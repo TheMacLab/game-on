@@ -1,0 +1,53 @@
+#go_notification {
+	text-align: center;
+	font-size: 36px;
+	position: fixed;
+	right: 30px;
+	height: 68px;
+	width: 250px;
+	color: white;
+	display:none;
+	padding: 4px 1px 1px 1px;
+	border-radius: 8px;
+	background: #111111;
+	opacity: .9;
+}
+
+#go_admin_bar_progress_bar_border{
+	height:15px;
+	width:120px;
+	border:thin grey solid;
+	-moz-border-radius: 2em 2em 2em 2em;
+border-radius: 2em 2em 2em 2em;
+
+	}
+#go_admin_bar_progress_bar{
+	height:15px;
+	-moz-border-radius: 2em 2em 2em 2em;
+border-radius: 2em 2em 2em 2em;
+background-color: #ff6600;
+	}
+#go_admin_bar_title{
+	text-align:left;
+	}
+#go_admin_bar_input{
+	width:250px;
+	}
+.go_admin_bar_points{
+	width:50px !important;
+	}
+.go_admin_bar_reason{
+	width:175px !important;}
+ul#wp-admin-bar-go_add-default.ab-submenu{
+	height:207px;}
+#points_needed_to_level_up{
+	position:absolute;
+	z-index:90000;
+	width: inherit;
+text-align: center;
+height: inherit;
+margin-top:-6px;
+color: white;
+text-shadow: 0px 0px #ff6600;}
+#points_needed_to_level_up:hover{
+	color:black;}
