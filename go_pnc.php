@@ -78,10 +78,21 @@ function go_notify($type, $points='', $currency='', $time='') {
 	$counter++;
 	$space = $counter*85;
 	if($type == 'points'){$display = go_display_points($points);}elseif ($type == 'currency'){$display = go_display_currency($currency);}
-	echo '<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">jQuery(".go_notification").fadeIn(200);
-	setTimeout(function(){
-		jQuery(".go_notification").fadeOut("slow");
-	},1500) </script>';
+	
+	// Refer to go_notification.js for explanation
+	echo '<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">	
+		jQuery(".go_notification").fadeIn(200);
+		jQuery("*").each(function(){
+		var current_index = parseInt(jQuery(this).css("z-index"), 10);
+		if(current_index > highest_index){
+			highest_index = current_index;
+			jQuery(".go_notification").css("z-index", highest_index);
+			}
+		});
+		setTimeout(function(){
+			jQuery(".go_notification").fadeOut("slow");
+		},1500) 
+	</script>';
 }
 
 function go_update_admin_bar($type, $title, $points_currency){

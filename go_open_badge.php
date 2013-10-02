@@ -36,18 +36,22 @@ function go_award_badge($atts){
 		if(!in_array($id, $existing_badges)){
 			$existing_badges[] = $id;
 			 update_user_meta($user_ID, 'go_badges', $existing_badges);
-			 echo '<div id="go_notification_badges" class="go_notification_badges" style="right: 250px">'.$display.'</div><script type="text/javascript" language="javascript">jQuery(".go_notification_badges").fadeIn(200);
-	setTimeout(function(){
-		jQuery(".go_notification_badges").fadeOut("slow");
-	},2000) </script>';
+			 echo '<div id="go_notification_badges" class="go_notification_badges" style="right: 250px">'.$display.'</div><script type="text/javascript" language="javascript">
+		jQuery(".go_notification_badges").fadeIn(200);
+		setTimeout(function(){
+			jQuery(".go_notification_badges").fadeOut("slow");
+		},2000) 
+	</script>';
 
 			}
 		} else { $existing_badges[] = $id;
 					 update_user_meta($user_ID, 'go_badges', $existing_badges);
-					 echo '<div id="go_notification_badges" class="go_notification_badges" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">jQuery(".go_notification_badges").fadeIn(200);
-	setTimeout(function(){
-		jQuery(".go_notification_badges").fadeOut("slow");
-	},2000) </script>';
+					 echo '<div id="go_notification_badges" class="go_notification_badges" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">
+		jQuery(".go_notification_badges").fadeIn(200);
+		setTimeout(function(){
+			jQuery(".go_notification_badges").fadeOut("slow");
+		},2000) 
+	</script>';
 
 		}
 	
