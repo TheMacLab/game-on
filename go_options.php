@@ -252,9 +252,7 @@ foreach(get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu)
 			<td>
 			<?php $class_a = get_option('go_class_a', false);
 			if($class_a){
-				?><select name="class_a_user[]"><option name="<?php echo $keyu; ?>" value="<?php echo $keyu; ?>"><?php echo $keyu; ?></option>
-				<option value="go_remove">Remove</option>
-				<?php
+				?><select name="class_a_user[]"><option name="<?php echo $keyu; ?>" value="<?php echo $keyu; ?>"><?php echo $keyu; ?></option><?php
 				foreach($class_a as $key => $value){
 					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
 					}
@@ -266,9 +264,7 @@ foreach(get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu)
             <td>
 			<?php $class_b = get_option('go_class_b', false);
 			if($class_b){
-				?><select name="class_b_user[]"><option name="<?php echo $valueu; ?>" value="<?php echo $valueu; ?>"><?php echo $valueu; ?></option>
-				<option value="go_remove">Remove</option>
-				<?php
+				?><select name="class_b_user[]"><option name="<?php echo $valueu; ?>" value="<?php echo $valueu; ?>"><?php echo $valueu; ?></option><?php
 				foreach($class_b as $key => $value){
 					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
 					}
@@ -312,52 +308,14 @@ foreach(get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu)
 add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
 add_action('go_return_presets_options','go_return_presets_options');
-
-function go_user_option_add(){
-	?> 
-	
-    <tr>
-
-			<td>
-			<?php $class_a = get_option('go_class_a', false);
-			if($class_a){
-				?><select name="class_a_user[]">
-				<option value="go_remove">Remove</option>
-				<?php
-				foreach($class_a as $key => $value){
-					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
-					}
-				  ?></select><?php
-				} ?>	
-			</td> 
-            
-            <td>
-			<?php $class_b = get_option('go_class_b', false);
-			if($class_b){
-				?><select name="class_b_user[]">
-				<option value="go_remove">Remove</option>
-				<?php
-				foreach($class_b as $key => $value){
-					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
-					}
-				  ?></select><?php
-				} ?>	
-			</td> 
-		</tr>
-       
-	<?php
-
-	}
-	
 function go_save_extra_profile_fields( $user_id ) {
 
 		if(isset($_POST['class_a_user'])){
 	foreach($_POST['class_a_user'] as $key=>$value){
-		if($value != 'go_remove'){
 		$class_a = $value;
 		$class_b = $_POST['class_b_user'][$key];
 		$class[$class_a] = $class_b;
-		}
+		
 	}
 	update_user_meta( $user_id, 'go_classifications', $class );
 	 }

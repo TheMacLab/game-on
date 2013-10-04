@@ -1,18 +1,12 @@
 <?php
-/*
-	This is the file that displays a page on the admin side of wordpress for the list of rankings.
-	Allows administrator to edit points required for each ranking and to delete certain rankings/add others. 
-*/
-
-
 function go_ranks() {
-	global $wpdb;
-	$dir = plugin_dir_url(__FILE__);
-	add_submenu_page( 'game-on-options.php', 'Ranks', 'Ranks', 'manage_options', 'go_ranks', 'go_ranks_menu');
+global $wpdb;
+$dir = plugin_dir_url(__FILE__);
+ add_submenu_page( 'game-on-options.php', 'Ranks', 'Ranks', 'manage_options', 'go_ranks', 'go_ranks_menu');
 }
 
 function go_ranks_menu() {
-	global $wpdb;
+		global $wpdb;
 	if (!current_user_can('manage_options'))  { 
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
@@ -21,48 +15,38 @@ function go_ranks_menu() {
      
 	
     ?>  
-        <form method="post" action="" style="margin: 2px 0px 2px 0px;">
-        	<input name="go_fix_ranks" type="submit" value="Fix Ranks"/>
+        <form method="post" action="">
+        <input name="go_fix_ranks" type="submit" value="Fix Ranks"/>
         </form>
-        <form method="POST" action="" style="margin: 2px 0px 2px 0px; ">
-    		<input type="submit" name="go_reset_ranks" value="Reset Ranks"/>
-    	</form>
-       
-    <?php 
-	
-		if(isset($_POST['go_reset_ranks'])){
-			$ranks = array('Level 01'=>0, 'Level 02'=> 150, 'Level 03'=> 315, 'Level 04'=> 495, 'Level 05'=> 690, 'Level 06'=> 900, 'Level 07'=> 1125, 'Level 08'=> 1365, 'Level 09'=> 1620,'Level 10'=> 1890, 'Level 11'=> 2175,'Level 12'=> 2475,'Level 13'=> 2790,'Level 14'=> 3120,'Level 15'=> 3465,'Level 16'=> 3825,'Level 17'=> 4200,'Level 18'=> 4590,'Level 19'=> 4995,'Level 20'=> 5415,);
-			update_option('go_ranks',$ranks); 
-		}
-	
+
+		<?php
 		if(isset($_POST['go_fix_ranks'])){
-		$table_name_user_meta = $wpdb->prefix . "usermeta";
-		$table_name_go_totals = $wpdb->prefix . "go_totals";
-		global $default_role;
-		$role = get_option('go_role',$default_role);
-		$uid = $wpdb->get_results("
-			SELECT user_id
-			FROM ".$table_name_user_meta."
-			WHERE meta_key =  'wp_capabilities'
-			AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')
-		");
+			 $table_name_user_meta = $wpdb->prefix . "usermeta";
+	 $table_name_go_totals = $wpdb->prefix . "go_totals";
+global $default_role;
+	$role = get_option('go_role',$default_role);
+	$uid = $wpdb->get_results("SELECT user_id
+FROM ".$table_name_user_meta."
+WHERE meta_key =  'wp_capabilities'
+AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')");
 			
-		foreach($uid as $id){foreach($id as $uids){
+			foreach($uid as $id){foreach($id as $uids){
 			
-			$ranks = get_option('go_ranks', false);
-			$current_points = go_return_points($uids);
-			while($current_points >= current($ranks)){
-				next($ranks);
-			}
-			$next_rank_points = current($ranks);
-			$next_rank = array_search($next_rank_points, $ranks);
-			$rank_points = prev($ranks);
-			$new_rank = array_search($rank_points, $ranks);
-			$new_rank_array= array(array($new_rank, $rank_points),array($next_rank, $next_rank_points));
-			update_user_meta($uids,'go_rank', $new_rank_array );
-		} // Ends foreach 
-	} // Ends if
-} // Ends function
+			
+$ranks = get_option('go_ranks', false);
+ $current_points = go_return_points($uids);
+ while($current_points >= current($ranks)){
+	 next($ranks);
+	 }
+ $next_rank_points = current($ranks);
+ $next_rank = array_search($next_rank_points, $ranks);
+ $rank_points = prev($ranks);
+ $new_rank = array_search($rank_points, $ranks);
+ $new_rank_array= array(array($new_rank, $rank_points),array($next_rank, $next_rank_points));
+  update_user_meta($uids,'go_rank', $new_rank_array );
+}	
+			
+			}}
 
 		$ranks = get_option('go_ranks',false);
 

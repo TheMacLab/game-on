@@ -56,7 +56,7 @@ function go_ranks_registration(){
 	global $wpdb;
 	$ranks = get_option('go_ranks',false);
 		if(!$ranks){
-			$ranks = array('Level 01'=>0, 'Level 02'=> 150, 'Level 03'=> 315, 'Level 04'=> 495, 'Level 05'=> 690, 'Level 06'=> 900, 'Level 07'=> 1125, 'Level 08'=> 1365, 'Level 09'=> 1620,'Level 10'=> 1890, 'Level 11'=> 2175,'Level 12'=> 2475,'Level 13'=> 2790,'Level 14'=> 3120,'Level 15'=> 3465,'Level 16'=> 3825,'Level 17'=> 4200,'Level 18'=> 4590,'Level 19'=> 4995,'Level 20'=> 5415,);
+			$ranks = array('Level 1'=>0, 'Level 2'=> 100, 'Level 3'=> 200, 'Level 4'=> 300, 'Level 5'=> 400, 'Level 6'=> 500, 'Level 7'=> 600, 'Level 8'=> 700, 'Level 9'=> 800,'Level 10'=> 900, 'Level 11'=> 1000,'Level 12'=> 1100,'Level 13'=> 1200,'Level 14'=> 1300,'Level 15'=> 1400,'Level 16'=> 1500,'Level 17'=> 1600,'Level 18'=> 1700,'Level 19'=> 1800,'Level 20'=> 1900,);
 			update_option('go_ranks',$ranks);
 			}
 	}

@@ -22,10 +22,10 @@ function register_cpt_task() {
 
     $args = array( 
         'labels' => $labels,
-        'hierarchical' => false,
+        'hierarchical' => true,
         'description' => get_option('go_tasks_plural_name'),
         'supports' => array( 'title','thumbnail', 'custom-fields', 'revisions', 'page-attributes' ),
-        'taxonomies' => array( 'task_categories', 'post_tag' ),
+        'taxonomies' => array( 'task_categories' ),
         'public' => true,
         'show_ui' => true,
         'show_in_menu' => true,
