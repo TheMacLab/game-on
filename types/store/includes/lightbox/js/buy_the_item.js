@@ -4,6 +4,7 @@ jQuery(document).ready(function(jQuery){
                 action:'buy_item',
                 nonce: "",
 				the_id: id,
+				qty: jQuery('#go_qty').val()
     };
 	jQuery.ajax({
 		url: buy_item.ajaxurl,
