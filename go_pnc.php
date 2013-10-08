@@ -98,17 +98,21 @@ function go_notify($type, $points='', $currency='', $time='') {
 	
 	// Refer to go_notification.js for explanation
 	echo '<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">	
+		
 		jQuery(".go_notification").fadeIn(200);
-		setTimeout(function(){
-			jQuery(".go_notification").fadeOut("slow");
-		},1500) 
+		
+		var highest_index = 0;
 		jQuery("*").each(function(){
-		var current_index = parseInt(jQuery(this).css("z-index"), 10);
-		if(current_index > highest_index){
-			highest_index = current_index;
-			jQuery(".go_notification").css("z-index", highest_index);
+			var current_index = parseInt(jQuery(this).css("z-index"), 10);
+			if(current_index > highest_index){
+				highest_index = current_index;
+				jQuery(".go_notification").css("z-index", highest_index);
 			}
 		});
+		setTimeout(function(){
+			jQuery(".go_notification").fadeOut("slow");
+		},1500)
+		
 		
 	</script>';
 }
