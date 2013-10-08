@@ -70,9 +70,11 @@ function go_ranks_menu() {
 
 	?>
      <div>   
-         <table style="width:250px;" id="ranks_table" class="widefat">
-            <th style="width:125px;">Rank</th>
+         <table style="width:350px;" id="ranks_table" class="widefat">
+            <th style="width:250px;">Rank</th>
             <th style="width:125px;"><?php echo get_option('go_points_name'); ?></th>
+            <th></th>
+            <th title="Insert Shortcodes (Badges) in the box and they will run when the rank is reached.">Triggers</th>
             <tbody id="table_rows">
             <?php  
 				foreach($ranks as $level => $points){
@@ -209,13 +211,25 @@ function go_update_ranks($user_id, $total_points){
 	global $next_rank_points;
 	global $current_points;
 	if($next_rank != ''){
-		if($total_points >= $next_rank_points || $total_points < $current_rank_points){
+		if($total_points >= $next_rank_points){
 		
 		$ranks = get_option('go_ranks');
 		$ranks_keys = array_keys($ranks);
 		$new_rank_key = array_search($next_rank, $ranks_keys);
 		$new_next_rank = $ranks_keys[($new_rank_key+1)];
 		$new_rank = array(array($next_rank, $next_rank_points),	array($new_next_rank, $ranks[$new_next_rank]));
+		update_user_meta($user_id, 'go_rank', $new_rank);
+		$update = true;
+		}
+		
+		if($total_points < $current_rank_points){
+		
+		$ranks = get_option('go_ranks');
+		$ranks_keys = array_keys($ranks);
+		$current_rank_key = array_search($current_rank, $ranks_keys);
+		$prev_rank = $ranks_keys[($current_rank_key-1)];
+		$prev_rank_points = $ranks[$prev_rank];
+		$new_rank = array(array($prev_rank, $prev_rank_points),	array($current_rank, $current_rank_points));
 		update_user_meta($user_id, 'go_rank', $new_rank);
 		$update = true;
 		}

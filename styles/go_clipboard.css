@@ -25,3 +25,14 @@ table.sortable tbody tr::before {
     counter-increment: sortabletablescope;
     display: table-cell;
 }
+#go_clipboard_add input{
+	width:75px;
+height:10px;	}
+
+#go_clipboard_add{
+	border:thin solid #999;
+	 background-color:#FFF;
+	  width: 645px;
+height: 27px;
+padding: 3px;
+	}

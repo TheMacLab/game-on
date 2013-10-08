@@ -34,14 +34,16 @@ function go_the_lb_ajax(){
 	if ($user_points >= $req_rank) { $lvl_color = "g"; } else { $lvl_color = "r"; }
 	if ($user_gold >= $req_currency) { $gold_color = "g"; } else { $gold_color = "r"; }
 	if ($user_points >= $req_points) { $points_color = "g"; } else { $points_color = "r"; }
-	if ($user_time >= $req_time) { $time_color = "g"; } else { $time_color = "r"; }
-	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g" && $time_color == "g") { $buy_color = "g"; } else { $buy_color = "r"; }
+	$time_color = "g"; 
+	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g") { $buy_color = "g"; } else { $buy_color = "r"; }
 ?>
-	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>"><?php echo get_option('go_currency_name').': '.$req_currency; ?></div>
-	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>"><?php echo get_option('go_points_name').': '.$req_points; ?></div>
-	<div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>">Time: <?php echo $req_time; ?></div>
-    <div id="golb-fr-lvl" class="golb-fr-boxes-<?php echo $lvl_color; ?>">Rank: <span><?php echo $req_rank_key; ?>+</span></div>
-	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div>
+	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_gold; ?>"><?php echo get_option('go_currency_name').': '.$req_currency; ?></div>
+	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_points; ?>"><?php echo get_option('go_points_name').': '.$req_points; ?></div>
+	<div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_time; ?>">Time: <?php echo $req_time; ?></div>
+    <div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;
+height: 30px;
+font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
+	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div> 
 <?php
     die;
 }
@@ -57,6 +59,7 @@ add_action('wp_head', 'go_frontend_lightbox_css');
 function go_frontend_lightbox_html() {
 ?>
 <script type="text/javascript">
+
 function go_lb_closer() {
 	document.getElementById('light').style.display='none';
 	document.getElementById('fade').style.display='none';
@@ -85,8 +88,21 @@ function go_lb_opener(id) {
                 success:function(results, textStatus, XMLHttpRequest){  
   				jQuery("#lb-content").innerHTML = "";
 				jQuery("#lb-content").html('');  
-  				jQuery("#lb-content").append(results);  
-  				},
+  				jQuery("#lb-content").append(results);
+				window.go_req_currency = jQuery('#golb-fr-price').attr('req');
+				window.go_req_points = jQuery('#golb-fr-points').attr('req');
+				window.go_req_time = jQuery('#golb-fr-time').attr('req');
+				window.go_cur_currency = jQuery('#golb-fr-price').attr('cur');
+				window.go_cur_points = jQuery('#golb-fr-points').attr('cur');
+				window.go_cur_time = jQuery('#golb-fr-time').attr('cur');
+				jQuery('#go_qty').spinner({
+		
+	max: Math.min(Math.floor(go_cur_currency/go_req_currency),Math.floor(go_cur_points/go_req_points)),
+	min: 1
+	
+		
+		});
+  				}, 
             });
 	}
 }

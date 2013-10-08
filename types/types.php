@@ -153,12 +153,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'id'   => $prefix . 'store_time',
 				'type' => 'text',
 			),
-			array(
-				'name' => 'Repeatable',
-				'desc' => ' wether or not the item can be bought more than once',
-				'id'   => $prefix . 'store_repeat',
-				'type' => 'checkbox'
-			),
+			
 				
 				
 		),
