@@ -9,20 +9,50 @@ function go_admin_bar(){
 	global $next_rank_points;
 	global $current_rank_points;
 	$dom = ($next_rank_points-$current_rank_points);
+	$rng = ($current_points - $current_rank_points);
+	$color = '#00c100';
+	$current_minutes = go_return_minutes(get_current_user_id());
 	$table_name_options = $wpdb->prefix."options";
 	if($dom <= 0){ $dom = 1;}
-	$percentage = ($current_points-$current_rank_points)/$dom*100;
+	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
+	
+	function inRange($int, $min, $max){
+		return ($int>$min && $int<$max);
+	}
 	
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
+		switch ($current_minutes){
+			case inRange($current_minutes, 0, PHP_INT_MAX):
+			case 0:
+				$color = '#00c100';
+				break;
+			case inRange($current_minutes, -300, 0);
+			case -300:
+				$color = '#ffff00';
+				break;
+			case inRange($current_minutes, -600, -300);
+			case -600:
+				$color = '#ff6700';
+				break;
+			case inRange($current_minutes, -900, -600);
+			case -900:
+				$color = '#cc0000';
+				break;
+			case inRange($current_minutes, -PHP_INT_MAX, -900);
+				$color = '#464646';
+				break;
+		}
+		
 		$wp_admin_bar->add_menu( array(
-		'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up">'.($current_points-$current_rank_points).'/'.($next_rank_points-$current_rank_points).'</div><div id="go_admin_bar_progress_bar" style="width: '.$percentage.'%"></div></div></div>',
-		'href' => '#',
-		'id' => 'go_info',
-	));
+			'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up">'.($rng).'/'.($dom).'</div><div id="go_admin_bar_progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
+			'href' => '#',
+			'id' => 'go_info',
+		));
 	
-		if (!is_admin_bar_showing() || !is_user_logged_in() )
+	
+	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
 		'title' => '<div id="go_admin_bar_points">'.get_option('go_points_name').': '.get_option('go_points_prefix').$current_points.get_option('go_points_suffix').'</div>',
@@ -30,13 +60,14 @@ function go_admin_bar(){
 		'parent' => 'go_info',
 	));
 	
-		if (!is_admin_bar_showing() || !is_user_logged_in() )
+	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
 		'title' => '<div id="go_admin_bar_currency">'.get_option('go_currency_name').': '.go_display_currency($current_currency).'</div>',
 		'href' => '#',
 		'parent' => 'go_info',
 	));
+	
 	if (!is_admin_bar_showing()|| !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
@@ -44,6 +75,7 @@ function go_admin_bar(){
 		'href' => '#',
 		'parent' => 'go_info',
 	));
+	
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
