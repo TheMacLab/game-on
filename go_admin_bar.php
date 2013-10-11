@@ -3,8 +3,8 @@
 function go_admin_bar(){
 	global $wpdb;
 	global $wp_admin_bar;
-	global $current_points;
-	global $current_currency;
+	global $current_points; //users current experience
+	global $current_currency; //users current money
 	global $current_rank;
 	global $next_rank_points;
 	global $current_rank_points;
@@ -44,7 +44,6 @@ function go_admin_bar(){
 				$color = '#464646';
 				break;
 		}
-		
 		$wp_admin_bar->add_menu( array(
 			'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up">'.($rng).'/'.($dom).'</div><div id="go_admin_bar_progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
 			'href' => '#',
@@ -79,7 +78,7 @@ function go_admin_bar(){
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
-		'title' => '<div>'.go_return_minutes(get_current_user_id()).' Minutes</div>',
+		'title' => '<div id="go_admin_bar_minutes">Minutes: '.$current_minutes.'</div>',
 		'href' => '#',
 		'parent' => 'go_info',
 	));

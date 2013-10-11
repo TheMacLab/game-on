@@ -118,7 +118,22 @@ function go_notify($type, $points='', $currency='', $time='') {
 }
 
 function go_update_admin_bar($type, $title, $points_currency){
-	if($type == 'points'){$display = go_display_points($points_currency);}elseif ($type == 'currency'){$display = go_display_currency($points_currency);}
+	global $next_rank_points;
+	global $current_rank_points;
+	
+	if($type == 'points'){
+		$display = go_display_points($points_currency); 
+		$rng = ($current_rank_points -$points_currency) * -1;
+		$dom = ($next_rank_points - $current_rank_points);
+		echo '<script language="javascript">
+			jQuery("#points_needed_to_level_up").html("'.$rng.'/'.$dom.'");
+		</script>';
+	} elseif ($type == 'currency'){
+		$display = go_display_currency($points_currency);
+	} elseif($type == 'minutes'){ 
+		$display = $points_currency;
+	}
+	
 	$percentage = go_get_level_percentage(get_current_user_id());
 	echo '<script language="javascript">
 		jQuery("#go_admin_bar_'.$type.'").html("'.$title.': '.$display.'");
@@ -131,7 +146,6 @@ function go_update_admin_bar($type, $title, $points_currency){
 function go_update_totals($user_id,$points, $currency, $minutes){
 	global $wpdb;
 	if($points != 0){
-		
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$totalpoints = go_return_points($user_id);
 		$wpdb->update($table_name_go_totals, array('points'=> $totalpoints+$points), array('uid'=>$user_id));
@@ -152,6 +166,7 @@ function go_update_totals($user_id,$points, $currency, $minutes){
 		$totalminutes = go_return_minutes($user_id);
 		$wpdb->update($table_name_go_totals, array('minutes'=> $totalminutes+$minutes), array('uid'=>$user_id));
 		go_notify('Minutes', 0,0,$minutes);
+		go_update_admin_bar('minutes', 'Minutes', $totalminutes+$minutes);
 		}
 	}
 
