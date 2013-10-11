@@ -121,6 +121,36 @@ function go_update_admin_bar($type, $title, $points_currency){
 	global $next_rank_points;
 	global $current_rank_points;
 	
+	function barColor($current_minutes){
+		$color = '#00c100';
+		function inRange($int, $min, $max){
+			return ($int>$min && $int<$max);
+		}
+		switch ($current_minutes){
+			case inRange($current_minutes, 0, PHP_INT_MAX):
+				$color = '#00c100';
+				return $color; 
+				break;
+			case inRange($current_minutes, -301, -1):
+				$color = '#ffe400';
+				return $color;
+				break;
+			case inRange($current_minutes, -601, -300):
+				$color = '#ff6700';
+				return $color;
+				break;
+			case inRange($current_minutes, -901, -600):
+				$color = '#cc0000';
+				return $color;
+				break;
+			case inRange($current_minutes, -PHP_INT_MAX, -900):
+				$color = '#464646';
+				return $color;
+				break;
+		}
+		return $color;
+	}
+	
 	if($type == 'points'){
 		$display = go_display_points($points_currency); 
 		$rng = ($current_rank_points -$points_currency) * -1;
@@ -132,12 +162,13 @@ function go_update_admin_bar($type, $title, $points_currency){
 		$display = go_display_currency($points_currency);
 	} elseif($type == 'minutes'){ 
 		$display = $points_currency;
+		$color = barColor($points_currency);
 	}
 	
 	$percentage = go_get_level_percentage(get_current_user_id());
 	echo '<script language="javascript">
 		jQuery("#go_admin_bar_'.$type.'").html("'.$title.': '.$display.'");
-		jQuery("#go_admin_bar_progress_bar").css("width", "'.$percentage.'%");
+		jQuery("#go_admin_bar_progress_bar").css({"width": "'.$percentage.'%", "background-color": "'.$color.'"});
 	</script>';
 	}
 

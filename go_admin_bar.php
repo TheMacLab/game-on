@@ -17,33 +17,39 @@ function go_admin_bar(){
 	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	
-	function inRange($int, $min, $max){
-		return ($int>$min && $int<$max);
+	function barColor($current_minutes){
+		function inRange($int, $min, $max){
+			return ($int>$min && $int<$max);
+		}
+		switch ($current_minutes){
+			case inRange($current_minutes, 0, PHP_INT_MAX):
+				$color = '#00c100';
+				return $color; 
+				break;
+			case inRange($current_minutes, -301, -1):
+				$color = '#ffe400';
+				return $color;
+				break;
+			case inRange($current_minutes, -601, -300):
+				$color = '#ff6700';
+				return $color;
+				break;
+			case inRange($current_minutes, -901, -600):
+				$color = '#cc0000';
+				return $color;
+				break;
+			case inRange($current_minutes, -PHP_INT_MAX, -900):
+				$color = '#464646';
+				return $color;
+				break;
+		}
+		return $color;
 	}
+	
+	$color = barColor($current_minutes);
 	
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
-		switch ($current_minutes){
-			case inRange($current_minutes, 0, PHP_INT_MAX):
-			case 0:
-				$color = '#00c100';
-				break;
-			case inRange($current_minutes, -300, 0);
-			case -300:
-				$color = '#ffff00';
-				break;
-			case inRange($current_minutes, -600, -300);
-			case -600:
-				$color = '#ff6700';
-				break;
-			case inRange($current_minutes, -900, -600);
-			case -900:
-				$color = '#cc0000';
-				break;
-			case inRange($current_minutes, -PHP_INT_MAX, -900);
-				$color = '#464646';
-				break;
-		}
 		$wp_admin_bar->add_menu( array(
 			'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up">'.($rng).'/'.($dom).'</div><div id="go_admin_bar_progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
 			'href' => '#',
