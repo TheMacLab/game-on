@@ -121,35 +121,7 @@ function go_update_admin_bar($type, $title, $points_currency){
 	global $next_rank_points;
 	global $current_rank_points;
 	
-	function barColor($current_minutes){
-		$color = '#00c100';
-		function inRange($int, $min, $max){
-			return ($int>$min && $int<$max);
-		}
-		switch ($current_minutes){
-			case inRange($current_minutes, 0, PHP_INT_MAX):
-				$color = '#00c100';
-				return $color; 
-				break;
-			case inRange($current_minutes, -301, -1):
-				$color = '#ffe400';
-				return $color;
-				break;
-			case inRange($current_minutes, -601, -300):
-				$color = '#ff6700';
-				return $color;
-				break;
-			case inRange($current_minutes, -901, -600):
-				$color = '#cc0000';
-				return $color;
-				break;
-			case inRange($current_minutes, -PHP_INT_MAX, -900):
-				$color = '#464646';
-				return $color;
-				break;
-		}
-		return $color;
-	}
+
 	
 	if($type == 'points'){
 		$display = go_display_points($points_currency); 
@@ -183,14 +155,14 @@ function go_update_totals($user_id,$points, $currency, $minutes){
 		go_update_ranks($user_id, ($totalpoints+$points));
 		go_notify('points', $points);
 		$p = (string)($totalpoints+$points);
-		go_update_admin_bar('points',get_option('go_points_name'),$p);
+		go_update_admin_bar('points',go_return_options('go_points_name'),$p);
 		}
 	if($currency != 0){
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$totalcurrency = go_return_currency($user_id);
 		$wpdb->update($table_name_go_totals, array('currency'=> $totalcurrency+$currency), array('uid'=>$user_id));
 		go_notify('currency',0, $currency);
-		go_update_admin_bar('currency', get_option('go_currency_name'), ($totalcurrency+$currency));
+		go_update_admin_bar('currency', go_return_options('go_currency_name'), ($totalcurrency+$currency));
 		}
 	if($minutes != 0){
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
@@ -246,6 +218,40 @@ function go_get_level_percentage($user_id){
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	return $percentage;
 	}
-
-
+function go_return_options($option){
+if(defined ($option) ){
+return constant($option);
+} else {
+return get_option($option);
+}
+}
+	function barColor($current_minutes){
+		$color = '#00c100';
+		function inRange($int, $min, $max){
+			return ($int>$min && $int<$max);
+		}
+		switch ($current_minutes){
+			case inRange($current_minutes, 0, PHP_INT_MAX):
+				$color = '#00c100';
+				return $color; 
+				break;
+			case inRange($current_minutes, -301, -1):
+				$color = '#ffe400';
+				return $color;
+				break;
+			case inRange($current_minutes, -601, -300):
+				$color = '#ff6700';
+				return $color;
+				break;
+			case inRange($current_minutes, -901, -600):
+				$color = '#cc0000';
+				return $color;
+				break;
+			case inRange($current_minutes, -PHP_INT_MAX, -900):
+				$color = '#464646';
+				return $color;
+				break;
+		}
+		return $color;
+	}
 ?>

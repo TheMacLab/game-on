@@ -6,24 +6,24 @@ include('tsk-admin-footer.php');
 // Task custom post type
 function register_cpt_task() {
     $labels = array( 
-        'name' => _x( get_option('go_tasks_plural_name'), 'task' ),
-        'singular_name' => _x( get_option('go_tasks_name'), 'task' ),
-        'add_new' => _x( 'Add New '.get_option('go_tasks_name'), 'task' ),
-        'add_new_item' => _x( 'Add New '.get_option('go_tasks_name'), 'task' ),
-        'edit_item' => _x( 'Edit '.get_option('go_tasks_name'), 'task' ),
-        'new_item' => _x( 'New '.get_option('go_tasks_name'), 'task' ),
-        'view_item' => _x( 'View '.get_option('go_tasks_name'), 'task' ),
-        'search_items' => _x( 'Search '.get_option('go_tasks_plural_name'), 'task' ),
-        'not_found' => _x( 'No '.get_option('go_tasks_plural_name').' found', 'task' ),
-        'not_found_in_trash' => _x( 'No '.get_option('go_tasks_plural_name').' found in Trash', 'task' ),
-        'parent_item_colon' => _x( 'Parent '.get_option('go_tasks_name').':', 'task' ),
-        'menu_name' => _x( get_option('go_tasks_plural_name'), 'task' ),
+        'name' => _x( go_return_options('go_tasks_plural_name'), 'task' ),
+        'singular_name' => _x( go_return_options('go_tasks_name'), 'task' ),
+        'add_new' => _x( 'Add New '.go_return_options('go_tasks_name'), 'task' ),
+        'add_new_item' => _x( 'Add New '.go_return_options('go_tasks_name'), 'task' ),
+        'edit_item' => _x( 'Edit '.go_return_options('go_tasks_name'), 'task' ),
+        'new_item' => _x( 'New '.go_return_options('go_tasks_name'), 'task' ),
+        'view_item' => _x( 'View '.go_return_options('go_tasks_name'), 'task' ),
+        'search_items' => _x( 'Search '.go_return_options('go_tasks_plural_name'), 'task' ),
+        'not_found' => _x( 'No '.go_return_options('go_tasks_plural_name').' found', 'task' ),
+        'not_found_in_trash' => _x( 'No '.go_return_options('go_tasks_plural_name').' found in Trash', 'task' ),
+        'parent_item_colon' => _x( 'Parent '.go_return_options('go_tasks_name').':', 'task' ),
+        'menu_name' => _x( go_return_options('go_tasks_plural_name'), 'task' ),
     );
 
     $args = array( 
         'labels' => $labels,
         'hierarchical' => false,
-        'description' => get_option('go_tasks_plural_name'),
+        'description' => go_return_options('go_tasks_plural_name'),
         'supports' => array( 'title','thumbnail', 'custom-fields', 'revisions', 'page-attributes' ),
         'taxonomies' => array( 'task_categories', 'post_tag' ),
         'public' => true,
@@ -36,7 +36,7 @@ function register_cpt_task() {
         'has_archive' => true,
         'query_var' => true,
         'can_export' => true,
-        'rewrite' => array( 'slug' => strtolower(get_option('go_tasks_plural_name')) ),
+        'rewrite' => true ,
         'capability_type' => 'post'
     );
 
@@ -50,21 +50,21 @@ add_action( 'init', 'register_taxonomy_task_categories' );
 function register_taxonomy_task_categories() {
 
     $labels = array( 
-        'name' => _x( get_option('go_tasks_name').' Categories', 'task_categories' ),
-        'singular_name' => _x( get_option('go_tasks_name').' Category', 'task_categories' ),
-        'search_items' => _x( 'Search '.get_option('go_tasks_name').' Categories', 'task_categories' ),
-        'popular_items' => _x( 'Popular '.get_option('go_tasks_name').' Categories', 'task_categories' ),
-        'all_items' => _x( 'All '.get_option('go_tasks_name').' Categories', 'task_categories' ),
-        'parent_item' => _x( get_option('go_tasks_name').' Category Parent', 'task_categories' ),
-        'parent_item_colon' => _x( 'Parent '.get_option('go_tasks_name').' Category:', 'task_categories' ),
-        'edit_item' => _x( 'Edit '.get_option('go_tasks_name').' Category', 'task_categories' ),
-        'update_item' => _x( 'Update '.get_option('go_tasks_name').' Category', 'task_categories' ),
-        'add_new_item' => _x( 'Add New '.get_option('go_tasks_name').' Category', 'task_categories' ),
-        'new_item_name' => _x( 'New '.get_option('go_tasks_name').' Category', 'task_categories' ),
-        'separate_items_with_commas' => _x( 'Separate '.get_option('go_tasks_name').' categories with commas', 'task_categories' ),
-        'add_or_remove_items' => _x( 'Add or remove '.get_option('go_tasks_name').' categories', 'task_categories' ),
-        'choose_from_most_used' => _x( 'Choose from the most used '.get_option('go_tasks_name').' categories', 'task_categories' ),
-        'menu_name' => _x( get_option('go_tasks_name').' Categories', 'task_categories' ),
+        'name' => _x( go_return_options('go_tasks_name').' Categories', 'task_categories' ),
+        'singular_name' => _x( go_return_options('go_tasks_name').' Category', 'task_categories' ),
+        'search_items' => _x( 'Search '.go_return_options('go_tasks_name').' Categories', 'task_categories' ),
+        'popular_items' => _x( 'Popular '.go_return_options('go_tasks_name').' Categories', 'task_categories' ),
+        'all_items' => _x( 'All '.go_return_options('go_tasks_name').' Categories', 'task_categories' ),
+        'parent_item' => _x( go_return_options('go_tasks_name').' Category Parent', 'task_categories' ),
+        'parent_item_colon' => _x( 'Parent '.go_return_options('go_tasks_name').' Category:', 'task_categories' ),
+        'edit_item' => _x( 'Edit '.go_return_options('go_tasks_name').' Category', 'task_categories' ),
+        'update_item' => _x( 'Update '.go_return_options('go_tasks_name').' Category', 'task_categories' ),
+        'add_new_item' => _x( 'Add New '.go_return_options('go_tasks_name').' Category', 'task_categories' ),
+        'new_item_name' => _x( 'New '.go_return_options('go_tasks_name').' Category', 'task_categories' ),
+        'separate_items_with_commas' => _x( 'Separate '.go_return_options('go_tasks_name').' categories with commas', 'task_categories' ),
+        'add_or_remove_items' => _x( 'Add or remove '.go_return_options('go_tasks_name').' categories', 'task_categories' ),
+        'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options('go_tasks_name').' categories', 'task_categories' ),
+        'menu_name' => _x( go_return_options('go_tasks_name').' Categories', 'task_categories' ),
     );
 
     $args = array( 

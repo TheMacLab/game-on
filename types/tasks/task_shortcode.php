@@ -45,7 +45,7 @@ function go_task_shortcode($atts, $content = null) {
 				echo '';	// Echo nothing as they don't need to know how many points necessary to start it 
 			} else { // If the user is logged in, and does not have enough points, run this code
 				$points = $req_rank - $current_points; // Grabs points difference between user's current points, and points required to start the task
-				$points_name = get_option('go_points_name'); // Grabs what the points are called, whether it's XP or something else
+				$points_name = go_return_options('go_points_name'); // Grabs what the points are called, whether it's XP or something else
 				echo 'You need '.$points.' more '.$points_name.' to begin this task.'; // displays the message stating the need for more points to start the task
 			}
 		} else {
@@ -66,7 +66,7 @@ function go_task_shortcode($atts, $content = null) {
 					
 ?>
 				<div id="go_content"> <br />
-				<button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;"><?= get_option('go_second_stage_button') ?></button>
+				<button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
             	</div>
                 
 <?php			
@@ -76,36 +76,36 @@ function go_task_shortcode($atts, $content = null) {
 				case '1': 
 ?>
 				<div id="go_content"> <br />
-				<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?= get_option('go_second_stage_button') ?></button>
+				<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
          		</div>   
 <?php
 				break;
 				
 				// Accepted
 				case '2': 
-					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<br /> <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.get_option('go_third_stage_button').'</button></div>';
+					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<br /> <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
 				break;
 				
 				// Completed
 				case '3': 
-					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<br /> <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.get_option('go_fourth_stage_button').'</button></div>';
+					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<br /> <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div>';
 				break;
 				
 				// Mastered
 				case '4':  
 					echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
 					if ($repeat == 'on') {
-		/*		echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'.get_option('go_repeat_button').'</button></div>'; */
+		/*		echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'.go_return_options('go_repeat_button').'</button></div>'; */
 		
 						echo '<div id="go_repeat_clicked" style="display:none;">'
 						.do_shortcode(wpautop($repeat_message)).
 						'<br/><button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
-						.get_option('go_repeat_button').
+						.go_return_options('go_repeat_button').
 						'</button>
 						</div>
 						<div id="go_repeat_unclicked">
 						<button onclick="go_repeat_replace();">'
-						.get_option('go_repeat_button').
+						.go_return_options('go_repeat_button').
 						'</button>
 						</div>';
 					} else {
@@ -141,7 +141,7 @@ function go_task_shortcode($atts, $content = null) {
 		
 <?php
 			echo $the_stage; // Just for Testing Purposes
-			edit_post_link('Edit '.get_option('go_tasks_name'), '<br />
+			edit_post_link('Edit '.go_return_options('go_tasks_name'), '<br />
 	<p>', '</p>', $id);
 		} // Ends else statement
 	} // Ends if statement
@@ -183,13 +183,13 @@ function task_change_stage(){
 			}
 	switch($status) {
 		case 1:
-			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'.get_option('go_second_stage_button').'</button></div>';
+			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.get_option('go_third_stage_button').'</button></div>';
+			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
 			break;
 		case 3:
-			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).' <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.get_option('go_fourth_stage_button').'</button</div>';
+			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).' <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button</div>';
 			break;
 		case 4:
 			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
@@ -198,12 +198,12 @@ function task_change_stage(){
 				echo '<div id="go_repeat_clicked" style="display:none;">'
 		.do_shortcode(wpautop($repeat_message)).
 		'<br/><button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
-		.get_option('go_repeat_button').
+		.go_return_options('go_repeat_button').
 		'</button>
 		</div>
 		<div id="go_repeat_unclicked">
 		<button onclick="go_repeat_replace();">'
-		.get_option('go_repeat_button').
+		.go_return_options('go_repeat_button').
 		'</button>
 		</div>';
 			} else {

@@ -23,14 +23,14 @@ function go_return_minutes($user_id){
 	}
 function go_display_points($points){
 	global $wpdb;
-	$prefix = get_option('go_points_prefix');
-	$suffix = get_option('go_points_suffix');
+	$prefix = go_return_options('go_points_prefix');
+	$suffix = go_return_options('go_points_suffix');
 	return $prefix.$points.$suffix;
 	}
 function go_display_currency($currency){
 	global $wpdb;
-	$prefix = get_option('go_currency_prefix');
-	$suffix = get_option('go_currency_suffix');
+	$prefix = go_return_options('go_currency_prefix');
+	$suffix = go_return_options('go_currency_suffix');
 	return $prefix.$currency.$suffix;
 	}
 

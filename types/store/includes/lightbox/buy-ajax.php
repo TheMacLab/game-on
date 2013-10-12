@@ -36,12 +36,12 @@ global $wpdb;
 		switch ($type) {
 			case 'points':
 				if ($points_re == false) {
-					array_push($stack_arr, get_option('go_points_name'));
+					array_push($stack_arr, go_return_options('go_points_name'));
 				}
 				break;
 			case 'currency':
 				if ($currency_re == false) {
-					array_push($stack_arr, get_option('go_currency_name'));
+					array_push($stack_arr, go_return_options('go_currency_name'));
 				}
 				break;
 			case 'time':

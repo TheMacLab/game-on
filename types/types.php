@@ -17,7 +17,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 	// Tasks Meta Boxes
 	$meta_boxes[] = array(
 		'id'         => 'go_mta_metabox',
-		'title'      => get_option('go_tasks_name').' Options',
+		'title'      => go_return_options('go_tasks_name').' Options',
 		'pages'      => array( 'tasks' ), // Post type
 		'context'    => 'normal',
 		'priority'   => 'high',
@@ -31,7 +31,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 		
 			array(
 				'name' => 'Required Rank',
-				'desc' => 'rank required to begin '.get_option('go_tasks_name'),
+				'desc' => 'rank required to begin '.go_return_options('go_tasks_name'),
 				'id'   => $prefix . 'req_rank',
 				'type' => 'select',
 				'options' => go_get_all_ranks()
@@ -45,19 +45,19 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Points',
-				'desc' => 'points awarded for encountering, accepting, completing, and mastering the '.get_option('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70)',
+				'desc' => 'points awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70)',
 				'id'   => $prefix . 'task_points',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Currency',
-				'desc' => 'currency awarded for encountering, accepting, completing, and mastering the '.get_option('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70)',
+				'desc' => 'currency awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70)',
 				'id'   => $prefix . 'task_currency',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Encounter Message',
-				'desc' => 'Enter a message for the user to recieve when they have <i>encountered</i> the '.get_option('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>encountered</i> the '.go_return_options('go_tasks_name'),
 				'id' => $prefix . 'quick_desc',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -67,7 +67,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Accept Message',
-				'desc' => 'Enter a message for the user to recieve when they have <i>accepted</i> the '.get_option('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>accepted</i> the '.go_return_options('go_tasks_name'),
 				'id' => $prefix . 'accept_message',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -77,7 +77,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Completion Message (Optional)',
-				'desc' => 'Enter a message for the user to recieve when they have <i>completed</i> the '.get_option('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>completed</i> the '.go_return_options('go_tasks_name'),
 				'id' => $prefix . 'complete_message',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -87,7 +87,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),
 			array(
 				'name' => 'Mastery Message (Optional)',
-				'desc' => 'Enter a message for the user to recieve when they have <i>mastered</i> the '.get_option('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>mastered</i> the '.go_return_options('go_tasks_name'),
 				'id' => $prefix . 'mastery_message',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -97,13 +97,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),
 			array(
 					'name' => 'Repeatable',
-					'desc' => ' Select to make '.get_option('go_tasks_name').' repeatable',
+					'desc' => ' Select to make '.go_return_options('go_tasks_name').' repeatable',
 					'id'   => $prefix . 'task_repeat',
 					'type' => 'checkbox'
 				),
 			array(
 				'name' => 'Repeat Message (Optional)',
-				'desc' => 'Enter a message for the user to recieve when they have <i>repeated</i> the '.get_option('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>repeated</i> the '.go_return_options('go_tasks_name'),
 				'id' => $prefix . 'repeat_message',
 				'type' => 'wysiwyg',
         		'options' => array(

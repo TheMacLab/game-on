@@ -72,7 +72,7 @@ function go_ranks_menu() {
      <div>   
          <table style="width:350px;" id="ranks_table" class="widefat">
             <th style="width:250px;">Rank</th>
-            <th style="width:125px;"><?php echo get_option('go_points_name'); ?></th>
+            <th style="width:125px;"><?php echo go_return_options('go_points_name'); ?></th>
             <th></th>
             <th title="Insert Shortcodes (Badges) in the box and they will run when the rank is reached.">Triggers</th>
             <tbody id="table_rows">
@@ -88,7 +88,7 @@ function go_ranks_menu() {
 	</div>
 	<div class="widefat">
         Ranks: <textarea id="ranks"></textarea>
-        <?php echo get_option('go_points_name');?>: <textarea id="points"></textarea>
+        <?php echo go_return_options('go_points_name');?>: <textarea id="points"></textarea>
         Separator: <textarea id="separator"></textarea><button onclick="go_add_ranks();" >+</button>
 	</div>
     <script language="javascript">

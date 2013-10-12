@@ -17,34 +17,7 @@ function go_admin_bar(){
 	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	
-	function barColor($current_minutes){
-		function inRange($int, $min, $max){
-			return ($int>$min && $int<$max);
-		}
-		switch ($current_minutes){
-			case inRange($current_minutes, 0, PHP_INT_MAX):
-				$color = '#00c100';
-				return $color; 
-				break;
-			case inRange($current_minutes, -301, -1):
-				$color = '#ffe400';
-				return $color;
-				break;
-			case inRange($current_minutes, -601, -300):
-				$color = '#ff6700';
-				return $color;
-				break;
-			case inRange($current_minutes, -901, -600):
-				$color = '#cc0000';
-				return $color;
-				break;
-			case inRange($current_minutes, -PHP_INT_MAX, -900):
-				$color = '#464646';
-				return $color;
-				break;
-		}
-		return $color;
-	}
+	
 	
 	$color = barColor($current_minutes);
 	
@@ -60,7 +33,7 @@ function go_admin_bar(){
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
-		'title' => '<div id="go_admin_bar_points">'.get_option('go_points_name').': '.get_option('go_points_prefix').$current_points.get_option('go_points_suffix').'</div>',
+		'title' => '<div id="go_admin_bar_points">'.go_return_options('go_points_name').': '.go_return_options('go_points_prefix').$current_points.go_return_options('go_points_suffix').'</div>',
 		'href' => '#',
 		'parent' => 'go_info',
 	));
@@ -68,7 +41,7 @@ function go_admin_bar(){
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
-		'title' => '<div id="go_admin_bar_currency">'.get_option('go_currency_name').': '.go_display_currency($current_currency).'</div>',
+		'title' => '<div id="go_admin_bar_currency">'.go_return_options('go_currency_name').': '.go_display_currency($current_currency).'</div>',
 		'href' => '#',
 		'parent' => 'go_info',
 	));
@@ -93,7 +66,7 @@ function go_admin_bar(){
 	
 	
 ////////////////////////////////////////////////////////////////////////	
-if(get_option('go_admin_bar_add_switch') != 'Off'){	
+if(go_return_options('go_admin_bar_add_switch') != 'Off'){	
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
@@ -108,7 +81,7 @@ if(get_option('go_admin_bar_add_switch') != 'Off'){
 		'title' => 
 		'<div id="go_admin_bar_title">Points</div>
 		<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_points_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_points_reason"/></div>
-		<div id="go_admin_bar_title">'.get_option('go_currency_name').'</div>
+		<div id="go_admin_bar_title">'.go_return_options('go_currency_name').'</div>
 		<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_currency_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_currency_reason"/></div>
 		<div id="go_admin_bar_title">Minutes</div>
 		<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_minutes_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_minutes_reason"/></div>

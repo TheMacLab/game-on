@@ -69,8 +69,8 @@ jQuery( "#go_stats_progress_bar" ).progressbar({
    <div id="go_stats_info" class="go_border_radius">
   <div class="go_info_boxes" class="go_border_radius"><a href="<?= $user_website ?>" style="color: black !important;
 font-size: 25px !important;">Website</a></div>
-  <div class="go_info_boxes" class="go_border_radius"><?= get_option('go_points_name').'<br />'.$current_points?> </div>
-  <div class="go_info_boxes" class="go_border_radius"><?= get_option('go_currency_name').'<br />'.$current_currency?></div>
+  <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_points_name').'<br />'.$current_points?> </div>
+  <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_currency_name').'<br />'.$current_currency?></div>
   <div class="go_info_boxes" class="go_border_radius">Minutes <?= '<br />'.$current_minutes?></div>
    </div>
    
@@ -107,10 +107,10 @@ font-size: 19px;"><?= $current_points.'/'.$next_rank_points ?></div></div>
 <div id="go_stats_next_rank"><?= $next_rank ?></div>
     <div id="go_stats_chart_div" style="margin-left: 55px;
 margin-top: 40px; width:200px; display:inline;"></div
-><div id="go_stats_chart_key"><div><div id="go_key_box" style="background-color:rgba(255, 102, 0,.25);"></div> <?= get_option('go_first_stage_name') ?> (<?= $numb_encountered ?>)</div>
-<div><div id="go_key_box" style="background-color:rgba(255, 102, 0,.5);"></div><?= get_option('go_second_stage_name') ?>(<?= $numb_accepted ?>)</div>
-<div><div id="go_key_box" style="background-color:rgba(255, 102, 0,.75);"></div> <?= get_option('go_third_stage_name') ?> (<?= $numb_completed ?>)</div>
-<div><div id="go_key_box" style="background-color:rgba(255, 102, 0,1);"></div> <?= get_option('go_fourth_stage_name') ?> (<?= $numb_mastered ?>)</div></div>
+><div id="go_stats_chart_key"><div><div id="go_key_box" style="background-color:rgba(255, 102, 0,.25);"></div> <?= go_return_options('go_first_stage_name') ?> (<?= $numb_encountered ?>)</div>
+<div><div id="go_key_box" style="background-color:rgba(255, 102, 0,.5);"></div><?= go_return_options('go_second_stage_name') ?>(<?= $numb_accepted ?>)</div>
+<div><div id="go_key_box" style="background-color:rgba(255, 102, 0,.75);"></div> <?= go_return_options('go_third_stage_name') ?> (<?= $numb_completed ?>)</div>
+<div><div id="go_key_box" style="background-color:rgba(255, 102, 0,1);"></div> <?= go_return_options('go_fourth_stage_name') ?> (<?= $numb_mastered ?>)</div></div>
   </div>
   
   
@@ -118,16 +118,16 @@ margin-top: 40px; width:200px; display:inline;"></div
   
  
   
-  <h3 class="go_stats_header" onclick="go_stats_task_list();"><?= get_option('go_tasks_name'); ?></h3>
+  <h3 class="go_stats_header" onclick="go_stats_task_list();"><?= go_return_options('go_tasks_name'); ?></h3>
   <div class="go_stats_box">
    <div id="go_stats_task_columns"><h6 class="go_stats_box_title"></h6>
 <ul id="go_stats_encountered_list" class="go_stats_task_lists" ></ul></div>
 
   </div>
-  <h3 class="go_stats_header" onclick="go_stats_third_tab();"><?= get_option('go_points_name').' - '. get_option('go_currency_name').' - '. 'Minutes' ?></h3>
+  <h3 class="go_stats_header" onclick="go_stats_third_tab();"><?= go_return_options('go_points_name').' - '. go_return_options('go_currency_name').' - '. 'Minutes' ?></h3>
   <div class="go_stats_box">
-  <div id="go_stats_third_tab_points"><h6 class="go_stats_box_title"><?= get_option('go_points_name') ?></h6><ul id="go_stats_points" class="go_stats_task_lists" ></ul></div>
-  <div id="go_stats_third_tab_currency"><h6 class="go_stats_box_title"><?= get_option('go_currency_name') ?></h6><ul id="go_stats_currency" class="go_stats_task_lists" ></ul></div>
+  <div id="go_stats_third_tab_points"><h6 class="go_stats_box_title"><?= go_return_options('go_points_name') ?></h6><ul id="go_stats_points" class="go_stats_task_lists" ></ul></div>
+  <div id="go_stats_third_tab_currency"><h6 class="go_stats_box_title"><?= go_return_options('go_currency_name') ?></h6><ul id="go_stats_currency" class="go_stats_task_lists" ></ul></div>
   <div id="go_stats_third_tab_minutes"><h6 class="go_stats_box_title">Minutes</h6><ul id="go_stats_minutes" class="go_stats_task_lists" ></ul></div>
   </div>
   
@@ -137,16 +137,16 @@ margin-top: 40px; width:200px; display:inline;"></div
     <h3 class="go_stats_header" onclick=""><?php echo ' Leaderboard';?></h3>
   <div class="go_stats_box">
   <div id="go_stats_leaderboard_order">Order By:<select id="go_stats_leaderboard_select" onchange="go_stats_leaderboard_choice();">
-  <option value="points"><?php echo get_option('go_points_name'); ?></option>
-  <option value="currency"><?php echo get_option('go_currency_name'); ?></option>
+  <option value="points"><?php echo go_return_options('go_points_name'); ?></option>
+  <option value="currency"><?php echo go_return_options('go_currency_name'); ?></option>
   <option value="minutes">Minutes</option>
   </select></div>
   <div id="leaderboard_left_box">
   <table id="go_stats_leaderboard_table" ><thead>
   <tr>
   <th class="header">Gamertag</th>
-  <th class="header"><?php echo get_option('go_points_name'); ?></th>
-  <th class="header"><?php echo get_option('go_currency_name'); ?></th>
+  <th class="header"><?php echo go_return_options('go_points_name'); ?></th>
+  <th class="header"><?php echo go_return_options('go_currency_name'); ?></th>
   <th class="header">Minutes</th>
   </tr></thead>
   <tbody id="go_stats_leaderboard_table_body"></tbody>

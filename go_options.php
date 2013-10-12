@@ -31,7 +31,11 @@ function go_sub_option_radio($explanation_name, $explanation, $title, $field_nam
 	}	
 add_action('go_sub_option','go_sub_option');
 add_action('go_sub_option_radio','go_sub_option_radio');
-function game_on_options() { ?>  
+function game_on_options() { 
+if($_GET['settings-updated']== true || $_GET['settings-updated']== 'true'){
+	go_update_globals();
+	}
+?>  
     <div class="go-wrap">  
         <h2>Game On Options</h2>  
         <form method="post" action="options.php">  
@@ -145,9 +149,9 @@ go_jquery_periods();
        <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
        <label for="go_preset_name" style="margin-left:15px;">Name: </label>
        <input type="text" id="go_preset_name" value="<?php echo $key; ?>" />
-       <label for="go_preset_points"><?php echo get_option('go_points_name'); ?>: </label>
+       <label for="go_preset_points"><?php echo go_return_options('go_points_name'); ?>: </label>
        <input type="text" id="go_preset_points" value="<?php echo $value[0]; ?>"/>
-	   <label for="go_preset_currency"><?php echo get_option('go_currency_name'); ?>: </label>
+	   <label for="go_preset_currency"><?php echo go_return_options('go_currency_name'); ?>: </label>
        <input type="text" id="go_preset_currency" value="<?php echo $value[1]; ?>"/>
        
        </li> 
@@ -168,12 +172,12 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, class_a_name, class_b_name" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name" />  
         </form>
         
         <script type="text/javascript">
         function go_presets_new_input(){
-	jQuery('#sortable_go_presets').append(' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label for="go_preset_name" style="margin-left:15px;">Name: </label><input type="text" id="go_preset_name" /><label for="go_preset_points"><?php echo get_option('go_points_name'); ?>: </label><input type="text" id="go_preset_points" /><label for="go_preset_currency"><?php echo get_option('go_currency_name'); ?>: </label><input type="text" id="go_preset_currency" /> </li>');
+	jQuery('#sortable_go_presets').append(' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label for="go_preset_name" style="margin-left:15px;">Name: </label><input type="text" id="go_preset_name" /><label for="go_preset_points"><?php echo go_return_options('go_points_name'); ?>: </label><input type="text" id="go_preset_points" /><label for="go_preset_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input type="text" id="go_preset_currency" /> </li>');
 	}
         </script>
         <?php /*
@@ -223,7 +227,7 @@ $preset_currency = $_POST['go_preset_currency'];
 foreach($preset_name as $key=>$value){
 	if($value!=''){
 	$preset_array[$value] = array($preset_points[$key],$preset_currency[$key]);
-	echo ' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label for="go_preset_name" style="margin-left:15px;">Name: </label><input type="text" id="go_preset_name" value="'.$value.'" /><label for="go_preset_points">'. get_option('go_points_name').': </label><input type="text" id="go_preset_points" value="'.$value[0].'" /><label for="go_preset_currency">'.get_option('go_currency_name').': </label><input type="text" id="go_preset_currency" value="'.$value[1].'" /> </li>';
+	echo ' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label for="go_preset_name" style="margin-left:15px;">Name: </label><input type="text" id="go_preset_name" value="'.$value.'" /><label for="go_preset_points">'. go_return_options('go_points_name').': </label><input type="text" id="go_preset_points" value="'.$value[0].'" /><label for="go_preset_currency">'.go_return_options('go_currency_name').': </label><input type="text" id="go_preset_currency" value="'.$value[1].'" /> </li>';
 	} }
 update_option('go_presets',$preset_array);
 die();
@@ -237,10 +241,10 @@ add_action( 'edit_user_profile', 'go_extra_profile_fields' );
 
 function go_extra_profile_fields( $user ) { ?>
 
-	<h3><?php echo get_option('go_class_a_name').' and '.get_option('go_class_b_name'); ?></h3>
+	<h3><?php echo go_return_options('go_class_a_name').' and '.go_return_options('go_class_b_name'); ?></h3>
 
 	<table id="go_user_form_table">
-<th><?php echo get_option('go_class_a_name'); ?></th><th><?php echo get_option('go_class_b_name'); ?></th>
+<th><?php echo go_return_options('go_class_a_name'); ?></th><th><?php echo go_return_options('go_class_b_name'); ?></th>
 <tbody id="go_user_form_table_body">
 
 <?php
@@ -376,5 +380,17 @@ function go_return_presets_options(){
 	
 	return $array;
 					
+	}
+function go_update_globals(){
+	global $wpdb;
+	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name');
+	foreach($array as $key=>$value){
+$value = trim($value);
+		$string .= 'define("'.$value.'","'.get_option($value).'",TRUE);';
+		}
+	
+ file_put_contents ( $file_name, '<?php '.$string.' ?>' );
+
 	}
 ?>
