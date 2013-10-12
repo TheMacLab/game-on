@@ -119,10 +119,11 @@ function go_task_shortcode($atts, $content = null) {
 	function go_repeat_replace(){
 		jQuery('#go_repeat_unclicked').remove();
 		jQuery('#go_repeat_clicked').show();		
-		}
-		function task_stage_change(){
-			ajaxurl = '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php';
-			jQuery.ajax({
+	}
+	function task_stage_change(){
+		var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
+		ajaxurl = '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php';
+		jQuery.ajax({
 			type: "post",
 			url: ajaxurl,
 			data: { 
@@ -131,12 +132,13 @@ function go_task_shortcode($atts, $content = null) {
 				user_id: <?php echo $user_ID ?>, 
 				status: jQuery('#go_button').attr('status'),
 				repeat: jQuery('#go_button').attr('repeat'),
-				page_id: <?php echo get_the_ID(); ?>  },
+				page_id: <?php echo get_the_ID(); ?>,},
 				success: function(html){
 					jQuery('#go_content').html(html);
+					jQuery('#go_admin_bar_progress_bar').css({"background-color": color})
 				}
-			});	
-		}
+		});	
+	}
 	</script>
 		
 <?php

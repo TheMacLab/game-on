@@ -141,6 +141,14 @@ go_jquery_periods();
        		<ul id="sortable_go_presets">
        <?php
 	   $presets = get_option('go_presets',false);
+	   if (!$presets){
+		   $presets = array(
+		   'Tier 1' => array(0 => '5,5,10,30', 1=> '0,0,3,9'), 
+		   'Tier 2' => array(0 => '5,5,20,60', 1=> '0,0,6,18'),
+		   'Tier 3' => array(0 => '5,5,40,120', 1=> '0,0,12,36'),
+		   'Tier 4' => array(0 => '5,5,70,210', 1=> '0,0,21,63'),
+		   'Tier 5' => array(0 => '5,5,110,330', 1=> '0,0,33,99'));   
+	   }
 	   if($presets){
 		   foreach($presets as $key=>$value){ 
 		  
@@ -374,7 +382,7 @@ function go_return_presets_options(){
 					if($presets){
 		   foreach($presets as $key=>$value){ 
 		  $array[] = array('name'=> $key, 'points'=>$value[0], 'currency'=>$value[1], 'value'=>  $key.' - '.$value[0].' - '.$value[1]  );
-			// echo '<option value="'.$key.'" points="'.$value[0].'" currency="'.$value[1].'">'.$key.' - '.$value[0].' - '.$value[1].'</option>';  
+			//echo '<option value="'.$key.'" points="'.$value[0].'" currency="'.$value[1].'">'.$key.' - '.$value[0].' - '.$value[1].'</option>';  
 		   }}
 		   
 	

@@ -10,7 +10,6 @@ function go_admin_bar(){
 	global $current_rank_points;
 	$dom = ($next_rank_points-$current_rank_points);
 	$rng = ($current_points - $current_rank_points);
-	$color = '#00c100';
 	$current_minutes = go_return_minutes(get_current_user_id());
 	$table_name_options = $wpdb->prefix."options";
 	if($dom <= 0){ $dom = 1;}
