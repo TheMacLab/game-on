@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Author: Semar Yousif, Vincent Astolfi, Ezio Ballarin
 Author URI: http://maclab.guhsd.net/
-Version: 0.0.1.1
+Version: 0.0.1.2
 */
 include('go_definitions.php');
 include('types/types.php');
@@ -25,6 +25,7 @@ include('badge_designer.php');
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
+register_activation_hook( __FILE__, 'go_presets_registration' );
 register_activation_hook( __FILE__, 'go_install_data' );
 add_action('user_register', 'go_user_registration');
 add_action( 'delete_user', 'go_user_delete' );

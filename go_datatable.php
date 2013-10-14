@@ -51,7 +51,7 @@ function go_table_totals() {
 
 
 
-//Updates the totals upon activation of plugin.
+//Updates the rank totals upon activation of plugin.
 function go_ranks_registration(){
 	global $wpdb;
 	$ranks = get_option('go_ranks',false);
@@ -60,6 +60,20 @@ function go_ranks_registration(){
 			update_option('go_ranks',$ranks);
 			}
 	}
+// Updates the presets for task creation upon activation of plugin. 
+function go_presets_registration(){
+	global $wpdb;
+	$presets = get_option('go_presets');
+	if (!$presets){
+		$presets = array(
+		'Tier 1' => array(0 => '5,5,10,30', 1=> '0,0,3,9'), 
+		'Tier 2' => array(0 => '5,5,20,60', 1=> '0,0,6,18'),
+		'Tier 3' => array(0 => '5,5,40,120', 1=> '0,0,12,36'),
+		'Tier 4' => array(0 => '5,5,70,210', 1=> '0,0,21,63'),
+		'Tier 5' => array(0 => '5,5,110,330', 1=> '0,0,33,99'));   
+		update_option('go_presets',$presets);
+	}
+}
 
 function go_install_data(){
 	
