@@ -160,6 +160,7 @@ go_jquery_periods();
 	   }
 ?>
        </ul>
+       <button type="button" style="width:100%;" onclick="go_preset_reset();" id="go_reset_presets">Reset Presets</button>
        <button type="button" style="width:100%;" onclick="go_presets_new_input();" id="go_preset_new_input" value="New" >New</button>
        <button type="button" style="width:100%;" onclick="go_preset_save();" id="go_preset_add_input" >Save</button>
         </div>
@@ -217,7 +218,16 @@ update_option('go_class_b',$array);
 die();
 }
 
-
+function go_presets_reset(){
+	global $wpdb;
+	if(!empty($_POST['presets'])){
+		$json = $_POST['presets'];
+		$json_string = stripslashes($json);
+		$presets = json_decode($json_string, true);
+		
+		update_option('go_presets', $presets);
+	}
+}
 
 function go_presets_save(){
 global $wpdb;
