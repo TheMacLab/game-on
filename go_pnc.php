@@ -29,6 +29,7 @@ function go_add_currency($user_id, $reason, $status, $points, $currency, $update
 		go_update_totals($user_id,$points,$currency,0);
 
 	}
+	
 
 
 
@@ -115,6 +116,17 @@ function go_notify($type, $points='', $currency='', $time='') {
 		
 		
 	</script>';
+}
+//think negatives if you are wondering how to "undo" infractions
+function go_add_infraction($user_id,$infractionCount,$update){
+	global $wpdb;
+	$infractions = $infractionCount + go_return_infractions($user_id);
+	$table_name_go_totals = $wpdb->prefix . "go_totals";
+	if($update == false){
+		$wpdb->insert($table_name_go_totals, array('uid'=> $user_id, 'infractions'=>$infractions));
+		} else if($update == true) {
+			$wpdb->update($table_name_go_totals,array('infractions'=>$infractions), array('uid'=>$user_id));
+			}
 }
 
 function go_update_admin_bar($type, $title, $points_currency){
@@ -218,6 +230,45 @@ function go_get_level_percentage($user_id){
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	return $percentage;
 	}
+function go_get_health_percentage($user_id){
+	global $wpdb;
+	$max_infractions = go_return_options('go_max_infractions');
+	$infractions = go_return_infractions($user_id);
+	$percent = 100 - (($infractions / $max_infractions) * 100);
+	return $percent;
+}
+function go_get_health_bar_color($user_id){
+	$percent = go_get_health_percentage($user_id);
+	function inRange($int, $min, $max){
+			return ($int>$min && $int<$max);
+		}
+	switch($percent){
+		case($percent >= 80):
+		$color = '#00FF00';//Pure Green
+		return $color;
+		break;
+		
+		case inRange($percent, 59.999, 80):
+		$color = '#FFFF00';//Yellow
+		return $color;
+		break;
+		
+		case inRange($percent, 39.999, 60):
+		$color = '#FF6600';//"Vibrant" Orange
+		return $color;
+		break;
+		
+		case inRange($percent, 19.999, 40):
+		$color = '#CB6D51';//Light Red
+		return $color;
+		break;
+		
+		case ($percent < 20):
+		$color = '#FF0000';//Pure Red
+		return $color;
+		break;
+	}	
+}
 function go_return_options($option){
 if(defined ($option) ){
 return constant($option);
@@ -227,9 +278,9 @@ return get_option($option);
 }
 	function barColor($current_minutes){
 		$color = '#00c100';
-		function inRange($int, $min, $max){
-			return ($int>$min && $int<$max);
-		}
+		//function inRange($int, $min, $max){
+		//	return ($int>$min && $int<$max);
+		//}
 		switch ($current_minutes){
 			case inRange($current_minutes, 0, PHP_INT_MAX):
 				$color = '#00c100';

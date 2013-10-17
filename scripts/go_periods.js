@@ -38,28 +38,26 @@ function go_class_b_save(){
 	
 	
 jQuery('#sortable_go_presets').sortable({axis:"y"});
-
 function go_preset_reset(){
-	var presetsObj = {
-		'Tier 1': {0:'5,5,10,30', 1:'0,0,3,9'}, 
-		'Tier 2': {0:'5,5,20,60', 1:'0,0,6,18'},
-		'Tier 3': {0:'5,5,40,120', 1:'0,0,12,36'},
-		'Tier 4': {0:'5,5,70,210', 1:'0,0,21,63'},
-		'Tier 5': {0:'5,5,110,330', 1:'0,0,33,99'}	
-	};
-	jQuery.ajax({
-		type: "POST", 
-		url: MyAjax.ajaxurl,
-		data: {
-			action: 'go_presets_reset',
-			presets: JSON.stringify(presetsObj)
-		}, 
-		success: function(){
-			location.reload();	
-		}
-	});	
-}
-
+	  var presetsObj = {
+	    'Tier 1': {0:'5,5,10,30', 1:'0,0,3,9'}, 
+	    'Tier 2': {0:'5,5,20,60', 1:'0,0,6,18'},
+	    'Tier 3': {0:'5,5,40,120', 1:'0,0,12,36'},
+	    'Tier 4': {0:'5,5,70,210', 1:'0,0,21,63'},
+	    'Tier 5': {0:'5,5,110,330', 1:'0,0,33,99'}  
+	  };
+	  jQuery.ajax({
+	    type: "POST", 
+	    url: MyAjax.ajaxurl,
+	    data: {
+	      action: 'go_presets_reset',
+	      presets: JSON.stringify(presetsObj)
+	    }, 
+	    success: function(){
+	      location.reload();  
+	    }
+	  });  
+	} 
 function go_preset_save(){
 	var name = jQuery("input[id='go_preset_name']")
               .map(function(){return jQuery(this).val();}).get();
