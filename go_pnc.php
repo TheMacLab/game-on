@@ -29,6 +29,7 @@ function go_add_currency($user_id, $reason, $status, $points, $currency, $update
 		go_update_totals($user_id,$points,$currency,0);
 
 	}
+	
 
 
 
@@ -115,6 +116,17 @@ function go_notify($type, $points='', $currency='', $time='') {
 		
 		
 	</script>';
+}
+//negatives undo
+function go_add_infraction($user_id,$infractionCount,$update){
+	global $wpdb;
+	$infractions = $infractionCount + go_return_infractions($user_id);
+	$table_name_go_totals = $wpdb->prefix . "go_totals";
+	if($update == false){
+		$wpdb->insert($table_name_go_totals, array('uid'=> $user_id, 'infractions'=>$infractions));
+		} else if($update == true) {
+			$wpdb->update($table_name_go_totals,array('infractions'=>$infractions), array('uid'=>$user_id));
+			}
 }
 
 function go_update_admin_bar($type, $title, $points_currency){
@@ -218,6 +230,51 @@ function go_get_level_percentage($user_id){
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	return $percentage;
 	}
+	
+function go_get_health_percentage(){
+	global $current_user_infractions;
+	global $current_max_infractions;
+	$percent = 100 - (($current_user_infractions / $current_max_infractions) * 100);
+	return round($percent,2);
+}
+function go_get_health_percentage_not_current_user($user_id){
+	global $wpdb;
+	global $current_max_infractions;
+	$infractions = go_return_infractions($user_id);
+	$percent = 100 - (($infractions / $current_max_infractions) * 100);
+	return round($percent,2);
+}
+function go_get_health_bar_color($percent){
+	function rangeCheck($int, $min, $max){
+			return ($int>$min && $int<$max);
+		}
+	switch($percent){
+		case($percent >= 80):
+		$color = '#00FF00';//Pure Green
+		return $color;
+		break;
+		
+		case rangeCheck($percent, 59.999, 80):
+		$color = '#FFFF00';//Yellow
+		return $color;
+		break;
+		
+		case rangeCheck($percent, 39.999, 60):
+		$color = '#FF6600';//"Vibrant" Orange
+		return $color;
+		break;
+		
+		case rangeCheck($percent, 19.999, 40):
+		$color = '#CB6D51';//Light Red
+		return $color;
+		break;
+		
+		case ($percent < 20):
+		$color = '#FF0000';//Pure Red
+		return $color;
+		break;
+	}	
+}
 function go_return_options($option){
 if(defined ($option) ){
 return constant($option);

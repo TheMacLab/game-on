@@ -16,6 +16,7 @@ function go_table_individual() {
   count INT,
   points INT,
   currency INT,
+  infractions INT,	 
   minutes VARCHAR (200),
   reason VARCHAR (200),
   UNIQUE KEY  id (id)
@@ -41,6 +42,7 @@ function go_table_totals() {
   currency  INT,
   points  INT,
   minutes  VARCHAR (200),
+  infractions INT,
   UNIQUE KEY  id (id)
     );";
 
@@ -106,7 +108,8 @@ global $default_role;
 	'go_class_a' => array('Period 1', 'Period 2', 'Period 3'),
 	'go_class_b' => array('Computer 1', 'Computer 2', 'Computer 3'),
 	'go_tasks_name'=>'Quest',
-	'go_tasks_plural_name'=>'Quests'
+	'go_tasks_plural_name'=>'Quests',
+	'go_max_infractions'=>'3'
 	);
 	foreach($options_array as $key => $value){
 		 add_option( $key, $value );
@@ -177,6 +180,7 @@ function go_user_registration($user_id) {
 		$next_rank = array_search($next_rank_points, $ranks);
 		$new_rank = array(array($current_rank, $current_rank_points),array($next_rank, $next_rank_points));
  $wpdb->insert( $table_name_go_totals,array( 'uid' => $user_id, 'points' => 0 ),  array(  '%s' ) );
+ $wpdb->insert($table_name_go_totals,array('uid'=>$user_id,'infractions'=>0),array ('%s'));
  update_user_meta($user_id,'go_rank', $new_rank);
  }
 }	

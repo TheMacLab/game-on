@@ -83,7 +83,12 @@ if($_GET['settings-updated']== true || $_GET['settings-updated']== 'true'){
           <?php
 		 echo go_sub_option_radio( 'admin_bar_add_trigger', 'Turn on and off the add section of the admin bar.','Add Switch', 'go_admin_bar_add_switch','go_admin_bar_add_switch', 'Would you like to have the Add section of the admin bar?');
 		   ?><br />
-
+	<div class="opt-box">
+            <h3> Infraction Settings</h3>
+            <?php
+            echo go_sub_option('max_infractions','When a user has this many infractions they will have 0 life/hitpoints left.','Maximum Infractions','go_max_infractions','go_max_infractions','How many infractions do you want to allow your students?');
+                  ?>
+            </div>
             </div>
                    <div class="opt-box">       
             <h3> Classifications </h3> 
@@ -160,7 +165,7 @@ go_jquery_periods();
 	   }
 ?>
        </ul>
-       <button type="button" style="width:100%;" onclick="go_preset_reset();" id="go_reset_presets">Reset Presets</button>
+       <button type="button" style="width:100%;" onclick="go_preset_reset();" id="go_reset_presets">Reset Presets</button> 
        <button type="button" style="width:100%;" onclick="go_presets_new_input();" id="go_preset_new_input" value="New" >New</button>
        <button type="button" style="width:100%;" onclick="go_preset_save();" id="go_preset_add_input" >Save</button>
         </div>
@@ -173,7 +178,7 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions" />  
         </form>
         
         <script type="text/javascript">
@@ -219,16 +224,15 @@ die();
 }
 
 function go_presets_reset(){
-	global $wpdb;
-	if(!empty($_POST['presets'])){
-		$json = $_POST['presets'];
-		$json_string = stripslashes($json);
-		$presets = json_decode($json_string, true);
-		
-		update_option('go_presets', $presets);
-	}
-}
-
+  global $wpdb;
+  if(!empty($_POST['presets'])){
+    $json = $_POST['presets'];
+    $json_string = stripslashes($json);
+    $presets = json_decode($json_string, true);
+    
+    update_option('go_presets', $presets);
+  }
+} 
 function go_presets_save(){
 global $wpdb;
 $preset_name = $_POST['go_preset_name'];
@@ -394,7 +398,7 @@ function go_return_presets_options(){
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions');
 	foreach($array as $key=>$value){
 $value = trim($value);
 		$string .= 'define("'.$value.'","'.get_option($value).'",TRUE);';

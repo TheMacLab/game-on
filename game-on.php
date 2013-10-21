@@ -2,9 +2,9 @@
 /*
 Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
-Author: Semar Yousif, Vincent Astolfi, Ezio Ballarin
+Author: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 0.0.1.3
+Version: 0.0.1.4
 */
 include('go_definitions.php');
 include('types/types.php');
@@ -65,7 +65,7 @@ add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
 add_action('wp_ajax_go_stats_points','go_stats_points');
 add_action('wp_ajax_go_stats_currency','go_stats_currency');
 add_action('wp_ajax_go_stats_minutes','go_stats_minutes');
-add_action('wp_ajax_go_presets_reset','go_presets_reset');
+add_action('wp_ajax_go_presets_reset','go_presets_reset'); 
 add_action('wp_ajax_go_presets_save','go_presets_save');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
@@ -93,10 +93,10 @@ function go_tsk_actv_redirect() {
 }
 
 function isEven($value) {
-	if ($value%2 == 0){
-		return 'even';}
-	else{
-		return 'odd';
+if ($value%2 == 0){
+return 'even';}
+else{
+return 'odd';
 }}
 
 ?>
