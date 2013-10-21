@@ -6,6 +6,7 @@ jQuery(document).ready(function(jQuery){
 				the_id: id,
 				qty: jQuery('#go_qty').val()
     };
+	var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
 	jQuery.ajax({
 		url: buy_item.ajaxurl,
 		type: "POST",
@@ -25,6 +26,7 @@ jQuery(document).ready(function(jQuery){
 			jQuery("#golb-fr-buy").innerHTML = "";
 			jQuery("#golb-fr-buy").html('');  
 			jQuery("#golb-fr-buy").append('<span>'+response+'</span>');
+			jQuery('#go_admin_bar_progress_bar').css({"background-color":color});
 		}
 	});
 });
