@@ -117,7 +117,7 @@ function go_notify($type, $points='', $currency='', $time='') {
 		
 	</script>';
 }
-//think negatives if you are wondering how to "undo" infractions
+//negatives undo
 function go_add_infraction($user_id,$infractionCount,$update){
 	global $wpdb;
 	$infractions = $infractionCount + go_return_infractions($user_id);
@@ -230,16 +230,22 @@ function go_get_level_percentage($user_id){
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	return $percentage;
 	}
-function go_get_health_percentage($user_id){
-	global $wpdb;
-	$max_infractions = go_return_options('go_max_infractions');
-	$infractions = go_return_infractions($user_id);
-	$percent = 100 - (($infractions / $max_infractions) * 100);
-	return $percent;
+	
+function go_get_health_percentage(){
+	global $current_user_infractions;
+	global $current_max_infractions;
+	$percent = 100 - (($current_user_infractions / $current_max_infractions) * 100);
+	return round($percent,2);
 }
-function go_get_health_bar_color($user_id){
-	$percent = go_get_health_percentage($user_id);
-	function inRange($int, $min, $max){
+function go_get_health_percentage_not_current_user($user_id){
+	global $wpdb;
+	global $current_max_infractions;
+	$infractions = go_return_infractions($user_id);
+	$percent = 100 - (($infractions / $current_max_infractions) * 100);
+	return round($percent,2);
+}
+function go_get_health_bar_color($percent){
+	function rangeCheck($int, $min, $max){
 			return ($int>$min && $int<$max);
 		}
 	switch($percent){
@@ -248,17 +254,17 @@ function go_get_health_bar_color($user_id){
 		return $color;
 		break;
 		
-		case inRange($percent, 59.999, 80):
+		case rangeCheck($percent, 59.999, 80):
 		$color = '#FFFF00';//Yellow
 		return $color;
 		break;
 		
-		case inRange($percent, 39.999, 60):
+		case rangeCheck($percent, 39.999, 60):
 		$color = '#FF6600';//"Vibrant" Orange
 		return $color;
 		break;
 		
-		case inRange($percent, 19.999, 40):
+		case rangeCheck($percent, 19.999, 40):
 		$color = '#CB6D51';//Light Red
 		return $color;
 		break;
@@ -278,9 +284,9 @@ return get_option($option);
 }
 	function barColor($current_minutes){
 		$color = '#00c100';
-		//function inRange($int, $min, $max){
-		//	return ($int>$min && $int<$max);
-		//}
+		function inRange($int, $min, $max){
+			return ($int>$min && $int<$max);
+		}
 		switch ($current_minutes){
 			case inRange($current_minutes, 0, PHP_INT_MAX):
 				$color = '#00c100';

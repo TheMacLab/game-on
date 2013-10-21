@@ -7,6 +7,7 @@ $dir = plugin_dir_url(__FILE__);
 
 function go_clipboard_menu() {
 		global $wpdb;
+		global $current_max_infractions;
 	if (!current_user_can('manage_options'))  { 
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
@@ -43,7 +44,7 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
 <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 <th class="header" style="width:8%;"><a href="#">Minutes</a></th>
 <th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
-<th class="header" style="width:13%;"><a href="#" >Infractions (Max: <?php echo go_return_options('go_max_infractions'); ?>)</a></th>
+<th class="header" style="width:13%;"><a href="#" >Infractions (Max: <?php echo $current_max_infractions; ?>)</a></th>
 <th class="header" style="width:9%;"><a href="#"><?php echo go_return_options('go_first_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_second_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_third_stage_name'); ?></a></th> 
