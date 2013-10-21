@@ -35,7 +35,7 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		if($user_ID == 0){ // If user isn't logged in, run this code
-			echo wpautop($description).wpautop($accpt_mssg).wpautop($completion_message).wpautop($mastery_message); // Displays task content
+			echo wpautop($description).wpautop($accpt_mssg).wpautop($completion_message);// Displays task content
 		}
 		
 		$req_rank = $custom_fields['go_mta_req_rank'][0]; // Required Rank to accept task
