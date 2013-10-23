@@ -12,6 +12,8 @@ include ('buy-ajax.php'); // Ajax run when buying something
 // Main Lightbox Ajax Function
 function go_the_lb_ajax(){
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
+	global $wpdb;
+	$table_name_go = $wpdb->prefix."go";
 	$the_id = $_POST["the_item_id"];
 	$the_post = get_post($the_id);
 	$the_title = $the_post->post_title;
@@ -43,7 +45,16 @@ function go_the_lb_ajax(){
     <div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;
 height: 30px;
 font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
-	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div> 
+	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>'); goCountItem('<?php echo $the_id; ?>');">Buy</div> 
+    <div id="golb-purchased"> 
+	<?php 
+		$purchase_count = $wpdb->get_var("SELECT count FROM ".$table_name_go." WHERE post_id=".$the_id.""); 
+		if($purchase_count == NULL){ 
+			echo 'Times purchased: 0';
+		} else{
+			echo 'Times purchased: '.$purchase_count;
+		} 
+	?></div>
 <?php
     die;
 }
@@ -115,4 +126,17 @@ function go_lb_opener(id) {
 <?php
 }
 add_action('wp_head', 'go_frontend_lightbox_html');
+
+function go_get_purchase_count(){
+	global $wpdb;
+	$table_name_go = $wpdb->prefix."go";
+	$the_id = $_POST["the_item_id"];
+	$purchase_count = $wpdb->get_var("SELECT count FROM ".$table_name_go." WHERE post_id=".$the_id.""); 
+	if($purchase_count == NULL){ 
+		echo '0';
+	} else{
+		echo $purchase_count;
+	}
+}
+add_action('wp_ajax_purchase_count', 'go_get_purchase_count');
 ?>
