@@ -19,6 +19,7 @@ jQuery(document).ready(function(jQuery){
 					},
 		dataType: "html",
 		success: function(response){
+			jQuery("#golb-fr-buy").attr('onclick','');
 			if (response == 'Insuffcient Funds') {
 				alert('Purchase Denied. Reason: '+response);
 			} else if (response == 'Rank Too Low') {
@@ -29,6 +30,7 @@ jQuery(document).ready(function(jQuery){
 			jQuery("#golb-fr-buy").append('<span>'+response+'</span>');
 			// Whenever you figure out a better way to do this, implement it. 
 			jQuery('#go_admin_bar_progress_bar').css({"background-color":color});
+			goCountItem(id);
 		}
 	});
 });
@@ -44,7 +46,7 @@ function goCountItem(id){
 		},
 		success: function(data){
 			var count = data.toString();
-			jQuery('#golb-purchased').html("Times purchased: " + count.substring(0, count.length - 1));
+			jQuery('#golb-purchased').html("Times purchased: " + count);
 		}
 	});	
 }

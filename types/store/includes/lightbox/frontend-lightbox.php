@@ -45,10 +45,10 @@ function go_the_lb_ajax(){
     <div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;
 height: 30px;
 font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
-	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>'); goCountItem('<?php echo $the_id; ?>');">Buy</div> 
+	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div> 
     <div id="golb-purchased"> 
 	<?php 
-		$purchase_count = $wpdb->get_var("SELECT count FROM ".$table_name_go." WHERE post_id=".$the_id.""); 
+		$purchase_count = $wpdb->get_var("SELECT `count` FROM `".$table_name_go."` WHERE `post_id`='".$the_id."' AND `uid`='".$user_ID."'"); 
 		if($purchase_count == NULL){ 
 			echo 'Times purchased: 0';
 		} else{
@@ -131,12 +131,14 @@ function go_get_purchase_count(){
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
 	$the_id = $_POST["the_item_id"];
-	$purchase_count = $wpdb->get_var("SELECT count FROM ".$table_name_go." WHERE post_id=".$the_id.""); 
+	$user_ID = get_current_user_id();
+	$purchase_count = $wpdb->get_var("SELECT `count` FROM `".$table_name_go."` WHERE `post_id`='".$the_id."' AND `uid`='".$user_ID."'"); 
 	if($purchase_count == NULL){ 
 		echo '0';
 	} else{
 		echo $purchase_count;
 	}
+	die();
 }
 add_action('wp_ajax_purchase_count', 'go_get_purchase_count');
 ?>
