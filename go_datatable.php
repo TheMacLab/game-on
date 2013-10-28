@@ -142,7 +142,7 @@ AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')");
 		update_user_meta($uids, 'go_badges', array());
 }					
 $rank_check =	get_user_meta($uids, 'go_rank');
- if(empty($rank_check)){ 
+ if(empty($rank_check) || $rank_check == ''){ 
  $ranks = get_option('go_ranks', false);
  $current_points = go_return_points($uids);
  while($current_points >= current($ranks)){
@@ -169,7 +169,7 @@ function go_user_registration($user_id) {
  $table_name_user_meta = $wpdb->prefix . "usermeta";
  $role = get_option('go_role','subscriber');
  $user_role = get_user_meta($user_id,'wp_capabilities', true);
- if(array_search(1, $user_role) == $role || $user_role == 'administrator'){
+ if(array_search(1, $user_role) == $role || array_search(1, $user_role) == 'administrator'){
  	$ranks = get_option('go_ranks');
 		$current_rank_points = current($ranks);
 		$current_rank = array_search($current_rank, $ranks);
