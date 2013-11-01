@@ -22,6 +22,8 @@ include('go_stats.php');
 include('go_clipboard.php');
 include('go_open_badge.php');
 include('badge_designer.php');
+include('go_shortcodes.php');
+include('go_comments.php');
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
@@ -78,6 +80,7 @@ add_action('go_display_currency','go_display_currency');
 add_action('go_return_options','go_return_options');
 add_action('go_update_globals','go_update_globals');
 add_action('barColor','barColor');
+add_filter('get_comment_author', 'go_display_comment_author_points');
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);

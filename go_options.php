@@ -184,12 +184,14 @@ go_jquery_periods();
         <?php /*
       */
 } 
+
+}
 function add_game_on_options() {  
     add_menu_page('Game On', 'Game On', 'manage_options', 'game-on-options.php','game_on_options', plugins_url( 'images/ico.png' , __FILE__ ), '81');  
+	add_submenu_page( 'game-on-options.php', 'Options', 'Options', 'manage_options', 'game-on-options.php', 'game_on_options');
+
 }
 add_action('admin_menu', 'add_game_on_options');
-}
-
 function go_class_a_save(){
 	$array = $_POST['class_a_array'];
 	foreach($array as $key=>$value){
