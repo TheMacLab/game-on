@@ -57,7 +57,7 @@ function listUrl(){
 					$check = in_array($class_a_choice, $class);
 					if($check){
 						$user_url = $user->user_url;
-						$user_username = $user->user_nicename;
+						$user_username = $user->display_name;
 						$user_complete_url = '<a class="go_user_url" href="'.$user_url.'" target="_blank" >'.$user_username.'</a><br/>';
 						echo $user_complete_url;
 					}
