@@ -1,3 +1,9 @@
+jQuery(document).ready( function () {
+  jQuery('#go_clipboard_table').dataTable( {
+    "bPaginate": false
+  } );
+} );
+
 function go_clipboard_class_a_choice(){
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
@@ -5,10 +11,14 @@ function go_clipboard_class_a_choice(){
 		go_clipboard_class_a_choice: jQuery('#go_clipboard_class_a_choice').val()},
 		success: function(html){
 			jQuery('#go_clipboard_table_body').html('');
+			 var oTable = jQuery('#go_clipboard_table').dataTable();
+			 oTable.fnDestroy();
 			jQuery('#go_clipboard_table_body').html(html);	
-			jQuery('#go_clipboard_table').dataTable( {
-        "bPaginate": false
-     } );
+			
+			  jQuery('#go_clipboard_table').dataTable( {
+    "bPaginate": false,
+	  "aaSorting": [[2, "asc" ]]
+  } );
 		}
 	});
 	
