@@ -69,6 +69,8 @@ add_action('wp_ajax_go_stats_currency','go_stats_currency');
 add_action('wp_ajax_go_stats_minutes','go_stats_minutes');
 add_action('wp_ajax_go_presets_reset','go_presets_reset');
 add_action('wp_ajax_go_presets_save','go_presets_save');
+add_action('wp_ajax_listurl', 'listurl');
+add_action('wp_ajax_nopriv_listurl', 'listurl');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');
