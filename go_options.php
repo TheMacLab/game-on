@@ -85,6 +85,49 @@ if($_GET['settings-updated']== true || $_GET['settings-updated']== 'true'){
 		   ?><br />
 
             </div>
+                <div class="opt-box">       
+            <h3>Minutes</h3>
+       
+          <?php
+		echo go_sub_option( 'minutes_bar_color', 'The intervals for the minutes colors.', 'Time', 'go_minutes_color_limit', 'go_minutes_color_limit', 'what suffix would you like associated with points? (Optional)' );
+		
+		?>
+	    <div class="pa">
+            	<?php go_opt_help('minutes_multi','It adds an extra percentage of points and currency to pointsn and currency gained from tasks.'); ?> 
+            	<strong><?php echo 'Percentage Multiplier. Format: percentage, lower limit, upper limit.'; ?>:</strong><br />   
+                On:<input type="radio" <?php if(go_return_options('go_multiplier_switch') == 'On'){echo 'checked="checked"';} ?> name="go_multiplier_switch" size="45" value="On" style="margin-left: 5px;
+width: 20px;" /><br />
+                Off:<input type="radio" <?php if(go_return_options('go_multiplier_switch') == 'Off'){echo 'checked="checked"';} ?> name="go_multiplier_switch" size="45" value="Off" style="margin-left: 5px;
+width: 20px;" /><br />
+                <div id="go_multiplier">
+<?php 
+$limit = go_return_options('go_multiplier');
+$rounding = go_return_options('go_multiplier_rounding');
+$rounding_text = array('','Normal rounding','Always round up','Always round down') ;
+if($limit != ''){
+if(!is_array($limit)){ 
+$limit = unserialize($limit);
+}
+if(!is_array($rounding)){
+$rounding = unserialize($rounding);	
+}
+foreach($limit as $key=>$value){
+	echo '<input type="text" name="go_multiplier[]" size="45" value="'.$value.'" /> <select name="go_multiplier_rounding[]">
+	<option selected="selected" value="'.$rounding[$key].'">'.$rounding_text[$rounding[$key]].'</option>
+<option value="1">Normal rounding</option>
+<option value="2">Always round up</option>
+<option value="3">Always round down</option>
+</select>
+';
+	}}
+?></div>
+<button type="button" style="width:100%;" onclick="go_new_multiplier();" value="New" >New</button>
+
+                <br />
+                <i><?php echo $explanation_question; ?></i> 
+            </div> 
+ 
+            </div>
                    <div class="opt-box">       
             <h3> Classifications </h3> 
     <?php
@@ -173,13 +216,16 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding" />  
         </form>
         
         <script type="text/javascript">
         function go_presets_new_input(){
 	jQuery('#sortable_go_presets').append(' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label for="go_preset_name" style="margin-left:15px;">Name: </label><input type="text" id="go_preset_name" /><label for="go_preset_points"><?php echo go_return_options('go_points_name'); ?>: </label><input type="text" id="go_preset_points" /><label for="go_preset_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input type="text" id="go_preset_currency" /> </li>');
 	}
+	function go_new_multiplier(){
+		jQuery('#go_multiplier').append('<input type="text" name="go_multiplier[]" size="45" value="" /><select name="go_multiplier_rounding[]"><option value="1">Normal rounding</option><option value="2">Always round up</option><option value="3">Always round down</option></select>');
+		}
         </script>
         <?php /*
       */
@@ -396,7 +442,7 @@ function go_return_presets_options(){
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit');
 	foreach($array as $key=>$value){
 $value = trim($value);
 		$string .= 'define("'.$value.'","'.get_option($value).'",TRUE);';

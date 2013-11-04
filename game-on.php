@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Author: Semar Yousif, Vincent Astolfi, Ezio Ballarin
 Author URI: http://maclab.guhsd.net/
-Version: 0.0.1.7
+Version: 0.0.1.8
 */
 include('go_definitions.php');
 include('types/types.php');
@@ -80,6 +80,7 @@ add_action('go_display_currency','go_display_currency');
 add_action('go_return_options','go_return_options');
 add_action('go_update_globals','go_update_globals');
 add_action('barColor','barColor');
+add_action('go_return_multiplier','go_return_multiplier');
 add_filter('get_comment_author', 'go_display_comment_author_points');
 
 function go_tsk_actv_activate() {

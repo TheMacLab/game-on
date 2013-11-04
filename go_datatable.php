@@ -106,7 +106,11 @@ global $default_role;
 	'go_class_a' => array('Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5', 'Period 6', 'Period 7'),
 	'go_class_b' => array('Computer 01', 'Computer 02', 'Computer 03', 'Computer 04', 'Computer 05', 'Computer 06', 'Computer 07', 'Computer 08', 'Computer 09', 'Computer 10', 'Computer 11', 'Computer 12', 'Computer 13', 'Computer 14', 'Computer 15', 'Computer 16', 'Computer 17', 'Computer 18', 'Computer 19', 'Computer 20', 'Computer 21', 'Computer 22', 'Computer 23', 'Computer 24', 'Computer 25', 'Computer 26', 'Computer 27', 'Computer 28', 'Computer 29', 'Computer 30', 'Computer 31', 'Computer 32', 'Computer 33', 'Computer 34', 'Computer 35', 'Computer 36', 'Computer 37', 'Computer 38', 'Computer 39', 'Computer 40', 'Computer 41', 'Computer 42', 'Computer 43', 'Computer 44'),
 	'go_tasks_name'=>'Quest',
-	'go_tasks_plural_name'=>'Quests'
+	'go_tasks_plural_name'=>'Quests',
+	'go_multiplier'=>'a:9:{i:0;s:14:"-40,-9999,-900";i:1;s:13:"-30,-899,-601";i:2;s:13:"-20,-600,-301";i:3;s:11:"-10,-300,-1";i:4;s:10:"10,300,599";i:5;s:10:"20,600,899";i:6;s:11:"30,900,1199";i:7;s:12:"40,1200,1499";i:8;s:12:"50,1500,9999";}',
+	'go_multiplier_switch'=>'Off',
+	'go_multiplier_rounding'=>'a:9:{i:0;s:1:"3";i:1;s:1:"3";i:2;s:1:"3";i:3;s:1:"3";i:4;s:1:"2";i:5;s:1:"2";i:6;s:1:"2";i:7;s:1:"2";i:8;s:1:"2";}',
+	'go_minutes_color_limit'=>'-900,-600,-300,0'
 	);
 	foreach($options_array as $key => $value){
 		 add_option( $key, $value );

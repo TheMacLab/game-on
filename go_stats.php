@@ -275,7 +275,7 @@ function go_stats_leaderboard(){
 	$table_name_go_totals= $wpdb->prefix.'go_totals';
 	$ids = $wpdb->get_results("SELECT uid
 FROM ".$table_name_go_totals."
-order by ABS(".$_POST['order'].") Desc");
+order by CAST(".$_POST['order']." as signed ) Desc");
 	foreach($ids as $uid){
 		foreach($uid as $id){
 		$class_a = get_user_meta($id, 'go_classifications',true);
