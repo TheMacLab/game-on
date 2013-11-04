@@ -89,11 +89,11 @@ if($_GET['settings-updated']== true || $_GET['settings-updated']== 'true'){
             <h3>Minutes</h3>
        
           <?php
-		echo go_sub_option( 'minutes_bar_color', 'The intervals for the minutes colors.', 'Time', 'go_minutes_color_limit', 'go_minutes_color_limit', 'what suffix would you like associated with points? (Optional)' );
+		echo go_sub_option( 'minutes_bar_color', 'The intervals for the minutes colors.', 'Time', 'go_minutes_color_limit', 'go_minutes_color_limit', '' );
 		
 		?>
 	    <div class="pa">
-            	<?php go_opt_help('minutes_multi','It adds an extra percentage of points and currency to pointsn and currency gained from tasks.'); ?> 
+            	<?php go_opt_help('minutes_multi','It adds an extra percentage of points and currency to points and currency gained from tasks.'); ?> 
             	<strong><?php echo 'Percentage Multiplier. Format: percentage, lower limit, upper limit.'; ?>:</strong><br />   
                 On:<input type="radio" <?php if(go_return_options('go_multiplier_switch') == 'On'){echo 'checked="checked"';} ?> name="go_multiplier_switch" size="45" value="On" style="margin-left: 5px;
 width: 20px;" /><br />
@@ -445,7 +445,11 @@ function go_update_globals(){
 	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit');
 	foreach($array as $key=>$value){
 $value = trim($value);
-		$string .= 'define("'.$value.'","'.get_option($value).'",TRUE);';
+$content = get_option($value);
+if(is_array($content)){
+	$content = serialize($content);
+	}
+		$string .= 'define("'.$value.'",\''.$content.'\',TRUE);';
 		}
 	
  file_put_contents ( $file_name, '<?php '.$string.' ?>' );
