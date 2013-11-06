@@ -130,32 +130,35 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'fields'     => array(
 			array(
 				'name' => 'Required Rank',
-				'desc' => 'rank required to purchase the item',
+				'desc' => 'Rank required to purchase the item',
 				'id'   => $prefix . 'store_rank',
 				'type' => 'select',
 				'options' => go_get_all_ranks()
 			),
 			array(
 				'name' => 'Currency',
-				'desc' => 'currency required to purchase the item',
+				'desc' => 'Currency required to purchase the item',
 				'id'   => $prefix . 'store_currency',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Points',
-				'desc' => 'points required to purchase item',
+				'desc' => 'Points required to purchase item',
 				'id'   => $prefix . 'store_points',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Time',
-				'desc' => 'time required to purchase item',
+				'desc' => 'Time required to purchase item',
 				'id'   => $prefix . 'store_time',
 				'type' => 'text',
 			),
-			
-				
-				
+			array(
+				'name' => 'Item URL',
+				'desc' => 'URL to be displayed when the item is purchased. Format as "www.example.com". Leave out "http://" before the URL. Leave blank if you don\'t need a link.',
+				'id' => $prefix . 'store_itemURL',
+				'type' => 'text'	
+			),
 		),
 	);
 	return $meta_boxes;

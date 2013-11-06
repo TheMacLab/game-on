@@ -15,12 +15,19 @@ function go_buy_item(){
 global $wpdb;
     $the_id = $_POST["the_id"];
 	$qty = $_POST['qty'];
+	if(isset($_POST['recipient']) && !empty($_POST['recipient'])){
+		$recipient = $_POST['recipient'];
+	}
 	$user_ID = get_current_user_id(); // Current User ID
 	$custom_fields = get_post_custom($the_id);
+	$title = get_the_title($the_id);
 	$req_points = $custom_fields['go_mta_store_points'][0];
 	$req_currency = $custom_fields['go_mta_store_currency'][0];
 	$req_time = $custom_fields['go_mta_store_time'][0];
 	$req_rank = $custom_fields['go_mta_store_rank'][0];
+	if($custom_fields['go_mta_store_itemURL'][0] && $custom_fields['go_mta_store_itemURL'][0] != ''){
+		$item_url = $custom_fields['go_mta_store_itemURL'][0];
+	}
 	$repeat = 'on';
 	$user_points = go_return_points($user_ID);
 	$user_currency = go_return_currency($user_ID);
@@ -56,12 +63,18 @@ global $wpdb;
 				break;
 		}
 	}
+	
 	if ($points_re == true && $currency_re == true && $time_re == true && $rank_re == true) {
 		go_add_post($user_ID, $the_id, -1, -$req_points, -$req_currency, $page_id, $repeat);
+		if($item_url){
+			$item_hyperlink = '<a target="_blank" href="http://'.$item_url.'">'.$title.'</a>';
+			echo 'Grab your loot! '.$item_hyperlink;
+		} else{
+			echo 'Purchased';	
+		}
 		if( $req_time != ''){
-			
-		go_add_minutes($user_ID, -$req_time, get_the_title($the_id));}
-		echo 'Purchased';
+			go_add_minutes($user_ID, -$req_time, get_the_title($the_id));
+		}
 	} else {
 		$new_stack = implode(',', $stack_arr);
 		echo $new_stack;
