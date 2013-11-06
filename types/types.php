@@ -154,8 +154,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text',
 			),
 			array(
-				'name' => 'Item URL',
-				'desc' => 'URL to be displayed when the item is purchased. Format as "www.example.com". Leave out "http://" before the URL. Leave blank if you don\'t need a link.',
+				'name' => 'Item URL <i>http://</i>',
+				'desc' => 'URL to be displayed when the item is purchased. Leave blank if you don\'t need a link.',
 				'id' => $prefix . 'store_itemURL',
 				'type' => 'text'	
 			),
