@@ -67,8 +67,8 @@ global $wpdb;
 	if ($points_re == true && $currency_re == true && $time_re == true && $rank_re == true) {
 		go_add_post($user_ID, $the_id, -1, -$req_points, -$req_currency, $page_id, $repeat);
 		if($item_url){
-			$item_hyperlink = '<a target="_blank" href="http://'.$item_url.'">'.$title.'</a>';
-			echo 'Grab your loot! '.$item_hyperlink;
+			$item_hyperlink = '<a target="_blank" href="'.$item_url.'">Grab your loot!</a>';
+			echo $item_hyperlink;
 		} else{
 			echo 'Purchased';	
 		}
