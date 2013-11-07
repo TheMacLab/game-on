@@ -20,6 +20,9 @@ function go_the_lb_ajax(){
 	$item_content = get_post_field('post_content', $the_id);
 	$the_content = wpautop($item_content);
 	$custom_fields = get_post_custom($the_id);
+	if(isset($custom_fields['go_mta_penalty_switch'])){
+		$penalty = true;
+	}
 	$req_currency = $custom_fields['go_mta_store_currency'][0];
 	$req_points = $custom_fields['go_mta_store_points'][0];
 	$req_time = $custom_fields['go_mta_store_time'][0];
@@ -34,7 +37,7 @@ function go_the_lb_ajax(){
 	echo '<h2>'.$the_title.'</h2>';
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
 	if ($user_points >= $req_rank) { $lvl_color = "g"; } else { $lvl_color = "r"; }
-	if ($user_gold >= $req_currency) { $gold_color = "g"; } else { $gold_color = "r"; }
+	if ($user_gold >= $req_currency || $penalty) { $gold_color = "g"; } else { $gold_color = "r"; }
 	if ($user_points >= $req_points) { $points_color = "g"; } else { $points_color = "r"; }
 	$time_color = "g"; 
 	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g") { $buy_color = "g"; } else { $buy_color = "r"; }
@@ -42,11 +45,10 @@ function go_the_lb_ajax(){
 	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_gold; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
 	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
 	<div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_time; ?>">Time: <?php echo $req_time; ?></div>
-    <div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;
-height: 30px;
-font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
+    <div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;height: 30px;font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
+	<!--<div id="golb-fr-recipient" class="golb-fr-boxes-<?php //echo $buy_color; ?>"><input id="go_recipient" type="text"/></div>!-->
 	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div> 
-    <div id="golb-purchased"> 
+    <div id="golb-purchased">
 	<?php 
 		$purchase_count = $wpdb->get_var("SELECT `count` FROM `".$table_name_go."` WHERE `post_id`='".$the_id."' AND `uid`='".$user_ID."'"); 
 		if($purchase_count == NULL){ 
@@ -54,8 +56,9 @@ font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
 		} else{
 			echo 'Times purchased: '.$purchase_count;
 		} 
-	?></div>
-<?php
+	?>
+    </div>
+	<?php
     die;
 }
 add_action('wp_ajax_go_lb_ajax', 'go_the_lb_ajax');

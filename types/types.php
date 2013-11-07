@@ -129,6 +129,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
+				'name' => 'Penalty Switch',
+				'desc' => 'Allow user\'s currency to go negative when purchasing this item',
+				'id' => $prefix . 'penalty_switch',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Required Rank',
 				'desc' => 'Rank required to purchase the item',
 				'id'   => $prefix . 'store_rank',
