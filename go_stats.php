@@ -134,41 +134,40 @@ margin-top: 40px; width:200px; display:inline;"></div
   
   
   
-    <h3 class="go_stats_header" onclick=""><?php echo ' Leaderboard';?></h3>
+  <h3 class="go_stats_header" onclick=""><?php echo ' Leaderboard';?></h3>
   <div class="go_stats_box">
-  <div id="go_stats_leaderboard_order">Order By:<select id="go_stats_leaderboard_select" onchange="go_stats_leaderboard_choice();">
-  <option value="points"><?php echo go_return_options('go_points_name'); ?></option>
-  <option value="currency"><?php echo go_return_options('go_currency_name'); ?></option>
-  <option value="minutes">Minutes</option>
-  </select></div>
-  <div id="leaderboard_left_box">
-  <table id="go_stats_leaderboard_table" ><thead>
-  <tr>
-  <th class="header">Gamertag</th>
-  <th class="header"><?php echo go_return_options('go_points_name'); ?></th>
-  <th class="header"><?php echo go_return_options('go_currency_name'); ?></th>
-  <th class="header">Minutes</th>
-  </tr></thead>
-  <tbody id="go_stats_leaderboard_table_body"></tbody>
-  </table>
-  </div>
-  <div id="leaderboard_right_box">
-  	<div id="go_stats_class_a_choice"> 
-    <h3>Displaying</h3>
+      <div id="go_stats_leaderboard_order">
+          Order By:<select id="go_stats_leaderboard_select" onchange="go_stats_leaderboard_choice();">
+              <option value="points"><?php echo go_return_options('go_points_name'); ?></option>
+              <option value="currency"><?php echo go_return_options('go_currency_name'); ?></option>
+              <option value="minutes">Minutes</option>
+          </select>
+      </div>
+      <div id="leaderboard_left_box">
+          <table id="go_stats_leaderboard_table" ><thead>
+          <tr>
+          <th class="header">Gamertag</th>
+          <th class="header"><?php echo go_return_options('go_points_name'); ?></th>
+          <th class="header"><?php echo go_return_options('go_currency_name'); ?></th>
+          <th class="header">Minutes</th>
+          </tr></thead>
+          <tbody id="go_stats_leaderboard_table_body"></tbody>
+          </table>
+      </div>
+      <div id="leaderboard_right_box">
+        <h3 class="header"> Options to Display</h3>
+        <div id="go_stats_class_a_list">
+			<?php
+            $class_a = get_option('go_class_a');
+            if($class_a){
+            foreach($class_a as $key=> $value){
+                echo '<input type="checkbox" class="class_choice" value="'.$value.'">'.$value.'</br>';
+                }
+            }
+            ?>
+        </div>
+      </div>
     </div>
-	<div id="go_stats_class_a_list">
-    <h3> Options to Display</h3>
-    <?php
-$class_a = get_option('go_class_a');
-if($class_a){
-	foreach($class_a as $key=> $value){
-		echo '<li class="ui-corner-all">'.$value.'</li>';
-		}
-	}
-	?>
-    </div>
-  </div>
-</div>
 </div>
 <?php die();}
 function go_stats_task_list(){
