@@ -161,7 +161,7 @@ margin-top: 40px; width:200px; display:inline;"></div
             $class_a = get_option('go_class_a');
             if($class_a){
             foreach($class_a as $key=> $value){
-                echo '<input type="checkbox" class="class_choice" value="'.$value.'">'.$value.'</br>';
+                echo '<input type="checkbox" class="class_choice" value="'.$value.'" onChange="go_stats_leaderboard_choice();">'.$value.'</br>';
                 }
             }
             ?>
@@ -280,6 +280,7 @@ order by CAST(".$_POST['order']." as signed ) Desc");
 		$class_a = get_user_meta($id, 'go_classifications',true);
 		if($class_a){
 		$class_key = array_keys($class_a);
+		if(!empty($class_a_choice) && !empty($class_key)){
 		$intersect = array_intersect($class_key, $class_a_choice);
 		if(!empty($intersect)){
 			$points =go_return_points($id);
@@ -289,6 +290,7 @@ order by CAST(".$_POST['order']." as signed ) Desc");
 		$user_display = $user_data_key->display_name;
 			echo '<tr><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
 			}
+		}
 		}
 		}
 		}
