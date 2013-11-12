@@ -95,11 +95,10 @@ function go_task_shortcode($atts, $content = null) {
 				case '4':  
 					echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
 					if ($repeat == 'on') {
-		/*		echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'.go_return_options('go_repeat_button').'</button></div>'; */
 		
 						echo '<div id="go_repeat_clicked" style="display:none;">'
 						.do_shortcode(wpautop($repeat_message)).
-						'<br/><button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
+						'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
 						.go_return_options('go_repeat_button').
 						'</button>
 						</div>
@@ -111,14 +110,13 @@ function go_task_shortcode($atts, $content = null) {
 					} else {
 						echo '</div>';
 					}
-				break;		
 			}
 ?>
 		
 	<script language="javascript">
-	function go_repeat_replace(){
-		jQuery('#go_repeat_unclicked').remove();
-		jQuery('#go_repeat_clicked').show();		
+	function go_repeat_replace() {
+ 		jQuery('#go_repeat_unclicked').remove();
+		jQuery('#go_repeat_clicked').show();	 
 	}
 	function task_stage_change(){
 		var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
@@ -135,7 +133,8 @@ function go_task_shortcode($atts, $content = null) {
 				page_id: <?php echo get_the_ID(); ?>,},
 				success: function(html){
 					jQuery('#go_content').html(html);
-					jQuery('#go_admin_bar_progress_bar').css({"background-color": color})
+					jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
+					jQuery("#new_content").show('slow');
 				}
 		});	
 	}
@@ -185,35 +184,31 @@ function task_change_stage(){
 			}
 	switch($status) {
 		case 1:
-			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_second_stage_button').'</button></div>';
+			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
+			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
 			break;
 		case 3:
-			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).' <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button</div>';
+			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content" style="display: none;">'.do_shortcode(wpautop($completion_message)).' <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button</div>';
 			break;
 		case 4:
-			echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
-			do_shortcode(wpautop($mastery_message));
+			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).'<div id="new_content" style="display: none;">'.do_shortcode(wpautop($mastery_message));
 			if ($repeat == 'on') {
-				echo '<div id="go_repeat_clicked" style="display:none;">'
+				echo '<div id="go_repeat_clicked">'
 		.do_shortcode(wpautop($repeat_message)).
-		'<br/><button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
+		'<button id="go_button" status="4" style="display:none;" onclick="task_stage_change();this.disabled=true;" repeat="on">'
 		.go_return_options('go_repeat_button').
 		'</button>
-		</div>
-		<div id="go_repeat_unclicked">
-		<button onclick="go_repeat_replace();">'
-		.go_return_options('go_repeat_button').
-		'</button>
-		</div>';
+		</div><div id="go_repeat_unclicked">
+						<button onclick="go_repeat_replace();">'
+						.go_return_options('go_repeat_button').
+						'</button>
+						</div>';
 			} else {
 				echo '</div>';
 			}
-			break;
 	}
-	
 die();
 }
 ?>
