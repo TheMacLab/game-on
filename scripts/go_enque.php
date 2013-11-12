@@ -29,18 +29,22 @@ function go_jquery_periods() {
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-draggable' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
-	
-	
 }
 function go_jquery_clipboard() {
     wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-tabs' );
+	wp_enqueue_script( 'go_excanvas', plugin_dir_url(__FILE__).'/flot/excanvas.min.js');
+	wp_enqueue_script( 'go_flot', plugin_dir_url(__FILE__).'/flot/jquery.flot.min.js');
+	wp_enqueue_script( 'go_flot_time', plugin_dir_url(__FILE__).'/flot/jquery.flot.time.min.js');
+	wp_enqueue_script( 'go_flot_selection', plugin_dir_url(__FILE__).'/flot/jquery.flot.selection.min.js');
 	wp_enqueue_script( 'go_jquery_clipboard', plugin_dir_url(__FILE__).'go_clipboard.js');
 	wp_enqueue_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url(__FILE__).'sorttable.js');
-
+	
 	wp_localize_script( 'go_jquery_clipboard', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	wp_enqueue_script( 'jquery-ui-accordion' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
+	
 }
 function go_presets_js(){
 	 wp_enqueue_script( 'jquery' );

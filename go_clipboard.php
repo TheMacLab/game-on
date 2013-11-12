@@ -15,7 +15,11 @@ function go_clipboard_menu() {
 		go_jquery_clipboard();
 		
 		?>
-
+ <div id="records_tabs">
+<ul>
+    <li><a href="#clipboard_wrap">Clipboard</a></li>
+    <li><a href="#go_analysis">Analysis</a></li>
+  </ul>
         <div id="clipboard_wrap">
         <select class="menuitem" id="go_clipboard_class_a_choice" onchange="go_clipboard_class_a_choice();">
       <option>...</option>
@@ -53,7 +57,24 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
     </table>
     
     
-     </div><?php
+     </div>
+	 <div id="go_analysis">
+     <button onClick="collectData();">Collect Data</button>
+     <select id="go_selection" onClick="go_update_graph();">
+     <option value="0"><?php echo 'Minutes'; ?></option>
+     <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
+     <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
+     <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
+     </select>
+     <div class="container" style="overflow:auto;">
+     <div id="placeholder" style="width:600px;height:300px; float:left"></div>
+     <div id="overview" class="demo-placeholder" style="float:right;width:400px; height:235px;"></div>
+     <p id="choices" style="float:right; width:200px; height:250px; overflow:auto; margin-right:30px; border:solid black
+     thin;"></p>
+     </div>
+     </div>
+     </div>
+	 <?php
 	}
 }
 
@@ -117,4 +138,48 @@ if($minutes!= ''&&$reason != ''){
 	die();
 	
 	}
+function go_clipboard_collect_data(){
+	global $wpdb;
+	$table_name_user_meta = $wpdb->prefix.'usermeta';
+	$table_name_go = $wpdb->prefix.'go';
+	$uid = $wpdb->get_results("SELECT user_id
+FROM ".$table_name_user_meta."
+WHERE meta_key =  'wp_capabilities'
+AND meta_value LIKE  '%subscriber%'");
+	$time = round(microtime(true));
+	$array = get_option('go_graphing_data');
+	foreach($uid as $id){
+		foreach($id as $value){
+		$minutes = go_return_minutes($value);
+		$points = go_return_points($value);
+		$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
+		$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
+		$array[$value][$time] = $minutes.','. $points.','. $third_stage.','. $fourth_stage;
+		}}
+	update_option( 'go_graphing_data', $array );
+	}
+	
+function go_clipboard_get_data(){
+	global $wpdb;
+	$selection = $_POST['go_graph_selection'];
+	$array = get_option('go_graphing_data',false);
+	foreach($array as $id => $date){
+		$getinfo = get_userdata( $id );
+		$id= $getinfo -> user_login;
+		$first= $getinfo-> first_name;
+		$last= $getinfo-> last_name;
+		$info[$id]['label'] = $last.','.$first.'('.$id.')';
+		foreach($date as $date => $content){
+			$content_array = explode(',',$content);
+			$info[$id]['data'][]=array($date*1000,$content_array[$selection]);
+			//$data[$id] .= '['.$date.','.$content_array[$selection].'],';
+			}
+		//$info .= '"'.$id.'": {label: "'.$id.'",data: ['.$data[$id].']},';
+		}
+		
+
+		echo JSON_encode($info);
+		//	echo '{'.$info.'}';
+			die();
+			     	}
 ?>

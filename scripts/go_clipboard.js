@@ -1,9 +1,198 @@
+jQuery('#records_tabs').tabs();
 jQuery(document).ready( function () {
   jQuery('#go_clipboard_table').dataTable( {
     "bPaginate": false
   } );
-} );
+/*  jQuery("#placeholder").plot( [
+  { label:"foo", data: [[1383984447837,1],[1384502847000,1.2], [1385194047000, 3]]},
+  { label:"big", data: [[1383984447837,.8],[1384502847000,1.5], [1385194047000, 2.8]]}
+  ], 
+  {
+	   xaxis: {  mode:"time", timeformat: "%Y/%m/%d - %H:%M"} ,
+	   legend: {
+    labelFormatter: null,
+    position: "ne", 
+    backgroundColor: null ,
+    backgroundOpacity: .5,
+    container: null,
+    sorted: false
+}
+	   
+	   }); */
+//*****************************************************************************************************************************************************************
 
+go_update_graph();
+
+//*******************************************************************************************************************************************************
+
+} );
+function go_graphs(datasets){
+		// hard-code color indices to prevent them from shifting as
+		// countries are turned on/off
+		jQuery('#placeholder').empty();
+			jQuery('#overview').empty();
+			jQuery('#choices').empty();
+		var i = 0;
+		jQuery.each(datasets, function(key, val) {
+			val.color = i;
+			++i;
+		});
+
+
+	// insert checkboxes 
+		var choiceContainer = jQuery("#choices");
+		var goCheck = 'checked';
+		jQuery.each(datasets, function(key, val) {
+			choiceContainer.append("<br/><input type='checkbox' name='" + key +"' "+goCheck+" id='id"+key+"'></input>" +"<label for='id" + key + "'>"+ val.label +"</label>");
+		goCheck = '';
+		});
+
+		choiceContainer.find("input").click(plotAccordingToChoices);
+
+		function plotAccordingToChoices() {
+
+			var data = [];
+
+			choiceContainer.find("input:checked").each(function () {
+				var key = jQuery(this).attr("name");
+				if (key && datasets[key]) {
+					data.push(datasets[key]);
+				}
+			});
+
+			if (data.length > 0) {
+				jQuery.plot("#placeholder", data, {
+					
+					xaxis: {
+						tickDecimals: 0,
+						mode : "time",
+						timezone: "browser" ,
+						 timeformat: "%m/%d"
+					},
+					selection: {
+				mode: "xy"
+			},
+			series: {
+				lines: {
+					show: true
+				},
+				points: {
+					show: true
+				}
+				}
+				});
+			}
+var startData = data;
+var options = {
+			xaxis: {
+						mode : "time",
+						timezone: "browser" ,
+						 timeformat: "%m/%d"
+				},
+			series: {
+				lines: {
+					show: true,
+					lineWidth: 1
+				},
+				shadowSize: 0
+			},
+			grid: {
+				color: "#999"
+			},
+			selection: {
+				mode: "xy"
+			},
+				points: {
+					show: true
+				}
+		};
+var plot = jQuery.plot("#overview", data, options );
+var overview = jQuery.plot("#overview", data, 
+{
+			legend: {
+				show: false
+			},
+			series: {
+				lines: {
+					show: true,
+					lineWidth: 1
+				},
+				shadowSize: 0
+			},
+			xaxis: {
+				mode:"time",
+				timezone: "browser" ,
+				 timeformat: "%m/%d"
+			},
+			grid: {
+				color: "#999"
+			},
+			selection: {
+				mode: "xy"
+			}
+}
+
+ );
+
+		// now connect the two
+
+		jQuery("#placeholder").bind("plotselected", function (event, ranges) {
+			console.log('hello');
+
+			// clamp the zooming to prevent eternal zoom
+
+			if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {
+				ranges.xaxis.to = ranges.xaxis.from + 0.00001;
+			}
+
+			if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {
+				ranges.yaxis.to = ranges.yaxis.from + 0.00001;
+			}
+
+			// do the zooming
+
+			plot = jQuery.plot("#placeholder", data,
+				jQuery.extend(true, {}, options, {
+					xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
+					yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
+				})
+			);
+
+			// don't fire event on the overview to prevent eternal loop
+
+			overview.setSelection(ranges, true);
+		});
+
+		jQuery("#overview").bind("plotselected", function (event, ranges) {
+			plot.setSelection(ranges);
+		});
+
+		}
+
+		plotAccordingToChoices();
+
+	}
+function go_update_graph(){
+	jQuery.ajax({
+		type: "post",url: MyAjax.ajaxurl,data: { 
+		action: 'go_clipboard_get_data',
+		go_graph_selection: jQuery('#go_selection').val()
+		},
+		success: function(html){
+			go_graphs(jQuery.parseJSON(html));
+		}
+	});
+	}
+function collectData(){
+	jQuery.ajax({
+		type: "post",url: MyAjax.ajaxurl,data: { 
+		action: 'go_clipboard_collect_data',
+		},
+		success: function(html){
+			go_update_graph();
+		}
+	});
+	}
 function go_clipboard_class_a_choice(){
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
@@ -14,7 +203,6 @@ function go_clipboard_class_a_choice(){
 			 var oTable = jQuery('#go_clipboard_table').dataTable();
 			 oTable.fnDestroy();
 			jQuery('#go_clipboard_table_body').html(html);	
-			
 			  jQuery('#go_clipboard_table').dataTable( {
     "bPaginate": false,
 	  "aaSorting": [[2, "asc" ]]
@@ -38,7 +226,10 @@ function go_clipboard_add(id){
 		time:jQuery('#go_clipboard_time').val(),
 		reason:jQuery('#go_clipboard_reason').val()},
 		success: function(html){
-				
+		jQuery('#go_clipboard_points').val(''),
+		jQuery('#go_clipboard_currency').val(''),
+		jQuery('#go_clipboard_time').val(''),
+		jQuery('#go_clipboard_reason').val('')
 		}
 	});
 	}
