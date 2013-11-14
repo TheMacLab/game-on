@@ -16,12 +16,23 @@ function go_task_shortcode($atts, $content = null) {
 		$task_currency = $custom_fields['go_mta_task_currency'][0]; // Currency granted after each stage of task
 		$task_points = $custom_fields['go_mta_task_points'][0]; // Points granted after each stage of task
 		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
+		if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
+			$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
+		} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
+			$repeat_amount = 0;	// Sets the limit equal to zero. In other words, unlimits the amount of times the task is repeatable
+		}
+		if($custom_fields['go_mta_time_filter'][0]){
+			$minutes_required = $custom_fields['go_mta_time_filter'][0];	
+		} 
 		$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 		$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 		$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Repeat Message
 		$description = $custom_fields['go_mta_quick_desc'][0]; // Description
 		$currency_array = explode(',', $task_currency); // Makes an array out of currency values for each stage
 		$points_array = explode(',', $task_points); //Makes an array out of currency values for each stage
+		if($user_ID != 0){
+			$current_minutes = go_return_minutes($user_ID);	
+		}
 		
 		$content_post = get_post($id); // Grabs content of a task from the post table in your wordpress database where post_id = id in the shortcode. 
 		$task_content = $content_post->post_content; // Grabs what the task actually says in the body of it
@@ -54,62 +65,65 @@ function go_task_shortcode($atts, $content = null) {
 			global $wpdb;
 			$user_ID = get_current_user_id(); // User ID
 			$go_table_ind = $wpdb->prefix.'go';
+			$task_count = $wpdb->get_var("select `count` from ".$go_table_ind." where post_id = $id and uid = $user_ID");
 			$status = (int)$wpdb->get_var("select status from ".$go_table_ind." where post_id = $id and uid = $user_ID");
 ?> <div id="go_description"> <?php echo  do_shortcode(wpautop($description)) ;?> </div>
 <?php
-
-			switch ($status) {
-				
-				// This one's for you First Timers out there...
-				case 0: 
-					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], get_the_ID());
+			if($current_minutes >= $minutes_required || !$minutes_required){
+				switch ($status) {
 					
-?>
-				<div id="go_content"> <br />
-				<button id="go_button" status="2" onclick="task_stage_change();"><?= go_return_options('go_second_stage_button') ?></button>
-            	</div>
-                
-<?php			
-				break;
-				
-				// Encountered
-				case 1: 
-?>
-				<div id="go_content"> <br />
-				<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
-         		</div>   
-<?php
-				break;
-				
-				// Accepted
-				case 2: 
-					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
-				break;
-				
-				// Completed
-				case 3: 
-					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div>';
-				break;
-				
-				// Mastered
-				case 4:  
-					echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
-					if ($repeat == 'on') {
-		
-						echo '<div id="go_repeat_clicked" style="display:none;">'
-						.do_shortcode(wpautop($repeat_message)).
-						'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
-						.go_return_options('go_repeat_button').
-						'</button>
-						</div>
-						<div id="go_repeat_unclicked">
-						<button onclick="go_repeat_replace();">'
-						.go_return_options('go_repeat_button').
-						'</button>
-						</div>';
-					} else {
-						echo '</div>';
-					}
+					// This one's for you First Timers out there...
+					case 0: 
+						go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], get_the_ID());
+						
+	?>
+					<div id="go_content"> <br />
+					<button id="go_button" status="2" onclick="task_stage_change();"><?= go_return_options('go_second_stage_button') ?></button>
+					</div>
+					
+	<?php			
+					break;
+					
+					// Encountered
+					case 1: 
+	?>
+					<div id="go_content"> <br />
+					<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
+					</div>   
+	<?php
+					break;
+					
+					// Accepted
+					case 2: 
+						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
+					break;
+					
+					// Completed
+					case 3: 
+						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div>';
+					break;
+					
+					// Mastered
+					case 4:  
+						echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
+						if ($repeat == 'on') {
+							if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
+								echo '<div id="go_repeat_clicked" style="display:none;">'
+								.do_shortcode(wpautop($repeat_message)).
+								'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
+								.go_return_options('go_repeat_button').
+								'</button>
+								</div>
+								<div id="go_repeat_unclicked">
+								<button onclick="go_repeat_replace();">'
+								.go_return_options('go_repeat_button').
+								'</button>
+								</div>';
+							}
+						} else {
+							echo '</div>';
+						}
+				}
 			}
 
 ?>
@@ -161,6 +175,11 @@ function task_change_stage(){
 		$task_currency = $custom_fields['go_mta_task_currency'][0]; // Currency granted after each stage of task
 		$task_points = $custom_fields['go_mta_task_points'][0]; // Points granted after each stage of task
 		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
+		if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
+			$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
+		} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
+			$repeat_amount = 0;	// Sets the limit equal to zero. In other words, unlimits the amount of times the task is repeatable
+		}
 		$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 		$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 		$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Mastery Message
@@ -176,6 +195,7 @@ function task_change_stage(){
 			$accpt_mssg = $content_post->post_content;
 		}
 		$table_name_go = $wpdb->prefix . "go";
+		$task_count = $wpdb->get_var("select `count` from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 		if($repeat_button != 'on'){
 			$check = (int) $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 			if($check == 0 || $check < ($status)){
@@ -205,12 +225,14 @@ function task_change_stage(){
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
 			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
 			if ($repeat == 'on') {
-				echo '<div id="go_repeat_clicked">'
-		.do_shortcode(wpautop($repeat_message)).
-		'<button id="go_button" status="4" style="display:none;" onclick="task_stage_change();this.disabled=true;" repeat="on">'
-		.go_return_options('go_repeat_button').
-		'</button>
-		</div>';
+				if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
+					echo '<div id="go_repeat_clicked">'
+						.do_shortcode(wpautop($repeat_message)).
+						'<button id="go_button" status="4" style="display:none;" onclick="task_stage_change();this.disabled=true;" repeat="on">'
+						.go_return_options('go_repeat_button').
+						'</button>
+						</div>';
+				}
 			} else {
 				echo '</div>';
 			}
