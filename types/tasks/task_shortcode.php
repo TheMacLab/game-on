@@ -61,19 +61,19 @@ function go_task_shortcode($atts, $content = null) {
 			switch ($status) {
 				
 				// This one's for you First Timers out there...
-				case '': 
+				case 0: 
 					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], get_the_ID());
 					
 ?>
 				<div id="go_content"> <br />
-				<button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
+				<button id="go_button" status="2" onclick="task_stage_change();"><?= go_return_options('go_second_stage_button') ?></button>
             	</div>
                 
 <?php			
 				break;
 				
 				// Encountered
-				case '1': 
+				case 1: 
 ?>
 				<div id="go_content"> <br />
 				<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
@@ -82,17 +82,17 @@ function go_task_shortcode($atts, $content = null) {
 				break;
 				
 				// Accepted
-				case '2': 
-					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<br /> <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
+				case 2: 
+					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
 				break;
 				
 				// Completed
-				case '3': 
-					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<br /> <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div>';
+				case 3: 
+					echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div>';
 				break;
 				
 				// Mastered
-				case '4':  
+				case 4:  
 					echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
 					if ($repeat == 'on') {
 		
@@ -111,12 +111,13 @@ function go_task_shortcode($atts, $content = null) {
 						echo '</div>';
 					}
 			}
+
 ?>
 		
 	<script language="javascript">
 	function go_repeat_replace() {
  		jQuery('#go_repeat_unclicked').remove();
-		jQuery('#go_repeat_clicked').show();	 
+		jQuery('#go_repeat_clicked').show('slow');	 
 	}
 	function task_stage_change(){
 		var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
@@ -178,33 +179,38 @@ function task_change_stage(){
 		if($repeat_button != 'on'){
 			$check = (int) $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 			if($check == 0 || $check < ($status)){
-				go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  ); }
-			} else {
-				go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  );
+				go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  ); 
 			}
+		} else {
+			go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  );
+		}
 	switch($status) {
 		case 1:
-			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_second_stage_button').'</button></div>';
+			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).
+			' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'
+			.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
+			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).
+			' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
+			.go_return_options('go_third_stage_button').'</button></div>';
 			break;
 		case 3:
-			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content" style="display: none;">'.do_shortcode(wpautop($completion_message)).' <button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button</div>';
+			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content" style="display: none;">'
+			.do_shortcode(wpautop($completion_message)).
+			'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'
+			.go_return_options('go_fourth_stage_button').'</button</div>';
 			break;
 		case 4:
-			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).'<div id="new_content" style="display: none;">'.do_shortcode(wpautop($mastery_message));
+			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
+			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
 			if ($repeat == 'on') {
 				echo '<div id="go_repeat_clicked">'
 		.do_shortcode(wpautop($repeat_message)).
 		'<button id="go_button" status="4" style="display:none;" onclick="task_stage_change();this.disabled=true;" repeat="on">'
 		.go_return_options('go_repeat_button').
 		'</button>
-		</div><div id="go_repeat_unclicked">
-						<button onclick="go_repeat_replace();">'
-						.go_return_options('go_repeat_button').
-						'</button>
-						</div>';
+		</div>';
 			} else {
 				echo '</div>';
 			}
