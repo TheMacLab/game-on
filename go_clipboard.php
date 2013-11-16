@@ -66,11 +66,11 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
      <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
      <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
      </select>
-     <div class="container" style="overflow:auto;">
-     <div id="placeholder" style="width:600px;height:300px; float:left"></div>
-     <div id="overview" class="demo-placeholder" style="float:right;width:400px; height:235px;"></div>
-     <p id="choices" style="float:right; width:200px; height:250px; overflow:auto; margin-right:30px; border:solid black
-     thin;"></p>
+     <p id="choices">
+     </p>
+     <div class="container">
+     <div id="placeholder" style="width:98%;height:98%;">
+     </div>  
      </div>
      </div>
      </div>
@@ -110,7 +110,7 @@ AND meta_value LIKE  '%subscriber%'");
 		$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
 		$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
 		
-		echo '<tr><td><input class="go_checkbox" type="checkbox" name="go_selected" value="'.$value.'"></td><td><a onclick="go_admin_bar_stats_page_button('.$value.'); "  >'.$user_login.'</a></td><td>'.$class_a[$class_a_choice].'</td><td><a href="'.$user_url.'" target="_blank">'.$user_last_name.', '.$user_first_name.'</a></td><td>'.$user_display.'</td><td>'.$current_rank.'</td><td>'.$currency.'</td><td>'.$minutes.'</td><td>'.$points.'</td><td>'.$first_stage.'</td><td>'.$second_stage.'</td><td>'.$third_stage.'</td><td>'.$fourth_stage.'</td></tr>';
+		echo '<tr><td><input class="go_checkbox" type="checkbox" name="go_selected" value="'.$value.'"></td><td><span><a href="#" onclick="go_admin_bar_stats_page_button('.$value.'); "  >'.$user_login.'</a></td><td>'.$class_a[$class_a_choice].'</td><td><a href="'.$user_url.'" target="_blank">'.$user_last_name.', '.$user_first_name.'</a></td><td>'.$user_display.'</td><td>'.$current_rank.'</td><td>'.$currency.'</td><td>'.$minutes.'</td><td>'.$points.'</td><td>'.$first_stage.'</td><td>'.$second_stage.'</td><td>'.$third_stage.'</td><td>'.$fourth_stage.'</td></tr>';
 		
 		}}}}
 		die();
@@ -168,7 +168,7 @@ function go_clipboard_get_data(){
 		$id= $getinfo -> user_login;
 		$first= $getinfo-> first_name;
 		$last= $getinfo-> last_name;
-		$info[$id]['label'] = $last.','.$first.'('.$id.')';
+		$info[$id]['label'] = $last.', '.$first.' ('.$id.')';
 		foreach($date as $date => $content){
 			$content_array = explode(',',$content);
 			$info[$id]['data'][]=array($date*1000,$content_array[$selection]);

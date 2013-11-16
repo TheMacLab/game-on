@@ -3,48 +3,30 @@ jQuery(document).ready( function () {
   jQuery('#go_clipboard_table').dataTable( {
     "bPaginate": false
   } );
-/*  jQuery("#placeholder").plot( [
-  { label:"foo", data: [[1383984447837,1],[1384502847000,1.2], [1385194047000, 3]]},
-  { label:"big", data: [[1383984447837,.8],[1384502847000,1.5], [1385194047000, 2.8]]}
-  ], 
-  {
-	   xaxis: {  mode:"time", timeformat: "%Y/%m/%d - %H:%M"} ,
-	   legend: {
-    labelFormatter: null,
-    position: "ne", 
-    backgroundColor: null ,
-    backgroundOpacity: .5,
-    container: null,
-    sorted: false
-}
-	   
-	   }); */
-//*****************************************************************************************************************************************************************
-
 go_update_graph();
-
-//*******************************************************************************************************************************************************
-
 } );
 function go_graphs(datasets){
 		// hard-code color indices to prevent them from shifting as
 		// countries are turned on/off
-		jQuery('#placeholder').empty();
-			jQuery('#overview').empty();
+			jQuery('#placeholder').empty();
 			jQuery('#choices').empty();
-		var i = 0;
-		jQuery.each(datasets, function(key, val) {
-			val.color = i;
-			++i;
+			jQuery('#placeholder').resize();
+			jQuery(".container").resizable({
+			minWidth: 450,
+			minHeight: 250,
 		});
-
+		
+		
+window.data = datasets;
 
 	// insert checkboxes 
 		var choiceContainer = jQuery("#choices");
 		var goCheck = 'checked';
+		var ii = 0;
 		jQuery.each(datasets, function(key, val) {
-			choiceContainer.append("<br/><input type='checkbox' name='" + key +"' "+goCheck+" id='id"+key+"'></input>" +"<label for='id" + key + "'>"+ val.label +"</label>");
+			choiceContainer.append("<input type='checkbox' name='" + key +"' "+goCheck+" id='id"+key+"'></input><label class='highlight_box' onClick='highlight_click(this);' key='"+val.label+"' rank='"+ii+"'>Highlight</label>"+"<label for='id" + key + "'>"+ val.label +"</label><br/>");
 		goCheck = '';
+		ii++;
 		});
 
 		choiceContainer.find("input").click(plotAccordingToChoices);
@@ -59,119 +41,125 @@ function go_graphs(datasets){
 					data.push(datasets[key]);
 				}
 			});
-
+var i = 0;
+		jQuery.each(datasets, function(key, val) {
+			val.color = i;
+			++i;
+		});
 			if (data.length > 0) {
-				jQuery.plot("#placeholder", data, {
-					
-					xaxis: {
-						tickDecimals: 0,
-						mode : "time",
-						timezone: "browser" ,
-						 timeformat: "%m/%d"
+				if(jQuery('#go_selection').val() == 0){
+				var minutes = Minutes_limit.limit.split(',');
+				var markings = [
+			{ color: "rgba(255,228,0,.4)", yaxis: {from :minutes[2], to: minutes[3] } },
+			{ color: "rgba(255,103,0,.4)", yaxis: {from: minutes[1], to: minutes[2] } },
+			{ color: "rgba(204,0,0,.4)", yaxis: {from: minutes[0], to: minutes[1] } },
+			{ color: "rgba(70,70,70,.8)", yaxis: {to: minutes[0] } },
+			{ color: "rgba(0,193,0,.4)", yaxis: { from: minutes[3] } },
+		];} else {
+			var markings = '';
+			}
+			var plot = 	jQuery.plot("#placeholder", data, {	
+			xaxis: {
+				tickDecimals: 0,
+				mode : "time",
+				timezone: "browser" ,
+				timeformat: "%m/%d",
 					},
-					selection: {
-				mode: "xy"
-			},
+			legend:{
+				show:false
+				},
 			series: {
 				lines: {
-					show: true
-				},
+					show: true,
+					hoverable: true,
+					},
 				points: {
 					show: true
-				}
+					}
+			
+				},
+			zoom: {
+				interactive: true
+			},
+			pan: {
+				interactive: true
+			},
+			grid:{
+				markings :markings,
+				hoverable: true,
 				}
 				});
-			}
-var startData = data;
-var options = {
-			xaxis: {
-						mode : "time",
-						timezone: "browser" ,
-						 timeformat: "%m/%d"
-				},
-			series: {
-				lines: {
-					show: true,
-					lineWidth: 1
-				},
-				shadowSize: 0
-			},
-			grid: {
-				color: "#999"
-			},
-			selection: {
-				mode: "xy"
-			},
-				points: {
-					show: true
+				
+window.plot = plot;
+		var previousPoint = null;
+		jQuery("#placeholder").bind("plothover", function (event, pos, item) {
+
+				var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+				jQuery("#hoverdata").text(str);
+				if (item) {
+					if (previousPoint != item.dataIndex) {
+						previousPoint = item.dataIndex;
+						jQuery("#tooltip").remove();
+						var x = new Date(parseInt(item.datapoint[0].toFixed(2),10)).toString();
+						y = item.datapoint[1].toFixed(2);
+						showTooltip(item.pageX, item.pageY,
+						item.series.label + " on " + x + " = " + y);
+					}
+				} else {
+					jQuery("#tooltip").remove();
+					previousPoint = null;            
 				}
-		};
-var plot = jQuery.plot("#overview", data, options );
-var overview = jQuery.plot("#overview", data, 
-{
-			legend: {
-				show: false
-			},
-			series: {
-				lines: {
-					show: true,
-					lineWidth: 1
-				},
-				shadowSize: 0
-			},
-			xaxis: {
-				mode:"time",
-				timezone: "browser" ,
-				 timeformat: "%m/%d"
-			},
-			grid: {
-				color: "#999"
-			},
-			selection: {
-				mode: "xy"
+			
+		});
+
+		
+				
+				
 			}
+			
+jQuery("<div class='button' style='right:20px;top:20px'>zoom out</div>")
+			.appendTo(jQuery('#placeholder'))
+			.click(function (event) {
+				event.preventDefault();
+				plot.zoomOut();
+			});
+var startData = data;
+		
 }
-
- );
-
-		// now connect the two
-
-		jQuery("#placeholder").bind("plotselected", function (event, ranges) {
-			console.log('hello');
-
-			// clamp the zooming to prevent eternal zoom
-
-			if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {
-				ranges.xaxis.to = ranges.xaxis.from + 0.00001;
+plotAccordingToChoices();
+	}
+function highlight_click(box){
+	var key = jQuery(box).attr('key');
+	if(!jQuery(box).hasClass('highlight_box_clicked')){
+		for( var j = 0;j < window.plot.getData().length; j++ ){
+		if(window.plot.getData()[j]['label'] == key){
+		for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
+		window.plot.highlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
+					}}
+		}} else {
+		for( var j = 0;j < window.plot.getData().length; j++ ){
+		if(window.plot.getData()[j]['label'] == key){
+		for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
+		window.plot.unhighlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
+					}}
+		}
 			}
-
-			if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {
-				ranges.yaxis.to = ranges.yaxis.from + 0.00001;
-			}
-
-			// do the zooming
-
-			plot = jQuery.plot("#placeholder", data,
-				jQuery.extend(true, {}, options, {
-					xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
-					yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
-				})
-			);
-
-			// don't fire event on the overview to prevent eternal loop
-
-			overview.setSelection(ranges, true);
-		});
-
-		jQuery("#overview").bind("plotselected", function (event, ranges) {
-			plot.setSelection(ranges);
-		});
-
+	jQuery(box).toggleClass("highlight_box_clicked");
+	
+	}
+function showTooltip(x, y, contents) {
+			jQuery("<div id='tooltip'>" + contents + "</div>").css({
+				position: "absolute",
+				display: "none",
+				top: y + 5,
+				left: x + 5,
+				border: "1px solid #fdd",
+				padding: "2px",
+				"background-color": "#fee",
+				opacity: 0.80
+			}).appendTo("body").fadeIn(200);
 		}
 
-		plotAccordingToChoices();
-
-	}
 function go_update_graph(){
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
