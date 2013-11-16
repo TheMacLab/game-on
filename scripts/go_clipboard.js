@@ -1,9 +1,186 @@
+jQuery('#records_tabs').tabs();
 jQuery(document).ready( function () {
   jQuery('#go_clipboard_table').dataTable( {
     "bPaginate": false
   } );
+go_update_graph();
 } );
+function go_graphs(datasets){
+		// hard-code color indices to prevent them from shifting as
+		// countries are turned on/off
+			jQuery('#placeholder').empty();
+			jQuery('#choices').empty();
+			jQuery('#placeholder').resize();
+			jQuery(".container").resizable({
+			minWidth: 450,
+			minHeight: 250,
+		});
+		
+		
+window.data = datasets;
 
+	// insert checkboxes 
+		var choiceContainer = jQuery("#choices");
+		var goCheck = 'checked';
+		var ii = 0;
+		jQuery.each(datasets, function(key, val) {
+			choiceContainer.append("<input type='checkbox' name='" + key +"' "+goCheck+" id='id"+key+"'></input><label class='highlight_box' onClick='highlight_click(this);' key='"+val.label+"' rank='"+ii+"'>Highlight</label>"+"<label for='id" + key + "'>"+ val.label +"</label><br/>");
+		goCheck = '';
+		ii++;
+		});
+
+		choiceContainer.find("input").click(plotAccordingToChoices);
+
+		function plotAccordingToChoices() {
+
+			var data = [];
+
+			choiceContainer.find("input:checked").each(function () {
+				var key = jQuery(this).attr("name");
+				if (key && datasets[key]) {
+					data.push(datasets[key]);
+				}
+			});
+var i = 0;
+		jQuery.each(datasets, function(key, val) {
+			val.color = i;
+			++i;
+		});
+			if (data.length > 0) {
+				if(jQuery('#go_selection').val() == 0){
+				var minutes = Minutes_limit.limit.split(',');
+				var markings = [
+			{ color: "rgba(255,228,0,.4)", yaxis: {from :minutes[2], to: minutes[3] } },
+			{ color: "rgba(255,103,0,.4)", yaxis: {from: minutes[1], to: minutes[2] } },
+			{ color: "rgba(204,0,0,.4)", yaxis: {from: minutes[0], to: minutes[1] } },
+			{ color: "rgba(70,70,70,.8)", yaxis: {to: minutes[0] } },
+			{ color: "rgba(0,193,0,.4)", yaxis: { from: minutes[3] } },
+		];} else {
+			var markings = '';
+			}
+			var plot = 	jQuery.plot("#placeholder", data, {	
+			xaxis: {
+				tickDecimals: 0,
+				mode : "time",
+				timezone: "browser" ,
+				timeformat: "%m/%d",
+					},
+			legend:{
+				show:false
+				},
+			series: {
+				lines: {
+					show: true,
+					hoverable: true,
+					},
+				points: {
+					show: true
+					}
+			
+				},
+			zoom: {
+				interactive: true
+			},
+			pan: {
+				interactive: true
+			},
+			grid:{
+				markings :markings,
+				hoverable: true,
+				}
+				});
+				
+window.plot = plot;
+		var previousPoint = null;
+		jQuery("#placeholder").bind("plothover", function (event, pos, item) {
+
+				var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+				jQuery("#hoverdata").text(str);
+				if (item) {
+					if (previousPoint != item.dataIndex) {
+						previousPoint = item.dataIndex;
+						jQuery("#tooltip").remove();
+						var x = new Date(parseInt(item.datapoint[0].toFixed(2),10)).toString();
+						y = item.datapoint[1].toFixed(2);
+						showTooltip(item.pageX, item.pageY,
+						item.series.label + " on " + x + " = " + y);
+					}
+				} else {
+					jQuery("#tooltip").remove();
+					previousPoint = null;            
+				}
+			
+		});
+
+		
+				
+				
+			}
+			
+jQuery("<div class='button' style='right:20px;top:20px'>zoom out</div>")
+			.appendTo(jQuery('#placeholder'))
+			.click(function (event) {
+				event.preventDefault();
+				plot.zoomOut();
+			});
+var startData = data;
+		
+}
+plotAccordingToChoices();
+	}
+function highlight_click(box){
+	var key = jQuery(box).attr('key');
+	if(!jQuery(box).hasClass('highlight_box_clicked')){
+		for( var j = 0;j < window.plot.getData().length; j++ ){
+		if(window.plot.getData()[j]['label'] == key){
+		for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
+		window.plot.highlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
+					}}
+		}} else {
+		for( var j = 0;j < window.plot.getData().length; j++ ){
+		if(window.plot.getData()[j]['label'] == key){
+		for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
+		window.plot.unhighlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
+					}}
+		}
+			}
+	jQuery(box).toggleClass("highlight_box_clicked");
+	
+	}
+function showTooltip(x, y, contents) {
+			jQuery("<div id='tooltip'>" + contents + "</div>").css({
+				position: "absolute",
+				display: "none",
+				top: y + 5,
+				left: x + 5,
+				border: "1px solid #fdd",
+				padding: "2px",
+				"background-color": "#fee",
+				opacity: 0.80
+			}).appendTo("body").fadeIn(200);
+		}
+
+function go_update_graph(){
+	jQuery.ajax({
+		type: "post",url: MyAjax.ajaxurl,data: { 
+		action: 'go_clipboard_get_data',
+		go_graph_selection: jQuery('#go_selection').val()
+		},
+		success: function(html){
+			go_graphs(jQuery.parseJSON(html));
+		}
+	});
+	}
+function collectData(){
+	jQuery.ajax({
+		type: "post",url: MyAjax.ajaxurl,data: { 
+		action: 'go_clipboard_collect_data',
+		},
+		success: function(html){
+			go_update_graph();
+		}
+	});
+	}
 function go_clipboard_class_a_choice(){
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
@@ -14,7 +191,6 @@ function go_clipboard_class_a_choice(){
 			 var oTable = jQuery('#go_clipboard_table').dataTable();
 			 oTable.fnDestroy();
 			jQuery('#go_clipboard_table_body').html(html);	
-			
 			  jQuery('#go_clipboard_table').dataTable( {
     "bPaginate": false,
 	  "aaSorting": [[2, "asc" ]]
@@ -38,7 +214,10 @@ function go_clipboard_add(id){
 		time:jQuery('#go_clipboard_time').val(),
 		reason:jQuery('#go_clipboard_reason').val()},
 		success: function(html){
-				
+		jQuery('#go_clipboard_points').val(''),
+		jQuery('#go_clipboard_currency').val(''),
+		jQuery('#go_clipboard_time').val(''),
+		jQuery('#go_clipboard_reason').val('')
 		}
 	});
 	}
