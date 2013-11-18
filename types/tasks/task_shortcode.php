@@ -108,18 +108,21 @@ function go_task_shortcode($atts, $content = null) {
 						echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
 						if ($repeat == 'on') {
 							if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
-								echo '<div id="go_repeat_clicked" style="display:none;">'
-								.do_shortcode(wpautop($repeat_message)).
-								'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;" repeat="on">'
-								.go_return_options('go_repeat_button').
-								'</button>
-								</div>
-								<div id="go_repeat_unclicked">
-								<button onclick="go_repeat_replace();">'
-								.go_return_options('go_repeat_button').
-								'</button>
-								</div>';
+								echo '<div id="repeat_quest">
+										<div id="go_repeat_clicked" style="display:none;">'
+											.do_shortcode(wpautop($repeat_message)).
+											'<button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));" repeat="on">'
+												.go_return_options('go_fourth_stage_button')." Again". 
+											'</button>
+										</div>
+										<div id="go_repeat_unclicked">
+											<button id="go_button" onclick="go_repeat_replace();">'
+												.go_return_options('go_repeat_button').
+											'</button>
+										</div>
+									</div>';
 							}
+							echo '</div>';
 						} else {
 							echo '</div>';
 						}
@@ -129,11 +132,23 @@ function go_task_shortcode($atts, $content = null) {
 ?>
 		
 	<script language="javascript">
+	function go_repeat_hide(target) {
+		// if the lines below are uncommented, make sure that the jQuery calls in the if statement in the task_stage_change() ajax() call are
+		// uncommented as well.  You are looking for the lines that target #repeat_quest.children() and #repeat_quest buttons.
+		// The point is to keep the repeat message around after the button is removed.
+		//jQuery('#repeat_quest button').hide('slow');
+		// otherwise, use the following to create a repeat cycle.
+		jQuery("#repeat_quest").hide('slow');
+		
+		setTimeout(function() {
+			task_stage_change(target);
+		}, 500);
+	}
 	function go_repeat_replace() {
  		jQuery('#go_repeat_unclicked').remove();
 		jQuery('#go_repeat_clicked').show('slow');	 
 	}
-	function task_stage_change(){
+	function task_stage_change(target){
 		var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
 		ajaxurl = '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php';
 		jQuery.ajax({
@@ -149,7 +164,28 @@ function go_task_shortcode($atts, $content = null) {
 				success: function(html){
 					jQuery('#go_content').html(html);
 					jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
-					jQuery("#new_content").show('slow');
+					if (jQuery(target).attr('repeat') == 'on') {
+						// this is the code used to make the repeat button disappear after it goes through one cycle.
+						// The repeat message is still shown even though the buttons are removed.
+						//jQuery("#repeat_quest").children().show();
+						//
+						//jQuery("#repeat_quest").find("button").remove();
+						// if the buttons AND the repeat message need to be removed, use the following instead of the line above.
+						//jQuery("#repeat_quest").remove();				
+						//
+						//jQuery("#go_repeat_unclicked").remove();
+						//
+
+						// this code is part of the code that creates the loop for the repeat quest cycle.
+						// starts off by hiding the #repeat_quest div and then shows it slowly.  The idea is to lessen the jolt
+						// from hiding the #repeat_quest div above.
+						jQuery('#repeat_quest').hide();
+						jQuery('#repeat_quest').show('slow');
+						//
+					} else {
+						jQuery("#new_content").css("display", "none");
+						jQuery("#new_content").show('slow');
+					}
 				}
 		});	
 	}
@@ -195,7 +231,7 @@ function task_change_stage(){
 			$accpt_mssg = $content_post->post_content;
 		}
 		$table_name_go = $wpdb->prefix . "go";
-		$task_count = $wpdb->get_var("select `count` from ".$table_name_go." where uid = $user_id and post_id = $task_id");
+		
 		if($repeat_button != 'on'){
 			$check = (int) $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 			if($check == 0 || $check < ($status)){
@@ -204,19 +240,20 @@ function task_change_stage(){
 		} else {
 			go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  );
 		}
+		$task_count = $wpdb->get_var("select `count` from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 	switch($status) {
 		case 1:
-			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).
+			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
 			' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).
+			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
 			' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_third_stage_button').'</button></div>';
 			break;
 		case 3:
-			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content" style="display: none;">'
+			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content">'
 			.do_shortcode(wpautop($completion_message)).
 			'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_fourth_stage_button').'</button</div>';
@@ -225,14 +262,22 @@ function task_change_stage(){
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
 			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
 			if ($repeat == 'on') {
-				if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
-					echo '<div id="go_repeat_clicked">'
-						.do_shortcode(wpautop($repeat_message)).
-						'<button id="go_button" status="4" style="display:none;" onclick="task_stage_change();this.disabled=true;" repeat="on">'
-						.go_return_options('go_repeat_button').
-						'</button>
+				if ($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
+					echo '<div id="repeat_quest">
+							<div id="go_repeat_clicked" style="display:none;">'
+								.do_shortcode(wpautop($repeat_message)).
+								'<button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));refresh_count();" repeat="on">'
+									.go_return_options('go_fourth_stage_button')." Again".
+								'</button>
+							</div>
+							<div id="go_repeat_unclicked">
+								<button id="go_button" onclick="go_repeat_replace();">'
+									.go_return_options('go_repeat_button').
+								'</button>
+							</div>
 						</div>';
 				}
+				echo '</div>';
 			} else {
 				echo '</div>';
 			}
@@ -240,3 +285,4 @@ function task_change_stage(){
 die();
 }
 ?>
+
