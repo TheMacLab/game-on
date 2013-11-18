@@ -46,24 +46,26 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 		   $currency = $currency * $qty;
 		   if($repeat != 'on' || empty($old_points)){
 			   $wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> -1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id, 'count'=> $qty));
-			   } else {
-				   $wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> (($old_points->count)+$qty)), array('uid'=>$user_id, 'post_id'=>$post_id));
-				   }
+			} else {
+			   $wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> (($old_points->count)+$qty)), array('uid'=>$user_id, 'post_id'=>$post_id));
+			}
 		   
-	   } else {
-if($repeat == 'on'){
-	$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-			$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> ($old_points->count)+1), array('uid'=>$user_id, 'post_id'=>$post_id));
-				 go_return_multiplier($user_id, $points, $currency, $page_id);
-} else {
-	if($status == 0){
-		$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> 1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id));
-					 go_return_multiplier($user_id, $points, $currency, $page_id);
-} else {
-	$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-			$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
-						 go_return_multiplier($user_id, $points, $currency, $page_id);
-}}}
+		} else {
+			if($repeat == 'on'){
+				$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
+				$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> ($old_points->count)+1), array('uid'=>$user_id, 'post_id'=>$post_id));
+				go_return_multiplier($user_id, $points, $currency, $page_id);
+			} else {
+				if($status == 0){
+					$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> 1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id));
+					go_return_multiplier($user_id, $points, $currency, $page_id);
+				} else {
+					$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
+					$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
+					go_return_multiplier($user_id, $points, $currency, $page_id);
+				}
+			}
+		}
 	
 	
 	go_update_totals($user_id,$points,$currency,0);

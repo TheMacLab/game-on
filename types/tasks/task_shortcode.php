@@ -107,7 +107,7 @@ function go_task_shortcode($atts, $content = null) {
 					case 4:  
 						echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
 						if ($repeat == 'on') {
-							if($task_count +1 < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
+							if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 								echo '<div id="repeat_quest">
 										<div id="go_repeat_clicked" style="display:none;">'
 											.do_shortcode(wpautop($repeat_message)).
@@ -122,6 +122,7 @@ function go_task_shortcode($atts, $content = null) {
 										</div>
 									</div>';
 							}
+							echo '</div>';
 						} else {
 							echo '</div>';
 						}
@@ -137,7 +138,7 @@ function go_task_shortcode($atts, $content = null) {
 		// The point is to keep the repeat message around after the button is removed.
 		//jQuery('#repeat_quest button').hide('slow');
 		// otherwise, use the following to create a repeat cycle.
-		jQuery(target).parent().parent().hide('slow');
+		jQuery("#repeat_quest").hide('slow');
 		
 		setTimeout(function() {
 			task_stage_change(target);
@@ -228,7 +229,7 @@ function task_change_stage(){
 			$accpt_mssg = $content_post->post_content;
 		}
 		$table_name_go = $wpdb->prefix . "go";
-		$task_count = $wpdb->get_var("select `count` from ".$table_name_go." where uid = $user_id and post_id = $task_id");
+		
 		if($repeat_button != 'on'){
 			$check = (int) $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 			if($check == 0 || $check < ($status)){
@@ -237,6 +238,7 @@ function task_change_stage(){
 		} else {
 			go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  );
 		}
+		$task_count = $wpdb->get_var("select `count` from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 	switch($status) {
 		case 1:
 			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).
@@ -256,23 +258,24 @@ function task_change_stage(){
 			break;
 		case 4:
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
-			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
+			'<div id="new_content" style="display:none">'.do_shortcode(wpautop($mastery_message));
 			if ($repeat == 'on') {
-				if($task_count +1 < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
+				if ($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 					echo '<div id="repeat_quest">
 							<div id="go_repeat_clicked" style="display:none;">'
 								.do_shortcode(wpautop($repeat_message)).
-								'<button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));" repeat="on">'
+								'<button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));refresh_count();" repeat="on">'
 									.go_return_options('go_fourth_stage_button')." Again".
 								'</button>
 							</div>
 							<div id="go_repeat_unclicked">
 								<button id="go_button" onclick="go_repeat_replace();">'
-								.go_return_options('go_repeat_button').
+									.go_return_options('go_repeat_button').
 								'</button>
 							</div>
 						</div>';
 				}
+				echo '</div>';
 			} else {
 				echo '</div>';
 			}
