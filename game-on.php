@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Author: Semar Yousif, Vincent Astolfi, Ezio Ballarin
 Author URI: http://maclab.guhsd.net/
-Version: 1.0.3
+Version: 1.0.4
 */
 include('go_definitions.php');
 include('types/types.php');
