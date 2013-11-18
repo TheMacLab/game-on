@@ -164,7 +164,6 @@ function go_task_shortcode($atts, $content = null) {
 				success: function(html){
 					jQuery('#go_content').html(html);
 					jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
-					jQuery("#new_content").show('slow');
 					if (jQuery(target).attr('repeat') == 'on') {
 						// this is the code used to make the repeat button disappear after it goes through one cycle.
 						// The repeat message is still shown even though the buttons are removed.
@@ -183,6 +182,9 @@ function go_task_shortcode($atts, $content = null) {
 						jQuery('#repeat_quest').hide();
 						jQuery('#repeat_quest').show('slow');
 						//
+					} else {
+						jQuery("#new_content").css("display", "none");
+						jQuery("#new_content").show('slow');
 					}
 				}
 		});	
@@ -241,24 +243,24 @@ function task_change_stage(){
 		$task_count = $wpdb->get_var("select `count` from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 	switch($status) {
 		case 1:
-			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).
+			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
 			' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="new_content" style="display: none;">'.do_shortcode(wpautop($accpt_mssg, false)).
+			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
 			' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_third_stage_button').'</button></div>';
 			break;
 		case 3:
-			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content" style="display: none;">'
+			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content">'
 			.do_shortcode(wpautop($completion_message)).
 			'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_fourth_stage_button').'</button</div>';
 			break;
 		case 4:
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
-			'<div id="new_content" style="display:none">'.do_shortcode(wpautop($mastery_message));
+			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
 			if ($repeat == 'on') {
 				if ($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 					echo '<div id="repeat_quest">
