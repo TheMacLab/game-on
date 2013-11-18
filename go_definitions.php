@@ -1,1 +1,16 @@
-<?php define("go_tasks_name",'Quest',TRUE);define("go_tasks_plural_name",'Quests',TRUE);define("go_currency_name",'Gold',TRUE);define("go_points_name",'Experience',TRUE);define("go_first_stage_name",'Encountered',TRUE);define("go_second_stage_name",'Accepted',TRUE);define("go_second_stage_button",'Accept',TRUE);define("go_third_stage_name",'Completed',TRUE);define("go_third_stage_button",'Complete Quest',TRUE);define("go_fourth_stage_name",'Mastered',TRUE);define("go_fourth_stage_button",'Master Quest',TRUE);define("go_currency_prefix",'',TRUE);define("go_currency_suffix",'g',TRUE);define("go_points_prefix",'',TRUE);define("go_points_suffix",'XP',TRUE);define("go_admin_bar_add_switch",'Off',TRUE);define("go_repeat_button",'Repeat Quest',TRUE);define("go_class_a_name",'Period',TRUE);define("go_class_b_name",'Computer',TRUE);define("go_multiplier",'',TRUE);define("go_multiplier_switch",'',TRUE);define("go_multiplier_rounding",'',TRUE);define("go_minutes_color_limit",'-900,-600,-300,0',TRUE); ?>
+<?php 
+global $wpdb;
+$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
+$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit');
+foreach($array as $key=>$value){
+$value = trim($value);
+$content = get_option($value);
+if(is_array($content)){
+$content = serialize($content);
+}
+$string .= 'define("'.$value.'",\''.$content.'\',TRUE);';
+}
+
+file_put_contents ( $file_name, '<?php '.$string.' ?>' );
+
+?>
