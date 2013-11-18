@@ -135,11 +135,28 @@ function go_lb_opener(id) {
 				} 
 				jQuery('#go_qty').spinner({
 		
-	max: Math.min(Math.floor(go_cur_currency/go_req_currency),Math.floor(go_cur_points/go_req_points),go_purchase_limit),
-	min: 1
-	
-		
-		});
+					max: Math.min(Math.floor(go_cur_currency/go_req_currency),Math.floor(go_cur_points/go_req_points),go_purchase_limit),
+					min: 1,
+					stop: function(event, ui){
+						jQuery(this).change();
+					}
+				});
+				jQuery('#go_qty').change(function(){
+					var price_raw = jQuery('#golb-fr-price').html();
+					var price_sub = price_raw.substr(price_raw.indexOf(":")+2);
+					var price = price_raw.replace(price_sub, go_req_currency * jQuery(this).val())
+					jQuery('#golb-fr-price').html(price);
+					
+					var points_raw = jQuery('#golb-fr-points').html();
+					var points_sub = points_raw.substr(points_raw.indexOf(":")+2);
+					var points = points_raw.replace(points_sub, go_req_points * jQuery(this).val())
+					jQuery('#golb-fr-points').html(points);
+					
+					var time_raw = jQuery('#golb-fr-time').html();
+					var time_sub = time_raw.substr(time_raw.indexOf(":")+2);
+					var time = time_raw.replace(time_sub, go_req_time * jQuery(this).val())
+					jQuery('#golb-fr-time').html(time);
+				});
   				}, 
             });
 	}
