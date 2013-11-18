@@ -154,7 +154,6 @@ function go_lb_opener(id) {
 					
 					var time_raw = jQuery('#golb-fr-time').html();
 					var time_sub = time_raw.substr(time_raw.indexOf(":")+2);
-					console.log(time_sub);
 					var time = time_raw.replace(time_sub, go_req_time * jQuery(this).val())
 					jQuery('#golb-fr-time').html(time);
 				});
