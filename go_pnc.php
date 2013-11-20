@@ -254,28 +254,28 @@ function go_get_health_bar_color($percent){
 			return ($int>$min && $int<$max);
 		}
 	switch($percent){
-		case($percent >= 80):
-		$color = '#00FF00';//Pure Green
+		case($percent == 100):
+		$color = '#00c100';//Green
+		return $color;
+		break;
+	
+		case rangeCheck($percent, 65.999, 100):
+		$color = '#ffe400';//Yellow
 		return $color;
 		break;
 		
-		case rangeCheck($percent, 59.999, 80):
-		$color = '#FFFF00';//Yellow
+		case rangeCheck($percent, 32.999, 66):
+		$color = '#FF6700';//"Vibrant" Orange
 		return $color;
 		break;
 		
-		case rangeCheck($percent, 39.999, 60):
-		$color = '#FF6600';//"Vibrant" Orange
+		case rangeCheck($percent, 0.001, 33):
+		$color = '#cc0000';//Red
 		return $color;
 		break;
 		
-		case rangeCheck($percent, 19.999, 40):
-		$color = '#CB6D51';//Light Red
-		return $color;
-		break;
-		
-		case ($percent < 20):
-		$color = '#FF0000';//Pure Red
+		case ($percent <= 0):
+		$color = '#464646';//Same color as admin bar background
 		return $color;
 		break;
 	}	

@@ -21,6 +21,7 @@ function go_admin_bar(){
 	if($dom <= 0){ $dom = 1;}
 	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
+	if($current_user_infractions == $current_max_infractions){$htpt_color = '#464646';}
 	
 	
 	
@@ -33,22 +34,6 @@ function go_admin_bar(){
 			'href' => '#',
 			'id' => 'go_info',
 		));
-	if (!is_admin_bar_showing() || !is_user_logged_in() )
-		return;
-		$wp_admin_bar->add_menu( array(
-			'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_hitpoint_bar_border"><div id="points_needed_to_level_up">'.($current_user_infractions).'/'.($current_max_infractions).' '.'('.$hitpoints.'%)'.'</div><div id="go_admin_bar_progress_bar" style="width: '.$hitpoints.'%; background-color: '.$htpt_color.' ;"></div></div></div>',
-			'href' => '#',
-			'parent' => 'go_info',
-		));
-	if (!is_admin_bar_showing() || !is_user_logged_in() )
-		return;
-		$wp_admin_bar->add_menu( array(
-		'title' => '<div id="go_admin_bar_infractions">Hitpoints:'.$hitpoints.'%</div>',
-		'href' => '#',
-		'parent' => 'go_info',
-	));
-	
-	
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
@@ -77,6 +62,13 @@ function go_admin_bar(){
 		return;
 		$wp_admin_bar->add_menu( array(
 		'title' => '<div id="go_admin_bar_minutes">Minutes: '.$current_minutes.'</div>',
+		'href' => '#',
+		'parent' => 'go_info',
+	));
+	if (!is_admin_bar_showing() || !is_user_logged_in() )
+	return;
+	$wp_admin_bar->add_menu( array(
+		'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_hitpoint_bar_border"><div id="points_needed_to_level_up">'.go_return_options('go_infractions_name').': '.$current_user_infractions.'/'.$current_max_infractions.' </div><div id="go_admin_bar_progress_bar" style="width:100%; background-color: '.$htpt_color.' ;"></div></div></div>',
 		'href' => '#',
 		'parent' => 'go_info',
 	));

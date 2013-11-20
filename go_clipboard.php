@@ -48,7 +48,7 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
 <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 <th class="header" style="width:8%;"><a href="#">Minutes</a></th>
 <th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
-<th class="header" style="width:13%;"><a href="#" >Infractions (Max: <?php echo $current_max_infractions; ?>)</a></th>
+<th class="header" style="width:13%;"><a href="#" ><?php echo go_return_options('go_infractions_name'); ?> (Max: <?php echo $current_max_infractions; ?>)</a></th>
 <th class="header" style="width:9%;"><a href="#"><?php echo go_return_options('go_first_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_second_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_third_stage_name'); ?></a></th>  
