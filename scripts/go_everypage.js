@@ -158,9 +158,11 @@ jQuery('#go_stats_minutes').html(html);
 	
 	}
 function go_stats_leaderboard_choice(){
-	 var values = jQuery("#go_stats_class_a_choice li")
-              .map(function(){return jQuery(this).text();}).get();
-		jQuery.ajax({
+	var values = []
+	jQuery('#go_stats_class_a_list :checked').each(function() {
+		values.push(jQuery(this).val());
+	});
+	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
 		action: 'go_stats_leaderboard',
 		class_a_choice: values,

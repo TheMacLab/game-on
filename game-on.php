@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Author: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 0.0.1.4
+Version: 1.0.5
 */
 include('go_definitions.php');
 include('types/types.php');
@@ -22,6 +22,8 @@ include('go_stats.php');
 include('go_clipboard.php');
 include('go_open_badge.php');
 include('badge_designer.php');
+include('go_shortcodes.php');
+include('go_comments.php');
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
@@ -67,6 +69,10 @@ add_action('wp_ajax_go_stats_currency','go_stats_currency');
 add_action('wp_ajax_go_stats_minutes','go_stats_minutes');
 add_action('wp_ajax_go_presets_reset','go_presets_reset'); 
 add_action('wp_ajax_go_presets_save','go_presets_save');
+add_action('wp_ajax_listurl', 'listurl');
+add_action('wp_ajax_nopriv_listurl', 'listurl');
+add_action('wp_ajax_go_clipboard_collect_data', 'go_clipboard_collect_data');
+add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');
@@ -78,6 +84,8 @@ add_action('go_display_currency','go_display_currency');
 add_action('go_return_options','go_return_options');
 add_action('go_update_globals','go_update_globals');
 add_action('barColor','barColor');
+add_action('go_return_multiplier','go_return_multiplier');
+add_filter('get_comment_author', 'go_display_comment_author_points');
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);

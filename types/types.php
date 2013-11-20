@@ -28,7 +28,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'desc' => 'Insert this shortcode where you want the task to appear',
 				'type' => 'go_shortcode'
 			),
-		
+			
 			array(
 				'name' => 'Required Rank',
 				'desc' => 'rank required to begin '.go_return_options('go_tasks_name'),
@@ -41,7 +41,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'id'   => 'go_presets',
 				'desc'=> '',
 				'type' => 'go_presets',
-				
+			),
+			array(
+				'name' => 'Time Filter (Optional)',
+				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes)',
+				'id' => $prefix . 'time_filter',
+				'type' => 'text'
 			),
 			array(
 				'name' => 'Points',
@@ -112,11 +117,18 @@ function go_mta_con_meta( array $meta_boxes ) {
 							),
 						
 				),
-				array(
+			array(
+				'name' => 'Allowed Repeatable Times (Optional)',
+				'desc' => 'Enter a numerical value to set a hard limit to the amount of times a user can repeat a task.<br/> Leave blank if no limit.',
+				'id' => $prefix.'repeat_amount',
+				'type' => 'text'
+				),
+			array(
 				'name' => 'Shortcode',
 				'desc' => 'Insert this shortcode where you want the task to appear',
 				'type' => 'go_shortcode'
-			),
+				),
+			
 			),
 		);
 	// Store Meta Boxes
@@ -129,33 +141,54 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
+				'name' => 'Penalty Switch',
+				'desc' => 'Allow user\'s currency to go negative when purchasing this item',
+				'id' => $prefix . 'penalty_switch',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Time Filter (Optional)',
+				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes)',
+				'id' => $prefix . 'store_time_filter',
+				'type' => 'text'
+			),
+			array(
 				'name' => 'Required Rank',
-				'desc' => 'rank required to purchase the item',
+				'desc' => 'Rank required to purchase the item',
 				'id'   => $prefix . 'store_rank',
 				'type' => 'select',
 				'options' => go_get_all_ranks()
 			),
 			array(
 				'name' => 'Currency',
-				'desc' => 'currency required to purchase the item',
+				'desc' => 'Currency required to purchase the item',
 				'id'   => $prefix . 'store_currency',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Points',
-				'desc' => 'points required to purchase item',
+				'desc' => 'Points required to purchase item',
 				'id'   => $prefix . 'store_points',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Time',
-				'desc' => 'time required to purchase item',
+				'desc' => 'Time required to purchase item',
 				'id'   => $prefix . 'store_time',
 				'type' => 'text',
 			),
-			
-				
-				
+			array(
+				'name' => 'Item URL (Optional)',
+				'desc' => 'URL to be displayed when the item is purchased. Leave blank if you don\'t need a link.',
+				'id' => $prefix . 'store_itemURL',
+				'type' => 'text'	
+			),
+			array(
+				'name' => 'Allowed Repeatable Times (Optional)',
+				'desc' => 'Enter a numerical value to set a hard limit to the amount of times a user can repeat a task.<br/> Leave blank if no limit.',
+				'id' => $prefix.'store_repeat_amount',
+				'type' => 'text'
+			),
 		),
 	);
 	return $meta_boxes;

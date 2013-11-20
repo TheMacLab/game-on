@@ -114,7 +114,7 @@ if(go_return_options('go_admin_bar_add_switch') != 'Off'){
 if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
-		'title' => '<div onclick="go_admin_bar_stats_page_button();">Stats Page</div><div id="go_stats_page"></div>',
+		'title' => '<div onclick="go_admin_bar_stats_page_button();">Stats</div><div id="go_stats_page"></div>',
 		'href' => '#',
 		'id' => 'go_stats',
 	));

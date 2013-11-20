@@ -13,7 +13,7 @@ function go_table_individual() {
   status INT,
   post_id INT,
   page_id INT,
-  count INT,
+  count INT DEFAULT 0,
   points INT,
   currency INT,
   infractions INT,	 
@@ -92,24 +92,28 @@ global $default_role;
 	'go_second_stage_name' => 'Accepted',
 	'go_third_stage_name' => 'Completed',
 	'go_fourth_stage_name' => 'Mastered',
-	'go_second_stage_button' => 'Accept',
-	'go_third_stage_button' => 'Complete',
-	'go_fourth_stage_button' => 'Master',
-	'go_currency_prefix' => '$',
-	'go_currency_suffix' => '',
+	'go_second_stage_button' => 'Accept Quest',
+	'go_third_stage_button' => 'Complete Quest',
+	'go_fourth_stage_button' => 'Master Quest',
+	'go_currency_prefix' => '',
+	'go_currency_suffix' => 'g',
 	'go_points_prefix' => '',
 	'go_points_suffix' => 'XP',
-	'go_currency_name' => 'Dollars',
-	'go_points_name' => 'Points',
-	'go_admin_bar_add_switch' => 'On',
-	'go_repeat_button' => 'Repeat',
+	'go_currency_name' => 'Gold',
+	'go_points_name' => 'Experience',
+	'go_admin_bar_add_switch' => 'Off',
+	'go_repeat_button' => 'Repeat Quest',
 	'go_class_a_name' => 'Period',
 	'go_class_b_name' => 'Computer',
-	'go_class_a' => array('Period 1', 'Period 2', 'Period 3'),
-	'go_class_b' => array('Computer 1', 'Computer 2', 'Computer 3'),
+	'go_class_a' => array('Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5', 'Period 6', 'Period 7'),
+	'go_class_b' => array('Computer 01', 'Computer 02', 'Computer 03', 'Computer 04', 'Computer 05', 'Computer 06', 'Computer 07', 'Computer 08', 'Computer 09', 'Computer 10', 'Computer 11', 'Computer 12', 'Computer 13', 'Computer 14', 'Computer 15', 'Computer 16', 'Computer 17', 'Computer 18', 'Computer 19', 'Computer 20', 'Computer 21', 'Computer 22', 'Computer 23', 'Computer 24', 'Computer 25', 'Computer 26', 'Computer 27', 'Computer 28', 'Computer 29', 'Computer 30', 'Computer 31', 'Computer 32', 'Computer 33', 'Computer 34', 'Computer 35', 'Computer 36', 'Computer 37', 'Computer 38', 'Computer 39', 'Computer 40', 'Computer 41', 'Computer 42', 'Computer 43', 'Computer 44'),
 	'go_tasks_name'=>'Quest',
 	'go_tasks_plural_name'=>'Quests',
-	'go_max_infractions'=>'3'
+	'go_max_infractions'=>'3',
+	'go_multiplier'=>'a:9:{i:0;s:14:"-40,-9000,-901";i:1;s:13:"-30,-900,-601";i:2;s:13:"-20,-600,-301";i:3;s:11:"-10,-300,-1";i:4;s:10:"10,301,600";i:5;s:10:"20,601,900";i:6;s:11:"30,901,1200";i:7;s:12:"40,1201,1500";i:8;s:13:"50,1501,90000";}',
+	'go_multiplier_switch'=>'Off',
+	'go_multiplier_rounding'=>'a:9:{i:0;s:1:"3";i:1;s:1:"3";i:2;s:1:"3";i:3;s:1:"3";i:4;s:1:"2";i:5;s:1:"2";i:6;s:1:"2";i:7;s:1:"2";i:8;s:1:"2";}',
+	'go_minutes_color_limit'=>'-900,-600,-300,0'
 	);
 	foreach($options_array as $key => $value){
 		 add_option( $key, $value );
@@ -145,7 +149,7 @@ AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')");
 		update_user_meta($uids, 'go_badges', array());
 }					
 $rank_check =	get_user_meta($uids, 'go_rank');
- if(empty($rank_check)){ 
+ if(empty($rank_check) || $rank_check == ''){ 
  $ranks = get_option('go_ranks', false);
  $current_points = go_return_points($uids);
  while($current_points >= current($ranks)){
@@ -172,7 +176,7 @@ function go_user_registration($user_id) {
  $table_name_user_meta = $wpdb->prefix . "usermeta";
  $role = get_option('go_role','subscriber');
  $user_role = get_user_meta($user_id,'wp_capabilities', true);
- if(array_search(1, $user_role) == $role || $user_role == 'administrator'){
+ if(array_search(1, $user_role) == $role || array_search(1, $user_role) == 'administrator'){
  	$ranks = get_option('go_ranks');
 		$current_rank_points = current($ranks);
 		$current_rank = array_search($current_rank, $ranks);

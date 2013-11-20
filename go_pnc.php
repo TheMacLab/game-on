@@ -47,21 +47,26 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 		   $currency = $currency * $qty;
 		   if($repeat != 'on' || empty($old_points)){
 			   $wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> -1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id, 'count'=> $qty));
-			   } else {
-				   $wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> (($old_points->count)+$qty)), array('uid'=>$user_id, 'post_id'=>$post_id));
-				   }
+			} else {
+			   $wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> (($old_points->count)+$qty)), array('uid'=>$user_id, 'post_id'=>$post_id));
+			}
 		   
-	   } else {
-if($repeat == 'on'){
-	$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-			$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> ($old_points->count)+1), array('uid'=>$user_id, 'post_id'=>$post_id));
-	} else {
-	if($status == 0){
-		$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> 1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id));
 		} else {
-	$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-			$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
-			}}}
+			if($repeat == 'on'){
+				$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
+				$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> ($old_points->count)+1), array('uid'=>$user_id, 'post_id'=>$post_id));
+				go_return_multiplier($user_id, $points, $currency, $page_id);
+			} else {
+				if($status == 0){
+					$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> 1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id));
+					go_return_multiplier($user_id, $points, $currency, $page_id);
+				} else {
+					$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
+					$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
+					go_return_multiplier($user_id, $points, $currency, $page_id);
+				}
+			}
+		}
 	
 	
 	go_update_totals($user_id,$points,$currency,0);
@@ -284,10 +289,18 @@ return get_option($option);
 }
 	function barColor($current_minutes){
 		$color = '#00c100';
-		function inRange($int, $min, $max){
+	/*	function inRange($int, $min, $max){
 			return ($int>$min && $int<$max);
-		}
-		switch ($current_minutes){
+		} */
+		$color= array('#464646', '#cc0000', '#ff6700', '#ffe400', '#00c100');
+		$limit = go_return_options('go_minutes_color_limit');
+		$limit_array = explode(',',$limit);
+		$limit_array[] = PHP_INT_MAX;
+		while($current_minutes >= current($limit_array) ){
+			next($limit_array);
+			next($color);
+			}
+	/*	switch ($current_minutes){
 			case inRange($current_minutes, 0, PHP_INT_MAX):
 				$color = '#00c100';
 				return $color; 
@@ -308,7 +321,41 @@ return get_option($option);
 				$color = '#464646';
 				return $color;
 				break;
-		}
-		return $color;
+		} */
+		
+		return current($color);
 	}
+function go_return_multiplier($user_id, $points, $currency, $post_id){
+if(go_return_options('go_multiplier_switch') == 'On'){
+	$limit = go_return_options('go_multiplier');
+	$rounding_array = go_return_options('go_multiplier_rounding');
+	$limit = unserialize($limit);
+	$rounding_array = unserialize($rounding_array);
+	$minutes = go_return_minutes($user_id);
+	foreach($limit as $key=>$value){
+		$array = explode(',',$value);
+		if($array[2] >= $minutes && $minutes >= $array[1]){
+			$multiplier = $array[0];
+			$rounding_key = $key;
+			}
+		}
+	
+	}else{
+		$multiplier = 0;
+		}
+		$points = $points* $multiplier/100;
+		$currency = $currency* $multiplier/100;
+		$rounding = $rounding_array[$rounding_key];
+	if($rounding == 1){
+		$points = round($points);
+		$currency = round($currency);
+		}else if($rounding == 2){
+			$points = ceil($points);
+			$currency = ceil($currency);
+			}else if($rounding == 3){
+				$points = floor($points);
+				$currency = floor($currency);
+				}
+				go_add_currency($user_id, get_the_title($post_id).' Bonus', 5, $points, $currency, false);
+}
 ?>
