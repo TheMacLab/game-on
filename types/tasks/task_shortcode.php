@@ -95,12 +95,12 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Accepted
 					case 2: 
-						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div>';
+						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div> <button id="go_back_button" onclick="task_back_stage(2);this.disabled=true;">Undo</button>';
 					break;
 					
 					// Completed
 					case 3: 
-						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div>';
+						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div> <button id="go_back_button" onclick="task_back_stage(3);this.disabled=true;">Undo</button>';
 					break;
 					
 					// Mastered
@@ -124,7 +124,7 @@ function go_task_shortcode($atts, $content = null) {
 							}
 							echo '</div>';
 						} else {
-							echo '</div>';
+							echo '</div><button id="go_back_button" onclick="task_back_stage(4);">Undo</button>';
 						}
 				}
 			}
@@ -156,8 +156,8 @@ function go_task_shortcode($atts, $content = null) {
 			url: ajaxurl,
 			data: { 
 				action: 'task_change_stage', 
-				post_id: <?php echo $id ?>, 
-				user_id: <?php echo $user_ID ?>, 
+				post_id: <?php echo $id; ?>, 
+				user_id: <?php echo $user_ID; ?>, 
 				status: jQuery('#go_button').attr('status'),
 				repeat: jQuery('#go_button').attr('repeat'),
 				page_id: <?php echo get_the_ID(); ?>,},
@@ -188,6 +188,48 @@ function go_task_shortcode($atts, $content = null) {
 					}
 				}
 		});	
+	}
+	function task_back_stage(target){
+		var color = jQuery('#go_admin_bar_progress_bar').css('background-color');
+		ajaxurl = '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php';
+		jQuery.ajax({
+			type: 'POST',
+			url: ajaxurl,
+			data:{
+				action: 'task_back_stage',
+				post_id: <?php echo $id; ?>,
+				user_id: <?php echo $user_ID; ?>,
+				status: target,
+				repeat: jQuery('#go_button').attr('repeat'),
+				points: JSON.stringify(<?php echo json_encode($points_array); ?>),
+				currency: JSON.stringify(<?php echo json_encode($currency_array); ?>),
+				page_id: <?php echo get_the_ID(); ?>
+			},
+			success: function(){
+				if(jQuery('#new_content p').length){
+					jQuery('#new_content p').remove();
+				} else if (jQuery('#go_content').length){
+					jQuery('#go_content p:last').hide('slow');
+				}
+				jQuery('#go_button').attr('status', target);
+				switch(target){
+					case 2: 
+						jQuery('#go_button').html('<?php echo go_return_options('go_second_stage_button');?>');
+						jQuery('#go_back_button').remove();
+						break;
+					case 3: 
+						jQuery('#go_button').html('<?php echo go_return_options('go_third_stage_button');?>');
+						jQuery('#go_back_button').attr('onclick', 'task_back_stage(2)');
+						break;
+					case 4:
+						if (jQuery('#go_content').length){
+							jQuery('#go_content p:last').after('<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;"><?php echo go_return_options('go_fourth_stage_button');?></button>');
+						}
+						jQuery('#go_back_button').attr('onclick', 'task_back_stage(3)');
+						break;
+				}
+			}
+		});
 	}
 	</script>
 		
@@ -250,13 +292,13 @@ function task_change_stage(){
 		case 2:
 			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
 			' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
-			.go_return_options('go_third_stage_button').'</button></div>';
+			.go_return_options('go_third_stage_button').'</button></div><button id="go_back_button" onclick="task_back_stage(2);">Undo</button>';
 			break;
 		case 3:
 			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content">'
 			.do_shortcode(wpautop($completion_message)).
 			'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'
-			.go_return_options('go_fourth_stage_button').'</button</div>';
+			.go_return_options('go_fourth_stage_button').'</button></div> <button id="go_back_button" onclick="task_back_stage(3);">Undo</button>';
 			break;
 		case 4:
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
@@ -279,9 +321,27 @@ function task_change_stage(){
 				}
 				echo '</div>';
 			} else {
-				echo '</div>';
+				echo '</div><button id="go_back_button" onclick="task_back_stage(4);">Undo</button>';
 			}
 	}
 die();
+}
+
+function task_back_stage(){
+	global $wpdb;	
+	$uid = $_POST['user_id'];
+	$post_id = $_POST['post_id'];
+	$status = $_POST['status'] - 1;
+	$page_id = $_POST['page_id'];
+	$repeat_button = $_POST['repeat'];
+	$points = json_decode(stripslashes($_POST['points']), true);
+	$currency = json_decode(stripslashes($_POST['currency']), true);
+	$new_points = $points[$status];
+	$new_currency = $currency[$status];
+	$totalpoints = go_return_points($uid);
+	$p = $totalpoints + $new_points;
+	
+	go_update_admin_bar('points',go_return_options('go_points_name'),$p);
+	go_add_post($uid, $post_id, $status, -$new_points, -$new_currency, $page_id, $repeat_button);
 }
 ?>
