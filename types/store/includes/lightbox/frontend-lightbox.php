@@ -23,9 +23,23 @@ function go_the_lb_ajax(){
 	if(isset($custom_fields['go_mta_penalty_switch'])){
 		$penalty = true;
 	}
-	$req_currency = $custom_fields['go_mta_store_currency'][0];
-	$req_points = $custom_fields['go_mta_store_points'][0];
-	$req_time = $custom_fields['go_mta_store_time'][0];
+	
+	if($custom_fields['go_mta_store_currency'][0]){
+		$req_currency = $custom_fields['go_mta_store_currency'][0];
+	}else {
+		$req_currency = 0;
+	}
+	if($custom_fields['go_mta_store_points'][0]){
+		$req_points = $custom_fields['go_mta_store_points'][0];
+	}else{
+		$req_points = 0;	
+	}
+	if($custom_fields['go_mta_store_time'][0]){
+		$req_time = $custom_fields['go_mta_store_time'][0];
+	}else{
+		$req_time = 0;	
+	}
+
 	
 	if($custom_fields['go_mta_store_time_filter'][0]){
 		$minutes_required = $custom_fields['go_mta_store_time_filter'][0];	
@@ -57,7 +71,7 @@ function go_the_lb_ajax(){
 		if($user_time>=$minutes_required || !$minutes_required){ 
 	?>
         <div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_gold; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
-        <div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
+        <div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
         <div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_time; ?>">Time: <?php echo $req_time; ?></div>
         <div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;height: 30px;font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
         <!--<div id="golb-fr-recipient" class="golb-fr-boxes-<?php //echo $buy_color; ?>"><input id="go_recipient" type="text"/></div>!-->
