@@ -77,8 +77,8 @@ function go_task_shortcode($atts, $content = null) {
 						go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], get_the_ID());
 						
 	?>
-					<div id="go_content"> <br />
-					<button id="go_button" status="2" onclick="task_stage_change();"><?= go_return_options('go_second_stage_button') ?></button>
+					<div id="go_content">
+					<button id="go_button" status="2" onclick="task_stage_change(jQuery(this));"><?= go_return_options('go_second_stage_button') ?></button>
 					</div>
 					
 	<?php			
@@ -87,20 +87,20 @@ function go_task_shortcode($atts, $content = null) {
 					// Encountered
 					case 1: 
 	?>
-					<div id="go_content"> <br />
-					<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
+					<div id="go_content">
+					<button id="go_button" status= "2" onclick="task_stage_change(jQuery(this));this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
 					</div>   
 	<?php
 					break;
 					
 					// Accepted
 					case 2: 
-						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div> <button id="go_back_button" onclick="task_back_stage(2);this.disabled=true;">Undo</button>';
+						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'<button id="go_button" status="3" onclick="task_stage_change(jQuery(this));this.disabled=true;">'.go_return_options('go_third_stage_button').'</button></div> <button id="go_back_button" onclick="task_stage_change(jQuery(this));this.disabled=true;" undo="true">Undo</button>';
 					break;
 					
 					// Completed
 					case 3: 
-						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div> <button id="go_back_button" onclick="task_back_stage(3);this.disabled=true;">Undo</button>';
+						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).''.do_shortcode(wpautop($completion_message)).'<button id="go_button" status="4" onclick="task_stage_change(jQuery(this));this.disabled=true;">'.go_return_options('go_fourth_stage_button').'</button></div> <button id="go_back_button" onclick="task_stage_change(jQuery(this));this.disabled=true;" undo="true">Undo</button>';
 					break;
 					
 					// Mastered
@@ -124,7 +124,7 @@ function go_task_shortcode($atts, $content = null) {
 							}
 							echo '</div>';
 						} else {
-							echo '</div><button id="go_back_button" onclick="task_back_stage(4);">Undo</button>';
+							echo '</div>';
 						}
 				}
 			}
@@ -160,76 +160,52 @@ function go_task_shortcode($atts, $content = null) {
 				user_id: <?php echo $user_ID; ?>, 
 				status: jQuery('#go_button').attr('status'),
 				repeat: jQuery('#go_button').attr('repeat'),
+				undo: jQuery(target).attr('undo'),
 				page_id: <?php echo get_the_ID(); ?>,},
 				success: function(html){
-					jQuery('#go_content').html(html);
-					jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
-					if (jQuery(target).attr('repeat') == 'on') {
-						// this is the code used to make the repeat button disappear after it goes through one cycle.
-						// The repeat message is still shown even though the buttons are removed.
-						//jQuery("#repeat_quest").children().show();
-						//
-						//jQuery("#repeat_quest").find("button").remove();
-						// if the buttons AND the repeat message need to be removed, use the following instead of the line above.
-						//jQuery("#repeat_quest").remove();				
-						//
-						//jQuery("#go_repeat_unclicked").remove();
-						//
+					jQuery("#go_back_button").remove();
+					if (!jQuery(target).is("#go_back_button")) {
+						jQuery('#go_content').html(html);
+						jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
+						if (jQuery(target).attr('repeat') == 'on') {
+							// this is the code used to make the repeat button disappear after it goes through one cycle.
+							// The repeat message is still shown even though the buttons are removed.
+							//jQuery("#repeat_quest").children().show();
+							//
+							//jQuery("#repeat_quest").find("button").remove();
+							// if the buttons AND the repeat message need to be removed, use the following instead of the line above.
+							//jQuery("#repeat_quest").remove();				
+							//
+							//jQuery("#go_repeat_unclicked").remove();
+							//
 
-						// this code is part of the code that creates the loop for the repeat quest cycle.
-						// starts off by hiding the #repeat_quest div and then shows it slowly.  The idea is to lessen the jolt
-						// from hiding the #repeat_quest div above.
-						jQuery('#repeat_quest').hide();
-						jQuery('#repeat_quest').show('slow');
-						//
+							// this code is part of the code that creates the loop for the repeat quest cycle.
+							// starts off by hiding the #repeat_quest div and then shows it slowly.  The idea is to lessen the jolt
+							// from hiding the #repeat_quest div above.
+							jQuery('#repeat_quest').hide();
+							jQuery('#repeat_quest').show('slow');
+							//
+						} else {
+							jQuery("#go_back_button").show('slow');
+							jQuery("#new_content").css("display", "none");
+							jQuery("#new_content").show('slow');
+						}
 					} else {
-						jQuery("#new_content").css("display", "none");
-						jQuery("#new_content").show('slow');
+						jQuery('#go_content').html(html);
+						jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
+						
+						// if the status is complete or higher show all the children of the #new_content div.
+						if (jQuery("#go_button").attr("status") >= 3) {
+							// removing the following line will make #go_button jump up to the previous stage when the undo button is hit.
+							jQuery("#prev_content").hide('slow');
+							// removing this line instead of the one above will hide all of #new_content when the undo button is hit.
+							jQuery("#new_content").children().show("slow");
+						} else {
+							jQuery("#prev_content").hide('slow');	
+						}
 					}
 				}
 		});	
-	}
-	function task_back_stage(target){
-		var color = jQuery('#go_admin_bar_progress_bar').css('background-color');
-		ajaxurl = '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php';
-		jQuery.ajax({
-			type: 'POST',
-			url: ajaxurl,
-			data:{
-				action: 'task_back_stage',
-				post_id: <?php echo $id; ?>,
-				user_id: <?php echo $user_ID; ?>,
-				status: target,
-				repeat: jQuery('#go_button').attr('repeat'),
-				points: JSON.stringify(<?php echo json_encode($points_array); ?>),
-				currency: JSON.stringify(<?php echo json_encode($currency_array); ?>),
-				page_id: <?php echo get_the_ID(); ?>
-			},
-			success: function(){
-				if(jQuery('#new_content p').length){
-					jQuery('#new_content p').remove();
-				} else if (jQuery('#go_content').length){
-					jQuery('#go_content p:last').hide('slow');
-				}
-				jQuery('#go_button').attr('status', target);
-				switch(target){
-					case 2: 
-						jQuery('#go_button').html('<?php echo go_return_options('go_second_stage_button');?>');
-						jQuery('#go_back_button').remove();
-						break;
-					case 3: 
-						jQuery('#go_button').html('<?php echo go_return_options('go_third_stage_button');?>');
-						jQuery('#go_back_button').attr('onclick', 'task_back_stage(2)');
-						break;
-					case 4:
-						if (jQuery('#go_content').length){
-							jQuery('#go_content p:last').after('<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;"><?php echo go_return_options('go_fourth_stage_button');?></button>');
-						}
-						jQuery('#go_back_button').attr('onclick', 'task_back_stage(3)');
-						break;
-				}
-			}
-		});
 	}
 	</script>
 		
@@ -248,6 +224,7 @@ function task_change_stage(){
 	$status = $_POST['status'];
 	$page_id = $_POST['page_id'];
 	$repeat_button = $_POST['repeat'];
+	$undo = $_POST['undo'];
 		$custom_fields = get_post_custom($task_id); // Just gathering some data about this task with its post id
 		$req_rank = $custom_fields['go_mta_req_rank'][0]; // Required Rank to accept Task
 		$task_currency = $custom_fields['go_mta_task_currency'][0]; // Currency granted after each stage of task
@@ -277,28 +254,34 @@ function task_change_stage(){
 		if($repeat_button != 'on'){
 			$check = (int) $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 			if($check == 0 || $check < ($status)){
-				go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  ); 
+				if ($undo == "true" || $undo == true) {
+					go_update_admin_bar('points',go_return_options('go_points_name'),$p);
+					go_add_post($user_id, $task_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button  );
+				} else {
+					go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  ); 
+				}
 			}
 		} else {
 			go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button  );
 		}
 		$task_count = $wpdb->get_var("select `count` from ".$table_name_go." where uid = $user_id and post_id = $task_id");
+		$status = $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 	switch($status) {
 		case 1:
-			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
-			' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'
+			echo '<div id="new_content"><div id="prev_content">'.do_shortcode(wpautop($accpt_mssg, false)).
+			'</div><button id="go_button" status="2" onclick="task_stage_change(jQuery(this));this.disabled=true;">'
 			.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
-			' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
-			.go_return_options('go_third_stage_button').'</button></div><button id="go_back_button" onclick="task_back_stage(2);">Undo</button>';
+			echo '<div id="new_content"><div id="prev_content">'.do_shortcode(wpautop($accpt_mssg, false)).
+			'</div><button id="go_button" status="3" onclick="task_stage_change(jQuery(this));this.disabled=true;">'
+			.go_return_options('go_third_stage_button').'</button></div><button id="go_back_button" onclick="task_stage_change(jQuery(this));this.disabled=true;" undo="true">Undo</button>';
 			break;
 		case 3:
-			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content">'
+			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content"><div id="prev_content">'
 			.do_shortcode(wpautop($completion_message)).
-			'<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'
-			.go_return_options('go_fourth_stage_button').'</button></div> <button id="go_back_button" onclick="task_back_stage(3);">Undo</button>';
+			'</div><button id="go_button" status="4" onclick="task_stage_change(jQuery(this));this.disabled=true;">'
+			.go_return_options('go_fourth_stage_button').'</button></div> <button id="go_back_button" onclick="task_stage_change(jQuery(this));this.disabled=true;" undo="true">Undo</button>';
 			break;
 		case 4:
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
@@ -321,27 +304,9 @@ function task_change_stage(){
 				}
 				echo '</div>';
 			} else {
-				echo '</div><button id="go_back_button" onclick="task_back_stage(4);">Undo</button>';
+				echo '</div>';
 			}
 	}
 die();
-}
-
-function task_back_stage(){
-	global $wpdb;	
-	$uid = $_POST['user_id'];
-	$post_id = $_POST['post_id'];
-	$status = $_POST['status'] - 1;
-	$page_id = $_POST['page_id'];
-	$repeat_button = $_POST['repeat'];
-	$points = json_decode(stripslashes($_POST['points']), true);
-	$currency = json_decode(stripslashes($_POST['currency']), true);
-	$new_points = $points[$status];
-	$new_currency = $currency[$status];
-	$totalpoints = go_return_points($uid);
-	$p = $totalpoints + $new_points;
-	
-	go_update_admin_bar('points',go_return_options('go_points_name'),$p);
-	go_add_post($uid, $post_id, $status, -$new_points, -$new_currency, $page_id, $repeat_button);
 }
 ?>
