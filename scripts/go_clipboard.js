@@ -212,12 +212,14 @@ function go_clipboard_add(id){
 		points:jQuery('#go_clipboard_points').val(),
 		currency:jQuery('#go_clipboard_currency').val(),
 		time:jQuery('#go_clipboard_time').val(),
-		reason:jQuery('#go_clipboard_reason').val()},
+		reason:jQuery('#go_clipboard_reason').val(),
+		infractions:jQuery('#go_clipboard_infractions').val()},
 		success: function(html){
 		jQuery('#go_clipboard_points').val(''),
 		jQuery('#go_clipboard_currency').val(''),
 		jQuery('#go_clipboard_time').val(''),
-		jQuery('#go_clipboard_reason').val('')
+		jQuery('#go_clipboard_reason').val(''),
+		jQuery('#go_clipboard_infractions').val('')
 		}
 	});
 	}

@@ -2,9 +2,10 @@
 /*
 Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
-Author: Semar Yousif, Vincent Astolfi, Ezio Ballarin
+Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin
+Contributors: Forest Hoffman, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.0.5
+Version: 1.1.0
 */
 include('go_definitions.php');
 include('types/types.php');
@@ -95,7 +96,7 @@ function go_tsk_actv_redirect() {
         delete_option('go_tsk_actv_do_activation_redirect');
         if(!isset($_GET['activate-multi']))
         {
-            wp_redirect("admin.php?page=game-on-options.php");
+            wp_redirect("admin.php?page=game-on-options.php&settings-updated=true");
         }
     }
 }

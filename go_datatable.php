@@ -13,9 +13,10 @@ function go_table_individual() {
   status INT,
   post_id INT,
   page_id INT,
-  count INT DEFAULT 0,
+  count INT,
   points INT,
   currency INT,
+  infractions INT,	 
   minutes VARCHAR (200),
   reason VARCHAR (200),
   UNIQUE KEY  id (id)
@@ -41,6 +42,7 @@ function go_table_totals() {
   currency  INT,
   points  INT,
   minutes  VARCHAR (200),
+  infractions INT,
   UNIQUE KEY  id (id)
     );";
 
@@ -109,6 +111,8 @@ global $default_role;
 	'go_tasks_plural_name'=>'Quests',
 	'go_multiplier'=>'a:9:{i:0;s:14:"-40,-9000,-901";i:1;s:13:"-30,-900,-601";i:2;s:13:"-20,-600,-301";i:3;s:11:"-10,-300,-1";i:4;s:10:"10,301,600";i:5;s:10:"20,601,900";i:6;s:11:"30,901,1200";i:7;s:12:"40,1201,1500";i:8;s:13:"50,1501,90000";}',
 	'go_multiplier_switch'=>'Off',
+	'go_infractions_name'=>'Infractions',
+	'go_max_infractions'=> 3,
 	'go_multiplier_rounding'=>'a:9:{i:0;s:1:"3";i:1;s:1:"3";i:2;s:1:"3";i:3;s:1:"3";i:4;s:1:"2";i:5;s:1:"2";i:6;s:1:"2";i:7;s:1:"2";i:8;s:1:"2";}',
 	'go_minutes_color_limit'=>'-900,-600,-300,0'
 	);

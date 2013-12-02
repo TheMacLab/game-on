@@ -34,6 +34,12 @@ add_action('go_sub_option_radio','go_sub_option_radio');
 function game_on_options() { 
 if($_GET['settings-updated']== true || $_GET['settings-updated']== 'true'){
 	go_update_globals();
+	// wp_redirect("admin.php?page=game-on-options.php");
+	 echo '<script type="text/javascript">
+<!--
+window.location = "'.admin_url().'/?page=game-on-options.php"
+//-->
+</script>';
 	}
 ?>  
     <div class="go-wrap">  
@@ -83,7 +89,13 @@ if($_GET['settings-updated']== true || $_GET['settings-updated']== 'true'){
           <?php
 		 echo go_sub_option_radio( 'admin_bar_add_trigger', 'Turn on and off the add section of the admin bar.','Add Switch', 'go_admin_bar_add_switch','go_admin_bar_add_switch', 'Would you like to have the Add section of the admin bar?');
 		   ?><br />
-
+<div class="opt-box">
+            <h3> Infraction Settings</h3>
+            <?php
+            echo go_sub_option('max_infractions','When a user has this many infractions they will have 0 life/hitpoints left.','Maximum Infractions','go_max_infractions','go_max_infractions','How many infractions do you want to allow your users?');
+            echo go_sub_option('infractions_name','The name for infractions','Infractions Name','go_infractions_name','go_infractions_name','The name for infractions.');
+                  ?>
+            </div>
             </div>
                 <div class="opt-box">       
             <h3>Minutes</h3>
@@ -216,7 +228,7 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding" />  
         </form>
         
         <script type="text/javascript">
@@ -442,7 +454,7 @@ function go_return_presets_options(){
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit');
 	foreach($array as $key=>$value){
 $value = trim($value);
 $content = get_option($value);
