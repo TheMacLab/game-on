@@ -7,4 +7,4 @@ Adding gaming functionality (experience, currency, levels, quests with multiple 
 #Changelog
 
 ###Version 1.1.1
-	* Added back button to task stages
+* Added back button to task stages
