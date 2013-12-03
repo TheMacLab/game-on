@@ -34,7 +34,7 @@ if($class_a){
 	?></select>
     
     <div id="go_clipboard_add"> <div style="width:17px; display:inline-table;margin-top: 4px;
-margin-right: 5px;" title="Check the boxes of the students you want to add to." class="ui-state-default ui-corner-all"><span  class="ui-icon ui-icon-help"></span></div><label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" /> <label id="go_clipboard_minutes"><?php echo 'Minutes'; ?>: </label> <input name="go_clipboard_minutes" id="go_clipboard_time" /><label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_minuts" id="go_clipboard_currency" /><label for="go_clipboard_infractions">Infractions: </label><input name="go_clipboard_infractions" id="go_clipboard_infractions" /><label name="go_clipboard_reason">Reason: </label> <input name="go_clipboard_reason" id="go_clipboard_reason" /><button class="ui-button-text" onclick="go_clipboard_add();">Add</button></div>
+margin-right: 5px;" title="Check the boxes of the students you want to add to." class="ui-state-default ui-corner-all"><span  class="ui-icon ui-icon-help"></span></div><label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" /> <label id="go_clipboard_minutes"><?php echo 'Minutes'; ?>: </label> <input name="go_clipboard_minutes" id="go_clipboard_time" /><label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_minuts" id="go_clipboard_currency" /><label for="go_clipboard_infractions"><?php echo go_return_options('go_infractions_name') ?>: </label><input name="go_clipboard_infractions" id="go_clipboard_infractions" /><label name="go_clipboard_reason">Reason: </label> <input name="go_clipboard_reason" id="go_clipboard_reason" /><button class="ui-button-text" onclick="go_clipboard_add();">Add</button></div>
 
     
     <table  id="go_clipboard_table" class="pretty" >
@@ -48,7 +48,7 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
 <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 <th class="header" style="width:8%;"><a href="#">Minutes</a></th>
 <th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
-<th class="header" style="width:13%;"><a href="#" ><?php echo go_return_options('go_infractions_name'); ?> (Max: <?php echo $current_max_infractions; ?>)</a></th>
+<th class="header" style="width:13%;"><a href="#" ><?php echo go_return_options('go_infractions_name'); ?><br> (Max: <?php echo go_return_options('go_max_infractions'); ?>)</a></th>
 <th class="header" style="width:9%;"><a href="#"><?php echo go_return_options('go_first_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_second_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_third_stage_name'); ?></a></th>  
