@@ -74,11 +74,12 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// This one's for you First Timers out there...
 					case 0: 
-						go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], get_the_ID());
+					// sending go_add_post the $repeat var was the problem, that is why it is no sending a null value.
+					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], get_the_ID(), null, 0);
 						
 	?>
 					<div id="go_content"> <br />
-					<button id="go_button" status="2" onclick="task_stage_change();"><?= go_return_options('go_second_stage_button') ?></button>
+					<button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
 					</div>
 					
 	<?php			
@@ -154,10 +155,11 @@ function go_task_shortcode($atts, $content = null) {
 	function task_stage_change(target){
 		var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
 		ajaxurl = '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php';
+		<?php $task_count = $wpdb->get_var("select `count` from ".$go_table_ind." where post_id = $id and uid = $user_ID"); ?>
 		if(jQuery('#go_button').length != 0){
 			var task_status = jQuery('#go_button').attr('status');	
 		} else{
-			var task_status = 5;	
+			var task_status = 5;
 		}
 		if (jQuery(target).is('#go_back_button') && jQuery('#new_content').length != 0){
 			jQuery('#new_content p').hide('slow');
@@ -170,7 +172,13 @@ function go_task_shortcode($atts, $content = null) {
 				action: 'task_change_stage', 
 				post_id: <?php echo $id; ?>, 
 				user_id: <?php echo $user_ID; ?>,
-				task_count: <?php echo $task_count; ?>,
+				task_count: <?php 
+								if ($task_count == null) {
+									echo '0';
+								} else {
+									echo $task_count;
+								}
+							?>,
 				status: task_status,
 				repeat: jQuery('#go_button').attr('repeat'),
 				undo: jQuery(target).attr('undo'),
@@ -232,13 +240,15 @@ function task_change_stage(){
 		}
 		$table_name_go = $wpdb->prefix . "go";
 		
+		// if repeat is not on...
 		if($repeat_button != 'on'){
 			$check = (int) $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
 			if($check == 0 || $check < ($status)){
 				if($undo == 'true' || $undo === true){
-					go_add_post($user_id, $task_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button);
+					go_add_post($user_id, $task_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button, 0);
 				} else{
-					go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button); 
+					//$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $task_id, 'status'=> 2, 'points'=> $points_array[$status-1], 'currency'=>$currency_array[$status-2], 'page_id' => $task_id, 'count'=> 0));
+					go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 0); 
 				}
 			}
 		} else {
@@ -250,7 +260,7 @@ function task_change_stage(){
 				}
 			} else {
 				// if repeat is on and undo is not hit...
-				go_add_post($user_id, $task_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 1);
+				go_add_post($user_id, $task_id, $status, $points_array[$status-2], $currency_array[$status-2], $page_id, $repeat_button, 1);
 			}	
 		}
 		$status = $wpdb->get_var("select status from ".$table_name_go." where uid = $user_id and post_id = $task_id");
