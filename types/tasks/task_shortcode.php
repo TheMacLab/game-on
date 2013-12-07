@@ -78,7 +78,7 @@ function go_task_shortcode($atts, $content = null) {
 					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], get_the_ID(), null, 0);
 						
 	?>
-					<div id="go_content"> <br />
+					<div id="go_content">
 					<button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
 					</div>
 					
@@ -88,7 +88,7 @@ function go_task_shortcode($atts, $content = null) {
 					// Encountered
 					case 1: 
 	?>
-					<div id="go_content"> <br />
+					<div id="go_content">
 					<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?= go_return_options('go_second_stage_button') ?></button>
 					</div>   
 	<?php
@@ -124,10 +124,12 @@ function go_task_shortcode($atts, $content = null) {
 											<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
 										</div>
 									</div>';
+							} else {
+								echo '<button id="go_back_button" status="4" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 							}
 							echo '</div>';
 						} else {
-							echo '</div><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
+							echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
 						}
 				}
 			}
@@ -158,13 +160,23 @@ function go_task_shortcode($atts, $content = null) {
 		<?php $task_count = $wpdb->get_var("select `count` from ".$go_table_ind." where post_id = $id and uid = $user_ID"); ?>
 		if(jQuery('#go_button').length != 0){
 			var task_status = jQuery('#go_button').attr('status');	
-		} else{
+		} else if(jQuery("#go_back_button").attr('repeat') != null) {
+			var task_status = jQuery('#go_back_button').attr('status');
+		} else {
 			var task_status = 5;
 		}
+		
 		if (jQuery(target).is('#go_back_button') && jQuery('#new_content').length != 0){
 			jQuery('#new_content p').hide('slow');
 			jQuery(target).remove();
 		}
+		
+		if (jQuery('#go_back_button').attr('repeat') != 'on') {
+			var repeat_attr = jQuery('#go_button').attr('repeat');
+		} else {
+			var repeat_attr = jQuery('#go_back_button').attr('repeat');
+		}
+		
 		jQuery.ajax({
 			type: "post",
 			url: ajaxurl,
@@ -180,7 +192,7 @@ function go_task_shortcode($atts, $content = null) {
 								}
 							?>,
 				status: task_status,
-				repeat: jQuery('#go_button').attr('repeat'),
+				repeat: repeat_attr,
 				undo: jQuery(target).attr('undo'),
 				page_id: <?php echo get_the_ID(); ?>,},
 				success: function(html){
@@ -302,6 +314,8 @@ function task_change_stage(){
 								<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
 							</div>
 						</div>';
+				} else {
+					echo '<button id="go_back_button" status="4" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 				}
 				echo '</div>';
 			} else {
