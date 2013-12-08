@@ -163,12 +163,8 @@ function go_task_shortcode($atts, $content = null) {
   	
 			// if the button#go_button exists...
 			if (jQuery('#go_button').length != 0){
-				// set task_status to the value of the 'status' attribute on the current button#go_button.
+				// set var 'task_status' to the value of the 'status' attribute on the current button#go_button.
 				var task_status = jQuery('#go_button').attr('status');	
-			// otherwise, if the button#go_back_button exists...
-			} else if (jQuery("#go_back_button").length != 0) {
-				// set task_status to the value of the 'status' attribute on the current button#go_back_button.
-				var task_status = jQuery('#go_back_button').attr('status');
 			// otherwise...
 			} else {
 				var task_status = 5;
