@@ -13,7 +13,7 @@ function go_table_individual() {
   status INT,
   post_id INT,
   page_id INT,
-  count INT,
+  count INT DEFAULT 0,
   points INT,
   currency INT,
   infractions INT,	 
