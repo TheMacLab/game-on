@@ -58,6 +58,13 @@ jQuery( "#go_stats_progress_bar" ).progressbar({
 
 
 	 document.getElementById("go_stats_chart_div").appendChild(Pie);
+	 
+	//Monitors for keyboard input
+	jQuery(document).keyup(function(e) { 
+		if (e.keyCode == 27) { // If keypressed is escape, run this
+			go_stats_close(); //Close out stats panel
+		}  
+	});
       
 </script>
 <div id="go_stats_wrap">
