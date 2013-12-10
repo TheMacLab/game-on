@@ -201,6 +201,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', end
 	overflow:auto;}
 		.go_stats_box{
 			padding:1px!important;}
+#go_stats_encountered_list{
+	height: auto !important;
+}
 #go_stats_third_tab_points{
 	width: 376px;
 height: 205px;
