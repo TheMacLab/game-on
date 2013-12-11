@@ -35,7 +35,7 @@ function go_add_currency($user_id, $reason, $status, $points, $currency, $update
 
 // Adds currency and points for reasons that are post tied.
 
-function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, $repeat = null, $count){
+function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, $repeat = null, $count = null){
 	
 		global $wpdb;
 	   	$table_name_go = $wpdb->prefix . "go";
