@@ -15,6 +15,7 @@ function go_jquery() {
 	wp_enqueue_script( 'go_everypage', plugin_dir_url(__FILE__).'go_everypage.js');
 	wp_localize_script( 'go_everypage', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	wp_enqueue_script( 'go_css_pie', plugin_dir_url(__FILE__).'CSSpie.js');
+	wp_enqueue_script( 'CryptoJS-SHA1', plugin_dir_url(__FILE__).'CryptoJS-SHA1.js');
 	
 		wp_enqueue_script('jquery-ui-progressbar');
 			
