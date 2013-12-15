@@ -69,7 +69,7 @@ function go_admin_bar(){
 if (!is_admin_bar_showing() || !is_user_logged_in() )
 	return;
 	$wp_admin_bar->add_menu( array(
-		'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_hitpoint_bar_border"><div id="points_needed_to_level_up">'.go_return_options('go_infractions_name').': '.$current_user_infractions.'/'.$current_max_infractions.' </div><div id="go_admin_bar_progress_bar" style="width:100%; background-color: '.$htpt_color.' ;"></div></div></div>',
+		'title' => '<div style="padding-top:5px;"><div id="go_hitpoint_bar_border"><div id="points_needed_to_level_up">'.go_return_options('go_infractions_name').': '.$current_user_infractions.'/'.$current_max_infractions.' </div><div id="go_admin_bar_hitpoint_bar" style="width:100%; background-color: '.$htpt_color.' ;"></div></div></div>',
 		'href' => '#',
 		'parent' => 'go_info',
 	));

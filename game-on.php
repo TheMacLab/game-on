@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin
 Contributors: Forest Hoffman, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.1.1
+Version: 1.1.2
 */
 include('go_definitions.php');
 include('types/types.php');
