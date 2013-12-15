@@ -91,6 +91,18 @@ function go_mta_con_meta( array $meta_boxes ) {
          		),
 				),
 			array(
+				'name' => 'Lock complete stage (Optional)',
+				'desc' => 'Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password',
+				'id' => $prefix.'complete_lock',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Completion unlock password',
+				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name'),
+				'id' => $prefix.'complete_unlock',
+				'type' => 'text'
+			),
+			array(
 				'name' => 'Mastery Message (Optional)',
 				'desc' => 'Enter a message for the user to recieve when they have <i>mastered</i> the '.go_return_options('go_tasks_name'),
 				'id' => $prefix . 'mastery_message',
@@ -100,6 +112,18 @@ function go_mta_con_meta( array $meta_boxes ) {
            			'textarea_rows' => '5',
          		),
 				),
+			array(
+				'name' => 'Lock mastery stage (Optional)',
+				'desc' => 'Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password',
+				'id' => $prefix.'mastery_lock',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Mastery unlock password',
+				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name'),
+				'id' => $prefix.'mastery_unlock',
+				'type' => 'text'
+			),
 			array(
 					'name' => 'Repeatable',
 					'desc' => ' Select to make '.go_return_options('go_tasks_name').' repeatable',
