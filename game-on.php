@@ -5,11 +5,10 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.1.2
+Version: 1.1.3
 */
-include('go_definitions.php');
-include('types/types.php');
 include('go_datatable.php');
+include('types/types.php');
 include('go_pnc.php');
 include('go_returns.php');
 include('go_ranks.php');
@@ -25,11 +24,13 @@ include('go_open_badge.php');
 include('badge_designer.php');
 include('go_shortcodes.php');
 include('go_comments.php');
+include('go_definitions.php');
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
 register_activation_hook( __FILE__, 'go_presets_registration' );
 register_activation_hook( __FILE__, 'go_install_data' );
+register_activation_hook( __FILE__, 'go_define_options' );
 add_action('user_register', 'go_user_registration');
 add_action( 'delete_user', 'go_user_delete' );
 add_action('go_add_post','go_add_post');

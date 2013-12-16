@@ -294,3 +294,7 @@ color: white;
 padding-top: 3px;
 background-color:grey;
 	}
+	
+#go_clipboard_add input{
+	height:20px;	
+}
