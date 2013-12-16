@@ -2,10 +2,10 @@
 /*
 Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
-Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin
-Contributors: Forest Hoffman, Isaac Canada
+Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
+Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.1.1
+Version: 1.1.2
 */
 include('go_definitions.php');
 include('types/types.php');
@@ -52,6 +52,7 @@ add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
 add_action('go_get_all_ranks','go_get_all_ranks');
+add_action('wp_ajax_unlock_stage', 'unlock_stage');
 add_action('wp_ajax_task_change_stage','task_change_stage');
 add_action('admin_bar_init', 'go_admin_bar');
 add_action('admin_bar_init', 'go_style_everypage' );
