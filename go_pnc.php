@@ -116,7 +116,9 @@ function go_notify($type, $points='', $currency='', $time='') {
 		});
 		setTimeout(function(){
 			jQuery(".go_notification").fadeOut("slow");
-		},1500)
+			jQuery(".go_notification").remove();
+		},1500);
+		
 		
 		
 	</script>';
