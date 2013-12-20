@@ -165,6 +165,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
+				'name' => 'Shortcode',
+				'desc' => 'Insert this shortcode where you want the task to appear',
+				'type' => 'go_store_shortcode'
+			),
+			array(
 				'name' => 'Penalty Switch',
 				'desc' => 'Allow user\'s currency to go negative when purchasing this item',
 				'id' => $prefix . 'penalty_switch',
@@ -213,6 +218,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'id' => $prefix.'store_repeat_amount',
 				'type' => 'text'
 			),
+			array(
+				'name' => 'Shortcode',
+				'desc' => 'Insert this shortcode where you want the task to appear',
+				'type' => 'go_store_shortcode'
+			),			
 		),
 	);
 	return $meta_boxes;
@@ -240,7 +250,13 @@ function go_cmb_render_go_presets() {
 
 add_action( 'cmb_render_go_shortcode', 'go_cmb_render_go_shortcode', 10, 0 );
 function go_cmb_render_go_shortcode() {
- echo '<input type="text" value="[go_task id=\''.get_the_id().'\']"';
+ echo '<input type="text" disabled value="[go_task id=\''.get_the_id().'\']"';
+ 
+}
+
+add_action( 'cmb_render_go_store_shortcode', 'go_cmb_render_go_store_shortcode', 10, 0 );
+function go_cmb_render_go_store_shortcode() {
+ echo '<input type="text" disabled value="[go_store id=\''.get_the_id().'\']"';
  
 }
 
