@@ -123,7 +123,7 @@ function go_lb_opener(id) {
                 nonce: "<?php echo esc_js( wp_create_nonce('go_lb_ajax_referall') ); ?>",
 				the_item_id: get_id,
     };
-	url_action = "<?php echo admin_url('/admin-ajax.php'); ?>";
+	var url_action = "<?php echo admin_url('/admin-ajax.php'); ?>";
             jQuery.ajaxSetup({cache:true});
             jQuery.ajax({
                 url: url_action,

@@ -96,7 +96,7 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// First time a user encounters a task
 					case 0: 
-					// sending go_add_post the $repeat var was the problem, that is why it is no sending a null value.
+					// sending go_add_post the $repeat var was the problem, that is why it is not sending a null value.
 					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0);
 						
 	?>

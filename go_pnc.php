@@ -68,7 +68,7 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 		}
 	
 	
-	go_update_totals($user_id,$points,$currency,0);
+	go_update_totals($user_id,$points,$currency,0,$status);
 	
 	}
 	
@@ -134,7 +134,7 @@ function go_add_infraction($user_id,$infractionCount,$update){
 			$wpdb->update($table_name_go_totals,array('infractions'=>$infractions), array('uid'=>$user_id));
 			}
 }
-function go_update_admin_bar($type, $title, $points_currency){
+function go_update_admin_bar($type, $title, $points_currency, $status){
 	global $next_rank_points;
 	global $current_rank_points;
 	
@@ -144,9 +144,17 @@ function go_update_admin_bar($type, $title, $points_currency){
 		$display = go_display_points($points_currency); 
 		$rng = ($current_rank_points -$points_currency) * -1;
 		$dom = ($next_rank_points - $current_rank_points);
-		echo '<script language="javascript">
-			jQuery("#points_needed_to_level_up").html("'.$rng.'/'.$dom.'");
-		</script>';
+		if ($status == 0) { 
+			echo '<script language="javascript">
+				jQuery(document).ready(function() {
+					jQuery("#points_needed_to_level_up").html("'.$rng.'/'.$dom.'");
+				});
+			</script>';
+		} else {
+			echo '<script language="javascript">
+				jQuery("#points_needed_to_level_up").html("'.$rng.'/'.$dom.'");
+			</script>';
+		}
 	} elseif ($type == 'currency'){
 		$display = go_display_currency($points_currency);
 	} elseif($type == 'minutes'){ 
@@ -159,11 +167,11 @@ function go_update_admin_bar($type, $title, $points_currency){
 		jQuery("#go_admin_bar_'.$type.'").html("'.$title.': '.$display.'");
 		jQuery("#go_admin_bar_progress_bar").css({"width": "'.$percentage.'%", "background-color": "'.$color.'"});
 	</script>';
-	}
+}
 
 
 //Update totals
-function go_update_totals($user_id,$points, $currency, $minutes){
+function go_update_totals($user_id, $points, $currency, $minutes, $status){
 	global $wpdb;
 	if($points != 0){
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
@@ -172,7 +180,11 @@ function go_update_totals($user_id,$points, $currency, $minutes){
 		go_update_ranks($user_id, ($totalpoints+$points));
 		go_notify('points', $points);
 		$p = (string)($totalpoints+$points);
-		go_update_admin_bar('points',go_return_options('go_points_name'),$p);
+		if ($status == 0) {
+			go_update_admin_bar('points',go_return_options('go_points_name'),$p, $status);
+		} else {
+			go_update_admin_bar('points',go_return_options('go_points_name'),$p);
+		}
 		}
 	if($currency != 0){
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
