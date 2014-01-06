@@ -153,6 +153,7 @@ margin-top: 40px; width:200px; display:inline;"></div
       <div id="leaderboard_left_box">
           <table id="go_stats_leaderboard_table" ><thead>
           <tr>
+          <th class="header">Rank</th>
           <th class="header">Gamertag</th>
           <th class="header"><?php echo go_return_options('go_points_name'); ?></th>
           <th class="header"><?php echo go_return_options('go_currency_name'); ?></th>
@@ -279,6 +280,7 @@ function go_stats_leaderboard(){
 	global $wpdb;
 	$class_a_choice= $_POST['class_a_choice'];
 	$table_name_go_totals= $wpdb->prefix.'go_totals';
+	$counter = 1;
 	$ids = $wpdb->get_results("SELECT uid
 FROM ".$table_name_go_totals."
 order by CAST(".$_POST['order']." as signed ) Desc");
@@ -294,8 +296,9 @@ order by CAST(".$_POST['order']." as signed ) Desc");
 			$currency = go_return_currency($id);
 			$minutes = go_return_minutes($id);
 			$user_data_key = get_userdata( $id ); 
-		$user_display = $user_data_key->display_name;
-			echo '<tr><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
+			$user_display = '<a href="'.$user_data_key->user_url.'">'.$user_data_key->display_name.'</a>';
+			echo '<tr><td>'.$counter.'</td><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
+			$counter++;
 			}
 		}
 		}
