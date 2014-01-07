@@ -296,7 +296,7 @@ order by CAST(".$_POST['order']." as signed ) Desc");
 			$currency = go_return_currency($id);
 			$minutes = go_return_minutes($id);
 			$user_data_key = get_userdata( $id ); 
-			$user_display = '<a href="'.$user_data_key->user_url.'">'.$user_data_key->display_name.'</a>';
+			$user_display = '<a href="'.$user_data_key->user_url.'" target="_blank">'.$user_data_key->display_name.'</a>';
 			echo '<tr><td>'.$counter.'</td><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
 			$counter++;
 			}
