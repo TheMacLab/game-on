@@ -3,7 +3,6 @@
 	This is the file that displays content in a post/page with a task. 
 	This file interprets and executes the shortcode in a post's body. 
 */
-
 // Task Shortcode
 function go_task_shortcode($atts, $content = null) {
 	extract(shortcode_atts(array(
@@ -18,6 +17,11 @@ function go_task_shortcode($atts, $content = null) {
 		$task_currency = $custom_fields['go_mta_task_currency'][0]; // Currency granted after each stage of task
 		$task_points = $custom_fields['go_mta_task_points'][0]; // Points granted after each stage of task
 		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
+		$test_active = $custom_fields['go_mta_test_lock'][0];
+		$test_type = $custom_fields['go_mta_test_lock_type'][0];
+		$test_question = $custom_fields['go_mta_test_lock_question'][0];
+		$test_answers = $custom_fields['go_mta_test_lock_answers'][0];
+		$test_key = $custom_fields['go_mta_test_lock_key'][0];
 		
 		if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
 			$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
@@ -118,8 +122,11 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Accepted
 					case 2: 
-						echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg)).
-						'<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.
+						echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg));
+						if ($test_active) {
+							echo do_shortcode("[go_test type='{$test_type}' question='{$test_question}' possible_answers='{$test_answers}' key='{$test_key}']");
+						}
+						echo '<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.
 						go_return_options('go_third_stage_button').'</button>
 						<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
 						</div>';
@@ -174,10 +181,44 @@ function go_task_shortcode($atts, $content = null) {
 						}
 				}
 			}
-
+			echo "<pre>";
+			print_r($GLOBALS['_all_keys']);
+			echo "<br/>";
+			print_r($GLOBALS['_key']);
+			echo "<br/>";
+			print_r($custom_fields['go_mta_test_lock_key'][0]);
+			echo "</pre>";
 ?>
 	<script language="javascript">
-		if(jQuery('#go_unlock_next_stage').length != 0){
+		jQuery(document).ready(function() {
+			jQuery.ajaxSetup({ 
+				url: '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php'
+			});
+			check_locks();
+		});
+		
+		function check_locks() {
+		if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
+			jQuery('#go_button').attr('disabled', 'true');
+
+			var typing_timer;
+			var doneTyping = 500;
+			jQuery('#go_test_submit').click(function() {
+					task_unlock();
+					console.log('pushed button');
+			});
+			jQuery('#go_unlock_next_stage').keyup(function (){
+				typing_timer = setTimeout(function() {
+						task_unlock();
+						console.log('in timeout');
+				}, doneTyping);
+			});
+			jQuery('#go_unlock_next_stage').keydown(function (){
+				clearTimeout(typing_timer);
+			});
+			
+			
+		} else if (jQuery('#go_unlock_next_stage').length != 0){
 			jQuery('#go_button').attr('disabled', 'true');
 			var typing_timer;
 			var doneTyping = 500;
@@ -187,31 +228,106 @@ function go_task_shortcode($atts, $content = null) {
 			jQuery('#go_unlock_next_stage').keydown(function (){
 				clearTimeout(typing_timer);
 			});
-		} 
-	
-		function task_unlock(){
-			ajaxurl = '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php';
-			var pwd_check = String(jQuery('#go_unlock_next_stage').val());
-			var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
+		} else if (jQuery(".go_test_list").length != 0) {
+			jQuery('#go_button').attr('disabled', 'true');
+			jQuery('#go_test_submit').click(function() {
+				if (jQuery(".go_test_list").length == 1) {
+					task_unlock();
+				}
+			});
+		}
+		}
+
+		function task_unlock() {
+			if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
+				var chosen_answer = jQuery("ul#go_test li input:checked");
+				var choice = chosen_answer[0].value.toLowerCase();
+				var type = jQuery('.go_test_list li input:first').attr('type');
+				var pwd_check = String(jQuery('#go_unlock_next_stage').val());
+				var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
+				var which = 'both';
+			} else {
+				if (jQuery('#go_unlock_next_stage').length != 0) {
+					var pwd_check = String(jQuery('#go_unlock_next_stage').val());
+					var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
+					var which = 'pass';
+				} else if (jQuery(".go_test_list").length != 0) {
+					var type = jQuery('.go_test_list li input:first').attr('type');
+					var chosen_answer = jQuery("ul#go_test li input:checked");
+					if (type == 'radio') {
+						var choice = chosen_answer[0].value.toLowerCase();	
+					} else if (type == 'checkbox') {
+						var choice = [];
+						for (var i = 0; i < chosen_answer.length; i++) {
+							choice.push(chosen_answer[i].value.toLowerCase());	
+						}
+						choice = choice.join("### ");
+					}
+					var which = 'test';
+				}
+			}
+			
 			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
+				type: "POST",
 				data:{
 					action: 'unlock_stage',
 					password_check: pwd_hash,
-					task: <?php echo $id; ?>
+					task: <?php echo $id; ?>,
+					chosen_answer: choice,
+					type: type,
+					which: which
 				},
 				success: function(response){
-					if(response == 1){
+					if(response == 1 || response == '1'){
 						jQuery('#go_button').removeAttr('disabled');
-						jQuery('.go_lock_message').html('Password correct, move on.');
-						jQuery('#go_unlock_next_stage').remove();	
-					} else{
-						jQuery('.go_lock_message').html('Incorrect password, try again.');
+						if (which == 'both') {
+							jQuery('.go_lock_message').html('Password correct, move on.');
+							jQuery('#go_unlock_next_stage').remove();	
+							jQuery('#go_test_container').hide('slow');
+							jQuery('#go_button').removeAttr('disabled');
+							jQuery('#go_test_error_msg').attr('style', 'color:green');
+							jQuery('#go_test_error_msg').text("Well done, continue!");
+							//test_point_update();
+						} else if (which == 'pass') {	
+							jQuery('.go_lock_message').html('Password correct, move on.');
+							jQuery('#go_unlock_next_stage').remove();	
+						} else if (which == 'test') {
+							jQuery('#go_test_container').hide('slow');
+							jQuery('#go_button').removeAttr('disabled');
+							jQuery('#go_test_error_msg').attr('style', 'color:green');
+							jQuery('#go_test_error_msg').text("Well done, continue!");
+						}
+					} else {
+						if (which == 'both') {
+							jQuery('.go_lock_message').html('Incorrect password, try again.');
+							jQuery('#go_test_error_msg').text(response);
+						} else if (which == 'pass'){
+							jQuery('.go_lock_message').html('Incorrect password, try again.');
+						} else if (which == 'test') {
+							jQuery('#go_test_error_msg').text("Wrong answer, try again!");
+						}
 					}
 				}
 			});
 		}
+		
+		/*  If the checks for understanding need to provide bonuses with diminishing returns.
+		function test_point_update() {
+			jQuery.ajax({
+				type: "POST",
+				data: {
+					action: "test_point_update",
+					points: <?php echo $points_array[0]; ?>,
+					status: <?php echo $status; ?>,
+					user_ID: <?php echo $user_ID; ?>,
+				},
+				success: function () {
+					console.log("test_point_update success");
+				}
+			});
+		}
+		*/
+		
 		function go_repeat_hide(target) {
 			// hides the div#repeat_quest to create the repeat cycle.
 			jQuery("#repeat_quest").hide('slow');
@@ -230,7 +346,6 @@ function go_task_shortcode($atts, $content = null) {
 		
 		function task_stage_change(target){
 			var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
-			ajaxurl = '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php';
 			// redeclare (also called "overloading") the variable $task_count to the value of the 'count' var on the database.
 			<?php $task_count = $wpdb->get_var("select `count` from ".$go_table_ind." where post_id = $id and uid = $user_ID"); ?>
 			
@@ -271,8 +386,7 @@ function go_task_shortcode($atts, $content = null) {
 			// div#new_content; then slowly display div#new_content; if the button#go_button 'status' attribute is equal to 2
 			// and remove the first child element of div#new_content.
 			jQuery.ajax({
-				type: "post",
-				url: ajaxurl,
+				type: "POST",
 				data: { 
 					action: 'task_change_stage', 
 					post_id: <?php echo $id; ?>, 
@@ -311,6 +425,10 @@ function go_task_shortcode($atts, $content = null) {
 							clearTimeout(typing_timer);
 						});
 					} 
+					
+					jQuery('#go_button').ready(function() {
+						check_locks();
+					});
 				}
 			});	
 		}
@@ -326,28 +444,123 @@ function go_task_shortcode($atts, $content = null) {
 } // Ends function
 add_shortcode('go_task','go_task_shortcode');
 
+/*  For checks for understanding... See the declaration of the test_point_update function in the script tag.
+function test_point_update() {
+	$status = $_POST['status'];
+	$user_id = $_POST['user_ID'];
+	$points = $_POST['points'];
+	go_update_totals($user_id, $points, 0, 0, $status);
+	//go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0);
+}
+*/
+
 function unlock_stage(){
 	global $wpdb;
-	$password_check = $_POST['password_check'];
+
 	$id = $_POST['task'];
+	$which = $_POST['which'];
+	
+	if ($which == 'both') {
+		$password_check = $_POST['password_check'];
+		$choice = $_POST['chosen_answer'];
+		$type = $_POST['type'];
+	} else if ($which == 'pass') {
+		$password_check = $_POST['password_check'];
+	} else if ($which == 'test') {
+		$choice = $_POST['chosen_answer'];
+		$type = $_POST['type'];
+		if ($type == 'checkbox') {
+			$choice_array = explode("### ", $choice);
+		}
+	}
+	
+	if ($type == 'checkbox') {
+		$choice_array_keys = array_keys($choice_array);
+		if (count($choice_array_keys) < 2) {
+			echo 0;
+			die();
+		}
+	}
 	
 	$custom_fields = get_post_custom($id);
+	$task_points = $custom_fields['go_mta_task_points'][0];
+	$points_array = explode(',', $task_points);
+	$task_currency = $custom_fields['go_mta_task_currency'][0];
+	$currency_array = explode(',', $task_currency);
+	$page_id = get_the_ID();
+	
+	$key = $custom_fields['go_mta_test_lock_key'][0];
+	if ($type == 'checkbox') {
+		$key_array = explode("### ", $key);
+	}
 	
 	$user_ID = get_current_user_id();
 	$go_table_ind = $wpdb->prefix.'go';
 	$status = (int)$wpdb->get_var("SELECT `status` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 	
-	if($status == 2){
+	if ($status == 2){
 		$password = sha1($custom_fields['go_mta_complete_unlock'][0]);
-	} elseif($status == 3){
+	} else if ($status == 3){
 		$password = sha1($custom_fields['go_mta_mastery_unlock'][0]);
 	}
 	
-	if($password_check == $password){
-		echo 1;
-	} else{
-		echo 0;	
+	if ($which == 'both') {
+		if ($choice == $key && $password_check == $password) {
+			echo 1;
+		} else {
+			if ($choice != $key && $password_check != $password) {
+				echo "Wrong answer AND incorrect password!";
+				die();
+			} else { 
+			
+				if ($password_check != $password) {
+					echo "Incorrect password!";
+				}
+				
+				if ($choice != $key) {
+					echo "Wrong answer!";
+				}
+				die();
+			}
+		}
+	} else if ($which == 'pass') {
+		if($password_check == $password){
+			echo 1;
+			die();
+		} else {
+			echo 0;
+			die();
+		}
+	} else if ($which == 'test') {
+		if ($type == 'radio') {
+			if ($choice == $key) {
+				echo 1;
+				die();
+			} else {
+				echo 0;
+				die();
+			}
+		} else if ($type == 'checkbox') {
+			$key_match = 0;
+			$key_array_keys = array_keys($key_array);
+			$choice_array_keys = array_keys($choice_array);
+			for ($i = 0; $i < count($key_array_keys); $i++) {
+				for ($x = 0; $x < count($choice_array_keys);  $x++) {
+					if (strtolower($choice_array[$x]) == strtolower($key_array[$i])) {
+						$key_match++;
+						break;
+					}
+				}
+			}
+			if ($key_match == count($choice_array_keys) && $key_match >= 2) {
+				echo 1;
+				die();
+			} else {
+				echo 0;
+			}
+		}
 	}
+	
 	die();
 }
 
@@ -371,6 +584,11 @@ function task_change_stage() {
 	$task_currency = $custom_fields['go_mta_task_currency'][0]; // Currency granted after each stage of task
 	$task_points = $custom_fields['go_mta_task_points'][0]; // Points granted after each stage of task
 	$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
+	$test_active = $custom_fields['go_mta_test_lock'][0];
+	$test_type = $custom_fields['go_mta_test_lock_type'][0];
+	$test_question = $custom_fields['go_mta_test_lock_question'][0];
+	$test_answers = $custom_fields['go_mta_test_lock_answers'][0];
+	$test_key = $custom_fields['go_mta_test_lock_key'][0];
 	if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
 		$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
 	} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
@@ -436,8 +654,11 @@ function task_change_stage() {
 			.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
-			' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
+			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false));
+			if ($test_active) {
+				echo do_shortcode("[go_test type='{$test_type}' question='{$test_question}' possible_answers='{$test_answers}' key='{$test_key}']");
+			}
+			echo ' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
 			if($complete_lock == "true"){
 				echo '<br/><div id="go_complete_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
