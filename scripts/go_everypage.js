@@ -188,6 +188,7 @@ function go_stats_leaderboard_choice(){
 						jQuery('#go_messages_bar').html(data[2]);
 						}else if( data[1] == 'unseen'){
 							jQuery('#wp-admin-bar-'+data[0]+' div').css('color','');
+							jQuery('#go_messages_bar').html(data[2]);
 							} 
 					
 				}

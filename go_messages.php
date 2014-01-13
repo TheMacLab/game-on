@@ -48,11 +48,16 @@ function go_mark_read(){
 	global $wpdb;
 	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages',true);
 	if($_POST['type'] == 'unseen'){
+		if($messages[1][$_POST['date']][1] == 1){
 	$messages[1][$_POST['date']][1] = 0;
+	(int)$messages[0] = (int)$messages[0] - 1;
+		}
 	} elseif($_POST['type'] == 'remove') {
 		unset($messages[1][$_POST['date']]);
-		(int)$messages[0] = (int)$messages[0] - 1;
-		}
+if($messages[1][$_POST['date']][1] == 1){
+	$messages[1][$_POST['date']][1] = 0;
+	(int)$messages[0] = (int)$messages[0] - 1;
+		}		}
 	update_user_meta( get_current_user_id(), 'go_admin_messages', $messages);
 	echo JSON_encode(array(0 => $_POST['date'], 1 => $_POST['type'], 2 => $messages[0]));
 	die();
