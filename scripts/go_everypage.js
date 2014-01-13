@@ -172,4 +172,24 @@ function go_stats_leaderboard_choice(){
 		}
 	});
 	}
-	
+	 function go_mark_seen(date, type){
+			jQuery.ajax({
+				url: MyAjax.ajaxurl,
+				type: "POST",
+				data:{
+					action: 'go_mark_read',
+					date: date,
+					type: type
+				},
+				success: function(data){
+					data = JSON.parse(data);
+					if(data[1] == 'remove'){
+						jQuery('#wp-admin-bar-'+data[0]+' div').remove();
+						jQuery('#go_messages_bar').html(data[2]);
+						}else if( data[1] == 'unseen'){
+							jQuery('#wp-admin-bar-'+data[0]+' div').css('color','');
+							} 
+					
+				}
+			});
+				}
