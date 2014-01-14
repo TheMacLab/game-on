@@ -46,17 +46,26 @@ $mail->Subject  = get_the_title($ID).' - '.$first_name.' '.$last_name;
 $mail->Body     = 'User login: '.$username.'
 Uploader comments: '.$_POST['go_attachment_com'];
 $mail->WordWrap = 50;
- $mail->AddAttachment($_FILES['go_attachment']['tmp_name'],
-                         $_FILES['go_attachment']['name']);
+//$mail->AddAttachment($_FILES['go_attachment']['tmp_name'],$_FILES['go_attachment']['name']);
+for($i=0; $i < count($_FILES['go_attachment']); $i++){ // This loop will upload all the files you have attached to your email. 
+
+$name=$_FILES['go_attachment']['name'][$i];
+$path=$_FILES['go_attachment']['tmp_name'][$i];
+
+//And attach it using attachment method of PHPmailer.
+
+$mail->AddAttachment($path,$name); 
+}
 if(!$mail->Send()) {
-  echo 'Message was not sent.';
-  echo 'Mailer error: ' . $mail->ErrorInfo;
+  return 'Message was not sent.';
+  return 'Mailer error: ' . $mail->ErrorInfo;
 } else {
-  echo 'Message has been sent.';
+  return 'Message has been sent.';
 }
 	}
 return('<form action="" method="post" enctype="multipart/form-data">
-<input type="file" name="go_attachment"/><br/>
+<div id="go_uploader"><input type="file" name="go_attachment[]"/><br/></div>
+<button type="button" onClick="go_add_uploader();">Attach More</button><br/>
 Comments:<br />
 <textarea name="go_attachment_com"></textarea><br />
 <input type="submit" value="Submit"/>
