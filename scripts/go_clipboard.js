@@ -212,6 +212,18 @@ function go_clipboard_class_a_choice(){
 	});
 	
 	}
+
+function go_user_focus_change(user_id,element){
+	jQuery.ajax({
+			type: "POST",
+			url: MyAjax.ajaxurl,
+			data:{
+				action: 'go_new_user_focus',
+				new_user_focus: jQuery(element).val(),
+				user_id: user_id
+			}
+	});
+}
 function go_clipboard_add(id){
 	 var values = [];
 	 jQuery("input:checkbox[name=go_selected]:checked").each(function()

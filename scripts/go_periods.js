@@ -36,6 +36,24 @@ function go_class_b_save(){
 	});
 	}
 	
+jQuery('#sortable_focus').sortable({axis:"y"});
+function go_focus_new_input(){
+	jQuery('#sortable_focus').append(' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input id="go_focus" type="text" value=""/></li>');
+}
+function go_focus_save(){
+	var values = jQuery("input[id='go_focus']").map(function(){return jQuery(this).val();}).get();
+	jQuery.ajax({
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: { 
+			action: 'go_focus_save',
+			focus_array: values
+		},
+		success: function(html){
+			jQuery('#sortable_focus').html(html);
+		}
+	});
+}
 	
 jQuery('#sortable_go_presets').sortable({axis:"y"});
 

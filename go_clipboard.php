@@ -53,6 +53,7 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
  <th class="header" style="width:10%;"><a href="#" >Name</a></th>
 <th class="header" style="width:10%;""><a href="#" >Gamertag</a></th>
 <th class="header" style="width:8%;"><a href="#" >Rank</a></th>
+<th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th>
 <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 <th class="header" style="width:8%;"><a href="#">Minutes</a></th>
 <th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
@@ -99,6 +100,11 @@ function go_clipboard_intable(){
 FROM ".$table_name_user_meta."
 WHERE meta_key =  'wp_capabilities'
 AND meta_value LIKE  '%subscriber%'");
+	$focuses = get_option('go_focus');
+	$focuses_list = '';
+	foreach($focuses as $focus){
+		$focuses_list .= '<option name="'.$focus.'" value="'.$focus.'">'.$focus.'</option>';
+	}
 	foreach($uid as $id){
 		foreach($id as $value){
 			$class_a = get_user_meta($value, 'go_classifications',true);
@@ -110,6 +116,7 @@ AND meta_value LIKE  '%subscriber%'");
 		$user_first_name = $user_data_key->user_firstname;
 		$user_last_name =  $user_data_key->user_lastname;
 		$user_url =  $user_data_key->user_url;
+		$user_focuses = go_display_user_focuses($value);
 		$infractions = go_return_infractions($value);
 		$minutes = go_return_minutes($value);
 		$currency = go_return_currency($value);
@@ -121,7 +128,7 @@ AND meta_value LIKE  '%subscriber%'");
 		$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
 		$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
 		
-		echo '<tr><td><input class="go_checkbox" type="checkbox" name="go_selected" value="'.$value.'"></td><td><span><a href="#" onclick="go_admin_bar_stats_page_button('.$value.'); "  >'.$user_login.'</a></td><td>'.$class_a[$class_a_choice].'</td><td><a href="'.$user_url.'" target="_blank">'.$user_last_name.', '.$user_first_name.'</a></td><td>'.$user_display.'</td><td>'.$current_rank.'</td><td>'.$currency.'</td><td>'.$minutes.'</td><td>'.$points.'</td><td>'.$infractions.'</td><td>'.$first_stage.'</td><td>'.$second_stage.'</td><td>'.$third_stage.'</td><td>'.$fourth_stage.'</td></tr>';
+		echo '<tr><td><input class="go_checkbox" type="checkbox" name="go_selected" value="'.$value.'"></td><td><span><a href="#" onclick="go_admin_bar_stats_page_button('.$value.'); "  >'.$user_login.'</a></td><td>'.$class_a[$class_a_choice].'</td><td><a href="'.$user_url.'" target="_blank">'.$user_last_name.', '.$user_first_name.'</a></td><td>'.$user_display.'</td><td>'.$current_rank.'</td><td><select id="go_focus" onchange="go_user_focus_change('.$value.', this);"><option name="'.$user_focuses.'" value="'.$user_focuses.'">'.$user_focuses.' </option>'.$focuses_list.'</select></td><td>'.$currency.'</td><td>'.$minutes.'</td><td>'.$points.'</td><td>'.$infractions.'</td><td>'.$first_stage.'</td><td>'.$second_stage.'</td><td>'.$third_stage.'</td><td>'.$fourth_stage.'</td></tr>';
 		
 		}}}}
 		die();
