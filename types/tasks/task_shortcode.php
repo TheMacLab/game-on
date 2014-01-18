@@ -146,7 +146,13 @@ function go_task_shortcode($atts, $content = null) {
 					case 2: 
 						echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg));
 						if ($test_active) {
-							echo do_shortcode("[go_test type='{$test_type}' question='{$test_question}' possible_answers='{$test_answers}' key='{$test_key}']");
+							if (preg_match("/('|\")+/", $test_question, $match_q) || preg_match("/('|\")+/", $test_answers, $match_a) || preg_match("/('|\")+/", $test_key, $match_k)) {
+								if (current_user_can('manage_options')) {
+									echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
+								}
+							} else {
+								echo do_shortcode("[go_test type='".$test_type."' question='".$test_question."' possible_answers='".$test_answers."' key='".$test_key."']");
+							}
 						}
 						echo '<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.
 						go_return_options('go_third_stage_button').'</button>
@@ -207,6 +213,7 @@ function go_task_shortcode($atts, $content = null) {
 			$category_name = implode(',',$category_names);
 			echo 'This task is only available to '.$category_name;
 		}
+
 ?>
 	<script language="javascript">
 		jQuery(document).ready(function() {
@@ -224,12 +231,10 @@ function go_task_shortcode($atts, $content = null) {
 			var doneTyping = 500;
 			jQuery('#go_test_submit').click(function() {
 					task_unlock();
-					console.log('pushed button');
 			});
 			jQuery('#go_unlock_next_stage').keyup(function (){
 				typing_timer = setTimeout(function() {
 						task_unlock();
-						console.log('in timeout');
 				}, doneTyping);
 			});
 			jQuery('#go_unlock_next_stage').keydown(function (){
@@ -250,9 +255,7 @@ function go_task_shortcode($atts, $content = null) {
 		} else if (jQuery(".go_test_list").length != 0) {
 			jQuery('#go_button').attr('disabled', 'true');
 			jQuery('#go_test_submit').click(function() {
-				if (jQuery(".go_test_list").length == 1) {
-					task_unlock();
-				}
+				task_unlock();
 			});
 		}
 		}
@@ -260,7 +263,7 @@ function go_task_shortcode($atts, $content = null) {
 		function task_unlock() {
 			if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
 				var chosen_answer = jQuery("ul#go_test li input:checked");
-				var choice = chosen_answer[0].value.toLowerCase();
+				var choice = chosen_answer[0].value;
 				var type = jQuery('.go_test_list li input:first').attr('type');
 				var pwd_check = String(jQuery('#go_unlock_next_stage').val());
 				var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
@@ -274,11 +277,11 @@ function go_task_shortcode($atts, $content = null) {
 					var type = jQuery('.go_test_list li input:first').attr('type');
 					var chosen_answer = jQuery("ul#go_test li input:checked");
 					if (type == 'radio') {
-						var choice = chosen_answer[0].value.toLowerCase();	
+						var choice = chosen_answer[0].value;	
 					} else if (type == 'checkbox') {
 						var choice = [];
 						for (var i = 0; i < chosen_answer.length; i++) {
-							choice.push(chosen_answer[i].value.toLowerCase());	
+							choice.push(chosen_answer[i].value);	
 						}
 						choice = choice.join("### ");
 					}
@@ -675,7 +678,13 @@ function task_change_stage() {
 		case 2:
 			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false));
 			if ($test_active) {
-				echo do_shortcode("[go_test type='{$test_type}' question='{$test_question}' possible_answers='{$test_answers}' key='{$test_key}']");
+				if (preg_match("/('|\")+/", $test_question, $match_q) || preg_match("/('|\")+/", $test_answers, $match_a) || preg_match("/('|\")+/", $test_key, $match_k)) {
+					if (current_user_can('manage_options')) {
+						echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
+					}
+				} else {
+					echo do_shortcode("[go_test type='".$test_type."' question='".$test_question."' possible_answers='".$test_answers."' key='".$test_key."']");
+				}
 			}
 			echo ' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';

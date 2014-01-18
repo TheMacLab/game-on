@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.1.9
+Version: 1.2.0
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -57,11 +57,8 @@ add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
 add_action('go_get_all_ranks','go_get_all_ranks');
-<<<<<<< HEAD
 add_action('wp_ajax_test_point_update', 'test_point_update');
-=======
 add_action('go_get_all_focuses', 'go_get_all_focuses');
->>>>>>> 1619913369df29574a6e4c5a6a651a83d5e15639
 add_action('wp_ajax_unlock_stage', 'unlock_stage');
 add_action('wp_ajax_task_change_stage','task_change_stage');
 add_action('admin_bar_init', 'go_admin_bar');

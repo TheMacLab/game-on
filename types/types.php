@@ -134,7 +134,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Answers',
-				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. Separate each answer with three octothorpes ("###")',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). Note: Apostrophes (\', ") are not permited.',
 				'id' => $prefix.'test_lock_answers',
 				'type' => 'text'
 			),
