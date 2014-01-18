@@ -27,9 +27,16 @@ global $wpdb;
 	$req_currency = $custom_fields['go_mta_store_currency'][0];
 	$req_time = $custom_fields['go_mta_store_time'][0];
 	$req_rank = $custom_fields['go_mta_store_rank'][0];
+	
+	if($custom_fields['go_mta_focus_item_switch'][0] && $custom_fields['go_mta_focuses'][0]){
+		$item_focus_switch = true;
+		$item_focus = $custom_fields['go_mta_focuses'][0];
+	}
+	
 	if($custom_fields['go_mta_store_itemURL'][0] && $custom_fields['go_mta_store_itemURL'][0] != ''){
 		$item_url = $custom_fields['go_mta_store_itemURL'][0];
 	} 
+	
 	$repeat = 'on';
 	$user_points = go_return_points($user_ID);
 	$user_currency = go_return_currency($user_ID);
@@ -67,6 +74,11 @@ global $wpdb;
 	}
 	
 	if ($points_re == true && $currency_re == true && $time_re == true && $rank_re == true) {
+		if($item_focus_switch && $item_focus){
+			$user_focuses = (array) get_user_meta($user_ID, 'go_focus', true);
+			$user_focuses[] = $item_focus;
+			update_user_meta($user_ID, 'go_focus', $user_focuses);
+		}
 		go_add_post($user_ID, $the_id, -1, -$req_points, -$req_currency, $page_id, $repeat);
 		if($item_url){
 			$item_hyperlink = '<a target="_blank" href="'.$item_url.'">Grab your loot!</a>';

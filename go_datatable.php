@@ -114,7 +114,10 @@ global $default_role;
 	'go_infractions_name'=>'Infractions',
 	'go_max_infractions'=> 3,
 	'go_multiplier_rounding'=>'a:9:{i:0;s:1:"3";i:1;s:1:"3";i:2;s:1:"3";i:3;s:1:"3";i:4;s:1:"2";i:5;s:1:"2";i:6;s:1:"2";i:7;s:1:"2";i:8;s:1:"2";}',
-	'go_minutes_color_limit'=>'-900,-600,-300,0'
+	'go_minutes_color_limit'=>'-900,-600,-300,0',
+	'go_focus_name' => 'Focus',
+	'go_focus_switch'=>'Off',
+	'go_focus'=>''
 	);
 	foreach($options_array as $key => $value){
 		 add_option( $key, $value );

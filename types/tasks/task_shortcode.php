@@ -42,6 +42,9 @@ function go_task_shortcode($atts, $content = null) {
 			$mastery_lock = true; 
 			$mastery_unlock = $custom_fields['go_mta_mastery_unlock'][0]; // Sets this variable equal to the password entered on the task creation page
 		}
+		if($custom_fields['go_mta_focus_category_lock'][0]){
+			$focus_category_lock = true;
+		}
 		
 		$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 		$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
@@ -90,12 +93,31 @@ function go_task_shortcode($atts, $content = null) {
 			$go_table_ind = $wpdb->prefix.'go';
 			$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 			$status = (int)$wpdb->get_var("SELECT `status` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
+			
+			if(get_the_terms($id, 'task_focus_categories') && $focus_category_lock){
+				$categories = get_the_terms($id, 'task_focus_categories');
+				$category_names = array();
+				foreach($categories as $category){
+					array_push($category_names, $category->name);	
+				}
+			}
+			
+			if(get_user_meta($user_ID, 'go_focus', true) != ''){
+				$user_focus = (array) get_user_meta($user_ID, 'go_focus', true);	
+			}
+			
+			if($category_names && $user_focus){
+				$go_ahead = array_intersect($user_focus, $category_names);	
+			}
+			
 ?> 
 
 			<div id="go_description"> <?php echo  do_shortcode(wpautop($description));?> </div>
             
 <?php
+		if($go_ahead || !isset($focus_category_lock) || empty($category_names)){
 			if($current_minutes >= $minutes_required || !$minutes_required){
+				
 				switch ($status) {
 					
 					// First time a user encounters a task
@@ -181,13 +203,10 @@ function go_task_shortcode($atts, $content = null) {
 						}
 				}
 			}
-			echo "<pre>";
-			print_r($GLOBALS['_all_keys']);
-			echo "<br/>";
-			print_r($GLOBALS['_key']);
-			echo "<br/>";
-			print_r($custom_fields['go_mta_test_lock_key'][0]);
-			echo "</pre>";
+		} else{ // If user can't access quest because they aren't part of the specialty, echo this
+			$category_name = implode(',',$category_names);
+			echo 'This task is only available to '.$category_name;
+		}
 ?>
 	<script language="javascript">
 		jQuery(document).ready(function() {

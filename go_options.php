@@ -145,7 +145,9 @@ foreach($limit as $key=>$value){
     <?php
 		 echo go_sub_option( 'class_a_name', 'The name of the first classification. Such as Period or Color.','Classification A Name', 'go_class_a_name','go_class_a_name', 'What would you like to call the first classification?');
 		  echo go_sub_option( 'class_b_name', 'The name of the second classification. Such as Computer or Skill.','Classification B Name', 'go_class_b_name','go_class_b_name', 'What would you like to call the second classification?');
-		   ?>  </div>
+		   ?>  
+            
+           </div>
            <div class="opt-box"> 
                   <div class="pa">
         <h4> A </h4>
@@ -184,9 +186,38 @@ go_jquery_periods();
        </ul>
        <button type="button" style="width:100%;" onclick="go_class_b_new_input();" id="go_class_b_add_input" value="New" >New</button>
        <button type="button" style="width:100%;" onclick="go_class_b_save();" id="go_class_b_add_input" value="Save Classifications" >Save</button>
-        </div></div>
+        </div>
+        </div>
 
-
+	<div class="opt-box">
+    	<h3> Focuses </h3>
+        <?php echo go_sub_option( 'focus_name', 'The name of focuses such as \'Career\' or \'Pathway\' ', 'Focus Name', 'go_focus_name','go_focus_name', 'What would you like to call focuses?');?>
+    </div>
+    
+    <div class="opt-box">
+      <div class="pa">
+      	<?php go_opt_help('focus_explanation', 'The switch to turn focuses on and off. Focuses are the areas of interest or study that users choose. Focuses can be purchased via store items.'); ?> 
+        <strong><?php echo 'Turn focuses on or off: ';?> </strong><br />
+        On:<input type="radio" <?php if(go_return_options('go_focus_switch') == 'On'){echo 'checked="checked"';} ?> name="go_focus_switch" size="45" value="On" style="margin-left: 5px;width: 20px;" /><br />
+        Off:<input type="radio" <?php if(go_return_options('go_focus_switch') == 'Off'){echo 'checked="checked"';} ?>name="go_focus_switch" size="45" value="Off" style="margin-left: 5px;width: 20px;" /><br />
+        <strong><?php echo 'List of focuses: '; ?></strong><br />
+        <i>Note: Clicking save will add these values as task categories</i>
+        <ul id="sortable_focus">
+			<?php 
+            $focus = get_option('go_focus');
+            if($focus){
+            	foreach($focus as $key=>$value){
+            ?>
+            	<li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input id="go_focus" type="text" value="<?php echo $value; ?>"/></li> 
+            <?php
+           		}
+            }
+            ?>
+        </ul>
+        <button type="button" style="width:100%;" onclick="go_focus_new_input();" id="go_focus_add_input" value="New" >New</button>
+      	<button type="button" style="width:100%;" onclick="go_focus_save();" id="go_focus_add_input" value="Save Classifications" >Save</button>
+      </div>
+    </div>
             
    <div class="opt-box">       
             <h3> Presets </h3>  </div>
@@ -228,7 +259,7 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name" />  
         </form>
         
         <script type="text/javascript">
@@ -276,6 +307,64 @@ update_option('go_class_b',$array);
 	    ?>
        <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input id="go_class_b_input" type="text" value="<?php echo $value; ?>"/></li> <?php }} 
 die();
+}
+
+function go_focus_save(){
+	global $wpdb;
+	$array = $_POST['focus_array'];
+	$terms = $wpdb->get_results("SELECT * FROM $wpdb->terms", ARRAY_A);
+	$term_names = array();
+	
+	foreach($array as $key=>$value){
+		if ($value == ''){
+			unset($array[$key]);
+		}
+		if(!term_exists($value, 'task_focus_categories')){
+			wp_insert_term($value, 'task_focus_categories');
+		}
+	} 
+	
+	foreach($terms as $term){
+		if($term['name'] != 'Uncategorized'){
+			array_push($term_names, $term['name']);
+		}
+	}
+	$delete_terms = array_diff($term_names, $array);
+	foreach($delete_terms as $term){
+		$term_id = $wpdb->get_var("SELECT `term_id` FROM $wpdb->terms WHERE `name`='".$term."'");
+		wp_delete_term($term_id, 'task_focus_categories');
+	}
+	update_option('go_focus',$array);
+	$focus = get_option('go_focus',false);
+	if($focus){
+		foreach($focus as $key=>$value){
+	?>
+       		<li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input id="go_focus" type="text" value="<?php echo $value; ?>"/></li> 
+	<?php 
+		}
+	} 
+die();
+}
+
+function go_get_all_focuses() {
+	if(get_option('go_focus')){
+		$all_focuses = get_option('go_focus');
+	}
+	$all_focuses_sorted = array();
+	if($all_focuses){
+		foreach($all_focuses as $focus ) {
+			 $all_focuses_sorted[] = array('name' => $focus , 'value' => $focus);
+		 }
+	}
+	return $all_focuses_sorted;
+}
+
+add_action('wp_ajax_go_new_user_focus', 'go_new_user_focus');
+function go_new_user_focus(){
+	$new_user_focus = $_POST['new_user_focus'];
+	$user_id = $_POST['user_id'];
+	update_user_meta($user_id, 'go_focus', $new_user_focus);
+	die();	
 }
 
 function go_presets_reset(){
@@ -354,25 +443,31 @@ foreach(get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu)
 		</tr> <?php }} ?> </tbody>
         <tr> 
         <td><button onclick="go_add_class();" type="button">+</button></td>
-        </tr>
-
 	</table>
+	<?php 
+		if(get_option('go_focus_switch', true) == 'On'){
+	?>
+		<h3>User <?php echo go_return_options('go_focus_name');?></h3>
+		<?php 
+			echo go_display_user_focuses($user->ID);
+		}
+    ?>
     <script type="text/javascript" language="javascript">
-    function go_add_class(){
-		var ajaxurl = "<?php global $wpdb;
-		echo admin_url( 'admin-ajax.php' ) ; ?>";
-		jQuery.ajax({
-		type: "post",url: ajaxurl,data: { 
-		action: 'go_user_option_add',
-		go_clipboard_class_a_choice: jQuery('#go_clipboard_class_a_choice').val()},
-		success: function(html){
-		jQuery('#go_user_form_table_body').append(html);
+		function go_add_class(){
+			var ajaxurl = "<?php global $wpdb;
+			echo admin_url( 'admin-ajax.php' ) ; ?>";
+			jQuery.ajax({
+				type: "post",
+				url: ajaxurl,
+				data: { 
+					action: 'go_user_option_add',
+					go_clipboard_class_a_choice: jQuery('#go_clipboard_class_a_choice').val()
+				},
+				success: function(html){
+					jQuery('#go_user_form_table_body').append(html);
+				}
+			});
 		}
-	});
-		}
-		
-			
-
     </script>
 <?php
 
@@ -425,16 +520,16 @@ function go_user_option_add(){
 	
 function go_save_extra_profile_fields( $user_id ) {
 
-		if(isset($_POST['class_a_user'])){
-	foreach($_POST['class_a_user'] as $key=>$value){
-		if($value != 'go_remove'){
-		$class_a = $value;
-		$class_b = $_POST['class_b_user'][$key];
-		$class[$class_a] = $class_b;
+	if(isset($_POST['class_a_user'])){
+		foreach($_POST['class_a_user'] as $key=>$value){
+			if($value != 'go_remove'){
+				$class_a = $value;
+				$class_b = $_POST['class_b_user'][$key];
+				$class[$class_a] = $class_b;
+			}
 		}
+		update_user_meta( $user_id, 'go_classifications', $class );
 	}
-	update_user_meta( $user_id, 'go_classifications', $class );
-	 }
 }	
 
 function go_return_presets_options(){
@@ -454,7 +549,7 @@ function go_return_presets_options(){
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name');
 	foreach($array as $key=>$value){
 $value = trim($value);
 $content = get_option($value);

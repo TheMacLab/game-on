@@ -5,6 +5,18 @@ jQuery(document).ready( function () {
   } );
 go_update_graph();
 } );
+function toggle(source) {
+  checkboxes = document.getElementsByName('go_selected');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+function analysis_toggle(source) {
+  checkboxes = jQuery('#choices input');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
 function go_graphs(datasets){
 		// hard-code color indices to prevent them from shifting as
 		// countries are turned on/off
@@ -23,6 +35,7 @@ window.data = datasets;
 		var choiceContainer = jQuery("#choices");
 		var goCheck = 'checked';
 		var ii = 0;
+		choiceContainer.append('<input type="checkbox" onClick="analysis_toggle(this);" /> Select All<br />');
 		jQuery.each(datasets, function(key, val) {
 			choiceContainer.append("<input type='checkbox' name='" + key +"' "+goCheck+" id='id"+key+"'></input><label class='highlight_box' onClick='highlight_click(this);' key='"+val.label+"' rank='"+ii+"'>Highlight</label>"+"<label for='id" + key + "'>"+ val.label +"</label><br/>");
 		goCheck = '';
@@ -199,6 +212,18 @@ function go_clipboard_class_a_choice(){
 	});
 	
 	}
+
+function go_user_focus_change(user_id,element){
+	jQuery.ajax({
+			type: "POST",
+			url: MyAjax.ajaxurl,
+			data:{
+				action: 'go_new_user_focus',
+				new_user_focus: jQuery(element).val(),
+				user_id: user_id
+			}
+	});
+}
 function go_clipboard_add(id){
 	 var values = [];
 	 jQuery("input:checkbox[name=go_selected]:checked").each(function()

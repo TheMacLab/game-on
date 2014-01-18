@@ -51,6 +51,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
+				'name' => 'Lock by '.go_return_options('go_focus_name').' Category? (Optional)',
+				'desc' => 'Check this box to lock this task by its '.go_return_options('go_focus_name').' category.',
+				'id' => $prefix.'focus_category_lock',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Points',
 				'desc' => 'points awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70)',
 				'id'   => $prefix . 'task_points',
@@ -210,6 +216,19 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'desc' => 'Allow user\'s currency to go negative when purchasing this item',
 				'id' => $prefix . 'penalty_switch',
 				'type' => 'checkbox'
+			),
+			array(
+				'name' => go_return_options('go_focus_name').' Gateway? (Optional)',
+				'desc' => 'Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account.',
+				'id' => $prefix . 'focus_item_switch',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => go_return_options('go_focus_name'),
+				'desc' => 'Select the '.go_return_options('go_focus_name').' to be associated with this item',
+				'id' => $prefix.'focuses',
+				'type' => 'select',
+				'options' => go_get_all_focuses()
 			),
 			array(
 				'name' => 'Time Filter (Optional)',

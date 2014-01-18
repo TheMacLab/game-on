@@ -340,13 +340,16 @@ if(go_return_options('go_multiplier_switch') == 'On'){
 	$limit = unserialize($limit);
 	$rounding_array = unserialize($rounding_array);
 	$minutes = go_return_minutes($user_id);
+	if(is_array($limit) && !empty($limit)){
 	foreach($limit as $key=>$value){
 		$array = explode(',',$value);
 		if($array[2] >= $minutes && $minutes >= $array[1]){
 			$multiplier = $array[0];
 			$rounding_key = $key;
 			}
-		}
+		}} else {
+			$multiplier = 0;
+			}
 	
 	}else{
 		$multiplier = 0;
