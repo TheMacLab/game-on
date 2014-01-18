@@ -27,13 +27,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'fields'     => array(
 			array(
 				'name' => 'Shortcode',
-				'desc' => 'Insert this shortcode where you want the task to appear',
+				'desc' => 'Insert this shortcode where you want the task to appear.',
 				'type' => 'go_shortcode'
 			),
 			
 			array(
 				'name' => 'Required Rank',
-				'desc' => 'rank required to begin '.go_return_options('go_tasks_name'),
+				'desc' => 'rank required to begin '.go_return_options('go_tasks_name').".",
 				'id'   => $prefix . 'req_rank',
 				'type' => 'select',
 				'options' => go_get_all_ranks()
@@ -46,31 +46,31 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Time Filter (Optional)',
-				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes)',
+				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes).',
 				'id' => $prefix . 'time_filter',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Lock by '.go_return_options('go_focus_name').' Category? (Optional)',
-				'desc' => 'Check this box to lock this task by its '.go_return_options('go_focus_name').' category.',
+				'desc' => ' Check this box to lock this task by its '.go_return_options('go_focus_name').' category.',
 				'id' => $prefix.'focus_category_lock',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Points',
-				'desc' => 'points awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70)',
+				'desc' => 'points awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70).',
 				'id'   => $prefix . 'task_points',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Currency',
-				'desc' => 'currency awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70)',
+				'desc' => 'currency awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70).',
 				'id'   => $prefix . 'task_currency',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Encounter Message',
-				'desc' => 'Enter a message for the user to recieve when they have <i>encountered</i> the '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>encountered</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'quick_desc',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -80,7 +80,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Accept Message',
-				'desc' => 'Enter a message for the user to recieve when they have <i>accepted</i> the '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>accepted</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'accept_message',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -90,7 +90,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Completion Message (Optional)',
-				'desc' => 'Enter a message for the user to recieve when they have <i>completed</i> the '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>completed</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'complete_message',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -100,25 +100,25 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),
 			array(
 				'name' => 'Lock complete stage (Optional)',
-				'desc' => 'Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password',
+				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',
 				'id' => $prefix.'complete_lock',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Completion unlock password',
-				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'complete_unlock',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Completion Check for Understanding (Optional)',
-				'desc' => 'Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has completed the test',
+				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has completed the test.',
 				'id' => $prefix.'test_lock',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Check Type',
-				'desc' => 'Select the type of test that is given to the user',
+				'desc' => 'Select the type of test that is given to the user.',
 				'id' => $prefix.'test_lock_type',
 				'type' => 'select',
 				'options' => array(
@@ -128,20 +128,23 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question',
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_question',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Check Answers',
 				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
-							Separate each answer with three octothorpes ("###"). Note: Apostrophes (\', ") are not permited.',
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_answers',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Check Key',
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_key',
 				'type' => 'text'
 			),
@@ -157,25 +160,25 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),
 			array(
 				'name' => 'Lock mastery stage (Optional)',
-				'desc' => 'Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password',
+				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',
 				'id' => $prefix.'mastery_lock',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Mastery unlock password',
-				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'mastery_unlock',
 				'type' => 'text'
 			),
 			array(
 					'name' => 'Repeatable',
-					'desc' => ' Select to make '.go_return_options('go_tasks_name').' repeatable',
+					'desc' => ' Select to make '.go_return_options('go_tasks_name').' repeatable.',
 					'id'   => $prefix . 'task_repeat',
 					'type' => 'checkbox'
 				),
 			array(
 				'name' => 'Repeat Message (Optional)',
-				'desc' => 'Enter a message for the user to recieve when they have <i>repeated</i> the '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>repeated</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'repeat_message',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -192,7 +195,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),
 			array(
 				'name' => 'Shortcode',
-				'desc' => 'Insert this shortcode where you want the task to appear',
+				'desc' => 'Insert this shortcode where you want the task to appear.',
 				'type' => 'go_shortcode'
 				),
 			
@@ -209,56 +212,56 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'fields'     => array(
 			array(
 				'name' => 'Shortcode',
-				'desc' => 'Insert this shortcode where you want the task to appear',
+				'desc' => 'Insert this shortcode where you want the task to appear.',
 				'type' => 'go_store_shortcode'
 			),
 			array(
 				'name' => 'Penalty Switch',
-				'desc' => 'Allow user\'s currency to go negative when purchasing this item',
+				'desc' => 'Allow user\'s currency to go negative when purchasing this item.',
 				'id' => $prefix . 'penalty_switch',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => go_return_options('go_focus_name').' Gateway? (Optional)',
-				'desc' => 'Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account.',
+				'desc' => ' Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account.',
 				'id' => $prefix . 'focus_item_switch',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => go_return_options('go_focus_name'),
-				'desc' => 'Select the '.go_return_options('go_focus_name').' to be associated with this item',
+				'desc' => 'Select the '.go_return_options('go_focus_name').' to be associated with this item.',
 				'id' => $prefix.'focuses',
 				'type' => 'select',
 				'options' => go_get_all_focuses()
 			),
 			array(
 				'name' => 'Time Filter (Optional)',
-				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes)',
+				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes).',
 				'id' => $prefix . 'store_time_filter',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Required Rank',
-				'desc' => 'Rank required to purchase the item',
+				'desc' => 'Rank required to purchase the item.',
 				'id'   => $prefix . 'store_rank',
 				'type' => 'select',
 				'options' => go_get_all_ranks()
 			),
 			array(
 				'name' => 'Currency',
-				'desc' => 'Currency required to purchase the item',
+				'desc' => 'Currency required to purchase the item.',
 				'id'   => $prefix . 'store_currency',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Points',
-				'desc' => 'Points required to purchase item',
+				'desc' => 'Points required to purchase item.',
 				'id'   => $prefix . 'store_points',
 				'type' => 'text',
 			),
 			array(
 				'name' => 'Time',
-				'desc' => 'Time required to purchase item',
+				'desc' => 'Time required to purchase item.',
 				'id'   => $prefix . 'store_time',
 				'type' => 'text',
 			),
@@ -276,7 +279,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Shortcode',
-				'desc' => 'Insert this shortcode where you want the task to appear',
+				'desc' => 'Insert this shortcode where you want the task to appear.',
 				'type' => 'go_store_shortcode'
 			),			
 		),
