@@ -165,6 +165,44 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'Mastery Check for Understanding (Optional)',
+				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has completed the test.',
+				'id' => $prefix.'test_mastery_lock',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Check Type',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_mastery_lock_type',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_question',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_answers',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_key',
+				'type' => 'text'
+			),
+			array(
 				'name' => 'Mastery unlock password',
 				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'mastery_unlock',
