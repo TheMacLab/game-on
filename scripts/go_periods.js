@@ -95,37 +95,3 @@ var points = jQuery("input[id='go_preset_points']")
 		}
 	});
 	}
-	
-function go_display_help_video(url){
-	jQuery('.dark').show();
-	jQuery('#go_option_help_video').prop('src', url);
-	jQuery('#go_option_help_video_html5_api').prop('src', url);
-	videojs('#go_option_help_video', {}, function(){
-		
-	});
-	var myplayer = videojs('#go_option_help_video');
-	myplayer.ready(function(){
-		jQuery('#go_option_help_video').removeClass("vjs-playing").addClass("vjs-paused");
-		myplayer.load();
-		myplayer.play();
-	});
-	jQuery('.light').show();
-	if(jQuery('.dark').css('display') != 'none'){
-		jQuery(document).keyup(function(e) { 
-			if (e.keyCode == 27) { // If keypressed is escape, run this
-				jQuery('.dark').hide();
-				myplayer.pause();
-				jQuery('#go_option_help_video_html5_api').prop('src', '');
-				jQuery('#go_option_help_video').addClass("vjs-paused");
-				jQuery('.light').hide();
-			}  
-		});	
-		jQuery('.dark').click(function(){
-			jQuery('.dark').hide();
-			myplayer.pause();
-			jQuery('#go_option_help_video_html5_api').prop('src', '');
-			jQuery('#go_option_help_video').addClass("vjs-paused");
-			jQuery('.light').hide();
-		});
-	}
-}
