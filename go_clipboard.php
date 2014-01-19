@@ -100,7 +100,7 @@ function go_clipboard_intable(){
 FROM ".$table_name_user_meta."
 WHERE meta_key =  'wp_capabilities'
 AND meta_value LIKE  '%subscriber%'");
-	$focuses = get_option('go_focus');
+	$focuses = (array)get_option('go_focus');
 	$focuses_list = '';
 	foreach($focuses as $focus){
 		$focuses_list .= '<option name="'.$focus.'" value="'.$focus.'">'.$focus.'</option>';
