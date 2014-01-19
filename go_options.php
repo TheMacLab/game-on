@@ -20,9 +20,9 @@ function go_sub_option($explanation_name, $explanation, $title, $field_name, $op
             
 	}
 	
-function go_sub_option_radio($explanation_name, $explanation, $title, $field_name, $option_name, $explanation_question){ ?>
+function go_sub_option_radio($explanation_name, $explanation, $title, $field_name, $option_name, $explanation_question, $video_url = null){ ?>
 	    <div class="pa">
-            	<?php go_opt_help($explanation_name,$explanation); ?> 
+            	<?php go_opt_help($explanation_name,$explanation, $video_url); ?> 
             	<strong><?php echo $title; ?>:</strong><br />  
                    On:<input type="radio" <?php if(get_option($option_name) == 'On'){echo 'checked="checked"';} ?> name="<?php echo $option_name; ?>" size="45" value="On" /><br />
                 Off:<input type="radio" <?php if(get_option($option_name) == 'Off'){echo 'checked="checked"';} ?> name="<?php echo $option_name; ?>" size="45" value="Off" /><br />
