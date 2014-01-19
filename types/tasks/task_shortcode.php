@@ -532,30 +532,21 @@ function unlock_stage(){
 	$currency_array = explode(',', $task_currency);
 	$page_id = get_the_ID();
 	
-	/*
-	$key = $custom_fields['go_mta_test_lock_key'][0];
-	if ($type == 'checkbox') {
-		$key_array = explode("### ", $key);
-	}
-	*/
-	
 	$user_ID = get_current_user_id();
 	$go_table_ind = $wpdb->prefix.'go';
-	// less db calls? :)
-	//$status = (int)$wpdb->get_var("SELECT `status` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 	
 	if ($status == 2) {
 		$password = sha1($custom_fields['go_mta_complete_unlock'][0]);
 		$key = $custom_fields['go_mta_test_lock_key'][0];
-		if ($type == 'checkbox') {
-			$key_array = explode("### ", $key);
-		}
 	} else if ($status == 3) {
 		$password = sha1($custom_fields['go_mta_mastery_unlock'][0]);
 		$key = $custom_fields['go_mta_test_mastery_lock_key'][0];
-		if ($type == 'checkbox') {
-			$key_array = explode("### ", $key);
-		}
+		
+	}
+	
+	if ($type == 'checkbox') {
+		$key_str = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
+		$key_array = explode("### ", $key_str);
 	}
 	
 	if ($which == 'both') {
@@ -611,6 +602,7 @@ function unlock_stage(){
 				die();
 			} else {
 				echo 0;
+				die();
 			}
 		}
 	}
