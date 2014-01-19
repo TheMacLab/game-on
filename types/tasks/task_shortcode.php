@@ -146,7 +146,7 @@ function go_task_shortcode($atts, $content = null) {
 					case 2: 
 						echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg));
 						if ($test_active) {
-							if (preg_match("/('|\")+/", $test_question, $match_q) || preg_match("/('|\")+/", $test_answers, $match_a) || preg_match("/('|\")+/", $test_key, $match_k)) {
+							if (preg_match("/('|\")+/", $test_question) || preg_match("/('|\")+/", $test_answers) || preg_match("/('|\")+/", $test_key)) {
 								if (current_user_can('manage_options')) {
 									echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
 								}
@@ -527,10 +527,10 @@ function unlock_stage(){
 	}
 	
 	if ($which == 'both') {
-		if ($choice == $key && $password_check == $password) {
+		if (strtolower($choice) != strtolower($key) && $password_check == $password) {
 			echo 1;
 		} else {
-			if ($choice != $key && $password_check != $password) {
+			if (strtolower($choice) != strtolower($key) && $password_check != $password) {
 				echo "Wrong answer AND incorrect password!";
 				die();
 			} else { 
@@ -539,7 +539,7 @@ function unlock_stage(){
 					echo "Incorrect password!";
 				}
 				
-				if ($choice != $key) {
+				if (strtolower($choice) != strtolower($key)) {
 					echo "Wrong answer!";
 				}
 				die();
@@ -555,7 +555,7 @@ function unlock_stage(){
 		}
 	} else if ($which == 'test') {
 		if ($type == 'radio') {
-			if ($choice == $key) {
+			if (strtolower($choice) == strtolower($key)) {
 				echo 1;
 				die();
 			} else {
@@ -678,7 +678,7 @@ function task_change_stage() {
 		case 2:
 			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false));
 			if ($test_active) {
-				if (preg_match("/('|\")+/", $test_question, $match_q) || preg_match("/('|\")+/", $test_answers, $match_a) || preg_match("/('|\")+/", $test_key, $match_k)) {
+				if (preg_match("/('|\")+/", $test_question) || preg_match("/('|\")+/", $test_answers) || preg_match("/('|\")+/", $test_key)) {
 					if (current_user_can('manage_options')) {
 						echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
 					}
