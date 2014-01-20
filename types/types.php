@@ -19,57 +19,57 @@ function go_mta_con_meta( array $meta_boxes ) {
 	// Tasks Meta Boxes
 	$meta_boxes[] = array(
 		'id'         => 'go_mta_metabox',
-		'title'      => go_return_options('go_tasks_name').' Options <br/> Click ?\'s for videos. <a href="javascript:;" onclick="go_display_help_video(\'maclab.guhsd.net/go/video/quests/questsIntro.mp4\')"> Please watch this video first. </a>',
+		'title'      => go_return_options('go_tasks_name').' Options <br/> Click ?\'s for videos. <a href="javascript:;" onclick="go_display_help_video(\'http://maclab.guhsd.net/go/video/quests/questsIntro.mp4\')"> Please watch this video first. </a>',
 		'pages'      => array( 'tasks' ), // Post type
 		'context'    => 'normal',
 		'priority'   => 'high',
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
-				'name' => 'Shortcode'.go_task_opt_help('shortocde', '', 'maclab.guhsd.net/go/video/quests/shortocde.mp4'),
+				'name' => 'Shortcode'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/shortcode.mp4'),
 				'desc' => 'Insert this shortcode where you want the task to appear.',
 				'type' => 'go_shortcode'
 			),
 			
 			array(
-				'name' => 'Required Rank '.go_task_opt_help('req_rank', '', 'maclab.guhsd.net/go/video/quests/requiredRank.mp4'),
+				'name' => 'Required Rank '.go_task_opt_help('req_rank', '', 'http://maclab.guhsd.net/go/video/quests/requiredRank.mp4'),
 				'desc' => 'rank required to begin '.go_return_options('go_tasks_name').".",
 				'id'   => $prefix . 'req_rank',
 				'type' => 'select',
 				'options' => go_get_all_ranks()
 			),
 			array(
-				'name' => 'Presets'.go_task_opt_help('presets', '', 'maclab.guhsd.net/go/video/quests/presets.mp4'),
+				'name' => 'Presets'.go_task_opt_help('presets', '', 'http://maclab.guhsd.net/go/video/quests/presets.mp4'),
 				'id'   => 'go_presets',
 				'desc'=> '',
 				'type' => 'go_presets',
 			),
 			array(
-				'name' => 'Time Filter (Optional)'.go_task_opt_help('time_filter', '', 'maclab.guhsd.net/go/video/quests/timeFilter.mp4'),
+				'name' => 'Time Filter (Optional)'.go_task_opt_help('time_filter', '', 'http://maclab.guhsd.net/go/video/quests/timeFilter.mp4'),
 				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes).',
 				'id' => $prefix . 'time_filter',
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Lock by '.go_return_options('go_focus_name').' Category? (Optional)'.go_task_opt_help('lock_by_cat', '', ' maclab.guhsd.net/go/video/quests/lockByProfessionCategory.mp4'),
+				'name' => 'Lock by '.go_return_options('go_focus_name').' Category? (Optional)'.go_task_opt_help('lock_by_cat', '', ' http://maclab.guhsd.net/go/video/quests/lockByProfessionCategory.mp4'),
 				'desc' => ' Check this box to lock this task by its '.go_return_options('go_focus_name').' category.',
 				'id' => $prefix.'focus_category_lock',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Points'.go_task_opt_help('points', '', 'maclab.guhsd.net/go/video/quests/points.mp4'),
+				'name' => 'Points'.go_task_opt_help('points', '', 'http://maclab.guhsd.net/go/video/quests/points.mp4'),
 				'desc' => 'points awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70).',
 				'id'   => $prefix . 'task_points',
 				'type' => 'text',
 			),
 			array(
-				'name' => 'Currency'.go_task_opt_help('currency', '', 'maclab.guhsd.net/go/video/quests/currency.mp4'),
+				'name' => 'Currency'.go_task_opt_help('currency', '', 'http://maclab.guhsd.net/go/video/quests/currency.mp4'),
 				'desc' => 'currency awarded for encountering, accepting, completing, and mastering the '.go_return_options('go_tasks_name').'. (comma seperated, e.g. 10,20,50,70).',
 				'id'   => $prefix . 'task_currency',
 				'type' => 'text',
 			),
 			array(
-				'name' => 'Encounter Message'.go_task_opt_help('encounter', '', 'maclab.guhsd.net/go/video/quests/encounterMessage.mp4'),
+				'name' => 'Encounter Message'.go_task_opt_help('encounter', '', 'http://maclab.guhsd.net/go/video/quests/encounterMessage.mp4'),
 				'desc' => 'Enter a message for the user to recieve when they have <i>encountered</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'quick_desc',
 				'type' => 'wysiwyg',
@@ -79,7 +79,7 @@ function go_mta_con_meta( array $meta_boxes ) {
            		),
 			),
 			array(
-				'name' => 'Accept Message'.go_task_opt_help('accept', '', 'maclab.guhsd.net/go/video/quests/acceptMessage.mp4'),
+				'name' => 'Accept Message'.go_task_opt_help('accept', '', 'http://maclab.guhsd.net/go/video/quests/acceptMessage.mp4'),
 				'desc' => 'Enter a message for the user to recieve when they have <i>accepted</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'accept_message',
 				'type' => 'wysiwyg',
@@ -89,7 +89,7 @@ function go_mta_con_meta( array $meta_boxes ) {
            		),
 			),
 			array(
-				'name' => 'Completion Message (Optional)'.go_task_opt_help('complete', '', 'maclab.guhsd.net/go/video/quests/completeMessage.mp4'),
+				'name' => 'Completion Message (Optional)'.go_task_opt_help('complete', '', 'http://maclab.guhsd.net/go/video/quests/completeMessage.mp4'),
 				'desc' => 'Enter a message for the user to recieve when they have <i>completed</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'complete_message',
 				'type' => 'wysiwyg',
@@ -99,25 +99,25 @@ function go_mta_con_meta( array $meta_boxes ) {
          		),
 				),
 			array(
-				'name' => 'Lock complete stage (Optional)'.go_task_opt_help('lock_complete', '', 'maclab.guhsd.net/go/video/quests/lockCompleteStage.mp4'),
+				'name' => 'Lock complete stage (Optional)'.go_task_opt_help('lock_complete', '', 'http://maclab.guhsd.net/go/video/quests/lockCompleteStage.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',
 				'id' => $prefix.'complete_lock',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Completion unlock password'.go_task_opt_help('unlock_complete', '', 'maclab.guhsd.net/go/video/quests/completionUnlockPassword.mp4'),
+				'name' => 'Completion unlock password'.go_task_opt_help('unlock_complete', '', 'http://maclab.guhsd.net/go/video/quests/completionUnlockPassword.mp4'),
 				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'complete_unlock',
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Completion Check for Understanding (Optional)'.go_task_opt_help('complete_understand', '', 'maclab.guhsd.net/go/video/quests/completionCheckForUnderstanding.mp4'),
+				'name' => 'Completion Check for Understanding (Optional)'.go_task_opt_help('complete_understand', '', 'http://maclab.guhsd.net/go/video/quests/completionCheckForUnderstanding.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has completed the test.',
 				'id' => $prefix.'test_lock',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Check Type'.go_task_opt_help('complete_understand_checktype', '', 'maclab.guhsd.net/go/video/quests/completeCheckType.mp4'),
+				'name' => 'Check Type'.go_task_opt_help('complete_understand_checktype', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckType.mp4'),
 				'desc' => 'Select the type of test that is given to the user.',
 				'id' => $prefix.'test_lock_type',
 				'type' => 'select',
@@ -127,21 +127,21 @@ function go_mta_con_meta( array $meta_boxes ) {
                 )
 			),
 			array(
-				'name' => 'Check Question'.go_task_opt_help('complete_understand_question', '', 'maclab.guhsd.net/go/video/quests/completeCheckQuestion.mp4'),
+				'name' => 'Check Question'.go_task_opt_help('complete_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckQuestion.mp4'),
 				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
 							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_question',
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Check Answers'.go_task_opt_help('complete_understand_answer', '', 'maclab.guhsd.net/go/video/quests/completeCheckAnswers.mp4'),
+				'name' => 'Check Answers'.go_task_opt_help('complete_understand_answer', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckAnswers.mp4'),
 				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
 							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_answers',
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Check Key'.go_task_opt_help('complete_understand_key', '', 'maclab.guhsd.net/go/video/quests/completeCheckKey.mp4'),
+				'name' => 'Check Key'.go_task_opt_help('complete_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckKey.mp4'),
 				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
 							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
 							<code>Note: Apostrophes (\', ") are not permited.</code>',
@@ -149,7 +149,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Mastery Message (Optional)'.go_task_opt_help('mastery', '', 'maclab.guhsd.net/go/video/quests/masteryMessage.mp4'),
+				'name' => 'Mastery Message (Optional)'.go_task_opt_help('mastery', '', 'http://maclab.guhsd.net/go/video/quests/masteryMessage.mp4'),
 				'desc' => 'Enter a message for the user to recieve when they have <i>mastered</i> the '.go_return_options('go_tasks_name'),
 				'id' => $prefix . 'mastery_message',
 				'type' => 'wysiwyg',
@@ -159,19 +159,19 @@ function go_mta_con_meta( array $meta_boxes ) {
          		),
 				),
 			array(
-				'name' => 'Lock mastery stage (Optional)'.go_task_opt_help('lock_mastery', '', 'maclab.guhsd.net/go/video/quests/lockMasteryStage.mp4'),
+				'name' => 'Lock mastery stage (Optional)'.go_task_opt_help('lock_mastery', '', 'http://maclab.guhsd.net/go/video/quests/lockMasteryStage.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',
 				'id' => $prefix.'mastery_lock',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Mastery Check for Understanding (Optional)'.go_task_opt_help('mastery_understand', '', 'maclab.guhsd.net/go/video/quests/masteryCheckForUnderstanding.mp4'),
+				'name' => 'Mastery Check for Understanding (Optional)'.go_task_opt_help('mastery_understand', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckForUnderstanding.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has completed the test.',
 				'id' => $prefix.'test_mastery_lock',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Check Type'.go_task_opt_help('mastery_understand_checktype', '', 'maclab.guhsd.net/go/video/quests/masteryCheckType.mp4'),
+				'name' => 'Check Type'.go_task_opt_help('mastery_understand_checktype', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckType.mp4'),
 				'desc' => 'Select the type of test that is given to the user.',
 				'id' => $prefix.'test_mastery_lock_type',
 				'type' => 'select',
@@ -181,21 +181,21 @@ function go_mta_con_meta( array $meta_boxes ) {
                 )
 			),
 			array(
-				'name' => 'Check Question'.go_task_opt_help('mastery_understand_question', '', 'maclab.guhsd.net/go/video/quests/masteryCheckQuestion.mp4'),
+				'name' => 'Check Question'.go_task_opt_help('mastery_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckQuestion.mp4'),
 				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
 							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_question',
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Check Answers'.go_task_opt_help('mastery_understand_answer', '', 'maclab.guhsd.net/go/video/quests/masteryCheckAnswers.mp4'),
+				'name' => 'Check Answers'.go_task_opt_help('mastery_understand_answer', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckAnswers.mp4'),
 				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
 							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_answers',
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Check Key'.go_task_opt_help('mastery_understand_key', '', 'maclab.guhsd.net/go/video/quests/masteryCheckKey.mp4'),
+				'name' => 'Check Key'.go_task_opt_help('mastery_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckKey.mp4'),
 				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
 							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
 							<code>Note: Apostrophes (\', ") are not permited.</code>',
@@ -203,19 +203,19 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Mastery unlock password'.go_task_opt_help('unlock_mastery', '', 'maclab.guhsd.net/go/video/quests/masteryUnlockPassword.mp4'),
+				'name' => 'Mastery unlock password'.go_task_opt_help('unlock_mastery', '', 'http://maclab.guhsd.net/go/video/quests/masteryUnlockPassword.mp4'),
 				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'mastery_unlock',
 				'type' => 'text'
 			),
 			array(
-					'name' => 'Repeatable'.go_task_opt_help('repeatable', '', 'maclab.guhsd.net/go/video/quests/repeatable.mp4'),
+					'name' => 'Repeatable'.go_task_opt_help('repeatable', '', 'http://maclab.guhsd.net/go/video/quests/repeatable.mp4'),
 					'desc' => ' Select to make '.go_return_options('go_tasks_name').' repeatable.',
 					'id'   => $prefix . 'task_repeat',
 					'type' => 'checkbox'
 				),
 			array(
-				'name' => 'Repeat Message (Optional)'.go_task_opt_help('repeat_message', '', 'maclab.guhsd.net/go/video/quests/repeatMessage.mp4'),
+				'name' => 'Repeat Message (Optional)'.go_task_opt_help('repeat_message', '', 'http://maclab.guhsd.net/go/video/quests/repeatMessage.mp4'),
 				'desc' => 'Enter a message for the user to recieve when they have <i>repeated</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'repeat_message',
 				'type' => 'wysiwyg',
@@ -226,7 +226,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 						
 				),
 			array(
-				'name' => 'Allowed Repeatable Times (Optional)'.go_task_opt_help('repeat_limit', '', 'maclab.guhsd.net/go/video/quests/allowedRepeatableTimes.mp4'),
+				'name' => 'Allowed Repeatable Times (Optional)'.go_task_opt_help('repeat_limit', '', 'http://maclab.guhsd.net/go/video/quests/allowedRepeatableTimes.mp4'),
 				'desc' => 'Enter a numerical value to set a hard limit to the amount of times a user can repeat a task.<br/> Leave blank if no limit.',
 				'id' => $prefix.'repeat_amount',
 				'type' => 'text'
