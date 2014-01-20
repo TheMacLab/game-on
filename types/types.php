@@ -394,7 +394,7 @@ function go_create_help_video_lb(){
     </div>';
 }
 
-add_action('admin_init', 'go_create_help_video_lb');
+add_action('admin_head', 'go_create_help_video_lb');
 
 function go_task_opt_help($field, $title, $video_url = null) {
 	return '<a id="go_help_'.$field.'" class="go_task_opt_help" onclick="go_display_help_video(\''.$video_url.'\');" title="'.$title.'" style="background: #DBDBDB !important;">?</a>';
