@@ -19,16 +19,128 @@ function go_task_shortcode($atts, $content = null) {
 		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
 		
 		$test_active = $custom_fields['go_mta_test_lock'][0];
-		$test_type = $custom_fields['go_mta_test_lock_type'][0];
-		$test_question = $custom_fields['go_mta_test_lock_question'][0];
-		$test_answers = $custom_fields['go_mta_test_lock_answers'][0];
-		$test_key = $custom_fields['go_mta_test_lock_key'][0];
+		
+		if ($test_active) {
+			$test_num = $custom_fields['go_mta_test_lock_num'][0];
+			
+			$test_type_0 = $custom_fields['go_mta_test_lock_type_0'][0];
+			$test_question_0 = $custom_fields['go_mta_test_lock_question_0'][0];
+			$test_answers_0 = $custom_fields['go_mta_test_lock_answers_0'][0];
+			$test_key_0 = $custom_fields['go_mta_test_lock_key_0'][0];
+			
+			if ($test_num > 1) {
+					$test_all_types = array();
+					$test_all_questions = array();
+					$test_all_answers = array();
+					$test_all_keys = array();
+					array_push($test_all_types, $test_type_0);
+					array_push($test_all_questions, $test_question_0);
+					array_push($test_all_answers, $test_answers_0);
+					array_push($test_all_keys, $test_key_0);
+			}
+			if ($test_num >= 2) {
+				$test_type_1 = $custom_fields['go_mta_test_lock_type_1'][0];
+				$test_question_1 = $custom_fields['go_mta_test_lock_question_1'][0];
+				$test_answers_1 = $custom_fields['go_mta_test_lock_answers_1'][0];
+				$test_key_1 = $custom_fields['go_mta_test_lock_key_1'][0];
+				array_push($test_all_types, $test_type_1);
+				array_push($test_all_questions, $test_question_1);
+				array_push($test_all_answers, $test_answers_1);
+				array_push($test_all_keys, $test_key_1);
+			}
+			if ($test_num >= 3) {
+				$test_type_2 = $custom_fields['go_mta_test_lock_type_2'][0];
+				$test_question_2 = $custom_fields['go_mta_test_lock_question_2'][0];
+				$test_answers_2 = $custom_fields['go_mta_test_lock_answers_2'][0];
+				$test_key_2 = $custom_fields['go_mta_test_lock_key_2'][0];
+				array_push($test_all_types, $test_type_2);
+				array_push($test_all_questions, $test_question_2);
+				array_push($test_all_answers, $test_answers_2);
+				array_push($test_all_keys, $test_key_2);
+			}
+			if ($test_num >= 4) {
+				$test_type_3 = $custom_fields['go_mta_test_lock_type_3'][0];
+				$test_question_3 = $custom_fields['go_mta_test_lock_question_3'][0];
+				$test_answers_3 = $custom_fields['go_mta_test_lock_answers_3'][0];
+				$test_key_3 = $custom_fields['go_mta_test_lock_key_3'][0];			
+				array_push($test_all_types, $test_type_3);
+				array_push($test_all_questions, $test_question_3);
+				array_push($test_all_answers, $test_answers_3);
+				array_push($test_all_keys, $test_key_3);
+			}
+			if ($test_num == 5) {
+				$test_type_4 = $custom_fields['go_mta_test_lock_type_4'][0];
+				$test_question_4 = $custom_fields['go_mta_test_lock_question_4'][0];
+				$test_answers_4 = $custom_fields['go_mta_test_lock_answers_4'][0];
+				$test_key_4 = $custom_fields['go_mta_test_lock_key_4'][0];			
+				array_push($test_all_types, $test_type_4);
+				array_push($test_all_questions, $test_question_4);
+				array_push($test_all_answers, $test_answers_4);
+				array_push($test_all_keys, $test_key_4);			
+			}
+		}
 		
 		$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
-		$test_m_type = $custom_fields['go_mta_test_mastery_lock_type'][0];
-		$test_m_question = $custom_fields['go_mta_test_mastery_lock_question'][0];
-		$test_m_answers = $custom_fields['go_mta_test_mastery_lock_answers'][0];
-		$test_m_key = $custom_fields['go_mta_test_mastery_lock_key'][0];
+
+		if ($test_m_active) {
+			$test_m_num = $custom_fields['go_mta_test_mastery_lock_num'][0];
+			
+			$test_m_type_0 = $custom_fields['go_mta_test_mastery_lock_type_0'][0];
+			$test_m_question_0 = $custom_fields['go_mta_test_mastery_lock_question_0'][0];
+			$test_m_answers_0 = $custom_fields['go_mta_test_mastery_lock_answers_0'][0];
+			$test_m_key_0 = $custom_fields['go_mta_test_mastery_lock_key_0'][0];
+			
+			if ($test_m_num > 1) {
+					$test_m_all_types = array();
+					$test_m_all_questions = array();
+					$test_m_all_answers = array();
+					$test_m_all_keys = array();
+					array_push($test_m_all_types, $test_m_type_0);
+					array_push($test_m_all_questions, $test_m_question_0);
+					array_push($test_m_all_answers, $test_m_answers_0);
+					array_push($test_m_all_keys, $test_m_key_0);
+			}
+			if ($test_m_num >= 2) {
+				$test_m_type_1 = $custom_fields['go_mta_test_mastery_lock_type_1'][0];
+				$test_m_question_1 = $custom_fields['go_mta_test_mastery_lock_question_1'][0];
+				$test_m_answers_1 = $custom_fields['go_mta_test_mastery_lock_answers_1'][0];
+				$test_m_key_1 = $custom_fields['go_mta_test_mastery_lock_key_1'][0];
+				array_push($test_m_all_types, $test_m_type_1);
+				array_push($test_m_all_questions, $test_m_question_1);
+				array_push($test_m_all_answers, $test_m_answers_1);
+				array_push($test_m_all_keys, $test_m_key_1);
+			}
+			if ($test_m_num >= 3) {
+				$test_m_type_2 = $custom_fields['go_mta_test_mastery_lock_type_2'][0];
+				$test_m_question_2 = $custom_fields['go_mta_test_mastery_lock_question_2'][0];
+				$test_m_answers_2 = $custom_fields['go_mta_test_mastery_lock_answers_2'][0];
+				$test_m_key_2 = $custom_fields['go_mta_test_mastery_lock_key_2'][0];
+				array_push($test_m_all_types, $test_m_type_2);
+				array_push($test_m_all_questions, $test_m_question_2);
+				array_push($test_m_all_answers, $test_m_answers_2);
+				array_push($test_m_all_keys, $test_m_key_2);
+			}
+			if ($test_m_num >= 4) {
+				$test_m_type_3 = $custom_fields['go_mta_test_mastery_lock_type_3'][0];
+				$test_m_question_3 = $custom_fields['go_mta_test_mastery_lock_question_3'][0];
+				$test_m_answers_3 = $custom_fields['go_mta_test_mastery_lock_answers_3'][0];
+				$test_m_key_3 = $custom_fields['go_mta_test_mastery_lock_key_3'][0];			
+				array_push($test_m_all_types, $test_m_type_3);
+				array_push($test_m_all_questions, $test_m_question_3);
+				array_push($test_m_all_answers, $test_m_answers_3);
+				array_push($test_m_all_keys, $test_m_key_3);
+			}
+			if ($test_m_num == 5) {
+				$test_m_type_4 = $custom_fields['go_mta_test_mastery_lock_type_4'][0];
+				$test_m_question_4 = $custom_fields['go_mta_test_mastery_lock_question_4'][0];
+				$test_m_answers_4 = $custom_fields['go_mta_test_mastery_lock_answers_4'][0];
+				$test_m_key_4 = $custom_fields['go_mta_test_mastery_lock_key_4'][0];			
+				array_push($test_m_all_types, $test_m_type_4);
+				array_push($test_m_all_questions, $test_m_question_4);
+				array_push($test_m_all_answers, $test_m_answers_4);
+				array_push($test_m_all_keys, $test_m_key_4);			
+			}
+		}
 		
 		if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
 			$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
@@ -153,12 +265,19 @@ function go_task_shortcode($atts, $content = null) {
 					case 2: 
 						echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg));
 						if ($test_active) {
-							if (preg_match("/('|\")+/", $test_question) || preg_match("/('|\")+/", $test_answers) || preg_match("/('|\")+/", $test_key)) {
+							if (preg_match("/('|\")+/", $test_question_0) || preg_match("/('|\")+/", $test_answers_0) || preg_match("/('|\")+/", $test_key_0)) {
 								if (current_user_can('manage_options')) {
 									echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
 								}
 							} else {
-								echo do_shortcode("[go_test type='".$test_type."' question='".$test_question."' possible_answers='".$test_answers."' key='".$test_key."']");
+								if ($test_num > 1) {
+									for ($i = 0; $i < $test_num; $i++) {
+										echo do_shortcode("[go_test type='".$test_all_types[$i]."' question='".$test_all_questions[$i]."' possible_answers='".$test_all_answers[$i]."' key='".$test_all_keys[$i]."' test_id='".$i."' total_num='".$test_num."']");
+									}
+									echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
+								} else {
+									echo do_shortcode("[go_test type='".$test_type_0."' question='".$test_question_0."' possible_answers='".$test_answers_0."' key='".$test_key_0."' test_id='0']");
+								}
 							}
 						}
 						echo '<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.
@@ -177,15 +296,21 @@ function go_task_shortcode($atts, $content = null) {
 						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'
 						'.do_shortcode(wpautop($completion_message));
 						if ($test_m_active) {
-							if (preg_match("/('|\")+/", $test_m_question) || preg_match("/('|\")+/", $test_m_answers) || preg_match("/('|\")+/", $test_m_key)) {
+							if (preg_match("/('|\")+/", $test_m_question_0) || preg_match("/('|\")+/", $test_m_answers_0) || preg_match("/('|\")+/", $test_m_key_0)) {
 								if (current_user_can('manage_options')) {
 									echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
 								}
 							} else {
-								echo do_shortcode("[go_test type='".$test_m_type."' question='".$test_m_question."' possible_answers='".$test_m_answers."' key='".$test_m_key."']");
+								if ($test_m_num > 1) {
+									for ($i = 0; $i < $test_m_num; $i++) {
+										echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+									}
+									echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
+								} else {
+									echo do_shortcode("[go_test type='".$test_m_type_0."' question='".$test_m_question_0."' possible_answers='".$test_m_answers_0."' key='".$test_m_key_0."' test_id='0']");
+								}
 							}
 						}
-						
 						echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
 						go_return_options('go_fourth_stage_button').'</button> 
 						<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
@@ -230,7 +355,7 @@ function go_task_shortcode($atts, $content = null) {
 			$category_name = implode(',',$category_names);
 			echo 'This task is only available to '.$category_name;
 		}
-
+		
 ?>
 	<script language="javascript">
 		jQuery(document).ready(function() {
@@ -241,91 +366,224 @@ function go_task_shortcode($atts, $content = null) {
 		});
 		
 		function check_locks() {
-		if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
-			jQuery('#go_button').attr('disabled', 'true');
-
-			var typing_timer;
-			var doneTyping = 500;
-			jQuery('#go_test_submit').click(function() {
-					task_unlock();
-			});
-			jQuery('#go_unlock_next_stage').keyup(function (){
-				typing_timer = setTimeout(function() {
+			if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
+				jQuery('#go_button').attr('disabled', 'true');
+				var typing_timer;
+				var doneTyping = 500;
+				jQuery('.go_test_submit').click(function() {
 						task_unlock();
-				}, doneTyping);
-			});
-			jQuery('#go_unlock_next_stage').keydown(function (){
-				clearTimeout(typing_timer);
-			});
+				});
+				jQuery('#go_unlock_next_stage').keyup(function (){
+					typing_timer = setTimeout(function() {
+							task_unlock();
+					}, doneTyping);
+				});
+				jQuery('#go_unlock_next_stage').keydown(function (){
+					clearTimeout(typing_timer);
+				});
 			
 			
-		} else if (jQuery('#go_unlock_next_stage').length != 0){
-			jQuery('#go_button').attr('disabled', 'true');
-			var typing_timer;
-			var doneTyping = 500;
-			jQuery('#go_unlock_next_stage').keyup(function (){
-				typing_timer = setTimeout(task_unlock, doneTyping);
-			});
-			jQuery('#go_unlock_next_stage').keydown(function (){
-				clearTimeout(typing_timer);
-			});
-		} else if (jQuery(".go_test_list").length != 0) {
-			jQuery('#go_button').attr('disabled', 'true');
-			jQuery('#go_test_submit').click(function() {
-				task_unlock();
-			});
-		}
+			} else if (jQuery('#go_unlock_next_stage').length != 0){
+				jQuery('#go_button').attr('disabled', 'true');
+				var typing_timer;
+				var doneTyping = 500;
+				jQuery('#go_unlock_next_stage').keyup(function (){
+					typing_timer = setTimeout(task_unlock, doneTyping);
+				});
+				jQuery('#go_unlock_next_stage').keydown(function (){
+					clearTimeout(typing_timer);
+				});
+			} else if (jQuery(".go_test_list").length != 0) {
+				jQuery('#go_button').attr('disabled', 'true');
+				jQuery('.go_test_submit').click(function() {
+					var test_list = jQuery(".go_test_list");
+					if (test_list.length > 1) {
+						var checked_ans = 0;
+						for (var i = 0; i < test_list.length; i++) {
+							var type = test_list[i].children[1].children[0].type;
+
+							var obj_str = "#"+test_list[i].id+" :checked";
+							var chosen_answers = jQuery(obj_str);
+
+							if (type == 'radio') {
+								if (chosen_answers.length == 1) {
+									checked_ans++;
+								} else { 
+									jQuery('#go_test_error_msg').text("Please answer all questions!");
+								}
+							} else {
+								if (chosen_answers.length >= 2) {
+									checked_ans++;
+								} else { 
+									jQuery('#go_test_error_msg').text("Please choose at least two answers!");
+								}
+							}
+						}
+
+						if (checked_ans >= test_list.length) {
+							task_unlock();
+						}
+					} else {
+						var type = jQuery('.go_test_list li input').attr("type");
+						if (type == 'radio') {
+							if (jQuery(".go_test_list input:checked").length == 1) {
+								task_unlock();
+							} else {
+								jQuery('#go_test_error_msg').text("Please choose an answer!");
+							}
+						} else {
+							if (jQuery(".go_test_list input:checked").length > 1) {
+								task_unlock();
+							} else { 
+								jQuery('#go_test_error_msg').text("Please choose at least two answers!");
+							}
+						}
+					}
+				});
+			}
 		}
 
 		function task_unlock() {
 			if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
-				var chosen_answer = jQuery("ul#go_test li input:checked");
-				var choice = chosen_answer[0].value;
-				var type = jQuery('.go_test_list li input:first').attr('type');
-				var pwd_check = String(jQuery('#go_unlock_next_stage').val());
-				var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
-				var which = 'both';
+				if (jQuery('.go_test_list :checked').length != 0) {
+						var test_list = jQuery(".go_test_list");
+						var list_size = test_list.length;
+						var type_array = [];
+						
+						if (jQuery(".go_test_list").length > 1) {
+						
+							var choice_array = [];
+
+							for (var x = 0; x < list_size; x++) {
+								
+								// figure out the type of each test
+								var test_type = test_list[x].children[1].children[0].type;
+								type_array.push(test_type);
+
+								// get the checked inputs of each test
+								var obj_str = "#"+test_list[x].id+" :checked";
+								var chosen_answers = jQuery(obj_str);
+
+								if (test_type == 'radio') {
+									// push indiviudal answers to the choice_array
+									choice_array.push(chosen_answers[0].value);
+								} else if (test_type == 'checkbox') {
+									var t_array = [];
+									for (var i = 0; i < chosen_answers.length; i++) {
+										t_array.push(chosen_answers[i].value);
+									}
+									var choice_str = t_array.join("### ");
+									choice_array.push(choice_str);
+								}	
+							}
+							var choice = choice_array.join("#### ");
+							var type = type_array.join("### ");
+						} else {
+							var chosen_answer = jQuery('.go_test_list li input:checked');
+							var type = jQuery('.go_test_list li input').first().attr("type");
+							if (type == 'radio') {
+								var choice = chosen_answer[0].value;
+							} else if (type == 'checkbox') {
+								var choice = [];
+								for (var i = 0; i < chosen_answer.length; i++) {
+									choice.push(chosen_answer[i].value);	
+								}
+								choice = choice.join("### ");
+							}
+						}
+
+					/*var chosen_answer = jQuery("ul#go_test li input:checked");
+					var choice = chosen_answer[0].value;
+					var type = jQuery('.go_test_list li input:first').attr('type');
+					*/
+					var pwd_check = String(jQuery('#go_unlock_next_stage').val());
+					var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
+					var which = 'both';
+				} else {
+					jQuery('#go_test_error_msg').text("Choose an answer!");
+				}
 			} else {
 				if (jQuery('#go_unlock_next_stage').length != 0) {
 					var pwd_check = String(jQuery('#go_unlock_next_stage').val());
 					var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
 					var which = 'pass';
 				} else if (jQuery(".go_test_list").length != 0) {
-					var type = jQuery('.go_test_list li input:first').attr('type');
-					var chosen_answer = jQuery("ul#go_test li input:checked");
-					if (type == 'radio') {
-						var choice = chosen_answer[0].value;	
-					} else if (type == 'checkbox') {
-						var choice = [];
-						for (var i = 0; i < chosen_answer.length; i++) {
-							choice.push(chosen_answer[i].value);	
+					if (jQuery('.go_test_list :checked').length != 0) {
+						
+						var test_list = jQuery(".go_test_list");
+						var list_size = test_list.length;
+						var type_array = [];
+						
+						if (jQuery(".go_test_list").length > 1) {
+						
+							var choice_array = [];
+
+							for (var x = 0; x < list_size; x++) {
+								
+								// figure out the type of each test
+								var test_type = test_list[x].children[1].children[0].type;
+								type_array.push(test_type);
+
+								// get the checked inputs of each test
+								var obj_str = "#"+test_list[x].id+" :checked";
+								var chosen_answers = jQuery(obj_str);
+
+								if (test_type == 'radio') {
+									// push indiviudal answers to the choice_array
+									choice_array.push(chosen_answers[0].value);
+								} else if (test_type == 'checkbox') {
+									var t_array = [];
+									for (var i = 0; i < chosen_answers.length; i++) {
+										t_array.push(chosen_answers[i].value);
+									}
+									var choice_str = t_array.join("### ");
+									choice_array.push(choice_str);
+								}	
+							}
+							var choice = choice_array.join("#### ");
+							var type = type_array.join("### ");
+						} else {
+							var chosen_answer = jQuery('.go_test_list li input:checked');
+							var type = jQuery('.go_test_list li input').first().attr("type");
+							if (type == 'radio') {
+								var choice = chosen_answer[0].value;
+							} else if (type == 'checkbox') {
+								var choice = [];
+								for (var i = 0; i < chosen_answer.length; i++) {
+									choice.push(chosen_answer[i].value);	
+								}
+								choice = choice.join("### ");
+							}
 						}
-						choice = choice.join("### ");
+						var which = 'test';
+					} else {
+						jQuery('#go_test_error_msg').text("Choose an answer!");
 					}
-					var which = 'test';
 				}
 			}
 			var status = jQuery('#go_button').attr("status");
-			
 			jQuery.ajax({
 				type: "POST",
 				data:{
 					action: 'unlock_stage',
 					password_check: pwd_hash,
 					task: <?php echo $id; ?>,
+					list_size: list_size,
 					chosen_answer: choice,
 					type: type,
 					status: status,
 					which: which,
-					
 				},
 				success: function(response){
 					if(response == 1 || response == '1'){
 						jQuery('#go_button').removeAttr('disabled');
 						if (which == 'both') {
 							jQuery('.go_lock_message').html('Password correct, move on.');
-							jQuery('#go_unlock_next_stage').remove();	
-							jQuery('#go_test_container').hide('slow');
+							jQuery('#go_unlock_next_stage').remove();
+							jQuery('.go_test_container').hide('slow');
+							if (list_size > 1) {
+								jQuery('.go_test_submit').hide('slow');	
+							}
 							jQuery('#go_button').removeAttr('disabled');
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
@@ -334,7 +592,10 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('.go_lock_message').html('Password correct, move on.');
 							jQuery('#go_unlock_next_stage').remove();	
 						} else if (which == 'test') {
-							jQuery('#go_test_container').hide('slow');
+							jQuery('.go_test_container').hide('slow');
+							if (list_size > 1) {
+								jQuery('.go_test_submit').hide('slow');	
+							}
 							jQuery('#go_button').removeAttr('disabled');
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
@@ -353,7 +614,7 @@ function go_task_shortcode($atts, $content = null) {
 			});
 		}
 		
-		/*  If the checks for understanding need to provide bonuses with diminishing returns.
+		/*  For when the checks for understanding need to provide bonuses with diminishing returns.
 		function test_point_update() {
 			jQuery.ajax({
 				type: "POST",
@@ -475,8 +736,7 @@ function go_task_shortcode($atts, $content = null) {
 			});	
 		}
 	</script>
-		
-<?php
+<?php	
 			echo $the_stage; // Just for Testing Purposes
 			// this is an edit link.
 			edit_post_link('Edit '.go_return_options('go_tasks_name'), '<br />
@@ -486,7 +746,7 @@ function go_task_shortcode($atts, $content = null) {
 } // Ends function
 add_shortcode('go_task','go_task_shortcode');
 
-/*  For checks for understanding... See the declaration of the test_point_update function in the script tag.
+/*  For checks for understanding... See the declaration of the test_point_update function in the script tag above.
 function test_point_update() {
 	$status = $_POST['status'];
 	$user_id = $_POST['user_ID'];
@@ -502,18 +762,32 @@ function unlock_stage(){
 	$id = $_POST['task'];
 	$status = $_POST['status'] - 1;
 	$which = $_POST['which'];
+	$test_size = $_POST['list_size'];
 	
 	if ($which == 'both') {
 		$password_check = $_POST['password_check'];
 		$choice = $_POST['chosen_answer'];
 		$type = $_POST['type'];
+		if ($test_size > 1) {
+			$all_test_choices = explode("#### ", $choice);
+			$type_array = explode("### ", $type);
+		} else {
+			if ($type == 'checkbox') {
+				$choice_array = explode("### ", $choice);
+			}
+		}
 	} else if ($which == 'pass') {
 		$password_check = $_POST['password_check'];
 	} else if ($which == 'test') {
 		$choice = $_POST['chosen_answer'];
 		$type = $_POST['type'];
-		if ($type == 'checkbox') {
-			$choice_array = explode("### ", $choice);
+		if ($test_size > 1) {
+			$all_test_choices = explode("#### ", $choice);
+			$type_array = explode("### ", $type);
+		} else {
+			if ($type == 'checkbox') {
+				$choice_array = explode("### ", $choice);
+			}
 		}
 	}
 	
@@ -533,41 +807,165 @@ function unlock_stage(){
 	$page_id = get_the_ID();
 	
 	$user_ID = get_current_user_id();
-	$go_table_ind = $wpdb->prefix.'go';
 	
 	if ($status == 2) {
 		$password = sha1($custom_fields['go_mta_complete_unlock'][0]);
-		$key = $custom_fields['go_mta_test_lock_key'][0];
+		$key = $custom_fields['go_mta_test_lock_key_0'][0];
+		if ($test_size > 1) {
+			$key_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
+
+			$all_keys_array = array($key_parsed);
+			$test_key_1 = $custom_fields['go_mta_test_lock_key_1'][0];
+			$test_key_1_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_1);
+			array_push($all_keys_array, $test_key_1_parsed);
+		}
+		if ($test_size > 2) {
+			$test_key_2 = $custom_fields['go_mta_test_lock_key_2'][0];
+			$test_key_2_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_2);
+			array_push($all_keys_array, $test_key_2_parsed);
+		}
+		if ($test_size > 3) {
+			$test_key_3 = $custom_fields['go_mta_test_lock_key_3'][0];
+			$test_key_3_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_3);
+			array_push($all_keys_array, $test_key_3_parsed);
+		}
+		if ($test_size > 4) {
+			$test_key_4 = $custom_fields['go_mta_test_lock_key_4'][0];
+			$test_key_4_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_4);
+			array_push($all_keys_array, $test_key_4_parsed);
+		}
 	} else if ($status == 3) {
 		$password = sha1($custom_fields['go_mta_mastery_unlock'][0]);
-		$key = $custom_fields['go_mta_test_mastery_lock_key'][0];
-		
+		$key = $custom_fields['go_mta_test_mastery_lock_key_0'][0];
+		if ($test_size > 1) {
+			$key_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
+
+			$all_keys_array = array($key_parsed);
+			$test_key_1 = $custom_fields['go_mta_test_mastery_lock_key_1'][0];
+			$test_key_1_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_1);
+			array_push($all_keys_array, $test_key_1_parsed);
+		}
+		if ($test_size > 2) {
+			$test_key_2 = $custom_fields['go_mta_test_mastery_lock_key_2'][0];
+			$test_key_2_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_2);
+			array_push($all_keys_array, $test_key_2_parsed);
+		}
+		if ($test_size > 3) {
+			$test_key_3 = $custom_fields['go_mta_test_mastery_lock_key_3'][0];
+			$test_key_3_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_3);
+			array_push($all_keys_array, $test_key_3_parsed);
+		}
+		if ($test_size > 4) {
+			$test_key_4 = $custom_fields['go_mta_test_mastery_lock_key_4'][0];
+			$test_key_4_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_4);
+			array_push($all_keys_array, $test_key_4_parsed);
+		}
 	}
 	
-	if ($type == 'checkbox') {
+	if ($type == 'checkbox' && !($list_size > 1)) {
 		$key_str = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
 		$key_array = explode("### ", $key_str);
 	}
-	
+
+
 	if ($which == 'both') {
-		if (strtolower($choice) != strtolower($key) && $password_check == $password) {
-			echo 1;
-		} else {
-			if (strtolower($choice) != strtolower($key) && $password_check != $password) {
-				echo "Wrong answer AND incorrect password!";
-				die();
-			} else { 
+		if ($test_size > 1) {
+			$total_matches = 0;
+			for ($i = 0; $i < $test_size; $i++) {
+				if ($type_array[$i] == 'radio') {
+					if (strtolower($all_keys_array[$i]) == strtolower($all_test_choices[$i])) {
+						$total_matches++;
+					}					
+				} else {
+					$k_array = explode("### ", $all_keys_array[$i]);
+					$c_array = explode("### ", $all_test_choices[$i]);
+					$match_count = 0;
+					for ($x = 0; $x < count($c_array); $x++) {
+						if (strtolower($c_array[$x]) == strtolower($k_array[$x])) {
+							$match_count++;
+						}
+					}
+
+					if ($match_count == count($k_array)) {
+						$total_matches++;
+					}
+				}
+			}
+			if ($total_matches == $test_size && $password_check == $password) {
+				echo 1;
+			} else {
+				if ($total_matches != $test_size && $password_check != $password) {
+					echo "Wrong answer AND incorrect password!";
+					die();
+				} else { 
 			
-				if ($password_check != $password) {
-					echo "Incorrect password!";
-				}
+					if ($password_check != $password) {
+						echo "Incorrect password!";
+					}
 				
-				if (strtolower($choice) != strtolower($key)) {
-					echo "Wrong answer!";
+					if ($total_matches != $test_size) {
+						echo "Wrong answer!";
+					}
+					die();
 				}
-				die();
+			}
+		} else {
+
+			if ($type == 'radio') {
+				if (strtolower($choice) == strtolower($key) && $password_check == $password) {
+					echo 1;
+				} else {
+					if ($strtolower($choice) != strtolower($key) && $password_check != $password) {
+						echo "Wrong answer AND incorrect password!";
+						die();
+					} else { 
+				
+						if ($password_check != $password) {
+							echo "Incorrect password!";
+						}
+					
+						if (strtolower($choice) != strtolower($key)) {
+							echo "Wrong answer!";
+						}
+						die();
+					}
+				}
+
+			} else if ($type == 'checkbox') {
+				$key_match = 0;
+				$key_array_keys = array_keys($key_array);
+				$choice_array_keys = array_keys($choice_array);
+				for ($i = 0; $i < count($key_array_keys); $i++) {
+					for ($x = 0; $x < count($choice_array_keys);  $x++) {
+						if (strtolower($choice_array[$x]) == strtolower($key_array[$i])) {
+							$key_match++;
+							break;
+						}
+					}
+				}
+
+				if ($key_match == count($choice_array_keys) && $key_match >= 2 && $password_check == $password) {
+					echo 1;
+				} else {
+					if ($key_match != count($choice_array_keys) && $key_match < 2 && $password_check != $password) {
+						echo "Wrong answer AND incorrect password!";
+						die();
+					} else { 
+				
+						if ($password_check != $password) {
+							echo "Incorrect password!";
+						}
+					
+						if ($key_match != count($choice_array_keys) || $key_match < 2) {
+							echo "Wrong answer!";
+						}
+						die();
+					}
+				}
 			}
 		}
+
+
 	} else if ($which == 'pass') {
 		if($password_check == $password){
 			echo 1;
@@ -577,32 +975,74 @@ function unlock_stage(){
 			die();
 		}
 	} else if ($which == 'test') {
-		if ($type == 'radio') {
-			if (strtolower($choice) == strtolower($key)) {
-				echo 1;
-				die();
-			} else {
-				echo 0;
-				die();
-			}
-		} else if ($type == 'checkbox') {
-			$key_match = 0;
-			$key_array_keys = array_keys($key_array);
-			$choice_array_keys = array_keys($choice_array);
-			for ($i = 0; $i < count($key_array_keys); $i++) {
-				for ($x = 0; $x < count($choice_array_keys);  $x++) {
-					if (strtolower($choice_array[$x]) == strtolower($key_array[$i])) {
-						$key_match++;
-						break;
+		if ($test_size > 1) {
+			$total_matches = 0;
+			for ($i = 0; $i < $test_size; $i++) {
+				if ($type_array[$i] == 'radio') {
+					if (strtolower($all_keys_array[$i]) == strtolower($all_test_choices[$i])) {
+						$total_matches++;
+					} else {
+						echo 0;
+						die();
+					}					
+				} else {
+					$k_array = explode("### ", $all_keys_array[$i]);
+					$c_array = explode("### ", $all_test_choices[$i]);
+					$match_count = 0;
+					for ($x = 0; $x < count($c_array); $x++) {
+						if (strtolower($c_array[$x]) == strtolower($k_array[$x])) {
+							$match_count++;
+						} else {
+							echo 0;
+							die();
+						}
+					}
+
+					if ($match_count == count($k_array)) {
+						$total_matches++;
+					} else {
+						echo 0;
+						die();
 					}
 				}
 			}
-			if ($key_match == count($choice_array_keys) && $key_match >= 2) {
+
+			if ($total_matches == $test_size) {
 				echo 1;
 				die();
 			} else {
 				echo 0;
 				die();
+			}
+		} else {
+
+			if ($type == 'radio') {
+				if (strtolower($choice) == strtolower($key)) {
+					echo 1;
+					die();
+				} else {
+					echo 0;
+					die();
+				}
+			} else if ($type == 'checkbox') {
+				$key_match = 0;
+				$key_array_keys = array_keys($key_array);
+				$choice_array_keys = array_keys($choice_array);
+				for ($i = 0; $i < count($key_array_keys); $i++) {
+					for ($x = 0; $x < count($choice_array_keys);  $x++) {
+						if (strtolower($choice_array[$x]) == strtolower($key_array[$i])) {
+							$key_match++;
+							break;
+						}
+					}
+				}
+				if ($key_match == count($choice_array_keys) && $key_match >= 2) {
+					echo 1;
+					die();
+				} else {
+					echo 0;
+					die();
+				}
 			}
 		}
 	}
@@ -632,17 +1072,129 @@ function task_change_stage() {
 	$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
 
 	$test_active = $custom_fields['go_mta_test_lock'][0];
-	$test_type = $custom_fields['go_mta_test_lock_type'][0];
-	$test_question = $custom_fields['go_mta_test_lock_question'][0];
-	$test_answers = $custom_fields['go_mta_test_lock_answers'][0];
-	$test_key = $custom_fields['go_mta_test_lock_key'][0];
 	
+	if ($test_active) {
+		$test_num = $custom_fields['go_mta_test_lock_num'][0];
+		
+		$test_type_0 = $custom_fields['go_mta_test_lock_type_0'][0];
+		$test_question_0 = $custom_fields['go_mta_test_lock_question_0'][0];
+		$test_answers_0 = $custom_fields['go_mta_test_lock_answers_0'][0];
+		$test_key_0 = $custom_fields['go_mta_test_lock_key_0'][0];
+		
+		if ($test_num > 1) {
+				$test_all_types = array();
+				$test_all_questions = array();
+				$test_all_answers = array();
+				$test_all_keys = array();
+				array_push($test_all_types, $test_type_0);
+				array_push($test_all_questions, $test_question_0);
+				array_push($test_all_answers, $test_answers_0);
+				array_push($test_all_keys, $test_key_0);
+		}
+		if ($test_num >= 2) {
+			$test_type_1 = $custom_fields['go_mta_test_lock_type_1'][0];
+			$test_question_1 = $custom_fields['go_mta_test_lock_question_1'][0];
+			$test_answers_1 = $custom_fields['go_mta_test_lock_answers_1'][0];
+			$test_key_1 = $custom_fields['go_mta_test_lock_key_1'][0];
+			array_push($test_all_types, $test_type_1);
+			array_push($test_all_questions, $test_question_1);
+			array_push($test_all_answers, $test_answers_1);
+			array_push($test_all_keys, $test_key_1);
+		}
+		if ($test_num >= 3) {
+			$test_type_2 = $custom_fields['go_mta_test_lock_type_2'][0];
+			$test_question_2 = $custom_fields['go_mta_test_lock_question_2'][0];
+			$test_answers_2 = $custom_fields['go_mta_test_lock_answers_2'][0];
+			$test_key_2 = $custom_fields['go_mta_test_lock_key_2'][0];
+			array_push($test_all_types, $test_type_2);
+			array_push($test_all_questions, $test_question_2);
+			array_push($test_all_answers, $test_answers_2);
+			array_push($test_all_keys, $test_key_2);
+		}
+		if ($test_num >= 4) {
+			$test_type_3 = $custom_fields['go_mta_test_lock_type_3'][0];
+			$test_question_3 = $custom_fields['go_mta_test_lock_question_3'][0];
+			$test_answers_3 = $custom_fields['go_mta_test_lock_answers_3'][0];
+			$test_key_3 = $custom_fields['go_mta_test_lock_key_3'][0];			
+			array_push($test_all_types, $test_type_3);
+			array_push($test_all_questions, $test_question_3);
+			array_push($test_all_answers, $test_answers_3);
+			array_push($test_all_keys, $test_key_3);
+		}
+		if ($test_num == 5) {
+			$test_type_4 = $custom_fields['go_mta_test_lock_type_4'][0];
+			$test_question_4 = $custom_fields['go_mta_test_lock_question_4'][0];
+			$test_answers_4 = $custom_fields['go_mta_test_lock_answers_4'][0];
+			$test_key_4 = $custom_fields['go_mta_test_lock_key_4'][0];			
+			array_push($test_all_types, $test_type_4);
+			array_push($test_all_questions, $test_question_4);
+			array_push($test_all_answers, $test_answers_4);
+			array_push($test_all_keys, $test_key_4);			
+		}
+	}
+
 	$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
-	$test_m_type = $custom_fields['go_mta_test_mastery_lock_type'][0];
-	$test_m_question = $custom_fields['go_mta_test_mastery_lock_question'][0];
-	$test_m_answers = $custom_fields['go_mta_test_mastery_lock_answers'][0];
-	$test_m_key = $custom_fields['go_mta_test_mastery_lock_key'][0];
-	
+
+	if ($test_m_active) {
+		$test_m_num = $custom_fields['go_mta_test_mastery_lock_num'][0];
+		
+		$test_m_type_0 = $custom_fields['go_mta_test_mastery_lock_type_0'][0];
+		$test_m_question_0 = $custom_fields['go_mta_test_mastery_lock_question_0'][0];
+		$test_m_answers_0 = $custom_fields['go_mta_test_mastery_lock_answers_0'][0];
+		$test_m_key_0 = $custom_fields['go_mta_test_mastery_lock_key_0'][0];
+		
+		if ($test_m_num > 1) {
+				$test_m_all_types = array();
+				$test_m_all_questions = array();
+				$test_m_all_answers = array();
+				$test_m_all_keys = array();
+				array_push($test_m_all_types, $test_m_type_0);
+				array_push($test_m_all_questions, $test_m_question_0);
+				array_push($test_m_all_answers, $test_m_answers_0);
+				array_push($test_m_all_keys, $test_m_key_0);
+		}
+		if ($test_m_num >= 2) {
+			$test_m_type_1 = $custom_fields['go_mta_test_mastery_lock_type_1'][0];
+			$test_m_question_1 = $custom_fields['go_mta_test_mastery_lock_question_1'][0];
+			$test_m_answers_1 = $custom_fields['go_mta_test_mastery_lock_answers_1'][0];
+			$test_m_key_1 = $custom_fields['go_mta_test_mastery_lock_key_1'][0];
+			array_push($test_m_all_types, $test_m_type_1);
+			array_push($test_m_all_questions, $test_m_question_1);
+			array_push($test_m_all_answers, $test_m_answers_1);
+			array_push($test_m_all_keys, $test_m_key_1);
+		}
+		if ($test_m_num >= 3) {
+			$test_m_type_2 = $custom_fields['go_mta_test_mastery_lock_type_2'][0];
+			$test_m_question_2 = $custom_fields['go_mta_test_mastery_lock_question_2'][0];
+			$test_m_answers_2 = $custom_fields['go_mta_test_mastery_lock_answers_2'][0];
+			$test_m_key_2 = $custom_fields['go_mta_test_mastery_lock_key_2'][0];
+			array_push($test_m_all_types, $test_m_type_2);
+			array_push($test_m_all_questions, $test_m_question_2);
+			array_push($test_m_all_answers, $test_m_answers_2);
+			array_push($test_m_all_keys, $test_m_key_2);
+		}
+		if ($test_m_num >= 4) {
+			$test_m_type_3 = $custom_fields['go_mta_test_mastery_lock_type_3'][0];
+			$test_m_question_3 = $custom_fields['go_mta_test_mastery_lock_question_3'][0];
+			$test_m_answers_3 = $custom_fields['go_mta_test_mastery_lock_answers_3'][0];
+			$test_m_key_3 = $custom_fields['go_mta_test_mastery_lock_key_3'][0];			
+			array_push($test_m_all_types, $test_m_type_3);
+			array_push($test_m_all_questions, $test_m_question_3);
+			array_push($test_m_all_answers, $test_m_answers_3);
+			array_push($test_m_all_keys, $test_m_key_3);
+		}
+		if ($test_m_num == 5) {
+			$test_m_type_4 = $custom_fields['go_mta_test_mastery_lock_type_4'][0];
+			$test_m_question_4 = $custom_fields['go_mta_test_mastery_lock_question_4'][0];
+			$test_m_answers_4 = $custom_fields['go_mta_test_mastery_lock_answers_4'][0];
+			$test_m_key_4 = $custom_fields['go_mta_test_mastery_lock_key_4'][0];			
+			array_push($test_m_all_types, $test_m_type_4);
+			array_push($test_m_all_questions, $test_m_question_4);
+			array_push($test_m_all_answers, $test_m_answers_4);
+			array_push($test_m_all_keys, $test_m_key_4);			
+		}
+	}
+
 	if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
 		$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
 	} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
@@ -710,12 +1262,19 @@ function task_change_stage() {
 		case 2:
 			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false));
 			if ($test_active) {
-				if (preg_match("/('|\")+/", $test_question) || preg_match("/('|\")+/", $test_answers) || preg_match("/('|\")+/", $test_key)) {
+				if (preg_match("/('|\")+/", $test_question_0) || preg_match("/('|\")+/", $test_answers_0) || preg_match("/('|\")+/", $test_key_0)) {
 					if (current_user_can('manage_options')) {
 						echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
 					}
 				} else {
-					echo do_shortcode("[go_test type='".$test_type."' question='".$test_question."' possible_answers='".$test_answers."' key='".$test_key."']");
+					if ($test_num > 1) {
+						for ($i = 0; $i < $test_num; $i++) {
+							echo do_shortcode("[go_test type='".$test_all_types[$i]."' question='".$test_all_questions[$i]."' possible_answers='".$test_all_answers[$i]."' key='".$test_all_keys[$i]."' test_id='".$i."' total_num='".$test_num."']");
+						}
+						echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
+					} else {
+						echo do_shortcode("[go_test type='".$test_type_0."' question='".$test_question_0."' possible_answers='".$test_answers_0."' key='".$test_key_0."' test_id='0']");
+					}
 				}
 			}
 			echo ' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
@@ -729,12 +1288,19 @@ function task_change_stage() {
 			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content">'
 			.do_shortcode(wpautop($completion_message));
 			if ($test_m_active) {
-				if (preg_match("/('|\")+/", $test_m_question) || preg_match("/('|\")+/", $test_m_answers) || preg_match("/('|\")+/", $test_m_key)) {
+				if (preg_match("/('|\")+/", $test_m_question_0) || preg_match("/('|\")+/", $test_m_answers_0) || preg_match("/('|\")+/", $test_m_key_0)) {
 					if (current_user_can('manage_options')) {
 						echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
 					}
 				} else {
-					echo do_shortcode("[go_test type='".$test_m_type."' question='".$test_m_question."' possible_answers='".$test_m_answers."' key='".$test_m_key."']");
+					if ($test_m_num > 1) {
+						for ($i = 0; $i < $test_m_num; $i++) {
+							echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+						}
+						echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
+					} else {
+						echo do_shortcode("[go_test type='".$test_m_type_0."' question='".$test_m_question_0."' possible_answers='".$test_m_answers_0."' key='".$test_m_key_0."' test_id='0']");
+					}
 				}
 			}
 			echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'

@@ -117,9 +117,22 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Check Type'.go_task_opt_help('complete_understand_checktype', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckType.mp4'),
+				'name' => 'Question Total',
+				'desc' => 'Select the desired number of questions for the test.',
+				'id' => $prefix.'test_lock_num',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( '1', 'cmb' ), 'value' => '1', ),
+					array( 'name' => __( '2', 'cmb' ), 'value' => '2', ),
+					array( 'name' => __( '3', 'cmb' ), 'value' => '3', ),
+					array( 'name' => __( '4', 'cmb' ), 'value' => '4', ),
+					array( 'name' => __( '5', 'cmb' ), 'value' => '5', )
+                )
+			),
+			array(
+				'name' => 'Check Type 1'.go_task_opt_help('complete_understand_checktype', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckType.mp4'),
 				'desc' => 'Select the type of test that is given to the user.',
-				'id' => $prefix.'test_lock_type',
+				'id' => $prefix.'test_lock_type_0',
 				'type' => 'select',
 				'options' => array(
                 	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
@@ -127,30 +140,146 @@ function go_mta_con_meta( array $meta_boxes ) {
                 )
 			),
 			array(
-				'name' => 'Check Question'.go_task_opt_help('complete_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
-							'<code>Note: Apostrophes (\', ") are not permited.</code>',
-				'id' => $prefix.'test_lock_question',
+				'name' => 'Check Question 1'.go_task_opt_help('complete_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckQuestion.mp4'),
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_lock_question_0',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Check Answers'.go_task_opt_help('complete_understand_answer', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckAnswers.mp4'),
 				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
 							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
-				'id' => $prefix.'test_lock_answers',
+				'id' => $prefix.'test_lock_answers_0',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('complete_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/completeCheckKey.mp4'),
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_lock_key_0',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Type 2',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_lock_type_1',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 2',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_lock_question_1',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_lock_answers_1',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
 				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
 							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
 							<code>Note: Apostrophes (\', ") are not permited.</code>',
-				'id' => $prefix.'test_lock_key',
+				'id' => $prefix.'test_lock_key_1',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Type 3',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_lock_type_2',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 3',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_lock_question_2',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_lock_answers_2',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_lock_key_2',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Type  4',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_lock_type_3',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 4',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_lock_question_3',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_lock_answers_3',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_lock_key_3',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Type 5',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_lock_type_4',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 5',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_lock_question_4',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_lock_answers_4',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_lock_key_4',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Mastery Message (Optional)'.go_task_opt_help('mastery', '', 'http://maclab.guhsd.net/go/video/quests/masteryMessage.mp4'),
-				'desc' => 'Enter a message for the user to recieve when they have <i>mastered</i> the '.go_return_options('go_tasks_name'),
+				'desc' => 'Enter a message for the user to recieve when they have <i>mastered</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'mastery_message',
 				'type' => 'wysiwyg',
         		'options' => array(
@@ -165,15 +294,34 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'Mastery unlock password'.go_task_opt_help('unlock_mastery', '', 'http://maclab.guhsd.net/go/video/quests/masteryUnlockPassword.mp4'),
+				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'mastery_unlock',
+				'type' => 'text'
+			),
+			array(
 				'name' => 'Mastery Check for Understanding (Optional)'.go_task_opt_help('mastery_understand', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckForUnderstanding.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has completed the test.',
 				'id' => $prefix.'test_mastery_lock',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Check Type'.go_task_opt_help('mastery_understand_checktype', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckType.mp4'),
+				'name' => 'Question Total',
+				'desc' => 'Select the desired number of questions for the test.',
+				'id' => $prefix.'test_mastery_lock_num',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( '1', 'cmb' ), 'value' => '1', ),
+					array( 'name' => __( '2', 'cmb' ), 'value' => '2', ),
+					array( 'name' => __( '3', 'cmb' ), 'value' => '3', ),
+					array( 'name' => __( '4', 'cmb' ), 'value' => '4', ),
+					array( 'name' => __( '5', 'cmb' ), 'value' => '5', )
+                )
+			),
+			array(
+				'name' => 'Check Type 1'.go_task_opt_help('mastery_understand_checktype', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckType.mp4'),
 				'desc' => 'Select the type of test that is given to the user.',
-				'id' => $prefix.'test_mastery_lock_type',
+				'id' => $prefix.'test_mastery_lock_type_0',
 				'type' => 'select',
 				'options' => array(
                 	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
@@ -181,39 +329,149 @@ function go_mta_con_meta( array $meta_boxes ) {
                 )
 			),
 			array(
-				'name' => 'Check Question'.go_task_opt_help('mastery_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
-							'<code>Note: Apostrophes (\', ") are not permited.</code>',
-				'id' => $prefix.'test_mastery_lock_question',
+				'name' => 'Check Question 1'.go_task_opt_help('mastery_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckQuestion.mp4'),
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_mastery_lock_question_0',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Check Answers'.go_task_opt_help('mastery_understand_answer', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckAnswers.mp4'),
 				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
 							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
-				'id' => $prefix.'test_mastery_lock_answers',
+				'id' => $prefix.'test_mastery_lock_answers_0',
 				'type' => 'text'
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('mastery_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckKey.mp4'),
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_mastery_lock_key_0',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Type 2',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_mastery_lock_type_1',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 2',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_question_1',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_answers_1',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
 				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
 							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
 							<code>Note: Apostrophes (\', ") are not permited.</code>',
-				'id' => $prefix.'test_mastery_lock_key',
+				'id' => $prefix.'test_mastery_lock_key_1',
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Mastery unlock password'.go_task_opt_help('unlock_mastery', '', 'http://maclab.guhsd.net/go/video/quests/masteryUnlockPassword.mp4'),
-				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
-				'id' => $prefix.'mastery_unlock',
+				'name' => 'Check Type 3',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_mastery_lock_type_2',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 3',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_mastery_lock_question_2',
 				'type' => 'text'
 			),
 			array(
-					'name' => 'Repeatable'.go_task_opt_help('repeatable', '', 'http://maclab.guhsd.net/go/video/quests/repeatable.mp4'),
-					'desc' => ' Select to make '.go_return_options('go_tasks_name').' repeatable.',
-					'id'   => $prefix . 'task_repeat',
-					'type' => 'checkbox'
-				),
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_answers_2',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_mastery_lock_key_2',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Type  4',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_mastery_lock_type_3',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 4',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_mastery_lock_question_3',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_answers_3',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_mastery_lock_key_3',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Type 5',
+				'desc' => 'Select the type of test that is given to the user.',
+				'id' => $prefix.'test_mastery_lock_type_4',
+				'type' => 'select',
+				'options' => array(
+                	array( 'name' => __( 'Radio', 'cmb' ), 'value' => 'radio', ),
+					array( 'name' => __( 'Checkbox', 'cmb' ), 'value' => 'checkbox', ),
+                )
+			),
+			array(
+				'name' => 'Check Question 5',
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'test_mastery_lock_question_4',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Answers',
+				'desc' => 'Enter at least 2 possible answers that a user could chose from to answer the provided question. 
+							Separate each answer with three octothorpes ("###"). <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_answers_4',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Check Key',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'id' => $prefix.'test_mastery_lock_key_4',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Repeatable'.go_task_opt_help('repeatable', '', 'http://maclab.guhsd.net/go/video/quests/repeatable.mp4'),
+				'desc' => ' Select to make '.go_return_options('go_tasks_name').' repeatable.',
+				'id'   => $prefix . 'task_repeat',
+				'type' => 'checkbox'
+			),
 			array(
 				'name' => 'Repeat Message (Optional)'.go_task_opt_help('repeat_message', '', 'http://maclab.guhsd.net/go/video/quests/repeatMessage.mp4'),
 				'desc' => 'Enter a message for the user to recieve when they have <i>repeated</i> the '.go_return_options('go_tasks_name').".",
@@ -357,7 +615,10 @@ function go_cmb_render_go_store_shortcode() {
  
 }
 
-
+add_action( 'cmb_render_go_button', 'go_cmb_render_go_button', 9, 0 );
+function go_cmb_render_go_button() {
+ echo '<input id="go_mta_test_lock_add_button" type="button" value="Add Question"/>';
+}
 
 add_filter( 'template_include', 'go_tasks_template_function', 1 );
 

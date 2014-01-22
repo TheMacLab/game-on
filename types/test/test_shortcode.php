@@ -6,6 +6,8 @@ function go_test_shortcode ( $atts, $content ) {
 		'question' => 'What is the ultimate answer to life, the universe, and everything?',
 		'possible_answers' => 'Pie### Burritos### 42### There is no answer',
 		'key' => '42',
+		'test_id' => '0',
+		'total_num' => '1'
 	), $atts) );
 	$possible_answers_str = preg_replace("/\#\#\#\s*/", "### ", $possible_answers);
 	$answer_array = explode("### ", $possible_answers_str);
@@ -45,16 +47,21 @@ function go_test_shortcode ( $atts, $content ) {
 		if ($type == 'radio') {
 			for ($i = 0; $i < count($answer_array_keys); $i++) {
 				$upper_name = ucfirst($answer_array[$i]);
-				array_push($output_array, "<li class='go_test go_test_element'><input type='radio' name='go_test_answer' value='".$upper_name."'> ".$upper_name."</input></li>");
+				array_push($output_array, "<li class='go_test go_test_element'><input type='radio' name='go_test_answer_".$test_id."' value='".$upper_name."'> ".$upper_name."</input></li>");
 			}
 		} else if ($type == 'checkbox') {
 			for ($i = 0; $i < count($answer_array_keys); $i++) {
 				$upper_name = ucfirst($answer_array[$i]);
-				array_push($output_array, "<li class='go_test go_test_element'><input type='checkbox' name='go_test_answer_".$answer_array[$i]."' value='".$upper_name."'> ".$upper_name."</input></li>");
+				array_push($output_array, "<li class='go_test go_test_element'><input type='checkbox' name='go_test_answer_".$test_id."_".$answer_array[$i]."' value='".$upper_name."'> ".$upper_name."</input></li>");
 			}
 		}
 		$output_array_str = implode(" ", $output_array);
-		$rtn_output = "<div id='go_test_container'><p id='go_test_error_msg' class='go_test' style='color: red;'></p><ul id='go_test' class='go_test go_test_list go_test_".$type."'><span style='font-weight:700;'>".ucfirst($question)."</span>".$output_array_str."<button id='go_test_submit'>GO!</button></ul></div>";
+		if ($total_num > 1) {
+			$rtn_output = "<div class='go_test_container'><p id='go_test_error_msg' class='go_test' style='color: red;'></p><ul id='go_test_".$test_id."' class='go_test go_test_list go_test_".$type."'><span style='font-weight:700;'>".ucfirst($question)."</span>".$output_array_str."</div>";
+		} else {
+			$rtn_output = "<div class='go_test_container'><p id='go_test_error_msg' class='go_test' style='color: red;'></p><ul id='go_test' class='go_test go_test_list go_test_".$type."'><span style='font-weight:700;'>".ucfirst($question)."</span>".$output_array_str."<button class='go_test_submit' style='margin-top: 10px;'>GO!</button></ul></div>";
+			
+		}
 		
 		return $rtn_output;
 	} else {
