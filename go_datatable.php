@@ -117,7 +117,8 @@ global $default_role;
 	'go_minutes_color_limit'=>'-900,-600,-300,0',
 	'go_focus_name' => 'Focus',
 	'go_focus_switch'=>'Off',
-	'go_focus'=>''
+	'go_focus'=>'',
+	'go_time_reset_switch' =>'Off'
 	);
 	foreach($options_array as $key => $value){
 		 add_option( $key, $value );
