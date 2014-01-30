@@ -17,7 +17,7 @@ function go_mail_menu() {
 			} else {
 				$email = get_option('go_admin_email','');
 				}
-		echo 'Recipient Email: <form action="" method="post">
+		echo '<span">Recipient Email:<span> <a href="javascript:;" class="go_task_opt_help" style="float: inherit !important;"onclick="go_display_help_video(\'http://maclab.guhsd.net/go/video/email/email.mp4\');">?</a> <form action="" method="post">
         <textarea name="go_mail">'.$email.'</textarea>
         <input type="submit" value="Submit"/>
         </form> <br />
