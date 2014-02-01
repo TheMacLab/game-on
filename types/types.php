@@ -97,7 +97,13 @@ function go_mta_con_meta( array $meta_boxes ) {
            			'wpautop' => true,
            			'textarea_rows' => '5',
          		),
-				),
+			),
+			array(
+				'name' => 'Completion File Upload',
+				'desc' => 'Toggle to require a user to upoad a file before completing the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'completion_upload',
+				'type' => 'checkbox'
+			),
 			array(
 				'name' => 'Lock complete stage (Optional)'.go_task_opt_help('lock_complete', '', 'http://maclab.guhsd.net/go/video/quests/lockCompleteStage.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',
@@ -293,6 +299,12 @@ function go_mta_con_meta( array $meta_boxes ) {
            			'textarea_rows' => '5',
          		),
 				),
+			array(
+				'name' => 'Mastery File Upload',
+				'desc' => 'Toggle to require a user to upoad a file before mastering the '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'mastery_upload',
+				'type' => 'checkbox'
+			),
 			array(
 				'name' => 'Lock mastery stage (Optional)'.go_task_opt_help('lock_mastery', '', 'http://maclab.guhsd.net/go/video/quests/lockMasteryStage.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',

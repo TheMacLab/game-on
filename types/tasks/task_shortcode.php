@@ -144,7 +144,7 @@ function go_task_shortcode($atts, $content = null) {
 				}
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
-
+			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
 			$mastery_locked = $custom_fields['go_mta_mastery_lock'][0];
 			$mastery_unlock = $custom_fields['go_mta_mastery_unlock'][0];
 			if ($mastery_locked == 'on' && $mastery_unlock != ' ') {
@@ -173,6 +173,7 @@ function go_task_shortcode($atts, $content = null) {
 			$minutes_required = $custom_fields['go_mta_time_filter'][0]; // Sets the filter equal to the meta field value declared in the task creation page
 		}
 		
+		$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 		$complete_locked = $custom_fields['go_mta_complete_lock'][0]; // Sets this variable equal to the password entered on the task creation page
 		$complete_unlock = $custom_fields['go_mta_complete_unlock'][0];
 		if ($complete_locked == 'on' && $complete_unlock != ' ') {
@@ -301,6 +302,11 @@ function go_task_shortcode($atts, $content = null) {
 								}
 							}
 						}
+
+						if ($completion_upload) {
+							echo do_shortcode("[go_upload]")."<br/>";
+						}
+
 						echo '<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.
 						go_return_options('go_third_stage_button').'</button>
 						<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
@@ -333,6 +339,11 @@ function go_task_shortcode($atts, $content = null) {
 									}
 								}
 							}
+						
+							if ($mastery_upload) {
+								echo do_shortcode("[go_upload]")."<br/>";
+							}
+
 							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
 							go_return_options('go_fourth_stage_button').'</button> 
 							<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
@@ -407,8 +418,6 @@ function go_task_shortcode($atts, $content = null) {
 				jQuery('#go_unlock_next_stage').keydown(function (){
 					clearTimeout(typing_timer);
 				});
-			
-			
 			} else if (jQuery('#go_unlock_next_stage').length != 0){
 				jQuery('#go_button').attr('disabled', 'true');
 				var typing_timer;
@@ -466,6 +475,13 @@ function go_task_shortcode($atts, $content = null) {
 						}
 					}
 				});
+			} 
+
+			if (jQuery('#go_upload_form').length != 0) {
+				jQuery('#go_button').attr('disabled', 'true');
+				jQuery('#go_upload_submit').click(function() {
+					task_unlock();
+				});
 			}
 		}
 
@@ -517,14 +533,10 @@ function go_task_shortcode($atts, $content = null) {
 								choice = choice.join("### ");
 							}
 						}
-
-					/*var chosen_answer = jQuery("ul#go_test li input:checked");
-					var choice = chosen_answer[0].value;
-					var type = jQuery('.go_test_list li input:first').attr('type');
-					*/
 					var pwd_check = String(jQuery('#go_unlock_next_stage').val());
 					var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
 					var which = 'both';
+
 				} else {
 					jQuery('#go_test_error_msg').text("Choose an answer!");
 				}
@@ -586,7 +598,7 @@ function go_task_shortcode($atts, $content = null) {
 						jQuery('#go_test_error_msg').text("Choose an answer!");
 					}
 				}
-			}
+			} 
 			var status = jQuery('#go_button').attr("status");
 			jQuery.ajax({
 				type: "POST",
@@ -941,7 +953,7 @@ function unlock_stage(){
 				if (strtolower($choice) == strtolower($key) && $password_check == $password) {
 					echo 1;
 				} else {
-					if ($strtolower($choice) != strtolower($key) && $password_check != $password) {
+					if (strtolower($choice) != strtolower($key) && $password_check != $password) {
 						echo "Wrong answer AND incorrect password!";
 						die();
 					} else { 
@@ -1223,7 +1235,7 @@ function task_change_stage() {
 				}
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
-
+			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
 			if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
 				$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
 			} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
@@ -1240,6 +1252,7 @@ function task_change_stage() {
 		$repeat_amount = 0;	// Sets the limit equal to zero. In other words, unlimits the amount of times the task is repeatable
 	}
 */	
+	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 	$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 	// $repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Mastery Message
@@ -1316,6 +1329,11 @@ function task_change_stage() {
 					}
 				}
 			}
+
+			if ($completion_upload) {
+				echo do_shortcode("[go_upload]")."<br/>";
+			}
+
 			echo ' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
 			
@@ -1344,6 +1362,11 @@ function task_change_stage() {
 									}
 								}
 							}
+
+							if ($mastery_upload) {
+								echo do_shortcode("[go_upload]")."<br/>";
+							}
+
 							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
 							go_return_options('go_fourth_stage_button').'</button> 
 							<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>

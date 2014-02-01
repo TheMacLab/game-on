@@ -309,6 +309,7 @@ if(jQuery('#go_mta_mastery_lock').prop('checked')){
 jQuery('#go_mta_task_mastery').click(function(){
 	if(!jQuery('#go_mta_task_mastery').prop('checked')){
 		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').show('slow');
+		jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_mastery_upload").show("slow");
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').show('slow');
 		if (jQuery('#go_mta_mastery_lock').prop('checked')) {
 			jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
@@ -317,6 +318,7 @@ jQuery('#go_mta_task_mastery').click(function(){
 		if (jQuery("#go_mta_test_mastery_lock").prop('checked')) {
 			test_m_show();
 		}
+		
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat').show("slow");
 		if (jQuery('#go_mta_task_repeat').prop('checked')) {
 			jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').show("slow");
@@ -324,6 +326,7 @@ jQuery('#go_mta_task_mastery').click(function(){
 		}
 	} else{
 		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').hide('slow');
+		jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_mastery_upload").hide("slow");
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').hide('slow');
 		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
 		jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock").hide("slow");
@@ -335,6 +338,7 @@ jQuery('#go_mta_task_mastery').click(function(){
 });
 if(!jQuery('#go_mta_task_mastery').prop('checked')){
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').show('slow');
+	jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_mastery_upload").show("slow");
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').show('slow');
 	if (jQuery('#go_mta_mastery_lock').prop('checked')) {
 		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
@@ -350,6 +354,7 @@ if(!jQuery('#go_mta_task_mastery').prop('checked')){
 	}
 } else{
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').hide('slow');
+	jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_mastery_upload").hide("slow");
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').hide('slow');
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
 	jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock").hide("slow");

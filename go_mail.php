@@ -21,7 +21,7 @@ function go_mail_menu() {
         <textarea name="go_mail">'.$email.'</textarea>
         <input type="submit" value="Submit"/>
         </form> <br />
-		Paste this shortcode: <input type="text" value="[go_upload]"/>
+		Paste this shortcode: <input type="text" value="[go_upload]" disabled/>
 		This will display an upload box for files and a text-box for additional comments the user has. It will send an Email with the file as an attachment. The message will be from \"no-replay@go.net\" with the first and last name of the student. The subject will be the page title where this was sent from. The message will contain the addition comments and the student\'s login.';
 		}
 }
@@ -63,8 +63,8 @@ if(!$mail->Send()) {
   return 'Message has been sent.';
 }
 	}
-return('<form action="" method="post" enctype="multipart/form-data">
-<div id="go_uploader"><input type="file" name="go_attachment[]"/><br/></div>
+return('<form id="go_upload_form" action="" method="post" enctype="multipart/form-data">
+<div><input type="file" name="go_attachment[]"/><br/></div>
 <button type="button" onClick="go_add_uploader();">Attach More</button><br/>
 Comments:<br />
 <textarea name="go_attachment_com"></textarea><br />
