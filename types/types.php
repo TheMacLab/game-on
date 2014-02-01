@@ -278,6 +278,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
+				'name' => 'Toggle Mastery Stage (Optional)',
+				'desc' => 'Choose whether the mastery stage is active for this '.go_return_options('go_tasks_name').".",
+				'id' => $prefix.'task_mastery',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Mastery Message (Optional)'.go_task_opt_help('mastery', '', 'http://maclab.guhsd.net/go/video/quests/masteryMessage.mp4'),
 				'desc' => 'Enter a message for the user to recieve when they have <i>mastered</i> the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix . 'mastery_message',

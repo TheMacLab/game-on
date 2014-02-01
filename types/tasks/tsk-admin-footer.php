@@ -19,7 +19,6 @@ if(jQuery('#go_mta_complete_lock').prop('checked')){
 var test_num = 1;
 jQuery("#go_mta_test_lock_num").ready(function () {
 	test_num = jQuery("#go_mta_test_lock_num").val();
-	console.log(test_num);
 });
 
 function test_show() {
@@ -30,7 +29,6 @@ function test_show() {
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_test_lock_key_0').show('slow');
 
 	test_num = jQuery("#go_mta_test_lock_num").val();
-	console.log(test_num);
 
 	if (test_num == 1) {
 			jQuery('tr.cmb-type-select.cmb_id_go_mta_test_lock_type_0').show('slow');
@@ -167,7 +165,6 @@ function test_m_show() {
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_test_mastery_lock_key_0').show('slow');
 
 	test_num = jQuery("#go_mta_test_mastery_lock_num").val();
-	console.log(test_num);
 
 	if (test_num == 1) {
 			jQuery('tr.cmb-type-select.cmb_id_go_mta_test_mastery_lock_type_0').show('slow');
@@ -286,7 +283,7 @@ jQuery('#go_mta_test_mastery_lock').click(function(){
 if(jQuery('#go_mta_test_mastery_lock').prop('checked')){
 	test_m_hide_all();
 	test_m_show();
-} else{
+} else {
 	test_m_hide_all();
 }
 
@@ -296,7 +293,59 @@ jQuery('#go_mta_test_mastery_lock_num').change(function() {
 	test_m_show();
 });
 
-
+jQuery('#go_mta_task_mastery').click(function(){
+	if(jQuery('#go_mta_task_mastery').prop('checked')){
+		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').show('slow');
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').show('slow');
+		if (jQuery('#go_mta_mastery_lock').prop('checked')) {
+			jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
+		}
+		jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock").show("slow");
+		if (jQuery("#go_mta_test_mastery_lock").prop('checked')) {
+			test_m_show();
+		}
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat').show("slow");
+		if (jQuery('#go_mta_task_repeat').prop('checked')) {
+			jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').show("slow");
+			jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').show("slow");
+		}
+	} else{
+		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').hide('slow');
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').hide('slow');
+		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
+		jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock").hide("slow");
+		test_m_hide_all();
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat').hide("slow");
+		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').hide("slow");
+		jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').hide("slow");
+	}
+});
+if(jQuery('#go_mta_task_mastery').prop('checked')){
+	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').show('slow');
+	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').show('slow');
+	if (jQuery('#go_mta_mastery_lock').prop('checked')) {
+		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
+	}
+	jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock").show("slow");
+	if (jQuery("#go_mta_test_mastery_lock").prop('checked')) {
+		test_m_show();
+	}
+	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat').show("slow");
+	if (jQuery('#go_mta_task_repeat').prop('checked')) {
+		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').show("slow");
+		jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').show("slow");
+	}
+} else{
+	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').hide('slow');
+	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').hide('slow');
+	jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
+	jQuery("tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock").hide("slow");
+	test_m_hide_all();
+	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat').hide("slow");
+	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').hide("slow");
+	jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').hide("slow");
+}
+////////
 jQuery('#go_mta_mastery_lock').click(function(){
 	if(jQuery('#go_mta_mastery_lock').prop('checked')){
 		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
