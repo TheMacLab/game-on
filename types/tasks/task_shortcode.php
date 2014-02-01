@@ -145,6 +145,14 @@ function go_task_shortcode($atts, $content = null) {
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 
+			$mastery_locked = $custom_fields['go_mta_mastery_lock'][0];
+			$mastery_unlock = $custom_fields['go_mta_mastery_unlock'][0];
+			if ($mastery_locked == 'on' && $mastery_unlock != ' ') {
+				$mastery_lock = true; 
+			} else {
+				$mastery_lock = false;
+			}
+
 			if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
 				$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
 			} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
@@ -165,15 +173,14 @@ function go_task_shortcode($atts, $content = null) {
 			$minutes_required = $custom_fields['go_mta_time_filter'][0]; // Sets the filter equal to the meta field value declared in the task creation page
 		}
 		
-		if($custom_fields['go_mta_complete_lock'][0] && $custom_fields['go_mta_complete_unlock'][0]){ // Checks if the task completion stage has a lock and password
-			$complete_lock = true; 
-			$complete_unlock = $custom_fields['go_mta_complete_unlock'][0]; // Sets this variable equal to the password entered on the task creation page
+		$complete_locked = $custom_fields['go_mta_complete_lock'][0]; // Sets this variable equal to the password entered on the task creation page
+		$complete_unlock = $custom_fields['go_mta_complete_unlock'][0];
+		if ($complete_locked == 'on' && $complete_unlock != ' ') {
+			$complete_lock = true;
+		} else {
+			$complete_lock = false;
 		}
-		
-		if($custom_fields['go_mta_mastery_lock'][0] && $custom_fields['go_mta_mastery_unlock'][0]){ // Checks if the task mastery stage has a lock and password
-			$mastery_lock = true; 
-			$mastery_unlock = $custom_fields['go_mta_mastery_unlock'][0]; // Sets this variable equal to the password entered on the task creation page
-		}
+
 		if($custom_fields['go_mta_focus_category_lock'][0]){
 			$focus_category_lock = true;
 		}
@@ -299,9 +306,9 @@ function go_task_shortcode($atts, $content = null) {
 						<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
 						</div>';
 						
-						if($complete_lock){
+						if($complete_lock == true || $complete_lock == 'true'){
 							echo '<br/><div id="go_complete_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
-							<input type="password" id="go_unlock_next_stage"/>';	
+							<input type="password" id="go_unlock_next_stage"/>';
 						}
 					break;
 					
@@ -332,7 +339,7 @@ function go_task_shortcode($atts, $content = null) {
 							</div>';
 							
 							if($mastery_lock){
-								echo '<br/><div id="go_complete_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
+								echo '<br/><div id="go_mastery_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
 								<input type="password" id="go_unlock_next_stage"/>';	
 							}
 						} else {
@@ -725,8 +732,8 @@ function go_task_shortcode($atts, $content = null) {
 					undo: jQuery(target).attr('undo'),
 					page_id: <?php echo $page_id; ?>,
 					admin_name: '<?php echo $admin_name; ?>',
-					complete_lock: <?php if($complete_lock == true){echo 'true';} else{echo 'false';} ?>,
-					mastery_lock: <?php if($mastery_lock == true){echo 'true';} else{echo 'false';}?>,
+					complete_lock: <?php if($complete_lock){echo 'true';} else{echo 'false';} ?>,
+					mastery_lock: <?php if($mastery_lock){echo 'true';} else{echo 'false';}?>,
 				},
 				success: function(html){
 					jQuery('#go_content').html(html);
@@ -1311,7 +1318,8 @@ function task_change_stage() {
 			}
 			echo ' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
-			if($complete_lock == "true"){
+			
+			if($complete_lock == 'true'){
 				echo '<br/><div id="go_complete_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
 				<input type="password" id="go_unlock_next_stage"/>';	
 			}
@@ -1341,8 +1349,8 @@ function task_change_stage() {
 							<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
 							</div>';
 							
-							if($mastery_lock){
-								echo '<br/><div id="go_complete_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
+							if($mastery_lock == 'true'){
+								echo '<br/><div id="go_mastery_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
 								<input type="password" id="go_unlock_next_stage"/>';	
 							}
 						} else {
