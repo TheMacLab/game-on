@@ -293,8 +293,21 @@ jQuery('#go_mta_test_mastery_lock_num').change(function() {
 	test_m_show();
 });
 
+jQuery('#go_mta_mastery_lock').click(function(){
+	if(jQuery('#go_mta_mastery_lock').prop('checked')){
+		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
+	} else{
+		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
+	}
+});
+if(jQuery('#go_mta_mastery_lock').prop('checked')){
+	jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
+} else{
+	jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
+}
+
 jQuery('#go_mta_task_mastery').click(function(){
-	if(jQuery('#go_mta_task_mastery').prop('checked')){
+	if(!jQuery('#go_mta_task_mastery').prop('checked')){
 		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').show('slow');
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').show('slow');
 		if (jQuery('#go_mta_mastery_lock').prop('checked')) {
@@ -320,7 +333,7 @@ jQuery('#go_mta_task_mastery').click(function(){
 		jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').hide("slow");
 	}
 });
-if(jQuery('#go_mta_task_mastery').prop('checked')){
+if(!jQuery('#go_mta_task_mastery').prop('checked')){
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').show('slow');
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_lock').show('slow');
 	if (jQuery('#go_mta_mastery_lock').prop('checked')) {
@@ -346,18 +359,6 @@ if(jQuery('#go_mta_task_mastery').prop('checked')){
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').hide("slow");
 }
 ////////
-jQuery('#go_mta_mastery_lock').click(function(){
-	if(jQuery('#go_mta_mastery_lock').prop('checked')){
-		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
-	} else{
-		jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
-	}
-});
-if(jQuery('#go_mta_mastery_lock').prop('checked')){
-	jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').show('slow');
-} else{
-	jQuery('tr.cmb-type-text.cmb_id_go_mta_mastery_unlock').hide('slow');
-}
 	
 jQuery('#go_mta_task_repeat').click(function() {
 	if (jQuery('#go_mta_task_repeat').prop('checked')) {
