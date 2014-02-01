@@ -99,19 +99,19 @@ function go_mta_con_meta( array $meta_boxes ) {
          		),
 			),
 			array(
-				'name' => 'Completion File Upload',
+				'name' => 'Completion File Upload'.go_task_opt_help('completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/completionFileUpload.mp4'),
 				'desc' => 'Toggle to require a user to upoad a file before completing the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'completion_upload',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Lock complete stage (Optional)'.go_task_opt_help('lock_complete', '', 'http://maclab.guhsd.net/go/video/quests/lockCompleteStage.mp4'),
+				'name' => 'Lock Complete Stage (Optional)'.go_task_opt_help('lock_complete', '', 'http://maclab.guhsd.net/go/video/quests/lockCompleteStage.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',
 				'id' => $prefix.'complete_lock',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Completion unlock password'.go_task_opt_help('unlock_complete', '', 'http://maclab.guhsd.net/go/video/quests/completionUnlockPassword.mp4'),
+				'name' => 'Completion Unlock Password'.go_task_opt_help('unlock_complete', '', 'http://maclab.guhsd.net/go/video/quests/completionUnlockPassword.mp4'),
 				'desc' => 'Enter a password into this field which is used when a user attempts to complete a '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'complete_unlock',
 				'type' => 'text'
@@ -226,7 +226,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Check Type  4',
+				'name' => 'Check Type 4',
 				'desc' => 'Select the type of test that is given to the user.',
 				'id' => $prefix.'test_lock_type_3',
 				'type' => 'select',
@@ -284,7 +284,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Toggle Mastery Stage (Optional)',
+				'name' => 'Toggle Mastery Stage (Optional)'.go_task_opt_help('toggle_mastery_stage', '', 'http://maclab.guhsd.net/go/video/quests/toggleMasteryStage.mp4'),
 				'desc' => 'Choose to deactive the mastery stage, for a three stage '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'task_mastery',
 				'type' => 'checkbox'
@@ -300,13 +300,13 @@ function go_mta_con_meta( array $meta_boxes ) {
          		),
 				),
 			array(
-				'name' => 'Mastery File Upload',
+				'name' => 'Mastery File Upload'.go_task_opt_help('mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/masteryFileUpload.mp4'),
 				'desc' => 'Toggle to require a user to upoad a file before mastering the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'mastery_upload',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Lock mastery stage (Optional)'.go_task_opt_help('lock_mastery', '', 'http://maclab.guhsd.net/go/video/quests/lockMasteryStage.mp4'),
+				'name' => 'Lock Mastery Stage (Optional)'.go_task_opt_help('lock_mastery', '', 'http://maclab.guhsd.net/go/video/quests/lockMasteryStage.mp4'),
 				'desc' => ' Check to lock this stage of a '.go_return_options('go_tasks_name').' until a user has entered a specified password.',
 				'id' => $prefix.'mastery_lock',
 				'type' => 'checkbox'
@@ -427,7 +427,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Check Type  4',
+				'name' => 'Check Type 4',
 				'desc' => 'Select the type of test that is given to the user.',
 				'id' => $prefix.'test_mastery_lock_type_3',
 				'type' => 'select',
