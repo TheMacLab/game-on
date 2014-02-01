@@ -42,7 +42,7 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
 <label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_minuts" id="go_clipboard_currency" />
 <label for="go_clipboard_infractions">Infractions: </label><input name="go_clipboard_infractions" id="go_clipboard_infractions" />
 <label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px;
-margin-right: 5px;" title="The message will be displayed as reason if any points/currency/minutes are being added. If nothing is being added, the message will be displayed as a message in a seperate system in the admin bar with a limit of 9 messages per student."> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason"></textarea><button class="ui-button-text" onclick="go_clipboard_add();">Add</button></div>
+margin-right: 5px;" title="The message will be displayed as reason if any points/currency/minutes are being added. If nothing is being added, the message will be displayed as a message in a seperate system in the admin bar with a limit of 9 messages per student."> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason"></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
 
     
     <table  id="go_clipboard_table" class="pretty" >
@@ -220,4 +220,27 @@ function go_clipboard_get_data(){
 		//	echo '{'.$info.'}';
 			die();
 			     	}
+
+add_action('wp_ajax_fixmessages', 'fixmessages');					
+function fixmessages(){
+	global $wpdb;
+	$users = get_users(array('role' => 'Subscriber'));
+	foreach($users as $user){
+		$messages = get_user_meta($user->ID, 'go_admin_messages',true);
+		$messages_array = $messages[1];
+		$messages_unread = array_values($messages_array);
+		$messages_unread_count = 0;
+		foreach($messages_unread as $message_unread){
+			if($message_unread[1] == 1){
+				$messages_unread_count++;	
+			}
+		}
+		if($messages[0] != $message_unread_count){
+			$messages[0] = $messages_unread_count;
+			update_user_meta($user->ID, 'go_admin_messages', $messages);
+		}
+	}
+	
+	die();
+}
 ?>

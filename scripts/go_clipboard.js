@@ -226,6 +226,7 @@ function go_user_focus_change(user_id,element){
 }
 function go_clipboard_add(id){
 	 var values = [];
+	 jQuery('#go_send_message').prop('disabled', 'diabled');
 	 jQuery("input:checkbox[name=go_selected]:checked").each(function()
 {
     values.push(jQuery(this).val())
@@ -245,9 +246,22 @@ function go_clipboard_add(id){
 		jQuery('#go_clipboard_time').val(''),
 		jQuery('#go_clipboard_reason').val(''),
 		jQuery('#go_clipboard_infractions').val('')
+		jQuery('#go_send_message').prop('disabled', '')
 		}
 	});
 	}
+function fixmessages(){
+	jQuery.ajax({
+		type: "POST",
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'fixmessages'	
+		},
+		success: function(){
+			alert('Messages fixed');	
+		}
+	});
+}
 	/*
  * File:        jquery.dataTables.min.js
  * Version:     1.9.4

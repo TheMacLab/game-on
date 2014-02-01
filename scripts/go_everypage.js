@@ -217,7 +217,7 @@ function go_stats_leaderboard_choice(){
 				success: function(data){
 					data = JSON.parse(data);
 					if(data[1] == 'remove'){
-						jQuery('#wp-admin-bar-'+data[0]+' div').remove();
+						jQuery('#wp-admin-bar-'+data[0]).remove();
 						jQuery('#go_messages_bar').html(data[2]);
 						if(data[2] == 0){
 							jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient( 5px -9px, circle, white 8%, green 26px )');
