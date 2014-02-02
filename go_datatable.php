@@ -118,7 +118,9 @@ global $default_role;
 	'go_focus_name' => 'Focus',
 	'go_focus_switch'=>'Off',
 	'go_focus'=>'',
-	'go_time_reset_switch' =>'Off'
+	'go_time_reset_switch' =>'Off',
+	'go_video_height' => '540',
+	'go_video_width' => '864'
 	);
 	foreach($options_array as $key => $value){
 		 add_option( $key, $value );

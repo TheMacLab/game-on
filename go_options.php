@@ -226,6 +226,18 @@ go_jquery_periods();
 			echo go_sub_option_radio('time_reset_switch', 'Turn the time reset buttons on or off. The buttons can either erase only time, or erase both time and any records on the stats page of a user gaining it.', 'Turn the time reset buttons on or off. <br/> <i>Note, buttons appears at foot of this page.</i>', 'time_switch', 'go_time_reset_switch', 'Would you like to display buttons that can be clicked to reset all user\'s time?', 'http://maclab.guhsd.net/go/video/options/resetTimeSwitch.mp4');
 		?>
 	</div>
+   	<div class="opt-box">
+    	<h3>Videos</h3>
+        <div class="pa">
+        Set the default height and width of videos displayed by the go_display_video shortcode.
+        <?php go_opt_help('video_settings', 'Set the default dimensions of videos on your site.', 'http://maclab.guhsd.net/go/video/options/videos.mp4');?>
+        <ul>
+        	<li class="ui-state-default" class="go_list">Height: <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input name="go_video_height" type="text" value="<?php echo go_return_options('go_video_height');?>"/>px</li>
+            <li class="ui-state-default" class="go_list">Width: <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input name="go_video_width" type="text" value="<?php echo go_return_options('go_video_width');?>"/>px</li>
+        </ul>
+   		</div>
+    </div>
+
             
    <div class="opt-box">       
             <h3> Presets </h3>  </div>
@@ -268,7 +280,7 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_time_reset_switch" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_time_reset_switch, go_video_height, go_video_width" />  
         </form>
 		<?php
 			if(get_option('go_time_reset_switch') == 'On'){
@@ -580,7 +592,7 @@ function go_return_presets_options(){
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name,go_time_reset_switch');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name,go_time_reset_switch, go_video_height, go_video_width');
 	foreach($array as $key=>$value){
 $value = trim($value);
 $content = get_option($value);

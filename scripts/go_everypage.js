@@ -1,33 +1,39 @@
-	function go_display_help_video(url){
+function hideVid(){
+	myplayer = videojs('go_option_help_video');
+	jQuery('.dark').hide();
+	jQuery('.light').hide();
+	myplayer.pause();
+	myplayer.dispose();
+	jQuery('#go_help_video_container').append('<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video>');
+}
+
+function go_display_help_video(url){
 	jQuery('.dark').show();
-	jQuery('#go_option_help_video').prop('src', url);
-	jQuery('#go_option_help_video_html5_api').prop('src', url);
-	videojs('#go_option_help_video', {}, function(){
-		
-	});
-	var myplayer = videojs('#go_option_help_video');
+	jQuery('#go_help_video_container').show();
+	var myplayer = videojs('go_option_help_video');
 	myplayer.ready(function(){
-		jQuery('#go_option_help_video').removeClass("vjs-playing").addClass("vjs-paused");
+		myplayer.src(url);
 		myplayer.load();
 		myplayer.play();
+		videoStatus = 'playing';
 	});
 	jQuery('.light').show();
 	if(jQuery('.dark').css('display') != 'none'){
-		jQuery(document).keyup(function(e) { 
+		jQuery(document).keydown(function(e) { 
 			if (e.keyCode == 27) { // If keypressed is escape, run this
-				jQuery('.dark').hide();
-				myplayer.pause();
-				jQuery('#go_option_help_video_html5_api').prop('src', '');
-				jQuery('#go_option_help_video').addClass("vjs-paused");
-				jQuery('.light').hide();
-			}  
+				hideVid();
+			} 
+			if(e.keyCode == 32){
+				e.preventDefault();
+				if(!myplayer.paused()){
+					myplayer.pause();
+				}else{
+					myplayer.play();	
+				}
+			}
 		});	
 		jQuery('.dark').click(function(){
-			jQuery('.dark').hide();
-			myplayer.pause();
-			jQuery('#go_option_help_video_html5_api').prop('src', '');
-			jQuery('#go_option_help_video').addClass("vjs-paused");
-			jQuery('.light').hide();
+			hideVid();
 		});
 	}
 }
