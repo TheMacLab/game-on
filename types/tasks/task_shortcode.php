@@ -388,6 +388,9 @@ function go_task_shortcode($atts, $content = null) {
 						}
 				}
 			}
+			if(get_post_type() == 'tasks'){
+				comments_template();
+			}
 		} else{ // If user can't access quest because they aren't part of the specialty, echo this
 			$category_name = implode(',',$category_names);
 			echo 'This task is only available to '.$category_name;

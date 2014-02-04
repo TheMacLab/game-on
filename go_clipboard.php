@@ -34,8 +34,8 @@ if($class_a){
 	?></select>
     
     <div id="go_clipboard_add"> <div style="width:17px; display:inline-table;margin-top: 4px;
-margin-right: 5px;" title="Check the boxes of the students you want to add to." class="ui-state-default ui-corner-all">
-<span  class="ui-icon ui-icon-help"></span>
+margin-right: 5px;" title="Check the boxes of the students you want to add to." class="ui-state-default ui-corner-all"><a href="javascript:;" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4')"> 
+<span  class="ui-icon ui-icon-help"></span></a>
 </div>
 <label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" /> 
 <label id="go_clipboard_minutes"><?php echo 'Minutes'; ?>: </label> <input name="go_clipboard_minutes" id="go_clipboard_time" />

@@ -232,8 +232,8 @@ go_jquery_periods();
         Set the default height and width of videos displayed by the go_display_video shortcode.
         <?php go_opt_help('video_settings', 'Set the default dimensions of videos on your site.', 'http://maclab.guhsd.net/go/video/options/videos.mp4');?>
         <ul>
-        	<li class="ui-state-default" class="go_list">Height: <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input name="go_video_height" type="text" value="<?php echo go_return_options('go_video_height');?>"/>px</li>
-            <li class="ui-state-default" class="go_list">Width: <span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input name="go_video_width" type="text" value="<?php echo go_return_options('go_video_width');?>"/>px</li>
+            <li class="ui-state-default" >Width: <input name="go_video_width" type="text" value="<?php echo go_return_options('go_video_width');?>"/>px</li>
+        	<li class="ui-state-default" >Height: <input name="go_video_height" type="text" value="<?php echo go_return_options('go_video_height');?>"/>px</li>
         </ul>
    		</div>
     </div>
