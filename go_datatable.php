@@ -134,14 +134,6 @@ WHERE meta_key =  'wp_capabilities'
 AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')");
  foreach($uid as $id){
  foreach($id as $uids){
-	 
-	 
-	 
- 
-
-
-
-
 			$check = (int)$wpdb->get_var("select uid from ".$table_name_go_totals." where uid = $uids ");
 			$total_points = (int)$wpdb->get_var("select sum(points) from ".$table_name_go." where uid = $uids ");
 			$total_currency = (int)$wpdb->get_var("select sum(currency) from ".$table_name_go." where uid = $uids ");
@@ -172,7 +164,7 @@ $rank_check =	get_user_meta($uids, 'go_rank');
 
 								
 				}
-		}
+ }
 }
 	
 //Adds user id to the totals table upon user creation.
@@ -204,9 +196,11 @@ function go_user_delete($user_id){
 
 	$wpdb->delete( $table_name_go_totals, array('uid'=> $user_id));
 	$wpdb->delete( $table_name_go, array('uid'=> $user_id) );
-	
-
 }
 
+function go_open_comments(){
+	global $wpdb;
+	$wpdb->update($wpdb->posts, array('comment_status'=>'open', 'ping_status'=>'open'), array('post_type'=>'tasks'));	
+}
 
 ?>
