@@ -1,22 +1,39 @@
 function hideVid(){
-	myplayer = videojs('go_option_help_video');
+	if(jQuery('#go_option_help_video').length){
+		myplayer = videojs('go_option_help_video');
+	}
 	jQuery('.dark').hide();
 	jQuery('.light').hide();
-	myplayer.pause();
-	myplayer.dispose();
+	if(jQuery('#go_option_help_video').length){
+		myplayer.pause();
+		myplayer.dispose();
+	}
+	if(jQuery('#go_video_iframe').length){
+		jQuery('#go_video_iframe').remove();
+	}
 	jQuery('#go_help_video_container').append('<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video>');
 }
 
 function go_display_help_video(url){
 	jQuery('.dark').show();
+	if(url.indexOf('youtube') != -1 || url.indexOf('vimeo') != -1){
+		if(url.indexOf('youtube') != -1 ){
+			jQuery('#go_help_video_container').html('<iframe id="go_video_iframe" width="100%" height="100%" src="'+ url +'" frameborder="0" allowfullscreen></iframe>');
+		}
+		if(url.indexOf('vimeo') != -1){
+			jQuery('#go_help_video_container').html('<iframe id="go_video_iframe" src="' + url + '" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+		}
+	}
 	jQuery('#go_help_video_container').show();
-	var myplayer = videojs('go_option_help_video');
-	myplayer.ready(function(){
-		myplayer.src(url);
-		myplayer.load();
-		myplayer.play();
-		videoStatus = 'playing';
-	});
+	if(jQuery('#go_option_help_video').length){
+		var myplayer = videojs('go_option_help_video');
+		myplayer.ready(function(){
+			myplayer.src(url);
+			myplayer.load();
+			myplayer.play();
+			videoStatus = 'playing';
+		});
+	}
 	jQuery('.light').show();
 	if(jQuery('.dark').css('display') != 'none'){
 		jQuery(document).keydown(function(e) { 
