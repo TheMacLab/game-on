@@ -636,7 +636,7 @@ function go_cmb_render_go_task_shortcode() {
 
 add_action('cmb_render_go_video_shortcode', 'go_cmb_render_go_video_shortcode');
 function go_cmb_render_go_video_shortcode(){
-	echo '<input type="text" disabled value="[go_display_video video_url=\'\' width=\'\' height=\'\']"/><br/><span>Insert this shortcode where you want a video link to appear.</span>';	
+	echo '<input type="text" disabled value="[go_display_video video_url=\'\' video_title=\'\' width=\'\' height=\'\']"/><br/><span>Insert this shortcode where you want a video link to appear.</span>';	
 }
 
 add_action('cmb_render_go_upload_shortcode', 'go_cmb_render_go_upload_shortcode');

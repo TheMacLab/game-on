@@ -69,6 +69,7 @@ add_shortcode('go_list_URL', 'listUserURL');
 function go_display_video($atts, $video_url){
 	extract(shortcode_atts(array(
 		'video_url' => '',
+		'video_title' => '',
 		'height' => '',
 		'width' => '',
 		), $atts
@@ -96,7 +97,7 @@ function go_display_video($atts, $video_url){
         <?php
 		}
 	?>
-   	<a href="javascript:;" onclick="go_display_help_video('<?php echo $video_url;?>');">video</a>
+   	<a href="javascript:;" onclick="go_display_help_video('<?php echo $video_url;?>');"><?php if($video_title){echo $video_title;}else{?>video<?php }?></a>
     <?php
 	}
 }
