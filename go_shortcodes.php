@@ -96,9 +96,11 @@ function go_display_video($atts, $video_url){
         </script>
         <?php
 		}
-	?>
-   	<a href="javascript:;" onclick="go_display_help_video('<?php echo $video_url;?>');"><?php if($video_title){echo $video_title;}else{?>video<?php }?></a>
-    <?php
+		if($video_title){
+			return '<a href="javascript:;" onclick="go_display_help_video(\''.$video_url.'\');">'.$video_title.'</a>';	
+		} else{
+			return '<a href="javascript:;" onclick="go_display_help_video(\''.$video_url.'\');">video</a>';	
+		}
 	}
 }
 add_shortcode('go_display_video', 'go_display_video');
