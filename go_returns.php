@@ -39,5 +39,19 @@ function go_display_currency($currency){
 	$suffix = go_return_options('go_currency_suffix');
 	return $prefix.$currency.$suffix;
 	}
+function go_display_user_focuses($user_id){
+	
+	if(get_user_meta($user_id, 'go_focus',true)){
+		if(!is_array(get_user_meta($user_id, 'go_focus',true))){
+			$valueu = get_user_meta($user_id, 'go_focus',true);
+		}else{
+			$valueu = implode(', ',get_user_meta($user_id, 'go_focus', true));
+		}
+	} else{
+		$valueu = 'No '.go_return_options('go_focus_name');	
+	}
+	
+	return $valueu;
+}
 
 ?>

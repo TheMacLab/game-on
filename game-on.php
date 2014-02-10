@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.1.4
+Version: 1.3.7
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -25,12 +25,15 @@ include('badge_designer.php');
 include('go_shortcodes.php');
 include('go_comments.php');
 include('go_definitions.php');
+include('go_mail.php');
+include('go_messages.php');
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
 register_activation_hook( __FILE__, 'go_presets_registration' );
 register_activation_hook( __FILE__, 'go_install_data' );
 register_activation_hook( __FILE__, 'go_define_options' );
+register_activation_hook( __FILE__, 'go_open_comments');
 add_action('user_register', 'go_user_registration');
 add_action( 'delete_user', 'go_user_delete' );
 add_action('go_add_post','go_add_post');
@@ -39,8 +42,10 @@ add_action('go_add_minutes','go_add_minutes');
 add_action('go_return_currency','go_return_currency');
 add_action('go_return_points','go_return_points');
 add_action('go_return_minutes','go_return_minutes');
+add_action('go_display_user_focuses', 'go_display_user_focuses');
 add_action('admin_menu', 'go_ranks');
 add_action('admin_menu', 'go_clipboard');
+add_action('admin_menu', 'go_mail');
 add_action('go_jquery_clipboard','go_jquery_clipboard');
 add_action('go_style_clipboard','go_style_clipboard');
 add_action('wp_ajax_go_clipboard_intable','go_clipboard_intable');
@@ -53,6 +58,8 @@ add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
 add_action('go_get_all_ranks','go_get_all_ranks');
+add_action('wp_ajax_test_point_update', 'test_point_update');
+add_action('go_get_all_focuses', 'go_get_all_focuses');
 add_action('wp_ajax_unlock_stage', 'unlock_stage');
 add_action('wp_ajax_task_change_stage','task_change_stage');
 add_action('admin_bar_init', 'go_admin_bar');
@@ -66,6 +73,7 @@ add_action('wp_ajax_go_admin_bar_add','go_admin_bar_add');
 add_action('wp_ajax_go_admin_bar_stats','go_admin_bar_stats');
 add_action('wp_ajax_go_class_a_save','go_class_a_save');
 add_action('wp_ajax_go_class_b_save','go_class_b_save');
+add_action('wp_ajax_go_focus_save','go_focus_save');
 add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
 add_action('wp_ajax_go_stats_points','go_stats_points');
 add_action('wp_ajax_go_stats_currency','go_stats_currency');
@@ -109,5 +117,4 @@ function isEven($value) {
 	else{
 		return 'odd';
 }}
-
 ?>

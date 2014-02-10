@@ -67,33 +67,47 @@ function go_the_lb_ajax(){
 	$time_color = "g"; 
 	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g") { $buy_color = "g"; } else { $buy_color = "r"; }
 	
-	if($purchase_count < $purchase_limit || $purchase_limit == 0){
-		if($user_time>=$minutes_required || !$minutes_required){ 
-	?>
-        <div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_gold; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
-        <div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
-        <div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_time; ?>">Time: <?php echo $req_time; ?></div>
-        <div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;height: 30px;font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
-        <!--<div id="golb-fr-recipient" class="golb-fr-boxes-<?php //echo $buy_color; ?>"><input id="go_recipient" type="text"/></div>!-->
-        <div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div>
-        <div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div> 
-        <div id="golb-purchased">
-        <?php 
-            if($purchase_count == NULL){ 
-                echo 'Times purchased: 0';
-            } else{
-                echo 'Times purchased: '.$purchase_count;
-            } 
-        ?>
-        </div>
-	<?php
-		} else{
-			echo 'You require more time to view this item.';	
-		}
-	} else{
-		echo 'You\'ve reached the maximum purchase limit.';	
+	$user_focuses = array();
+	
+	if(get_user_meta($user_ID, 'go_focus', true) != null){
+		$user_focuses = (array) get_user_meta($user_ID, 'go_focus', true);
 	}
-    die;
+	
+	if($custom_fields['go_mta_focuses'][0]){
+		$item_focus = $custom_fields['go_mta_focuses'][0];
+	}
+	
+	if(!in_array($item_focus, $user_focuses) || empty($user_focuses)){
+		if($purchase_count < $purchase_limit || $purchase_limit == 0){
+			if($user_time>=$minutes_required || !$minutes_required){ 
+		?>
+			<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_gold; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
+			<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
+			<div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_time; ?>">Time: <?php echo $req_time; ?></div>
+			<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;height: 30px;font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
+			<!--<div id="golb-fr-recipient" class="golb-fr-boxes-<?php //echo $buy_color; ?>"><input id="go_recipient" type="text"/></div>!-->
+			<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div>
+			<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div> 
+			<div id="golb-purchased">
+			<?php 
+				if($purchase_count == NULL){ 
+					echo 'Times purchased: 0';
+				} else{
+					echo 'Times purchased: '.$purchase_count;
+				} 
+			?>
+			</div>
+		<?php
+			} else{
+				echo 'You require more time to view this item.';	
+			}
+		} else{
+			echo 'You\'ve reached the maximum purchase limit.';	
+		}
+	}else{
+		echo 'You already have this '.go_return_options('go_focus_name').'!';	
+	}
+    die();
 }
 add_action('wp_ajax_go_lb_ajax', 'go_the_lb_ajax');
 add_action('wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax');
@@ -123,7 +137,7 @@ function go_lb_opener(id) {
                 nonce: "<?php echo esc_js( wp_create_nonce('go_lb_ajax_referall') ); ?>",
 				the_item_id: get_id,
     };
-	url_action = "<?php echo admin_url('/admin-ajax.php'); ?>";
+	var url_action = "<?php echo admin_url('/admin-ajax.php'); ?>";
             jQuery.ajaxSetup({cache:true});
             jQuery.ajax({
                 url: url_action,

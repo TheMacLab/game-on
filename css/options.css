@@ -49,6 +49,20 @@
 	display: inline;
 	position: relative;
 }
+.go_task_opt_help{
+	float: right;
+	color: black;
+	margin-right: 0px;
+	width: 15px;
+	height: 15px;
+	border-radius: 8px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	background: white;
+	cursor: pointer;
+	display: inline;
+	position: relative;
+}
 .go_opt_help:hover:after {
 	background: #333;
 	background: rgba(0,0,0,.95);
@@ -72,3 +86,7 @@
 	position: absolute;
 	z-index: 99;
 }
+
+#sortable_go_presets input{
+	width: 80px !important; 
+}	

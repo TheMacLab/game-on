@@ -65,4 +65,43 @@ function listurl(){
 	die();
 }
 add_shortcode('go_list_URL', 'listUserURL');
+
+function go_display_video($atts, $video_url){
+	extract(shortcode_atts(array(
+		'video_url' => '',
+		'video_title' => '',
+		'height' => '',
+		'width' => '',
+		), $atts
+	));
+	if($video_url){
+		if($height && $width){
+		?>
+        	<script type="text/javascript"> 
+				jQuery('#go_help_video_container').css({'height': '<?php echo $height?>px', 'width': '<?php echo $width;?>px'});
+			</script>
+        <?php	
+		}
+		if($height){
+		?>
+		<script type="text/javascript"> 
+            jQuery('#go_help_video_container').css('height', '<?php echo $height?>px');
+        </script>
+        <?php
+		} 
+		if($width){
+		?>
+		<script type="text/javascript"> 
+            jQuery('#go_help_video_container').css('width','<?php echo $width;?>px');
+        </script>
+        <?php
+		}
+		if($video_title){
+			return '<a href="javascript:;" onclick="go_display_help_video(\''.$video_url.'\');">'.$video_title.'</a>';	
+		} else{
+			return '<a href="javascript:;" onclick="go_display_help_video(\''.$video_url.'\');">video</a>';	
+		}
+	}
+}
+add_shortcode('go_display_video', 'go_display_video');
 ?>

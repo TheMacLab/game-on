@@ -23,11 +23,11 @@ function go_ranks_menu() {
     ?>  
     
         <form method="post" action="" style="margin: 2px 0px 2px 0px;">
-        	<input name="go_fix_ranks" type="submit" value="Fix Ranks"/>
+        	<input name="go_fix_ranks" type="submit" value="Fix Ranks"/><a  class="go_task_opt_help" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/ranks/fixRanks.mp4');" style="background: #DBDBDB !important; float: inherit !important;" >?</a>
         </form>
         
         <form method="POST" action="" style="margin: 2px 0px 2px 0px; ">
-    		<input type="submit" name="go_reset_ranks" value="Reset Ranks"/>
+    		<input type="submit" name="go_reset_ranks" value="Reset Ranks"/><a  class="go_task_opt_help" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/ranks/resetRanks.mp4');" style="background: #DBDBDB !important; float: inherit !important;" >?</a>
     	</form>
        
     <?php 
@@ -71,10 +71,10 @@ function go_ranks_menu() {
 	?>
      <div>   
          <table style="width:350px;" id="ranks_table" class="widefat">
-            <th style="width:250px;">Rank</th>
-            <th style="width:125px;"><?php echo go_return_options('go_points_name'); ?></th>
+            <th style="width:250px;">Rank <a  class="go_task_opt_help" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/ranks/rank.mp4');" style="background: #DBDBDB !important; ">?</a></th>
+            <th style="width:125px;"><?php echo go_return_options('go_points_name'); ?><a  class="go_task_opt_help" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/ranks/points.mp4');" style="background: #DBDBDB !important;">?</a></th>
             <th></th>
-            <th title="Insert Shortcodes (Badges) in the box and they will run when the rank is reached.">Triggers</th>
+            <th title="Insert Shortcodes (Badges) in the box and they will run when the rank is reached.">Triggers <a  class="go_task_opt_help" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/ranks/triggers.mp4');" style="background: #DBDBDB !important;">?</a></th>
             <tbody id="table_rows">
             <?php  
 				foreach($ranks as $level => $points){
@@ -89,7 +89,7 @@ function go_ranks_menu() {
 	<div class="widefat">
         Ranks: <textarea id="ranks"></textarea>
         <?php echo go_return_options('go_points_name');?>: <textarea id="points"></textarea>
-        Separator: <textarea id="separator"></textarea><button onclick="go_add_ranks();" >+</button>
+        Separator: <textarea id="separator"></textarea><span style="float: left;"><a  class="go_task_opt_help" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/ranks/addRank.mp4');" style="background: #DBDBDB !important;">?</a></span><button onclick="go_add_ranks();" >+</button>
 	</div>
     <script language="javascript">
 		

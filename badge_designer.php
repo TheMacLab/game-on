@@ -123,6 +123,7 @@ function badge_designer(){
 				<input type="hidden" name="targetImage" id="targetImage"/>
 			</form>
 		</div>
+        <a href="javascript:;" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/badgeDesigner/badgeDesigner.mp4');">Help</a>
 	<?php } ?>
 <?php }
 
