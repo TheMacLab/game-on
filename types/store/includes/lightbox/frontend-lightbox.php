@@ -84,7 +84,7 @@ function go_the_lb_ajax(){
 			<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_gold; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
 			<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
 			<div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_time; ?>">Time: <?php echo $req_time; ?></div>
-			<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;height: 30px;font-size: 11px; margin-right:0px;" value="1" disabled="disabled" /></div>
+			<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
 			<!--<div id="golb-fr-recipient" class="golb-fr-boxes-<?php //echo $buy_color; ?>"><input id="go_recipient" type="text"/></div>!-->
 			<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div>
 			<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div> 
@@ -185,6 +185,16 @@ function go_lb_opener(id) {
 					var time = time_raw.replace(time_sub, go_req_time * jQuery(this).val())
 					jQuery('#golb-fr-time').html(time);
 				});
+				if(jQuery('.black_overlay').css('display') != 'none'){
+					jQuery(document).keydown(function(e) { 
+						if (e.keyCode == 27) { // If keypressed is escape, run this
+							go_lb_closer();
+						} 
+					});
+					jQuery('.black_overlay').click(function(){
+						go_lb_closer();
+					});
+				}
   				}, 
             });
 	}
