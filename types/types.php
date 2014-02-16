@@ -131,6 +131,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'Test Return Points (Optional)'.go_task_opt_help('complete_understand_return_points', '', 'http://maclab.guhsd.net/go/video/quests/returnPoints.mp4'),
+				'desc' => ' Check to allow tests to return points, based on the tier of the current '.go_return_options('go_tasks_name').', that diminish as the number of test failures increase.',
+				'id' => $prefix.'test_lock_loot',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Question Total'.go_task_opt_help('complete_understand_question_total', '', 'http://maclab.guhsd.net/go/video/quests/questionTotal.mp4'),
 				'desc' => 'Select the desired number of questions for the test.',
 				'id' => $prefix.'test_lock_num',
@@ -155,7 +161,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 1'.go_task_opt_help('complete_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_question_0',
 				'type' => 'text'
 			),
@@ -168,7 +175,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('complete_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_key_0',
 				'type' => 'text'
 			),
@@ -216,7 +225,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 3'.go_task_opt_help('complete_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_question_2',
 				'type' => 'text'
 			),
@@ -229,7 +239,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('complete_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_key_2',
 				'type' => 'text'
 			),
@@ -245,7 +257,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 4'.go_task_opt_help('complete_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_question_3',
 				'type' => 'text'
 			),
@@ -258,7 +271,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('complete_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_key_3',
 				'type' => 'text'
 			),
@@ -274,7 +289,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 5'.go_task_opt_help('complete_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_question_4',
 				'type' => 'text'
 			),
@@ -287,7 +303,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('complete_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_lock_key_4',
 				'type' => 'text'
 			),
@@ -332,6 +350,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'Test Return Points (Optional)'.go_task_opt_help('mastery_understand_return_points', '', 'http://maclab.guhsd.net/go/video/quests/returnPoints.mp4'),
+				'desc' => ' Check to allow tests to return points, based on the tier of the current '.go_return_options('go_tasks_name').', that diminish as the number of test failures increase.',
+				'id' => $prefix.'test_mastery_lock_loot',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Question Total'.go_task_opt_help('mastery_understand_question_total', '', 'http://maclab.guhsd.net/go/video/quests/questionTotal.mp4'),
 				'desc' => 'Select the desired number of questions for the test.',
 				'id' => $prefix.'test_mastery_lock_num',
@@ -356,7 +380,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 1'.go_task_opt_help('mastery_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_question_0',
 				'type' => 'text'
 			),
@@ -369,7 +394,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('mastery_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_key_0',
 				'type' => 'text'
 			),
@@ -417,7 +444,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 3'.go_task_opt_help('mastery_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_question_2',
 				'type' => 'text'
 			),
@@ -430,7 +458,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('mastery_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_key_2',
 				'type' => 'text'
 			),
@@ -446,7 +476,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 4'.go_task_opt_help('mastery_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_question_3',
 				'type' => 'text'
 			),
@@ -459,7 +490,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('mastery_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_key_3',
 				'type' => 'text'
 			),
@@ -475,7 +508,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Question 5'.go_task_opt_help('mastery_understand_question', '', 'http://maclab.guhsd.net/go/video/quests/checkQuestion.mp4'),
-				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Enter a question that the user must answer to continue the '.go_return_options('go_tasks_name').
+							'<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_question_4',
 				'type' => 'text'
 			),
@@ -488,7 +522,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Check Key'.go_task_opt_help('mastery_understand_key', '', 'http://maclab.guhsd.net/go/video/quests/checkKey.mp4'),
-				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, more than one answer (key) is required.',
+				'desc' => 'Enter the correct answer/answers for the test.  If the "checkbox" test type is selected, 
+							more than one answer (key) is required. Separate each answer with three octothorpes ("###").
+							<code>Note: Apostrophes (\', ") are not permited.</code>',
 				'id' => $prefix.'test_mastery_lock_key_4',
 				'type' => 'text'
 			),
@@ -516,11 +552,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 				),
 			array(
-				'name' => 'Shortcode',
-				'desc' => 'Insert this shortcode where you want the task to appear.',
-				'type' => 'go_shortcode'
-				),
-			
+				'name' => go_return_options('go_tasks_name').' Shortcode'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/taskShortcode.mp4'),
+				'type' => 'go_task_shortcode'
+			),
 			),
 		);
 	// Store Meta Boxes

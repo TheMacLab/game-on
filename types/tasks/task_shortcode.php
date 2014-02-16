@@ -1,4 +1,5 @@
 <?php
+session_start();
 /*
 	This is the file that displays content in a post/page with a task. 
 	This file interprets and executes the shortcode in a post's body. 
@@ -22,6 +23,7 @@ function go_task_shortcode($atts, $content = null) {
 		$test_active = $custom_fields['go_mta_test_lock'][0];
 		
 		if ($test_active) {
+			$test_returns = $custom_fields['go_mta_test_lock_loot'][0];
 			$test_num = $custom_fields['go_mta_test_lock_num'][0];
 			
 			$test_type_0 = $custom_fields['go_mta_test_lock_type_0'][0];
@@ -82,6 +84,7 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		if ($mastery_active) {
+			$test_m_returns = $custom_fields['go_mta_test_mastery_lock_loot'][0];
 			$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
 
 			if ($test_m_active) {
@@ -161,14 +164,7 @@ function go_task_shortcode($atts, $content = null) {
 
 			$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Repeat Message
 		}
-
-/*
-		if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
-			$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
-		} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
-			$repeat_amount = 0;	// Sets the limit equal to zero. In other words, unlimits the amount of times the task is repeatable
-		}
-*/		
+		
 		if($custom_fields['go_mta_time_filter'][0]){ // Checks if the task has a time filter
 			$minutes_required = $custom_fields['go_mta_time_filter'][0]; // Sets the filter equal to the meta field value declared in the task creation page
 		}
@@ -187,9 +183,7 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
-		
-		//$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
-		//$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Repeat Message
+
 		$description = $custom_fields['go_mta_quick_desc'][0]; // Description
 		$req_rank = $custom_fields['go_mta_req_rank'][0]; // Required Rank to accept task
 		$currency_array = explode(',', $task_currency); // Makes an array out of currency values for each stage
@@ -264,7 +258,7 @@ function go_task_shortcode($atts, $content = null) {
 					// First time a user encounters a task
 					case 0: 
 					// sending go_add_post the $repeat var was the problem, that is why it is not sending a null value.
-					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0);
+					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0, 0, 0);
 						
 	?>
 					<div id="go_content">
@@ -387,6 +381,9 @@ function go_task_shortcode($atts, $content = null) {
 							echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
 						}
 				}
+
+				// echo '<div id="failure_overlay" style="display:none"><div><p>Having Trouble?</p><p>'.ucwords($admin_name).' has been notified.</p></div></div>';
+
 			}
 			if(get_post_type() == 'tasks'){
 				comments_template();
@@ -395,28 +392,47 @@ function go_task_shortcode($atts, $content = null) {
 			$category_name = implode(',',$category_names);
 			echo 'This task is only available to '.$category_name;
 		}
-		
+
+		// if ($complete_locked || $mastery_lock) {	
+		// 	if (!isset($_SESSION['fail_count'])) {
+		// 		$_SESSION['fail_count'] = 2;
+		// 	}	
+		// }
+
+		if ($test_active && $test_returns) {
+			$db_test_fail_count = $wpdb->get_var("SELECT `c_fail_count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
+			$_SESSION['test_fail_count'] = $db_test_fail_count;
+		}
+
+		if ($test_m_active && $test_m_returns) {
+			$db_test_mastery_fail_count = $wpdb->get_var("SELECT `m_fail_count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
+			$_SESSION['test_mastery_fail_count'] = $db_test_mastery_fail_count;
+		}
+
 ?>
 	<script language="javascript">
 		jQuery(document).ready(function() {
 			jQuery.ajaxSetup({ 
-				url: '<?php echo get_site_url() ?>/wp-admin/admin-ajax.php'
+				url: '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php'
 			});
 			check_locks();
+			// console.log("$_SESSION['fail_count']: <?php echo $_SESSION['fail_count']; ?>");
 		});
 		
 		function check_locks() {
 			if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
 				jQuery('#go_button').attr('disabled', 'true');
 				var typing_timer;
-				var doneTyping = 500;
+				var doneTyping = 1000;
 				jQuery('.go_test_submit').click(function() {
 						task_unlock();
 				});
 				jQuery('#go_unlock_next_stage').keyup(function (){
-					typing_timer = setTimeout(function() {
-							task_unlock();
-					}, doneTyping);
+					if (jQuery('#go_unlock_next_stage').val().length != 0) {
+						typing_timer = setTimeout(function() {
+								task_unlock();
+						}, doneTyping);
+					}
 				});
 				jQuery('#go_unlock_next_stage').keydown(function (){
 					clearTimeout(typing_timer);
@@ -424,9 +440,13 @@ function go_task_shortcode($atts, $content = null) {
 			} else if (jQuery('#go_unlock_next_stage').length != 0){
 				jQuery('#go_button').attr('disabled', 'true');
 				var typing_timer;
-				var doneTyping = 500;
+				var doneTyping = 1000;
 				jQuery('#go_unlock_next_stage').keyup(function (){
-					typing_timer = setTimeout(task_unlock, doneTyping);
+					if (jQuery('#go_unlock_next_stage').val().length != 0) {
+						typing_timer = setTimeout(function() {
+							task_unlock();
+						}, doneTyping);
+					}
 				});
 				jQuery('#go_unlock_next_stage').keydown(function (){
 					clearTimeout(typing_timer);
@@ -488,66 +508,95 @@ function go_task_shortcode($atts, $content = null) {
 			}
 		}
 
+
+		// function display_failure(count) {
+		// 	if (jQuery('#failure_surprise').length == 0) {
+		// 		if ( (count - 2) == 5 ) {
+		// 			jQuery("#go_content").append("<audio id='failure_surprise' autoplay loop><source src='<?php echo plugins_url( '../audio/siren.ogg' , dirname(__FILE__) ); ?>' type='audio/ogg'><source src='<?php echo plugins_url( '../audio/siren.mp3' , dirname(__FILE__) ); ?>' type='audio/mp3'></audio>");
+		// 			jQuery('#go_unlock_next_stage').attr('disabled', true);
+		// 			jQuery('#failure_surprise').prop("volume", 1);
+		// 			jQuery('#failure_surprise').animate({volume: 0}, 5000, "easeOutQuad");
+		// 			jQuery("#failure_overlay").fadeIn('fast');
+		// 			setTimeout(function() {
+		// 				jQuery("#failure_overlay").fadeOut('slow');	
+		// 			}, 5000);
+		// 			setTimeout(function() {
+		// 				jQuery("#failure_surprise").remove();
+		// 				// jQuery('#go_unlock_next_stage').attr('disabled', false);
+		// 			}, 5000);
+		// 		}
+		// 	}
+		// }
+
 		function task_unlock() {
 			if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
-				if (jQuery('.go_test_list :checked').length != 0) {
-						var test_list = jQuery(".go_test_list");
-						var list_size = test_list.length;
-						var type_array = [];
-						
-						if (jQuery(".go_test_list").length > 1) {
-						
-							var choice_array = [];
+				if (jQuery('.go_test_list :checked').length != 0 && (jQuery('#go_unlock_next_stage').val() != '' && jQuery('#go_unlock_next_stage').val() != null)) {
+					var test_list = jQuery(".go_test_list");
+					var list_size = test_list.length;
+					var type_array = [];
+					if (jQuery(".go_test_list").length > 1) {
+					
+						var choice_array = [];
 
-							for (var x = 0; x < list_size; x++) {
-								
-								// figure out the type of each test
-								var test_type = test_list[x].children[1].children[0].type;
-								type_array.push(test_type);
+						for (var x = 0; x < list_size; x++) {
+							
+							// figure out the type of each test
+							var test_type = test_list[x].children[1].children[0].type;
+							type_array.push(test_type);
 
-								// get the checked inputs of each test
-								var obj_str = "#"+test_list[x].id+" :checked";
-								var chosen_answers = jQuery(obj_str);
+							// get the checked inputs of each test
+							var obj_str = "#"+test_list[x].id+" :checked";
+							var chosen_answers = jQuery(obj_str);
 
-								if (test_type == 'radio') {
-									// push indiviudal answers to the choice_array
-									choice_array.push(chosen_answers[0].value);
-								} else if (test_type == 'checkbox') {
-									var t_array = [];
-									for (var i = 0; i < chosen_answers.length; i++) {
-										t_array.push(chosen_answers[i].value);
-									}
-									var choice_str = t_array.join("### ");
-									choice_array.push(choice_str);
-								}	
-							}
-							var choice = choice_array.join("#### ");
-							var type = type_array.join("### ");
-						} else {
-							var chosen_answer = jQuery('.go_test_list li input:checked');
-							var type = jQuery('.go_test_list li input').first().attr("type");
-							if (type == 'radio') {
-								var choice = chosen_answer[0].value;
-							} else if (type == 'checkbox') {
-								var choice = [];
-								for (var i = 0; i < chosen_answer.length; i++) {
-									choice.push(chosen_answer[i].value);	
+							if (test_type == 'radio') {
+								// push indiviudal answers to the choice_array
+								choice_array.push(chosen_answers[0].value);
+							} else if (test_type == 'checkbox') {
+								var t_array = [];
+								for (var i = 0; i < chosen_answers.length; i++) {
+									t_array.push(chosen_answers[i].value);
 								}
-								choice = choice.join("### ");
-							}
+								var choice_str = t_array.join("### ");
+								choice_array.push(choice_str);
+							}	
 						}
+						var choice = choice_array.join("#### ");
+						var type = type_array.join("### ");
+					} else {
+						var chosen_answer = jQuery('.go_test_list li input:checked');
+						var type = jQuery('.go_test_list li input').first().attr("type");
+						if (type == 'radio') {
+							var choice = chosen_answer[0].value;
+						} else if (type == 'checkbox') {
+							var choice = [];
+							for (var i = 0; i < chosen_answer.length; i++) {
+								choice.push(chosen_answer[i].value);	
+							}
+							choice = choice.join("### ");
+						}
+					}
 					var pwd_check = String(jQuery('#go_unlock_next_stage').val());
 					var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
 					var which = 'both';
-
 				} else {
-					jQuery('#go_test_error_msg').text("Choose an answer!");
+					if (jQuery('.go_test_list :checked').length == 0 && (jQuery('#go_unlock_next_stage').val() == '' || jQuery('#go_unlock_next_stage').val() == null)) {
+						jQuery('#go_test_error_msg').text("Choose an answer and enter a password!");
+					} else if (jQuery('.go_test_list :checked').length == 0) {
+						jQuery('#go_test_error_msg').text("Choose an answer!");
+					} else if (jQuery('#go_unlock_next_stage').val() == '' || jQuery('#go_unlock_next_stage').val() == null) {
+						jQuery('#go_test_error_msg').text("Enter a password!");
+					}
 				}
 			} else {
 				if (jQuery('#go_unlock_next_stage').length != 0) {
 					var pwd_check = String(jQuery('#go_unlock_next_stage').val());
-					var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
-					var which = 'pass';
+					if (pwd_check == '' || pwd_check == null) {
+						jQuery('#go_test_error_msg').text("Enter a password!");
+						return;
+					} else {
+						var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
+						var which = 'pass';
+					}
 				} else if (jQuery(".go_test_list").length != 0) {
 					if (jQuery('.go_test_list :checked').length != 0) {
 						
@@ -601,7 +650,8 @@ function go_task_shortcode($atts, $content = null) {
 						jQuery('#go_test_error_msg').text("Choose an answer!");
 					}
 				}
-			} 
+			}
+
 			var status = jQuery('#go_button').attr("status");
 			jQuery.ajax({
 				type: "POST",
@@ -628,10 +678,16 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('#go_button').removeAttr('disabled');
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
-							//test_point_update();
+							<?php
+								if ($status == 2 && $test_returns) {
+									echo "test_point_update();";	
+								} else if ($status == 3 && $test_m_returns) {
+									echo "test_point_update();";
+								}
+							?>
 						} else if (which == 'pass') {	
 							jQuery('.go_lock_message').html('Password correct, move on.');
-							jQuery('#go_unlock_next_stage').remove();	
+							jQuery('#go_unlock_next_stage').remove();
 						} else if (which == 'test') {
 							jQuery('.go_test_container').hide('slow');
 							if (list_size > 1) {
@@ -640,37 +696,65 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('#go_button').removeAttr('disabled');
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
+							<?php
+								if ($status == 2 && $test_returns) {
+									echo "test_point_update();";	
+								} else if ($status == 3 && $test_m_returns) {
+									echo "test_point_update();";
+								}
+							?>
 						}
 					} else {
 						if (which == 'both') {
-							jQuery('.go_lock_message').html('Incorrect password, try again.');
+							// var regex = new RegExp(/(#)+/);
+							// if (regex.test(response)) {
+							// 	var response_array = response.split("#");
+							// 	display_failure(response_array[0]);
+							// 	jQuery('#go_test_error_msg').text(response_array[1]);
+							// 	jQuery('.go_lock_message').text('Incorrect password, try again.');
+							// 	console.log(response);
+							// } else {
+							// 	display_failure(response);
+							// 	jQuery('#go_test_error_msg').text(response);
+							// 	console.log("no-regex: "+response);
+							// }
+							if (response == 'Incorrect password!') {
+								jQuery('.go_lock_message').text('Incorrect password, try again.');
+							}
 							jQuery('#go_test_error_msg').text(response);
 						} else if (which == 'pass'){
-							jQuery('.go_lock_message').html('Incorrect password, try again.');
+							// display_failure(response);
+							jQuery('.go_lock_message').text('Incorrect password, try again.');
 						} else if (which == 'test') {
 							jQuery('#go_test_error_msg').text("Wrong answer, try again!");
 						}
 					}
+					// console.log(response);
 				}
 			});
 		}
 		
-		/*  For when the checks for understanding need to provide bonuses with diminishing returns.
 		function test_point_update() {
 			jQuery.ajax({
 				type: "POST",
 				data: {
 					action: "test_point_update",
-					points: <?php echo $points_array[0]; ?>,
+					points: "<?php $points_str = implode(" ", $points_array); 
+						echo $points_str;
+						 ?>",
 					status: <?php echo $status; ?>,
+					page_id: <?php echo $page_id; ?>,
 					user_ID: <?php echo $user_ID; ?>,
+					post_id: <?php echo $id; ?>,
 				},
-				success: function () {
-					console.log("test_point_update success");
+				success: function (response) {
+					// the three following lines are required for the go_notification to work
+					var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
+					jQuery('#go_content').append(response);
+					jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
 				}
 			});
 		}
-		*/
 		
 		function go_repeat_hide(target) {
 			// hides the div#repeat_quest to create the repeat cycle.
@@ -761,12 +845,13 @@ function go_task_shortcode($atts, $content = null) {
 					if(jQuery('#go_unlock_next_stage').length != 0){
 						jQuery('#go_button').attr('disabled', 'true');
 						var typing_timer;
-						var doneTyping = 500;
+						var doneTyping = 1000;
 						jQuery('#go_unlock_next_stage').keyup(function (){
-							typing_timer = setTimeout(task_unlock, doneTyping);
-						});
-						jQuery('#go_unlock_next_stage').keydown(function (){
-							clearTimeout(typing_timer);
+							if (jQuery('#go_unlock_next_stage').val().length != 0) {
+								typing_timer = setTimeout(function() {
+									task_unlock();
+								}, doneTyping);
+							}
 						});
 					} 
 					
@@ -787,15 +872,32 @@ function go_task_shortcode($atts, $content = null) {
 } // Ends function
 add_shortcode('go_task','go_task_shortcode');
 
-/*  For checks for understanding... See the declaration of the test_point_update function in the script tag above.
 function test_point_update() {
 	$status = $_POST['status'];
+	$page_id = $_POST['page_id'];
+	$post_id = $_POST['post_id'];
 	$user_id = $_POST['user_ID'];
-	$points = $_POST['points'];
-	go_update_totals($user_id, $points, 0, 0, $status);
-	//go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0);
+	$points_str = $_POST['points'];
+	$points_array = explode(" ", $points_str);
+	$point_base = $points_array[2];
+	$c_fail_count = $_SESSION['test_fail_count'];
+	$m_fail_count = $_SESSION['test_mastery_fail_count'];
+	if ($status == 2) {
+		$fail_count = $c_fail_count;
+	} else if ($status == 3) {
+		$fail_count = $m_fail_count;
+	}
+
+	$mod_array = array(0.2, 0, -0.2, -0.4, -0.5);
+
+	$p_num = $point_base + ($point_base * $mod_array[$fail_count]);
+
+	$target_point = floor($p_num);
+
+	go_add_post($user_id, $post_id, $status, $target_point, 0, $page_id, null, null, $c_fail_count, $m_fail_count);
+
+	die();
 }
-*/
 
 function unlock_stage(){
 	global $wpdb;
@@ -804,7 +906,7 @@ function unlock_stage(){
 	$status = $_POST['status'] - 1;
 	$which = $_POST['which'];
 	$test_size = $_POST['list_size'];
-	
+
 	if ($which == 'both') {
 		$password_check = $_POST['password_check'];
 		$choice = $_POST['chosen_answer'];
@@ -848,7 +950,8 @@ function unlock_stage(){
 	$page_id = get_the_ID();
 	
 	$user_ID = get_current_user_id();
-	
+
+
 	if ($status == 2) {
 		$password = sha1($custom_fields['go_mta_complete_unlock'][0]);
 		$key = $custom_fields['go_mta_test_lock_key_0'][0];
@@ -936,15 +1039,49 @@ function unlock_stage(){
 				echo 1;
 			} else {
 				if ($total_matches != $test_size && $password_check != $password) {
-					echo "Wrong answer AND incorrect password!";
+					if ($status == 2) {
+						if (isset($_SESSION['test_fail_count'])) {
+							if (($_SESSION['test_fail_count']) < 4) {
+								$_SESSION['test_fail_count']++;
+							} else {
+								unset($_SESSION['test_fail_count']);
+							}
+						}
+					} else if ($status == 3) {
+						if (isset($_SESSION['test_mastery_fail_count'])) {
+							if (($_SESSION['test_mastery_fail_count']) < 4) {
+								$_SESSION['test_mastery_fail_count']++;
+							} else {
+								unset($_SESSION['test_mastery_fail_count']);
+							}
+						}
+					}
+
+					echo "Wrong answer and incorrect password!";
 					die();
 				} else { 
 			
 					if ($password_check != $password) {
 						echo "Incorrect password!";
-					}
-				
-					if ($total_matches != $test_size) {
+					} else if ($total_matches != $test_size) {
+						if ($status == 2) {
+							if (isset($_SESSION['test_fail_count'])) {
+								if (($_SESSION['test_fail_count']) < 4) {
+									$_SESSION['test_fail_count']++;
+								} else {
+									unset($_SESSION['test_fail_count']);
+								}
+							}
+						} else if ($status == 3) {
+							if (isset($_SESSION['test_mastery_fail_count'])) {
+								if (($_SESSION['test_mastery_fail_count']) < 4) {
+									$_SESSION['test_mastery_fail_count']++;
+								} else {
+									unset($_SESSION['test_mastery_fail_count']);
+								}
+							}
+						}
+
 						echo "Wrong answer!";
 					}
 					die();
@@ -957,18 +1094,85 @@ function unlock_stage(){
 					echo 1;
 				} else {
 					if (strtolower($choice) != strtolower($key) && $password_check != $password) {
-						echo "Wrong answer AND incorrect password!";
+						if ($status == 2) {
+							if (isset($_SESSION['test_fail_count'])) {
+								if (($_SESSION['test_fail_count']) < 4) {
+									$_SESSION['test_fail_count']++;
+								} else {
+									unset($_SESSION['test_fail_count']);
+								}
+							}
+						} else if ($status == 3) {
+							if (isset($_SESSION['test_mastery_fail_count'])) {
+								if (($_SESSION['test_mastery_fail_count']) < 4) {
+									$_SESSION['test_mastery_fail_count']++;
+								} else {
+									unset($_SESSION['test_mastery_fail_count']);
+								}
+							}
+						}
+
+						// if (isset($_SESSION['fail_count'])) {
+						// 	if (($_SESSION['fail_count'] - 2) < 5) {
+						// 		$_SESSION['fail_count']++;
+						// 		echo $_SESSION['fail_count']."#"."Wrong answer and incorrect password!";
+						// 		die();
+						// 	} else {
+						// 		// $_SESSION['fail_count'] = 2;
+						// 		unset($_SESSION['fail_count']);
+						// 		echo "Wrong answer and incorrect password!";
+						// 		die();
+						// 	}
+						// } else {
+						// 	echo "Wrong answer and incorrect password!";
+						// 	die();
+						// }
+
+						echo "Wrong answer and incorrect password!";
 						die();
 					} else { 
-				
+						
 						if ($password_check != $password) {
+							// if (isset($_SESSION['fail_count'])) {
+							// 	if (($_SESSION['fail_count'] - 2) < 5) {
+							// 		$_SESSION['fail_count']++;
+							// 		echo $_SESSION['fail_count']."#"."Incorrect password!";
+							// 		die();
+							// 	} else {
+							// 		// $_SESSION['fail_count'] = 2;
+							// 		unset($_SESSION['fail_count']);
+							// 		echo "Incorrect password!";
+							// 		die();
+							// 	}
+							// } else {
+							// 	echo "Incorrect password!";
+							// 	die();
+							// }
+
 							echo "Incorrect password!";
-						}
-					
-						if (strtolower($choice) != strtolower($key)) {
+							die();
+						} else if (strtolower($choice) != strtolower($key)) {
+							if ($status == 2) {
+								if (isset($_SESSION['test_fail_count'])) {
+									if (($_SESSION['test_fail_count']) < 4) {
+										$_SESSION['test_fail_count']++;
+									} else {
+										unset($_SESSION['test_fail_count']);
+									}	
+								}
+							} else if ($status == 3) {
+								if (isset($_SESSION['test_mastery_fail_count'])) {
+									if (($_SESSION['test_mastery_fail_count']) < 4) {
+										$_SESSION['test_mastery_fail_count']++;
+									} else {
+										unset($_SESSION['test_mastery_fail_count']);
+									}
+								}
+							}
+
 							echo "Wrong answer!";
+							die();
 						}
-						die();
 					}
 				}
 
@@ -989,7 +1193,24 @@ function unlock_stage(){
 					echo 1;
 				} else {
 					if ($key_match != count($choice_array_keys) && $key_match < 2 && $password_check != $password) {
-						echo "Wrong answer AND incorrect password!";
+						if ($status == 2) {
+							if (isset($_SESSION['test_fail_count'])) {
+								if (($_SESSION['test_fail_count']) < 4) {
+									$_SESSION['test_fail_count']++;
+								} else {
+									unset($_SESSION['test_fail_count']);
+								}
+							}
+						} else if ($status == 3) {
+							if (isset($_SESSION['test_mastery_fail_count'])) {
+								if (($_SESSION['test_mastery_fail_count']) < 4) {
+									$_SESSION['test_mastery_fail_count']++;
+								} else {
+									unset($_SESSION['test_mastery_fail_count']);
+								}
+							}
+						}
+						echo "Wrong answer and incorrect password!";
 						die();
 					} else { 
 				
@@ -998,6 +1219,23 @@ function unlock_stage(){
 						}
 					
 						if ($key_match != count($choice_array_keys) || $key_match < 2) {
+							if ($status == 2) {
+								if (isset($_SESSION['test_fail_count'])) {
+									if (($_SESSION['test_fail_count']) < 4) {
+										$_SESSION['test_fail_count']++;
+									} else {
+										unset($_SESSION['test_fail_count']);
+									}
+								}
+							} else if ($status == 3) {
+								if (isset($_SESSION['test_mastery_fail_count'])) {
+									if (($_SESSION['test_mastery_fail_count']) < 4) {
+										$_SESSION['test_mastery_fail_count']++;
+									} else {
+										unset($_SESSION['test_mastery_fail_count']);
+									}
+								}
+							}
 							echo "Wrong answer!";
 						}
 						die();
@@ -1005,13 +1243,22 @@ function unlock_stage(){
 				}
 			}
 		}
-
-
 	} else if ($which == 'pass') {
 		if($password_check == $password){
 			echo 1;
 			die();
 		} else {
+			// if (isset($_SESSION['fail_count'])) {
+			// 	if (($_SESSION['fail_count'] - 2) < 5) {
+			// 		$_SESSION['fail_count']++;
+			// 		echo $_SESSION['fail_count'];
+			// 		die();
+			// 	} else {
+			// 		unset($_SESSION['fail_count']);
+			// 		echo 0;
+			// 		die();
+			// 	}
+			// }
 			echo 0;
 			die();
 		}
@@ -1023,6 +1270,23 @@ function unlock_stage(){
 					if (strtolower($all_keys_array[$i]) == strtolower($all_test_choices[$i])) {
 						$total_matches++;
 					} else {
+						if ($status == 2) {
+							if (isset($_SESSION['test_fail_count'])) {
+								if (($_SESSION['test_fail_count']) < 4) {
+									$_SESSION['test_fail_count']++;
+								} else {
+									unset($_SESSION['test_fail_count']);
+								}
+							}
+						} else if ($status == 3) {
+							if (isset($_SESSION['test_mastery_fail_count'])) {
+								if (($_SESSION['test_mastery_fail_count']) < 4) {
+									$_SESSION['test_mastery_fail_count']++;
+								} else {
+									unset($_SESSION['test_mastery_fail_count']);
+								}
+							}
+						}
 						echo 0;
 						die();
 					}					
@@ -1034,6 +1298,23 @@ function unlock_stage(){
 						if (strtolower($c_array[$x]) == strtolower($k_array[$x])) {
 							$match_count++;
 						} else {
+							if ($status == 2) {
+								if (isset($_SESSION['test_fail_count'])) {
+									if (($_SESSION['test_fail_count']) < 4) {
+										$_SESSION['test_fail_count']++;
+									} else {
+										unset($_SESSION['test_fail_count']);
+									}
+								}
+							} else if ($status == 3) {
+								if (isset($_SESSION['test_mastery_fail_count'])) {
+									if (($_SESSION['test_mastery_fail_count']) < 4) {
+										$_SESSION['test_mastery_fail_count']++;
+									} else {
+										unset($_SESSION['test_mastery_fail_count']);
+									}
+								}
+							}
 							echo 0;
 							die();
 						}
@@ -1042,6 +1323,23 @@ function unlock_stage(){
 					if ($match_count == count($k_array)) {
 						$total_matches++;
 					} else {
+						if ($status == 2) {
+							if (isset($_SESSION['test_fail_count'])) {
+								if (($_SESSION['test_fail_count']) < 4) {
+									$_SESSION['test_fail_count']++;
+								} else {
+									unset($_SESSION['test_fail_count']);
+								}
+							}
+						} else if ($status == 3) {
+							if (isset($_SESSION['test_mastery_fail_count'])) {
+								if (($_SESSION['test_mastery_fail_count']) < 4) {
+									$_SESSION['test_mastery_fail_count']++;
+								} else {
+									unset($_SESSION['test_mastery_fail_count']);
+								}
+							}
+						}
 						echo 0;
 						die();
 					}
@@ -1052,6 +1350,23 @@ function unlock_stage(){
 				echo 1;
 				die();
 			} else {
+				if ($status == 2) {
+					if (isset($_SESSION['test_fail_count'])) {
+						if (($_SESSION['test_fail_count']) < 4) {
+							$_SESSION['test_fail_count']++;
+						} else {
+							unset($_SESSION['test_fail_count']);
+						}
+					}
+				} else if ($status == 3) {
+					if (isset($_SESSION['test_mastery_fail_count'])) {
+						if (($_SESSION['test_mastery_fail_count']) < 4) {
+							$_SESSION['test_mastery_fail_count']++;
+						} else {
+							unset($_SESSION['test_mastery_fail_count']);
+						}
+					}
+				}
 				echo 0;
 				die();
 			}
@@ -1062,6 +1377,23 @@ function unlock_stage(){
 					echo 1;
 					die();
 				} else {
+					if ($status == 2) {
+						if (isset($_SESSION['test_fail_count'])) {
+							if (($_SESSION['test_fail_count']) < 4) {
+								$_SESSION['test_fail_count']++;
+							} else {
+								unset($_SESSION['test_fail_count']);
+							}
+						}
+					} else if ($status == 3) {
+						if (isset($_SESSION['test_mastery_fail_count'])) {
+							if (($_SESSION['test_mastery_fail_count']) < 4) {
+								$_SESSION['test_mastery_fail_count']++;
+							} else {
+								unset($_SESSION['test_mastery_fail_count']);
+							}
+						}
+					}
 					echo 0;
 					die();
 				}
@@ -1081,6 +1413,23 @@ function unlock_stage(){
 					echo 1;
 					die();
 				} else {
+					if ($status == 2) {
+						if (isset($_SESSION['test_fail_count'])) {
+							if (($_SESSION['test_fail_count']) < 4) {
+								$_SESSION['test_fail_count']++;
+							} else {
+								unset($_SESSION['test_fail_count']);
+							}
+						}
+					} else if ($status == 3) {
+						if (isset($_SESSION['test_mastery_fail_count'])) {
+							if (($_SESSION['test_mastery_fail_count']) < 4) {
+								$_SESSION['test_mastery_fail_count']++;
+							} else {
+								unset($_SESSION['test_mastery_fail_count']);
+							}
+						}
+					}
 					echo 0;
 					die();
 				}
@@ -1116,6 +1465,9 @@ function task_change_stage() {
 	$test_active = $custom_fields['go_mta_test_lock'][0];
 	
 	if ($test_active) {
+
+		$c_fail_count = $_SESSION['test_fail_count'];
+
 		$test_num = $custom_fields['go_mta_test_lock_num'][0];
 		
 		$test_type_0 = $custom_fields['go_mta_test_lock_type_0'][0];
@@ -1179,6 +1531,7 @@ function task_change_stage() {
 			$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
 
 			if ($test_m_active) {
+				$m_fail_count = $_SESSION['test_mastery_fail_count'];
 				$test_m_num = $custom_fields['go_mta_test_mastery_lock_num'][0];
 				
 				$test_m_type_0 = $custom_fields['go_mta_test_mastery_lock_type_0'][0];
@@ -1248,17 +1601,9 @@ function task_change_stage() {
 			$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Repeat Message
 		}
 
-/*
-	if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
-		$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
-	} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
-		$repeat_amount = 0;	// Sets the limit equal to zero. In other words, unlimits the amount of times the task is repeatable
-	}
-*/	
 	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 	$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
-	// $repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Mastery Message
 	$description = $custom_fields['go_mta_quick_desc'][0]; // Description
 	$currency_array = explode(',', $task_currency); // Makes an array out of currency values for each stage
 	$points_array = explode(',', $task_points); //Makes an array out of currency values for each stage
@@ -1276,9 +1621,9 @@ function task_change_stage() {
 	if ($repeat_button == 'on') {
 		if ($undo == 'true' || $undo === true) {
 			if ($task_count > 0) {
-				go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1);
+				go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count);
 			} else {
-				go_add_post($user_id, $post_id, ($status-1), -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, 0);
+				go_add_post($user_id, $post_id, ($status-1), -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count);
 			}
 		} else {
 			// if repeat is on and undo is not hit...
@@ -1290,12 +1635,12 @@ function task_change_stage() {
 		if ($db_status == 0 || ($db_status < $status)) {
 			if ($undo == 'true' || $undo === true) {
 				if ($task_count > 0) {
-					go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1);
+					go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count);
 				} else {
-					go_add_post($user_id, $post_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button, 0);
+					go_add_post($user_id, $post_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count);
 				}
 			} else {
-				go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 0); 
+				go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count); 
 			}
 		}
 	}
@@ -1419,6 +1764,8 @@ function task_change_stage() {
 				echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
 			}
 	}
+	// echo '<div id="failure_overlay" style="display:none"><div><p>Having Trouble?</p><p>'.ucwords($admin_name).' has been notified.</p></div></div>';
+
 die();
 }
 ?>

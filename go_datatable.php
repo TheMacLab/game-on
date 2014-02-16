@@ -14,6 +14,8 @@ function go_table_individual() {
   post_id INT,
   page_id INT,
   count INT DEFAULT 0,
+  c_fail_count INT DEFAULT 0,
+  m_fail_count INT DEFAULT 0,
   points INT,
   currency INT,
   infractions INT,	 
