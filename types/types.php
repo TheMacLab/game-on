@@ -137,6 +137,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'Custom Reward Modifier'.go_task_opt_help('complete_understand_return_modifier', '', 'http://maclab.guhsd.net/go/video/quests/returnModifier.mp4'),
+				'desc' => 'Enter a list of modifiers that will be used to determine the points received on the completion of a test (Seperate percentiles with commas, e.g. "20, 0, -20, -50, -80, -100").  
+							This will replace the default modifier. <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_lock_loot_mod',
+				'type' => 'text'
+			),
+			array(
 				'name' => 'Question Total'.go_task_opt_help('complete_understand_question_total', '', 'http://maclab.guhsd.net/go/video/quests/questionTotal.mp4'),
 				'desc' => 'Select the desired number of questions for the test.',
 				'id' => $prefix.'test_lock_num',
@@ -354,6 +361,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'desc' => ' Check to allow tests to return points, based on the tier of the current '.go_return_options('go_tasks_name').', that diminish as the number of test failures increase.',
 				'id' => $prefix.'test_mastery_lock_loot',
 				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Custom Reward Modifier'.go_task_opt_help('mastery_understand_return_modifier', '', 'http://maclab.guhsd.net/go/video/quests/returnModifier.mp4'),
+				'desc' => 'Enter a list of modifiers that will be used to determine the points received on the completion of a test (Seperate percentiles with commas, e.g. "20, 0, -20, -50, -80, -100").  
+							This will replace the default modifier. <code>Note: Apostrophes (\', ") are not permited.</code>',
+				'id' => $prefix.'test_mastery_lock_loot_mod',
+				'type' => 'text'
 			),
 			array(
 				'name' => 'Question Total'.go_task_opt_help('mastery_understand_question_total', '', 'http://maclab.guhsd.net/go/video/quests/questionTotal.mp4'),

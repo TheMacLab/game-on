@@ -416,7 +416,7 @@ function go_task_shortcode($atts, $content = null) {
 				url: '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php'
 			});
 			check_locks();
-			// console.log("$_SESSION['fail_count']: <?php echo $_SESSION['fail_count']; ?>");
+			// console.log("$_SESSION['test_fail_count']: <?php echo $_SESSION['test_fail_count']; ?>");
 		});
 		
 		function check_locks() {
@@ -752,6 +752,7 @@ function go_task_shortcode($atts, $content = null) {
 					var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
 					jQuery('#go_content').append(response);
 					jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
+					// console.log(response);
 				}
 			});
 		}
@@ -882,20 +883,38 @@ function test_point_update() {
 	$point_base = $points_array[2];
 	$c_fail_count = $_SESSION['test_fail_count'];
 	$m_fail_count = $_SESSION['test_mastery_fail_count'];
+
+	$custom_fields = get_post_custom($post_id);
 	if ($status == 2) {
 		$fail_count = $c_fail_count;
+		$custom_mods = $custom_fields['go_mta_test_lock_loot_mod'][0];
 	} else if ($status == 3) {
 		$fail_count = $m_fail_count;
+		$custom_mods = $custom_fields['go_mta_test_mastery_lock_loot_mod'][0];
 	}
 
-	$mod_array = array(0.2, 0, -0.2, -0.4, -0.5);
-
+	if (!preg_match("/[^0-9\-\,\s]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*,\s*)+/", $custom_mods)) {
+		$custom_mods_str = preg_replace("/(\s*,\s*)+/", ", ", $custom_mods);
+		$custom_mods_array = explode(", ", $custom_mods_str);
+		$mod_array = array();
+		for ($i = 0; $i < count($custom_mods_array); $i++) {
+			$percent = $custom_mods_array[$i]/100;
+			array_push($mod_array, $percent);
+		}
+	} else {
+		$mod_array = array(0.2, 0, -0.2, -0.4, -0.6, -0.8, -1);
+	}
+	
 	$p_num = $point_base + ($point_base * $mod_array[$fail_count]);
 
-	$target_point = floor($p_num);
-
+	if ($mod_array[$fail_count] >= 0) {
+		$target_point = ceil($p_num);
+	} else {
+		$target_point = floor($p_num);
+	}
+	
 	go_add_post($user_id, $post_id, $status, $target_point, 0, $page_id, null, null, $c_fail_count, $m_fail_count);
-
+	
 	die();
 }
 
@@ -947,7 +966,26 @@ function unlock_stage(){
 	$points_array = explode(',', $task_points);
 	$task_currency = $custom_fields['go_mta_task_currency'][0];
 	$currency_array = explode(',', $task_currency);
-	$page_id = get_the_ID();
+
+	if ($status == 2) {
+		$custom_mods = $custom_fields['go_mta_test_lock_loot_mod'][0];
+	} else if ($status== 3) {
+		$custom_mods = $custom_fields['go_mta_test_mastery_lock_loot_mod'][0];
+	}
+
+	if (!preg_match("/[^0-9\-\,\s]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*,\s*)+/", $custom_mods)) {
+		$custom_mods_str = preg_replace("/(\s*,\s*)+/", ", ", $custom_mods);
+		$custom_mods_array = explode(", ", $custom_mods_str);
+		$mod_array = array();
+		for ($i = 0; $i < count($custom_mods_array); $i++) {
+			$percent = $custom_mods_array[$i]/100;
+			array_push($mod_array, $percent);
+		}
+	} else {
+		$mod_array = array(0.2, 0, -0.2, -0.4, -0.6, -0.8, -1);
+	}
+
+	$test_fail_max = count($mod_array) - 1;
 	
 	$user_ID = get_current_user_id();
 
@@ -1041,7 +1079,7 @@ function unlock_stage(){
 				if ($total_matches != $test_size && $password_check != $password) {
 					if ($status == 2) {
 						if (isset($_SESSION['test_fail_count'])) {
-							if (($_SESSION['test_fail_count']) < 4) {
+							if ($_SESSION['test_fail_count'] < $test_fail_max) {
 								$_SESSION['test_fail_count']++;
 							} else {
 								unset($_SESSION['test_fail_count']);
@@ -1049,7 +1087,7 @@ function unlock_stage(){
 						}
 					} else if ($status == 3) {
 						if (isset($_SESSION['test_mastery_fail_count'])) {
-							if (($_SESSION['test_mastery_fail_count']) < 4) {
+							if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 								$_SESSION['test_mastery_fail_count']++;
 							} else {
 								unset($_SESSION['test_mastery_fail_count']);
@@ -1066,7 +1104,7 @@ function unlock_stage(){
 					} else if ($total_matches != $test_size) {
 						if ($status == 2) {
 							if (isset($_SESSION['test_fail_count'])) {
-								if (($_SESSION['test_fail_count']) < 4) {
+								if ($_SESSION['test_fail_count'] < $test_fail_max) {
 									$_SESSION['test_fail_count']++;
 								} else {
 									unset($_SESSION['test_fail_count']);
@@ -1074,7 +1112,7 @@ function unlock_stage(){
 							}
 						} else if ($status == 3) {
 							if (isset($_SESSION['test_mastery_fail_count'])) {
-								if (($_SESSION['test_mastery_fail_count']) < 4) {
+								if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 									$_SESSION['test_mastery_fail_count']++;
 								} else {
 									unset($_SESSION['test_mastery_fail_count']);
@@ -1096,7 +1134,7 @@ function unlock_stage(){
 					if (strtolower($choice) != strtolower($key) && $password_check != $password) {
 						if ($status == 2) {
 							if (isset($_SESSION['test_fail_count'])) {
-								if (($_SESSION['test_fail_count']) < 4) {
+								if ($_SESSION['test_fail_count'] < $test_fail_max) {
 									$_SESSION['test_fail_count']++;
 								} else {
 									unset($_SESSION['test_fail_count']);
@@ -1104,7 +1142,7 @@ function unlock_stage(){
 							}
 						} else if ($status == 3) {
 							if (isset($_SESSION['test_mastery_fail_count'])) {
-								if (($_SESSION['test_mastery_fail_count']) < 4) {
+								if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 									$_SESSION['test_mastery_fail_count']++;
 								} else {
 									unset($_SESSION['test_mastery_fail_count']);
@@ -1154,7 +1192,7 @@ function unlock_stage(){
 						} else if (strtolower($choice) != strtolower($key)) {
 							if ($status == 2) {
 								if (isset($_SESSION['test_fail_count'])) {
-									if (($_SESSION['test_fail_count']) < 4) {
+									if ($_SESSION['test_fail_count'] < $test_fail_max) {
 										$_SESSION['test_fail_count']++;
 									} else {
 										unset($_SESSION['test_fail_count']);
@@ -1162,7 +1200,7 @@ function unlock_stage(){
 								}
 							} else if ($status == 3) {
 								if (isset($_SESSION['test_mastery_fail_count'])) {
-									if (($_SESSION['test_mastery_fail_count']) < 4) {
+									if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 										$_SESSION['test_mastery_fail_count']++;
 									} else {
 										unset($_SESSION['test_mastery_fail_count']);
@@ -1195,7 +1233,7 @@ function unlock_stage(){
 					if ($key_match != count($choice_array_keys) && $key_match < 2 && $password_check != $password) {
 						if ($status == 2) {
 							if (isset($_SESSION['test_fail_count'])) {
-								if (($_SESSION['test_fail_count']) < 4) {
+								if ($_SESSION['test_fail_count'] < $test_fail_max) {
 									$_SESSION['test_fail_count']++;
 								} else {
 									unset($_SESSION['test_fail_count']);
@@ -1203,7 +1241,7 @@ function unlock_stage(){
 							}
 						} else if ($status == 3) {
 							if (isset($_SESSION['test_mastery_fail_count'])) {
-								if (($_SESSION['test_mastery_fail_count']) < 4) {
+								if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 									$_SESSION['test_mastery_fail_count']++;
 								} else {
 									unset($_SESSION['test_mastery_fail_count']);
@@ -1221,7 +1259,7 @@ function unlock_stage(){
 						if ($key_match != count($choice_array_keys) || $key_match < 2) {
 							if ($status == 2) {
 								if (isset($_SESSION['test_fail_count'])) {
-									if (($_SESSION['test_fail_count']) < 4) {
+									if ($_SESSION['test_fail_count'] < $test_fail_max) {
 										$_SESSION['test_fail_count']++;
 									} else {
 										unset($_SESSION['test_fail_count']);
@@ -1229,7 +1267,7 @@ function unlock_stage(){
 								}
 							} else if ($status == 3) {
 								if (isset($_SESSION['test_mastery_fail_count'])) {
-									if (($_SESSION['test_mastery_fail_count']) < 4) {
+									if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 										$_SESSION['test_mastery_fail_count']++;
 									} else {
 										unset($_SESSION['test_mastery_fail_count']);
@@ -1272,7 +1310,7 @@ function unlock_stage(){
 					} else {
 						if ($status == 2) {
 							if (isset($_SESSION['test_fail_count'])) {
-								if (($_SESSION['test_fail_count']) < 4) {
+								if ($_SESSION['test_fail_count'] < $test_fail_max) {
 									$_SESSION['test_fail_count']++;
 								} else {
 									unset($_SESSION['test_fail_count']);
@@ -1280,7 +1318,7 @@ function unlock_stage(){
 							}
 						} else if ($status == 3) {
 							if (isset($_SESSION['test_mastery_fail_count'])) {
-								if (($_SESSION['test_mastery_fail_count']) < 4) {
+								if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 									$_SESSION['test_mastery_fail_count']++;
 								} else {
 									unset($_SESSION['test_mastery_fail_count']);
@@ -1300,7 +1338,7 @@ function unlock_stage(){
 						} else {
 							if ($status == 2) {
 								if (isset($_SESSION['test_fail_count'])) {
-									if (($_SESSION['test_fail_count']) < 4) {
+									if ($_SESSION['test_fail_count'] < $test_fail_max) {
 										$_SESSION['test_fail_count']++;
 									} else {
 										unset($_SESSION['test_fail_count']);
@@ -1308,7 +1346,7 @@ function unlock_stage(){
 								}
 							} else if ($status == 3) {
 								if (isset($_SESSION['test_mastery_fail_count'])) {
-									if (($_SESSION['test_mastery_fail_count']) < 4) {
+									if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 										$_SESSION['test_mastery_fail_count']++;
 									} else {
 										unset($_SESSION['test_mastery_fail_count']);
@@ -1325,7 +1363,7 @@ function unlock_stage(){
 					} else {
 						if ($status == 2) {
 							if (isset($_SESSION['test_fail_count'])) {
-								if (($_SESSION['test_fail_count']) < 4) {
+								if ($_SESSION['test_fail_count'] < $test_fail_max) {
 									$_SESSION['test_fail_count']++;
 								} else {
 									unset($_SESSION['test_fail_count']);
@@ -1333,7 +1371,7 @@ function unlock_stage(){
 							}
 						} else if ($status == 3) {
 							if (isset($_SESSION['test_mastery_fail_count'])) {
-								if (($_SESSION['test_mastery_fail_count']) < 4) {
+								if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 									$_SESSION['test_mastery_fail_count']++;
 								} else {
 									unset($_SESSION['test_mastery_fail_count']);
@@ -1352,7 +1390,7 @@ function unlock_stage(){
 			} else {
 				if ($status == 2) {
 					if (isset($_SESSION['test_fail_count'])) {
-						if (($_SESSION['test_fail_count']) < 4) {
+						if ($_SESSION['test_fail_count'] < $test_fail_max) {
 							$_SESSION['test_fail_count']++;
 						} else {
 							unset($_SESSION['test_fail_count']);
@@ -1360,7 +1398,7 @@ function unlock_stage(){
 					}
 				} else if ($status == 3) {
 					if (isset($_SESSION['test_mastery_fail_count'])) {
-						if (($_SESSION['test_mastery_fail_count']) < 4) {
+						if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 							$_SESSION['test_mastery_fail_count']++;
 						} else {
 							unset($_SESSION['test_mastery_fail_count']);
@@ -1379,7 +1417,7 @@ function unlock_stage(){
 				} else {
 					if ($status == 2) {
 						if (isset($_SESSION['test_fail_count'])) {
-							if (($_SESSION['test_fail_count']) < 4) {
+							if ($_SESSION['test_fail_count'] < $test_fail_max) {
 								$_SESSION['test_fail_count']++;
 							} else {
 								unset($_SESSION['test_fail_count']);
@@ -1387,7 +1425,7 @@ function unlock_stage(){
 						}
 					} else if ($status == 3) {
 						if (isset($_SESSION['test_mastery_fail_count'])) {
-							if (($_SESSION['test_mastery_fail_count']) < 4) {
+							if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 								$_SESSION['test_mastery_fail_count']++;
 							} else {
 								unset($_SESSION['test_mastery_fail_count']);
@@ -1415,7 +1453,7 @@ function unlock_stage(){
 				} else {
 					if ($status == 2) {
 						if (isset($_SESSION['test_fail_count'])) {
-							if (($_SESSION['test_fail_count']) < 4) {
+							if ($_SESSION['test_fail_count'] < $test_fail_max) {
 								$_SESSION['test_fail_count']++;
 							} else {
 								unset($_SESSION['test_fail_count']);
@@ -1423,7 +1461,7 @@ function unlock_stage(){
 						}
 					} else if ($status == 3) {
 						if (isset($_SESSION['test_mastery_fail_count'])) {
-							if (($_SESSION['test_mastery_fail_count']) < 4) {
+							if ($_SESSION['test_mastery_fail_count'] < $test_fail_max) {
 								$_SESSION['test_mastery_fail_count']++;
 							} else {
 								unset($_SESSION['test_mastery_fail_count']);
