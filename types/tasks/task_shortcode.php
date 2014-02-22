@@ -258,7 +258,7 @@ function go_task_shortcode($atts, $content = null) {
 					// First time a user encounters a task
 					case 0: 
 					// sending go_add_post the $repeat var was the problem, that is why it is not sending a null value.
-					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0, 0, 0);
+					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0, 0, 0, $c_passed, $m_passed);
 						
 	?>
 					<div id="go_content">
@@ -402,11 +402,17 @@ function go_task_shortcode($atts, $content = null) {
 		if ($test_active && $test_returns) {
 			$db_test_fail_count = $wpdb->get_var("SELECT `c_fail_count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 			$_SESSION['test_fail_count'] = $db_test_fail_count;
+			
+			$test_passed = $wpdb->get_var("SELECT `c_passed` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
+			$_SESSION['test_passed'] = $test_passed;
 		}
 
 		if ($test_m_active && $test_m_returns) {
 			$db_test_mastery_fail_count = $wpdb->get_var("SELECT `m_fail_count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 			$_SESSION['test_mastery_fail_count'] = $db_test_mastery_fail_count;
+			
+			$test_mastery_passed = $wpdb->get_var("SELECT `m_passed` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
+			$_SESSION['test_mastery_passed'] = $test_mastery_passed;
 		}
 
 ?>
@@ -416,7 +422,8 @@ function go_task_shortcode($atts, $content = null) {
 				url: '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php'
 			});
 			check_locks();
-			// console.log("$_SESSION['test_fail_count']: <?php echo $_SESSION['test_fail_count']; ?>");
+			// console.log("$_SESSION['test_passed']: <?php echo $_SESSION['test_passed']; ?>");
+			// console.log("$_SESSION['test_mastery_passed']: <?php echo $_SESSION['test_mastery_passed']; ?>");
 		});
 		
 		function check_locks() {
@@ -652,7 +659,7 @@ function go_task_shortcode($atts, $content = null) {
 				}
 			}
 
-			var status = jQuery('#go_button').attr("status");
+			var status = jQuery('#go_button').attr("status") - 1;
 			jQuery.ajax({
 				type: "POST",
 				data:{
@@ -678,13 +685,12 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('#go_button').removeAttr('disabled');
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
-							<?php
-								if ($status == 2 && $test_returns) {
-									echo "test_point_update();";	
-								} else if ($status == 3 && $test_m_returns) {
-									echo "test_point_update();";
-								}
-							?>
+
+							var test_returns = "<?php echo $test_returns; ?>";
+							var test_m_returns = "<?php echo $test_m_returns; ?>";
+							if ((status == 2 && test_returns == 'on') || (status == 3 && test_m_returns == 'on')) {
+								test_point_update();
+							}
 						} else if (which == 'pass') {	
 							jQuery('.go_lock_message').html('Password correct, move on.');
 							jQuery('#go_unlock_next_stage').remove();
@@ -696,13 +702,12 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('#go_button').removeAttr('disabled');
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
-							<?php
-								if ($status == 2 && $test_returns) {
-									echo "test_point_update();";	
-								} else if ($status == 3 && $test_m_returns) {
-									echo "test_point_update();";
-								}
-							?>
+
+							var test_returns = "<?php echo $test_returns; ?>";
+							var test_m_returns = "<?php echo $test_m_returns; ?>";
+							if ((status == 2 && test_returns == 'on') || (status == 3 && test_m_returns == 'on')) {
+								test_point_update();
+							}
 						}
 					} else {
 						if (which == 'both') {
@@ -729,12 +734,13 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('#go_test_error_msg').text("Wrong answer, try again!");
 						}
 					}
-					// console.log(response);
+					// console.log("\nresponse:"+response);
 				}
 			});
 		}
 		
 		function test_point_update() {
+			var status = jQuery('#go_button').attr("status") - 1;
 			jQuery.ajax({
 				type: "POST",
 				data: {
@@ -742,7 +748,7 @@ function go_task_shortcode($atts, $content = null) {
 					points: "<?php $points_str = implode(" ", $points_array); 
 						echo $points_str;
 						 ?>",
-					status: <?php echo $status; ?>,
+					status: status,
 					page_id: <?php echo $page_id; ?>,
 					user_ID: <?php echo $user_ID; ?>,
 					post_id: <?php echo $id; ?>,
@@ -888,9 +894,19 @@ function test_point_update() {
 	if ($status == 2) {
 		$fail_count = $c_fail_count;
 		$custom_mods = $custom_fields['go_mta_test_lock_loot_mod'][0];
+		$c_passed = 1;
+		$m_passed = $_SESSION['test_mastery_passed'];
+		$passed = $_SESSION['test_passed'];	
+		$_SESSION['test_passed'] = 1;
 	} else if ($status == 3) {
 		$fail_count = $m_fail_count;
 		$custom_mods = $custom_fields['go_mta_test_mastery_lock_loot_mod'][0];
+		$c_passed = $_SESSION['test_passed'];
+		$m_passed = 1;
+		$passed = $_SESSION['test_mastery_passed'];
+		$_SESSION['test_mastery_passed'] = 1;
+	} else {
+		$passed = 1;
 	}
 
 	if (!preg_match("/[^0-9\-\,\s]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*,\s*)+/", $custom_mods)) {
@@ -913,8 +929,11 @@ function test_point_update() {
 		$target_point = floor($p_num);
 	}
 	
-	go_add_post($user_id, $post_id, $status, $target_point, 0, $page_id, null, null, $c_fail_count, $m_fail_count);
-	
+	if ($passed === 0 || $passed === '0') {
+		go_add_post($user_id, $post_id, $status, $target_point, 0, $page_id, null, null, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
+	}
+	// echo "\n\$passed: ".$passed." \$c_passed: ".$c_passed." \$status: ".$status." \$fail_count: ".$fail_count." \$_SESSION['test_passed']: ".$_SESSION['test_passed']
+	// ." \$_SESSION['test_mastery_passed']: ".$_SESSION['test_mastery_passed'];
 	die();
 }
 
@@ -922,7 +941,7 @@ function unlock_stage(){
 	global $wpdb;
 
 	$id = $_POST['task'];
-	$status = $_POST['status'] - 1;
+	$status = $_POST['status'];
 	$which = $_POST['which'];
 	$test_size = $_POST['list_size'];
 
@@ -988,7 +1007,6 @@ function unlock_stage(){
 	$test_fail_max = count($mod_array) - 1;
 	
 	$user_ID = get_current_user_id();
-
 
 	if ($status == 2) {
 		$password = sha1($custom_fields['go_mta_complete_unlock'][0]);
@@ -1654,18 +1672,30 @@ function task_change_stage() {
 		$accpt_mssg = $content_post->post_content;
 	}
 	$table_name_go = $wpdb->prefix . "go";
+
+	if (isset($_SESSION['test_passed'])) {
+		$c_passed = $_SESSION['test_passed'];	
+	} else {
+		$c_passed = 0;
+	}
+
+	if (isset($_SESSION['test_mastery_passed'])) {
+		$m_passed = $_SESSION['test_mastery_passed'];
+	} else {
+		$m_passed = 0;
+	}
 	
 	// if the button pressed IS the repeat button...
 	if ($repeat_button == 'on') {
 		if ($undo == 'true' || $undo === true) {
 			if ($task_count > 0) {
-				go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count);
+				go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 			} else {
-				go_add_post($user_id, $post_id, ($status-1), -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count);
+				go_add_post($user_id, $post_id, ($status-1), -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 			}
 		} else {
 			// if repeat is on and undo is not hit...
-			go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 1);
+			go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 		}	
 	// if the button pressed is NOT the repeat button...
 	} else {
@@ -1673,12 +1703,12 @@ function task_change_stage() {
 		if ($db_status == 0 || ($db_status < $status)) {
 			if ($undo == 'true' || $undo === true) {
 				if ($task_count > 0) {
-					go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count);
+					go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 				} else {
-					go_add_post($user_id, $post_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count);
+					go_add_post($user_id, $post_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 				}
 			} else {
-				go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count); 
+				go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed); 
 			}
 		}
 	}

@@ -35,7 +35,7 @@ function go_add_currency($user_id, $reason, $status, $points, $currency, $update
 
 // Adds currency and points for reasons that are post tied.
 
-function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, $repeat = null, $count = null, $c_fail_count = null, $m_fail_count = null){
+function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, $repeat = null, $count = null, $c_fail_count = null, $m_fail_count = null, $c_passed = null, $m_passed = null){
 	
 		global $wpdb;
 	   	$table_name_go = $wpdb->prefix . "go";
@@ -62,7 +62,7 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 				} else {
 					$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
 					if ($c_fail_count != null || $m_fail_count != null) {
-						$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count), array('uid'=>$user_id, 'post_id'=>$post_id));
+						$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'c_passed' => $c_passed, 'm_passed' => $m_passed), array('uid'=>$user_id, 'post_id'=>$post_id));
 					} else {
 						$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
 					}
