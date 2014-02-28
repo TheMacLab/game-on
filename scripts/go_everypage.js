@@ -214,20 +214,25 @@ jQuery('#go_stats_minutes').html(html);
 	
 	}
 function go_stats_leaderboard_choice(){
-	var values = []
+	var class_values = [];
+	var focus_values = [];
 	jQuery('#go_stats_class_a_list :checked').each(function() {
-		values.push(jQuery(this).val());
+		class_values.push(jQuery(this).val());
+	});
+	jQuery('#go_focuses :checked').each(function(){
+		focus_values.push(jQuery(this).val());
 	});
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
 		action: 'go_stats_leaderboard',
-		class_a_choice: values,
+		class_a_choice: class_values,
+		focuses: focus_values,
 		order: jQuery('#go_stats_leaderboard_select').val()},
 		success: function(html){
 			jQuery('#go_stats_leaderboard_table_body').html(html);
 		}
 	});
-	}
+}
 	 function go_mark_seen(date, type){
 			jQuery.ajax({
 				url: MyAjax.ajaxurl,

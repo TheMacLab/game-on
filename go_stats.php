@@ -164,6 +164,7 @@ margin-top: 40px; width:200px; display:inline;"></div
       </div>
       <div id="leaderboard_right_box">
         <h3 class="header"> Options to Display</h3>
+        <h4><?php echo get_option('go_class_a_name');?></h4>
         <div id="go_stats_class_a_list">
 			<?php
             $class_a = get_option('go_class_a');
@@ -173,6 +174,17 @@ margin-top: 40px; width:200px; display:inline;"></div
                 }
             }
             ?>
+        </div>
+        <h4><?php echo get_option('go_focus_name');?></h4>
+        <div id="go_focuses">
+        	<?php
+			$focuses = get_option('go_focus');
+			if($focuses){
+				foreach($focuses as $focus){
+					echo '<input type="checkbox" class="focus_choice" value="'.$focus.'" onChange="go_stats_leaderboard_choice();">'.$focus.'<br/>';	
+				}
+			}
+			?>
         </div>
       </div>
     </div>
@@ -278,34 +290,96 @@ function go_stats_minutes(){
 	add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
 function go_stats_leaderboard(){
 	global $wpdb;
+	// Chosen classes from front end
 	$class_a_choice= $_POST['class_a_choice'];
+	// Chosen focuses from front end
+	$focuses = $_POST['focuses'];
 	$table_name_go_totals= $wpdb->prefix.'go_totals';
+	// Initiallize ranking counter
 	$counter = 1;
+	// Grab all users according to the selected filter of points, currency, or time on the front end
 	$ids = $wpdb->get_results("SELECT uid
-FROM ".$table_name_go_totals."
-order by CAST(".$_POST['order']." as signed ) Desc");
+	FROM ".$table_name_go_totals."
+	order by CAST(".$_POST['order']." as signed ) Desc");
+	// Loop though these user objects
 	foreach($ids as $uid){
+		// Loop through only the user objects' IDs 
 		foreach($uid as $id){
-		$class_a = get_user_meta($id, 'go_classifications',true);
-		if($class_a){
-		$class_key = array_keys($class_a);
-		if(!empty($class_a_choice) && !empty($class_key)){
-		$intersect = array_intersect($class_key, $class_a_choice);
-		if(!empty($intersect)){
-			$points =go_return_points($id);
-			$currency = go_return_currency($id);
-			$minutes = go_return_minutes($id);
-			$user_data_key = get_userdata( $id ); 
-			$user_display = '<a href="'.$user_data_key->user_url.'" target="_blank">'.$user_data_key->display_name.'</a>';
-			echo '<tr><td>'.$counter.'</td><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
-			$counter++;
+			// Fetch current user's class(es)/computer(s)
+			$class_a = get_user_meta($id, 'go_classifications', true);
+			// Fetch current user's focus(es)
+			$focus = get_user_meta($id, 'go_focus', true);
+			
+			//Anonymous function which returns points, currency, time, user URL, and then echoes it out in a row for the leaderboard table
+			$get_user_data = function($id) use($counter){
+				$points = go_return_points($id);
+				$currency = go_return_currency($id);
+				$minutes = go_return_minutes($id);
+				$user_data_key = get_userdata($id);
+				$user_display = '<a href="'.$user_data_key->user_url.'" target="_blank">'.$user_data_key->display_name.'</a>';
+				echo '<tr><td>'.$counter.'</td><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
+			};
+			
+			// Isolate current users class(es)
+			if($class_a){
+				$class_keys = array_keys($class_a);	
+			}
+			
+			// If both focuses and classes are chosen
+			if(!empty($class_a_choice) && !empty($focuses)){
+				// If the current user has a class and focus
+				if(!empty($class_keys) && !empty($focus)){
+					// Checks if their class is part of the chosen classes
+					$class_intersect = array_intersect($class_keys, $class_a_choice);
+					// If current user has multiple focuses
+					if(is_array($focus)){
+						// Check if their focuses intersect with the chosen focuses
+						$focus_intersect = array_intersect($focus, $focuses);
+					// Else just check if their focus is part of chosen focuses	
+					}else{
+						$focus_intersect = in_array($focus, $focuses);	
+					}
+					// If both their class and focus are part of the chosen options
+					if(!empty($class_intersect) && !empty($focus_intersect)){
+						// Echo out a row of data for that user 
+						$get_user_data($id);
+						// Increment counter to give ranks to each row
+						$counter++;	
+					}
+				}
+			// If just classes are chosen
+			}elseif(!empty($class_a_choice)){
+				// If current user has a class
+				if(!empty($class_keys)){
+					// Check if their class was part of chosen classes
+					$class_intersect = 	array_intersect($class_keys, $class_a_choice);
+					// If it was, echo row of data for that user and increment the rankings
+					if(!empty($class_intersect)){
+						$get_user_data($id);
+						$counter++;	
+					}
+				}
+			// If just focuses are chosen
+			}elseif(!empty($focuses)){
+				// If current user has  a focus
+				if(!empty($focus)){
+					// If multiple focuses, check if any of their focuses are part of those chosen
+					if(is_array($focus)){
+						$focus_intersect = array_intersect($focus, $focuses);	
+					// If single focus, check if it is one of the chosen ones
+					}else{
+						$focus_intersect = in_array($focus, $focuses);	
+					}
+					// If either of above is true, echo row of data for that user and increment the rankings
+					if(!empty($focus_intersect)){
+						$get_user_data($id);
+						$counter++;	
+					}
+				}
 			}
 		}
-		}
-		}
-		}
-		die();
 	}
+	die();
+}
 	
-
  ?>

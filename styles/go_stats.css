@@ -247,10 +247,6 @@ border-radius: 10px;
 	opacity: .8;
 }
 
-#go_stats_class_a_list{
-	padding: 10px 10px 10px 10px; 
-}
-
 #leaderboard_left_box{
 	width: 68.125%;
 	height: 400px;
@@ -274,6 +270,15 @@ border-radius: 10px;
 	display: inline-table;
 	position:absolute;
 }
+
+#leaderboard_right_box h4{
+	padding-left: 10px;	
+}
+
+#go_stats_class_a_list, #go_focuses{
+	padding-left: 20px;
+}
+
 	
 go_stats-leaderboard_order{
 	border:solid thin black;
