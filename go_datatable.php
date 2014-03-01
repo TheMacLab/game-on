@@ -16,6 +16,8 @@ function go_table_individual() {
   count INT DEFAULT 0,
   c_fail_count INT DEFAULT 0,
   m_fail_count INT DEFAULT 0,
+  c_passed BOOLEAN DEFAULT 0,
+  m_passed BOOLEAN DEFAULT 0,
   points INT,
   currency INT,
   infractions INT,	 
