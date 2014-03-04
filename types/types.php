@@ -52,6 +52,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_presets',
 			),
 			array(
+				'name' => 'Nerf Dates (optional)',
+				'id' => $prefix.'date_picker',
+				'type' => 'go_decay_table'
+			),
+			array(
 				'name' => 'Time Filter (Optional)'.go_task_opt_help('time_filter', '', 'http://maclab.guhsd.net/go/video/quests/timeFilter.mp4'),
 				'desc' => 'Hides this post from all users with less than the entered amount of time (in minutes).',
 				'id' => $prefix . 'time_filter',
@@ -660,8 +665,6 @@ add_action( 'cmb_render_go_presets', 'go_presets_js' );
 add_filter( 'cmb_meta_boxes', 'go_mta_con_meta' );
 add_action( 'init', 'go_init_mtbxs', 9999 );
 
-
-
 add_action( 'cmb_render_go_presets', 'go_cmb_render_go_presets', 10, 0 );
 function go_cmb_render_go_presets() {
     ?><select id="go_presets" onchange="apply_presets();">
@@ -701,6 +704,76 @@ function go_cmb_render_go_store_shortcode() {
 add_action( 'cmb_render_go_button', 'go_cmb_render_go_button', 9, 0 );
 function go_cmb_render_go_button() {
  echo '<input id="go_mta_test_lock_add_button" type="button" value="Add Question"/>';
+}
+
+add_action('cmb_render_go_decay_table', 'go_decay_table');
+function go_decay_table(){
+	?>
+		<table id="go_list_of_decay_dates">
+			<th>Date of Nerf</th><th>Percentage Nerf</th>
+            <?php
+            $custom = get_post_custom(get_the_id());
+            if($custom['go_mta_date_picker']){
+				$temp_array = array();
+				$dates = array();
+				$percentages = array();
+            	foreach($custom['go_mta_date_picker'] as $key => $value){
+					$temp_array[$key] = unserialize($value); 
+				}
+				$temp_array2 = $temp_array[0];
+				
+				if(!empty($temp_array2)){
+					foreach($temp_array2 as $key => $value){
+						if($key == 'date'){
+							foreach(array_values($value) as $date_val){
+								array_push($dates, $date_val);	
+							}
+						}elseif($key == 'percent'){
+							foreach(array_values($value) as $percent_val){
+								array_push($percentages, $percent_val);	
+							}
+						}
+					}
+				}
+				foreach($dates as $key => $date){
+					?>
+                    <tr>
+                        <td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar" class="datepicker" value="<?php echo $date;?>" type="date"/></td>
+                        <td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" value="<?php echo $percentages[$key]?>" type="text"/></td>
+                    </tr>
+                    <?php
+				}
+            }else{
+			?>
+			<tr>
+				<td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar" class="datepicker" type="date"/></td>
+				<td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" type="text"/></td>
+			</tr>
+            <?php 
+			}
+			?>
+		</table>
+		<input type="button" id="go_mta_add_task_decay" onclick="go_add_decay_table_row()" value="+"/>
+	<?php
+}
+
+add_action('cmb_validate_go_decay_table', 'go_validate_decay_table');
+function go_validate_decay_table(){
+	$dates = $_POST['go_mta_task_decay_calendar'];
+	$percentages = $_POST['go_mta_task_decay_percent'];
+	if(isset($dates) && isset($percentages)){
+		$dates_f = array_filter($dates);
+		$percentages_f = array_filter($percentages);
+		$new_dates = $dates_f;
+		$new_percentages = $percentages_f;
+		if(count($dates_f) != count($dates)){
+			$new_percentages = array_intersect_key($percentages_f,$dates_f);
+		}
+		if(count($percentages_f) != count($percentages)){
+			$new_dates = array_intersect_key($dates_f,$percentages_f);
+		}
+		return array('date' => $new_dates, 'percent' => $new_percentages);
+	}
 }
 
 add_filter( 'template_include', 'go_tasks_template_function', 1 );

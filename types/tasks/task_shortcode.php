@@ -13,7 +13,7 @@ function go_task_shortcode($atts, $content = null) {
 	$user_ID = get_current_user_id(); // User ID
 	$page_id = get_the_ID();
 	if ($id) { // If the shortcode has an attribute called id, run this code
-	
+		$today = date('Y-m-d');
 		$custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
 		$task_currency = $custom_fields['go_mta_task_currency'][0]; // Currency granted after each stage of task
 		$task_points = $custom_fields['go_mta_task_points'][0]; // Points granted after each stage of task
@@ -207,8 +207,60 @@ function go_task_shortcode($atts, $content = null) {
 			$accpt_mssg = $custom_fields['go_mta_accept_message'][0]; // Set value of accept message equal to the task's accept message meta field value
 		}
 		
+		// If there are dates in the nerf date picker
+		if($custom_fields['go_mta_date_picker']){
+			// Initialize arrays to be filled w/ values
+			$temp_array = array();
+			$dates = array();
+			$percentages = array();
+			
+			// Loops through array of dates set in task creation page
+			foreach($custom_fields['go_mta_date_picker'] as $key => $value){
+				$temp_array[$key] = unserialize($value); 
+			}
+			
+			$temp_array2 = $temp_array[0];
+			
+			// Loops through condensed array of dates
+			foreach($temp_array2 as $key => $value){
+				if($key == 'date'){
+					foreach(array_values($value) as $date_val){
+						array_push($dates, $date_val);	
+					}
+				}elseif($key == 'percent'){
+					foreach(array_values($value) as $percent_val){
+						array_push($percentages, $percent_val);	
+					}
+				}
+			}
+			
+			// Loops through dates to check which is closest
+			foreach($dates as $key => $val){
+				
+				// Checks numerical distance from today and the date in the array
+				$interval[] = abs(strtotime($today) - strtotime($val));
+				
+				// If current date is in the future, set its value to be large number so that when sorting it can't appear first and mess up setting the update percentage below
+				if(strtotime($today) < strtotime($val)){
+					$interval[$key] = PHP_INT_MAX; 
+				}
+			}
+			// Sorts array from least to greatest
+			asort($interval);
+	
+			// Sets percent equal to the percent paired with the closest date from today
+			// Prioritizes past dates over future dates
+			$update_percent = $percentages[key($interval)]/100;
+			
+		}else {
+			$update_percent = 0;	
+		}
+		
 		if($user_ID == 0){ // If user isn't logged in, run this code
 			echo wpautop($description).wpautop($accpt_mssg).wpautop($completion_message);// Displays task content
+			if(get_post_type() == 'tasks'){
+				comments_template();
+			}
 		}
 		
 		global $current_points;
@@ -258,7 +310,9 @@ function go_task_shortcode($atts, $content = null) {
 					// First time a user encounters a task
 					case 0: 
 					// sending go_add_post the $repeat var was the problem, that is why it is not sending a null value.
-					go_add_post($user_ID, $id, 0, $points_array[0], $currency_array[0], $page_id, null, 0, 0, 0, $c_passed, $m_passed);
+					go_add_post($user_ID, $id, 0, 
+					floor($points_array[0] + ($update_percent * $points_array[0])), 
+					floor($currency_array[0] + ($update_percent * $currency_array[0])), $page_id, null, 0, 0, 0, $c_passed, $m_passed);
 						
 	?>
 					<div id="go_content">
@@ -752,6 +806,7 @@ function go_task_shortcode($atts, $content = null) {
 					page_id: <?php echo $page_id; ?>,
 					user_ID: <?php echo $user_ID; ?>,
 					post_id: <?php echo $id; ?>,
+					update_percent: <?php echo $update_percent;?>
 				},
 				success: function (response) {
 					// the three following lines are required for the go_notification to work
@@ -840,6 +895,7 @@ function go_task_shortcode($atts, $content = null) {
 					admin_name: '<?php echo $admin_name; ?>',
 					complete_lock: <?php if($complete_lock){echo 'true';} else{echo 'false';} ?>,
 					mastery_lock: <?php if($mastery_lock){echo 'true';} else{echo 'false';}?>,
+					update_percent: <?php echo $update_percent;?>
 				},
 				success: function(html){
 					jQuery('#go_content').html(html);
@@ -885,6 +941,7 @@ function test_point_update() {
 	$post_id = $_POST['post_id'];
 	$user_id = $_POST['user_ID'];
 	$points_str = $_POST['points'];
+	$update_percent = $_POST['update_percent'];
 	$points_array = explode(" ", $points_str);
 	$point_base = $points_array[2];
 	$c_fail_count = $_SESSION['test_fail_count'];
@@ -930,7 +987,8 @@ function test_point_update() {
 	}
 	
 	if ($passed === 0 || $passed === '0') {
-		go_add_post($user_id, $post_id, $status, $target_point, 0, $page_id, null, null, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
+		go_add_post($user_id, $post_id, $status, 
+		floor($target_point + ($update_percent * $target_point)), 0, $page_id, null, null, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 	}
 	// echo "\n\$passed: ".$passed." \$c_passed: ".$c_passed." \$status: ".$status." \$fail_count: ".$fail_count." \$_SESSION['test_passed']: ".$_SESSION['test_passed']
 	// ." \$_SESSION['test_mastery_passed']: ".$_SESSION['test_mastery_passed'];
@@ -1507,6 +1565,7 @@ function task_change_stage() {
 	$repeat_button = $_POST['repeat']; // Boolean which determines if the task is repeatable or not (True or False)
 	$complete_lock = $_POST['complete_lock']; // Boolean which determines if the completion stage is locked or not (True or False)
 	$mastery_lock = $_POST['mastery_lock']; // Boolean which determines if the mastery stage is locked or not (True or False)
+	$update_percent = $_POST['update_percent']; // Float which is used to modify values saved to database
 	
 	$go_table_ind = $wpdb->prefix.'go';
 	$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $post_id AND uid = $user_id");
@@ -1689,13 +1748,19 @@ function task_change_stage() {
 	if ($repeat_button == 'on') {
 		if ($undo == 'true' || $undo === true) {
 			if ($task_count > 0) {
-				go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
+				go_add_post($user_id, $post_id, $status, 
+				-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
+				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 			} else {
-				go_add_post($user_id, $post_id, ($status-1), -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
+				go_add_post($user_id, $post_id, ($status-1), 
+				-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
+				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 			}
 		} else {
 			// if repeat is on and undo is not hit...
-			go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
+			go_add_post($user_id, $post_id, $status, 
+			floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
+			floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), $page_id, $repeat_button, 1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 		}	
 	// if the button pressed is NOT the repeat button...
 	} else {
@@ -1703,12 +1768,18 @@ function task_change_stage() {
 		if ($db_status == 0 || ($db_status < $status)) {
 			if ($undo == 'true' || $undo === true) {
 				if ($task_count > 0) {
-					go_add_post($user_id, $post_id, $status, -$points_array[$status-1], -$currency_array[$status-1], $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
+					go_add_post($user_id, $post_id, $status, 
+					-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
+					-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), $page_id, $repeat_button, -1, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 				} else {
-					go_add_post($user_id, $post_id, ($status-2), -$points_array[$status-2], -$currency_array[$status-2], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
+					go_add_post($user_id, $post_id, ($status-2), 
+					-floor($points_array[$status-2] + ($update_percent * $points_array[$status-2])), 
+					-floor($currency_array[$status-2] + ($update_percent * $currency_array[$status-2])), $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed);
 				}
 			} else {
-				go_add_post($user_id, $post_id, $status, $points_array[$status-1], $currency_array[$status-1], $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed); 
+				go_add_post($user_id, $post_id, $status, 
+				floor($points_array[$status-1] + ($update_percent * $points_array[$status - 1])), 
+				floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), $page_id, $repeat_button, 0, $c_fail_count, $m_fail_count, $c_passed, $m_passed); 
 			}
 		}
 	}

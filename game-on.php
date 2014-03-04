@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.4.3
+Version: 1.4.4
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -96,7 +96,7 @@ add_action('go_return_options','go_return_options');
 add_action('go_update_globals','go_update_globals');
 add_action('barColor','barColor');
 add_action('go_return_multiplier','go_return_multiplier');
-add_filter('get_comment_author', 'go_display_comment_author_points');
+add_filter('get_comment_author', 'go_display_comment_author');
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);

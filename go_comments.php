@@ -1,6 +1,6 @@
 <?php
 
-function go_display_comment_author_points(){
+function go_display_comment_author(){
 	global $comment;
 	$user_id = $comment->user_id;
 	$author = $comment->comment_author;
@@ -8,7 +8,22 @@ function go_display_comment_author_points(){
 		return $author;
 	} else{
 		$points = get_user_meta($user_id, 'go_rank', true);
-		return $author.'<br/>'.'('.$points[0][0].')';
+		$focus = get_user_meta($user_id, 'go_focus', true);
+		if($focus){
+			if(is_array($focus)){
+				foreach($focus as $val){
+					$careers .= $val.'/';
+				}
+				$careers = substr($careers, 0, strlen($careers)-1);	
+			}else{
+				$careers = $focus;	
+			}
+		}
+		if($careers){
+			return $author.'<br/>'.'('.$careers.', '.$points[0][0].')';
+		}else{
+			return $author.'<br/>'.'('.$points[0][0].')';
+		}
 	}
 }
 
