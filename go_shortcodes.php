@@ -105,7 +105,7 @@ function go_display_video($atts, $video_url){
 }
 add_shortcode('go_display_video', 'go_display_video');
 
-/Function that grabs the current page
+//Function that grabs the current page
 function go_page_grabber_shortcode() { 
 echo '';
 $args=array(
