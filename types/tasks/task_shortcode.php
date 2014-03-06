@@ -208,7 +208,7 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		// If there are dates in the nerf date picker
-		if($custom_fields['go_mta_date_picker']){
+		if($custom_fields['go_mta_date_picker'] && $custom_fields['go_mta_date_picker'][0] != ""){
 			// Initialize arrays to be filled w/ values
 			$temp_array = array();
 			$dates = array();
@@ -220,37 +220,44 @@ function go_task_shortcode($atts, $content = null) {
 			}
 			
 			$temp_array2 = $temp_array[0];
+			if(empty($temp_array2['date']) || empty($temp_array2['percent'])){
+				$update_percent = 0;
+			}
 			
 			// Loops through condensed array of dates
-			foreach($temp_array2 as $key => $value){
-				if($key == 'date'){
-					foreach(array_values($value) as $date_val){
-						array_push($dates, $date_val);	
-					}
-				}elseif($key == 'percent'){
-					foreach(array_values($value) as $percent_val){
-						array_push($percentages, $percent_val);	
+			if($temp_array2 && is_array($temp_array2)){
+				foreach($temp_array2 as $key => $value){
+					if($key == 'date'){
+						foreach(array_values($value) as $date_val){
+							array_push($dates, $date_val);	
+						}
+					}elseif($key == 'percent'){
+						foreach(array_values($value) as $percent_val){
+							array_push($percentages, $percent_val);	
+						}
 					}
 				}
-			}
-			
-			// Loops through dates to check which is closest
-			foreach($dates as $key => $val){
+				// Loops through dates to check which is closest
+				foreach($dates as $key => $val){
+					
+					// Checks numerical distance from today and the date in the array
+					$interval[] = abs(strtotime($today) - strtotime($val));
+					
+					// If current date is in the future, set its value to be large number so that when sorting it can't appear first and mess up setting the update percentage below
+					if(strtotime($today) < strtotime($val)){
+						$interval[$key] = PHP_INT_MAX; 
+					}
+				}
 				
-				// Checks numerical distance from today and the date in the array
-				$interval[] = abs(strtotime($today) - strtotime($val));
-				
-				// If current date is in the future, set its value to be large number so that when sorting it can't appear first and mess up setting the update percentage below
-				if(strtotime($today) < strtotime($val)){
-					$interval[$key] = PHP_INT_MAX; 
+				if($interval){
+					// Sorts array from least to greatest
+					asort($interval);
+					
+					// Sets percent equal to the percent paired with the closest date from today
+					// Prioritizes past dates over future dates
+					$update_percent = $percentages[key($interval)]/100;
 				}
 			}
-			// Sorts array from least to greatest
-			asort($interval);
-	
-			// Sets percent equal to the percent paired with the closest date from today
-			// Prioritizes past dates over future dates
-			$update_percent = $percentages[key($interval)]/100;
 			
 		}else {
 			$update_percent = 0;	

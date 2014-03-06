@@ -52,7 +52,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_presets',
 			),
 			array(
-				'name' => 'Nerf Dates (optional)',
+				'name' => 'Nerf Dates (optional)'.go_task_opt_help('nerf_dates', '', 'http://maclab.guhsd.net/go/video/quests/nerfDates.mp4'),
 				'id' => $prefix.'date_picker',
 				'type' => 'go_decay_table'
 			),
