@@ -288,6 +288,15 @@ function go_stats_minutes(){
 		die(); 
 	}
 	add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
+	
+function go_return_user_data($id, $counter){
+	$points = go_return_points($id);
+	$currency = go_return_currency($id);
+	$minutes = go_return_minutes($id);
+	$user_data_key = get_userdata($id);
+	$user_display = '<a href="'.$user_data_key->user_url.'" target="_blank">'.$user_data_key->display_name.'</a>';
+	echo '<tr><td>'.$counter.'</td><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
+};
 function go_stats_leaderboard(){
 	global $wpdb;
 	// Chosen classes from front end
@@ -309,16 +318,6 @@ function go_stats_leaderboard(){
 			$class_a = get_user_meta($id, 'go_classifications', true);
 			// Fetch current user's focus(es)
 			$focus = get_user_meta($id, 'go_focus', true);
-			
-			//Anonymous function which returns points, currency, time, user URL, and then echoes it out in a row for the leaderboard table
-			$get_user_data = function($id) use($counter){
-				$points = go_return_points($id);
-				$currency = go_return_currency($id);
-				$minutes = go_return_minutes($id);
-				$user_data_key = get_userdata($id);
-				$user_display = '<a href="'.$user_data_key->user_url.'" target="_blank">'.$user_data_key->display_name.'</a>';
-				echo '<tr><td>'.$counter.'</td><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
-			};
 			
 			// Isolate current users class(es)
 			if($class_a){
@@ -342,7 +341,7 @@ function go_stats_leaderboard(){
 					// If both their class and focus are part of the chosen options
 					if(!empty($class_intersect) && !empty($focus_intersect)){
 						// Echo out a row of data for that user 
-						$get_user_data($id);
+						go_return_user_data($id,$counter);
 						// Increment counter to give ranks to each row
 						$counter++;	
 					}
@@ -355,7 +354,7 @@ function go_stats_leaderboard(){
 					$class_intersect = 	array_intersect($class_keys, $class_a_choice);
 					// If it was, echo row of data for that user and increment the rankings
 					if(!empty($class_intersect)){
-						$get_user_data($id);
+						go_return_user_data($id,$counter);
 						$counter++;	
 					}
 				}
@@ -372,7 +371,7 @@ function go_stats_leaderboard(){
 					}
 					// If either of above is true, echo row of data for that user and increment the rankings
 					if(!empty($focus_intersect)){
-						$get_user_data($id);
+						go_return_user_data($id,$counter);
 						$counter++;	
 					}
 				}
