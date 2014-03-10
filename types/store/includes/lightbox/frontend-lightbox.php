@@ -69,15 +69,18 @@ function go_the_lb_ajax(){
 	
 	$user_focuses = array();
 	
+	// Check if user has a focus
 	if(get_user_meta($user_ID, 'go_focus', true) != null){
 		$user_focuses = (array) get_user_meta($user_ID, 'go_focus', true);
 	}
 	
-	if($custom_fields['go_mta_focuses'][0]){
+	// Check if the item has a focus and the focus gateway is turned on
+	if($custom_fields['go_mta_focuses'][0] && $custom_fields['go_mta_focus_item_switch'][0] == 'on'){
 		$item_focus = $custom_fields['go_mta_focuses'][0];
-	}
+	} 
 	
-	if(!in_array($item_focus, $user_focuses) || empty($user_focuses)){
+	// Check if the item has a focus, or it does but the user doesn't have the focus, or the user doesn't have a focus at all
+	if($item_focus == NULL || !in_array($item_focus, $user_focuses) || empty($user_focuses)){
 		if($purchase_count < $purchase_limit || $purchase_limit == 0){
 			if($user_time>=$minutes_required || !$minutes_required){ 
 		?>
@@ -104,6 +107,7 @@ function go_the_lb_ajax(){
 		} else{
 			echo 'You\'ve reached the maximum purchase limit.';	
 		}
+	// If user has the focus and the item is a focus gateway echo this
 	}else{
 		echo 'You already have this '.go_return_options('go_focus_name').'!';	
 	}
