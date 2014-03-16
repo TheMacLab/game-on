@@ -2,7 +2,7 @@
 function task_edit_jquery() {
 ?>
 <script type="text/javascript">
-if(navigator.userAgent.indexOf('Firefox') != -1 && parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('Firefox') + 8)) >= 3.6){
+if(navigator.userAgent.indexOf('Firefox') != -1 && parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('Firefox') + 8)) >= 3.6 || navigator.userAgent.indexOf('Safari') != -1){
 	jQuery('input[type="date"]').datepicker({dateFormat: "yy-mm-dd"});
 }
 var count = 1;
