@@ -109,7 +109,21 @@ if (!is_admin_bar_showing() || !is_user_logged_in() )
 		'href' => '#',
 		'id' => 'go_stats',
 	));
-	
+
+if (!is_admin_bar_showing() || !is_user_logged_in() || !is_super_admin() )
+		return;
+		$wp_admin_bar->add_menu( array(
+		'title' => '
+			<form role="search" method="get" id="go_admin_bar_task_search_form" class="searchform" action="' . home_url( '/' ) . '" >
+		    	<div><label class="screen-reader-text" for="s">' . __( 'Search for:' ) . '</label>
+		    		<input type="text" value="' . get_search_query() . '" name="s" id="go_admin_bar_task_search_input" placeholder="Search for tasks..."/>
+		    		<input type="hidden" name="post_type[]" value="tasks" />
+		    		<input type="submit" id="go_admin_bar_task_search_submit" value="'. esc_attr__( 'Search' ) .'" />
+		    	</div>
+		    </form>',
+		'id' => 'go_task_search'
+	));
+
 if (!is_admin_bar_showing() || !is_user_logged_in() || !is_super_admin() )
 		return;
 		$wp_admin_bar->add_menu( array(

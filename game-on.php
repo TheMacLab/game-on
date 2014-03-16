@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.4.8
+Version: 1.4.9
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -27,6 +27,7 @@ include('go_comments.php');
 include('go_definitions.php');
 include('go_mail.php');
 include('go_messages.php');
+include('go_task_search.php');
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
