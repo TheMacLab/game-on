@@ -26,6 +26,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
+				'name' => 'Choose Order of Tasks in Chain',
+				'type' => 'go_pick_order_of_chain'
+			),
+			array(
 				'name' => go_return_options('go_tasks_name').' Shortcode'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/taskShortcode.mp4'),
 				'type' => 'go_task_shortcode'
 			),
@@ -819,3 +823,79 @@ add_action('wp_head', 'go_create_help_video_lb');
 function go_task_opt_help($field, $title, $video_url = null) {
 	return '<a id="go_help_'.$field.'" class="go_task_opt_help" onclick="go_display_help_video(\''.$video_url.'\');" title="'.$title.'" style="background: #DBDBDB !important;">?</a>';
 }
+
+add_action('cmb_render_go_pick_order_of_chain', 'go_pick_order_of_chain');
+function go_pick_order_of_chain(){
+	global $wpdb;
+	$task_id = get_the_id();
+	if(get_the_terms($task_id, 'task_chains')){
+		$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')));
+		$posts_in_chain = get_posts(array(
+			'post_type' => 'tasks',
+			'taxonomy' => 'task_chains',
+			'term' => $chain->name,
+			'order' => 'ASC',
+			'meta_key' => 'chain_position',
+			'orderby' => 'meta_value_num'
+		));
+		
+		?>
+        <ul id="go_task_order_in_chain">
+			<?php
+            foreach($posts_in_chain as $post){
+                echo '<li class="go_task_in_chain" post_id="'.$post->ID.'">'.$post->post_title.'</li>';
+            }
+            ?>
+		</ul>
+        <script type="text/javascript">
+		jQuery('document').ready(function(e) {
+           jQuery('#go_task_order_in_chain').sortable({
+			   axis: "y", 
+			   stop: function(event, ui){
+				   var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+				   var order = {};
+				   var chain = '<?php echo $chain->name;?>';
+				   var position = 1;
+				   jQuery('.go_task_in_chain').each(function(i, el){
+					   order[position] = jQuery(this).attr('post_id');
+					   position++;
+				   });
+				   jQuery.ajax({
+					   url: go_ajaxurl,
+					   type: 'POST',
+					   data: {
+						   action: 'go_update_task_order',
+						   order: order,
+						   chain: chain
+					   }
+				   });   
+			   }
+			}); 
+        });
+		</script>
+        <?php
+	}
+}
+
+add_action('save_post', 'go_add_new_task_in_chain');
+function go_add_new_task_in_chain(){
+	$task_id = get_the_id();
+	if(get_the_terms($task_id, 'task_chains')){
+		$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')))->name;
+	}
+	if($chain && go_return_task_amount_in_chain($chain)){
+		$position = go_return_task_amount_in_chain($chain) + 1;
+	}
+	add_post_meta($task_id, 'chain', $chain, true);
+	add_post_meta($task_id, 'chain_position', $position, true);
+}
+function go_update_task_order(){
+	$order = $_POST['order'];
+	$chain = $_POST['chain'];
+	foreach($order as $key => $value){
+		add_post_meta($value, 'chain', $chain, true);
+		update_post_meta($value, 'chain_position', $key);
+	}
+	die();	
+}
+?>

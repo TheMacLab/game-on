@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.5.1
+Version: 1.5.2
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -44,6 +44,7 @@ add_action('go_return_currency','go_return_currency');
 add_action('go_return_points','go_return_points');
 add_action('go_return_minutes','go_return_minutes');
 add_action('go_display_user_focuses', 'go_display_user_focuses');
+add_action('go_return_task_amount_in_chain', 'go_return_task_amount_in_chain');
 add_action('admin_menu', 'go_ranks');
 add_action('admin_menu', 'go_clipboard');
 add_action('admin_menu', 'go_mail');
@@ -85,6 +86,7 @@ add_action('wp_ajax_listurl', 'listurl');
 add_action('wp_ajax_nopriv_listurl', 'listurl');
 add_action('wp_ajax_go_clipboard_collect_data', 'go_clipboard_collect_data');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');
+add_action('wp_ajax_go_update_task_order', 'go_update_task_order');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');

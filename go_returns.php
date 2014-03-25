@@ -54,4 +54,9 @@ function go_display_user_focuses($user_id){
 	return $valueu;
 }
 
+function go_return_task_amount_in_chain($chain){
+	global $wpdb;
+	$count = $wpdb->query("SELECT * FROM `".$wpdb->postmeta."` WHERE meta_key = 'chain' and meta_value = '".$chain."'");
+	return $count;
+}
 ?>

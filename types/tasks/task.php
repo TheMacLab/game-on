@@ -112,6 +112,37 @@ function register_taxonomy_task_categories() {
     );
 	
 	register_taxonomy('task_focus_categories', array('tasks'), $args_focus);
+	
+	$labels_task_chains = array( 
+		'name' => _x( go_return_options('go_tasks_name').' Chains', 'task_chains' ),
+        'singular_name' => _x( go_return_options('go_tasks_name').' Chain', 'task_chains' ),
+        'search_items' => _x( 'Search '.go_return_options('go_tasks_name').' Chains', 'task_chains' ),
+        'popular_items' => _x( 'Popular '.go_return_options('go_tasks_name').' Chains', 'task_chains' ),
+        'all_items' => _x( 'All '.go_return_options('go_tasks_name').' Chains', 'task_chains' ),
+        'parent_item' => _x( go_return_options('go_tasks_name').' Chain Parent', 'task_chains' ),
+        'parent_item_colon' => _x( 'Parent '.go_return_options('go_tasks_name').' Chain:', 'task_chains' ),
+        'edit_item' => _x( 'Edit '.go_return_options('go_tasks_name').' Chain', 'task_chains' ),
+        'update_item' => _x( 'Update '.go_return_options('go_tasks_name').' Chain', 'task_chains' ),
+        'add_new_item' => _x( 'Add New '.go_return_options('go_tasks_name').' Chain', 'task_chains' ),
+        'new_item_name' => _x( 'New '.go_return_options('go_tasks_name').' Chain', 'task_chains' ),
+        'separate_items_with_commas' => _x( 'Separate '.go_return_options('go_tasks_name').' chains with commas', 'task_chains' ),
+        'add_or_remove_items' => _x( 'Add or remove '.go_return_options('go_tasks_name').' chains', 'task_chains' ),
+        'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options('go_tasks_name').' chains', 'task_chains' ),
+        'menu_name' => _x( go_return_options('go_tasks_name').' Chains', 'task_chains' ),
+	);
+	$args_task_chains = array(
+		'labels' => $labels_task_chains,
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_ui' => true,
+        'show_tagcloud' => true,
+        'show_admin_column' => false,
+        'hierarchical' => true,
+        'rewrite' => true,
+        'query_var' => true
+	);
+	
+	register_taxonomy('task_chains', array('tasks'), $args_task_chains);
 }
 
 ?>

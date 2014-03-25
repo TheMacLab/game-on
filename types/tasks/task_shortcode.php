@@ -308,7 +308,70 @@ function go_task_shortcode($atts, $content = null) {
 
 			<div id="go_description"> <?php echo  do_shortcode(wpautop($description));?> </div>
             
-<?php
+<?php	
+		// If current post in a chain and user logged in
+		if($custom_fields['chain'] && $user_ID != 0){
+			
+			$current_position_in_chain = get_post_meta($id, 'chain_position', true);
+			$chain = get_the_terms($id, 'task_chains');
+			
+			//Grab chain object for this post
+			$chain = array_shift(array_values($chain));
+			
+			if($current_position_in_chain != 1){
+				
+				//Grab all posts in the current chain in order
+				$posts_in_chain = get_posts(array(
+					'post_type' => 'tasks',
+					'taxonomy' => 'task_chains',
+					'term' => $chain->name,
+					'order' => 'ASC',
+					'meta_key' => 'chain_position',
+					'orderby' => 'meta_value_num'
+				));
+	
+				// Loop through each one and make array of their ids
+				foreach($posts_in_chain as $post_in_chain){
+					$post_ids_in_chain[] = $post_in_chain->ID;	
+				}
+				
+				// Setup next task in chain 
+				if($id != end($post_ids_in_chain)){
+					$next_post_id_in_chain = $post_ids_in_chain[array_search($id, $post_ids_in_chain) + 1];
+					$next_post_in_chain = '<a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+				}
+				
+				$post_ids_in_chain_string = join(',', $post_ids_in_chain);
+				
+				// Grab all posts in chain statuses
+				$list = $wpdb->get_results("
+				select post_id,status
+				from ".$go_table_ind."
+				where uid = $user_ID
+				and post_id in ($post_ids_in_chain_string)
+				order by field(post_id, $post_ids_in_chain_string)
+				");
+				
+				// Make array of statuses in chain indexed by post id
+				foreach($list as $post_obj){
+					$post_status_in_chain[$post_obj->post_id] = $post_obj->status;
+				}
+				
+				foreach($post_ids_in_chain as $post_id_in_chain){
+					if($post_id_in_chain == $id){
+						break;	
+					}
+					
+					// Check if current post in loop has been mastered
+					if($post_status_in_chain[$post_id_in_chain] != 4){
+						$previous_task = '<a href="'.get_permalink($post_id_in_chain).'">'.get_the_title($post_id_in_chain).'</a>';
+						echo 'You must master '.$previous_task.' to do this '.strtolower(go_return_options('go_tasks_name'));
+						return false;
+					}
+				}
+			}
+		}
+		
 		if($go_ahead || !isset($focus_category_lock) || empty($category_names)){
 			if($current_minutes >= $minutes_required || !$minutes_required){
 				
@@ -416,7 +479,10 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Mastered
 					case 4:  
-						echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));	
+						echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
+						if($next_post_in_chain){
+							echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain;
+						}
 						if ($repeat == 'on') {
 							if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 								echo '<div id="repeat_quest">
@@ -902,7 +968,9 @@ function go_task_shortcode($atts, $content = null) {
 					admin_name: '<?php echo $admin_name; ?>',
 					complete_lock: <?php if($complete_lock){echo 'true';} else{echo 'false';} ?>,
 					mastery_lock: <?php if($mastery_lock){echo 'true';} else{echo 'false';}?>,
-					update_percent: <?php echo $update_percent;?>
+					update_percent: <?php echo $update_percent;?>,
+					chain_name: '<?php if($chain->name){echo $chain->name;}else{echo '';}?>',
+					next_post_id_in_chain: <?php if($next_post_id_in_chain){echo $next_post_id_in_chain;}else{echo 0;} ?>
 				},
 				success: function(html){
 					jQuery('#go_content').html(html);
@@ -1573,6 +1641,8 @@ function task_change_stage() {
 	$complete_lock = $_POST['complete_lock']; // Boolean which determines if the completion stage is locked or not (True or False)
 	$mastery_lock = $_POST['mastery_lock']; // Boolean which determines if the mastery stage is locked or not (True or False)
 	$update_percent = $_POST['update_percent']; // Float which is used to modify values saved to database
+	$chain_name = $_POST['chain_name']; // String which is used to display next task in a quest chain
+	$next_post_id_in_chain = $_POST['next_post_id_in_chain']; // Integer which is used to display next task in a quest chain
 	
 	$go_table_ind = $wpdb->prefix.'go';
 	$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $post_id AND uid = $user_id");
@@ -1878,6 +1948,9 @@ function task_change_stage() {
 		case 4:
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
 			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
+			if($next_post_id_in_chain != 0){
+				echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+			}
 			// if the task can be repeated...
 			if ($repeat == 'on') {
 				// if the number of times that the page has been repeated is less than the total amount of repeats allowed OR if the 
