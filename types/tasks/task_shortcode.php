@@ -223,9 +223,9 @@ function go_task_shortcode($atts, $content = null) {
 			if(empty($temp_array2['date']) || empty($temp_array2['percent'])){
 				$update_percent = 0;
 			}
-			
+			$temp_array2 = array_filter($temp_array2);
 			// Loops through condensed array of dates
-			if($temp_array2 && is_array($temp_array2)){
+			if(!empty($temp_array2) && is_array($temp_array2)){
 				foreach($temp_array2 as $key => $value){
 					if($key == 'date'){
 						foreach(array_values($value) as $date_val){
@@ -303,14 +303,13 @@ function go_task_shortcode($atts, $content = null) {
 			if($category_names && $user_focus){
 				$go_ahead = array_intersect($user_focus, $category_names);	
 			}
-			
 ?> 
 
 			<div id="go_description"> <?php echo  do_shortcode(wpautop($description));?> </div>
             
 <?php	
 		// If current post in a chain and user logged in
-		if($custom_fields['chain'] && $user_ID != 0){
+		if($custom_fields['chain'][0] != null && $user_ID != 0){
 			
 			$current_position_in_chain = get_post_meta($id, 'chain_position', true);
 			$chain = get_the_terms($id, 'task_chains');
