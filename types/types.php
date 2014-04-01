@@ -26,7 +26,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
-				'name' => 'Choose Order of Tasks in Chain',
+				'name' => 'Order of Tasks in Chain'.go_task_opt_help('task_chain_order', '', 'http://maclab.guhsd.net/go/video/quests/tasksInChain'),
 				'type' => 'go_pick_order_of_chain'
 			),
 			array(
@@ -686,7 +686,7 @@ function go_cmb_render_go_presets() {
 
 add_action( 'cmb_render_go_task_shortcode', 'go_cmb_render_go_task_shortcode', 10, 0 );
 function go_cmb_render_go_task_shortcode() {
- echo '<input type="text" disabled value="[go_task id=\''.get_the_id().'\']"/><br/><span>Insert this shortcode where you want the task to appear.</span>';
+	echo '<input type="text" disabled value="[go_task id=\''.get_the_id().'\']"/><br/><span>Insert this shortcode where you want the task to appear.</span>';
 }
 
 add_action('cmb_render_go_video_shortcode', 'go_cmb_render_go_video_shortcode');

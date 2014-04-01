@@ -133,9 +133,9 @@ margin-top: 40px; width:200px; display:inline;"></div
   </div>
   <h3 class="go_stats_header" onclick="go_stats_third_tab();"><?= go_return_options('go_points_name').' - '. go_return_options('go_currency_name').' - '. 'Minutes' ?></h3>
   <div class="go_stats_box">
-  <div id="go_stats_third_tab_points"><h6 class="go_stats_box_title"><?= go_return_options('go_points_name') ?></h6><ul id="go_stats_points" class="go_stats_task_lists" ></ul></div>
-  <div id="go_stats_third_tab_currency"><h6 class="go_stats_box_title"><?= go_return_options('go_currency_name') ?></h6><ul id="go_stats_currency" class="go_stats_task_lists" ></ul></div>
-  <div id="go_stats_third_tab_minutes"><h6 class="go_stats_box_title">Minutes</h6><ul id="go_stats_minutes" class="go_stats_task_lists" ></ul></div>
+  <div id="go_stats_third_tab_points"><h6 class="go_stats_box_title"><?= go_return_options('go_points_name').' '.$current_points; ?></h6><ul id="go_stats_points" class="go_stats_task_lists" ></ul></div>
+  <div id="go_stats_third_tab_currency"><h6 class="go_stats_box_title"><?= go_return_options('go_currency_name').' '.$current_currency; ?></h6><ul id="go_stats_currency" class="go_stats_task_lists" ></ul></div>
+  <div id="go_stats_third_tab_minutes"><h6 class="go_stats_box_title"><?= 'Minutes '.$current_minutes; ?></h6><ul id="go_stats_minutes" class="go_stats_task_lists" ></ul></div>
   </div>
   
   
