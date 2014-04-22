@@ -58,13 +58,6 @@ jQuery( "#go_stats_progress_bar" ).progressbar({
 
 
 	 document.getElementById("go_stats_chart_div").appendChild(Pie);
-	 
-	//Monitors for keyboard input
-	jQuery(document).keyup(function(e) { 
-		if (e.keyCode == 27) { // If keypressed is escape, run this
-			go_stats_close(); //Close out stats panel
-		}  
-	});
       
 </script>
 <div id="go_stats_wrap">
@@ -119,18 +112,23 @@ margin-top: 40px; width:200px; display:inline;"></div
 <div><div id="go_key_box" style="background-color:rgba(255, 102, 0,.75);"></div> <?= go_return_options('go_third_stage_name') ?> (<?= $numb_completed ?>)</div>
 <div><div id="go_key_box" style="background-color:rgba(255, 102, 0,1);"></div> <?= go_return_options('go_fourth_stage_name') ?> (<?= $numb_mastered ?>)</div></div>
   </div>
-  
-  
-  
-  
- 
-  
-  <h3 class="go_stats_header" onclick="go_stats_task_list();"><?= go_return_options('go_tasks_name'); ?></h3>
-  <div class="go_stats_box">
-   <div id="go_stats_task_columns"><h6 class="go_stats_box_title"></h6>
-<ul id="go_stats_encountered_list" class="go_stats_task_lists" ></ul></div>
 
-  </div>
+    <h3 class="go_stats_header" onclick="go_stats_task_list();"><?= go_return_options('go_tasks_name'); ?></h3>
+    <div class="go_stats_box">
+        <div id="go_stats_task_columns">
+            <h6 class="go_stats_box_title"></h6>
+            <ul id="go_stats_encountered_list" class="go_stats_task_lists" ></ul>
+        </div>
+    </div>
+  
+    <h3 class="go_stats_header" onclick="go_stats_item_list()">Purchases</h3>
+    <div class="go_stats_box">
+    	<div id="go_stats_item_columns">
+        	<h6 class="go_stats_box_title"></h6>
+            <ul id="go_stats_item_list"> </ul>
+        </div>
+    </div>
+    
   <h3 class="go_stats_header" onclick="go_stats_third_tab();"><?= go_return_options('go_points_name').' - '. go_return_options('go_currency_name').' - '. 'Minutes' ?></h3>
   <div class="go_stats_box">
   <div id="go_stats_third_tab_points"><h6 class="go_stats_box_title"><?= go_return_options('go_points_name').' '.$current_points; ?></h6><ul id="go_stats_points" class="go_stats_task_lists" ></ul></div>
@@ -224,6 +222,33 @@ function go_stats_task_list(){
 		}
 		die();
 	}
+	
+function go_stats_item_list(){
+	global $wpdb;
+	if($_POST['uid'] != ''){
+		$current_user = get_userdata( $_POST['uid'] );
+	} else{
+ 		$current_user = wp_get_current_user();
+	}
+	$user_id = $current_user->ID;
+	$table_name_go = $wpdb->prefix."go";
+	
+	// Select all posts associated with the user id that have a status of -1, i.e. items associated with that user
+	$results = $wpdb->get_results("SELECT * FROM ".$table_name_go." WHERE uid = $user_id AND status = -1 ORDER BY id DESC");
+	
+	$i = 0;
+	foreach($results as $result){
+		$post_id = $result->post_id;
+		$count = $result->count;
+		
+		// Grab timestamp of purchase
+		$purchase_date = $result->reason;
+		
+		echo '<li class="go_'.isEven($i).'"><a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="color:rgba(0,0,0,.4); font-size: 12px;">'.get_the_title($post_id).'</a> '.$purchase_date.'<div style="float:right;">Amount purchased: '.$count.'</div></li>';
+		$i++;
+	}
+	die();	
+}
 	
 function go_stats_points(){
 		global $wpdb;

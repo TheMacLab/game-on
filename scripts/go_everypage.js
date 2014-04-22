@@ -79,79 +79,40 @@ function go_admin_bar_add(){
 	}
 	
 function go_admin_bar_stats_page_button(id){
-		jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_admin_bar_stats',
-		uid: id},
+	jQuery.ajax({
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: { 
+			action: 'go_admin_bar_stats',
+			uid: id
+		},
 		success: function(html){
-jQuery('#go_stats_white_overlay').html(html);
-jQuery('#go_stats_page_black_bg').show();
-jQuery('#go_stats_white_overlay').show();
-jQuery('#go_stats_hidden_input').val(id);
-
-
-  jQuery( "#go_stats_class_a_list li" ).draggable({
-      });
-    
-jQuery( "#go_stats_class_a_choice" ).droppable({
-      activeClass: "ui-state-default",
-      hoverClass: "ui-state-hover",
-      accept: "#go_stats_class_a_list li",
-      drop: function( event, ui ) {
-        jQuery( this ).find( ".placeholder" ).remove();
-        jQuery( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
-		 ui.draggable.remove();
-		go_stats_leaderboard_choice();
-      }
-    }).sortable({
-      items: "li:not(.placeholder)",
-      sort: function() {
-        // gets added unintentionally by droppable interacting with sortable
-        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
-        jQuery( this ).removeClass( "ui-state-default" );
-      }
-    });
-
-jQuery( "#go_stats_class_a_choice li" ).draggable({
-      });
-
-    
-jQuery( "#go_stats_class_a_list" ).droppable({
-      activeClass: "ui-state-default",
-      hoverClass: "ui-state-hover",
-      accept: "#go_stats_class_a_choice li",
-      drop: function( event, ui ) {
-        jQuery( this ).find( ".placeholder" ).remove();
-        jQuery( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
-		 ui.draggable.remove();
-		 		go_stats_leaderboard_choice();
-
-      }
-    }).sortable({
-      items: "li:not(.placeholder)",
-      sort: function() {
-        // gets added unintentionally by droppable interacting with sortable
-        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
-        jQuery( this ).removeClass( "ui-state-default" );
-      }
-    });
-
-
+			jQuery('#go_stats_white_overlay').html(html);
+			jQuery('#go_stats_page_black_bg').show();
+			jQuery('#go_stats_white_overlay').show();
+			jQuery('#go_stats_hidden_input').val(id);
+			
+			//Check if store lightbox is visible
+			if(jQuery('#go_stats_white_overlay').css('display') != 'none'){
+				//Monitors for keyboard input
+				jQuery(document).keydown(function(e) {
+					if(jQuery('.white_content').css('display') == 'none' && e.keyCode == 27){ 
+						go_stats_close(); //Close out stats panel
+					}
+				});
+				jQuery('#go_stats_page_black_bg').click(function(){
+					go_stats_close();
+				});
+			}
 		}
 	});
-	
-	
-	
-	
-		}
+}
+
 function go_stats_close(){
 	jQuery('#go_stats_white_overlay').hide();
 	jQuery('#go_stats_page_black_bg').hide();
 	jQuery('#go_stats_lay').hide();
-
-	
-	}
-	
+}
 	
 function go_stats_task_list(){
 		jQuery.ajax({
@@ -186,8 +147,21 @@ jQuery('#go_stats_mastered_list').html(html);
 		}
 	});
 	
-	}
-	
+}
+
+function go_stats_item_list(){
+	jQuery.ajax({
+		type: "POST",
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_stats_item_list',
+			uid: jQuery('#go_stats_hidden_input').val()	
+		}, 
+		success: function(html){
+			jQuery('#go_stats_item_list').html(html);
+		}
+	});	
+}
 	
 function go_stats_third_tab(){
 jQuery.ajax({

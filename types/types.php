@@ -880,14 +880,16 @@ function go_pick_order_of_chain(){
 add_action('save_post', 'go_add_new_task_in_chain');
 function go_add_new_task_in_chain(){
 	$task_id = get_the_id();
-	if(get_the_terms($task_id, 'task_chains')){
-		$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')))->name;
+	if(get_post_type($task_id) == 'tasks'){
+		if(get_the_terms($task_id, 'task_chains')){
+			$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')))->name;
+		}
+		if($chain && go_return_task_amount_in_chain($chain)){
+			$position = go_return_task_amount_in_chain($chain) + 1;
+		}
+		add_post_meta($task_id, 'chain', $chain, true);
+		add_post_meta($task_id, 'chain_position', $position, true);
 	}
-	if($chain && go_return_task_amount_in_chain($chain)){
-		$position = go_return_task_amount_in_chain($chain) + 1;
-	}
-	add_post_meta($task_id, 'chain', $chain, true);
-	add_post_meta($task_id, 'chain_position', $position, true);
 }
 function go_update_task_order(){
 	$order = $_POST['order'];

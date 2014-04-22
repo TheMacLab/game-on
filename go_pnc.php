@@ -39,16 +39,43 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 	
 		global $wpdb;
 	   	$table_name_go = $wpdb->prefix . "go";
+		$time = date('m/d@H:i',current_time('timestamp',0));
 		if($status == -1){
 		   	$qty = $_POST['qty'];
 		   	$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
 		   	$points = $points * $qty;
 		   	$currency = $currency * $qty;
 		   	if($repeat != 'on' || empty($old_points)){
-				$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> -1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id, 'count'=> $qty));
+				$wpdb->insert(
+					$table_name_go, 
+					array(
+						'uid'=> $user_id, 
+						'post_id'=> $post_id, 
+						'status'=> -1, 
+						'points'=> $points, 
+						'currency'=>$currency, 
+						'page_id' => $page_id, 
+						'count'=> $qty,
+						'reason' => $time
+					)
+				);
 			} else {
-				   $wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> (($old_points->count)+$qty)), array('uid'=>$user_id, 'post_id'=>$post_id));
-				}
+				$wpdb->update(
+					$table_name_go,
+					array(
+						'status'=>$status, 
+						'points'=>$points+ ($old_points->points), 
+						'currency'=> $currency+($old_points->currency), 
+						'page_id' => $page_id, 
+						'count'=> (($old_points->count)+$qty),
+						'reason' => $time
+					), 
+					array(
+						'uid'=> $user_id, 
+						'post_id'=> $post_id
+					)
+				);
+			}
 		   
 		} else {
 			if($repeat == 'on'){
@@ -71,11 +98,8 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 				}
 			}
 		}
-	
-	
-	go_update_totals($user_id,$points,$currency,0,$status);
-	
-	}
+	go_update_totals(get_current_user_id(),$points,$currency,0,$status);
+}
 	
 // Adds minutes.
 
@@ -89,44 +113,52 @@ function go_add_minutes($user_id, $minutes, $reason){
 	$minutes_reason = array('reason'=>$reason, 'time'=>$time);
 	$minutes_reason_serialized = serialize($minutes_reason);
 	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'minutes'=> $minutes, 'reason'=> $minutes_reason_serialized) );
-	go_update_totals($user_id,0,0,$minutes);
+	if($minutes < 0 && $user_id != get_current_user_id()){
+		go_update_totals($user_id,0,0,$minutes);
+	}else{
+		go_update_totals(get_current_user_id(), 0, 0, $minutes);	
 	}
+}
 	
 	
-function go_notify($type, $points='', $currency='', $time='') {
-	if ($points < 0 || $currency < 0) {
-		$sym = '';
-	} else {
-		$sym = '+';
-	}
-	global $counter;
-	$counter++;
-	$space = $counter*85;
-	if($type == 'points'){$display = go_display_points($points);}elseif ($type == 'currency'){$display = go_display_currency($currency);} else if($type=='Minutes'){
-		$display = $time. 'Minutes';
+function go_notify($type, $points='', $currency='', $time='', $user_id = null) {
+	if($user_id != get_current_user_id()){
+		return false;	
+	}else{
+		if ($points < 0 || $currency < 0) {
+			$sym = '';
+		} else {
+			$sym = '+';
 		}
-	
-	// Refer to go_notification.js for explanation
-	echo '<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">	
-		
-		jQuery(".go_notification").fadeIn(200);
-		
-		var highest_index = 0;
-		jQuery("*").each(function(){
-			var current_index = parseInt(jQuery(this).css("z-index"), 10);
-			if(current_index > highest_index){
-				highest_index = current_index;
-				jQuery(".go_notification").css("z-index", highest_index);
+		global $counter;
+		$counter++;
+		$space = $counter*85;
+		if($type == 'points'){$display = go_display_points($points);}elseif ($type == 'currency'){$display = go_display_currency($currency);} else if($type=='Minutes'){
+			$display = $time. 'Minutes';
 			}
-		});
-		setTimeout(function(){
-			jQuery(".go_notification").fadeOut("slow");
-			jQuery(".go_notification").remove();
-		},1500);
 		
-		
-		
-	</script>';
+		// Refer to go_notification.js for explanation
+		echo '<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">	
+			
+			jQuery(".go_notification").fadeIn(200);
+			
+			var highest_index = 0;
+			jQuery("*").each(function(){
+				var current_index = parseInt(jQuery(this).css("z-index"), 10);
+				if(current_index > highest_index){
+					highest_index = current_index;
+					jQuery(".go_notification").css("z-index", highest_index);
+				}
+			});
+			setTimeout(function(){
+				jQuery(".go_notification").fadeOut("slow");
+				jQuery(".go_notification").remove();
+			},1500);
+			
+			
+			
+		</script>';
+	}
 }
 //negatives undo
 function go_add_infraction($user_id,$infractionCount,$update){
@@ -183,7 +215,7 @@ function go_update_totals($user_id, $points, $currency, $minutes, $status = null
 		$totalpoints = go_return_points($user_id);
 		$wpdb->update($table_name_go_totals, array('points'=> $totalpoints+$points), array('uid'=>$user_id));
 		go_update_ranks($user_id, ($totalpoints+$points));
-		go_notify('points', $points);
+		go_notify('points', $points, 0, 0, $user_id);
 		$p = (string)($totalpoints+$points);
 		go_update_admin_bar('points',go_return_options('go_points_name'),$p, $status);
 		}
@@ -191,14 +223,14 @@ function go_update_totals($user_id, $points, $currency, $minutes, $status = null
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$totalcurrency = go_return_currency($user_id);
 		$wpdb->update($table_name_go_totals, array('currency'=> $totalcurrency+$currency), array('uid'=>$user_id));
-		go_notify('currency',0, $currency);
+		go_notify('currency',0, $currency, 0, $user_id);
 		go_update_admin_bar('currency', go_return_options('go_currency_name'), ($totalcurrency+$currency));
 		}
 	if($minutes != 0){
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$totalminutes = go_return_minutes($user_id);
 		$wpdb->update($table_name_go_totals, array('minutes'=> $totalminutes+$minutes), array('uid'=>$user_id));
-		go_notify('Minutes', 0,0,$minutes);
+		go_notify('Minutes', 0,0,$minutes, $user_id);
 		go_update_admin_bar('minutes', 'Minutes', $totalminutes+$minutes);
 		}
 	}

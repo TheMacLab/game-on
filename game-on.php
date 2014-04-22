@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.5.4
+Version: 1.5.5
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -77,6 +77,7 @@ add_action('wp_ajax_go_class_a_save','go_class_a_save');
 add_action('wp_ajax_go_class_b_save','go_class_b_save');
 add_action('wp_ajax_go_focus_save','go_focus_save');
 add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
+add_action('wp_ajax_go_stats_item_list', 'go_stats_item_list');
 add_action('wp_ajax_go_stats_points','go_stats_points');
 add_action('wp_ajax_go_stats_currency','go_stats_currency');
 add_action('wp_ajax_go_stats_minutes','go_stats_minutes');
@@ -87,6 +88,7 @@ add_action('wp_ajax_nopriv_listurl', 'listurl');
 add_action('wp_ajax_go_clipboard_collect_data', 'go_clipboard_collect_data');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');
 add_action('wp_ajax_go_update_task_order', 'go_update_task_order');
+add_action('wp_ajax_go_search_for_user', 'go_search_for_user');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');

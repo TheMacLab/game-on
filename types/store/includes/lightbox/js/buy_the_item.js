@@ -4,7 +4,8 @@ jQuery(document).ready(function(jQuery){
                 action:'buy_item',
                 nonce: "",
 				the_id: id,
-				qty: jQuery('#go_qty').val()
+				qty: jQuery('#go_qty').val(),
+				recipient: jQuery('#go_recipient').val()
     };
 	// Whenever you figure out a better way to do this, implement it. 
 	var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
@@ -19,17 +20,18 @@ jQuery(document).ready(function(jQuery){
 					},
 		dataType: "html",
 		success: function(response){
-			jQuery("#golb-fr-buy").attr('onclick','');
-			if (response == 'Insuffcient Funds') {
-				alert('Purchase Denied. Reason: '+response);
-			} else if (response == 'Rank Too Low') {
-				alert('Purchase Denied. Reason: '+response);
+			var buy = jQuery('#golb-fr-buy');
+			buy.attr('onclick','');
+			if (response == 'currency' || response == 'points' || response == 'time'){
+				alert('Need more ' + response);
+				buy.html('Error');
+			}else{
+				buy.innerHTML = "";
+				buy.html('');  
+				buy.append('<span>'+response+'</span>');
+				// Whenever you figure out a better way to do this, implement it. 
+				jQuery('#go_admin_bar_progress_bar').css({"background-color":color});
 			}
-			jQuery("#golb-fr-buy").innerHTML = "";
-			jQuery("#golb-fr-buy").html('');  
-			jQuery("#golb-fr-buy").append('<span>'+response+'</span>');
-			// Whenever you figure out a better way to do this, implement it. 
-			jQuery('#go_admin_bar_progress_bar').css({"background-color":color});
 			goCountItem(id);
 		}
 	});

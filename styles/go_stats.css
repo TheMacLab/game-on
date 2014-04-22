@@ -197,12 +197,19 @@ background: linear-gradient(to bottom, rgba(242,245,246,1) 0%,rgba(227,234,237,1
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 ); /* IE6-9 */}
 .go_stats_task_lists{
 	height:177px;
-	margin-top:0px;
-	overflow:auto;}
-		.go_stats_box{
+	margin:0px;
+	padding: 0px;
+	overflow:auto;
+}
+.go_stats_box{
 			padding:1px!important;}
 #go_stats_encountered_list{
 	height: auto !important;
+}
+#go_stats_item_list{
+	height: 177px;
+	margin: 0px;
+	padding: 0px;	
 }
 #go_stats_third_tab_points{
 	width: 376px;
