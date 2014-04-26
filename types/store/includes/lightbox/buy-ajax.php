@@ -33,7 +33,7 @@ function go_buy_item(){
 		}
 	}
 	function check_values($req = null, $cur = null){
-		if($cur >= $req){
+		if($cur >= $req || $req == 0){
 			return true;
 		} else{
 			return false;
