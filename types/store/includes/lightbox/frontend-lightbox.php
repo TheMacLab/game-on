@@ -61,10 +61,10 @@ function go_the_lb_ajax(){
 	$purchase_count = $wpdb->get_var("SELECT `count` FROM `".$table_name_go."` WHERE `post_id`='".$the_id."' AND `uid`='".$user_ID."'"); 
 	echo '<h2>'.$the_title.'</h2>';
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
-	if ($user_points >= $req_rank) { $lvl_color = "g"; } else { $lvl_color = "r"; }
-	if ($user_gold >= $req_currency || $penalty) { $gold_color = "g"; } else { $gold_color = "r"; }
-	if ($user_points >= $req_points) { $points_color = "g"; } else { $points_color = "r"; }
-	$time_color = "g"; 
+	if ($user_points >= $req_rank || $req_rank <= 0) { $lvl_color = "g"; } else { $lvl_color = "r"; }
+	if ($user_gold >= $req_currency || $req_currency <= 0 || $penalty) { $gold_color = "g"; } else { $gold_color = "r"; }
+	if ($user_points >= $req_points || $req_points <= 0) { $points_color = "g"; } else { $points_color = "r"; }
+	if ($user_time >= $req_time || $req_time <= 0){$time_color = "g";}else{$time_color = "r";} 
 	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g") { $buy_color = "g"; } else { $buy_color = "r"; }
 	
 	$user_focuses = array();
