@@ -49,6 +49,7 @@ function go_buy_item(){
 	if($item_focus_switch){
 		$item_focus = check_custom($custom_fields['go_mta_focuses'][0]);	
 	}
+	$penalty = check_custom($custom_fields['go_mta_penalty_switch']);
 	$item_url = check_custom($custom_fields['go_mta_store_itemURL'][0]);
 	$repeat = 'on';
 	
@@ -60,7 +61,7 @@ function go_buy_item(){
 	$enough_points = check_values($req_points, $cur_points);
 	$enough_minutes = check_values($req_minutes, $cur_minutes);
 	
-	if($enough_currency && $enough_minutes && $enough_points){
+	if(($enough_currency && $enough_minutes && $enough_points) || $penalty){
 		if($item_focus_switch && $item_focus){
 			$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
 			$user_focuses[] = $item_focus;
