@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.5.8
+Version: 1.5.9
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -102,6 +102,9 @@ add_action('go_update_globals','go_update_globals');
 add_action('barColor','barColor');
 add_action('go_return_multiplier','go_return_multiplier');
 add_filter('get_comment_author', 'go_display_comment_author');
+add_action('check_custom', 'check_custom');
+add_action('check_values', 'check_values');
+add_action('go_message_user', 'go_message_user');
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);
@@ -122,4 +125,19 @@ function isEven($value) {
 	else{
 		return 'odd';
 }}
+
+function check_custom($custom = null){
+	if($custom){
+		return $custom;
+	} else{
+		return 0;	
+	}
+}
+function check_values($req = null, $cur = null){
+	if($cur >= $req || $req <= 0){
+		return true;
+	} else{
+		return false;
+	}
+}
 ?>

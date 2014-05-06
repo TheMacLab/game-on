@@ -143,39 +143,25 @@ function go_clipboard_add(){
 	$reason = $_POST['reason'];
 	$infractions = $_POST['infractions'];
 	foreach($ids as $key=>$value){
-	if($points != ''&& $reason != ''){
-	go_add_currency($value,$reason, 6, $points, 0, false);
-	}
-if($currency!= ''&&$reason!= ''){
-	go_add_currency($value, $reason, 6, 0, $currency, false);
-
-	}
-if($minutes!= ''&&$reason != ''){
-	go_add_minutes($value, $minutes, $reason);
-	}
-	if($infractions!=''&&$reason !=''){
-	go_add_infraction($value, $infractions,true);
-}
-if($infractions==''&& $points == '' && $currency== ''&& $minutes== ''&& $reason !=''){
-	$user_id = $value;
-	$current_messages = get_user_meta($user_id, 'go_admin_messages',true);
-	$current_messages[1][time()] = array($reason, 1);
-	krsort($current_messages[1]);
-	if(count($current_messages[1]) > 9){
-		array_pop($current_messages[1]);
+		if($points != ''&& $reason != ''){
+			go_add_currency($value,$reason, 6, $points, 0, false);
 		}
-	if(!$current_messages[0]){
-		$current_messages[0] = 1;
-		} else {
-			(int)$current_messages[0] = (int)$current_messages[0] + 1;
-			if((int)$current_messages[0] > 9){(int)$current_messages[0] = 9;}
-			}
-update_user_meta( $user_id, 'go_admin_messages', $current_messages);
-}
+		if($currency!= ''&&$reason!= ''){
+			go_add_currency($value, $reason, 6, 0, $currency, false);
+		}
+		if($minutes!= ''&&$reason != ''){
+			go_add_minutes($value, $minutes, $reason);
+		}
+		if($infractions!=''&&$reason !=''){
+			go_add_infraction($value, $infractions,true);
+		}
+		if($infractions==''&& $points == '' && $currency== ''&& $minutes== ''&& $reason !=''){
+			$user_id = $value;
+			go_message_user($user_id, $reason);
+		}
 	}
 	die();
-	
-	}
+}
 function go_clipboard_collect_data(){
 	global $wpdb;
 	$table_name_user_meta = $wpdb->prefix.'usermeta';

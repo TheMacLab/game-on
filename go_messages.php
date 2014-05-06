@@ -61,5 +61,23 @@ function go_mark_read(){
 	update_user_meta( get_current_user_id(), 'go_admin_messages', $messages);
 	echo JSON_encode(array(0 => $_POST['date'], 1 => $_POST['type'], 2 => $messages[0]));
 	die();
+}
+
+function go_message_user($user_id, $message){
+	$current_messages = get_user_meta($user_id, 'go_admin_messages',true);
+	$current_messages[1][time()] = array($message, 1);
+	krsort($current_messages[1]);
+	if(count($current_messages[1]) > 9){
+		array_pop($current_messages[1]);
 	}
+	if(!$current_messages[0]){
+		$current_messages[0] = 1;
+	} else {
+		(int)$current_messages[0] = (int)$current_messages[0] + 1;
+		if((int)$current_messages[0] > 9){
+			(int)$current_messages[0] = 9;
+		}
+	}
+	update_user_meta( $user_id, 'go_admin_messages', $current_messages);
+}
 ?>

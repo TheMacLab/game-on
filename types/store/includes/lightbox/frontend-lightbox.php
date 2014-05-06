@@ -61,10 +61,10 @@ function go_the_lb_ajax(){
 	$purchase_count = $wpdb->get_var("SELECT `count` FROM `".$table_name_go."` WHERE `post_id`='".$the_id."' AND `uid`='".$user_ID."'"); 
 	echo '<h2>'.$the_title.'</h2>';
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
-	if ($user_points >= $req_rank || $req_rank <= 0) { $lvl_color = "g"; } else { $lvl_color = "r"; }
+	if ($user_points >= $req_rank || $req_rank <= 0 || $penalty) { $lvl_color = "g"; } else { $lvl_color = "r"; }
 	if ($user_gold >= $req_currency || $req_currency <= 0 || $penalty) { $gold_color = "g"; } else { $gold_color = "r"; }
-	if ($user_points >= $req_points || $req_points <= 0) { $points_color = "g"; } else { $points_color = "r"; }
-	if ($user_time >= $req_time || $req_time <= 0){$time_color = "g";}else{$time_color = "r";} 
+	if ($user_points >= $req_points || $req_points <= 0 || $penalty) { $points_color = "g"; } else { $points_color = "r"; }
+	if ($user_time >= $req_time || $req_time <= 0 || $penalty){$time_color = "g";}else{$time_color = "r";} 
 	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g") { $buy_color = "g"; } else { $buy_color = "r"; }
 	
 	$user_focuses = array();
@@ -97,7 +97,7 @@ function go_the_lb_ajax(){
 	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
 	<div id="golb-fr-time" class="golb-fr-boxes-<?php echo $time_color; ?>" req="<?php echo $req_time; ?>" cur="<?php echo $user_time; ?>">Time: <?php echo $req_time; ?></div>
 	<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
-	<?php if(!$item_focus){?>
+	<?php if(!$item_focus && !$penalty){?>
         <div id="go_recipient_wrap" class="golb-fr-boxes-g">Recipient: <input id="go_recipient" type="text"/></div>
         <div id="go_search_results"></div>
 	<?php }?>

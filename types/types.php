@@ -596,13 +596,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Penalty Switch'.go_task_opt_help('penalty_switch', '', 'http://maclab.guhsd.net/go/video/store/penaltySwitch.mp4'),
-				'desc' => 'Allow user\'s currency to go negative when purchasing this item.',
+				'desc' => 'Allow user\'s currency to go negative when purchasing this item. Checking this disables students from purchasing this item for one another.',
 				'id' => $prefix . 'penalty_switch',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => go_return_options('go_focus_name').' Gateway? (Optional)'.go_task_opt_help('focus_gateway', '', 'http://maclab.guhsd.net/go/video/store/focusGateway.mp4'),
-				'desc' => ' Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account.',
+				'desc' => ' Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account. Checking this disables students from purchasing this item for one another.',
 				'id' => $prefix . 'focus_item_switch',
 				'type' => 'checkbox'
 			),
@@ -627,22 +627,46 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'options' => go_get_all_ranks()
 			),
 			array(
-				'name' => 'Currency'.go_task_opt_help('currency', '', 'http://maclab.guhsd.net/go/video/store/currency.mp4'),
+				'name' => 'Currency Cost'.go_task_opt_help('currency', '', 'http://maclab.guhsd.net/go/video/store/currency.mp4'),
 				'desc' => 'Currency required to purchase the item.',
 				'id'   => $prefix . 'store_currency',
 				'type' => 'text',
 			),
 			array(
-				'name' => 'Points'.go_task_opt_help('points', '', 'http://maclab.guhsd.net/go/video/store/points.mp4'),
+				'name' => 'Points Cost'.go_task_opt_help('points', '', 'http://maclab.guhsd.net/go/video/store/points.mp4'),
 				'desc' => 'Points required to purchase item.',
 				'id'   => $prefix . 'store_points',
 				'type' => 'text',
 			),
 			array(
-				'name' => 'Time'.go_task_opt_help('time', '', 'http://maclab.guhsd.net/go/video/store/time.mp4'),
+				'name' => 'Time Cost'.go_task_opt_help('time', '', 'http://maclab.guhsd.net/go/video/store/time.mp4'),
 				'desc' => 'Time required to purchase item.',
 				'id'   => $prefix . 'store_time',
 				'type' => 'text',
+			),
+			array(
+				'name' => 'Exchange Switch (Optional)'.go_task_opt_help('exchange', '', 'http://maclab.guhsd.net/go/video/store/exchange.mp4'),
+				'desc' => 'Check this box to allow users to purchase this item for one another',
+				'id' => $prefix.'store_exchange_switch',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Exchange Currency'.go_task_opt_help('exchange_currency', '', 'http://maclab.guhsd.net/go/video/store/exchangeCurrency.mp4'),
+				'desc' => 'Currency to be given to recipient of item. Leave blank to reward none.',
+				'id' => $prefix.'store_exchange_currency',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Exchange Points'.go_task_opt_help('exchange_points', '', 'http://maclab.guhsd.net/go/video/store/exchangePoints.mp4'),
+				'desc' => 'Points to be given to recipient of item. Leave blank to reward none.',
+				'id' => $prefix.'store_exchange_points',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Exchange Time'.go_task_opt_help('exchange_time', '', 'http://maclab.guhsd.net/go/video/store/exchangeTime.mp4'),
+				'desc' => 'Time to be given to recipient of item. Leave blank to reward none.',
+				'id' => $prefix.'store_exchange_time',
+				'type' => 'text'
 			),
 			array(
 				'name' => 'Item URL (Optional)'.go_task_opt_help('item_url', '', 'http://maclab.guhsd.net/go/video/store/itemURL.mp4'),

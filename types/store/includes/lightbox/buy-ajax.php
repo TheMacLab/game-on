@@ -25,31 +25,22 @@ function go_buy_item(){
 	}
 	$user_id = get_current_user_id(); 
 	
-	function check_custom($custom = null){
-		if($custom){
-			return $custom;
-		} else{
-			return 0;	
-		}
-	}
-	function check_values($req = null, $cur = null){
-		if($cur >= $req || $req <= 0){
-			return true;
-		} else{
-			return false;
-		}
-	}
-	
 	$custom_fields = get_post_custom($post_id);
 	$req_currency = check_custom($custom_fields['go_mta_store_currency'][0]);
 	$req_points = check_custom($custom_fields['go_mta_store_points'][0]);
 	$req_minutes = check_custom($custom_fields['go_mta_store_time'][0]);
 	$req_rank = check_custom($custom_fields['go_mta_store_rank'][0]);
 	$item_focus_switch = check_custom($custom_fields['go_mta_focus_item_switch'][0]);
-	if($item_focus_switch){
+	if($item_focus_switch && $item_focus_switch == 'on'){
 		$item_focus = check_custom($custom_fields['go_mta_focuses'][0]);	
 	}
 	$penalty = check_custom($custom_fields['go_mta_penalty_switch']);
+	$exchange_switch = check_custom($custom_fields['go_mta_store_exchange_switch'][0]);
+	if($exchange_switch && $exchange_switch == 'on'){
+		$exchange_currency = check_custom($custom_fields['go_mta_store_exchange_currency'][0]) * $qty;
+		$exchange_points = check_custom($custom_fields['go_mta_store_exchange_points'][0]) * $qty;
+		$exchange_time = check_custom($custom_fields['go_mta_store_exchange_time'][0]) * $qty;
+	}
 	$item_url = check_custom($custom_fields['go_mta_store_itemURL'][0]);
 	$repeat = 'on';
 	
@@ -69,8 +60,15 @@ function go_buy_item(){
 		}
 		if($recipient_id){
 			go_add_post($recipient_id, $post_id, -1, -$req_points, -$req_currency, null, $repeat);
+			go_message_user($recipient_id, get_userdata($user_id)->display_name.' has purchased <a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($post_id).'</a> for you '.$qty.' time(s).');
+			if($exchange_currency || $exchange_points || $exchange_time){
+				go_update_totals($recipient_id, $exchange_points, $exchange_currency, $exchange_time);
+			}
 		}else{
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, null, $repeat);
+		}
+		if($req_minutes != ''){
+			go_add_minutes($user_id, -$req_minutes, 'store');
 		}
 		if($item_url){
 			$item_hyperlink = '<a target="_blank" href="'.$item_url.'">Grab your loot!</a>';
@@ -78,17 +76,16 @@ function go_buy_item(){
 		} else{
 			echo 'Purchased';	
 		}
-		if($req_minutes != ''){
-			go_add_minutes($user_id, -$req_minutes, 'store');
-		}
-		
 	} else{
 		$enough_array = array('currency' => $enough_currency, 'points' => $enough_points, 'time' => $enough_minutes);
+		$errors = array();
 		foreach($enough_array as $key => $enough){
 			if(!$enough){
-				echo $key;	
+				$errors[] = $key;
 			}
 		}
+		$errors = implode(', ', $errors);
+		echo 'Need more '.substr($errors,0,strlen($errors));
 	}
 	die();
 }

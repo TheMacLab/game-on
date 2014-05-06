@@ -22,13 +22,13 @@ jQuery(document).ready(function(jQuery){
 		success: function(response){
 			var buy = jQuery('#golb-fr-buy');
 			buy.attr('onclick','');
-			if (response == 'currency' || response == 'points' || response == 'time'){
-				alert('Need more ' + response);
-				buy.html('Error');
-			}else{
+			if(response.indexOf("Need more") > -1){
+				alert(response);
+				buy.html('Error');	
+			} else{
 				buy.innerHTML = "";
-				buy.html('');  
-				buy.append('<span>'+response+'</span>');
+				buy.html('');
+				buy.append('<span>' + response + '</span>');
 				// Whenever you figure out a better way to do this, implement it. 
 				jQuery('#go_admin_bar_progress_bar').css({"background-color":color});
 			}

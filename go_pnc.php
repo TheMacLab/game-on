@@ -113,11 +113,7 @@ function go_add_minutes($user_id, $minutes, $reason){
 	$minutes_reason = array('reason'=>$reason, 'time'=>$time);
 	$minutes_reason_serialized = serialize($minutes_reason);
 	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'minutes'=> $minutes, 'reason'=> $minutes_reason_serialized) );
-	if($minutes < 0 && $user_id != get_current_user_id()){
-		go_update_totals($user_id,0,0,$minutes);
-	}else{
-		go_update_totals(get_current_user_id(), 0, 0, $minutes);	
-	}
+	go_update_totals($user_id,0,0,$minutes);
 }
 	
 	

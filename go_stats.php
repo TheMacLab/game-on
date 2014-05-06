@@ -244,7 +244,7 @@ function go_stats_item_list(){
 		// Grab timestamp of purchase
 		$purchase_date = $result->reason;
 		
-		echo '<li class="go_'.isEven($i).'"><a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="color:rgba(0,0,0,.4); font-size: 12px;">'.get_the_title($post_id).'</a> '.$purchase_date.'<div style="float:right;">Amount purchased: '.$count.'</div></li>';
+		echo '<li class="go_'.isEven($i).'" style="font-size: 12px !important"><a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="color:rgba(0,0,0,.4); font-size: 12px;">'.get_the_title($post_id).'</a> '.$purchase_date.'<div style="float:right;">Amount: '.$count.'</div></li>';
 		$i++;
 	}
 	die();	
