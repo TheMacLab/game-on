@@ -432,7 +432,7 @@ function go_task_shortcode($atts, $content = null) {
 
 						// if the completion upload option is checked and the user hasn't uploaded a file already, display the upload form
 						if ($completion_upload && $completion_uploaded == 0) {
-							echo do_shortcode("[go_upload status='".$status."' uploaded='".$completion_uploaded."']")."<br/>";
+							echo do_shortcode("[go_upload status='".$status."']")."<br/>";
 						}
 
 						echo '<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.
@@ -470,7 +470,7 @@ function go_task_shortcode($atts, $content = null) {
 						
 							// if the mastery upload option is checked and the user hasn't uploaded a file already, display the upload form
 							if ($mastery_upload && $mastery_uploaded == 0) {
-								echo do_shortcode("[go_upload status='".$status."' uploaded='".$mastery_uploaded."']")."<br/>";
+								echo do_shortcode("[go_upload status='".$status."']")."<br/>";
 							}
 
 							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
@@ -2062,7 +2062,7 @@ function task_change_stage() {
 
 			// if the completion upload option is checked and the user hasn't uploaded a file already, display the upload form
 			if ($completion_upload && $completion_uploaded == 0) {
-				echo do_shortcode("[go_upload status='".$status."' uploaded='".$completion_uploaded."']")."<br/>";
+				echo do_shortcode("[go_upload status='".$status."']")."<br/>";
 			}
 
 			echo ' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
@@ -2096,7 +2096,7 @@ function task_change_stage() {
 
 							// if the mastery upload option is checked and the user hasn't uploaded a file already, display the upload form
 							if ($mastery_upload && $mastery_uploaded == 0) {
-								echo do_shortcode("[go_upload status='".$status."' uploaded='".$mastery_uploaded."']")."<br/>";
+								echo do_shortcode("[go_upload status='".$status."']")."<br/>";
 							}
 
 							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.

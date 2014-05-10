@@ -31,23 +31,16 @@ add_shortcode('go_upload','go_file_input');
 function go_file_input($atts, $content = null){
 	extract(shortcode_atts(array(
 		'status' => '2',
-		'uploaded' => '0',
 	), $atts) );
 	global $wpdb;
 	$go_table_ind = $wpdb->prefix.'go';
 	$uid = get_current_user_id();
 	$post_id = get_the_ID();
 	
-	// if the user has already uploaded a file in the stage indicated by the status parameter, display the following and end the script
-	if ($uploaded == 1) {
-		return '<p id="go_upload_msg">Message already sent.</p>';
-		die();
-	} else {
-		if ($status == 2) {
-			$upload_column = "c_upload";
-		} else if ($status == 3) {
-			$upload_column = "m_upload";
-		}
+	if ($status == 2) {
+		$upload_column = "c_upload";
+	} else if ($status == 3) {
+		$upload_column = "m_upload";
 	}
 
 	if(isset($_FILES['go_attachment'])){
