@@ -117,7 +117,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
 				'name' => 'Completion File Upload',
 				'name' => 'Completion File Upload'.go_task_opt_help('completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/completionFileUpload.mp4'),
- 				'desc' => 'Toggle to require a user to upoad a file before completing the '.go_return_options('go_tasks_name').".",
+ 				'desc' => 'Toggle to require a user to upload a file before completing the '.go_return_options('go_tasks_name').".",
  				'id' => $prefix.'completion_upload',
  				'type' => 'checkbox'
  			),
@@ -343,7 +343,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),
 			array(
 				'name' => 'Mastery File Upload'.go_task_opt_help('mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/masteryFileUpload.mp4'),
-				'desc' => 'Toggle to require a user to upoad a file before mastering the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Toggle to require a user to upload a file before mastering the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'mastery_upload',
 				'type' => 'checkbox'
 			),

@@ -18,6 +18,8 @@ function go_table_individual() {
   m_fail_count INT DEFAULT 0,
   c_passed BOOLEAN DEFAULT 0,
   m_passed BOOLEAN DEFAULT 0,
+  c_upload BOOLEAN DEFAULT 0,
+  m_upload BOOLEAN DEFAULT 0,
   points INT,
   currency INT,
   infractions INT,	 

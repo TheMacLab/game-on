@@ -28,47 +28,70 @@ function go_mail_menu() {
 
 //Shortcode for Email input
 add_shortcode('go_upload','go_file_input');
-function go_file_input(){
+function go_file_input($atts, $content = null){
+	extract(shortcode_atts(array(
+		'status' => '2',
+		'uploaded' => '0',
+	), $atts) );
 	global $wpdb;
-	if(isset($_FILES['go_attachment'])){
-	$user_info = get_userdata(get_current_user_id());
-    $username = $user_info->user_login;
-    $first_name = $user_info->first_name;
-    $last_name = $user_info->last_name;
-	$user_id = $user_info->ID;
-	$to = get_option('go_admin_email','');
-	require("mail/class.phpmailer.php");
-$mail = new PHPMailer();
-$mail->From     = "no-reply@go.net";
-$mail->FromName = $first_name.' '.$last_name;
-$mail->AddAddress($to);
-$mail->Subject  = get_the_title($ID).' - '.$first_name.' '.$last_name;
-$mail->Body     = 'User login: '.$username.'
-Uploader comments: '.$_POST['go_attachment_com'];
-$mail->WordWrap = 50;
-//$mail->AddAttachment($_FILES['go_attachment']['tmp_name'],$_FILES['go_attachment']['name']);
-for($i=0; $i < count($_FILES['go_attachment']); $i++){ // This loop will upload all the files you have attached to your email. 
-
-$name=$_FILES['go_attachment']['name'][$i];
-$path=$_FILES['go_attachment']['tmp_name'][$i];
-
-//And attach it using attachment method of PHPmailer.
-
-$mail->AddAttachment($path,$name); 
-}
-if(!$mail->Send()) {
-  return 'Message was not sent.';
-  return 'Mailer error: ' . $mail->ErrorInfo;
-} else {
-  return 'Message has been sent.';
-}
+	$go_table_ind = $wpdb->prefix.'go';
+	$uid = get_current_user_id();
+	$post_id = get_the_ID();
+	
+	// if the user has already uploaded a file in the stage indicated by the status parameter, display the following and end the script
+	if ($uploaded == 1) {
+		return '<p id="go_upload_msg">Message already sent.</p>';
+		die();
+	} else {
+		if ($status == 2) {
+			$upload_column = "c_upload";
+		} else if ($status == 3) {
+			$upload_column = "m_upload";
+		}
 	}
-return('<form id="go_upload_form" action="" method="post" enctype="multipart/form-data">
-<div><input type="file" name="go_attachment[]"/><br/></div>
-<button type="button" onClick="go_add_uploader();">Attach More</button><br/>
-Comments:<br />
-<textarea name="go_attachment_com"></textarea><br />
-<input type="submit" value="Submit"/>
-</form>');
+
+	if(isset($_FILES['go_attachment'])){
+		$user_info = get_userdata(get_current_user_id());
+	    $username = $user_info->user_login;
+	    $first_name = $user_info->first_name;
+	    $last_name = $user_info->last_name;
+		$user_id = $user_info->ID;
+		$to = get_option('go_admin_email','');
+		require("mail/class.phpmailer.php");
+		$mail = new PHPMailer();
+		$mail->From     = "no-reply@go.net";
+		$mail->FromName = $first_name.' '.$last_name;
+		$mail->AddAddress($to);
+		$mail->Subject  = get_the_title($ID).' - '.$first_name.' '.$last_name;
+		$mail->Body     = 'User login: '.$username.'
+		Uploader comments: '.$_POST['go_attachment_com'];
+		$mail->WordWrap = 50;
+		//$mail->AddAttachment($_FILES['go_attachment']['tmp_name'],$_FILES['go_attachment']['name']);
+		for ($i=0; $i < count($_FILES['go_attachment']); $i++) { // This loop will upload all the files you have attached to your email. 
+
+			$name=$_FILES['go_attachment']['name'][$i];
+			$path=$_FILES['go_attachment']['tmp_name'][$i];
+
+			//And attach it using attachment method of PHPmailer.
+
+			$mail->AddAttachment($path,$name); 
+		}
+		if (!$mail->Send()) {
+			return '<p id="go_upload_msg">Message was not sent.</p>';
+			return 'Mailer error: ' . $mail->ErrorInfo;
+		} else {
+			// if the message was successfully sent, the user's stage-specific upload variable ('c_upload'/'m_upload') will be updated to 1. 
+			// (The admin has to provide an email for the form to succeed).
+			$wpdb->update($go_table_ind, array($upload_column => 1), array('uid' => $uid, 'post_id' => $post_id));
+			return '<p id="go_upload_msg">Message has been sent.</p>';
+		}
+	}
+	return('<form id="go_upload_form" action="" method="post" enctype="multipart/form-data">
+		<div><input type="file" name="go_attachment[]"/><br/></div>
+		<button type="button" onClick="go_add_uploader();">Attach More</button><br/>
+		Comments:<br />
+		<textarea name="go_attachment_com"></textarea><br />
+		<input type="submit" value="Submit"/>
+		</form>');
 	}
 ?>
