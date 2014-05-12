@@ -19,8 +19,6 @@ function go_task_shortcode($atts, $content = null) {
 		$task_points = $custom_fields['go_mta_task_points'][0]; // Points granted after each stage of task
 		$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
 		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
-		global $wpdb;
-		$go_table_ind = $wpdb->prefix.'go';
 		
 		$test_active = $custom_fields['go_mta_test_lock'][0];
 		
@@ -150,10 +148,6 @@ function go_task_shortcode($atts, $content = null) {
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
-			if ($mastery_upload) {
-				// get the uploaded variable for the mastery stage
-				$mastery_uploaded = $wpdb->get_var("select `m_upload` from ".$go_table_ind." where uid = $user_ID and post_id = $id");
-			}
 			$mastery_locked = $custom_fields['go_mta_mastery_lock'][0];
 			$mastery_unlock = $custom_fields['go_mta_mastery_unlock'][0];
 			if ($mastery_locked == 'on' && $mastery_unlock != ' ') {
@@ -176,10 +170,6 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		$completion_upload = $custom_fields['go_mta_completion_upload'][0];
-		if ($completion_upload) {
-			// get the uploaded variable for the completion stage
-			$completion_uploaded = $wpdb->get_var("select `c_upload` from ".$go_table_ind." where uid = $user_ID and post_id = $id");
-		}
 		$complete_locked = $custom_fields['go_mta_complete_lock'][0]; // Sets this variable equal to the password entered on the task creation page
 		$complete_unlock = $custom_fields['go_mta_complete_unlock'][0];
 		if ($complete_locked == 'on' && $complete_unlock != ' ') {
@@ -430,9 +420,8 @@ function go_task_shortcode($atts, $content = null) {
 							}
 						}
 
-						// if the completion upload option is checked and the user hasn't uploaded a file already, display the upload form
-						if ($completion_upload && $completion_uploaded == 0) {
-							echo do_shortcode("[go_upload status='".$status."']")."<br/>";
+						if ($completion_upload) {
+							echo do_shortcode("[go_upload]")."<br/>";
 						}
 
 						echo '<button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'.
@@ -468,9 +457,8 @@ function go_task_shortcode($atts, $content = null) {
 								}
 							}
 						
-							// if the mastery upload option is checked and the user hasn't uploaded a file already, display the upload form
-							if ($mastery_upload && $mastery_uploaded == 0) {
-								echo do_shortcode("[go_upload status='".$status."']")."<br/>";
+							if ($mastery_upload) {
+								echo do_shortcode("[go_upload]")."<br/>";
 							}
 
 							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
@@ -861,14 +849,13 @@ function go_task_shortcode($atts, $content = null) {
 							// 	jQuery('#go_test_error_msg').text(response);
 							// 	console.log("no-regex: "+response);
 							// }
-							if (response === 'Incorrect password!') {
+							if (response == 'Incorrect password!') {
 								jQuery('.go_lock_message').text('Incorrect password, try again.');
 							}
 							jQuery('#go_test_error_msg').text(response);
 						} else if (which == 'pass'){
 							// display_failure(response);
-							// jQuery('.go_lock_message').text('Incorrect password, try again.');
-							jQuery('.go_lock_message').text(response);
+							jQuery('.go_lock_message').text('Incorrect password, try again.');
 						} else if (which == 'test') {
 							jQuery('#go_test_error_msg').text("Wrong answer, try again!");
 						}
@@ -1084,14 +1071,11 @@ function test_point_update() {
 
 function unlock_stage(){
 	global $wpdb;
-	$go_table_ind = $wpdb->prefix.'go';
 
-	$user_ID = get_current_user_id();
 	$id = $_POST['task'];
 	$status = $_POST['status'];
 	$which = $_POST['which'];
 	$test_size = $_POST['list_size'];
-	
 
 	if ($which == 'both') {
 		$password_check = $_POST['password_check'];
@@ -1133,23 +1117,11 @@ function unlock_stage(){
 	$points_array = explode(',', $task_points);
 	$task_currency = $custom_fields['go_mta_task_currency'][0];
 	$currency_array = explode(',', $task_currency);
-	$upload_column = '';
 
 	if ($status == 2) {
 		$custom_mods = $custom_fields['go_mta_test_lock_loot_mod'][0];
-		
-		$upload = $custom_fields['go_mta_completion_upload'][0];
-		$upload_column = 'c_upload';
-	
-	} else if ($status == 3) {
+	} else if ($status== 3) {
 		$custom_mods = $custom_fields['go_mta_test_mastery_lock_loot_mod'][0];
-		
-		$upload = $custom_fields['go_mta_mastery_upload'][0];
-		$upload_column = 'm_upload';
-	}
-	
-	if ($upload == 'on') {
-		$uploaded = $wpdb->get_var("select ".$upload_column." from ".$go_table_ind." where uid = $user_ID and post_id = $id");
 	}
 
 	if (!preg_match("/[^0-9\-\,\s]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*,\s*)+/", $custom_mods)) {
@@ -1165,6 +1137,8 @@ function unlock_stage(){
 	}
 
 	$test_fail_max = count($mod_array) - 1;
+	
+	$user_ID = get_current_user_id();
 
 	if ($status == 2) {
 		$password = sha1($custom_fields['go_mta_complete_unlock'][0]);
@@ -1250,16 +1224,7 @@ function unlock_stage(){
 				}
 			}
 			if ($total_matches == $test_size && $password_check == $password) {
-				if ($upload == 'on') {
-					if ($uploaded == 1) {
-						echo 1;
-					} else {
-						echo "Files not uploaded!";
-					}
-				} else {
-					echo 1;
-				}
-				die();
+				echo 1;
 			} else {
 				if ($total_matches != $test_size && $password_check != $password) {
 					if ($status == 2) {
@@ -1280,16 +1245,10 @@ function unlock_stage(){
 						}
 					}
 
-					if ($upload == 'on' && !$uploaded) {
-						echo "Wrong answer, incorrect password, and files not uploaded!";
-					} else {
-						echo "Wrong answer and incorrect password!";
-					}
+					echo "Wrong answer and incorrect password!";
 					die();
-				} else if ($upload == 'on' && !$uploaded) { 
-					echo "Files not uploaded!";
-					die();
-				} else {
+				} else { 
+			
 					if ($password_check != $password) {
 						echo "Incorrect password!";
 					} else if ($total_matches != $test_size) {
@@ -1311,11 +1270,7 @@ function unlock_stage(){
 							}
 						}
 
-						if ($upload == 'on' && !$uploaded) {
-							echo "Wrong answer and files not uploaded!";
-						} else {
-							echo "Wrong answer!";
-						}
+						echo "Wrong answer!";
 					}
 					die();
 				}
@@ -1324,16 +1279,7 @@ function unlock_stage(){
 
 			if ($type == 'radio') {
 				if (strtolower($choice) == strtolower($key) && $password_check == $password) {
-					if ($upload == 'on') {
-						if ($uploaded == 1) {
-							echo 1;
-						} else {
-							echo "Files not uploaded!";
-						}
-					} else {
-						echo 1;
-					}
-					die();
+					echo 1;
 				} else {
 					if (strtolower($choice) != strtolower($key) && $password_check != $password) {
 						if ($status == 2) {
@@ -1370,16 +1316,9 @@ function unlock_stage(){
 						// 	die();
 						// }
 
-						if ($upload == 'on' && !$uploaded) {
-							echo "Wrong answer, incorrect password, and files not uploaded!";
-						} else {
-							echo "Wrong answer and incorrect password!";
-						}
+						echo "Wrong answer and incorrect password!";
 						die();
-					} else if ($upload == 'on' && !$uploaded) { 
-						echo "Files not uploaded!";
-						die();
-					} else {
+					} else { 
 						
 						if ($password_check != $password) {
 							// if (isset($_SESSION['fail_count'])) {
@@ -1398,11 +1337,7 @@ function unlock_stage(){
 							// 	die();
 							// }
 
-							if ($upload == 'on' && !$uploaded) {
-								echo "Incorrect password and files not uploaded!";
-							} else {
-								echo "Incorrect password!";
-							}
+							echo "Incorrect password!";
 							die();
 						} else if (strtolower($choice) != strtolower($key)) {
 							if ($status == 2) {
@@ -1423,11 +1358,7 @@ function unlock_stage(){
 								}
 							}
 
-							if ($upload == 'on' && !$uploaded) {
-								echo "Wrong answer and files not uploaded!";
-							} else {
-								echo "Wrong answer!";
-							}
+							echo "Wrong answer!";
 							die();
 						}
 					}
@@ -1447,16 +1378,7 @@ function unlock_stage(){
 				}
 
 				if ($key_match == count($choice_array_keys) && $key_match >= 2 && $password_check == $password) {
-					if ($upload == 'on') {
-						if ($uploaded == 1) {
-							echo 1;
-						} else {
-							echo "Files not uploaded!";
-						}
-					} else {
-						echo 1;
-					}
-					die();
+					echo 1;
 				} else {
 					if ($key_match != count($choice_array_keys) && $key_match < 2 && $password_check != $password) {
 						if ($status == 2) {
@@ -1476,23 +1398,12 @@ function unlock_stage(){
 								}
 							}
 						}
-
-						if ($upload == 'on' && !$uploaded) {
-							echo "Wrong answer, incorrect password, and files not uploaded!";
-						} else {
-							echo "Wrong answer and incorrect password!";
-						}
+						echo "Wrong answer and incorrect password!";
 						die();
-					} else if ($upload == 'on' && !$uploaded) { 
-						echo "Files not uplaoded!";
-						die();
-					} else {
+					} else { 
+				
 						if ($password_check != $password) {
-							if ($upload == 'on' && !$uploaded) {
-								echo "Incorrect password and files not uploaded!";
-							} else {
-								echo "Incorrect password!";
-							}
+							echo "Incorrect password!";
 						}
 					
 						if ($key_match != count($choice_array_keys) || $key_match < 2) {
@@ -1513,12 +1424,7 @@ function unlock_stage(){
 									}
 								}
 							}
-
-							if ($upload == 'on' && !$uploaded) {
-								echo "Wrong answer and files not uploaded!";
-							} else {
-								echo "Wrong answer!";
-							}
+							echo "Wrong answer!";
 						}
 						die();
 					}
@@ -1526,16 +1432,8 @@ function unlock_stage(){
 			}
 		}
 	} else if ($which == 'pass') {
-		if ($password_check == $password) {
-			if ($upload == 'on') {
-				if ($uploaded == 1) {
-					echo 1;
-				} else {
-					echo "Files not uploaded!";
-				}
-			} else {
-				echo 1;
-			}
+		if($password_check == $password){
+			echo 1;
 			die();
 		} else {
 			// if (isset($_SESSION['fail_count'])) {
@@ -1549,11 +1447,7 @@ function unlock_stage(){
 			// 		die();
 			// 	}
 			// }
-			if ($upload == 'on' && !$uploaded) {
-				echo "Incorrect password and files not uploaded!";
-			} else {
-				echo "Incorrect password!";
-			}
+			echo 0;
 			die();
 		}
 	} else if ($which == 'test') {
@@ -1581,12 +1475,7 @@ function unlock_stage(){
 								}
 							}
 						}
-
-						if ($upload == 'on' && !$uploaded) {
-							echo "Wrong answer and files not uploaded!";
-						} else {
-							echo "Wrong answer!";
-						}
+						echo 0;
 						die();
 					}					
 				} else {
@@ -1614,12 +1503,7 @@ function unlock_stage(){
 									}
 								}
 							}
-
-							if ($upload == 'on' && !$uploaded) {
-								echo "Wrong answer and files not uploaded!";
-							} else {
-								echo "Wrong answer!";
-							}
+							echo 0;
 							die();
 						}
 					}
@@ -1644,27 +1528,14 @@ function unlock_stage(){
 								}
 							}
 						}
-
-						if ($upload == 'on' && !$uploaded) {
-							echo "Wrong answer and files not uploaded!";
-						} else {
-							echo "Wrong answer!";
-						}
+						echo 0;
 						die();
 					}
 				}
 			}
 
 			if ($total_matches == $test_size) {
-				if ($upload == 'on') {
-					if ($unloaded) {
-						echo 1;
-					} else {
-						echo "Files not uploaded!";
-					}
-				} else {
-					echo 1;	
-				}
+				echo 1;
 				die();
 			} else {
 				if ($status == 2) {
@@ -1684,27 +1555,14 @@ function unlock_stage(){
 						}
 					}
 				}
-
-				if ($upload == 'on' && !$uploaded) {
-					echo "Wrong answer and files not uploaded!";
-				} else {
-					echo "Wrong answer!";
-				}
+				echo 0;
 				die();
 			}
 		} else {
 
 			if ($type == 'radio') {
 				if (strtolower($choice) == strtolower($key)) {
-					if ($upload == 'on') {
-						if ($uploaded == 1) {
-							echo 1;
-						} else {
-							echo "Files not uploaded!";
-						}
-					} else {
-						echo 1;	
-					}
+					echo 1;
 					die();
 				} else {
 					if ($status == 2) {
@@ -1724,11 +1582,7 @@ function unlock_stage(){
 							}
 						}
 					}
-					if ($upload == 'on' && !$uploaded) {
-						echo "Wrong answer and files not uploaded!";
-					} else {
-						echo "Wrong answer!";
-					}
+					echo 0;
 					die();
 				}
 			} else if ($type == 'checkbox') {
@@ -1744,15 +1598,7 @@ function unlock_stage(){
 					}
 				}
 				if ($key_match == count($choice_array_keys) && $key_match >= 2) {
-					if ($upload == 'on') {
-						if ($uploaded == 1) {
-							echo 1;
-						} else {
-							echo "Files not uploaded!";
-						}
-					} else {
-						echo 1;	
-					}
+					echo 1;
 					die();
 				} else {
 					if ($status == 2) {
@@ -1772,12 +1618,7 @@ function unlock_stage(){
 							}
 						}
 					}
-					
-					if ($upload == 'on' && !$uploaded) {
-						echo "Wrong answer and files not uploaded!";
-					} else {
-						echo "Wrong answer!";
-					}
+					echo 0;
 					die();
 				}
 			}
@@ -1942,10 +1783,6 @@ function task_change_stage() {
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
-			if ($mastery_upload) {
-				// get the uploaded variable for the mastery stage
-				$mastery_uploaded = $wpdb->get_var("select `m_upload` from ".$go_table_ind." where uid = $user_id and post_id = $post_id");
-			}
 			if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
 				$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
 			} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
@@ -1956,10 +1793,6 @@ function task_change_stage() {
 		}
 
 	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
-	if ($completion_upload) {
-		// get the uploaded variable for the completion stage
-		$completion_uploaded = $wpdb->get_var("select `c_upload` from ".$go_table_ind." where uid = $user_id and post_id = $post_id");
-	}
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 	$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 	$description = $custom_fields['go_mta_quick_desc'][0]; // Description
@@ -2060,9 +1893,8 @@ function task_change_stage() {
 				}
 			}
 
-			// if the completion upload option is checked and the user hasn't uploaded a file already, display the upload form
-			if ($completion_upload && $completion_uploaded == 0) {
-				echo do_shortcode("[go_upload status='".$status."']")."<br/>";
+			if ($completion_upload) {
+				echo do_shortcode("[go_upload]")."<br/>";
 			}
 
 			echo ' <button id="go_button" status="3" onclick="task_stage_change();this.disabled=true;">'
@@ -2094,9 +1926,8 @@ function task_change_stage() {
 								}
 							}
 
-							// if the mastery upload option is checked and the user hasn't uploaded a file already, display the upload form
-							if ($mastery_upload && $mastery_uploaded == 0) {
-								echo do_shortcode("[go_upload status='".$status."']")."<br/>";
+							if ($mastery_upload) {
+								echo do_shortcode("[go_upload]")."<br/>";
 							}
 
 							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
