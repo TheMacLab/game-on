@@ -13,8 +13,10 @@ add_action('wp_ajax_nopriv_buy_item', 'go_buy_item'); //fire go_buy_item on AJAX
 
 function go_buy_item(){ 
 	global $wpdb;
+	$table_name_go = $wpdb->prefix."go";
     $post_id = $_POST["the_id"];
 	$qty = $_POST['qty'];
+	$current_purchase_count = $_POST['purchase_count'];
 	
 	if(isset($_POST['recipient']) && !empty($_POST['recipient'])){
 		$recipient = $_POST['recipient'];
@@ -22,6 +24,7 @@ function go_buy_item(){
 	
 	if($recipient){
 		$recipient_id = $wpdb->get_var('SELECT id FROM '.$wpdb->users.' WHERE display_name="'.$recipient.'"'); 
+		$recipient_purchase_count = $wpdb->get_var("SELECT `count` FROM `".$table_name_go."` WHERE `post_id`='".$post_id."' AND `uid`='".$recipient_id."'"); 
 	}
 	$user_id = get_current_user_id(); 
 	
@@ -40,6 +43,11 @@ function go_buy_item(){
 		$exchange_currency = check_custom($custom_fields['go_mta_store_exchange_currency'][0]) * $qty;
 		$exchange_points = check_custom($custom_fields['go_mta_store_exchange_points'][0]) * $qty;
 		$exchange_time = check_custom($custom_fields['go_mta_store_exchange_time'][0]) * $qty;
+	}
+	$badge_reward_switch = check_custom($custom_fields['go_mta_badge_switch'][0]);
+	if($badge_reward_switch == 'on'){
+		$badge_id = check_custom($custom_fields['go_mta_badge_id'][0]);	
+		$badge_after_purchases = check_custom($custom_fields['go_mta_badge_purchase_count'][0]);
 	}
 	$item_url = check_custom($custom_fields['go_mta_store_itemURL'][0]);
 	$repeat = 'on';
@@ -69,6 +77,15 @@ function go_buy_item(){
 		}
 		if($req_minutes != ''){
 			go_add_minutes($user_id, -$req_minutes, 'store');
+		}
+		if($badge_reward_switch){
+			if($recipient_id){
+				if(($recipient_purchase_count + $qty) >= $badge_after_purchases){
+					do_shortcode('[go_award_badge id="'.$badge_id.'" repeat = "off" uid="'.$recipient_id.'"]');
+				}
+			}elseif(($current_purchase_count + $qty) >= $badge_after_purchases){
+				do_shortcode('[go_award_badge id="'.$badge_id.'" repeat = "off" uid="'.$user_id.'"]');
+			}
 		}
 		if($item_url){
 			$item_hyperlink = '<a target="_blank" href="'.$item_url.'">Grab your loot!</a>';

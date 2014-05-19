@@ -117,7 +117,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
 				'name' => 'Completion File Upload',
 				'name' => 'Completion File Upload'.go_task_opt_help('completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/completionFileUpload.mp4'),
- 				'desc' => 'Toggle to require a user to upload a file before completing the '.go_return_options('go_tasks_name').".",
+ 				'desc' => 'Toggle to require a user to upoad a file before completing the '.go_return_options('go_tasks_name').".",
  				'id' => $prefix.'completion_upload',
  				'type' => 'checkbox'
  			),
@@ -343,7 +343,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),
 			array(
 				'name' => 'Mastery File Upload'.go_task_opt_help('mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/masteryFileUpload.mp4'),
-				'desc' => 'Toggle to require a user to upload a file before mastering the '.go_return_options('go_tasks_name').".",
+				'desc' => 'Toggle to require a user to upoad a file before mastering the '.go_return_options('go_tasks_name').".",
 				'id' => $prefix.'mastery_upload',
 				'type' => 'checkbox'
 			),
@@ -596,13 +596,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Penalty Switch'.go_task_opt_help('penalty_switch', '', 'http://maclab.guhsd.net/go/video/store/penaltySwitch.mp4'),
-				'desc' => 'Allow user\'s currency to go negative when purchasing this item. Checking this disables students from purchasing this item for one another.',
+				'desc' => 'Allow user\'s currency to go negative when purchasing this item.',
 				'id' => $prefix . 'penalty_switch',
 				'type' => 'checkbox'
 			),
 			array(
 				'name' => go_return_options('go_focus_name').' Gateway? (Optional)'.go_task_opt_help('focus_gateway', '', 'http://maclab.guhsd.net/go/video/store/focusGateway.mp4'),
-				'desc' => ' Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account. Checking this disables students from purchasing this item for one another.',
+				'desc' => ' Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account.',
 				'id' => $prefix . 'focus_item_switch',
 				'type' => 'checkbox'
 			),
@@ -678,6 +678,24 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Allowed Repeatable Times (Optional)'.go_task_opt_help('repeat_limit', '', 'http://maclab.guhsd.net/go/video/store/allowedRepeatableTimes.mp4'),
 				'desc' => 'Enter a numerical value to set a hard limit to the amount of times a user can repeat a task.<br/> Leave blank if no limit.',
 				'id' => $prefix.'store_repeat_amount',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Badge (Optional)'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/store/badge.mp4'),
+				'desc' => 'Check this box to have a badge associated with this item.',
+				'id' => $prefix.'badge_switch',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Badge ID'.go_task_opt_help('badge_id', '', 'http://maclab.guhsd.net/go/video/store/badgeID.mp4'),
+				'desc' => 'ID of badge to be rewarded',
+				'id' => $prefix.'badge_id',
+				'type' => 'text'
+			),
+			array(
+				'name' => 'Badge After Purchases'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/store/badgeAfterPurchases.mp4'),
+				'desc' => 'Reward badge after this many purchases. Leave blank to default to 1 purchase.',
+				'id' => $prefix.'badge_purchase_count',
 				'type' => 'text'
 			),
 			array(
@@ -924,4 +942,5 @@ function go_update_task_order(){
 	}
 	die();	
 }
+
 ?>

@@ -2,7 +2,13 @@
 	This is the file that handles the displaying of points, level ups, and experience gained when task portions are completed.
 */
 
-function go_notification (){	
+function go_notification (timer, el){	
+	if(typeof timer === 'undefined'){
+		timer = 1500;	
+	}
+	if(typeof el === 'undefined'){
+		el = false;
+	}
 
 	// Fades the notification(s) in after 200 miliseconds
 	jQuery(".go_notification").fadeIn(200);
@@ -16,9 +22,16 @@ function go_notification (){
 			jQuery(".go_notification").css("z-index", highest_index);
 		}
 	});
-	
 	// Fades the notifaction(s) out after being visible for 1.5 seconds
-	setTimeout(function(){
-		jQuery(".go_notification").fadeOut("slow");
-	},1500)
+	
+	if(el){
+		setTimeout(function(){
+			el.fadeOut("slow");
+		},timer)
+	}else{
+		setTimeout(function(){
+			jQuery(".go_notification").not('#go_notification_level, #go_notification_badges').fadeOut("slow");
+		},timer)
+	}
+	
 }

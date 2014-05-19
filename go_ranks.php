@@ -257,8 +257,11 @@ function go_update_ranks($user_id, $total_points){
 		global $counter;
 		$counter++;
 		$space = $counter*85;
-		echo '<div id="go_notification" class="go_notification" style="top: '.$space.'px; color: #FFD700;"> '.$current_rank.'!</div><script type="text/javascript" language="javascript">go_notification();
-		jQuery("#go_admin_bar_rank").html("'.$current_rank.'");
+		echo '
+		<div id="go_notification_level" class="go_notification" style="top: '.($space - 17).'px; color: #FFD700; width: 300px; height: 81.6px; font-size: 52px;"> '.$current_rank.'!</div>
+		<script type="text/javascript" language="javascript">
+			go_notification(3000, jQuery("#go_notification_level"));
+			jQuery("#go_admin_bar_rank").html("'.$current_rank.'");
 		</script>';
 		$ranks_triggers = get_option('go_ranks_trigger', false);
 		if($ranks_triggers){

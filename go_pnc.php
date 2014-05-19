@@ -117,7 +117,7 @@ function go_add_minutes($user_id, $minutes, $reason){
 }
 	
 	
-function go_notify($type, $points='', $currency='', $time='', $user_id = null) {
+function go_notify($type, $points='', $currency='', $time='', $user_id = null, $display = null) {
 	if($user_id != get_current_user_id()){
 		return false;	
 	}else{
@@ -129,30 +129,19 @@ function go_notify($type, $points='', $currency='', $time='', $user_id = null) {
 		global $counter;
 		$counter++;
 		$space = $counter*85;
-		if($type == 'points'){$display = go_display_points($points);}elseif ($type == 'currency'){$display = go_display_currency($currency);} else if($type=='Minutes'){
+		if($type == 'points'){
+			$display = go_display_points($points);
+		}else if ($type == 'currency'){
+			$display = go_display_currency($currency);
+		}else if($type == 'Minutes'){
 			$display = $time. 'Minutes';
-			}
-		
-		// Refer to go_notification.js for explanation
-		echo '<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">	
-			
-			jQuery(".go_notification").fadeIn(200);
-			
-			var highest_index = 0;
-			jQuery("*").each(function(){
-				var current_index = parseInt(jQuery(this).css("z-index"), 10);
-				if(current_index > highest_index){
-					highest_index = current_index;
-					jQuery(".go_notification").css("z-index", highest_index);
-				}
-			});
-			setTimeout(function(){
-				jQuery(".go_notification").fadeOut("slow");
-				jQuery(".go_notification").remove();
-			},1500);
-			
-			
-			
+		}else if($type == 'custom'){
+			$display = $display;
+		}
+		echo '
+		<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div>
+		<script type="text/javascript" language="javascript"> 
+		go_notification();
 		</script>';
 	}
 }

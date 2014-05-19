@@ -2,6 +2,7 @@
 function store_edit_jquery(){
 ?>
 <script type="text/javascript"> 
+
 var focus_switch = jQuery('#go_mta_focus_item_switch');
 var focus_type = jQuery('tr.cmb-type-select.cmb_id_go_mta_focuses');
 focus_switch.click(function(){
@@ -37,6 +38,30 @@ if(exchange_switch.prop('checked')){
 	});
 } else{
 	exchange_map.forEach(function(el){
+		el.hide('slow');
+	});
+}
+
+var badge_switch = jQuery('#go_mta_badge_switch');
+var badge_map = new Array(jQuery('tr.cmb-type-text.cmb_id_go_mta_badge_id'), jQuery('tr.cmb-type-text.cmb_id_go_mta_badge_purchase_count'));
+
+badge_switch.click(function(){
+	if(jQuery(this).prop('checked')){
+		badge_map.forEach(function(el){
+			el.show('slow');
+		});
+	} else{
+		badge_map.forEach(function(el){
+			el.hide('slow');
+		});
+	}
+});
+if(badge_switch.prop('checked')){
+	badge_map.forEach(function(el){
+		el.show('slow');
+	});
+} else{
+	badge_map.forEach(function(el){
 		el.hide('slow');
 	});
 }

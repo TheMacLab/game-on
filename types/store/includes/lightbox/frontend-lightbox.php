@@ -24,34 +24,18 @@ function go_the_lb_ajax(){
 		$penalty = true;
 	}
 	
-	if($custom_fields['go_mta_store_currency'][0]){
-		$req_currency = $custom_fields['go_mta_store_currency'][0];
-	}else {
-		$req_currency = 0;
-	}
-	if($custom_fields['go_mta_store_points'][0]){
-		$req_points = $custom_fields['go_mta_store_points'][0];
-	}else{
-		$req_points = 0;	
-	}
-	if($custom_fields['go_mta_store_time'][0]){
-		$req_time = $custom_fields['go_mta_store_time'][0];
-	}else{
-		$req_time = 0;	
-	}
-
+	$req_currency = check_custom($custom_fields['go_mta_store_currency'][0]);
+	$req_points = check_custom($custom_fields['go_mta_store_points'][0]);
+	$req_time = check_custom($custom_fields['go_mta_store_time'][0]);
 	
 	if($custom_fields['go_mta_store_time_filter'][0]){
 		$minutes_required = $custom_fields['go_mta_store_time_filter'][0];	
 	} 
+	
 	$req_rank_key =  go_get_rank_key($custom_fields['go_mta_store_rank'][0]);
 	$req_rank = $custom_fields['go_mta_store_rank'][0];
 	$go_store_repeat = $custom_fields['go_mta_store_repeat'][0];
-	if($custom_fields['go_mta_store_repeat_amount'][0]){
-		$purchase_limit = $custom_fields['go_mta_store_repeat_amount'][0];	
-	} else{
-		$purchase_limit = 0;
-	}
+	$purchase_limit = check_custom($custom_fields['go_mta_store_repeat_amount'][0]);
 	
 	$user_rank = go_get_rank($user_id); // Rank of current user
 	$user_ID = get_current_user_id(); // Current User ID
@@ -101,8 +85,8 @@ function go_the_lb_ajax(){
         <div id="go_recipient_wrap" class="golb-fr-boxes-g">Recipient: <input id="go_recipient" type="text"/></div>
         <div id="go_search_results"></div>
 	<?php }?>
-	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>');">Buy</div>
-	<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div> 
+	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>');">Buy</div>
+	<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
 	<div id="golb-purchased">
 	<?php 
 		if($purchase_count == NULL){ 

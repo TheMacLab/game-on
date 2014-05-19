@@ -1,11 +1,12 @@
-function goBuytheItem(id, buyColor) {
+function goBuytheItem(id, buyColor, count) {
 jQuery(document).ready(function(jQuery){
 	var gotoBuy = {
                 action:'buy_item',
                 nonce: "",
 				the_id: id,
 				qty: jQuery('#go_qty').val(),
-				recipient: jQuery('#go_recipient').val()
+				recipient: jQuery('#go_recipient').val(),
+				purchase_count: count
     };
 	// Whenever you figure out a better way to do this, implement it. 
 	var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
@@ -32,13 +33,13 @@ jQuery(document).ready(function(jQuery){
 				// Whenever you figure out a better way to do this, implement it. 
 				jQuery('#go_admin_bar_progress_bar').css({"background-color":color});
 			}
-			goCountItem(id);
+			go_count_item(id);
 		}
 	});
 });
 }
 
-function goCountItem(id){
+function go_count_item(id){
 	jQuery.ajax({
 		url: MyAjax.ajaxurl,
 		type: "POST",

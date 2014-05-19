@@ -85,7 +85,7 @@ function badge_designer(){
 				'guid' => $wp_upload_dir['url'] . '/' . basename( $movefile['file']), 
 				'post_mime_type' => $wp_filetype['type'],
 				'post_title' => preg_replace('/\.[^.]+$/', '', basename($movefile['file'])),
-				'post_content' => 'fasd',
+				'post_content' => '',
 				'post_status' => 'inherit',
 				
 			);

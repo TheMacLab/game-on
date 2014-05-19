@@ -1,4 +1,4 @@
-#go_notification {
+.go_notification {
 	text-align: center;
 	font-size: 36px;
 	position: fixed;
@@ -11,6 +11,7 @@
 	border-radius: 8px;
 	background: #111111;
 	opacity: .9;
+	z-index: 10000;
 }
 
 #go_admin_bar_progress_bar_border{

@@ -27,38 +27,41 @@ function go_media_badge_list( $tabs ) {
 
 function go_award_badge($atts){
 	global $wpdb;
+	global $counter;
+	$counter++;
+	$space = $counter*85;
+	
 	$id = $atts['id'];
 	$repeat = $atts['repeat'];
-	$display = wp_get_attachment_image( $id, array(200,200), false );
-	$user_ID = get_current_user_id();
-	$existing_badges = get_user_meta($user_ID, 'go_badges', true);
-	if($repeat == 'off'){
-		if(!in_array($id, $existing_badges)){
-			$existing_badges[] = $id;
-			 update_user_meta($user_ID, 'go_badges', $existing_badges);
-			 echo '<div id="go_notification_badges" class="go_notification_badges" style="right: 250px">'.$display.'</div><script type="text/javascript" language="javascript">
-		jQuery(".go_notification_badges").fadeIn(200);
-		setTimeout(function(){
-			jQuery(".go_notification_badges").fadeOut("slow");
-		},2000) 
-	</script>';
-
-			}
-		} else { $existing_badges[] = $id;
-					 update_user_meta($user_ID, 'go_badges', $existing_badges);
-					 echo '<div id="go_notification_badges" class="go_notification_badges" style="top: '.$space.'px">'.$display.'</div><script type="text/javascript" language="javascript">
-		jQuery(".go_notification_badges").fadeIn(200);
-		setTimeout(function(){
-			jQuery(".go_notification_badges").fadeOut("slow");
-		},2000) 
-	</script>';
-
-		}
-	
-	
+	if( $atts['uid']){
+		$user_id = $atts['uid'];
+	}else{
+		$user_id = get_current_user_id();	
 	}
-
-
-
-
+	$display = wp_get_attachment_image( $id, array(200,200), false );
+	$existing_badges = get_user_meta($user_id, 'go_badges', true);
+	if($repeat == 'off'){
+		if(empty($existing_badges) || !in_array($id, $existing_badges)){
+			$existing_badges[] = $id;
+			update_user_meta($user_id, 'go_badges', $existing_badges);
+			if($user_id == get_current_user_id()){
+				echo '
+				<div id="go_notification_badges" class="go_notification go_notification_badges" style="background: none; top: '.$space.'px;">'.$display.'</div>
+				<script type="text/javascript" language="javascript">
+					go_notification(3000, jQuery("#go_notification_badges"));
+				</script>';
+			}
+		}
+	} else { 
+		$existing_badges[] = $id;
+		update_user_meta($user_id, 'go_badges', $existing_badges);
+		if($user_id == get_current_user_id()){
+			echo '
+			<div id="go_notification_badges" class="go_notification go_notification_badges" style="background: none;">'.$display.'</div>
+			<script type="text/javascript" language="javascript">
+				go_notification(3000, jQuery("#go_notification_badges"));
+			</script>';
+		}
+	}
+}
 ?>
