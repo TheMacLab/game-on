@@ -2,17 +2,18 @@
 function task_edit_jquery() {
 ?>
 <script type="text/javascript">
-if(navigator.userAgent.indexOf('Firefox') != -1 && parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('Firefox') + 8)) >= 3.6 || navigator.userAgent.indexOf('Safari') != -1){
-	if(jQuery('input[type="date"').length){
-		jQuery('input[type="date"]').datepicker({dateFormat: "yy-mm-dd"});
+var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+if(!is_chrome){
+	if(jQuery('.datepicker').length){
+		jQuery('.datepicker').datepicker({dateFormat: "yy-mm-dd"});
 	}
 }
 var count = 1;
 function go_add_decay_table_row(){
 	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar' + count + '" class="datepicker" type="date"/></td><td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" type="text"/></td></tr>');	
-	if(navigator.userAgent.indexOf('Firefox') != -1 && parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('Firefox') + 8)) >= 3.6 || navigator.userAgent.indexOf('Safari') != -1){
-		if(jQuery('input[type="date"').length){
-			jQuery('input[type="date"]').datepicker({dateFormat: "yy-mm-dd"});
+	if(!is_chrome){
+		if(jQuery('.datepicker').length){
+			jQuery('.datepicker').datepicker({dateFormat: "yy-mm-dd"});
 		}
 	}
 	count++;
