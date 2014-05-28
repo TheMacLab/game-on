@@ -409,6 +409,7 @@ function go_get_all_posts(){
 	$taxonomy = $_POST['taxonomy'];
 	$terms = $_POST['terms'];
 	$posts = get_posts(array(
+			'posts_per_page' => -1,
 			'post_type' => 'tasks',
 			'orderby' => 'ID',
 			'order' => 'ASC',
