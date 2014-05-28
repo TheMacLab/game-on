@@ -5,7 +5,7 @@ Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
 Contributors: Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.6.1
+Version: 1.6.2
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -87,6 +87,10 @@ add_action('wp_ajax_listurl', 'listurl');
 add_action('wp_ajax_nopriv_listurl', 'listurl');
 add_action('wp_ajax_go_clipboard_collect_data', 'go_clipboard_collect_data');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');
+add_action('wp_ajax_go_get_all_terms', 'go_get_all_terms');
+add_action('wp_ajax_nopriv_go_get_all_terms', 'go_get_all_terms');
+add_action('wp_ajax_go_get_all_posts', 'go_get_all_posts');
+add_action('wp_ajax_nopriv_go_get_all_posts', 'go_get_all_posts');
 add_action('wp_ajax_go_update_task_order', 'go_update_task_order');
 add_action('wp_ajax_go_search_for_user', 'go_search_for_user');
 add_shortcode( 'go_stats_page', 'go_stats_page' );

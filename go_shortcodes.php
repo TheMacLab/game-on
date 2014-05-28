@@ -64,6 +64,8 @@ function listurl(){
 	}
 	die();
 }
+
+
 add_shortcode('go_list_URL', 'listUserURL');
 
 function go_display_video($atts, $video_url){
@@ -323,4 +325,107 @@ function go_login($atts, $content = null) {
 }}
 add_shortcode ('sb_login', 'go_login');
 add_shortcode ('go_login', 'go_login');
+
+function go_get_category(){
+	global $wpdb;
+	$terms = get_taxonomies();
+	?>
+    <script type="text/javascript">
+		var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+		function go_get_all_tasks(el){
+			var el = jQuery(el);
+			if(el.prop("checked")){
+				var val = el.val();
+			}else{
+				jQuery('#' + el.val() + '_terms').remove();
+				jQuery('#go_queried_posts_' + el.val()).remove();
+			}
+			jQuery.ajax({
+				type:"POST", 
+				url: go_ajaxurl, 
+				data: {
+					taxonomy: val,
+					action: 'go_get_all_terms'
+				}, 
+				success: function(data){
+					if(data){
+						el.parent().after(data);
+					}
+				}
+			});
+		}
+		function go_get_all_posts(taxonomy){
+			var terms = [];
+			jQuery('#go_queried_posts_' + taxonomy).remove();
+			jQuery('.term').each(function(){
+				el = jQuery(this);
+				if(el.prop('checked')){
+					terms.push(el.val());
+				}
+			});
+			jQuery.ajax({
+				type: "POST",
+				url: go_ajaxurl,
+				data:{
+					taxonomy: taxonomy,
+					terms: terms,
+					action: 'go_get_all_posts'
+				},
+				success: function(data){
+					jQuery('#' + taxonomy + '_terms').after(data);
+				}
+			});
+		}
+	</script>
+    <?php
+	echo '<div id="taxonomies" style="padding: 0px; margin: 0px;">';
+	foreach($terms as $term){
+		if($term == 'post_tag' || $term == 'task_categories' || $term == 'task_focus_categories'){
+			echo '<div style="padding: 0px; margin: 0px;"><input type="checkbox" id="chk" value="'.$term.'" onClick="go_get_all_tasks(this)">'.$term.'</div><br/>';
+		}
+	}
+	echo '</div>';
+}
+
+
+add_shortcode('go_get_category', 'go_get_category');
+function go_get_all_terms(){
+	$taxonomy = $_POST['taxonomy'];
+	if($taxonomy != ''){
+		echo '<div id="'.$taxonomy.'_terms">';
+	}
+	if($taxonomy){
+		$terms = get_terms($taxonomy);
+		foreach($terms as $term){
+			echo '<input type="checkbox" class="term" value="'.$term->name.'" name="'.$term->name.'" onClick="go_get_all_posts(\''.$taxonomy.'\')"/>'.$term->name.'<br/>';
+		}
+	}
+	echo '</div>';
+	die();
+}
+
+function go_get_all_posts(){
+	//what posts should be returned???
+	$taxonomy = $_POST['taxonomy'];
+	$terms = $_POST['terms'];
+	$posts = get_posts(array(
+			'post_type' => 'tasks',
+			'orderby' => 'ID',
+			'order' => 'ASC',
+			'tax_query' => array(
+				array(
+					'taxonomy' => $taxonomy,
+					'field' => 'name',
+					'terms' => $terms
+				)
+			)
+		)
+	);	
+	echo '<div id="go_queried_posts_'.$taxonomy.'" class="go_queried_posts">';
+	foreach($posts as $post){
+		echo '<a href="'.get_permalink($post->ID).'" target="_blank">'.get_the_title($post->ID).'</a><br/>';	
+	}
+	echo '</div>';
+	die();
+}
 ?>
