@@ -45,6 +45,9 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 		   	$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
 		   	$points = $points * $qty;
 		   	$currency = $currency * $qty;
+			if($user_id != get_current_user_id()){
+				$reason = 'Purchased by '.get_userdata(get_current_user_id())->display_name.' '.$qty.' times';	
+			}
 		   	if($repeat != 'on' || empty($old_points)){
 				$wpdb->insert(
 					$table_name_go, 
@@ -56,19 +59,20 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 						'currency'=>$currency, 
 						'page_id' => $page_id, 
 						'count'=> $qty,
-						'reason' => $time
+						'reason' => $reason,
+						'timestamp' => $time
 					)
 				);
 			} else {
 				$wpdb->update(
 					$table_name_go,
 					array(
-						'status'=>$status, 
 						'points'=>$points+ ($old_points->points), 
 						'currency'=> $currency+($old_points->currency), 
 						'page_id' => $page_id, 
 						'count'=> (($old_points->count)+$qty),
-						'reason' => $time
+						'reason' => $reason,
+						'timestamp' => $time
 					), 
 					array(
 						'uid'=> $user_id, 
@@ -98,7 +102,7 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 				}
 			}
 		}
-	go_update_totals(get_current_user_id(),$points,$currency,0,$status);
+	go_update_totals($user_id,$points,$currency,0,$status);
 }
 	
 // Adds minutes.
@@ -110,9 +114,7 @@ function go_add_minutes($user_id, $minutes, $reason){
 		$minutes = $minutes * $_POST['qty'];
 		}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$minutes_reason = array('reason'=>$reason, 'time'=>$time);
-	$minutes_reason_serialized = serialize($minutes_reason);
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'minutes'=> $minutes, 'reason'=> $minutes_reason_serialized) );
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'minutes'=> $minutes, 'reason'=> $reason, 'timestamp' => $time) );
 	go_update_totals($user_id,0,0,$minutes);
 }
 	

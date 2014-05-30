@@ -2,10 +2,9 @@
 /*
 Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
-Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman
-Contributors: Isaac Canada
+Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.6.3
+Version: 1.6.4
 */
 include('go_datatable.php');
 include('types/types.php');

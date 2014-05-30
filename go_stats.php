@@ -234,7 +234,7 @@ function go_stats_item_list(){
 	$table_name_go = $wpdb->prefix."go";
 	
 	// Select all posts associated with the user id that have a status of -1, i.e. items associated with that user
-	$results = $wpdb->get_results("SELECT * FROM ".$table_name_go." WHERE uid = $user_id AND status = -1 ORDER BY id DESC");
+	$results = $wpdb->get_results("SELECT * FROM ".$table_name_go." WHERE uid = $user_id AND status = -1 ORDER BY timestamp DESC, reason DESC");
 	
 	$i = 0;
 	foreach($results as $result){
@@ -242,9 +242,12 @@ function go_stats_item_list(){
 		$count = $result->count;
 		
 		// Grab timestamp of purchase
-		$purchase_date = $result->reason;
+		$purchase_date = $result->timestamp;
 		
-		echo '<li class="go_'.isEven($i).'" style="font-size: 12px !important"><a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="color:rgba(0,0,0,.4); font-size: 12px;">'.get_the_title($post_id).'</a> '.$purchase_date.'<div style="float:right;">Amount: '.$count.'</div></li>';
+		// Grab reason of purchase
+		$purchase_reason = $result->reason;
+		
+		echo '<li class="go_'.isEven($i).'" style="font-size: 12px !important"><a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="color:rgba(0,0,0,.4); font-size: 12px;">'.get_the_title($post_id).'</a> '.$purchase_date.' '.$purchase_reason.'<div style="float:right;">Total: '.$count.'</div></li>';
 		$i++;
 	}
 	die();	
@@ -259,7 +262,7 @@ function go_stats_points(){
 	}
     $user_id = $current_user->ID ;
 	$table_name_go = $wpdb->prefix . "go";
-	$list = $wpdb->get_results("select post_id, points, reason from ".$table_name_go." where uid = $user_id and points != 0 order by id desc");
+	$list = $wpdb->get_results("select post_id, points, reason from ".$table_name_go." where uid = $user_id and points != 0 order by timestamp desc, reason desc");
 	$x = 0;
 	$sym = get_option('go_points_sym');
 	foreach($list as $lists){
@@ -281,7 +284,7 @@ function go_stats_currency(){
 	}
     $user_id = $current_user->ID ;
 	$table_name_go = $wpdb->prefix . "go";
-	$list = $wpdb->get_results("select post_id, currency, reason from ".$table_name_go." where uid = $user_id and currency != 0 order by id desc");
+	$list = $wpdb->get_results("select post_id, currency, reason from ".$table_name_go." where uid = $user_id and currency != 0 order by timestamp desc, reason desc");
 	$x = 0;
 	$sym = get_option('go_currency_sym');
 	foreach($list as $lists){
@@ -303,12 +306,16 @@ function go_stats_minutes(){
 	}
     $user_id = $current_user->ID ;
 	$table_name_go = $wpdb->prefix . "go";
-	$list = $wpdb->get_results("select minutes, reason from ".$table_name_go." where uid = $user_id and minutes != 0 order by id desc");
+	$list = $wpdb->get_results("select minutes, reason, timestamp from ".$table_name_go." where uid = $user_id and minutes != 0 order by timestamp desc, reason desc");
 	$x = 0;
 	foreach($list as $lists){
-		$reason_array = unserialize($lists->reason);
+		if(gettype(unserialize($lists->reason)) == 'array'){
+			$reason_array = unserialize($lists->reason);
+			$lists->reason = $reason_array['reason'];
+			$lists->timestamp = $reason_array['time'];
+		}
 			$x++;
-		?> <li class="go_<?= isEven($x)?>"><?= $lists->minutes ?> Minutes @ <?= $reason_array['time'] ?> For <?= $reason_array['reason'] ?></li> <?php
+		?> <li class="go_<?= isEven($x)?>"><?= $lists->minutes ?> Minutes on <?= $lists->timestamp ?> For <?= $lists->reason ?></li> <?php
 		}
 		die(); 
 	}

@@ -6,7 +6,7 @@ function go_table_individual() {
    global $wpdb;
 
    $table_name = $wpdb->prefix . "go";
-      
+   
    $sql = "CREATE TABLE $table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   uid INT,
@@ -23,6 +23,7 @@ function go_table_individual() {
   infractions INT,	 
   minutes VARCHAR (200),
   reason VARCHAR (200),
+  timestamp VARCHAR (200), 
   UNIQUE KEY  id (id)
     );";
 

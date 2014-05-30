@@ -17,7 +17,7 @@ function go_buy_item(){
     $post_id = $_POST["the_id"];
 	$qty = $_POST['qty'];
 	$current_purchase_count = $_POST['purchase_count'];
-	
+
 	if(isset($_POST['recipient']) && !empty($_POST['recipient'])){
 		$recipient = $_POST['recipient'];
 	}
@@ -40,9 +40,9 @@ function go_buy_item(){
 	$penalty = check_custom($custom_fields['go_mta_penalty_switch']);
 	$exchange_switch = check_custom($custom_fields['go_mta_store_exchange_switch'][0]);
 	if($exchange_switch && $exchange_switch == 'on'){
-		$exchange_currency = check_custom($custom_fields['go_mta_store_exchange_currency'][0]) * $qty;
-		$exchange_points = check_custom($custom_fields['go_mta_store_exchange_points'][0]) * $qty;
-		$exchange_time = check_custom($custom_fields['go_mta_store_exchange_time'][0]) * $qty;
+		$exchange_currency = check_custom($custom_fields['go_mta_store_exchange_currency'][0]);
+		$exchange_points = check_custom($custom_fields['go_mta_store_exchange_points'][0]);
+		$exchange_time = check_custom($custom_fields['go_mta_store_exchange_time'][0]);
 	}
 	$badge_reward_switch = check_custom($custom_fields['go_mta_badge_switch'][0]);
 	if($badge_reward_switch == 'on'){
@@ -67,16 +67,17 @@ function go_buy_item(){
 			update_user_meta($user_id, 'go_focus', $user_focuses);
 		}
 		if($recipient_id){
-			go_add_post($recipient_id, $post_id, -1, -$req_points, -$req_currency, null, $repeat);
 			go_message_user($recipient_id, get_userdata($user_id)->display_name.' has purchased <a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($post_id).'</a> for you '.$qty.' time(s).');
 			if($exchange_currency || $exchange_points || $exchange_time){
-				go_update_totals($recipient_id, $exchange_points, $exchange_currency, $exchange_time);
+				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, null, $repeat);
+				go_add_minutes($recipient_id, $exchange_time, get_userdata($user_id)->display_name.' purchase of '.get_the_title($post_id).' '.$qty.' times');
 			}
+			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, null, $repeat);
 		}else{
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, null, $repeat);
 		}
 		if($req_minutes != ''){
-			go_add_minutes($user_id, -$req_minutes, 'store');
+			go_add_minutes($user_id, -$req_minutes, 'Purchase of '.get_the_title($post_id).' '.$qty.' times');
 		}
 		if($badge_reward_switch){
 			if($recipient_id){
