@@ -98,7 +98,7 @@ function go_clipboard_intable(){
 	$table_name_go = $wpdb->prefix.'go';
 	$uid = $wpdb->get_results("SELECT user_id
 FROM ".$table_name_user_meta."
-WHERE meta_key =  'wp_capabilities'
+WHERE meta_key =  '".$wpdb->prefix."capabilities'
 AND meta_value LIKE  '%subscriber%'");
 	$focuses = (array)get_option('go_focus');
 	$focuses_list = '';
@@ -168,7 +168,7 @@ function go_clipboard_collect_data(){
 	$table_name_go = $wpdb->prefix.'go';
 	$uid = $wpdb->get_results("SELECT user_id
 FROM ".$table_name_user_meta."
-WHERE meta_key =  'wp_capabilities'
+WHERE meta_key =  '".$wpdb->prefix."capabilities'
 AND meta_value LIKE  '%subscriber%'");
 	$time = round(microtime(true));
 	$array = get_option('go_graphing_data');

@@ -45,7 +45,7 @@ function go_ranks_menu() {
 			$uid = $wpdb->get_results("
 				SELECT user_id
 				FROM ".$table_name_user_meta."
-				WHERE meta_key =  'wp_capabilities'
+				WHERE meta_key =  '".$wpdb->prefix."capabilities'
 				AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')
 			");
 				
