@@ -179,7 +179,7 @@ function go_user_registration($user_id) {
  $table_name_go_totals = $wpdb->prefix . "go_totals";
  $table_name_user_meta = $wpdb->prefix . "usermeta";
  $role = get_option('go_role','subscriber');
- $user_role = get_user_meta($user_id,'wp_capabilities', true);
+ $user_role = get_user_meta($user_id,$wpdb->prefix.'capabilities', true);
  if(array_search(1, $user_role) == $role || array_search(1, $user_role) == 'administrator'){
  	$ranks = get_option('go_ranks');
 		$current_rank_points = current($ranks);
