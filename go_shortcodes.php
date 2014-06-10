@@ -41,7 +41,6 @@ function listUserURL(){
 function listurl(){
 	global $wpdb;
 	if(isset($_POST['class_a_choice'])){
-		$all_user = get_users();
 		$class_a_choice = $_POST['class_a_choice'];
 		$table_name_go_totals= $wpdb->prefix.'go_totals';
 		$uids = $wpdb->get_results("SELECT uid FROM ".$table_name_go_totals."");

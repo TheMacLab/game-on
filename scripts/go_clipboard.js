@@ -1,10 +1,10 @@
-jQuery('#records_tabs').tabs();
 jQuery(document).ready( function () {
-  jQuery('#go_clipboard_table').dataTable( {
-    "bPaginate": false
-  } );
-go_update_graph();
-} );
+	jQuery('#records_tabs').tabs();
+  	jQuery('#go_clipboard_table').dataTable( {
+		"bPaginate": false 
+	} );
+	go_update_graph();
+});
 function toggle(source) {
   checkboxes = document.getElementsByName('go_selected');
   for(var i=0, n=checkboxes.length;i<n;i++) {
@@ -18,95 +18,72 @@ function analysis_toggle(source) {
   }
 }
 function go_graphs(datasets){
-		// hard-code color indices to prevent them from shifting as
-		// countries are turned on/off
-			jQuery('#placeholder').empty();
-			jQuery('#choices').empty();
-			jQuery('#placeholder').resize();
-			jQuery(".container").resizable({
-			minWidth: 450,
-			minHeight: 250,
-		});
-		
-		
-window.data = datasets;
+	// hard-code color indices to prevent them from shifting as
+	// countries are turned on/off
+	jQuery('#placeholder').empty();
+	jQuery('#placeholder').resize();
+	window.data = datasets;
 
 	// insert checkboxes 
-		var choiceContainer = jQuery("#choices");
-		var goCheck = 'checked';
-		var ii = 0;
-		choiceContainer.append('<input type="checkbox" onClick="analysis_toggle(this);" /> Select All<br />');
-		jQuery.each(datasets, function(key, val) {
-			choiceContainer.append("<input type='checkbox' name='" + key +"' "+goCheck+" id='id"+key+"'></input><label class='highlight_box' onClick='highlight_click(this);' key='"+val.label+"' rank='"+ii+"'>Highlight</label>"+"<label for='id" + key + "'>"+ val.label +"</label><br/>");
-		goCheck = '';
-		ii++;
-		});
-
-		choiceContainer.find("input").click(plotAccordingToChoices);
-
-		function plotAccordingToChoices() {
-
-			var data = [];
-
-			choiceContainer.find("input:checked").each(function () {
-				var key = jQuery(this).attr("name");
-				if (key && datasets[key]) {
+	var choiceContainer = jQuery("#choices");
+	choiceContainer.find("input").click(plotAccordingToChoices);
+	function plotAccordingToChoices() {
+		var data = [];
+		choiceContainer.find("input:checked").each(function () {
+			var key = jQuery(this).attr("name");
+			if(!jQuery(this).is('[who]')){
+				if (key && datasets[key]){
 					data.push(datasets[key]);
 				}
-			});
-var i = 0;
-		jQuery.each(datasets, function(key, val) {
-			val.color = i;
-			++i;
+			}
 		});
-			if (data.length > 0) {
-				if(jQuery('#go_selection').val() == 0){
+		var i = 0;
+		if (data.length > 0) {
+			if(jQuery('#go_selection').val() == 0){
 				var minutes = Minutes_limit.limit.split(',');
 				var markings = [
-			{ color: "rgba(255,228,0,.4)", yaxis: {from :minutes[2], to: minutes[3] } },
-			{ color: "rgba(255,103,0,.4)", yaxis: {from: minutes[1], to: minutes[2] } },
-			{ color: "rgba(204,0,0,.4)", yaxis: {from: minutes[0], to: minutes[1] } },
-			{ color: "rgba(70,70,70,.8)", yaxis: {to: minutes[0] } },
-			{ color: "rgba(0,193,0,.4)", yaxis: { from: minutes[3] } },
-		];} else {
-			var markings = '';
+					{ color: "rgba(255,228,0,.4)", yaxis: {from :minutes[2], to: minutes[3] } },
+					{ color: "rgba(255,103,0,.4)", yaxis: {from: minutes[1], to: minutes[2] } },
+					{ color: "rgba(204,0,0,.4)", yaxis: {from: minutes[0], to: minutes[1] } },
+					{ color: "rgba(70,70,70,.8)", yaxis: {to: minutes[0] } },
+					{ color: "rgba(0,193,0,.4)", yaxis: { from: minutes[3] } },];
+			} else {
+				var markings = '';
 			}
 			var plot = 	jQuery.plot("#placeholder", data, {	
-			xaxis: {
-				tickDecimals: 0,
-				mode : "time",
-				timezone: "browser" ,
-				timeformat: "%m/%d",
-					},
-			legend:{
-				show:false
+				xaxis: {
+					tickDecimals: 0,
+					mode : "time",
+					timezone: "browser" ,
+					timeformat: "%m/%d",
 				},
-			series: {
-				lines: {
-					show: true,
+				legend:{
+					show:false
+				},
+				series: {
+					lines: {
+						show: true,
+						hoverable: true,
+						},
+					points: {
+						show: true
+						}
+				},
+				zoom: {
+					interactive: true
+				},
+				pan: {
+					interactive: true
+				},
+				grid:{
+					markings: markings,
 					hoverable: true,
-					},
-				points: {
-					show: true
-					}
-			
-				},
-			zoom: {
-				interactive: true
-			},
-			pan: {
-				interactive: true
-			},
-			grid:{
-				markings :markings,
-				hoverable: true,
 				}
-				});
+			});
 				
-window.plot = plot;
-		var previousPoint = null;
-		jQuery("#placeholder").bind("plothover", function (event, pos, item) {
-
+			window.plot = plot;
+			var previousPoint = null;
+			jQuery("#placeholder").bind("plothover", function (event, pos, item) {
 				var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 				jQuery("#hoverdata").text(str);
 				if (item) {
@@ -123,43 +100,39 @@ window.plot = plot;
 					previousPoint = null;            
 				}
 			
-		});
-
-		
-				
-				
-			}
-			
-jQuery("<div class='button' style='right:20px;top:20px'>zoom out</div>")
-			.appendTo(jQuery('#placeholder'))
-			.click(function (event) {
+			});	
+		}
+		jQuery("<div class='button' style='right:20px;top:20px'>zoom out</div>").appendTo(jQuery('#placeholder')).click(function (event) {
 				event.preventDefault();
 				plot.zoomOut();
-			});
-var startData = data;
-		
-}
-plotAccordingToChoices();
+		});
+		var startData = data;
 	}
+	plotAccordingToChoices();
+	
+}
+
 function highlight_click(box){
 	var key = jQuery(box).attr('key');
 	if(!jQuery(box).hasClass('highlight_box_clicked')){
 		for( var j = 0;j < window.plot.getData().length; j++ ){
-		if(window.plot.getData()[j]['label'] == key){
-		for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
-		window.plot.highlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
-					}}
-		}} else {
-		for( var j = 0;j < window.plot.getData().length; j++ ){
-		if(window.plot.getData()[j]['label'] == key){
-		for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
-		window.plot.unhighlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
-					}}
-		}
+			if(window.plot.getData()[j]['label'] == key){
+				for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
+					window.plot.highlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
+				}
 			}
-	jQuery(box).toggleClass("highlight_box_clicked");
-	
+		}
+	} else {
+		for( var j = 0;j < window.plot.getData().length; j++ ){
+			if(window.plot.getData()[j]['label'] == key){
+				for(var i = 0; i < window.plot.getData()[j].data.length; i++ ){
+					window.plot.unhighlight(window.plot.getData()[j], window.plot.getData()[j].data[i]);		
+				}
+			}
+		}
 	}
+	jQuery(box).toggleClass("highlight_box_clicked");
+}
 function showTooltip(x, y, contents) {
 			jQuery("<div id='tooltip'>" + contents + "</div>").css({
 				position: "absolute",
@@ -172,46 +145,93 @@ function showTooltip(x, y, contents) {
 				opacity: 0.80
 			}).appendTo("body").fadeIn(200);
 		}
-
+// runs on analysis tab click, data collection, or points/currency/time select change
 function go_update_graph(){
-	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_clipboard_get_data',
-		go_graph_selection: jQuery('#go_selection').val()
-		},
-		success: function(html){
-			go_graphs(jQuery.parseJSON(html));
+	var go_class_a = new Array();
+	jQuery('.go_class_a').each(function(){
+		el = jQuery(this);
+		if(el.prop('checked')){
+			go_class_a.push(el.val());	
 		}
 	});
+	jQuery.ajax({
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: { 
+			action: 'go_clipboard_get_data',
+			go_graph_selection: jQuery('#go_selection').val(),
+			go_class_a: go_class_a
+		},
+		success: function(html){
+			datasets = jQuery.parseJSON(html);
+			jQuery('.go_class_a_results').empty();
+			jQuery('.go_class_a_results').each(function(index, element) {
+				var all_class = jQuery(element).attr('id');
+				jQuery(element).append('<div class="go_select_all" id="go_select_all_' + all_class + '"><input type="checkbox" name="all_' + all_class + '" onclick="go_select_all_from_class(this, \'' + all_class + ' \');" who="all">Select All</div>');
+				if(jQuery('#' + all_class + '').prev().prev().prop('checked')){
+					jQuery('#go_select_all_' + all_class + '').show();	
+				}
+            });
+			for(var user in datasets){
+				var user_name = user;
+				var user = datasets[user];
+				var user_class = user['class_a'].toLowerCase().replace(/\s+/g, '');
+				jQuery('#'+user_class+'').append('<input type="checkbox" name="' + user_name +'"></input><label class="highlight_box" onClick="highlight_click(this);" key="'+ user['label']+'">Highlight</label><label>'+user['label'] +'</label><br/>');
+			}
+			go_graphs(datasets);
+		}
+	});
+}
+
+// for use in 'select all' checkboxes underneath each period in the analysis tab
+function go_select_all_from_class(el, class_a){
+	if(jQuery(el).prop('checked')){
+		// find all inputs in the same period as the select all checkbox
+		jQuery('#' + class_a + ' input').each(function(){
+			// checks each checkbox for users in period where select all checkbox is found
+			jQuery(this).prop('checked', true);
+		});	
+	}else{
+		// unchecks users
+		jQuery('#' + class_a + ' input').each(function(){
+			jQuery(this).prop('checked', false);
+		});	
 	}
+}
+
+// only runs when button clicked
 function collectData(){
 	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_clipboard_collect_data',
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: { 
+			action: 'go_clipboard_collect_data',
 		},
 		success: function(html){
 			go_update_graph();
 		}
 	});
-	}
+}
 function go_clipboard_class_a_choice(){
 	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_clipboard_intable',
-		go_clipboard_class_a_choice: jQuery('#go_clipboard_class_a_choice').val()},
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: { 
+			action: 'go_clipboard_intable',
+			go_clipboard_class_a_choice: jQuery('#go_clipboard_class_a_choice').val()
+		},
 		success: function(html){
 			jQuery('#go_clipboard_table_body').html('');
-			 var oTable = jQuery('#go_clipboard_table').dataTable();
-			 oTable.fnDestroy();
+			var oTable = jQuery('#go_clipboard_table').dataTable();
+			oTable.fnDestroy();
 			jQuery('#go_clipboard_table_body').html(html);	
-			  jQuery('#go_clipboard_table').dataTable( {
-    "bPaginate": false,
-	  "aaSorting": [[2, "asc" ]]
-  } );
+			jQuery('#go_clipboard_table').dataTable( {
+				"bPaginate": false,
+				"aaSorting": [[2, "asc" ]]
+			});
 		}
 	});
-	
-	}
+}
 
 function go_user_focus_change(user_id,element){
 	jQuery.ajax({

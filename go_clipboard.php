@@ -70,19 +70,30 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
     
      </div>
 	 <div id="go_analysis">
-     <button onClick="collectData();">Collect Data</button>
-     <select id="go_selection" onClick="go_update_graph();">
-     <option value="0"><?php echo 'Minutes'; ?></option>
-     <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
-     <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
-     <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
-     </select>
-     <p id="choices"> 
-     </p>
-     <div class="container">
-     <div id="placeholder" style="width:98%;height:98%;">
-     </div>  
-     </div>
+         <button onClick="collectData();">Collect Data</button>
+         <select id="go_selection" onchange="go_update_graph();">
+             <option value="0"><?php echo 'Minutes'; ?></option>
+             <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
+             <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
+             <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
+         </select>
+         <div id="choices">
+         <?php
+		 	if($class_a){
+				foreach($class_a as $class){
+				?>
+                	<input type="checkbox" class="go_class_a" value="<?php echo $class;?>" onclick="go_update_graph(this)"/><?php echo $class;?><br />
+                    <div id="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" class="go_class_a_results"></div>
+                <?php	
+					$i++;
+				}
+			}
+		 ?>
+         </div>
+         <div class="container">
+             <div id="placeholder" style="width:98%;height:98%;">
+             </div>  
+         </div>
      </div>
      </div>
 	 <?php
@@ -167,45 +178,86 @@ function go_clipboard_collect_data(){
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
 	$table_name_go = $wpdb->prefix.'go';
 	$uid = $wpdb->get_results("SELECT user_id
-FROM ".$table_name_user_meta."
-WHERE meta_key =  '".$wpdb->prefix."capabilities'
-AND meta_value LIKE  '%subscriber%'");
+	FROM ".$table_name_user_meta."
+	WHERE meta_key =  '".$wpdb->prefix."capabilities'
+	AND meta_value LIKE  '%subscriber%'");
 	$time = round(microtime(true));
 	$array = get_option('go_graphing_data');
 	foreach($uid as $id){
 		foreach($id as $value){
-		$minutes = go_return_minutes($value);
-		$points = go_return_points($value);
-		$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
-		$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
-		$array[$value][$time] = $minutes.','. $points.','. $third_stage.','. $fourth_stage;
-		}}
-	update_option( 'go_graphing_data', $array );
+			$minutes = go_return_minutes($value);
+			$points = go_return_points($value);
+			$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
+			$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
+			$array[$value][$time] = $minutes.','. $points.','. $third_stage.','. $fourth_stage;
+		}
 	}
+	update_option( 'go_graphing_data', $array );
+}
 	
+//function which is run when the analysis tab is clicked, when a user collects data, or when a different selection (points, currency, time) is picked in the analysis tab
 function go_clipboard_get_data(){
 	global $wpdb;
+	
+	//grabs the selection
+	// 0 = minutes
+	// 1 = points
+	// 2 = completed
+	// 3 = mastered
 	$selection = $_POST['go_graph_selection'];
+	if(isset($_POST['go_class_a'])){
+		$class_a_choice = $_POST['go_class_a'];
+	}else{
+		$class_a_choice = array();	
+	}
+	
 	$array = get_option('go_graphing_data',false);
-	foreach($array as $id => $date){
-		$getinfo = get_userdata( $id );
-		$id= $getinfo -> user_login;
-		$first= $getinfo-> first_name;
-		$last= $getinfo-> last_name;
-		$info[$id]['label'] = $last.', '.$first.' ('.$id.')';
-		foreach($date as $date => $content){
-			$content_array = explode(',',$content);
-			$info[$id]['data'][]=array($date*1000,$content_array[$selection]);
-			//$data[$id] .= '['.$date.','.$content_array[$selection].'],';
-			}
-		//$info .= '"'.$id.'": {label: "'.$id.'",data: ['.$data[$id].']},';
+	
+	$users_in_class = array();
+	foreach($class_a_choice as $value){
+		if(!array_key_exists($value, $users_in_class)){
+			$users_in_class[$value] = array();	
 		}
-		
-
-		echo JSON_encode($info);
-		//	echo '{'.$info.'}';
-			die();
-			     	}
+	}
+	
+	$table_name_go_totals= $wpdb->prefix.'go_totals';
+	$uids = $wpdb->get_results("SELECT uid FROM ".$table_name_go_totals."");
+	foreach($uids as $uid){
+		foreach($uid as $id){
+			$user_class = get_user_meta($id, 'go_classifications', true);
+			if($user_class){
+				$class = array_keys($user_class);
+				$check = array_intersect($class, array_keys($users_in_class));
+				if($check){
+					$key = (string)$check[0];
+					$users_in_class[$key][] = $id;	
+				}
+			}
+		}
+	}
+	// date is the unix timestamp of the last time data was collected using the go_clipboard_collect_data function
+	foreach($array as $id => $date){
+		foreach($users_in_class as $class => $student){
+			if(in_array($id, $student)){
+				$getinfo = get_userdata( $id );
+				$id = $getinfo -> user_login;
+				$first = $getinfo-> first_name;
+				$last = $getinfo-> last_name;
+				$info[$id]['label'] = $last.', '.$first.' ('.$id.')';
+				$info[$id]['class_a'] = $class;
+				foreach($date as $date => $content){
+					// Minutes, points, completed, and mastered array associated with the unix timestamp when go_clipboard_collect_data function ran
+					$content_array = explode(',',$content);
+					// generates array of user data associated with a unix timestamp, then appends the unix timestamp$content_array's element which corresponds to the graph selection key above
+					$info[$id]['data'][] = array($date*1000,$content_array[$selection]);	
+				}
+			}
+		}
+	}
+	//echo JSON_encode($users_in_class);
+	echo JSON_encode($info);
+	die();
+}
 
 add_action('wp_ajax_fixmessages', 'fixmessages');					
 function fixmessages(){

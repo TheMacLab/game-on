@@ -9,8 +9,7 @@ function go_display_comment_author(){
 	} else{
 		$points = get_user_meta($user_id, 'go_rank', true);
 		$focus = get_user_meta($user_id, 'go_focus', true);
-
-		if($focus && !empty($focus)){
+		if($focus){
 			if(is_array($focus)){
 				foreach($focus as $val){
 					$careers .= $val.'/';
@@ -20,15 +19,10 @@ function go_display_comment_author(){
 				$careers = $focus;	
 			}
 		}
-
 		if($careers){
 			return $author.'<br/>'.'('.$careers.', '.$points[0][0].')';
-		} else {
-			if (!empty($points)) {
-				return $author.'<br/>'.'('.$points[0][0].')';
-			} else {
-				return $author;
-			}
+		}else{
+			return $author.'<br/>'.'('.$points[0][0].')';
 		}
 	}
 }

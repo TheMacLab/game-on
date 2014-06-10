@@ -249,22 +249,28 @@ table.pretty thead th.sorting {
 		padding: 2px;
 }
 #choices {
-width: 200px;
-height:25px;
+width: 10.416666666%;
+height:450px;
 overflow:hidden; 
-margin-right:10px; 
+margin: 15px 10px 0px 0px; 
 border:solid grey thin;
 text-align:left;
+font-size: 16px;
+line-height: 1.5;
 background-color: white;
-}
-#choices:hover{
-height:96%;
+z-index: 9999;
 position: absolute;
-z-index:9999;
-overflow:auto;
-opacity: .9;
-padding:5px;
 }
+
+.go_class_a_results{
+	font-size:13px;
+	position: relative;
+	left: 10%;
+}
+.go_select_all{
+	display: none;	
+}
+
 .highlight_box{
 height: 10px;
 width: 50px;
