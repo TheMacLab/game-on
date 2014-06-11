@@ -154,13 +154,19 @@ function go_update_graph(){
 			go_class_a.push(el.val());	
 		}
 	});
+	var go_choices_checked = jQuery('.go_class_a_results input:checked');
+	var go_choices_checked_names = new Array();
+	go_choices_checked.each(function() {
+        go_choices_checked_names.push(jQuery(this).prop('name'));
+    });
 	jQuery.ajax({
 		type: "post",
 		url: MyAjax.ajaxurl,
 		data: { 
 			action: 'go_clipboard_get_data',
 			go_graph_selection: jQuery('#go_selection').val(),
-			go_class_a: go_class_a
+			go_class_a: go_class_a,
+			go_choices_checked_names: go_choices_checked_names
 		},
 		success: function(html){
 			datasets = jQuery.parseJSON(html);
@@ -173,10 +179,16 @@ function go_update_graph(){
 				}
             });
 			for(var user in datasets){
-				var user_name = user;
-				var user = datasets[user];
-				var user_class = user['class_a'].toLowerCase().replace(/\s+/g, '');
-				jQuery('#'+user_class+'').append('<input type="checkbox" name="' + user_name +'"></input><label class="highlight_box" onClick="highlight_click(this);" key="'+ user['label']+'">Highlight</label><label>'+user['label'] +'</label><br/>');
+				if(user != 'checked'){
+					var user_name = user;
+					var user = datasets[user];
+					var user_class = user['class_a'].toLowerCase().replace(/\s+/g, '');
+					jQuery('#'+user_class+'').append('<input type="checkbox" name="' + user_name +'"></input><label class="highlight_box" onClick="highlight_click(this);" key="'+ user['label']+'">Highlight</label><label>'+user['label'] +'</label><br/>');
+				}else{
+					for(checked in datasets[user]){
+						jQuery('input[name="' + datasets[user][checked] +'"]').prop('checked', true);	
+					}
+				}
 			}
 			go_graphs(datasets);
 		}

@@ -210,6 +210,11 @@ function go_clipboard_get_data(){
 	}else{
 		$class_a_choice = array();	
 	}
+	if(isset($_POST['go_choices_checked_names'])){
+		$go_choices_checked_names = $_POST['go_choices_checked_names'];
+	}else{
+		$go_choices_checked_names = array();
+	}
 	
 	$array = get_option('go_graphing_data',false);
 	
@@ -254,6 +259,9 @@ function go_clipboard_get_data(){
 			}
 		}
 	}
+	if($go_choices_checked_names){
+		$info['checked'] = $go_choices_checked_names;
+	}	
 	//echo JSON_encode($users_in_class);
 	echo JSON_encode($info);
 	die();
