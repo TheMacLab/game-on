@@ -72,17 +72,18 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
 	 <div id="go_analysis">
          <button onClick="collectData();">Collect Data</button>
          <select id="go_selection" onchange="go_update_graph();">
-             <option value="0"><?php echo 'Minutes'; ?></option>
-             <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
-             <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
-             <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
+            <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
+            <option value="4"><?php echo go_return_options('go_currency_name');?></option>
+            <option value="0"><?php echo 'Minutes'; ?></option>
+            <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
+            <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
          </select>
          <div id="choices">
          <?php
 		 	if($class_a){
 				foreach($class_a as $class){
 				?>
-                	<input type="checkbox" class="go_class_a" value="<?php echo $class;?>" onclick="go_update_graph(this)"/><?php echo $class;?><br />
+                	<input type="checkbox" class="go_class_a" name="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" value="<?php echo $class;?>" onclick="go_update_graph(this)"/><?php echo $class;?><br />
                     <div id="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" class="go_class_a_results"></div>
                 <?php	
 					$i++;
@@ -186,10 +187,11 @@ function go_clipboard_collect_data(){
 	foreach($uid as $id){
 		foreach($id as $value){
 			$minutes = go_return_minutes($value);
+			$currency = go_return_currency($value);
 			$points = go_return_points($value);
 			$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
 			$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
-			$array[$value][$time] = $minutes.','. $points.','. $third_stage.','. $fourth_stage;
+			$array[$value][$time] = $minutes.','. $points.','. $third_stage.','. $fourth_stage.','.$currency;
 		}
 	}
 	update_option( 'go_graphing_data', $array );
@@ -204,6 +206,7 @@ function go_clipboard_get_data(){
 	// 1 = points
 	// 2 = completed
 	// 3 = mastered
+	// 4 = currency
 	$selection = $_POST['go_graph_selection'];
 	if(isset($_POST['go_class_a'])){
 		$class_a_choice = $_POST['go_class_a'];
@@ -227,6 +230,7 @@ function go_clipboard_get_data(){
 	
 	$table_name_go_totals= $wpdb->prefix.'go_totals';
 	$uids = $wpdb->get_results("SELECT uid FROM ".$table_name_go_totals."");
+	// loops through game on users and places each user in their respective class_a 
 	foreach($uids as $uid){
 		foreach($uid as $id){
 			$user_class = get_user_meta($id, 'go_classifications', true);
@@ -234,22 +238,29 @@ function go_clipboard_get_data(){
 				$class = array_keys($user_class);
 				$check = array_intersect($class, array_keys($users_in_class));
 				if($check){
-					$key = (string)$check[0];
-					$users_in_class[$key][] = $id;	
+					if(count($check) > 1 || count($class) > 1){
+						foreach($check as $value){
+							$users_in_class[$value][] = $id;
+						}
+					}else{
+						$key = (string)$check[0];
+						$users_in_class[$key][] = $id;	
+					}
 				}
 			}
 		}
 	}
-	// date is the unix timestamp of the last time data was collected using the go_clipboard_collect_data function
-	foreach($array as $id => $date){
-		foreach($users_in_class as $class => $student){
-			if(in_array($id, $student)){
+	// loops through users in each class and creates array of all their data
+	foreach($users_in_class as $class => $students){
+		// date is the unix timestamp of the last time data was collected using the go_clipboard_collect_data function
+		foreach($array as $id => $date){
+			if(in_array($id, $students)){
 				$getinfo = get_userdata( $id );
 				$id = $getinfo -> user_login;
 				$first = $getinfo-> first_name;
 				$last = $getinfo-> last_name;
 				$info[$id]['label'] = $last.', '.$first.' ('.$id.')';
-				$info[$id]['class_a'] = $class;
+				$info[$id]['class_a'][] = $class;
 				foreach($date as $date => $content){
 					// Minutes, points, completed, and mastered array associated with the unix timestamp when go_clipboard_collect_data function ran
 					$content_array = explode(',',$content);
@@ -262,7 +273,7 @@ function go_clipboard_get_data(){
 	if($go_choices_checked_names){
 		$info['checked'] = $go_choices_checked_names;
 	}	
-	//echo JSON_encode($users_in_class);
+	// stringifies the php array into a json object
 	echo JSON_encode($info);
 	die();
 }

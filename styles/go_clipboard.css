@@ -249,17 +249,18 @@ table.pretty thead th.sorting {
 		padding: 2px;
 }
 #choices {
-width: 10.416666666%;
-height:450px;
-overflow:hidden; 
-margin: 15px 10px 0px 0px; 
-border:solid grey thin;
-text-align:left;
-font-size: 16px;
-line-height: 1.5;
-background-color: white;
-z-index: 9999;
-position: absolute;
+	width: 10.416666666%;
+	height:450px;
+	overflow:hidden; 
+	margin: 15px 10px 0px 0px; 
+	border:solid grey thin;
+	text-align:left;
+	font-size: 16px;
+	line-height: 1.5;
+	background-color: white;
+	z-index: 9999;
+	position: absolute;
+	overflow: auto;
 }
 
 .go_class_a_results{

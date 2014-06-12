@@ -32,7 +32,7 @@ function go_graphs(datasets){
 		choiceContainer.find("input:checked").each(function () {
 			var key = jQuery(this).attr("name");
 			if(!jQuery(this).is('[who]')){
-				if (key && datasets[key]){
+				if (datasets && key && datasets[key]){
 					data.push(datasets[key]);
 				}
 			}
@@ -152,6 +152,9 @@ function go_update_graph(){
 		el = jQuery(this);
 		if(el.prop('checked')){
 			go_class_a.push(el.val());	
+		}else{
+			id = el.prop('name');
+			jQuery('#' + id + ' input').prop('checked', false);	
 		}
 	});
 	var go_choices_checked = jQuery('.go_class_a_results input:checked');
@@ -182,8 +185,11 @@ function go_update_graph(){
 				if(user != 'checked'){
 					var user_name = user;
 					var user = datasets[user];
-					var user_class = user['class_a'].toLowerCase().replace(/\s+/g, '');
-					jQuery('#'+user_class+'').append('<input type="checkbox" name="' + user_name +'"></input><label class="highlight_box" onClick="highlight_click(this);" key="'+ user['label']+'">Highlight</label><label>'+user['label'] +'</label><br/>');
+					var user_class = user['class_a'];
+					for (class_a in user_class){
+						class_div = user_class[class_a].toLowerCase().replace(/\s+/g, '');
+						jQuery('#'+class_div+'').append('<input type="checkbox" name="' + user_name +'"></input><label class="highlight_box" onClick="highlight_click(this);" key="'+ user['label']+'">Highlight</label><label>'+user['label'] +'</label><br/>');
+					}
 				}else{
 					for(checked in datasets[user]){
 						jQuery('input[name="' + datasets[user][checked] +'"]').prop('checked', true);	
