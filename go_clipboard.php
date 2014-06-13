@@ -51,7 +51,7 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
      <th class="header" style="width:6%;"><a href="#" >ID</a></th>
  <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
  <th class="header" style="width:10%;"><a href="#" >Name</a></th>
-<th class="header" style="width:10%;""><a href="#" >Gamertag</a></th>
+<th class="header" style="width:10%;"><a href="#" >Gamertag</a></th>
 <th class="header" style="width:8%;"><a href="#" >Rank</a></th>
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th>
 <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
