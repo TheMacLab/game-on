@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.7.3
+Version: 1.7.4
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -44,6 +44,7 @@ add_action('go_return_points','go_return_points');
 add_action('go_return_minutes','go_return_minutes');
 add_action('go_display_user_focuses', 'go_display_user_focuses');
 add_action('go_return_task_amount_in_chain', 'go_return_task_amount_in_chain');
+add_action('go_display_rewards', 'go_display_rewards');
 add_action('admin_menu', 'go_ranks');
 add_action('admin_menu', 'go_clipboard');
 add_action('admin_menu', 'go_mail');

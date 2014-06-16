@@ -22,6 +22,8 @@ function go_task_shortcode($atts, $content = null) {
 		
 		$test_active = $custom_fields['go_mta_test_lock'][0];
 		
+		$number_of_stages = 4;
+		
 		if ($test_active) {
 			$test_returns = $custom_fields['go_mta_test_lock_loot'][0];
 			$test_num = $custom_fields['go_mta_test_lock_num'][0];
@@ -163,6 +165,8 @@ function go_task_shortcode($atts, $content = null) {
 			}
 
 			$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Repeat Message
+		}else{
+			$number_of_stages = 3;	
 		}
 		
 		if($custom_fields['go_mta_time_filter'][0]){ // Checks if the task has a time filter
@@ -281,7 +285,6 @@ function go_task_shortcode($atts, $content = null) {
 			}
 		} else {
 			
-			//Stage Stuff
 			global $wpdb;
 			$user_ID = get_current_user_id(); // User ID
 			$go_table_ind = $wpdb->prefix.'go';
@@ -303,6 +306,8 @@ function go_task_shortcode($atts, $content = null) {
 			if($category_names && $user_focus){
 				$go_ahead = array_intersect($user_focus, $category_names);	
 			}
+			go_display_rewards($points_array, $currency_array,$number_of_stages);
+			echo '<script type="text/javascript">jQuery(".entry-title").after(jQuery(".go_task_rewards"));</script>';
 ?> 
 
 			<div id="go_description"> <?php echo  do_shortcode(wpautop($description));?> </div>
@@ -1985,5 +1990,37 @@ function task_change_stage() {
 	// echo '<div id="failure_overlay" style="display:none"><div><p>Having Trouble?</p><p>'.ucwords($admin_name).' has been notified.</p></div></div>';
 
 die();
+}
+function go_display_rewards($points_array, $currency_array, $number_of_stages){
+	echo '<div class="go_task_rewards" style="margin: 6px 0px 6px 0px;"><strong>Rewards</strong><br/>';
+	for($i=0;$i<$number_of_stages;$i++){
+		if($points_array[$i] == 0){
+			$points_array[$i] = '';
+			$points_name = '';	
+		}else{
+			$points_name = go_return_options('go_points_name');	
+		}
+		if($currency_array[$i] == 0){
+			$currency_array[$i] = '';
+			$currency_name = '';
+		}else{
+			$currency_name = go_return_options('go_currency_name');	
+		}
+		switch($i){
+			case 0:
+				echo go_return_options('go_first_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
+				break;
+			case 1:
+				echo go_return_options('go_second_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
+				break;
+			case 2:
+				echo go_return_options('go_third_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
+				break;
+			case 3:
+				echo go_return_options('go_fourth_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
+				break;
+		}
+	}
+	echo '</div>';
 }
 ?>
