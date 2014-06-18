@@ -26,62 +26,23 @@ function go_task_shortcode($atts, $content = null) {
 		
 		if ($test_active) {
 			$test_returns = $custom_fields['go_mta_test_lock_loot'][0];
-			$test_num = $custom_fields['go_mta_test_lock_num'][0];
-			
-			$test_type_0 = $custom_fields['go_mta_test_lock_type_0'][0];
-			$test_question_0 = $custom_fields['go_mta_test_lock_question_0'][0];
-			$test_answers_0 = $custom_fields['go_mta_test_lock_answers_0'][0];
-			$test_key_0 = $custom_fields['go_mta_test_lock_key_0'][0];
-			
-			if ($test_num > 1) {
-					$test_all_types = array();
-					$test_all_questions = array();
-					$test_all_answers = array();
-					$test_all_keys = array();
-					array_push($test_all_types, $test_type_0);
-					array_push($test_all_questions, $test_question_0);
-					array_push($test_all_answers, $test_answers_0);
-					array_push($test_all_keys, $test_key_0);
-			}
-			if ($test_num >= 2) {
-				$test_type_1 = $custom_fields['go_mta_test_lock_type_1'][0];
-				$test_question_1 = $custom_fields['go_mta_test_lock_question_1'][0];
-				$test_answers_1 = $custom_fields['go_mta_test_lock_answers_1'][0];
-				$test_key_1 = $custom_fields['go_mta_test_lock_key_1'][0];
-				array_push($test_all_types, $test_type_1);
-				array_push($test_all_questions, $test_question_1);
-				array_push($test_all_answers, $test_answers_1);
-				array_push($test_all_keys, $test_key_1);
-			}
-			if ($test_num >= 3) {
-				$test_type_2 = $custom_fields['go_mta_test_lock_type_2'][0];
-				$test_question_2 = $custom_fields['go_mta_test_lock_question_2'][0];
-				$test_answers_2 = $custom_fields['go_mta_test_lock_answers_2'][0];
-				$test_key_2 = $custom_fields['go_mta_test_lock_key_2'][0];
-				array_push($test_all_types, $test_type_2);
-				array_push($test_all_questions, $test_question_2);
-				array_push($test_all_answers, $test_answers_2);
-				array_push($test_all_keys, $test_key_2);
-			}
-			if ($test_num >= 4) {
-				$test_type_3 = $custom_fields['go_mta_test_lock_type_3'][0];
-				$test_question_3 = $custom_fields['go_mta_test_lock_question_3'][0];
-				$test_answers_3 = $custom_fields['go_mta_test_lock_answers_3'][0];
-				$test_key_3 = $custom_fields['go_mta_test_lock_key_3'][0];			
-				array_push($test_all_types, $test_type_3);
-				array_push($test_all_questions, $test_question_3);
-				array_push($test_all_answers, $test_answers_3);
-				array_push($test_all_keys, $test_key_3);
-			}
-			if ($test_num == 5) {
-				$test_type_4 = $custom_fields['go_mta_test_lock_type_4'][0];
-				$test_question_4 = $custom_fields['go_mta_test_lock_question_4'][0];
-				$test_answers_4 = $custom_fields['go_mta_test_lock_answers_4'][0];
-				$test_key_4 = $custom_fields['go_mta_test_lock_key_4'][0];			
-				array_push($test_all_types, $test_type_4);
-				array_push($test_all_questions, $test_question_4);
-				array_push($test_all_answers, $test_answers_4);
-				array_push($test_all_keys, $test_key_4);			
+
+			$test_array = $custom_fields['go_mta_test_lock_completion'][0];
+			$test_uns = unserialize($test_array);
+
+			$test_num = $test_uns[3];
+
+			$test_all_questions = $test_uns[0];
+			$test_all_types = $test_uns[2];
+			$test_all_inputs = $test_uns[1];
+			$test_all_input_num = $test_uns[4];
+			$test_all_answers = array();
+			$test_all_keys = array();
+			for ($i = 0; $i < count($test_all_inputs); $i++) {
+				$answer_temp = implode("###", $test_all_inputs[$i][0]);
+				$key_temp = implode("###", $test_all_inputs[$i][1]);
+				array_push($test_all_answers, $answer_temp);
+				array_push($test_all_keys, $key_temp);
 			}
 		}
 		
@@ -90,62 +51,22 @@ function go_task_shortcode($atts, $content = null) {
 			$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
 
 			if ($test_m_active) {
-				$test_m_num = $custom_fields['go_mta_test_mastery_lock_num'][0];
+				$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
+				$test_m_uns = unserialize($test_m_array);
 				
-				$test_m_type_0 = $custom_fields['go_mta_test_mastery_lock_type_0'][0];
-				$test_m_question_0 = $custom_fields['go_mta_test_mastery_lock_question_0'][0];
-				$test_m_answers_0 = $custom_fields['go_mta_test_mastery_lock_answers_0'][0];
-				$test_m_key_0 = $custom_fields['go_mta_test_mastery_lock_key_0'][0];
+				$test_m_num = $test_m_uns[3];
 				
-				if ($test_m_num > 1) {
-						$test_m_all_types = array();
-						$test_m_all_questions = array();
-						$test_m_all_answers = array();
-						$test_m_all_keys = array();
-						array_push($test_m_all_types, $test_m_type_0);
-						array_push($test_m_all_questions, $test_m_question_0);
-						array_push($test_m_all_answers, $test_m_answers_0);
-						array_push($test_m_all_keys, $test_m_key_0);
-				}
-				if ($test_m_num >= 2) {
-					$test_m_type_1 = $custom_fields['go_mta_test_mastery_lock_type_1'][0];
-					$test_m_question_1 = $custom_fields['go_mta_test_mastery_lock_question_1'][0];
-					$test_m_answers_1 = $custom_fields['go_mta_test_mastery_lock_answers_1'][0];
-					$test_m_key_1 = $custom_fields['go_mta_test_mastery_lock_key_1'][0];
-					array_push($test_m_all_types, $test_m_type_1);
-					array_push($test_m_all_questions, $test_m_question_1);
-					array_push($test_m_all_answers, $test_m_answers_1);
-					array_push($test_m_all_keys, $test_m_key_1);
-				}
-				if ($test_m_num >= 3) {
-					$test_m_type_2 = $custom_fields['go_mta_test_mastery_lock_type_2'][0];
-					$test_m_question_2 = $custom_fields['go_mta_test_mastery_lock_question_2'][0];
-					$test_m_answers_2 = $custom_fields['go_mta_test_mastery_lock_answers_2'][0];
-					$test_m_key_2 = $custom_fields['go_mta_test_mastery_lock_key_2'][0];
-					array_push($test_m_all_types, $test_m_type_2);
-					array_push($test_m_all_questions, $test_m_question_2);
-					array_push($test_m_all_answers, $test_m_answers_2);
-					array_push($test_m_all_keys, $test_m_key_2);
-				}
-				if ($test_m_num >= 4) {
-					$test_m_type_3 = $custom_fields['go_mta_test_mastery_lock_type_3'][0];
-					$test_m_question_3 = $custom_fields['go_mta_test_mastery_lock_question_3'][0];
-					$test_m_answers_3 = $custom_fields['go_mta_test_mastery_lock_answers_3'][0];
-					$test_m_key_3 = $custom_fields['go_mta_test_mastery_lock_key_3'][0];			
-					array_push($test_m_all_types, $test_m_type_3);
-					array_push($test_m_all_questions, $test_m_question_3);
-					array_push($test_m_all_answers, $test_m_answers_3);
-					array_push($test_m_all_keys, $test_m_key_3);
-				}
-				if ($test_m_num == 5) {
-					$test_m_type_4 = $custom_fields['go_mta_test_mastery_lock_type_4'][0];
-					$test_m_question_4 = $custom_fields['go_mta_test_mastery_lock_question_4'][0];
-					$test_m_answers_4 = $custom_fields['go_mta_test_mastery_lock_answers_4'][0];
-					$test_m_key_4 = $custom_fields['go_mta_test_mastery_lock_key_4'][0];			
-					array_push($test_m_all_types, $test_m_type_4);
-					array_push($test_m_all_questions, $test_m_question_4);
-					array_push($test_m_all_answers, $test_m_answers_4);
-					array_push($test_m_all_keys, $test_m_key_4);			
+				$test_m_all_questions = $test_m_uns[0];
+				$test_m_all_types = $test_m_uns[2];
+				$test_m_all_inputs = $test_m_uns[1];
+				$test_m_all_input_num = $test_m_uns[4];
+				$test_m_all_answers = array();
+				$test_m_all_keys = array();
+				for ($i = 0; $i < count($test_m_all_inputs); $i++) {
+					$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
+					$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
+					array_push($test_m_all_answers, $answer_m_temp);
+					array_push($test_m_all_keys, $key_m_temp);
 				}
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
@@ -409,19 +330,13 @@ function go_task_shortcode($atts, $content = null) {
 					case 2: 
 						echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg));
 						if ($test_active) {
-							if (preg_match("/('|\")+/", $test_question_0) || preg_match("/('|\")+/", $test_answers_0) || preg_match("/('|\")+/", $test_key_0)) {
-								if (current_user_can('manage_options')) {
-									echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
+							if ($test_num > 1) {
+								for ($i = 0; $i < $test_num; $i++) {
+									echo do_shortcode("[go_test type='".$test_all_types[$i]."' question='".$test_all_questions[$i]."' possible_answers='".$test_all_answers[$i]."' key='".$test_all_keys[$i]."' test_id='".$i."' total_num='".$test_num."']");
 								}
+								echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
 							} else {
-								if ($test_num > 1) {
-									for ($i = 0; $i < $test_num; $i++) {
-										echo do_shortcode("[go_test type='".$test_all_types[$i]."' question='".$test_all_questions[$i]."' possible_answers='".$test_all_answers[$i]."' key='".$test_all_keys[$i]."' test_id='".$i."' total_num='".$test_num."']");
-									}
-									echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
-								} else {
-									echo do_shortcode("[go_test type='".$test_type_0."' question='".$test_question_0."' possible_answers='".$test_answers_0."' key='".$test_key_0."' test_id='0']");
-								}
+								echo do_shortcode("[go_test type='".$test_all_types[0]."' question='".$test_all_questions[0]."' possible_answers='".$test_all_answers[0]."' key='".$test_all_keys[0]."' test_id='0']");
 							}
 						}
 
@@ -446,19 +361,13 @@ function go_task_shortcode($atts, $content = null) {
 						'.do_shortcode(wpautop($completion_message));
 						if ($mastery_active) {
 							if ($test_m_active) {
-								if (preg_match("/('|\")+/", $test_m_question_0) || preg_match("/('|\")+/", $test_m_answers_0) || preg_match("/('|\")+/", $test_m_key_0)) {
-									if (current_user_can('manage_options')) {
-										echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
+								if ($test_m_num > 1) {
+									for ($i = 0; $i < $test_m_num; $i++) {
+										echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
 									}
+									echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
 								} else {
-									if ($test_m_num > 1) {
-										for ($i = 0; $i < $test_m_num; $i++) {
-											echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
-										}
-										echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
-									} else {
-										echo do_shortcode("[go_test type='".$test_m_type_0."' question='".$test_m_question_0."' possible_answers='".$test_m_answers_0."' key='".$test_m_key_0."' test_id='0']");
-									}
+									echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']");
 								}
 							}
 						
@@ -546,6 +455,9 @@ function go_task_shortcode($atts, $content = null) {
 			$_SESSION['test_mastery_passed'] = $test_mastery_passed;
 		}
 
+		echo "<pre>";
+		var_dump($test_all_answers);
+		echo "</pre>";
 ?>
 	<script language="javascript">
 		jQuery(document).ready(function() {
@@ -810,10 +722,9 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('.go_lock_message').html('Password correct, move on.');
 							jQuery('#go_unlock_next_stage').remove();
 							jQuery('.go_test_container').hide('slow');
-							if (list_size > 1) {
-								jQuery('.go_test_submit').hide('slow');	
-							}
-							jQuery('#go_button').removeAttr('disabled');
+							jQuery('#test_failure_msg').hide('slow');
+							jQuery('.go_test_submit').hide('slow');	
+
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
 
@@ -827,10 +738,9 @@ function go_task_shortcode($atts, $content = null) {
 							jQuery('#go_unlock_next_stage').remove();
 						} else if (which == 'test') {
 							jQuery('.go_test_container').hide('slow');
-							if (list_size > 1) {
-								jQuery('.go_test_submit').hide('slow');	
-							}
-							jQuery('#go_button').removeAttr('disabled');
+							jQuery('#test_failure_msg').hide('slow');
+							jQuery('.go_test_submit').hide('slow');
+
 							jQuery('#go_test_error_msg').attr('style', 'color:green');
 							jQuery('#go_test_error_msg').text("Well done, continue!");
 
@@ -1147,57 +1057,32 @@ function unlock_stage(){
 
 	if ($status == 2) {
 		$password = sha1($custom_fields['go_mta_complete_unlock'][0]);
-		$key = $custom_fields['go_mta_test_lock_key_0'][0];
-		if ($test_size > 1) {
-			$key_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
-
-			$all_keys_array = array($key_parsed);
-			$test_key_1 = $custom_fields['go_mta_test_lock_key_1'][0];
-			$test_key_1_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_1);
-			array_push($all_keys_array, $test_key_1_parsed);
-		}
-		if ($test_size > 2) {
-			$test_key_2 = $custom_fields['go_mta_test_lock_key_2'][0];
-			$test_key_2_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_2);
-			array_push($all_keys_array, $test_key_2_parsed);
-		}
-		if ($test_size > 3) {
-			$test_key_3 = $custom_fields['go_mta_test_lock_key_3'][0];
-			$test_key_3_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_3);
-			array_push($all_keys_array, $test_key_3_parsed);
-		}
-		if ($test_size > 4) {
-			$test_key_4 = $custom_fields['go_mta_test_lock_key_4'][0];
-			$test_key_4_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_4);
-			array_push($all_keys_array, $test_key_4_parsed);
-		}
+		$test_stage = 'go_mta_test_lock_completion';
 	} else if ($status == 3) {
 		$password = sha1($custom_fields['go_mta_mastery_unlock'][0]);
-		$key = $custom_fields['go_mta_test_mastery_lock_key_0'][0];
-		if ($test_size > 1) {
-			$key_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
-
-			$all_keys_array = array($key_parsed);
-			$test_key_1 = $custom_fields['go_mta_test_mastery_lock_key_1'][0];
-			$test_key_1_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_1);
-			array_push($all_keys_array, $test_key_1_parsed);
-		}
-		if ($test_size > 2) {
-			$test_key_2 = $custom_fields['go_mta_test_mastery_lock_key_2'][0];
-			$test_key_2_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_2);
-			array_push($all_keys_array, $test_key_2_parsed);
-		}
-		if ($test_size > 3) {
-			$test_key_3 = $custom_fields['go_mta_test_mastery_lock_key_3'][0];
-			$test_key_3_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_3);
-			array_push($all_keys_array, $test_key_3_parsed);
-		}
-		if ($test_size > 4) {
-			$test_key_4 = $custom_fields['go_mta_test_mastery_lock_key_4'][0];
-			$test_key_4_parsed = preg_replace("/\s*\#\#\#\s*/", "### ", $test_key_4);
-			array_push($all_keys_array, $test_key_4_parsed);
-		}
+		$test_stage = 'go_mta_test_lock_mastery';
 	}
+
+	$test_array = $custom_fields[$test_stage][0];
+	$test_uns = unserialize($test_array);
+	$keys = $test_uns[1];
+	$all_keys_array = array();
+	for ($i = 0; $i < count($keys); $i++) {
+		$keys_temp = implode("### ", $keys[$i][1]);
+		$str = $keys_temp;
+		if (preg_match("/(\&\#39;|\&\#34;)+/", $str)) {
+			
+			if (preg_match("/(\&\#39;)+/", $str)) {
+				$str = preg_replace("/(\&\#39;)+/", "\'", $str);
+			}
+			
+			if (preg_match("/(\&\#34;)+/", $str)) {
+				$str = preg_replace("/(\&\#34;)+/", '\"', $str);
+			}
+		}
+		array_push($all_keys_array, $str);
+	}
+	$key = $all_keys_array[0];
 	
 	if ($type == 'checkbox' && !($list_size > 1)) {
 		$key_str = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
@@ -1664,62 +1549,22 @@ function task_change_stage() {
 
 		$c_fail_count = $_SESSION['test_fail_count'];
 
-		$test_num = $custom_fields['go_mta_test_lock_num'][0];
-		
-		$test_type_0 = $custom_fields['go_mta_test_lock_type_0'][0];
-		$test_question_0 = $custom_fields['go_mta_test_lock_question_0'][0];
-		$test_answers_0 = $custom_fields['go_mta_test_lock_answers_0'][0];
-		$test_key_0 = $custom_fields['go_mta_test_lock_key_0'][0];
-		
-		if ($test_num > 1) {
-				$test_all_types = array();
-				$test_all_questions = array();
-				$test_all_answers = array();
-				$test_all_keys = array();
-				array_push($test_all_types, $test_type_0);
-				array_push($test_all_questions, $test_question_0);
-				array_push($test_all_answers, $test_answers_0);
-				array_push($test_all_keys, $test_key_0);
-		}
-		if ($test_num >= 2) {
-			$test_type_1 = $custom_fields['go_mta_test_lock_type_1'][0];
-			$test_question_1 = $custom_fields['go_mta_test_lock_question_1'][0];
-			$test_answers_1 = $custom_fields['go_mta_test_lock_answers_1'][0];
-			$test_key_1 = $custom_fields['go_mta_test_lock_key_1'][0];
-			array_push($test_all_types, $test_type_1);
-			array_push($test_all_questions, $test_question_1);
-			array_push($test_all_answers, $test_answers_1);
-			array_push($test_all_keys, $test_key_1);
-		}
-		if ($test_num >= 3) {
-			$test_type_2 = $custom_fields['go_mta_test_lock_type_2'][0];
-			$test_question_2 = $custom_fields['go_mta_test_lock_question_2'][0];
-			$test_answers_2 = $custom_fields['go_mta_test_lock_answers_2'][0];
-			$test_key_2 = $custom_fields['go_mta_test_lock_key_2'][0];
-			array_push($test_all_types, $test_type_2);
-			array_push($test_all_questions, $test_question_2);
-			array_push($test_all_answers, $test_answers_2);
-			array_push($test_all_keys, $test_key_2);
-		}
-		if ($test_num >= 4) {
-			$test_type_3 = $custom_fields['go_mta_test_lock_type_3'][0];
-			$test_question_3 = $custom_fields['go_mta_test_lock_question_3'][0];
-			$test_answers_3 = $custom_fields['go_mta_test_lock_answers_3'][0];
-			$test_key_3 = $custom_fields['go_mta_test_lock_key_3'][0];			
-			array_push($test_all_types, $test_type_3);
-			array_push($test_all_questions, $test_question_3);
-			array_push($test_all_answers, $test_answers_3);
-			array_push($test_all_keys, $test_key_3);
-		}
-		if ($test_num == 5) {
-			$test_type_4 = $custom_fields['go_mta_test_lock_type_4'][0];
-			$test_question_4 = $custom_fields['go_mta_test_lock_question_4'][0];
-			$test_answers_4 = $custom_fields['go_mta_test_lock_answers_4'][0];
-			$test_key_4 = $custom_fields['go_mta_test_lock_key_4'][0];			
-			array_push($test_all_types, $test_type_4);
-			array_push($test_all_questions, $test_question_4);
-			array_push($test_all_answers, $test_answers_4);
-			array_push($test_all_keys, $test_key_4);			
+		$test_array = $custom_fields['go_mta_test_lock_completion'][0];
+		$test_uns = unserialize($test_array);
+
+		$test_num = $test_uns[3];
+
+		$test_all_questions = $test_uns[0];
+		$test_all_types = $test_uns[2];
+		$test_all_inputs = $test_uns[1];
+		$test_all_input_num = $test_uns[4];
+		$test_all_answers = array();
+		$test_all_keys = array();
+		for ($i = 0; $i < count($test_all_inputs); $i++) {
+			$answer_temp = implode("###", $test_all_inputs[$i][0]);
+			$key_temp = implode("###", $test_all_inputs[$i][1]);
+			array_push($test_all_answers, $answer_temp);
+			array_push($test_all_keys, $key_temp);
 		}
 	}
 
@@ -1728,62 +1573,23 @@ function task_change_stage() {
 
 			if ($test_m_active) {
 				$m_fail_count = $_SESSION['test_mastery_fail_count'];
-				$test_m_num = $custom_fields['go_mta_test_mastery_lock_num'][0];
+
+				$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
+				$test_m_uns = unserialize($test_m_array);
 				
-				$test_m_type_0 = $custom_fields['go_mta_test_mastery_lock_type_0'][0];
-				$test_m_question_0 = $custom_fields['go_mta_test_mastery_lock_question_0'][0];
-				$test_m_answers_0 = $custom_fields['go_mta_test_mastery_lock_answers_0'][0];
-				$test_m_key_0 = $custom_fields['go_mta_test_mastery_lock_key_0'][0];
+				$test_m_num = $test_m_uns[3];
 				
-				if ($test_m_num > 1) {
-						$test_m_all_types = array();
-						$test_m_all_questions = array();
-						$test_m_all_answers = array();
-						$test_m_all_keys = array();
-						array_push($test_m_all_types, $test_m_type_0);
-						array_push($test_m_all_questions, $test_m_question_0);
-						array_push($test_m_all_answers, $test_m_answers_0);
-						array_push($test_m_all_keys, $test_m_key_0);
-				}
-				if ($test_m_num >= 2) {
-					$test_m_type_1 = $custom_fields['go_mta_test_mastery_lock_type_1'][0];
-					$test_m_question_1 = $custom_fields['go_mta_test_mastery_lock_question_1'][0];
-					$test_m_answers_1 = $custom_fields['go_mta_test_mastery_lock_answers_1'][0];
-					$test_m_key_1 = $custom_fields['go_mta_test_mastery_lock_key_1'][0];
-					array_push($test_m_all_types, $test_m_type_1);
-					array_push($test_m_all_questions, $test_m_question_1);
-					array_push($test_m_all_answers, $test_m_answers_1);
-					array_push($test_m_all_keys, $test_m_key_1);
-				}
-				if ($test_m_num >= 3) {
-					$test_m_type_2 = $custom_fields['go_mta_test_mastery_lock_type_2'][0];
-					$test_m_question_2 = $custom_fields['go_mta_test_mastery_lock_question_2'][0];
-					$test_m_answers_2 = $custom_fields['go_mta_test_mastery_lock_answers_2'][0];
-					$test_m_key_2 = $custom_fields['go_mta_test_mastery_lock_key_2'][0];
-					array_push($test_m_all_types, $test_m_type_2);
-					array_push($test_m_all_questions, $test_m_question_2);
-					array_push($test_m_all_answers, $test_m_answers_2);
-					array_push($test_m_all_keys, $test_m_key_2);
-				}
-				if ($test_m_num >= 4) {
-					$test_m_type_3 = $custom_fields['go_mta_test_mastery_lock_type_3'][0];
-					$test_m_question_3 = $custom_fields['go_mta_test_mastery_lock_question_3'][0];
-					$test_m_answers_3 = $custom_fields['go_mta_test_mastery_lock_answers_3'][0];
-					$test_m_key_3 = $custom_fields['go_mta_test_mastery_lock_key_3'][0];			
-					array_push($test_m_all_types, $test_m_type_3);
-					array_push($test_m_all_questions, $test_m_question_3);
-					array_push($test_m_all_answers, $test_m_answers_3);
-					array_push($test_m_all_keys, $test_m_key_3);
-				}
-				if ($test_m_num == 5) {
-					$test_m_type_4 = $custom_fields['go_mta_test_mastery_lock_type_4'][0];
-					$test_m_question_4 = $custom_fields['go_mta_test_mastery_lock_question_4'][0];
-					$test_m_answers_4 = $custom_fields['go_mta_test_mastery_lock_answers_4'][0];
-					$test_m_key_4 = $custom_fields['go_mta_test_mastery_lock_key_4'][0];			
-					array_push($test_m_all_types, $test_m_type_4);
-					array_push($test_m_all_questions, $test_m_question_4);
-					array_push($test_m_all_answers, $test_m_answers_4);
-					array_push($test_m_all_keys, $test_m_key_4);			
+				$test_m_all_questions = $test_m_uns[0];
+				$test_m_all_types = $test_m_uns[2];
+				$test_m_all_inputs = $test_m_uns[1];
+				$test_m_all_input_num = $test_m_uns[4];
+				$test_m_all_answers = array();
+				$test_m_all_keys = array();
+				for ($i = 0; $i < count($test_m_all_inputs); $i++) {
+					$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
+					$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
+					array_push($test_m_all_answers, $answer_m_temp);
+					array_push($test_m_all_keys, $key_m_temp);
 				}
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
@@ -1882,19 +1688,13 @@ function task_change_stage() {
 		case 2:
 			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false));
 			if ($test_active) {
-				if (preg_match("/('|\")+/", $test_question_0) || preg_match("/('|\")+/", $test_answers_0) || preg_match("/('|\")+/", $test_key_0)) {
-					if (current_user_can('manage_options')) {
-						echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
+				if ($test_num > 1) {
+					for ($i = 0; $i < $test_num; $i++) {
+						echo do_shortcode("[go_test type='".$test_all_types[$i]."' question='".$test_all_questions[$i]."' possible_answers='".$test_all_answers[$i]."' key='".$test_all_keys[$i]."' test_id='".$i."' total_num='".$test_num."']");
 					}
+					echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
 				} else {
-					if ($test_num > 1) {
-						for ($i = 0; $i < $test_num; $i++) {
-							echo do_shortcode("[go_test type='".$test_all_types[$i]."' question='".$test_all_questions[$i]."' possible_answers='".$test_all_answers[$i]."' key='".$test_all_keys[$i]."' test_id='".$i."' total_num='".$test_num."']");
-						}
-						echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
-					} else {
-						echo do_shortcode("[go_test type='".$test_type_0."' question='".$test_question_0."' possible_answers='".$test_answers_0."' key='".$test_key_0."' test_id='0']");
-					}
+					echo do_shortcode("[go_test type='".$test_all_types[0]."' question='".$test_all_questions[0]."' possible_answers='".$test_all_answers[0]."' key='".$test_all_keys[0]."' test_id='0']");
 				}
 			}
 
@@ -1915,19 +1715,13 @@ function task_change_stage() {
 			.do_shortcode(wpautop($completion_message));
 			if ($mastery_active) {
 							if ($test_m_active) {
-								if (preg_match("/('|\")+/", $test_m_question_0) || preg_match("/('|\")+/", $test_m_answers_0) || preg_match("/('|\")+/", $test_m_key_0)) {
-									if (current_user_can('manage_options')) {
-										echo "<span style='color:red'><b>ERROR: Please make sure that there are no appostrophes (' or  \")in any of the provided fields.</b></span><br/>";
+								if ($test_m_num > 1) {
+									for ($i = 0; $i < $test_m_num; $i++) {
+										echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
 									}
+									echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
 								} else {
-									if ($test_m_num > 1) {
-										for ($i = 0; $i < $test_m_num; $i++) {
-											echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
-										}
-										echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
-									} else {
-										echo do_shortcode("[go_test type='".$test_m_type_0."' question='".$test_m_question_0."' possible_answers='".$test_m_answers_0."' key='".$test_m_key_0."' test_id='0']");
-									}
+									echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']");
 								}
 							}
 

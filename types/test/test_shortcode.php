@@ -4,7 +4,7 @@ function go_test_shortcode ( $atts, $content ) {
 	extract(shortcode_atts(array(
 		'type' => 'radio',
 		'question' => 'What is the ultimate answer to life, the universe, and everything?',
-		'possible_answers' => 'Pie### Burritos### 42### There is no answer',
+		'possible_answers' => '42### There is no answer',
 		'key' => '42',
 		'test_id' => '0',
 		'total_num' => '1'
@@ -69,10 +69,13 @@ function go_test_shortcode ( $atts, $content ) {
 			$error_array = array();
 			
 			if (count($answer_array_keys) < 2) {
-				print_r($answer_array);
 				array_push($error_array, "<b>ERROR: A minimum of two possible answers are required.</b>");
 			}
 			
+			if (count($key_array) < 2 && $type == 'checkbox') {
+				array_push($error_array, "<b>ERROR: A minimum of two correct answers must be provided for a question with the 'Checkbox' type.</b>");
+			}
+
 			if ($key_check == false) {
 				array_push($error_array, "<b>ERROR: The correct answer provided does not match any of the possible answers.</b>");
 			}
@@ -81,7 +84,7 @@ function go_test_shortcode ( $atts, $content ) {
 				array_push($error_array, "<b>ERROR: The question attribute has been left blank.</b>");
 			}
 			$error_array_str = implode("<br/>", $error_array);
-			return ($error_array_str."<br/>");
+			return ("<p id='test_failure_msg'>".$error_array_str."</p>");
 		} else {
 			return "";
 		}

@@ -91,17 +91,16 @@ line-height:16px;
 	margin-bottom: 3px;
 }
 
-.cmb_id_go_mta_test_mastery_lock_type_0, 
-.cmb_id_go_mta_test_mastery_lock_type_1, 
-.cmb_id_go_mta_test_mastery_lock_type_2, 
-.cmb_id_go_mta_test_mastery_lock_type_3, 
-.cmb_id_go_mta_test_mastery_lock_type_4,
-.cmb_id_go_mta_test_lock_type_0, 
-.cmb_id_go_mta_test_lock_type_1, 
-.cmb_id_go_mta_test_lock_type_2, 
-.cmb_id_go_mta_test_lock_type_3, 
-.cmb_id_go_mta_test_lock_type_4{
-	border-top: thin grey dotted;
+input.go_test_field_add {
+	color: green;
+}
+
+input.go_test_field_rm {
+	color: red;
+}
+
+ul.go_test li {
+	list-style: none;
 }
 
 .dark{
