@@ -242,59 +242,70 @@ function go_task_shortcode($atts, $content = null) {
 			
 			//Grab chain object for this post
 			$chain = array_shift(array_values($chain));
+			//Grab all posts in the current chain in order
+			$posts_in_chain = get_posts(array(
+				'post_type' => 'tasks',
+				'taxonomy' => 'task_chains',
+				'term' => $chain->name,
+				'order' => 'ASC',
+				'meta_key' => 'chain_position',
+				'orderby' => 'meta_value_num'
+			));
+
+			// Loop through each one and make array of their ids
+			foreach($posts_in_chain as $post_in_chain){
+				$post_ids_in_chain[] = $post_in_chain->ID;	
+			}
 			
-			if($current_position_in_chain != 1){
-				
-				//Grab all posts in the current chain in order
-				$posts_in_chain = get_posts(array(
-					'post_type' => 'tasks',
-					'taxonomy' => 'task_chains',
-					'term' => $chain->name,
-					'order' => 'ASC',
-					'meta_key' => 'chain_position',
-					'orderby' => 'meta_value_num'
-				));
-	
-				// Loop through each one and make array of their ids
-				foreach($posts_in_chain as $post_in_chain){
-					$post_ids_in_chain[] = $post_in_chain->ID;	
+			// Setup next task in chain 
+			if($id != end($post_ids_in_chain)){
+				$next_post_id_in_chain = $post_ids_in_chain[array_search($id, $post_ids_in_chain) + 1];
+				$next_post_in_chain = '<a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+			}
+			
+			$post_ids_in_chain_string = join(',', $post_ids_in_chain);
+			
+			// Grab all posts in chain statuses
+			$list = $wpdb->get_results("
+			select post_id,status
+			from ".$go_table_ind."
+			where uid = $user_ID
+			and post_id in ($post_ids_in_chain_string)
+			order by field(post_id, $post_ids_in_chain_string)
+			");
+			
+			// Make array of statuses in chain indexed by post id
+			foreach($list as $post_obj){
+				$post_status_in_chain[$post_obj->post_id] = $post_obj->status;
+			}
+			
+			foreach($post_ids_in_chain as $post_id_in_chain){
+				if($post_id_in_chain == $id){
+					break;	
 				}
 				
-				// Setup next task in chain 
-				if($id != end($post_ids_in_chain)){
-					$next_post_id_in_chain = $post_ids_in_chain[array_search($id, $post_ids_in_chain) + 1];
-					$next_post_in_chain = '<a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+				$post_custom_in_chain = get_post_custom($post_id_in_chain);
+				$post_mastery_active_in_chain = !$post_custom_in_chain['go_mta_task_mastery'][0];
+				if($post_mastery_active_in_chain){
+					$post_number_of_stages_in_chain = 4;	
+				}else{
+					$post_number_of_stages_in_chain = 3;
 				}
 				
-				$post_ids_in_chain_string = join(',', $post_ids_in_chain);
-				
-				// Grab all posts in chain statuses
-				$list = $wpdb->get_results("
-				select post_id,status
-				from ".$go_table_ind."
-				where uid = $user_ID
-				and post_id in ($post_ids_in_chain_string)
-				order by field(post_id, $post_ids_in_chain_string)
-				");
-				
-				// Make array of statuses in chain indexed by post id
-				foreach($list as $post_obj){
-					$post_status_in_chain[$post_obj->post_id] = $post_obj->status;
-				}
-				
-				foreach($post_ids_in_chain as $post_id_in_chain){
-					if($post_id_in_chain == $id){
-						break;	
-					}
-					
-					// Check if current post in loop has been mastered
-					if($post_status_in_chain[$post_id_in_chain] != 4){
-						$previous_task = '<a href="'.get_permalink($post_id_in_chain).'">'.get_the_title($post_id_in_chain).'</a>';
-						echo 'You must master '.$previous_task.' to do this '.strtolower(go_return_options('go_tasks_name'));
-						return false;
-					}
+				// Check if current post in loop has been completed/mastered, depending on the number of stages in the task that needs to be completed
+				if($post_status_in_chain[$post_id_in_chain] < $post_number_of_stages_in_chain){
+					$previous_task = '<a href="'.get_permalink($post_id_in_chain).'" target="_blank">'.get_the_title($post_id_in_chain).'</a>';
+					echo 'You must finish '.$previous_task.' to do this '.strtolower(go_return_options('go_tasks_name'));
+					return false;	
 				}
 			}
+			
+			if($current_position_in_chain == go_return_task_amount_in_chain($chain->name)){
+				$last_in_chain = true;
+			}else{
+				$last_in_chain = false;
+			}
+		
 		}
 		
 		if($go_ahead || !isset($focus_category_lock) || empty($category_names)){
@@ -385,17 +396,19 @@ function go_task_shortcode($atts, $content = null) {
 								<input type="password" id="go_unlock_next_stage"/>';	
 							}
 						} else {
-							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
-								</div>';
+							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
+							if($next_post_in_chain && !$last_in_chain){
+								echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain;
+							}else{
+								echo $custom_fields['go_mta_final_chain_message'][0];	
+							}
+							echo '</div>';
 						}
 					break;
 					
 					// Mastered
 					case 4:  
 						echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
-						if($next_post_in_chain){
-							echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain;
-						}
 						if ($repeat == 'on') {
 							if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 								echo '<div id="repeat_quest">
@@ -418,8 +431,14 @@ function go_task_shortcode($atts, $content = null) {
 							}
 							echo '</div>';
 						} else {
-							echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
+							echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 						}
+						if($next_post_in_chain && !$last_in_chain){
+							echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain;
+						}else{
+							echo $custom_fields['go_mta_final_chain_message'][0];	
+						}
+						echo '</div>';
 				}
 
 				// echo '<div id="failure_overlay" style="display:none"><div><p>Having Trouble?</p><p>'.ucwords($admin_name).' has been notified.</p></div></div>';
@@ -884,7 +903,8 @@ function go_task_shortcode($atts, $content = null) {
 					mastery_lock: <?php if($mastery_lock){echo 'true';} else{echo 'false';}?>,
 					update_percent: <?php echo $update_percent;?>,
 					chain_name: '<?php if($chain->name){echo $chain->name;}else{echo '';}?>',
-					next_post_id_in_chain: <?php if($next_post_id_in_chain){echo $next_post_id_in_chain;}else{echo 0;} ?>
+					next_post_id_in_chain: <?php if($next_post_id_in_chain){echo $next_post_id_in_chain;}else{echo 0;} ?>,
+					last_in_chain: <?php if($last_in_chain){echo 'true';}else{echo 'false';}?>
 				},
 				success: function(html){
 					jQuery('#go_content').html(html);
@@ -1532,6 +1552,7 @@ function task_change_stage() {
 	$update_percent = $_POST['update_percent']; // Float which is used to modify values saved to database
 	$chain_name = $_POST['chain_name']; // String which is used to display next task in a quest chain
 	$next_post_id_in_chain = $_POST['next_post_id_in_chain']; // Integer which is used to display next task in a quest chain
+	$last_in_chain = $_POST['last_in_chain']; // Boolean which determines if the current quest is last in chain
 	
 	$go_table_ind = $wpdb->prefix.'go';
 	$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $post_id AND uid = $user_id");
@@ -1569,39 +1590,39 @@ function task_change_stage() {
 	}
 
 	if ($mastery_active) {
-			$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
+		$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
 
-			if ($test_m_active) {
-				$m_fail_count = $_SESSION['test_mastery_fail_count'];
+		if ($test_m_active) {
+			$m_fail_count = $_SESSION['test_mastery_fail_count'];
 
-				$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
-				$test_m_uns = unserialize($test_m_array);
-				
-				$test_m_num = $test_m_uns[3];
-				
-				$test_m_all_questions = $test_m_uns[0];
-				$test_m_all_types = $test_m_uns[2];
-				$test_m_all_inputs = $test_m_uns[1];
-				$test_m_all_input_num = $test_m_uns[4];
-				$test_m_all_answers = array();
-				$test_m_all_keys = array();
-				for ($i = 0; $i < count($test_m_all_inputs); $i++) {
-					$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
-					$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
-					array_push($test_m_all_answers, $answer_m_temp);
-					array_push($test_m_all_keys, $key_m_temp);
-				}
+			$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
+			$test_m_uns = unserialize($test_m_array);
+			
+			$test_m_num = $test_m_uns[3];
+			
+			$test_m_all_questions = $test_m_uns[0];
+			$test_m_all_types = $test_m_uns[2];
+			$test_m_all_inputs = $test_m_uns[1];
+			$test_m_all_input_num = $test_m_uns[4];
+			$test_m_all_answers = array();
+			$test_m_all_keys = array();
+			for ($i = 0; $i < count($test_m_all_inputs); $i++) {
+				$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
+				$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
+				array_push($test_m_all_answers, $answer_m_temp);
+				array_push($test_m_all_keys, $key_m_temp);
 			}
-			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
-			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
-			if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
-				$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
-			} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
-				$repeat_amount = 0;	// Sets the limit equal to zero. In other words, unlimits the amount of times the task is repeatable
-			}
-
-			$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Repeat Message
 		}
+		$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
+		$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
+		if ($repeat == 'on' && $custom_fields['go_mta_repeat_amount'][0]){	// Checks if the task is repeatable and if it has a repeat limit
+			$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page
+		} elseif($repeat == 'on' && !$custom_fields['go_mta_repeat_amount']){ // Checks if the task is repeatable and if it does not have a repeat limit
+			$repeat_amount = 0;	// Sets the limit equal to zero. In other words, unlimits the amount of times the task is repeatable
+		}
+
+		$repeat_message = $custom_fields['go_mta_repeat_message'][0]; // Repeat Message
+	}
 
 	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
@@ -1714,41 +1735,43 @@ function task_change_stage() {
 			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content">'
 			.do_shortcode(wpautop($completion_message));
 			if ($mastery_active) {
-							if ($test_m_active) {
-								if ($test_m_num > 1) {
-									for ($i = 0; $i < $test_m_num; $i++) {
-										echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
-									}
-									echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
-								} else {
-									echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']");
-								}
-							}
-
-							if ($mastery_upload) {
-								echo do_shortcode("[go_upload]")."<br/>";
-							}
-
-							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
-							go_return_options('go_fourth_stage_button').'</button> 
-							<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
-							</div>';
-							
-							if($mastery_lock == 'true'){
-								echo '<br/><div id="go_mastery_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
-								<input type="password" id="go_unlock_next_stage"/>';	
-							}
-						} else {
-							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
-								</div>';
+				if ($test_m_active) {
+					if ($test_m_num > 1) {
+						for ($i = 0; $i < $test_m_num; $i++) {
+							echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
 						}
+						echo "<button class='go_test_submit' style='margin-top: -10px; margin-left: 40px;'>GO!</button><br/><br/>";
+					} else {
+						echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']");
+					}
+				}
+
+				if ($mastery_upload) {
+					echo do_shortcode("[go_upload]")."<br/>";
+				}
+
+				echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
+				go_return_options('go_fourth_stage_button').'</button> 
+				<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+				</div>';
+				
+				if($mastery_lock == 'true'){
+					echo '<br/><div id="go_mastery_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
+					<input type="password" id="go_unlock_next_stage"/>';	
+				}
+			} else {
+				echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
+				if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
+					echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+				}else{
+					echo $custom_fields['go_mta_final_chain_message'][0];	
+				}
+				echo '</div>';
+			}
 			break;
 		case 4:
 			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
 			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
-			if($next_post_id_in_chain != 0){
-				echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
-			}
 			// if the task can be repeated...
 			if ($repeat == 'on') {
 				// if the number of times that the page has been repeated is less than the total amount of repeats allowed OR if the 
@@ -1778,8 +1801,14 @@ function task_change_stage() {
 			// otherwise...
 			} else {
 				// display the back button.
-				echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
+				echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 			}
+			if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
+				echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+			}else{
+				echo $custom_fields['go_mta_final_chain_message'][0];	
+			}
+			echo '</div>';
 	}
 	// echo '<div id="failure_overlay" style="display:none"><div><p>Having Trouble?</p><p>'.ucwords($admin_name).' has been notified.</p></div></div>';
 

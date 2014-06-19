@@ -221,6 +221,24 @@ if (jQuery('#go_mta_task_repeat').prop('checked')) {
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').hide('slow');
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').hide('slow');
 }
+jQuery(document).on('click', 'input[name="tax_input[task_chains][]"]', function(){
+	jQuery('input[name="tax_input[task_chains][]"]').each(function(){
+		if(jQuery(this).prop('checked')){
+			jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').show('slow');
+			return false;
+		}else{
+			jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').hide('slow');
+		}
+	});
+});
+jQuery('input[name="tax_input[task_chains][]"]').each(function(){
+	if(jQuery(this).prop('checked')){
+		jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').show('slow');
+		return false;
+	}else{
+		jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').hide('slow');
+	}
+});
 </script>
 <?php
 }

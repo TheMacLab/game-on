@@ -240,6 +240,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
+				'name' => 'Final Chain Message (Optional)'.go_task_opt_help('final_chain_message', '', 'http://maclab.guhsd.net/go/video/quests/finalChainMessage.mp4'),
+				'desc' => 'Enter a message to be displayed after the <strong>final</strong> '.strtolower(go_return_options('go_tasks_name')).' in this '.strtolower(go_return_options('go_tasks_name')).' chain has been fully finished',
+				'id' => $prefix.'final_chain_message',
+				'type' => 'text'
+
+			),
+			array(
 				'name' => go_return_options('go_tasks_name').' Shortcode'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/taskShortcode.mp4'),
 				'type' => 'go_task_shortcode'
 			),
@@ -1327,6 +1334,7 @@ function go_add_new_task_in_chain(){
 		add_post_meta($task_id, 'chain_position', $position, true);
 	}
 }
+
 function go_update_task_order(){
 	$order = $_POST['order'];
 	$chain = $_POST['chain'];
@@ -1337,4 +1345,26 @@ function go_update_task_order(){
 	die();	
 }
 
+add_action('save_post', 'go_final_chain_message');
+function go_final_chain_message(){
+	$task_id = get_the_id();
+	$custom = get_post_custom($task_id);
+	if(get_post_type($task_id) == 'tasks'){
+		if(get_the_terms($task_id, 'task_chains')){
+			$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')));
+			$posts_in_chain = get_posts(array(
+				'post_type' => 'tasks',
+				'taxonomy' => 'task_chains',
+				'term' => $chain->name,
+				'order' => 'ASC',
+				'meta_key' => 'chain_position',
+				'orderby' => 'meta_value_num'
+			));
+			$message = $custom['go_mta_final_chain_message'][0];
+			foreach($posts_in_chain as $post){
+               update_post_meta($post->ID, 'go_mta_final_chain_message', $message);
+            }
+		}
+	}
+}
 ?>
