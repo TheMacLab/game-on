@@ -473,10 +473,6 @@ function go_task_shortcode($atts, $content = null) {
 			$test_mastery_passed = $wpdb->get_var("SELECT `m_passed` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 			$_SESSION['test_mastery_passed'] = $test_mastery_passed;
 		}
-
-		echo "<pre>";
-		var_dump($test_all_answers);
-		echo "</pre>";
 ?>
 	<script language="javascript">
 		jQuery(document).ready(function() {
@@ -577,6 +573,15 @@ function go_task_shortcode($atts, $content = null) {
 			}
 		}
 
+		function flash_test_err() {
+			jQuery('#go_test_error_msg').animate({
+  				color: "white"
+  			}, 200, function() {
+  				jQuery('#go_test_error_msg').animate({
+  					color: "red"
+  				}, 200);
+  			});
+		}
 
 		// function display_failure(count) {
 		// 	if (jQuery('#failure_surprise').length == 0) {
@@ -786,12 +791,21 @@ function go_task_shortcode($atts, $content = null) {
 							if (response == 'Incorrect password!') {
 								jQuery('.go_lock_message').text('Incorrect password, try again.');
 							}
+							var error_msg_val = jQuery('#go_test_error_msg').text();
+							if (error_msg_val.length > 0) {
+								flash_test_err();
+							}
 							jQuery('#go_test_error_msg').text(response);
 						} else if (which == 'pass'){
 							// display_failure(response);
 							jQuery('.go_lock_message').text('Incorrect password, try again.');
 						} else if (which == 'test') {
-							jQuery('#go_test_error_msg').text("Wrong answer, try again!");
+							var error_msg_val = jQuery('#go_test_error_msg').text();
+							if (error_msg_val.length == 0) {
+								jQuery('#go_test_error_msg').text("Wrong answer, try again!");
+							} else {
+								flash_test_err();
+							}
 						}
 					}
 					// console.log("\nresponse:"+response);
