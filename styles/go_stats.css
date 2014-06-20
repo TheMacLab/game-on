@@ -69,7 +69,7 @@
 
 #go_stats_info{
 	float:right;
-	width:578px;
+	width: 70%;
 	height:100px;
 	border: solid black thin;
 	margin-left:5px;
@@ -89,7 +89,6 @@
 }
 
 .go_info_boxes{
-	width: 20% !important;
 	margin-left: 3% !important;
 	height: 68px !important;
 	border: thin solid grey;
@@ -97,7 +96,7 @@
 	margin-top: 9px!important;
 	text-align: center;
 	color: black !important;
-	font-size: 25px !important;
+	font-size: 1.5vw !important;
 	padding-top: 12px !important;
 	background: rgb(255,255,255); /* Old browsers */
 	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%); /* FF3.6+ */

@@ -68,7 +68,7 @@ jQuery( "#go_stats_progress_bar" ).progressbar({
    <?php echo get_avatar($user_id, 96);?></div>
    <div id="go_stats_info" class="go_border_radius">
   <div class="go_info_boxes" class="go_border_radius"><a href="<?= $user_website ?>" style="color: black !important;
-font-size: 25px !important;">Website</a></div>
+font-size: inherit;">Website</a></div>
   <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_points_name').'<br />'.$current_points?> </div>
   <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_currency_name').'<br />'.$current_currency?></div>
   <div class="go_info_boxes" class="go_border_radius">Minutes <?= '<br />'.$current_minutes?></div>
