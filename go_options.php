@@ -221,10 +221,17 @@ go_jquery_periods();
     </div>
 	
 	<div class="opt-box">
-		<h3>Reset Time Switch</h3>
-		<?php 
-			echo go_sub_option_radio('time_reset_switch', 'Turn the time reset buttons on or off. The buttons can either erase only time, or erase both time and any records on the stats page of a user gaining it.', 'Turn the time reset buttons on or off. <br/> <i>Note, buttons appears at foot of this page.</i>', 'time_switch', 'go_time_reset_switch', 'Would you like to display buttons that can be clicked to reset all user\'s time?', 'http://maclab.guhsd.net/go/video/options/resetTimeSwitch.mp4');
-		?>
+		<h3>Reset Data Switch</h3>
+	</div>
+	<div class="opt-box">
+		<div class="pa">
+			<?php 
+				echo go_opt_help('time_reset_switch', 'Turn the data reset button on or off. The button can reset points, currency, time, or all three. After resetting points/currency/time, user\'s records are erased, meaning they will have 0 of whatever was erased and there will be no log of it in their stats page.',  'http://maclab.guhsd.net/go/video/options/resetDataSwitch.mp4');
+			?>
+			<strong>Turn data reset switches on or off: </strong><br/><i>Note, button appears at the bottom of this page.</i><br/>
+			On:<input type="radio" <?php if(go_return_options('go_data_reset_switch') == 'On'){echo 'checked="checked"';} ?> name="go_data_reset_switch" size="45" value="On" style="margin-left: 5px;width: 20px;" /><br />
+			Off:<input type="radio" <?php if(go_return_options('go_data_reset_switch') == 'Off'){echo 'checked="checked"';} ?>name="go_data_reset_switch" size="45" value="Off" style="margin-left: 5px;width: 20px;" /><br />
+		</div>
 	</div>
    	<div class="opt-box">
     	<h3>Videos</h3>
@@ -280,27 +287,61 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_time_reset_switch, go_video_height, go_video_width" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width" />  
         </form>
 		<?php
-			if(get_option('go_time_reset_switch') == 'On'){
+			if(get_option('go_data_reset_switch') == 'On'){
 				global $wpdb;
 		?> 
+				<h3> Choose which records to erase </h3>
 				<form action="" method="post">
-					<span class="opt-inp"><input type="submit" value="Erase Time"name="erase_time"/> </span>
-					<span class="opt-inp"><input type="submit" value="Erase Time and Records"name="erase_time_records"/> </span>
+					<span class="opt-inp"><input type="checkbox" value="erase_points" name="erase_records[]" /><?php echo go_return_options('go_points_name'); ?></span>
+					<span class="opt-inp"><input type="checkbox" value="erase_currency" name="erase_records[]" /><?php echo go_return_options('go_currency_name');?></span>
+					<span class="opt-inp"><input type="checkbox" value="erase_time" name="erase_records[]" />Time</span>
+					<span class="opt-inp"><input type="checkbox" value="erase_all" name="erase_records[]" />All</span>
+					<span class="opt-inp"><input type="submit" value="Erase" name="erase" /></span>
 				</form>
+				<script type="text/javascript">
+					jQuery('input[value="erase_all"]').click(function(){
+						if(jQuery(this).prop('checked')){
+							jQuery('input[name="erase_records[]"]').each(function(){
+								jQuery(this).prop('checked', true);
+							});
+						}else{
+							jQuery('input[name="erase_records[]"]').each(function(){
+								jQuery(this).prop('checked', false);
+							});
+						}
+					});
+				</script>
 		<?php
-				$users = get_users('orderby=ID');
-				if(isset($_POST['erase_time'])){
-					foreach($users as $user){
-						$wpdb->update($wpdb->prefix.'go_totals',array('minutes' => 0),array('uid' => $user->ID) );
+				if(isset($_POST['erase_records'])){
+					foreach($_POST['erase_records'] as $erase_type){
+						switch($erase_type){
+							case 'erase_points':
+								$erase_array[] = 'points';
+								$users = get_users('orderby=ID');
+								$ranks = go_return_options('go_ranks');
+								$erase_level = array(array(key($ranks), $ranks[key($ranks)]));
+								next($ranks);
+								$erase_level[] = array(key($ranks), $ranks[key($ranks)]);
+				
+								foreach($users as $user){
+									update_user_meta($user->ID, 'go_rank', $erase_level);
+								}
+								break;
+							case 'erase_currency':
+								$erase_array[] = 'currency';
+								break;
+							case 'erase_time':
+								$erase_array[] = 'minutes';
+								break;
+						}
 					}
-				}else if(isset($_POST['erase_time_records'])){
-					foreach($users as $user){
-						$wpdb->update($wpdb->prefix.'go_totals',array('minutes' => 0),array('uid' => $user->ID) );
-						$wpdb->update($wpdb->prefix.'go', array('minutes' => 'NULL'), array('uid' => $user->ID));
-					}
+					$erase_list = implode(',', $erase_array);
+					$erase_update = "SET ".implode('=0,', $erase_array)."=0";
+					$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."go WHERE %s IS NOT NULL", $erase_list));
+					$wpdb->query("UPDATE ".$wpdb->prefix."go_totals ".$erase_update);
 				}
 			}
 		?>
@@ -313,8 +354,7 @@ go_jquery_periods();
 		jQuery('#go_multiplier').append('<input type="text" name="go_multiplier[]" size="45" value="" /><select name="go_multiplier_rounding[]"><option value="1">Normal rounding</option><option value="2">Always round up</option><option value="3">Always round down</option></select>');
 		}
         </script>
-        <?php /*
-      */
+        <?php 
 } 
 
 }
@@ -577,32 +617,30 @@ function go_save_extra_profile_fields( $user_id ) {
 
 function go_return_presets_options(){
 	 global $wpdb;
-					$presets = get_option('go_presets',false);
-					$array = array();
-					if($presets){
-		   foreach($presets as $key=>$value){ 
-		  $array[] = array('name'=> $key, 'points'=>$value[0], 'currency'=>$value[1], 'value'=>  $key.' - '.$value[0].' - '.$value[1]  );
-			//echo '<option value="'.$key.'" points="'.$value[0].'" currency="'.$value[1].'">'.$key.' - '.$value[0].' - '.$value[1].'</option>';  
-		   }}
-		   
-	
-	return $array;
-					
+	$presets = get_option('go_presets',false);
+	$array = array();
+	if($presets){
+		foreach($presets as $key=>$value){ 
+			$array[] = array('name'=> $key, 'points'=>$value[0], 'currency'=>$value[1], 'value'=>  $key.' - '.$value[0].' - '.$value[1]  );
+		}
 	}
+	return $array;
+}
+
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name,go_time_reset_switch, go_video_height, go_video_width');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width');
 	foreach($array as $key=>$value){
-$value = trim($value);
-$content = get_option($value);
-if(is_array($content)){
-	$content = serialize($content);
-	}
-		$string .= 'define("'.$value.'",\''.$content.'\',TRUE);';
+		$value = trim($value);
+		$content = get_option($value);
+		if(is_array($content)){
+			$content = serialize($content);
 		}
-	
- file_put_contents ( $file_name, '<?php '.$string.' ?>' );
-
+		$string .= 'define("'.$value.'",\''.$content.'\',TRUE);';
 	}
+
+	file_put_contents ( $file_name, '<?php '.$string.' ?>' );
+
+}
 ?>
