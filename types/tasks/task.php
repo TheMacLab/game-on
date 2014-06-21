@@ -24,7 +24,7 @@ function register_cpt_task() {
         'labels' => $labels,
         'hierarchical' => false,
         'description' => go_return_options('go_tasks_plural_name'),
-        'supports' => array( 'title','thumbnail', 'custom-fields', 'revisions', 'page-attributes', 'comments'),
+        'supports' => array( 'title', 'publicize', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes', 'comments'),
         'taxonomies' => array( 'task_categories', 'post_tag', 'task_focus_categories' ),
         'public' => true,
         'show_ui' => true,

@@ -260,7 +260,7 @@ function go_task_shortcode($atts, $content = null) {
 			// Setup next task in chain 
 			if($id != end($post_ids_in_chain)){
 				$next_post_id_in_chain = $post_ids_in_chain[array_search($id, $post_ids_in_chain) + 1];
-				$next_post_in_chain = '<a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+				$next_post_in_chain = '<a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a>';
 			}
 			
 			$post_ids_in_chain_string = join(',', $post_ids_in_chain);
@@ -294,7 +294,7 @@ function go_task_shortcode($atts, $content = null) {
 				
 				// Check if current post in loop has been completed/mastered, depending on the number of stages in the task that needs to be completed
 				if($post_status_in_chain[$post_id_in_chain] < $post_number_of_stages_in_chain){
-					$previous_task = '<a href="'.get_permalink($post_id_in_chain).'" target="_blank">'.get_the_title($post_id_in_chain).'</a>';
+					$previous_task = '<a href="'.get_permalink($post_id_in_chain).'">'.get_the_title($post_id_in_chain).'</a>';
 					echo 'You must finish '.$previous_task.' to do this '.strtolower(go_return_options('go_tasks_name'));
 					return false;	
 				}
@@ -1776,7 +1776,7 @@ function task_change_stage() {
 			} else {
 				echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 				if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
-					echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+					echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a>';
 				}else{
 					echo $custom_fields['go_mta_final_chain_message'][0];	
 				}
@@ -1818,7 +1818,7 @@ function task_change_stage() {
 				echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 			}
 			if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
-				echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'" target="_blank">'.get_the_title($next_post_id_in_chain).'</a>';
+				echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a>';
 			}else{
 				echo $custom_fields['go_mta_final_chain_message'][0];	
 			}
