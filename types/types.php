@@ -1286,7 +1286,7 @@ function go_pick_order_of_chain(){
         <ul id="go_task_order_in_chain">
 			<?php
             foreach($posts_in_chain as $post){
-                echo '<li class="go_task_in_chain" post_id="'.$post->ID.'">'.$post->post_title.'</li>';
+                echo '<li class="go_task_in_chain" post_id="'.$post->ID.'" style="cursor: pointer;">'.$post->post_title.'</li>';
             }
             ?>
 		</ul>
