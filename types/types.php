@@ -667,7 +667,7 @@ function go_test_field($field_args) {
 		}
 		for (var x = 0; x < block_count; x++) {
 			for (var z = 0; z < test_field_checked_array[x].length; z++) {
-				var test_fields_with_checked_value = ".go_test_field_input[value='"+test_field_checked_array[x][z]+"']";
+				var test_fields_with_checked_value = "tr#go_test_field_input_row_"+[x]+" .go_test_field_input[value='"+test_field_checked_array[x][z]+"']";
 				var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox').attr('checked', true);
 			}
 		}
@@ -1032,7 +1032,7 @@ function go_test_field_mastery($field_args) {
 		}
 		for (var x = 0; x < block_count_m; x++) {
 			for (var z = 0; z < test_field_checked_array_m[x].length; z++) {
-				var test_fields_with_checked_value = ".go_test_field_input_m[value='"+test_field_checked_array_m[x][z]+"']";
+				var test_fields_with_checked_value = "tr#go_test_field_input_row_m_"+[x]+" .go_test_field_input_m[value='"+test_field_checked_array_m[x][z]+"']";
 				var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_m').attr('checked', true);
 			}
 		}

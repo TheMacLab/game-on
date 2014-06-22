@@ -523,43 +523,22 @@ function go_task_shortcode($atts, $content = null) {
 					if (test_list.length > 1) {
 						var checked_ans = 0;
 						for (var i = 0; i < test_list.length; i++) {
-							var type = test_list[i].children[1].children[0].type;
-
 							var obj_str = "#"+test_list[i].id+" :checked";
 							var chosen_answers = jQuery(obj_str);
-
-							if (type == 'radio') {
-								if (chosen_answers.length == 1) {
-									checked_ans++;
-								} else { 
-									jQuery('#go_test_error_msg').text("Please answer all questions!");
-								}
-							} else {
-								if (chosen_answers.length >= 2) {
-									checked_ans++;
-								} else { 
-									jQuery('#go_test_error_msg').text("Please choose at least two answers!");
-								}
+							if (jQuery(".go_test_list input:checked").length >= 1) {
+								checked_ans++;
+							} else { 
+								jQuery('#go_test_error_msg').text("Please answer all questions!");
 							}
 						}
-
 						if (checked_ans >= test_list.length) {
 							task_unlock();
 						}
 					} else {
-						var type = jQuery('.go_test_list li input').attr("type");
-						if (type == 'radio') {
-							if (jQuery(".go_test_list input:checked").length == 1) {
-								task_unlock();
-							} else {
-								jQuery('#go_test_error_msg').text("Please choose an answer!");
-							}
-						} else {
-							if (jQuery(".go_test_list input:checked").length > 1) {
-								task_unlock();
-							} else { 
-								jQuery('#go_test_error_msg').text("Please choose at least two answers!");
-							}
+						if (jQuery(".go_test_list input:checked").length >= 1) {
+							task_unlock();
+						} else { 
+							jQuery('#go_test_error_msg').text("Please answer all questions!");
 						}
 					}
 				});
@@ -604,9 +583,10 @@ function go_task_shortcode($atts, $content = null) {
 
 		function task_unlock() {
 			if (jQuery('#go_unlock_next_stage').length != 0 && jQuery(".go_test_list").length != 0) {
-				if (jQuery('.go_test_list :checked').length != 0 && (jQuery('#go_unlock_next_stage').val() != '' && jQuery('#go_unlock_next_stage').val() != null)) {
-					var test_list = jQuery(".go_test_list");
-					var list_size = test_list.length;
+				var test_list = jQuery(".go_test_list");
+				var list_size = test_list.length;
+				if (jQuery('.go_test_list :checked').length >= list_size && (jQuery('#go_unlock_next_stage').val() != '' && jQuery('#go_unlock_next_stage').val() != null)) {
+					
 					var type_array = [];
 					if (jQuery(".go_test_list").length > 1) {
 					
@@ -624,7 +604,9 @@ function go_task_shortcode($atts, $content = null) {
 
 							if (test_type == 'radio') {
 								// push indiviudal answers to the choice_array
-								choice_array.push(chosen_answers[0].value);
+								if (chosen_answers[0] != undefined) {
+									choice_array.push(chosen_answers[0].value);
+								}
 							} else if (test_type == 'checkbox') {
 								var t_array = [];
 								for (var i = 0; i < chosen_answers.length; i++) {
@@ -653,12 +635,24 @@ function go_task_shortcode($atts, $content = null) {
 					var pwd_hash = CryptoJS.SHA1(pwd_check).toString();
 					var which = 'both';
 				} else {
-					if (jQuery('.go_test_list :checked').length == 0 && (jQuery('#go_unlock_next_stage').val() == '' || jQuery('#go_unlock_next_stage').val() == null)) {
-						jQuery('#go_test_error_msg').text("Choose an answer and enter a password!");
-					} else if (jQuery('.go_test_list :checked').length == 0) {
-						jQuery('#go_test_error_msg').text("Choose an answer!");
+					if (jQuery('.go_test_list :checked').length < list_size && (jQuery('#go_unlock_next_stage').val() == '' || jQuery('#go_unlock_next_stage').val() == null)) {
+						if (jQuery('#go_test_error_msg').text() != "Answer all questions and enter a password!") {
+							jQuery('#go_test_error_msg').text("Answer all questions and enter a password!");
+						} else {
+							flash_test_err();
+						}
+					} else if (jQuery('.go_test_list :checked').length < list_size) {
+						if (jQuery('#go_test_error_msg').text() != "Answer all questions") {
+							jQuery('#go_test_error_msg').text("Answer all questions!");
+						} else {
+							flash_test_err();
+						}
 					} else if (jQuery('#go_unlock_next_stage').val() == '' || jQuery('#go_unlock_next_stage').val() == null) {
-						jQuery('#go_test_error_msg').text("Enter a password!");
+						if (jQuery('#go_test_error_msg').text() != "Enter a password!") {
+							jQuery('#go_test_error_msg').text("Enter a password!");
+						} else {
+							flash_test_err();
+						}
 					}
 				}
 			} else {
@@ -672,7 +666,9 @@ function go_task_shortcode($atts, $content = null) {
 						var which = 'pass';
 					}
 				} else if (jQuery(".go_test_list").length != 0) {
-					if (jQuery('.go_test_list :checked').length != 0) {
+					var test_list = jQuery(".go_test_list");
+					var list_size = test_list.length;
+					if (jQuery('.go_test_list :checked').length >= list_size) {
 						
 						var test_list = jQuery(".go_test_list");
 						var list_size = test_list.length;
@@ -721,7 +717,7 @@ function go_task_shortcode($atts, $content = null) {
 						}
 						var which = 'test';
 					} else {
-						jQuery('#go_test_error_msg').text("Choose an answer!");
+						jQuery('#go_test_error_msg').text("Answer all questions!");
 					}
 				}
 			}
@@ -792,23 +788,24 @@ function go_task_shortcode($atts, $content = null) {
 								jQuery('.go_lock_message').text('Incorrect password, try again.');
 							}
 							var error_msg_val = jQuery('#go_test_error_msg').text();
-							if (error_msg_val.length > 0) {
+							if (error_msg_val == response) {
 								flash_test_err();
+							} else {
+								jQuery('#go_test_error_msg').text(response);
 							}
-							jQuery('#go_test_error_msg').text(response);
 						} else if (which == 'pass'){
 							// display_failure(response);
 							jQuery('.go_lock_message').text('Incorrect password, try again.');
 						} else if (which == 'test') {
 							var error_msg_val = jQuery('#go_test_error_msg').text();
-							if (error_msg_val.length == 0) {
+							if (error_msg_val != "Wrong answer, try again!") {
 								jQuery('#go_test_error_msg').text("Wrong answer, try again!");
 							} else {
 								flash_test_err();
 							}
 						}
 					}
-					// console.log("\nresponse:"+response);
+					// console.log(response);
 				}
 			});
 		}
@@ -1053,14 +1050,6 @@ function unlock_stage(){
 		}
 	}
 	
-	if ($type == 'checkbox') {
-		$choice_array_keys = array_keys($choice_array);
-		if (count($choice_array_keys) < 2) {
-			echo 0;
-			die();
-		}
-	}
-	
 	$custom_fields = get_post_custom($id);
 	$task_points = $custom_fields['go_mta_task_points'][0];
 	$points_array = explode(',', $task_points);
@@ -1194,7 +1183,7 @@ function unlock_stage(){
 							}
 						}
 
-						echo "Wrong answer!";
+						echo "Wrong answer, try again!";
 					}
 					die();
 				}
@@ -1290,10 +1279,8 @@ function unlock_stage(){
 
 			} else if ($type == 'checkbox') {
 				$key_match = 0;
-				$key_array_keys = array_keys($key_array);
-				$choice_array_keys = array_keys($choice_array);
-				for ($i = 0; $i < count($key_array_keys); $i++) {
-					for ($x = 0; $x < count($choice_array_keys);  $x++) {
+				for ($i = 0; $i < count($key_array); $i++) {
+					for ($x = 0; $x < count($choice_array);  $x++) {
 						if (strtolower($choice_array[$x]) == strtolower($key_array[$i])) {
 							$key_match++;
 							break;
@@ -1301,10 +1288,10 @@ function unlock_stage(){
 					}
 				}
 
-				if ($key_match == count($choice_array_keys) && $key_match >= 2 && $password_check == $password) {
+				if ($key_match == count($choice_array) && $password_check == $password) {
 					echo 1;
 				} else {
-					if ($key_match != count($choice_array_keys) && $key_match < 2 && $password_check != $password) {
+					if ($key_match != count($choice_array) && $password_check != $password) {
 						if ($status == 2) {
 							if (isset($_SESSION['test_fail_count'])) {
 								if ($_SESSION['test_fail_count'] < $test_fail_max) {
@@ -1330,7 +1317,7 @@ function unlock_stage(){
 							echo "Incorrect password!";
 						}
 					
-						if ($key_match != count($choice_array_keys) || $key_match < 2) {
+						if ($key_match != count($choice_array)) {
 							if ($status == 2) {
 								if (isset($_SESSION['test_fail_count'])) {
 									if ($_SESSION['test_fail_count'] < $test_fail_max) {
@@ -1511,17 +1498,15 @@ function unlock_stage(){
 				}
 			} else if ($type == 'checkbox') {
 				$key_match = 0;
-				$key_array_keys = array_keys($key_array);
-				$choice_array_keys = array_keys($choice_array);
-				for ($i = 0; $i < count($key_array_keys); $i++) {
-					for ($x = 0; $x < count($choice_array_keys);  $x++) {
+				for ($i = 0; $i < count($key_array); $i++) {
+					for ($x = 0; $x < count($choice_array);  $x++) {
 						if (strtolower($choice_array[$x]) == strtolower($key_array[$i])) {
 							$key_match++;
 							break;
 						}
 					}
 				}
-				if ($key_match == count($choice_array_keys) && $key_match >= 2) {
+				if ($key_match == count($choice_array)) {
 					echo 1;
 					die();
 				} else {
