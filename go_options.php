@@ -74,31 +74,28 @@ window.location = "'.admin_url().'/?page=game-on-options.php"
         </div><br />
             <br />
             <div id="poi" class="opt-box">       
-            <h3>Points Settings</h3>
-           <?php echo go_sub_option('tasks_points_name', 'This is what your points will be called. Use a name like Points, or Experience.', 'Points Name', 'go_points_name', 'go_points_name', 'what would you like points to be called?', 'http://maclab.guhsd.net/go/video/options/points.mp4');
-          echo  go_sub_option( 'tasks_points_prefix', 'The prefix symbol used to represent your points, such as a dollar sign.', 'Points Prefix', 'go_points_sym', 'go_points_prefix', 'what prefix would you like associated with points? (Optional)', 'http://maclab.guhsd.net/go/video/options/points.mp4' ); 
-			echo go_sub_option( 'tasks_points_suffix', 'The suffix symbol used to represent your points, such as Exp.', 'Points Suffix', 'go_points_suffix', 'go_points_suffix', 'what suffix would you like associated with points? (Optional)', 'http://maclab.guhsd.net/go/video/options/points.mp4' );  ?>
-          
-          
-            </div>
-            
-            
-              <br />
+				<h3>Points Settings</h3>
+				<?php 
+					echo go_sub_option('tasks_points_name', 'This is what your points will be called. Use a name like Points, or Experience.', 'Points Name', 'go_points_name', 'go_points_name', 'what would you like points to be called?', 'http://maclab.guhsd.net/go/video/options/points.mp4');
+					echo go_sub_option( 'tasks_points_prefix', 'The prefix symbol used to represent your points, such as a dollar sign.', 'Points Prefix', 'go_points_sym', 'go_points_prefix', 'what prefix would you like associated with points? (Optional)', 'http://maclab.guhsd.net/go/video/options/points.mp4' ); 
+					echo go_sub_option( 'tasks_points_suffix', 'The suffix symbol used to represent your points, such as Exp.', 'Points Suffix', 'go_points_suffix', 'go_points_suffix', 'what suffix would you like associated with points? (Optional)', 'http://maclab.guhsd.net/go/video/options/points.mp4' );  
+				?>
+            </div><br />
             <div class="opt-box">       
-            <h3> Admin Bar Settings</h3>
-       
-          <?php
-		 echo go_sub_option_radio( 'admin_bar_add_trigger', 'Turn on and off the add section of the admin bar.','Add Switch', 'go_admin_bar_add_switch','go_admin_bar_add_switch', 'Would you like to have the Add section of the admin bar?', 'http://maclab.guhsd.net/go/video/options/addBar.mp4');
-		   ?><br />
-<div class="opt-box">
-            <h3> Infraction Settings</h3>
-            <?php
-            echo go_sub_option('max_infractions','When a user has this many infractions they will have 0 life/hitpoints left.','Maximum Infractions','go_max_infractions','go_max_infractions','How many infractions do you want to allow your users?', 'http://maclab.guhsd.net/go/video/options/infractions.mp4');
-            echo go_sub_option('infractions_name','The name for infractions','Infractions Name','go_infractions_name','go_infractions_name','The name for infractions.', 'http://maclab.guhsd.net/go/video/options/infractions.mp4');
-                  ?>
+				<h3> Admin Bar Settings</h3>
+				<?php
+					echo go_sub_option_radio( 'admin_bar_switch', 'Display the admin bar for all users, logged in or not.','Admin Bar Display', 'go_admin_bar_display_switch','go_admin_bar_display_switch', 'Would you like to display the admin bar for all users, logged in or not?Note: for non-logged-in users admin bar will <strong>only</strong> display a "log in" button', 'http://maclab.guhsd.net/go/video/options/adminBarSwitch.mp4');
+					echo go_sub_option_radio( 'admin_bar_add_trigger', 'Turn the add section of the admin bar on or off.','Add Switch', 'go_admin_bar_add_switch','go_admin_bar_add_switch', 'Would you like to have the add section of the admin bar?', 'http://maclab.guhsd.net/go/video/options/addBar.mp4');
+				?>
+			</div><br />
+			<div class="opt-box">
+				<h3> Infraction Settings</h3>
+				<?php
+					echo go_sub_option('max_infractions','When a user has this many infractions they will have 0 life/hitpoints left.','Maximum Infractions','go_max_infractions','go_max_infractions','How many infractions do you want to allow your users?', 'http://maclab.guhsd.net/go/video/options/infractions.mp4');
+					echo go_sub_option('infractions_name','The name for infractions','Infractions Name','go_infractions_name','go_infractions_name','The name for infractions.', 'http://maclab.guhsd.net/go/video/options/infractions.mp4');
+				?>
             </div>
-            </div>
-                <div class="opt-box">       
+            <div class="opt-box">       
             <h3>Minutes</h3>
        
           <?php
@@ -287,7 +284,7 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_display_switch, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width" />  
         </form>
 		<?php
 			if(get_option('go_data_reset_switch') == 'On'){
@@ -630,7 +627,7 @@ function go_return_presets_options(){
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_display_switch, go_admin_bar_add_switch, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width');
 	foreach($array as $key=>$value){
 		$value = trim($value);
 		$content = get_option($value);

@@ -1,5 +1,11 @@
 <?php
 
+function go_display_admin_bar(){
+	if(go_return_options('go_admin_bar_display_switch') == 'On'){
+		return true;
+	}
+}
+
 function go_admin_bar(){
 	global $wpdb;
 	global $current_user_id;
@@ -22,8 +28,20 @@ function go_admin_bar(){
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	if($current_user_infractions == $current_max_infractions){$htpt_color = '#464646';}
 	
-	
 	$color = barColor($current_minutes);
+	
+	$wp_admin_bar->remove_menu('wp-logo');
+	
+	if(!is_user_logged_in()){
+		return
+		$wp_admin_bar->add_menu(
+			array(
+				'id' => 'go_toolbar_login',
+				'title' => 'Login',
+				'href' => wp_login_url()
+			)
+		);
+	}
 	
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
@@ -76,12 +94,12 @@ if (!is_admin_bar_showing() || !is_user_logged_in() )
 	
 	
 ////////////////////////////////////////////////////////////////////////	
-if(go_return_options('go_admin_bar_add_switch') != 'Off'){	
+if(go_return_options('go_admin_bar_add_switch') == 'On'){	
 	if (!is_admin_bar_showing() || !is_user_logged_in() )
 		return;
 		$wp_admin_bar->add_menu( array(
 		'title' => 'Add',
-		'href' => false,
+		'href' => '#',
 		'id' => 'go_add',
 	));
 	

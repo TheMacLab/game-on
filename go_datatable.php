@@ -106,6 +106,7 @@ global $default_role;
 	'go_points_suffix' => 'XP',
 	'go_currency_name' => 'Gold',
 	'go_points_name' => 'Experience',
+	'go_admin_bar_display_switch' => 'On',
 	'go_admin_bar_add_switch' => 'Off',
 	'go_repeat_button' => 'Repeat Quest',
 	'go_class_a_name' => 'Period',

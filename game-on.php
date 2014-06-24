@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.8.2
+Version: 1.8.3
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -59,17 +59,18 @@ add_action('wp_ajax_go_remove_ranks', 'go_remove_ranks');
 add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
+add_action('admin_bar_init', 'go_admin_bar');
+add_action('admin_bar_init', 'go_style_everypage');
+add_action('admin_bar_init','go_style_stats');
+add_action('show_admin_bar', 'go_display_admin_bar');
 add_action('go_get_all_ranks','go_get_all_ranks');
 add_action('wp_ajax_test_point_update', 'test_point_update');
 add_action('go_get_all_focuses', 'go_get_all_focuses');
 add_action('wp_ajax_unlock_stage', 'unlock_stage');
 add_action('wp_ajax_task_change_stage','task_change_stage');
-add_action('admin_bar_init', 'go_admin_bar');
-add_action('admin_bar_init', 'go_style_everypage' );
 add_action('go_update_admin_bar','go_update_admin_bar');
 add_action('go_update_progress_bar','go_update_progress_bar');
 add_action('go_style_periods','go_style_periods');
-add_action('admin_bar_init','go_style_stats');
 add_action('go_jquery_periods','go_jquery_periods');
 add_action('wp_ajax_go_admin_bar_add','go_admin_bar_add');
 add_action('wp_ajax_go_admin_bar_stats','go_admin_bar_stats');
