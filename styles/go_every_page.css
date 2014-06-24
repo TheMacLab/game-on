@@ -91,6 +91,17 @@ line-height:16px;
 	margin-bottom: 3px;
 }
 
+/* 
+*	Task Styles
+*/
+div.misc-pub-section-clone {
+	border-top: 1px solid #eee;
+}
+
+input#go-button-clone {
+	margin-bottom: 7px !important;
+}
+
 input.go_test_field_add {
 	color: green;
 }
@@ -101,6 +112,18 @@ input.go_test_field_rm {
 
 ul.go_test li {
 	list-style: none;
+}
+
+.go_task_in_chain {
+	cursor: -webkit-grab; 
+	cursor: -moz-grab;
+	cursor: grab;
+}
+
+.go_task_in_chain:active {
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
 }
 
 .dark{

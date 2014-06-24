@@ -1286,7 +1286,7 @@ function go_pick_order_of_chain(){
         <ul id="go_task_order_in_chain">
 			<?php
             foreach($posts_in_chain as $post){
-                echo '<li class="go_task_in_chain" post_id="'.$post->ID.'" style="cursor: -webkit-grab; cursor: -moz-grab">'.$post->post_title.'</li>';
+                echo '<li class="go_task_in_chain" post_id="'.$post->ID.'">'.$post->post_title.'</li>';
             }
             ?>
 		</ul>
@@ -1366,5 +1366,122 @@ function go_final_chain_message(){
             }
 		}
 	}
+}
+
+add_action('post_submitbox_misc_actions', 'go_clone_task_ajax');
+function go_clone_task_ajax() {
+    global $post;
+    // Display the following only when a task is being edited...
+    if (get_post_type($post) == 'tasks') {
+        echo '
+        <div class="misc-pub-section misc-pub-section-last">
+        	<input id="go-button-clone" class="button button-large alignright" type="button" value="Clone" />
+        </div>
+        <script type="text/javascript">
+        	function clone_post_ajax() {
+        		jQuery("input#go-button-clone").click(function() {
+	        		jQuery.ajax({
+	        			url: "'.get_site_url().'/wp-admin/admin-ajax.php",
+	        			type: "POST",
+	        			data: {
+	        				action: "go_clone_task",
+	        				post_id: '.$post->ID.',
+	        			}, success: function(url) {
+	        				var reg = new RegExp("^(http)");
+	        				var match = reg.test(url);
+	        				if (url != \'\' && match) {
+	        					window.location = url;
+	        				}
+	        			}
+	        		});
+				});
+        	}
+        	jQuery(document).ready(function() {
+        		clone_post_ajax();
+        	});
+        </script>
+        ';
+    }
+}
+
+function go_clone_task() {
+	// Grab the post id from the ajax call and use it to grab data from the original post.
+	$post_id = $_POST['post_id'];
+	// Get the post's title, permalink, publishing and modification dates, etc.
+	$post_data = get_post($post_id, ARRAY_A);
+	// Grab the original post's meta data.
+	$post_custom = get_post_custom($post_id);
+	// Grab the original post's taxonomies.
+	$terms = get_the_terms($post_id, 'task_chains');
+	$foci = get_the_terms($post_id, 'task_focus_categories');
+	$cat = get_the_terms($post_id, 'task_categories');
+
+	$term_ids = array();
+	$focus_ids = array();	
+	$cat_ids = array();
+	// Put the ids of the taxonomies that the original post was assigned to into arrays.
+	for ($i = 0; $i < count($terms); $i++) {
+		array_push($term_ids, $terms[$i]->term_id);
+	}
+
+	for ($i = 0; $i < count($foci); $i++) {
+		array_push($focus_ids, $foci[$i]->term_id);
+	}
+
+	for ($i = 0; $i < count($cat); $i++) {
+		array_push($cat_ids, $cat[$i]->term_id);
+	}
+	
+	// Change the post status to "draft" and leave the guid up to Wordpress.
+	$post_data['post_status'] = 'draft';
+	$post_data['guid'] = '';
+	// Remove some other data to allow the post to be easily cloned.
+	unset($post_data['ID']);
+	unset($post_data['post_title']);
+	unset($post_data['post_name']);
+	unset($post_data['post_modified']);
+	unset($post_data['post_modified_gmt']);
+	unset($post_data['post_date']);
+	unset($post_data['post_date_gmt']);
+
+	// Clone the original post with the modified data from above, and retreive the new post's id.
+	$clone_id = wp_insert_post($post_data);
+
+	// Set the cloned post's taxonomies using the ids from above.
+	wp_set_object_terms($clone_id, $term_ids, "task_chains");
+	wp_set_object_terms($clone_id, $focus_ids, "task_focus_categories");
+	wp_set_object_terms($clone_id, $cat_ids, "task_categories");
+
+	// If the clone was successfully created continue, otherwise return 0.
+	if (!empty($clone_id)) {
+		// Setup the url to the cloned post.
+		$url = get_site_url()."/wp-admin/post.php?post=".$clone_id."&action=edit";
+		// Loop through the original post's meta data and add it to the clone's.
+		foreach ($post_custom as $key => $value) {
+			for ($i = 0; $i < count($value); $i++) {
+				// Unserialize the original post's meta data, this is so that the task test meta data doesn't get serialized twice.
+				$uns = unserialize($value[$i]);
+				// If the unserialize function took in a non-string or non-serializable variable it will return FALSE.
+				if ($uns !== false) {
+					add_post_meta($clone_id, $key, $uns, true);
+				} else {
+					// If we're dealing with the "chain_position" meta field, cast the string (all the meta values should be strings) as an int and
+					// increment it before assigning it back to the clone as a string; otherwise, just add the value to the clone.
+					if ($key === 'chain_position') {
+						$val = (int)$value[$i] + 1;
+						$pos = (string)$val;
+						add_post_meta($clone_id, $key, $pos, true);
+					} else {
+						add_post_meta($clone_id, $key, $value[$i], true);
+					}
+				}
+			}
+		}
+		// Return the url of the cloned post's edit page.
+		echo $url;
+	} else {
+		echo 0;
+	}
+	die();
 }
 ?>
