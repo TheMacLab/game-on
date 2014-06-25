@@ -91,9 +91,11 @@ line-height:16px;
 	margin-bottom: 3px;
 }
 
-/* 
+/********************
 *	Task Styles
-*/
+********************/
+
+/* Tasks Style | Back-end */
 div.misc-pub-section-clone {
 	border-top: 1px solid #eee;
 }
@@ -110,10 +112,6 @@ input.go_test_field_rm {
 	color: red;
 }
 
-ul.go_test li {
-	list-style: none;
-}
-
 .go_task_in_chain {
 	cursor: -webkit-grab; 
 	cursor: -moz-grab;
@@ -124,6 +122,29 @@ ul.go_test li {
 	cursor: -webkit-grabbing;
 	cursor: -moz-grabbing;
 	cursor: grabbing;
+}
+
+/* Tasks Style | Front-end */
+div#go_description p, 
+div#go_content p,
+div#new_content p {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+div.go_stage_message p:last-of-type {
+	border-bottom: 1px solid;
+	border-bottom-color: inherit;
+}
+
+ul.go_test li {
+	list-style: none;
+}
+
+div.go_chain_message {
+	margin-top: 10px;
 }
 
 .dark{

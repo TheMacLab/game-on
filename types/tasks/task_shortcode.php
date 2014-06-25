@@ -228,10 +228,13 @@ function go_task_shortcode($atts, $content = null) {
 				$go_ahead = array_intersect($user_focus, $category_names);	
 			}
 			go_display_rewards($points_array, $currency_array,$number_of_stages);
-			echo '<script type="text/javascript">jQuery(".entry-title").after(jQuery(".go_task_rewards"));</script>';
+			echo '
+			<script type="text/javascript">
+				jQuery(".entry-title").after(jQuery(".go_task_rewards"));
+			</script>';
 ?> 
 
-			<div id="go_description"> <?php echo  do_shortcode(wpautop($description));?> </div>
+			<div id="go_description"><div class="go_stage_message"><?php echo  do_shortcode(wpautop($description));?></div></div>
             
 <?php	
 		// If current post in a chain and user logged in
@@ -339,7 +342,7 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Accepted
 					case 2: 
-						echo '<div id="go_content">'.do_shortcode(wpautop($accpt_mssg));
+						echo '<div id="go_content"><div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg)).'</div>';
 						if ($test_active) {
 							if ($test_num > 1) {
 								for ($i = 0; $i < $test_num; $i++) {
@@ -368,8 +371,8 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Completed
 					case 3: 
-						echo '<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).'
-						'.do_shortcode(wpautop($completion_message));
+						echo '<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accpt_mssg)).'</div><div class="go_stage_message">
+						'.do_shortcode(wpautop($completion_message)).'</div>';
 						if ($mastery_active) {
 							if ($test_m_active) {
 								if ($test_m_num > 1) {
@@ -398,9 +401,9 @@ function go_task_shortcode($atts, $content = null) {
 						} else {
 							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 							if($next_post_in_chain && !$last_in_chain){
-								echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain;
+								echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
 							}else{
-								echo $custom_fields['go_mta_final_chain_message'][0];	
+								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 							}
 							echo '</div>';
 						}
@@ -408,13 +411,13 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Mastered
 					case 4:  
-						echo'<div id="go_content">'. do_shortcode(wpautop($accpt_mssg)).do_shortcode(wpautop($completion_message)).do_shortcode(wpautop($mastery_message));
+						echo'<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accpt_mssg)).'</div>'.'<div class="go_stage_message">'.do_shortcode(wpautop($completion_message)).'</div><div class="go_stage_message">'.do_shortcode(wpautop($mastery_message)).'</div>';
 						if ($repeat == 'on') {
 							if($task_count < $repeat_amount || $repeat_amount == 0){ // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 								echo '<div id="repeat_quest">
-										<div id="go_repeat_clicked" style="display:none;">'
+										<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
 											.do_shortcode(wpautop($repeat_message)).
-											'<button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));" repeat="on">'
+											'</div><button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));" repeat="on">'
 												.go_return_options('go_fourth_stage_button')." Again". 
 											'</button>
 											<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
@@ -434,9 +437,9 @@ function go_task_shortcode($atts, $content = null) {
 							echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 						}
 						if($next_post_in_chain && !$last_in_chain){
-							echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain;
+							echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
 						}else{
-							echo $custom_fields['go_mta_final_chain_message'][0];	
+							echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 						}
 						echo '</div>';
 				}
@@ -1701,12 +1704,12 @@ function task_change_stage() {
 	// every case 1 will be output and so will ever case after it, until it hits the end of the switch.
 	switch ($status) {
 		case 1:
-			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false)).
+			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>'.
 			' <button id="go_button" status="2" onclick="task_stage_change();this.disabled=true;">'
 			.go_return_options('go_second_stage_button').'</button></div>';
 			break;
 		case 2:
-			echo '<div id="new_content">'.do_shortcode(wpautop($accpt_mssg, false));
+			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>';
 			if ($test_active) {
 				if ($test_num > 1) {
 					for ($i = 0; $i < $test_num; $i++) {
@@ -1731,8 +1734,8 @@ function task_change_stage() {
 			}
 			break;
 		case 3:
-			echo do_shortcode(wpautop($accpt_mssg, false)).'<div id="new_content">'
-			.do_shortcode(wpautop($completion_message));
+			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>'.'<div id="new_content"><div class="go_stage_message">'
+			.do_shortcode(wpautop($completion_message)).'</div>';
 			if ($mastery_active) {
 				if ($test_m_active) {
 					if ($test_m_num > 1) {
@@ -1761,25 +1764,25 @@ function task_change_stage() {
 			} else {
 				echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 				if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
-					echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a>';
+					echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
 				}else{
-					echo $custom_fields['go_mta_final_chain_message'][0];	
+					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 				}
 				echo '</div>';
 			}
 			break;
 		case 4:
-			echo do_shortcode(wpautop($accpt_mssg, false)).do_shortcode(wpautop($completion_message)).
-			'<div id="new_content">'.do_shortcode(wpautop($mastery_message));
+			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div><div class="go_stage_message">'.do_shortcode(wpautop($completion_message)).
+			'</div><div id="new_content"><div class="go_stage_message">'.do_shortcode(wpautop($mastery_message)).'</div>';
 			// if the task can be repeated...
 			if ($repeat == 'on') {
 				// if the number of times that the page has been repeated is less than the total amount of repeats allowed OR if the 
 				// total repeats allowed is equal to zero (infinte amount allowed)...
 				if ($task_count < $repeat_amount || $repeat_amount == 0) {
 					echo '<div id="repeat_quest">
-							<div id="go_repeat_clicked" style="display:none;">'
+							<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
 								.do_shortcode(wpautop($repeat_message)).
-								'<button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));" repeat="on">'
+								'</div><button id="go_button" status="4" onclick="go_repeat_hide(jQuery(this));" repeat="on">'
 									.go_return_options('go_fourth_stage_button')." Again".
 								'</button>
 								<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
@@ -1803,9 +1806,9 @@ function task_change_stage() {
 				echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 			}
 			if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
-				echo 'Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a>';
+				echo '<div class="go_chain_message"><p>Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
 			}else{
-				echo $custom_fields['go_mta_final_chain_message'][0];	
+				echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 			}
 			echo '</div>';
 	}
