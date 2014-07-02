@@ -241,10 +241,10 @@ function go_task_shortcode($atts, $content = null) {
 		if($custom_fields['chain'][0] != null && $user_ID != 0){
 			
 			$current_position_in_chain = get_post_meta($id, 'chain_position', true);
-			$chain = get_the_terms($id, 'task_chains');
+			$chain_tax = get_the_terms($id, 'task_chains');
 			
 			//Grab chain object for this post
-			$chain = array_shift(array_values($chain));
+			$chain = array_shift(array_values($chain_tax));
 			//Grab all posts in the current chain in order
 			$posts_in_chain = get_posts(array(
 				'post_type' => 'tasks',
@@ -252,12 +252,13 @@ function go_task_shortcode($atts, $content = null) {
 				'term' => $chain->name,
 				'order' => 'ASC',
 				'meta_key' => 'chain_position',
-				'orderby' => 'meta_value_num'
+				'orderby' => 'meta_value_num',
+				'posts_per_page' => '-1'
 			));
 
 			// Loop through each one and make array of their ids
 			foreach($posts_in_chain as $post_in_chain){
-				$post_ids_in_chain[] = $post_in_chain->ID;	
+				$post_ids_in_chain[] = $post_in_chain->ID;
 			}
 			
 			// Setup next task in chain 

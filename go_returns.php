@@ -56,7 +56,18 @@ function go_display_user_focuses($user_id){
 
 function go_return_task_amount_in_chain($chain){
 	global $wpdb;
-	$count = $wpdb->query("SELECT * FROM `".$wpdb->postmeta."` WHERE meta_key = 'chain' and meta_value = '".$chain."'");
+	$posts_in_chain = get_posts(array(
+		'post_type' => 'tasks',
+		'post_status' => 'publish',
+		'taxonomy' => 'task_chains',
+		'term' => $chain,
+		'posts_per_page' => '-1'
+	));
+	$published = array();
+	foreach ($posts_in_chain as $value) {
+		array_push($published, $value->ID);
+	}
+	$count = count($published);
 	return $count;
 }
 ?>

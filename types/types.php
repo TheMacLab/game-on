@@ -244,7 +244,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'desc' => 'Enter a message to be displayed after the <strong>final</strong> '.strtolower(go_return_options('go_tasks_name')).' in this '.strtolower(go_return_options('go_tasks_name')).' chain has been fully finished',
 				'id' => $prefix.'final_chain_message',
 				'type' => 'text'
-
 			),
 			array(
 				'name' => go_return_options('go_tasks_name').' Shortcode'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/taskShortcode.mp4'),
@@ -1275,78 +1274,176 @@ function go_pick_order_of_chain(){
 		$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')));
 		$posts_in_chain = get_posts(array(
 			'post_type' => 'tasks',
+			'post_status' => 'publish',
 			'taxonomy' => 'task_chains',
 			'term' => $chain->name,
 			'order' => 'ASC',
 			'meta_key' => 'chain_position',
-			'orderby' => 'meta_value_num'
+			'orderby' => 'meta_value_num',
+			'posts_per_page' => '-1'
 		));
 		
 		?>
         <ul id="go_task_order_in_chain">
 			<?php
-            foreach($posts_in_chain as $post){
-                echo '<li class="go_task_in_chain" post_id="'.$post->ID.'">'.$post->post_title.'</li>';
+            foreach($posts_in_chain as $post => $obj){
+            	echo '<li class="go_task_in_chain" post_id="'.$obj->ID.'">'.$obj->post_title.'</li>';
             }
             ?>
 		</ul>
         <script type="text/javascript">
-		jQuery('document').ready(function(e) {
-           jQuery('#go_task_order_in_chain').sortable({
-			   axis: "y", 
-			   stop: function(event, ui){
-				   var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
-				   var order = {};
-				   var chain = '<?php echo $chain->name;?>';
-				   var position = 1;
-				   jQuery('.go_task_in_chain').each(function(i, el){
-					   order[position] = jQuery(this).attr('post_id');
-					   position++;
-				   });
-				   jQuery.ajax({
-					   url: go_ajaxurl,
-					   type: 'POST',
-					   data: {
-						   action: 'go_update_task_order',
-						   order: order,
-						   chain: chain
-					   }
-				   });   
-			   }
-			}); 
-        });
+			jQuery('document').ready(function(e) {
+				var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+				var post_id = "<?php echo $task_id; ?>";
+	           	jQuery('#go_task_order_in_chain').sortable({
+				   	axis: "y", 
+				   	stop: function (event, ui) {
+					  	var order = [];
+					  	var chain = '<?php echo $chain->name;?>';
+					  	jQuery('.go_task_in_chain').each(function(i, el){
+							order[i+1] = jQuery(this).attr('post_id');
+					  	});
+					  	jQuery.ajax({
+						   	url: go_ajaxurl,
+						   	type: 'POST',
+						   	data: {
+								action: 'go_update_task_order',
+								order: order,
+								chain: chain,
+								post_id: "<?php echo $task_id; ?>",
+						   	}
+					   	}); 
+				   }
+				});
+
+				jQuery('input#publish').click(function(event, skip) {
+					// The default value for skip is false, this way the post's custom metadata "chain_position" will always be updated.
+					// The first time this fucntion is called, skip will be undefined.
+					if (typeof(skip) === undefined) {
+						skip = false;
+					}
+					// If skip is false, prevent the page from saving and update the metadata value "chain_position".
+					if (!skip) {
+						// Prevent the default functionality (saving).
+						event.preventDefault();
+						// Get the order of the task chain from the "Order of Tasks in Chain" meta box.
+						var order = [];
+						jQuery('.go_task_in_chain').each(function(i, el){
+							order[i+1] = jQuery(this).attr('post_id');
+					  	});
+						// Get the position of this task in the chain and get the current value of the meta value "chain_position".
+						// Compare them and update the meta value if they are not equal and the task id does exist in the chain.
+						var n_position = order.indexOf(post_id);
+						var c_position = jQuery("#the-list .left").children("input[value='chain_position']").first().parent('td.left').siblings("td").children("textarea").text();
+						if (n_position != c_position && n_position != -1) {
+							jQuery("#the-list .left").children("input[value='chain_position']").first().parent('td.left').siblings("td").children("textarea").text(n_position);
+						}
+						// Trigger the click event again, and pass it a true value for skip so that the task will resume normal function.
+						jQuery('input#publish').trigger('click', [true]);
+					}
+				});
+	        });
 		</script>
         <?php
 	}
 }
 
-add_action('save_post', 'go_add_new_task_in_chain');
-function go_add_new_task_in_chain(){
-	$task_id = get_the_id();
-	if(get_post_type($task_id) == 'tasks'){
-		if(get_the_terms($task_id, 'task_chains')){
-			$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')))->name;
-		}
-		if($chain && go_return_task_amount_in_chain($chain)){
-			$position = go_return_task_amount_in_chain($chain) + 1;
-		}
-		add_post_meta($task_id, 'chain', $chain, true);
-		add_post_meta($task_id, 'chain_position', $position, true);
-	}
-}
-
-function go_update_task_order(){
+function go_update_task_order () {
+	global $wpdb;
 	$order = $_POST['order'];
 	$chain = $_POST['chain'];
+	$id = $_POST['post_id'];
 	foreach($order as $key => $value){
 		add_post_meta($value, 'chain', $chain, true);
 		update_post_meta($value, 'chain_position', $key);
 	}
-	die();	
+}
+
+add_action('transition_post_status', 'go_add_new_task_in_chain', 10, 3);
+function go_add_new_task_in_chain ($new_status, $old_status, $post) {
+	$task_id = $post->ID;
+	if (get_post_type($task_id) == 'tasks') {
+		$task_chains = get_the_terms($task_id, 'task_chains');
+		if (!empty($task_chains)) {
+			$chain = array_shift(array_values($task_chains))->name;
+		}
+
+		// Check if task is new, is a published task that is being updated, or if the task is being deleted and update the
+		// task chain list based on the scenario.
+		if ($new_status == 'publish' && $old_status != 'publish') {	
+			
+			// If the new task contains the taxonomy "task_chains", grab the name of the first chain it is in.
+			if (get_the_terms($task_id, 'task_chains')) {
+				$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')))->name;
+			}
+			
+			// Get the current number of tasks in the given chain.
+			$count = go_return_task_amount_in_chain($chain);
+			
+			// If the chain is not empty and go_return_task_amount_in_chain() returns a non-null value,
+			// set $pos to the number of tasks plus one and then update the 'chain' and 'chain_position' meta values
+			// of the current post.
+			if (!empty($chain) && !empty($count)) {
+				$end_pos = $count + 1;
+				update_post_meta($task_id, 'chain', $chain, true);
+				update_post_meta($task_id, 'chain_position', $end_pos, true);
+			}
+		} else if ($new_status == 'publish' && $old_status == 'publish') {
+
+			// Get the current meta position in the database for this task as a string.
+			$c_position = get_post_meta($task_id, 'chain_position', true);
+			
+			// Get a list of all the tasks in this chain and order them by chain position.
+			$other_posts = get_posts(array(
+				'post_type' => 'tasks',
+				'post_status' => 'publish',
+				'taxonomy' => 'task_chains',
+				'term' => $chain,
+				'order' => 'ASC',
+				'meta_key' => 'chain_position',
+				'orderby' => 'meta_value_num',
+				'posts_per_page' => '-1'
+			));
+			
+			// Pull out the ids for the tasks, for each task, update the order so that the first task always has an index of 1.
+			foreach ($other_posts as $pos => $post) {
+				$id = $post->ID;
+				if ($id != $task_id) {
+					update_post_meta($id, 'chain_position', ($pos + 1));
+				} else {
+					if (!empty($c_position)) {
+						update_metadata('post', $task_id, 'chain_position', ($pos + 1));
+					} else {
+						$end_pos = go_return_task_amount_in_chain($chain) + 1;
+						update_metadata('post', $task_id, 'chain_position', $end_pos);
+					}
+				}
+			}
+		} else if ($new_status == 'trash' && $old_status != 'trash') {
+
+			// Get a list of all the tasks in this chain and order them by chain position.
+			$other_posts = get_posts(array(
+				'post_type' => 'tasks',
+				'post_status' => 'publish',
+				'taxonomy' => 'task_chains',
+				'term' => $chain,
+				'order' => 'ASC',
+				'meta_key' => 'chain_position',
+				'orderby' => 'meta_value_num',
+				'posts_per_page' => '-1'
+			));
+			
+			// Pull out the ids for the tasks, for each task, update the order so that the first task always has an index of 1.
+			foreach ($other_posts as $pos => $post) {
+				$id = $post->ID;
+				update_post_meta($id, 'chain_position', ($pos + 1));
+			}
+		}
+	}
 }
 
 add_action('save_post', 'go_final_chain_message');
-function go_final_chain_message(){
+function go_final_chain_message () {
 	$task_id = get_the_id();
 	$custom = get_post_custom($task_id);
 	if(get_post_type($task_id) == 'tasks'){
@@ -1356,9 +1453,9 @@ function go_final_chain_message(){
 				'post_type' => 'tasks',
 				'taxonomy' => 'task_chains',
 				'term' => $chain->name,
-				'order' => 'ASC',
 				'meta_key' => 'chain_position',
-				'orderby' => 'meta_value_num'
+				'orderby' => 'meta_value_num',
+				'posts_per_page' => '-1'
 			));
 			$message = $custom['go_mta_final_chain_message'][0];
 			foreach($posts_in_chain as $post){
@@ -1369,15 +1466,17 @@ function go_final_chain_message(){
 }
 
 add_action('post_submitbox_misc_actions', 'go_clone_task_ajax');
-function go_clone_task_ajax() {
+function go_clone_task_ajax () {
     global $post;
-    // Display the following only when a task is being edited...
+
+    // When the "clone" button is pressed send an ajax call to the go_clone_task() function to
+    // clone the task using the sent task id.
     if (get_post_type($post) == 'tasks') {
         echo '
-        <div class="misc-pub-section misc-pub-section-last">
+        <div class="misc-pub-section misc-pub-section-last">        
         	<input id="go-button-clone" class="button button-large alignright" type="button" value="Clone" />
         </div>
-        <script type="text/javascript">
+        <script type="text/javascript">        	
         	function clone_post_ajax() {
         		jQuery("input#go-button-clone").click(function() {
 	        		jQuery.ajax({
@@ -1404,13 +1503,17 @@ function go_clone_task_ajax() {
     }
 }
 
-function go_clone_task() {
+function go_clone_task () {
+
 	// Grab the post id from the ajax call and use it to grab data from the original post.
 	$post_id = $_POST['post_id'];
+
 	// Get the post's title, permalink, publishing and modification dates, etc.
 	$post_data = get_post($post_id, ARRAY_A);
+
 	// Grab the original post's meta data.
 	$post_custom = get_post_custom($post_id);
+
 	// Grab the original post's taxonomies.
 	$terms = get_the_terms($post_id, 'task_chains');
 	$foci = get_the_terms($post_id, 'task_focus_categories');
@@ -1419,6 +1522,7 @@ function go_clone_task() {
 	$term_ids = array();
 	$focus_ids = array();	
 	$cat_ids = array();
+
 	// Put the ids of the taxonomies that the original post was assigned to into arrays.
 	for ($i = 0; $i < count($terms); $i++) {
 		array_push($term_ids, $terms[$i]->term_id);
@@ -1435,6 +1539,7 @@ function go_clone_task() {
 	// Change the post status to "draft" and leave the guid up to Wordpress.
 	$post_data['post_status'] = 'draft';
 	$post_data['guid'] = '';
+
 	// Remove some other data to allow the post to be easily cloned.
 	unset($post_data['ID']);
 	unset($post_data['post_title']);
@@ -1454,30 +1559,27 @@ function go_clone_task() {
 
 	// If the clone was successfully created continue, otherwise return 0.
 	if (!empty($clone_id)) {
+
 		// Setup the url to the cloned post.
-		$url = get_site_url()."/wp-admin/post.php?post=".$clone_id."&action=edit";
-		// Loop through the original post's meta data and add it to the clone's.
+		$url = get_site_url()."/wp-admin/post.php?post={$clone_id}&action=edit";
+		
+		// Add the original post's meta data to the clone.
 		foreach ($post_custom as $key => $value) {
 			for ($i = 0; $i < count($value); $i++) {
-				// Unserialize the original post's meta data, this is so that the task test meta data doesn't get serialized twice.
 				$uns = unserialize($value[$i]);
-				// If the unserialize function took in a non-string or non-serializable variable it will return FALSE.
 				if ($uns !== false) {
 					add_post_meta($clone_id, $key, $uns, true);
 				} else {
-					// If we're dealing with the "chain_position" meta field, cast the string (all the meta values should be strings) as an int and
-					// increment it before assigning it back to the clone as a string; otherwise, just add the value to the clone.
 					if ($key === 'chain_position') {
-						$val = (int)$value[$i] + 1;
-						$pos = (string)$val;
-						add_post_meta($clone_id, $key, $pos, true);
+						$chain = $post_custom["chain"][0];
+						$end_pos = go_return_task_amount_in_chain($chain) + 1;
+						add_post_meta($clone_id, $key, $end_pos, true);
 					} else {
 						add_post_meta($clone_id, $key, $value[$i], true);
 					}
 				}
 			}
 		}
-		// Return the url of the cloned post's edit page.
 		echo $url;
 	} else {
 		echo 0;

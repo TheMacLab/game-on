@@ -221,24 +221,52 @@ if (jQuery('#go_mta_task_repeat').prop('checked')) {
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').hide('slow');
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount').hide('slow');
 }
-jQuery(document).on('click', 'input[name="tax_input[task_chains][]"]', function(){
+var is_final_task = 
+<?php 
+	$id = get_the_id();
+	$chain = get_post_meta($id, "chain", true);
+	if (!empty($chain)) {
+		$posts_in_chain = get_posts(array(
+			'post_type' => 'tasks',
+			'taxonomy' => 'task_chains',
+			'term' => $chain,
+			'order' => 'ASC',
+			'meta_key' => 'chain_position',
+			'orderby' => 'meta_value_num',
+			'posts_per_page' => '-1'
+		));
+		$last_task = end($posts_in_chain)->ID;
+		if ($id == $last_task) {
+			echo '"true"';
+		} else {
+			echo '"false"';
+		}
+	} else {
+		echo '"false"';
+	}
+?>;
+if (is_final_task == "true") {
+	jQuery(document).on('click', 'input[name="tax_input[task_chains][]"]', function(){
+		jQuery('input[name="tax_input[task_chains][]"]').each(function(){
+			if(jQuery(this).prop('checked')){
+				jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').show('slow');
+				return false;
+			}else{
+				jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').hide('slow');
+			}
+		});
+	});
 	jQuery('input[name="tax_input[task_chains][]"]').each(function(){
 		if(jQuery(this).prop('checked')){
-			jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').show('slow');
+			jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').show('slow');
 			return false;
 		}else{
-			jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').hide('slow');
+			jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').hide('slow');
 		}
 	});
-});
-jQuery('input[name="tax_input[task_chains][]"]').each(function(){
-	if(jQuery(this).prop('checked')){
-		jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').show('slow');
-		return false;
-	}else{
-		jQuery('.cmb-type-text.cmb_id_go_mta_final_chain_message').hide('slow');
-	}
-});
+} else {
+	jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').hide();
+}
 </script>
 <?php
 }
