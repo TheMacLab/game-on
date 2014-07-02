@@ -63,18 +63,18 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 	background-color: #ff6600;
 }
 #go_messages_bar{
-background-color: red;
-border: 2px solid white;
-border-radius: 12px;
-box-shadow: 1px 1px 1px black;
-color: white;
-font: bold 15px/13px Helvetica, Verdana, Tahoma;
-height: 16px;
-padding: 0px 1px 0px 1px;
-text-align: center;
-min-width: 14px;
-line-height:16px;
-	}
+	background-color: red;
+	border: 2px solid white;
+	border-radius: 12px;
+	box-shadow: 1px 1px 1px black;
+	color: white;
+	font: bold 15px/13px Helvetica, Verdana, Tahoma;
+	height: 16px;
+	padding: 0px 1px 0px 1px;
+	text-align: center;
+	min-width: 14px;
+	line-height:16px;
+}
 #go_admin_bar_task_search_input {
 	height: 24px;
 	font-size: 13px;

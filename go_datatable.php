@@ -108,6 +108,7 @@ global $default_role;
 	'go_points_name' => 'Experience',
 	'go_admin_bar_display_switch' => 'On',
 	'go_admin_bar_add_switch' => 'Off',
+	'go_admin_bar_user_redirect' => 'On',
 	'go_repeat_button' => 'Repeat Quest',
 	'go_class_a_name' => 'Period',
 	'go_class_b_name' => 'Computer',

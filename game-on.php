@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.8.7
+Version: 1.8.8
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -112,6 +112,7 @@ add_action('check_custom', 'check_custom');
 add_action('check_values', 'check_values');
 add_action('go_message_user', 'go_message_user');
 add_filter('jetpack_enable_open_graph', '__return_false');
+add_action('login_redirect', 'go_user_redirect', 10, 3);
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);
@@ -146,5 +147,26 @@ function check_values($req = null, $cur = null){
 	} else{
 		return false;
 	}
+}
+
+function go_user_redirect ($redirect_to, $request, $user) {
+    if (get_option('go_admin_bar_user_redirect', true)) {
+    	$roles = $user->roles;
+    	if (is_array($roles)) {
+	    	if (in_array('administrator', $roles)) {
+	    		return admin_url();
+	    	} else {
+	    		return site_url();
+	    	}
+	    } else {
+	    	if ($roles == 'administrator') {
+	    		return admin_url();
+	    	} else {
+	    		return site_url();
+	    	}
+	    }
+    } else {
+    	return $redirect_to;
+    }
 }
 ?>
