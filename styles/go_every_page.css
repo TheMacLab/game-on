@@ -112,16 +112,15 @@ input.go_test_field_rm {
 	color: red;
 }
 
-.go_task_in_chain {
-	cursor: -webkit-grab; 
+.ui-sortable {
+	cursor: move;
+	cursor: -webkit-grab;
 	cursor: -moz-grab;
-	cursor: grab;
 }
 
-.go_task_in_chain:active {
+.ui_sortable_item {
 	cursor: -webkit-grabbing;
 	cursor: -moz-grabbing;
-	cursor: grabbing;
 }
 
 /* Tasks Style | Front-end */

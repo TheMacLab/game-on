@@ -1,5 +1,10 @@
 <?php
 function task_edit_jquery() {
+	$id = get_the_id();
+	$task_chains = get_the_terms($id, 'task_chains');
+	if (!empty($task_chains)) {
+		$chain = array_shift(array_values($task_chains))->name;
+	}
 ?>
 <script type="text/javascript">
 var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
@@ -17,6 +22,20 @@ function go_add_decay_table_row(){
 		}
 	}
 	count++;
+}
+
+var in_chain = 
+<?php
+	if (!empty($chain)) {
+		echo "true";	
+	} else {
+		echo "false";
+	}
+?>
+;
+
+if (!in_chain) {
+	jQuery('tr.cmb-type-go_pick_order_of_chain.cmb_id_go_mta_chain_order').hide();
 }
 
 jQuery('#go_mta_complete_lock').click(function(){
@@ -223,11 +242,10 @@ if (jQuery('#go_mta_task_repeat').prop('checked')) {
 }
 var is_final_task = 
 <?php 
-	$id = get_the_id();
-	$chain = get_post_meta($id, "chain", true);
 	if (!empty($chain)) {
 		$posts_in_chain = get_posts(array(
 			'post_type' => 'tasks',
+			'post_status' => 'publish',
 			'taxonomy' => 'task_chains',
 			'term' => $chain,
 			'order' => 'ASC',
@@ -237,15 +255,15 @@ var is_final_task =
 		));
 		$last_task = end($posts_in_chain)->ID;
 		if ($id == $last_task) {
-			echo '"true"';
+			echo "true";
 		} else {
-			echo '"false"';
+			echo "false";
 		}
 	} else {
-		echo '"false"';
+		echo "false";
 	}
 ?>;
-if (is_final_task == "true") {
+if (is_final_task) {
 	jQuery(document).on('click', 'input[name="tax_input[task_chains][]"]', function(){
 		jQuery('input[name="tax_input[task_chains][]"]').each(function(){
 			if(jQuery(this).prop('checked')){

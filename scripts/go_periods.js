@@ -1,4 +1,12 @@
-jQuery('#sortable_go_class_a').sortable({axis:"y"});
+jQuery('#sortable_go_class_a').sortable({
+	axis: "y",
+	start: function(e, ui) {
+		jQuery(ui.item).addClass('ui_sortable_item');
+	},
+	stop: function(e, ui) {
+		jQuery(ui.item).removeClass("ui_sortable_item");
+	}
+});
 function go_class_a_new_input(){
 	jQuery('#sortable_go_class_a').append(' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input id="go_class_a_input" type="text" value=""/></li>');
 	}
@@ -19,7 +27,15 @@ function go_class_a_save(){
 	
 	
 	
-jQuery('#sortable_go_class_b').sortable({axis:"y"});
+jQuery('#sortable_go_class_b').sortable({
+	axis: "y",
+	start: function(e, ui) {
+		jQuery(ui.item).addClass("ui_sortable_item");
+	},
+	stop: function(e, ui) {
+		jQuery(ui.item).removeClass("ui_sortable_item");
+	}
+});
 function go_class_b_new_input(){
 	jQuery('#sortable_go_class_b').append(' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input id="go_class_b_input" type="text" value=""/></li>');
 	}
@@ -36,7 +52,15 @@ function go_class_b_save(){
 	});
 	}
 	
-jQuery('#sortable_focus').sortable({axis:"y"});
+jQuery('#sortable_focus').sortable({
+	axis: "y",
+	start: function(e, ui) {
+		jQuery(ui.item).addClass("ui_sortable_item");
+	},
+	stop: function(e, ui) {
+		jQuery(ui.item).removeClass("ui_sortable_item");
+	}
+});
 function go_focus_new_input(){
 	jQuery('#sortable_focus').append(' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><input id="go_focus" type="text" value=""/></li>');
 }
@@ -54,8 +78,16 @@ function go_focus_save(){
 		}
 	});
 }
-	
-jQuery('#sortable_go_presets').sortable({axis:"y"});
+
+jQuery('#sortable_go_presets').sortable({
+	axis: "y",
+	start: function(e, ui) {
+		jQuery(ui.item).addClass("ui_sortable_item");
+	},
+	stop: function(e, ui) {
+		jQuery(ui.item).removeClass("ui_sortable_item");
+	}
+});
 
 function go_preset_reset(){
 	var presetsObj = {

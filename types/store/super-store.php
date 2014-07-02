@@ -101,16 +101,5 @@ function go_new_item_permalink( $arg, $post_id ){
 	return $arg;
 } 
 add_filter( 'get_sample_permalink_html', 'go_new_item_permalink',5,2 );
-} else {
-function go_new_item_permalink( $arg, $post_id ){
-	global $is_resetable;
-	if( ereg('edit-slug', $arg) ){
-		$is_resetable = true;
-		$go_store_id = $_GET["post"];
-		$arg .= '<span id="edit-slug button button-small hide-if-no-js"><a href="javascript:void(0)" onclick="document.getElementById(\'go_lightbox\').style.display=\'block\';document.getElementById(\'fade\').style.display=\'block\'" class="button button-small" >Insert Store</a></span> ';
-	}
-	return $arg;
-} 
-add_filter( 'get_sample_permalink_html', 'go_new_item_permalink',5,2 );
 }
 ?>
