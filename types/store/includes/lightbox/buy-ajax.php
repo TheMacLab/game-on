@@ -92,8 +92,12 @@ function go_buy_item(){
 			$item_hyperlink = '<a target="_blank" href="'.$item_url.'">Grab your loot!</a>';
 			echo $item_hyperlink;
 		} else{
-			echo 'Purchased';	
+			echo "Purchased";
 		}
+		$receipt = go_mail_item_reciept($user_id, $post_id, $req_currency, $req_points, $req_minutes, $qty, $recipient_id);
+		if (!empty($receipt)) {
+			echo $receipt;
+		}		
 	} else{
 		$enough_array = array('currency' => $enough_currency, 'points' => $enough_points, 'time' => $enough_minutes);
 		$errors = array();
@@ -106,5 +110,42 @@ function go_buy_item(){
 		echo 'Need more '.substr($errors,0,strlen($errors));
 	}
 	die();
+}
+
+function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $req_minutes, $qty, $recipient_id = null) {
+	global $go_plugin_dir;
+	$currency = ucwords(go_return_options('go_currency_name'));
+	$points = ucwords(go_return_options('go_points_name'));
+	$item_title = get_the_title($item_id);
+	// For future use, when we give the option to rename minutes:
+	// $token = go_return_options('go_token_name');
+
+	$user_info = get_userdata($user_id);
+	$username = $user_info->user_login;
+	$user_full_name = "{$user_info->first_name} {$user_info->last_name}";
+	$user_email = $user_info->user_email;
+	$user_role = $user_info->roles;
+
+	$to = get_option('go_admin_email','');
+	require("{$go_plugin_dir}/mail/class.phpmailer.php");
+	$mail = new PHPMailer();
+	$mail->From = "no-reply@go.net";
+	$mail->FromName = $user_full_name;
+	$mail->AddAddress($to);
+	$mail->Subject = "Purchase: {$item_title} ({$qty}) | {$user_full_name} {$username}";
+	if (!empty($recipient_id)) {
+		$recipient = get_userdata($recipient_id);
+		$recipient_full_name = "{$recipient->first_name} {$recipient->last_name}";
+		$recipient_username = $recipient->user_login;
+		$mail->Subject .= " | {$recipient_full_name} {$recipient_username}";
+	}
+	$mail->Body = "{$user_email}\n\n{$currency} Spent: {$req_currency}\n\n{$points} Spent: {$req_points}\n\nTime Spent: {$req_minutes}";
+	$mail->WordWrap = 50;
+
+	if (!$mail->Send()) {
+		if ((is_array($user_role) && in_array('administrator', $user_role)) || $user_role === 'administrator') {
+			return "<div id='go_mailer_error_msg'>{$mail->ErrorInfo}</div>";
+		}
+	}
 }
 ?>

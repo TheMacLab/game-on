@@ -63,11 +63,7 @@ function go_return_task_amount_in_chain($chain){
 		'term' => $chain,
 		'posts_per_page' => '-1'
 	));
-	$published = array();
-	foreach ($posts_in_chain as $value) {
-		array_push($published, $value->ID);
-	}
-	$count = count($published);
+	$count = count($posts_in_chain);
 	return $count;
 }
 ?>

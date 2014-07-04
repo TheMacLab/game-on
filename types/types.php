@@ -257,11 +257,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
-				'name' => 'Shortcode'.go_task_opt_help('shortcode', '', 'http://maclab.guhsd.net/go/video/store/shortcode.mp4'),
-				'desc' => 'Insert this shortcode where you want the task to appear.',
-				'type' => 'go_store_shortcode'
-			),
-			array(
 				'name' => 'Penalty Switch'.go_task_opt_help('penalty_switch', '', 'http://maclab.guhsd.net/go/video/store/penaltySwitch.mp4'),
 				'desc' => 'Allow user\'s currency to go negative when purchasing this item.',
 				'id' => $prefix . 'penalty_switch',
@@ -516,8 +511,8 @@ function go_test_field($field_args) {
 				<tr id='go_test_field_input_row_".$i."' class='go_test_field_input_row'>
 					<td>
 						<select id='go_test_field_select_".$i."' class='go_test_field_input_select' name='go_test_field_select[]' onchange='update_checkbox_type(this);'>
-						  <option value='radio' class='go_test_field_input_option'>Radio</option>
-						  <option value='checkbox' class='go_test_field_input_option'>Checkbox</option>
+						  <option value='radio' class='go_test_field_input_option'>Multiple Choice</option>
+						  <option value='checkbox' class='go_test_field_input_option'>Multiple Select</option>
 						</select>";
 						if (!empty($test_field_input_question)) {
 							echo "<br/><br/><input class='go_test_field_input_question' name='go_test_field_input_question[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
@@ -564,8 +559,8 @@ function go_test_field($field_args) {
 				<tr id='go_test_field_input_row_0' class='go_test_field_input_row'>
 					<td>
 						<select id='go_test_field_select_0' class='go_test_field_input_select' name='go_test_field_select[]' onchange='update_checkbox_type(this);'>
-							<option value='radio' class='go_test_field_input_option'>Radio</option>
-							<option value='checkbox' class='go_test_field_input_option'>Checkbox</option>
+							<option value='radio' class='go_test_field_input_option'>Multiple Choice</option>
+							<option value='checkbox' class='go_test_field_input_option'>Multiple Select</option>
 						</select>
 						<br/><br/>
 						<input class='go_test_field_input_question' name='go_test_field_input_question[]' placeholder='Shall We Play a Game?' type='text' />
@@ -720,7 +715,7 @@ function go_test_field($field_args) {
 		function add_block (obj) {
 			block_num = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row').length;
 			jQuery('#go_test_field_block_count').attr('value', (block_num + 1));
-			var field_block = "<tr id='go_test_field_input_row_"+block_num+"' class='go_test_field_input_row'><td><select id='go_test_field_select_"+block_num+"' class='go_test_field_input_select' name='go_test_field_select[]' onchange='update_checkbox_type(this);'><option value='radio' class='go_test_field_input_option'>Radio</option><option value='checkbox' class='go_test_field_input_option'>Checkbox</option></select><br/><br/><input class='go_test_field_input_question' name='go_test_field_input_question[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_"+block_num+"' type='"+block_type+"' onchange='update_checkbox_value(this);' /><input class='go_test_field_input_checkbox_hidden' name='go_test_field_values["+block_num+"][1][]' type='hidden' /><input class='go_test_field_input' name='go_test_field_values["+block_num+"][0][]' placeholder='Yes' type='text' oninput='update_checkbox_value(this);' oncut='update_checkbox_value(this);' onpaste='update_checkbox_value(this);' /></li><li><input class='go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_"+block_num+"' type='"+block_type+"' onchange='update_checkbox_value(this);' /><input class='go_test_field_input_checkbox_hidden' name='go_test_field_values["+block_num+"][1][]' type='hidden' /><input class='go_test_field_input' name='go_test_field_values["+block_num+"][0][]' placeholder='No' type='text' oninput='update_checkbox_value(this);' oncut='update_checkbox_value(this);' onpaste='update_checkbox_value(this);' /></li><input class='go_test_field_add go_test_field_add_input_button' type='button' value='+' onclick='add_field(this);'/></ul><ul><li><input class='go_test_field_rm_row_button' type='button' value='Remove' onclick='remove_block(this);' /><input class='go_test_field_input_count' name='go_test_field_input_count[]' type='hidden' value='2' /></li></ul></td></tr>";
+			var field_block = "<tr id='go_test_field_input_row_"+block_num+"' class='go_test_field_input_row'><td><select id='go_test_field_select_"+block_num+"' class='go_test_field_input_select' name='go_test_field_select[]' onchange='update_checkbox_type(this);'><option value='radio' class='go_test_field_input_option'>Multiple Choice</option><option value='checkbox' class='go_test_field_input_option'>Multiple Select</option></select><br/><br/><input class='go_test_field_input_question' name='go_test_field_input_question[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_"+block_num+"' type='"+block_type+"' onchange='update_checkbox_value(this);' /><input class='go_test_field_input_checkbox_hidden' name='go_test_field_values["+block_num+"][1][]' type='hidden' /><input class='go_test_field_input' name='go_test_field_values["+block_num+"][0][]' placeholder='Yes' type='text' oninput='update_checkbox_value(this);' oncut='update_checkbox_value(this);' onpaste='update_checkbox_value(this);' /></li><li><input class='go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_"+block_num+"' type='"+block_type+"' onchange='update_checkbox_value(this);' /><input class='go_test_field_input_checkbox_hidden' name='go_test_field_values["+block_num+"][1][]' type='hidden' /><input class='go_test_field_input' name='go_test_field_values["+block_num+"][0][]' placeholder='No' type='text' oninput='update_checkbox_value(this);' oncut='update_checkbox_value(this);' onpaste='update_checkbox_value(this);' /></li><input class='go_test_field_add go_test_field_add_input_button' type='button' value='+' onclick='add_field(this);'/></ul><ul><li><input class='go_test_field_rm_row_button' type='button' value='Remove' onclick='remove_block(this);' /><input class='go_test_field_input_count' name='go_test_field_input_count[]' type='hidden' value='2' /></li></ul></td></tr>";
 			jQuery(obj).parent().parent().before(field_block);
 		}
 		function remove_block (obj) {
@@ -881,8 +876,8 @@ function go_test_field_mastery($field_args) {
 				<tr id='go_test_field_input_row_m_".$i."' class='go_test_field_input_row_m'>
 					<td>
 						<select id='go_test_field_select_m_".$i."' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'>
-						  <option value='radio' class='go_test_field_input_option_m'>Radio</option>
-						  <option value='checkbox' class='go_test_field_input_option_m'>Checkbox</option>
+						  <option value='radio' class='go_test_field_input_option_m'>Multiple Choice</option>
+						  <option value='checkbox' class='go_test_field_input_option_m'>Multiple Select</option>
 						</select>";
 						if (!empty($test_field_input_question)) {
 							echo "<br/><br/><input class='go_test_field_input_question_m' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
@@ -929,8 +924,8 @@ function go_test_field_mastery($field_args) {
 				<tr id='go_test_field_input_row_m_0' class='go_test_field_input_row_m'>
 					<td>
 						<select id='go_test_field_select_m_0' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'>
-							<option value='radio' class='go_test_field_input_option_m'>Radio</option>
-							<option value='checkbox' class='go_test_field_input_option_m'>Checkbox</option>
+							<option value='radio' class='go_test_field_input_option_m'>Multiple Choice</option>
+							<option value='checkbox' class='go_test_field_input_option_m'>Multiple Select</option>
 						</select>
 						<br/><br/>
 						<input class='go_test_field_input_question_m' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' />
@@ -1085,7 +1080,7 @@ function go_test_field_mastery($field_args) {
 		function add_block_m (obj) {
 			block_num_m = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_m').length;
 			jQuery('#go_test_field_block_count_m').attr('value', (block_num_m + 1));
-			var field_block = "<tr id='go_test_field_input_row_m_"+block_num_m+"' class='go_test_field_input_row_m'><td><select id='go_test_field_select_m_"+block_num_m+"' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'><option value='radio' class='go_test_field_input_option_m'>Radio</option><option value='checkbox' class='go_test_field_input_option_m'>Checkbox</option></select><br/><br/><input class='go_test_field_input_question_m' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox_m' name='unused_go_test_field_input_checkbox_m_"+block_num_m+"' type='"+block_type_m+"' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m["+block_num_m+"][1][]' type='hidden' /><input class='go_test_field_input_m' name='go_test_field_values_m["+block_num_m+"][0][]' placeholder='Enter An Answer!' type='text' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li><li><input class='go_test_field_input_checkbox_m' name='unused_go_test_field_input_checkbox_m_"+block_num_m+"' type='"+block_type_m+"' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m["+block_num_m+"][1][]' type='hidden' /><input class='go_test_field_input_m' name='go_test_field_values_m["+block_num_m+"][0][]' placeholder='Enter An Answer!' type='text' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li><input class='go_test_field_add go_test_field_add_input_button_m' type='button' value='+' onclick='add_field_m(this);'/></ul><ul><li><input class='go_test_field_rm_row_button_m' type='button' value='Remove' onclick='remove_block_m(this);' /><input class='go_test_field_input_count_m' name='go_test_field_input_count_m[]' type='hidden' value='2' /></li></ul></td></tr>";
+			var field_block = "<tr id='go_test_field_input_row_m_"+block_num_m+"' class='go_test_field_input_row_m'><td><select id='go_test_field_select_m_"+block_num_m+"' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'><option value='radio' class='go_test_field_input_option_m'>Multiple Choice</option><option value='checkbox' class='go_test_field_input_option_m'>Multiple Select</option></select><br/><br/><input class='go_test_field_input_question_m' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox_m' name='unused_go_test_field_input_checkbox_m_"+block_num_m+"' type='"+block_type_m+"' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m["+block_num_m+"][1][]' type='hidden' /><input class='go_test_field_input_m' name='go_test_field_values_m["+block_num_m+"][0][]' placeholder='Enter An Answer!' type='text' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li><li><input class='go_test_field_input_checkbox_m' name='unused_go_test_field_input_checkbox_m_"+block_num_m+"' type='"+block_type_m+"' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m["+block_num_m+"][1][]' type='hidden' /><input class='go_test_field_input_m' name='go_test_field_values_m["+block_num_m+"][0][]' placeholder='Enter An Answer!' type='text' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li><input class='go_test_field_add go_test_field_add_input_button_m' type='button' value='+' onclick='add_field_m(this);'/></ul><ul><li><input class='go_test_field_rm_row_button_m' type='button' value='Remove' onclick='remove_block_m(this);' /><input class='go_test_field_input_count_m' name='go_test_field_input_count_m[]' type='hidden' value='2' /></li></ul></td></tr>";
 			jQuery(obj).parent().parent().before(field_block);
 		}
 		function remove_block_m (obj) {
@@ -1283,7 +1278,7 @@ function go_pick_order_of_chain(){
 		));
 		
 		?>
-        <ul id="go_task_order_in_chain">
+        <ul id="go_task_order_in_chain" class="go_sortable">
 			<?php
             foreach($posts_in_chain as $post => $obj){
             	echo '<li class="go_task_in_chain" post_id="'.$obj->ID.'">'.$obj->post_title.'</li>';
@@ -1297,10 +1292,10 @@ function go_pick_order_of_chain(){
 	           	jQuery('#go_task_order_in_chain').sortable({
 				   	axis: "y", 
 				   	start: function(event, ui) {
-				   		jQuery(ui.item).addClass('ui_sortable_item');
+				   		jQuery(ui.item).addClass('go_sortable_item');
 				   	},
 				   	stop: function (event, ui) {
-				   		jQuery(ui.item).removeClass('ui_sortable_item');
+				   		jQuery(ui.item).removeClass('go_sortable_item');
 					  	var order = [];
 					  	var chain = '<?php echo $chain->name;?>';
 					  	jQuery('.go_task_in_chain').each(function(i, el){
@@ -1371,8 +1366,8 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 			$chain = array_shift(array_values($task_chains))->name;
 		}
 
-		// Check if task is new, is a published task that is being updated, or if the task is being deleted and update the
-		// task chain list based on the scenario.
+		// Check if task is new, is being updated, or being deleted and update the
+		// task chain list appropriately.
 		if ($new_status == 'publish' && $old_status != 'publish') {	
 			
 			// Get the current number of tasks in the given chain.
@@ -1476,42 +1471,70 @@ function go_final_chain_message () {
 	}
 }
 
+add_action('delete_term_taxonomy', 'go_remove_task_chain_from_posts', 10, 1);
+function go_remove_task_chain_from_posts ($term_id) {
+	$term = get_term_by('id', $term_id, 'task_chains');
+	$posts_in_chain = get_posts(array(
+		'post_type' => 'tasks',
+		'taxonomy' => 'task_chains',
+		'meta_key' => 'chain',
+		'posts_per_page' => '-1'
+	));
+	if (!empty($posts_in_chain)) {
+		foreach ($posts_in_chain as $key => $post) {
+			$post_chain_name = get_post_meta($post->ID, 'chain', true);
+			if ($post_chain_name == $term->name) {
+				delete_post_meta($post->ID, 'chain');
+				delete_post_meta($post->ID, 'chain_position');
+				
+				$post_tax = get_the_terms($post->ID, 'task_chains');
+				if (!empty($post_tax)) {
+					$first_chain_name = array_shift($post_tax)->name;
+					$chain_length = go_return_task_amount_in_chain($first_chain_name);
+					add_post_meta($post->ID, 'chain', $first_chain_name);
+					add_post_meta($post->ID, 'chain_position', $chain_length);
+				}
+			}
+		}
+	}
+}
+
 add_action('post_submitbox_misc_actions', 'go_clone_task_ajax');
 function go_clone_task_ajax () {
-    global $post;
+	global $post;
 
-    // When the "clone" button is pressed send an ajax call to the go_clone_task() function to
-    // clone the task using the sent task id.
-    if (get_post_type($post) == 'tasks') {
-        echo '
-        <div class="misc-pub-section misc-pub-section-last">
-        	<input id="go-button-clone" class="button button-large alignright" type="button" value="Clone" />
-        </div>
-        <script type="text/javascript">        	
-        	function clone_post_ajax() {
-        		jQuery("input#go-button-clone").click(function() {
-	        		jQuery.ajax({
-	        			url: "'.get_site_url().'/wp-admin/admin-ajax.php",
-	        			type: "POST",
-	        			data: {
-	        				action: "go_clone_task",
-	        				post_id: '.$post->ID.',
-	        			}, success: function(url) {
-	        				var reg = new RegExp("^(http)");
-	        				var match = reg.test(url);
-	        				if (url != \'\' && match) {
-	        					window.location = url;
-	        				}
-	        			}
-	        		});
+	// When the "clone" button is pressed send an ajax call to the go_clone_task() function to
+	// clone the task using the sent task id.
+	if (get_post_type($post) == 'tasks') {
+		echo '
+		<div class="misc-pub-section misc-pub-section-last">
+			<input id="go-button-clone" class="button button-large alignright" type="button" value="Clone" />
+		</div>
+		<script type="text/javascript">        	
+			function clone_post_ajax() {
+				jQuery("input#go-button-clone").click(function() {
+					jQuery.ajax({
+						url: "'.get_site_url().'/wp-admin/admin-ajax.php",
+						type: "POST",
+						data: {
+							action: "go_clone_task",
+							post_id: '.$post->ID.',
+						}, success: function(url) {
+							var reg = new RegExp("^(http)");
+							var match = reg.test(url);
+							if (url != \'\' && match) {
+								window.location = url;
+							}
+						}
+					});
 				});
-        	}
-        	jQuery(document).ready(function() {
-        		clone_post_ajax();
-        	});
-        </script>
-        ';
-    }
+			}
+			jQuery(document).ready(function() {
+				clone_post_ajax();
+			});
+		</script>
+		';
+	}
 }
 
 function go_clone_task () {

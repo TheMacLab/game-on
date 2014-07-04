@@ -150,7 +150,7 @@ foreach($limit as $key=>$value){
            <div class="opt-box"> 
                   <div class="pa">
         <h4> A </h4>
-       		<ul id="sortable_go_class_a">
+       		<ul id="sortable_go_class_a" class="go_sortable">
        <?php
 	   $class_a = get_option('go_class_a',false);
 	   if($class_a){
@@ -172,7 +172,7 @@ go_jquery_periods();
           
                <div class="pa">
         <h4> B </h4>
-       		<ul id="sortable_go_class_b">
+       		<ul id="sortable_go_class_b" class="go_sortable">
        <?php
 	   $class_b = get_option('go_class_b',false);
 	   if($class_b){
@@ -201,7 +201,7 @@ go_jquery_periods();
         Off:<input type="radio" <?php if(go_return_options('go_focus_switch') == 'Off'){echo 'checked="checked"';} ?>name="go_focus_switch" size="45" value="Off" style="margin-left: 5px;width: 20px;" /><br />
         <strong><?php echo 'List of focuses: '; ?></strong><br />
         <i>Note: Clicking save will add these values as task categories</i>
-        <ul id="sortable_focus">
+        <ul id="sortable_focus" class="go_sortable">
 			<?php 
             $focus = get_option('go_focus');
             if($focus){
@@ -250,7 +250,7 @@ go_jquery_periods();
                   <div class="pa" style="width:46%;">
                   <?php go_opt_help('presets_explanation', 'Preset values for tasks. Values are comma separated and correspond with their task stages. E.g., 1,2,3,4 assigns 1 exp to stage 1, 2 exp to stage 2, etc.', 'http://maclab.guhsd.net/go/video/options/presets.mp4');?><br/>
        
-       		<ul id="sortable_go_presets">
+       		<ul id="sortable_go_presets" class="go_sortable">
        <?php
 	   $presets = get_option('go_presets',false);
 	   if($presets){

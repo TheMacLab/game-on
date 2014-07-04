@@ -990,8 +990,8 @@ function test_point_update() {
 		$passed = 1;
 	}
 
-	if (!preg_match("/[^0-9\-\,\s]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*,\s*)+/", $custom_mods)) {
-		$custom_mods_str = preg_replace("/(\s*,\s*)+/", ", ", $custom_mods);
+	if (!preg_match("/[^0-9\-\,\s\%]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*(\%)*\s*,\s*)+/", $custom_mods)) {
+		$custom_mods_str = preg_replace("/(\s*(\%)*\s*,\s*)+/", ", ", $custom_mods);
 		$custom_mods_array = explode(", ", $custom_mods_str);
 		$mod_array = array();
 		for ($i = 0; $i < count($custom_mods_array); $i++) {
@@ -1066,8 +1066,8 @@ function unlock_stage(){
 		$custom_mods = $custom_fields['go_mta_test_mastery_lock_loot_mod'][0];
 	}
 
-	if (!preg_match("/[^0-9\-\,\s]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*,\s*)+/", $custom_mods)) {
-		$custom_mods_str = preg_replace("/(\s*,\s*)+/", ", ", $custom_mods);
+	if (!preg_match("/[^0-9\-\,\s\%]+/", $custom_mods) && preg_match("/(\-?[0-9]+\s*(\%)*\s*,\s*)+/", $custom_mods)) {
+		$custom_mods_str = preg_replace("/(\s*(\%)*\s*,\s*)+/", ", ", $custom_mods);
 		$custom_mods_array = explode(", ", $custom_mods_str);
 		$mod_array = array();
 		for ($i = 0; $i < count($custom_mods_array); $i++) {

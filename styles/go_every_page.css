@@ -91,6 +91,14 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 	margin-bottom: 3px;
 }
 
+#go_mailer_error_msg {
+	color: red;
+}
+
+#go_mailer_confirm_msg {
+	color: green;
+}
+
 /********************
 *	Task Styles
 ********************/
@@ -112,13 +120,13 @@ input.go_test_field_rm {
 	color: red;
 }
 
-.ui-sortable {
+.go_sortable {
 	cursor: move;
 	cursor: -webkit-grab;
 	cursor: -moz-grab;
 }
 
-.ui_sortable_item {
+.go_sortable_item {
 	cursor: -webkit-grabbing;
 	cursor: -moz-grabbing;
 }

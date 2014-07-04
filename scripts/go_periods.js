@@ -1,10 +1,10 @@
 jQuery('#sortable_go_class_a').sortable({
 	axis: "y",
 	start: function(e, ui) {
-		jQuery(ui.item).addClass('ui_sortable_item');
+		jQuery(ui.item).addClass('go_sortable_item');
 	},
 	stop: function(e, ui) {
-		jQuery(ui.item).removeClass("ui_sortable_item");
+		jQuery(ui.item).removeClass("go_sortable_item");
 	}
 });
 function go_class_a_new_input(){
@@ -30,10 +30,10 @@ function go_class_a_save(){
 jQuery('#sortable_go_class_b').sortable({
 	axis: "y",
 	start: function(e, ui) {
-		jQuery(ui.item).addClass("ui_sortable_item");
+		jQuery(ui.item).addClass("go_sortable_item");
 	},
 	stop: function(e, ui) {
-		jQuery(ui.item).removeClass("ui_sortable_item");
+		jQuery(ui.item).removeClass("go_sortable_item");
 	}
 });
 function go_class_b_new_input(){
@@ -55,10 +55,10 @@ function go_class_b_save(){
 jQuery('#sortable_focus').sortable({
 	axis: "y",
 	start: function(e, ui) {
-		jQuery(ui.item).addClass("ui_sortable_item");
+		jQuery(ui.item).addClass("go_sortable_item");
 	},
 	stop: function(e, ui) {
-		jQuery(ui.item).removeClass("ui_sortable_item");
+		jQuery(ui.item).removeClass("go_sortable_item");
 	}
 });
 function go_focus_new_input(){
@@ -82,10 +82,10 @@ function go_focus_save(){
 jQuery('#sortable_go_presets').sortable({
 	axis: "y",
 	start: function(e, ui) {
-		jQuery(ui.item).addClass("ui_sortable_item");
+		jQuery(ui.item).addClass("go_sortable_item");
 	},
 	stop: function(e, ui) {
-		jQuery(ui.item).removeClass("ui_sortable_item");
+		jQuery(ui.item).removeClass("go_sortable_item");
 	}
 });
 

@@ -39,6 +39,8 @@ function go_gold_store_sc ($atts, $content = null) {
 			$custom_fields = get_post_custom($id);
 			$req_currency = $custom_fields['go_mta_store_currency'][0];
 			return '<a class="go_str_item" onclick="go_lb_opener('.$id.');">'.$the_title.'</a>';
+		} else {
+			// return all store items.
 		}
 	}
 }

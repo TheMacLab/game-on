@@ -236,5 +236,5 @@ function go_stats_leaderboard_choice(){
 			});
 				}
 function go_add_uploader(){
-	jQuery('#go_uploader').append('<div id="go_uploader"><input type="file" name="go_attachment[]"/><br/>');
+	jQuery('#go_upload_form div#go_uploader').append('<input type="file" name="go_attachment[]"/><br/>');
 	}
