@@ -290,8 +290,9 @@ function go_task_shortcode($atts, $content = null) {
 				
 				$post_custom_in_chain = get_post_custom($post_id_in_chain);
 				$post_mastery_active_in_chain = !$post_custom_in_chain['go_mta_task_mastery'][0];
+				// $post_number_of_stages_in_chain will later be designated by an admin option that will be toggleable per task chain.
 				if($post_mastery_active_in_chain){
-					$post_number_of_stages_in_chain = 4;	
+					$post_number_of_stages_in_chain = 3;	
 				}else{
 					$post_number_of_stages_in_chain = 3;
 				}
@@ -392,9 +393,15 @@ function go_task_shortcode($atts, $content = null) {
 
 							echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
 							go_return_options('go_fourth_stage_button').'</button> 
-							<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
-							</div>';
+							<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 							
+							if($next_post_in_chain && !$last_in_chain){
+								echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
+							}else{
+								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+							}
+							echo "</div>";
+
 							if($mastery_lock){
 								echo '<br/><div id="go_mastery_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
 								<input type="password" id="go_unlock_next_stage"/>';	
@@ -406,7 +413,7 @@ function go_task_shortcode($atts, $content = null) {
 							}else{
 								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 							}
-							echo '</div>';
+							echo "</div>";
 						}
 					break;
 					
@@ -1755,9 +1762,15 @@ function task_change_stage() {
 
 				echo '<button id="go_button" status="4" onclick="task_stage_change();this.disabled=true;">'.
 				go_return_options('go_fourth_stage_button').'</button> 
-				<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
-				</div>';
+				<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 				
+				if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
+					echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
+				}else{
+					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+				}
+				echo "</div>";
+
 				if($mastery_lock == 'true'){
 					echo '<br/><div id="go_mastery_lock_message" class="go_lock_message">Need '.$admin_name.'\'s approval to continue.</div>
 					<input type="password" id="go_unlock_next_stage"/>';	
@@ -1769,7 +1782,7 @@ function task_change_stage() {
 				}else{
 					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 				}
-				echo '</div>';
+				echo "</div>";
 			}
 			break;
 		case 4:
