@@ -44,6 +44,8 @@ function go_award_badge($atts){
 		if(empty($existing_badges) || !in_array($id, $existing_badges)){
 			$existing_badges[] = $id;
 			update_user_meta($user_id, 'go_badges', $existing_badges);
+			$badge_count = go_return_badge_count($user_id);
+			$wpdb->update($wpdb->prefix."go_totals", array('badge_count' => $badge_count), array('uid' => $user_id));
 			if($user_id == get_current_user_id()){
 				echo '
 				<div id="go_notification_badges" class="go_notification go_notification_badges" style="background: none; top: '.$space.'px;">'.$display.'</div>
