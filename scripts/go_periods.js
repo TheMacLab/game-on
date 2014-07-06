@@ -111,19 +111,19 @@ function go_preset_reset(){
 }
 
 function go_preset_save(){
-	var name = jQuery("input[id='go_preset_name']")
-              .map(function(){return jQuery(this).val();}).get();
-var points = jQuery("input[id='go_preset_points']")
-              .map(function(){return jQuery(this).val();}).get();var currency = jQuery("input[id='go_preset_currency']")
-              .map(function(){return jQuery(this).val();}).get();
+	var name = jQuery("input[id='go_preset_name']").map(function(){return jQuery(this).val();}).get();
+	var points = jQuery("input[id='go_preset_points']").map(function(){return jQuery(this).val();}).get();
+	var currency = jQuery("input[id='go_preset_currency']").map(function(){return jQuery(this).val();}).get();
 	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_presets_save',
-		go_preset_name: name,
-		go_preset_points: points,go_preset_currency: currency,
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: { 
+			action: 'go_presets_save',
+			go_preset_name: name,
+			go_preset_points: points,go_preset_currency: currency,
 		},
 		success: function(html){
 			jQuery('#sortable_go_presets').html(html);
 		}
 	});
-	}
+}

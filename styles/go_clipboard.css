@@ -1,19 +1,23 @@
+#go_clipboard_table_wrapper{
+	overflow-x: auto;
+}
 #go_clipboard_table tr:hover td{
 	font-size: 14px;
 	height:20px;
 	background-color:#e6e6e6;
-	}
+}
 #go_clipboard_table tr:hover th{
 	font-size: 12px;
-	
-	}
+}
 .widefat th{
 	border-right:grey dashed thin;
-	font-size:9px;}
+	font-size:9px;
+}
 .widefat td{
 	border-right:grey dashed thin;
-	font-size:9px;}
-	table.sortable tbody {
+	font-size:9px;
+}
+table.sortable tbody {
     counter-reset: sortabletablescope;
 }
 table.sortable thead tr::before {
@@ -27,15 +31,15 @@ table.sortable tbody tr::before {
 }
 #go_clipboard_add input{
 	width:75px;
-height:10px;	}
+	height:10px;	
+}
 
 #go_clipboard_add{
 	border:thin solid #999;
-	 background-color:#FFF;
-	  width: 865 px;
-padding: 3px;
-
-	}
+	background-color:#FFF;
+	width: 865 px;
+	padding: 3px;
+}
 	
 	/*
  * Colour dictionary:

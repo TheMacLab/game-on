@@ -66,4 +66,12 @@ function go_return_task_amount_in_chain($chain){
 	$count = count($posts_in_chain);
 	return $count;
 }
+
+function go_return_badge_count($user_id){
+	global $wpdb;
+	$badge_ids = get_user_meta($user_id, 'go_badges', true);
+	$badge_count = count($badge_ids);
+	$wpdb->update($wpdb->prefix."go_totals", array('badge_count' => $badge_count), array('uid' => $user_id));
+	return $badge_count;
+}
 ?>

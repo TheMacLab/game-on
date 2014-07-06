@@ -48,6 +48,7 @@ function go_table_totals() {
   points  INT,
   minutes  VARCHAR (200),
   infractions INT,
+  badge_count INT,
   UNIQUE KEY  id (id)
     );";
 

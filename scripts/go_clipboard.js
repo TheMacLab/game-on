@@ -271,20 +271,23 @@ function go_clipboard_add(id){
 });
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_clipboard_add',
-		ids: values,
-		points:jQuery('#go_clipboard_points').val(),
-		currency:jQuery('#go_clipboard_currency').val(),
-		time:jQuery('#go_clipboard_time').val(),
-		reason:jQuery('#go_clipboard_reason').val(),
-		infractions:jQuery('#go_clipboard_infractions').val()},
+			action: 'go_clipboard_add',
+			ids: values,
+			points:jQuery('#go_clipboard_points').val(),
+			currency:jQuery('#go_clipboard_currency').val(),
+			time:jQuery('#go_clipboard_time').val(),
+			reason:jQuery('#go_clipboard_reason').val(),
+			infractions:jQuery('#go_clipboard_infractions').val(),
+			badge_ID: jQuery('#go_clipboard_badge').val()
+		},
 		success: function(html){
-		jQuery('#go_clipboard_points').val(''),
-		jQuery('#go_clipboard_currency').val(''),
-		jQuery('#go_clipboard_time').val(''),
-		jQuery('#go_clipboard_reason').val(''),
-		jQuery('#go_clipboard_infractions').val('')
-		jQuery('#go_send_message').prop('disabled', '')
+			jQuery('#go_clipboard_points').val('');
+			jQuery('#go_clipboard_currency').val('');
+			jQuery('#go_clipboard_time').val('');
+			jQuery('#go_clipboard_reason').val('');
+			jQuery('#go_clipboard_infractions').val('');
+			jQuery('#go_clipboard_badge').val('');
+			jQuery('#go_send_message').prop('disabled', '');
 		}
 	});
 	}

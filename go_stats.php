@@ -140,12 +140,13 @@ margin-top: 40px; width:200px; display:inline;"></div
   
   
   <h3 class="go_stats_header" onclick=""><?php echo ' Leaderboard';?></h3>
-  <div class="go_stats_box">
+  <div class="go_stats_box" style="overflow-x: auto !important;">
       <div id="go_stats_leaderboard_order">
           Order By:<select id="go_stats_leaderboard_select" onchange="go_stats_leaderboard_choice();">
               <option value="points"><?php echo go_return_options('go_points_name'); ?></option>
               <option value="currency"><?php echo go_return_options('go_currency_name'); ?></option>
               <option value="minutes">Minutes</option>
+			  <option value="badge_count">Badge Count</option>
           </select>
       </div>
       <div id="leaderboard_left_box">
@@ -156,6 +157,7 @@ margin-top: 40px; width:200px; display:inline;"></div
           <th class="header"><?php echo go_return_options('go_points_name'); ?></th>
           <th class="header"><?php echo go_return_options('go_currency_name'); ?></th>
           <th class="header">Minutes</th>
+		  <th class="header">Badge Count</th>
           </tr></thead>
           <tbody id="go_stats_leaderboard_table_body"></tbody>
           </table>
@@ -168,7 +170,7 @@ margin-top: 40px; width:200px; display:inline;"></div
             $class_a = get_option('go_class_a');
             if($class_a){
             foreach($class_a as $key=> $value){
-                echo '<input type="checkbox" class="class_choice" value="'.$value.'" onChange="go_stats_leaderboard_choice();">'.$value.'</br>';
+                echo "<input type='checkbox' class='class_choice' value='{$value}' onChange='go_stats_leaderboard_choice();'>{$value}</br>";
                 }
             }
             ?>
@@ -325,9 +327,10 @@ function go_return_user_data($id, $counter){
 	$points = go_return_points($id);
 	$currency = go_return_currency($id);
 	$minutes = go_return_minutes($id);
+	$badge_count = go_return_badge_count($id);
 	$user_data_key = get_userdata($id);
 	$user_display = '<a href="'.$user_data_key->user_url.'" target="_blank">'.$user_data_key->display_name.'</a>';
-	echo '<tr><td>'.$counter.'</td><td>'.$user_display.'</td><td>'.$points.'</td><td>'.$currency.'</td><td>'.$minutes.'</td></tr>';
+	echo "<tr><td>{$counter}</td><td>{$user_display}</td><td>{$points}</td><td>{$currency}</td><td>{$minutes}</td><td>{$badge_count}</td></tr>";
 };
 function go_stats_leaderboard(){
 	global $wpdb;

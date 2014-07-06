@@ -198,10 +198,11 @@ function go_stats_leaderboard_choice(){
 	});
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_leaderboard',
-		class_a_choice: class_values,
-		focuses: focus_values,
-		order: jQuery('#go_stats_leaderboard_select').val()},
+			action: 'go_stats_leaderboard',
+			class_a_choice: class_values,
+			focuses: focus_values,
+			order: jQuery('#go_stats_leaderboard_select').val()
+		},
 		success: function(html){
 			jQuery('#go_stats_leaderboard_table_body').html(html);
 		}

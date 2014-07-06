@@ -460,17 +460,18 @@ function go_presets_reset(){
 }
 
 function go_presets_save(){
-global $wpdb;
-$preset_name = $_POST['go_preset_name'];
-$preset_points = $_POST['go_preset_points'];
-$preset_currency = $_POST['go_preset_currency'];
-foreach($preset_name as $key=>$value){
-	if($value!=''){
-	$preset_array[$value] = array($preset_points[$key],$preset_currency[$key]);
-	echo ' <li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label for="go_preset_name" style="margin-left:15px;">Name: </label><input type="text" id="go_preset_name" value="'.$value.'" /><label for="go_preset_points">'. go_return_options('go_points_name').': </label><input type="text" id="go_preset_points" value="'.$value[0].'" /><label for="go_preset_currency">'.go_return_options('go_currency_name').': </label><input type="text" id="go_preset_currency" value="'.$value[1].'" /> </li>';
-	} }
-update_option('go_presets',$preset_array);
-die();
+	global $wpdb;
+	$preset_name = $_POST['go_preset_name'];
+	$preset_points = $_POST['go_preset_points'];
+	$preset_currency = $_POST['go_preset_currency'];
+	foreach($preset_name as $key=>$value){
+		if($value!=''){
+			$preset_array[$value] = array($preset_points[$key],$preset_currency[$key]);
+			echo '<li class="ui-state-default" class="go_list"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label for="go_preset_name" style="margin-left:15px;">Name: </label><input type="text" id="go_preset_name" value="'.$value.'" /><label for="go_preset_points">'. go_return_options('go_points_name').': </label><input type="text" id="go_preset_points" value="'.$preset_array[$value][0].'" /><label for="go_preset_currency">'.go_return_options('go_currency_name').': </label><input type="text" id="go_preset_currency" value="'.$preset_array[$value][1].'" /> </li>';
+		} 
+	}
+	update_option('go_presets',$preset_array);
+	die();
 }
 
 
