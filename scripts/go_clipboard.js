@@ -265,10 +265,9 @@ function go_user_focus_change(user_id,element){
 function go_clipboard_add(id){
 	 var values = [];
 	 jQuery('#go_send_message').prop('disabled', 'diabled');
-	 jQuery("input:checkbox[name=go_selected]:checked").each(function()
-{
-    values.push(jQuery(this).val())
-});
+	 jQuery("input:checkbox[name=go_selected]:checked").each(function(){
+		values.push(jQuery(this).val())
+	});
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
 			action: 'go_clipboard_add',
@@ -281,6 +280,22 @@ function go_clipboard_add(id){
 			badge_ID: jQuery('#go_clipboard_badge').val()
 		},
 		success: function(html){
+			if(jQuery('#go_clipboard_badge').val() != ''){
+				badge_count = 1;
+			}
+			for(id in values){
+				var user_currency = parseFloat(jQuery('#user_'+values[id]+' .user_currency').html());
+				var user_minutes = parseFloat(jQuery('#user_'+values[id]+' .user_minutes').html());
+				var user_points = parseFloat(jQuery('#user_'+values[id]+' .user_points').html());
+				var user_badge_count = parseFloat(jQuery('#user_'+values[id]+' .user_badge_count').html());
+				var user_infractions = parseFloat(jQuery('#user_'+values[id]+' .user_infractions').html());
+				
+				jQuery('#user_'+values[id]+' .user_currency').html(user_currency + parseFloat(jQuery('#go_clipboard_currency').val()));
+				jQuery('#user_'+values[id]+' .user_minutes').html(user_minutes + parseFloat(jQuery('#go_clipboard_time').val()));
+				jQuery('#user_'+values[id]+' .user_points').html(user_points + parseFloat(jQuery('#go_clipboard_points').val()));
+				jQuery('#user_'+values[id]+' .user_badge_count').html(user_badge_count + badge_count);
+				jQuery('#user_'+values[id]+' .user_infractions').html(user_infractions + parseFloat(jQuery('#go_clipboard_infractions').val()));
+			}
 			jQuery('#go_clipboard_points').val('');
 			jQuery('#go_clipboard_currency').val('');
 			jQuery('#go_clipboard_time').val('');

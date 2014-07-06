@@ -111,43 +111,62 @@ function go_clipboard_intable(){
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
 	$table_name_go = $wpdb->prefix.'go';
 	$uid = $wpdb->get_results("SELECT user_id
-FROM ".$table_name_user_meta."
-WHERE meta_key =  '".$wpdb->prefix."capabilities'
-AND meta_value LIKE  '%subscriber%'");
+	FROM {$table_name_user_meta}
+	WHERE meta_key =  '{$wpdb->prefix}capabilities'
+	AND meta_value LIKE  '%subscriber%'");
 	$focuses = (array)get_option('go_focus');
 	$focuses_list = '';
 	foreach($focuses as $focus){
-		$focuses_list .= '<option name="'.$focus.'" value="'.$focus.'">'.$focus.'</option>';
+		$focuses_list .= "<option name='{$focus}' value='{$focus}'>{$focus}</option>";
 	}
 	foreach($uid as $id){
 		foreach($id as $value){
 			$class_a = get_user_meta($value, 'go_classifications',true);
 			if($class_a){ 
-			if($class_a[$class_a_choice]){
-		$user_data_key = get_userdata( $value ); 
-		$user_login = $user_data_key->user_login;
-		$user_display = $user_data_key->display_name;
-		$user_first_name = $user_data_key->user_firstname;
-		$user_last_name =  $user_data_key->user_lastname;
-		$user_url =  $user_data_key->user_url;
-		$user_focuses = go_display_user_focuses($value);
-		$infractions = go_return_infractions($value);
-		$minutes = go_return_minutes($value);
-		$currency = go_return_currency($value);
-		$points = go_return_points($value);
-		$badge_count = go_return_badge_count($value);
-		go_get_rank($value);
-		global $current_rank;
-		$first_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 1");
-		$second_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 2");
-		$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
-		$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
-		
-		echo '<tr><td><input class="go_checkbox" type="checkbox" name="go_selected" value="'.$value.'"></td><td><span><a href="#" onclick="go_admin_bar_stats_page_button('.$value.'); "  >'.$user_login.'</a></td><td>'.$class_a[$class_a_choice].'</td><td><a href="'.$user_url.'" target="_blank">'.$user_last_name.', '.$user_first_name.'</a></td><td>'.$user_display.'</td><td>'.$current_rank.'</td><td><select id="go_focus" onchange="go_user_focus_change('.$value.', this);"><option name="'.$user_focuses.'" value="'.$user_focuses.'">'.$user_focuses.' </option>'.$focuses_list.'</select></td><td>'.$currency.'</td><td>'.$minutes.'</td><td>'.$points.'</td><td>'.$badge_count.'</td><td>'.$infractions.'</td><td>'.$first_stage.'</td><td>'.$second_stage.'</td><td>'.$third_stage.'</td><td>'.$fourth_stage.'</td></tr>';
-		
-		}}}}
-		die();
+				if($class_a[$class_a_choice]){
+					$user_data_key = get_userdata( $value ); 
+					$user_login = $user_data_key->user_login;
+					$user_display = $user_data_key->display_name;
+					$user_first_name = $user_data_key->user_firstname;
+					$user_last_name =  $user_data_key->user_lastname;
+					$user_url =  $user_data_key->user_url;
+					$user_focuses = go_display_user_focuses($value);
+					$infractions = go_return_infractions($value);
+					$minutes = go_return_minutes($value);
+					$currency = go_return_currency($value);
+					$points = go_return_points($value);
+					$badge_count = go_return_badge_count($value);
+					go_get_rank($value);
+					global $current_rank;
+					$first_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 1");
+					$second_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 2");
+					$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
+					$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
+					
+					echo "<tr id='user_{$value}'>
+							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'></td>
+							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$value}&quot;);'>{$user_login}</a></td>
+							<td>{$class_a[$class_a_choice]}</td>
+							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
+							<td>{$user_display}</td>
+							<td>{$current_rank}</td>
+							<td><select id='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'><option name='{$user_focuses}' value='{$user_focuses}'>{$user_focuses}</option>{$focuses_list}</select></td>
+							<td class='user_currency'>{$currency}</td>
+							<td class='user_minutes'>{$minutes}</td>
+							<td class='user_points'>{$points}</td>
+							<td class='user_badge_count'>{$badge_count}</td>
+							<td class='user_infractions'>{$infractions}</td>
+							<td>{$first_stage}</td>
+							<td>{$second_stage}</td>
+							<td>{$third_stage}</td>
+							<td>{$fourth_stage}</td>
+						  </tr>";
+				}
+			}
+		}
 	}
+	die();
+}
 
 add_action('wp_ajax_go_clipboard_add','go_clipboard_add');
 function go_clipboard_add(){
