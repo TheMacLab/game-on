@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.9.2
+Version: 1.9.3
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -95,12 +95,14 @@ add_action('wp_ajax_go_get_all_posts', 'go_get_all_posts');
 add_action('wp_ajax_nopriv_go_get_all_posts', 'go_get_all_posts');
 add_action('wp_ajax_go_update_task_order', 'go_update_task_order');
 add_action('wp_ajax_go_search_for_user', 'go_search_for_user');
+add_action('wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');
 add_action('isEven','isEven');
 add_action('wp_head', 'go_stats_overlay');
 add_action('admin_head', 'go_stats_overlay');
+add_action('admin_notices', 'go_admin_head_notification');
 add_action('go_display_points','go_display_points');
 add_action('go_display_currency','go_display_currency');
 add_action('go_return_options','go_return_options');
@@ -116,6 +118,7 @@ add_action('login_redirect', 'go_user_redirect', 10, 3);
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);
+	update_option('go_display_admin_explanation', true);
 }
 function go_tsk_actv_redirect() {
     if (get_option('go_tsk_actv_do_activation_redirect', false)) {
@@ -168,5 +171,29 @@ function go_user_redirect ($redirect_to, $request, $user) {
     } else {
     	return $redirect_to;
     }
+}
+
+function go_admin_head_notification(){
+	if(get_option('go_display_admin_explanation')){
+		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://www.maclab.guhsd.net/go/video/gameOn.mp4&quot;);'style='display:inline-block;'>this short video</a> for important information.<br/>Got it. <a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage.</a></div>";
+		echo "<script>
+			function go_remove_admin_notification(){
+				jQuery.ajax({
+					type: 'post',
+					url: MyAjax.ajaxurl,
+					data:{
+						action: 'go_admin_remove_notification'
+					},
+					success:function(html){
+						location.reload();
+					}
+				});
+			}
+		</script>";
+	}
+}
+function go_admin_remove_notification(){
+	update_option('go_display_admin_explanation', false);
+	die();
 }
 ?>
