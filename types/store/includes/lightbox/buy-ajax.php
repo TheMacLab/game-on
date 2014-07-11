@@ -31,7 +31,7 @@ function go_buy_item(){
 	$custom_fields = get_post_custom($post_id);
 	$req_currency = check_custom($custom_fields['go_mta_store_currency'][0]);
 	$req_points = check_custom($custom_fields['go_mta_store_points'][0]);
-	$req_minutes = check_custom($custom_fields['go_mta_store_time'][0]);
+	$req_bonus_currency = check_custom($custom_fields['go_mta_store_time'][0]);
 	$req_rank = check_custom($custom_fields['go_mta_store_rank'][0]);
 	$item_focus_switch = check_custom($custom_fields['go_mta_focus_item_switch'][0]);
 	if($item_focus_switch && $item_focus_switch == 'on'){
@@ -54,13 +54,13 @@ function go_buy_item(){
 	
 	$cur_currency = go_return_currency($user_id);
 	$cur_points = go_return_points($user_id);
-	$cur_minutes = go_return_minutes($user_id);
+	$cur_bonus_currency = go_return_bonus_currency($user_id);
 	
 	$enough_currency = check_values($req_currency, $cur_currency);
 	$enough_points = check_values($req_points, $cur_points);
-	$enough_minutes = check_values($req_minutes, $cur_minutes);
+	$enough_bonus_currency = check_values($req_bonus_currency, $cur_bonus_currency);
 	
-	if(($enough_currency && $enough_minutes && $enough_points) || $penalty){
+	if(($enough_currency && $enough_bonus_currency && $enough_points) || $penalty){
 		if($item_focus_switch && $item_focus){
 			$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
 			$user_focuses[] = $item_focus;
@@ -70,14 +70,14 @@ function go_buy_item(){
 			go_message_user($recipient_id, get_userdata($user_id)->display_name.' has purchased <a href="javascript:;" onclick="go_lb_opener('.$post_id.')" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($post_id).'</a> for you '.$qty.' time(s).');
 			if($exchange_currency || $exchange_points || $exchange_time){
 				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, null, $repeat);
-				go_add_minutes($recipient_id, $exchange_time, get_userdata($user_id)->display_name.' purchase of '.get_the_title($post_id).' '.$qty.' times');
+				go_add_bonus_currency($recipient_id, $exchange_time, get_userdata($user_id)->display_name.' purchase of '.get_the_title($post_id).' '.$qty.' times');
 			}
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, null, $repeat);
 		}else{
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, null, $repeat);
 		}
-		if($req_minutes != ''){
-			go_add_minutes($user_id, -$req_minutes, 'Purchase of '.get_the_title($post_id).' '.$qty.' times');
+		if($req_bonus_currency != ''){
+			go_add_bonus_currency($user_id, -$req_bonus_currency, 'Purchase of '.get_the_title($post_id).' '.$qty.' times');
 		}
 		if($badge_reward_switch){
 			if($recipient_id){
@@ -94,12 +94,15 @@ function go_buy_item(){
 		} else{
 			echo "Purchased";
 		}
-		$receipt = go_mail_item_reciept($user_id, $post_id, $req_currency, $req_points, $req_minutes, $qty, $recipient_id);
+		$receipt = go_mail_item_reciept($user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $qty, $recipient_id);
 		if (!empty($receipt)) {
 			echo $receipt;
 		}		
-	} else{
-		$enough_array = array('currency' => $enough_currency, 'points' => $enough_points, 'time' => $enough_minutes);
+	} else {
+		$currency_name = go_return_options('go_currency_name');
+		$points_name = go_return_options('go_points_name');
+		$bonus_currency_name = go_return_options('go_bonus_currency_name');
+		$enough_array = array($currency_name => $enough_currency, $points_name => $enough_points, $bonus_currency_name => $enough_bonus_currency);
 		$errors = array();
 		foreach($enough_array as $key => $enough){
 			if(!$enough){
@@ -112,12 +115,12 @@ function go_buy_item(){
 	die();
 }
 
-function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $req_minutes, $qty, $recipient_id = null) {
+function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $qty, $recipient_id = null) {
 	global $go_plugin_dir;
 	$currency = ucwords(go_return_options('go_currency_name'));
 	$points = ucwords(go_return_options('go_points_name'));
 	$item_title = get_the_title($item_id);
-	// For future use, when we give the option to rename minutes:
+	// For future use, when we give the option to rename bonus currency:
 	// $token = go_return_options('go_token_name');
 
 	$user_info = get_userdata($user_id);
@@ -139,7 +142,7 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 		$recipient_username = $recipient->user_login;
 		$mail->Subject .= " | {$recipient_full_name} {$recipient_username}";
 	}
-	$mail->Body = "{$user_email}\n\n{$currency} Spent: {$req_currency}\n\n{$points} Spent: {$req_points}\n\nTime Spent: {$req_minutes}";
+	$mail->Body = "{$user_email}\n\n{$currency} Spent: {$req_currency}\n\n{$points} Spent: {$req_points}\n\nTime Spent: {$req_bonus_currency}";
 	$mail->WordWrap = 50;
 
 	if (!$mail->Send()) {

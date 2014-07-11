@@ -63,15 +63,20 @@ function go_admin_bar_add(){
 		go_admin_bar_points_reason:jQuery('#go_admin_bar_points_reason').val(),
 		go_admin_bar_currency_points:jQuery('#go_admin_bar_currency_points').val(),
 		go_admin_bar_currency_reason:jQuery('#go_admin_bar_currency_reason').val(),
-		go_admin_bar_minutes_points:jQuery('#go_admin_bar_minutes_points').val(),
-		go_admin_bar_minutes_reason:jQuery('#go_admin_bar_minutes_reason').val()},
+		go_admin_bar_bonus_currency_points:jQuery('#go_admin_bar_bonus_currency_points').val(),
+		go_admin_bar_bonus_currency_reason:jQuery('#go_admin_bar_bonus_currency_reason').val(),
+		go_admin_bar_penalty_points:jQuery('#go_admin_bar_penalty_points').val(),
+		go_admin_bar_penalty_reason:jQuery('#go_admin_bar_penalty_reason').val(),
+		},
 		success: function(html){
 	    jQuery('#go_admin_bar_points_points').val('');
 		jQuery('#go_admin_bar_points_reason').val('');
 		jQuery('#go_admin_bar_currency_points').val('');
 		jQuery('#go_admin_bar_currency_reason').val('');
-		jQuery('#go_admin_bar_minutes_points').val('');
-		jQuery('#go_admin_bar_minutes_reason').val('');
+		jQuery('#go_admin_bar_bonus_currency_points').val('');
+		jQuery('#go_admin_bar_bonus_currency_reason').val('');
+		jQuery('#go_admin_bar_penalty_points').val('');
+		jQuery('#go_admin_bar_penalty_reason').val('');
 		jQuery('#admin_bar_add_return').html(html);
 		}
 	});
@@ -180,9 +185,16 @@ jQuery('#go_stats_currency').html(html);
 	});
 jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_minutes', uid: jQuery('#go_stats_hidden_input').val()},
+		action: 'go_stats_bonus_currency', uid: jQuery('#go_stats_hidden_input').val()},
 		success: function(html){
-jQuery('#go_stats_minutes').html(html);
+jQuery('#go_stats_bonus_currency').html(html);
+		}
+	});
+jQuery.ajax({
+		type: "post",url: MyAjax.ajaxurl,data: { 
+		action: 'go_stats_penalty', uid: jQuery('#go_stats_hidden_input').val()},
+		success: function(html){
+jQuery('#go_stats_penalty').html(html);
 		}
 	});
 	
@@ -239,3 +251,22 @@ function go_stats_leaderboard_choice(){
 function go_add_uploader(){
 	jQuery('#go_upload_form div#go_uploader').append('<input type="file" name="go_attachment[]"/><br/>');
 	}
+
+//	Grabs substring in the middle of the string object that getMid() is being called from.
+//	Takes two strings, one from the left and one from the right.
+String.prototype.getMid = function(str_1, str_2) {
+	if (typeof(str_1) === 'string' && typeof(str_2) === 'string') {
+		var start = str_1.length;
+		var substr_length = this.length - (str_1.length + str_2.length);
+		var substr = this.substr(start, substr_length);
+		return substr;
+	} else {
+		if (typeof(str_1) !== 'string' && typeof(str_2) !== 'string') {
+			console.error("String.prototype.getMid expects two strings as args.");
+		} else if (typeof(str_1) !== 'string') {
+			console.error("String.prototype.getMid expects 1st arg to be string.");
+		} else if (typeof(str_2) !== 'string') {
+			console.error("String.prototype.getMid expects 2nd arg to be string.");
+		}
+	}
+}

@@ -26,7 +26,7 @@ function go_add_currency($user_id, $reason, $status, $points, $currency, $update
 		} else if($update == true) {
 			$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points, 'currency'=> $currency), array('uid'=>$user_id, 'reason'=>$reason));
 			}
-		go_update_totals($user_id,$points,$currency,0);
+		go_update_totals($user_id,$points,$currency,0,0,0);
 
 	}
 
@@ -35,7 +35,7 @@ function go_add_currency($user_id, $reason, $status, $points, $currency, $update
 
 // Adds currency and points for reasons that are post tied.
 
-function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, $repeat = null, $count = null, $c_fail_count = null, $m_fail_count = null, $c_passed = null, $m_passed = null){
+function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $bonus_currency = null){
 	
 		global $wpdb;
 	   	$table_name_go = $wpdb->prefix . "go";
@@ -92,34 +92,47 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 					go_return_multiplier($user_id, $points, $currency, $page_id);
 				} else {
 					$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-					if ($c_fail_count != null || $m_fail_count != null) {
-						$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'c_passed' => $c_passed, 'm_passed' => $m_passed), array('uid'=>$user_id, 'post_id'=>$post_id));
-					} else {
-						$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
-					}
+					$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
 					
 					go_return_multiplier($user_id, $points, $currency, $page_id);
 				}
 			}
+
+			if ($e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null) {
+				$wpdb->update($table_name_go, array('status'=> $status, 'points'=> $points + ($old_points->points), 'currency'=> $currency + ($old_points->currency), 'page_id' => $page_id, 'e_fail_count' => $e_fail_count, 'a_fail_count' => $a_fail_count, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'e_passed' => $e_passed, 'a_passed' => $a_passed, 'c_passed' => $c_passed, 'm_passed' => $m_passed), array('uid'=>$user_id, 'post_id'=>$post_id));
+			}
 		}
-	go_update_totals($user_id,$points,$currency,0,$status);
+	go_update_totals($user_id,$points,$currency,0,0,$status);
 }
 	
-// Adds minutes.
+// Adds bonus currency.
 
-function go_add_minutes($user_id, $minutes, $reason){
+function go_add_bonus_currency($user_id, $bonus_currency, $reason){
 	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	if(!empty($_POST['qty'])){
-		$minutes = $minutes * $_POST['qty'];
+		$bonus_currency = $bonus_currency * $_POST['qty'];
 		}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'minutes'=> $minutes, 'reason'=> $reason, 'timestamp' => $time) );
-	go_update_totals($user_id,0,0,$minutes);
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'bonus_currency'=> $bonus_currency, 'reason'=> $reason, 'timestamp' => $time));
+	go_update_totals($user_id,0,0,$bonus_currency,0, $status);
+}
+
+// Adds penalties
+
+function go_add_penalty($user_id, $penalty, $reason){
+	global $wpdb;
+	$table_name_go = $wpdb->prefix . "go";
+	if(!empty($_POST['qty'])){
+		$penalty = $penalty * $_POST['qty'];
+		}
+	$time = date('m/d@H:i',current_time('timestamp',0));
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'penalty'=> $penalty, 'reason'=> $reason, 'timestamp' => $time) );
+	go_update_totals($user_id,0,0,0,$penalty, $status);
 }
 	
 	
-function go_notify($type, $points='', $currency='', $time='', $user_id = null, $display = null) {
+function go_notify($type, $points='', $currency='', $bonus_currency='', $user_id = null, $display = null, $penalty='') {
 	if($user_id != get_current_user_id()){
 		return false;	
 	}else{
@@ -135,8 +148,10 @@ function go_notify($type, $points='', $currency='', $time='', $user_id = null, $
 			$display = go_display_points($points);
 		}else if ($type == 'currency'){
 			$display = go_display_currency($currency);
-		}else if($type == 'Minutes'){
-			$display = $time. 'Minutes';
+		}else if($type == 'bonus_currency'){
+			$display = $bonus_currency;
+		}else if($type == 'penalty'){
+			$display = $penalty;
 		}else if($type == 'custom'){
 			$display = $display;
 		}
@@ -158,15 +173,15 @@ function go_add_infraction($user_id,$infractionCount,$update){
 			$wpdb->update($table_name_go_totals,array('infractions'=>$infractions), array('uid'=>$user_id));
 			}
 }
-function go_update_admin_bar($type, $title, $points_currency, $status = null){
+function go_update_admin_bar($type, $title, $value, $status = null){
 	global $next_rank_points;
 	global $current_rank_points;
 	
 
 	
 	if($type == 'points'){
-		$display = go_display_points($points_currency); 
-		$rng = ($current_rank_points -$points_currency) * -1;
+		$display = go_display_points($value); 
+		$rng = ($current_rank_points -$value) * -1;
 		$dom = ($next_rank_points - $current_rank_points);
 		if ($status == 0) { 
 			echo '<script language="javascript">
@@ -180,10 +195,12 @@ function go_update_admin_bar($type, $title, $points_currency, $status = null){
 			</script>';
 		}
 	} elseif ($type == 'currency'){
-		$display = go_display_currency($points_currency);
-	} elseif($type == 'minutes'){ 
-		$display = $points_currency;
-		$color = barColor($points_currency);
+		$display = go_display_currency($value);
+	} elseif($type == 'bonus_currency'){ 
+		$display = $value;
+		$color = barColor($value);
+	}elseif ($type == 'penalty'){
+		$display = go_display_penalty($value);
 	}
 	
 	$percentage = go_get_level_percentage(get_current_user_id());
@@ -195,7 +212,7 @@ function go_update_admin_bar($type, $title, $points_currency, $status = null){
 
 
 //Update totals
-function go_update_totals($user_id, $points, $currency, $minutes, $status = null){
+function go_update_totals($user_id, $points, $currency, $bonus_currency, $penalty, $status = null){
 	global $wpdb;
 	if($points != 0){
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
@@ -213,12 +230,19 @@ function go_update_totals($user_id, $points, $currency, $minutes, $status = null
 		go_notify('currency',0, $currency, 0, $user_id);
 		go_update_admin_bar('currency', go_return_options('go_currency_name'), ($totalcurrency+$currency));
 		}
-	if($minutes != 0){
+	if($bonus_currency != 0){
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
-		$totalminutes = go_return_minutes($user_id);
-		$wpdb->update($table_name_go_totals, array('minutes'=> $totalminutes+$minutes), array('uid'=>$user_id));
-		go_notify('Minutes', 0,0,$minutes, $user_id);
-		go_update_admin_bar('minutes', 'Minutes', $totalminutes+$minutes);
+		$total_bonus_currency = go_return_bonus_currency($user_id);
+		$wpdb->update($table_name_go_totals, array('bonus_currency'=> $total_bonus_currency+$bonus_currency), array('uid'=>$user_id));
+		go_notify('bonus_currency', 0,0,$bonus_currency, $user_id);
+		go_update_admin_bar('bonus_currency', go_return_options('go_bonus_currency_name'), $total_bonus_currency+$bonus_currency);
+		}
+	if($penalty != 0){
+		$table_name_go_totals = $wpdb->prefix . "go_totals";
+		$total_penalty = go_return_penalty($user_id);
+		$wpdb->update($table_name_go_totals, array('penalty'=> $total_penalty+$penalty), array('uid'=>$user_id));
+		go_notify('penalty', 0,0,$penalty, $user_id);
+		go_update_admin_bar('penalty', go_return_options('go_penalty_name'), $total_penalty+$penalty);
 		}
 	}
 
@@ -227,31 +251,37 @@ function go_update_totals($user_id, $points, $currency, $minutes, $status = null
 
 
 function go_admin_bar_add(){
+
+	$points_points = $_POST['go_admin_bar_points_points'];
+	$points_reason = $_POST['go_admin_bar_points_reason'];
 	
-$points_points = $_POST['go_admin_bar_points_points'];
-$points_reason = $_POST['go_admin_bar_points_reason'];
-
-$currency_points = $_POST['go_admin_bar_currency_points'];
-$currency_reason = $_POST['go_admin_bar_currency_reason'];
-
-$minutes_points = $_POST['go_admin_bar_minutes_points'];
-$minutes_reason = $_POST['go_admin_bar_minutes_reason'];
+	$currency_points = $_POST['go_admin_bar_currency_points'];
+	$currency_reason = $_POST['go_admin_bar_currency_reason'];
+	
+	$bonus_currency_points = $_POST['go_admin_bar_bonus_currency_points'];
+	$bonus_currency_reason = $_POST['go_admin_bar_bonus_currency_reason'];
+	
+	$penalty_points = $_POST['go_admin_bar_penalty_points'];
+	$penalty_reason = $_POST['go_admin_bar_penalty_reason'];
+	
 	$user_id = get_current_user_id();
-
-if($points_points != ''&& $points_reason != ''){
-	go_add_currency($user_id,$points_reason, 6, $points_points, 0, false);
-	}
-if($currency_points!= ''&&$currency_reason!= ''){
-	go_add_currency($user_id, $currency_reason, 6, 0, $currency_points, false);
-
-	}
-if($minutes_points!= ''&&$minutes_reason != ''){
-	go_add_minutes($user_id, $minutes_points, $minutes_reason);
-	}
 	
+	if($points_points != ''&& $points_reason != ''){
+		go_add_currency($user_id,$points_reason, 6, $points_points, 0, false);
+	}
+	if($currency_points!= ''&&$currency_reason!= ''){
+		go_add_currency($user_id, $currency_reason, 6, 0, $currency_points, false);
+	}
+	if($bonus_currency_points!= ''&&$bonus_currency_reason != ''){
+		go_add_bonus_currency($user_id, $bonus_currency_points, $bonus_currency_reason);
+	}
+	if($penalty_points!= ''&&$penalty_reason != ''){
+		go_add_penalty($user_id, $penalty_points, $penalty_reason);
+	}
+		
 	die();
 	
-	}
+}
 
 function go_get_level_percentage($user_id){
 	global $wpdb;
@@ -319,37 +349,37 @@ return get_option($option);
 }
 }
 
-	function barColor($current_minutes){
+	function barColor($current_bonus_currency){
 		$color = '#00c100';
 	/*	function inRange($int, $min, $max){
 			return ($int>$min && $int<$max);
 		} */
 		$color= array('#464646', '#cc0000', '#ff6700', '#ffe400', '#00c100');
-		$limit = go_return_options('go_minutes_color_limit');
+		$limit = go_return_options('go_bonus_currency_color_limit');
 		$limit_array = explode(',',$limit);
 		$limit_array[] = PHP_INT_MAX;
-		while($current_minutes >= current($limit_array) ){
+		while($current_bonus_currency >= current($limit_array) ){
 			next($limit_array);
 			next($color);
 			}
-	/*	switch ($current_minutes){
-			case inRange($current_minutes, 0, PHP_INT_MAX):
+	/*	switch ($current_bonus_currency){
+			case inRange($current_bonus_currency, 0, PHP_INT_MAX):
 				$color = '#00c100';
 				return $color; 
 				break;
-			case inRange($current_minutes, -301, -1):
+			case inRange($current_bonus_currency, -301, -1):
 				$color = '#ffe400';
 				return $color;
 				break;
-			case inRange($current_minutes, -601, -300):
+			case inRange($current_bonus_currency, -601, -300):
 				$color = '#ff6700';
 				return $color;
 				break;
-			case inRange($current_minutes, -901, -600):
+			case inRange($current_bonus_currency, -901, -600):
 				$color = '#cc0000';
 				return $color;
 				break;
-			case inRange($current_minutes, -PHP_INT_MAX, -900):
+			case inRange($current_bonus_currency, -PHP_INT_MAX, -900):
 				$color = '#464646';
 				return $color;
 				break;
@@ -363,11 +393,11 @@ if(go_return_options('go_multiplier_switch') == 'On'){
 	$rounding_array = go_return_options('go_multiplier_rounding');
 	$limit = unserialize($limit);
 	$rounding_array = unserialize($rounding_array);
-	$minutes = go_return_minutes($user_id);
+	$bonus_currency = go_return_bonus_currency($user_id);
 	if(is_array($limit) && !empty($limit)){
 	foreach($limit as $key=>$value){
 		$array = explode(',',$value);
-		if($array[2] >= $minutes && $minutes >= $array[1]){
+		if($array[2] >= $bonus_currencys && $bonus_currency >= $array[1]){
 			$multiplier = $array[0];
 			$rounding_key = $key;
 			}

@@ -91,11 +91,11 @@ jQuery('#sortable_go_presets').sortable({
 
 function go_preset_reset(){
 	var presetsObj = {
-		'Tier 1': {0:'5,5,10,30', 1:'0,0,3,9'}, 
-		'Tier 2': {0:'5,5,20,60', 1:'0,0,6,18'},
-		'Tier 3': {0:'5,5,40,120', 1:'0,0,12,36'},
-		'Tier 4': {0:'5,5,70,210', 1:'0,0,21,63'},
-		'Tier 5': {0:'5,5,110,330', 1:'0,0,33,99'}	
+		'Tier 1': {0:'5,5,10,30,30', 1:'0,0,3,9,9'}, 
+		'Tier 2': {0:'5,5,20,60,60', 1:'0,0,6,18,18'},
+		'Tier 3': {0:'5,5,40,120,120', 1:'0,0,12,36,36'},
+		'Tier 4': {0:'5,5,70,210,210', 1:'0,0,21,63,63'},
+		'Tier 5': {0:'5,5,110,330,330', 1:'0,0,33,99,99'}	
 	};
 	jQuery.ajax({
 		type: "POST", 
@@ -114,13 +114,15 @@ function go_preset_save(){
 	var name = jQuery("input[id='go_preset_name']").map(function(){return jQuery(this).val();}).get();
 	var points = jQuery("input[id='go_preset_points']").map(function(){return jQuery(this).val();}).get();
 	var currency = jQuery("input[id='go_preset_currency']").map(function(){return jQuery(this).val();}).get();
+	var bonus_currency = jQuery("input[id='go_preset_bonus_currency']").map(function(){return jQuery(this).val();}).get();
+	var penalty = jQuery("input[id='go_preset_penalty']").map(function(){return jQuery(this).val();}).get();
 	jQuery.ajax({
 		type: "post",
 		url: MyAjax.ajaxurl,
 		data: { 
 			action: 'go_presets_save',
 			go_preset_name: name,
-			go_preset_points: points,go_preset_currency: currency,
+			go_preset_points: points, go_preset_currency: currency, go_preset_bonus_currency: bonus_currency, go_preset_penalty: penalty,
 		},
 		success: function(html){
 			jQuery('#sortable_go_presets').html(html);

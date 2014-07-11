@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.9.4
+Version: 1.9.5
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -38,10 +38,12 @@ add_action('user_register', 'go_user_registration');
 add_action( 'delete_user', 'go_user_delete' );
 add_action('go_add_post','go_add_post');
 add_action('go_add_currency','go_add_currency');
-add_action('go_add_minutes','go_add_minutes');
+add_action('go_add_bonus_currency','go_add_bonus_currency');
+add_action('go_add_penalty','go_add_penalty');
 add_action('go_return_currency','go_return_currency');
 add_action('go_return_points','go_return_points');
-add_action('go_return_minutes','go_return_minutes');
+add_action('go_return_bonus_currency','go_return_bonus_currency');
+add_action('go_return_penalty','go_return_penalty');
 add_action('go_display_user_focuses', 'go_display_user_focuses');
 add_action('go_return_task_amount_in_chain', 'go_return_task_amount_in_chain');
 add_action('go_display_rewards', 'go_display_rewards');
@@ -82,7 +84,8 @@ add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
 add_action('wp_ajax_go_stats_item_list', 'go_stats_item_list');
 add_action('wp_ajax_go_stats_points','go_stats_points');
 add_action('wp_ajax_go_stats_currency','go_stats_currency');
-add_action('wp_ajax_go_stats_minutes','go_stats_minutes');
+add_action('wp_ajax_go_stats_bonus_currency','go_stats_bonus_currency');
+add_action('wp_ajax_go_stats_penalty','go_stats_penalty');
 add_action('wp_ajax_go_presets_reset','go_presets_reset');
 add_action('wp_ajax_go_presets_save','go_presets_save');
 add_action('wp_ajax_listurl', 'listurl');

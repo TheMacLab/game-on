@@ -2,8 +2,9 @@
 function go_jquery() {
     wp_enqueue_script( 'jquery' );
 	
-		wp_enqueue_script( 'jquery-ui-core' );
+	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script('jquery-ui-accordion');
+	wp_enqueue_script('jquery-ui-datepicker');
 	wp_enqueue_script('jquery-ui-draggable');
 	wp_enqueue_script('jquery-ui-droppable');
 	wp_enqueue_script('jquery-ui-sortable');
@@ -19,9 +20,6 @@ function go_jquery() {
 	wp_enqueue_script('video', plugin_dir_url(__FILE__).'/video-js/video.js');
 	wp_enqueue_style('video-js', plugin_dir_url(__FILE__).'/video-js/video-js.css');
 	wp_enqueue_script('jquery-ui-progressbar');
-			
-	
-	
 }
 function go_jquery_periods() {
     wp_enqueue_script( 'jquery' );

@@ -97,14 +97,15 @@ window.location = "'.admin_url().'/?page=game-on-options.php"
 				?>
             </div>
             <div class="opt-box">       
-            <h3>Minutes</h3>
+            <h3>Bonus Currency Settings</h3>
        
           <?php
-		echo go_sub_option( 'minutes_bar_color', 'The intervals for the minutes colors.', 'Time', 'go_minutes_color_limit', 'go_minutes_color_limit', '', 'http://maclab.guhsd.net/go/video/options/time.mp4' );
+		echo  go_sub_option('bonus_currency_name', 'This is what your bonus currency will be called. Use a name like Honor or Tokens.',' Bonus Currency Name','go_bonus_currency_name', 'go_bonus_currency_name', 'What would you like the bonus currency to be called?', 'http://maclab.guhsd.net/go/video/options/bonusCurrency.mp4'); 
+		echo go_sub_option( 'bonus_currency_bar_color', 'The intervals for the Bonus Currency colors.', ''.go_return_options('go_bonus_currency_name').'', 'go_bonus_currency_color_limit', 'go_bonus_currency_color_limit', '', 'http://maclab.guhsd.net/go/video/options/bonusCurrencyColors.mp4' );
 		
 		?>
 	    <div class="pa">
-            	<?php go_opt_help('minutes_multi','It adds an extra percentage of points and currency to points and currency gained from tasks.', 'http://maclab.guhsd.net/go/video/options/time.mp4'); ?> 
+            	<?php go_opt_help('minutes_multi','It adds an extra percentage of points and currency to points and currency gained from tasks.', 'http://maclab.guhsd.net/go/video/options/bonusCurrencyMultiplier.mp4'); ?> 
             	<strong><?php echo 'Percentage Multiplier. Format: percentage, lower limit, upper limit.'; ?>:</strong><br />   
                 On:<input type="radio" <?php if(go_return_options('go_multiplier_switch') == 'On'){echo 'checked="checked"';} ?> name="go_multiplier_switch" size="45" value="On" style="margin-left: 5px;
 width: 20px;" /><br />
@@ -139,7 +140,20 @@ foreach($limit as $key=>$value){
             </div> 
  
             </div>
-                   <div class="opt-box">       
+                   <div class="opt-box">  <br />
+
+			</div>
+            <div class="opt-box">       
+            <h3>Penalty Settings</h3>
+       
+          <?php
+		echo  go_sub_option('penalty_name', 'This is what your penalty will be called. Use a name like Demerit or Penalty.',' Penalty Name','go_penalty_name', 'go_penalty_name', 'What would you like the penalty to be called?', 'http://maclab.guhsd.net/go/video/options/penalty.mp4'); 
+
+		?>
+        
+        </div>
+            <div class="opt-box"> 
+     
             <h3> Classifications </h3> 
     <?php
 		 echo go_sub_option( 'class_a_name', 'The name of the first classification. Such as Period or Color.','Classification A Name', 'go_class_a_name','go_class_a_name', 'What would you like to call the first classification?', 'http://maclab.guhsd.net/go/video/options/classifications.mp4');
@@ -224,7 +238,7 @@ go_jquery_periods();
 	<div class="opt-box">
 		<div class="pa">
 			<?php 
-				echo go_opt_help('time_reset_switch', 'Turn the data reset button on or off. The button can reset points, currency, time, or all three. After resetting points/currency/time, user\'s records are erased, meaning they will have 0 of whatever was erased and there will be no log of it in their stats page.',  'http://maclab.guhsd.net/go/video/options/resetDataSwitch.mp4');
+				echo go_opt_help('reset_data_switch', 'Turn the data reset button on or off. The button can reset points, currency, bonus currency, penalties, or all four. After resetting points/currency/bonus currency/penalties, user\'s records are erased, meaning they will have 0 of whatever was erased and there will be no log of it in their stats page.',  'http://maclab.guhsd.net/go/video/options/resetDataSwitch.mp4');
 			?>
 			<strong>Turn data reset switches on or off: </strong><br/><i>Note, button appears at the bottom of this page.</i><br/>
 			On:<input type="radio" <?php if(go_return_options('go_data_reset_switch') == 'On'){echo 'checked="checked"';} ?> name="go_data_reset_switch" size="45" value="On" style="margin-left: 5px;width: 20px;" /><br />
@@ -285,7 +299,7 @@ go_jquery_periods();
             
             <span class="opt-inp"><input type="submit" name="Submit" value="Save Options" /> </span> 
             <input type="hidden" name="action" value="update" />  
-            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_display_switch, go_admin_bar_add_switch, go_admin_bar_user_redirect, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_minutes_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width" />  
+            <input type="hidden" name="page_options" value="go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_display_switch, go_admin_bar_add_switch, go_admin_bar_user_redirect, go_repeat_button, go_class_a_name, go_class_b_name,go_max_infractions,go_infractions_name,go_bonus_currency_color_limit,go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width, go_bonus_currency_name, go_penalty_name" />  
         </form>
 		<?php
 			if(get_option('go_data_reset_switch') == 'On'){
@@ -295,7 +309,8 @@ go_jquery_periods();
 				<form action="" method="post">
 					<span class="opt-inp"><input type="checkbox" value="erase_points" name="erase_records[]" /><?php echo go_return_options('go_points_name'); ?></span>
 					<span class="opt-inp"><input type="checkbox" value="erase_currency" name="erase_records[]" /><?php echo go_return_options('go_currency_name');?></span>
-					<span class="opt-inp"><input type="checkbox" value="erase_time" name="erase_records[]" />Time</span>
+					<span class="opt-inp"><input type="checkbox" value="erase_bonus_currency" name="erase_records[]" /><?php echo go_return_options('go_bonus_currency_name');?></span>
+                    <span class="opt-inp"><input type="checkbox" value="erase_penalty" name="erase_records[]" /><?php echo go_return_options('go_penalty_name');?></span>
 					<span class="opt-inp"><input type="checkbox" value="erase_all" name="erase_records[]" />All</span>
 					<span class="opt-inp"><input type="submit" value="Erase" name="erase" /></span>
 				</form>
@@ -331,8 +346,11 @@ go_jquery_periods();
 							case 'erase_currency':
 								$erase_array[] = 'currency';
 								break;
-							case 'erase_time':
-								$erase_array[] = 'minutes';
+							case 'erase_bonus_currency':
+								$erase_array[] = 'bonus_currency';
+								break;
+							case 'erase_penalty':
+								$erase_array[] = 'penalty';
 								break;
 						}
 					}
@@ -629,7 +647,7 @@ function go_return_presets_options(){
 function go_update_globals(){
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_display_switch, go_admin_bar_add_switch, go_admin_bar_user_redirect, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_minutes_color_limit,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width');
+	$array = explode(',','go_tasks_name,go_tasks_plural_name,go_currency_name,go_points_name,go_first_stage_name,go_second_stage_name,go_second_stage_button,go_third_stage_name,go_third_stage_button,go_fourth_stage_name,go_fourth_stage_button,go_currency_prefix,go_currency_suffix, go_points_prefix, go_points_suffix, go_admin_bar_display_switch, go_admin_bar_add_switch, go_admin_bar_user_redirect, go_repeat_button, go_class_a_name, go_class_b_name, go_max_infractions,go_infractions_name, go_multiplier,go_multiplier_switch,go_multiplier_rounding,go_bonus_currency_color_limit,go_focus_switch,go_focus_name,go_data_reset_switch, go_video_height, go_video_width, go_bonus_currency_name, go_penalty_name');
 	foreach($array as $key=>$value){
 		$value = trim($value);
 		$content = get_option($value);

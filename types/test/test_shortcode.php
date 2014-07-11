@@ -20,14 +20,14 @@ function go_test_shortcode ( $atts, $content ) {
 	$key_match = 0;
 	
 	if ($type == 'radio') {
-		for($i = 0; $i < count($answer_array); $i++) {
+		for ($i = 0; $i < count($answer_array); $i++) {
 			if (strtolower($answer_array[$i]) == strtolower($key)) {
 				$key_check = true;
 				break;
 			}
 		}	
 	} else if ($type == 'checkbox') {
-		for($i = 0; $i < count($answer_array); $i++) {
+		for ($i = 0; $i < count($answer_array); $i++) {
 			for ($x = 0; $x < count($key_array); $x++) {
 				if (strtolower($answer_array[$i]) == strtolower($key_array[$x])) {
 					$key_match++;
@@ -55,9 +55,9 @@ function go_test_shortcode ( $atts, $content ) {
 		}
 		$output_array_str = implode(" ", $output_array);
 		if ($total_num > 1) {
-			$rtn_output = "<div class='go_test_container'><p id='go_test_error_msg' class='go_test' style='color: red;'></p><ul id='go_test_".$test_id."' class='go_test go_test_list go_test_".$type."'><span style='font-weight:700;'>".ucfirst($question)."</span>".$output_array_str."</div>";
+			$rtn_output = "<div class='go_test_container'><ul id='go_test_".$test_id."' class='go_test go_test_list go_test_".$type."'><li><div style='font-weight:700;'>".ucfirst($question)."<span class='go_wrong_answer_marker' style='display: none;'>wrong</span><span class='go_correct_answer_marker' style='display: none;'>correct</span></div></li>".$output_array_str."</div>";
 		} else {
-			$rtn_output = "<div class='go_test_container'><p id='go_test_error_msg' class='go_test' style='color: red;'></p><ul id='go_test' class='go_test go_test_list go_test_".$type."'><span style='font-weight:700;'>".ucfirst($question)."</span>".$output_array_str."<button class='go_test_submit' style='margin-top: 10px;'>GO!</button></ul></div>";
+			$rtn_output = "<div class='go_test_container'><ul id='go_test' class='go_test go_test_list go_test_".$type."'><li><div style='font-weight:700;'>".ucfirst($question)."<span class='go_wrong_answer_marker' style='display: none;'>wrong</span><span class='go_correct_answer_marker' style='display: none;'>correct</span></div></li>".$output_array_str."</ul></div>";
 			
 		}
 		

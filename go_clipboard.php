@@ -38,12 +38,13 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
 <span  class="ui-icon ui-icon-help"></span></a>
 </div>
 <label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" /> 
-<label id="go_clipboard_minutes"><?php echo 'Minutes'; ?>: </label> <input name="go_clipboard_minutes" id="go_clipboard_time" />
-<label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_minuts" id="go_clipboard_currency" />
+<label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" />
+<label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" />
+<label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" />
 <label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge"/>
 <label for="go_clipboard_infractions">Infractions: </label><input name="go_clipboard_infractions" id="go_clipboard_infractions" />
 <label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px;
-margin-right: 5px;" title="The message will be displayed as reason if any points/currency/minutes are being added. If nothing is being added, the message will be displayed as a message in a seperate system in the admin bar with a limit of 9 messages per student."> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason"></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
+margin-right: 5px;" title="The message will be displayed as reason if any points/currency/bonus currency/ penalty are being added. If nothing is being added, the message will be displayed as a message in a seperate system in the admin bar with a limit of 9 messages per student."> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason"></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
 
     
     <table  id="go_clipboard_table" class="pretty" >
@@ -55,9 +56,10 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
 <th class="header" style="width:10%;"><a href="#" >Gamertag</a></th>
 <th class="header" style="width:8%;"><a href="#" >Rank</a></th>
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th>
-<th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
-<th class="header" style="width:8%;"><a href="#">Minutes</a></th>
 <th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
+<th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
+<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
+<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
 <th class="header" style="width:5%;" align="center"><a href="#">Badge Count</a></th>
 <th class="header" style="width:13%;"><a href="#" ><?php echo go_return_options('go_infractions_name'); ?> (Max: <?php echo $current_max_infractions; ?>)</a></th>
 <th class="header" style="width:9%;"><a href="#"><?php echo go_return_options('go_first_stage_name'); ?></a></th> 
@@ -76,7 +78,8 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
          <select id="go_selection" onchange="go_update_graph();">
             <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
             <option value="4"><?php echo go_return_options('go_currency_name');?></option>
-            <option value="0"><?php echo 'Minutes'; ?></option>
+            <option value="0"><?php echo go_return_options('go_bonus_currency_name'); ?></option>
+            <option value="0"><?php echo go_return_options('go_penalty_name'); ?></option>
             <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
             <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
          </select>
@@ -132,7 +135,8 @@ function go_clipboard_intable(){
 					$user_url =  $user_data_key->user_url;
 					$user_focuses = go_display_user_focuses($value);
 					$infractions = go_return_infractions($value);
-					$minutes = go_return_minutes($value);
+					$bonus_currency = go_return_bonus_currency($value);
+					$penalty = go_return_penalty($value);
 					$currency = go_return_currency($value);
 					$points = go_return_points($value);
 					$badge_count = go_return_badge_count($value);
@@ -151,9 +155,10 @@ function go_clipboard_intable(){
 							<td>{$user_display}</td>
 							<td>{$current_rank}</td>
 							<td><select id='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'><option name='{$user_focuses}' value='{$user_focuses}'>{$user_focuses}</option>{$focuses_list}</select></td>
-							<td class='user_currency'>{$currency}</td>
-							<td class='user_minutes'>{$minutes}</td>
 							<td class='user_points'>{$points}</td>
+							<td class='user_currency'>{$currency}</td>
+							<td class='user_bonus_currency'>{$bonus_currency}</td>
+							<td class='user_penalty'>{$penalty}</td>
 							<td class='user_badge_count'>{$badge_count}</td>
 							<td class='user_infractions'>{$infractions}</td>
 							<td>{$first_stage}</td>
@@ -173,7 +178,8 @@ function go_clipboard_add(){
 	$ids = $_POST['ids'];
 	$points = $_POST['points'];
 	$currency = $_POST['currency'];
-	$minutes = $_POST['time'];
+	$bonus_currency = $_POST['bonus_currency'];
+	$penalty = $_POST['penalty'];
 	$reason = $_POST['reason'];
 	$infractions = $_POST['infractions'];
 	$badge_ID = $_POST['badge_ID'];
@@ -185,8 +191,11 @@ function go_clipboard_add(){
 			if($currency!= ''){
 				go_add_currency($value, $reason, 6, 0, $currency, false);
 			}
-			if($minutes!= ''){
-				go_add_minutes($value, $minutes, $reason);
+			if($bonus_currency!= ''){
+				go_add_bonus_currency($value, $bonus_currency, $reason);
+			}
+			if($penalty!= ''){
+				go_add_penalty($value, $penalty, $reason);
 			}
 			if($badge_ID != ''){
 				do_shortcode('[go_award_badge id="'.$badge_ID.'" repeat = "off" uid="'.$value.'"]');
@@ -194,7 +203,7 @@ function go_clipboard_add(){
 			if($infractions!=''){
 				go_add_infraction($value, $infractions,true);
 			}
-			if($infractions==''&& $points == '' && $currency== ''&& $minutes== ''){
+			if($infractions==''&& $points == '' && $currency== ''&& $bonus_currency== ''&& $penalty== ''){
 				$user_id = $value;
 				go_message_user($user_id, $reason);
 			}
@@ -214,12 +223,13 @@ function go_clipboard_collect_data(){
 	$array = get_option('go_graphing_data');
 	foreach($uid as $id){
 		foreach($id as $value){
-			$minutes = go_return_minutes($value);
+			$bonus_currency = go_return_bonus_currency($value);
+			$penalty = go_return_penalty($value);
 			$currency = go_return_currency($value);
 			$points = go_return_points($value);
 			$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
 			$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
-			$array[$value][$time] = $minutes.','. $points.','. $third_stage.','. $fourth_stage.','.$currency;
+			$array[$value][$time] = $bonus_currency.','. $penalty.','. $points.','. $third_stage.','. $fourth_stage.','.$currency;
 		}
 	}
 	update_option( 'go_graphing_data', $array );
@@ -230,11 +240,12 @@ function go_clipboard_get_data(){
 	global $wpdb;
 	
 	//grabs the selection
-	// 0 = minutes
+	// 0 = bonus currency
 	// 1 = points
 	// 2 = completed
 	// 3 = mastered
 	// 4 = currency
+	// 5 = penalty
 	$selection = $_POST['go_graph_selection'];
 	if(isset($_POST['go_class_a'])){
 		$class_a_choice = $_POST['go_class_a'];
@@ -290,7 +301,7 @@ function go_clipboard_get_data(){
 				$info[$id]['label'] = $last.', '.$first.' ('.$id.')';
 				$info[$id]['class_a'][] = $class;
 				foreach($date as $date => $content){
-					// Minutes, points, completed, and mastered array associated with the unix timestamp when go_clipboard_collect_data function ran
+					// Bonus Currency, penalty, points, completed, and mastered array associated with the unix timestamp when go_clipboard_collect_data function ran
 					$content_array = explode(',',$content);
 					// generates array of user data associated with a unix timestamp, then appends the unix timestamp$content_array's element which corresponds to the graph selection key above
 					$info[$id]['data'][] = array($date*1000,$content_array[$selection]);	

@@ -18,7 +18,8 @@ function go_admin_bar_stats(){
  	$current_user_id = $current_user->ID;
 	$current_points = go_return_points($current_user_id);
 	$current_currency = go_return_currency($current_user_id);
-	$current_minutes = go_return_minutes($current_user_id);
+	$current_bonus_currency = go_return_bonus_currency($current_user_id);
+	$current_penalty = go_return_penalty($current_user_id);
 	////////////////////////////////////////////////////////////
 	go_get_rank($current_user_id);
 	global $current_rank;
@@ -71,7 +72,8 @@ jQuery( "#go_stats_progress_bar" ).progressbar({
 font-size: inherit;">Website</a></div>
   <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_points_name').'<br />'.$current_points?> </div>
   <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_currency_name').'<br />'.$current_currency?></div>
-  <div class="go_info_boxes" class="go_border_radius">Minutes <?= '<br />'.$current_minutes?></div>
+  <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_bonus_currency_name').'<br />'.$current_bonus_currency?></div>
+  <div class="go_info_boxes" class="go_border_radius"><?= go_return_options('go_penalty_name').'<br />'.$current_penalty?></div>
    </div>
    
    
@@ -129,11 +131,12 @@ margin-top: 40px; width:200px; display:inline;"></div
         </div>
     </div>
     
-  <h3 class="go_stats_header" onclick="go_stats_third_tab();"><?= go_return_options('go_points_name').' - '. go_return_options('go_currency_name').' - '. 'Minutes' ?></h3>
+  <h3 class="go_stats_header" onclick="go_stats_third_tab();"><?= go_return_options('go_points_name').' - '. go_return_options('go_currency_name').' - '. ''.go_return_options('go_bonus_currency_name').' - '. go_return_options('go_penalty_name').'' ?></h3>
   <div class="go_stats_box">
   <div id="go_stats_third_tab_points"><h6 class="go_stats_box_title"><?= go_return_options('go_points_name').' '.$current_points; ?></h6><ul id="go_stats_points" class="go_stats_task_lists" ></ul></div>
   <div id="go_stats_third_tab_currency"><h6 class="go_stats_box_title"><?= go_return_options('go_currency_name').' '.$current_currency; ?></h6><ul id="go_stats_currency" class="go_stats_task_lists" ></ul></div>
-  <div id="go_stats_third_tab_minutes"><h6 class="go_stats_box_title"><?= 'Minutes '.$current_minutes; ?></h6><ul id="go_stats_minutes" class="go_stats_task_lists" ></ul></div>
+  <div id="go_stats_third_tab_bonus_currency"><h6 class="go_stats_box_title"><?= go_return_options('go_bonus_currency_name').' '.$current_bonus_currency; ?></h6><ul id="go_stats_bonus_currency" class="go_stats_task_lists" ></ul></div>
+    <div id="go_stats_third_tab_penalty"><h6 class="go_stats_box_title"><?= go_return_options('go_penalty_name').' '.$current_penalty; ?></h6><ul id="go_stats_penalty" class="go_stats_task_lists" ></ul></div>
   </div>
   
   
@@ -145,7 +148,8 @@ margin-top: 40px; width:200px; display:inline;"></div
           Order By:<select id="go_stats_leaderboard_select" onchange="go_stats_leaderboard_choice();">
               <option value="points"><?php echo go_return_options('go_points_name'); ?></option>
               <option value="currency"><?php echo go_return_options('go_currency_name'); ?></option>
-              <option value="minutes">Minutes</option>
+              <option value="bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?></option>
+              <option value="penalty"><?php echo go_return_options('go_penalty_name'); ?></option>
 			  <option value="badge_count">Badge Count</option>
           </select>
       </div>
@@ -156,7 +160,8 @@ margin-top: 40px; width:200px; display:inline;"></div
           <th class="header">Gamertag</th>
           <th class="header"><?php echo go_return_options('go_points_name'); ?></th>
           <th class="header"><?php echo go_return_options('go_currency_name'); ?></th>
-          <th class="header">Minutes</th>
+          <th class="header"><?php echo go_return_options('go_bonus_currency_name'); ?></th>
+          <th class="header"><?php echo go_return_options('go_penalty_name'); ?></th>
 		  <th class="header">Badge Count</th>
           </tr></thead>
           <tbody id="go_stats_leaderboard_table_body"></tbody>
@@ -299,7 +304,7 @@ function go_stats_currency(){
 			}}
 		die(); 
 	}
-function go_stats_minutes(){
+function go_stats_bonus_currency(){
 		global $wpdb;
  	if($_POST['uid'] != ''){
 		$current_user = get_userdata( $_POST['uid'] );
@@ -308,7 +313,7 @@ function go_stats_minutes(){
 	}
     $user_id = $current_user->ID ;
 	$table_name_go = $wpdb->prefix . "go";
-	$list = $wpdb->get_results("select minutes, reason, timestamp from ".$table_name_go." where uid = $user_id and minutes != 0 order by timestamp desc, reason desc");
+	$list = $wpdb->get_results("select bonus_currency, reason, timestamp from ".$table_name_go." where uid = $user_id and bonus_currency != 0 order by timestamp desc, reason desc");
 	$x = 0;
 	foreach($list as $lists){
 		if(gettype(unserialize($lists->reason)) == 'array'){
@@ -317,20 +322,44 @@ function go_stats_minutes(){
 			$lists->timestamp = $reason_array['time'];
 		}
 			$x++;
-		?> <li class="go_<?= isEven($x)?>"><?= $lists->minutes ?> Minutes on <?= $lists->timestamp ?> For <?= $lists->reason ?></li> <?php
+		?> <li class="go_<?= isEven($x)?>"><?php echo $lists->bonus_currency .' '. go_return_options('go_bonus_currency_name').' on '.$lists->timestamp.' For '. $lists->reason ?></li> <?php
 		}
 		die(); 
 	}
-	add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
+function go_stats_penalty(){
+		global $wpdb;
+ 	if($_POST['uid'] != ''){
+		$current_user = get_userdata( $_POST['uid'] );
+		}else{
+ 	$current_user = wp_get_current_user();
+	}
+    $user_id = $current_user->ID ;
+	$table_name_go = $wpdb->prefix . "go";
+	$list = $wpdb->get_results("select penalty, reason, timestamp from ".$table_name_go." where uid = $user_id and penalty != 0 order by timestamp desc, reason desc");
+	$x = 0;
+	foreach($list as $lists){
+		if(gettype(unserialize($lists->reason)) == 'array'){
+			$reason_array = unserialize($lists->reason);
+			$lists->reason = $reason_array['reason'];
+			$lists->timestamp = $reason_array['time'];
+		}
+			$x++;
+		?> <li class="go_<?= isEven($x)?>"><?php echo $lists->penalty .' '. go_return_options('go_penalty_name').' on '.$lists->timestamp.' For '. $lists->reason ?></li> <?php
+		}
+		die(); 
+	}
+
+add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
 	
 function go_return_user_data($id, $counter){
 	$points = go_return_points($id);
 	$currency = go_return_currency($id);
-	$minutes = go_return_minutes($id);
+	$bonus_currency = go_return_bonus_currency($id);
+	$penalty = go_return_penalty($id);
 	$badge_count = go_return_badge_count($id);
 	$user_data_key = get_userdata($id);
 	$user_display = '<a href="'.$user_data_key->user_url.'" target="_blank">'.$user_data_key->display_name.'</a>';
-	echo "<tr><td>{$counter}</td><td>{$user_display}</td><td>{$points}</td><td>{$currency}</td><td>{$minutes}</td><td>{$badge_count}</td></tr>";
+	echo "<tr><td>{$counter}</td><td>{$user_display}</td><td>{$points}</td><td>{$currency}</td><td>{$bonus_currency}</td><td>{$penalty}</td><td>{$badge_count}</td></tr>";
 };
 function go_stats_leaderboard(){
 	global $wpdb;
