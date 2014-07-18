@@ -114,6 +114,14 @@ function go_stats_task_list(){
                     <div class='go_stats_task_status_wrap'>
 				<?php 
 				}
+					$custom = get_post_custom($task->post_id);
+					if($custom['go_mta_three_stage_switch'][0] == 'on'){
+						$stage_count = 3;
+					}elseif($custom['go_mta_five_stage_switch'][0] == 'on'){
+						$stage_count = 5;
+					}else{
+						$stage_count = 4;	
+					}
 					for($i = 5; $i > 0; $i--){
 						if($is_admin){ 
 							?>
@@ -121,7 +129,7 @@ function go_stats_task_list(){
 							<?php 
 						}
 						?>
-						<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} ?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
+						<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
 						<?php 
 						if ($is_admin){
 							?>

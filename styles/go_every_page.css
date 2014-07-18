@@ -128,6 +128,21 @@ input.go_test_field_rm {
 	color: red;
 }
 
+.go_task_opt_help{
+	float: right;
+	color: black;
+	margin-right: 0px;
+	width: 15px;
+	height: 15px;
+	border-radius: 8px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	background: white;
+	cursor: pointer;
+	display: inline;
+	position: relative;
+}
+
 .go_sortable {
 	cursor: move;
 	cursor: -webkit-grab;

@@ -180,7 +180,11 @@ function go_stats_task_list(){
 			jQuery('#go_stats_body').html(html);
 			jQuery('.go_stats_task_status_wrap a').click(function(){
 				jQuery('.chosen').not(jQuery(this).children('div')).removeClass('chosen');
-				jQuery(this).children('div').toggleClass('chosen');
+				jQuery(this).children('div').not(jQuery('.go_stage_does_not_exist')).toggleClass('chosen');
+			});
+			jQuery('.go_stage_does_not_exist').parent().css('cursor', 'default');
+			jQuery('.go_stage_does_not_exist').parent().on('click', function(e){
+				e.preventDefault();
 			});
 			jQuery('.go_stats_task_admin_submit').click(function(){
 				task_id = jQuery(this).attr('task');
