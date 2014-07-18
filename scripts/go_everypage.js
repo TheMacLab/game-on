@@ -326,34 +326,67 @@ function go_stats_leaderboard(){
 		}
 	});
 }
-	 function go_mark_seen(date, type){
-			jQuery.ajax({
-				url: MyAjax.ajaxurl,
-				type: "POST",
-				data:{
-					action: 'go_mark_read',
-					date: date,
-					type: type
-				},
-				success: function(data){
-					data = JSON.parse(data);
-					if(data[1] == 'remove'){
-						jQuery('#wp-admin-bar-'+data[0]).remove();
-						jQuery('#go_messages_bar').html(data[2]);
-						if(data[2] == 0){
-							jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient( 5px -9px, circle, white 8%, green 26px )');
-							}
-						}else if( data[1] == 'unseen'){
-							jQuery('#wp-admin-bar-'+data[0]+' div').css('color','');
-							jQuery('#go_messages_bar').html(data[2]);
-							if(data[2] == 0){
-							jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient( 5px -9px, circle, white 8%, green 26px )');
-							}
-							} 
-					
+function go_mark_seen(date, type){
+	jQuery.ajax({
+		url: MyAjax.ajaxurl,
+		type: "POST",
+		data:{
+			action: 'go_mark_read',
+			date: date,
+			type: type
+		},
+		success: function(data){
+			data = JSON.parse(data);
+			if (data[1] == 'remove') {
+				jQuery('#wp-admin-bar-'+data[0]).remove();
+				jQuery('#go_messages_bar').html(data[2]);
+				if (data[2] == 0) {
+					jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient(5px -9px, circle, white 8%, green 26px)');
 				}
-			});
+			} else if (data[1] == 'unseen') {
+				jQuery('#wp-admin-bar-'+data[0]+' div').css('color','');
+				jQuery('#go_messages_bar').html(data[2]);
+				if (data[2] == 0) {
+					jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient(5px -9px, circle, white 8%, green 26px)');
 				}
+			} else if (data[1] == 'seen') {
+				jQuery('#wp-admin-bar-'+data[0]+' a:first-of-type div').css('color','rgba(255, 215, 0, .4)');
+				jQuery('#go_messages_bar').html(data[2]);
+				if (data[2] == 1) {
+					jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient(5px -9px, circle, white 8%, red 26px)');
+				}
+			}
+		}
+	});
+}
+function go_change_seen(date, type, obj) {
+	if (type == 'unseen') {
+		jQuery(obj).text('Mark Unseen');
+		jQuery(obj).attr('onClick', 'go_mark_seen("'+date+'", "seen"); go_change_seen("'+date+'", "seen", this);');
+	} else if (type == 'seen') {
+		jQuery(obj).text('Mark Seen');
+		jQuery(obj).attr('onClick', 'go_mark_seen("'+date+'", "unseen"); go_change_seen("'+date+'", "unseen", this);');
+	}
+}
 function go_add_uploader(){
 	jQuery('#go_upload_form div#go_uploader').append('<input type="file" name="go_attachment[]"/><br/>');
 	}
+	
+//	Grabs substring in the middle of the string object that getMid() is being called from.
+//	Takes two strings, one from the left and one from the right.
+String.prototype.getMid = function(str_1, str_2) {
+	if (typeof(str_1) === 'string' && typeof(str_2) === 'string') {
+		var start = str_1.length;
+		var substr_length = this.length - (str_1.length + str_2.length);
+		var substr = this.substr(start, substr_length);
+		return substr;
+	} else {
+		if (typeof(str_1) !== 'string' && typeof(str_2) !== 'string') {
+			console.error("String.prototype.getMid expects two strings as args.");
+		} else if (typeof(str_1) !== 'string') {
+			console.error("String.prototype.getMid expects 1st arg to be string.");
+		} else if (typeof(str_2) !== 'string') {
+			console.error("String.prototype.getMid expects 2nd arg to be string.");
+		}
+	}
+}

@@ -2,28 +2,45 @@
 function go_mail() {
 	global $wpdb;
 	$dir = plugin_dir_url(__FILE__);
-	add_submenu_page( 'game-on-options.php', 'Email', 'Email', 'manage_options', 'go_mail', 'go_mail_menu');
+	add_submenu_page('game-on-options.php', 'Email', 'Email', 'manage_options', 'go_mail', 'go_mail_menu');
 }
 
 function go_mail_menu() {
 	global $wpdb;
-	if (!current_user_can('manage_options'))  { 
-		wp_die( __('You do not have sufficient permissions to access this page.') );
-	} 
-	else{
+	if (!current_user_can('manage_options')) { 
+		wp_die(__('You do not have sufficient permissions to access this page.'));
+	} else {
 		if(isset($_POST['go_mail'])){
 			$email = $_POST['go_mail'];
 			update_option('go_admin_email', $email);
 			} else {
 				$email = get_option('go_admin_email','');
-				}
-		echo '<span">Recipient Email:<span> <a href="javascript:;" class="go_task_opt_help" style="float: inherit !important;"onclick="go_display_help_video(\'http://maclab.guhsd.net/go/video/email/email.mp4\');">?</a> <form action="" method="post">
-        <textarea name="go_mail">'.$email.'</textarea>
-        <input type="submit" value="Submit"/>
-        </form> <br/>
-		Paste this shortcode: <input type="text" value="[go_upload]" disabled/>
-		This will display an upload box for files and a text-box for additional comments the user has. It will send an Email with the file as an attachment. The message will be from \"no-replay@go.net\" with the first and last name of the student. The subject will be the page title where this was sent from. The message will contain the addition comments and the student\'s login.';
-		}
+			}
+		echo "
+			<div id='go_option_admin_email_desc'>
+				<span>
+					Recipient Email:
+				</span>
+				<a href='javascript:;' class='go_task_opt_help' style='float: inherit !important;' onclick='go_display_help_video(\"http://maclab.guhsd.net/go/video/email/email.mp4\");'>
+					?
+				</a>
+				<form action='' method='post'>
+					<input name='go_mail' type='text' style='width: 35%;' value='{$email}'/>
+					<input type='submit' value='Submit'/>
+				</form>
+				<p>
+					Paste this shortcode,
+					<input type='text' value='[go_upload]' style='width: 95px; text-align: center;' disabled/>
+					anywhere you would like to present an upload form for users to upload files.  <b>The files will be sent from a non-replyable address (\"no-reply@go.net\")
+					to the address given above.</b>
+				</p>
+				<p>
+					The subject line will contain the uploader's first and last name, username, and the task/post it was uploaded from. The body will contain
+					the user's email and any comments that they may leave.
+				</p>
+			</div>
+		";
+	}
 }
 
 //Shortcode for Email input

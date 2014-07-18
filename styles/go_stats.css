@@ -268,8 +268,6 @@
 	display: inline-block;
 	float: left;
 	margin-right: 5.8%;
-	border: 5px solid #BBB;
-	border-radius: 50%;
 	height: 120px; 
 	width: 120px;
 }

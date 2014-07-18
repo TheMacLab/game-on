@@ -148,9 +148,9 @@ function go_mta_con_meta( array $meta_boxes ) {
  				'type' => 'go_test_field_encounter'
  			),
 			array(
-				'name' => 'HTML5 Video Player'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4'),
-				'id' => 'stage_one_video_shortcode',
-				'type' => 'go_video_shortcode'
+				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
+				'id' => 'stage_one_shortcode_list',
+				'type' => 'go_shortcode_list'
 			),
 			array(
 				'name' => 'Stage 2'.go_task_opt_help('accept', '', 'http://maclab.guhsd.net/go/video/quests/acceptMessage.mp4'),
@@ -190,6 +190,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
+				'name' => 'Lock'.go_task_opt_help('accept_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'id' => $prefix.'accept_admin_lock',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('accept_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'accept_upload',
 				'type' => 'checkbox'
@@ -217,9 +222,9 @@ function go_mta_con_meta( array $meta_boxes ) {
  				'type' => 'go_test_field_accept'
  			),
 			array(
-				'name' => 'HTML5 Video Player'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4'),
-				'id' => 'stage_two_video_shortcode',
-				'type' => 'go_video_shortcode'
+				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
+				'id' => 'stage_two_shortcode_list',
+				'type' => 'go_shortcode_list'
 			),
 			array(
 				'name' => 'Stage 3'.go_task_opt_help('complete', '', 'http://maclab.guhsd.net/go/video/quests/completionMessage.mp4'),
@@ -259,6 +264,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
+				'name' => 'Lock'.go_task_opt_help('completion_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'id' => $prefix.'completion_admin_lock',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
  				'id' => $prefix.'completion_upload',
  				'type' => 'checkbox'
@@ -291,9 +301,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'HTML5 Video Player'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4'),
-				'id' => 'stage_three_video_shortcode',
-				'type' => 'go_video_shortcode'
+				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
+				'id' => 'stage_three_shortcode_list',
+				'type' => 'go_shortcode_list'
 			),
 			array(
 				'name' => 'Stage 4'.go_task_opt_help('mastery', '', 'http://maclab.guhsd.net/go/video/quests/stageFour.mp4'),
@@ -333,6 +343,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
+				'name' => 'Lock'.go_task_opt_help('mastery_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'id' => $prefix.'mastery_admin_lock',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'mastery_upload',
 				'type' => 'checkbox'
@@ -365,9 +380,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'HTML5 Video Player'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4'),
-				'id' => 'stage_four_video_shortcode',
-				'type' => 'go_video_shortcode'
+				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
+				'id' => 'stage_four_shortcode_list',
+				'type' => 'go_shortcode_list'
 			),
 			array(
 				'name' => 'Stage 5'.go_task_opt_help('repeat_message', '', 'http://maclab.guhsd.net/go/video/quests/stageFive.mp4'),
@@ -412,14 +427,19 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
+				'name' => 'Lock'.go_task_opt_help('repeat_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'id' => $prefix.'repeat_admin_lock',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('repeat_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'repeat_upload',
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'HTML5 Video Player'.go_task_opt_help('shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4'),
-				'id' => 'stage_five_video_shortcode',
-				'type' => 'go_video_shortcode'
+				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
+				'id' => 'stage_five_shortcode_list',
+				'type' => 'go_shortcode_list'
 			)
 		),
 	);
@@ -576,9 +596,43 @@ function go_cmb_render_go_task_shortcode() {
 	echo '<input type="text" disabled value="[go_task id=\''.get_the_id().'\']"/>';
 }
 
-add_action('cmb_render_go_video_shortcode', 'go_cmb_render_go_video_shortcode');
-function go_cmb_render_go_video_shortcode(){
-	echo '[go_display_video video_url=\'\' video_title=\'\' width=\'\' height=\'\']';	
+add_action('cmb_render_go_shortcode_list', 'go_cmb_render_go_shortcode_list');
+function go_cmb_render_go_shortcode_list($field_args){
+	$meta_id = $field_args["id"];
+	$custom = get_post_custom(get_the_id());
+	$is_checked = $custom[$meta_id][0];
+	echo "
+		<input class='go_shortcode_list_checkbox' name='{$meta_id}' type='checkbox'";
+		if ($is_checked) {
+			echo ' checked';
+		}
+	echo "/>
+		<ul class='go_shortcode_list' style='display: none;'>
+			<li class='go_shortcode_list_item'><span>"
+				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/displayNameShortcode.mp4')."</span>[go_get_displayname]
+			</li>
+			<li class='go_shortcode_list_item'><span>"
+				.go_task_opt_help('upload_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/uploadShortcode.mp4')."</span>[go_upload]
+			</li>
+			<li class='go_shortcode_list_item'><span>"
+				.go_task_opt_help('badge_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/badgeShortcde.mp4')."</span>[go_award_badge id='']
+			</li>
+			<li class='go_shortcode_list_item'><span>"
+				.go_task_opt_help('user_only_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/userOnlyShortcode.mp4')."</span>[go_user_only_content][/go_user_only_content]
+			</li>
+			<li class='go_shortcode_list_item'><span>"
+				.go_task_opt_help('visitor_only_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/visitorOnlyShortcode.mp4')."</span>[go_visitor_only_content][/go_visitor_only_content]
+			</li>
+			<!--
+			<li class='go_shortcode_list_item'><span>"
+				.go_task_opt_help('admin_only_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/adminOnlyShortcode.mp4')."</span>[go_admin_only_content][/go_admin_only_content]
+			</li>
+			-->
+			<li class='go_shortcode_list_item'><span>"
+				.go_task_opt_help('video_shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4')."</span>[go_display_video video_url='' video_title='' width='' height='']
+			</li>
+		</ul>
+	";
 }
 
 add_action( 'cmb_render_go_store_shortcode', 'go_cmb_render_go_store_shortcode', 10, 0 );
@@ -2315,7 +2369,7 @@ function go_stage_reward($field_args){
 	
 	echo "<div id='stage_{$field_args['stage']}'>";
 	for($i = 1; $i <= 5; $i++){
-		echo "<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[]' class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".(($field_args['stage'] == $i)?"current":"")."' value='".
+		echo "<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[]' class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".(($field_args['stage'] == $i)?"go_current":"")."' value='".
 		(($field_args['reward'] == 'points') && (!empty($rewards['points']))?$rewards['points'][$i-1]: 
 		(($field_args['reward'] == 'currency') && (!empty($rewards['currency']))?$rewards['currency'][$i-1]:
 		(($field_args['reward'] == 'bonus_currency') && (!empty($rewards['bonus_currency']))?$rewards['bonus_currency'][$i-1]:0)))."'/>";
