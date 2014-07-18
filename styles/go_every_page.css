@@ -14,43 +14,44 @@
 	z-index: 10000;
 }
 
-#go_admin_bar_progress_bar_border {
+.go_message_container a{
+	display: inline-block !important; 
+	text-decoration: underline !important; 
+	padding: 0px !important; 
+	margin: 0px !important;
+}
+
+#go_admin_bar_progress_bar_border{
 	height:15px;
 	width:120px;
 	border:thin grey solid;
 	-moz-border-radius: 2em 2em 2em 2em;
 	border-radius: 2em 2em 2em 2em;
 }
-
-#go_admin_bar_hitpoint_bar_border {
+#go_admin_bar_hitpoint_bar_border{
 	height:15px;
     width:120px;
     border:thin grey solid;
     -moz-border-radius: 2em 2em 2em 2em;
     border-radius: 2em 2em 2em 2em;
 }
-
-#go_admin_bar_title {
+#go_admin_bar_title{
 	text-align:left;
 }
 
-#go_admin_bar_input {
+#go_admin_bar_input{
 	width:250px;
 }
-
-.go_admin_bar_points {
+.go_admin_bar_points{
 	width:50px !important;
 }
-
-.go_admin_bar_reason {
+.go_admin_bar_reason{
 	width:175px !important;
 }
-
-ul#wp-admin-bar-go_add-default.ab-submenu {
+ul#wp-admin-bar-go_add-default.ab-submenu{
 	height:310px;
 }
-
-#points_needed_to_level_up:hover {
+#points_needed_to_level_up:hover{
 	color:black;
 }
 
@@ -63,15 +64,13 @@ ul#wp-admin-bar-go_add-default.ab-submenu {
 	color: white;
 	text-shadow: 0px 0px #ff6600;
 }
-
-.progress_bar {
+.progress_bar{
 	height:15px !important;
 	-moz-border-radius: 2em 2em 2em 2em !important;
 	border-radius: 2em 2em 2em 2em !important;
 	background-color: #ff6600;
 }
-
-#go_messages_bar {
+#go_messages_bar{
 	background-color: red;
 	border: 2px solid white;
 	border-radius: 12px;
@@ -84,14 +83,12 @@ ul#wp-admin-bar-go_add-default.ab-submenu {
 	min-width: 14px;
 	line-height:16px;
 }
-
 #go_admin_bar_task_search_input {
 	height: 24px;
 	font-size: 13px;
 	margin-top: 3px;
 	line-height: 2;
 }
-
 #go_admin_bar_task_search_submit {
 	height: 24px;
 	padding-bottom: 2px;
@@ -123,6 +120,14 @@ input#go-button-clone {
 	margin-bottom: 7px !important;
 }
 
+input.go_test_field_add {
+	color: green;
+}
+
+input.go_test_field_rm {
+	color: red;
+}
+
 .go_sortable {
 	cursor: move;
 	cursor: -webkit-grab;
@@ -134,7 +139,7 @@ input#go-button-clone {
 	cursor: -moz-grabbing;
 }
 
-#go_list_of_decay_dates, #go_list_of_decay_dates tbody, #go_list_of_decay_dates th, #go_list_of_decay_dates tr, #go_list_of_decay_dates td {
+#go_list_of_decay_dates, #go_list_of_decay_dates tbody, #go_list_of_decay_dates th, #go_list_of_decay_dates tr, #go_list_of_decay_dates td{
 	margin: 0px;
 	padding: 0px;
 }
@@ -144,7 +149,7 @@ input#go-button-clone {
 	border-color: #DDD;	
 }
 
-.go_task_settings_accordion {
+.go_task_settings_accordion{
 	font-size:16px;
 	border-style:solid;
 	border-width:1px;
@@ -153,7 +158,7 @@ input#go-button-clone {
 	cursor: pointer;
 }
 
-.go_triangle_container {
+.go_triangle_container{
 	float:right;
 	cursor: pointer;
 	display: block;
@@ -162,11 +167,11 @@ input#go-button-clone {
 	text-align: center;
 }
 
-.go_triangle_container:hover .go_task_accordion_triangle {
+.go_triangle_container:hover .go_task_accordion_triangle{
 	border-top: 5px solid #777;
 }
 
-.go_task_accordion_triangle {
+.go_task_accordion_triangle{
 	width: 0; 
 	height: 0; 
 	border-left: 5px solid transparent;
@@ -177,98 +182,27 @@ input#go-button-clone {
 	margin: auto;
 }
 
-.down {
+.down{
 	border-top: none;
 	border-bottom: 5px solid #AAA;	
 }
 
-ul#go_task_order_in_chain {
-	margin: 0;
-}
-
-input#go_mta_final_chain_message {
-	width: 100%;
-}
-
-.go_reward_input {
+.go_reward_input{
 	color: #BBB !important;
 	text-align: center;
 	width: 40px;
 }
 
-.go_test_field_table, .go_test_field_input_question {
+.go_test_field_table, .go_test_field_input_question_m{
 	width: 100%;
 }
 
-.go_test_field_table td {
-	padding: 0px !important;
-	margin-left: -2px;
+.go_test_field_input_m{
+	width: 60%;
 }
 
-.go_test_field_input_row select, 
-.go_test_field_input_question, 
-.go_test_field_add, 
-.go_test_field_rm,
-.go_test_field_add_block_button {
-	margin-left: inherit;
-}
-
-.go_test_loot_mod {
-	text-align: center;
-	width: 40px;
-}
-
-.go_test_field_input_question {
-	width: 100%;
-}
-
-input.go_test_field_input {
-	width: 75%;
-	margin: 0 5px 0 5px !important;
-	padding-top: 4px;
-}
-
-input.go_test_field_input::-webkit-input-placeholder {
-   padding-top: 2px;
-}
-
-input.go_test_field_input:-moz-placeholder {
-   padding-top: 2px;  
-}
-
-input.go_test_field_input::-moz-placeholder {
-   padding-top: 2px;  
-}
-
-input.go_test_field_input:-ms-input-placeholder {  
-   padding-top: 2px;  
-}
-
-.go_test_field_input_checkbox {
-	margin: 0 0 4px -2px !important;
-}
-
-input.go_test_field_add {
-	color: green;
-	font-size: 250%;
-}
-
-input.go_test_field_rm {
-	color: red;
-	font-size: 250%;
-	margin-left: 5px;
-}
-
-.go_test_field_input_rm_row_button {
-	margin-left: -2px !important;
-}
-
-input.current {
+.current{
 	color: #000 !important;
-}
-
-.condensed  {
-	padding: 7px !important;
 }
 
 /* Tasks Style | Front-end */
@@ -286,53 +220,15 @@ div.go_stage_message p:last-of-type {
 	border-bottom-color: inherit;
 }
 
-div.go_test_container {
-	margin-bottom: 10px;
-}
-
-div.go_test_container:last-of-type {
-	margin-bottom: 0px;
-}
-
 ul.go_test li {
 	list-style: none;
-}
-
-ul.go_test li:first-of-type {
-	display: inline;
-}
-
-ul.go_test li p {
-	margin: 0px !important;
-	padding: 0px !important;
-}
-
-p#go_test_error_msg {
-	margin: 0 !important;
-}
-
-span.go_wrong_answer_marker {
-	color: red;
-	margin: 0 0 0 10px !important;
-	padding: 0px !important;
-}
-
-span.go_correct_answer_marker {
-	color: green;
-	margin: 0 0 0 10px !important;
-	padding: 0px !important;
 }
 
 div.go_chain_message {
 	margin-top: 10px;
 }
 
-button.go_test_submit {
-	margin: 10px 0 10px 2px !important;
-	/* Deal with line break */
-}
-
-.dark {
+.dark{
 	display: none;
 	position: fixed;
 	top: 0%;
@@ -346,7 +242,7 @@ button.go_test_submit {
 	filter: alpha(opacity=80);
 }
 
-.light {
+.light{
 	display: none;
 	position: fixed;
 	left: 22.5%; 
@@ -354,3 +250,45 @@ button.go_test_submit {
 	background-color: white;
 	z-index:1002;
 }
+
+
+/*
+.condensed{
+	margin: 0px !important;
+	padding: 0px !important;
+}
+*/
+/*
+#failure_overlay {
+	background-color: rgba(255, 74, 0, 0.5);
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	position: fixed;
+}
+
+#failure_overlay div {
+	background-color: rgba(155, 0, 0, 0.9);
+	color: white;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	border-radius: 3px;
+	margin: auto;
+	margin-top: 20%;
+	width: 50%;
+	text-align: center;
+	font-size: 200%;
+}
+
+#failure_overlay div ::selection {
+	color: rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+#failure_overlay div p {
+	padding: 0;
+	margin: 0;
+}
+*/

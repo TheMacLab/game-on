@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.9.5
+Version: 1.9.6
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -81,11 +81,12 @@ add_action('wp_ajax_go_class_a_save','go_class_a_save');
 add_action('wp_ajax_go_class_b_save','go_class_b_save');
 add_action('wp_ajax_go_focus_save','go_focus_save');
 add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
+add_action('wp_ajax_go_stats_move_stage', 'go_stats_move_stage');
 add_action('wp_ajax_go_stats_item_list', 'go_stats_item_list');
-add_action('wp_ajax_go_stats_points','go_stats_points');
-add_action('wp_ajax_go_stats_currency','go_stats_currency');
-add_action('wp_ajax_go_stats_bonus_currency','go_stats_bonus_currency');
-add_action('wp_ajax_go_stats_penalty','go_stats_penalty');
+add_action('wp_ajax_go_stats_rewards_list', 'go_stats_rewards_list');
+add_action('wp_ajax_go_stats_badges_list', 'go_stats_badges_list');
+add_action('wp_ajax_go_stats_leaderboard_choices','go_stats_leaderboard_choices');
+add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
 add_action('wp_ajax_go_presets_reset','go_presets_reset');
 add_action('wp_ajax_go_presets_save','go_presets_save');
 add_action('wp_ajax_listurl', 'listurl');

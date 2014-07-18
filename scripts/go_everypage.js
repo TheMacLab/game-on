@@ -97,6 +97,43 @@ function go_admin_bar_stats_page_button(id){
 			jQuery('#go_stats_white_overlay').show();
 			jQuery('#go_stats_hidden_input').val(id);
 			
+			jQuery('.go_stats_body_selectors').click(function(){
+				body = jQuery('#go_stats_body');
+				body.empty();
+				body.css('background-color', '#FFF');
+				jQuery('.go_stats_body_selectors').css('font-weight', 'normal');
+				tab = jQuery(this).attr('tab');
+				jQuery(this).css('font-weight', 'bold');
+				switch (tab){
+					/*
+					case 'progress':
+						body.css('background-color', '#CCC');
+						body.html('goml');
+						break;
+					*/
+					case 'help':
+						go_stats_help();
+						break;
+					case 'tasks':
+						go_stats_task_list();
+						break;
+					case 'items':
+						go_stats_item_list();
+						break;
+					case 'rewards':
+						go_stats_rewards_list();
+						break;
+					case 'badges':
+						go_stats_badges_list();
+						break;
+					case 'leaderboard':
+						go_stats_leaderboard();
+						break;
+				}
+			});
+			
+			jQuery('#go_stats_body_tasks').click();
+			
 			//Check if store lightbox is visible
 			if(jQuery('#go_stats_white_overlay').css('display') != 'none'){
 				//Monitors for keyboard input
@@ -118,105 +155,170 @@ function go_stats_close(){
 	jQuery('#go_stats_page_black_bg').hide();
 	jQuery('#go_stats_lay').hide();
 }
+
+function go_stats_help(){
+	jQuery('#go_option_help_video').clone().css({'margin': '0px 15% 0px 11%'}).prop('id', 'go_stats_help_video').attr('width', '70%').attr('height', '100%').appendTo('#go_stats_body');
+	//jQuery('#go_stats_help_video').css({'margin': '0px 15% 0px 11%'});
+	myplayer = videojs('go_stats_help_video');
+	myplayer.ready(function(){
+		myplayer.src('http://www.maclab.guhsd.net/video/stats/help.mp4');
+		myplayer.load();
+		myplayer.play();
+		videoStatus = 'playing';
+	});
+}
 	
 function go_stats_task_list(){
-		jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_task_list', stage:1, uid:jQuery('#go_stats_hidden_input').val()},
-		success: function(html){
-jQuery('#go_stats_encountered_list').html(html);
-		}
-	});
-
 	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_task_list', stage:2, uid:jQuery('#go_stats_hidden_input').val()},
-		success: function(html){
-jQuery('#go_stats_accepted_list').html(html);
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data: {
+			action: 'go_stats_task_list',
+			user_id: jQuery('#go_stats_hidden_input').val()
+		},
+		success:function(html){
+			jQuery('#go_stats_body').html(html);
+			jQuery('.go_stats_task_status_wrap a').click(function(){
+				jQuery('.chosen').not(jQuery(this).children('div')).removeClass('chosen');
+				jQuery(this).children('div').toggleClass('chosen');
+			});
+			jQuery('.go_stats_task_admin_submit').click(function(){
+				task_id = jQuery(this).attr('task');
+				stage = '';
+				if(jQuery('div[task="'+task_id+'"].chosen').length){
+					stage = jQuery('div[task="'+task_id+'"].chosen').attr('stage');
+				}
+				if(task_id != '' && stage != ''){
+					go_stats_move_stage(task_id, stage);
+				}
+				jQuery('.chosen').toggleClass('chosen');
+			});
 		}
 	});
+}
 
+function go_stats_move_stage(task_id, status){
+	task_message = jQuery('#go_stats_task_' + task_id + '_message');
+	if(task_message.val() != ''){
+		message = task_message.val();
+	}else{
+		message = task_message.prop('placeholder');
+	} 
+	if(jQuery('div[task="' + task_id + '"][stage="' + status +'"]').attr('count')){
+		count = jQuery('div[task="' + task_id + '"][stage="' + status +'"]').attr('count');
+	}else{
+		count = 0;	
+	}
 	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_task_list', stage:3, uid:jQuery('#go_stats_hidden_input').val()},
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_stats_move_stage',
+			user_id:  jQuery('#go_stats_hidden_input').val(),
+			task_id: task_id,
+			status: status,
+			count: count,
+			message: message
+		},
 		success: function(html){
-jQuery('#go_stats_completed_list').html(html);
+			task_message.val('');
+			for(i = 5; i > 0; i--){
+				if(i <= status){
+					jQuery('div[task="' + task_id + '"][stage="' + i +'"]').addClass('completed');
+				}else{
+					jQuery('div[task="' + task_id + '"][stage="' + i +'"]').removeClass('completed');
+				}
+			}
+			json = JSON.parse(html.substr(html.search('{"type"'), html.length));
+			jQuery('#go_stats_user_points_value').html(parseFloat(jQuery('#go_stats_user_points_value').html()) + json['points']);
+			jQuery('#go_stats_user_progress_top_value').html(parseFloat(jQuery('#go_stats_user_progress_top_value').html()) + json['points']);
+			percentage = (parseFloat(jQuery('#go_stats_user_progress_top_value').html())/parseFloat(jQuery('#go_stats_user_progress_bottom_value').html())) * 100;
+			jQuery('#go_stats_progress_fill').css('width', '' + percentage + '%');
+			jQuery('#go_stats_user_currency_value').html(parseFloat(jQuery('#go_stats_user_currency_value').html()) + json['currency']);
+			jQuery('#go_stats_user_bonus_currency_value').html(parseFloat(jQuery('#go_stats_user_bonus_currency_value').html()) + json['bonus_currency']);
 		}
 	});
-
-	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_task_list', stage:4, uid:jQuery('#go_stats_hidden_input').val()},
-		success: function(html){
-jQuery('#go_stats_mastered_list').html(html);
-		}
-	});
-	
 }
 
 function go_stats_item_list(){
 	jQuery.ajax({
-		type: "POST",
+		type: 'post',
 		url: MyAjax.ajaxurl,
 		data:{
 			action: 'go_stats_item_list',
-			uid: jQuery('#go_stats_hidden_input').val()	
+			user_id: jQuery('#go_stats_hidden_input').val()	
 		}, 
 		success: function(html){
-			jQuery('#go_stats_item_list').html(html);
+			jQuery('#go_stats_body').html(html);
 		}
 	});	
 }
-	
-function go_stats_third_tab(){
-jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_points', uid: jQuery('#go_stats_hidden_input').val()},
-		success: function(html){
-jQuery('#go_stats_points').html(html);
-		}
-	});	
-jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_currency', uid:jQuery('#go_stats_hidden_input').val()},
-		success: function(html){
-jQuery('#go_stats_currency').html(html);
-		}
-	});
-jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_bonus_currency', uid: jQuery('#go_stats_hidden_input').val()},
-		success: function(html){
-jQuery('#go_stats_bonus_currency').html(html);
-		}
-	});
-jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-		action: 'go_stats_penalty', uid: jQuery('#go_stats_hidden_input').val()},
-		success: function(html){
-jQuery('#go_stats_penalty').html(html);
-		}
-	});
-	
-	}
-function go_stats_leaderboard_choice(){
-	var class_values = [];
-	var focus_values = [];
-	jQuery('#go_stats_class_a_list :checked').each(function() {
-		class_values.push(jQuery(this).val());
-	});
-	jQuery('#go_focuses :checked').each(function(){
-		focus_values.push(jQuery(this).val());
-	});
+
+function go_stats_rewards_list(){
 	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-			action: 'go_stats_leaderboard',
-			class_a_choice: class_values,
-			focuses: focus_values,
-			order: jQuery('#go_stats_leaderboard_select').val()
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_stats_rewards_list',
+			user_id: jQuery('#go_stats_hidden_input').val()
 		},
 		success: function(html){
-			jQuery('#go_stats_leaderboard_table_body').html(html);
+			jQuery('#go_stats_body').html(html);
+		}
+	});
+}	
+
+function go_stats_badges_list(){
+	jQuery.ajax({
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_stats_badges_list',
+			user_id: jQuery('#go_stats_hidden_input').val()
+		},
+		success: function(html){
+			jQuery('#go_stats_body').html(html);
+		}
+	});
+}
+
+function go_stats_leaderboard(){
+	jQuery.ajax({
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data: {
+			action: 'go_stats_leaderboard_choices',
+		},
+		success: function(html){
+			jQuery('#go_stats_body').html(html);
+			jQuery('.go_stats_leaderboard_focus_choice, .go_stats_leaderboard_class_choice').click(function(){
+				var class_values = [];
+				var focus_values = [];
+				jQuery('.go_stats_leaderboard_class_choice').each(function() {
+					if(jQuery(this).prop('checked')){
+						class_values.push(jQuery(this).val());
+					}
+				});
+				jQuery('.go_stats_leaderboard_focus_choice').each(function(){
+					if(jQuery(this).prop('checked')){
+						focus_values.push(jQuery(this).val());
+					}
+				});
+				jQuery.ajax({
+					type: 'post',
+					url: MyAjax.ajaxurl,
+					data: { 
+						action: 'go_stats_leaderboard',
+						class_a_choice: class_values,
+						focuses: focus_values,
+						date: jQuery('.go_stats_leaderboard_date_choice:checked').val()
+					},
+					success: function(html){
+						jQuery('#go_stats_leaderboard').html(html);
+					}
+				});
+			});
+			jQuery('.go_stats_leaderboard_class_choice').first().click();
 		}
 	});
 }
@@ -251,22 +353,3 @@ function go_stats_leaderboard_choice(){
 function go_add_uploader(){
 	jQuery('#go_upload_form div#go_uploader').append('<input type="file" name="go_attachment[]"/><br/>');
 	}
-
-//	Grabs substring in the middle of the string object that getMid() is being called from.
-//	Takes two strings, one from the left and one from the right.
-String.prototype.getMid = function(str_1, str_2) {
-	if (typeof(str_1) === 'string' && typeof(str_2) === 'string') {
-		var start = str_1.length;
-		var substr_length = this.length - (str_1.length + str_2.length);
-		var substr = this.substr(start, substr_length);
-		return substr;
-	} else {
-		if (typeof(str_1) !== 'string' && typeof(str_2) !== 'string') {
-			console.error("String.prototype.getMid expects two strings as args.");
-		} else if (typeof(str_1) !== 'string') {
-			console.error("String.prototype.getMid expects 1st arg to be string.");
-		} else if (typeof(str_2) !== 'string') {
-			console.error("String.prototype.getMid expects 2nd arg to be string.");
-		}
-	}
-}

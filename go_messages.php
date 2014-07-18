@@ -24,12 +24,18 @@ function go_messages_bar(){
 		));
 		if(!empty($messages[1])){
 			foreach($messages[1] as $date=> $values){
+				if (preg_match("/[<>]+/", $values[0])) {
+					$title_temp = preg_replace("/(<a\s?href=\".*\">)+/", '', $values[0]);
+					$title = preg_replace("/(<\/a>)+/", '', $title_temp);
+				} else {
+					$title = $values[0];
+				}
 				$style = '';
 				if((int)$values[1] == 1){
 					$style = 'color: rgba(255, 215, 0, .4);';
 					}
 				$wp_admin_bar->add_menu( array(
-			'title' => '<div style="'.$style.'">'.substr($values[0],0,20).'...</div>',
+			'title' => '<div style="'.$style.'">'.$title.'...</div>',
 			'href' => '#',
 			'id' => $date,
 			'parent' => 'go_messages'
@@ -37,7 +43,7 @@ function go_messages_bar(){
 		$wp_admin_bar->add_menu( array(
 			'title' => date('m-d-Y',$date).' - <a onClick="go_mark_seen('.$date.',\'unseen\');" style="display:inline;" href="#">Mark seen</a>'.' - <a onClick="go_mark_seen('.$date.',\'remove\');" style="display:inline;" href="#">Remove</a>',
 			'parent' => $date,
-			'meta' => array('html' =>  '<div style="width:350px;">'.$values[0].'</div>'),
+			'meta' => array('html' =>  '<div class="go_message_container" style="width:350px;">'.$values[0].'</div>'),
 			'id' => rand()
 		));
 				}

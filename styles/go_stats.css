@@ -26,360 +26,307 @@
 	border-radius: 3px;
 }
 
-#go_stats_close_all{
-	margin-left:75%; 
-	width:18px; 
-	height:18px; 
-	background-color:rgba(255,0,0,.9);
-	position:fixed; 
-	margin-bottom:10px;
-	margin-top:-26px;
-	-webkit-border-radius: 9px;
-	-moz-border-radius: 9px;
-	border-radius:9px;
-	color:white;
-	font-size:20px;
+#go_stats_lay{
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
 }
 
-#go_stats_wrap{
-	width: 80%;
-	margin-left: auto;
-	margin-right: auto;
-	height:94%;
-	border:thin grey solid;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	overflow:auto;
-}
-
-#go_stats_accordion{
-	width: 98%;
-	margin:1%;
-}
+/** Header Styles **/
 
 #go_stats_gravatar{
-	width:96px;
-	height:96px;
-	padding:2px;
-	border: thin black solid;
-	float:left;
-	margin-top:5px;
-}
-
-#go_stats_info{
-	float:right;
-	width: 70%;
-	height:100px;
-	border: solid black thin;
-	margin-left:5px;
-	margin-top:5px;
-	padding-left:9px;
-	padding-right:9px;
-}
-	
-#go_stats_badges{
-	width:100%;
-	height:200px;
-	border: solid black thin;
-	margin-top:10px;
-	padding-left:9px;
-	padding-right:9px;
-	overflow:auto;
-}
-
-.go_info_boxes{
-	margin-left: 3% !important;
-	height: 68px !important;
-	border: thin solid grey;
-	display:inline-table;
-	margin-top: 9px!important;
-	text-align: center;
-	color: black !important;
-	font-size: 1.5vw !important;
-	padding-top: 12px !important;
-	background: rgb(255,255,255); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(243,243,243,1)), color-stop(51%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-}
-
-.go_border_radius{
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-}
-
-.ui-progressbar .ui-progressbar-value {
-	margin: -1px !important;
-	height: 100% !important;
-}
-#go_stats_current_rank{
-	color: black;
-	float:left;
-}
-
-#go_stats_next_rank{
-	color: black;
-	margin-left:490px;
-}
-
-#go_key_box{
-	height:10px;
-	width:10px;
-	border:thin solid grey;
 	display: inline-block;
+	width: 142px;
+	height: 142px;
+	border: 2px solid #BBB;
+	float: left;
+	position: relative;
+	margin: 0px 10px 0px 20px;
 }
 
-#go_stats_chart_key{
-	height:110px;
-	width:150px;
-	border:thin solid black;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	display:inline-block;
-	margin-left:10px;
+#go_stats_header{
+	position: relative;
+	overflow: hidden;
+	font-family: verdana;
+	border-bottom: 2px solid #BBB;
+	margin-right: 20px;
 }
 
-#go_stats_task_columns{
-	width:100%;
-	height: 205px;
-	border: thin solid black;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	margin-right:2px;
-	display:inline-table;
+#go_stats_user_info{
+	display: inline-block;
+	float: left;
+	font-size: 16px;
+	line-height: 18px;
 }
 
-.go_stats_box_title{
-	width:100%;
-	height:28px;
-	margin:0px;
-	font-size: 15px;
-	text-align: center;
-	padding-top: 7px;
-	background: rgb(255,168,76); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(255,168,76,1) 0%, rgba(255,123,13,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,168,76,1)), color-stop(100%,rgba(255,123,13,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa84c', endColorstr='#ff7b0d',GradientType=0 ); /* IE6-9 */	
-}
-	
-.go_odd{
-	height:30px !important;
-	color:black !important;
-	margin:0px;
-	padding-top:3px;
-	list-style-type:none;
-	padding-left: 10px;
-	background: rgb(242,245,246); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(242,245,246,1) 0%, rgba(227,234,237,1) 37%, rgba(200,215,220,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,245,246,1)), color-stop(37%,rgba(227,234,237,1)), color-stop(100%,rgba(200,215,220,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 ); /* IE6-9 */
-}
-
-.go_even{
-	height:30px !important;
-	color:black !important;
-	margin:0px;
-	padding-top:3px;
-	list-style-type:none;
-	padding-left: 10px;
-	background: rgb(242,245,246); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(242,245,246,1) 0%, rgba(227,234,237,1) 37%, rgba(200,215,220,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,245,246,1)), color-stop(37%,rgba(227,234,237,1)), color-stop(100%,rgba(200,215,220,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 ); /* IE6-9 */
-}
-
-.go_stats_task_lists{
-	height:177px;
-	margin:0px;
-	padding: 0px;
-	overflow:auto;
-}
-
-.go_stats_box{
-	padding:1px!important;
-}
-
-#go_stats_encountered_list{
-	height: auto !important;
-}
-
-#go_stats_item_list{
-	height: 177px;
+#go_stats_user_info div{
 	margin: 0px;
 	padding: 0px;	
 }
 
-#go_stats_third_tab_points{
-	width: 376px;
-	height: 205px;
-	border: thin solid black;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	margin-right:2px;
-	display:inline-table;
+.go_stats_reward_name{
+	display: inline-block;	
 }
 
-#go_stats_third_tab_currency{
-	width: 376px;
-	height: 205px;
-	border: thin solid black;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	margin-right:2px;
-	display:inline-table;
+#go_stats_user_progress, #go_stats_user_rank{
+	display: inline-block;	
+	float: right;
 }
 
-#go_stats_third_tab_minutes{
-	width: 760px;
-	height: 205px;
-	border: thin solid black;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	margin-right:2px;
-	display:inline-table;
+#go_stats_user_progress{
+	width: 25%;
+	height: 25px;
+	border: 2px solid #BBB;
+	border-radius: 15px;
+	position: relative;
+	top: 12px;
+	margin-right: 40px;
 }
 
-.go_status_icon_wrap{
-	width:105px;
-	float:right;
-}
-	
-.go_status_icon{
-	float:left;
-	border: thin solid black;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	width:20px;
-	height:20px;
-	margin:2px;
-	opacity: .8;
+#go_stats_progress_text_wrap{
+	float: left;
+	position: relative;
+	left: 50%;
 }
 
-#leaderboard_left_box{
-	width: 68.125%;
-	height: 400px;
-	border: thin solid black;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	margin-right: 1px;
+#go_stats_progress_text{
+	position: relative;
+	font-size: 18px;
+	z-index: 1;
+	float: left;
+	left: -50%;
+}
+
+#go_stats_progress_fill{
+	height: 100%;
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	position: absolute;
+	z-index: 0;
+}
+
+#go_stats_user_rank{
+	height: auto;
+	font-size: 55px;
+	font-weight: bold;
+	vertical-align: middle;
+	position: relative;
+	top: 12px;
+}
+
+#go_stats_user_tabs{
 	display: inline-block;
-	position:relative;
-	overflow-x: auto;
-}
-
-#leaderboard_right_box{
-	width: 24.5%;
-	height: 401px;
-	border: thin solid black;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	margin-right: 2px;
-	display: inline-table;
-	position:absolute;
-}
-
-#leaderboard_right_box h4{
-	padding-left: 10px;	
-}
-
-#go_stats_class_a_list, #go_focuses{
-	padding-left: 20px;
-}	
-	
-#leaderboard_left_box li{
-	height:30px !important;
-	color:black !important;
-	margin:0px;
-	padding-top:3px;
-	list-style-type:none;
-	padding-left: 10px;
-	background: rgb(242,245,246); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(242,245,246,1) 0%, rgba(227,234,237,1) 37%, rgba(200,215,220,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,245,246,1)), color-stop(37%,rgba(227,234,237,1)), color-stop(100%,rgba(200,215,220,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 ); /* IE6-9 */
-}
-
-#leaderboard_right_box li{
-	height:30px !important;
-	color:black !important;
-	margin:0px;
-	padding-top:3px;
-	list-style-type:none;
-	padding-left: 10px;
-	background: rgb(242,245,246); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(242,245,246,1) 0%, rgba(227,234,237,1) 37%, rgba(200,215,220,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,245,246,1)), color-stop(37%,rgba(227,234,237,1)), color-stop(100%,rgba(200,215,220,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 ); /* IE6-9 */
-}
-
-#go_stats_leaderboard_table{
-	width: 100%;
+	float: right;
 	clear: both;
+	font-size: 14px;
 }
 
-#go_stats_leaderboard_table td{
-	height:30px !important;
-	color:black !important;
-	margin:0px;
-	padding-top:3px;
-	list-style-type:none;
-	padding-left: 10px;
-	background: rgb(242,245,246); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(242,245,246,1) 0%, rgba(227,234,237,1) 37%, rgba(200,215,220,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,245,246,1)), color-stop(37%,rgba(227,234,237,1)), color-stop(100%,rgba(200,215,220,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 ); /* IE6-9 */
+#go_stats_user_tabs a{
+	text-decoration: none;
+	color: inherit;
 }
-	
-#go_stats_leaderboard_table thead,#leaderboard_right_box h3, #go_stats_badges h3{
-	height:32px;
-	margin:0px;
-	font-size: 15px;
+
+#go_stats_admin_help{
+	color: #FF0000 !important;	
+}
+
+#go_stats_body{
+	position: relative;
+	height: 70%;
+	margin: 25px 20px 0px 20px;
+	font-size: 13px;
+	font-family: verdana;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#go_stats_body a{
+	text-decoration: none;
+	color: inherit;
+}
+
+/** Task Styles **/
+
+#go_stats_tasks_list_left, #go_stats_tasks_list_right{
+	list-style-type: none;
+	height: 100%;
+	position: relative;
+	margin: 0px;
+}
+
+#go_stats_tasks_list_left{
+	float: left;
+	display: inline-block;
+	width: 48%;	
+	margin: 0px 3.6% 0px 0px;
+}
+
+.go_stats_tasks_list_admin{
+	float: none !important;
+	display: inherit !important;
+	margin: 0px !important;
+	width: 100% !important;	
+}
+
+#go_stats_tasks_list_right{
+	overflow: hidden;
+}
+
+#go_stats_tasks_list_left:last-child, #go_stats_tasks_list_right:last-child{
+	border-bottom: 1px solid #BBB;
+}
+
+.go_stats_task{
+	margin: 4px 0px 4px 0px;
+	border-top: 1px solid #BBB;
+}
+
+.go_stats_task_status_wrap{
+	float: right;	
+}
+
+.go_stats_task_status{
 	text-align: center;
-	padding-top: 7px;
-	background: rgb(255,168,76); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(255,168,76,1) 0%, rgba(255,123,13,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,168,76,1)), color-stop(100%,rgba(255,123,13,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(255,168,76,1) 0%,rgba(255,123,13,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa84c', endColorstr='#ff7b0d',GradientType=0 ); /* IE6-9 */	width:100%;
+	color: #FFF;
+	display: inline-block;
+	float: right;
+	width: 60px;
+	background-color: #DDD;
+	height: 14px;
+	margin: 4px 0px 2px 4px;
+	line-height: 14px;
+	vertical-algin: middle;
+}
+
+.go_stats_task_admin_submit{
+	cursor: pointer !important;
+	float: right !important; 
+	margin: 4px 0px 3px 4px !important;
+	height: 15px !important; 
+	width: 15px !important;
+	background-color: silver !important;
+	padding: 2px 6px 3px 6px !important;
+	 
+}
+
+.go_stats_task_admin_message{
+	float: right;
+	font-size: 12px;
+	line-height: 14px;
+	height: 16px;
+	width: 40%;
+	display: inline-block;
+	margin: 4px 0px 2px 4px;
+	padding: 0px;
+	overflow: hidden;
+}
+
+.completed{
+	background-color: #AAA;
+}
+
+.chosen{
+	background-color: #000;
+}
+
+.go_stats_body_list{
+	display: inline-block;
+	width: 30%;
+	height: 100%;
+	float: left;
+	list-style-type: none;
+	margin: 0px 1.5% 0px 0px !important;
+}
+
+#go_stats_body .go_stats_body_list:last-of-type{
+	margin-right: 0px;
+}
+
+.go_stats_body_list li:last-of-type{
+	border-bottom: 1px solid #BBB;
+}
+
+.go_stats_body_list_head{
+	font-weight: bold;
+	border-top: 0px !important;
+}
+
+.go_stats_body_list li{
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+	border-top: 1px solid #BBB;
+}
+
+/** Reward Styles **/
+.go_stats_reward{
+	white-space: pre-wrap;	
+}
+
+/** Badge Styles **/
+
+.go_badge_wrap{
+	display: inline-block;
+	float: left;
+	margin-right: 5.8%;
+	border: 5px solid #BBB;
+	border-radius: 50%;
+	height: 120px; 
+	width: 120px;
+}
+
+.go_badge_container{
+	position: relative;
+	float: left;
+	left: 50%;
+	top: 13%;
+}
+
+.go_badge{
+	position: relative;
+	float: left;
+	left: -50%;
+}
+
+/** Leaderboard Styles **/
+
+#go_stats_leaderboard{
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+#go_stats_leaderboard_filters{
+	position: relative;
+	display: inline-block;
+	float: right;
+	height: 100%;
+}
+
+#go_stats_leaderboard_classes{
+	margin-bottom: 40px;
+}
+
+#go_stats_leaderboard_filters_head{
+	font-weight: bold;
+	margin-top: 5px;
+}
+
+.go_stats_leaderboard_class_wrap{
+	margin-top: 10px;
+}
+
+#go_stats_leaderboard_focuses{
+	margin-bottom: 40px;
+}
+
+.go_stats_leaderboard_list{
+	display: inline-block;
+	width: 23%;
+	margin: 0px 15px 0px 0px !important;
+	float: none !important;
+}
+
+.go_stats_amount{
+	float: right;
 }
