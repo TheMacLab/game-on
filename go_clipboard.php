@@ -42,7 +42,6 @@ margin-right: 5px;" title="Check the boxes of the students you want to add to." 
 <label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" />
 <label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" />
 <label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge"/>
-<label for="go_clipboard_infractions">Infractions: </label><input name="go_clipboard_infractions" id="go_clipboard_infractions" />
 <label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px;
 margin-right: 5px;" title="The message will be displayed as reason if any points/currency/bonus currency/ penalty are being added. If nothing is being added, the message will be displayed as a message in a seperate system in the admin bar with a limit of 9 messages per student."> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason"></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
 
@@ -61,7 +60,6 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
 <th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
 <th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
 <th class="header" style="width:5%;" align="center"><a href="#">Badge Count</a></th>
-<th class="header" style="width:13%;"><a href="#" ><?php echo go_return_options('go_infractions_name'); ?> (Max: <?php echo $current_max_infractions; ?>)</a></th>
 <th class="header" style="width:9%;"><a href="#"><?php echo go_return_options('go_first_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_second_stage_name'); ?></a></th> 
 <th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_third_stage_name'); ?></a></th>  
@@ -134,7 +132,6 @@ function go_clipboard_intable(){
 					$user_last_name =  $user_data_key->user_lastname;
 					$user_url =  $user_data_key->user_url;
 					$user_focuses = go_display_user_focuses($value);
-					$infractions = go_return_infractions($value);
 					$bonus_currency = go_return_bonus_currency($value);
 					$penalty = go_return_penalty($value);
 					$currency = go_return_currency($value);
@@ -160,7 +157,6 @@ function go_clipboard_intable(){
 							<td class='user_bonus_currency'>{$bonus_currency}</td>
 							<td class='user_penalty'>{$penalty}</td>
 							<td class='user_badge_count'>{$badge_count}</td>
-							<td class='user_infractions'>{$infractions}</td>
 							<td>{$first_stage}</td>
 							<td>{$second_stage}</td>
 							<td>{$third_stage}</td>
@@ -181,7 +177,6 @@ function go_clipboard_add(){
 	$bonus_currency = $_POST['bonus_currency'];
 	$penalty = $_POST['penalty'];
 	$reason = $_POST['reason'];
-	$infractions = $_POST['infractions'];
 	$badge_ID = $_POST['badge_ID'];
 	foreach($ids as $key=>$value){
 		if($reason != ''){
@@ -200,10 +195,7 @@ function go_clipboard_add(){
 			if($badge_ID != ''){
 				do_shortcode('[go_award_badge id="'.$badge_ID.'" repeat = "off" uid="'.$value.'"]');
 			}
-			if($infractions!=''){
-				go_add_infraction($value, $infractions,true);
-			}
-			if($infractions==''&& $points == '' && $currency== ''&& $bonus_currency== ''&& $penalty== ''){
+			if($points == '' && $currency== ''&& $bonus_currency== ''&& $penalty== ''){
 				$user_id = $value;
 				go_message_user($user_id, $reason);
 			}

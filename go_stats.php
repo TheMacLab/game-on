@@ -64,16 +64,16 @@ function go_admin_bar_stats(){
 					<?php echo strtoupper(go_return_options('go_tasks_plural_name'));?>
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_items" class='go_stats_body_selectors' tab='items'>
-					INVENTORY
+					<?php echo strtoupper(go_return_options('go_inventory_name'));?>
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_rewards" class='go_stats_body_selectors' tab='rewards'>
 					REWARDS
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_badges" class='go_stats_body_selectors' tab='badges'>
-					BADGES
+					<?php echo strtoupper(go_return_options('go_badges_name'));?>
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_leaderboard" class='go_stats_body_selectors' tab='leaderboard'>
-					LEADERBOARD
+					<?php echo strtoupper(go_return_options('go_leaderboard_name'));?>
 				</a>
 			</div>
 		</div>
@@ -143,19 +143,6 @@ function go_stats_task_list(){
 			<?php
 			$counter++;
 		}
-		?>
-	</ul>
-    <ul id='go_stats_tasks_list_right'></ul>
-	<?php
-	
-	if(!$is_admin){
-	?>
-    	<script type='text/javascript'>
-			jQuery('.go_stats_right_task').appendTo('#go_stats_tasks_list_right');
-		</script>
-    <?php	
-	}
-	
 	die();
 }
 

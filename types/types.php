@@ -571,15 +571,14 @@ function go_presets($field_args) {
 	<select id="go_presets" onchange="apply_presets();">
         <?php
 			$presets = get_option('go_presets',false);
-			if ($presets) {
-				foreach ($presets as $key=>$value){ 
-					echo '<option value="'.$key.'" points="'.$value[0].'" currency="'.$value[1].'">'.$key.' - '.$value[0].' - '.$value[1].'</option>';  
-				}
+			foreach($presets['name'] as $key => $name){
+				$points = implode(',', $presets['points'][$key]);
+				$currency = implode(',', $presets['currency'][$key]);
+				echo "<option value='{$name}' points='{$points}' currency='{$currency}'>{$name} - {$points} - {$currency}</option>";
 			}
 		?>
 	</select>
 	<?php
-	echo "<p>".$field_args['desc']."</p>";
 }
 
 add_action('cmb_validate_go_presets', 'go_validate_stage_reward');
@@ -2353,26 +2352,25 @@ add_action('cmb_render_go_stage_reward', 'go_stage_reward');
 function go_stage_reward($field_args){
 	$custom = get_post_custom(get_the_id());
 	if (empty($custom['go_presets'][0])) {
-		$rewards = array('points' => array(), 'currency' => array());
-		$presets = array_shift(get_option('go_presets'));
-		$p_array = explode(",", $presets[0]);
-		$c_array = explode(",", $presets[1]);
-		foreach ($p_array as $stage => $points) {
-			array_push($rewards['points'], $points);
-		}
-		foreach ($c_array as $stage => $currency) {
-			array_push($rewards['currency'], $currency);
-		}
+		$presets = get_option('go_presets');
+		$points = $presets['points'];
+		$currency = $presets['currency'];
+		$rewards = array(
+			'points' => $points[$field_args['stage'] - 1],
+			'currency' => $currency[$field_args['stage'] - 1]
+		);
+		
 	} else {
 		$rewards = unserialize($custom['go_presets'][0]);
 	}
-	
 	echo "<div id='stage_{$field_args['stage']}'>";
-	for($i = 1; $i <= 5; $i++){
-		echo "<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[]' class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".(($field_args['stage'] == $i)?"go_current":"")."' value='".
-		(($field_args['reward'] == 'points') && (!empty($rewards['points']))?$rewards['points'][$i-1]: 
-		(($field_args['reward'] == 'currency') && (!empty($rewards['currency']))?$rewards['currency'][$i-1]:
-		(($field_args['reward'] == 'bonus_currency') && (!empty($rewards['bonus_currency']))?$rewards['bonus_currency'][$i-1]:0)))."'/>";
+	if($rewards){
+		for($i = 1; $i <= 5; $i++){
+			echo "<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[".($i - 1)."]' class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".(($field_args['stage'] == $i)?"go_current":"")."' value='".
+			(($field_args['reward'] == 'points') && (!empty($rewards['points']))?$rewards['points'][$i-1]: 
+			(($field_args['reward'] == 'currency') && (!empty($rewards['currency']))?$rewards['currency'][$i-1]:
+			(($field_args['reward'] == 'bonus_currency') && (!empty($rewards['bonus_currency']))?$rewards['bonus_currency'][$i-1]:0)))."'/>";
+		}
 	}
 	echo "</div>";
 }

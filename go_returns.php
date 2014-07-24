@@ -28,13 +28,6 @@ function go_return_penalty($user_id){
 	return $penalty;
 }
 
-function go_return_infractions($user_id){
-	global $wpdb;
-	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$infractions = (int)$wpdb->get_var("select infractions from ".$table_name_go_totals." where uid = $user_id");
-	return $infractions;
-}
-
 function go_display_points($points){
 	global $wpdb;
 	$prefix = go_return_options('go_points_prefix');

@@ -162,17 +162,7 @@ function go_notify($type, $points='', $currency='', $bonus_currency='', $user_id
 		</script>';
 	}
 }
-//negatives undo
-function go_add_infraction($user_id,$infractionCount,$update){
-	global $wpdb;
-	$infractions = $infractionCount + go_return_infractions($user_id);
-	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	if($update == false){
-		$wpdb->insert($table_name_go_totals, array('uid'=> $user_id, 'infractions'=>$infractions));
-		} else if($update == true) {
-			$wpdb->update($table_name_go_totals,array('infractions'=>$infractions), array('uid'=>$user_id));
-			}
-}
+
 function go_update_admin_bar($type, $title, $value, $status = null){
 	global $next_rank_points;
 	global $current_rank_points;
@@ -297,19 +287,7 @@ function go_get_level_percentage($user_id){
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	return $percentage;
 	}
-	function go_get_health_percentage(){
-	global $current_user_infractions;
-	global $current_max_infractions;
-	$percent = 100 - (($current_user_infractions / $current_max_infractions) * 100);
-	return round($percent,2);
-}
-function go_get_health_percentage_not_current_user($user_id){
-	global $wpdb;
-	global $current_max_infractions;
-	$infractions = go_return_infractions($user_id);
-	$percent = 100 - (($infractions / $current_max_infractions) * 100);
-	return round($percent,2);
-}
+
 function go_get_health_bar_color($percent){
 	function rangeCheck($int, $min, $max){
 			return ($int>$min && $int<$max);
@@ -349,45 +327,38 @@ return get_option($option);
 }
 }
 
-	function barColor($current_bonus_currency){
-		$color = '#00c100';
-	/*	function inRange($int, $min, $max){
-			return ($int>$min && $int<$max);
-		} */
-		$color= array('#464646', '#cc0000', '#ff6700', '#ffe400', '#00c100');
-		$limit = go_return_options('go_bonus_currency_color_limit');
-		$limit_array = explode(',',$limit);
-		$limit_array[] = PHP_INT_MAX;
-		while($current_bonus_currency >= current($limit_array) ){
-			next($limit_array);
-			next($color);
-			}
-	/*	switch ($current_bonus_currency){
-			case inRange($current_bonus_currency, 0, PHP_INT_MAX):
-				$color = '#00c100';
-				return $color; 
-				break;
-			case inRange($current_bonus_currency, -301, -1):
-				$color = '#ffe400';
-				return $color;
-				break;
-			case inRange($current_bonus_currency, -601, -300):
-				$color = '#ff6700';
-				return $color;
-				break;
-			case inRange($current_bonus_currency, -901, -600):
-				$color = '#cc0000';
-				return $color;
-				break;
-			case inRange($current_bonus_currency, -PHP_INT_MAX, -900):
-				$color = '#464646';
-				return $color;
-				break;
-		} */
-		
-		return current($color);
-	}
+function barColor($current_bonus_currency){
+	$color = '#00c100';
+	function inRange($int, $min, $max){
+		return ($int>$min && $int<=$max);
+	} 
+	switch ($current_bonus_currency){
+		case inRange($current_bonus_currency, 0, PHP_INT_MAX):
+			$color = '#00c100';
+			return $color; 
+			break;
+		case inRange($current_bonus_currency, -301, -1):
+			$color = '#ffe400';
+			return $color;
+			break;
+		case inRange($current_bonus_currency, -601, -300):
+			$color = '#ff6700';
+			return $color;
+			break;
+		case inRange($current_bonus_currency, -901, -600):
+			$color = '#cc0000';
+			return $color;
+			break;
+		case inRange($current_bonus_currency, -PHP_INT_MAX, -900):
+			$color = '#464646';
+			return $color;
+			break;
+	} 
+	
+	return $color;
+}
 function go_return_multiplier($user_id, $points, $currency, $post_id){
+/*
 if(go_return_options('go_multiplier_switch') == 'On'){
 	$limit = go_return_options('go_multiplier');
 	$rounding_array = go_return_options('go_multiplier_rounding');
@@ -422,5 +393,6 @@ if(go_return_options('go_multiplier_switch') == 'On'){
 				$currency = floor($currency);
 				}
 				go_add_currency($user_id, get_the_title($post_id).' Bonus', 5, $points, $currency, false);
+*/
 }
 ?>

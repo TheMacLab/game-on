@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Adds support for a point system and currency for your users.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.9.8
+Version: 1.9.9
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -47,9 +47,7 @@ add_action('go_return_penalty','go_return_penalty');
 add_action('go_display_user_focuses', 'go_display_user_focuses');
 add_action('go_return_task_amount_in_chain', 'go_return_task_amount_in_chain');
 add_action('go_display_rewards', 'go_display_rewards');
-add_action('admin_menu', 'go_ranks');
 add_action('admin_menu', 'go_clipboard');
-add_action('admin_menu', 'go_mail');
 add_action('go_jquery_clipboard','go_jquery_clipboard');
 add_action('go_style_clipboard','go_style_clipboard');
 add_action('wp_ajax_go_clone_task', 'go_clone_task');
@@ -57,8 +55,6 @@ add_action('wp_ajax_go_clipboard_intable','go_clipboard_intable');
 add_action('wp_ajax_go_user_option_add','go_user_option_add');
 add_action('go_update_totals','go_update_totals');
 add_action( 'init', 'go_jquery' );
-add_action('wp_ajax_go_add_ranks', 'go_add_ranks');
-add_action('wp_ajax_go_remove_ranks', 'go_remove_ranks');
 add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
@@ -80,6 +76,9 @@ add_action('wp_ajax_go_admin_bar_stats','go_admin_bar_stats');
 add_action('wp_ajax_go_class_a_save','go_class_a_save');
 add_action('wp_ajax_go_class_b_save','go_class_b_save');
 add_action('wp_ajax_go_focus_save','go_focus_save');
+add_action('wp_ajax_go_reset_levels', 'go_reset_levels');
+add_action('wp_ajax_go_save_levels', 'go_save_levels');
+add_action('wp_ajax_go_reset_data', 'go_reset_data');
 add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
 add_action('wp_ajax_go_stats_move_stage', 'go_stats_move_stage');
 add_action('wp_ajax_go_stats_item_list', 'go_stats_item_list');

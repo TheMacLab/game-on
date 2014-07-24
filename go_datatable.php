@@ -27,7 +27,6 @@ function go_table_individual () {
 		r_uploaded BOOLEAN DEFAULT 0,
 		points INT,
 		currency INT,
-		infractions INT,	 
 		bonus_currency INT,
 		penalty INT,
 		reason VARCHAR (200),
@@ -53,7 +52,6 @@ function go_table_totals () {
 		points  INT,
 		bonus_currency  INT,
 		penalty  INT,
-		infractions INT,
 		badge_count INT,
 		UNIQUE KEY  id (id)
 	);";
@@ -66,8 +64,32 @@ function go_table_totals () {
 function go_ranks_registration () {
 	global $wpdb;
 	$ranks = get_option('go_ranks',false);
-	if (!$ranks) {
-		$ranks = array('Level 01'=>0, 'Level 02'=> 150, 'Level 03'=> 315, 'Level 04'=> 495, 'Level 05'=> 690, 'Level 06'=> 900, 'Level 07'=> 1125, 'Level 08'=> 1365, 'Level 09'=> 1620,'Level 10'=> 1890, 'Level 11'=> 2175,'Level 12'=> 2475,'Level 13'=> 2790,'Level 14'=> 3120,'Level 15'=> 3465,'Level 16'=> 3825,'Level 17'=> 4200,'Level 18'=> 4590,'Level 19'=> 4995,'Level 20'=> 5415,);
+	if (!$ranks || !in_array('name', array_keys($ranks))) {
+		$rank_prefix = 'Level ';
+		$ranks = array(
+			'name' => array(
+				
+			),
+			'points' => array(
+			
+			),
+			'badges' => array(
+				
+			)
+		);
+		for($i = 1; $i <= 20; $i++){
+			if($i <10){
+				$ranks['name'][] = "{$rank_prefix} 0{$i}";
+			}else{
+				$ranks['name'][] = "{$rank_prefix} {$i}";
+			}
+			if($i == 1){
+				$ranks['points'][0] = 0;
+			}else{
+				$ranks['points'][] = (15/2) * ($i + 18) * ($i - 1);
+			}
+			$ranks['badges'][] = '';
+		}
 		update_option('go_ranks',$ranks);
 	}
 }
@@ -76,13 +98,50 @@ function go_ranks_registration () {
 function go_presets_registration () {
 	global $wpdb;
 	$presets = get_option('go_presets');
-	if (!$presets) {
+	if (!$presets || !in_array('name', array_keys($presets))){
 		$presets = array(
-		'Tier 1' => array(0 => '5,5,10,30,30', 1=> '0,0,3,9,9'), 
-		'Tier 2' => array(0 => '5,5,20,60,60', 1=> '0,0,6,18,18'),
-		'Tier 3' => array(0 => '5,5,40,120,120', 1=> '0,0,12,36,36'),
-		'Tier 4' => array(0 => '5,5,70,210,210', 1=> '0,0,21,63,63'),
-		'Tier 5' => array(0 => '5,5,110,330,330', 1=> '0,0,33,99,99'));   
+			'name' => array(
+				'Tier 1',
+				'Tier 2',
+				'Tier 3',
+				'Tier 4',
+				'Tier 5',
+			),
+			'points' => array(
+				array(
+					5,5,10,30,30
+				),
+				array(
+					5,5,20,60,60
+				),
+				array(
+					5,5,40,120,120
+				),
+				array(
+					5,5,70,210,210
+				),
+				array(
+					5,5,110,330,330
+				)
+			),
+			'currency' => array(
+				array(
+					0,0,3,9,9
+				),
+				array(
+					0,0,6,18,18
+				),
+				array(
+					0,0,12,36,36
+				),
+				array(
+					0,0,21,63,63
+				),
+				array(
+					0,0,33,99,99
+				)
+			)
+		);
 		update_option('go_presets',$presets);
 	}
 }
@@ -95,44 +154,85 @@ function go_install_data () {
 	global $default_role;
 	$role = get_option('go_role',$default_role);
 	
+	$rank_prefix = 'Level ';
+	$ranks = array(
+		'name' => array(
+			
+		),
+		'points' => array(
+		
+		),
+		'badges' => array(
+			
+		)
+	);
+	for($i = 1; $i <= 20; $i++){
+		if($i <10){
+			$ranks['name'][] = "{$rank_prefix} 0{$i}";
+		}else{
+			$ranks['name'][] = "{$rank_prefix} {$i}";
+		}
+		if($i == 1){
+			$ranks['points'][0] = 0;
+		}else{
+			$ranks['points'][] = (15/2) * ($i + 18) * ($i - 1);
+		}
+		$ranks['badges'][] = '';
+	}
+	
 	$options_array = array(
-		'go_first_stage_name' => 'Encountered',
-		'go_second_stage_name' => 'Accepted',
-		'go_third_stage_name' => 'Completed',
-		'go_fourth_stage_name' => 'Mastered',
-		'go_second_stage_button' => 'Accept Quest',
-		'go_third_stage_button' => 'Complete Quest',
-		'go_fourth_stage_button' => 'Master Quest',
-		'go_currency_prefix' => '',
-		'go_currency_suffix' => 'g',
+		'go_tasks_name' => 'Quest',
+		'go_tasks_plural_name' => 'Quests' ,
+		'go_first_stage_name' => 'Stage 1',
+		'go_second_stage_name' => 'Stage 2',
+		'go_third_stage_name' => 'Stage 3',
+		'go_fourth_stage_name' => 'Stage 4',
+		'go_fifth_stage_name' => 'Stage 5',
+		'go_second_stage_button' => 'Accept',
+		'go_third_stage_button' => 'Complete',
+		'go_fourth_stage_button' => 'Master',
+		'go_fifth_stage_button' => 'Repeat Mastery',
+		'go_points_name' => 'Experience',
 		'go_points_prefix' => '',
 		'go_points_suffix' => 'XP',
 		'go_currency_name' => 'Gold',
-		'go_points_name' => 'Experience',
-		'go_admin_bar_display_switch' => 'On',
-		'go_admin_bar_add_switch' => 'Off',
-		'go_admin_bar_user_redirect' => 'On',
-		'go_repeat_button' => 'Repeat Quest',
+		'go_currency_prefix' => '',
+		'go_currency_suffix' => 'g',
+		'go_bonus_currency_name' => 'Honor',
+		'go_bonus_currency_prefix' => '',
+		'go_bonus_currency_suffix' => 'HP',
+		'go_penalty_name' => 'Demerit(s)',
+		'go_penalty_prefix' => '',
+		'go_penalty_suffix' => 'DP',
+		'go_level_names' => 'Level',
+		'go_level_plural_names' => 'Levels',
+		'go_organization_name' => 'Seating Chart',
 		'go_class_a_name' => 'Period',
 		'go_class_b_name' => 'Computer',
+		'go_focus_name' => 'Profession',
+		'go_stats_name' => 'Stats',
+		'go_inventory_name' => 'Inventory',
+		'go_badges_name' => 'Badges',
+		'go_leaderboard_name' => 'Leaderboard',
+		'go_presets' => $presets = array('name' => array('Tier 1','Tier 2','Tier 3','Tier 4','Tier 5',),'points' => array(array(5,5,10,30,30),array(5,5,20,60,60),array(5,5,40,120,120),array(5,5,70,210,210),array(5,5,110,330,330)),'currency' => array(array(0,0,3,9,9),array(0,0,6,18,18),array(0,0,12,36,36),array(0,0,21,63,63),array(0,0,33,99,99))),
+		'go_admin_bar_display_switch' => 'On',
+		'go_admin_bar_user_redirect' => 'On',
+		'go_admin_bar_add_switch' => '',
+		'go_ranks' => $ranks,
 		'go_class_a' => array('Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5', 'Period 6', 'Period 7'),
 		'go_class_b' => array('Computer 01', 'Computer 02', 'Computer 03', 'Computer 04', 'Computer 05', 'Computer 06', 'Computer 07', 'Computer 08', 'Computer 09', 'Computer 10', 'Computer 11', 'Computer 12', 'Computer 13', 'Computer 14', 'Computer 15', 'Computer 16', 'Computer 17', 'Computer 18', 'Computer 19', 'Computer 20', 'Computer 21', 'Computer 22', 'Computer 23', 'Computer 24', 'Computer 25', 'Computer 26', 'Computer 27', 'Computer 28', 'Computer 29', 'Computer 30', 'Computer 31', 'Computer 32', 'Computer 33', 'Computer 34', 'Computer 35', 'Computer 36', 'Computer 37', 'Computer 38', 'Computer 39', 'Computer 40', 'Computer 41', 'Computer 42', 'Computer 43', 'Computer 44'),
-		'go_tasks_name'=>'Quest',
-		'go_tasks_plural_name'=>'Quests',
-		'go_multiplier'=>'a:9:{i:0;s:14:"-40,-9000,-901";i:1;s:13:"-30,-900,-601";i:2;s:13:"-20,-600,-301";i:3;s:11:"-10,-300,-1";i:4;s:10:"10,301,600";i:5;s:10:"20,601,900";i:6;s:11:"30,901,1200";i:7;s:12:"40,1201,1500";i:8;s:13:"50,1501,90000";}',
-		'go_multiplier_switch'=>'Off',
-		'go_infractions_name'=>'Infractions',
-		'go_max_infractions'=> 3,
-		'go_multiplier_rounding'=>'a:9:{i:0;s:1:"3";i:1;s:1:"3";i:2;s:1:"3";i:3;s:1:"3";i:4;s:1:"2";i:5;s:1:"2";i:6;s:1:"2";i:7;s:1:"2";i:8;s:1:"2";}',
-		'go_bonus_currency_color_limit'=>'-900,-600,-300,0',
-		'go_focus_name' => 'Focus',
-		'go_focus_switch'=>'Off',
-		'go_focus'=>'',
-		'go_data_reset_switch' =>'Off',
-		'go_video_height' => '540',
-		'go_video_width' => '864',
-		'go_bonus_currency_name' => 'Honor',
-		'go_penalty_name' => 'Demerit(s)'
+		'go_focus_switch' => 'On',
+		'go_focus' => array(''),
+		'go_admin_email' => '',
+		'go_video_width' => 864,
+		'go_video_height' => 540,
+		'go_full_student_name_switch' => '',
+		'go_multiplier_switch' => '',
+		'go_multiplier_threshold' => 10,
+		'go_penalty_switch' => '',
+		'go_penalty_threshold' => 5,
+		'go_multiplier_percentage' => 10,
+		'go_data_reset_switch' => ''
 	);
 	foreach($options_array as $key => $value){
 		add_option( $key, $value );
@@ -163,13 +263,14 @@ function go_install_data () {
 			if (empty($rank_check) || $rank_check == '') { 
 				$ranks = get_option('go_ranks', false);
 				$current_points = go_return_points($uids);
-				while ($current_points >= current($ranks)) {
-					next($ranks);
+				
+				while ($current_points >= current($ranks['points'])) {
+					next($ranks['points']);
 				}
-				$next_rank_points = current($ranks);
-				$next_rank = array_search($next_rank_points, $ranks);
-				$rank_points = prev($ranks);
-				$new_rank = array_search($rank_points, $ranks);
+				$next_rank_points = current($ranks['points']);
+				$next_rank = $ranks['name'][array_search($next_rank_points, $ranks['points'])];
+				$rank_points = prev($ranks['points']);
+				$new_rank = $ranks['name'][array_search($rank_points, $ranks['points'])];
 				$new_rank_array = array(array($new_rank, $rank_points),array($next_rank, $next_rank_points));
 				update_user_meta($uids,'go_rank', $new_rank_array );
 			}								
@@ -187,10 +288,10 @@ function go_user_registration ($user_id) {
 	$user_role = get_user_meta($user_id,$wpdb->prefix.'capabilities', true);
 	if (array_search(1, $user_role) == $role || array_search(1, $user_role) == 'administrator') {
 		$ranks = get_option('go_ranks');
-		$current_rank_points = current($ranks);
-		$current_rank = array_search($current_rank, $ranks);
-		$next_rank_points = next($ranks);
-		$next_rank = array_search($next_rank_points, $ranks);
+		$current_rank_points = current($ranks['points']);
+		$current_rank = $ranks['name'][array_search($current_rank_points, $ranks['points'])];
+		$next_rank_points = next($ranks['points']);
+		$next_rank = $ranks['name'][array_search($next_rank_points, $ranks['points'])];
 		$new_rank = array(array($current_rank, $current_rank_points),array($next_rank, $next_rank_points));
 		$wpdb->insert($table_name_go_totals,array('uid' => $user_id, 'points' => 0),  array( '%s'));
 		update_user_meta($user_id,'go_rank', $new_rank);

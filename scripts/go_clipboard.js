@@ -281,7 +281,6 @@ function go_clipboard_add(id){
 	add_currency = parseFloat(check_null(jQuery('#go_clipboard_currency').val()));
 	add_bonus_currency = parseFloat(check_null(jQuery('#go_clipboard_bonus_currency').val()));
 	add_penalty = parseFloat(check_null(jQuery('#go_clipboard_penalty').val()));
-	add_infractions = parseFloat(check_null(jQuery('#go_clipboard_infractions').val()));
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
 			action: 'go_clipboard_add',
@@ -291,7 +290,6 @@ function go_clipboard_add(id){
 			bonus_currency: add_bonus_currency,
 			penalty: add_penalty,
 			reason:jQuery('#go_clipboard_reason').val(),
-			infractions: add_infractions,
 			badge_ID: jQuery('#go_clipboard_badge').val()
 		},
 		success: function(html){
@@ -307,14 +305,12 @@ function go_clipboard_add(id){
 					var user_penalty = parseFloat(jQuery('#user_'+values[id]+' .user_penalty').html());
 					var user_points = parseFloat(jQuery('#user_'+values[id]+' .user_points').html());
 					var user_badge_count = parseFloat(jQuery('#user_'+values[id]+' .user_badge_count').html());
-					var user_infractions = parseFloat(jQuery('#user_'+values[id]+' .user_infractions').html());
-					
+		
 					jQuery('#user_'+values[id]+' .user_currency').html(user_currency + add_currency);
 					jQuery('#user_'+values[id]+' .user_bonus_currency').html(user_bonus_currency + add_bonus_currency);
 					jQuery('#user_'+values[id]+' .user_penalty').html(user_penalty + add_penalty);
 					jQuery('#user_'+values[id]+' .user_points').html(user_points + add_points);
 					jQuery('#user_'+values[id]+' .user_badge_count').html(user_badge_count + badge_count);
-					jQuery('#user_'+values[id]+' .user_infractions').html(user_infractions + add_infractions);
 				}
 			}
 			jQuery('#go_clipboard_points').val('');
@@ -322,7 +318,6 @@ function go_clipboard_add(id){
 			jQuery('#go_clipboard_bonus_currency').val('');
 			jQuery('#go_clipboard_penalty').val('');
 			jQuery('#go_clipboard_reason').val('');
-			jQuery('#go_clipboard_infractions').val('');
 			jQuery('#go_clipboard_badge').val('');
 			jQuery('#go_send_message').prop('disabled', '');
 		}

@@ -1,0 +1,338 @@
+jQuery(document).ready(function(){
+	jQuery('.go_options_no_help').click(false);
+	
+	option_wraps = [
+		jQuery('#go_options_naming_conventions_wrap'),
+		jQuery('#go_options_loot_presets_wrap'),
+		jQuery('#go_options_admin_bar_wrap'),
+		jQuery('#go_options_levels_wrap'),
+		jQuery('#go_options_seating_chart_wrap'),
+		jQuery('#go_options_profession_wrap'),
+		jQuery('#go_options_additional_settings_wrap')
+	];
+	
+	for(wrap in option_wraps){
+		option_wraps[wrap].toggle('slow');
+	}
+	data_reset_display = [
+		jQuery('input[name="go_data_reset_points"]').parent('.go_options'),
+		jQuery('input[name="go_data_reset_currency"]').parent('.go_options'),
+		jQuery('input[name="go_data_reset_bonus_currency"]').parent('.go_options'),
+		jQuery('input[name="go_data_reset_penalty"]').parent('.go_options'),
+		jQuery('input[name="go_data_reset_badges"]').parent('.go_options'),
+		jQuery('input[name="go_data_reset_all"]').parent('.go_options'),
+		jQuery('#go_data_reset').parent('.go_options')
+	];
+	
+	data_reset_inputs = [
+		jQuery('input[name="go_data_reset_points"]'),
+		jQuery('input[name="go_data_reset_currency"]'),
+		jQuery('input[name="go_data_reset_bonus_currency"]'),
+		jQuery('input[name="go_data_reset_penalty"]'),
+		jQuery('input[name="go_data_reset_badges"]'),
+		jQuery('input[name="go_data_reset_all"]')
+	];
+	
+	jQuery('.go_options_accordion').click(function(){
+		jQuery('.go_options_triangle', this).toggleClass('go_triangle_up');
+		wrap = jQuery(this).parent('.go_options_accordion_wrap').attr('opt')
+		option_wraps[wrap].toggle('slow');
+		if(jQuery('input[name="go_focus_switch"]').is(':checked')){
+			jQuery('#go_options_professions_names_wrap').show('slow');
+		}else{
+			jQuery('#go_options_professions_names_wrap').hide('slow');
+		}
+		if(jQuery('input[name="go_data_reset_switch"]').is(':checked')){
+			for(display in data_reset_display){
+				data_reset_display[display].show('slow');
+			}
+		}else{
+			for(display in data_reset_display){
+				data_reset_display[display].hide('slow');
+			}
+		}
+	});
+	
+	jQuery('input[name="go_focus_switch"]').click(function(){
+		if(jQuery('input[name="go_focus_switch"]').is(':checked')){
+			jQuery('#go_options_professions_names_wrap').show('slow');
+		}else{
+			jQuery('#go_options_professions_names_wrap').hide('slow');
+		}
+	});
+	
+	jQuery('input[name="go_data_reset_switch"]').click(function(){
+		if(jQuery('input[name="go_data_reset_switch"]').is(':checked')){
+			for(display in data_reset_display){
+				data_reset_display[display].show('slow');
+			}
+		}else{
+			for(display in data_reset_display){
+				data_reset_display[display].hide('slow');
+			}
+		}
+	});
+	
+	jQuery('button').click(function(e){
+		e.preventDefault();
+	});
+	
+	jQuery('.go_options_preset_name_input').appendTo('#go_options_preset_name');
+	jQuery('.go_options_preset_points_input').appendTo('#go_options_preset_points');
+	jQuery('.go_options_preset_currency_input').appendTo('#go_options_preset_currency');
+	jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
+	
+	jQuery('.go_options_level_names_input').appendTo('#go_options_level_names');
+	jQuery('.go_options_level_points_input').appendTo('#go_options_level_points');
+	jQuery('.go_options_level_badges_input').appendTo('#go_options_level_badges');
+	jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
+	
+	jQuery('.go_options_period_input').appendTo('#go_options_periods');
+	jQuery('.go_options_period_input').last().after('<button type="button" class="go_remove_period">-</button>');
+	
+	jQuery('.go_options_computer_input').appendTo('#go_options_computers');
+	jQuery('.go_options_computer_input').last().after('<button type="button" class="go_remove_computer">-</button>');
+	//jQuery('#go_options_computers').css({'height': jQuery('#go_options_periods').css('height'), 'overflow':'scroll'});
+	
+	jQuery('.go_options_profession_input').appendTo('#go_options_professions');
+	if(jQuery('.go_options_profession_input').length > 1){
+		jQuery('.go_options_profession_input').last().after('<button type="button" class="go_remove_profession">-</button><button type="button" class="go_add_profession">+</button>');
+	}else{
+		jQuery('.go_options_profession_input').last().after('<button type="button" class="go_add_profession">+</button>');
+	}
+	
+	
+	jQuery(document).on('click', '.go_remove_preset', function(){
+		key = jQuery('.go_options_preset_name_input').last().attr('key');
+		jQuery('.go_options_preset_name_input').last().remove();
+		jQuery('input[key="'+key+'"').remove();
+		console.log('wow');
+	});
+	
+	jQuery('.go_add_preset').click(function(){
+		presets = jQuery('.go_options_preset_name_input').length;
+		jQuery('.go_remove_preset').remove();
+		jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input' name='go_presets[name][" + presets +"]' key='" + presets +"'value=''/>");
+		for(i = 1; i <= 5; i++){
+			jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input' name='go_presets[points][" + presets + "][]' key='" + presets + "' value=''/>");
+			jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input' name='go_presets[currency][" + presets + "][]' key='" + presets + "' value=''/>");
+		}
+		jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
+	});
+	
+	jQuery('#go_reset_presets').click(function(){
+		jQuery.ajax({
+			type: 'post', 
+			url: MyAjax.ajaxurl,
+			data: {
+				action: 'go_presets_reset'
+			},
+			success: function(html){
+				presets = JSON.parse(html);
+				jQuery('#go_options_preset_name').empty();
+				jQuery('#go_options_preset_points').empty();
+				jQuery('#go_options_preset_currency').empty();
+				for(name in presets['name']){
+					jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input' name='go_presets[name][" + name +"]' value='" + presets['name'][name] + "'/>");
+				}
+				for(points in presets['points']){
+					for(point in presets['points']){
+						jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input' name='go_presets[points][" + points + "][]' key='" + points + "' value='" + presets['points'][points][point] + "'/>")
+					}
+				}
+				for(currency in presets['currency']){
+					for(cur in presets['currency']){
+						jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input' name='go_presets[currency][" + currency + "][]' key='" + currency + "' value='" + presets['currency'][currency][cur] + "'/>")
+					}
+				}
+				jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
+			}
+		});
+	});
+	
+	jQuery('#go_save_presets').click(function(){
+		go_preset_name = [];
+		go_preset_points = [];
+		go_preset_currency = [];
+		presets = jQuery('.go_options_preset_name_input').length;
+		for(i = 0; i < presets; i++){
+			go_preset_points[i] = [];
+			go_preset_currency[i] = [];
+		}
+		jQuery('.go_options_preset_name_input').each(function(){
+			go_preset_name.push(jQuery(this).val());
+		});
+		jQuery('.go_options_preset_points_input').each(function(){
+			go_preset_points[jQuery(this).attr('key')].push(jQuery(this).val());
+		});
+		jQuery('.go_options_preset_currency_input').each(function(){
+			go_preset_currency[jQuery(this).attr('key')].push(jQuery(this).val());
+		});
+		jQuery.ajax({
+			type: 'post',
+			url: MyAjax.ajaxurl,
+			data: {
+				action: 'go_presets_save',
+				go_preset_name: go_preset_name,
+				go_preset_points: go_preset_points,
+				go_preset_currency: go_preset_currency
+			}
+		});
+	});
+	
+	jQuery(document).on('click', '.go_remove_level', function(){
+		jQuery('.go_options_level_names_input').last().remove();
+		jQuery('.go_options_level_points_input').last().remove();
+		jQuery('.go_options_level_badges_input').last().remove();
+	});
+	
+	jQuery('.go_add_level').click(function(){
+		jQuery('.go_remove_level').remove();
+		levels = jQuery('.go_options_level_names_input').length;
+		jQuery('#go_options_level_names').append("<input type='text' class='go_options_level_names_input' name='go_ranks[name][" + levels + "]' value=''/>");
+		jQuery('#go_options_level_points').append("<input type='text' class='go_options_level_points_input' name='go_ranks[points][" + levels + "]' value=''/>");
+		jQuery('#go_options_level_badges').append("<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][" + levels + "]' value=''/>");
+		jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
+	});
+	
+	jQuery('#go_reset_levels').click(function(){
+		jQuery.ajax({
+			type: 'post',
+			url: MyAjax.ajaxurl,
+			data: {
+				action: 'go_reset_levels'
+			}, 
+			success: function(html){
+				levels = JSON.parse(html);
+				jQuery('#go_options_level_names').empty();
+				jQuery('#go_options_level_points').empty();
+				jQuery('#go_options_level_badges').empty();
+				
+				for(name in levels['name']){
+					jQuery('#go_options_level_names').append("<input type='text' class='go_options_level_names_input' name='go_ranks[name][" + name + "]' value='" + levels['name'][name] + "'/>");
+				}
+				for(point in levels['points']){
+					jQuery('#go_options_level_points').append("<input type='text' class='go_options_level_points_input' name='go_ranks[points][" + point +"]' value='"+ levels['points'][point] +"'/>");
+				}
+				for(badge in levels['badges']){
+					jQuery('#go_options_level_badges').append("<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][" + badge + "]' value='" + levels['badges'][badge] + "'/>");
+				}
+				jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
+			}
+		});
+	});
+	
+	jQuery('#go_save_levels').click(function(){
+		console.log('hello world');
+		go_level_names = [];
+		go_level_points = [];
+		go_level_badges = [];
+		levels = jQuery('.go_options_level_names_input').length;
+		jQuery('.go_options_level_names_input').each(function(){
+			go_level_names.push(jQuery(this).val());
+		});
+		jQuery('.go_options_level_points_input').each(function(){
+			go_level_points.push(jQuery(this).val());
+		});
+		jQuery('.go_options_level_badges_input').each(function(){
+			go_level_badges.push(jQuery(this).val());
+		});
+		jQuery.ajax({
+			type: 'post',
+			url: MyAjax.ajaxurl,
+			data: {
+				action: 'go_save_levels',
+				go_level_names: go_level_names,
+				go_level_points: go_level_points,
+				go_level_badges: go_level_badges
+			}
+		});
+	});
+	
+	jQuery('#go_fix_levels').click(function(){
+		jQuery.ajax({
+			type: 'post',
+			url: MyAjax.ajaxurl,
+			data: {
+				action: 'go_fix_levels',
+			},
+			success: function(){
+				location.reload();
+			}
+		});
+	});
+	
+	jQuery(document).on('click', '.go_remove_period', function(){
+		jQuery('.go_options_period_input').last().remove();
+	});
+	
+	jQuery('.go_add_period').click(function(){
+		jQuery('.go_remove_period').remove();
+		jQuery('#go_options_periods').append("<input type='text' class='go_options_period_input' name='go_class_a[]' value=''/>");
+		jQuery('.go_options_period_input').last().after('<button type="button" class="go_remove_period">-</button>');
+	});
+	
+	jQuery(document).on('click', '.go_remove_computer', function(){
+		jQuery('.go_options_computer_input').last().remove();
+	});
+	
+	jQuery('.go_add_computer').click(function(){
+		jQuery('.go_remove_computer').remove();
+		jQuery('#go_options_computers').append("<input type='text' class='go_options_computer_input' name='go_class_b[]'value=''/>");
+		jQuery('.go_options_computer_input').last().after('<button type="button" class="go_remove_computer">-</button>');
+	});
+	
+	jQuery(document).on('click', '.go_remove_profession', function(){
+		professions_count = jQuery('.go_options_profession_input').length;
+		if(professions_count > 1){
+			jQuery('.go_options_profession_input').last().remove();
+		}
+		if(professions_count == 2){
+			jQuery(this).remove();
+		}
+	});
+	
+	jQuery(document).on('click', '.go_add_profession', function(){
+		jQuery('.go_remove_profession').remove();
+		jQuery(this).remove();
+		jQuery('#go_options_professions').append("<input type='text' class='go_options_profession_input' name='go_focus[]' value=''/>");
+		jQuery('.go_options_profession_input').last().after('<button type="button" class="go_remove_profession">-</button><button type="button" class="go_add_profession">+</button>');
+	});
+	
+	jQuery('input[name="go_data_reset_all"]').click(function(){
+		if(jQuery('input[name="go_data_reset_all"]').is(':checked')){
+			for(input in data_reset_inputs){
+				data_reset_inputs[input].prop('checked', true);
+			}
+		}else{
+			for(input in data_reset_inputs){
+				data_reset_inputs[input].prop('checked', false);
+			}
+		}
+	});
+	
+	jQuery('#go_data_reset').click(function(){
+		if(jQuery('input[name="go_data_reset_switch"]').is(':checked')){
+			reset_data = [];
+			for(input in data_reset_inputs){
+				if(data_reset_inputs[input].is(':checked')){
+					reset_data.push(data_reset_inputs[input].attr('reset'));
+				}
+			}
+			if(confirm("WARNING: What you are about to do will reset the chosen types of data from EVERY user on your database. Do you wish to continue?")){
+				jQuery.ajax({
+					type: 'post',
+					url: MyAjax.ajaxurl,
+					data: {
+						action: 'go_reset_data',
+						reset_data: reset_data
+					},
+					success: function(html){
+						location.reload();
+					}
+				});
+			}
+		}
+	});
+	
+});

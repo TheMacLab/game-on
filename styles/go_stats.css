@@ -147,18 +147,16 @@
 
 /** Task Styles **/
 
-#go_stats_tasks_list_left, #go_stats_tasks_list_right{
+#go_stats_tasks_list_left{
 	list-style-type: none;
 	height: 100%;
 	position: relative;
 	margin: 0px;
-}
-
-#go_stats_tasks_list_left{
 	float: left;
 	display: inline-block;
-	width: 48%;	
+	width: 100%;
 	margin: 0px 3.6% 0px 0px;
+	overflow: scroll;
 }
 
 .go_stats_tasks_list_admin{
@@ -168,11 +166,7 @@
 	width: 100% !important;	
 }
 
-#go_stats_tasks_list_right{
-	overflow: hidden;
-}
-
-#go_stats_tasks_list_left:last-child, #go_stats_tasks_list_right:last-child{
+#go_stats_tasks_list_left:last-child{
 	border-bottom: 1px solid #BBB;
 }
 
@@ -227,6 +221,10 @@
 
 .chosen{
 	background-color: #000;
+}
+
+.go_stage_does_not_exist{
+	background-color: #FFF;
 }
 
 .go_stats_body_list{
