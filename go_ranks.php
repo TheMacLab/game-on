@@ -19,6 +19,10 @@ function go_update_ranks($user_id, $total_points){
 			$new_next_rank_points = $ranks['points'][array_search($next_rank, $ranks['name']) + 1];
 			$new_rank = array(array($next_rank, $next_rank_points),	array($new_next_rank, $new_next_rank_points));
 			update_user_meta($user_id, 'go_rank', $new_rank);
+			if($ranks['badges'][array_search($next_rank, $ranks['name'])]){
+				$badge_id = $ranks['badges'][array_search($next_rank, $ranks['name'])];
+				do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
+			}
 			$update = true;
 		}
 		if($total_points < $current_rank_points){
@@ -26,6 +30,14 @@ function go_update_ranks($user_id, $total_points){
 			$prev_rank_points = $ranks['points'][array_search($current_rank, $ranks['name']) - 1];
 			$new_rank = array(array($prev_rank, $prev_rank_points),	array($current_rank, $current_rank_points));
 			update_user_meta($user_id, 'go_rank', $new_rank);
+			if($ranks['badges'][array_search($current_rank, $ranks['name'])]){
+				$badge_id = $ranks['badges'][array_search($current_rank, $ranks['name'])];
+				$existing_badges = get_user_meta($user_id, 'go_badges', true);
+				unset($existing_badges[array_search($badge_id, $existing_badges)]);
+				$badge_count = go_return_badge_count($user_id) - 1;
+				$wpdb->update($wpdb->prefix."go_totals", array('badge_count' => $badge_count), array('uid' => $user_id));
+				update_user_meta($user_id, 'go_badges', $existing_badges);
+			}
 			$update = true;
 		}
 	}

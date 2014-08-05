@@ -297,6 +297,7 @@
 	display: inline-block;
 	float: right;
 	height: 100%;
+	overflow-y: scroll;
 }
 
 #go_stats_leaderboard_classes{

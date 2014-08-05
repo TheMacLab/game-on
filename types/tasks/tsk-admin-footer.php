@@ -112,7 +112,7 @@ var stage_settings_rows = {
 // Advanced settings accordion //
 
 var task_settings = [
-	jQuery('tr.cmb-type-select.cmb_id_go_mta_req_rank'),
+	jQuery('tr.cmb-type-go_rank_list.cmb_id_go_mta_req_rank'),
 	jQuery('tr.cmb-type-go_decay_table.cmb_id_go_mta_date_picker'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_bonus_currency_filter'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_penalty_filter'),
@@ -200,6 +200,9 @@ function go_add_decay_table_row(){
 		}
 	}
 	count++;
+}
+function go_remove_decay_table_row(){
+	jQuery('#go_list_of_decay_dates tbody tr').last('.datepicker').remove();
 }
 
 ////////////////////////////////////
@@ -289,7 +292,6 @@ function toggle_test_loot(stage) {
 }
 
 jQuery('#go_mta_test_encounter_lock, #go_mta_test_accept_lock, #go_mta_test_completion_lock, #go_mta_test_mastery_lock').click(function() {
-	console.log('lkajsdf');
 	var stage = this.id.getMid("go_mta_test_", "_lock");
 	toggle_test_all(stage);
 });

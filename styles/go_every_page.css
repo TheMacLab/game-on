@@ -129,6 +129,153 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 	color: green;
 }
 
+/** Help Button Styles **/
+
+.go_task_opt_help {
+	float: right;
+	color: black;
+	margin-right: 0px;
+	width: 15px;
+	height: 15px;
+	border-radius: 8px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	background: white;
+	cursor: pointer;
+	display: inline;
+	position: relative;
+	background-color: #DBDBDB !important;
+}
+
+.go_task_opt_help:hover::after {
+	position: absolute;
+	content: attr(tooltip);
+	width: 200px;
+	padding: 0 5px 0 5px;
+	background-color: #CCC;
+	font-size: 14px;
+	bottom: 15px;
+	left: 20px;
+	border-radius: 5px;
+	z-index: 99;
+	color: black;
+	white-space: initial;
+}
+
+/****************************/
+
+/********************
+*	Store Styles
+********************/
+
+/* Store Item Style | Back-end */
+
+input#go_store_limit_input {
+	text-align: center;
+	width: 50px;
+}
+
+input#go_store_limit_input::-webkit-input-placeholder,
+input.go_store_cost_input::-webkit-input-placeholder,
+input.go_store_filter_input::-webkit-input-placeholder,
+input#go_store_item_url_input::-webkit-input-placeholder,
+input#go_store_badge_id_input::-webkit-input-placeholder,
+input.go_store_exchange_input::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input#go_store_limit_input,
+input.go_store_cost_input,
+input.go_store_filter_input,
+input#go_store_item_url_input,
+input#go_store_badge_id_input,
+input.go_store_exchange_input {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+input.go_store_cost_input {
+	width: 30%;
+}
+
+input.go_store_filter_input {
+	width: 15%;
+}
+
+input#go_store_item_url_input {
+	width: 50%;
+}
+
+input.go_store_exchange_input[type='text'] {
+	width: 30%;
+}
+
+input#go_store_badge_id_input {
+	text-align: center;
+	width: 75px;
+}
+
+ul#go_store_shortcode_list span {
+	float: left;
+	margin-right: 10px;
+}
+
+/********************
+*	Store Styles
+********************/
+
+/* Store Item Style | Back-end */
+
+input#go_store_limit_input {
+	text-align: center;
+	width: 50px;
+}
+
+input#go_store_limit_input::-webkit-input-placeholder,
+input.go_store_cost_input::-webkit-input-placeholder,
+input.go_store_filter_input::-webkit-input-placeholder,
+input#go_store_item_url_input::-webkit-input-placeholder,
+input#go_store_badge_id_input::-webkit-input-placeholder,
+input.go_store_exchange_input::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input#go_store_limit_input,
+input.go_store_cost_input,
+input.go_store_filter_input,
+input#go_store_item_url_input,
+input#go_store_badge_id_input,
+input.go_store_exchange_input {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+input.go_store_cost_input {
+	width: 30%;
+}
+
+input.go_store_filter_input {
+	width: 15%;
+}
+
+input#go_store_item_url_input {
+	width: 50%;
+}
+
+input.go_store_exchange_input[type='text'] {
+	width: 30%;
+}
+
+input#go_store_badge_id_input {
+	text-align: center;
+	width: 75px;
+}
+
+ul#go_store_shortcode_list span {
+	float: left;
+	margin-right: 10px;
+}
+
 /********************
 *	Task Styles
 ********************/
@@ -148,21 +295,6 @@ input.go_test_field_add {
 
 input.go_test_field_rm {
 	color: red;
-}
-
-.go_task_opt_help {
-	float: right;
-	color: black;
-	margin-right: 0px;
-	width: 15px;
-	height: 15px;
-	border-radius: 8px;
-	padding: 0px 0px 0px 0px;
-	text-align: center;
-	background: white;
-	cursor: pointer;
-	display: inline;
-	position: relative;
 }
 
 .go_sortable {

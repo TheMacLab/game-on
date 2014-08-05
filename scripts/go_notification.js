@@ -2,11 +2,11 @@
 	This is the file that handles the displaying of points, level ups, and experience gained when task portions are completed.
 */
 
-function go_notification (timer, el){	
-	if(typeof timer === 'undefined'){
+function go_notification (timer, el) {	
+	if (typeof timer === 'undefined') {
 		timer = 1500;	
 	}
-	if(typeof el === 'undefined'){
+	if (typeof el === 'undefined') {
 		el = false;
 	}
 
@@ -15,7 +15,7 @@ function go_notification (timer, el){
 	
 	// This block makes sure the elements are all placed first in the stack order so that they appear in front of every other element
 	var highest_index = 0;
-	jQuery("*").each(function(){
+	jQuery("*").each(function() {
 		var current_index = parseInt(jQuery(this).css("z-index"), 10);
 		if(current_index > highest_index){
 			highest_index = current_index;
@@ -24,14 +24,13 @@ function go_notification (timer, el){
 	});
 	// Fades the notifaction(s) out after being visible for 1.5 seconds
 	
-	if(el){
-		setTimeout(function(){
+	if (el) {
+		setTimeout(function() {
 			el.fadeOut("slow");
 		},timer)
-	}else{
-		setTimeout(function(){
+	} else {
+		setTimeout(function() {
 			jQuery(".go_notification").not('#go_notification_level, #go_notification_badges').fadeOut("slow");
 		},timer)
 	}
-	
 }

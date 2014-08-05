@@ -79,9 +79,9 @@ function go_ranks_registration () {
 		);
 		for($i = 1; $i <= 20; $i++){
 			if($i <10){
-				$ranks['name'][] = "{$rank_prefix} 0{$i}";
+				$ranks['name'][] = "{$rank_prefix}0{$i}";
 			}else{
-				$ranks['name'][] = "{$rank_prefix} {$i}";
+				$ranks['name'][] = "{$rank_prefix}{$i}";
 			}
 			if($i == 1){
 				$ranks['points'][0] = 0;
@@ -221,18 +221,20 @@ function go_install_data () {
 		'go_ranks' => $ranks,
 		'go_class_a' => array('Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5', 'Period 6', 'Period 7'),
 		'go_class_b' => array('Computer 01', 'Computer 02', 'Computer 03', 'Computer 04', 'Computer 05', 'Computer 06', 'Computer 07', 'Computer 08', 'Computer 09', 'Computer 10', 'Computer 11', 'Computer 12', 'Computer 13', 'Computer 14', 'Computer 15', 'Computer 16', 'Computer 17', 'Computer 18', 'Computer 19', 'Computer 20', 'Computer 21', 'Computer 22', 'Computer 23', 'Computer 24', 'Computer 25', 'Computer 26', 'Computer 27', 'Computer 28', 'Computer 29', 'Computer 30', 'Computer 31', 'Computer 32', 'Computer 33', 'Computer 34', 'Computer 35', 'Computer 36', 'Computer 37', 'Computer 38', 'Computer 39', 'Computer 40', 'Computer 41', 'Computer 42', 'Computer 43', 'Computer 44'),
-		'go_focus_switch' => 'On',
+		'go_focus_switch' => '',
 		'go_focus' => array(''),
 		'go_admin_email' => '',
-		'go_video_width' => 864,
-		'go_video_height' => 540,
+		'go_video_width' => '',
+		'go_video_height' => '',
+		'go_store_receipt_switch' => '',
 		'go_full_student_name_switch' => '',
 		'go_multiplier_switch' => '',
 		'go_multiplier_threshold' => 10,
 		'go_penalty_switch' => '',
 		'go_penalty_threshold' => 5,
-		'go_multiplier_percentage' => 10,
-		'go_data_reset_switch' => ''
+		'go_multiplier_percentage' => 20,
+		'go_data_reset_switch' => '',
+		'go_analysis_script_day' => 'Friday'
 	);
 	foreach($options_array as $key => $value){
 		add_option( $key, $value );

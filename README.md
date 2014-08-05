@@ -2,7 +2,7 @@
 
 Game-On is an educational framework that provides teachers with a vast amount of tools to create their own <a href="http://en.wikipedia.org/wiki/Gamification" target="_blank">gamified</a> learning system.
 
-<a href="http://edex.adobe.com/group/game-on/discussions/" target="_blank">Adobe Educatino Exchange Game-On Group Forum</a>
+<a href="http://edex.adobe.com/group/game-on/discussions/" target="_blank">Adobe Education Exchange Game-On Group Forum</a>
 
 <a href="http://edex.adobe.com/group/game-on/discussion/2fcaa2/" target="_blank">Adobe Education Exchange Updates Thread</a>
 
@@ -20,21 +20,21 @@ Everything except for using `echo` (on that in a minute), should follow the K&R 
 
 **Naming Conventions**
 
-Functions, variables, etc. in all languages should use the format: go_*function_name*.  With underscores to separate words.
+Functions, variables, etc. in all languages should use the format: go_*function_name*.  Lowercase with underscores to separate words.
 
 **Functions**
 
-All functions will be declared using the "go_" prefix followed by a unique name, a space, and then the arguments.
+All functions will be declared using the "go_" prefix followed by a unique name, and then the parameters as shown below.
 
 ```
-function go_add ($param1, $param2) {
+function go_add($param1, $param2) {
 	return($param1 + $param2);
 }
 ```
 
 When adding hooks try to keep the <a href="http://codex.wordpress.org/Function_Reference/add_action" target="_blank">`add_action()`</a> or <a href="http://codex.wordpress.org/Function_Reference/add_filter" target="_blank">`add_filter()`</a> calls right on top of their respective functions.  It makes them easier to find.  If you have written an ajax call in jQuery make sure to link to it in game_on.php using the format `add_action('wp_ajax_go_function_that_the_ajax_is_calling', 'go_function_that_the_ajax_is_calling');`.
 
-Although calling a function before it is declared in JavaScript and PHP is "wrong", it is allowed and it is easier to read, so we'll stick with it.  Besides that's what the developers at Wordpress.org do, so it must be ok!
+Although calling a function before it is declared in JavaScript and PHP is "wrong", it is allowed and it is easier to read, so we'll stick with it.
 
 **Variables**
 
@@ -111,10 +111,9 @@ One `"` above and one below, just like the curly braces of a function!
 
 JavaScript/jQuery code should always be set below the HTML elements that it is affecting, if not the code should be called inside a <a href="http://api.jquery.com/ready/" target="_blank">`jQuery(document).ready()`</a> anonymous function.  That ensures that the code will be called after all elements are loaded on the page.
 
-Another tip is to create JavaScript functions when possible so that you aren't unknowingly overriding variables in the global scope or duplicating code that is used in multiple places in the code.  For example in <a href="https://github.com/TheMacLab/game-on/blob/master/types/tasks/task_shortcode.php#L488" target="_blank">`types/tasks/task_shortcode.php`</a> we have a rather large script tag in the `go_task_shortcode()` function.  In that script tag we have multiple functions that use very similar data such as the stage that a task is in; however, we don't want these variables to override one another, so we stick them into separate functions.
+Another tip is to create JavaScript functions when possible so that you aren't unknowingly overriding variables in the global scope or duplicating code that is used in multiple places in the code.  For example in <a href="https://github.com/TheMacLab/game-on/blob/master/types/tasks/task_shortcode.php" target="_blank">`types/tasks/task_shortcode.php`</a> we have a rather large script tag in the `go_task_shortcode()` function.  In that script tag we have multiple functions that use very similar data such as the stage that a task is in; however, we don't want these variables to override one another, so we stick them into separate functions.
 
 * * *
 #### Documentation
 
 Please leave a newline for all comments and if the comment is describing a function leave a space above the comment to make it easier to read.  Comments should be short and sweet.
-

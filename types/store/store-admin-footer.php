@@ -2,69 +2,72 @@
 function store_edit_jquery(){
 ?>
 <script type="text/javascript"> 
-
-var focus_switch = jQuery('#go_mta_focus_item_switch');
-var focus_type = jQuery('tr.cmb-type-select.cmb_id_go_mta_focuses');
-focus_switch.click(function(){
-	if(focus_switch.prop('checked')){
-		focus_type.show('slow');
-	} else{
-		focus_type.hide('slow');
+jQuery(document).ready(function() {
+	if (jQuery('#go_store_limit_checkbox').prop('checked')) {
+		jQuery('#go_store_limit_input').show('slow');
+	} else {
+		jQuery('#go_store_limit_input').hide('slow');
 	}
-});
-if(focus_switch.prop('checked')){
-	focus_type.show('slow');
-} else{
-	focus_type.hide('slow');
-}
+	jQuery('#go_store_limit_checkbox').click(function() {
+		if (jQuery('#go_store_limit_checkbox').prop('checked')) {
+			jQuery('#go_store_limit_input').show('slow');
+		} else {
+			jQuery('#go_store_limit_input').hide('slow');
+		}
+	});
 
-var exchange_switch = jQuery('#go_mta_store_exchange_switch');
-var exchange_map = new Array(jQuery('tr.cmb-type-text.cmb_id_go_mta_store_exchange_currency'), jQuery('tr.cmb-type-text.cmb_id_go_mta_store_exchange_points'), jQuery('tr.cmb-type-text.cmb_id_go_mta_store_exchange_time'));
-
-exchange_switch.click(function(){
-	if(jQuery(this).prop('checked')){
-		exchange_map.forEach(function(el){
-			el.show('slow');
-		});
-	} else{
-		exchange_map.forEach(function(el){
-			el.hide('slow');
-		});
+	if (jQuery('#go_store_filter_checkbox').prop('checked')) {
+		jQuery('.go_store_filter_input').show('slow');
+	} else {
+		jQuery('.go_store_filter_input').hide('slow');
 	}
-});
-if(exchange_switch.prop('checked')){
-	exchange_map.forEach(function(el){
-		el.show('slow');
+	jQuery('#go_store_filter_checkbox').click(function() {
+		if (jQuery('#go_store_filter_checkbox').prop('checked')) {
+			jQuery('.go_store_filter_input').show('slow');
+		} else {
+			jQuery('.go_store_filter_input').hide('slow');
+		}
 	});
-} else{
-	exchange_map.forEach(function(el){
-		el.hide('slow');
-	});
-}
 
-var badge_switch = jQuery('#go_mta_badge_switch');
-var badge_map = new Array(jQuery('tr.cmb-type-text.cmb_id_go_mta_badge_id'), jQuery('tr.cmb-type-text.cmb_id_go_mta_badge_purchase_count'));
-
-badge_switch.click(function(){
-	if(jQuery(this).prop('checked')){
-		badge_map.forEach(function(el){
-			el.show('slow');
-		});
-	} else{
-		badge_map.forEach(function(el){
-			el.hide('slow');
-		});
+	if (jQuery('#go_store_exchange_checkbox').prop('checked')) {
+		jQuery('.go_store_exchange_input').show('slow');
+	} else {
+		jQuery('.go_store_exchange_input').hide('slow');
 	}
+	jQuery('#go_store_exchange_checkbox').click(function() {
+		if (jQuery('#go_store_exchange_checkbox').prop('checked')) {
+			jQuery('.go_store_exchange_input').show('slow');
+		} else {
+			jQuery('.go_store_exchange_input').hide('slow');
+		}
+	});
+
+	if (jQuery('#go_store_focus_checkbox').prop('checked')) {
+		jQuery('#go_store_focus_select').show('slow');
+	} else {
+		jQuery('#go_store_focus_select').hide('slow');
+	}
+	jQuery('#go_store_focus_checkbox').click(function() {
+		if (jQuery('#go_store_focus_checkbox').prop('checked')) {
+			jQuery('#go_store_focus_select').show('slow');
+		} else {
+			jQuery('#go_store_focus_select').hide('slow');
+		}
+	});
+
+	if (jQuery('#go_store_shortcode_list_checkbox').prop('checked')) {
+		jQuery('#go_store_shortcode_list').show('slow');
+	} else {
+		jQuery('#go_store_shortcode_list').hide('slow');
+	}
+	jQuery('#go_store_shortcode_list_checkbox').click(function() {
+		if (jQuery('#go_store_shortcode_list_checkbox').prop('checked')) {
+			jQuery('#go_store_shortcode_list').show('slow');
+		} else {
+			jQuery('#go_store_shortcode_list').hide('slow');
+		}
+	});
 });
-if(badge_switch.prop('checked')){
-	badge_map.forEach(function(el){
-		el.show('slow');
-	});
-} else{
-	badge_map.forEach(function(el){
-		el.hide('slow');
-	});
-}
 </script>
 <?php 
 }

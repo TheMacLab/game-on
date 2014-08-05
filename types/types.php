@@ -26,12 +26,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
-				'name' => 'Presets'.go_task_opt_help('presets', '', 'http://maclab.guhsd.net/go/video/quests/presets.mp4'),
+				'name' => 'Presets'.go_task_opt_help('presets', 'SAMPLE TEXT HELLO WORLD HOW ARE YOU DOING TODAY THIS IS GREAT', 'http://maclab.guhsd.net/go/video/quests/presets.mp4'),
 				'id'   => 'go_presets',
 				'type' => 'go_presets',
 			),
 			array(
-				'name' => go_task_opt_help('advanced_settings', '', 'http://maclab.guhsd.net/go/video/quest/advancedSettings.mp4'),
+				'name' => go_task_opt_help('advanced_settings', '', 'http://maclab.guhsd.net/go/video/quests/advancedSettings.mp4'),
 				'id' => 'advanced_settings',
 				'type' => 'go_settings_accordion',
 				'message' => 'Advanced Settings',
@@ -40,8 +40,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
 				'name' => 'Required Rank '.go_task_opt_help('req_rank', '', 'http://maclab.guhsd.net/go/video/quests/requiredRank.mp4'),
 				'id'   => $prefix . 'req_rank',
-				'type' => 'select',
-				'options' => go_get_all_ranks()
+				'type' => 'go_rank_list'
 			),
 			array(
 				'name' => go_return_options('go_bonus_currency_name').' Filter'.go_task_opt_help('bonus_currency_filter', '', 'http://maclab.guhsd.net/go/video/quests/bonusCurrencyFilter.mp4'),
@@ -74,7 +73,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Chain Order'.go_task_opt_help('task_chain_order', '', 'http://maclab.guhsd.net/go/video/quests/tasksInChain'),
+				'name' => 'Chain Order'.go_task_opt_help('task_chain_order', '', 'http://maclab.guhsd.net/go/video/quests/tasksInChain.mp4'),
 				'id' => $prefix.'chain_order',
 				'type' => 'go_pick_order_of_chain'
 			),
@@ -93,28 +92,28 @@ function go_mta_con_meta( array $meta_boxes ) {
            		),
 			),
 			array(
-				'name' => go_task_opt_help('stage_one_settings', '', 'http://maclab.guhsd.net/go/video/quest/stageOneSettings.mp4'),
+				'name' => go_task_opt_help('stage_one_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageOneSettings.mp4'),
 				'id' => 'stage_one_settings',
 				'type' => 'go_settings_accordion',
 				'message' => 'Stage 1 Settings',
 				'settings_id' => 'go_stage_one_settings_accordion'
 			),
 			array(
-				'name' => go_return_options('go_points_name').go_task_opt_help('stage_one_points', '', 'http://maclab.guhsd.net/go/video/quest/stagepoint.mp4'),
+				'name' => go_return_options('go_points_name').go_task_opt_help('stage_one_points', '', 'http://maclab.guhsd.net/go/video/quests/stagePoint.mp4'),
 				'id' => $prefix . 'stage_one_points',
 				'type' => 'go_stage_reward',
 				'stage' => 1,
 				'reward' => 'points'
 			),
 			array(
-				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_one_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageCurrency.mp4'),
+				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_one_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageCurrency.mp4'),
 				'id' => $prefix . 'stage_one_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 1,
 				'reward' => 'currency'
 			),
 			array(
-				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_one_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageBonusCurrency.mp4'),
+				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_one_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageBonusCurrency.mp4'),
 				'id' => $prefix . 'stage_one_bonus_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 1,
@@ -150,7 +149,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
 				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
 				'id' => 'stage_one_shortcode_list',
-				'type' => 'go_shortcode_list'
+				'type' => 'go_shortcode_list',
 			),
 			array(
 				'name' => 'Stage 2'.go_task_opt_help('accept', '', 'http://maclab.guhsd.net/go/video/quests/acceptMessage.mp4'),
@@ -162,28 +161,28 @@ function go_mta_con_meta( array $meta_boxes ) {
            		),
 			),
 			array(
-				'name' => go_task_opt_help('stage_two_settings', '', 'http://maclab.guhsd.net/go/video/quest/stageTwoSettings.mp4'),
+				'name' => go_task_opt_help('stage_two_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageTwoSettings.mp4'),
 				'id' => 'stage_two_settings',
 				'type' => 'go_settings_accordion',
 				'message' => 'Stage 2 Settings',
 				'settings_id' => 'go_stage_two_settings_accordion'
 			),
 			array(
-				'name' => go_return_options('go_points_name').go_task_opt_help('stage_two_points', '', 'http://maclab.guhsd.net/go/video/quest/stagepoint.mp4'),
+				'name' => go_return_options('go_points_name').go_task_opt_help('stage_two_points', '', 'http://maclab.guhsd.net/go/video/quests/stagePoint.mp4'),
 				'id' => $prefix . 'stage_two_points',
 				'type' => 'go_stage_reward',
 				'stage' => 2,
 				'reward' => 'points'
 			),
 			array(
-				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_two_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageCurrency.mp4'),
+				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_two_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageCurrency.mp4'),
 				'id' => $prefix . 'stage_two_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 2,
 				'reward' => 'currency'
 			),
 			array(
-				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_two_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageBonusCurrency.mp4'),
+				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_two_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageBonusCurrency.mp4'),
 				'id' => $prefix . 'stage_two_bonus_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 2,
@@ -236,28 +235,28 @@ function go_mta_con_meta( array $meta_boxes ) {
          		),
 			),
 			array(
-				'name' => go_task_opt_help('stage_three_settings', '', 'http://maclab.guhsd.net/go/video/quest/stageThreeSettings.mp4'),
+				'name' => go_task_opt_help('stage_three_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageThreeSettings.mp4'),
 				'id' => 'stage_three_settings',
 				'type' => 'go_settings_accordion',
 				'message' => 'Stage 3 Settings',
 				'settings_id' => 'go_stage_three_settings_accordion'
 			),
 			array(
-				'name' => go_return_options('go_points_name').go_task_opt_help('stage_three_points', '', 'http://maclab.guhsd.net/go/video/quest/stagepoint.mp4'),
+				'name' => go_return_options('go_points_name').go_task_opt_help('stage_three_points', '', 'http://maclab.guhsd.net/go/video/quests/stagePoint.mp4'),
 				'id' => $prefix . 'stage_three_points',
 				'type' => 'go_stage_reward',
 				'stage' => 3,
 				'reward' => 'points'
 			),
 			array(
-				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_three_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageCurrency.mp4'),
+				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_three_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageCurrency.mp4'),
 				'id' => $prefix . 'stage_three_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 3,
 				'reward' => 'currency'
 			),
 			array(
-				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_three_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageBonusCurrency.mp4'),
+				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_three_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageBonusCurrency.mp4'),
 				'id' => $prefix . 'stage_three_bonus_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 3,
@@ -315,28 +314,28 @@ function go_mta_con_meta( array $meta_boxes ) {
          		),
 			),
 			array(
-				'name' => go_task_opt_help('stage_four_settings', '', 'http://maclab.guhsd.net/go/video/quest/stageFourSettings.mp4'),
+				'name' => go_task_opt_help('stage_four_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageFourSettings.mp4'),
 				'id' => 'stage_four_settings',
 				'type' => 'go_settings_accordion',
 				'message' => 'Stage 4 Settings',
 				'settings_id' => 'go_stage_four_settings_accordion'
 			),
 			array(
-				'name' => go_return_options('go_points_name').go_task_opt_help('stage_four_points', '', 'http://maclab.guhsd.net/go/video/quest/stagepoint.mp4'),
+				'name' => go_return_options('go_points_name').go_task_opt_help('stage_four_points', '', 'http://maclab.guhsd.net/go/video/quests/stagePoint.mp4'),
 				'id' => $prefix . 'stage_four_points',
 				'type' => 'go_stage_reward',
 				'stage' => 4,
 				'reward' => 'points'
 			),
 			array(
-				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_four_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageCurrency.mp4'),
+				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_four_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageCurrency.mp4'),
 				'id' => $prefix . 'stage_four_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 4,
 				'reward' => 'currency'
 			),
 			array(
-				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_four_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageBonusCurrency.mp4'),
+				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_four_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageBonusCurrency.mp4'),
 				'id' => $prefix . 'stage_four_bonus_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 4,
@@ -394,28 +393,28 @@ function go_mta_con_meta( array $meta_boxes ) {
 				),		
 			),
 			array(
-				'name' => go_task_opt_help('stage_five_settings', '', 'http://maclab.guhsd.net/go/video/quest/stageFiveSettings.mp4'),
+				'name' => go_task_opt_help('stage_five_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageFiveSettings.mp4'),
 				'id' => 'stage_five_settings',
 				'type' => 'go_settings_accordion',
 				'message' => 'Stage 5 Settings',
 				'settings_id' => 'go_stage_five_settings_accordion'
 			),
 			array(
-				'name' => go_return_options('go_points_name').go_task_opt_help('stage_five_points', '', 'http://maclab.guhsd.net/go/video/quest/stagepoint.mp4'),
+				'name' => go_return_options('go_points_name').go_task_opt_help('stage_five_points', '', 'http://maclab.guhsd.net/go/video/quests/stagePoint.mp4'),
 				'id' => $prefix . 'stage_five_points',
 				'type' => 'go_stage_reward',
 				'stage' => 5,
 				'reward' => 'points'
 			),
 			array(
-				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_five_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageCurrency.mp4'),
+				'name' => go_return_options('go_currency_name').go_task_opt_help('stage_five_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageCurrency.mp4'),
 				'id' => $prefix . 'stage_five_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 5,
 				'reward' => 'currency'
 			),
 			array(
-				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_five_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quest/stageBonusCurrency.mp4'),
+				'name' => go_return_options('go_bonus_currency_name').go_task_opt_help('stage_five_bonus_currency', '', 'http://maclab.guhsd.net/go/video/quests/stageBonusCurrency.mp4'),
 				'id' => $prefix . 'stage_five_bonus_currency',
 				'type' => 'go_stage_reward',
 				'stage' => 5,
@@ -453,114 +452,60 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
-				'name' => 'Penalty Switch'.go_task_opt_help('penalty_switch', '', 'http://maclab.guhsd.net/go/video/store/penaltySwitch.mp4'),
-				'desc' => 'Allow user\'s currency to go negative when purchasing this item.',
-				'id' => $prefix . 'penalty_switch',
+				'name' => 'Cost'.go_task_opt_help('cost', 'The Cost of the store item', 'http://maclab.guhsd.net/go/video/store/cost.mp4'),
+				'id' => "{$prefix}store_cost",
+				'type' => 'go_store_cost',
+			),
+			array(
+				'name' => 'Limit'.go_task_opt_help('store_limit', '', 'http://maclab.guhsd.net/go/video/store/storeLimit.mp4'),
+				'id' => "{$prefix}store_limit",
+				'type' => 'go_store_limit'
+			),
+			array(
+				'name' => 'Penalty'.go_task_opt_help('penalty', '', 'http://maclab.guhsd.net/go/video/store/penalty.mp4'),
+				'id' => "{$prefix}penalty_switch",
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => go_return_options('go_focus_name').' Gateway? <br/>(Optional)'.go_task_opt_help('focus_gateway', '', 'http://maclab.guhsd.net/go/video/store/focusGateway.mp4'),
-				'desc' => 'Check this box to convert this item into a focus gateway. When a user purchases this item, this focus pathway will be added to their account.',
-				'id' => $prefix . 'focus_item_switch',
-				'type' => 'checkbox'
+				'name' => 'Filter'.go_task_opt_help('filter', '', 'http://maclab.guhsd.net/go/video/store/filter.mp4'),
+				'id' => "{$prefix}store_filter",
+				'type' => 'go_store_filter'
+			),
+			array(
+				'name' => 'Exchange'.go_task_opt_help('exchange', '', 'http://maclab.guhsd.net/go/video/store/exchange.mp4'),
+				'id' => "{$prefix}store_exchange",
+				'type' => 'go_store_exchange'
+			),
+			array(
+				'name' => 'URL'.go_task_opt_help('item_url', '', 'http://maclab.guhsd.net/go/video/store/itemURL.mp4'),
+				'id' => "{$prefix}store_item_url",
+				'type' => 'go_item_url'	
+			),
+			array(
+				'name' => 'Badge'.go_task_opt_help('badge_id', '', 'http://maclab.guhsd.net/go/video/store/badgeID.mp4'),
+				'id' => "{$prefix}badge_id",
+				'type' => 'go_badge_id'
 			),
 			array(
 				'name' => go_return_options('go_focus_name').go_task_opt_help('focus', '', 'http://maclab.guhsd.net/go/video/store/focus.mp4'),
-				'desc' => 'Select the '.go_return_options('go_focus_name').' to be associated with this item.',
-				'id' => $prefix.'focuses',
-				'type' => 'select',
-				'options' => go_get_all_focuses()
+				'id' => "{$prefix}store_focus",
+				'type' => 'go_store_focus'
 			),
 			array(
-				'name' => go_return_options('go_bonus_currency_name').' Filter'.go_task_opt_help('bonus_currency_filter', '', 'http://maclab.guhsd.net/go/video/store/bonusCurrencyFilter.mp4'),
-				'id' => $prefix . 'store_bonus_currency_filter',
-				'type' => 'text'
+				'name' => 'Send Receipt'.go_task_opt_help('store_receipt', '', 'http://maclab.guhsd.net/go/video/store/receipt.mp4'),
+				'id' => "{$prefix}store_receipt",
+				'type' => 'go_store_receipt'
 			),
 			array(
-				'name' => 'Required Rank'.go_task_opt_help('required_rank', '', 'http://maclab.guhsd.net/go/video/store/requiredRank.mp4'),
-				'desc' => 'Rank required to purchase the item.',
-				'id'   => $prefix . 'store_rank',
-				'type' => 'select',
-				'options' => go_get_all_ranks()
+				'name' => 'Shortcode'.go_task_opt_help('store_shortcode', '', 'http://maclab.guhsd.net/go/video/store/storeShortcode.mp4'),
+				'id' => "{$prefix}store_shortcode_list",
+				'type' => 'go_store_shortcode_list'
 			),
-			array(
-				'name' => 'Currency Cost'.go_task_opt_help('currency', '', 'http://maclab.guhsd.net/go/video/store/currency.mp4'),
-				'desc' => 'Currency required to purchase the item.',
-				'id'   => $prefix . 'store_currency',
-				'type' => 'text',
-			),
-			array(
-				'name' => 'Points Cost'.go_task_opt_help('points', '', 'http://maclab.guhsd.net/go/video/store/points.mp4'),
-				'desc' => 'Points required to purchase item.',
-				'id'   => $prefix . 'store_points',
-				'type' => 'text',
-			),
-			array(
-				'name' => go_return_options('go_bonus_currency_name').' Cost'.go_task_opt_help('bonus_currency', '', 'http://maclab.guhsd.net/go/video/store/bonusCurrency.mp4'),
-				'id'   => $prefix . 'store_bonus_currency',
-				'type' => 'text',
-			),
-			array(
-				'name' => 'Exchange Switch <br/>(Optional)'.go_task_opt_help('exchange', '', 'http://maclab.guhsd.net/go/video/store/exchange.mp4'),
-				'desc' => 'Check this box to allow users to purchase this item for one another',
-				'id' => $prefix.'store_exchange_switch',
-				'type' => 'checkbox'
-			),
-			array(
-				'name' => 'Exchange Currency'.go_task_opt_help('exchange_currency', '', 'http://maclab.guhsd.net/go/video/store/exchangeCurrency.mp4'),
-				'desc' => 'Currency to be given to recipient of item. Leave blank to reward none.',
-				'id' => $prefix.'store_exchange_currency',
-				'type' => 'text'
-			),
-			array(
-				'name' => 'Exchange Points'.go_task_opt_help('exchange_points', '', 'http://maclab.guhsd.net/go/video/store/exchangePoints.mp4'),
-				'desc' => 'Points to be given to recipient of item. Leave blank to reward none.',
-				'id' => $prefix.'store_exchange_points',
-				'type' => 'text'
-			),
-			array(
-				'name' => 'Exchange '.go_return_options('go_bonus_currency_name').go_task_opt_help('exchange_bonus_currency', '', 'http://maclab.guhsd.net/go/video/store/exchangeBonusCurrency.mp4'),
-				'id' => $prefix.'store_exchange_bonus_currency',
-				'type' => 'text'
-			),
-			array(
-				'name' => 'Item URL <br/>(Optional)'.go_task_opt_help('item_url', '', 'http://maclab.guhsd.net/go/video/store/itemURL.mp4'),
-				'desc' => 'URL to be displayed when the item is purchased. Leave blank if you don\'t need a link.',
-				'id' => $prefix . 'store_itemURL',
-				'type' => 'text'	
-			),
-			array(
-				'name' => 'Allowed Repeatable Times <br/>(Optional)'.go_task_opt_help('repeat_limit', '', 'http://maclab.guhsd.net/go/video/store/allowedRepeatableTimes.mp4'),
-				'id' => $prefix.'store_repeat_amount',
-				'type' => 'text'
-			),
-			array(
-				'name' => 'Badge <br/>(Optional)'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/store/badge.mp4'),
-				'desc' => 'Check this box to have a badge associated with this item.',
-				'id' => $prefix.'badge_switch',
-				'type' => 'checkbox'
-			),
-			array(
-				'name' => 'Badge ID'.go_task_opt_help('badge_id', '', 'http://maclab.guhsd.net/go/video/store/badgeID.mp4'),
-				'desc' => 'ID of badge to be rewarded',
-				'id' => $prefix.'badge_id',
-				'type' => 'text'
-			),
-			array(
-				'name' => 'Badge After Purchases'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/store/badgeAfterPurchases.mp4'),
-				'desc' => 'Reward badge after this many purchases. Leave blank to default to 1 purchase.',
-				'id' => $prefix.'badge_purchase_count',
-				'type' => 'text'
-			),
-			array(
-				'name' => 'Shortcode',
-				'desc' => 'Insert this shortcode where you want the task to appear.',
-				'type' => 'go_store_shortcode'
-			),		
 		),
 	);
 	return $meta_boxes;
 }
+
 add_action( 'cmb_render_go_presets', 'go_presets_js' );
 add_filter( 'cmb_meta_boxes', 'go_mta_con_meta' );
 add_action( 'init', 'go_init_mtbxs', 9999 );
@@ -590,9 +535,21 @@ function go_validate_stage_reward(){
 	return $task_rewards;
 }
 
-add_action( 'cmb_render_go_task_shortcode', 'go_cmb_render_go_task_shortcode', 10, 0 );
-function go_cmb_render_go_task_shortcode() {
-	echo '<input type="text" disabled value="[go_task id=\''.get_the_id().'\']"/>';
+add_action('cmb_render_go_rank_list', 'go_rank_list');
+function go_rank_list() {
+	$custom = get_post_custom(get_the_id());
+	$current_rank = $custom['go_mta_req_rank'][0];
+	$ranks_array = get_option('go_ranks');
+	$ranks = $ranks_array['name'];
+	if (!empty($ranks)) {
+		echo "<select id='go_req_rank_select' name='go_mta_req_rank'>";
+		foreach ($ranks as $rank) {
+			echo "<option class='go_req_rank_option' ".(strtolower($rank) == strtolower($current_rank) ? 'selected' : '').">{$rank}</option>";
+		}
+		echo "</select>";
+	} else {
+		echo "No <a href='".admin_url()."/?page=game-on-options.php' target='_blank'>".get_option('go_level_plural_names')."</a> were provided.";
+	}
 }
 
 add_action('cmb_render_go_shortcode_list', 'go_cmb_render_go_shortcode_list');
@@ -609,9 +566,6 @@ function go_cmb_render_go_shortcode_list($field_args){
 		<ul class='go_shortcode_list' style='display: none;'>
 			<li class='go_shortcode_list_item'><span>"
 				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/displayNameShortcode.mp4')."</span>[go_get_displayname]
-			</li>
-			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('upload_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/uploadShortcode.mp4')."</span>[go_upload]
 			</li>
 			<li class='go_shortcode_list_item'><span>"
 				.go_task_opt_help('badge_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/badgeShortcde.mp4')."</span>[go_award_badge id='']
@@ -632,11 +586,6 @@ function go_cmb_render_go_shortcode_list($field_args){
 			</li>
 		</ul>
 	";
-}
-
-add_action( 'cmb_render_go_store_shortcode', 'go_cmb_render_go_store_shortcode', 10, 0 );
-function go_cmb_render_go_store_shortcode() {
-	echo '<input type="text" disabled value="[go_store id=\''.get_the_id().'\']"';
 }
 
 add_action('cmb_render_go_decay_table', 'go_decay_table');
@@ -687,6 +636,7 @@ function go_decay_table() {
 			?>
 		</table>
 		<input type="button" id="go_mta_add_task_decay" onclick="go_add_decay_table_row()" value="+"/>
+		<input type="button" id="go_mta_remove_task_decay" onclick="go_remove_decay_table_row()" value="-"/>
 	<?php
 }
 
@@ -2248,7 +2198,7 @@ add_action('admin_head', 'go_create_help_video_lb');
 add_action('wp_head', 'go_create_help_video_lb');
 
 function go_task_opt_help($field, $title, $video_url = null) {
-	return '<a id="go_help_'.$field.'" class="go_task_opt_help" onclick="go_display_help_video(\''.$video_url.'\');" title="'.$title.'" style="background: #DBDBDB !important;">?</a>';
+	return '<a id="go_help_'.$field.'" class="go_task_opt_help" onclick="go_display_help_video(\''.$video_url.'\');" tooltip="'.$title.'">?</a>';
 }
 
 add_action('cmb_render_go_pick_order_of_chain', 'go_pick_order_of_chain');
@@ -2648,5 +2598,258 @@ function go_clone_task () {
 		echo 0;
 	}
 	die();
+}
+
+add_action('cmb_render_go_store_shortcode_list', 'go_cmb_render_go_store_shortcode_list');
+function go_cmb_render_go_store_shortcode_list() {
+	$post_id = get_the_id();
+	$custom = get_post_custom($post_id);
+	$is_checked = $custom['go_mta_store_shortcode_list'][0];
+	echo "
+		<input id='go_store_shortcode_list_checkbox' name='go_mta_store_shortcode_list' type='checkbox'".($is_checked ? "checked" : "")."/>";
+	echo "
+		<ul id='go_store_shortcode_list' style='display: none;'>
+			<li class='go_store_shortcode_list_item'><span>"
+				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/store/displayNameShortcode.mp4')."</span>[go_get_displayname]
+			</li>
+			<li class='go_store_shortcode_list_item'><span>"
+				.go_task_opt_help('store_by_cat', '', 'http://maclab.guhsd.net/go/video/store/storeByCat.mp4')."</span>[go_store cats='']
+			</li>
+			<li class='go_store_shortcode_list_item'><span>"
+				.go_task_opt_help('store_by_id', '', 'http://maclab.guhsd.net/go/video/store/storeById.mp4')."</span>[go_store id='{$post_id}']
+			</li>
+		</ul>
+	";
+}
+
+add_action('cmb_render_go_store_cost', 'go_store_cost');
+function go_store_cost() {
+	$custom = get_post_custom(get_the_id());
+	$cost_array = unserialize($custom['go_mta_store_cost'][0]);
+	if (!empty($cost_array)) {
+		$go_currency_cost = $cost_array[0];
+		$go_point_cost = $cost_array[1];
+		$go_bonus_currency_cost = $cost_array[2];
+	}
+	echo "
+		<input class='go_store_cost_input' name='go_currency_cost' type='text' placeholder='".go_return_options('go_currency_name')."'".(!empty($go_currency_cost) ? "value='{$go_currency_cost}'" : "")."/>
+		<input class='go_store_cost_input' name='go_point_cost' type='text' placeholder='".go_return_options('go_points_name')."'".(!empty($go_point_cost) ? "value='{$go_point_cost}'" : "")."/>
+		<input class='go_store_cost_input' name='go_bonus_currency_cost' type='text' placeholder='".go_return_options('go_bonus_currency_name')."'".(!empty($go_bonus_currency_cost) ? "value='{$go_bonus_currency_cost}'" : "")."/>
+	";
+}
+
+add_action('cmb_validate_go_store_cost', 'go_validate_store_cost');
+function go_validate_store_cost() {
+	$go_currency_cost = $_POST['go_currency_cost'];
+	$go_point_cost = $_POST['go_point_cost'];
+	$go_bonus_currency_cost = $_POST['go_bonus_currency_cost'];
+	if (empty($go_currency_cost)) {
+		$go_currency_cost = 0;
+	}
+	if (empty($go_point_cost)) {
+		$go_point_cost = 0;
+	}
+	if (empty($go_bonus_currency_cost)) {
+		$go_bonus_currency_cost = 0;
+	}
+	return (array($go_currency_cost, $go_point_cost, $go_bonus_currency_cost));
+}
+
+add_action('cmb_render_go_store_limit', 'go_store_limit');
+function go_store_limit() {
+	$custom = get_post_custom(get_the_id());
+	$content_array = unserialize($custom['go_mta_store_limit'][0]);
+	$is_checked = $content_array[0];
+	if (empty($is_checked)) {
+		$is_checked = "true";
+	}
+	$limit = $content_array[1];
+	echo "
+		<input id='go_store_limit_checkbox' name='go_store_limit' type='checkbox' ".($is_checked == 'true' ? "checked" : "")."/>
+		<input id='go_store_limit_input' name='go_store_limit_input' type='text' style='display: none;' placeholder='Limit'".(!empty($limit) ? "value='{$limit}'" : "")."/>
+	";
+}
+
+add_action('cmb_validate_go_store_limit', 'go_validate_store_limit');
+function go_validate_store_limit() {
+	$is_checked = $_POST['go_store_limit'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	$limit = $_POST['go_store_limit_input'];
+	return (array($is_checked, $limit));
+}
+
+add_action('cmb_render_go_store_focus', 'go_store_focus');
+function go_store_focus() {
+	$custom = get_post_custom(get_the_id());
+	$content_array = unserialize($custom['go_mta_store_focus'][0]);
+	$is_checked = $content_array[0];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	}
+	$profession = $content_array[1];
+	$user_id = get_current_user_id();
+	$focus_switch = go_return_options('go_focus_switch');
+	
+	if ($focus_switch == 'On') {
+		$go_foci = get_option('go_focus');
+		if (!empty($go_foci)) {
+			if (count($go_foci) > 1 || (count($go_foci) == 1 && !empty($go_foci[0]))) {
+				echo "
+					<input id='go_store_focus_checkbox' name='go_mta_store_focus' type='checkbox' ".($is_checked == 'true' ? "checked" : "")."/>
+					<select id='go_store_focus_select' name='go_store_focus_select' style='display: none;'>
+				";
+				foreach ($go_foci as $key => $focus) {
+					echo "<option class='go_store_focus_option'";
+					if (strtolower($focus) == strtolower($profession) && !empty($profession)) {
+						echo 'selected';
+					}
+					echo ">{$focus}</option>";
+				}
+				echo "</select>";
+			} else {
+				echo "<p>No names were found in the ".go_return_options('go_focus_name')." section in the <a href='".admin_url()."/?page=game-on-options.php'>Game-On options</a>.</p>";
+			}
+		}
+	} else {
+		echo "<p>The ".go_return_options('go_focus_name')." option is disabled in the <a href='".admin_url()."/?page=game-on-options.php'>Game-On options</a>.</p>";
+	}
+}
+
+add_action('cmb_validate_go_store_focus', 'go_validate_store_focus');
+function go_validate_store_focus() {
+	$is_checked = $_POST['go_mta_store_focus'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	$focus_select = $_POST['go_store_focus_select'];
+	return (array($is_checked, $focus_select));
+}
+
+add_action('cmb_render_go_store_receipt', 'go_store_receipt');
+function go_store_receipt() {
+	$custom = get_post_custom(get_the_id());
+	$store_receipt_option = get_option('go_store_receipt_switch');
+	$is_checked = $custom['go_mta_store_receipt'][0];
+	if ($store_receipt_option == 'On') {
+		if (empty($is_checked)) {
+			$is_checked = "true";
+		}
+	} else {
+		if (empty($is_checked)) {
+			$is_checked = "false";
+		}
+	}
+	echo "<input id='go_store_receipt_checkbox' name='go_store_receipt' type='checkbox'".($is_checked == 'true' ? "checked" : "")."/>";
+}
+
+add_action('cmb_validate_go_store_receipt', 'go_validate_store_receipt');
+function go_validate_store_receipt() {
+	$is_checked = $_POST['go_store_receipt'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	return ($is_checked);
+}
+
+add_action('cmb_render_go_store_filter', 'go_store_filter');
+function go_store_filter() {
+	$custom = get_post_custom(get_the_id());
+	$content_array = unserialize($custom['go_mta_store_filter'][0]);
+	$is_checked = $content_array[0];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	}
+	$chosen_rank = $content_array[1];
+	$bonus_currency_filter = $content_array[2];
+	$penalty_filter = $content_array[3];
+	$ranks_array = get_option('go_ranks');
+	$ranks = $ranks_array['name'];
+	echo "
+		<input id='go_store_filter_checkbox' name='go_mta_store_filter' type='checkbox' ".($is_checked == 'true' ? "checked" : "")."/>";
+
+	if (!empty($ranks) && is_array($ranks)) {
+		echo "<select id='go_store_filter_select' class='go_store_filter_input' name='go_store_filter_select' style='display: none;'>";
+		foreach ($ranks as $rank) {
+			echo "<option class='go_store_filter_option'";
+			if (strtolower($rank) == strtolower($chosen_rank)) {
+				echo 'selected';
+			}
+			echo ">{$rank}</option>";
+		}
+		echo "</select>";
+	}
+	echo "
+		<input id='go_store_filter_bonus_currency' class='go_store_filter_input' name='go_store_filter_bonus_currency' type='text' style='display: none;' placeholder='".go_return_options('go_bonus_currency_name')."' ".(!empty($bonus_currency_filter) ? "value='{$bonus_currency_filter}'" : '')."/>
+		<input id='go_store_filter_penalty' class='go_store_filter_input' name='go_store_filter_penalty' type='text' style='display: none;' placeholder='".go_return_options('go_penalty_name')."' ".(!empty($penalty_filter) ? "value='{$penalty_filter}'" : '')."/>
+	";
+}
+
+add_action('cmb_validate_go_store_filter', 'go_validate_store_filter');
+function go_validate_store_filter() {
+	$is_checked = $_POST['go_mta_store_filter'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	$chosen_rank = $_POST['go_store_filter_select'];
+	$b_filter = $_POST['go_store_filter_bonus_currency'];
+	$d_filter = $_POST['go_store_filter_penalty'];
+	return (array($is_checked, $chosen_rank, $b_filter, $d_filter));
+}
+
+add_action('cmb_render_go_item_url', 'go_item_url');
+function go_item_url() {
+	$custom = get_post_custom(get_the_id());
+	$url = $custom['go_mta_store_item_url'][0];
+	echo "<input id='go_store_item_url_input' name='go_mta_store_item_url' type='text' placeholder='http://yourlink.com' ".(!empty($url) ? "value='{$url}'" : '')."/>";
+}
+
+add_action('cmb_render_go_badge_id', 'go_badge_id');
+function go_badge_id() {
+	$custom = get_post_custom(get_the_id());
+	$id = $custom['go_mta_badge_id'][0];
+	echo "<input id='go_store_badge_id_input' name='go_mta_badge_id' type='text' placeholder='Badge ID' ".(!empty($id) ? "value='{$id}'" : '')."/>";
+}
+
+add_action('cmb_render_go_store_exchange', 'go_store_exchange');
+function go_store_exchange() {
+	$custom = get_post_custom(get_the_id());
+	$content_array = unserialize($custom['go_mta_store_exchange'][0]);
+	$is_checked = $content_array[0];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	}
+	$c_exchange = $content_array[1];
+	$p_exchange = $content_array[2];
+	$b_exchange = $content_array[3];
+	echo "
+		<input id='go_store_exchange_checkbox' name='go_mta_store_exchange' type='checkbox' ".($is_checked == 'true' ? "checked" : "")."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_currency' type='text' style='display: none;' placeholder='".go_return_options('go_currency_name')."' ".(!empty($c_exchange) ? "value='{$c_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_points' type='text' style='display: none;' placeholder='".go_return_options('go_points_name')."' ".(!empty($p_exchange) ? "value='{$p_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_bonus_currency' type='text' style='display: none;' placeholder='".go_return_options('go_bonus_currency_name')."' ".(!empty($b_exchange) ? "value='{$b_exchange}'" : '')."/>
+	";
+}
+
+add_action('cmb_validate_go_store_exchange', 'go_validate_store_exchange');
+function go_validate_store_exchange() {
+	$is_checked = $_POST['go_mta_store_exchange'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	$c_exchange = $_POST['go_store_exchange_currency'];
+	$p_exchange = $_POST['go_store_exchange_points'];
+	$b_exchange = $_POST['go_store_exchange_bonus_currency'];
+	return (array($is_checked, $c_exchange, $p_exchange, $b_exchange));
 }
 ?>

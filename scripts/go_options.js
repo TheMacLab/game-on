@@ -104,18 +104,16 @@ jQuery(document).ready(function(){
 	
 	jQuery(document).on('click', '.go_remove_preset', function(){
 		key = jQuery('.go_options_preset_name_input').last().attr('key');
-		jQuery('.go_options_preset_name_input').last().remove();
 		jQuery('input[key="'+key+'"').remove();
-		console.log('wow');
 	});
 	
 	jQuery('.go_add_preset').click(function(){
 		presets = jQuery('.go_options_preset_name_input').length;
 		jQuery('.go_remove_preset').remove();
-		jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input' name='go_presets[name][" + presets +"]' key='" + presets +"'value=''/>");
+		jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input go_options_preset_input' name='go_presets[name][" + presets +"]' key='" + presets +"'value=''/>");
 		for(i = 1; i <= 5; i++){
-			jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input' name='go_presets[points][" + presets + "][]' key='" + presets + "' value=''/>");
-			jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input' name='go_presets[currency][" + presets + "][]' key='" + presets + "' value=''/>");
+			jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input go_options_preset_input' name='go_presets[points][" + presets + "][]' key='" + presets + "' value=''/>");
+			jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + presets + "][]' key='" + presets + "' value=''/>");
 		}
 		jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
 	});
@@ -133,16 +131,16 @@ jQuery(document).ready(function(){
 				jQuery('#go_options_preset_points').empty();
 				jQuery('#go_options_preset_currency').empty();
 				for(name in presets['name']){
-					jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input' name='go_presets[name][" + name +"]' value='" + presets['name'][name] + "'/>");
+					jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input go_options_preset_input' name='go_presets[name][" + name +"]' key='" + name + "' value='" + presets['name'][name] + "'/>");
 				}
 				for(points in presets['points']){
 					for(point in presets['points']){
-						jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input' name='go_presets[points][" + points + "][]' key='" + points + "' value='" + presets['points'][points][point] + "'/>")
+						jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input go_options_preset_input' name='go_presets[points][" + points + "][]' key='" + points + "' value='" + presets['points'][points][point] + "'/>")
 					}
 				}
 				for(currency in presets['currency']){
 					for(cur in presets['currency']){
-						jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input' name='go_presets[currency][" + currency + "][]' key='" + currency + "' value='" + presets['currency'][currency][cur] + "'/>")
+						jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + currency + "][]' key='" + currency + "' value='" + presets['currency'][currency][cur] + "'/>")
 					}
 				}
 				jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
@@ -223,7 +221,6 @@ jQuery(document).ready(function(){
 	});
 	
 	jQuery('#go_save_levels').click(function(){
-		console.log('hello world');
 		go_level_names = [];
 		go_level_points = [];
 		go_level_badges = [];
@@ -332,6 +329,20 @@ jQuery(document).ready(function(){
 					}
 				});
 			}
+		}
+	});
+	
+	jQuery('#go_options_form').submit(function(){
+		if(jQuery('input[name="go_focus_switch"]').is(':checked')){
+			var values = jQuery('.go_options_profession_input').map(function(){return jQuery(this).val();}).get();
+			jQuery.ajax({
+				type: "post",
+				url: MyAjax.ajaxurl,
+				data: { 
+					action: 'go_focus_save',
+					focus_array: values
+				}
+			});
 		}
 	});
 	

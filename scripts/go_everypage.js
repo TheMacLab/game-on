@@ -98,6 +98,11 @@ function go_admin_bar_stats_page_button(id){
 			jQuery('#go_stats_hidden_input').val(id);
 			
 			jQuery('.go_stats_body_selectors').click(function(){
+				if(jQuery('#go_stats_help_video').length){
+					myplayer = videojs('go_stats_help_video');
+					myplayer.pause();
+					myplayer.dispose();
+				}
 				body = jQuery('#go_stats_body');
 				body.empty();
 				body.css('background-color', '#FFF');
@@ -151,21 +156,29 @@ function go_admin_bar_stats_page_button(id){
 }
 
 function go_stats_close(){
+	if(jQuery('#go_stats_help_video').length){
+		myplayer = videojs('go_stats_help_video');
+		myplayer.pause();
+		myplayer.dispose();
+	}
 	jQuery('#go_stats_white_overlay').hide();
 	jQuery('#go_stats_page_black_bg').hide();
 	jQuery('#go_stats_lay').hide();
 }
 
 function go_stats_help(){
-	jQuery('#go_option_help_video').clone().css({'margin': '0px 15% 0px 11%'}).prop('id', 'go_stats_help_video').attr('width', '70%').attr('height', '100%').appendTo('#go_stats_body');
-	//jQuery('#go_stats_help_video').css({'margin': '0px 15% 0px 11%'});
-	myplayer = videojs('go_stats_help_video');
-	myplayer.ready(function(){
-		myplayer.src('http://www.maclab.guhsd.net/video/stats/help.mp4');
-		myplayer.load();
-		myplayer.play();
-		videoStatus = 'playing';
-	});
+	jQuery('#go_stats_body').append('<div id="go_stats_help_video_container"></div>');
+	jQuery('#go_stats_help_video_container').css({'margin': '0px 10% 0px 15%', 'height': '100%', 'width': '100%'});
+	jQuery('#go_option_help_video').clone().prop('id', 'go_stats_help_video').attr('width', '70%').attr('height', '100%').appendTo('#go_stats_help_video_container');
+	if(jQuery('#go_stats_help_video').length){
+		myplayer = videojs('go_stats_help_video');
+		myplayer.ready(function(){
+			myplayer.src('http://maclab.guhsd.net/go/video/stats/help.mp4 ');
+			myplayer.load();
+			myplayer.play();
+			videoStatus = 'playing';
+		});
+	}
 }
 	
 function go_stats_task_list(){

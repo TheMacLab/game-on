@@ -42,19 +42,33 @@ function go_display_currency($currency){
 	return $prefix.$currency.$suffix;
 }
 
+function go_display_bonus_currency($bonus_currency) {
+	global $wpdb;
+	$prefix = go_return_options('go_bonus_currency_prefix');
+	$suffix = go_return_options('go_bonus_currency_suffix');
+	return $prefix.$bonus_currency.$suffix;
+}
+
+function go_display_penalty($penalty){
+	global $wpdb;
+	$prefix = go_return_options('go_penalty_prefix');
+	$suffix = go_return_options('go_penalty_suffix');
+	return $prefix.$penalty.$suffix;
+}
+
 function go_display_user_focuses($user_id){
 	
 	if(get_user_meta($user_id, 'go_focus',true)){
 		if(!is_array(get_user_meta($user_id, 'go_focus',true))){
-			$valueu = get_user_meta($user_id, 'go_focus',true);
+			$value = get_user_meta($user_id, 'go_focus',true);
 		}else{
-			$valueu = implode(', ',get_user_meta($user_id, 'go_focus', true));
+			$value = implode(', ',get_user_meta($user_id, 'go_focus', true));
 		}
 	} else{
-		$valueu = 'No '.go_return_options('go_focus_name');	
+		$value = 'No '.go_return_options('go_focus_name');
 	}
 	
-	return $valueu;
+	return $value;
 }
 
 function go_return_task_amount_in_chain($chain){

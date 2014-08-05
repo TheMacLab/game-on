@@ -166,7 +166,7 @@ function go_stats_move_stage(){
 	$changed = array('type' => 'json', 'points' => 0, 'currency' => 0, 'bonus_currency' => 0);
 	 
 	for($count; $count > 0; $count--){
-		go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], $page_id, 'on', -1, null, null, null, null, -$rewards['bonus_currency'][$current_status]);
+		go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], $page_id, 'on', -1, null, null, null, null);
 		
 		$changed['points'] += -$rewards['points'][$current_status];
 		$changed['currency'] += -$rewards['currency'][$current_status];
@@ -177,7 +177,7 @@ function go_stats_move_stage(){
 		if($current_status > $status){
 			$current_status--;
 			
-			go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], $page_id, null, null, null, null, null, null, -$rewards['bonus_currency'][$current_status]);
+			go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], $page_id, null, null, null, null, null, null);
 			
 			$changed['points'] += -$rewards['points'][$current_status];
 			$changed['currency'] += -$rewards['currency'][$current_status];
@@ -187,13 +187,13 @@ function go_stats_move_stage(){
 			$current_status++;
 			$current_count = $wpdb->get_var($wpdb->prepare("SELECT count FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
 			if($current_status == 5 && $current_count == 0){
-				go_add_post($user_id, $task_id, $current_status-1, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $page_id, 'on', 1, null, null, null, null, $rewards['bonus_currency'][$current_status-1]);
+				go_add_post($user_id, $task_id, $current_status-1, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], $page_id, 'on', 1, null, null, null, null);
 				
 				$changed['points'] += $rewards['points'][$current_status-1];
 				$changed['currency'] += $rewards['currency'][$current_status-1];
 				$changed['bonus_currency'] += $rewards['bonus_currency'][$current_status-1];
 			}elseif($current_status < 5){
-				go_add_post($user_id, $task_id, $current_status, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $page_id, null, null, null, null, null, null, $rewards['bonus_currency'][$current_status-1]);
+				go_add_post($user_id, $task_id, $current_status, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], $page_id, null, null, null, null, null, null);
 				
 				$changed['points'] += $rewards['points'][$current_status-1];
 				$changed['currency'] += $rewards['currency'][$current_status-1];
@@ -218,20 +218,22 @@ function go_stats_item_list(){
 	}else{
 		$user_id = get_current_user_id();
 	}
-	$items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid=%d AND status=%d ORDER BY timestamp DESC, reason DESC", $user_id, -1));
+	$items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid=%d AND status=%d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1));
+	
 	?>
 	<ul id='go_stats_item_list_purchases' class='go_stats_body_list'>
 		<li class='go_stats_body_list_head'>PURCHASES</li>
 		<?php
 		foreach($items as $item){
 			$item_id = $item->post_id;
-			$item_count = $item->count;
+			$item_count_total = $wpdb->get_var($wpdb->prepare("SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d ", $user_id, -1, $item_id));
+			$count_before = $wpdb->get_var($wpdb->prepare("SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d AND id<=%d", $user_id, -1, $item_id, $item->id));
 			$purchase_date = $item->timestamp;
 			$purchase_reason = $item->reason;
 			?>
 				<li class='go_stats_item go_stats_purchased_item'>
 					<?php
-						echo "<a href='".get_permalink($item_id)."'>".get_the_title($item_id)."</a> ({$item_count}) {$purchase_date}";
+						echo "<a href='".get_permalink($item_id)."'>".get_the_title($item_id)."</a> ({$count_before} of {$item_count_total}) {$purchase_date}";
 					?>
 				</li>
 			<?php

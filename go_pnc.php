@@ -35,16 +35,16 @@ function go_add_currency($user_id, $reason, $status, $points, $currency, $update
 
 // Adds currency and points for reasons that are post tied.
 
-function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $bonus_currency = null){
+function go_add_post($user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null){
 	
 		global $wpdb;
 	   	$table_name_go = $wpdb->prefix . "go";
 		$time = date('m/d@H:i',current_time('timestamp',0));
 		if($status == -1){
 		   	$qty = $_POST['qty'];
-		   	$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-		   	$points = $points * $qty;
-		   	$currency = $currency * $qty;
+		   	$old_points = $wpdb->get_row("SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1");
+		   	$points *= $qty;
+		   	$currency *= $qty;
 			if($user_id != get_current_user_id()){
 				$reason = 'Purchased by '.get_userdata(get_current_user_id())->display_name.' '.$qty.' times';	
 			}
@@ -55,8 +55,9 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 						'uid'=> $user_id, 
 						'post_id'=> $post_id, 
 						'status'=> -1, 
-						'points'=> $points, 
-						'currency'=>$currency, 
+						'points'=> $points,
+						'currency'=>$currency,
+						'bonus_currency' => $bonus_currency,
 						'page_id' => $page_id, 
 						'count'=> $qty,
 						'reason' => $reason,
@@ -69,10 +70,10 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 					array(
 						'points'=>$points+ ($old_points->points), 
 						'currency'=> $currency+($old_points->currency), 
+						'bonus_currency' => $bonus_currency + ($old_points->bonus_currency),
 						'page_id' => $page_id, 
 						'count'=> (($old_points->count)+$qty),
-						'reason' => $reason,
-						'timestamp' => $time
+						'reason' => $reason
 					), 
 					array(
 						'uid'=> $user_id, 
@@ -84,25 +85,25 @@ function go_add_post($user_id, $post_id, $status, $points, $currency, $page_id, 
 		} else {
 			if($repeat == 'on'){
 				$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-				$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id, 'count'=> ($old_points->count)+$count), array('uid'=>$user_id, 'post_id'=>$post_id));
+				$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency),'page_id' => $page_id, 'count'=> ($old_points->count)+$count), array('uid'=>$user_id, 'post_id'=>$post_id));
 				go_return_multiplier($user_id, $points, $currency, $page_id);
 			} else {
 				if($status == 0){
-					$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> 1, 'points'=> $points, 'currency'=>$currency, 'page_id' => $page_id));
+					$wpdb->insert($table_name_go, array('uid'=> $user_id, 'post_id'=> $post_id, 'status'=> 1, 'points'=> $points, 'currency'=>$currency, 'bonus_currency' => $bonus_currency, 'page_id' => $page_id));
 					go_return_multiplier($user_id, $points, $currency, $page_id);
 				} else {
 					$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-					$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
+					$wpdb->update($table_name_go,array('status'=>$status, 'points'=>$points+ ($old_points->points), 'currency'=> $currency+($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id), array('uid'=>$user_id, 'post_id'=>$post_id));
 					
 					go_return_multiplier($user_id, $points, $currency, $page_id);
 				}
 			}
 
 			if ($e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null) {
-				$wpdb->update($table_name_go, array('status'=> $status, 'points'=> $points + ($old_points->points), 'currency'=> $currency + ($old_points->currency), 'page_id' => $page_id, 'e_fail_count' => $e_fail_count, 'a_fail_count' => $a_fail_count, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'e_passed' => $e_passed, 'a_passed' => $a_passed, 'c_passed' => $c_passed, 'm_passed' => $m_passed), array('uid'=>$user_id, 'post_id'=>$post_id));
+				$wpdb->update($table_name_go, array('status'=> $status, 'points'=> $points + ($old_points->points), 'currency'=> $currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'e_fail_count' => $e_fail_count, 'a_fail_count' => $a_fail_count, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'e_passed' => $e_passed, 'a_passed' => $a_passed, 'c_passed' => $c_passed, 'm_passed' => $m_passed), array('uid'=>$user_id, 'post_id'=>$post_id));
 			}
 		}
-	go_update_totals($user_id,$points,$currency,0,0,$status);
+	go_update_totals($user_id,$points,$currency,$bonus_currency,0,$status);
 }
 	
 // Adds bonus currency.
@@ -187,7 +188,7 @@ function go_update_admin_bar($type, $title, $value, $status = null){
 	} elseif ($type == 'currency'){
 		$display = go_display_currency($value);
 	} elseif($type == 'bonus_currency'){ 
-		$display = $value;
+		$display = go_display_bonus_currency($value);
 		$color = barColor($value);
 	}elseif ($type == 'penalty'){
 		$display = go_display_penalty($value);

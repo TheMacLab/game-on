@@ -33,17 +33,14 @@ if($class_a){
 	}
 	?></select>
     
-    <div id="go_clipboard_add"> <div style="width:17px; display:inline-table;margin-top: 4px;
-margin-right: 5px;" title="Check the boxes of the students you want to add to." class="ui-state-default ui-corner-all"><a href="javascript:;" onclick="go_display_help_video('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4')"> 
-<span  class="ui-icon ui-icon-help"></span></a>
-</div>
+    <div id="go_clipboard_add">
+    <?php go_options_help('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'SAMPLE TEXT'); ?>
 <label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" /> 
 <label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" />
 <label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" />
 <label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" />
 <label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge"/>
-<label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px;
-margin-right: 5px;" title="The message will be displayed as reason if any points/currency/bonus currency/ penalty are being added. If nothing is being added, the message will be displayed as a message in a seperate system in the admin bar with a limit of 9 messages per student."> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason"></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
+<label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px; margin-right: 5px;"> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
 
     
     <table  id="go_clipboard_table" class="pretty" >
@@ -54,7 +51,7 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
  <th class="header" style="width:10%;"><a href="#" >Name</a></th>
 <th class="header" style="width:10%;"><a href="#" >Gamertag</a></th>
 <th class="header" style="width:8%;"><a href="#" >Rank</a></th>
-<th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th>
+<?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
 <th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
 <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 <th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
@@ -72,7 +69,22 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
     
      </div>
 	 <div id="go_analysis">
-         <button onClick="collectData();">Collect Data</button>
+		<?php echo wp_next_scheduled('go_clipboard_collect_data'); ?>
+		<select id='go_day_select' onchange='go_update_script_day()'>
+			<?php 
+			$script_day = go_return_options('go_analysis_script_day');
+			if($script_day){
+				echo "<option value='{$script_day}'>{$script_day}</option>";
+			}
+			?>
+			<option value='Monday'>Monday</option>
+			<option value='Tuesday'>Tuesday</option>
+			<option value='Wednesday'>Wednesday</option>
+			<option value='Thursday'>Thursday</option>
+			<option value='Friday'>Friday</option>
+			<option value='Saturday'>Saturday</option>
+			<option value='Sunday'>Sunday</option>
+		</select>
          <select id="go_selection" onchange="go_update_graph();">
             <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
             <option value="4"><?php echo go_return_options('go_currency_name');?></option>
@@ -104,8 +116,6 @@ margin-right: 5px;" title="The message will be displayed as reason if any points
 	}
 }
 
-
-
 function go_clipboard_intable(){
 	global $wpdb;
 	$class_a_choice = $_POST['go_clipboard_class_a_choice'];
@@ -115,11 +125,6 @@ function go_clipboard_intable(){
 	FROM {$table_name_user_meta}
 	WHERE meta_key =  '{$wpdb->prefix}capabilities'
 	AND meta_value LIKE  '%subscriber%'");
-	$focuses = (array)get_option('go_focus');
-	$focuses_list = '';
-	foreach($focuses as $focus){
-		$focuses_list .= "<option name='{$focus}' value='{$focus}'>{$focus}</option>";
-	}
 	foreach($uid as $id){
 		foreach($id as $value){
 			$class_a = get_user_meta($value, 'go_classifications',true);
@@ -132,6 +137,12 @@ function go_clipboard_intable(){
 					$user_last_name =  $user_data_key->user_lastname;
 					$user_url =  $user_data_key->user_url;
 					$user_focuses = go_display_user_focuses($value);
+					$focus_name = get_option('go_focus_name');
+					$focuses = get_option('go_focus');
+					$focuses_list = '';
+					foreach ($focuses as $focus) {
+						$focuses_list .= "<option value='{$focus}' ".($focus == $user_focuses ? "selected" : "").">{$focus}</option>";
+					}
 					$bonus_currency = go_return_bonus_currency($value);
 					$penalty = go_return_penalty($value);
 					$currency = go_return_currency($value);
@@ -145,13 +156,13 @@ function go_clipboard_intable(){
 					$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
 					
 					echo "<tr id='user_{$value}'>
-							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'></td>
+							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'/></td>
 							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$value}&quot;);'>{$user_login}</a></td>
 							<td>{$class_a[$class_a_choice]}</td>
 							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
 							<td>{$user_display}</td>
 							<td>{$current_rank}</td>
-							<td><select id='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'><option name='{$user_focuses}' value='{$user_focuses}'>{$user_focuses}</option>{$focuses_list}</select></td>
+							<td><select id='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>".(empty($user_focuses) || $user_focuses == "No {$focus_name}" ? "<option value='No {$focus_name}' selected>No {$focus_name}</option>" : "")."{$focuses_list}</select></td>
 							<td class='user_points'>{$points}</td>
 							<td class='user_currency'>{$currency}</td>
 							<td class='user_bonus_currency'>{$bonus_currency}</td>
@@ -195,14 +206,12 @@ function go_clipboard_add(){
 			if($badge_ID != ''){
 				do_shortcode('[go_award_badge id="'.$badge_ID.'" repeat = "off" uid="'.$value.'"]');
 			}
-			if($points == '' && $currency== ''&& $bonus_currency== ''&& $penalty== ''){
-				$user_id = $value;
-				go_message_user($user_id, $reason);
-			}
+			go_message_user($value, $reason);
 		}
 	}
 	die();
 }
+
 function go_clipboard_collect_data(){
 	global $wpdb;
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
@@ -329,6 +338,16 @@ function fixmessages(){
 		}
 	}
 	
+	die();
+}
+
+function go_update_script_day(){
+	$new_day = $_POST['new_day'];
+	update_option('go_analysis_script_day', $new_day);
+	wp_clear_scheduled_hook('go_clipboard_collect_data');
+	$script_day = go_return_options('go_analysis_script_day');
+	$script_timestamp = strtotime("this {$script_day}");
+	wp_schedule_event($script_timestamp, 'go_weekly', 'go_clipboard_collect_data');
 	die();
 }
 ?>
