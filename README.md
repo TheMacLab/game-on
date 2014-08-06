@@ -2,6 +2,8 @@
 
 Game-On is an educational framework that provides teachers with a vast amount of tools to create their own <a href="http://en.wikipedia.org/wiki/Gamification" target="_blank">gamified</a> learning system.
 
+<a href="http://maclab.guhsd.net/game-on" target="_blank">Game-On Documentation</a>
+
 <a href="http://edex.adobe.com/group/game-on/discussions/" target="_blank">Adobe Education Exchange Game-On Group Forum</a>
 
 <a href="http://edex.adobe.com/group/game-on/discussion/2fcaa2/" target="_blank">Adobe Education Exchange Updates Thread</a>

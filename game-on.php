@@ -175,7 +175,7 @@ function go_user_redirect ($redirect_to, $request, $user) {
 
 function go_admin_head_notification(){
 	if(get_option('go_display_admin_explanation')){
-		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Got it. <a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage.</a></div>";
+		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
 		echo "<script>
 			function go_remove_admin_notification(){
 				jQuery.ajax({
