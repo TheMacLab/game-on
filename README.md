@@ -8,7 +8,9 @@ Game-On is an educational framework that provides teachers with a vast amount of
 
 <a href="http://edex.adobe.com/group/game-on/discussion/2fcaa2/" target="_blank">Adobe Education Exchange Updates Thread</a>
 
-If you think Game-On could be improved or could use a new feature drop us a <a href="http://edex.adobe.com/group/game-on/discussion/8610bf/" target="_blank">feature request</a> and we'll see what we can do!
+If you think Game-On could be improved or could use a new feature, drop us a <a href="http://edex.adobe.com/group/game-on/discussion/8610bf/" target="_blank">feature request</a> and we'll see what we can do!
+
+If you find a bug or need assistance while using Game-On, please check the <a href='http://edex.adobe.com/group/game-on/discussion/684285c0/' target='_blank'>known conflicts</a> thread to see if your situation has appeared before.  If you believe you've found a new bug, please report it to our <a href='http://edex.adobe.com/group/game-on/discussion/4a137977/' target='_blank'>tech support</a> thread.
 
 * * *
 
