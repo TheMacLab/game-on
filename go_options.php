@@ -52,7 +52,7 @@ if (is_admin()) {
 	function go_options_input($title, $type, $name, $video_url, $explanation, $help = true, $reset = null){
 		?>
 		<div class='go_options'>
-			<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo $title; if ($help) {go_options_help($video_url, $explanation, $help);} ?></span></div>
+			<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo $title; go_options_help($video_url, $explanation, $help); ?></span></div>
 			<input type='<?php echo $type;?>' name='<?php echo $name; ?>' <?php if($type == 'checkbox'){echo 'value="On"'; if(get_option($name) == 'On'){echo 'checked="checked"';}}else{echo 'value="'.get_option($name).'"';}?> class='go_options_additional_settings_input' <?php if($reset){echo "reset='{$reset}'";}?>/>
 		</div>
 		<?php

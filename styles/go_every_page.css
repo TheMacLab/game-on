@@ -531,8 +531,9 @@ button.go_test_submit {
 .light{
 	display: none;
 	position: fixed;
-	left: 22.5%; 
-	top: 20%;
+	top: 50%;
+	left: 50%;
 	background-color: white;
-	z-index:1002;
+	z-index: 999999;
+	padding: 10px 10px 10px 10px;
 }
