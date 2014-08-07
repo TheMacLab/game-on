@@ -446,8 +446,8 @@ function go_task_shortcode($atts, $content = null) {
 								echo do_shortcode("[go_test type='".$test_a_all_types[0]."' question='".$test_a_all_questions[0]."' possible_answers='".$test_a_all_answers[0]."' key='".$test_a_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 							}
 						}
-
-						if ($accept_upload) {
+						
+						if ($encounter_upload) {
 							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 						}
 					?>
@@ -471,8 +471,8 @@ function go_task_shortcode($atts, $content = null) {
 								echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 							}
 						}
-
-						if ($completion_upload) {
+						
+						if ($accept_upload) {
 							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 						}
 						echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='3' onclick='task_stage_change();this.disabled=true;'";
@@ -500,8 +500,8 @@ function go_task_shortcode($atts, $content = null) {
 									echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 								}
 							}
-						
-							if ($mastery_upload) {
+							
+							if ($completion_upload) {
 								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 							}
 							echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='task_stage_change();this.disabled=true;'";
@@ -533,8 +533,14 @@ function go_task_shortcode($atts, $content = null) {
 						echo'<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accpt_mssg)).'</div>'.'<div class="go_stage_message">'.do_shortcode(wpautop($completion_message)).'</div><div class="go_stage_message">'.do_shortcode(wpautop($mastery_message)).'</div>';
 						if ($repeat == 'on') {
 							if ($task_count < $repeat_amount || $repeat_amount == 0) { // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
-								if ($repeat_upload) {
-									echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
+								if ($task_count == 0) {
+									if ($mastery_upload) {
+										echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
+									}
+								} else {
+									if ($repeat_upload) {
+										echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
+									}
 								}
 								echo '
 									<div id="repeat_quest">
@@ -560,6 +566,9 @@ function go_task_shortcode($atts, $content = null) {
 								echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 							}
 						} else {
+							if ($mastery_upload) {
+								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
+							}
 							echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 						}
 						if($next_post_in_chain && !$last_in_chain){
@@ -1596,8 +1605,8 @@ function task_change_stage() {
 				}
 			}
 
-			if ($accept_upload) {
-				echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$pot_id}]")."<br/>";
+			if ($encounter_upload) {
+				echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 			}
 
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='2' onclick='task_stage_change();this.disabled=true;'";
@@ -1619,9 +1628,9 @@ function task_change_stage() {
 					echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 				}
 			}
-
-			if ($completion_upload) {
-				echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$pot_id}]")."<br/>";
+			
+			if ($accept_upload) {
+				echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 			}
 
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='3' onclick='task_stage_change();this.disabled=true;'";
@@ -1646,8 +1655,8 @@ function task_change_stage() {
 					}
 				}
 
-				if ($mastery_upload) {
-					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$pot_id}]")."<br/>";
+				if ($completion_upload) {
+					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}
 
 				echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='task_stage_change();this.disabled=true;'";
@@ -1681,8 +1690,14 @@ function task_change_stage() {
 				// if the number of times that the page has been repeated is less than the total amount of repeats allowed OR if the 
 				// total repeats allowed is equal to zero (infinte amount allowed)...
 				if ($task_count < $repeat_amount || $repeat_amount == 0) {
-					if ($repeat_upload) {
-						echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$pot_id}]")."<br/>";
+					if ($task_count == 0) {
+						if ($mastery_upload) {
+							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
+						}
+					} else {
+						if ($repeat_upload) {
+							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
+						}
 					}
 					echo '
 						<div id="repeat_quest">
@@ -1708,6 +1723,9 @@ function task_change_stage() {
 					echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 				}
 			} else {
+				if ($mastery_upload) {
+					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
+				}
 				echo '<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 			}
 			if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
