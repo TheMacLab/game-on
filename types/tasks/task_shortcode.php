@@ -308,7 +308,7 @@ function go_task_shortcode($atts, $content = null) {
             
 <?php	
 		// If current post in a chain and user logged in
-		if($custom_fields['chain'][0] != null && $user_ID != 0){
+		if ($custom_fields['chain'][0] != null && $user_ID != 0) {
 			
 			$current_position_in_chain = get_post_meta($id, 'chain_position', true);
 			$chain_tax = get_the_terms($id, 'task_chains');
@@ -327,12 +327,12 @@ function go_task_shortcode($atts, $content = null) {
 			));
 
 			// Loop through each one and make array of their ids
-			foreach($posts_in_chain as $post_in_chain){
+			foreach ($posts_in_chain as $post_in_chain) {
 				$post_ids_in_chain[] = $post_in_chain->ID;
 			}
 			
 			// Setup next task in chain 
-			if($id != end($post_ids_in_chain)){
+			if ($id != end($post_ids_in_chain)) {
 				$next_post_id_in_chain = $post_ids_in_chain[array_search($id, $post_ids_in_chain) + 1];
 				$next_post_in_chain = '<a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a>';
 			}
@@ -349,11 +349,11 @@ function go_task_shortcode($atts, $content = null) {
 			");
 			
 			// Make array of statuses in chain indexed by post id
-			foreach($list as $post_obj){
+			foreach ($list as $post_obj) {
 				$post_status_in_chain[$post_obj->post_id] = $post_obj->status;
 			}
 			
-			foreach($post_ids_in_chain as $post_id_in_chain){
+			foreach ($post_ids_in_chain as $post_id_in_chain) {
 				if($post_id_in_chain == $id){
 					break;	
 				}
@@ -368,16 +368,16 @@ function go_task_shortcode($atts, $content = null) {
 				}
 				
 				// Check if current post in loop has been completed/mastered, depending on the number of stages in the task that needs to be completed
-				if($post_status_in_chain[$post_id_in_chain] < $post_number_of_stages_in_chain){
+				if ($post_status_in_chain[$post_id_in_chain] < $post_number_of_stages_in_chain) {
 					$previous_task = '<a href="'.get_permalink($post_id_in_chain).'">'.get_the_title($post_id_in_chain).'</a>';
 					echo 'You must finish '.$previous_task.' to do this '.strtolower(go_return_options('go_tasks_name'));
 					return false;	
 				}
 			}
 			
-			if($current_position_in_chain == go_return_task_amount_in_chain($chain->name)){
+			if ($current_position_in_chain == go_return_task_amount_in_chain($chain->name)) {
 				$last_in_chain = true;
-			}else{
+			} else {
 				$last_in_chain = false;
 			}
 		
@@ -419,7 +419,6 @@ function go_task_shortcode($atts, $content = null) {
 								echo do_shortcode("[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 							}
 						}
-
 						if ($encounter_upload) {
 							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 						}
@@ -435,6 +434,30 @@ function go_task_shortcode($atts, $content = null) {
 		?>
 					<div id="go_content">
 					<?php
+						if ($test_e_active) {
+							echo "<p id='go_test_error_msg' style='color: red;'></p>";
+							if ($test_e_num > 1) {
+								for ($i = 0; $i < $test_e_num; $i++) {
+									echo do_shortcode("[go_test type='".$test_e_all_types[$i]."' question='".$test_e_all_questions[$i]."' possible_answers='".$test_e_all_answers[$i]."' key='".$test_e_all_keys[$i]."' test_id='".$i."' total_num='".$test_e_num."']");
+								}
+								echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+							} else {
+								echo do_shortcode("[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+							}
+						}
+						if ($encounter_upload) {
+							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
+						}
+					?>
+					<p id='go_stage_error_msg' style='display: none; color: red;'></p>
+					<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;"><?php echo go_return_options('go_second_stage_button') ?></button>
+					</div>   
+		<?php
+					break;
+					
+					// Accepted
+					case 2: 
+						echo '<div id="go_content"><div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg)).'</div>';
 						if ($test_a_active) {
 							echo "<p id='go_test_error_msg' style='color: red;'></p>";
 							if ($test_a_num > 1) {
@@ -446,37 +469,11 @@ function go_task_shortcode($atts, $content = null) {
 								echo do_shortcode("[go_test type='".$test_a_all_types[0]."' question='".$test_a_all_questions[0]."' possible_answers='".$test_a_all_answers[0]."' key='".$test_a_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 							}
 						}
-						
-						if ($encounter_upload) {
-							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
-						}
-					?>
-					<p id='go_stage_error_msg' style='display: none; color: red;'></p>
-					<button id="go_button" status= "2" onclick="task_stage_change();this.disabled=true;" <?php if ($a_admin_lock == 'on') {echo "permalock='true'";} ?>><?php echo go_return_options('go_second_stage_button') ?></button>
-					</div>   
-		<?php
-					break;
-					
-					// Accepted
-					case 2: 
-						echo '<div id="go_content"><div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg)).'</div>';
-						if ($test_c_active) {
-							echo "<p id='go_test_error_msg' style='color: red;'></p>";
-							if ($test_c_num > 1) {
-								for ($i = 0; $i < $test_c_num; $i++) {
-									echo do_shortcode("[go_test type='".$test_c_all_types[$i]."' question='".$test_c_all_questions[$i]."' possible_answers='".$test_c_all_answers[$i]."' key='".$test_c_all_keys[$i]."' test_id='".$i."' total_num='".$test_c_num."']");
-								}
-								echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
-							} else {
-								echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
-							}
-						}
-						
 						if ($accept_upload) {
 							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 						}
 						echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='3' onclick='task_stage_change();this.disabled=true;'";
-						if ($c_admin_lock == 'on') {
+						if ($a_admin_lock == 'on') {
 							echo "permalock='true'";
 						}
 						echo '>'.go_return_options('go_third_stage_button').'</button>
@@ -489,23 +486,22 @@ function go_task_shortcode($atts, $content = null) {
 						echo '<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accpt_mssg)).'</div><div class="go_stage_message">
 						'.do_shortcode(wpautop($completion_message)).'</div>';
 						if ($mastery_active) {
-							if ($test_m_active) {
+							if ($test_c_active) {
 								echo "<p id='go_test_error_msg' style='color: red;'></p>";
-								if ($test_m_num > 1) {
-									for ($i = 0; $i < $test_m_num; $i++) {
-										echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+								if ($test_c_num > 1) {
+									for ($i = 0; $i < $test_c_num; $i++) {
+										echo do_shortcode("[go_test type='".$test_c_all_types[$i]."' question='".$test_c_all_questions[$i]."' possible_answers='".$test_c_all_answers[$i]."' key='".$test_c_all_keys[$i]."' test_id='".$i."' total_num='".$test_c_num."']");
 									}
 									echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 								} else {
-									echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+									echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 								}
 							}
-							
 							if ($completion_upload) {
 								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 							}
 							echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='task_stage_change();this.disabled=true;'";
-							if ($m_admin_lock == 'on') {
+							if ($c_admin_lock == 'on') {
 								echo "permalock='true'";
 							}
 							echo '>'.go_return_options('go_fourth_stage_button').'</button> 
@@ -518,6 +514,20 @@ function go_task_shortcode($atts, $content = null) {
 							}
 							echo "</div>";
 						} else {
+							if ($test_c_active) {
+								echo "<p id='go_test_error_msg' style='color: red;'></p>";
+								if ($test_c_num > 1) {
+									for ($i = 0; $i < $test_c_num; $i++) {
+										echo do_shortcode("[go_test type='".$test_c_all_types[$i]."' question='".$test_c_all_questions[$i]."' possible_answers='".$test_c_all_answers[$i]."' key='".$test_c_all_keys[$i]."' test_id='".$i."' total_num='".$test_c_num."']");
+									}
+									echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+								} else {
+									echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+								}
+							}
+							if ($completion_upload) {
+								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
+							}
 							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 							if($next_post_in_chain && !$last_in_chain){
 								echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
@@ -534,38 +544,80 @@ function go_task_shortcode($atts, $content = null) {
 						if ($repeat == 'on') {
 							if ($task_count < $repeat_amount || $repeat_amount == 0) { // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 								if ($task_count == 0) {
+									if ($test_m_active) {
+										echo "<p id='go_test_error_msg' style='color: red;'></p>";
+										if ($test_m_num > 1) {
+											for ($i = 0; $i < $test_m_num; $i++) {
+												echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+											}
+											echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+										} else {
+											echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+										}
+									}
 									if ($mastery_upload) {
 										echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 									}
+									echo '
+										<div id="repeat_quest">
+											<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
+												.do_shortcode(wpautop($repeat_message)).
+												"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='go_repeat_hide(jQuery(this));' repeat='on'";
+									if ($m_admin_lock == 'on') {
+										echo "permalock='true'";
+									}
+									echo '>'.go_return_options('go_fourth_stage_button')." Again". 
+												'</button>
+												<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+											</div>
+											<div id="go_repeat_unclicked">
+												<button id="go_button" status="4" onclick="go_repeat_replace();">'
+													.go_return_options('go_repeat_button').
+												'</button>
+												<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+											</div>
+										</div>
+									';
 								} else {
 									if ($repeat_upload) {
 										echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 									}
-								}
-								echo '
-									<div id="repeat_quest">
-										<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
-											.do_shortcode(wpautop($repeat_message)).
-											"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='go_repeat_hide(jQuery(this));' repeat='on'";
-								if ($r_admin_lock == 'on') {
-									echo "permalock='true'";
-								}
-								echo '>'.go_return_options('go_fourth_stage_button')." Again". 
-											'</button>
-											<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+									echo '
+										<div id="repeat_quest">
+											<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
+												.do_shortcode(wpautop($repeat_message)).
+												"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='go_repeat_hide(jQuery(this));' repeat='on'";
+									if ($r_admin_lock == 'on') {
+										echo "permalock='true'";
+									}
+									echo '>'.go_return_options('go_fourth_stage_button')." Again". 
+												'</button>
+												<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+											</div>
+											<div id="go_repeat_unclicked">
+												<button id="go_button" status="4" onclick="go_repeat_replace();">'
+													.go_return_options('go_repeat_button').
+												'</button>
+												<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+											</div>
 										</div>
-										<div id="go_repeat_unclicked">
-											<button id="go_button" status="4" onclick="go_repeat_replace();">'
-												.go_return_options('go_repeat_button').
-											'</button>
-											<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
-										</div>
-									</div>
-								';
+									';
+								}
 							} else {
 								echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 							}
 						} else {
+							if ($test_m_active) {
+								echo "<p id='go_test_error_msg' style='color: red;'></p>";
+								if ($test_m_num > 1) {
+									for ($i = 0; $i < $test_m_num; $i++) {
+										echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+									}
+									echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+								} else {
+									echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+								}
+							}
 							if ($mastery_upload) {
 								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 							}
@@ -871,7 +923,12 @@ function go_task_shortcode($atts, $content = null) {
 				}
 			}
 
-			var status = jQuery('#go_button').attr('status') - 1;
+			var is_repeating = jQuery('#go_button').attr('repeat');
+			if (is_repeating !== 'on') {
+				var status = jQuery('#go_button').attr('status') - 2;	
+			} else {
+				var status = jQuery('#go_button').attr('status') - 1;
+			}
 			jQuery.ajax({
 				type: "POST",
 				data:{
@@ -1593,6 +1650,24 @@ function task_change_stage() {
 	switch ($status) {
 		case 1:
 			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>';
+			if ($test_e_active) {
+				echo "<p id='go_test_error_msg' style='color: red;'></p>";
+				if ($test_e_num > 1) {
+					for ($i = 0; $i < $test_e_num; $i++) {
+						echo do_shortcode("[go_test type='".$test_e_all_types[$i]."' question='".$test_e_all_questions[$i]."' possible_answers='".$test_e_all_answers[$i]."' key='".$test_e_all_keys[$i]."' test_id='".$i."' total_num='".$test_e_num."']");
+					}
+					echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+				} else {
+					echo do_shortcode("[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+				}
+			}
+			if ($encounter_upload) {
+				echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
+			}
+			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='2' onclick='task_stage_change();this.disabled=true;'>".go_return_options('go_second_stage_button')."</button></div>";
+			break;
+		case 2:
+			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>';
 			if ($test_a_active) {
 				echo "<p id='go_test_error_msg' style='color: red;'></p>";
 				if ($test_a_num > 1) {
@@ -1604,37 +1679,11 @@ function task_change_stage() {
 					echo do_shortcode("[go_test type='".$test_a_all_types[0]."' question='".$test_a_all_questions[0]."' possible_answers='".$test_a_all_answers[0]."' key='".$test_a_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 				}
 			}
-
-			if ($encounter_upload) {
-				echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
-			}
-
-			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='2' onclick='task_stage_change();this.disabled=true;'";
-			if ($a_admin_lock == 'on') {
-				echo "permalock='true'";
-			}
-			echo '>'.go_return_options('go_second_stage_button').'</button></div>';
-			break;
-		case 2:
-			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>';
-			if ($test_c_active) {
-				echo "<p id='go_test_error_msg' style='color: red;'></p>";
-				if ($test_c_num > 1) {
-					for ($i = 0; $i < $test_c_num; $i++) {
-						echo do_shortcode("[go_test type='".$test_c_all_types[$i]."' question='".$test_c_all_questions[$i]."' possible_answers='".$test_c_all_answers[$i]."' key='".$test_c_all_keys[$i]."' test_id='".$i."' total_num='".$test_c_num."']");
-					}
-					echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
-				} else {
-					echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
-				}
-			}
-			
 			if ($accept_upload) {
 				echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 			}
-
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='3' onclick='task_stage_change();this.disabled=true;'";
-			if ($c_admin_lock == 'on') {
+			if ($a_admin_lock == 'on') {
 				echo "permalock='true'";
 			}
 			echo '>'.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
@@ -1643,40 +1692,51 @@ function task_change_stage() {
 			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>'.'<div id="new_content"><div class="go_stage_message">'
 			.do_shortcode(wpautop($completion_message)).'</div>';
 			if ($mastery_active) {
-				if ($test_m_active) {
+				if ($test_c_active) {
 					echo "<p id='go_test_error_msg' style='color: red;'></p>";
-					if ($test_m_num > 1) {
-						for ($i = 0; $i < $test_m_num; $i++) {
-							echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+					if ($test_c_num > 1) {
+						for ($i = 0; $i < $test_c_num; $i++) {
+							echo do_shortcode("[go_test type='".$test_c_all_types[$i]."' question='".$test_c_all_questions[$i]."' possible_answers='".$test_c_all_answers[$i]."' key='".$test_c_all_keys[$i]."' test_id='".$i."' total_num='".$test_c_num."']");
 						}
 						echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 					} else {
-						echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+						echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
 					}
 				}
-
 				if ($completion_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}
-
 				echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='task_stage_change();this.disabled=true;'";
-				if ($m_admin_lock == 'on') {
+				if ($c_admin_lock == 'on') {
 					echo "permalock='true'";
 				}
 				echo '>'.go_return_options('go_fourth_stage_button').'</button> 
 				<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
-				
-				if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
+				if ($next_post_id_in_chain != 0 && $last_in_chain !== 'true') {
 					echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
-				}else{
+				} else {
 					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 				}
 				echo "</div>";
 			} else {
+				if ($test_c_active) {
+					echo "<p id='go_test_error_msg' style='color: red;'></p>";
+					if ($test_c_num > 1) {
+						for ($i = 0; $i < $test_c_num; $i++) {
+							echo do_shortcode("[go_test type='".$test_c_all_types[$i]."' question='".$test_c_all_questions[$i]."' possible_answers='".$test_c_all_answers[$i]."' key='".$test_c_all_keys[$i]."' test_id='".$i."' total_num='".$test_c_num."']");
+						}
+						echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+					} else {
+						echo do_shortcode("[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+					}
+				}
+				if ($completion_upload) {
+					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
+				}
 				echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
-				if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
+				if ($next_post_id_in_chain != 0 && $last_in_chain !== 'true') {
 					echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
-				}else{
+				} else {
 					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 				}
 				echo "</div>";
@@ -1691,38 +1751,80 @@ function task_change_stage() {
 				// total repeats allowed is equal to zero (infinte amount allowed)...
 				if ($task_count < $repeat_amount || $repeat_amount == 0) {
 					if ($task_count == 0) {
+						if ($test_m_active) {
+							echo "<p id='go_test_error_msg' style='color: red;'></p>";
+							if ($test_m_num > 1) {
+								for ($i = 0; $i < $test_m_num; $i++) {
+									echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+								}
+								echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+							} else {
+								echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+							}
+						}
 						if ($mastery_upload) {
 							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 						}
+						echo '
+							<div id="repeat_quest">
+								<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
+									.do_shortcode(wpautop($repeat_message)).
+									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='go_repeat_hide(jQuery(this));' repeat='on'";
+						if ($m_admin_lock == 'on') {
+							echo "permalock='true'";
+						}
+						echo '>'.go_return_options('go_fourth_stage_button')." Again". 
+									'</button>
+									<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+								</div>
+								<div id="go_repeat_unclicked">
+									<button id="go_button" status="4" onclick="go_repeat_replace();">'
+										.go_return_options('go_repeat_button').
+									'</button>
+									<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+								</div>
+							</div>
+						';
 					} else {
 						if ($repeat_upload) {
 							echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 						}
-					}
-					echo '
-						<div id="repeat_quest">
-							<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
-								.do_shortcode(wpautop($repeat_message)).
-								"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='go_repeat_hide(jQuery(this));' repeat='on'";
-					if ($r_admin_lock == 'on') {
-						echo "permalock='true'";
-					}
-					echo '>'.go_return_options('go_fourth_stage_button')." Again". 
-								'</button>
-								<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+						echo '
+							<div id="repeat_quest">
+								<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
+									.do_shortcode(wpautop($repeat_message)).
+									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='4' onclick='go_repeat_hide(jQuery(this));' repeat='on'";
+						if ($r_admin_lock == 'on') {
+							echo "permalock='true'";
+						}
+						echo '>'.go_return_options('go_fourth_stage_button')." Again". 
+									'</button>
+									<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+								</div>
+								<div id="go_repeat_unclicked">
+									<button id="go_button" status="4" onclick="go_repeat_replace();">'
+										.go_return_options('go_repeat_button').
+									'</button>
+									<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
+								</div>
 							</div>
-							<div id="go_repeat_unclicked">
-								<button id="go_button" status="4" onclick="go_repeat_replace();">'
-									.go_return_options('go_repeat_button').
-								'</button>
-								<button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>
-							</div>
-						</div>
-					';
+						';
+					}
 				} else {
 					echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button>';
 				}
 			} else {
+				if ($test_m_active) {
+					echo "<p id='go_test_error_msg' style='color: red;'></p>";
+					if ($test_m_num > 1) {
+						for ($i = 0; $i < $test_m_num; $i++) {
+							echo do_shortcode("[go_test type='".$test_m_all_types[$i]."' question='".$test_m_all_questions[$i]."' possible_answers='".$test_m_all_answers[$i]."' key='".$test_m_all_keys[$i]."' test_id='".$i."' total_num='".$test_m_num."']");
+						}
+						echo "<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+					} else {
+						echo do_shortcode("[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']")."<div class='go_test_submit_div'><button class='go_test_submit'>GO!</button></div>";
+					}
+				}
 				if ($mastery_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}

@@ -71,6 +71,7 @@ if (is_admin()) {
 		?>
         <div class="wrap go_wrap">
 		<h2>Game On Options</h2>
+		<a href='http://maclab.guhsd.net/game-on' target='_blank'>Documentation Page</a>
         <form method="post" action="options.php" id="go_options_form">
 			<?php 
 			wp_nonce_field('update-options'); 
