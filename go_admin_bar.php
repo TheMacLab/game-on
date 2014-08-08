@@ -21,6 +21,7 @@ function go_admin_bar(){
 	$current_penalty = go_return_penalty(get_current_user_id());
 	$table_name_options = $wpdb->prefix."options";
 	if($dom <= 0){ $dom = 1;}
+	if($dom <= $rng){go_update_ranks($current_user_id, $current_points);}
 	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	
