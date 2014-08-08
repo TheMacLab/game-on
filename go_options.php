@@ -415,9 +415,10 @@ function go_save_levels(){
 }	
 
 function go_fix_levels(){
+	global $default_role;
+	global $wpdb;
 	$table_name_user_meta = $wpdb->prefix . "usermeta";
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	global $default_role;
 	$role = get_option('go_role',$default_role);
 	$uid = $wpdb->get_results("
 		SELECT user_id

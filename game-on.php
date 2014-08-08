@@ -88,6 +88,7 @@ add_action('wp_ajax_go_stats_leaderboard_choices','go_stats_leaderboard_choices'
 add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
 add_action('wp_ajax_go_presets_reset','go_presets_reset');
 add_action('wp_ajax_go_presets_save','go_presets_save');
+add_action('wp_ajax_go_fix_levels', 'go_fix_levels');
 add_action('wp_ajax_listurl', 'listurl');
 add_action('wp_ajax_nopriv_listurl', 'listurl');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');

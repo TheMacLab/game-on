@@ -100,9 +100,6 @@ function go_buy_item() {
 		} else {
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
 		}
-		if ($req_bonus_currency != '') {
-			go_add_bonus_currency($user_id, -$req_bonus_currency, "Purchase of {$qty} ".get_the_title($post_id).".");
-		}
 		if (!empty($badge_id)) {
 			if ($recipient_id) {
 				do_shortcode('[go_award_badge id="'.$badge_id.'" repeat = "off" uid="'.$recipient_id.'"]');
