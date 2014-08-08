@@ -2186,8 +2186,8 @@ function go_tasks_filter_content(){
 function go_create_help_video_lb(){
 	?>
 	<div class="dark" style="display: none;"> </div>
-    <div class="light" style="display: none;">
-        <div id="go_help_video_container" style="margin: 10px 10px 10px 10px; <?php if(is_admin()){?>height:540px;width:864px;<?php } else {?>height: <?php echo go_return_options('go_video_height');?>px; width: <?php echo go_return_options('go_video_width');}?>px">
+    <div class="light" style="display: none; <?php if(is_admin()){?>height:540px;width:864px;margin: -270px 0 0 -432px;<?php } else {?>height: <?php echo (go_return_options('go_video_height'))?go_return_options('go_video_height'):'540';?>px; width: <?php echo (go_return_options('go_video_width'))?go_return_options('go_video_width'):'864';?>px; margin: <?php echo ((go_return_options('go_video_width'))?"-".(go_return_options('go_video_height')/2):"-270")."px 0 0 ".((go_return_options('go_video_width'))?"-".(go_return_options('go_video_width')/2):"-432")."px;";}?>">
+        <div id="go_help_video_container" style="height: 100%; width: 100%;">
         	<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video/options>
         </div>
     </div>

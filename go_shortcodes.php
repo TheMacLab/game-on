@@ -79,21 +79,21 @@ function go_display_video($atts, $video_url){
 		if($height && $width){
 		?>
         	<script type="text/javascript"> 
-				jQuery('#go_help_video_container').css({'height': '<?php echo $height?>px', 'width': '<?php echo $width;?>px'});
+				jQuery('.light').css({'height': '<?php echo $height;?>px', 'width': '<?php echo $width;?>px'});
 			</script>
         <?php	
 		}
 		if($height){
 		?>
 		<script type="text/javascript"> 
-            jQuery('#go_help_video_container').css('height', '<?php echo $height?>px');
+            jQuery('.light').css({'height': '<?php echo $height;?>px', 'margin-top': '-<?php echo $height/2;?>px'});
         </script>
         <?php
 		} 
 		if($width){
 		?>
 		<script type="text/javascript"> 
-            jQuery('#go_help_video_container').css('width','<?php echo $width;?>px');
+            jQuery('.light').css({'width': '<?php echo $width;?>px', 'margin-left': '-<?php echo $width/2;?>px'});
         </script>
         <?php
 		}
