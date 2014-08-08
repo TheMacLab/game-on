@@ -414,33 +414,34 @@ function go_save_levels(){
 	die();
 }	
 
-function go_fix_levels(){
+function go_fix_levels() {
 	global $default_role;
 	global $wpdb;
-	$table_name_user_meta = $wpdb->prefix . "usermeta";
-	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$role = get_option('go_role',$default_role);
-	$uid = $wpdb->get_results("
+	$ranks = get_option('go_ranks');
+	$uids = $wpdb->get_results("
 		SELECT user_id
-		FROM ".$table_name_user_meta."
-		WHERE meta_key =  '".$wpdb->prefix."capabilities'
-		AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')
+		FROM {$wpdb->usermeta}
+		WHERE meta_key =  '{$wpdb->prefix}capabilities'
+		AND (meta_value LIKE  '%{$role}%' or meta_value LIKE '%administrator%')
 	");
-
-	foreach($uid as $id){
-		foreach($id as $uids){
-			$ranks = get_option('go_ranks');
-			$current_points = go_return_points(get_current_user_id());
+	
+	foreach ($uids as $uid) {
+		foreach ($uid as $user_id) {
+			$current_points = go_return_points($user_id);
 			current($ranks['points']);
-			while($current_points >= current($ranks['points'])){
+			while ($current_points >= current($ranks['points'])) {
 				next($ranks['points']);
 			}
 			$next_rank_points = current($ranks['points']);
 			$next_rank = $ranks['name'][key($ranks['points'])];
 			$rank_points = prev($ranks['points']);
 			$new_rank = $ranks['name'][key($ranks['points'])];
-			$new_rank_array= array(array($new_rank, $rank_points),array($next_rank, $next_rank_points));
-			update_user_meta($uids, 'go_rank', $new_rank_array);
+			$new_rank_array = array(
+				array($new_rank, $rank_points),
+				array($next_rank, $next_rank_points)
+			);
+			update_user_meta($user_id, 'go_rank', $new_rank_array);
 		} 
 	}
 	die();
