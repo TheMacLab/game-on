@@ -69,7 +69,7 @@ if($class_a){
     
      </div>
 	 <div id="go_analysis">
-		<?php echo wp_next_scheduled('go_clipboard_collect_data'); ?>
+		Choose the day at which data will be collected at midnight (0:00 AM)
 		<select id='go_day_select' onchange='go_update_script_day()'>
 			<?php 
 			$script_day = go_return_options('go_analysis_script_day');
