@@ -1,3 +1,16 @@
+function go_deactivate_plugin(){
+	jQuery.ajax({
+		type: 'post', 
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_deactivate_plugin'
+		},
+		success: function(){
+			location.reload();
+		}
+	});	
+}
+
 function hideVid(){
 	if(jQuery('#go_option_help_video').length){
 		myplayer = videojs('go_option_help_video');
