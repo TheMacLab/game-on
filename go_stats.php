@@ -95,54 +95,56 @@ function go_stats_task_list(){
 	$task_list = $wpdb->get_results($wpdb->prepare("SELECT status,post_id,count FROM {$go_table_name} WHERE uid=%d AND (status = %d OR status = 2 OR status = 3 OR status = 4) ORDER BY id DESC", $user_id, 1));
 	$counter = 1;
 	?>
-	<ul id='go_stats_tasks_list_left' <?php if($is_admin){echo "class='go_stats_tasks_list_admin'";}?>
+	<ul id='go_stats_tasks_list' <?php if($is_admin){echo "class='go_stats_tasks_list_admin'";}?>>
 		<?php
-		if ($is_admin){
-			go_task_opt_help('admin_stats', 'admin_stats', 'http://google.com');	
-		}
 		foreach($task_list as $task){
 			?>
 			<li class='go_stats_task <?php if($counter%2 == 0){echo 'go_stats_right_task';}?>'>
-				<a href='<?php echo get_permalink($task->post_id);?>' target='_blank'>
-					<?php echo get_the_title($task->post_id);?>
-				</a>
+				<a href='<?php echo get_permalink($task->post_id);?>' target='_blank' class='go_stats_task_list_name'><?php echo get_the_title($task->post_id);?></a>
 				<?php
 				if($is_admin){
 				?>
 					<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me'/>
                     <button class='go_stats_task_admin_submit' task='<?php echo $task->post_id;?>'></button>
-                    <div class='go_stats_task_status_wrap'>
 				<?php 
 				}
-					$custom = get_post_custom($task->post_id);
-					if($custom['go_mta_three_stage_switch'][0] == 'on'){
-						$stage_count = 3;
-					}elseif($custom['go_mta_five_stage_switch'][0] == 'on'){
-						$stage_count = 5;
-					}else{
-						$stage_count = 4;	
-					}
-					for($i = 5; $i > 0; $i--){
-						if($is_admin){ 
-							?>
-							<a href='#'>
-							<?php 
-						}
-						?>
-						<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
-						<?php 
-						if ($is_admin){
-							?>
-							</a>
-							<?php
-						}
-					}
 				?>
-                </div>
-			</li>
+				<div class='go_stats_task_status_wrap'>
+				<?php
+				$custom = get_post_custom($task->post_id);
+				if($custom['go_mta_three_stage_switch'][0] == 'on'){
+					$stage_count = 3;
+				}elseif($custom['go_mta_five_stage_switch'][0] == 'on'){
+					$stage_count = 5;
+				}else{
+					$stage_count = 4;	
+				}
+				for($i = 5; $i > 0; $i--){
+					if($is_admin){ 
+						?>
+						<a href='#'>
+						<?php 
+					}
+					?>
+					<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
+					<?php 
+					if ($is_admin){
+						?>
+						</a>
+						<?php
+					}
+				}
+				?>
+				</div>
 			<?php
 			$counter++;
+			?>
+			</li>
+			<?php
 		}
+	?>
+	</ul>
+	<?php
 	die();
 }
 
