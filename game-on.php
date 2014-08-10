@@ -35,7 +35,8 @@ register_activation_hook( __FILE__, 'go_install_data' );
 register_activation_hook( __FILE__, 'go_define_options' );
 register_activation_hook( __FILE__, 'go_open_comments');
 add_action('user_register', 'go_user_registration');
-add_action( 'delete_user', 'go_user_delete' );
+add_action('delete_user', 'go_user_delete' );
+add_action('wp_ajax_go_deactivate_plugin', 'go_deactivate_plugin');
 add_action('go_add_post','go_add_post');
 add_action('go_add_currency','go_add_currency');
 add_action('go_add_bonus_currency','go_add_bonus_currency');
@@ -122,6 +123,13 @@ add_filter('jetpack_enable_open_graph', '__return_false');
 add_action('login_redirect', 'go_user_redirect', 10, 3);
 add_action('go_clipboard_collect_data', 'go_clipboard_collect_data');
 add_filter('cron_schedules', 'go_weekly_schedule');
+
+function go_deactivate_plugin(){
+	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	$plugin = plugin_basename( __FILE__ );
+	deactivate_plugins($plugin);
+	die();
+}
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);
