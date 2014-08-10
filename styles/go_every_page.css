@@ -331,7 +331,7 @@ input.go_test_field_rm {
 	cursor: pointer;
 }
 
-.go_triangle_container{
+.go_triangle_container {
 	float:right;
 	cursor: pointer;
 	display: block;
@@ -340,11 +340,11 @@ input.go_test_field_rm {
 	text-align: center;
 }
 
-.go_triangle_container:hover .go_task_accordion_triangle{
+.go_triangle_container:hover .go_task_accordion_triangle {
 	border-top: 5px solid #777;
 }
 
-.go_task_accordion_triangle{
+.go_task_accordion_triangle {
 	width: 0; 
 	height: 0; 
 	border-left: 5px solid transparent;
@@ -355,7 +355,7 @@ input.go_test_field_rm {
 	margin: auto;
 }
 
-.down{
+.down {
 	border-top: none;
 	border-bottom: 5px solid #AAA;
 }
@@ -372,6 +372,18 @@ input#go_mta_final_chain_message {
 	color: #BBB !important;
 	text-align: center;
 	width: 40px;
+}
+
+input.go_admin_lock_text {
+	width: 50%;
+}
+
+input.go_admin_lock_text::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input.go_admin_lock_text:-moz-placeholder {
+	padding-top: 2px;
 }
 
 .go_test_field_table, .go_test_field_input_question {
@@ -400,6 +412,14 @@ input#go_mta_final_chain_message {
 	width: 100%;
 }
 
+input.go_test_field_input_question::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input.go_test_field_input_question:-moz-placeholder {
+	padding-top: 2px;
+}
+
 input.go_test_field_input {
 	width: 75%;
 	margin: 0 5px 0 5px !important;
@@ -411,14 +431,6 @@ input.go_test_field_input::-webkit-input-placeholder {
 }
 
 input.go_test_field_input:-moz-placeholder {
-   padding-top: 2px;  
-}
-
-input.go_test_field_input::-moz-placeholder {
-   padding-top: 2px;  
-}
-
-input.go_test_field_input:-ms-input-placeholder {  
    padding-top: 2px;  
 }
 
@@ -439,6 +451,11 @@ input.go_test_field_rm {
 
 .go_test_field_input_rm_row_button {
 	margin-left: -2px !important;
+}
+
+input#go_mta_repeat_amount {
+	width: 40px;
+	text-align: center;
 }
 
 .go_shortcode_list_item span {
@@ -512,6 +529,18 @@ div.go_chain_message {
 
 button.go_test_submit {
 	margin: 10px 0 10px 2px !important;
+}
+
+input#go_pass_lock {
+	margin: 0 0 10px 0;
+}
+
+input#go_pass_lock::-webkit-input-placeholder {
+	padding-left: 4px;
+}
+
+input#go_pass_lock:-moz-placeholder {
+	padding-left: 4px;
 }
 
 .dark{

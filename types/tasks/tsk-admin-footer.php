@@ -53,6 +53,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_one_points'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_one_currency'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_one_bonus_currency'),
+		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_encounter_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_encounter_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_encounter_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_encounter_lock_loot'),
@@ -64,7 +65,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_two_points'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_two_currency'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_two_bonus_currency'),
-		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_accept_admin_lock'),
+		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_accept_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_accept_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_accept_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_accept_lock_loot'),
@@ -76,7 +77,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_three_points'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_three_currency'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_three_bonus_currency'),
-		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_admin_lock'),
+		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_completion_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_completion_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_completion_lock_loot'),
@@ -89,7 +90,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_four_points'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_four_currency'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_four_bonus_currency'),
-		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_admin_lock'),
+		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_mastery_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock_loot'),
@@ -103,7 +104,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_currency'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_bonus_currency'),
 		jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount'),
-		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_admin_lock'),
+		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_repeat_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_upload'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_five_shortcode_list')
 	]
@@ -207,7 +208,46 @@ function go_remove_decay_table_row(){
 
 ////////////////////////////////////
 
-// Task tests //
+// Admin Lock //
+
+function toggle_admin_lock(accordion, stage) {
+	if (typeof(accordion) === 'string') {
+		if (jQuery(accordion).hasClass("opened")) {
+			if (jQuery('#go_mta_'+stage+'_admin_lock_checkbox').prop('checked')) {
+				if (!jQuery('#go_mta_'+stage+'_admin_lock_input').is(':visible')) {
+					jQuery('#go_mta_'+stage+'_admin_lock_input').show('slow');
+				}
+			} else {
+				if (jQuery('#go_mta_'+stage+'_admin_lock_input').is(':visible')) {
+					jQuery('#go_mta_'+stage+'_admin_lock_input').hide();
+				}
+			}
+		} else {
+			if (jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_'+stage+'_admin_lock').is(':visible')) {
+				jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_'+stage+'_admin_lock').hide();
+			}
+		}
+	} else {
+		if (jQuery('#go_mta_'+stage+'_admin_lock_checkbox').prop('checked')) {
+			if (!jQuery('#go_mta_'+stage+'_admin_lock_input').is(':visible')) {
+				jQuery('#go_mta_'+stage+'_admin_lock_input').show('slow');
+			}
+		} else {
+			if (jQuery('#go_mta_'+stage+'_admin_lock_input').is(':visible')) {
+				jQuery('#go_mta_'+stage+'_admin_lock_input').hide('slow');
+			}
+		}
+	}
+}
+
+jQuery('.go_admin_lock_checkbox').click(function () {
+	var stage = this.id.getMid("go_mta_", "_admin_lock_checkbox");
+	toggle_admin_lock(null, stage);
+});
+
+////////////////////////////////////
+
+// Task Tests //
 
 function toggle_tests(accordion, stage) {
 	if (typeof(stage) === 'string') {
@@ -303,7 +343,7 @@ jQuery('#go_mta_test_encounter_lock_loot, #go_mta_test_accept_lock_loot, #go_mta
 
 ////////////////////////////////////
 
-// Shortcode list //
+// Shortcode List //
 
 function go_shortcode_list(stage) {
 	if (jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_'+stage+'_shortcode_list input.go_shortcode_list_checkbox').prop('checked')) {
@@ -332,6 +372,7 @@ go_toggle_settings_rows(stage_settings_rows[1]);
 stage_accordions[1].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[1], true);
+	toggle_admin_lock(stage_accordions[1], 'encounter');
 	toggle_tests(stage_accordions[1], 'encounter');
 	go_shortcode_list('one');
 });
@@ -345,6 +386,7 @@ go_toggle_settings_rows(stage_settings_rows[2]);
 stage_accordions[2].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[2], true);
+	toggle_admin_lock(stage_accordions[2], 'accept');
 	toggle_tests(stage_accordions[2], 'accept');
 	go_shortcode_list('two');
 });
@@ -358,6 +400,7 @@ go_toggle_settings_rows(stage_settings_rows[3]);
 stage_accordions[3].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[3], true);
+	toggle_admin_lock(stage_accordions[3], 'completion');
 	toggle_tests(stage_accordions[3], 'completion');
 	go_shortcode_list('three');
 });
@@ -370,6 +413,7 @@ go_toggle_settings_rows(stage_settings_rows[4]);
 stage_accordions[4].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[4], true);
+	toggle_admin_lock(stage_accordions[4], 'mastery');
 	toggle_tests(stage_accordions[4], 'mastery');
 	go_shortcode_list('four');
 });
@@ -414,6 +458,7 @@ go_toggle_settings_rows(stage_settings_rows[5], true);
 stage_accordions[5].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[5], true);
+	toggle_admin_lock(stage_accordions[5], 'repeat');
 	go_shortcode_list('five');
 });
 
