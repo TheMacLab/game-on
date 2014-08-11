@@ -156,6 +156,7 @@ function go_stats_move_stage(){
 	}else{
 		$user_id = get_current_user_id();
 	}
+	$current_rank = get_user_meta($user_id, 'go_rank', true);
 	$task_id = $_POST['task_id'];
 	$status = $_POST['status'];
 	$count = $_POST['count'];
@@ -207,6 +208,14 @@ function go_stats_move_stage(){
 		go_message_user($user_id, $message.' about, <a href="'.get_permalink($task_id).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($task_id).'</a>, please.');
 	}else{
 		go_message_user($user_id, 'RE: <a href="'.get_permalink($task_id).'">'.get_the_title($task_id).'</a> '.$message);
+	}
+	$current_points = go_return_points($user_id);
+	$updated_rank = get_user_meta($user_id, 'go_rank', true);
+	if($current_rank[0][0] != $updated_rank[0][0]){
+		$changed['current_points'] = $current_points;
+		$changed['rank'] = $updated_rank[0][0];
+		$changed['rank_points'] = $updated_rank[0][1];
+		$changed['next_rank_points'] = $updated_rank[1][1];
 	}
 	echo json_encode($changed);
 	die();
@@ -369,6 +378,54 @@ function go_stats_leaderboard_choices(){
 	<div id='go_stats_leaderboard'></div>
 	<?php
 	die();
+}
+
+function go_return_user_leaderboard($users, $class_a_choice, $focuses, $type, $counter){
+	foreach($users as $user_ids){
+		foreach($user_ids as $user_id){
+			if(!user_can($user_id, 'manage_options')){
+				$class_a = get_user_meta($user_id, 'go_classifications', true);
+				$focus = get_user_meta($user_id, 'go_focus', true);
+				if($class_a){
+					$class_keys = array_keys($class_a);
+				}
+				if(!empty($class_a_choice) && !empty($focuses)){
+					if(!empty($class_keys) && !empty($focus)){
+						$class_intersect = array_intersect($class_keys, $class_a_choice);
+						if(is_array($focus)){
+							$focus_intersect = array_intersect($focus, $focuses);
+						}else{
+							$focus_intersect = in_array($focus, $focuses);
+						}
+						if(!empty($class_intersect) && !empty($focus_intersect)){
+							go_return_user_data($user_id, $counter, $type);
+							$counter++;
+						}
+					}
+				}elseif(!empty($class_a_choice)){
+					if(!empty($class_keys)){
+						$class_intersect = array_intersect($class_keys, $class_a_choice);
+						if(!empty($class_intersect)){
+							go_return_user_data($user_id, $counter, $type);
+							$counter++;
+						}
+					}
+				}elseif(!empty($focuses)){
+					if(!empty($focus)){
+						if(is_array($focus)){
+							$focus_intersect = array_intersect($focus, $focuses);
+						}else{
+							$focus_intersect = in_array($focus, $focuses);
+						}
+						if(!empty($focus_intersect)){
+							go_return_user_data($user_id, $counter, $type);
+							$counter++;
+						}
+					}
+				}
+			}
+		}
+	}	
 }
 
 function go_stats_leaderboard(){

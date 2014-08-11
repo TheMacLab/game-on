@@ -156,7 +156,7 @@
 	display: inline-block;
 	width: 100%;
 	margin: 0px 3.6% 0px 0px;
-	overflow: scroll;
+	overflow-y: auto;
 }
 
 .go_stats_tasks_list_admin{
@@ -305,7 +305,7 @@
 	display: inline-block;
 	float: right;
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 #go_stats_leaderboard_classes{

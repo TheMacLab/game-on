@@ -261,9 +261,21 @@ function go_stats_move_stage(task_id, status){
 			}
 			json = JSON.parse(html.substr(html.search('{"type"'), html.length));
 			jQuery('#go_stats_user_points_value').html(parseFloat(jQuery('#go_stats_user_points_value').html()) + json['points']);
-			jQuery('#go_stats_user_progress_top_value').html(parseFloat(jQuery('#go_stats_user_progress_top_value').html()) + json['points']);
-			percentage = (parseFloat(jQuery('#go_stats_user_progress_top_value').html())/parseFloat(jQuery('#go_stats_user_progress_bottom_value').html())) * 100;
-			jQuery('#go_stats_progress_fill').css('width', '' + percentage + '%');
+			
+			if(json['rank']){
+				top_val = json['current_points'] - json['rank_points'];
+				bottom_val = json['next_rank_points'] - json['rank_points'];
+				percentage = (top_val/bottom_val) * 100;
+				jQuery('#go_stats_user_rank').html(json['rank']);
+				jQuery('#go_stats_user_progress_top_value').html(top_val);
+				jQuery('#go_stats_user_progress_bottom_value').html(bottom_val);
+				jQuery('#go_stats_progress_fill').css('width', '' + percentage +'%');
+			}else{
+				jQuery('#go_stats_user_progress_top_value').html(parseFloat(jQuery('#go_stats_user_progress_top_value').html()) + json['points']);
+				percentage = (parseFloat(jQuery('#go_stats_user_progress_top_value').html())/parseFloat(jQuery('#go_stats_user_progress_bottom_value').html())) * 100;
+				jQuery('#go_stats_progress_fill').css('width', '' + percentage + '%');
+			}
+			
 			jQuery('#go_stats_user_currency_value').html(parseFloat(jQuery('#go_stats_user_currency_value').html()) + json['currency']);
 			jQuery('#go_stats_user_bonus_currency_value').html(parseFloat(jQuery('#go_stats_user_bonus_currency_value').html()) + json['bonus_currency']);
 		}
