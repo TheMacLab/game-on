@@ -96,6 +96,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_mastery_lock_loot_mod'),
 		jQuery('tr.cmb-type-go_test_field_mastery.cmb_id_go_mta_test_lock_mastery'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat'),
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_privacy'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_four_shortcode_list')
 	],
 	5: [
@@ -105,6 +106,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_upload'),
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_privacy'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_five_shortcode_list')
 	]
 }

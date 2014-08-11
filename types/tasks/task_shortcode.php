@@ -171,11 +171,11 @@ function go_task_shortcode($atts, $content = null) {
 		$task_content = $content_post->post_content; // Grabs what the task actually says in the body of it
 		
 		if ($task_content == '') { // If the task is empty, run this code
-			$accpt_mssg = $custom_fields['go_mta_accept_message'][0]; // Accept message meta field exists, set accept message equal to the meta field's content
+			$accept_message = $custom_fields['go_mta_accept_message'][0]; // Accept message meta field exists, set accept message equal to the meta field's content
 		} elseif($task_content != '' && !$custom_fields['go_mta_accept_message']) { // If content is returned from the post table, and the post doesn't have an accept message meta field, run this code
 			add_post_meta($id, 'go_mta_accept_message', $task_content); // Add accept message meta field with value of the post's content from post table
 		} else { // If the task has content in the post table, and has a meta field, run this code
-			$accpt_mssg = $custom_fields['go_mta_accept_message'][0]; // Set value of accept message equal to the task's accept message meta field value
+			$accept_message = $custom_fields['go_mta_accept_message'][0]; // Set value of accept message equal to the task's accept message meta field value
 		}
 		
 		// If there are dates in the nerf date picker
@@ -235,7 +235,7 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		if($user_ID == 0){ // If user isn't logged in, run this code
-			echo wpautop($description).wpautop($accpt_mssg).wpautop($completion_message);// Displays task content
+			echo wpautop($description).wpautop($accept_message).wpautop($completion_message);// Displays task content
 			if(get_post_type() == 'tasks'){
 				comments_template();
 			}
@@ -457,7 +457,7 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Accepted
 					case 2: 
-						echo '<div id="go_content"><div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg)).'</div>';
+						echo '<div id="go_content"><div class="go_stage_message">'.do_shortcode(wpautop($accept_message)).'</div>';
 						if ($test_a_active) {
 							echo "<p id='go_test_error_msg' style='color: red;'></p>";
 							if ($test_a_num > 1) {
@@ -483,7 +483,7 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Completed
 					case 3: 
-						echo '<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accpt_mssg)).'</div><div class="go_stage_message">
+						echo '<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accept_message)).'</div><div class="go_stage_message">
 						'.do_shortcode(wpautop($completion_message)).'</div>';
 						if ($mastery_active) {
 							if ($test_c_active) {
@@ -540,7 +540,7 @@ function go_task_shortcode($atts, $content = null) {
 					
 					// Mastered
 					case 4:  
-						echo'<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accpt_mssg)).'</div>'.'<div class="go_stage_message">'.do_shortcode(wpautop($completion_message)).'</div><div class="go_stage_message">'.do_shortcode(wpautop($mastery_message)).'</div>';
+						echo'<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop($accept_message)).'</div>'.'<div class="go_stage_message">'.do_shortcode(wpautop($completion_message)).'</div><div class="go_stage_message">'.do_shortcode(wpautop($mastery_message)).'</div>';
 						if ($repeat == 'on') {
 							if ($task_count < $repeat_amount || $repeat_amount == 0) { // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 								if ($task_count == 0) {
@@ -1125,7 +1125,44 @@ function go_task_shortcode($atts, $content = null) {
 	<p>', '</p>', $id);
 		} // Ends else statement
 	} else {
-		echo "You must be <a href='".home_url()."/wp-login.php'>logged in</a> to view this page!";
+		$custom_fields = get_post_custom($id);
+		$encounter_message = $custom_fields['go_mta_quick_desc'][0];
+		$accept_message = $custom_fields['go_mta_accept_message'][0];
+		$complete_message = $custom_fields['go_mta_complete_message'][0];
+		$mastery_active = !$custom_fields['go_mta_task_mastery'][0];
+		if ($mastery_active) {
+			$mastery_privacy = !$custom_fields['go_mta_mastery_privacy'][0];
+			if ($mastery_privacy) {
+				$mastery_message = $custom_fields['go_mta_mastery_message'][0];
+				$repeat_active = $custom_fields['go_mta_task_repeat'][0];
+				if ($repeat_active && $mastery_privacy) {
+					$repeat_privacy = !$custom_fields['go_mta_repeat_privacy'][0];
+					if ($repeat_privacy) {
+						$repeat_message = $custom_fields['go_mta_repeat_message'][0];
+					} else {
+						$repeat_message = "This stage has been hidden by the administrator.";
+					}
+				}
+			} else {
+				$mastery_message = "This stage has been hidden by the administrator.";
+			}
+		}
+		echo "<div id='go_content'>";
+		if (!empty($encounter_message)) {
+			echo "<div id='go_stage_encounter_message' class='go_stage_message'>".do_shortcode(wpautop($encounter_message))."</div>";
+		}
+		if (!empty($accept_message)) {
+			echo "<div id='go_stage_accept_message' class='go_stage_message'>".do_shortcode(wpautop($accept_message))."</div>";
+		}
+		if (!empty($complete_message)) {
+			echo "<div id='go_stage_complete_message' class='go_stage_message'>".do_shortcode(wpautop($complete_message))."</div>";
+		}
+		if (!empty($mastery_message)) {
+			echo "<div id='go_stage_mastery_message' class='go_stage_message'>".do_shortcode(wpautop($mastery_message))."</div>";
+			if (!empty($repeat_message)) {
+				echo "<div id='go_stage_repeat_message' class='go_stage_message'>".do_shortcode(wpautop($repeat_message))."</div>";
+			}
+		}
 	}
 } // Ends function
 add_shortcode('go_task','go_task_shortcode');
@@ -1520,9 +1557,9 @@ function task_change_stage() {
 	$content_post = get_post($post_id);
 	$task_content = $content_post->post_content;
 	if ($task_content == '') {
-		$accpt_mssg = $custom_fields['go_mta_accept_message'][0]; // Completion Message
+		$accept_message = $custom_fields['go_mta_accept_message'][0]; // Completion Message
 	} else {
-		$accpt_mssg = $content_post->post_content;
+		$accept_message = $content_post->post_content;
 	}
 	$table_name_go = $wpdb->prefix . "go";
 
@@ -1649,7 +1686,7 @@ function task_change_stage() {
 	// every case 1 will be output and so will ever case after it, until it hits the end of the switch.
 	switch ($status) {
 		case 1:
-			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>';
+			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div>';
 			if ($test_e_active) {
 				echo "<p id='go_test_error_msg' style='color: red;'></p>";
 				if ($test_e_num > 1) {
@@ -1667,7 +1704,7 @@ function task_change_stage() {
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p><button id='go_button' status='2' onclick='task_stage_change();this.disabled=true;'>".go_return_options('go_second_stage_button')."</button></div>";
 			break;
 		case 2:
-			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>';
+			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div>';
 			if ($test_a_active) {
 				echo "<p id='go_test_error_msg' style='color: red;'></p>";
 				if ($test_a_num > 1) {
@@ -1689,7 +1726,7 @@ function task_change_stage() {
 			echo '>'.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);this.disabled=true;" undo="true">Undo</button></div>';
 			break;
 		case 3:
-			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div>'.'<div id="new_content"><div class="go_stage_message">'
+			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div>'.'<div id="new_content"><div class="go_stage_message">'
 			.do_shortcode(wpautop($completion_message)).'</div>';
 			if ($mastery_active) {
 				if ($test_c_active) {
@@ -1743,7 +1780,7 @@ function task_change_stage() {
 			}
 			break;
 		case 4:
-			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accpt_mssg, false)).'</div><div class="go_stage_message">'.do_shortcode(wpautop($completion_message)).
+			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div><div class="go_stage_message">'.do_shortcode(wpautop($completion_message)).
 			'</div><div id="new_content"><div class="go_stage_message">'.do_shortcode(wpautop($mastery_message)).'</div>';
 			// if the task can be repeated...
 			if ($repeat == 'on') {
