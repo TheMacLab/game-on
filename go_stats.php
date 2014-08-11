@@ -379,6 +379,28 @@ function go_stats_leaderboard_choices(){
 	<?php
 	die();
 }
+function go_return_user_data($id, $counter, $sort){
+	$points = go_return_points($id);
+	$currency = go_return_currency($id);
+	$bonus_currency = go_return_bonus_currency($id);
+	$badge_count = go_return_badge_count($id);
+	$user_data_key = get_userdata($id);
+	$user_display = "<a href='{$user_data_key->user_url}' target='_blank'>{$user_data_key->display_name}</a>";
+	switch($sort){
+		case 'points':
+			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$points}</div></li>";
+			break;
+		case 'currency':
+			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$currency}</div></li>";
+			break;
+		case 'bonus_currency':
+			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$bonus_currency}</div></li>";
+			break;
+		case 'badges':
+			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$badge_count}</div></li>";
+			break;
+	}
+}
 
 function go_return_user_leaderboard($users, $class_a_choice, $focuses, $type, $counter){
 	foreach($users as $user_ids){

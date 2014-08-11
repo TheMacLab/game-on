@@ -564,7 +564,7 @@ function go_reset_data(){
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
 	$reset_data = $_POST['reset_data'];
 	$users = get_users('orderby=ID');
-	$ranks = unserialize(go_return_options('go_ranks'));
+	$ranks = get_option('go_ranks');
 	if(in_array('points', $reset_data)){
 		$erase_level = array( 
 			array(
@@ -587,11 +587,16 @@ function go_reset_data(){
 			update_user_meta($user->ID, 'go_badges', '');
 		}
 	}
-	
-	$erase_list = implode(',', $reset_data);
-	$erase_update = "SET ".implode('=0,', $reset_data)."=0";
-	$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."go WHERE %s IS NOT NULL", $erase_list));
-	$wpdb->query("UPDATE ".$wpdb->prefix."go_totals ".$erase_update);
+	if(in_array('all', $reset_data)){
+		$wpdb->query("TRUNCATE TABLE {$go_table_name}");
+	}else{
+		$erase_list = implode(',', $reset_data);
+		$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".(in_array('points', $reset_data) && !in_array('currency', $reset_data) ? 'AND status != -1' : (in_array('currency', $reset_data) && !in_array('points', $reset_data)? 'AND status = -1': ''));
+		
+		$wpdb->query($query);
+	}
+	$erase_update = "SET ".implode('=0,', $reset_data)."=0 WHERE uid IS NOT NULL";
+	$wpdb->query("UPDATE {$go_table_totals_name} ".$erase_update);
 	die();
 }
 
