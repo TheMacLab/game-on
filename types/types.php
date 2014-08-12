@@ -514,10 +514,12 @@ add_action('cmb_render_go_presets', 'go_presets', 10, 1);
 function go_presets($field_args) {
 	$custom = get_post_custom(get_the_id());
 	$content_array = unserialize($custom['go_presets'][0]);
-	$custom_points = $content_array['points'];
-	$custom_points_str = implode(',', $custom_points);
-	$custom_currency = $content_array['currency'];
-	$custom_currency_str = implode(',', $custom_currency);
+	if (!empty($content_array)) {
+		$custom_points = $content_array['points'];
+		$custom_points_str = implode(',', $custom_points);
+		$custom_currency = $content_array['currency'];
+		$custom_currency_str = implode(',', $custom_currency);
+	}
 	?>
 	<select id="go_presets" onchange="apply_presets();">
         <?php
