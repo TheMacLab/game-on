@@ -113,7 +113,7 @@ function go_add_bonus_currency($user_id, $bonus_currency, $reason){
 	$table_name_go = $wpdb->prefix . "go";
 	if(!empty($_POST['qty'])){
 		$bonus_currency = $bonus_currency * $_POST['qty'];
-		}
+	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
 	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'bonus_currency'=> $bonus_currency, 'reason'=> $reason, 'timestamp' => $time));
 	go_update_totals($user_id,0,0,$bonus_currency,0, $status);
@@ -168,9 +168,7 @@ function go_update_admin_bar($type, $title, $value, $status = null){
 	global $next_rank_points;
 	global $current_rank_points;
 	
-
-	
-	if($type == 'points'){
+	if ($type == 'points') {
 		$display = go_display_points($value); 
 		$rng = ($current_rank_points -$value) * -1;
 		$dom = ($next_rank_points - $current_rank_points);
@@ -185,20 +183,20 @@ function go_update_admin_bar($type, $title, $value, $status = null){
 				jQuery("#points_needed_to_level_up").html("'.$rng.'/'.$dom.'");
 			</script>';
 		}
-	} elseif ($type == 'currency'){
+	} elseif ($type == 'currency') {
 		$display = go_display_currency($value);
-	} elseif($type == 'bonus_currency'){ 
+	} elseif ($type == 'bonus_currency') { 
 		$display = go_display_bonus_currency($value);
-		$color = barColor($value);
-	}elseif ($type == 'penalty'){
+		$current_bonus_currency = go_return_bonus_currency(get_current_user_id());
+		$color = barColor($current_bonus_currency);
+	}elseif ($type == 'penalty') {
 		$display = go_display_penalty($value);
 	}
-	
 	$percentage = go_get_level_percentage(get_current_user_id());
-	echo '<script language="javascript">
-		jQuery("#go_admin_bar_'.$type.'").html("'.$title.': '.$display.'");
-		jQuery("#go_admin_bar_progress_bar").css({"width": "'.$percentage.'%", "background-color": "'.$color.'"});
-	</script>';
+	echo "<script language='javascript'>
+		jQuery('#go_admin_bar_{$type}').html('{$title}: {$display}');
+		jQuery('#go_admin_bar_progress_bar').css({'width': '{$percentage}%'".(($color)?", 'background-color': '{$color}'":"")."});
+	</script>";
 }
 
 
@@ -287,53 +285,22 @@ function go_get_level_percentage($user_id){
 	$percentage = ($current_points-$current_rank_points)/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	return $percentage;
+}
+
+function go_return_options ($option) {
+	if (defined ($option)){
+		return constant($option);
+	} else {
+		return get_option($option);
 	}
-
-function go_get_health_bar_color($percent){
-	function rangeCheck($int, $min, $max){
-			return ($int>$min && $int<$max);
-		}
-	switch($percent){
-		case($percent == 100):
-		$color = '#00c100';//Green
-		return $color;
-		break;
-	
-		case rangeCheck($percent, 65.999, 100):
-		$color = '#ffe400';//Yellow
-		return $color;
-		break;
-		
-		case rangeCheck($percent, 32.999, 66):
-		$color = '#FF6700';//"Vibrant" Orange
-		return $color;
-		break;
-		
-		case rangeCheck($percent, 0.001, 33):
-		$color = '#cc0000';//Red
-		return $color;
-		break;
-		
-		case ($percent <= 0):
-		$color = '#464646';//Same color as admin bar background
-		return $color;
-		break;
-	}	
-}
-function go_return_options($option){
-if(defined ($option) ){
-return constant($option);
-} else {
-return get_option($option);
-}
 }
 
-function barColor($current_bonus_currency){
+function barColor ($current_bonus_currency) {
 	$color = '#00c100';
-	function inRange($int, $min, $max){
+	function inRange ($int, $min, $max) {
 		return ($int>$min && $int<=$max);
 	} 
-	switch ($current_bonus_currency){
+	switch ($current_bonus_currency) {
 		case inRange($current_bonus_currency, 0, PHP_INT_MAX):
 			$color = '#00c100';
 			return $color; 
@@ -358,6 +325,7 @@ function barColor($current_bonus_currency){
 	
 	return $color;
 }
+
 function go_return_multiplier($user_id, $points, $currency, $post_id){
 /*
 if(go_return_options('go_multiplier_switch') == 'On'){
