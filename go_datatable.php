@@ -65,23 +65,20 @@ function go_ranks_registration () {
 	global $wpdb;
 	$ranks = get_option('go_ranks',false);
 	if (!$ranks || !in_array('name', array_keys($ranks))) {
-		$rank_prefix = 'Level ';
+		$rank_prefix = get_option('go_level_names');
+		if (empty($rank_prefix)) {
+			$rank_prefix = 'Level';
+		}
 		$ranks = array(
-			'name' => array(
-				
-			),
-			'points' => array(
-			
-			),
-			'badges' => array(
-				
-			)
+			'name' => array(),
+			'points' => array(),
+			'badges' => array()
 		);
 		for($i = 1; $i <= 20; $i++){
-			if($i <10){
-				$ranks['name'][] = "{$rank_prefix}0{$i}";
+			if($i < 10){
+				$ranks['name'][] = "{$rank_prefix} 0{$i}";
 			}else{
-				$ranks['name'][] = "{$rank_prefix}{$i}";
+				$ranks['name'][] = "{$rank_prefix} {$i}";
 			}
 			if($i == 1){
 				$ranks['points'][0] = 0;
@@ -146,15 +143,17 @@ function go_presets_registration () {
 	}
 }
 
-function go_install_data () {
+function go_install_data() {
 	global $wpdb;
 	$table_name_user_meta = $wpdb->prefix . "usermeta";
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$table_name_go = $wpdb->prefix . "go";
 	global $default_role;
 	$role = get_option('go_role',$default_role);
-	
-	$rank_prefix = 'Level ';
+	$rank_prefix = get_option('go_level_names');
+	if (empty($rank_prefix)) {
+		$rank_prefix = 'Level';
+	}
 	$ranks = array(
 		'name' => array(
 			

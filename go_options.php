@@ -181,55 +181,67 @@ if (is_admin()) {
 				<div id='go_options_levels_wrap' class='go_options_wrap'>
 					<?php
 					$ranks = get_option('go_ranks',false);
-					if ($ranks) {
-						$first = 1;
-						foreach ($ranks['name'] as $key => $name) {
-							if ($first == 1) {
+					$plural_rank_name = get_option('go_level_plural_names', 'Levels');
+					if ($ranks !== false) {
+						if (!empty($ranks['name'])) {
+							$first = 1;						
+							foreach ($ranks['name'] as $key => $name) {
+								$rank_name = get_option('go_level_names');
+								if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s/", $name)) {
+									$name_array = explode(' ', $name);
+									$temp_key = $key + 1;
+									$name = "{$rank_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
+								}
+								if ($first == 1) {
+									?>
+									<div id='go_options_level_names_wrap'>
+										<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Preset Name <?php go_options_help('http://maclab.guhsd.net/go/video/options/levelName.mp4','Name your individual levels');?></span></div>
+										<div id='go_options_level_names'></div>
+									</div>
+									<?php 
+								}
 								?>
-								<div id='go_options_level_names_wrap'>
-									<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Preset Name <?php go_options_help('http://maclab.guhsd.net/go/video/options/levelName.mp4','Name your individual levels');?></span></div>
-									<div id='go_options_level_names'></div>
+									<input type='text' class='go_options_level_names_input' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
+								<?php
+								$first++;
+							}
+						}
+						if (!empty($ranks['points'])) {
+							$first = 1;
+							foreach ($ranks['points'] as $key => $points) {
+								if ($first == 1) {
+									?>
+									<div id='go_options_level_points_wrap'>
+										<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo get_option('go_points_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelPoints.mp4','Establish thresholds for each level. IMPORTANT: The first level must be set to 0 (zero)');?></span></div>
+										<div id='go_options_level_points'></div>
+									</div>
+									<?php 
+								}
+								
+									?>
+										<input type='text' class='go_options_level_points_input' name='go_ranks[points][<?php echo $key;?>]' value='<?php echo $points; ?>'/>
+									<?php 
+								
+								$first++;
+							}
+						}
+						if (!empty($ranks['badges'])) {
+							$first = 1;
+							foreach ($ranks['badges'] as $key => $badge) {
+								if ($first == 1) {
+								?>
+								<div id='go_options_level_badges_wrap'>
+									<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo go_return_options('go_badges_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelBadges.mp4','Award badges when players reach certain levels');?></span></div>
+									<div id='go_options_level_badges'></div>
 								</div>
 								<?php 
-							}
-							?>
-								<input type='text' class='go_options_level_names_input' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
-							<?php
-							$first++;
-						}
-						$first = 1;
-						foreach ($ranks['points'] as $key => $points) {
-							if ($first == 1) {
+								}
+								
 								?>
-								<div id='go_options_level_points_wrap'>
-									<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo get_option('go_points_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelPoints.mp4','Establish thresholds for each level. IMPORTANT: The first level must be set to 0 (zero)');?></span></div>
-									<div id='go_options_level_points'></div>
-								</div>
+									<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][<?php echo $key;?>]' value='<?php echo $badge; ?>'/>
 								<?php 
+								$first++;
 							}
-							
-								?>
-									<input type='text' class='go_options_level_points_input' name='go_ranks[points][<?php echo $key;?>]' value='<?php echo $points; ?>'/>
-								<?php 
-							
-							$first++;
-						}
-						$first = 1;
-						foreach ($ranks['badges'] as $key => $badge) {
-							if ($first == 1) {
-							?>
-							<div id='go_options_level_badges_wrap'>
-								<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo go_return_options('go_badges_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelBadges.mp4','Award badges when players reach certain levels');?></span></div>
-								<div id='go_options_level_badges'></div>
-							</div>
-							<?php 
-							}
-							
-							?>
-								<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][<?php echo $key;?>]' value='<?php echo $badge; ?>'/>
-							<?php 
-							
-							$first++;
 						}
 					}
 					?>
@@ -239,15 +251,15 @@ if (is_admin()) {
 					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/resetLevels.mp4','Revert to default presets');?></span></div>
-						<button type="button" id='go_reset_levels' class='go_options_button'>Reset Levels</button>
+						<button type="button" id='go_reset_levels' class='go_options_button'>Reset <?php echo $plural_rank_name ?></button>
 					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/saveLevels.mp4','Save changes to level presets');?></span></div>
-						<button type="button" id='go_save_levels' class='go_options_button'>Save Levels</button>
+						<button type="button" id='go_save_levels' class='go_options_button'>Save <?php echo $plural_rank_name ?></button>
 					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/fixLevels.mp4','Repair errors caused by improper level settings');?></span></div>
-						<button type="button" id='go_fix_levels' class='go_options_button'>Fix Levels</button>
+						<button type="button" id='go_fix_levels' class='go_options_button'>Fix <?php echo $plural_rank_name ?></button>
 					</div>
 				</div>
 			 <div class='go_options_accordion_wrap' opt='4'><?php go_options_accordion_help('http://maclab.guhsd.net/go/video/options/seatingChart.mp4', 'Customize user info to suit your needs');?><div class='go_options_accordion'><?php echo go_return_options('go_organization_name'); ?><div class='go_triangle_container'><div class='go_options_triangle'></div></div></div></div>
@@ -370,8 +382,17 @@ function add_game_on_options() {
 
 }
 
-function go_reset_levels() {
-	$rank_prefix = 'Level ';
+function go_options_save_levels() {
+	$rank_name = get_option('go_level_names');
+	echo $rank_name;
+	die();
+}
+
+function go_reset_levels(){
+	$rank_prefix = get_option('go_level_names');
+	if (empty($rank_prefix)) {
+		$rank_prefix = 'Level';
+	}
 	$ranks = array(
 		'name' => array(
 			
@@ -383,11 +404,11 @@ function go_reset_levels() {
 			
 		)
 	);
-	for ($i = 1; $i <= 20; $i++) {
-		if ($i <10) {
-			$ranks['name'][] = "{$rank_prefix}0{$i}";
-		} else {
-			$ranks['name'][] = "{$rank_prefix}{$i}";
+	for($i = 1; $i <= 20; $i++){
+		if($i <10){
+			$ranks['name'][] = "{$rank_prefix} 0{$i}";
+		}else{
+			$ranks['name'][] = "{$rank_prefix} {$i}";
 		}
 		if ($i == 1) {
 			$ranks['points'][0] = 0;
