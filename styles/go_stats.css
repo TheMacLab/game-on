@@ -147,7 +147,7 @@
 
 /** Task Styles **/
 
-#go_stats_tasks_list_left{
+#go_stats_tasks_list{
 	list-style-type: none;
 	height: 100%;
 	position: relative;
@@ -156,7 +156,7 @@
 	display: inline-block;
 	width: 100%;
 	margin: 0px 3.6% 0px 0px;
-	overflow: scroll;
+	overflow-y: auto;
 }
 
 .go_stats_tasks_list_admin{
@@ -166,17 +166,27 @@
 	width: 100% !important;	
 }
 
-#go_stats_tasks_list_left:last-child{
+#go_stats_tasks_list:last-child{
 	border-bottom: 1px solid #BBB;
 }
 
 .go_stats_task{
 	margin: 4px 0px 4px 0px;
 	border-top: 1px solid #BBB;
+	overflow: hidden;
+}
+
+.go_stats_task_list_name{
+	display: inline-block;
+	width: 25%;
+	white-space: pre-line;
 }
 
 .go_stats_task_status_wrap{
-	float: right;	
+	float: right;
+	position: relative;
+	width: 30%;
+	display: inline-block;
 }
 
 .go_stats_task_status{
@@ -184,12 +194,11 @@
 	color: #FFF;
 	display: inline-block;
 	float: right;
-	width: 60px;
+	width: 18%;
 	background-color: #DDD;
 	height: 14px;
 	margin: 4px 0px 2px 4px;
 	line-height: 14px;
-	vertical-algin: middle;
 }
 
 .go_stats_task_admin_submit{
@@ -200,7 +209,6 @@
 	width: 15px !important;
 	background-color: silver !important;
 	padding: 2px 6px 3px 6px !important;
-	 
 }
 
 .go_stats_task_admin_message{
@@ -297,7 +305,7 @@
 	display: inline-block;
 	float: right;
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 #go_stats_leaderboard_classes{

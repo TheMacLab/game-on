@@ -35,36 +35,32 @@ if($class_a){
     
     <div id="go_clipboard_add">
     <?php go_options_help('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'SAMPLE TEXT'); ?>
-<label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" /> 
-<label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" />
-<label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" />
-<label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" />
-<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge"/>
-<label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px; margin-right: 5px;"> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
+	<label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
+	<label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
+	<label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
+	<label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
+	<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/>
+	<label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px; margin-right: 5px;"> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
 
-    
-    <table  id="go_clipboard_table" class="pretty" >
-    <thead>
-    <tr><th><input type="checkbox" onClick="toggle(this);" /></th>
-     <th class="header" style="width:6%;"><a href="#" >ID</a></th>
- <th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
- <th class="header" style="width:10%;"><a href="#" >Name</a></th>
-<th class="header" style="width:10%;"><a href="#" >Gamertag</a></th>
-<th class="header" style="width:8%;"><a href="#" >Rank</a></th>
-<?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
-<th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
-<th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
-<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
-<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
-<th class="header" style="width:5%;" align="center"><a href="#">Badge Count</a></th>
-<th class="header" style="width:9%;"><a href="#"><?php echo go_return_options('go_first_stage_name'); ?></a></th> 
-<th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_second_stage_name'); ?></a></th> 
-<th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_third_stage_name'); ?></a></th>  
-<th class="header" style="width:14%;"><a href="#"><?php echo go_return_options('go_fourth_stage_name'); ?></a></th> </tr></thead>
-<tbody id="go_clipboard_table_body"></tbody>
-    
-    
-    </table>
+	<table  id="go_clipboard_table" class="pretty" >
+		<thead>
+			<tr>
+				<th><input type="checkbox" onClick="go_toggle(this);" /></th>
+				<th class="header" style="width:6%;"><a href="#" >ID</a></th>
+				<th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
+				<th class="header" style="width:10%;"><a href="#" >Name</a></th>
+				<th class="header" style="width:10%;"><a href="#" >Gamertag</a></th>
+				<th class="header" style="width:8%;"><a href="#" >Rank</a></th>
+				<?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
+				<th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
+				<th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
+				<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
+				<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
+				<th class="header" style="width:5%;" align="center"><a href="#">Badge Count</a></th>
+			</tr>
+		</thead>
+	<tbody id="go_clipboard_table_body"></tbody>
+	</table>
     </div>
     
      </div>
@@ -150,10 +146,6 @@ function go_clipboard_intable(){
 					$badge_count = go_return_badge_count($value);
 					go_get_rank($value);
 					global $current_rank;
-					$first_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 1");
-					$second_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 2");
-					$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
-					$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
 					
 					echo "<tr id='user_{$value}'>
 							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'/></td>
@@ -168,10 +160,6 @@ function go_clipboard_intable(){
 							<td class='user_bonus_currency'>{$bonus_currency}</td>
 							<td class='user_penalty'>{$penalty}</td>
 							<td class='user_badge_count'>{$badge_count}</td>
-							<td>{$first_stage}</td>
-							<td>{$second_stage}</td>
-							<td>{$third_stage}</td>
-							<td>{$fourth_stage}</td>
 						  </tr>";
 				}
 			}

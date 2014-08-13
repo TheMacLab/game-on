@@ -1,37 +1,35 @@
 #go_clipboard_table_wrapper{
 	overflow-x: auto;
 }
-#go_clipboard_table tr:hover td{
-	font-size: 14px;
-	height:20px;
-	background-color:#e6e6e6;
-}
-#go_clipboard_table tr:hover th{
-	font-size: 12px;
-}
+
 .widefat th{
 	border-right:grey dashed thin;
 	font-size:9px;
 }
+
 .widefat td{
 	border-right:grey dashed thin;
 	font-size:9px;
 }
+
 table.sortable tbody {
     counter-reset: sortabletablescope;
 }
+
 table.sortable thead tr::before {
     content: "";
     display: table-cell;
 }
+
 table.sortable tbody tr::before {
     content: counter(sortabletablescope);
     counter-increment: sortabletablescope;
     display: table-cell;
 }
-#go_clipboard_add input{
+
+.go_clipboard_add{
 	width:75px;
-	height:10px;	
+	height:20px;	
 }
 
 #go_clipboard_add{
@@ -157,7 +155,7 @@ table.pretty tbody td {
 	text-align: center;
 	background: #d5eaf0;
 }
-		
+
 table.pretty tbody tr.odd td { 
 	background: #bcd9e1;
 }
@@ -173,7 +171,6 @@ table.pretty tfoot td {
 	text-align: center;
 	font-weight: bold;
 }
-
 
 /*
  * Pagination
@@ -196,9 +193,11 @@ a.paginate_active {
 a.paginate_button_disabled {
 	color: #3d6672;
 }
+
 .paging_full_numbers a:active {
 	outline: none
 }
+
 .paging_full_numbers a:hover {
 	text-decoration: none;
 }
@@ -207,7 +206,6 @@ div.dataTables_paginate span>a {
 	width: 15px;
 	text-align: center;
 }
-
 
 /*
  * Sorting
@@ -223,6 +221,7 @@ table.pretty thead th.sorting_desc {
 table.pretty thead th.sorting {
 	background: #66A9BD url('images/sort_both.png') no-repeat right center;
 }
+
 .container {
 	box-sizing: border-box;
 	width: 80%;
@@ -242,16 +241,19 @@ table.pretty thead th.sorting {
 	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
+
 #placeholder .button {
-		position: absolute;
-		cursor: pointer;
-	}
-#placeholder div.button {
-		font-size: smaller;
-		color: #999;
-		background-color: #eee;
-		padding: 2px;
+	position: absolute;
+	cursor: pointer;
 }
+
+#placeholder div.button {
+	font-size: smaller;
+	color: #999;
+	background-color: #eee;
+	padding: 2px;
+}
+
 #choices {
 	width: 10.416666666%;
 	height:450px;
@@ -272,40 +274,39 @@ table.pretty thead th.sorting {
 	position: relative;
 	left: 10%;
 }
+
 .go_select_all{
 	display: none;	
 }
 
 .highlight_box{
-height: 10px;
-width: 50px;
-font-size: 8px;
-padding: .2px .2px .2px .2px;
-border: thin grey solid;
-color: grey;
-padding-top: 3px;
-	}
+	height: 10px;
+	width: 50px;
+	font-size: 8px;
+	padding: .2px .2px .2px .2px;
+	border: thin grey solid;
+	color: grey;
+	padding-top: 3px;
+}
+
 .highlight_box:hover{
-height: 10px;
-width: 50px;
-font-size: 8px;
-padding: .2px .2px .2px .2px;
-border: thin grey solid;
-color: white;
-padding-top: 3px;
-background-color:grey;
-	}
+	height: 10px;
+	width: 50px;
+	font-size: 8px;
+	padding: .2px .2px .2px .2px;
+	border: thin grey solid;
+	color: white;
+	padding-top: 3px;
+	background-color:grey;
+}
+
 .highlight_box_clicked{
-height: 10px;
-width: 50px;
-font-size: 8px;
-padding: .2px .2px .2px .2px;
-border: thin grey solid;
-color: white;
-padding-top: 3px;
-background-color:grey;
-	}
-	
-#go_clipboard_add input{
-	height:20px;	
+	height: 10px;
+	width: 50px;
+	font-size: 8px;
+	padding: .2px .2px .2px .2px;
+	border: thin grey solid;
+	color: white;
+	padding-top: 3px;
+	background-color:grey;
 }

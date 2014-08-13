@@ -48,6 +48,7 @@ input[type="submit"]{
 	text-decoration: none;
 	font-weight: normal !important;
 	font-size: 14px !important;
+	position: relative;
 }
 
 .go_options_help_link:hover:after {
@@ -57,8 +58,8 @@ input[type="submit"]{
 	padding: 0 5px 0 5px;
 	background-color: #CCC;
 	font-size: 14px;
-	margin-bottom: 40px;
-	margin-left: 0px;
+	left: 20px; 
+	bottom: 0px;
 	border-radius: 5px;
 	z-index: 99;
 	color: black;

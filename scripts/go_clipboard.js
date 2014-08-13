@@ -5,7 +5,7 @@ jQuery(document).ready( function () {
 	} );
 	go_update_graph();
 });
-function toggle(source) {
+function go_toggle(source) {
   checkboxes = document.getElementsByName('go_selected');
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = source.checked;
@@ -42,7 +42,7 @@ function go_graphs(datasets){
 			if(jQuery('#go_selection').val() == 0){
 				var bonus_currency = bonus_currency_limit.limit.split(',');
 				var markings = [
-					{ color: "rgba(255,228,0,.4)", yaxis: {from :bonus_currency[2], to: bonus_currency[3] } },
+					{ color: "rgba(255,228,0,.4)", yaxis: {from: bonus_currency[2], to: bonus_currency[3] } },
 					{ color: "rgba(255,103,0,.4)", yaxis: {from: bonus_currency[1], to: bonus_currency[2] } },
 					{ color: "rgba(204,0,0,.4)", yaxis: {from: bonus_currency[0], to: bonus_currency[1] } },
 					{ color: "rgba(70,70,70,.8)", yaxis: {to: bonus_currency[0] } },
