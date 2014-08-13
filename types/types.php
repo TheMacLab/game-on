@@ -384,6 +384,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'Private'.go_task_opt_help('mastery_privacy', '', 'http://maclab.guhsd.net/go/video/quests/masteryPrivacy.mp4'),
+				'id' => "{$prefix}mastery_privacy",
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
 				'id' => 'stage_four_shortcode_list',
 				'type' => 'go_shortcode_list'
@@ -438,6 +443,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
 				'name' => 'Upload'.go_task_opt_help('repeat_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'repeat_upload',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Private'.go_task_opt_help('repeat_privacy', '', 'http://maclab.guhsd.net/go/video/quests/repeatPrivacy.mp4'),
+				'id' => "{$prefix}repeat_privacy",
 				'type' => 'checkbox'
 			),
 			array(
