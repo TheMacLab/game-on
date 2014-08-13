@@ -347,18 +347,39 @@ jQuery(document).ready(function(){
 		}
 	});
 	
-	jQuery('#go_options_form').submit(function(){
-		if(jQuery('input[name="go_focus_switch"]').is(':checked')){
-			var values = jQuery('.go_options_profession_input').map(function(){return jQuery(this).val();}).get();
+	jQuery('#go_options_form').submit(function(event){
+		if (!event.savedLevels) {
+			event.preventDefault();
 			jQuery.ajax({
-				type: "post",
+				type: 'post',
 				url: MyAjax.ajaxurl,
-				data: { 
-					action: 'go_focus_save',
-					focus_array: values
+				data: {
+					action: 'go_options_save_levels'
+				}, success: function(response) {
+					var rank_name = response;
+					jQuery('.go_options_level_names_input').each(function(index) {
+						if (this.value.indexOf(rank_name) === -1) {
+							var num = index + 1;
+							jQuery(this).attr('value', rank_name+' '+(num < 10 ? "0"+num : num));
+						}
+					});
+					jQuery('#go_options_form').trigger({type: 'submit', savedLevels: true});
 				}
 			});
+		} else {
+			if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
+				var values = jQuery('.go_options_profession_input').map(function() {
+					return jQuery(this).val();
+				}).get();
+				jQuery.ajax({
+					type: "post",
+					url: MyAjax.ajaxurl,
+					data: { 
+						action: 'go_focus_save',
+						focus_array: values
+					}
+				});
+			}
 		}
 	});
-	
 });

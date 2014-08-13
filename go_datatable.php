@@ -70,18 +70,12 @@ function go_ranks_registration () {
 			$rank_prefix = 'Level';
 		}
 		$ranks = array(
-			'name' => array(
-				
-			),
-			'points' => array(
-			
-			),
-			'badges' => array(
-				
-			)
+			'name' => array(),
+			'points' => array(),
+			'badges' => array()
 		);
 		for($i = 1; $i <= 20; $i++){
-			if($i <10){
+			if($i < 10){
 				$ranks['name'][] = "{$rank_prefix} 0{$i}";
 			}else{
 				$ranks['name'][] = "{$rank_prefix} {$i}";

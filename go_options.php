@@ -186,15 +186,11 @@ if (is_admin()) {
 						if (!empty($ranks['name'])) {
 							$first = 1;						
 							foreach ($ranks['name'] as $key => $name) {
-								// $rank_name = get_option('go_level_names');
-								// if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s/", $name)) {
-								// 	$name_array = explode(' ', $name);
-								// 	$name = "{$rank_name} {$name_array[1]}";
-								// }
-								if (empty($name)) {
-									$rank_name = get_option('go_level_names');
-									$rank_num = ($key < 10 ? "0{$key}" : $key);
-									$name = "{$rank_name} {$rank_num}";
+								$rank_name = get_option('go_level_names');
+								if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s/", $name)) {
+									$name_array = explode(' ', $name);
+									$temp_key = $key + 1;
+									$name = "{$rank_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
 								}
 								if ($first == 1) {
 									?>
@@ -385,6 +381,12 @@ function add_game_on_options() {
     add_menu_page('Game On', 'Game On', 'manage_options', 'game-on-options.php','game_on_options', plugins_url( 'images/ico.png' , __FILE__ ), '81');  
 	add_submenu_page( 'game-on-options.php', 'Options', 'Options', 'manage_options', 'game-on-options.php', 'game_on_options');
 
+}
+
+function go_options_save_levels() {
+	$rank_name = get_option('go_level_names');
+	echo $rank_name;
+	die();
 }
 
 function go_reset_levels(){
