@@ -13,15 +13,7 @@ function go_update_ranks($user_id, $total_points){
 	global $next_rank_points;
 	global $current_points;
 	$ranks = get_option('go_ranks');
-	if (!empty($ranks)) {
-		$name_array = $ranks['name'];
-		$points_array = $ranks['points'];
-		$rank_name = get_option('go_level_names');
-		$rank_index = array_search($current_rank_points, $points_array);
-		if ($current_rank_points == $points_array[$rank_index] && $current_rank != $name_array[$rank_index]) {
-			$current_rank = $name_array[$rank_index];
-		}
-	}
+	go_return_clean_rank($user_id);
 
 	if($next_rank != ''){
 		if($total_points >= $next_rank_points){

@@ -82,17 +82,8 @@ jQuery(document).ready(function(){
 	jQuery('.go_options_preset_currency_input').appendTo('#go_options_preset_currency');
 	jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
 	
-	// jQuery('.go_options_level_names_input').appendTo('#go_options_level_names');
 	jQuery('.go_options_level_points_input').appendTo('#go_options_level_points');
 	jQuery('.go_options_level_badges_input').appendTo('#go_options_level_badges');
-	// jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
-	
-	// jQuery('.go_options_period_input').appendTo('#go_options_periods');
-	// jQuery('.go_options_period_input').last().after('<button type="button" class="go_remove_period">-</button>');
-	
-	// jQuery('.go_options_computer_input').appendTo('#go_options_computers');
-	// jQuery('.go_options_computer_input').last().after('<button type="button" class="go_remove_computer">-</button>');
-	//jQuery('#go_options_computers').css({'height': jQuery('#go_options_periods').css('height'), 'overflow':'scroll'});
 	
 	jQuery('.go_options_profession_input').appendTo('#go_options_professions');
 	if(jQuery('.go_options_profession_input').length > 1){
@@ -178,7 +169,7 @@ jQuery(document).ready(function(){
 		});
 	});
 	
-	jQuery('#go_remove_level').click(function() {
+	jQuery(document).on('click', '.go_remove_level', function() {
 		jQuery('.go_options_level_names_input').last().remove();
 		jQuery('.go_options_level_names_input_hidden').last().remove();
 		jQuery('.go_options_level_points_input').last().remove();
@@ -189,13 +180,21 @@ jQuery(document).ready(function(){
 		jQuery('.go_remove_level').remove();
 		var r_name, points = '';
 		var r_end_name = jQuery('.go_options_level_names_input').last().val();
-		var regex = /(\S)+(\s)+(\S)+/;
-		if (r_end_name.match(regex)) {
-			var r_name_array = r_end_name.split(' ');
-			var r_num = Number(r_name_array[1]) + 1;
-			name = r_name_array[0]+" "+(r_num < 10 ? "0"+r_num : r_num);
+		var name_array = r_end_name.split(' ');
+		var name_length = name_array.length;
+		if (name_length > 2) {
+			var output_str = '';
+			for (var i = 0; i < name_length; i++) {
+				var str = name_array[i];
+				if ((i + 1) < name_length && str.length > 0) {
+					output_str += str+" ";
+				}
+			}
+			var name_index = Number(name_array[name_length - 1]) + 1;
+			var name = output_str+(name_index < 10 ? "0"+name_index : name_index);
 		} else {
-			name = r_end_name;
+			var name_index = Number(name_array[1]) + 1;
+			var name = name_array[0]+" "+(name_index < 10 ? "0"+name_index : name_index);
 		}
 		
 		var r_num = jQuery('.go_options_level_points_input').length + 1;
@@ -241,7 +240,6 @@ jQuery(document).ready(function(){
 		var go_level_points = [];
 		var go_level_badges = [];
 		var levels = jQuery('.go_options_level_names_input').length;
-		console.log(levels);
 		jQuery('.go_options_level_names_input').each(function(){
 			go_level_names.push(jQuery(this).val());
 		});
@@ -285,8 +283,21 @@ jQuery(document).ready(function(){
 		jQuery('.go_remove_period').remove();
 		var last_period_name = jQuery('.go_options_period_input').last().val();
 		var name_array = last_period_name.split(' ');
-		var name_index = Number(name_array[1]) + 1;
-		var name = name_array[0]+" "+name_index;
+		var name_length = name_array.length;
+		if (name_length > 2) {
+			var output_str = '';
+			for (var i = 0; i < name_length; i++) {
+				var str = name_array[i];
+				if ((i + 1) < name_length && str.length > 0) {
+					output_str += str+" ";
+				}
+			}
+			var name_index = Number(name_array[name_length - 1]) + 1;
+			var name = output_str+name_index;
+		} else {
+			var name_index = Number(name_array[1]) + 1;
+			var name = name_array[0]+" "+name_index;
+		}
 		jQuery('#go_options_periods').append("<input type='text' class='go_options_period_input' value='"+name+"' disabled/><input type='hidden' class='go_options_period_input_hidden' name='go_class_a[]' value='"+name+"'/><button type='button' class='go_remove_period'>-</button>");
 	});
 	
@@ -299,8 +310,21 @@ jQuery(document).ready(function(){
 		jQuery('.go_remove_computer').remove();
 		var last_period_name = jQuery('.go_options_computer_input').last().val();
 		var name_array = last_period_name.split(' ');
-		var name_index = Number(name_array[1]) + 1;
-		var name = name_array[0]+" "+name_index;
+		var name_length = name_array.length;
+		if (name_length > 2) {
+			var output_str = '';
+			for (var i = 0; i < name_length; i++) {
+				var str = name_array[i];
+				if ((i + 1) < name_length && str.length > 0) {
+					output_str += str+" ";
+				}
+			}
+			var name_index = Number(name_array[name_length - 1]) + 1;
+			var name = output_str+name_index;
+		} else {
+			var name_index = Number(name_array[1]) + 1;
+			var name = name_array[0]+" "+name_index;
+		}
 		jQuery('#go_options_computers').append("<input type='text' class='go_options_computer_input' value='"+name+"' disabled/><input type='hidden' class='go_options_computer_input_hidden' name='go_class_b[]' value='"+name+"'/><button type='button' class='go_remove_computer'>-</button>");
 	});
 	

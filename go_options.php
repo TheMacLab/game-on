@@ -181,28 +181,28 @@ if (is_admin()) {
 				<div id='go_options_levels_wrap' class='go_options_wrap'>
 					<?php
 					$ranks = get_option('go_ranks',false);
+					$rank_name = get_option('go_level_names', 'Level');
 					$plural_rank_name = get_option('go_level_plural_names', 'Levels');
 					if ($ranks !== false) {
 						if (!empty($ranks['name'])) {
-							$rank_name = get_option('go_level_names');
-							if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s/", $name)) {
-								$name_array = explode(' ', $name);
-								$temp_key = $key + 1;
-								$name = "{$rank_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
-							}
 							?>
 							<div id='go_options_level_names_wrap'>
 								<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Preset Name <?php go_options_help('http://maclab.guhsd.net/go/video/options/levelName.mp4','Name your individual levels');?></span></div>
 								<div id='go_options_level_names'>
 							<?php				
 							foreach ($ranks['name'] as $key => $name) {
+								if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s+/", $name)) {
+									$name_array = explode(' ', $name);
+									$temp_key = $key + 1;
+									$name = "{$rank_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
+								}
 								?>
 									<input type='text' class='go_options_level_names_input' value='<?php echo $name; ?>' disabled/>
 									<input type='hidden' class='go_options_level_names_input_hidden' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
 								<?php
 							}
 							?>
-								<button type="button" id="go_remove_level">-</button>
+								<button type="button" class="go_remove_level">-</button>
 								</div>
 							</div>
 							<?php
@@ -277,10 +277,10 @@ if (is_admin()) {
 							<div id='go_options_periods'>
 					<?php
 					foreach ($class_a as $key => $period) {
-						if (!empty($period_name) && strpos($period, $period_name) == false && preg_match("/\s/", $period)) {
+						if (!empty($period_name) && strpos($period, $period_name) == false && preg_match("/\s+/", $period)) {
 							$name_array = explode(' ', $period);
 							$temp_key = $key + 1;
-							$period = "{$period_name} {$temp_key}";
+							$period = "{$period_name} ".$temp_key;
 						}
 						?>
 							<input type='text' class='go_options_period_input' value='<?php echo $period;?>' disabled/>
@@ -300,10 +300,10 @@ if (is_admin()) {
 							<div id='go_options_computers'>
 					<?php
 					foreach ($class_b as $key => $computer) {
-						if (!empty($computer_name) && strpos($computer, $computer_name) == false && preg_match("/\s/", $computer)) {
+						if (!empty($computer_name) && strpos($computer, $computer_name) == false && preg_match("/\s+/", $computer)) {
 							$name_array = explode(' ', $computer);
 							$temp_key = $key + 1;
-							$computer = "{$computer_name} {$temp_key}";
+							$computer = "{$computer_name} ".$temp_key;
 						}
 						?>
 							<input type='text' class='go_options_computer_input' value='<?php echo $computer?>' disabled/>
