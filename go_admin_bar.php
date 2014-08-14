@@ -19,10 +19,12 @@ function go_admin_bar(){
 	if (!empty($ranks)) {
 		$name_array = $ranks['name'];
 		$points_array = $ranks['points'];
-		$rank_name = get_option('go_level_names');
-		$rank_index = array_search($current_rank_points, $points_array);
-		if ($current_rank_points == $points_array[$rank_index] && $current_rank != $name_array[$rank_index]) {
-			$current_rank = $name_array[$rank_index];
+		if (!empty($points_array) && $name_array) {
+			$rank_name = get_option('go_level_names');
+			$rank_index = array_search($current_rank_points, $points_array);
+			if ($current_rank_points == $points_array[$rank_index] && $current_rank != $name_array[$rank_index]) {
+				$current_rank = $name_array[$rank_index];
+			}
 		}
 	}
 	$dom = ($next_rank_points - $current_rank_points);

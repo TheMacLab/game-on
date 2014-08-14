@@ -184,27 +184,28 @@ if (is_admin()) {
 					$plural_rank_name = get_option('go_level_plural_names', 'Levels');
 					if ($ranks !== false) {
 						if (!empty($ranks['name'])) {
-							$first = 1;						
-							foreach ($ranks['name'] as $key => $name) {
-								$rank_name = get_option('go_level_names');
-								if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s/", $name)) {
-									$name_array = explode(' ', $name);
-									$temp_key = $key + 1;
-									$name = "{$rank_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
-								}
-								if ($first == 1) {
-									?>
-									<div id='go_options_level_names_wrap'>
-										<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Preset Name <?php go_options_help('http://maclab.guhsd.net/go/video/options/levelName.mp4','Name your individual levels');?></span></div>
-										<div id='go_options_level_names'></div>
-									</div>
-									<?php 
-								}
-								?>
-									<input type='text' class='go_options_level_names_input' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
-								<?php
-								$first++;
+							$rank_name = get_option('go_level_names');
+							if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s/", $name)) {
+								$name_array = explode(' ', $name);
+								$temp_key = $key + 1;
+								$name = "{$rank_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
 							}
+							?>
+							<div id='go_options_level_names_wrap'>
+								<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Preset Name <?php go_options_help('http://maclab.guhsd.net/go/video/options/levelName.mp4','Name your individual levels');?></span></div>
+								<div id='go_options_level_names'>
+							<?php				
+							foreach ($ranks['name'] as $key => $name) {
+								?>
+									<input type='text' class='go_options_level_names_input' value='<?php echo $name; ?>' disabled/>
+									<input type='hidden' class='go_options_level_names_input_hidden' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
+								<?php
+							}
+							?>
+								<button type="button" id="go_remove_level">-</button>
+								</div>
+							</div>
+							<?php
 						}
 						if (!empty($ranks['points'])) {
 							$first = 1;
@@ -267,44 +268,52 @@ if (is_admin()) {
 				<div id='go_options_seating_chart_wrap' class='go_options_wrap'>
 					<?php
 					$class_a = get_option('go_class_a');
+					$period_name = get_option('go_class_a_name');
 					$class_b = get_option('go_class_b');
-					$first = 1;
-					foreach($class_a as $period){
-						if($first == 1){
-						?>
-						<div id='go_options_periods_wrap'>
-							<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo go_return_options('go_class_a_name'); go_options_help('http://maclab.guhsd.net/go/video/options/periods.mp4','Name the first sorting method');?></span></div>							
-							<div id='go_options_periods'></div>
-						</div>
-						<?php
+					$computer_name = get_option('go_class_b_name');
+					?>
+					<div id='go_options_periods_wrap'>
+							<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo $period_name; go_options_help('http://maclab.guhsd.net/go/video/options/periods.mp4','Name the first sorting method');?></span></div>							
+							<div id='go_options_periods'>
+					<?php
+					foreach ($class_a as $key => $period) {
+						if (!empty($period_name) && strpos($period, $period_name) == false && preg_match("/\s/", $period)) {
+							$name_array = explode(' ', $period);
+							$temp_key = $key + 1;
+							$period = "{$period_name} {$temp_key}";
 						}
 						?>
-							<input type='text' class='go_options_period_input' name='go_class_a[]' value='<?php echo $period;?>'/>
+							<input type='text' class='go_options_period_input' value='<?php echo $period;?>' disabled/>
+							<input type='hidden' class='go_options_period_input_hidden' name='go_class_a[]' value='<?php echo $period;?>'/>
 						<?php
-						$first++;
 					}
 					?>
+						<button type="button" class="go_remove_period">-</button>
+						</div>
+					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/addPeriod.mp4','Add or subtract first sorting settings');?></span></div>
 						<button type="button"  class='go_add_period'>+</button>
 					</div>
+					<div id='go_options_computers_wrap'>
+							<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo $computer_name; go_options_help('http://maclab.guhsd.net/go/video/options/computers.mp4','Name the second sorting method');?></span></div>
+							<div id='go_options_computers'>
 					<?php
-					$first = 1;
-					foreach($class_b as $computer){
-						if($first == 1){
-						?>
-						<div id='go_options_computers_wrap'>
-							<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo go_return_options('go_class_b_name'); go_options_help('http://maclab.guhsd.net/go/video/options/computers.mp4','Name the second sorting method');?></span></div>
-							<div id='go_options_computers'></div>
-						</div>
-						<?php
+					foreach ($class_b as $key => $computer) {
+						if (!empty($computer_name) && strpos($computer, $computer_name) == false && preg_match("/\s/", $computer)) {
+							$name_array = explode(' ', $computer);
+							$temp_key = $key + 1;
+							$computer = "{$computer_name} {$temp_key}";
 						}
 						?>
-							<input type='text' class='go_options_computer_input' name='go_class_b[]'value='<?php echo $computer?>'/>
+							<input type='text' class='go_options_computer_input' value='<?php echo $computer?>' disabled/>
+							<input type='hidden' class='go_options_computer_input_hidden' name='go_class_b[]' value='<?php echo $computer?>'/>
 						<?php
-						$first++;
 					}
 					?>
+						<button type="button" class="go_remove_computer">-</button>
+						</div>
+					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/addComputer.mp4','Add or subtract second sorting settings');?></span></div>
 						<button type="button" class='go_add_computer'>+</button>
@@ -348,8 +357,8 @@ if (is_admin()) {
 					go_options_field('Video Default', 2, array(1 => 'go_video_width', 2 => 'go_video_height'), 'http://maclab.guhsd.net/go/video/options/videoDefault.mp4', 'Set your default video size');
 					go_options_input('Store Receipts', 'checkbox', 'go_store_receipt_switch', 'http://maclab.guhsd.net/go/video/options/storeReceipt.mp4', 'Receive email notification for each store purchase (off by default)');
 					go_options_input('Full Student Name', 'checkbox', 'go_full_student_name_switch', 'http://maclab.guhsd.net/go/video/options/fullStudentName.mp4', 'Display only first name and last initial (default)');
-					go_options_input('Multiplier', 'checkbox', 'go_multiplier_switch', 'http://maclab.guhsd.net/go/video/options/multiplier.mp4', 'Enable bonus mechanism to boost rewards');
-					go_options_input('Multiplier Threshold', 'text', 'go_multiplier_threshold', 'http://maclab.guhsd.net/go/video/options/multiplierThreshold.mp4', 'Number of bonus points required to boost rewards');
+					go_options_input(get_option('go_bonus_currency_name', 'Bonus'), 'checkbox', 'go_multiplier_switch', 'http://maclab.guhsd.net/go/video/options/multiplier.mp4', 'Enable bonus mechanism to boost rewards');
+					go_options_input(get_option('go_bonus_currency_name', 'Bonus').' Threshold', 'text', 'go_multiplier_threshold', 'http://maclab.guhsd.net/go/video/options/multiplierThreshold.mp4', 'Number of bonus points required to boost rewards');
 					go_options_input(go_return_options('go_penalty_name'), 'checkbox', 'go_penalty_switch', 'http://maclab.guhsd.net/go/video/options/penalty2.mp4', 'Enable penalty mechanism to reduce rewards');
 					go_options_input(go_return_options('go_penalty_name').' Threshold', 'text', 'go_penalty_threshold', 'http://maclab.guhsd.net/go/video/options/penaltyThreshold.mp4', 'Number of penalty points required to reduce rewards');
 					go_options_input('Multiplier %', 'text', 'go_multiplier_percentage', 'http://maclab.guhsd.net/go/video/options/multiplierPercentage.mp4', 'Percentage of rewards awarded or deducted at each threshold');
@@ -381,12 +390,6 @@ function add_game_on_options() {
     add_menu_page('Game On', 'Game On', 'manage_options', 'game-on-options.php','game_on_options', plugins_url( 'images/ico.png' , __FILE__ ), '81');  
 	add_submenu_page( 'game-on-options.php', 'Options', 'Options', 'manage_options', 'game-on-options.php', 'game_on_options');
 
-}
-
-function go_options_save_levels() {
-	$rank_name = get_option('go_level_names');
-	echo $rank_name;
-	die();
 }
 
 function go_reset_levels(){
