@@ -203,7 +203,19 @@ function go_task_shortcode($atts, $content = null) {
 			$admin = get_user_by('email', $go_admin_email);
 			$admin_name = $admin->display_name;
 		}
+		$is_admin = false;
+		$user_obj = get_user_by('id', $user_ID);
+		$user_roles = $user_obj->roles;
+		if (!empty($user_roles)) {
+			foreach ($user_roles as $role) {
+				if ($role === "administrator") {
+					$is_admin = true;
+					break;
+				}
+			}
+		}
 		
+
 		$content_post = get_post($id); // Grabs content of a task from the post table in your wordpress database where post_id = id in the shortcode. 
 		$task_content = $content_post->post_content; // Grabs what the task actually says in the body of it
 		
@@ -419,7 +431,7 @@ function go_task_shortcode($atts, $content = null) {
 			}
 		
 		}
-		if ($go_ahead || !isset($focus_category_lock) || empty($category_names)){
+		if ($is_admin === true || $go_ahead || !isset($focus_category_lock) || empty($category_names)){
 			if (($current_bonus_currency >= $bonus_currency_required && !empty($bonus_currency_required)) || ($current_penalty < $penalty_filter && !empty($penalty_filter)) || (empty($bonus_currency_required) && empty($penalty_filter))) {
 				switch ($status) {
 					
@@ -707,7 +719,9 @@ function go_task_shortcode($atts, $content = null) {
 			}
 		} else{ // If user can't access quest because they aren't part of the specialty, echo this
 			$category_name = implode(',',$category_names);
-			echo 'This task is only available to '.$category_name;
+			$focus_name = get_option('go_focus_name', 'Profession');
+			$task_name = strtolower(get_option('go_tasks_name', 'Quest'));
+			echo "This {$task_name} is only available to the \"{$category_name}\" {$focus_name}.";
 		}
 
 		if ($test_e_active && $test_e_returns) {
