@@ -370,11 +370,27 @@ function go_return_multiplier($user_id, $points, $currency, $bonuses, $penalties
 		} else {
 			$mod = $multiplier * $diff;
 			if ($mod > 0) {
-				$modded_points = round($points + ($points * $mod));
-				$modded_currency = round($currency + ($currency * $mod));
+				if ($points < 0) {
+					$modded_points = floor($points + ($points * $mod));
+				} else {
+					$modded_points = ceil($points + ($points * $mod));
+				}
+				if ($currency < 0) {
+					$modded_currency = floor($currency + ($currency * $mod));
+				} else {
+					$modded_currency = ceil($currency + ($currency * $mod));
+				}
 			} else if ($mod < 0) {
-				$modded_points = round($points + ($points * $mod));
-				$modded_currency = round($currency + ($currency * $mod));
+				if ($points < 0) {
+					$modded_points = ceil($points + ($points * $mod));
+				} else {
+					$modded_points = floor($points + ($points * $mod));
+				}
+				if ($currency < 0) {
+					$modded_currency = ceil($currency + ($currency * $mod));
+				} else {
+					$modded_currency = floor($currency + ($currency * $mod));
+				}
 			}
 			if ($return_mod === false) {
 				return (array($modded_points, $modded_currency));
