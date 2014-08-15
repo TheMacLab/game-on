@@ -162,7 +162,6 @@ function go_lb_opener(id) {
 	if(jQuery('#go_stats_page_black_bg').css('display') == 'none'){
 		jQuery('#fade').css('display', 'block');
 	}
-	jQuery('#light').css('z-index', 9000);
 	if( !jQuery.trim( jQuery('#lb-content').html() ).length ) {
 	var get_id = id;
 	var gotoSend = {

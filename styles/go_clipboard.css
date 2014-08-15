@@ -4,7 +4,7 @@
 
 .widefat th{
 	border-right:grey dashed thin;
-	font-size:9px;
+	font-size: 9px;
 }
 
 .widefat td{
@@ -28,7 +28,7 @@ table.sortable tbody tr::before {
 }
 
 .go_clipboard_add{
-	width:75px;
+	width:100px;
 	height:20px;	
 }
 
@@ -80,7 +80,7 @@ h1 {
  * DataTables framework
  */
 div.dataTables_wrapper {
-	background-color: #719ba7;
+	background-color: #FFF;
 }
 
 div.dataTables_length {
@@ -142,32 +142,32 @@ table.pretty th {
 /* Header cells */
 table.pretty thead th {
 	text-align: center;
-	background: #66a9bd;
+	background: #F4F4F4;
 }
 
 /* Body cells */
 table.pretty tbody th {
 	text-align: left;
-	background: #91c5d4;
+	background: #F4F4F4;
 }
 	
 table.pretty tbody td {
 	text-align: center;
-	background: #d5eaf0;
+	background: #F4F4F4;
 }
 
 table.pretty tbody tr.odd td { 
-	background: #bcd9e1;
+	background: #F4F4F4;
 }
 
 /* Footer cells */	
 table.pretty tfoot th {
-	background: #b0cc7f;
+	background: #F4F4F4;
 	text-align: left;
 }
 	
 table.pretty tfoot td {
-	background: #d7e1c5;
+	background: #F4F4F4;
 	text-align: center;
 	font-weight: bold;
 }
@@ -211,15 +211,15 @@ div.dataTables_paginate span>a {
  * Sorting
  */
 table.pretty thead th.sorting_asc {
-	background: #66A9BD url('images/sort_asc.png') no-repeat right center;
+	background: #E2E2E2 url('images/sort_asc.png') no-repeat right center;
 }
 
 table.pretty thead th.sorting_desc {
-	background: #66A9BD url('images/sort_desc.png') no-repeat right center;
+	background: #F4F4F4 url('images/sort_desc.png') no-repeat right center;
 }
 
 table.pretty thead th.sorting {
-	background: #66A9BD url('images/sort_both.png') no-repeat right center;
+	background: #E2E2E2 url('images/sort_both.png') no-repeat right center;
 }
 
 .container {
@@ -275,7 +275,7 @@ table.pretty thead th.sorting {
 	left: 10%;
 }
 
-.go_select_all{
+.go_#F4F4F4_all{
 	display: none;	
 }
 
@@ -309,4 +309,14 @@ table.pretty thead th.sorting {
 	color: white;
 	padding-top: 3px;
 	background-color:grey;
+}
+
+.go_alternate td{
+	background-color: #E2E2E2 !important; 	
+}
+
+.go_focus{
+	margin: 0px;
+	height: 19px !important;
+	font-size: 12px !important;
 }

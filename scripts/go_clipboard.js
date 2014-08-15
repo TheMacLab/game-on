@@ -2,22 +2,22 @@ jQuery(document).ready( function () {
 	jQuery('#records_tabs').tabs();
   	jQuery('#go_clipboard_table').dataTable( {
 		"bPaginate": false 
-	} );
+	});
 	go_update_graph();
 });
-function go_toggle(source) {
-  checkboxes = document.getElementsByName('go_selected');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
+function go_toggle (source){
+	checkboxes = jQuery('.go_selected');
+	for(var i=0, n=checkboxes.length;i<n;i++) {
+		checkboxes[i].checked = source.checked;
+	}
 }
-function analysis_toggle(source) {
-  checkboxes = jQuery('#choices input');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
+function analysis_toggle (source){
+	checkboxes = jQuery('#choices input');
+	for (var i=0, n=checkboxes.length; i<n; i++) {
+		checkboxes[i].checked = source.checked;
+	}
 }
-function go_graphs(datasets){
+function go_graphs (datasets){
 	// hard-code color indices to prevent them from shifting as
 	// countries are turned on/off
 	jQuery('#placeholder').empty();

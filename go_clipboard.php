@@ -39,24 +39,29 @@ if($class_a){
 	<label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
 	<label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
 	<label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
-	<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/>
-	<label name="go_clipboard_reason"><br /><div style="width:17px; display:inline-table;margin-top: 4px; margin-right: 5px;"> Message: </label> <textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button><button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button></div>
+	<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br />
+	<label name="go_clipboard_reason">Message: </label>
+    <div>
+    	<textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><br/>
+        <button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button>
+        <button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button>
+	</div>
 
 	<table  id="go_clipboard_table" class="pretty" >
 		<thead>
 			<tr>
 				<th><input type="checkbox" onClick="go_toggle(this);" /></th>
-				<th class="header" style="width:6%;"><a href="#" >ID</a></th>
-				<th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
-				<th class="header" style="width:10%;"><a href="#" >Name</a></th>
-				<th class="header" style="width:10%;"><a href="#" >Gamertag</a></th>
-				<th class="header" style="width:8%;"><a href="#" >Rank</a></th>
-				<?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header" style="width:8%;"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
-				<th class="header" style="width:5%;" align="center"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
-				<th class="header" style="width:6%;"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
-				<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
-				<th class="header" style="width:8%;"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
-				<th class="header" style="width:5%;" align="center"><a href="#">Badge Count</a></th>
+				<th class="header"><a href="#" >ID</a></th>
+				<th class="header"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
+				<th class="header"><a href="#" >Name</a></th>
+				<th class="header"><a href="#" >Gamertag</a></th>
+				<th class="header"><a href="#" >Rank</a></th>
+				<?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
+				<th class="header"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
+				<th class="header"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
+				<th class="header"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
+				<th class="header"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
+				<th class="header"><a href="#">Badge Count</a></th>
 			</tr>
 		</thead>
 	<tbody id="go_clipboard_table_body"></tbody>
@@ -121,6 +126,7 @@ function go_clipboard_intable(){
 	FROM {$table_name_user_meta}
 	WHERE meta_key =  '{$wpdb->prefix}capabilities'
 	AND meta_value LIKE  '%subscriber%'");
+	$num = 1;
 	foreach($uid as $id){
 		foreach($id as $value){
 			$class_a = get_user_meta($value, 'go_classifications',true);
@@ -147,15 +153,15 @@ function go_clipboard_intable(){
 					go_get_rank($value);
 					global $current_rank;
 					
-					echo "<tr id='user_{$value}'>
+					echo "<tr id='user_{$value}' ".(($num%2 == 0)?"class='go_alternate'":"").">
 							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'/></td>
 							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$value}&quot;);'>{$user_login}</a></td>
 							<td>{$class_a[$class_a_choice]}</td>
 							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
 							<td>{$user_display}</td>
 							<td>{$current_rank}</td>
-							<td><select id='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>".(empty($user_focuses) || $user_focuses == "No {$focus_name}" ? "<option value='No {$focus_name}' selected>No {$focus_name}</option>" : "")."{$focuses_list}</select></td>
-							<td class='user_points'>{$points}</td>
+							".((go_return_options('go_focus_switch') == 'On')?"<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>".(empty($user_focuses) || $user_focuses == "No {$focus_name}" ? "<option value='No {$focus_name}' selected>No {$focus_name}</option>" : "")."{$focuses_list}</select></td>":"").
+							"<td class='user_points'>{$points}</td>
 							<td class='user_currency'>{$currency}</td>
 							<td class='user_bonus_currency'>{$bonus_currency}</td>
 							<td class='user_penalty'>{$penalty}</td>
@@ -164,6 +170,7 @@ function go_clipboard_intable(){
 				}
 			}
 		}
+		$num++;
 	}
 	die();
 }

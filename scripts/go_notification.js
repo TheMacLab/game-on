@@ -19,9 +19,9 @@ function go_notification (timer, el) {
 		var current_index = parseInt(jQuery(this).css("z-index"), 10);
 		if(current_index > highest_index){
 			highest_index = current_index;
-			jQuery(".go_notification").css("z-index", highest_index);
 		}
 	});
+	jQuery(".go_notification").css("z-index", highest_index + 1, 'important');
 	// Fades the notifaction(s) out after being visible for 1.5 seconds
 	
 	if (el) {
@@ -33,4 +33,5 @@ function go_notification (timer, el) {
 			jQuery(".go_notification").not('#go_notification_level, #go_notification_badges').fadeOut("slow");
 		},timer)
 	}
+	
 }

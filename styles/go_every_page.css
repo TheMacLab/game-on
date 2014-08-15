@@ -11,7 +11,7 @@
 	border-radius: 8px;
 	background: #111111;
 	opacity: .9;
-	z-index: 10000;
+	z-index: 9999999;
 }
 
 .go_message_container {
@@ -565,4 +565,8 @@ input#go_pass_lock:-moz-placeholder {
 	background-color: white;
 	z-index: 999999;
 	padding: 10px 10px 10px 10px;
+}
+
+input[name="go_admin_bar_submit"]{
+	height: 40px !important;	
 }
