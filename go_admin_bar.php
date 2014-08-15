@@ -15,16 +15,24 @@ function go_admin_bar(){
 	global $current_rank;
 	global $next_rank_points;
 	global $current_rank_points;
-	$dom = ($next_rank_points-$current_rank_points);
+	$ranks = get_option('go_ranks');
+	if (!empty($ranks)) {
+		$name_array = $ranks['name'];
+		$points_array = $ranks['points'];
+		$rank_name = get_option('go_level_names');
+		$rank_index = array_search($current_rank_points, $points_array);
+		if ($current_rank_points == $points_array[$rank_index] && $current_rank != $name_array[$rank_index]) {
+			$current_rank = $name_array[$rank_index];
+		}
+	}
+	$dom = ($next_rank_points - $current_rank_points);
 	$rng = ($current_points - $current_rank_points);
 	$current_bonus_currency = go_return_bonus_currency(get_current_user_id());
 	$current_penalty = go_return_penalty(get_current_user_id());
 	if($dom <= 0){
 		$dom = 1;
 	}
-	if($dom <= $rng){
-		go_update_ranks($current_user_id, $current_points);
-	}
+	go_update_ranks($current_user_id, $current_points);
 	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	

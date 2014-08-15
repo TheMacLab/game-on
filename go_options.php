@@ -181,55 +181,67 @@ if (is_admin()) {
 				<div id='go_options_levels_wrap' class='go_options_wrap'>
 					<?php
 					$ranks = get_option('go_ranks',false);
-					if ($ranks) {
-						$first = 1;
-						foreach ($ranks['name'] as $key => $name) {
-							if ($first == 1) {
+					$plural_rank_name = get_option('go_level_plural_names', 'Levels');
+					if ($ranks !== false) {
+						if (!empty($ranks['name'])) {
+							$first = 1;						
+							foreach ($ranks['name'] as $key => $name) {
+								$rank_name = get_option('go_level_names');
+								if (!empty($rank_name) && strpos($name, $rank_name) == false && preg_match("/\s/", $name)) {
+									$name_array = explode(' ', $name);
+									$temp_key = $key + 1;
+									$name = "{$rank_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
+								}
+								if ($first == 1) {
+									?>
+									<div id='go_options_level_names_wrap'>
+										<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Preset Name <?php go_options_help('http://maclab.guhsd.net/go/video/options/levelName.mp4','Name your individual levels');?></span></div>
+										<div id='go_options_level_names'></div>
+									</div>
+									<?php 
+								}
 								?>
-								<div id='go_options_level_names_wrap'>
-									<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Preset Name <?php go_options_help('http://maclab.guhsd.net/go/video/options/levelName.mp4','Name your individual levels');?></span></div>
-									<div id='go_options_level_names'></div>
+									<input type='text' class='go_options_level_names_input' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
+								<?php
+								$first++;
+							}
+						}
+						if (!empty($ranks['points'])) {
+							$first = 1;
+							foreach ($ranks['points'] as $key => $points) {
+								if ($first == 1) {
+									?>
+									<div id='go_options_level_points_wrap'>
+										<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo get_option('go_points_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelPoints.mp4','Establish thresholds for each level. IMPORTANT: The first level must be set to 0 (zero)');?></span></div>
+										<div id='go_options_level_points'></div>
+									</div>
+									<?php 
+								}
+								
+									?>
+										<input type='text' class='go_options_level_points_input' name='go_ranks[points][<?php echo $key;?>]' value='<?php echo $points; ?>'/>
+									<?php 
+								
+								$first++;
+							}
+						}
+						if (!empty($ranks['badges'])) {
+							$first = 1;
+							foreach ($ranks['badges'] as $key => $badge) {
+								if ($first == 1) {
+								?>
+								<div id='go_options_level_badges_wrap'>
+									<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo go_return_options('go_badges_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelBadges.mp4','Award badges when players reach certain levels');?></span></div>
+									<div id='go_options_level_badges'></div>
 								</div>
 								<?php 
-							}
-							?>
-								<input type='text' class='go_options_level_names_input' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
-							<?php
-							$first++;
-						}
-						$first = 1;
-						foreach ($ranks['points'] as $key => $points) {
-							if ($first == 1) {
+								}
+								
 								?>
-								<div id='go_options_level_points_wrap'>
-									<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo get_option('go_points_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelPoints.mp4','Establish thresholds for each level. IMPORTANT: The first level must be set to 0 (zero)');?></span></div>
-									<div id='go_options_level_points'></div>
-								</div>
+									<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][<?php echo $key;?>]' value='<?php echo $badge; ?>'/>
 								<?php 
+								$first++;
 							}
-							
-								?>
-									<input type='text' class='go_options_level_points_input' name='go_ranks[points][<?php echo $key;?>]' value='<?php echo $points; ?>'/>
-								<?php 
-							
-							$first++;
-						}
-						$first = 1;
-						foreach ($ranks['badges'] as $key => $badge) {
-							if ($first == 1) {
-							?>
-							<div id='go_options_level_badges_wrap'>
-								<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo go_return_options('go_badges_name'); go_options_help('http://maclab.guhsd.net/go/video/options/levelBadges.mp4','Award badges when players reach certain levels');?></span></div>
-								<div id='go_options_level_badges'></div>
-							</div>
-							<?php 
-							}
-							
-							?>
-								<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][<?php echo $key;?>]' value='<?php echo $badge; ?>'/>
-							<?php 
-							
-							$first++;
 						}
 					}
 					?>
@@ -239,15 +251,15 @@ if (is_admin()) {
 					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/resetLevels.mp4','Revert to default presets');?></span></div>
-						<button type="button" id='go_reset_levels' class='go_options_button'>Reset Levels</button>
+						<button type="button" id='go_reset_levels' class='go_options_button'>Reset <?php echo $plural_rank_name ?></button>
 					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/saveLevels.mp4','Save changes to level presets');?></span></div>
-						<button type="button" id='go_save_levels' class='go_options_button'>Save Levels</button>
+						<button type="button" id='go_save_levels' class='go_options_button'>Save <?php echo $plural_rank_name ?></button>
 					</div>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php go_options_help('http://maclab.guhsd.net/go/video/options/fixLevels.mp4','Repair errors caused by improper level settings');?></span></div>
-						<button type="button" id='go_fix_levels' class='go_options_button'>Fix Levels</button>
+						<button type="button" id='go_fix_levels' class='go_options_button'>Fix <?php echo $plural_rank_name ?></button>
 					</div>
 				</div>
 			 <div class='go_options_accordion_wrap' opt='4'><?php go_options_accordion_help('http://maclab.guhsd.net/go/video/options/seatingChart.mp4', 'Customize user info to suit your needs');?><div class='go_options_accordion'><?php echo go_return_options('go_organization_name'); ?><div class='go_triangle_container'><div class='go_options_triangle'></div></div></div></div>
@@ -364,14 +376,23 @@ if (is_admin()) {
 }
 
 add_action('admin_menu', 'add_game_on_options');
-function add_game_on_options () {  
+function add_game_on_options() {  
     add_menu_page('Game On', 'Game On', 'manage_options', 'game-on-options.php','game_on_options', plugins_url( 'images/ico.png' , __FILE__ ), '81');  
 	add_submenu_page( 'game-on-options.php', 'Options', 'Options', 'manage_options', 'game-on-options.php', 'game_on_options');
 
 }
 
-function go_reset_levels () {
-	$rank_prefix = 'Level ';
+function go_options_save_levels() {
+	$rank_name = get_option('go_level_names');
+	echo $rank_name;
+	die();
+}
+
+function go_reset_levels(){
+	$rank_prefix = get_option('go_level_names');
+	if (empty($rank_prefix)) {
+		$rank_prefix = 'Level';
+	}
 	$ranks = array(
 		'name' => array(
 			
@@ -383,11 +404,11 @@ function go_reset_levels () {
 			
 		)
 	);
-	for ($i = 1; $i <= 20; $i++) {
-		if ($i <10) {
-			$ranks['name'][] = "{$rank_prefix}0{$i}";
-		} else {
-			$ranks['name'][] = "{$rank_prefix}{$i}";
+	for($i = 1; $i <= 20; $i++){
+		if($i <10){
+			$ranks['name'][] = "{$rank_prefix} 0{$i}";
+		}else{
+			$ranks['name'][] = "{$rank_prefix} {$i}";
 		}
 		if ($i == 1) {
 			$ranks['points'][0] = 0;
@@ -401,7 +422,7 @@ function go_reset_levels () {
 	die();
 }
 
-function go_save_levels (){
+function go_save_levels() {
 	$go_level_names = $_POST['go_level_names'];
 	$go_level_points = $_POST['go_level_points'];
 	$go_level_badges = $_POST['go_level_badges'];
@@ -414,22 +435,20 @@ function go_save_levels (){
 	die();
 }	
 
-function go_fix_levels (){
-	$table_name_user_meta = $wpdb->prefix . "usermeta";
-	$table_name_go_totals = $wpdb->prefix . "go_totals";
+function go_fix_levels() {
 	global $default_role;
+	global $wpdb;
 	$role = get_option('go_role',$default_role);
-	$uid = $wpdb->get_results("
+	$ranks = get_option('go_ranks');
+	$uids = $wpdb->get_results("
 		SELECT user_id
-		FROM ".$table_name_user_meta."
-		WHERE meta_key =  '".$wpdb->prefix."capabilities'
-		AND (meta_value LIKE  '%".$role."%' or meta_value like '%administrator%')
+		FROM {$wpdb->usermeta}
+		WHERE meta_key =  '{$wpdb->prefix}capabilities'
+		AND (meta_value LIKE  '%{$role}%' or meta_value LIKE '%administrator%')
 	");
-
-	foreach ($uid as $id) {
-		foreach ($id as $uids) {
-			$ranks = get_option('go_ranks');
-			$current_points = go_return_points(get_current_user_id());
+	foreach ($uids as $uid) {
+		foreach ($uid as $user_id) {
+			$current_points = go_return_points($user_id);
 			current($ranks['points']);
 			while ($current_points >= current($ranks['points'])) {
 				next($ranks['points']);
@@ -438,14 +457,17 @@ function go_fix_levels (){
 			$next_rank = $ranks['name'][key($ranks['points'])];
 			$rank_points = prev($ranks['points']);
 			$new_rank = $ranks['name'][key($ranks['points'])];
-			$new_rank_array= array(array($new_rank, $rank_points),array($next_rank, $next_rank_points));
-			update_user_meta($uids, 'go_rank', $new_rank_array);
+			$new_rank_array = array(
+				array($new_rank, $rank_points),
+				array($next_rank, $next_rank_points)
+			);
+			update_user_meta($user_id, 'go_rank', $new_rank_array);
 		} 
 	}
 	die();
 }
 
-function go_focus_save (){
+function go_focus_save() {
 	global $wpdb;
 	$array = $_POST['focus_array'];
 	$terms = $wpdb->get_results("SELECT * FROM $wpdb->terms", ARRAY_A);
@@ -473,7 +495,7 @@ function go_focus_save (){
 	die();
 }
 
-function go_get_all_focuses () {
+function go_get_all_focuses() {
 	if (get_option('go_focus')) {
 		$all_focuses = get_option('go_focus');
 	}
@@ -487,14 +509,14 @@ function go_get_all_focuses () {
 }
 
 add_action('wp_ajax_go_new_user_focus', 'go_new_user_focus');
-function go_new_user_focus (){
+function go_new_user_focus() {
 	$new_user_focus = $_POST['new_user_focus'];
 	$user_id = $_POST['user_id'];
 	update_user_meta($user_id, 'go_focus', $new_user_focus);
 	die();	
 }
 
-function go_presets_reset () {
+function go_presets_reset() {
 	global $wpdb;
 	$presets = array(
 		'name' => array(
@@ -544,7 +566,7 @@ function go_presets_reset () {
 	die();
 }
 
-function go_presets_save () {
+function go_presets_save() {
 	global $wpdb;
 	$preset_name = $_POST['go_preset_name'];
 	$preset_points = $_POST['go_preset_points'];
@@ -558,7 +580,7 @@ function go_presets_save () {
 	die();
 }
 
-function go_reset_data () {
+function go_reset_data() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
@@ -604,7 +626,7 @@ function go_reset_data () {
 add_action( 'show_user_profile', 'go_extra_profile_fields' );
 add_action( 'edit_user_profile', 'go_extra_profile_fields' );
 
-function go_extra_profile_fields ($user) { ?>
+function go_extra_profile_fields($user) { ?>
 
 	<h3><?php echo go_return_options('go_class_a_name').' and '.go_return_options('go_class_b_name'); ?></h3>
 
@@ -685,7 +707,7 @@ foreach (get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu
 add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
 
-function go_user_option_add () {
+function go_user_option_add() {
 	?> 
 	
     <tr>
@@ -721,7 +743,7 @@ function go_user_option_add () {
 
 	}
 	
-function go_save_extra_profile_fields ($user_id) {
+function go_save_extra_profile_fields($user_id) {
 	if (isset($_POST['class_a_user'])) {
 		foreach ($_POST['class_a_user'] as $key=>$value) {
 			if ($value != 'go_remove') {
@@ -734,7 +756,7 @@ function go_save_extra_profile_fields ($user_id) {
 	}
 }	
 
-function go_update_globals () {
+function go_update_globals() {
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
 	$array = explode(',','go_tasks_name, go_tasks_plural_name, go_first_stage_name, go_second_stage_name, go_third_stage_name, go_fourth_stage_name, go_fifth_stage_name, go_second_stage_button, go_third_stage_button, go_fourth_stage_button, go_fifth_stage_button, go_points_name, go_points_prefix, go_points_suffix, go_currency_name, go_currency_prefix, go_currency_suffix, go_bonus_currency_name, go_bonus_currency_prefix, go_bonus_currency_suffix, go_penalty_name, go_penalty_prefix, go_penalty_suffix, go_level_names, go_level_plural_names, go_organization_name, go_class_a_name, go_class_b_name, go_focus_name, go_stats_name, go_inventory_name, go_badges_name, go_leaderboard_name, go_presets, go_admin_bar_display_switch, go_admin_bar_user_redirect, go_admin_bar_add_switch, go_ranks, go_class_a, go_class_b, go_focus_switch, go_focus, go_admin_email, go_video_width, go_video_height, go_store_receipt_switch, go_full_student_name_switch, go_multiplier_switch, go_multiplier_threshold, go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch'); 	

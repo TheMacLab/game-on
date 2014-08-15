@@ -186,9 +186,24 @@ jQuery(document).ready(function(){
 	
 	jQuery('.go_add_level').click(function(){
 		jQuery('.go_remove_level').remove();
+		var r_name, points = '';
+		var r_end_name = jQuery('.go_options_level_names_input').last().val();
+		var regex = /(\S)+(\s)+(\S)+/;
+		if (r_end_name.match(regex)) {
+			var r_name_array = r_end_name.split(' ');
+			var r_num = Number(r_name_array[1]) + 1;
+			name = r_name_array[0]+" "+(r_num < 10 ? "0"+r_num : r_num);
+		} else {
+			name = r_end_name;
+		}
+		
+		var r_num = jQuery('.go_options_level_points_input').length + 1;
+		var new_points = (15/2) * (r_num + 18) * (r_num - 1);
+		points = new_points;
+
 		levels = jQuery('.go_options_level_names_input').length;
-		jQuery('#go_options_level_names').append("<input type='text' class='go_options_level_names_input' name='go_ranks[name][" + levels + "]' value=''/>");
-		jQuery('#go_options_level_points').append("<input type='text' class='go_options_level_points_input' name='go_ranks[points][" + levels + "]' value=''/>");
+		jQuery('#go_options_level_names').append("<input type='text' class='go_options_level_names_input' name='go_ranks[name][" + levels + "]' value='"+name+"'/>");
+		jQuery('#go_options_level_points').append("<input type='text' class='go_options_level_points_input' name='go_ranks[points][" + levels + "]' value='"+points+"'/>");
 		jQuery('#go_options_level_badges').append("<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][" + levels + "]' value=''/>");
 		jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
 	});
@@ -332,18 +347,39 @@ jQuery(document).ready(function(){
 		}
 	});
 	
-	jQuery('#go_options_form').submit(function(){
-		if(jQuery('input[name="go_focus_switch"]').is(':checked')){
-			var values = jQuery('.go_options_profession_input').map(function(){return jQuery(this).val();}).get();
+	jQuery('#go_options_form').submit(function(event){
+		if (!event.savedLevels) {
+			event.preventDefault();
 			jQuery.ajax({
-				type: "post",
+				type: 'post',
 				url: MyAjax.ajaxurl,
-				data: { 
-					action: 'go_focus_save',
-					focus_array: values
+				data: {
+					action: 'go_options_save_levels'
+				}, success: function(response) {
+					var rank_name = response;
+					jQuery('.go_options_level_names_input').each(function(index) {
+						if (this.value.indexOf(rank_name) === -1) {
+							var num = index + 1;
+							jQuery(this).attr('value', rank_name+' '+(num < 10 ? "0"+num : num));
+						}
+					});
+					jQuery('#go_options_form').trigger({type: 'submit', savedLevels: true});
 				}
 			});
+		} else {
+			if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
+				var values = jQuery('.go_options_profession_input').map(function() {
+					return jQuery(this).val();
+				}).get();
+				jQuery.ajax({
+					type: "post",
+					url: MyAjax.ajaxurl,
+					data: { 
+						action: 'go_focus_save',
+						focus_array: values
+					}
+				});
+			}
 		}
 	});
-	
 });

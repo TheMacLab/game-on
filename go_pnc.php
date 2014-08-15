@@ -255,16 +255,17 @@ function go_admin_bar_add(){
 	
 	$user_id = get_current_user_id();
 	
-	if($points_points != ''&& $points_reason != ''){
+	if($points_points != '' && $points_reason != ''){
 		go_add_currency($user_id,$points_reason, 6, $points_points, 0, false);
+		go_update_ranks($current_user_id, $current_points);
 	}
-	if($currency_points!= ''&&$currency_reason!= ''){
+	if($currency_points!= '' &&$currency_reason!= ''){
 		go_add_currency($user_id, $currency_reason, 6, 0, $currency_points, false);
 	}
-	if($bonus_currency_points!= ''&&$bonus_currency_reason != ''){
+	if($bonus_currency_points!= '' &&$bonus_currency_reason != ''){
 		go_add_bonus_currency($user_id, $bonus_currency_points, $bonus_currency_reason);
 	}
-	if($penalty_points!= ''&&$penalty_reason != ''){
+	if($penalty_points!= '' &&$penalty_reason != ''){
 		go_add_penalty($user_id, $penalty_points, $penalty_reason);
 	}
 		

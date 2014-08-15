@@ -1,8 +1,8 @@
 <?php
-function go_stats_overlay(){ 
+function go_stats_overlay() { 
 	echo '<div id="go_stats_page_black_bg" style="display:none !important;"></div><div id="go_stats_white_overlay" style="display:none;"></div>';
 }
-function go_admin_bar_stats () { 
+function go_admin_bar_stats() { 
  	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	if ($_POST['uid']) {
@@ -18,12 +18,14 @@ function go_admin_bar_stats () {
 	$user_website = $current_user->user_url;
  	$current_user_id = $current_user->ID;
 	$user_avatar = get_avatar($current_user_id, 142);
-	/* option names */
+	
+	// option names 
 	$points_name = go_return_options('go_points_name');
 	$currency_name = go_return_options('go_currency_name');
 	$bonus_currency_name = go_return_options('go_bonus_currency_name');
 	$penalty_name = go_return_options('go_penalty_name');
-	/* user pnc */
+
+	// user pnc 
 	go_get_rank($current_user_id);
 	$current_points = go_return_points($current_user_id);
 	$current_currency = go_return_currency($current_user_id);
@@ -83,7 +85,7 @@ function go_admin_bar_stats () {
 	die();
 
 }
-function go_stats_task_list () {
+function go_stats_task_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if (!empty($_POST['user_id'])) {
@@ -148,7 +150,7 @@ function go_stats_task_list () {
 	die();
 }
 
-function go_stats_move_stage () {
+function go_stats_move_stage() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if (!empty($_POST['user_id'])) {
@@ -221,7 +223,7 @@ function go_stats_move_stage () {
 	die();
 }
 	
-function go_stats_item_list () {
+function go_stats_item_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if (!empty($_POST['user_id'])) {
@@ -261,7 +263,7 @@ function go_stats_item_list () {
 	die();
 }
 
-function go_stats_rewards_list () {
+function go_stats_rewards_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if (!empty($_POST['user_id'])) {
@@ -320,7 +322,7 @@ function go_stats_rewards_list () {
 	die();
 }
 
-function go_stats_badges_list () {
+function go_stats_badges_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if (!empty($_POST['user_id'])) {
@@ -338,7 +340,7 @@ function go_stats_badges_list () {
 	die();
 }
 
-function go_stats_leaderboard_choices () {
+function go_stats_leaderboard_choices() {
 	?>
 	<div id='go_stats_leaderboard_filters'>
 		<div id='go_stats_leaderboard_filters_head'>FILTER</div>
@@ -379,7 +381,7 @@ function go_stats_leaderboard_choices () {
 	<?php
 	die();
 }
-function go_return_user_data ($id, $counter, $sort) {
+function go_return_user_data($id, $counter, $sort) {
 	$points = go_return_points($id);
 	$currency = go_return_currency($id);
 	$bonus_currency = go_return_bonus_currency($id);
@@ -402,7 +404,7 @@ function go_return_user_data ($id, $counter, $sort) {
 	}
 }
 
-function go_return_user_leaderboard ($users, $class_a_choice, $focuses, $type, $counter) {
+function go_return_user_leaderboard($users, $class_a_choice, $focuses, $type, $counter) {
 	foreach ($users as $user_ids) {
 		foreach ($user_ids as $user_id) {
 			if (!user_can($user_id, 'manage_options')) {
@@ -450,7 +452,7 @@ function go_return_user_leaderboard ($users, $class_a_choice, $focuses, $type, $
 	}	
 }
 
-function go_stats_leaderboard () {
+function go_stats_leaderboard() {
 	global $wpdb;
 	$go_totals_table_name = "{$wpdb->prefix}go_totals";
 	$class_a_choice = $_POST['class_a_choice'];

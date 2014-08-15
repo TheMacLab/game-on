@@ -77,6 +77,7 @@ add_action('wp_ajax_go_admin_bar_stats','go_admin_bar_stats');
 add_action('wp_ajax_go_class_a_save','go_class_a_save');
 add_action('wp_ajax_go_class_b_save','go_class_b_save');
 add_action('wp_ajax_go_focus_save','go_focus_save');
+add_action('wp_ajax_go_options_save_levels', 'go_options_save_levels');
 add_action('wp_ajax_go_reset_levels', 'go_reset_levels');
 add_action('wp_ajax_go_save_levels', 'go_save_levels');
 add_action('wp_ajax_go_reset_data', 'go_reset_data');
@@ -89,6 +90,7 @@ add_action('wp_ajax_go_stats_leaderboard_choices','go_stats_leaderboard_choices'
 add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
 add_action('wp_ajax_go_presets_reset','go_presets_reset');
 add_action('wp_ajax_go_presets_save','go_presets_save');
+add_action('wp_ajax_go_fix_levels', 'go_fix_levels');
 add_action('wp_ajax_listurl', 'listurl');
 add_action('wp_ajax_nopriv_listurl', 'listurl');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');

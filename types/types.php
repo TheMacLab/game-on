@@ -120,6 +120,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
+				'name' => 'Lock'.go_task_opt_help('encounter_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
+				'id' => $prefix.'encounter_admin_lock',
+				'type' => 'go_admin_lock'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('encounter_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'encounter_upload',
 				'type' => 'checkbox'
@@ -189,9 +194,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
-				'name' => 'Lock'.go_task_opt_help('accept_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'name' => 'Lock'.go_task_opt_help('accept_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'accept_admin_lock',
-				'type' => 'checkbox'
+				'type' => 'go_admin_lock'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('accept_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
@@ -263,9 +268,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
-				'name' => 'Lock'.go_task_opt_help('completion_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'name' => 'Lock'.go_task_opt_help('completion_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'completion_admin_lock',
-				'type' => 'checkbox'
+				'type' => 'go_admin_lock'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
@@ -342,9 +347,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
-				'name' => 'Lock'.go_task_opt_help('mastery_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'name' => 'Lock'.go_task_opt_help('mastery_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'mastery_admin_lock',
-				'type' => 'checkbox'
+				'type' => 'go_admin_lock'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
@@ -376,6 +381,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
 				'name' => '5 Stage '.go_return_options('go_tasks_name').go_task_opt_help('five_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/fiveStageQuest.mp4'),
 				'id'   => $prefix . 'task_repeat',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Private'.go_task_opt_help('mastery_privacy', '', 'http://maclab.guhsd.net/go/video/quests/masteryPrivacy.mp4'),
+				'id' => "{$prefix}mastery_privacy",
 				'type' => 'checkbox'
 			),
 			array(
@@ -426,13 +436,18 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Lock'.go_task_opt_help('repeat_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/permaLock.mp4'),
+				'name' => 'Lock'.go_task_opt_help('repeat_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'repeat_admin_lock',
-				'type' => 'checkbox'
+				'type' => 'go_admin_lock'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('repeat_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'repeat_upload',
+				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Private'.go_task_opt_help('repeat_privacy', '', 'http://maclab.guhsd.net/go/video/quests/repeatPrivacy.mp4'),
+				'id' => "{$prefix}repeat_privacy",
 				'type' => 'checkbox'
 			),
 			array(
@@ -512,6 +527,14 @@ add_action( 'init', 'go_init_mtbxs', 9999 );
 
 add_action('cmb_render_go_presets', 'go_presets', 10, 1);
 function go_presets($field_args) {
+	$custom = get_post_custom(get_the_id());
+	$content_array = unserialize($custom['go_presets'][0]);
+	if (!empty($content_array)) {
+		$custom_points = $content_array['points'];
+		$custom_points_str = implode(',', $custom_points);
+		$custom_currency = $content_array['currency'];
+		$custom_currency_str = implode(',', $custom_currency);
+	}
 	?>
 	<select id="go_presets" onchange="apply_presets();">
         <?php
@@ -519,7 +542,11 @@ function go_presets($field_args) {
 			foreach($presets['name'] as $key => $name){
 				$points = implode(',', $presets['points'][$key]);
 				$currency = implode(',', $presets['currency'][$key]);
-				echo "<option value='{$name}' points='{$points}' currency='{$currency}'>{$name} - {$points} - {$currency}</option>";
+				echo "<option value='{$name}' points='{$points}' currency='{$currency}'";
+				if (!empty($content_array) && $custom_points_str == $points && $custom_currency_str == $currency) {
+					echo "selected";
+				}
+				echo ">{$name} - {$points} - {$currency}</option>";
 			}
 		?>
 	</select>
@@ -657,6 +684,40 @@ function go_validate_decay_table() {
 		}
 		return array('date' => $new_dates, 'percent' => $new_percentages);
 	}
+}
+
+add_action('cmb_render_go_admin_lock', 'go_admin_lock', 10, 1);
+function go_admin_lock($field_args) {
+	$custom = get_post_custom($post_id);
+	$meta_id = $field_args["id"];
+	$content_array = unserialize($custom[$meta_id][0]);
+	$is_checked = $content_array[0];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	}
+	$pass = $content_array[1];
+	echo "
+		<input id='{$meta_id}_checkbox' class='go_admin_lock_checkbox' name='{$meta_id}' type='checkbox' ".($is_checked == 'true' ? "checked" : "")."/>
+		<input id='{$meta_id}_input' class='go_admin_lock_text' name='{$meta_id}_input' type='text' placeholder='Enter A Password' ".(!empty($pass) ? "value='{$pass}'": "")."/>
+	";
+}
+
+add_action('cmb_validate_go_admin_lock', 'go_validate_admin_lock', 10, 3);
+function go_validate_admin_lock($override_value, $post_id, $field_args) {
+	$meta_id = $field_args["id"];
+	$is_checked = $_POST[$meta_id];
+	$temp_pass = $_POST["{$meta_id}_input"];
+	if (preg_match("/['\"\<>]+/", $temp_pass)) {
+		$pass = preg_replace("/['\"<>]+/", '', $temp_pass);
+	} else {
+		$pass = $temp_pass;
+	}
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	return(array($is_checked, $pass));
 }
 
 add_action('cmb_render_go_test_modifier', 'go_test_modifier');
@@ -800,7 +861,7 @@ function go_test_field_encounter($field_args) {
 		?>
 		<tr>
 			<td>
-				<input id='go_test_field_add_block_button_e' class='go_test_field_add_block_button' value='Add Block' type='button' onclick='add_block_e(this);' />
+				<input id='go_test_field_add_block_button_e' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_e(this);' />
 				<?php 
 				if (!empty($test_field_block_count)) {
 					echo "<input id='go_test_field_block_count_e' name='go_test_field_block_count_e' type='hidden' value='".$test_field_block_count."' />";
@@ -1165,7 +1226,7 @@ function go_test_field_accept($field_args) {
 		?>
 		<tr>
 			<td>
-				<input id='go_test_field_add_block_button_a' class='go_test_field_add_block_button' value='Add Block' type='button' onclick='add_block_a(this);' />
+				<input id='go_test_field_add_block_button_a' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_a(this);' />
 				<?php 
 				if (!empty($test_field_block_count)) {
 					echo "<input id='go_test_field_block_count_a' name='go_test_field_block_count_a' type='hidden' value='".$test_field_block_count."' />";
@@ -1530,7 +1591,7 @@ function go_test_field_completion($field_args) {
 		?>
 		<tr>
 			<td>
-				<input id='go_test_field_add_block_button_c' class='go_test_field_add_block_button' value='Add Block' type='button' onclick='add_block_c(this);' />
+				<input id='go_test_field_add_block_button_c' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_c(this);' />
 				<?php 
 				if (!empty($test_field_block_count)) {
 					echo "<input id='go_test_field_block_count_c' name='go_test_field_block_count_c' type='hidden' value='".$test_field_block_count."' />";
@@ -1895,7 +1956,7 @@ function go_test_field_mastery($field_args) {
 		?>
 		<tr>
 			<td>
-				<input id='go_test_field_add_block_button_m' class='go_test_field_add_block_button' value='Add Block' type='button' onclick='add_block_m(this);' />
+				<input id='go_test_field_add_block_button_m' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_m(this);' />
 				<?php 
 				if (!empty($test_field_block_count)) {
 					echo "<input id='go_test_field_block_count_m' name='go_test_field_block_count_m' type='hidden' value='".$test_field_block_count."' />";

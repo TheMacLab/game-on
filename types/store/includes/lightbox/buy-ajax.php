@@ -39,20 +39,20 @@ function go_buy_item() {
 	$penalty = $custom_fields['go_mta_penalty_switch'];
 
 	$store_limit = unserialize($custom_fields['go_mta_store_limit'][0]);
-	$is_limited = $store_limit[0];
+	$is_limited = (bool)$store_limit[0];
 	if ($is_limited) {
 		$limit = (int)$store_limit[1];
 	}
 
 	$store_filter = unserialize($custom_fields['go_mta_store_filter'][0]);
-	$is_filtered = $store_filter[0];
+	$is_filtered = (bool)$store_filter[0];
 	if ($is_filtered) {
 		$req_rank = $store_filter[1];
 		$bonus_filter = $store_filter[2];
 	}
 	
 	$store_exchange = unserialize($custom_fields['go_mta_store_exchange'][0]);
-	$is_exchangeable = $store_exchange[0];
+	$is_exchangeable = (bool)$store_exchange[0];
 	if ($is_exchangeable) {
 		$exchange_currency = $store_exchange[1];
 		$exchange_points = $store_exchange[2];
@@ -62,7 +62,7 @@ function go_buy_item() {
 	$badge_id = $custom_fields['go_mta_badge_id'][0];
 
 	$store_focus = $custom_fields['go_mta_store_focus'][0];
-	$is_focused = $store_focus[0];
+	$is_focused = (bool)$store_focus[0];
 	if ($is_focused) {
 		$item_focus = $store_focus[1];
 	}
@@ -99,9 +99,6 @@ function go_buy_item() {
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
 		} else {
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
-		}
-		if ($req_bonus_currency != '') {
-			go_add_bonus_currency($user_id, -$req_bonus_currency, "Purchase of {$qty} ".get_the_title($post_id).".");
 		}
 		if (!empty($badge_id)) {
 			if ($recipient_id) {
