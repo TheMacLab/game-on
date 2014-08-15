@@ -187,7 +187,7 @@ input[type="submit"]{
 }
 
 .go_options_button{
-	width: 110px;
+	width: auto;
 }
 /****************************/
 
@@ -269,7 +269,7 @@ input[type="submit"]{
 }
 
 .go_options_period_input, .go_options_computer_input{
-	width: 50%;
+	width: auto;
 }
 /****************************/
 

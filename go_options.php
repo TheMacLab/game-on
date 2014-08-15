@@ -201,8 +201,12 @@ if (is_admin()) {
 									<input type='hidden' class='go_options_level_names_input_hidden' name='go_ranks[name][<?php echo $key;?>]' value='<?php echo $name; ?>'/>
 								<?php
 							}
+							if (count($ranks['name']) > 1) {
 							?>
 								<button type="button" class="go_remove_level">-</button>
+							<?php 
+							}
+							?>
 								</div>
 							</div>
 							<?php
@@ -287,8 +291,12 @@ if (is_admin()) {
 							<input type='hidden' class='go_options_period_input_hidden' name='go_class_a[]' value='<?php echo $period;?>'/>
 						<?php
 					}
+					if (count($class_a) > 1) {
 					?>
 						<button type="button" class="go_remove_period">-</button>
+					<?php 
+					}
+					?>
 						</div>
 					</div>
 					<div class='go_options'>
@@ -303,15 +311,19 @@ if (is_admin()) {
 						if (!empty($computer_name) && strpos($computer, $computer_name) == false && preg_match("/\s+/", $computer)) {
 							$name_array = explode(' ', $computer);
 							$temp_key = $key + 1;
-							$computer = "{$computer_name} ".$temp_key;
+							$computer = "{$computer_name} ".($temp_key < 10 ? "0{$temp_key}" : $temp_key);
 						}
 						?>
 							<input type='text' class='go_options_computer_input' value='<?php echo $computer?>' disabled/>
 							<input type='hidden' class='go_options_computer_input_hidden' name='go_class_b[]' value='<?php echo $computer?>'/>
 						<?php
 					}
+					if (count($class_b) > 1) {
 					?>
 						<button type="button" class="go_remove_computer">-</button>
+					<?php
+					}
+					?>
 						</div>
 					</div>
 					<div class='go_options'>

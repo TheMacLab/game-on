@@ -94,17 +94,48 @@ jQuery(document).ready(function(){
 	
 	
 	jQuery(document).on('click', '.go_remove_preset', function(){
-		key = jQuery('.go_options_preset_name_input').last().attr('key');
-		jQuery('input[key="'+key+'"').remove();
+		if (jQuery('.go_options_preset_name_input').length > 1) {	
+			key = jQuery('.go_options_preset_name_input').last().attr('key');
+			jQuery('input[key="'+key+'"').remove();
+		} 
+		if (jQuery('.go_options_preset_name_input').length == 1) {
+			jQuery('.go_remove_preset').remove();
+		}
 	});
 	
 	jQuery('.go_add_preset').click(function(){
-		presets = jQuery('.go_options_preset_name_input').length;
+		var preset_name = jQuery('.go_options_preset_name_input').last().val();
+		var regex = /((\S)+(\s)+)+((\d)+)/;
+		if (preset_name.match(regex)) {
+			var name_array = preset_name.split(' ');
+			var output_str = '';
+			for (var i = 0; i < name_array.length; i++) {
+				if ((i + 1) < name_array.length) {
+					output_str += name_array[i]+" ";
+				}
+			}
+			var name_index = Number(name_array.pop()) + 1;
+			var name = output_str+name_index;
+		} else {
+			var name = preset_name;
+		}
+
+		var preset_key = jQuery('.go_options_preset_name_input').last().attr('key');
+		var points_array = [];
+		jQuery('.go_options_preset_points_input[key="'+preset_key+'"').each(function(index) {
+			points_array[index] = this.value;
+		});
+		var currency_array = [];
+		jQuery('.go_options_preset_currency_input[key="'+preset_key+'"').each(function(index) {
+			currency_array[index] = this.value;
+		});
+
+		var presets = jQuery('.go_options_preset_name_input').length;
 		jQuery('.go_remove_preset').remove();
-		jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input go_options_preset_input' name='go_presets[name][" + presets +"]' key='" + presets +"'value=''/>");
-		for(i = 1; i <= 5; i++){
-			jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input go_options_preset_input' name='go_presets[points][" + presets + "][]' key='" + presets + "' value=''/>");
-			jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + presets + "][]' key='" + presets + "' value=''/>");
+		jQuery('#go_options_preset_name').append("<input type='text' class='go_options_preset_name_input go_options_preset_input' name='go_presets[name][" + presets +"]' key='" + presets +"'value='"+name+"'/>");
+		for(i = 0; i < 5; i++){
+			jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input go_options_preset_input' name='go_presets[points][" + presets + "][]' key='" + presets + "' value='"+points_array[i]+"'/>");
+			jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + presets + "][]' key='" + presets + "' value='"+currency_array[i]+"'/>");
 		}
 		jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
 	});
@@ -170,10 +201,15 @@ jQuery(document).ready(function(){
 	});
 	
 	jQuery(document).on('click', '.go_remove_level', function() {
-		jQuery('.go_options_level_names_input').last().remove();
-		jQuery('.go_options_level_names_input_hidden').last().remove();
-		jQuery('.go_options_level_points_input').last().remove();
-		jQuery('.go_options_level_badges_input').last().remove();
+		if (jQuery('.go_options_level_names_input').length > 1) {
+			jQuery('.go_options_level_names_input').last().remove();
+			jQuery('.go_options_level_names_input_hidden').last().remove();
+			jQuery('.go_options_level_points_input').last().remove();
+			jQuery('.go_options_level_badges_input').last().remove();
+		}
+		if (jQuery('.go_options_level_names_input').length == 1) {
+			jQuery('.go_remove_level').remove();
+		}
 	});
 	
 	jQuery('.go_add_level').click(function(){
@@ -190,7 +226,7 @@ jQuery(document).ready(function(){
 					output_str += str+" ";
 				}
 			}
-			var name_index = Number(name_array[name_length - 1]) + 1;
+			var name_index = Number(name_array.pop()) + 1;
 			var name = output_str+(name_index < 10 ? "0"+name_index : name_index);
 		} else {
 			var name_index = Number(name_array[1]) + 1;
@@ -275,8 +311,13 @@ jQuery(document).ready(function(){
 	});
 	
 	jQuery(document).on('click', '.go_remove_period', function(){
-		jQuery('.go_options_period_input').last().remove();
-		jQuery('.go_options_period_input_hidden').last().remove();
+		if (jQuery('.go_options_period_input').length > 1) {
+			jQuery('.go_options_period_input').last().remove();
+			jQuery('.go_options_period_input_hidden').last().remove();	
+		}
+		if (jQuery('.go_options_period_input').length == 1) {
+			jQuery('.go_remove_period').remove();
+		}
 	});
 	
 	jQuery('.go_add_period').click(function(){
@@ -302,8 +343,13 @@ jQuery(document).ready(function(){
 	});
 	
 	jQuery(document).on('click', '.go_remove_computer', function(){
-		jQuery('.go_options_computer_input').last().remove();
-		jQuery('.go_options_computer_input_hidden').last().remove();
+		if (jQuery('.go_options_computer_input').length > 1) {
+			jQuery('.go_options_computer_input').last().remove();
+			jQuery('.go_options_computer_input_hidden').last().remove();
+		}
+		if (jQuery('.go_options_computer_input').length == 1) {
+			jQuery('.go_remove_computer').remove();
+		}
 	});
 	
 	jQuery('.go_add_computer').click(function(){
@@ -319,11 +365,11 @@ jQuery(document).ready(function(){
 					output_str += str+" ";
 				}
 			}
-			var name_index = Number(name_array[name_length - 1]) + 1;
-			var name = output_str+name_index;
+			var name_index = Number(name_array.pop()) + 1;
+			var name = output_str+(name_index < 10 ? "0"+name_index : name_index);
 		} else {
 			var name_index = Number(name_array[1]) + 1;
-			var name = name_array[0]+" "+name_index;
+			var name = name_array[0]+" "+(name_index < 10 ? "0"+name_index : name_index);
 		}
 		jQuery('#go_options_computers').append("<input type='text' class='go_options_computer_input' value='"+name+"' disabled/><input type='hidden' class='go_options_computer_input_hidden' name='go_class_b[]' value='"+name+"'/><button type='button' class='go_remove_computer'>-</button>");
 	});
