@@ -2489,12 +2489,15 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 }
 
 add_action('save_post', 'go_final_chain_message');
-function go_final_chain_message () {
-	$task_id = get_the_id();
-	$custom = get_post_custom($task_id);
-	if(get_post_type($task_id) == 'tasks'){
-		if(get_the_terms($task_id, 'task_chains')){
-			$chain = array_shift(array_values(get_the_terms($task_id, 'task_chains')));
+function go_final_chain_message($post_id) {
+	$post_type = get_post_type($post_id);
+	if ($post_type == 'tasks') {
+		$terms = get_the_terms($post_id, 'task_chains');
+		$post_meta_chain = get_post_meta($post_id, 'chain');
+		$post_meta_chain_pos = get_post_meta($post_id, 'chain_position');
+		if (!empty($terms)) {
+			$custom = get_post_custom($post_id);
+			$chain = array_shift(array_values($terms));
 			$posts_in_chain = get_posts(array(
 				'post_type' => 'tasks',
 				'taxonomy' => 'task_chains',
@@ -2504,9 +2507,12 @@ function go_final_chain_message () {
 				'posts_per_page' => '-1'
 			));
 			$message = $custom['go_mta_final_chain_message'][0];
-			foreach($posts_in_chain as $post){
-               update_post_meta($post->ID, 'go_mta_final_chain_message', $message);
-            }
+			foreach ($posts_in_chain as $post) {
+				update_post_meta($post->ID, 'go_mta_final_chain_message', $message);
+			}
+		} else if (!empty($post_meta_chain) || !empty($post_meta_chain_pos)) {
+			delete_post_meta($post_id, 'chain');
+			delete_post_meta($post_id, 'chain_position');
 		}
 	}
 }
