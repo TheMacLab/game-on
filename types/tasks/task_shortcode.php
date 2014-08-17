@@ -10,6 +10,7 @@ function go_task_shortcode($atts, $content = null) {
 		'id' => '', // ID defined in Shortcode
 		'cats' => '', // Cats defined in Shortcode     
 	), $atts) );
+	global $wpdb;
 	$user_ID = get_current_user_id(); // User ID
 	$page_id = get_the_ID();
 	if ($id && !empty($user_ID)) { // If the shortcode has an attribute called id, run this code
@@ -194,10 +195,9 @@ function go_task_shortcode($atts, $content = null) {
 		$points_array = $rewards['points']; //Makes an array out of currency values for each stage
 		$bonus_currency_array = $rewards['bonus_currency'];
 		
-		if($user_ID != 0){
-			$current_bonus_currency = go_return_bonus_currency($user_ID);	
-			$current_penalty = go_return_penalty($user_ID);
-		}
+		$current_bonus_currency = go_return_bonus_currency($user_ID);	
+		$current_penalty = go_return_penalty($user_ID);
+
 		$go_admin_email = get_option('go_admin_email');
 		if ($go_admin_email) {
 			$admin = get_user_by('email', $go_admin_email);
@@ -271,26 +271,12 @@ function go_task_shortcode($atts, $content = null) {
 			$update_percent = 0;	
 		}
 		
-		if($user_ID == 0){ // If user isn't logged in, run this code
-			echo wpautop($description).wpautop($accept_message).wpautop($completion_message);// Displays task content
-			if(get_post_type() == 'tasks'){
-				comments_template();
-			}
-		}
-		
 		global $current_points;
 		if ($current_points < $req_rank) {
-			if($user_ID == 0) { // If the user isn't logged in, run this code
-				echo '';	// Echo nothing as they don't need to know how many points necessary to start it 
-			} else { // If the user is logged in, and does not have enough points, run this code
-				$points = $req_rank - $current_points; // Grabs points difference between user's current points, and points required to start the task
-				$points_name = go_return_options('go_points_name'); // Grabs what the points are called, whether it's XP or something else
-				echo 'You need '.$points.' more '.$points_name.' to begin this task.'; // displays the message stating the need for more points to start the task
-			}
+			$points = $req_rank - $current_points;
+			$points_name = strtolower(go_return_options('go_points_name'));
+			echo "You need {$points} more {$points_name} to begin this task.";
 		} else {
-			
-			global $wpdb;
-			$user_ID = get_current_user_id(); // User ID
 			$go_table_ind = $wpdb->prefix.'go';
 			$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 			$status = (int)$wpdb->get_var("SELECT `status` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
@@ -345,7 +331,7 @@ function go_task_shortcode($atts, $content = null) {
             
 <?php	
 		// If current post in a chain and user logged in
-		if ($custom_fields['chain'][0] != null && $user_ID != 0) {
+		if ($custom_fields['chain'][0] != null) {
 			
 			$current_position_in_chain = get_post_meta($id, 'chain_position', true);
 			$chain_tax = get_the_terms($id, 'task_chains');
