@@ -231,7 +231,7 @@ function go_install_data() {
 		'go_multiplier_threshold' => 10,
 		'go_penalty_switch' => '',
 		'go_penalty_threshold' => 5,
-		'go_multiplier_percentage' => 20,
+		'go_multiplier_percentage' => 10,
 		'go_data_reset_switch' => '',
 		'go_analysis_script_day' => 'Friday'
 	);
