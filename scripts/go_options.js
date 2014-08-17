@@ -403,21 +403,23 @@ jQuery(document).ready(function(){
 		}
 	});
 	
-	jQuery('#go_data_reset').click(function(){
-		if(jQuery('input[name="go_data_reset_switch"]').is(':checked')){
+	jQuery('#go_data_reset').click(function() {
+		if (jQuery('input[name="go_data_reset_switch"]').is(':checked')) {
 			reset_data = [];
-			for(input in data_reset_inputs){
-				if(data_reset_inputs[input].is(':checked')){
+			for (input in data_reset_inputs) {
+				if (data_reset_inputs[input].is(':checked')) {
 					reset_data.push(data_reset_inputs[input].attr('reset'));
 				}
 			}
-			if(confirm("WARNING: What you are about to do will reset the chosen types of data from EVERY user on your database. Do you wish to continue?")){
+			var reset_all = jQuery("input[name='go_data_reset_all']").is(':checked');
+			if (confirm("WARNING: What you are about to do will reset the chosen types of data from EVERY user on your database. Do you wish to continue?")) {
 				jQuery.ajax({
 					type: 'post',
 					url: MyAjax.ajaxurl,
 					data: {
 						action: 'go_reset_data',
-						reset_data: reset_data
+						reset_data: reset_data,
+						reset_all: reset_all
 					},
 					success: function(html){
 						location.reload();

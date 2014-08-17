@@ -585,6 +585,7 @@ function go_reset_data() {
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
 	$reset_data = $_POST['reset_data'];
+	$reset_all = $_POST['reset_all'];
 	$users = get_users('orderby=ID');
 	$ranks = get_option('go_ranks');
 	if (in_array('points', $reset_data)) {
@@ -609,12 +610,11 @@ function go_reset_data() {
 			update_user_meta($user->ID, 'go_badges', '');
 		}
 	}
-	if (in_array('all', $reset_data)) {
+	if ($reset_all === 'true') {
 		$wpdb->query("TRUNCATE TABLE {$go_table_name}");
 	} else {
 		$erase_list = implode(',', $reset_data);
 		$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".(in_array('points', $reset_data) && !in_array('currency', $reset_data) ? 'AND status != -1' : (in_array('currency', $reset_data) && !in_array('points', $reset_data)? 'AND status = -1': ''));
-		
 		$wpdb->query($query);
 	}
 	$erase_update = "SET ".implode('=0,', $reset_data)."=0 WHERE uid IS NOT NULL";
