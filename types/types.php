@@ -2403,7 +2403,7 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 	if (get_post_type($task_id) == 'tasks') {
 		$task_chains = get_the_terms($task_id, 'task_chains');
 		if (!empty($task_chains)) {
-			$chain = array_shift(array_values($task_chains));
+			$chain = array_shift($task_chains);
 		}
 
 		// Check if task is new, is being updated, or being deleted and update the
