@@ -31,7 +31,7 @@ Functions, variables, etc. in all languages should use the format: go_*function_
 All functions will be declared using the "go_" prefix followed by a unique name, and then the parameters as shown below.
 
 ```
-function go_add($param1, $param2) {
+function go_add ($param1, $param2) {
 	return($param1 + $param2);
 }
 ```
