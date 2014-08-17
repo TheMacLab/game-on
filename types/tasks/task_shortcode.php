@@ -412,7 +412,7 @@ function go_task_shortcode($atts, $content = null) {
 				}
 			}
 			
-			if ($current_position_in_chain == go_return_task_amount_in_chain($chain->name)) {
+			if ($current_position_in_chain == $chain->count) {
 				$last_in_chain = true;
 			} else {
 				$last_in_chain = false;

@@ -46,7 +46,6 @@ add_action('go_return_points','go_return_points');
 add_action('go_return_bonus_currency','go_return_bonus_currency');
 add_action('go_return_penalty','go_return_penalty');
 add_action('go_display_user_focuses', 'go_display_user_focuses');
-add_action('go_return_task_amount_in_chain', 'go_return_task_amount_in_chain');
 add_action('go_display_rewards', 'go_display_rewards');
 add_action('admin_menu', 'go_clipboard');
 add_action('go_jquery_clipboard','go_jquery_clipboard');

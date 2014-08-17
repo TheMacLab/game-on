@@ -71,19 +71,6 @@ function go_display_user_focuses($user_id){
 	return $value;
 }
 
-function go_return_task_amount_in_chain($chain){
-	global $wpdb;
-	$posts_in_chain = get_posts(array(
-		'post_type' => 'tasks',
-		'post_status' => 'publish',
-		'taxonomy' => 'task_chains',
-		'term' => $chain,
-		'posts_per_page' => '-1'
-	));
-	$count = count($posts_in_chain);
-	return $count;
-}
-
 function go_return_badge_count($user_id){
 	global $wpdb;
 	$badge_count = $wpdb->get_var("SELECT badge_count FROM {$wpdb->prefix}go_totals WHERE uid = {$user_id}");

@@ -2403,7 +2403,7 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 	if (get_post_type($task_id) == 'tasks') {
 		$task_chains = get_the_terms($task_id, 'task_chains');
 		if (!empty($task_chains)) {
-			$chain = array_shift(array_values($task_chains))->name;
+			$chain = array_shift(array_values($task_chains));
 		}
 
 		// Check if task is new, is being updated, or being deleted and update the
@@ -2411,14 +2411,13 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 		if ($new_status == 'publish' && $old_status != 'publish') {	
 			
 			// Get the current number of tasks in the given chain.
-			$count = go_return_task_amount_in_chain($chain);
+			$count = $chain->count;
 			
-			// If the chain is not empty and go_return_task_amount_in_chain() returns a non-null value,
-			// set $pos to the number of tasks plus one and then update the 'chain' and 'chain_position' meta values
-			// of the current post.
+			// If the chain is not empty, set $pos to the number of tasks plus one 
+			// and then update the 'chain' and 'chain_position' meta values of the current post.
 			if (!empty($chain)) {				
-				if (!update_post_meta($task_id, 'chain', $chain)) {
-					add_post_meta($task_id, 'chain', $chain, true);
+				if (!update_post_meta($task_id, 'chain', $chain->name)) {
+					add_post_meta($task_id, 'chain', $chain->name, true);
 				}
 				if (!empty($count)) {
 					if (!update_post_meta($task_id, 'chain_position', $count)) {
@@ -2437,7 +2436,7 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 				'post_type' => 'tasks',
 				'post_status' => 'publish',
 				'taxonomy' => 'task_chains',
-				'term' => $chain,
+				'term' => $chain->name,
 				'order' => 'ASC',
 				'meta_key' => 'chain_position',
 				'orderby' => 'meta_value_num',
@@ -2453,16 +2452,16 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 					if (!empty($c_position)) {
 						update_post_meta($task_id, 'chain_position', ($pos + 1));
 					} else {
-						$end_pos = go_return_task_amount_in_chain($chain) + 1;
+						$end_pos = $chain->count + 1;
 						add_post_meta($task_id, 'chain_position', $end_pos);
 					}
 				}
 			}
 			if (empty($chain_meta)) {
-				add_post_meta($task_id, 'chain', $chain);
+				add_post_meta($task_id, 'chain', $chain->name);
 			}
 			if (empty($c_position)) {
-				$end_pos = go_return_task_amount_in_chain($chain);
+				$end_pos = $chain->count;
 				add_post_meta($task_id, 'chain_position', $end_pos);
 			}
 		} else if ($new_status == 'trash' && $old_status != 'trash') {
@@ -2472,7 +2471,7 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 				'post_type' => 'tasks',
 				'post_status' => 'publish',
 				'taxonomy' => 'task_chains',
-				'term' => $chain,
+				'term' => $chain->name,
 				'order' => 'ASC',
 				'meta_key' => 'chain_position',
 				'orderby' => 'meta_value_num',
@@ -2488,16 +2487,20 @@ function go_add_new_task_in_chain ($new_status, $old_status, $post) {
 	}
 }
 
-add_action('save_post', 'go_final_chain_message');
-function go_final_chain_message($post_id) {
+add_action('save_post', 'go_update_task_chain_meta');
+function go_update_task_chain_meta($post_id) {
 	$post_type = get_post_type($post_id);
 	if ($post_type == 'tasks') {
 		$terms = get_the_terms($post_id, 'task_chains');
-		$post_meta_chain = get_post_meta($post_id, 'chain');
-		$post_meta_chain_pos = get_post_meta($post_id, 'chain_position');
+		$chain = array_shift(array_values($terms));
+		$post_meta_chain_array = get_post_meta($post_id, 'chain');
+		if (is_array($post_meta_chain_array)) {
+			$post_meta_chain = array_shift($post_meta_chain_array);
+		} else {
+			$post_meta_chain = $post_meta_chain_array;
+		}
 		if (!empty($terms)) {
 			$custom = get_post_custom($post_id);
-			$chain = array_shift(array_values($terms));
 			$posts_in_chain = get_posts(array(
 				'post_type' => 'tasks',
 				'taxonomy' => 'task_chains',
@@ -2508,6 +2511,10 @@ function go_final_chain_message($post_id) {
 			));
 			$message = $custom['go_mta_final_chain_message'][0];
 			foreach ($posts_in_chain as $post) {
+				if ($post->ID == $post_id && $post_meta_chain != $chain->name) {
+					update_post_meta($post->ID, 'chain', $chain->name);
+					update_post_meta($post->ID, 'chain_position', $chain->count);
+				}
 				update_post_meta($post->ID, 'go_mta_final_chain_message', $message);
 			}
 		} else if (!empty($post_meta_chain) || !empty($post_meta_chain_pos)) {
@@ -2535,9 +2542,9 @@ function go_remove_task_chain_from_posts ($term_id) {
 				
 				$post_tax = get_the_terms($post->ID, 'task_chains');
 				if (!empty($post_tax)) {
-					$first_chain_name = array_shift($post_tax)->name;
-					$chain_length = go_return_task_amount_in_chain($first_chain_name);
-					add_post_meta($post->ID, 'chain', $first_chain_name);
+					$chain = array_shift($post_tax);
+					$chain_length = $chain->count;
+					add_post_meta($post->ID, 'chain', $chain->name);
 					add_post_meta($post->ID, 'chain_position', $chain_length);
 				}
 			}
@@ -2600,7 +2607,7 @@ function go_clone_task () {
 	$cat = get_the_terms($post_id, 'task_categories');
 
 	$term_ids = array();
-	$focus_ids = array();	
+	$focus_ids = array();
 	$cat_ids = array();
 
 	// Put the ids of the taxonomies that the original post was assigned to into arrays.
@@ -2651,8 +2658,8 @@ function go_clone_task () {
 					add_post_meta($clone_id, $key, $uns, true);
 				} else {
 					if ($key === 'chain_position') {
-						$chain = $post_custom["chain"][0];
-						$end_pos = go_return_task_amount_in_chain($chain) + 1;
+						$chain = array_shift(get_the_terms($post_id, 'task_chains'));
+						$end_pos = $chain->count + 1;
 						add_post_meta($clone_id, $key, $end_pos, true);
 					} else {
 						add_post_meta($clone_id, $key, $value[$i], true);
