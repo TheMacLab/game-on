@@ -2492,7 +2492,6 @@ function go_update_task_chain_meta($post_id) {
 	$post_type = get_post_type($post_id);
 	if ($post_type == 'tasks') {
 		$terms = get_the_terms($post_id, 'task_chains');
-		$chain = array_shift(array_values($terms));
 		$post_meta_chain_array = get_post_meta($post_id, 'chain');
 		if (is_array($post_meta_chain_array)) {
 			$post_meta_chain = array_shift($post_meta_chain_array);
@@ -2500,6 +2499,7 @@ function go_update_task_chain_meta($post_id) {
 			$post_meta_chain = $post_meta_chain_array;
 		}
 		if (!empty($terms)) {
+			$chain = array_shift($terms);
 			$custom = get_post_custom($post_id);
 			$posts_in_chain = get_posts(array(
 				'post_type' => 'tasks',
