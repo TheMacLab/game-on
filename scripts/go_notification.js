@@ -26,12 +26,18 @@ function go_notification (timer, el) {
 	
 	if (el) {
 		setTimeout(function() {
-			el.fadeOut("slow");
+			el.fadeOut("slow", function(){
+				el.remove();
+			});
 		},timer)
 	} else {
 		setTimeout(function() {
-			jQuery(".go_notification").not('#go_notification_level, #go_notification_badges').fadeOut("slow");
+			jQuery(".go_notification").not('#go_notification_level, #go_notification_badges').fadeOut("slow", function(){
+				jQuery('.go_notification').remove();
+			});
+			
 		},timer)
 	}
+	
 	
 }
