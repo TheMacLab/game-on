@@ -188,7 +188,7 @@ input[type="submit"]{
 }
 
 .go_options_button{
-	width: 110px;
+	width: auto;
 }
 /****************************/
 
@@ -240,6 +240,10 @@ input[type="submit"]{
 	width: 15%;
 }
 
+#go_options_level_points_wrap {
+	margin-left: 5%;
+}
+
 .go_options_level_names_input, .go_options_level_badges_input{
 	width: 400%;
 }
@@ -266,7 +270,7 @@ input[type="submit"]{
 }
 
 .go_options_period_input, .go_options_computer_input{
-	width: 50%;
+	width: auto;
 }
 /****************************/
 
