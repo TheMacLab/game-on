@@ -164,7 +164,7 @@ function go_notify($type, $points='', $currency='', $bonus_currency='', $user_id
 	}
 }
 
-function go_update_admin_bar($type, $title, $value, $status = null){
+function go_update_admin_bar ($type, $title, $value, $status = null) {
 	global $next_rank_points;
 	global $current_rank_points;
 	
@@ -173,15 +173,15 @@ function go_update_admin_bar($type, $title, $value, $status = null){
 		$rng = ($current_rank_points -$value) * -1;
 		$dom = ($next_rank_points - $current_rank_points);
 		if ($status == 0) { 
-			echo '<script language="javascript">
+			echo "<script language='javascript'>
 				jQuery(document).ready(function() {
-					jQuery("#points_needed_to_level_up").html("'.$rng.'/'.$dom.'");
+					jQuery('#points_needed_to_level_up').html('{$rng}/{$dom}');
 				});
-			</script>';
+			</script>";
 		} else {
-			echo '<script language="javascript">
-				jQuery("#points_needed_to_level_up").html("'.$rng.'/'.$dom.'");
-			</script>';
+			echo "<script language='javascript'>
+					jQuery('#points_needed_to_level_up').html('{$rng}/{$dom}');
+			</script>";
 		}
 	} elseif ($type == 'currency') {
 		$display = go_display_currency($value);
@@ -189,7 +189,7 @@ function go_update_admin_bar($type, $title, $value, $status = null){
 		$display = go_display_bonus_currency($value);
 		$current_bonus_currency = go_return_bonus_currency(get_current_user_id());
 		$color = barColor($current_bonus_currency);
-	}elseif ($type == 'penalty') {
+	} elseif ($type == 'penalty') {
 		$display = go_display_penalty($value);
 	}
 	$percentage = go_get_level_percentage(get_current_user_id());
@@ -239,7 +239,7 @@ function go_update_totals($user_id, $points, $currency, $bonus_currency, $penalt
 
 
 
-function go_admin_bar_add(){
+function go_admin_bar_add () {
 
 	$points_points = $_POST['go_admin_bar_points_points'];
 	$points_reason = $_POST['go_admin_bar_points_reason'];
@@ -255,25 +255,24 @@ function go_admin_bar_add(){
 	
 	$user_id = get_current_user_id();
 	
-	if($points_points != '' && $points_reason != ''){
+	if ($points_points != '' && $points_reason != '') {
 		go_add_currency($user_id,$points_reason, 6, $points_points, 0, false);
 		go_update_ranks($current_user_id, $current_points);
 	}
-	if($currency_points!= '' &&$currency_reason!= ''){
+	if ($currency_points!= '' &&$currency_reason!= '') {
 		go_add_currency($user_id, $currency_reason, 6, 0, $currency_points, false);
 	}
-	if($bonus_currency_points!= '' &&$bonus_currency_reason != ''){
+	if ($bonus_currency_points!= '' &&$bonus_currency_reason != '') {
 		go_add_bonus_currency($user_id, $bonus_currency_points, $bonus_currency_reason);
 	}
-	if($penalty_points!= '' &&$penalty_reason != ''){
+	if ($penalty_points!= '' &&$penalty_reason != '') {
 		go_add_penalty($user_id, $penalty_points, $penalty_reason);
 	}
-		
-	die();
 	
+	die();
 }
 
-function go_get_level_percentage($user_id){
+function go_get_level_percentage ($user_id) {
 	global $wpdb;
 	$current_points = go_return_points($user_id);
 	go_get_rank($user_id);
@@ -282,14 +281,20 @@ function go_get_level_percentage($user_id){
 	global $next_rank_points;
 	global $current_rank_points;
 	$dom = ($next_rank_points-$current_rank_points);
-	if($dom <= 0){ $dom = 1;}
+	if ($dom <= 0){ 
+		$dom = 1;
+	}
 	$percentage = ($current_points-$current_rank_points)/$dom*100;
-	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
+	if ($percentage <= 0){ 
+		$percentage = 0;
+	} else if ($percentage >= 100)
+		{$percentage = 100;
+	}
 	return $percentage;
 }
 
 function go_return_options ($option) {
-	if (defined ($option)){
+	if (defined ($option)) {
 		return constant($option);
 	} else {
 		return get_option($option);
@@ -327,7 +332,7 @@ function barColor ($current_bonus_currency) {
 	return $color;
 }
 
-function go_return_multiplier($user_id, $points, $currency, $post_id){
+function go_return_multiplier ($user_id, $points, $currency, $post_id) {
 /*
 if(go_return_options('go_multiplier_switch') == 'On'){
 	$limit = go_return_options('go_multiplier');
