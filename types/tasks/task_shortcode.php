@@ -191,6 +191,17 @@ function go_task_shortcode($atts, $content = null) {
 
 		$description = $custom_fields['go_mta_quick_desc'][0]; // Description
 		$req_rank = $custom_fields['go_mta_req_rank'][0]; // Required Rank to accept task
+		if (!empty($req_rank)) {
+			$ranks = get_option('go_ranks');
+			if (!empty($ranks['name']) && !empty($ranks['points'])) {
+				$index = array_search($req_rank, $ranks['name']);
+				$req_points = $ranks['points'][$index];
+			} else {
+				$req_points = null;
+			}
+		} else {
+			$req_points = null;
+		}
 		$currency_array = $rewards['currency']; // Makes an array out of currency values for each stage
 		$points_array = $rewards['points']; //Makes an array out of currency values for each stage
 		$bonus_currency_array = $rewards['bonus_currency'];
@@ -284,10 +295,11 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		global $current_points;
-		if ($current_points < $req_rank) {
-			$points = $req_rank - $current_points;
+		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
+			$points = $req_points - $current_points;
 			$points_name = strtolower(go_return_options('go_points_name'));
-			echo "You need {$points} more {$points_name} to begin this task.";
+			$task_name = strtolower(go_return_options('go_tasks_name'));
+			echo "You need {$points} more {$points_name} to begin this {$task_name}.";
 		} else {
 			$go_table_ind = $wpdb->prefix.'go';
 			$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
@@ -1551,7 +1563,6 @@ function task_change_stage() {
 	$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $post_id AND uid = $user_id");
 	
 	$custom_fields = get_post_custom($post_id); // Just gathering some data about this task with its post id
-	$req_rank = $custom_fields['go_mta_req_rank'][0]; // Required Rank to accept Task
 	$rewards = unserialize($custom_fields['go_presets'][0]); // Array of rewards
 	$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
 	$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
