@@ -15,8 +15,6 @@ function go_update_ranks ($user_id, $total_points) {
 	$ranks = get_option('go_ranks');
 	$name_array = $ranks['name'];
 	$points_array = $ranks['points'];
-
-	// go_return_clean_rank($user_id);
 	
 	if ($next_rank != '') {
 		if ($total_points >= $next_rank_points) {
@@ -43,7 +41,9 @@ function go_update_ranks ($user_id, $total_points) {
 			$update = true;
 		}
 		
-		reset($points_array);
+		if (!empty($points_array)) {
+			reset($points_array);
+		}
 		
 		if ($total_points < $current_rank_points) {
 			

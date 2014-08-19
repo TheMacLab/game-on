@@ -77,45 +77,22 @@ function go_return_badge_count($user_id){
 	return $badge_count;
 }
 
-function go_return_clean_rank($user_id, $return_rank = false) {
+// Optionally returns user's correct current rank name from the go_ranks option, based on user's current points.
+// Updates current_rank global regardless.
+function go_return_clean_rank($user_id, $return_rank = true) {
 	if (!empty($user_id)) {
 		global $current_rank;
 		global $current_points;
 		$ranks = get_option('go_ranks');
-		if (!empty($ranks['name']) && !empty($ranks['points'])) {
-			$rank_name = get_option('go_level_names', 'Level');
-			$curr_rank_array = explode(' ', $current_rank);
-			$curr_rank_array_ln = count($curr_rank_array);
-			if ($curr_rank_array_ln > 2) {
-				$name_str = '';
-				foreach ($curr_rank_array as $key => $elem) {
-					if (($key + 1) < $curr_rank_array_ln && !empty($elem)) {
-						$name_str .= "{$elem} ";
-					} else if (($key + 1) == $curr_rank_array_ln && !empty($elem)) {
-						$name_str .= "{$elem}";
-					}
-				}
-				if (strpos($name_str, $rank_name) === false) {
-					$name = $rank_name." ".array_pop($curr_rank_array);
+		$names = $ranks['name'];
+		$points = $ranks['points'];
+		if (!empty($names) && !empty($points)) {
+			for ($i = 0; $i < count($points); $i++) {
+				if ((int)$points[$i + 1] > (int)$current_points) {
+					$name = $names[$i];
 					$current_rank = $name;
 					if ($return_rank === true) {
-						return $name;
-					}
-				} else {
-					if ($return_rank === true) {
-						return $current_rank;
-					}
-				}
-			} else {
-				if (strpos($curr_rank_array[0], $rank_name) === false) {
-					$name = $rank_name." ".$curr_rank_array[1];
-					$current_rank = $name;
-					if ($return_rank === true) {
-						return $name;
-					}
-				} else {
-					if ($return_rank === true) {
-						return $current_rank;
+						return ($name);
 					}
 				}
 			}
