@@ -181,12 +181,11 @@ if ( $go_count > 0 ) {
 }
 #gos_cog {
 	width: 17px;
-height: 17px;
-background: url(/wp-content/plugins/cube-gold/test-store/images/cog-small.png);
-position: relative;
-float: right;
-margin-right: 2px;
-cursor:pointer;
+	height: 17px;
+	position: relative;
+	float: right;
+	margin-right: 2px;
+	cursor:pointer;
 }
 #gos_name {
 	margin-top: 12px;

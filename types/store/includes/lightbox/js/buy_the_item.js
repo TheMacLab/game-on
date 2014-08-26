@@ -18,20 +18,20 @@ jQuery(document).ready(function(jQuery){
 			jQuery("#golb-fr-buy").innerHTML = "";
 			jQuery("#golb-fr-buy").html(''); 
 			jQuery("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_'+buyColor+'"></div>');
-					},
+		},
 		dataType: "html",
-		success: function(response){
+		success: function(response) {
 			var buy = jQuery('#golb-fr-buy');
 			buy.attr('onclick','');
-			if(response.indexOf("Need more") > -1){
+			if (response.indexOf("Need more") != -1 || response.indexOf("You've attempted to purchase") != -1) {
 				alert(response);
-				buy.html('Error');	
-			} else{
+				buy.html('Error');
+			} else {
 				buy.innerHTML = "";
 				buy.html('');
 				buy.append('<span>' + response + '</span>');
 				// Whenever you figure out a better way to do this, implement it. 
-				jQuery('#go_admin_bar_progress_bar').css({"background-color":color});
+				jQuery('#go_admin_bar_progress_bar').css("background-color", color);
 			}
 			go_count_item(id);
 		}
@@ -49,7 +49,7 @@ function go_count_item(id){
 		},
 		success: function(data){
 			var count = data.toString();
-			jQuery('#golb-purchased').html("Times purchased: " + count);
+			jQuery('#golb-purchased').html("Quantity purchased: " + count);
 		}
 	});	
 }

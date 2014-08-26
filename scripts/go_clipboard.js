@@ -2,22 +2,22 @@ jQuery(document).ready( function () {
 	jQuery('#records_tabs').tabs();
   	jQuery('#go_clipboard_table').dataTable( {
 		"bPaginate": false 
-	} );
+	});
 	go_update_graph();
 });
-function toggle(source) {
-  checkboxes = document.getElementsByName('go_selected');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
+function go_toggle (source){
+	checkboxes = jQuery('.go_selected');
+	for(var i=0, n=checkboxes.length;i<n;i++) {
+		checkboxes[i].checked = source.checked;
+	}
 }
-function analysis_toggle(source) {
-  checkboxes = jQuery('#choices input');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
+function analysis_toggle (source){
+	checkboxes = jQuery('#choices input');
+	for (var i=0, n=checkboxes.length; i<n; i++) {
+		checkboxes[i].checked = source.checked;
+	}
 }
-function go_graphs(datasets){
+function go_graphs (datasets){
 	// hard-code color indices to prevent them from shifting as
 	// countries are turned on/off
 	jQuery('#placeholder').empty();
@@ -42,7 +42,7 @@ function go_graphs(datasets){
 			if(jQuery('#go_selection').val() == 0){
 				var bonus_currency = bonus_currency_limit.limit.split(',');
 				var markings = [
-					{ color: "rgba(255,228,0,.4)", yaxis: {from :bonus_currency[2], to: bonus_currency[3] } },
+					{ color: "rgba(255,228,0,.4)", yaxis: {from: bonus_currency[2], to: bonus_currency[3] } },
 					{ color: "rgba(255,103,0,.4)", yaxis: {from: bonus_currency[1], to: bonus_currency[2] } },
 					{ color: "rgba(204,0,0,.4)", yaxis: {from: bonus_currency[0], to: bonus_currency[1] } },
 					{ color: "rgba(70,70,70,.8)", yaxis: {to: bonus_currency[0] } },
@@ -217,19 +217,6 @@ function go_select_all_from_class(el, class_a){
 	}
 }
 
-// only runs when button clicked
-function collectData(){
-	jQuery.ajax({
-		type: "post",
-		url: MyAjax.ajaxurl,
-		data: { 
-			action: 'go_clipboard_collect_data',
-		},
-		success: function(html){
-			go_update_graph();
-		}
-	});
-}
 function go_clipboard_class_a_choice(){
 	jQuery.ajax({
 		type: "post",
@@ -272,16 +259,22 @@ function check_null(val){
 }
 
 function go_clipboard_add(id){
-	 var values = [];
-	 jQuery('#go_send_message').prop('disabled', 'disabled');
-	 jQuery("input:checkbox[name=go_selected]:checked").each(function(){
+	var values = [];
+	jQuery('#go_send_message').prop('disabled', 'disabled');
+	jQuery("input:checkbox[name=go_selected]:checked").each(function(){
 		values.push(jQuery(this).val())
 	});
 	add_points = parseFloat(check_null(jQuery('#go_clipboard_points').val()));
 	add_currency = parseFloat(check_null(jQuery('#go_clipboard_currency').val()));
 	add_bonus_currency = parseFloat(check_null(jQuery('#go_clipboard_bonus_currency').val()));
 	add_penalty = parseFloat(check_null(jQuery('#go_clipboard_penalty').val()));
-	add_infractions = parseFloat(check_null(jQuery('#go_clipboard_infractions').val()));
+	
+	if(jQuery('#go_clipboard_reason').val() != ''){
+		reason = jQuery('#go_clipboard_reason').val();	
+	}else{
+		reason = jQuery('#go_clipboard_reason').attr('placeholder');	
+	}
+	console.log(reason);
 	jQuery.ajax({
 		type: "post",url: MyAjax.ajaxurl,data: { 
 			action: 'go_clipboard_add',
@@ -290,8 +283,7 @@ function go_clipboard_add(id){
 			currency: add_currency,
 			bonus_currency: add_bonus_currency,
 			penalty: add_penalty,
-			reason:jQuery('#go_clipboard_reason').val(),
-			infractions: add_infractions,
+			reason: reason,
 			badge_ID: jQuery('#go_clipboard_badge').val()
 		},
 		success: function(html){
@@ -307,14 +299,12 @@ function go_clipboard_add(id){
 					var user_penalty = parseFloat(jQuery('#user_'+values[id]+' .user_penalty').html());
 					var user_points = parseFloat(jQuery('#user_'+values[id]+' .user_points').html());
 					var user_badge_count = parseFloat(jQuery('#user_'+values[id]+' .user_badge_count').html());
-					var user_infractions = parseFloat(jQuery('#user_'+values[id]+' .user_infractions').html());
-					
+		
 					jQuery('#user_'+values[id]+' .user_currency').html(user_currency + add_currency);
 					jQuery('#user_'+values[id]+' .user_bonus_currency').html(user_bonus_currency + add_bonus_currency);
 					jQuery('#user_'+values[id]+' .user_penalty').html(user_penalty + add_penalty);
 					jQuery('#user_'+values[id]+' .user_points').html(user_points + add_points);
 					jQuery('#user_'+values[id]+' .user_badge_count').html(user_badge_count + badge_count);
-					jQuery('#user_'+values[id]+' .user_infractions').html(user_infractions + add_infractions);
 				}
 			}
 			jQuery('#go_clipboard_points').val('');
@@ -322,7 +312,6 @@ function go_clipboard_add(id){
 			jQuery('#go_clipboard_bonus_currency').val('');
 			jQuery('#go_clipboard_penalty').val('');
 			jQuery('#go_clipboard_reason').val('');
-			jQuery('#go_clipboard_infractions').val('');
 			jQuery('#go_clipboard_badge').val('');
 			jQuery('#go_send_message').prop('disabled', '');
 		}
@@ -340,6 +329,18 @@ function fixmessages(){
 		}
 	});
 }
+
+function go_update_script_day(){
+	jQuery.ajax({
+		type: 'POST',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_update_script_day',
+			new_day: jQuery('#go_day_select').val()
+		},
+	});
+}
+
 	/*
  * File:        jquery.dataTables.min.js
  * Version:     1.9.4

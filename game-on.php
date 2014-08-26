@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Game-On
-Description: Adds support for a point system and currency for your users.
+Description: Gamification tools for teachers.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada
 Author URI: http://maclab.guhsd.net/
-Version: 1.9.8
+Version: 2.0.1
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -35,7 +35,8 @@ register_activation_hook( __FILE__, 'go_install_data' );
 register_activation_hook( __FILE__, 'go_define_options' );
 register_activation_hook( __FILE__, 'go_open_comments');
 add_action('user_register', 'go_user_registration');
-add_action( 'delete_user', 'go_user_delete' );
+add_action('delete_user', 'go_user_delete' );
+add_action('wp_ajax_go_deactivate_plugin', 'go_deactivate_plugin');
 add_action('go_add_post','go_add_post');
 add_action('go_add_currency','go_add_currency');
 add_action('go_add_bonus_currency','go_add_bonus_currency');
@@ -45,11 +46,8 @@ add_action('go_return_points','go_return_points');
 add_action('go_return_bonus_currency','go_return_bonus_currency');
 add_action('go_return_penalty','go_return_penalty');
 add_action('go_display_user_focuses', 'go_display_user_focuses');
-add_action('go_return_task_amount_in_chain', 'go_return_task_amount_in_chain');
 add_action('go_display_rewards', 'go_display_rewards');
-add_action('admin_menu', 'go_ranks');
 add_action('admin_menu', 'go_clipboard');
-add_action('admin_menu', 'go_mail');
 add_action('go_jquery_clipboard','go_jquery_clipboard');
 add_action('go_style_clipboard','go_style_clipboard');
 add_action('wp_ajax_go_clone_task', 'go_clone_task');
@@ -57,8 +55,6 @@ add_action('wp_ajax_go_clipboard_intable','go_clipboard_intable');
 add_action('wp_ajax_go_user_option_add','go_user_option_add');
 add_action('go_update_totals','go_update_totals');
 add_action( 'init', 'go_jquery' );
-add_action('wp_ajax_go_add_ranks', 'go_add_ranks');
-add_action('wp_ajax_go_remove_ranks', 'go_remove_ranks');
 add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
@@ -80,6 +76,9 @@ add_action('wp_ajax_go_admin_bar_stats','go_admin_bar_stats');
 add_action('wp_ajax_go_class_a_save','go_class_a_save');
 add_action('wp_ajax_go_class_b_save','go_class_b_save');
 add_action('wp_ajax_go_focus_save','go_focus_save');
+add_action('wp_ajax_go_reset_levels', 'go_reset_levels');
+add_action('wp_ajax_go_save_levels', 'go_save_levels');
+add_action('wp_ajax_go_reset_data', 'go_reset_data');
 add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
 add_action('wp_ajax_go_stats_move_stage', 'go_stats_move_stage');
 add_action('wp_ajax_go_stats_item_list', 'go_stats_item_list');
@@ -89,10 +88,11 @@ add_action('wp_ajax_go_stats_leaderboard_choices','go_stats_leaderboard_choices'
 add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
 add_action('wp_ajax_go_presets_reset','go_presets_reset');
 add_action('wp_ajax_go_presets_save','go_presets_save');
+add_action('wp_ajax_go_fix_levels', 'go_fix_levels');
 add_action('wp_ajax_listurl', 'listurl');
 add_action('wp_ajax_nopriv_listurl', 'listurl');
-add_action('wp_ajax_go_clipboard_collect_data', 'go_clipboard_collect_data');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');
+add_action('wp_ajax_go_update_script_day', 'go_update_script_day');
 add_action('wp_ajax_go_get_all_terms', 'go_get_all_terms');
 add_action('wp_ajax_nopriv_go_get_all_terms', 'go_get_all_terms');
 add_action('wp_ajax_go_get_all_posts', 'go_get_all_posts');
@@ -109,6 +109,7 @@ add_action('admin_head', 'go_stats_overlay');
 add_action('admin_notices', 'go_admin_head_notification');
 add_action('go_display_points','go_display_points');
 add_action('go_display_currency','go_display_currency');
+add_action('go_display_penalty','go_display_penalty');
 add_action('go_return_options','go_return_options');
 add_action('go_update_globals','go_update_globals');
 add_action('barColor','barColor');
@@ -119,11 +120,21 @@ add_action('check_values', 'check_values');
 add_action('go_message_user', 'go_message_user');
 add_filter('jetpack_enable_open_graph', '__return_false');
 add_action('login_redirect', 'go_user_redirect', 10, 3);
+add_action('go_clipboard_collect_data', 'go_clipboard_collect_data');
+add_filter('cron_schedules', 'go_weekly_schedule');
+
+function go_deactivate_plugin(){
+	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	$plugin = plugin_basename( __FILE__ );
+	deactivate_plugins($plugin);
+	die();
+}
 
 function go_tsk_actv_activate() {
     add_option('go_tsk_actv_do_activation_redirect', true);
 	update_option('go_display_admin_explanation', true);
 }
+
 function go_tsk_actv_redirect() {
     if (get_option('go_tsk_actv_do_activation_redirect', false)) {
         delete_option('go_tsk_actv_do_activation_redirect');
@@ -141,13 +152,6 @@ function isEven($value) {
 		return 'odd';
 }}
 
-function check_custom($custom = null){
-	if($custom){
-		return $custom;
-	} else{
-		return 0;	
-	}
-}
 function check_values($req = null, $cur = null){
 	if($cur >= $req || $req <= 0){
 		return true;
@@ -179,7 +183,7 @@ function go_user_redirect ($redirect_to, $request, $user) {
 
 function go_admin_head_notification(){
 	if(get_option('go_display_admin_explanation')){
-		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://www.maclab.guhsd.net/go/video/gameOn.mp4&quot;);'style='display:inline-block;'>this short video</a> for important information.<br/>Got it. <a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage.</a></div>";
+		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
 		echo "<script>
 			function go_remove_admin_notification(){
 				jQuery.ajax({
@@ -196,8 +200,17 @@ function go_admin_head_notification(){
 		</script>";
 	}
 }
+
 function go_admin_remove_notification(){
 	update_option('go_display_admin_explanation', false);
 	die();
+}
+
+function go_weekly_schedule($schedules){
+	$schedules['go_weekly'] = array(
+		'interval' => 604800,
+		'display' => __('Once Weekly')
+	);
+	return $schedules;
 }
 ?>

@@ -11,7 +11,7 @@
 	border-radius: 8px;
 	background: #111111;
 	opacity: .9;
-	z-index: 10000;
+	z-index: 9999999;
 }
 
 .go_message_container {
@@ -129,6 +129,153 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 	color: green;
 }
 
+/** Help Button Styles **/
+
+.go_task_opt_help {
+	float: right;
+	color: black;
+	margin-right: 0px;
+	width: 15px;
+	height: 15px;
+	border-radius: 8px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	background: white;
+	cursor: pointer;
+	display: inline;
+	position: relative;
+	background-color: #DBDBDB !important;
+}
+
+.go_task_opt_help:hover::after {
+	position: absolute;
+	content: attr(tooltip);
+	width: 200px;
+	padding: 0 5px 0 5px;
+	background-color: #CCC;
+	font-size: 14px;
+	bottom: 15px;
+	left: 20px;
+	border-radius: 5px;
+	z-index: 99;
+	color: black;
+	white-space: initial;
+}
+
+/****************************/
+
+/********************
+*	Store Styles
+********************/
+
+/* Store Item Style | Back-end */
+
+input#go_store_limit_input {
+	text-align: center;
+	width: 50px;
+}
+
+input#go_store_limit_input::-webkit-input-placeholder,
+input.go_store_cost_input::-webkit-input-placeholder,
+input.go_store_filter_input::-webkit-input-placeholder,
+input#go_store_item_url_input::-webkit-input-placeholder,
+input#go_store_badge_id_input::-webkit-input-placeholder,
+input.go_store_exchange_input::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input#go_store_limit_input,
+input.go_store_cost_input,
+input.go_store_filter_input,
+input#go_store_item_url_input,
+input#go_store_badge_id_input,
+input.go_store_exchange_input {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+input.go_store_cost_input {
+	width: 30%;
+}
+
+input.go_store_filter_input {
+	width: 15%;
+}
+
+input#go_store_item_url_input {
+	width: 50%;
+}
+
+input.go_store_exchange_input[type='text'] {
+	width: 30%;
+}
+
+input#go_store_badge_id_input {
+	text-align: center;
+	width: 75px;
+}
+
+ul#go_store_shortcode_list span {
+	float: left;
+	margin-right: 10px;
+}
+
+/********************
+*	Store Styles
+********************/
+
+/* Store Item Style | Back-end */
+
+input#go_store_limit_input {
+	text-align: center;
+	width: 50px;
+}
+
+input#go_store_limit_input::-webkit-input-placeholder,
+input.go_store_cost_input::-webkit-input-placeholder,
+input.go_store_filter_input::-webkit-input-placeholder,
+input#go_store_item_url_input::-webkit-input-placeholder,
+input#go_store_badge_id_input::-webkit-input-placeholder,
+input.go_store_exchange_input::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input#go_store_limit_input,
+input.go_store_cost_input,
+input.go_store_filter_input,
+input#go_store_item_url_input,
+input#go_store_badge_id_input,
+input.go_store_exchange_input {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+input.go_store_cost_input {
+	width: 30%;
+}
+
+input.go_store_filter_input {
+	width: 15%;
+}
+
+input#go_store_item_url_input {
+	width: 50%;
+}
+
+input.go_store_exchange_input[type='text'] {
+	width: 30%;
+}
+
+input#go_store_badge_id_input {
+	text-align: center;
+	width: 75px;
+}
+
+ul#go_store_shortcode_list span {
+	float: left;
+	margin-right: 10px;
+}
+
 /********************
 *	Task Styles
 ********************/
@@ -148,21 +295,6 @@ input.go_test_field_add {
 
 input.go_test_field_rm {
 	color: red;
-}
-
-.go_task_opt_help {
-	float: right;
-	color: black;
-	margin-right: 0px;
-	width: 15px;
-	height: 15px;
-	border-radius: 8px;
-	padding: 0px 0px 0px 0px;
-	text-align: center;
-	background: white;
-	cursor: pointer;
-	display: inline;
-	position: relative;
 }
 
 .go_sortable {
@@ -199,7 +331,7 @@ input.go_test_field_rm {
 	cursor: pointer;
 }
 
-.go_triangle_container{
+.go_triangle_container {
 	float:right;
 	cursor: pointer;
 	display: block;
@@ -208,11 +340,11 @@ input.go_test_field_rm {
 	text-align: center;
 }
 
-.go_triangle_container:hover .go_task_accordion_triangle{
+.go_triangle_container:hover .go_task_accordion_triangle {
 	border-top: 5px solid #777;
 }
 
-.go_task_accordion_triangle{
+.go_task_accordion_triangle {
 	width: 0; 
 	height: 0; 
 	border-left: 5px solid transparent;
@@ -223,7 +355,7 @@ input.go_test_field_rm {
 	margin: auto;
 }
 
-.down{
+.down {
 	border-top: none;
 	border-bottom: 5px solid #AAA;
 }
@@ -240,6 +372,18 @@ input#go_mta_final_chain_message {
 	color: #BBB !important;
 	text-align: center;
 	width: 40px;
+}
+
+input.go_admin_lock_text {
+	width: 50%;
+}
+
+input.go_admin_lock_text::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input.go_admin_lock_text:-moz-placeholder {
+	padding-top: 2px;
 }
 
 .go_test_field_table, .go_test_field_input_question {
@@ -268,6 +412,14 @@ input#go_mta_final_chain_message {
 	width: 100%;
 }
 
+input.go_test_field_input_question::-webkit-input-placeholder {
+	padding-top: 2px;
+}
+
+input.go_test_field_input_question:-moz-placeholder {
+	padding-top: 2px;
+}
+
 input.go_test_field_input {
 	width: 75%;
 	margin: 0 5px 0 5px !important;
@@ -279,14 +431,6 @@ input.go_test_field_input::-webkit-input-placeholder {
 }
 
 input.go_test_field_input:-moz-placeholder {
-   padding-top: 2px;  
-}
-
-input.go_test_field_input::-moz-placeholder {
-   padding-top: 2px;  
-}
-
-input.go_test_field_input:-ms-input-placeholder {  
    padding-top: 2px;  
 }
 
@@ -307,6 +451,11 @@ input.go_test_field_rm {
 
 .go_test_field_input_rm_row_button {
 	margin-left: -2px !important;
+}
+
+input#go_mta_repeat_amount {
+	width: 40px;
+	text-align: center;
 }
 
 .go_shortcode_list_item span {
@@ -382,6 +531,18 @@ button.go_test_submit {
 	margin: 10px 0 10px 2px !important;
 }
 
+input#go_pass_lock {
+	margin: 0 0 10px 0;
+}
+
+input#go_pass_lock::-webkit-input-placeholder {
+	padding-left: 4px;
+}
+
+input#go_pass_lock:-moz-placeholder {
+	padding-left: 4px;
+}
+
 .dark{
 	display: none;
 	position: fixed;
@@ -399,8 +560,13 @@ button.go_test_submit {
 .light{
 	display: none;
 	position: fixed;
-	left: 22.5%; 
-	top: 20%;
+	top: 50%;
+	left: 50%;
 	background-color: white;
-	z-index:1002;
+	z-index: 999999;
+	padding: 10px 10px 10px 10px;
+}
+
+input[name="go_admin_bar_submit"]{
+	height: 40px !important;	
 }
