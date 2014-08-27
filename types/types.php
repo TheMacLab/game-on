@@ -157,6 +157,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_shortcode_list',
 			),
 			array(
+				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
+				'id' => 'stage_one_badge',
+				'type' => 'go_badge_input',
+				'stage' => 1
+			),
+			array(
 				'name' => 'Stage 2'.go_task_opt_help('accept', '', 'http://maclab.guhsd.net/go/video/quests/acceptMessage.mp4'),
 				'id' => $prefix . 'accept_message',
 				'type' => 'wysiwyg',
@@ -229,6 +235,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
 				'id' => 'stage_two_shortcode_list',
 				'type' => 'go_shortcode_list'
+			),
+			array(
+				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
+				'id' => 'stage_two_badge',
+				'type' => 'go_badge_input',
+				'stage' => 2
 			),
 			array(
 				'name' => 'Stage 3'.go_task_opt_help('complete', '', 'http://maclab.guhsd.net/go/video/quests/completionMessage.mp4'),
@@ -308,6 +320,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
 				'id' => 'stage_three_shortcode_list',
 				'type' => 'go_shortcode_list'
+			),
+			array(
+				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
+				'id' => 'stage_three_badge',
+				'type' => 'go_badge_input',
+				'stage' => 3
 			),
 			array(
 				'name' => 'Stage 4'.go_task_opt_help('mastery', '', 'http://maclab.guhsd.net/go/video/quests/stageFour.mp4'),
@@ -394,6 +412,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_shortcode_list'
 			),
 			array(
+				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
+				'id' => 'stage_four_badge',
+				'type' => 'go_badge_input',
+				'stage' => 4
+			),
+			array(
 				'name' => 'Stage 5'.go_task_opt_help('repeat_message', '', 'http://maclab.guhsd.net/go/video/quests/stageFive.mp4'),
 				'id' => $prefix . 'repeat_message',
 				'type' => 'wysiwyg',
@@ -454,7 +478,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
 				'id' => 'stage_five_shortcode_list',
 				'type' => 'go_shortcode_list'
-			)
+			),
+			array(
+				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
+				'id' => 'stage_five_badge',
+				'type' => 'go_badge_input',
+				'stage' => 5
+			),
 		),
 	);
 	// Store Meta Boxes
@@ -2925,5 +2955,25 @@ function go_validate_store_exchange() {
 	$p_exchange = $_POST['go_store_exchange_points'];
 	$b_exchange = $_POST['go_store_exchange_bonus_currency'];
 	return (array($is_checked, $c_exchange, $p_exchange, $b_exchange));
+}
+
+add_action('cmb_render_go_badge_input', 'go_badge_input', 10, 1);
+function go_badge_input ($field_args) {
+	$custom = get_post_custom($post_id);
+	echo '<pre>';
+	print_r(unserialize($custom[$field_args['id']][0]));
+	echo '</pre>';
+	?>
+	<input type='checkbox' name='go_badge_input_toggle_<?php echo $field_args['stage'];?>' class='go_badge_input_toggle' stage='<?php echo $field_args['stage'];?>' <?php echo ($checked  == 'true' ? "checked" : "");?>/>
+	<input type='text' name='go_badge_input' class='go_badge_input' stage='<?php echo $field_args['stage'];?>'/>
+	<button name='go_badge_input_add' stage='<?php echo $field_args['stage'];?>'>+</button>
+	<button name='go_badge_input_remove' stage='<?php echo $field_args['stage'];?>'>-</button>
+	<?php
+}
+
+add_action('cmb_validate_go_badge_input', 'go_validate_badge_input', 10, 3);
+function go_validate_badge_input ($field_args) {
+	
+	return array($field_args['id']);
 }
 ?>

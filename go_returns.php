@@ -73,7 +73,7 @@ function go_display_user_focuses($user_id){
 
 function go_return_badge_count($user_id){
 	global $wpdb;
-	$badge_count = $wpdb->get_var("SELECT badge_count FROM {$wpdb->prefix}go_totals WHERE uid = {$user_id}");
+	$badge_count = (int)$wpdb->get_var("SELECT badge_count FROM {$wpdb->prefix}go_totals WHERE uid = {$user_id}");
 	return $badge_count;
 }
 

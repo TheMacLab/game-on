@@ -58,12 +58,7 @@ function go_update_ranks ($user_id, $total_points) {
 				$new_next_rank = $name_array[$current_key];
 				$new_next_rank_points = $points_array[$current_key];
 				if($ranks['badges'][$current_key]){
-					$badge_id = $ranks['badges'][$current_key];
-					$existing_badges = get_user_meta($user_id, 'go_badges', true);
-					unset($existing_badges[array_search($badge_id, $existing_badges)]);
-					$badge_count = go_return_badge_count($user_id) - 1;
-					$wpdb->update($wpdb->prefix."go_totals", array('badge_count' => $badge_count), array('uid' => $user_id));
-					update_user_meta($user_id, 'go_badges', $existing_badges);
+					go_remove_badge($user_id, $ranks['badges'][$current_key]);
 				}
 				prev($points_array);
 			}

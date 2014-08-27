@@ -463,6 +463,10 @@ input#go_mta_repeat_amount {
 	margin-right: 10px;
 }
 
+.go_badge_input{
+	width: 50px;
+}
+
 input.go_current {
 	color: #000 !important;
 }

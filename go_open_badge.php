@@ -32,7 +32,7 @@ function go_award_badge($atts){
 	$space = $counter*85;
 	
 	$id = $atts['id'];
-	$repeat = $atts['repeat'];
+	$repeat = $atts['repeat'] ? $atts['repeat'] : 'off';
 	if( $atts['uid']){
 		$user_id = $atts['uid'];
 	}else{
@@ -65,5 +65,14 @@ function go_award_badge($atts){
 	}
 	$badge_count = count(get_user_meta($user_id, 'go_badges', true));
 	$wpdb->update($wpdb->prefix."go_totals", array('badge_count' => $badge_count), array('uid' => $user_id));
+}
+
+function go_remove_badge ($user_id, $badge_id) {
+	global $wpdb;
+	$existing_badges = get_user_meta($user_id, 'go_badges', true);
+	unset($existing_badges[array_search($badge_id, $existing_badges)]);
+	$badge_count = go_return_badge_count($user_id) - 1;
+	$wpdb->update("{$wpdb->prefix}go_totals", array('badge_count' => $badge_count), array('uid' => $user_id));
+	update_user_meta($user_id, 'go_badges', $existing_badges);
 }
 ?>

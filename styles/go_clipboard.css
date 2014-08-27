@@ -1,5 +1,5 @@
 #go_clipboard_table_wrapper{
-	overflow-x: auto;
+	overflow: auto;
 }
 
 .widefat th{
@@ -37,6 +37,11 @@ table.sortable tbody tr::before {
 	background-color:#FFF;
 	width: 865 px;
 	padding: 3px;
+}
+
+#go_clipboard_table_filter{
+	display: inline-block;
+	float: right;
 }
 	
 	/*
@@ -129,7 +134,7 @@ html[xmlns] .dataTables_wrapper {
  * Table styles
  */
 table.pretty {
-	width: 100%;
+	width: 100% !important;
 	clear: both;
 }
 
@@ -137,12 +142,14 @@ table.pretty td,
 table.pretty th {
 	padding: 5px;
 	border: 1px solid #fff;
+	font-size: 12px;
 }
 
 /* Header cells */
 table.pretty thead th {
 	text-align: center;
 	background: #F4F4F4;
+	font-size: 14px;
 }
 
 /* Body cells */
