@@ -123,14 +123,14 @@ add_action('login_redirect', 'go_user_redirect', 10, 3);
 add_action('go_clipboard_collect_data', 'go_clipboard_collect_data');
 add_filter('cron_schedules', 'go_weekly_schedule');
 
-function go_deactivate_plugin(){
+function go_deactivate_plugin () {
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	$plugin = plugin_basename( __FILE__ );
 	deactivate_plugins($plugin);
 	die();
 }
 
-function go_tsk_actv_activate() {
+function go_tsk_actv_activate () {
     add_option('go_tsk_actv_do_activation_redirect', true);
 	update_option('go_display_admin_explanation', true);
 }
@@ -146,16 +146,17 @@ function go_tsk_actv_redirect() {
 }
 
 function isEven($value) {
-	if ($value%2 == 0){
-		return 'even';}
-	else{
+	if ($value%2 == 0) {
+		return 'even';
+	} else {
 		return 'odd';
-}}
+	}
+}
 
-function check_values($req = null, $cur = null){
-	if($cur >= $req || $req <= 0){
+function check_values ($req = null, $cur = null) {
+	if ($cur >= $req || $req <= 0) {
 		return true;
-	} else{
+	} else {
 		return false;
 	}
 }
@@ -182,7 +183,7 @@ function go_user_redirect ($redirect_to, $request, $user) {
 }
 
 function go_admin_head_notification(){
-	if(get_option('go_display_admin_explanation') && current_user_can('manage_options')){
+	if (get_option('go_display_admin_explanation') && current_user_can('manage_options')) {
 		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
 		echo "<script>
 			function go_remove_admin_notification(){
@@ -201,12 +202,12 @@ function go_admin_head_notification(){
 	}
 }
 
-function go_admin_remove_notification(){
+function go_admin_remove_notification () {
 	update_option('go_display_admin_explanation', false);
 	die();
 }
 
-function go_weekly_schedule($schedules){
+function go_weekly_schedule ($schedules) {
 	$schedules['go_weekly'] = array(
 		'interval' => 604800,
 		'display' => __('Once Weekly')
