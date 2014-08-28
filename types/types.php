@@ -158,7 +158,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
-				'id' => 'stage_one_badge',
+				'id' => $prefix.'stage_one_badge',
 				'type' => 'go_badge_input',
 				'stage' => 1
 			),
@@ -238,7 +238,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
-				'id' => 'stage_two_badge',
+				'id' => $prefix.'stage_two_badge',
 				'type' => 'go_badge_input',
 				'stage' => 2
 			),
@@ -323,7 +323,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
-				'id' => 'stage_three_badge',
+				'id' => $prefix.'stage_three_badge',
 				'type' => 'go_badge_input',
 				'stage' => 3
 			),
@@ -413,7 +413,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
-				'id' => 'stage_four_badge',
+				'id' => $prefix.'stage_four_badge',
 				'type' => 'go_badge_input',
 				'stage' => 4
 			),
@@ -481,7 +481,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
-				'id' => 'stage_five_badge',
+				'id' => $prefix.'stage_five_badge',
 				'type' => 'go_badge_input',
 				'stage' => 5
 			),
@@ -2960,20 +2960,35 @@ function go_validate_store_exchange() {
 add_action('cmb_render_go_badge_input', 'go_badge_input', 10, 1);
 function go_badge_input ($field_args) {
 	$custom = get_post_custom($post_id);
-	echo '<pre>';
-	print_r(unserialize($custom[$field_args['id']][0]));
-	echo '</pre>';
+	$content = unserialize($custom[$field_args['id']][0]);
+	$checked = $content[0];
+	$badges = $content[1];
 	?>
-	<input type='checkbox' name='go_badge_input_toggle_<?php echo $field_args['stage'];?>' class='go_badge_input_toggle' stage='<?php echo $field_args['stage'];?>' <?php echo ($checked  == 'true' ? "checked" : "");?>/>
-	<input type='text' name='go_badge_input' class='go_badge_input' stage='<?php echo $field_args['stage'];?>'/>
+	<input type='checkbox' name='<?php echo $field_args['id'];?>' class='go_badge_input_toggle' stage='<?php echo $field_args['stage'];?>' <?php echo ($checked  == 'true' ? "checked" : "");?>/>
+	<?php
+	if ($badges) {
+		foreach ($badges as $badge) {
+	?>
+			<input type='text' name='go_badge_input_stage_<?php echo $field_args['stage'];?>[]' class='go_badge_input' stage='<?php echo $field_args['stage'];?>' value='<?php echo $badge;?>'/>
+	<?php
+		}
+	} else {
+	?>
+			<input type='text' name='go_badge_input_stage_<?php echo $field_args['stage'];?>[]' class='go_badge_input' stage='<?php echo $field_args['stage'];?>'/>
+	<?php 
+	}
+	?>
 	<button name='go_badge_input_add' stage='<?php echo $field_args['stage'];?>'>+</button>
 	<button name='go_badge_input_remove' stage='<?php echo $field_args['stage'];?>'>-</button>
 	<?php
 }
 
 add_action('cmb_validate_go_badge_input', 'go_validate_badge_input', 10, 3);
-function go_validate_badge_input ($field_args) {
-	
-	return array($field_args['id']);
+function go_validate_badge_input ($override_value, $value, $field_args) {
+	$checkbox_id = $field_args["id"];
+	$checked = $_POST[$checkbox_id] ? 'true' : 'false';
+	$badges = $_POST['go_badge_input_stage_'.$field_args['stage']];
+
+	return(array($checked, $badges));
 }
 ?>

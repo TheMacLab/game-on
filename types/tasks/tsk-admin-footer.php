@@ -60,7 +60,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_encounter_lock_loot_mod'),
 		jQuery('tr.cmb-type-go_test_field_encounter.cmb_id_go_mta_test_lock_encounter'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_one_shortcode_list'),
-		jQuery('tr.cmb_id_stage_one_badge')
+		jQuery('tr.cmb_id_go_mta_stage_one_badge')
 	],
 	2: [
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_two_points'),
@@ -73,7 +73,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_accept_lock_loot_mod'),
 		jQuery('tr.cmb-type-go_test_field_accept.cmb_id_go_mta_test_lock_accept'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_two_shortcode_list'),
-		jQuery('tr.cmb_id_stage_two_badge')
+		jQuery('tr.cmb_id_go_mta_stage_two_badge')
 	],
 	3: [
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_three_points'),
@@ -87,7 +87,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_test_field_completion.cmb_id_go_mta_test_lock_completion'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_mastery'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_three_shortcode_list'),
-		jQuery('tr.cmb_id_stage_three_badge')
+		jQuery('tr.cmb_id_go_mta_stage_three_badge')
 	],
 	4: [
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_four_points'),
@@ -102,7 +102,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_privacy'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_four_shortcode_list'),
-		jQuery('tr.cmb_id_stage_four_badge')
+		jQuery('tr.cmb_id_go_mta_stage_four_badge')
 	],
 	5: [
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_points'),
@@ -113,7 +113,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_privacy'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_five_shortcode_list'),
-		jQuery('tr.cmb_id_stage_five_badge')
+		jQuery('tr.cmb_id_go_mta_stage_five_badge')
 	]
 }
 
@@ -378,8 +378,12 @@ jQuery('.go_badge_input_toggle').each( function () {
 	stage = jQuery(this).attr('stage');
 	if (jQuery(this).prop('checked')) {
 		jQuery('.go_badge_input[stage=' + stage + ']').show('slow');
+		jQuery('button[name="go_badge_input_add"][stage=' + stage + ']').show('slow');
+		jQuery('button[name="go_badge_input_remove"][stage=' + stage + ']').show('slow');
 	} else {
-		jQuery('.go_badge_input[stage=' + stage + ']').hide('slow');	
+		jQuery('.go_badge_input[stage=' + stage + ']').hide('slow');
+		jQuery('button[name="go_badge_input_add"][stage=' + stage + ']').hide('slow');
+		jQuery('button[name="go_badge_input_remove"][stage=' + stage + ']').hide('slow');
 	}
 });
 
@@ -387,9 +391,25 @@ jQuery('.go_badge_input_toggle').click( function () {
 	stage = jQuery(this).attr('stage');
 	if (jQuery(this).prop('checked')) {
 		jQuery('.go_badge_input[stage=' + stage + ']').show('slow');
+		jQuery('button[name="go_badge_input_add"][stage=' + stage + ']').show('slow');
+		jQuery('button[name="go_badge_input_remove"][stage=' + stage + ']').show('slow');
 	} else {
-		jQuery('.go_badge_input[stage=' + stage + ']').hide('slow');	
+		jQuery('.go_badge_input[stage=' + stage + ']').hide('slow');
+		jQuery('button[name="go_badge_input_add"][stage=' + stage + ']').hide('slow');
+		jQuery('button[name="go_badge_input_remove"][stage=' + stage + ']').hide('slow');
 	}
+});
+
+jQuery('button[name="go_badge_input_add"]').click(function (e) {
+	e.preventDefault();
+	stage = jQuery(this).attr('stage');
+	jQuery('.go_badge_input[stage=' + stage + ']').last().after("<input type='text' name='go_badge_input_stage_" + stage + "[]' class='go_badge_input' stage='" + stage + "'/>");
+});
+
+jQuery('button[name="go_badge_input_remove"]').click(function (e) {
+	e.preventDefault();
+	stage = jQuery(this).attr('stage');
+	jQuery('.go_badge_input[stage=' + stage + ']').last().remove();
 });
 
 ////////////////////////////////////

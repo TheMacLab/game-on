@@ -293,7 +293,6 @@ function go_task_shortcode($atts, $content = null) {
 		}else {
 			$update_percent = 0;	
 		}
-		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
 			$points = $req_points - $current_points;
@@ -1754,6 +1753,16 @@ function task_change_stage() {
 	$points_array = $rewards['points'];
 	$currency_array = $rewards['currency'];
 	$bonus_currency = $rewards['bonus_currency'];
+	
+	// Array of badge switch and badges associated with a stage
+	// E.g. array(true, array(263, 276)) means that stage has badges (true) and the badge IDs are 263 and 276
+	$stage_badges = array(
+		unserialize($custom_fields['go_mta_stage_one_badge'][0]),
+		unserialize($custom_fields['go_mta_stage_two_badge'][0]),
+		unserialize($custom_fields['go_mta_stage_three_badge'][0]),
+		unserialize($custom_fields['go_mta_stage_four_badge'][0]),
+		unserialize($custom_fields['go_mta_stage_five_badge'][0]),
+	);
 
 	// Stage Stuff
 	$content_post = get_post($post_id);
@@ -1814,7 +1823,6 @@ function task_change_stage() {
 	} else {
 		$m_passed = 0;
 	}
-	
 	// if the button pressed IS the repeat button...
 	if ($repeat_button == 'on') {
 		if ($undo == 'true' || $undo === true) {
@@ -1826,12 +1834,22 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, ($status-1), 
 				-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
 				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+				if ($stage_badges[$status][0] == 'true') {
+					foreach ($stage_badges[$status][1] as $badge_id) {
+						go_remove_badge($user_id, $badge_id);
+					}
+				}
 			}
 		} else {
 			// if repeat is on and undo is not hit...
 			go_add_post($user_id, $post_id, $status, 
 			floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
 			floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+			if ($stage_badges[$status][0] == 'true') {
+				foreach ($stage_badges[$status][1] as $badge_id) {
+					do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
+				}
+			}
 		}	
 	// if the button pressed is NOT the repeat button...
 	} else {
@@ -1846,11 +1864,21 @@ function task_change_stage() {
 					go_add_post($user_id, $post_id, ($status-2), 
 					-floor($points_array[$status-2] + ($update_percent * $points_array[$status-2])), 
 					-floor($currency_array[$status-2] + ($update_percent * $currency_array[$status-2])), -floor($bonus_currency[$status-2] + ($update_percent * $bonus_currency[$status-2])), $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+					if ($stage_badges[$status-2][0] == 'true') {
+						foreach ($stage_badges[$status-2][1] as $badge_id) {
+							go_remove_badge($user_id, $badge_id);
+						}
+					}
 				}
 			} else {
 				go_add_post($user_id, $post_id, $status, 
 				floor($points_array[$status-1] + ($update_percent * $points_array[$status - 1])), 
 				floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null); 
+				if ($stage_badges[$status-1][0] == 'true') {
+					foreach ($stage_badges[$status-1][1] as $badge_id) {
+						do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
+					}
+				}
 			}
 		}
 	}
