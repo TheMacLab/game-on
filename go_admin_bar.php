@@ -78,10 +78,12 @@ function go_admin_bar(){
 			'parent' => 'go_info',
 		));
 		
-		$wp_admin_bar->add_node( array(
-			'title' => '<input type="button" id="go_admin_bar_deactivation" name="go_admin_bar_deactivation" value="Deactivate" onclick="go_deactivate_plugin()"/>',
-			'parent'=>'go_info'
-		));
+		if (current_user_can('manage_options')) {
+			$wp_admin_bar->add_node( array(
+				'title' => '<input type="button" id="go_admin_bar_deactivation" name="go_admin_bar_deactivation" value="Deactivate" onclick="go_deactivate_plugin()"/>',
+				'parent'=>'go_info'
+			));
+		}
 		
 		if(go_return_options('go_admin_bar_add_switch') == 'On'){	
 			
