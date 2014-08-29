@@ -390,7 +390,9 @@ jQuery('.go_badge_input_toggle').each( function () {
 jQuery('.go_badge_input_toggle').click( function () {
 	stage = jQuery(this).attr('stage');
 	if (jQuery(this).prop('checked')) {
-		jQuery('.go_badge_input[stage=' + stage + ']').show('slow');
+		jQuery('.go_badge_input[stage=' + stage + ']').show('slow', function(){
+			jQuery(this).focus();
+		});
 		jQuery('button[name="go_badge_input_add"][stage=' + stage + ']').show('slow');
 		jQuery('button[name="go_badge_input_remove"][stage=' + stage + ']').show('slow');
 	} else {
@@ -403,7 +405,8 @@ jQuery('.go_badge_input_toggle').click( function () {
 jQuery('button[name="go_badge_input_add"]').click(function (e) {
 	e.preventDefault();
 	stage = jQuery(this).attr('stage');
-	jQuery('.go_badge_input[stage=' + stage + ']').last().after("<input type='text' name='go_badge_input_stage_" + stage + "[]' class='go_badge_input' stage='" + stage + "'/>");
+	jQuery(this).before("<input type='text' name='go_badge_input_stage_" + stage + "[]' class='go_badge_input' stage='" + stage + "'/>");
+	jQuery('input[name="go_badge_input_stage_'+stage+'[]"]').last().focus();
 });
 
 jQuery('button[name="go_badge_input_remove"]').click(function (e) {

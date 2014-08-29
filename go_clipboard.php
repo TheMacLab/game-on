@@ -142,6 +142,7 @@ function go_clipboard_intable(){
 					$focus_name = get_option('go_focus_name');
 					$focuses = get_option('go_focus');
 					$focuses_list = '';
+					$focuses_list = "<option value='No {$focus_name}' ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
 					foreach ($focuses as $focus) {
 						$focuses_list .= "<option value='{$focus}' ".($focus == $user_focuses ? "selected" : "").">{$focus}</option>";
 					}
@@ -160,8 +161,8 @@ function go_clipboard_intable(){
 							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
 							<td>{$user_display}</td>
 							<td>{$current_rank}</td>
-							".((go_return_options('go_focus_switch') == 'On')?"<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>".(empty($user_focuses) || $user_focuses == "No {$focus_name}" ? "<option value='No {$focus_name}' selected>No {$focus_name}</option>" : "")."{$focuses_list}</select></td>":"").
-							"<td class='user_points'>{$points}</td>
+							".((go_return_options('go_focus_switch') == 'On')?"<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>{$focuses_list}</select</td>":"")."
+							<td class='user_points'>{$points}</td>
 							<td class='user_currency'>{$currency}</td>
 							<td class='user_bonus_currency'>{$bonus_currency}</td>
 							<td class='user_penalty'>{$penalty}</td>

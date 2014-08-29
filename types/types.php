@@ -2965,6 +2965,7 @@ function go_badge_input ($field_args) {
 	$badges = $content[1];
 	?>
 	<input type='checkbox' name='<?php echo $field_args['id'];?>' class='go_badge_input_toggle' stage='<?php echo $field_args['stage'];?>' <?php echo ($checked  == 'true' ? "checked" : "");?>/>
+	<div id='go_stage_<?php echo $field_args['stage'];?>_badges' class='go_stage_badge_container'>
 	<?php
 	if ($badges) {
 		foreach ($badges as $badge) {
@@ -2980,6 +2981,7 @@ function go_badge_input ($field_args) {
 	?>
 	<button name='go_badge_input_add' stage='<?php echo $field_args['stage'];?>'>+</button>
 	<button name='go_badge_input_remove' stage='<?php echo $field_args['stage'];?>'>-</button>
+	</div>
 	<?php
 }
 

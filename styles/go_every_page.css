@@ -463,8 +463,12 @@ input#go_mta_repeat_amount {
 	margin-right: 10px;
 }
 
+.go_stage_badge_container{
+	display: inline-block;
+}
+
 .go_badge_input{
-	width: 50px;
+	width: 75px;
 }
 
 input.go_current {
