@@ -322,6 +322,10 @@ tr.even td{
 	background-color: #E2E2E2 !important; 	
 }
 
+tr:hover td{
+	background-color: #CFCFCF !important;
+}
+
 .go_focus{
 	margin: 0px;
 	height: 19px !important;
