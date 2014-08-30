@@ -6,7 +6,7 @@ jQuery(document).ready( function () {
 	go_update_graph();
 });
 function go_toggle (source){
-	checkboxes = jQuery('.go_selected');
+	checkboxes = jQuery('.go_checkbox');
 	for(var i=0, n=checkboxes.length;i<n;i++) {
 		checkboxes[i].checked = source.checked;
 	}
