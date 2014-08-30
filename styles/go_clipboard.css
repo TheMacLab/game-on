@@ -318,7 +318,7 @@ table.pretty thead th.sorting {
 	background-color:grey;
 }
 
-.go_alternate td{
+tr.even td{
 	background-color: #E2E2E2 !important; 	
 }
 

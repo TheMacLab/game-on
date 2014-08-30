@@ -61,7 +61,7 @@ if($class_a){
 				<th class="header"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 				<th class="header"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
 				<th class="header"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
-				<th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?> Count</a></th>
+				<th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?></a></th>
 			</tr>
 		</thead>
 	<tbody id="go_clipboard_table_body"></tbody>
@@ -126,12 +126,12 @@ function go_clipboard_intable(){
 	FROM {$table_name_user_meta}
 	WHERE meta_key =  '{$wpdb->prefix}capabilities'
 	AND meta_value LIKE  '%subscriber%'");
-	$num = 1;
-	foreach($uid as $id){
-		foreach($id as $value){
+	print_r($uid);
+	foreach ($uid as $id) {
+		foreach ($id as $value) {
 			$class_a = get_user_meta($value, 'go_classifications',true);
-			if($class_a){ 
-				if($class_a[$class_a_choice]){
+			if ($class_a) { 
+				if ($class_a[$class_a_choice]) {
 					$user_data_key = get_userdata( $value ); 
 					$user_login = $user_data_key->user_login;
 					$user_display = $user_data_key->display_name;
@@ -154,7 +154,7 @@ function go_clipboard_intable(){
 					go_get_rank($value);
 					global $current_rank;
 					
-					echo "<tr id='user_{$value}' ".(($num%2 == 0)?"class='go_alternate'":"").">
+					echo "<tr id='user_{$value}'>
 							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'/></td>
 							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$value}&quot;);'>{$user_login}</a></td>
 							<td>{$class_a[$class_a_choice]}</td>
@@ -171,7 +171,6 @@ function go_clipboard_intable(){
 				}
 			}
 		}
-		$num++;
 	}
 	die();
 }
