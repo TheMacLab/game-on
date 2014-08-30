@@ -75,6 +75,7 @@ add_action('wp_ajax_go_admin_bar_add','go_admin_bar_add');
 add_action('wp_ajax_go_admin_bar_stats','go_admin_bar_stats');
 add_action('wp_ajax_go_class_a_save','go_class_a_save');
 add_action('wp_ajax_go_class_b_save','go_class_b_save');
+add_action('wp_ajax_go_update_user_sc_data', 'go_update_user_sc_data');
 add_action('wp_ajax_go_focus_save','go_focus_save');
 add_action('wp_ajax_go_reset_levels', 'go_reset_levels');
 add_action('wp_ajax_go_save_levels', 'go_save_levels');

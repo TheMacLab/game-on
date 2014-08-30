@@ -449,6 +449,33 @@ function go_fix_levels() {
 	die();
 }
 
+function go_update_user_sc_data () {
+	$old_class_a_array = $_POST['old_class_a'];
+	$old_class_b_array = $_POST['old_class_b'];
+	$new_class_a_array = $_POST['new_class_a'];
+	$new_class_b_array = $_POST['new_class_b'];
+	
+	$class_a_diff = array_diff($old_class_a_array, $new_class_a_array);
+	$class_b_diff = array_diff($old_class_b_array, $new_class_b_array);
+	
+	$users = get_users();
+	if (!empty($class_a_diff) || !empty($class_b_diff)){
+		foreach ($users as $user) {
+			$user_id = $user->ID;
+			$user_class = get_user_meta($user_id, 'go_classifications', true);
+			if (!empty($user_class)) {
+				foreach ($user_class as $class_a => $class_b) {
+					$new_class_a = $new_class_a_array[array_search($class_a, $old_class_a_array)];
+					$new_class_b = $new_class_b_array[array_search($class_b, $old_class_b_array)];
+					$new_class = array($new_class_a => $new_class_b);
+					update_user_meta($user_id, 'go_classifications', $new_class);
+				}
+			}
+		}
+	}
+	die();
+}
+
 function go_focus_save() {
 	global $wpdb;
 	$array = $_POST['focus_array'];

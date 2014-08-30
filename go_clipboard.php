@@ -54,14 +54,14 @@ if($class_a){
 				<th class="header"><a href="#" >ID</a></th>
 				<th class="header"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
 				<th class="header"><a href="#" >Student Name</a></th>
-				<th class="header"><a href="#" >Gamertag</a></th>
+				<th class="header"><a href="#" >Display Name</a></th>
 				<th class="header"><a href="#" ><?php echo go_return_options('go_level_names'); ?></a></th>
 				<?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
 				<th class="header"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
 				<th class="header"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 				<th class="header"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
 				<th class="header"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
-				<th class="header"><a href="#">Badge Count</a></th>
+				<th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?> Count</a></th>
 			</tr>
 		</thead>
 	<tbody id="go_clipboard_table_body"></tbody>

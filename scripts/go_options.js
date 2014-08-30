@@ -440,6 +440,16 @@ jQuery(document).ready(function(){
 	jQuery('#go_options_form').submit(function(event){
 		if (event.levels_saved !== true) {
 			event.preventDefault();
+			var old_class_a = [];
+			var	old_class_b = [];
+			var	new_class_a = [];
+			var	new_class_b = [];
+			jQuery('.go_options_period_input').each(function (i, el) {
+				old_class_a.push(jQuery(el).val());
+			});
+			jQuery('.go_options_computer_input').each(function (i, el) { 
+				old_class_b.push(jQuery(el).val());
+			});
 			var new_value_level = jQuery("input[name='go_level_names']").val().trim();
 			var old_value_level = jQuery("input[name='go_level_names']").attr('old_value').trim();
 			var new_value_period = jQuery("input[name='go_class_a_name']").val().trim();
@@ -467,6 +477,26 @@ jQuery(document).ready(function(){
 					this.value = name;
 				});
 			}
+			
+			jQuery('.go_options_period_input').each(function (i, el) {
+				new_class_a.push(jQuery(el).val());
+			});
+			jQuery('.go_options_computer_input').each(function (i, el) { 
+				new_class_b.push(jQuery(el).val());
+			});
+			
+			jQuery.ajax({
+				type: 'post',
+				url: MyAjax.ajaxurl,
+				data:{
+					action: 'go_update_user_sc_data',
+					old_class_a: old_class_a,
+					old_class_b: old_class_b,
+					new_class_a: new_class_a,
+					new_class_b: new_class_b
+				}
+			});
+			
 			if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
 				var values = jQuery('.go_options_profession_input').map(function() {
 					return jQuery(this).val();
