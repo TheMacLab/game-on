@@ -693,7 +693,7 @@ function go_task_shortcode($atts, $content = null) {
 							if ($mastery_upload) {
 								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 							}
-							echo '<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
+							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 						}
 						if($next_post_in_chain && !$last_in_chain){
 							echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
@@ -1027,7 +1027,7 @@ function go_task_shortcode($atts, $content = null) {
 
 			var is_repeating = jQuery('#go_button').attr('repeat');
 			if (is_repeating !== 'on') {
-				var status = jQuery('#go_button').attr('status') - 2;	
+				var status = jQuery('#go_button').attr('status') - 2;
 			} else {
 				var status = jQuery('#go_button').attr('status') - 1;
 			}
@@ -1104,7 +1104,12 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		
 		function test_point_update() {
-			var status = jQuery('#go_button').attr('status') - 1;
+			var is_repeating = jQuery('#go_button').attr('repeat');
+			if (is_repeating !== 'on') {
+				var status = jQuery('#go_button').attr('status') - 2;
+			} else {
+				var status = jQuery('#go_button').attr('status') - 1;
+			}
 			jQuery.ajax({
 				type: "POST",
 				data: {
@@ -1308,7 +1313,7 @@ function test_point_update() {
 	$points_str = $_POST['points'];
 	$update_percent = $_POST['update_percent'];
 	$points_array = explode(" ", $points_str);
-	$point_base = $points_array[$status];
+	$point_base = (int)$points_array[$status];
 	$e_fail_count = $_SESSION['test_encounter_fail_count'];
 	$a_fail_count = $_SESSION['test_accept_fail_count'];
 	$c_fail_count = $_SESSION['test_completion_fail_count'];
@@ -1384,11 +1389,9 @@ function go_inc_test_fail_count($s_name, $test_fail_max) {
 }
 
 function unlock_stage() {
-	global $wpdb;
-
 	$id = $_POST['task'];
 	$status = $_POST['status'];
-	$test_size = $_POST['list_size'];
+	$test_size = (int)$_POST['list_size'];
 	$points_str = $_POST['points'];
 	$points_array = explode(" ", $points_str);
 	$point_base = $points_array[$status];
@@ -1454,7 +1457,7 @@ function unlock_stage() {
 				$str = preg_replace("/(\&\#34;)+/", '\"', $str);
 			}
 		}
-		array_push($all_keys_array, $str);
+		$all_keys_array[] = $str;
 	}
 	$key = $all_keys_array[0];
 	
@@ -1485,7 +1488,7 @@ function unlock_stage() {
 					}
 				}
 
-				if ($match_count == count($k_array)) {
+				if ($match_count == count($k_array) && $match_count == count($c_array)) {
 					$total_matches++;
 				} else {
 					if (!in_array("#go_test_{$i}", $fail_question_ids)) {
@@ -1529,7 +1532,7 @@ function unlock_stage() {
 					}
 				}
 			}
-			if ($key_match == count($choice_array)) {
+			if ($key_match == count($key_array) && $key_match == count($choice_array)) {
 				echo 1;
 				die();
 			} else {
@@ -2119,7 +2122,7 @@ function task_change_stage() {
 				if ($mastery_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}
-				echo '<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
+				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 			}
 			if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
 				echo '<div class="go_chain_message"><p>Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';

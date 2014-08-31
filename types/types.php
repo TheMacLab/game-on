@@ -813,8 +813,8 @@ function go_test_field_encounter($field_args) {
 				<tr id='go_test_field_input_row_e_".$i."' class='go_test_field_input_row_e go_test_field_input_row'>
 					<td>
 						<select id='go_test_field_select_e_".$i."' class='go_test_field_input_select_e' name='go_test_field_select_e[]' onchange='update_checkbox_type_e(this);'>
-						  <option value='radio' class='go_test_field_input_option_e'>Multiple Choice</option>
-						  <option value='checkbox' class='go_test_field_input_option_e'>Multiple Select</option>
+							<option value='radio' class='go_test_field_input_option_e' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
+							<option value='checkbox' class='go_test_field_input_option_e' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
 						</select>";
 						if (!empty($test_field_input_question)) {
 							echo "<br/><br/><input class='go_test_field_input_question_e go_test_field_input_question' name='go_test_field_input_question_e[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
@@ -906,7 +906,7 @@ function go_test_field_encounter($field_args) {
 		var block_num_e = 0;
 		var block_type_e = 'radio';
 		var input_num_e = 0;
-		var block_count_e = <?php echo $test_field_block_count; ?>;
+		var block_count_e = <?php echo (!empty($test_field_block_count) ? $test_field_block_count : 1); ?>;
 		
 		var test_field_select_array_e = new Array(
 			<?php 
@@ -961,9 +961,11 @@ function go_test_field_encounter($field_args) {
 			jQuery(test_field_with_select_value).attr('selected', true);
 		}
 		for (var x = 0; x < block_count_e; x++) {
-			for (var z = 0; z < test_field_checked_array_e[x].length; z++) {
-				var test_fields_with_checked_value = "tr#go_test_field_input_row_e_"+[x]+" .go_test_field_input_e[value='"+test_field_checked_array_e[x][z]+"']";
-				var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_e').attr('checked', true);
+			if (test_field_checked_array_e.length !== 0) {
+				for (var z = 0; z < test_field_checked_array_e[x].length; z++) {
+					var test_fields_with_checked_value = "tr#go_test_field_input_row_e_"+[x]+" .go_test_field_input_e[value='"+test_field_checked_array_e[x][z]+"']";
+					var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_e').attr('checked', true);
+				}
 			}
 		}
 		var checkbox_obj_array = jQuery('.go_test_field_input_checkbox_e');
@@ -1037,7 +1039,6 @@ function go_test_field_encounter($field_args) {
 			jQuery(obj).parents('tr.go_test_field_input_row_e').find('input.go_test_field_input_count_e')[0].value--;
 			jQuery(obj).parent('li').remove();
 		}
-		
 	</script>
 	<?php
 }
@@ -1178,8 +1179,8 @@ function go_test_field_accept($field_args) {
 				<tr id='go_test_field_input_row_a_".$i."' class='go_test_field_input_row_a go_test_field_input_row'>
 					<td>
 						<select id='go_test_field_select_a_".$i."' class='go_test_field_input_select_a' name='go_test_field_select_a[]' onchange='update_checkbox_type_a(this);'>
-						  <option value='radio' class='go_test_field_input_option_a'>Multiple Choice</option>
-						  <option value='checkbox' class='go_test_field_input_option_a'>Multiple Select</option>
+						  <option value='radio' class='go_test_field_input_option_a' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
+						  <option value='checkbox' class='go_test_field_input_option_a' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
 						</select>";
 						if (!empty($test_field_input_question)) {
 							echo "<br/><br/><input class='go_test_field_input_question_a go_test_field_input_question' name='go_test_field_input_question_a[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
@@ -1326,9 +1327,11 @@ function go_test_field_accept($field_args) {
 			jQuery(test_field_with_select_value).attr('selected', true);
 		}
 		for (var x = 0; x < block_count_a; x++) {
-			for (var z = 0; z < test_field_checked_array_a[x].length; z++) {
-				var test_fields_with_checked_value = "tr#go_test_field_input_row_a_"+[x]+" .go_test_field_input_a[value='"+test_field_checked_array_a[x][z]+"']";
-				var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_a').attr('checked', true);
+			if (test_field_checked_array_a.length !== 0) {
+				for (var z = 0; z < test_field_checked_array_a[x].length; z++) {
+					var test_fields_with_checked_value = "tr#go_test_field_input_row_a_"+[x]+" .go_test_field_input_a[value='"+test_field_checked_array_a[x][z]+"']";
+					var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_a').attr('checked', true);
+				}
 			}
 		}
 		var checkbox_obj_array = jQuery('.go_test_field_input_checkbox_a');
@@ -1543,8 +1546,8 @@ function go_test_field_completion($field_args) {
 				<tr id='go_test_field_input_row_c_".$i."' class='go_test_field_input_row_c go_test_field_input_row'>
 					<td>
 						<select id='go_test_field_select_c_".$i."' class='go_test_field_input_select_c' name='go_test_field_select_c[]' onchange='update_checkbox_type_c(this);'>
-						  <option value='radio' class='go_test_field_input_option_c'>Multiple Choice</option>
-						  <option value='checkbox' class='go_test_field_input_option_c'>Multiple Select</option>
+						  <option value='radio' class='go_test_field_input_option_c' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
+						  <option value='checkbox' class='go_test_field_input_option_c' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
 						</select>";
 						if (!empty($test_field_input_question)) {
 							echo "<br/><br/><input class='go_test_field_input_question_c go_test_field_input_question' name='go_test_field_input_question_c[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
@@ -1691,9 +1694,11 @@ function go_test_field_completion($field_args) {
 			jQuery(test_field_with_select_value).attr('selected', true);
 		}
 		for (var x = 0; x < block_count_c; x++) {
-			for (var z = 0; z < test_field_checked_array_c[x].length; z++) {
-				var test_fields_with_checked_value = "tr#go_test_field_input_row_c_"+[x]+" .go_test_field_input_c[value='"+test_field_checked_array_c[x][z]+"']";
-				jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_c').attr('checked', true);
+			if (test_field_checked_array_c.length !== 0) {
+				for (var z = 0; z < test_field_checked_array_c[x].length; z++) {
+					var test_fields_with_checked_value = "tr#go_test_field_input_row_c_"+[x]+" .go_test_field_input_c[value='"+test_field_checked_array_c[x][z]+"']";
+					jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_c').attr('checked', true);
+				}
 			}
 		}
 		var checkbox_obj_array = jQuery('.go_test_field_input_checkbox_c');
@@ -1908,8 +1913,8 @@ function go_test_field_mastery($field_args) {
 				<tr id='go_test_field_input_row_m_".$i."' class='go_test_field_input_row_m go_test_field_input_row'>
 					<td>
 						<select id='go_test_field_select_m_".$i."' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'>
-						  <option value='radio' class='go_test_field_input_option_m'>Multiple Choice</option>
-						  <option value='checkbox' class='go_test_field_input_option_m'>Multiple Select</option>
+						  <option value='radio' class='go_test_field_input_option_m' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
+						  <option value='checkbox' class='go_test_field_input_option_m' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
 						</select>";
 						if (!empty($test_field_input_question)) {
 							echo "<br/><br/><input class='go_test_field_input_question_m go_test_field_input_question' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
@@ -2056,9 +2061,11 @@ function go_test_field_mastery($field_args) {
 			jQuery(test_field_with_select_value_m).attr('selected', true);
 		}
 		for (var x = 0; x < block_count_m; x++) {
-			for (var z = 0; z < test_field_checked_array_m[x].length; z++) {
-				var test_fields_with_checked_value = "tr#go_test_field_input_row_m_"+[x]+" .go_test_field_input_m[value='"+test_field_checked_array_m[x][z]+"']";
-				jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_m').attr('checked', true);
+			if (test_field_checked_array_m.length !== 0) {
+				for (var z = 0; z < test_field_checked_array_m[x].length; z++) {
+					var test_fields_with_checked_value = "tr#go_test_field_input_row_m_"+[x]+" .go_test_field_input_m[value='"+test_field_checked_array_m[x][z]+"']";
+					jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_m').attr('checked', true);
+				}
 			}
 		}
 		var checkbox_obj_array_m = jQuery('.go_test_field_input_checkbox_m');
