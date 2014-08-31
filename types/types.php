@@ -2979,8 +2979,6 @@ function go_badge_input ($field_args) {
 	<?php 
 	}
 	?>
-	<button name='go_badge_input_add' stage='<?php echo $field_args['stage'];?>'>+</button>
-	<button name='go_badge_input_remove' stage='<?php echo $field_args['stage'];?>'>-</button>
 	</div>
 	<?php
 }
