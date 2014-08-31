@@ -125,7 +125,7 @@ function go_the_lb_ajax(){
         <div id="go_recipient_wrap" class="golb-fr-boxes-g">Recipient: <input id="go_recipient" type="text"/></div>
         <div id="go_search_results"></div>
 	<?php }?>
-	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>');">Buy</div>
+	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>'); this.removeAttribute('onclick');">Buy</div>
 	<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
 	<div id="golb-purchased">
 	<?php 

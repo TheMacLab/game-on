@@ -22,7 +22,6 @@ function goBuytheItem (id, buyColor, count) {
 			dataType: "html",
 			success: function(response) {
 				var buy = jQuery('#golb-fr-buy');
-				jQuery(buy).removeAttr('onclick');
 				if (response.indexOf("Need more") != -1 || response.indexOf("You've attempted to purchase") != -1) {
 					alert(response);
 					buy.html('Error');
