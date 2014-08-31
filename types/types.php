@@ -2603,6 +2603,7 @@ function go_clone_task_ajax () {
 		<script type="text/javascript">        	
 			function clone_post_ajax() {
 				jQuery("input#go-button-clone").click(function() {
+					jQuery("input#go-button-clone").prop("disabled", true);
 					jQuery.ajax({
 						url: "'.get_site_url().'/wp-admin/admin-ajax.php",
 						type: "POST",
@@ -2685,7 +2686,7 @@ function go_clone_task () {
 	if (!empty($clone_id)) {
 
 		// Setup the url to the cloned post.
-		$url = get_site_url()."/wp-admin/post.php?post={$clone_id}&action=edit";
+		$url = get_admin_url()."post.php?post={$clone_id}&action=edit";
 		
 		// Add the original post's meta data to the clone.
 		foreach ($post_custom as $key => $value) {
