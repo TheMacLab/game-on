@@ -2695,9 +2695,12 @@ function go_clone_task () {
 					add_post_meta($clone_id, $key, $uns, true);
 				} else {
 					if ($key === 'chain_position') {
-						$chain = array_shift(get_the_terms($post_id, 'task_chains'));
-						$end_pos = $chain->count + 1;
-						add_post_meta($clone_id, $key, $end_pos, true);
+						$terms_array = get_the_terms($post_id, 'task_chains');
+						if (!empty($terms_array)) {
+							$chain = array_shift($terms_array);
+							$end_pos = $chain->count + 1;
+							add_post_meta($clone_id, $key, $end_pos, true);
+						}
 					} else {
 						add_post_meta($clone_id, $key, $value[$i], true);
 					}
