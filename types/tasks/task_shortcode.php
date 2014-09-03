@@ -640,7 +640,7 @@ function go_task_shortcode($atts, $content = null) {
 											</div>
 											<div id="go_repeat_unclicked">
 												<button id="go_button" status="4" onclick="go_repeat_replace();">'
-													.go_return_options('go_repeat_button').
+													.get_option('go_fifth_stage_button').
 												'</button>
 												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
 											</div>
@@ -668,7 +668,7 @@ function go_task_shortcode($atts, $content = null) {
 											</div>
 											<div id="go_repeat_unclicked">
 												<button id="go_button" status="4" onclick="go_repeat_replace();">'
-													.go_return_options('go_repeat_button').
+													.get_option('go_fifth_stage_button').
 												'</button>
 												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
 											</div>
@@ -2069,7 +2069,7 @@ function task_change_stage() {
 								</div>
 								<div id="go_repeat_unclicked">
 									<button id="go_button" status="4" onclick="go_repeat_replace();">'
-										.go_return_options('go_repeat_button').
+										.get_option('go_fifth_stage_button').
 									'</button>
 									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
 								</div>
@@ -2097,7 +2097,7 @@ function task_change_stage() {
 								</div>
 								<div id="go_repeat_unclicked">
 									<button id="go_button" status="4" onclick="go_repeat_replace();">'
-										.go_return_options('go_repeat_button').
+										.get_option('go_fifth_stage_button').
 									'</button>
 									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
 								</div>
