@@ -2260,7 +2260,7 @@ add_action('cmb_render_go_repeat_amount', 'go_repeat_amount');
 function go_repeat_amount() {
 	$custom = get_post_custom($post_id);
 	$content = $custom['go_mta_repeat_amount'][0];
-	if (empty($content[0])) {
+	if (is_null($content)) {
 		$value = 1;
 	} else {
 		$value = $content[0];
