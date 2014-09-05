@@ -108,7 +108,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_points'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_currency'),
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_bonus_currency'),
-		jQuery('tr.cmb-type-text.cmb_id_go_mta_repeat_amount'),
+		jQuery('tr.cmb-type-go_repeat_amount.cmb_id_go_mta_repeat_amount'),
 		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_repeat_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_privacy'),

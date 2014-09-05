@@ -455,9 +455,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'reward' => 'bonus_currency'
 			),
 			array(
-				'name' => 'Limit'.go_task_opt_help('repeat_limit', '', 'http://maclab.guhsd.net/go/video/quests/allowedRepeatableTimes.mp4'),
+				'name' => 'Limit'.go_task_opt_help('repeat_amount', '', 'http://maclab.guhsd.net/go/video/quests/allowedRepeatableTimes.mp4'),
 				'id' => $prefix.'repeat_amount',
-				'type' => 'text'
+				'type' => 'go_repeat_amount'
 			),
 			array(
 				'name' => 'Lock'.go_task_opt_help('repeat_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
@@ -2256,6 +2256,18 @@ function go_validate_test_field_mastery() {
 	return(array($question, $test, $select, $block_count, $input_count));
 }
 
+add_action('cmb_render_go_repeat_amount', 'go_repeat_amount');
+function go_repeat_amount() {
+	$custom = get_post_custom($post_id);
+	$content = $custom['go_mta_repeat_amount'][0];
+	if (empty($content[0])) {
+		$value = 1;
+	} else {
+		$value = $content[0];
+	}
+	echo "<input id='go_repeat_amount_input' name='go_mta_repeat_amount' type='text' ".(!empty($value) ? "value='{$value}'" : '')."/>";
+}
+
 add_filter( 'template_include', 'go_tasks_template_function', 1 );
 function go_tasks_template_function( $template_path ) {
     if ( get_post_type() == 'tasks' ) {
@@ -3001,5 +3013,5 @@ function go_validate_badge_input ($override_value, $value, $field_args) {
 	$badges = $_POST['go_badge_input_stage_'.$field_args['stage']];
 
 	return(array($checked, $badges));
-}
+}e
 ?>

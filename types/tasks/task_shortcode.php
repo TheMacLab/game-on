@@ -639,8 +639,8 @@ function go_task_shortcode($atts, $content = null) {
 												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
 											</div>
 											<div id="go_repeat_unclicked">
-												<button id="go_button" status="4" onclick="go_repeat_replace();">'
-													.get_option('go_fifth_stage_button').
+												<button id="go_button" status="4" onclick="go_repeat_replace();">
+													See '.get_option('go_fifth_stage_name').
 												'</button>
 												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
 											</div>

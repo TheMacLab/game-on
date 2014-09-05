@@ -453,7 +453,7 @@ input.go_test_field_rm {
 	margin-left: -2px !important;
 }
 
-input#go_mta_repeat_amount {
+input#go_repeat_amount_input {
 	width: 40px;
 	text-align: center;
 }
