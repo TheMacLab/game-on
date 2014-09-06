@@ -122,10 +122,11 @@ function go_clipboard_intable(){
 	$class_a_choice = $_POST['go_clipboard_class_a_choice'];
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
 	$table_name_go = $wpdb->prefix.'go';
-	$uid = $wpdb->get_results("SELECT user_id
-	FROM {$table_name_user_meta}
-	WHERE meta_key =  '{$wpdb->prefix}capabilities'
-	AND meta_value LIKE  '%subscriber%'");
+	$uid = $wpdb->get_results("SELECT user_id 
+		FROM {$table_name_user_meta} 
+		WHERE meta_key = '{$wpdb->prefix}capabilities' 
+		AND meta_value NOT LIKE '%administrator%'"
+	);
 	print_r($uid);
 	foreach ($uid as $id) {
 		foreach ($id as $value) {
@@ -211,10 +212,11 @@ function go_clipboard_collect_data(){
 	global $wpdb;
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
 	$table_name_go = $wpdb->prefix.'go';
-	$uid = $wpdb->get_results("SELECT user_id
-	FROM ".$table_name_user_meta."
-	WHERE meta_key =  '".$wpdb->prefix."capabilities'
-	AND meta_value LIKE  '%subscriber%'");
+	$uid = $wpdb->get_results("SELECT user_id 
+		FROM {$table_name_user_meta} 
+		WHERE meta_key = '{$wpdb->prefix}capabilities' 
+		AND meta_value NOT LIKE '%administrator%'"
+	);
 	$time = round(microtime(true));
 	$array = get_option('go_graphing_data');
 	foreach($uid as $id){
