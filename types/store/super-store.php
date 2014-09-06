@@ -16,19 +16,19 @@ include ('store-admin-footer.php');
 //Adds Store Texonomy
 add_action('init' , 'go_store_taxonomy' );
 function go_store_taxonomy()
-  {
-     $labels = array(
-    'name' => _x( 'Store Categories', 'taxonomy general name' ),
-    'singular_name' => _x( 'Store Item Category', 'taxonomy singular name' ),
-    'search_items' =>  __( 'Search Store Categories' ),
-    'all_items' => __( 'All Store Categories' ),
-    'parent_item' => __( 'Parent Store Categories' ),
-    'parent_item_colon' => __( 'Parent Store Category:' ),
-    'edit_item' => __( 'Edit Store Category' ), 
-    'update_item' => __( 'Update Store Category' ),
-    'add_new_item' => __( 'Add New Store Category' ),
-    'new_item_name' => __( 'New Store Category' ),
-  );    
+    {
+    $labels = array(
+        'name' => _x( get_option('go_store_name').' Categories', 'taxonomy general name' ),
+        'singular_name' => _x( get_option('go_store_name').' Item Category', 'taxonomy singular name' ),
+        'search_items' =>  __( 'Search '.get_option('go_store_name').' Categories' ),
+        'all_items' => __( 'All '.get_option('go_store_name').' Categories' ),
+        'parent_item' => __( 'Parent '.get_option('go_store_name').' Categories' ),
+        'parent_item_colon' => __( 'Parent '.get_option('go_store_name').' Category:' ),
+        'edit_item' => __( 'Edit '.get_option('go_store_name').' Category' ), 
+        'update_item' => __( 'Update '.get_option('go_store_name').' Category' ),
+        'add_new_item' => __( 'Add New '.get_option('go_store_name').' Category' ),
+        'new_item_name' => __( 'New '.get_option('go_store_name').' Category' ),
+    );    
 
   register_taxonomy('store_types',array('jobs'), array(
     'hierarchical' => true,
@@ -48,21 +48,20 @@ function go_store_post_type() {
 	register_post_type( 'go_store',
 		array(
 			'labels' => array(
-				'name' => 'Store',
-				'menu_name' => 'Store',
-                'singular_name' => 'Store Item',
-                'add_new' => 'New Store Item',
-                'add_new_item' => 'New Store Item',
-                'edit' => 'Edit Store Items',
-                'edit_item' => 'Edit Store Items',
-                'new_item' => 'New Store Item',
-                'view' => 'View Items',
-                'view_item' => 'View Store Items',
-                'search_items' => 'Search Store Items',
-                'not_found' => 'No Stores Items found',
-                'not_found_in_trash' => 'No Store Items found in Trash',
+                'name' => __(get_option('go_store_name')),
+                'menu_name' => __(get_option('go_store_name')),
+                'singular_name' => __(get_option('go_store_name').' Item'),
+                'add_new' => __('New '.get_option('go_store_name').' Item'),
+                'add_new_item' => __('New '.get_option('go_store_name').' Item'),
+                'edit' => __('Edit '.get_option('go_store_name').' Items'),
+                'edit_item' => __('Edit '.get_option('go_store_name').' Items'),
+                'new_item' => __('New '.get_option('go_store_name').' Item'),
+                'view' => __('View Items'),
+                'view_item' => __('View '.get_option('go_store_name').' Items'),
+                'search_items' => __('Search '.get_option('go_store_name').' Items'),
+                'not_found' => __('No '.get_option('go_store_name').' Items found'),
+                'not_found_in_trash' => __('No '.get_option('go_store_name').' Items found in Trash'),
                 'parent' => 'Parent Store Item'
-				
 			),
 			'taxonomies' => array('store_types'),
 			'public' => true,

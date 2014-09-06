@@ -191,6 +191,7 @@ function go_install_data() {
 		'go_third_stage_button' => 'Complete',
 		'go_fourth_stage_button' => 'Master',
 		'go_fifth_stage_button' => 'Repeat Mastery',
+		'go_store_name' => 'Store',
 		'go_points_name' => 'Experience',
 		'go_points_prefix' => '',
 		'go_points_suffix' => 'XP',

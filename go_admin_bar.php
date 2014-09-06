@@ -41,6 +41,17 @@ function go_admin_bar(){
 	}
 	
 	if (is_admin_bar_showing() && is_user_logged_in()){
+		$is_admin = false;
+		$user_obj = get_user_by('id', $current_user_id);
+		$user_roles = $user_obj->roles;
+		if (!empty($user_roles)) {
+			foreach ($user_roles as $role) {
+				if ($role === "administrator") {
+					$is_admin = true;
+					break;
+				}
+			}
+		}
 	
 		$wp_admin_bar->add_node( array(
 			'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up" class="go_admin_bar_text">'.($rng).'/'.($dom).'</div><div id="go_admin_bar_progress_bar" class="progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
@@ -127,18 +138,31 @@ function go_admin_bar(){
 			'id' => 'go_task_search'
 		));
 		
-		$wp_admin_bar->add_node( array(
-			'title' => 'Clipboard',
-			'href' => get_site_url().'/wp-admin/admin.php?page=go_clipboard',
-			'parent' => 'site-name'
-		));	
-		
-		$wp_admin_bar->add_node( array(
-			'title' => 'Clipboard',
-			'href' => get_site_url().'/wp-admin/admin.php?page=go_clipboard',
-			'parent' => 'site-name'
-		));	
-		
+		if ($is_admin) {
+			$wp_admin_bar->add_node( array(
+				'title' => 'Clipboard',
+				'href' => get_admin_url().'admin.php?page=go_clipboard',
+				'parent' => 'site-name'
+			));
+
+			$wp_admin_bar->add_node( array(
+				'title' => get_option('go_tasks_plural_name'),
+				'href' => get_admin_url().'edit.php?post_type=tasks',
+				'parent' => 'site-name'
+			));
+
+			$wp_admin_bar->add_node( array(
+				'title' => get_option('go_store_name'),
+				'href' => get_admin_url().'edit.php?post_type=go_store',
+				'parent' => 'site-name'
+			));
+
+			$wp_admin_bar->add_node( array(
+				'title' => 'Game-On',
+				'href' => get_admin_url().'admin.php?page=game-on-options.php',
+				'parent' => 'site-name'
+			));
+		}
 	}
 
 }
