@@ -128,11 +128,11 @@ function go_admin_bar(){
 		
 		$wp_admin_bar->add_node( array(
 			'title' => '
-				<form role="search" method="get" id="go_admin_bar_task_search_form" class="searchform" action="' . home_url( '/' ) . '" >
-					<div><label class="screen-reader-text" for="s">' . __( 'Search for:' ) . '</label>
-						<input type="text" value="' . get_search_query() . '" name="s" id="go_admin_bar_task_search_input" placeholder="Search for tasks..."/>
-						<input type="hidden" name="post_type[]" value="tasks" />
-						<input type="submit" id="go_admin_bar_task_search_submit" value="'. esc_attr__( 'Search' ) .'" />
+				<form role="search" method="get" id="go_admin_bar_task_search_form" class="searchform" action="'.home_url('/').'">
+					<div><label class="screen-reader-text" for="s">'.__('Search for:').'</label>
+						<input type="text" value="'.get_search_query().'" name="s" id="go_admin_bar_task_search_input" placeholder="Search for '.strtolower(get_option("go_tasks_plural_name")).'..."/>
+						<input type="hidden" name="post_type[]" value="tasks"/>
+						<input type="submit" id="go_admin_bar_task_search_submit" value="'.esc_attr__('Search').'"/>
 					</div>
 				</form>',
 			'id' => 'go_task_search'
