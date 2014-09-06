@@ -242,6 +242,7 @@
 	float: left;
 	list-style-type: none;
 	margin: 0px 1.5% 0px 0px !important;
+	overflow-y: auto;
 }
 
 #go_stats_body .go_stats_body_list:last-of-type{

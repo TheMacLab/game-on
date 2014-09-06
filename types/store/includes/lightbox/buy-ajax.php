@@ -66,7 +66,7 @@ function go_buy_item() {
 	if ($is_focused) {
 		$item_focus = $store_focus[1];
 	}
-	$repeat = 'on';
+	$repeat = 'off';
 	
 	$cur_currency = go_return_currency($user_id);
 	$cur_points = go_return_points($user_id);

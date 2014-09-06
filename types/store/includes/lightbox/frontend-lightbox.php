@@ -49,7 +49,7 @@ function go_the_lb_ajax(){
 	$user_bonus_currency = go_return_bonus_currency($user_id);
 	$user_currency = go_return_currency($user_id);
 	$user_penalties = go_return_penalty($user_id);
-	$purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
+	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
 	
 	echo '<h2>'.$the_title.'</h2>';
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
