@@ -139,31 +139,40 @@ function go_admin_bar(){
 		));
 		
 		if ($is_admin) {
+			$wp_admin_bar->add_group(array(
+				'id' => 'go_site_name_menu',
+				'parent' => 'site-name',
+				'meta' => array('class' => 'go_site_name_menu')
+			));
+
 			$wp_admin_bar->add_node( array(
 				'title' => 'Clipboard',
 				'href' => get_admin_url().'admin.php?page=go_clipboard',
-				'parent' => 'site-name'
+				'parent' => 'go_site_name_menu',
+				'meta' => array('class' => 'go_site_name_menu_item')
 			));
 
 			$wp_admin_bar->add_node( array(
 				'title' => get_option('go_tasks_plural_name'),
 				'href' => get_admin_url().'edit.php?post_type=tasks',
-				'parent' => 'site-name'
+				'parent' => 'go_site_name_menu',
+				'meta' => array('class' => 'go_site_name_menu_item')
 			));
 
 			$wp_admin_bar->add_node( array(
 				'title' => get_option('go_store_name'),
 				'href' => get_admin_url().'edit.php?post_type=go_store',
-				'parent' => 'site-name'
+				'parent' => 'go_site_name_menu',
+				'meta' => array('class' => 'go_site_name_menu_item')
 			));
 
 			$wp_admin_bar->add_node( array(
 				'title' => 'Game-On',
 				'href' => get_admin_url().'admin.php?page=game-on-options.php',
-				'parent' => 'site-name'
+				'parent' => 'go_site_name_menu',
+				'meta' => array('class' => 'go_site_name_menu_item')
 			));
 		}
 	}
-
 }
 ?>
