@@ -212,7 +212,7 @@ function go_task_shortcode($atts, $content = null) {
 		$go_admin_email = get_option('go_admin_email');
 		if ($go_admin_email) {
 			$admin = get_user_by('email', $go_admin_email);
-			$admin_name = $admin->display_name;
+			$admin_name = addslashes($admin->display_name);
 		}
 		$is_admin = false;
 		$user_obj = get_user_by('id', $user_ID);
