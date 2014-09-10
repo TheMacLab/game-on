@@ -116,15 +116,13 @@ function go_the_lb_ajax(){
 	if ($user_points < $req_rank) {
 		die("You need to reach {$req_rank_key} to purchase this item.");
 	}
+	
 	?>
 	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_currency; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
 	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
 	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options('go_bonus_currency_name').': '.$req_bonus_currency; ?></div>
 	<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
-	<?php if(!$item_focus && !$penalty){?>
-        <div id="go_recipient_wrap" class="golb-fr-boxes-g">Recipient: <input id="go_recipient" type="text"/></div>
-        <div id="go_search_results"></div>
-	<?php }?>
+	
 	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>'); this.removeAttribute('onclick');">Buy</div>
 	<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
 	<div id="golb-purchased">
@@ -346,4 +344,6 @@ function go_get_purchase_count(){
 	die();
 }
 add_action('wp_ajax_purchase_count', 'go_get_purchase_count');
+
+
 ?>
