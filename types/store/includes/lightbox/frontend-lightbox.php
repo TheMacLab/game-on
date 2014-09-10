@@ -134,11 +134,33 @@ function go_the_lb_ajax(){
 		} else {
 			echo "Quantity purchased: {$purchase_count}";
 		} 
-	?>
+	 if(!$item_focus && !$penalty && $is_giftable == "on"){?>
+ 		<br />
+		Gift this item <input type='checkbox' id='go_toggle_gift_fields'/>
+        <div id="go_recipient_wrap" class="golb-fr-boxes-giftable">Gift To: <input id="go_recipient" type="text"/></div>
+        <div id="go_search_results"></div>
+        
+     <script>   
+var isOther = document.getElementById("go_toggle_gift_fields");
+var other = document.getElementById("go_recipient");
+isOther.addEventListener("click", function () {
+    other.readOnly = !isOther.checked;
+});
+other.addEventListener("focus", function (evt) {
+     // Checkbox must be checked before data can be entered into textbox
+    other.readOnly = !isOther.checked;
+});
+	</script>
+    
+	<?php }?>
 	</div>
 	<?php
+	
+	
     die();
+	
 }
+
 add_action('wp_ajax_go_lb_ajax', 'go_the_lb_ajax');
 add_action('wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax');
 ////////////////////////////////////////////////////
@@ -285,6 +307,7 @@ function go_search_for_user(user){
 		}
 	});
 }
+
 </script>
 	<div id="light" class="white_content">
     	<a href="javascript:void(0)" onclick="go_lb_closer();" class="go_lb_closer">Close</a>

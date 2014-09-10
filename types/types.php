@@ -546,6 +546,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'id' => "{$prefix}store_shortcode_list",
 				'type' => 'go_store_shortcode_list'
 			),
+			array(
+				'name' => 'Giftable'.go_task_opt_help('store_shortcode', '', 'http://maclab.guhsd.net/go/video/store/Giftable.mp4'),
+				'id' => "{$prefix}store_giftable",
+				'type' => 'checkbox'
+			),
 		),
 	);
 	return $meta_boxes;

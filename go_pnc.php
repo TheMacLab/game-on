@@ -126,9 +126,11 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 		return false;	
 	}else{
 		if ($points < 0 || $currency < 0) {
-			$sym = '';
+			$sym = '-';
+			$color = "red";
 		} else {
 			$sym = '+';
+			$color = "green";
 		}
 		global $counter;
 		$counter++;
@@ -144,11 +146,11 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 		} else if($type == 'custom') {
 			$display = $display;
 		}
-		echo '
-		<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div>
-		<script type="text/javascript" language="javascript"> 
+		echo "
+		<div id='go_notification' class='go_notification' style='top: {$space}px; color: {$color} '>{$display}</div>
+		<script type='text/javascript' language='javascript'> 
 		go_notification();
-		</script>';
+		</script>";
 	}
 }
 

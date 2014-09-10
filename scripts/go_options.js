@@ -87,14 +87,14 @@ jQuery(document).ready(function(){
 	jQuery('.go_options_preset_name_input').appendTo('#go_options_preset_name');
 	jQuery('.go_options_preset_points_input').appendTo('#go_options_preset_points');
 	jQuery('.go_options_preset_currency_input').appendTo('#go_options_preset_currency');
-	jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
+	jQuery('.go_add_preset').last().after('<button type="button" class="go_remove_preset">-</button>');
 	
 	jQuery('.go_options_level_points_input').appendTo('#go_options_level_points');
 	jQuery('.go_options_level_badges_input').appendTo('#go_options_level_badges');
-	jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
+	
 
-	jQuery('.go_options_period_input').last().after('<button type="button" class="go_remove_period">-</button>');
-	jQuery('.go_options_computer_input').last().after('<button type="button" class="go_remove_computer">-</button>');
+	jQuery('.go_add_period').last().after('<button type="button" class="go_remove_period">-</button>');
+	jQuery('.go_add_computer').last().after('<button type="button" class="go_remove_computer">-</button>');
 	
 	jQuery('.go_options_profession_input').appendTo('#go_options_professions');
 	if(jQuery('.go_options_profession_input').length > 1){
@@ -148,7 +148,7 @@ jQuery(document).ready(function(){
 			jQuery('#go_options_preset_points').append("<input type='text' class='go_options_preset_points_input go_options_preset_input' name='go_presets[points][" + presets + "][]' key='" + presets + "' value='"+points_array[i]+"'/>");
 			jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + presets + "][]' key='" + presets + "' value='"+currency_array[i]+"'/>");
 		}
-		jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
+		jQuery('.go_add_preset').last().after('<button type="button" class="go_remove_preset">-</button>');
 	});
 	
 	jQuery('#go_reset_presets').click(function(){
@@ -176,7 +176,7 @@ jQuery(document).ready(function(){
 						jQuery('#go_options_preset_currency').append("<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + currency + "][]' key='" + currency + "' value='" + presets['currency'][currency][cur] + "'/>")
 					}
 				}
-				jQuery('.go_options_preset_name_input').last().after('<button type="button" class="go_remove_preset">-</button>');
+
 			}
 		});
 	});
@@ -251,7 +251,7 @@ jQuery(document).ready(function(){
 		jQuery('#go_options_level_names').append("<input type='text' class='go_options_level_names_input' name='go_ranks[name][" + levels + "]' value='"+name+"'/>");
 		jQuery('#go_options_level_points').append("<input type='text' class='go_options_level_points_input' name='go_ranks[points][" + levels + "]' value='"+points+"'/>");
 		jQuery('#go_options_level_badges').append("<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][" + levels + "]' value=''/>");
-		jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
+		jQuery('.go_add_level').last().after('<button type="button" class="go_remove_level">-</button>');
 	});
 	
 	jQuery('#go_reset_levels').click(function(){
@@ -276,7 +276,7 @@ jQuery(document).ready(function(){
 				for(badge in levels['badges']){
 					jQuery('#go_options_level_badges').append("<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][" + badge + "]' value='" + levels['badges'][badge] + "'/>");
 				}
-				jQuery('.go_options_level_names_input').last().after('<button type="button" class="go_remove_level">-</button>');
+
 			}
 		});
 	});
@@ -348,7 +348,9 @@ jQuery(document).ready(function(){
 			var name_index = Number(name_array[1]) + 1;
 			var name = name_array[0]+" "+name_index;
 		}
-		jQuery('#go_options_periods').append("<input type='text' class='go_options_period_input' name='go_class_a[]' value='"+name+"'/><button type='button' class='go_remove_period'>-</button>");
+		jQuery('#go_options_periods').append("<input type='text' class='go_options_period_input' name='go_class_a[]' value='"+name+"'/>");
+		jQuery('.go_add_period').last().after('<button type="button" class="go_remove_period">-</button>');
+		
 	});
 	
 	jQuery(document).on('click', '.go_remove_computer', function(){
@@ -379,7 +381,8 @@ jQuery(document).ready(function(){
 			var name_index = Number(name_array[1]) + 1;
 			var name = name_array[0]+" "+(name_index < 10 ? "0"+name_index : name_index);
 		}
-		jQuery('#go_options_computers').append("<input type='text' class='go_options_computer_input' name='go_class_b[]' value='"+name+"'/><button type='button' class='go_remove_computer'>-</button>");
+		jQuery('#go_options_computers').append("<input type='text' class='go_options_computer_input' name='go_class_b[]' value='"+name+"'/>");
+		jQuery('.go_add_computer').last().after('<button type="button" class="go_remove_computer">-</button>');
 	});
 	
 	jQuery(document).on('click', '.go_remove_profession', function(){
@@ -396,7 +399,8 @@ jQuery(document).ready(function(){
 		jQuery('.go_remove_profession').remove();
 		jQuery(this).remove();
 		jQuery('#go_options_professions').append("<input type='text' class='go_options_profession_input' name='go_focus[]' value=''/>");
-		jQuery('.go_options_profession_input').last().after('<button type="button" class="go_remove_profession">-</button><button type="button" class="go_add_profession">+</button>');
+		jQuery('.go_options_profession_input').last().after('<button type="button" class="go_add_profession">+</button>');
+		jQuery('.go_add_profession').last().after('<button type="button" class="go_remove_profession">-</button>');
 	});
 	
 	jQuery('input[name="go_data_reset_all"]').click(function(){
