@@ -29,6 +29,7 @@ function go_table_individual () {
 		currency INT,
 		bonus_currency INT,
 		penalty INT,
+		gifted BOOLEAN DEFAULT 0,
 		reason VARCHAR (200),
 		timestamp VARCHAR (200), 
 		UNIQUE KEY  id (id)

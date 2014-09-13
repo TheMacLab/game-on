@@ -13,19 +13,17 @@ add_action('wp_ajax_nopriv_buy_item', 'go_buy_item'); //fire go_buy_item on AJAX
 
 function go_buy_item() { 
 	global $wpdb;
-	$table_name_go = $wpdb->prefix."go";
+	$go_table_name = $wpdb->prefix."go";
     $post_id = $_POST["the_id"];
 	$qty = $_POST['qty'];
 	$current_purchase_count = $_POST['purchase_count'];
 
-	if (isset($_POST['recipient']) && !empty($_POST['recipient'])) {
+	if (isset($_POST['recipient']) && !empty($_POST['recipient']) && $_POST['recipient'] != '') {
 		$recipient = $_POST['recipient'];
-	}
-	
-	if ($recipient) {
 		$recipient_id = $wpdb->get_var('SELECT id FROM '.$wpdb->users.' WHERE display_name="'.$recipient.'"'); 
 		$recipient_purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$post_id} AND uid={$recipient_id} LIMIT 1");
 	}
+	
 	$user_id = get_current_user_id(); 
 	$custom_fields = get_post_custom($post_id);
 	$sending_receipt = $custom_fields['go_mta_store_receipt'][0];
@@ -91,12 +89,16 @@ function go_buy_item() {
 			update_user_meta($user_id, 'go_focus', $user_focuses);
 		}
 		if ($recipient_id) {
-			go_message_user($recipient_id, get_userdata($user_id)->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})' style='display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;'>".get_the_title($post_id)."</a> for you.");
+			
+			go_message_user($recipient_id, get_userdata($user_id)->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title($post_id)."</a> for you.");
 			if ($exchange_currency || $exchange_points || $exchange_bonus_currency) {
 				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, null, $repeat);
 				go_add_bonus_currency($recipient_id, $exchange_bonus_currency, get_userdata($user_id)->display_name." purchase of {$qty} ".get_the_title($post_id).".");
+			} else {
+				go_add_post($recipient_id, $post_id, -1,  0,  0, 0, null, $repeat);
 			}
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
+			$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET reason = 'Gifted' WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $post_id));
 		} else {
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
 		}
