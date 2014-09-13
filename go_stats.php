@@ -232,7 +232,7 @@ function go_stats_item_list() {
 		$user_id = get_current_user_id();
 	}
 	$items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1, 0));
-	$gifted_items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, 1));
+	$gifted_items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1, 1));
 	?>
 	<ul id='go_stats_item_list_purchases' class='go_stats_body_list'>
 		<li class='go_stats_body_list_head'>PURCHASES</li>
@@ -247,7 +247,7 @@ function go_stats_item_list() {
 			?>
 				<li class='go_stats_item go_stats_purchased_item'>
 					<?php
-						echo "<a href='".get_permalink($item_id)."'>".get_the_title($item_id)."</a> ({$count_before} of {$item_count_total}) {$purchase_date}";
+						echo "<a href='".get_permalink($item_id)."'>".get_the_title($item_id)."</a> ({$count_before} of {$item_count_total}) {$purchase_date} {$purchase_reason}";
 					?>
 				</li>
 			<?php
