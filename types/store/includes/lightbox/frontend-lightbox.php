@@ -142,13 +142,13 @@ function go_the_lb_ajax(){
         
      <script>   
 		var go_gift_check_box = jQuery("#go_toggle_gift_fields");
-		var go_gift_text_box = jQuery("#go_recipient");
-		go_gift_text_box.prop("disabled", true);
+		var go_gift_text_box = jQuery("#go_recipient_wrap");
+		go_gift_text_box.prop("hidden", true);
 		go_gift_check_box.click(function () {
 			if (jQuery(this).is(":checked")) {
-				go_gift_text_box.prop("disabled", false);
+				go_gift_text_box.prop("hidden", false);
 			} else {
-				go_gift_text_box.prop("disabled", true);
+				go_gift_text_box.prop("hidden", true);
 				jQuery('#go_search_results').hide();
 				jQuery("#go_recipient").val('');
 			}
