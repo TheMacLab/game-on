@@ -18,6 +18,7 @@ function go_add_currency ($user_id, $reason, $status, $points, $currency, $updat
 // Adds currency and points for reasons that are post tied.
 function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null) {
 	global $wpdb;
+	global $current_user_id;
 	$table_name_go = $wpdb->prefix . "go";
 	$time = date('m/d@H:i',current_time('timestamp',0));
 	$penalties = go_return_penalty($user_id);
@@ -26,8 +27,10 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 		$old_points = $wpdb->get_row("SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1");
 		$points *= $qty;
 		$currency *= $qty;
-		if ($user_id != $user_id) {
+		$gifted = false;
+		if ($current_user_id != $user_id) {
 			$reason = 'Purchased by '.get_userdata($user_id)->display_name.' '.$qty.' times';	
+			$gifted = true;
 		}
 	   	if ($repeat != 'on' || empty($old_points)) {
 			$wpdb->insert(
@@ -42,7 +45,8 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 					'page_id' => $page_id, 
 					'count'=> $qty,
 					'reason' => $reason,
-					'timestamp' => $time
+					'timestamp' => $time,
+					'gifted' => $gifted
 				)
 			);
 		} else {

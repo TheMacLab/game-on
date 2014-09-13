@@ -231,12 +231,13 @@ function go_stats_item_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
-	$items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid=%d AND status=%d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1));
-	
+	$items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1, 0));
+	$gifted_items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, 1));
 	?>
 	<ul id='go_stats_item_list_purchases' class='go_stats_body_list'>
 		<li class='go_stats_body_list_head'>PURCHASES</li>
 		<?php
+		
 		foreach ($items as $item) {
 			$item_id = $item->post_id;
 			$item_count_total = $wpdb->get_var($wpdb->prepare("SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d ", $user_id, -1, $item_id));
@@ -253,8 +254,27 @@ function go_stats_item_list() {
 		}
 		?>
 	</ul>
-	<ul class='go_stats_body_list'>
-		<li class='go_stats_body_list_head'>RECEIVED (coming soon)</li>
+	<ul id='go_stats_item_list_recieved' class='go_stats_body_list'>
+		<li class='go_stats_body_list_head'>RECEIVED</li>
+        <?php
+		
+		if (!empty($gifted_items)) {		
+			foreach ($gifted_items as $item) {
+				$item_id = $item->post_id;
+				$item_count_total = $wpdb->get_var($wpdb->prepare("SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d ", $user_id, -1, $item_id));
+				$count_before = $wpdb->get_var($wpdb->prepare("SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d AND id<=%d", $user_id, -1, $item_id, $item->id));
+				$purchase_date = $item->timestamp;
+				$purchase_reason = $item->reason;
+				?>
+					<li class='go_stats_item go_stats_purchased_item'>
+						<?php
+							echo "<a href='".get_permalink($item_id)."'>".get_the_title($item_id)."</a> ({$count_before} of {$item_count_total}) {$purchase_date}";
+						?>
+					</li>
+				<?php
+			}
+		}
+		?>
 	</ul>
 	<ul class='go_stats_body_list'>
 		<li class='go_stats_body_list_head'>SOLD (coming soon)</li>

@@ -50,7 +50,9 @@ function go_the_lb_ajax(){
 	$user_currency = go_return_currency($user_id);
 	$user_penalties = go_return_penalty($user_id);
 	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
-	
+	$purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
+	$is_giftable = $custom_fields['go_mta_store_giftable'][0];
+
 	echo '<h2>'.$the_title.'</h2>';
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
 	if ($user_points >= $req_rank || $req_rank <= 0 || $penalty) {
@@ -82,7 +84,7 @@ function go_the_lb_ajax(){
 	} else { 
 		$buy_color = "r"; 
 	}
-	
+		
 	$user_focuses = array();
 
 	if ($is_filtered === 'true' && !is_null($penalty_filter) && $user_penalties >= $penalty_filter) {
@@ -139,15 +141,18 @@ function go_the_lb_ajax(){
         <div id="go_search_results"></div>
         
      <script>   
-var isOther = document.getElementById("go_toggle_gift_fields");
-var other = document.getElementById("go_recipient");
-isOther.addEventListener("click", function () {
-    other.readOnly = !isOther.checked;
-});
-other.addEventListener("focus", function (evt) {
-     // Checkbox must be checked before data can be entered into textbox
-    other.readOnly = !isOther.checked;
-});
+		var go_gift_check_box = jQuery("#go_toggle_gift_fields");
+		var go_gift_text_box = jQuery("#go_recipient");
+		go_gift_text_box.prop("disabled", true);
+		go_gift_check_box.click(function () {
+			if (jQuery(this).is(":checked")) {
+				go_gift_text_box.prop("disabled", false);
+			} else {
+				go_gift_text_box.prop("disabled", true);
+				jQuery('#go_search_results').hide();
+				jQuery("#go_recipient").val('');
+			}
+		});
 	</script>
     
 	<?php }?>
@@ -253,7 +258,7 @@ function go_lb_opener(id) {
 							go_lb_closer();
 						});
 					}
-					var done_typing = 500;
+					var done_typing = 0;
 					var typing_timer;
 					var recipient = jQuery('#go_recipient');
 					var search_res = jQuery('#go_search_results');
@@ -263,6 +268,8 @@ function go_lb_opener(id) {
 							typing_timer = setTimeout(function(){
 								go_search_for_user(recipient.val());
 							}, done_typing);
+						} else {
+							jQuery('#go_search_results').hide();
 						}
 					});
 					recipient.focus(function(){

@@ -26,6 +26,7 @@ function go_buy_item() {
 		$recipient_id = $wpdb->get_var('SELECT id FROM '.$wpdb->users.' WHERE display_name="'.$recipient.'"'); 
 		$recipient_purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$post_id} AND uid={$recipient_id} LIMIT 1");
 	}
+	
 	$user_id = get_current_user_id(); 
 	$custom_fields = get_post_custom($post_id);
 	$sending_receipt = $custom_fields['go_mta_store_receipt'][0];
@@ -95,6 +96,8 @@ function go_buy_item() {
 			if ($exchange_currency || $exchange_points || $exchange_bonus_currency) {
 				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, null, $repeat);
 				go_add_bonus_currency($recipient_id, $exchange_bonus_currency, get_userdata($user_id)->display_name." purchase of {$qty} ".get_the_title($post_id).".");
+			} else {
+					go_add_post($recipient_id, $post_id, -1, -$req_points, 0, -$req_currency, 0, -$req_bonus_currency, null, $repeat);
 			}
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
 		} else {
