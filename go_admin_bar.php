@@ -60,6 +60,12 @@ function go_admin_bar(){
 		));
 		
 		$wp_admin_bar->add_node( array(
+			'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank($current_user_id).'</div>',
+			'href' => '#',
+			'parent' => 'go_info',
+		));
+		
+		$wp_admin_bar->add_node( array(
 			'title' => '<div id="go_admin_bar_points">'.go_return_options('go_points_name').': '.go_display_points($current_points).'</div>',
 			'href' => '#',
 			'parent' => 'go_info',
@@ -67,12 +73,6 @@ function go_admin_bar(){
 		
 		$wp_admin_bar->add_node( array(
 			'title' => '<div id="go_admin_bar_currency">'.go_return_options('go_currency_name').': '.go_display_currency($current_currency).'</div>',
-			'href' => '#',
-			'parent' => 'go_info',
-		));
-		
-		$wp_admin_bar->add_node( array(
-			'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank($current_user_id).'</div>',
 			'href' => '#',
 			'parent' => 'go_info',
 		));
