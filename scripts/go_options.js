@@ -30,6 +30,7 @@ jQuery(document).ready(function(){
 		jQuery('input[name="go_data_reset_currency"]'),
 		jQuery('input[name="go_data_reset_bonus_currency"]'),
 		jQuery('input[name="go_data_reset_penalty"]'),
+		jQuery('input[name="go_data_reset_minutes"]'),
 		jQuery('input[name="go_data_reset_badges"]'),
 		jQuery('input[name="go_data_reset_all"]')
 	];
@@ -448,7 +449,7 @@ jQuery(document).ready(function(){
 						reset_data: reset_data,
 						reset_all: reset_all
 					},
-					success: function(html){
+					success: function (html){
 						location.reload();
 					}
 				});

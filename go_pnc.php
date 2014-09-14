@@ -468,7 +468,7 @@ function go_task_abandon ($user_id = null, $post_id = null, $e_points = null, $e
 		$e_bonus_currency = intval($_POST['encounter_bonus']);
 	}
 	$table_name_go = "{$wpdb->prefix}go";
-	go_update_totals($user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0);
+	go_update_totals($user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0, 0);
 	$wpdb->query($wpdb->prepare("
 		DELETE FROM {$table_name_go} 
 		WHERE uid = %d 

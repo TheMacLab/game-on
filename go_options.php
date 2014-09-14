@@ -597,7 +597,7 @@ function go_reset_data() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
-	$reset_data = $_POST['reset_data'];
+	$reset_data = (array)$_POST['reset_data'];
 	$reset_all = $_POST['reset_all'];
 	$users = get_users('orderby=ID');
 	$ranks = get_option('go_ranks');
