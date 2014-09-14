@@ -92,6 +92,7 @@ if (is_admin()) {
 						go_options_field('Currency', 3, array(1 => 'go_currency_name', 2 => 'go_currency_prefix', 3 => 'go_currency_suffix'), 'http://maclab.guhsd.net/go/video/options/currency.mp4', 'Name your virtual currency (used to purchase goods in the store)');
 						go_options_field('Bonus', 3, array(1 => 'go_bonus_currency_name', 2 => 'go_bonus_currency_prefix', 3 => 'go_bonus_currency_suffix'), 'http://maclab.guhsd.net/go/video/options/bonus.mp4', 'Name your bonus mechanism');
 						go_options_field('Penalty', 3, array(1 => 'go_penalty_name', 2 => 'go_penalty_prefix', 3 => 'go_penalty_suffix'), 'http://maclab.guhsd.net/go/video/options/penalty.mp4', 'Name your penalty mechanism');
+						go_options_field('Minutes', 3, array(1 => 'go_minutes_name', 2 => 'go_minutes_prefix', 3 => 'go_minutes_suffix'), 'http://maclab.guhsd.net/go/video/options/minutes.mp4', 'Name your timing mechanism');
 						go_options_field('Ranks', 2, array(1 => 'go_level_names', 2 => 'go_level_plural_names'),'http://maclab.guhsd.net/go/video/options/ranks.mp4', 'Name your leveling system');
 						go_options_field('Classifications', 3, array(1 => 'go_organization_name', 2 => 'go_class_a_name', 3 => 'go_class_b_name'),'http://maclab.guhsd.net/go/video/options/classifications.mp4', 'Name your classroom management system');
 						go_options_field('Focus', 1, array(1 => 'go_focus_name'),'http://maclab.guhsd.net/go/video/options/focus.mp4', 'Name your sub-groups');
@@ -176,6 +177,7 @@ if (is_admin()) {
 					go_options_input('Display', 'checkbox', 'go_admin_bar_display_switch', 'http://maclab.guhsd.net/go/video/options/adminBarDisplay.mp4', 'Show login option in admin bar (recommended)');
 					go_options_input('User Redirect', 'checkbox', 'go_admin_bar_user_redirect', 'http://maclab.guhsd.net/go/video/options/userRedirect.mp4', 'Send users to home page after login (recommended)');
 					go_options_input('Add Switch', 'checkbox', 'go_admin_bar_add_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddSwitch.mp4', 'Activate the manual scoring system (not recommended)');
+					go_options_input('Minutes Only', 'checkbox', 'go_admin_bar_add_minutes_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'SAMPLE TEXT');
 					?>
 				</div>
 			 <div class='go_options_accordion_wrap' opt='3'><?php go_options_accordion_help('http://maclab.guhsd.net/go/video/options/levels.mp4', 'Customize names, numbers, and award badges');?><div class='go_options_accordion'><?php echo go_return_options('go_level_plural_names');?><div class='go_triangle_container'><div class='go_options_triangle'></div></div></div></div>
@@ -346,6 +348,7 @@ if (is_admin()) {
 					go_options_input(go_return_options('go_currency_name'), 'checkbox', 'go_data_reset_currency', '', null, false, 'currency');
 					go_options_input(go_return_options('go_bonus_currency_name'), 'checkbox', 'go_data_reset_bonus_currency', '', null, false, 'bonus_currency');
 					go_options_input(go_return_options('go_penalty_name'), 'checkbox', 'go_data_reset_penalty', '', null, false, 'penalty');
+					go_options_input(go_return_options('go_minutes_name'), 'checkbox', 'go_data_reset_minutes', '', null, false, 'minutes');
 					go_options_input(go_return_options('go_badges_name'), 'checkbox', 'go_data_reset_badges', '', null, false, 'badges');
 					go_options_input('All', 'checkbox', 'go_data_reset_all', '', null, false);
 					?>
@@ -356,7 +359,7 @@ if (is_admin()) {
 				</div>
 			<input type="submit" name="Submit" value="Save Options" />
 			<input type="hidden" name="action" value="update" />
-			<input type="hidden" name="page_options" value="go_tasks_name, go_tasks_plural_name, go_first_stage_name, go_second_stage_name, go_third_stage_name, go_fourth_stage_name, go_fifth_stage_name, go_abandon_stage_button, go_second_stage_button, go_third_stage_button, go_fourth_stage_button, go_fifth_stage_button, go_store_name, go_points_name, go_points_prefix, go_points_suffix, go_currency_name, go_currency_prefix, go_currency_suffix, go_bonus_currency_name, go_bonus_currency_prefix, go_bonus_currency_suffix, go_penalty_name, go_penalty_prefix, go_penalty_suffix, go_level_names, go_level_plural_names, go_organization_name, go_class_a_name, go_class_b_name, go_focus_name, go_stats_name, go_inventory_name, go_badges_name, go_leaderboard_name, go_presets, go_admin_bar_display_switch, go_admin_bar_user_redirect, go_admin_bar_add_switch, go_ranks, go_class_a, go_class_b, go_focus_switch, go_focus, go_admin_email, go_video_width, go_video_height, go_store_receipt_switch, go_full_student_name_switch, go_multiplier_switch, go_multiplier_threshold, go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch"/>
+			<input type="hidden" name="page_options" value="go_tasks_name, go_tasks_plural_name, go_first_stage_name, go_second_stage_name, go_third_stage_name, go_fourth_stage_name, go_fifth_stage_name, go_abandon_stage_button, go_second_stage_button, go_third_stage_button, go_fourth_stage_button, go_fifth_stage_button, go_store_name, go_points_name, go_points_prefix, go_points_suffix, go_currency_name, go_currency_prefix, go_currency_suffix, go_bonus_currency_name, go_bonus_currency_prefix, go_bonus_currency_suffix, go_penalty_name, go_penalty_prefix, go_penalty_suffix, go_minutes_name, go_minutes_prefix, go_minutes_suffix, go_level_names, go_level_plural_names, go_organization_name, go_class_a_name, go_class_b_name, go_focus_name, go_stats_name, go_inventory_name, go_badges_name, go_leaderboard_name, go_presets, go_admin_bar_display_switch, go_admin_bar_user_redirect, go_admin_bar_add_switch, go_ranks, go_class_a, go_class_b, go_focus_switch, go_focus, go_admin_email, go_video_width, go_video_height, go_store_receipt_switch, go_full_student_name_switch, go_multiplier_switch, go_multiplier_threshold, go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch"/>
         </form>
         </div>
         <?php	
@@ -769,7 +772,7 @@ function go_save_extra_profile_fields($user_id) {
 function go_update_globals() {
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
-	$array = explode(',','go_tasks_name, go_tasks_plural_name, go_first_stage_name, go_second_stage_name, go_third_stage_name, go_fourth_stage_name, go_fifth_stage_name, go_abandon_stage_button, go_second_stage_button, go_third_stage_button, go_fourth_stage_button, go_fifth_stage_button, go_store_name, go_points_name, go_points_prefix, go_points_suffix, go_currency_name, go_currency_prefix, go_currency_suffix, go_bonus_currency_name, go_bonus_currency_prefix, go_bonus_currency_suffix, go_penalty_name, go_penalty_prefix, go_penalty_suffix, go_level_names, go_level_plural_names, go_organization_name, go_class_a_name, go_class_b_name, go_focus_name, go_stats_name, go_inventory_name, go_badges_name, go_leaderboard_name, go_presets, go_admin_bar_display_switch, go_admin_bar_user_redirect, go_admin_bar_add_switch, go_ranks, go_class_a, go_class_b, go_focus_switch, go_focus, go_admin_email, go_video_width, go_video_height, go_store_receipt_switch, go_full_student_name_switch, go_multiplier_switch, go_multiplier_threshold, go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch'); 	
+	$array = explode(',','go_tasks_name, go_tasks_plural_name, go_first_stage_name, go_second_stage_name, go_third_stage_name, go_fourth_stage_name, go_fifth_stage_name, go_abandon_stage_button, go_second_stage_button, go_third_stage_button, go_fourth_stage_button, go_fifth_stage_button, go_store_name, go_points_name, go_points_prefix, go_points_suffix, go_currency_name, go_currency_prefix, go_currency_suffix, go_bonus_currency_name, go_bonus_currency_prefix, go_bonus_currency_suffix, go_penalty_name, go_penalty_prefix, go_penalty_suffix, go_minutes_name, go_minutes_prefix, go_minutes_suffix, go_level_names, go_level_plural_names, go_organization_name, go_class_a_name, go_class_b_name, go_focus_name, go_stats_name, go_inventory_name, go_badges_name, go_leaderboard_name, go_presets, go_admin_bar_display_switch, go_admin_bar_user_redirect, go_admin_bar_add_switch, go_ranks, go_class_a, go_class_b, go_focus_switch, go_focus, go_admin_email, go_video_width, go_video_height, go_store_receipt_switch, go_full_student_name_switch, go_multiplier_switch, go_multiplier_threshold, go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch');
 	foreach ($array as $key=>$value) {
 		$value = trim($value);
 		$content = get_option($value);
@@ -780,6 +783,5 @@ function go_update_globals() {
 	}
 
 	file_put_contents ( $file_name, '<?php '.$string.' ?>' );
-
 }
 ?>

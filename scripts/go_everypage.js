@@ -78,6 +78,8 @@ function go_admin_bar_add() {
 			go_admin_bar_currency_reason:jQuery('#go_admin_bar_currency_reason').val(),
 			go_admin_bar_bonus_currency_points:jQuery('#go_admin_bar_bonus_currency_points').val(),
 			go_admin_bar_bonus_currency_reason:jQuery('#go_admin_bar_bonus_currency_reason').val(),
+			go_admin_bar_minutes_points:jQuery('#go_admin_bar_minutes_points').val(),
+			go_admin_bar_minutes_reason:jQuery('#go_admin_bar_minutes_reason').val(),
 			go_admin_bar_penalty_points:jQuery('#go_admin_bar_penalty_points').val(),
 			go_admin_bar_penalty_reason:jQuery('#go_admin_bar_penalty_reason').val()
 		},
@@ -88,6 +90,8 @@ function go_admin_bar_add() {
 			jQuery('#go_admin_bar_currency_reason').val('');
 			jQuery('#go_admin_bar_bonus_currency_points').val('');
 			jQuery('#go_admin_bar_bonus_currency_reason').val('');
+			jQuery('#go_admin_bar_minutes_points').val('');
+			jQuery('#go_admin_bar_minutes_reason').val('');
 			jQuery('#go_admin_bar_penalty_points').val('');
 			jQuery('#go_admin_bar_penalty_reason').val('');
 			jQuery('#admin_bar_add_return').html(html);
@@ -139,6 +143,12 @@ function go_admin_bar_stats_page_button (id) {
 						break;
 					case 'rewards':
 						go_stats_rewards_list();
+						break;
+					case 'minutes':
+						go_stats_minutes_list();
+						break;
+					case 'penalties':
+						go_stats_penalties_list();
 						break;
 					case 'badges':
 						go_stats_badges_list();
@@ -308,6 +318,34 @@ function go_stats_rewards_list () {
 		}
 	});
 }	
+
+function go_stats_minutes_list () {
+	jQuery.ajax({
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_stats_minutes_list',
+			user_id: jQuery('#go_stats_hidden_input').val()
+		},
+		success: function (html) {
+			jQuery('#go_stats_body').html(html);
+		}
+	});
+}
+
+function go_stats_penalties_list () {
+	jQuery.ajax({
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_stats_penalties_list',
+			user_id: jQuery('#go_stats_hidden_input').val()	
+		},
+		success: function (html) {
+			jQuery('#go_stats_body').html(html);
+		}
+	});
+}
 
 function go_stats_badges_list () {
 	jQuery.ajax({
