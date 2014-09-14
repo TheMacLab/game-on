@@ -188,6 +188,7 @@ function go_install_data() {
 		'go_third_stage_name' => 'Stage 3',
 		'go_fourth_stage_name' => 'Stage 4',
 		'go_fifth_stage_name' => 'Stage 5',
+		'go_abandon_stage_button' => 'Abandon',
 		'go_second_stage_button' => 'Accept',
 		'go_third_stage_button' => 'Complete',
 		'go_fourth_stage_button' => 'Master',

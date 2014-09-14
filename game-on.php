@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Gamification tools for teachers.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada, Charles Leon
 Author URI: http://maclab.guhsd.net/
-Version: 2.1.5
+Version: 2.1.6
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -67,6 +67,7 @@ add_action('wp_ajax_test_point_update', 'test_point_update');
 add_action('go_get_all_focuses', 'go_get_all_focuses');
 add_action('wp_ajax_unlock_stage', 'unlock_stage');
 add_action('wp_ajax_task_change_stage','task_change_stage');
+add_action('wp_ajax_go_task_abandon','go_task_abandon');
 add_action('go_update_admin_bar','go_update_admin_bar');
 add_action('go_update_progress_bar','go_update_progress_bar');
 add_action('go_style_periods','go_style_periods');

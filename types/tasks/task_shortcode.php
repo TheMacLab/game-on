@@ -204,6 +204,7 @@ function go_task_shortcode($atts, $content = null) {
 		}
 		$currency_array = $rewards['currency']; // Makes an array out of currency values for each stage
 		$points_array = $rewards['points']; //Makes an array out of currency values for each stage
+		$points_str = implode(" ", $points_array);
 		$bonus_currency_array = $rewards['bonus_currency'];
 		
 		$current_bonus_currency = go_return_bonus_currency($user_ID);	
@@ -476,6 +477,7 @@ function go_task_shortcode($atts, $content = null) {
 					}
 					?>
 					<button id="go_button" status= "2" onclick="task_stage_change(this);" <?php if ($e_is_locked === 'true' && empty($e_pass_lock)) {echo "admin_lock='true'";} ?>><?php echo go_return_options('go_second_stage_button') ?></button>
+					<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option('go_abandon_stage_button', 'Abandon'); ?></button>
 					</div>
 		<?php		
 					break;
@@ -507,6 +509,7 @@ function go_task_shortcode($atts, $content = null) {
 					}
 					?>
 					<button id="go_button" status= "2" onclick="task_stage_change(this);" <?php if ($e_is_locked === 'true' && empty($e_pass_lock)) {echo "admin_lock='true'";} ?>><?php echo go_return_options('go_second_stage_button') ?></button>
+					<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option('go_abandon_stage_button', 'Abandon'); ?></button>
 					</div>   
 		<?php
 					break;
@@ -760,6 +763,21 @@ function go_task_shortcode($atts, $content = null) {
 			});
 			check_locks();
 		});
+
+		function go_task_abandon () {
+			jQuery.ajax({
+				type: "POST",
+				data: {
+					action: "go_task_abandon",
+					post_id: "<?php echo $id; ?>",
+					encounter_points: <?php echo $points_array[0]; ?>,
+					encounter_currency: <?php echo $currency_array[0]; ?>,
+					encounter_bonus: <?php echo $bonus_currency_array[0]; ?>
+				}, success: function () {
+					window.location = "<?php echo home_url(); ?>";
+				}
+			});
+		}
 
 		function check_locks() {
 			if (jQuery(".go_test_list").length != 0) {
@@ -1040,10 +1058,7 @@ function go_task_shortcode($atts, $content = null) {
 					chosen_answer: choice,
 					type: type,
 					status: status,
-					points: "<?php
-						$points_str = implode(" ", $points_array);
-						echo $points_str;
-					?>",
+					points: "<?php echo $points_str; ?>",
 				},
 				success: function(response) {
 					if (response === 1 || response === '1') {
@@ -1114,10 +1129,7 @@ function go_task_shortcode($atts, $content = null) {
 				type: "POST",
 				data: {
 					action: "test_point_update",
-					points: "<?php
-						$points_str = implode(" ", $points_array);
-						echo $points_str;
-					?>",
+					points: "<?php echo $points_str; ?>",
 					status: status,
 					page_id: <?php echo $page_id; ?>,
 					user_ID: <?php echo $user_ID; ?>,
@@ -1942,7 +1954,8 @@ function task_change_stage() {
 			if ($e_is_locked === 'true' && empty($e_pass_lock)) {
 				echo "admin_lock='true'";
 			}
-			echo ">".go_return_options('go_second_stage_button')."</button></div>";
+			echo ">".go_return_options('go_second_stage_button')."</button>
+			<button id='go_abandon_task' onclick='go_task_abandon();this.disabled = true;'>".get_option("go_abandon_stage_button", "Abandon")."</button></div>";
 			break;
 		case 2:
 			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div>';
