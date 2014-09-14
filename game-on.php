@@ -67,6 +67,7 @@ add_action('wp_ajax_test_point_update', 'test_point_update');
 add_action('go_get_all_focuses', 'go_get_all_focuses');
 add_action('wp_ajax_unlock_stage', 'unlock_stage');
 add_action('wp_ajax_task_change_stage','task_change_stage');
+add_action('wp_ajax_go_task_abandon','go_task_abandon');
 add_action('go_update_admin_bar','go_update_admin_bar');
 add_action('go_update_progress_bar','go_update_progress_bar');
 add_action('go_style_periods','go_style_periods');
