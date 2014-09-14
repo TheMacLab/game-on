@@ -351,7 +351,7 @@ if (is_admin()) {
 					?>
 					<div class='go_options'>
 						<div class='go_options_field_title_wrap'><span class='go_options_field_title'>Reset <?php go_options_help('http://maclab.guhsd.net/go/video/options/dataReset2.mp4', 'Clear all user data for specific categories DANGER!');?></span></div>
-						<button type="button" id='go_data_reset'></button>
+						<button type="button" id='go_data_reset'>Go</button>
 					</div>
 				</div>
 			<input type="submit" name="Submit" value="Save Options" />

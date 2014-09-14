@@ -258,64 +258,67 @@ function check_null(val){
 	}
 }
 
-function go_clipboard_add(id){
+function go_clipboard_add (id) {
 	var values = [];
 	jQuery('#go_send_message').prop('disabled', 'disabled');
 	jQuery("input:checkbox[name=go_selected]:checked").each(function(){
-		values.push(jQuery(this).val())
+		values.push(jQuery(this).val());
 	});
-	add_points = parseFloat(check_null(jQuery('#go_clipboard_points').val()));
-	add_currency = parseFloat(check_null(jQuery('#go_clipboard_currency').val()));
-	add_bonus_currency = parseFloat(check_null(jQuery('#go_clipboard_bonus_currency').val()));
-	add_penalty = parseFloat(check_null(jQuery('#go_clipboard_penalty').val()));
-	
-	if(jQuery('#go_clipboard_reason').val() != ''){
-		reason = jQuery('#go_clipboard_reason').val();	
-	}else{
-		reason = jQuery('#go_clipboard_reason').attr('placeholder');	
-	}
-	console.log(reason);
-	jQuery.ajax({
-		type: "post",url: MyAjax.ajaxurl,data: { 
-			action: 'go_clipboard_add',
-			ids: values,
-			points: add_points,
-			currency: add_currency,
-			bonus_currency: add_bonus_currency,
-			penalty: add_penalty,
-			reason: reason,
-			badge_ID: jQuery('#go_clipboard_badge').val()
-		},
-		success: function(html){
-			if(jQuery('#go_clipboard_reason').val() != ''){
-				if(jQuery('#go_clipboard_badge').val() != ''){
-					badge_count = 1;
-				}else{
-					badge_count = 0;	
-				}
-				for(id in values){
-					var user_currency = parseFloat(jQuery('#user_'+values[id]+' .user_currency').html());
-					var user_bonus_currency = parseFloat(jQuery('#user_'+values[id]+' .user_bonus_currency').html());
-					var user_penalty = parseFloat(jQuery('#user_'+values[id]+' .user_penalty').html());
-					var user_points = parseFloat(jQuery('#user_'+values[id]+' .user_points').html());
-					var user_badge_count = parseFloat(jQuery('#user_'+values[id]+' .user_badge_count').html());
+	if (values.length > 0) {
+		add_points = parseFloat(check_null(jQuery('#go_clipboard_points').val()));
+		add_currency = parseFloat(check_null(jQuery('#go_clipboard_currency').val()));
+		add_bonus_currency = parseFloat(check_null(jQuery('#go_clipboard_bonus_currency').val()));
+		add_penalty = parseFloat(check_null(jQuery('#go_clipboard_penalty').val()));
 		
-					jQuery('#user_'+values[id]+' .user_currency').html(user_currency + add_currency);
-					jQuery('#user_'+values[id]+' .user_bonus_currency').html(user_bonus_currency + add_bonus_currency);
-					jQuery('#user_'+values[id]+' .user_penalty').html(user_penalty + add_penalty);
-					jQuery('#user_'+values[id]+' .user_points').html(user_points + add_points);
-					jQuery('#user_'+values[id]+' .user_badge_count').html(user_badge_count + badge_count);
-				}
-			}
-			jQuery('#go_clipboard_points').val('');
-			jQuery('#go_clipboard_currency').val('');
-			jQuery('#go_clipboard_bonus_currency').val('');
-			jQuery('#go_clipboard_penalty').val('');
-			jQuery('#go_clipboard_reason').val('');
-			jQuery('#go_clipboard_badge').val('');
-			jQuery('#go_send_message').prop('disabled', '');
+		if(jQuery('#go_clipboard_reason').val() != ''){
+			reason = jQuery('#go_clipboard_reason').val();	
+		}else{
+			reason = jQuery('#go_clipboard_reason').attr('placeholder');	
 		}
-	});
+		// console.log(reason);
+		jQuery.ajax({
+			type: "post",url: MyAjax.ajaxurl,data: { 
+				action: 'go_clipboard_add',
+				ids: values,
+				points: add_points,
+				currency: add_currency,
+				bonus_currency: add_bonus_currency,
+				penalty: add_penalty,
+				reason: reason,
+				badge_ID: jQuery('#go_clipboard_badge').val()
+			},
+			success: function(html){
+				if(jQuery('#go_clipboard_reason').val() != ''){
+					if(jQuery('#go_clipboard_badge').val() != ''){
+						badge_count = 1;
+					}else{
+						badge_count = 0;	
+					}
+					for(id in values){
+						var user_currency = parseFloat(jQuery('#user_'+values[id]+' .user_currency').html());
+						var user_bonus_currency = parseFloat(jQuery('#user_'+values[id]+' .user_bonus_currency').html());
+						var user_penalty = parseFloat(jQuery('#user_'+values[id]+' .user_penalty').html());
+						var user_points = parseFloat(jQuery('#user_'+values[id]+' .user_points').html());
+						var user_badge_count = parseFloat(jQuery('#user_'+values[id]+' .user_badge_count').html());
+			
+						jQuery('#user_'+values[id]+' .user_currency').html(user_currency + add_currency);
+						jQuery('#user_'+values[id]+' .user_bonus_currency').html(user_bonus_currency + add_bonus_currency);
+						jQuery('#user_'+values[id]+' .user_penalty').html(user_penalty + add_penalty);
+						jQuery('#user_'+values[id]+' .user_points').html(user_points + add_points);
+						jQuery('#user_'+values[id]+' .user_badge_count').html(user_badge_count + badge_count);
+					}
+				}
+				jQuery('#go_clipboard_points').val('');
+				jQuery('#go_clipboard_currency').val('');
+				jQuery('#go_clipboard_bonus_currency').val('');
+				jQuery('#go_clipboard_penalty').val('');
+				jQuery('#go_clipboard_reason').val('');
+				jQuery('#go_clipboard_badge').val('');
+				jQuery('#go_send_message').prop('disabled', false);
+				jQuery('#go_clipboard_table input[type="checkbox"]').removeAttr('checked');
+			}
+		});
+	}
 	}
 function fixmessages(){
 	jQuery.ajax({

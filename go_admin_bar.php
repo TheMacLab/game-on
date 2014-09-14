@@ -145,32 +145,38 @@ function go_admin_bar(){
 				'meta' => array('class' => 'go_site_name_menu')
 			));
 
-			$wp_admin_bar->add_node( array(
+			$wp_admin_bar->add_node(array(
 				'title' => 'Clipboard',
 				'href' => get_admin_url().'admin.php?page=go_clipboard',
 				'parent' => 'go_site_name_menu',
 				'meta' => array('class' => 'go_site_name_menu_item')
 			));
 
-			$wp_admin_bar->add_node( array(
+			$wp_admin_bar->add_node(array(
 				'title' => get_option('go_tasks_plural_name'),
 				'href' => get_admin_url().'edit.php?post_type=tasks',
 				'parent' => 'go_site_name_menu',
 				'meta' => array('class' => 'go_site_name_menu_item')
 			));
 
-			$wp_admin_bar->add_node( array(
+			$wp_admin_bar->add_node(array(
 				'title' => get_option('go_store_name'),
 				'href' => get_admin_url().'edit.php?post_type=go_store',
 				'parent' => 'go_site_name_menu',
 				'meta' => array('class' => 'go_site_name_menu_item')
 			));
 
-			$wp_admin_bar->add_node( array(
+			$wp_admin_bar->add_node(array(
 				'title' => 'Game-On',
 				'href' => get_admin_url().'admin.php?page=game-on-options.php',
 				'parent' => 'go_site_name_menu',
 				'meta' => array('class' => 'go_site_name_menu_item')
+			));
+
+			$wp_admin_bar->add_node(array(
+				'title' => 'Plugins',
+				'href' => get_admin_url().'plugins.php',
+				'parent' => 'appearance'
 			));
 		}
 	}

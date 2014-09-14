@@ -50,7 +50,9 @@ function go_the_lb_ajax(){
 	$user_currency = go_return_currency($user_id);
 	$user_penalties = go_return_penalty($user_id);
 	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
-	
+	$purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
+	$is_giftable = $custom_fields['go_mta_store_giftable'][0];
+
 	echo '<h2>'.$the_title.'</h2>';
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
 	if ($user_points >= $req_rank || $req_rank <= 0 || $penalty) {
@@ -82,7 +84,7 @@ function go_the_lb_ajax(){
 	} else { 
 		$buy_color = "r"; 
 	}
-	
+		
 	$user_focuses = array();
 
 	if ($is_filtered === 'true' && !is_null($penalty_filter) && $user_penalties >= $penalty_filter) {
@@ -116,15 +118,13 @@ function go_the_lb_ajax(){
 	if ($user_points < $req_rank) {
 		die("You need to reach {$req_rank_key} to purchase this item.");
 	}
+	
 	?>
 	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_currency; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
 	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
 	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options('go_bonus_currency_name').': '.$req_bonus_currency; ?></div>
 	<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
-	<?php if(!$item_focus && !$penalty){?>
-        <div id="go_recipient_wrap" class="golb-fr-boxes-g">Recipient: <input id="go_recipient" type="text"/></div>
-        <div id="go_search_results"></div>
-	<?php }?>
+	
 	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>'); this.removeAttribute('onclick');">Buy</div>
 	<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
 	<div id="golb-purchased">
@@ -134,11 +134,36 @@ function go_the_lb_ajax(){
 		} else {
 			echo "Quantity purchased: {$purchase_count}";
 		} 
-	?>
+	 if(!$item_focus && !$penalty && $is_giftable == "on"){?>
+ 		<br />
+		Gift this item <input type='checkbox' id='go_toggle_gift_fields'/>
+        <div id="go_recipient_wrap" class="golb-fr-boxes-giftable">Gift To: <input id="go_recipient" type="text"/></div>
+        <div id="go_search_results"></div>
+        
+     <script>   
+		var go_gift_check_box = jQuery("#go_toggle_gift_fields");
+		var go_gift_text_box = jQuery("#go_recipient_wrap");
+		go_gift_text_box.prop("hidden", true);
+		go_gift_check_box.click(function () {
+			if (jQuery(this).is(":checked")) {
+				go_gift_text_box.prop("hidden", false);
+			} else {
+				go_gift_text_box.prop("hidden", true);
+				jQuery('#go_search_results').hide();
+				jQuery("#go_recipient").val('');
+			}
+		});
+	</script>
+    
+	<?php }?>
 	</div>
 	<?php
+	
+	
     die();
+	
 }
+
 add_action('wp_ajax_go_lb_ajax', 'go_the_lb_ajax');
 add_action('wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax');
 ////////////////////////////////////////////////////
@@ -233,7 +258,7 @@ function go_lb_opener(id) {
 							go_lb_closer();
 						});
 					}
-					var done_typing = 500;
+					var done_typing = 0;
 					var typing_timer;
 					var recipient = jQuery('#go_recipient');
 					var search_res = jQuery('#go_search_results');
@@ -243,6 +268,8 @@ function go_lb_opener(id) {
 							typing_timer = setTimeout(function(){
 								go_search_for_user(recipient.val());
 							}, done_typing);
+						} else {
+							jQuery('#go_search_results').hide();
 						}
 					});
 					recipient.focus(function(){
@@ -285,6 +312,7 @@ function go_search_for_user(user){
 		}
 	});
 }
+
 </script>
 	<div id="light" class="white_content">
     	<a href="javascript:void(0)" onclick="go_lb_closer();" class="go_lb_closer">Close</a>
@@ -323,4 +351,6 @@ function go_get_purchase_count(){
 	die();
 }
 add_action('wp_ajax_purchase_count', 'go_get_purchase_count');
+
+
 ?>

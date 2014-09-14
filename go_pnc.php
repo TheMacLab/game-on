@@ -26,8 +26,10 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 		$old_points = $wpdb->get_row("SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1");
 		$points *= $qty;
 		$currency *= $qty;
-		if ($user_id != $user_id) {
-			$reason = 'Purchased by '.get_userdata($user_id)->display_name.' '.$qty.' times';	
+		$gifted = false;
+		if (get_current_user_id() != $user_id) {
+			$reason = 'Gifted';
+			$gifted = true;
 		}
 	   	if ($repeat != 'on' || empty($old_points)) {
 			$wpdb->insert(
@@ -42,7 +44,8 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 					'page_id' => $page_id, 
 					'count'=> $qty,
 					'reason' => $reason,
-					'timestamp' => $time
+					'timestamp' => $time,
+					'gifted' => $gifted
 				)
 			);
 		} else {
@@ -126,9 +129,11 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 		return false;	
 	}else{
 		if ($points < 0 || $currency < 0) {
-			$sym = '';
+			$sym = '-';
+			$color = "red";
 		} else {
 			$sym = '+';
+			$color = "green";
 		}
 		global $counter;
 		$counter++;
@@ -144,11 +149,11 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 		} else if($type == 'custom') {
 			$display = $display;
 		}
-		echo '
-		<div id="go_notification" class="go_notification" style="top: '.$space.'px">'.$display.'</div>
-		<script type="text/javascript" language="javascript"> 
+		echo "
+		<div id='go_notification' class='go_notification' style='top: {$space}px; color: {$color} '>{$display}</div>
+		<script type='text/javascript' language='javascript'> 
 		go_notification();
-		</script>';
+		</script>";
 	}
 }
 
