@@ -42,9 +42,8 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 					'count'=> $qty,
 					'reason' => $reason,
 					'timestamp' => $time,
-					'gifted' => $gifted
-					'minutes' => $minutes,
-
+					'gifted' => $gifted,
+					'minutes' => $minutes
 				)
 			);
 		} else {
