@@ -12,9 +12,6 @@ function go_add_currency ($user_id, $reason, $status, $points, $currency, $updat
 	go_update_totals($user_id,$points,$currency,0,0,0);
 }
 
-
-
-
 // Adds currency and points for reasons that are post tied.
 function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null) {
 	global $wpdb;
@@ -111,7 +108,6 @@ function go_add_bonus_currency ($user_id, $bonus_currency, $reason){
 }
 
 // Adds penalties
-
 function go_add_penalty ($user_id, $penalty, $reason){
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
@@ -122,7 +118,6 @@ function go_add_penalty ($user_id, $penalty, $reason){
 	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'penalty'=> $penalty, 'reason'=> $reason, 'timestamp' => $time) );
 	go_update_totals($user_id,0,0,0,$penalty, $status);
 }
-	
 	
 function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $penalty = '', $user_id = null, $display = null) {
 	if($user_id != get_current_user_id()){
@@ -192,7 +187,6 @@ function go_update_admin_bar ($type, $title, $value, $status = null) {
 	</script>";
 }
 
-
 //Update totals
 function go_update_totals ($user_id, $points, $currency, $bonus_currency, $penalty, $status = null){
 	global $wpdb;
@@ -201,7 +195,7 @@ function go_update_totals ($user_id, $points, $currency, $bonus_currency, $penal
 	$modded_array = go_return_multiplier($user_id, $points, $currency, $bonuses, $penalties);
 	$modded_points = $modded_array[0];
 	$modded_currency = $modded_array[1];
-	if($points != 0){
+	if ($points != 0) {
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$totalpoints = go_return_points($user_id);
 		$wpdb->update($table_name_go_totals, array('points' => $modded_points + $totalpoints), array('uid' => $user_id));
@@ -209,29 +203,29 @@ function go_update_totals ($user_id, $points, $currency, $bonus_currency, $penal
 		go_notify('points', $modded_points, 0, 0, 0, $user_id);
 		$p = (string)($modded_points + $totalpoints);
 		go_update_admin_bar('points',go_return_options('go_points_name'),$p, $status);
-		}
-	if($currency != 0){
+	}
+	if ($currency != 0) {
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$totalcurrency = go_return_currency($user_id);
 		$wpdb->update($table_name_go_totals, array('currency' => $modded_currency + $totalcurrency), array('uid' => $user_id));
 		go_notify('currency', 0, $modded_currency, 0, 0, $user_id);
 		go_update_admin_bar('currency', go_return_options('go_currency_name'), ($modded_currency + $totalcurrency));
-		}
-	if($bonus_currency != 0){
+	}
+	if ($bonus_currency != 0) {
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$total_bonus_currency = go_return_bonus_currency($user_id);
 		$wpdb->update($table_name_go_totals, array('bonus_currency'=> $total_bonus_currency+$bonus_currency), array('uid'=>$user_id));
 		go_notify('bonus_currency', 0, 0, $bonus_currency, 0, $user_id);
 		go_update_admin_bar('bonus_currency', go_return_options('go_bonus_currency_name'), $total_bonus_currency+$bonus_currency);
-		}
-	if($penalty != 0){
+	}
+	if ($penalty != 0) {
 		$table_name_go_totals = $wpdb->prefix . "go_totals";
 		$total_penalty = go_return_penalty($user_id);
 		$wpdb->update($table_name_go_totals, array('penalty'=> $total_penalty+$penalty), array('uid'=>$user_id));
 		go_notify('penalty', 0, 0, 0, $penalty, $user_id);
 		go_update_admin_bar('penalty', go_return_options('go_penalty_name'), $total_penalty+$penalty);
-		}
 	}
+}
 
 function go_admin_bar_add () {
 	$points_points = $_POST['go_admin_bar_points_points'];
@@ -433,5 +427,23 @@ function go_return_multiplier ($user_id, $points, $currency, $bonuses, $penaltie
 	} else {
 		return (array($points, $currency));
 	}
+}
+
+function go_task_abandon ($user_id, $post_id, $e_points) {
+	global $wpdb;
+	if (empty($user_id) && empty($post_id) && empty($e_points)) {
+		$user_id = get_current_user_id();
+		$post_id = $_POST['post_id'];
+		$e_points = intval($_POST['encounter_points']);
+	}
+	$table_name_go = "{$wpdb->prefix}go";
+	go_update_totals($user_id, -$e_points, 0, 0, 0);
+	$wpdb->query($wpdb->prepare("
+		DELETE FROM {$table_name_go} 
+		WHERE uid = %d 
+		AND post_id = %d",
+		$user_id,
+		$post_id
+	));
 }
 ?>

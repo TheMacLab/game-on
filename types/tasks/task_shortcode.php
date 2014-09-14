@@ -2176,20 +2176,4 @@ function go_display_rewards($points_array, $currency_array, $number_of_stages){
 	}
 	echo '</div>';
 }
-
-function go_task_abandon () {
-	global $wpdb;
-	$user_id = get_current_user_id();
-	$post_id = $_POST['post_id'];
-	$encounter_points = -intval($_POST['encounter_points']);
-	$table_name_go = "{$wpdb->prefix}go";
-	go_update_totals($user_id, $encounter_points, 0, 0, 0);
-	$wpdb->query($wpdb->prepare("
-		DELETE FROM {$table_name_go} 
-		WHERE uid = %d 
-		AND post_id = %d",
-		$user_id,
-		$post_id
-	));
-}
 ?>
