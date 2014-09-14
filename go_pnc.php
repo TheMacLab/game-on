@@ -429,12 +429,14 @@ function go_return_multiplier ($user_id, $points, $currency, $bonuses, $penaltie
 	}
 }
 
-function go_task_abandon ($user_id, $post_id, $e_points, $e_currency, $e_bonus_currency) {
+function go_task_abandon ($user_id = null, $post_id = null, $e_points = null, $e_currency = null, $e_bonus_currency = null) {
 	global $wpdb;
 	if (empty($user_id) && empty($post_id) && empty($e_points) && empty($e_currency) && empty($e_bonus_currency)) {
 		$user_id = get_current_user_id();
 		$post_id = $_POST['post_id'];
 		$e_points = intval($_POST['encounter_points']);
+		$e_currency = intval($_POST['encounter_currency']);
+		$e_bonus_currency = intval($_POST['encounter_bonus']);
 	}
 	$table_name_go = "{$wpdb->prefix}go";
 	go_update_totals($user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0);

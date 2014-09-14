@@ -770,7 +770,9 @@ function go_task_shortcode($atts, $content = null) {
 				data: {
 					action: "go_task_abandon",
 					post_id: "<?php echo $id; ?>",
-					encounter_points: <?php echo $points_array[0]; ?>
+					encounter_points: <?php echo $points_array[0]; ?>,
+					encounter_currency: <?php echo $currency_array[0]; ?>,
+					encounter_bonus: <?php echo $bonus_currency_array[0]; ?>
 				}, success: function () {
 					window.location = "<?php echo home_url(); ?>";
 				}
