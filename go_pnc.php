@@ -105,8 +105,8 @@ function go_add_bonus_currency ($user_id, $bonus_currency, $reason){
 		$bonus_currency = $bonus_currency * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'bonus_currency'=> $bonus_currency, 'reason'=> $reason, 'timestamp' => $time));
-	go_update_totals($user_id,0,0,$bonus_currency,0, 0, $status);
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => 6, 'bonus_currency'=> $bonus_currency, 'reason'=> $reason, 'timestamp' => $time));
+	go_update_totals($user_id,0,0,$bonus_currency,0, 0);
 }
 
 // Adds penalties
@@ -117,12 +117,11 @@ function go_add_penalty ($user_id, $penalty, $reason){
 		$penalty = $penalty * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'penalty'=> $penalty, 'reason'=> $reason, 'timestamp' => $time) );
-	go_update_totals($user_id,0,0,0,$penalty, 0, $status);
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => 6, 'penalty'=> $penalty, 'reason'=> $reason, 'timestamp' => $time) );
+	go_update_totals($user_id,0,0,0,$penalty, 0);
 }
 
 // Adds minutes
-
 function go_add_minutes ($user_id, $minutes, $reason){
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
@@ -130,8 +129,8 @@ function go_add_minutes ($user_id, $minutes, $reason){
 		$minutes = $minutes * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'minutes'=> $minutes, 'reason'=> $reason, 'timestamp' => $time) );
-	go_update_totals($user_id,0,0,0,0,$minutes, $status);
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => 6, 'minutes'=> $minutes, 'reason'=> $reason, 'timestamp' => $time) );
+	go_update_totals($user_id,0,0,0,0,$minutes);
 }
 	
 
@@ -233,7 +232,7 @@ function go_update_totals ($user_id, $points, $currency, $bonus_currency, $penal
 	if ($bonus_currency != 0) {
 		$total_bonus_currency = go_return_bonus_currency($user_id);
 		$wpdb->update($table_name_go_totals, array('bonus_currency'=> $total_bonus_currency+$bonus_currency), array('uid'=>$user_id));
-		go_notify('bonus_currency', 0, 0, $bonus_currency, 0, $user_id);
+		go_notify('bonus_currency', 0, 0, $bonus_currency, 0, 0, $user_id);
 		go_update_admin_bar('bonus_currency', go_return_options('go_bonus_currency_name'), $total_bonus_currency+$bonus_currency);
 	}
 	if ($penalty != 0) {

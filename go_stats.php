@@ -339,7 +339,7 @@ function go_stats_rewards_list () {
 				$reward_bonus_currency = $reward->bonus_currency;
 				if ($reward_bonus_currency != 0) {
 					?>
-						<li class='go_stats_reward go_stats_reward_bonus_currency'><?php echo (($reward->status != 6)?"<a href='".get_permalink($reward_id)."'>".get_the_title($reward_id)."</a>": "{$reward->reason}")."<div class='go_stats_amount'>({$reward_bonus_currency})</div>";?>
+						<li class='go_stats_reward go_stats_reward_bonus_currency'><?php echo (($reward->status != 6 && !empty($reward->status))?"<a href='".get_permalink($reward_id)."'>".get_the_title($reward_id)."</a>": "{$reward->reason}")."<div class='go_stats_amount'>({$reward_bonus_currency})</div>";?>
 						</li>
 					<?php
 				}
