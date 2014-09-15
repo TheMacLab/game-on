@@ -38,7 +38,7 @@ function go_display_help_video (url) {
 		}
 	}
 	jQuery('#go_help_video_container').show();
-	if (jQuery('#go_option_help_video').length) {
+	if (jQuery('#go_option_help_video').length != 0) {
 		var myplayer = videojs('go_option_help_video');
 		myplayer.ready(function(){
 			myplayer.src(url);
@@ -47,18 +47,23 @@ function go_display_help_video (url) {
 			videoStatus = 'playing';
 		});
 	}
+
 	jQuery('.light').show();
 	if (jQuery('.dark').css('display') != 'none') {
 		jQuery(document).keydown(function(e) { 
-			if (e.keyCode == 27) { // If keypressed is escape, run this
-				hideVid();
-			} 
-			if (e.keyCode == 32) {
-				e.preventDefault();
-				if(!myplayer.paused()){
-					myplayer.pause();
-				}else{
-					myplayer.play();	
+			if (jQuery('#go_help_video_container').is(":visible")) {
+				
+				// If the key pressed is escape, run this.
+				if (e.keyCode == 27) {
+					hideVid();
+				} 
+				if (e.keyCode == 32) {
+					e.preventDefault();
+					if(!myplayer.paused()){
+						myplayer.pause();
+					}else{
+						myplayer.play();	
+					}
 				}
 			}
 		});	
