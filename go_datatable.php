@@ -30,6 +30,7 @@ function go_table_individual () {
 		bonus_currency INT,
 		penalty INT,
 		gifted BOOLEAN DEFAULT 0,
+		minutes INT,
 		reason VARCHAR (200),
 		timestamp VARCHAR (200), 
 		UNIQUE KEY  id (id)
@@ -53,6 +54,7 @@ function go_table_totals () {
 		points  INT,
 		bonus_currency  INT,
 		penalty  INT,
+		minutes INT,
 		badge_count INT,
 		UNIQUE KEY  id (id)
 	);";
@@ -206,6 +208,9 @@ function go_install_data() {
 		'go_penalty_name' => 'Demerit(s)',
 		'go_penalty_prefix' => '',
 		'go_penalty_suffix' => 'DP',
+		'go_minutes_name' => 'Minutes',
+		'go_minutes_prefix' => '',
+		'go_minutes_suffix' => 'm',
 		'go_level_names' => 'Level',
 		'go_level_plural_names' => 'Levels',
 		'go_organization_name' => 'Seating Chart',
@@ -220,6 +225,7 @@ function go_install_data() {
 		'go_admin_bar_display_switch' => 'On',
 		'go_admin_bar_user_redirect' => 'On',
 		'go_admin_bar_add_switch' => '',
+		'go_admin_bar_add_minutes_switch' => '',
 		'go_ranks' => $ranks,
 		'go_class_a' => array('Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5', 'Period 6', 'Period 7'),
 		'go_class_b' => array('Computer 01', 'Computer 02', 'Computer 03', 'Computer 04', 'Computer 05', 'Computer 06', 'Computer 07', 'Computer 08', 'Computer 09', 'Computer 10', 'Computer 11', 'Computer 12', 'Computer 13', 'Computer 14', 'Computer 15', 'Computer 16', 'Computer 17', 'Computer 18', 'Computer 19', 'Computer 20', 'Computer 21', 'Computer 22', 'Computer 23', 'Computer 24', 'Computer 25', 'Computer 26', 'Computer 27', 'Computer 28', 'Computer 29', 'Computer 30', 'Computer 31', 'Computer 32', 'Computer 33', 'Computer 34', 'Computer 35', 'Computer 36', 'Computer 37', 'Computer 38', 'Computer 39', 'Computer 40', 'Computer 41', 'Computer 42', 'Computer 43', 'Computer 44'),

@@ -29,6 +29,7 @@ function go_the_lb_ajax(){
 		$req_currency = $store_cost[0];
 		$req_points = $store_cost[1];
 		$req_bonus_currency = $store_cost[2];
+		$req_minutes = $store_cost[3];
 	}
 
 	$store_filter = unserialize($custom_fields['go_mta_store_filter'][0]);
@@ -79,6 +80,12 @@ function go_the_lb_ajax(){
 		$bonus_currency_color = "r";
 	} 
 	
+	if ($user_minutes >= $req_minutes || $req_minutes <= 0 || $penalty) {
+		$minutes_color = "g";
+	} else {
+		$minutes_color = "r";
+	} 
+	
 	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g") { 
 		$buy_color = "g"; 
 	} else { 
@@ -123,6 +130,7 @@ function go_the_lb_ajax(){
 	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_currency; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
 	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
 	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options('go_bonus_currency_name').': '.$req_bonus_currency; ?></div>
+    <div id="golb-fr-minutes" class="golb-fr-boxes-<?php echo $minutes_color; ?>" req="<?php echo $req_minutes; ?>" cur="<?php echo $user_minutes; ?>"><?php echo go_return_options('go_minutes_name').': '.$req_minutes; ?></div>
 	<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
 	
 	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>'); this.removeAttribute('onclick');">Buy</div>
@@ -211,9 +219,11 @@ function go_lb_opener(id) {
 					window.go_req_currency = jQuery('#golb-fr-price').attr('req');
 					window.go_req_points = jQuery('#golb-fr-points').attr('req');
 					window.go_req_bonus_currency = jQuery('#golb-fr-bonus_currency').attr('req');
+					window.go_req_minutes = jQuery('#golb-fr-minutes').attr('req');
 					window.go_cur_currency = jQuery('#golb-fr-price').attr('cur');
 					window.go_cur_points = jQuery('#golb-fr-points').attr('cur');
 					window.go_cur_bonus_currency = jQuery('#golb-fr-bonus_currency').attr('cur');
+					window.go_cur_minutes = jQuery('#golb-fr-minutes').attr('cur');
 					window.go_purchase_limit = jQuery('#golb-fr-purchase-limit').attr('val');
 					if(go_purchase_limit == 0){
 						go_purchase_limit = Number.MAX_VALUE;
@@ -246,6 +256,13 @@ function go_lb_opener(id) {
 						if (bonus_currency_sub.length > 0) {
 							var bonus_currency = bonus_currency_raw.replace(bonus_currency_sub, go_req_bonus_currency * jQuery(this).val());
 							jQuery('#golb-fr-bonus_currency').html(bonus_currency);
+						}
+						
+						var minutes_raw = jQuery('#golb-fr-minutes').html();
+						var minutes_sub = minutes_raw.substr(minutes_raw.indexOf(":")+2);
+						if (minutes_sub.length > 0) {
+							var minutes = minutes_raw.replace(minutes_sub, go_req_minutes * jQuery(this).val());
+							jQuery('#golb-fr-minutes').html(minutes);
 						}
 					});
 					if(jQuery('.white_content').css('display') != 'none'){

@@ -2759,11 +2759,13 @@ function go_store_cost() {
 		$go_currency_cost = $cost_array[0];
 		$go_point_cost = $cost_array[1];
 		$go_bonus_currency_cost = $cost_array[2];
+		$go_minutes_cost = $cost_array[3];
 	}
 	echo "
 		<input class='go_store_cost_input' name='go_currency_cost' type='text' placeholder='".go_return_options('go_currency_name')."'".(!empty($go_currency_cost) ? "value='{$go_currency_cost}'" : "")."/>
 		<input class='go_store_cost_input' name='go_point_cost' type='text' placeholder='".go_return_options('go_points_name')."'".(!empty($go_point_cost) ? "value='{$go_point_cost}'" : "")."/>
 		<input class='go_store_cost_input' name='go_bonus_currency_cost' type='text' placeholder='".go_return_options('go_bonus_currency_name')."'".(!empty($go_bonus_currency_cost) ? "value='{$go_bonus_currency_cost}'" : "")."/>
+		<input class='go_store_cost_input' name='go_minutes_cost' type='text' placeholder='".go_return_options('go_minutes_name')."'".(!empty($go_minutes_cost) ? "value='{$go_minutes_cost}'" : "")."/>
 	";
 }
 
@@ -2772,6 +2774,7 @@ function go_validate_store_cost() {
 	$go_currency_cost = $_POST['go_currency_cost'];
 	$go_point_cost = $_POST['go_point_cost'];
 	$go_bonus_currency_cost = $_POST['go_bonus_currency_cost'];
+	$go_minutes_cost = $_POST['go_minutes_cost'];
 	if (empty($go_currency_cost)) {
 		$go_currency_cost = 0;
 	}
@@ -2781,7 +2784,10 @@ function go_validate_store_cost() {
 	if (empty($go_bonus_currency_cost)) {
 		$go_bonus_currency_cost = 0;
 	}
-	return (array($go_currency_cost, $go_point_cost, $go_bonus_currency_cost));
+	if (empty($go_minutes_cost)) {
+		$go_minutes_cost = 0;
+	}
+	return (array($go_currency_cost, $go_point_cost, $go_bonus_currency_cost, $go_minutes_cost));
 }
 
 add_action('cmb_render_go_store_limit', 'go_store_limit');
@@ -3015,5 +3021,5 @@ function go_validate_badge_input ($override_value, $value, $field_args) {
 	$badges = $_POST['go_badge_input_stage_'.$field_args['stage']];
 
 	return(array($checked, $badges));
-}e
+}
 ?>

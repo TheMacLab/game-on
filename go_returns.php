@@ -28,6 +28,13 @@ function go_return_penalty($user_id){
 	return $penalty;
 }
 
+function go_return_minutes($user_id){
+	global $wpdb;
+	$table_name_go_totals = $wpdb->prefix . "go_totals";
+	$minutes = (int)$wpdb->get_var("select minutes from ".$table_name_go_totals." where uid = $user_id");
+	return $minutes;
+}
+
 function go_display_points($points){
 	global $wpdb;
 	$prefix = go_return_options('go_points_prefix');
@@ -54,6 +61,13 @@ function go_display_penalty($penalty){
 	$prefix = go_return_options('go_penalty_prefix');
 	$suffix = go_return_options('go_penalty_suffix');
 	return $prefix.$penalty.$suffix;
+}
+
+function go_display_minutes($minutes){
+	global $wpdb;
+	$prefix = go_return_options('go_minutes_prefix');
+	$suffix = go_return_options('go_minutes_suffix');
+	return $prefix.$minutes.$suffix;
 }
 
 function go_display_user_focuses($user_id){

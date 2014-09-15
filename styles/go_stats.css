@@ -36,8 +36,8 @@
 
 #go_stats_gravatar{
 	display: inline-block;
-	width: 142px;
-	height: 142px;
+	width: 161px;
+	height: 161px;
 	border: 2px solid #BBB;
 	float: left;
 	position: relative;
@@ -142,7 +142,6 @@
 
 #go_stats_body a{
 	text-decoration: none;
-	color: inherit;
 }
 
 /** Task Styles **/
@@ -267,6 +266,16 @@
 /** Reward Styles **/
 .go_stats_reward{
 	white-space: pre-wrap;	
+}
+
+/** Minutes  List **/
+#go_stats_minutes_list{
+	width: 100% !important;
+}
+
+/** Penalties  List **/
+#go_stats_penalties_list{
+	width: 100% !important;
 }
 
 /** Badge Styles **/
