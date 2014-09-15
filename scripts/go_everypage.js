@@ -95,6 +95,7 @@ function go_admin_bar_add() {
 			jQuery('#go_admin_bar_penalty_points').val('');
 			jQuery('#go_admin_bar_penalty_reason').val('');
 			jQuery('#admin_bar_add_return').html(html);
+			jQuery('#go_admin_bar_add_button').prop('disabled', false);
 		}
 	});	
 }

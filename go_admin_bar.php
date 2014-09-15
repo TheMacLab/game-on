@@ -125,7 +125,7 @@ function go_admin_bar(){
 					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_penalty_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_penalty_reason"/></div>
 					<div id="go_admin_bar_title">'.go_return_options('go_minutes_name').'</div>
 					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_minutes_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_minutes_reason"/></div>
-					<div><input type="button" style="width:250px; height: 20px;margin-top: 7px;" name="go_admin_bar_submit" onclick="go_admin_bar_add();" value="Add"><div id="admin_bar_add_return"></div></div>',
+					<div><input id="go_admin_bar_add_button" type="button" style="width:250px; height: 20px;margin-top: 7px;" name="go_admin_bar_submit" onclick="go_admin_bar_add();this.disabled = true;" value="Add"><div id="admin_bar_add_return"></div></div>',
 					'href' => false,
 					'parent' => 'go_add'
 				));
@@ -136,7 +136,7 @@ function go_admin_bar(){
 					'title' => 
 					'<div id="go_admin_bar_title">'.go_return_options('go_minutes_name').'</div>
 					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_minutes_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_minutes_reason"/></div>
-					<div><input type="button" style="width:250px; height: 20px;margin-top: 7px;" name="go_admin_bar_submit" onclick="go_admin_bar_add();" value="Add"><div id="admin_bar_add_return"></div></div>
+					<div><input id="go_admin_bar_add_button" type="button" style="width:250px; height: 20px;margin-top: 7px;" name="go_admin_bar_submit" onclick="go_admin_bar_add();this.disabled = true;" value="Add"><div id="admin_bar_add_return"></div></div>
 					<script type="text/javascript">
 						jQuery("ul#wp-admin-bar-go_add-default.ab-submenu").css("height", "125px");
 					</script>',
