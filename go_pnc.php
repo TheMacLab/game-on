@@ -17,6 +17,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	$time = date('m/d@H:i',current_time('timestamp',0));
+	$bonuses = go_return_bonus_currency($user_id);
 	$penalties = go_return_penalty($user_id);
 	if ($status == -1) {
 		$qty = $_POST['qty'];
@@ -65,32 +66,21 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 			);
 		}
 	} else {
+		$modded_array = go_return_multiplier($user_id, $points, $currency, $bonuses, $penalties);
+		$modded_points = $modded_array[0];
+		$modded_currency = $modded_array[1];
 		if ($repeat == 'on') {
 			$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-			$modded_array = go_return_multiplier($user_id, $points, $currency, $bonus_currency, $penalties);
-			$modded_points = $modded_array[0];
-			$modded_currency = $modded_array[1];
-			$wpdb->update($table_name_go,array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'count' => $count + ($old_points->count)), array('uid' => $user_id, 'post_id' => $post_id));
-			
+			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'count' => $count + ($old_points->count)), array('uid' => $user_id, 'post_id' => $post_id));
 		} else {
 			if ($status == 0) {
-				$modded_array = go_return_multiplier($user_id, $points, $currency, $bonus_currency, $penalties);
-				$modded_points = $modded_array[0];
-				$modded_currency = $modded_array[1];
 				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $bonus_currency, 'page_id' => $page_id));
-				
 			} else {
 				$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
-				$modded_array = go_return_multiplier($user_id, $points, $currency, $bonus_currency, $penalties);
-				$modded_points = $modded_array[0];
-				$modded_currency = $modded_array[1];
-				$wpdb->update($table_name_go,array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id), array('uid' => $user_id, 'post_id' => $post_id));
+				$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id), array('uid' => $user_id, 'post_id' => $post_id));
 			}
 		}
 		if ($e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null) {
-			$modded_array = go_return_multiplier($user_id, $points, $currency, $bonus_currency, $penalties);
-			$modded_points = $modded_array[0];
-			$modded_currency = $modded_array[1];
 			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'e_fail_count' => $e_fail_count, 'a_fail_count' => $a_fail_count, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'e_passed' => $e_passed, 'a_passed' => $a_passed, 'c_passed' => $c_passed, 'm_passed' => $m_passed), array('uid' => $user_id, 'post_id' => $post_id));
 		}
 	}
@@ -212,22 +202,24 @@ function go_update_totals ($user_id, $points, $currency, $bonus_currency, $penal
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$bonuses = go_return_bonus_currency($user_id);
 	$penalties = go_return_penalty($user_id);
-	$modded_array = go_return_multiplier($user_id, $points, $currency, $bonuses, $penalties);
-	$modded_points = $modded_array[0];
-	$modded_currency = $modded_array[1];
+	if ($status !== -1) {
+		$modded_array = go_return_multiplier($user_id, $points, $currency, $bonuses, $penalties);
+		$points = $modded_array[0];
+		$currency = $modded_array[1];
+	}
 	if ($points != 0) {
 		$totalpoints = go_return_points($user_id);
-		$wpdb->update($table_name_go_totals, array('points' => $modded_points + $totalpoints), array('uid' => $user_id));
-		go_update_ranks($user_id, ($modded_points + $totalpoints));
-		go_notify('points', $modded_points, 0, 0, 0, 0, $user_id);
-		$p = (string)($modded_points + $totalpoints);
+		$wpdb->update($table_name_go_totals, array('points' => $points + $totalpoints), array('uid' => $user_id));
+		go_update_ranks($user_id, ($points + $totalpoints));
+		go_notify('points', $points, 0, 0, 0, 0, $user_id);
+		$p = (string)($points + $totalpoints);
 		go_update_admin_bar('points',go_return_options('go_points_name'),$p, $status);
 	}
 	if ($currency != 0) {
 		$totalcurrency = go_return_currency($user_id);
-		$wpdb->update($table_name_go_totals, array('currency' => $modded_currency + $totalcurrency), array('uid' => $user_id));
-		go_notify('currency', 0, $modded_currency, 0, 0, 0, $user_id);
-		go_update_admin_bar('currency', go_return_options('go_currency_name'), ($modded_currency + $totalcurrency));
+		$wpdb->update($table_name_go_totals, array('currency' => $currency + $totalcurrency), array('uid' => $user_id));
+		go_notify('currency', 0, $currency, 0, 0, 0, $user_id);
+		go_update_admin_bar('currency', go_return_options('go_currency_name'), ($currency + $totalcurrency));
 	}
 	if ($bonus_currency != 0) {
 		$total_bonus_currency = go_return_bonus_currency($user_id);
