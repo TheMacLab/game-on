@@ -88,38 +88,38 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 }
 	
 // Adds bonus currency.
-function go_add_bonus_currency ($user_id, $bonus_currency, $reason){
+function go_add_bonus_currency ($user_id, $bonus_currency, $reason, $status = 6){
 	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	if(!empty($_POST['qty'])){
 		$bonus_currency = $bonus_currency * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => 6, 'bonus_currency'=> $bonus_currency, 'reason'=> $reason, 'timestamp' => $time));
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => $status, 'bonus_currency'=> $bonus_currency, 'reason'=> $reason, 'timestamp' => $time));
 	go_update_totals($user_id,0,0,$bonus_currency,0, 0);
 }
 
 // Adds penalties
-function go_add_penalty ($user_id, $penalty, $reason){
+function go_add_penalty ($user_id, $penalty, $reason, $status = 6){
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
 	if (!empty($_POST['qty'])) {
 		$penalty = $penalty * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => 6, 'penalty'=> $penalty, 'reason'=> $reason, 'timestamp' => $time) );
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => $status, 'penalty'=> $penalty, 'reason'=> $reason, 'timestamp' => $time) );
 	go_update_totals($user_id,0,0,0,$penalty, 0);
 }
 
 // Adds minutes
-function go_add_minutes ($user_id, $minutes, $reason){
+function go_add_minutes ($user_id, $minutes, $reason, $status = 6){
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
 	if (!empty($_POST['qty'])) {
 		$minutes = $minutes * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => 6, 'minutes'=> $minutes, 'reason'=> $reason, 'timestamp' => $time) );
+	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => $status, 'minutes'=> $minutes, 'reason'=> $reason, 'timestamp' => $time) );
 	go_update_totals($user_id,0,0,0,0,$minutes);
 }
 	

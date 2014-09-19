@@ -255,7 +255,7 @@ function go_stats_item_list () {
 			?>
 				<li class='go_stats_item go_stats_purchased_item'>
 					<?php
-						echo "<a href='".get_permalink($item_id)."'>".get_the_title($item_id)."</a> ({$count_before} of {$item_count_total}) {$purchase_date} {$purchase_reason}";
+						echo "<a href='#' onclick='go_lb_opener({$item_id})'>".get_the_title($item_id)."</a> ({$count_before} of {$item_count_total}) {$purchase_date} {$purchase_reason}";
 					?>
 				</li>
 			<?php
