@@ -19,6 +19,7 @@ function go_admin_bar(){
 	$rng = ($current_points - $current_rank_points);
 	$current_bonus_currency = go_return_bonus_currency(get_current_user_id());
 	$current_penalty = go_return_penalty(get_current_user_id());
+	$current_minutes = go_return_minutes(get_current_user_id());
 	if($dom <= 0){
 		$dom = 1;
 	}
@@ -60,6 +61,12 @@ function go_admin_bar(){
 		));
 		
 		$wp_admin_bar->add_node( array(
+			'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank($current_user_id).'</div>',
+			'href' => '#',
+			'parent' => 'go_info',
+		));
+		
+		$wp_admin_bar->add_node( array(
 			'title' => '<div id="go_admin_bar_points">'.go_return_options('go_points_name').': '.go_display_points($current_points).'</div>',
 			'href' => '#',
 			'parent' => 'go_info',
@@ -67,12 +74,6 @@ function go_admin_bar(){
 		
 		$wp_admin_bar->add_node( array(
 			'title' => '<div id="go_admin_bar_currency">'.go_return_options('go_currency_name').': '.go_display_currency($current_currency).'</div>',
-			'href' => '#',
-			'parent' => 'go_info',
-		));
-		
-		$wp_admin_bar->add_node( array(
-			'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank($current_user_id).'</div>',
 			'href' => '#',
 			'parent' => 'go_info',
 		));
@@ -89,6 +90,12 @@ function go_admin_bar(){
 			'parent' => 'go_info',
 		));
 		
+		$wp_admin_bar->add_node( array(
+			'title' => '<div id="go_admin_bar_minutes">'.go_return_options('go_minutes_name').': '.go_display_minutes($current_minutes).'</div>',
+			'href' => '#',
+			'parent' => 'go_info',
+		));
+		
 		if (current_user_can('manage_options')) {
 			$wp_admin_bar->add_node( array(
 				'title' => '<input type="button" id="go_admin_bar_deactivation" name="go_admin_bar_deactivation" value="Deactivate" onclick="go_deactivate_plugin()"/>',
@@ -96,28 +103,47 @@ function go_admin_bar(){
 			));
 		}
 		
-		if(go_return_options('go_admin_bar_add_switch') == 'On'){	
+		if (go_return_options('go_admin_bar_add_switch') == 'On') {	
 			
 			$wp_admin_bar->add_node( array(
 				'title' => 'Add',
 				'href' => '#',
 				'id' => 'go_add',
 			));
-		
-			$wp_admin_bar->add_node( array(
-				'title' => 
-				'<div id="go_admin_bar_title">Points</div>
-				<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_points_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_points_reason"/></div>
-				<div id="go_admin_bar_title">'.go_return_options('go_currency_name').'</div>
-				<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_currency_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_currency_reason"/></div>
-				<div id="go_admin_bar_title">'.go_return_options('go_bonus_currency_name').'</div>
-				<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_bonus_currency_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_bonus_currency_reason"/></div>
-				<div id="go_admin_bar_title">'.go_return_options('go_penalty_name').'</div>
-				<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_penalty_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_penalty_reason"/></div>
-				<div><input type="button" style="width:250px; height: 20px;margin-top: 7px;" name="go_admin_bar_submit" onclick="go_admin_bar_add();" value="Add"><div id="admin_bar_add_return"></div></div>',
-				'href' => false,
-				'parent' => 'go_add',
-			));
+			
+			if (go_return_options('go_admin_bar_add_minutes_switch') != 'On'){
+			
+				$wp_admin_bar->add_node( array(
+					'title' => 
+					'<div id="go_admin_bar_title">'.go_return_options('go_points_name').'</div>
+					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_points_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_points_reason"/></div>
+					<div id="go_admin_bar_title">'.go_return_options('go_currency_name').'</div>
+					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_currency_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_currency_reason"/></div>
+					<div id="go_admin_bar_title">'.go_return_options('go_bonus_currency_name').'</div>
+					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_bonus_currency_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_bonus_currency_reason"/></div>
+					<div id="go_admin_bar_title">'.go_return_options('go_penalty_name').'</div>
+					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_penalty_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_penalty_reason"/></div>
+					<div id="go_admin_bar_title">'.go_return_options('go_minutes_name').'</div>
+					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_minutes_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_minutes_reason"/></div>
+					<div><input id="go_admin_bar_add_button" type="button" style="width:250px; height: 20px;margin-top: 7px;" name="go_admin_bar_submit" onclick="go_admin_bar_add();this.disabled = true;" value="Add"><div id="admin_bar_add_return"></div></div>',
+					'href' => false,
+					'parent' => 'go_add'
+				));
+				
+			} else {
+			
+				$wp_admin_bar->add_node( array(
+					'title' => 
+					'<div id="go_admin_bar_title">'.go_return_options('go_minutes_name').'</div>
+					<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_minutes_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_minutes_reason"/></div>
+					<div><input id="go_admin_bar_add_button" type="button" style="width:250px; height: 20px;margin-top: 7px;" name="go_admin_bar_submit" onclick="go_admin_bar_add();this.disabled = true;" value="Add"><div id="admin_bar_add_return"></div></div>
+					<script type="text/javascript">
+						jQuery("ul#wp-admin-bar-go_add-default.ab-submenu").css("height", "125px");
+					</script>',
+					'href' => false,
+					'parent' => 'go_add'
+				));
+			}
 		}
 
 		$wp_admin_bar->add_node( array(

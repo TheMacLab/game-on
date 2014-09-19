@@ -33,7 +33,7 @@ function goBuytheItem (id, buyColor, count) {
 					jQuery('#go_admin_bar_progress_bar').css("background-color", color);
 				}
 				go_count_item(id);
-				console.log(response);
+				// console.log(response);
 			}
 		});
 	});
