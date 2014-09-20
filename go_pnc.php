@@ -310,9 +310,6 @@ function go_return_options ($option) {
 
 function barColor ($current_bonus_currency) {
 	$color = '#00c100';
-	function inRange ($int, $min, $max) {
-		return ($int>$min && $int<=$max);
-	} 
 	switch ($current_bonus_currency) {
 		case inRange($current_bonus_currency, 0, PHP_INT_MAX):
 			$color = '#00c100';

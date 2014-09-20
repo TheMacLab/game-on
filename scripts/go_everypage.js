@@ -290,7 +290,9 @@ function go_stats_move_stage (task_id, status) {
 				percentage = (parseFloat(jQuery('#go_stats_user_progress_top_value').html())/parseFloat(jQuery('#go_stats_user_progress_bottom_value').html())) * 100;
 				jQuery('#go_stats_progress_fill').css('width', '' + percentage + '%');
 			}
-			
+			if(json['abandon']){
+				task_message.parent('li').remove();
+			}
 			jQuery('#go_stats_user_currency_value').html(parseFloat(jQuery('#go_stats_user_currency_value').html()) + json['currency']);
 			jQuery('#go_stats_user_bonus_currency_value').html(parseFloat(jQuery('#go_stats_user_bonus_currency_value').html()) + json['bonus_currency']);
 		}

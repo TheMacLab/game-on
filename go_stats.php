@@ -45,7 +45,7 @@ function go_admin_bar_stats () {
 		<div id='go_stats_gravatar'><?php echo $user_avatar;?></div>
 		<div id='go_stats_header'>
 			<div id='go_stats_user_info'>
-				<?php echo "{$user_fullname}<br/>{$user_login}<br/><a href='{$user_website}'>{$user_display_name}</a><br/><div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br/>{$current_minutes} {$minutes_name}"; ?>
+				<?php echo "{$user_fullname}<br/>{$user_login}<br/><a href='{$user_website}' target='_blank'>{$user_display_name}</a><br/><div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br/>{$current_minutes} {$minutes_name}"; ?>
 			</div>
 			<div id='go_stats_user_rank'><?php echo $current_rank;?></div>
 			<div id='go_stats_user_progress'>
@@ -110,7 +110,7 @@ function go_stats_task_list () {
 		foreach ($task_list as $task) {
 			?>
 			<li class='go_stats_task <?php if($counter%2 == 0){echo 'go_stats_right_task';}?>'>
-				<a href='<?php echo get_permalink($task->post_id);?>' target='_blank' class='go_stats_task_list_name'><?php echo get_the_title($task->post_id);?></a>
+				<a href='<?php echo get_permalink($task->post_id);?>' <?php echo (($user_id != get_current_user_id())? "target='_blank'":""); ?>class='go_stats_task_list_name'><?php echo get_the_title($task->post_id);?></a>
 				<?php
 				if ($is_admin) {
 				?>
@@ -173,59 +173,80 @@ function go_stats_move_stage () {
 	$message = $_POST['message'];
 	$custom_fields = get_post_custom($task_id);
 	$rewards = unserialize($custom_fields['go_presets'][0]);
-	$current_status = $wpdb->get_var($wpdb->prepare("SELECT status FROM {$go_table_name} WHERE uid=%d AND post_id=%d",$user_id,$task_id));
+	$current_status = $wpdb->get_var($wpdb->prepare("SELECT status FROM {$go_table_name} WHERE uid=%d AND post_id=%d",$user_id, $task_id));
 	$page_id = $wpdb->get_var($wpdb->prepare("SELECT page_id FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
 	
 	$changed = array('type' => 'json', 'points' => 0, 'currency' => 0, 'bonus_currency' => 0);
-	 
-	for ($count; $count > 0; $count--) {
-		go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], null, $page_id, 'on', -1, null, null, null, null);
-		
-		$changed['points'] += -$rewards['points'][$current_status];
-		$changed['currency'] += -$rewards['currency'][$current_status];
-		$changed['bonus_currency'] += -$rewards['bonus_currency'][$current_status];
-	}
 	
-	while ($current_status != $status) {
-		if ($current_status > $status) {
-			$current_status--;
-			
-			go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], null, $page_id, null, null, null, null, null, null);
+	if ($status == 1){
+		$current_rewards = $wpdb->get_results($wpdb->prepare("SELECT points, currency, bonus_currency FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
+		go_task_abandon($user_id, $task_id, $current_rewards[0]->points, $current_rewards[0]->currency, $current_rewards[0]->bonus_currency);
+		
+		$changed['points'] = -$current_rewards[0]->points;
+		$changed['currency'] = -$current_rewards[0]->currency;
+		$changed['bonus_currency'] = -$current_rewards[0]->bonus_currency;
+		
+		$current_points = go_return_points($user_id);
+		$updated_rank = get_user_meta($user_id, 'go_rank', true);
+		if ($current_rank[0][0] != $updated_rank[0][0]) {
+			$changed['current_points'] = $current_points;
+			$changed['rank'] = $updated_rank[0][0];
+			$changed['rank_points'] = $updated_rank[0][1];
+			$changed['next_rank_points'] = $updated_rank[1][1];
+		}
+		$changed['abandon'] = 'true';
+		
+	} else {
+		 
+		for ($count; $count > 0; $count--) {
+			go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], null, $page_id, 'on', -1, null, null, null, null);
 			
 			$changed['points'] += -$rewards['points'][$current_status];
 			$changed['currency'] += -$rewards['currency'][$current_status];
 			$changed['bonus_currency'] += -$rewards['bonus_currency'][$current_status];
-			
-		} elseif ($current_status < $status) {
-			$current_status++;
-			$current_count = $wpdb->get_var($wpdb->prepare("SELECT count FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
-			if ($current_status == 5 && $current_count == 0) {
-				go_add_post($user_id, $task_id, $current_status-1, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], null, $page_id, 'on', 1, null, null, null, null);
+		}
+		
+		while ($current_status != $status) {
+			if ($current_status > $status) {
+				$current_status--;
 				
-				$changed['points'] += $rewards['points'][$current_status-1];
-				$changed['currency'] += $rewards['currency'][$current_status-1];
-				$changed['bonus_currency'] += $rewards['bonus_currency'][$current_status-1];
-			} elseif ($current_status < 5) {
-				go_add_post($user_id, $task_id, $current_status, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], null, $page_id, null, null, null, null, null, null);
+				go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], null, $page_id, null, null, null, null, null, null);
 				
-				$changed['points'] += $rewards['points'][$current_status-1];
-				$changed['currency'] += $rewards['currency'][$current_status-1];
-				$changed['bonus_currency'] += $rewards['bonus_currency'][$current_status-1];
+				$changed['points'] += -$rewards['points'][$current_status];
+				$changed['currency'] += -$rewards['currency'][$current_status];
+				$changed['bonus_currency'] += -$rewards['bonus_currency'][$current_status];
+				
+			} elseif ($current_status < $status) {
+				$current_status++;
+				$current_count = $wpdb->get_var($wpdb->prepare("SELECT count FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
+				if ($current_status == 5 && $current_count == 0) {
+					go_add_post($user_id, $task_id, $current_status-1, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], null, $page_id, 'on', 1, null, null, null, null);
+					
+					$changed['points'] += $rewards['points'][$current_status-1];
+					$changed['currency'] += $rewards['currency'][$current_status-1];
+					$changed['bonus_currency'] += $rewards['bonus_currency'][$current_status-1];
+				} elseif ($current_status < 5) {
+					go_add_post($user_id, $task_id, $current_status, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], null, $page_id, null, null, null, null, null, null);
+					
+					$changed['points'] += $rewards['points'][$current_status-1];
+					$changed['currency'] += $rewards['currency'][$current_status-1];
+					$changed['bonus_currency'] += $rewards['bonus_currency'][$current_status-1];
+				}
 			}
 		}
-	}
-	if ($message === 'See me') {
-		go_message_user($user_id, $message.' about, <a href="'.get_permalink($task_id).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($task_id).'</a>, please.');
-	} else {
-		go_message_user($user_id, 'RE: <a href="'.get_permalink($task_id).'">'.get_the_title($task_id).'</a> '.$message);
-	}
-	$current_points = go_return_points($user_id);
-	$updated_rank = get_user_meta($user_id, 'go_rank', true);
-	if ($current_rank[0][0] != $updated_rank[0][0]) {
-		$changed['current_points'] = $current_points;
-		$changed['rank'] = $updated_rank[0][0];
-		$changed['rank_points'] = $updated_rank[0][1];
-		$changed['next_rank_points'] = $updated_rank[1][1];
+		if ($message === 'See me') {
+			go_message_user($user_id, $message.' about, <a href="'.get_permalink($task_id).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($task_id).'</a>, please.');
+		} else {
+			go_message_user($user_id, 'RE: <a href="'.get_permalink($task_id).'">'.get_the_title($task_id).'</a> '.$message);
+		}
+		$current_points = go_return_points($user_id);
+		$updated_rank = get_user_meta($user_id, 'go_rank', true);
+		if ($current_rank[0][0] != $updated_rank[0][0]) {
+			$changed['current_points'] = $current_points;
+			$changed['rank'] = $updated_rank[0][0];
+			$changed['rank_points'] = $updated_rank[0][1];
+			$changed['next_rank_points'] = $updated_rank[1][1];
+		}
 	}
 	echo json_encode($changed);
 	die();
@@ -299,6 +320,7 @@ function go_stats_rewards_list () {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	$new_tab = ($user_id != get_current_user_id())?"target='_blank'":"";
 	$rewards = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND (points != %d OR currency != 0 OR bonus_currency != 0) ORDER BY id DESC", $user_id, 0));
 	?>
 	<ul id='go_stats_rewards_list_points' class='go_stats_body_list'>
@@ -309,7 +331,7 @@ function go_stats_rewards_list () {
 				$reward_points = $reward->points;
 				if ($reward_points != 0) {
 					?>
-						<li class='go_stats_reward go_stats_reward_points'><?php echo (($reward->status != 6)?"<a href='".get_permalink($reward_id)."'>".get_the_title($reward_id)."</a>": "{$reward->reason}")." <div class='go_stats_amount'>({$reward_points})</div>";?>
+						<li class='go_stats_reward go_stats_reward_points'><?php echo (!empty($reward->status)?(($reward->status == -1)?"<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title($reward_id)."</a>":(($reward->status < 6)?"<a href='".get_permalink($reward_id)."' {$new_tab}>".get_the_title($reward_id)."</a>":"{$reward->reason}")):"")."<div class='go_stats_amount'>({$reward_points})</div>";?>
 						</li>
 					<?php
 				}
@@ -324,7 +346,7 @@ function go_stats_rewards_list () {
 				$reward_currency = $reward->currency;
 				if ($reward_currency != 0) {
 					?>
-						<li class='go_stats_reward go_stats_reward_currency'><?php echo (($reward->status != 6)?"<a href='".get_permalink($reward_id)."'>".get_the_title($reward_id)."</a>": "{$reward->reason}")."<div class='go_stats_amount'>({$reward_currency})</div>";?>
+						<li class='go_stats_reward go_stats_reward_currency'><?php echo (!empty($reward->status)?(($reward->status == -1)?"<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title($reward_id)."</a>":(($reward->status < 6)?"<a href='".get_permalink($reward_id)."' {$new_tab}>".get_the_title($reward_id)."</a>":"{$reward->reason}")):"")."<div class='go_stats_amount'>({$reward_currency})</div>";?>
 						</li>
 					<?php
 				}
@@ -339,8 +361,7 @@ function go_stats_rewards_list () {
 				$reward_bonus_currency = $reward->bonus_currency;
 				if ($reward_bonus_currency != 0) {
 					?>
-						<li class='go_stats_reward go_stats_reward_bonus_currency'><?php echo (($reward->status != 6 && !empty($reward->status))?"<a href='".get_permalink($reward_id)."'>".get_the_title($reward_id)."</a>": "{$reward->reason}")."<div class='go_stats_amount'>({$reward_bonus_currency})</div>";?>
-						</li>
+						<li class='go_stats_reward go_stats_reward_bonus_currency'><?php echo (!empty($reward->status)?(($reward->status == -1)?"<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title($reward_id)."</a>":(($reward->status < 6)?"<a href='".get_permalink($reward_id)."' {$new_tab}>".get_the_title($reward_id)."</a>":"{$reward->reason}")):"")."<div class='go_stats_amount'>({$reward_bonus_currency})</div>";?></li>
 					<?php
 				}
 			}
@@ -365,7 +386,7 @@ function go_stats_minutes_list () {
 			foreach ($minutes as $minute) {
 				?>
 					<li class='go_stats_minutes'>
-						<span><?php echo (($minute->status == -1)?get_the_title($minute->post_id):$minute->reason).' '.$minute->timestamp;?> </span>
+						<span><?php echo (($minute->status == -1)?"<a href='#' onclick='go_lb_opener({$minute->post_id})'>".get_the_title($minute->post_id)."</a>":$minute->reason).' '.$minute->timestamp;?> </span>
 						<div class='go_stats_amount'>(<?php echo $minute->minutes?>)</div>
 					</li>
 				<?php
@@ -391,7 +412,7 @@ function go_stats_penalties_list () {
 			foreach ($penalties as $penalty) {
 				?>
 					<li class='go_stats_penalties'>
-						<span><?php echo (($penalty->status == -1)?get_the_title($penalty->post_id):$penalty->reason).' '.$penalty->timestamp;?> </span>
+						<span><?php echo $penalty->reason.' '.$penalty->timestamp;?> </span>
 						<div class='go_stats_amount'>(<?php echo $penalty->penalty?>)</div>
 					</li>
 				<?php
@@ -467,7 +488,7 @@ function go_return_user_data ($id, $counter, $sort) {
 	$bonus_currency = go_return_bonus_currency($id);
 	$badge_count = go_return_badge_count($id);
 	$user_data_key = get_userdata($id);
-	$user_display = "<a href='{$user_data_key->user_url}' target='_blank'>{$user_data_key->display_name}</a>";
+	$user_display = "<a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$id}&quot;);'>{$user_data_key->display_name}</a>";
 	switch ($sort) {
 		case 'points':
 			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$points}</div></li>";

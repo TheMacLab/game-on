@@ -109,6 +109,7 @@ add_action('wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');
+add_action('inRange', 'inRange');
 add_action('isEven','isEven');
 add_action('wp_head', 'go_stats_overlay');
 add_action('admin_head', 'go_stats_overlay');
@@ -151,6 +152,10 @@ function go_tsk_actv_redirect() {
         }
     }
 }
+
+function inRange ($int, $min, $max) {
+	return ($int>$min && $int<=$max);
+} 
 
 function isEven($value) {
 	if ($value%2 == 0) {
