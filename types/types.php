@@ -125,6 +125,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_admin_lock'
 			),
 			array(
+				'name' => 'URL'.go_task_opt_help('encounter_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'encounter_url_key',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('encounter_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'encounter_upload',
 				'type' => 'checkbox'
@@ -205,6 +210,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_admin_lock'
 			),
 			array(
+				'name' => 'URL'.go_task_opt_help('accept_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'accept_url_key',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('accept_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'accept_upload',
 				'type' => 'checkbox'
@@ -283,6 +293,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Lock'.go_task_opt_help('completion_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'completion_admin_lock',
 				'type' => 'go_admin_lock'
+			),
+			array(
+				'name' => 'URL'.go_task_opt_help('completion_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'completion_url_key',
+				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
@@ -368,6 +383,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Lock'.go_task_opt_help('mastery_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'mastery_admin_lock',
 				'type' => 'go_admin_lock'
+			),
+			array(
+				'name' => 'URL'.go_task_opt_help('mastery_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'mastery_url_key',
+				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
@@ -463,6 +483,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Lock'.go_task_opt_help('repeat_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'repeat_admin_lock',
 				'type' => 'go_admin_lock'
+			),
+			array(
+				'name' => 'URL'.go_task_opt_help('repeat_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'repeat_url_key',
+				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('repeat_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
