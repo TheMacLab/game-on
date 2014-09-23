@@ -102,12 +102,14 @@ function go_stats_task_list () {
 		$user_id = get_current_user_id();
 	}
 	$is_admin = current_user_can('manage_options');
-	$task_list = $wpdb->get_results($wpdb->prepare("SELECT status,post_id,count FROM {$go_table_name} WHERE uid=%d AND (status = %d OR status = 2 OR status = 3 OR status = 4) ORDER BY id DESC", $user_id, 1));
+	$task_list = $wpdb->get_results($wpdb->prepare("SELECT status,post_id,count,url FROM {$go_table_name} WHERE uid=%d AND (status = %d OR status = 2 OR status = 3 OR status = 4) ORDER BY id DESC", $user_id, 1));
 	$counter = 1;
 	?>
 	<ul id='go_stats_tasks_list' <?php if ($is_admin){ echo "class='go_stats_tasks_list_admin'"; }?>>
 		<?php
 		foreach ($task_list as $task) {
+			$task_urls = unserialize($task->url);
+			
 			?>
 			<li class='go_stats_task <?php if($counter%2 == 0){echo 'go_stats_right_task';}?>'>
 				<a href='<?php echo get_permalink($task->post_id);?>' <?php echo (($user_id != get_current_user_id())? "target='_blank'":""); ?>class='go_stats_task_list_name'><?php echo get_the_title($task->post_id);?></a>
@@ -130,19 +132,12 @@ function go_stats_task_list () {
 					$stage_count = 4;	
 				}
 				for ($i = 5; $i > 0; $i--) {
-					if ($is_admin) { 
-						?>
-						<a href='#'>
-						<?php 
-					}
+					$stage_url = $task_urls[$i];
 					?>
-					<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
+					<a href='<?php echo (!empty($stage_url))?$stage_url:"#";?>' class='<?php echo ($is_admin)?"go_stats_task_admin_stage_wrap":"go_stats_task_stage_wrap go_user";?> <?php echo (!empty($stage_url))?"go_stats_task_stage_url":""?>' <?php echo (!empty($stage_url))?'target="_blank"':"";?>>
+					<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?> <?php echo (!empty($stage_url))?"stage_url":""?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
+					</a>
 					<?php 
-					if ($is_admin) {
-						?>
-						</a>
-						<?php
-					}
 				}
 				?>
 				</div>

@@ -219,12 +219,19 @@ function go_stats_task_list () {
 		},
 		success:function (html) {
 			jQuery('#go_stats_body').html(html);
-			jQuery('.go_stats_task_status_wrap a').click(function(){
-				jQuery('.chosen').not(jQuery(this).children('div')).removeClass('chosen');
-				jQuery(this).children('div').not(jQuery('.go_stage_does_not_exist')).toggleClass('chosen');
+			jQuery('.go_stats_task_status_wrap a.go_stats_task_admin_stage_wrap').click(function(){
+				if (jQuery(this).attr('href') == '#') {
+					jQuery('.chosen').not(jQuery(this).children('div')).removeClass('chosen');
+					jQuery(this).children('div').not(jQuery('.go_stage_does_not_exist')).toggleClass('chosen');
+				}
 			});
+			border_color = jQuery('a').css('color');
+			jQuery('.stage_url').css('border-color', '' + border_color + '');
 			jQuery('.go_stage_does_not_exist').parent().css('cursor', 'default');
 			jQuery('.go_stage_does_not_exist').parent().on('click', function(e){
+				e.preventDefault();
+			});
+			jQuery('.go_user').not('.go_stats_task_stage_url').click( function (e) {
 				e.preventDefault();
 			});
 			jQuery('.go_stats_task_admin_submit').click(function(){
