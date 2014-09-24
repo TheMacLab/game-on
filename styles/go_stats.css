@@ -231,11 +231,11 @@
 	cursor: default;
 }
 
-.stage_url{
+.future_url{
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
-	border: 2px solid;
+	border: 1px solid;
 }
 
 .completed{

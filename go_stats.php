@@ -109,6 +109,7 @@ function go_stats_task_list () {
 		<?php
 		foreach ($task_list as $task) {
 			$task_urls = unserialize($task->url);
+			$custom = get_post_meta($task->post_id);
 			
 			?>
 			<li class='go_stats_task <?php if($counter%2 == 0){echo 'go_stats_right_task';}?>'>
@@ -132,10 +133,12 @@ function go_stats_task_list () {
 					$stage_count = 4;	
 				}
 				for ($i = 5; $i > 0; $i--) {
-					$stage_url = $task_urls[$i];
+					$stage_url = ($i != 5)?$task_urls[$i]:($task->count >= 1)?$task_urls[4]:"";
+					$fifth_stage_done = ($task->status == $i && $task->count >= 1)?true:false;
+					$url_switch = ($i == 1)?$custom['go_mta_encounter_url_key'][0]:($i == 2)?$custom['go_mta_accept_url_key'][0]:($i == 3)?$custom['go_mta_completion_url_key'][0]:($i == 4)?$custom['go_mta_mastery_url_key'][0]:($i == 5)?$custom['go_mta_repeat_url_key'][0]:"";
 					?>
-					<a href='<?php echo (!empty($stage_url))?$stage_url:"#";?>' class='<?php echo ($is_admin)?"go_stats_task_admin_stage_wrap":"go_stats_task_stage_wrap go_user";?> <?php echo (!empty($stage_url))?"go_stats_task_stage_url":""?>' <?php echo (!empty($stage_url))?'target="_blank"':"";?>>
-					<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?> <?php echo (!empty($stage_url))?"stage_url":""?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
+					<a href='<?php echo (!empty($stage_url) && !$fifth_stage_done)?$stage_url:"#";?>' class='<?php echo ($is_admin)?"go_stats_task_admin_stage_wrap":"go_stats_task_stage_wrap go_user";?> <?php echo (!empty($stage_url))?"go_stats_task_stage_url":""?>' <?php echo (!empty($stage_url) && !$fifth_stage_done)?'target="_blank"':"";?>>
+					<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?> <?php echo (!empty($stage_url) && !$fifth_stage_done)?"stage_url":""?> <?php echo ($url_switch == 'on' && $task->status < $i && $task->count < 1)?'future_url':"";?>'' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
 					</a>
 					<?php 
 				}
