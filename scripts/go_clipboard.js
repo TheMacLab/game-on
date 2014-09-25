@@ -102,7 +102,7 @@ function go_graphs (datasets){
 			
 			});	
 		}
-		jQuery("<div class='button' style='right:20px;top:20px'>zoom out</div>").appendTo(jQuery('#placeholder')).click(function (event) {
+		jQuery("<div class='button' style='right:20px;top:9px;width:100px;text-align:center;line-height: 20px;'>Zoom Out</div>").appendTo(jQuery('#placeholder')).click(function (event) {
 				event.preventDefault();
 				plot.zoomOut();
 		});
