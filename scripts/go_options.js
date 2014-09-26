@@ -19,6 +19,7 @@ jQuery(document).ready(function(){
 		jQuery('input[name="go_data_reset_currency"]').parent('.go_options'),
 		jQuery('input[name="go_data_reset_bonus_currency"]').parent('.go_options'),
 		jQuery('input[name="go_data_reset_penalty"]').parent('.go_options'),
+		jQuery('input[name="go_data_reset_minutes"]').parent('.go_options'),
 		jQuery('input[name="go_data_reset_badges"]').parent('.go_options'),
 		jQuery('input[name="go_data_reset_all"]').parent('.go_options'),
 		jQuery('#go_data_reset').parent('.go_options')
@@ -29,6 +30,7 @@ jQuery(document).ready(function(){
 		jQuery('input[name="go_data_reset_currency"]'),
 		jQuery('input[name="go_data_reset_bonus_currency"]'),
 		jQuery('input[name="go_data_reset_penalty"]'),
+		jQuery('input[name="go_data_reset_minutes"]'),
 		jQuery('input[name="go_data_reset_badges"]'),
 		jQuery('input[name="go_data_reset_all"]')
 	];
@@ -219,6 +221,20 @@ jQuery(document).ready(function(){
 		}
 		if (jQuery('.go_options_level_names_input').length == 1) {
 			jQuery('.go_remove_level').remove();
+		}
+	});
+	
+	if (jQuery('input[name="go_admin_bar_add_switch"]').is(':checked')) {
+		jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().show('slow');
+	} else {
+		jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().hide('slow');
+	}
+	
+	jQuery('input[name="go_admin_bar_add_switch"]').click(function(){
+		if (jQuery('input[name="go_admin_bar_add_switch"]').is(':checked')) {
+			jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().show('slow');
+		} else {
+			jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().hide('slow');
 		}
 	});
 	
@@ -433,7 +449,7 @@ jQuery(document).ready(function(){
 						reset_data: reset_data,
 						reset_all: reset_all
 					},
-					success: function(html){
+					success: function (html){
 						location.reload();
 					}
 				});
