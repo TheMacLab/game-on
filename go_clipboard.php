@@ -39,6 +39,7 @@ if($class_a){
 	<label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
 	<label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
 	<label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
+    <label for="go_clipboard_minutes"><?php echo go_return_options('go_minutes_name'); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
 	<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br />
 	<label name="go_clipboard_reason">Message: </label>
     <div>
@@ -61,6 +62,7 @@ if($class_a){
 				<th class="header"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
 				<th class="header"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
 				<th class="header"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
+                <th class="header"><a href="#"><?php echo go_return_options('go_minutes_name'); ?></a></th>
 				<th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?></a></th>
 			</tr>
 		</thead>
@@ -91,6 +93,7 @@ if($class_a){
             <option value="4"><?php echo go_return_options('go_currency_name');?></option>
             <option value="0"><?php echo go_return_options('go_bonus_currency_name'); ?></option>
             <option value="0"><?php echo go_return_options('go_penalty_name'); ?></option>
+            <option value="0"><?php echo go_return_options('go_minutes_name'); ?></option>
             <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
             <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
          </select>
@@ -149,6 +152,7 @@ function go_clipboard_intable(){
 					}
 					$bonus_currency = go_return_bonus_currency($value);
 					$penalty = go_return_penalty($value);
+					$minutes = go_return_minutes($value);
 					$currency = go_return_currency($value);
 					$points = go_return_points($value);
 					$badge_count = go_return_badge_count($value);
@@ -167,6 +171,7 @@ function go_clipboard_intable(){
 							<td class='user_currency'>{$currency}</td>
 							<td class='user_bonus_currency'>{$bonus_currency}</td>
 							<td class='user_penalty'>{$penalty}</td>
+							<td class='user_minutes'>{$minutes}</td>
 							<td class='user_badge_count'>{$badge_count}</td>
 						  </tr>";
 				}
@@ -183,6 +188,7 @@ function go_clipboard_add(){
 	$currency = $_POST['currency'];
 	$bonus_currency = $_POST['bonus_currency'];
 	$penalty = $_POST['penalty'];
+	$minutes = $_POST['minutes'];
 	$reason = $_POST['reason'];
 	$badge_ID = $_POST['badge_ID'];
 	foreach($ids as $key=>$value){
@@ -198,6 +204,9 @@ function go_clipboard_add(){
 			}
 			if($penalty!= ''){
 				go_add_penalty($value, $penalty, $reason);
+			}
+			if($minutes!= ''){
+				go_add_minutes($value, $minutes, $reason);
 			}
 			if($badge_ID != ''){
 				do_shortcode('[go_award_badge id="'.$badge_ID.'" repeat = "off" uid="'.$value.'"]');
@@ -227,7 +236,8 @@ function go_clipboard_collect_data(){
 			$points = go_return_points($value);
 			$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
 			$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
-			$array[$value][$time] = $bonus_currency.','. $penalty.','. $points.','. $third_stage.','. $fourth_stage.','.$currency;
+			$minutes = go_return_minutes($value);
+			$array[$value][$time] = $bonus_currency.','. $penalty.','. $points.','. $third_stage.','. $fourth_stage.','.$currency.','.$minutes;
 		}
 	}
 	update_option( 'go_graphing_data', $array );
@@ -244,6 +254,7 @@ function go_clipboard_get_data(){
 	// 3 = mastered
 	// 4 = currency
 	// 5 = penalty
+	// 6 = minutes
 	$selection = $_POST['go_graph_selection'];
 	if(isset($_POST['go_class_a'])){
 		$class_a_choice = $_POST['go_class_a'];

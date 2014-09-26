@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Gamification tools for teachers.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada, Charles Leon
 Author URI: http://maclab.guhsd.net/
-Version: 2.1.5
+Version: 2.2.0
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -41,10 +41,12 @@ add_action('go_add_post','go_add_post');
 add_action('go_add_currency','go_add_currency');
 add_action('go_add_bonus_currency','go_add_bonus_currency');
 add_action('go_add_penalty','go_add_penalty');
+add_action('go_add_minutes','go_add_minutes');
 add_action('go_return_currency','go_return_currency');
 add_action('go_return_points','go_return_points');
 add_action('go_return_bonus_currency','go_return_bonus_currency');
 add_action('go_return_penalty','go_return_penalty');
+add_action('go_return_minutes','go_return_minutes');
 add_action('go_display_user_focuses', 'go_display_user_focuses');
 add_action('go_display_rewards', 'go_display_rewards');
 add_action('admin_menu', 'go_clipboard');
@@ -67,6 +69,7 @@ add_action('wp_ajax_test_point_update', 'test_point_update');
 add_action('go_get_all_focuses', 'go_get_all_focuses');
 add_action('wp_ajax_unlock_stage', 'unlock_stage');
 add_action('wp_ajax_task_change_stage','task_change_stage');
+add_action('wp_ajax_go_task_abandon','go_task_abandon');
 add_action('go_update_admin_bar','go_update_admin_bar');
 add_action('go_update_progress_bar','go_update_progress_bar');
 add_action('go_style_periods','go_style_periods');
@@ -84,6 +87,8 @@ add_action('wp_ajax_go_stats_task_list','go_stats_task_list');
 add_action('wp_ajax_go_stats_move_stage', 'go_stats_move_stage');
 add_action('wp_ajax_go_stats_item_list', 'go_stats_item_list');
 add_action('wp_ajax_go_stats_rewards_list', 'go_stats_rewards_list');
+add_action('wp_ajax_go_stats_minutes_list', 'go_stats_minutes_list');
+add_action('wp_ajax_go_stats_penalties_list', 'go_stats_penalties_list');
 add_action('wp_ajax_go_stats_badges_list', 'go_stats_badges_list');
 add_action('wp_ajax_go_stats_leaderboard_choices','go_stats_leaderboard_choices');
 add_action('wp_ajax_go_stats_leaderboard','go_stats_leaderboard');
@@ -111,6 +116,7 @@ add_action('admin_notices', 'go_admin_head_notification');
 add_action('go_display_points','go_display_points');
 add_action('go_display_currency','go_display_currency');
 add_action('go_display_penalty','go_display_penalty');
+add_action('go_display_minutes','go_display_minutes');
 add_action('go_return_options','go_return_options');
 add_action('go_update_globals','go_update_globals');
 add_action('barColor','barColor');

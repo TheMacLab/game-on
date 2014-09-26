@@ -33,6 +33,7 @@ function go_buy_item() {
 		$req_currency = $store_cost[0];
 		$req_points = $store_cost[1];
 		$req_bonus_currency = $store_cost[2];
+		$req_minutes = $store_cost[3];
 	}
 	$penalty = $custom_fields['go_mta_penalty_switch'];
 
@@ -69,10 +70,12 @@ function go_buy_item() {
 	$cur_currency = go_return_currency($user_id);
 	$cur_points = go_return_points($user_id);
 	$cur_bonus_currency = go_return_bonus_currency($user_id);
+	$cur_minutes = go_return_minutes($user_id);
 	
 	$enough_currency = check_values($req_currency, $cur_currency);
 	$enough_points = check_values($req_points, $cur_points);
 	$enough_bonus_currency = check_values($req_bonus_currency, $cur_bonus_currency);
+	$enough_minutes = check_values($req_minutes, $cur_minutes);
 
 	$within_limit = true;
 	if (!empty($limit)) {
@@ -82,7 +85,7 @@ function go_buy_item() {
 		}
 	}
 
-	if ((($enough_currency && $enough_bonus_currency && $enough_points) || $penalty) && $within_limit) {
+	if ((($enough_currency && $enough_bonus_currency && $enough_points && $enough_minutes) || $penalty) && $within_limit) {
 		if ($is_focused && !empty($item_focus)) {
 			$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
 			$user_focuses[] = $item_focus;
@@ -92,15 +95,15 @@ function go_buy_item() {
 			
 			go_message_user($recipient_id, get_userdata($user_id)->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title($post_id)."</a> for you.");
 			if ($exchange_currency || $exchange_points || $exchange_bonus_currency) {
-				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, null, $repeat);
+				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, null, null, $repeat);
 				go_add_bonus_currency($recipient_id, $exchange_bonus_currency, get_userdata($user_id)->display_name." purchase of {$qty} ".get_the_title($post_id).".");
 			} else {
 				go_add_post($recipient_id, $post_id, -1,  0,  0, 0, null, $repeat);
 			}
-			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
+			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat);
 			$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET reason = 'Gifted' WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $post_id));
 		} else {
-			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, null, $repeat);
+			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat);
 		}
 		if (!empty($badge_id)) {
 			if ($recipient_id) {
@@ -116,7 +119,7 @@ function go_buy_item() {
 			echo "Purchased";
 		}
 		if ($sending_receipt === 'true') {
-			$receipt = go_mail_item_reciept($user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $qty, $recipient_id);
+			$receipt = go_mail_item_reciept($user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $req_minutes, $qty, $recipient_id);
 			if (!empty($receipt)) {
 				echo $receipt;
 			}
@@ -125,7 +128,8 @@ function go_buy_item() {
 		$currency_name = go_return_options('go_currency_name');
 		$points_name = go_return_options('go_points_name');
 		$bonus_currency_name = go_return_options('go_bonus_currency_name');
-		$enough_array = array($currency_name => $enough_currency, $points_name => $enough_points, $bonus_currency_name => $enough_bonus_currency);
+		$minutes_name = go_return_options('go_minutes_name');
+		$enough_array = array($currency_name => $enough_currency, $points_name => $enough_points, $bonus_currency_name => $enough_bonus_currency, $minutes_name => $enough_minutes);
 		$errors = array();
 		foreach ($enough_array as $key => $enough) {
 			if (!$enough) {
@@ -144,11 +148,12 @@ function go_buy_item() {
 	die();
 }
 
-function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $qty, $recipient_id = null) {
+function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_mintues, $qty, $recipient_id = null) {
 	global $go_plugin_dir;
 	$currency = ucwords(go_return_options('go_currency_name'));
 	$points = ucwords(go_return_options('go_points_name'));
 	$bonus_currency = ucwords(go_return_options('go_bonus_currency_name'));
+	$minutes = ucwords(go_return_options('go_minutes_name'));
 	$item_title = get_the_title($item_id);
 	$allow_full_name = get_option('go_full_student_name_switch');
 
@@ -185,7 +190,7 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 		}
 		$mail->Subject .= " | {$recipient_full_name} {$recipient_username}";
 	}
-	$mail->Body = "{$user_email}\n\n{$currency} Spent: {$req_currency}\n\n{$points} Spent: {$req_points}\n\n{$bonus_currency} Spent: {$req_bonus_currency}";
+	$mail->Body = "{$user_email}\n\n".(!empty($req_currency) ? "{$currency} Spent: {$req_currency}" : '')."\n\n".(!empty($req_points) ? "{$points} Spent: {$req_points}" : '')."\n\n".(!empty($req_bonus_currency) ? "{$bonus_currency} Spent: {$req_bonus_currency}" : '')."\n\n".(!empty($req_minutes) ? "{$minutes} Spent: {$req_minutes}": '');
 	$mail->WordWrap = 50;
 
 	if (!$mail->Send()) {

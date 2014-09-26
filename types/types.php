@@ -630,9 +630,6 @@ function go_cmb_render_go_shortcode_list($field_args){
 				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/displayNameShortcode.mp4')."</span>[go_get_displayname]
 			</li>
 			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('badge_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/badgeShortcde.mp4')."</span>[go_award_badge id='']
-			</li>
-			<li class='go_shortcode_list_item'><span>"
 				.go_task_opt_help('user_only_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/userOnlyShortcode.mp4')."</span>[go_user_only_content][/go_user_only_content]
 			</li>
 			<li class='go_shortcode_list_item'><span>"
@@ -644,7 +641,7 @@ function go_cmb_render_go_shortcode_list($field_args){
 			</li>
 			-->
 			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('video_shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4')."</span>[go_display_video video_url='' video_title='' width='' height='']
+				.go_task_opt_help('video_shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4')."</span>[go_display_video video_url=\"\" video_title=\"\" width=\"\" height=\"\"]
 			</li>
 		</ul>
 	";
@@ -2745,10 +2742,10 @@ function go_cmb_render_go_store_shortcode_list() {
 				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/store/displayNameShortcode.mp4')."</span>[go_get_displayname]
 			</li>
 			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('store_by_cat', '', 'http://maclab.guhsd.net/go/video/store/storeByCat.mp4')."</span>[go_store cats='']
+				.go_task_opt_help('store_by_cat', '', 'http://maclab.guhsd.net/go/video/store/storeByCat.mp4')."</span>[go_store cats=\"\"]
 			</li>
 			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('store_by_id', '', 'http://maclab.guhsd.net/go/video/store/storeById.mp4')."</span>[go_store id='{$post_id}']
+				.go_task_opt_help('store_by_id', '', 'http://maclab.guhsd.net/go/video/store/storeById.mp4')."</span>[go_store id=\"{$post_id}\"]
 			</li>
 		</ul>
 	";
@@ -2762,11 +2759,13 @@ function go_store_cost() {
 		$go_currency_cost = $cost_array[0];
 		$go_point_cost = $cost_array[1];
 		$go_bonus_currency_cost = $cost_array[2];
+		$go_minutes_cost = $cost_array[3];
 	}
 	echo "
 		<input class='go_store_cost_input' name='go_currency_cost' type='text' placeholder='".go_return_options('go_currency_name')."'".(!empty($go_currency_cost) ? "value='{$go_currency_cost}'" : "")."/>
 		<input class='go_store_cost_input' name='go_point_cost' type='text' placeholder='".go_return_options('go_points_name')."'".(!empty($go_point_cost) ? "value='{$go_point_cost}'" : "")."/>
 		<input class='go_store_cost_input' name='go_bonus_currency_cost' type='text' placeholder='".go_return_options('go_bonus_currency_name')."'".(!empty($go_bonus_currency_cost) ? "value='{$go_bonus_currency_cost}'" : "")."/>
+		<input class='go_store_cost_input' name='go_minutes_cost' type='text' placeholder='".go_return_options('go_minutes_name')."'".(!empty($go_minutes_cost) ? "value='{$go_minutes_cost}'" : "")."/>
 	";
 }
 
@@ -2775,6 +2774,7 @@ function go_validate_store_cost() {
 	$go_currency_cost = $_POST['go_currency_cost'];
 	$go_point_cost = $_POST['go_point_cost'];
 	$go_bonus_currency_cost = $_POST['go_bonus_currency_cost'];
+	$go_minutes_cost = $_POST['go_minutes_cost'];
 	if (empty($go_currency_cost)) {
 		$go_currency_cost = 0;
 	}
@@ -2784,7 +2784,10 @@ function go_validate_store_cost() {
 	if (empty($go_bonus_currency_cost)) {
 		$go_bonus_currency_cost = 0;
 	}
-	return (array($go_currency_cost, $go_point_cost, $go_bonus_currency_cost));
+	if (empty($go_minutes_cost)) {
+		$go_minutes_cost = 0;
+	}
+	return (array($go_currency_cost, $go_point_cost, $go_bonus_currency_cost, $go_minutes_cost));
 }
 
 add_action('cmb_render_go_store_limit', 'go_store_limit');
@@ -3018,5 +3021,5 @@ function go_validate_badge_input ($override_value, $value, $field_args) {
 	$badges = $_POST['go_badge_input_stage_'.$field_args['stage']];
 
 	return(array($checked, $badges));
-}e
+}
 ?>
