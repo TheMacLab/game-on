@@ -20,7 +20,6 @@ include('go_options.php');
 include('go_stats.php');
 include('go_clipboard.php');
 include('go_open_badge.php');
-include('badge_designer.php');
 include('go_shortcodes.php');
 include('go_comments.php');
 include('go_definitions.php');
