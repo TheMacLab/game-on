@@ -236,6 +236,7 @@
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	border: 1px solid;
+	background-color: #FFF;
 }
 
 .completed{
