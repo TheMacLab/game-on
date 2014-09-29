@@ -32,6 +32,7 @@ function go_table_individual () {
 		gifted BOOLEAN DEFAULT 0,
 		minutes INT,
 		reason VARCHAR (200),
+		url VARCHAR (200),
 		timestamp VARCHAR (200), 
 		UNIQUE KEY  id (id)
 	);";
@@ -205,7 +206,7 @@ function go_install_data() {
 		'go_bonus_currency_name' => 'Honor',
 		'go_bonus_currency_prefix' => '',
 		'go_bonus_currency_suffix' => 'HP',
-		'go_penalty_name' => 'Demerit(s)',
+		'go_penalty_name' => 'Damage',
 		'go_penalty_prefix' => '',
 		'go_penalty_suffix' => 'DP',
 		'go_minutes_name' => 'Minutes',

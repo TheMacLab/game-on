@@ -6,7 +6,7 @@ $dir = plugin_dir_url(__FILE__);
 }
 
 function go_clipboard_menu() {
-		global $wpdb;
+	global $wpdb;
 	if (!current_user_can('manage_options'))  { 
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
@@ -14,109 +14,112 @@ function go_clipboard_menu() {
 		go_style_clipboard();
 		go_jquery_clipboard();
 		
-		?>
- <div id="records_tabs">
-<ul>
-    <li><a href="#clipboard_wrap">Clipboard</a></li>
-    <li><a href="#go_analysis">Analysis</a></li>
-  </ul>
+	?>
+    <div id="records_tabs">
+        <ul>
+            <li><a href="#clipboard_wrap">Clipboard</a></li>
+            <!--<li><a href="#go_analysis">Analysis</a></li>-->
+        </ul>
         <div id="clipboard_wrap">
-        <select class="menuitem" id="go_clipboard_class_a_choice" onchange="go_clipboard_class_a_choice();">
-      <option>...</option>
-      
-         <?php
-$class_a = get_option('go_class_a');
-if($class_a){
-	foreach($class_a as $key=> $value){
-		echo '<option class="ui-corner-all">'.$value.'</option>';
-		}
-	}
-	?></select>
-    
-    <div id="go_clipboard_add">
-    <?php go_options_help('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'SAMPLE TEXT'); ?>
-	<label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
-	<label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
-	<label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
-	<label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
-    <label for="go_clipboard_minutes"><?php echo go_return_options('go_minutes_name'); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
-	<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br />
-	<label name="go_clipboard_reason">Message: </label>
-    <div>
-    	<textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><br/>
-        <button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button>
-        <button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button>
-	</div>
-
-	<table  id="go_clipboard_table" class="pretty" >
-		<thead>
-			<tr>
-				<th><input type="checkbox" onClick="go_toggle(this);" /></th>
-				<th class="header"><a href="#" >ID</a></th>
-				<th class="header"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
-				<th class="header"><a href="#" >Student Name</a></th>
-				<th class="header"><a href="#" >Display Name</a></th>
-				<th class="header"><a href="#" ><?php echo go_return_options('go_level_names'); ?></a></th>
-				<?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
-				<th class="header"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
-				<th class="header"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
-				<th class="header"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
-				<th class="header"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
-                <th class="header"><a href="#"><?php echo go_return_options('go_minutes_name'); ?></a></th>
-				<th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?></a></th>
-			</tr>
-		</thead>
-	<tbody id="go_clipboard_table_body"></tbody>
-	</table>
-    </div>
-    
-     </div>
-	 <div id="go_analysis">
-		Choose the day at which data will be collected at midnight (0:00 AM)
-		<select id='go_day_select' onchange='go_update_script_day()'>
-			<?php 
-			$script_day = go_return_options('go_analysis_script_day');
-			if($script_day){
-				echo "<option value='{$script_day}'>{$script_day}</option>";
-			}
-			?>
-			<option value='Monday'>Monday</option>
-			<option value='Tuesday'>Tuesday</option>
-			<option value='Wednesday'>Wednesday</option>
-			<option value='Thursday'>Thursday</option>
-			<option value='Friday'>Friday</option>
-			<option value='Saturday'>Saturday</option>
-			<option value='Sunday'>Sunday</option>
-		</select>
-         <select id="go_selection" onchange="go_update_graph();">
-            <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
-            <option value="4"><?php echo go_return_options('go_currency_name');?></option>
-            <option value="0"><?php echo go_return_options('go_bonus_currency_name'); ?></option>
-            <option value="0"><?php echo go_return_options('go_penalty_name'); ?></option>
-            <option value="0"><?php echo go_return_options('go_minutes_name'); ?></option>
-            <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
-            <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
-         </select>
-         <div id="choices">
-         <?php
-		 	if($class_a){
-				foreach($class_a as $class){
-				?>
-                	<input type="checkbox" class="go_class_a" name="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" value="<?php echo $class;?>" onclick="go_update_graph(this)"/><?php echo $class;?><br />
-                    <div id="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" class="go_class_a_results"></div>
-                <?php	
-					$i++;
-				}
-			}
-		 ?>
+            <select class="menuitem" id="go_clipboard_class_a_choice" onchange="go_clipboard_class_a_choice();">
+                <option>...</option>
+                <?php
+                $class_a = get_option('go_class_a');
+                if($class_a){
+                    foreach($class_a as $key=> $value){
+                        echo '<option class="ui-corner-all">'.$value.'</option>';
+                    }
+                }
+                ?>
+            </select>
+        
+            <div id="go_clipboard_add">
+                <?php go_options_help('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'SAMPLE TEXT'); ?>
+                <label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
+                <label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
+                <label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
+                <label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
+                <label for="go_clipboard_minutes"><?php echo go_return_options('go_minutes_name'); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
+                <label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br />
+                <label name="go_clipboard_reason">Message: </label>
+                <div>
+                    <textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><br/>
+                    <button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button>
+                    <button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button>
+                </div>
+            
+                <table  id="go_clipboard_table" class="pretty" >
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" onClick="go_toggle(this);" /></th>
+                            <th class="header"><a href="#" >ID</a></th>
+                            <th class="header"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
+                            <th class="header"><a href="#" >Student Name</a></th>
+                            <th class="header"><a href="#" >Display Name</a></th>
+                            <th class="header"><a href="#" ><?php echo go_return_options('go_level_names'); ?></a></th>
+                            <?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
+                            <th class="header"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
+                            <th class="header"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options('go_minutes_name'); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?></a></th>
+                        </tr>
+                    </thead>
+                <tbody id="go_clipboard_table_body"></tbody>
+                </table>
+            </div>
          </div>
-         <div class="container">
-             <div id="placeholder" style="width:98%;height:98%;">
-             </div>  
+         <?php /*
+         <div id="go_analysis">
+            Choose the day at which data will be collected at midnight (0:00 AM)
+            <select id='go_day_select' onchange='go_update_script_day()'>
+                <?php 
+                
+                $script_day = go_return_options('go_analysis_script_day');
+                if($script_day){
+                    echo "<option value='{$script_day}'>{$script_day}</option>";
+                }
+                
+                ?>
+                <option value='Monday'>Monday</option>
+                <option value='Tuesday'>Tuesday</option>
+                <option value='Wednesday'>Wednesday</option>
+                <option value='Thursday'>Thursday</option>
+                <option value='Friday'>Friday</option>
+                <option value='Saturday'>Saturday</option>
+                <option value='Sunday'>Sunday</option>
+            </select>
+             <select id="go_selection" onchange="go_update_graph();">
+                <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
+                <option value="4"><?php echo go_return_options('go_currency_name');?></option>
+                <option value="0"><?php echo go_return_options('go_bonus_currency_name'); ?></option>
+                <option value="0"><?php echo go_return_options('go_penalty_name'); ?></option>
+                <option value="0"><?php echo go_return_options('go_minutes_name'); ?></option>
+                <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
+                <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
+             </select>
+             <div id="choices">
+             <?php
+                if($class_a){
+                    foreach($class_a as $class){
+                    ?>
+                        <input type="checkbox" class="go_class_a" name="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" value="<?php echo $class;?>" onclick="go_update_graph(this)"/><?php echo $class;?><br />
+                        <div id="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" class="go_class_a_results"></div>
+                    <?php	
+                        $i++;
+                    }
+                }
+             ?>
+             </div>
+             <div class="container">
+                 <div id="placeholder" style="width:98%;height:98%;">
+                 </div>  
+             </div>
          </div>
-     </div>
      </div>
 	 <?php
+	 */
 	}
 }
 
