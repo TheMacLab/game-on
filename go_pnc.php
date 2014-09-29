@@ -143,10 +143,10 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 	} else {
 		if ($points < 0 || $currency < 0) {
 			$sym = '-';
-			$color = "red";
+			$background = "#ff0000";
 		} else {
 			$sym = '+';
-			$color = "green";
+			$background = "#39b54a";
 		}
 		global $counter;
 		$counter++;
@@ -165,7 +165,7 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 			$display = $display;
 		}
 		echo "
-		<div id='go_notification' class='go_notification' style='top: {$space}px; color: {$color} '>{$display}</div>
+		<div id='go_notification' class='go_notification' style='top: {$space}px; background: {$background}; '>{$display}</div>
 		<script type='text/javascript' language='javascript'> 
 		go_notification();
 		</script>";
