@@ -50,7 +50,6 @@ function go_task_shortcode($atts, $content = null) {
 		$a_url_is_locked = (!empty($custom_fields['go_mta_accept_url_key'][0]) ? true : false);
 		$c_url_is_locked = (!empty($custom_fields['go_mta_completion_url_key'][0]) ? true : false);
 		$m_url_is_locked = (!empty($custom_fields['go_mta_mastery_url_key'][0]) ? true : false);
-		$r_url_is_locked = (!empty($custom_fields['go_mta_repeat_url_key'][0]) ? true : false);
 
 		$test_e_active = $custom_fields['go_mta_test_encounter_lock'][0];
 		$test_a_active = $custom_fields['go_mta_test_accept_lock'][0];
@@ -677,8 +676,6 @@ function go_task_shortcode($atts, $content = null) {
 												"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 									if ($r_is_locked === 'true' && !empty($r_pass_lock)) {
 										echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-									} else if ($r_url_is_locked === true) {
-										echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 									}
 									echo "<button id='go_button' status='4' onclick='go_repeat_hide(this);' repeat='on'";
 									if ($r_is_locked === 'true' && empty($r_pass_lock)) {
@@ -1657,7 +1654,6 @@ function task_change_stage() {
 	$a_url_is_locked = (!empty($custom_fields['go_mta_accept_url_key'][0]) ? true : false);
 	$c_url_is_locked = (!empty($custom_fields['go_mta_completion_url_key'][0]) ? true : false);
 	$m_url_is_locked = (!empty($custom_fields['go_mta_mastery_url_key'][0]) ? true : false);
-	$r_url_is_locked = (!empty($custom_fields['go_mta_repeat_url_key'][0]) ? true : false);
 
 	if (!empty($pass)) {
 		if ($status == 4) {
@@ -2159,8 +2155,6 @@ function task_change_stage() {
 									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 						if ($r_is_locked === 'true' && !empty($r_pass_lock)) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-						} else if ($r_url_is_locked === true) {
-							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 						}
 						echo "<button id='go_button' status='4' onclick='go_repeat_hide(this);' repeat='on'";
 						if ($r_is_locked === 'true' && empty($r_pass_lock)) {

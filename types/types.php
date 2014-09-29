@@ -485,11 +485,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_admin_lock'
 			),
 			array(
-				'name' => 'URL'.go_task_opt_help('repeat_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
-				'id' => $prefix.'repeat_url_key',
-				'type' => 'checkbox'
-			),
-			array(
 				'name' => 'Upload'.go_task_opt_help('repeat_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'repeat_upload',
 				'type' => 'checkbox'

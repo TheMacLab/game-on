@@ -114,7 +114,6 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_bonus_currency'),
 		jQuery('tr.cmb-type-go_repeat_amount.cmb_id_go_mta_repeat_amount'),
 		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_repeat_admin_lock'),
-		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_url_key'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_privacy'),
 		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_five_shortcode_list'),
@@ -458,6 +457,16 @@ stage_accordions[3].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[3], true);
 	toggle_admin_lock(stage_accordions[3], 'completion');
+	if (jQuery(this).hasClass('opened')) {
+		if (!jQuery('#go_mta_task_mastery').prop('checked')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').show();
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_url_key').hide();
+		} else {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').hide();
+		}
+	} else {
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').hide();
+	}
 	toggle_tests(stage_accordions[3], 'completion');
 	go_shortcode_list('three');
 });
@@ -471,6 +480,20 @@ stage_accordions[4].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[4], true);
 	toggle_admin_lock(stage_accordions[4], 'mastery');
+	if (jQuery(this).hasClass('opened')) {
+		if (!jQuery('#go_mta_task_repeat').prop('checked')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_url_key').hide();
+			if (jQuery(stage_accordions[3]).hasClass('opened')) {
+				jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').show();
+			} else {
+				jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').hide();
+			}
+		} else {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_url_key').show();
+		}
+	} else {
+		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_url_key').hide();
+	}
 	toggle_tests(stage_accordions[4], 'mastery');
 	go_shortcode_list('four');
 });
@@ -482,22 +505,33 @@ jQuery('#go_mta_three_stage_switch, #go_mta_task_mastery').click(function(){
 	if(jQuery(this).prop('checked')){
 		jQuery('#go_mta_three_stage_switch, #go_mta_task_mastery').prop('checked', true);
 		jQuery('#go_mta_five_stage_switch, #go_mta_task_repeat').prop('checked', false);
-		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').toggle('slow');
-		stage_accordion_rows[4].toggle('slow');
-		if(stage_accordions[4].hasClass('opened')){
-			go_toggle_settings_rows(stage_settings_rows[4]);
-		}	
+		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').hide('slow');
+		stage_accordion_rows[4].hide('slow');
+		if (stage_accordions[4].hasClass('opened')) {
+			jQuery(stage_settings_rows[4]).hide();
+		}
+		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').hide('slow');
+		stage_accordion_rows[5].hide('slow');
+		if (stage_accordions[5].hasClass('opened')) {
+			jQuery(stage_settings_rows[5]).hide();
+		}
+		if (jQuery(stage_accordions[3]).hasClass('opened')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').hide();
+		}
 	}else{
 		jQuery('#go_mta_three_stage_switch, #go_mta_task_mastery').prop('checked', false);
 		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').toggle('slow');
 		stage_accordion_rows[4].toggle('slow');
-		if(stage_accordions[4].hasClass('opened')){
-			go_toggle_settings_rows(stage_settings_rows[4]);
-		}	
+		if (stage_accordions[4].hasClass('opened')) {
+			jQuery(stage_settings_rows[4]).hide();
+		}
+		if (jQuery(stage_accordions[3]).hasClass('opened')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').show();
+		}
 	}
 });
 
-stage_three = <?php echo ($custom['go_mta_three_stage_switch'][0] == 'on')? 'true' : 'false';?>;
+var stage_three = <?php echo ($custom['go_mta_three_stage_switch'][0] == 'on')? 'true' : 'false';?>;
 
 if(stage_three){
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').toggle('slow');
@@ -520,30 +554,47 @@ stage_accordions[5].click(function(){
 });
 
 jQuery('#go_mta_five_stage_switch, #go_mta_task_repeat').click(function(){
-	if(jQuery(this).prop('checked')){
+	if (jQuery(this).prop('checked')) {
 		jQuery('#go_mta_five_stage_switch, #go_mta_task_repeat').prop('checked', true);
 		jQuery('#go_mta_three_stage_switch, #go_mta_task_mastery').prop('checked', false);
 		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').toggle('slow');
 		stage_accordion_rows[5].toggle('slow');
-		if(stage_accordions[5].hasClass('opened')){
+		if (stage_accordions[5].hasClass('opened')) {
 			go_toggle_settings_rows(stage_settings_rows[5]);
-		}	
-	}else{
+		}
+		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message').show('slow');
+		stage_accordion_rows[4].show('slow');
+		if (stage_accordions[4].hasClass('opened')) {
+			jQuery(stage_settings_rows[4]).show('slow');
+		}
+		if (jQuery(stage_accordions[3]).hasClass('opened')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').show();
+		}
+		if (jQuery(stage_accordions[4]).hasClass('opened')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_url_key').show();
+		}
+	} else {
 		jQuery('#go_mta_five_stage_switch, #go_mta_task_repeat').prop('checked', false);
 		jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').toggle('slow');
 		stage_accordion_rows[5].toggle('slow');
-		if(stage_accordions[5].hasClass('opened')){
+		if (stage_accordions[5].hasClass('opened')) {
 			go_toggle_settings_rows(stage_settings_rows[5]);
-		}	
+		}
+		if (jQuery(stage_accordions[3]).hasClass('opened')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').show();
+		}
+		if (jQuery(stage_accordions[4]).hasClass('opened')) {
+			jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_url_key').hide();
+		}
 	}
 });
 
-stage_five = <?php echo ($custom['go_mta_five_stage_switch'][0] == 'on')? 'true' : 'false';?>;
+var stage_five = <?php echo ($custom['go_mta_five_stage_switch'][0] == 'on')? 'true' : 'false';?>;
 
-if(stage_five){
+if (stage_five) {
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').show('slow');
 	stage_accordion_rows[5].show('slow');
-}else{
+} else {
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').hide('slow');
 	stage_accordion_rows[5].hide('slow');
 }
