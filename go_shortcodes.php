@@ -441,7 +441,6 @@ function go_shortcode_button_add_button($buttons)
 function go_shortcode_button_register($plugin_array)
 {
     $url = plugins_url("/scripts/go_shortcode_button.js", __FILE__);
-
     $plugin_array['go_shortcode_button'] = $url;
     return $plugin_array;
 }
