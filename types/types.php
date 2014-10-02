@@ -485,11 +485,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_admin_lock'
 			),
 			array(
-				'name' => 'URL'.go_task_opt_help('repeat_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
-				'id' => $prefix.'repeat_url_key',
-				'type' => 'checkbox'
-			),
-			array(
 				'name' => 'Upload'.go_task_opt_help('repeat_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'repeat_upload',
 				'type' => 'checkbox'
@@ -2443,20 +2438,23 @@ function go_stage_reward($field_args){
 		$points = $presets['points'];
 		$currency = $presets['currency'];
 		$rewards = array(
-			'points' => $points[$field_args['stage'] - 1],
-			'currency' => $currency[$field_args['stage'] - 1]
+			'points' => $points[0],
+			'currency' => $currency[0]
 		);
-		
 	} else {
 		$rewards = unserialize($custom['go_presets'][0]);
 	}
 	echo "<div id='stage_{$field_args['stage']}'>";
-	if($rewards){
-		for($i = 1; $i <= 5; $i++){
-			echo "<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[".($i - 1)."]' class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".(($field_args['stage'] == $i)?"go_current":"")."' value='".
-			(($field_args['reward'] == 'points') && (!empty($rewards['points']))?$rewards['points'][$i-1]: 
-			(($field_args['reward'] == 'currency') && (!empty($rewards['currency']))?$rewards['currency'][$i-1]:
-			(($field_args['reward'] == 'bonus_currency') && (!empty($rewards['bonus_currency']))?$rewards['bonus_currency'][$i-1]:0)))."'/>";
+	if ($rewards) {
+		for ($i = 1; $i <= 5; $i++) {
+			echo "
+				<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[".($i - 1)."]' 
+					class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".($field_args['stage'] == $i ? "go_current" : "")."' value='".
+					(($field_args['reward'] == 'points') && (!empty($rewards['points'])) ? $rewards['points'][$i-1] : 
+					(($field_args['reward'] == 'currency') && (!empty($rewards['currency'])) ? $rewards['currency'][$i-1] :
+					(($field_args['reward'] == 'bonus_currency') && (!empty($rewards['bonus_currency'])) ? $rewards['bonus_currency'][$i-1] : 0)))."'
+				/>
+			";
 		}
 	}
 	echo "</div>";

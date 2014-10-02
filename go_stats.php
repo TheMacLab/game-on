@@ -102,7 +102,7 @@ function go_stats_task_list () {
 		$user_id = get_current_user_id();
 	}
 	$is_admin = current_user_can('manage_options');
-	$task_list = $wpdb->get_results($wpdb->prepare("SELECT status,post_id,count,url FROM {$go_table_name} WHERE uid=%d AND (status = %d OR status = 2 OR status = 3 OR status = 4) ORDER BY id DESC", $user_id, 1));
+	$task_list = $wpdb->get_results($wpdb->prepare("SELECT status, post_id, count, url FROM {$go_table_name} WHERE uid=%d AND (status = %d OR status = 2 OR status = 3 OR status = 4) ORDER BY id DESC", $user_id, 1));
 	$counter = 1;
 	?>
 	<ul id='go_stats_tasks_list' <?php if ($is_admin){ echo "class='go_stats_tasks_list_admin'"; }?>>
@@ -130,17 +130,16 @@ function go_stats_task_list () {
 					1 => !empty($custom['go_mta_encounter_url_key'][0]),
 					2 => !empty($custom['go_mta_accept_url_key'][0]),
 					3 => !empty($custom['go_mta_completion_url_key'][0]),
-					4 => !empty($custom['go_mta_mastery_url_key'][0]),
-					5 => !empty($custom['go_mta_repeat_url_key'][0])
+					4 => !empty($custom['go_mta_mastery_url_key'][0])
 				);
 				
 				for ($i = 5; $i > 0; $i--) {
 				
-					$stage_url = ((!empty($task_urls[$i]))?$task_urls[$i]:(($i == 5 && !empty($task_urls[4]) && $task->status == 4 && $task->count >= 1)?$task_urls[4]:""));
+					$stage_url = ((!empty($task_urls[$i])) ? $task_urls[$i] : (($i == 5 && !empty($task_urls[4]) && $task->status == 4 && $task->count >= 1) ? $task_urls[4] : ""));
 					
 					?>
 					<a href='<?php echo ((!empty($stage_url))?$stage_url:"#");?>' class='<?php echo (($is_admin)?"go_stats_task_admin_stage_wrap":"go_stats_task_stage_wrap go_user");?> <?php echo ((!empty($stage_url))?"go_stats_task_stage_url":"");?>' <?php echo ((!empty($stage_url))?'target="_blank"':"");?>>
-					<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?> <?php echo (($i <= 4 && $task->count < 1)?((!empty($stage_url))?"stage_url":""):(($i == 5 && $task->count >= 1 && !empty($stage_url))?"stage_url":""));?> <?php echo ((!empty($url_switch[$i-1]) && $task->status < $i && $task->count < 1)?'future_url':"");?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
+					<div task='<?php echo $task->post_id;?>' stage='<?php echo $i;?>' class='go_stats_task_status <?php if($task->status >= $i || $task->count >= 1){echo 'completed';} if($i > $stage_count){echo 'go_stage_does_not_exist';}?> <?php echo (($i <= 4 && $task->count < 1)?((!empty($stage_url))?"stage_url":""):(($i == 5 && $task->count >= 1 && !empty($stage_url))?"stage_url":""));?> <?php echo ((!empty($url_switch[$i-1]) && $task->status < $i && $task->count < 1 && $i <= $stage_count)?'future_url':"");?>' <?php if($task->count >=1){echo "count='{$task->count}'"; }?>><?php if($i == 5 && $task->count > 1){echo $task->count;}?></div>
 					</a>
 					<?php 
 				}
