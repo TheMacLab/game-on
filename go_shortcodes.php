@@ -171,6 +171,7 @@ if ( is_user_logged_in() ) {
 add_shortcode('get_displayname', 'go_get_displayname_function');
 add_shortcode('go_get_displayname', 'go_get_displayname_function');
 
+
 //Gets the users first name
 function go_get_firstname_function( $atts, $content = null ) {
 if ( is_user_logged_in() ) {
@@ -180,6 +181,7 @@ if ( is_user_logged_in() ) {
 else { return '<span id="go-visitor">Visitor</span>'; }}
 add_shortcode('go_get_firstname', 'go_get_firstname_function');
 
+
 //Gets the users last name
 function go_get_lastname_function( $atts, $content = null ) {
 if ( is_user_logged_in() ) {
@@ -188,6 +190,7 @@ if ( is_user_logged_in() ) {
       return '<span id="go-lastname">' . $current_user->user_lastname . "</span>";}
 else { return '<span id="go-visitor">Visitor</span>'; }}
 add_shortcode('go_get_lastname', 'go_get_lastname_function');
+
 
 //Gets the users login
 function go_get_login_function( $atts, $content = null ) {
@@ -207,6 +210,7 @@ if ( is_user_logged_in() ) {
       return '<span id="go-focus">' . $current_user->go_focus . "</span>";}
 else { return '<span id="go-visitor">Visitor</span>'; }}
 add_shortcode('go_get_focus', 'go_get_focus_function');
+
 
 //Gets the users level
 function go_get_level_function( $atts, $content = null ) {
