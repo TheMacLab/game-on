@@ -29,7 +29,8 @@ function go_the_lb_ajax(){
 		$req_currency = $store_cost[0];
 		$req_points = $store_cost[1];
 		$req_bonus_currency = $store_cost[2];
-		$req_minutes = $store_cost[3];
+		$req_penalty =  $store_cost[3];
+		$req_minutes = $store_cost[4];
 	}
 
 	$store_filter = unserialize($custom_fields['go_mta_store_filter'][0]);
@@ -79,6 +80,12 @@ function go_the_lb_ajax(){
 	} else {
 		$bonus_currency_color = "r";
 	} 
+	
+	if ($user_penalties >= $req_penalty || $req_penalty <= 0 || $penalty){
+		$penalty_color = "g";
+	} else {
+		$penalty_color = "r";
+	}
 	
 	if ($user_minutes >= $req_minutes || $req_minutes <= 0 || $penalty) {
 		$minutes_color = "g";
@@ -130,6 +137,7 @@ function go_the_lb_ajax(){
 	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_currency; ?>"><?php echo go_return_options('go_currency_name').': '.$req_currency; ?></div>
 	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options('go_points_name').': '.$req_points; ?></div>
 	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options('go_bonus_currency_name').': '.$req_bonus_currency; ?></div>
+    <div id='golb-fr-penalty' class='golb-fr-boxes-<?php echo $penalty_color; ?>' req='<?php echo $req_penalty; ?>' cur='<?php echo $user_penalties; ?>'><?php echo go_return_options('go_penalty_name').': '.$req_penalty;?></div>
     <div id="golb-fr-minutes" class="golb-fr-boxes-<?php echo $minutes_color; ?>" req="<?php echo $req_minutes; ?>" cur="<?php echo $user_minutes; ?>"><?php echo go_return_options('go_minutes_name').': '.$req_minutes; ?></div>
 	<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
 	

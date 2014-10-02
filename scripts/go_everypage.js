@@ -219,12 +219,20 @@ function go_stats_task_list () {
 		},
 		success:function (html) {
 			jQuery('#go_stats_body').html(html);
-			jQuery('.go_stats_task_status_wrap a').click(function(){
-				jQuery('.chosen').not(jQuery(this).children('div')).removeClass('chosen');
-				jQuery(this).children('div').not(jQuery('.go_stage_does_not_exist')).toggleClass('chosen');
+			jQuery('.go_stats_task_status_wrap a.go_stats_task_admin_stage_wrap').click(function(){
+				if (jQuery(this).attr('href') == '#') {
+					jQuery('.chosen').not(jQuery(this).children('div')).removeClass('chosen');
+					jQuery(this).children('div').not(jQuery('.go_stage_does_not_exist')).toggleClass('chosen');
+				}
 			});
+			a_color = jQuery('a').css('color');
+			jQuery('.stage_url').css('background-color', '' + a_color + '');
+			jQuery('.future_url').css('border-color', '' + a_color + '');
 			jQuery('.go_stage_does_not_exist').parent().css('cursor', 'default');
 			jQuery('.go_stage_does_not_exist').parent().on('click', function(e){
+				e.preventDefault();
+			});
+			jQuery('.go_user').not('.go_stats_task_stage_url').click( function (e) {
 				e.preventDefault();
 			});
 			jQuery('.go_stats_task_admin_submit').click(function(){
@@ -271,7 +279,11 @@ function go_stats_move_stage (task_id, status) {
 				if (i <= status) {
 					jQuery('div[task="' + task_id + '"][stage="' + i +'"]').addClass('completed');
 				} else {
-					jQuery('div[task="' + task_id + '"][stage="' + i +'"]').removeClass('completed');
+					if (jQuery('div[task="' + task_id + '"][stage="' + i +'"]').hasClass('stage_url')){
+						jQuery('div[task="' + task_id + '"][stage="' + i +'"]').removeAttr('style');
+						jQuery('div[task="' + task_id + '"][stage="' + i +'"]').parent('a').attr('href', '#').removeAttr('target');
+					}
+					jQuery('div[task="' + task_id + '"][stage="' + i +'"]').removeClass('completed').removeClass('stage_url');
 				}
 			}
 			json = JSON.parse(html.substr(html.search('{"type"'), html.length));
@@ -290,7 +302,9 @@ function go_stats_move_stage (task_id, status) {
 				percentage = (parseFloat(jQuery('#go_stats_user_progress_top_value').html())/parseFloat(jQuery('#go_stats_user_progress_bottom_value').html())) * 100;
 				jQuery('#go_stats_progress_fill').css('width', '' + percentage + '%');
 			}
-			
+			if(json['abandon']){
+				task_message.parent('li').remove();
+			}
 			jQuery('#go_stats_user_currency_value').html(parseFloat(jQuery('#go_stats_user_currency_value').html()) + json['currency']);
 			jQuery('#go_stats_user_bonus_currency_value').html(parseFloat(jQuery('#go_stats_user_bonus_currency_value').html()) + json['bonus_currency']);
 		}

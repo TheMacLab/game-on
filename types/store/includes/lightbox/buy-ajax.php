@@ -33,7 +33,8 @@ function go_buy_item() {
 		$req_currency = $store_cost[0];
 		$req_points = $store_cost[1];
 		$req_bonus_currency = $store_cost[2];
-		$req_minutes = $store_cost[3];
+		$req_penalty = $store_cost[3];
+		$req_minutes = $store_cost[4];
 	}
 	$penalty = $custom_fields['go_mta_penalty_switch'];
 
@@ -70,11 +71,13 @@ function go_buy_item() {
 	$cur_currency = go_return_currency($user_id);
 	$cur_points = go_return_points($user_id);
 	$cur_bonus_currency = go_return_bonus_currency($user_id);
+	$cur_penalty = go_return_penalty($user_id);
 	$cur_minutes = go_return_minutes($user_id);
 	
 	$enough_currency = check_values($req_currency, $cur_currency);
 	$enough_points = check_values($req_points, $cur_points);
 	$enough_bonus_currency = check_values($req_bonus_currency, $cur_bonus_currency);
+	$enough_penalty = check_values($req_penalty, $cur_penalty);
 	$enough_minutes = check_values($req_minutes, $cur_minutes);
 
 	$within_limit = true;
@@ -104,6 +107,9 @@ function go_buy_item() {
 			$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET reason = 'Gifted' WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $post_id));
 		} else {
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat);
+			if(!empty($req_penalty)){
+				go_add_penalty($user_id, -$req_penalty, get_the_title($post_id));	
+			}
 		}
 		if (!empty($badge_id)) {
 			if ($recipient_id) {
