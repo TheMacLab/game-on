@@ -1,5 +1,7 @@
 .go_notification {
 	text-align: center;
+	line-height: 60px;
+	vertical-align: middle;
 	font-size: 36px;
 	position: fixed;
 	right: 30px;
@@ -131,6 +133,12 @@ input[name="go_admin_bar_submit"]{
 
 #wp-admin-bar-site-name .go_site_name_menu {
 	background-color: #333 !important;
+}
+
+#go_admin_bar_deactivation {
+	height: 25px;
+	line-height: 10px;
+	width: 70px;
 }
 
 /********************

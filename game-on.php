@@ -4,7 +4,7 @@ Plugin Name: Game-On
 Description: Gamification tools for teachers.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada, Charles Leon
 Author URI: http://maclab.guhsd.net/
-Version: 2.2.0
+Version: 2.2.1
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -20,7 +20,6 @@ include('go_options.php');
 include('go_stats.php');
 include('go_clipboard.php');
 include('go_open_badge.php');
-include('badge_designer.php');
 include('go_shortcodes.php');
 include('go_comments.php');
 include('go_definitions.php');
@@ -109,6 +108,7 @@ add_action('wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');
+add_action('inRange', 'inRange');
 add_action('isEven','isEven');
 add_action('wp_head', 'go_stats_overlay');
 add_action('admin_head', 'go_stats_overlay');
@@ -151,6 +151,10 @@ function go_tsk_actv_redirect() {
         }
     }
 }
+
+function inRange ($int, $min, $max) {
+	return ($int>$min && $int<=$max);
+} 
 
 function isEven($value) {
 	if ($value%2 == 0) {

@@ -46,6 +46,11 @@ function go_task_shortcode($atts, $content = null) {
 			$r_pass_lock = $r_admin_lock[1];
 		}
 
+		$e_url_is_locked = (!empty($custom_fields['go_mta_encounter_url_key'][0]) ? true : false);
+		$a_url_is_locked = (!empty($custom_fields['go_mta_accept_url_key'][0]) ? true : false);
+		$c_url_is_locked = (!empty($custom_fields['go_mta_completion_url_key'][0]) ? true : false);
+		$m_url_is_locked = (!empty($custom_fields['go_mta_mastery_url_key'][0]) ? true : false);
+
 		$test_e_active = $custom_fields['go_mta_test_encounter_lock'][0];
 		$test_a_active = $custom_fields['go_mta_test_accept_lock'][0];
 		$test_c_active = $custom_fields['go_mta_test_completion_lock'][0];
@@ -475,6 +480,8 @@ function go_task_shortcode($atts, $content = null) {
 					<?php 
 					if ($e_is_locked === 'true' && !empty($e_pass_lock)) {
 						echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+					} else if ($e_url_is_locked === true) {
+						echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 					}
 					?>
 					<button id="go_button" status= "2" onclick="task_stage_change(this);" <?php if ($e_is_locked === 'true' && empty($e_pass_lock)) {echo "admin_lock='true'";} ?>><?php echo go_return_options('go_second_stage_button') ?></button>
@@ -507,6 +514,8 @@ function go_task_shortcode($atts, $content = null) {
 					<?php 
 					if ($e_is_locked === 'true' && !empty($e_pass_lock)) {
 						echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+					} else if ($e_url_is_locked === true) {
+						echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 					}
 					?>
 					<button id="go_button" status= "2" onclick="task_stage_change(this);" <?php if ($e_is_locked === 'true' && empty($e_pass_lock)) {echo "admin_lock='true'";} ?>><?php echo go_return_options('go_second_stage_button') ?></button>
@@ -535,6 +544,8 @@ function go_task_shortcode($atts, $content = null) {
 						echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 						if ($a_is_locked === 'true' && !empty($a_pass_lock)) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+						} else if ($a_url_is_locked === true) {
+							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 						}
 						echo "<button id='go_button' status='3' onclick='task_stage_change(this);'";
 						if ($a_is_locked === 'true' && empty($a_pass_lock)) {
@@ -567,6 +578,8 @@ function go_task_shortcode($atts, $content = null) {
 							echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 							if ($c_is_locked === 'true' && !empty($c_pass_lock)) {
 								echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+							} else if ($c_url_is_locked === true) {
+								echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 							}
 							echo "<button id='go_button' status='4' onclick='task_stage_change(this);'";
 							if ($c_is_locked === 'true' && empty($c_pass_lock)) {
@@ -633,6 +646,8 @@ function go_task_shortcode($atts, $content = null) {
 												"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 									if ($m_is_locked === 'true' && !empty($m_pass_lock)) {
 										echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+									} else if ($m_url_is_locked === true) {
+										echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 									}
 									echo "<button id='go_button' status='4' onclick='go_repeat_hide(this);' repeat='on'";
 									if ($m_is_locked === 'true' && empty($m_pass_lock)) {
@@ -1186,6 +1201,31 @@ function go_task_shortcode($atts, $content = null) {
 					}
 					return;
 				}
+			} else if (undoing !== 'true' && jQuery('#go_url_key').length > 0) {
+				var the_url = jQuery('#go_url_key').attr('value').replace(/\s+/, "");
+				if (the_url.length > 0) {
+					if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
+						var url_entered = true;
+					} else {
+						jQuery('#go_stage_error_msg').show();
+						var error = "Enter a valid URL.";
+						if (jQuery('#go_stage_error_msg').text() != error) {
+							jQuery('#go_stage_error_msg').text(error);
+						} else {
+							flash_error_msg('#go_stage_error_msg');
+						}
+						return;
+					}
+				} else {
+					jQuery('#go_stage_error_msg').show();
+					var error = "Enter a valid URL.";
+					if (jQuery('#go_stage_error_msg').text() != error) {
+						jQuery('#go_stage_error_msg').text(error);
+					} else {
+						flash_error_msg('#go_stage_error_msg');
+					}
+					return;
+				}
 			}
 			
 			var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
@@ -1238,6 +1278,7 @@ function go_task_shortcode($atts, $content = null) {
 					repeat: repeat_attr,
 					undo: undoing,
 					pass: (pass_entered ? jQuery('#go_pass_lock').attr('value') : ''),
+					url: (url_entered ? jQuery('#go_url_key').attr('value') : ''),
 					page_id: <?php echo $page_id; ?>,
 					update_percent: <?php echo $update_percent;?>,
 					chain_name: '<?php if($chain->name){echo $chain->name;}else{echo '';}?>',
@@ -1568,6 +1609,7 @@ function task_change_stage() {
 	$admin_name = $_POST['admin_name'];
 	$undo = $_POST['undo']; // Boolean which determines if the button clicked is an undo button or not (True or False)
 	$pass = $_POST['pass']; // Contains the user-entered admin password
+	$url = $_POST['url']; // Contains user-entered url
 	$repeat_button = $_POST['repeat']; // Boolean which determines if the task is repeatable or not (True or False)
 	$update_percent = $_POST['update_percent']; // Float which is used to modify values saved to database
 	$chain_name = $_POST['chain_name']; // String which is used to display next task in a quest chain
@@ -1607,6 +1649,11 @@ function task_change_stage() {
 	if ($r_is_locked === 'true') {
 		$r_pass_lock = $r_admin_lock[1];
 	}
+
+	$e_url_is_locked = (!empty($custom_fields['go_mta_encounter_url_key'][0]) ? true : false);
+	$a_url_is_locked = (!empty($custom_fields['go_mta_accept_url_key'][0]) ? true : false);
+	$c_url_is_locked = (!empty($custom_fields['go_mta_completion_url_key'][0]) ? true : false);
+	$m_url_is_locked = (!empty($custom_fields['go_mta_mastery_url_key'][0]) ? true : false);
 
 	if (!empty($pass)) {
 		if ($status == 4) {
@@ -1845,11 +1892,11 @@ function task_change_stage() {
 			if ($task_count > 0) {
 				go_add_post($user_id, $post_id, $status, 
 				-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 			} else {
 				go_add_post($user_id, $post_id, ($status-1), 
 				-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				if ($stage_badges[$status][0] == 'true') {
 					foreach ($stage_badges[$status][1] as $badge_id) {
 						go_remove_badge($user_id, $badge_id);
@@ -1860,7 +1907,7 @@ function task_change_stage() {
 			// if repeat is on and undo is not hit...
 			go_add_post($user_id, $post_id, $status, 
 			floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-			floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+			floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url);
 			if ($stage_badges[$status][0] == 'true') {
 				foreach ($stage_badges[$status][1] as $badge_id) {
 					do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
@@ -1875,11 +1922,11 @@ function task_change_stage() {
 				if ($task_count > 0) {
 					go_add_post($user_id, $post_id, $status, 
 					-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-					-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+					-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				} else {
 					go_add_post($user_id, $post_id, ($status-2), 
 					-floor($points_array[$status-2] + ($update_percent * $points_array[$status-2])), 
-					-floor($currency_array[$status-2] + ($update_percent * $currency_array[$status-2])), -floor($bonus_currency[$status-2] + ($update_percent * $bonus_currency[$status-2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+					-floor($currency_array[$status-2] + ($update_percent * $currency_array[$status-2])), -floor($bonus_currency[$status-2] + ($update_percent * $bonus_currency[$status-2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 					if ($stage_badges[$status-2][0] == 'true') {
 						foreach ($stage_badges[$status-2][1] as $badge_id) {
 							go_remove_badge($user_id, $badge_id);
@@ -1889,7 +1936,7 @@ function task_change_stage() {
 			} else {
 				go_add_post($user_id, $post_id, $status, 
 				floor($points_array[$status-1] + ($update_percent * $points_array[$status - 1])), 
-				floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null); 
+				floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url); 
 				if ($stage_badges[$status-1][0] == 'true') {
 					foreach ($stage_badges[$status-1][1] as $badge_id) {
 						do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
@@ -1950,6 +1997,8 @@ function task_change_stage() {
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 			if ($e_is_locked === 'true' && !empty($e_pass_lock)) {
 				echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+			} else if ($e_url_is_locked === true) {
+				echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 			}
 			echo "<button id='go_button' status='2' onclick='task_stage_change(this);'";
 			if ($e_is_locked === 'true' && empty($e_pass_lock)) {
@@ -1977,6 +2026,8 @@ function task_change_stage() {
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 			if ($a_is_locked === 'true' && !empty($a_pass_lock)) {
 				echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+			} else if ($a_url_is_locked === true) {
+				echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 			}
 			echo "<button id='go_button' status='3' onclick='task_stage_change(this);'";
 			if ($a_is_locked === 'true' && empty($a_pass_lock)) {
@@ -2005,6 +2056,8 @@ function task_change_stage() {
 				echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 				if ($c_is_locked === 'true' && !empty($c_pass_lock)) {
 					echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+				} else if ($c_url_is_locked === true) {
+					echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 				}
 				echo "<button id='go_button' status='4' onclick='task_stage_change(this);'";
 				if ($c_is_locked === 'true' && empty($c_pass_lock)) {
@@ -2072,6 +2125,8 @@ function task_change_stage() {
 									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 						if ($m_is_locked === 'true' && !empty($m_pass_lock)) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+						} else if ($m_url_is_locked === true) {
+							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 						}
 						echo "<button id='go_button' status='4' onclick='go_repeat_hide(this);' repeat='on'";
 						if ($m_is_locked === 'true' && empty($m_pass_lock)) {

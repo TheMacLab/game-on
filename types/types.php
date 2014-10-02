@@ -125,6 +125,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_admin_lock'
 			),
 			array(
+				'name' => 'URL'.go_task_opt_help('encounter_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'encounter_url_key',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('encounter_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'encounter_upload',
 				'type' => 'checkbox'
@@ -205,6 +210,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_admin_lock'
 			),
 			array(
+				'name' => 'URL'.go_task_opt_help('accept_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'accept_url_key',
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Upload'.go_task_opt_help('accept_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
 				'id' => $prefix.'accept_upload',
 				'type' => 'checkbox'
@@ -283,6 +293,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Lock'.go_task_opt_help('completion_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'completion_admin_lock',
 				'type' => 'go_admin_lock'
+			),
+			array(
+				'name' => 'URL'.go_task_opt_help('completion_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'completion_url_key',
+				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
@@ -368,6 +383,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Lock'.go_task_opt_help('mastery_admin_lock', '', 'http://maclab.guhsd.net/go/video/quests/adminLock.mp4'),
 				'id' => $prefix.'mastery_admin_lock',
 				'type' => 'go_admin_lock'
+			),
+			array(
+				'name' => 'URL'.go_task_opt_help('mastery_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4'),
+				'id' => $prefix.'mastery_url_key',
+				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help('mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4'),
@@ -2418,20 +2438,23 @@ function go_stage_reward($field_args){
 		$points = $presets['points'];
 		$currency = $presets['currency'];
 		$rewards = array(
-			'points' => $points[$field_args['stage'] - 1],
-			'currency' => $currency[$field_args['stage'] - 1]
+			'points' => $points[0],
+			'currency' => $currency[0]
 		);
-		
 	} else {
 		$rewards = unserialize($custom['go_presets'][0]);
 	}
 	echo "<div id='stage_{$field_args['stage']}'>";
-	if($rewards){
-		for($i = 1; $i <= 5; $i++){
-			echo "<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[".($i - 1)."]' class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".(($field_args['stage'] == $i)?"go_current":"")."' value='".
-			(($field_args['reward'] == 'points') && (!empty($rewards['points']))?$rewards['points'][$i-1]: 
-			(($field_args['reward'] == 'currency') && (!empty($rewards['currency']))?$rewards['currency'][$i-1]:
-			(($field_args['reward'] == 'bonus_currency') && (!empty($rewards['bonus_currency']))?$rewards['bonus_currency'][$i-1]:0)))."'/>";
+	if ($rewards) {
+		for ($i = 1; $i <= 5; $i++) {
+			echo "
+				<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[".($i - 1)."]' 
+					class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".($field_args['stage'] == $i ? "go_current" : "")."' value='".
+					(($field_args['reward'] == 'points') && (!empty($rewards['points'])) ? $rewards['points'][$i-1] : 
+					(($field_args['reward'] == 'currency') && (!empty($rewards['currency'])) ? $rewards['currency'][$i-1] :
+					(($field_args['reward'] == 'bonus_currency') && (!empty($rewards['bonus_currency'])) ? $rewards['bonus_currency'][$i-1] : 0)))."'
+				/>
+			";
 		}
 	}
 	echo "</div>";
@@ -2759,12 +2782,14 @@ function go_store_cost() {
 		$go_currency_cost = $cost_array[0];
 		$go_point_cost = $cost_array[1];
 		$go_bonus_currency_cost = $cost_array[2];
-		$go_minutes_cost = $cost_array[3];
+		$go_penalty_cost = $cost_array[3];
+		$go_minutes_cost = $cost_array[4];
 	}
 	echo "
 		<input class='go_store_cost_input' name='go_currency_cost' type='text' placeholder='".go_return_options('go_currency_name')."'".(!empty($go_currency_cost) ? "value='{$go_currency_cost}'" : "")."/>
 		<input class='go_store_cost_input' name='go_point_cost' type='text' placeholder='".go_return_options('go_points_name')."'".(!empty($go_point_cost) ? "value='{$go_point_cost}'" : "")."/>
 		<input class='go_store_cost_input' name='go_bonus_currency_cost' type='text' placeholder='".go_return_options('go_bonus_currency_name')."'".(!empty($go_bonus_currency_cost) ? "value='{$go_bonus_currency_cost}'" : "")."/>
+		<input class='go_store_cost_input' name='go_penalty_cost' type='text' placeholder='".go_return_options('go_penalty_name')."'".(!empty($go_penalty_cost) ? "value='{$go_penalty_cost}'":"")." />
 		<input class='go_store_cost_input' name='go_minutes_cost' type='text' placeholder='".go_return_options('go_minutes_name')."'".(!empty($go_minutes_cost) ? "value='{$go_minutes_cost}'" : "")."/>
 	";
 }
@@ -2774,6 +2799,7 @@ function go_validate_store_cost() {
 	$go_currency_cost = $_POST['go_currency_cost'];
 	$go_point_cost = $_POST['go_point_cost'];
 	$go_bonus_currency_cost = $_POST['go_bonus_currency_cost'];
+	$go_penalty_cost = $_POST['go_penalty_cost'];
 	$go_minutes_cost = $_POST['go_minutes_cost'];
 	if (empty($go_currency_cost)) {
 		$go_currency_cost = 0;
@@ -2784,10 +2810,13 @@ function go_validate_store_cost() {
 	if (empty($go_bonus_currency_cost)) {
 		$go_bonus_currency_cost = 0;
 	}
+	if (empty($go_penalty_cost)) { 
+		$go_penalty_cost = 0;
+	}
 	if (empty($go_minutes_cost)) {
 		$go_minutes_cost = 0;
 	}
-	return (array($go_currency_cost, $go_point_cost, $go_bonus_currency_cost, $go_minutes_cost));
+	return (array($go_currency_cost, $go_point_cost, $go_bonus_currency_cost, $go_penalty_cost, $go_minutes_cost));
 }
 
 add_action('cmb_render_go_store_limit', 'go_store_limit');
