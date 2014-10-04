@@ -438,6 +438,7 @@ function go_fix_levels() {
 			current($ranks['points']);
 			while ($current_points >= current($ranks['points'])) {
 				next($ranks['points']);
+				ini_set('max_execution_time', 300);
 			}
 			$next_rank_points = current($ranks['points']);
 			$next_rank = $ranks['name'][key($ranks['points'])];
