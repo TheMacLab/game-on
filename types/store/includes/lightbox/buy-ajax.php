@@ -57,6 +57,7 @@ function go_buy_item() {
 		$exchange_currency = $store_exchange[1];
 		$exchange_points = $store_exchange[2];
 		$exchange_bonus_currency = $store_exchange[3];
+		$exchange_minutes = $store_exchange[4];
 	}
 	$item_url = $custom_fields['go_mta_store_item_url'][0];
 	$badge_id = $custom_fields['go_mta_badge_id'][0];
@@ -97,8 +98,8 @@ function go_buy_item() {
 		if ($recipient_id) {
 			
 			go_message_user($recipient_id, get_userdata($user_id)->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title($post_id)."</a> for you.");
-			if ($exchange_currency || $exchange_points || $exchange_bonus_currency) {
-				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, null, null, $repeat);
+			if ($exchange_currency || $exchange_points || $exchange_bonus_currency || $exchange_minutes) {
+				go_add_post($recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, $exchange_minutes, null, $repeat);
 				go_add_bonus_currency($recipient_id, $exchange_bonus_currency, get_userdata($user_id)->display_name." purchase of {$qty} ".get_the_title($post_id).".");
 			} else {
 				go_add_post($recipient_id, $post_id, -1,  0,  0, 0, null, $repeat);
