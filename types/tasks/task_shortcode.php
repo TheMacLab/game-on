@@ -246,7 +246,7 @@ function go_task_shortcode($atts, $content = null) {
 		
 		$date_picker = ((unserialize($custom_fields['go_mta_date_picker'][0]))?array_filter(unserialize($custom_fields['go_mta_date_picker'][0])):false);
 		
-		// If there are dates in the nerf date picker
+		// If there are dates in the date picker
 		if (!empty($date_picker)) {
 			
 			$dates = $date_picker['date'];
@@ -254,27 +254,30 @@ function go_task_shortcode($atts, $content = null) {
 			$unix_today = strtotime($today);
 			
 			// Setup empty array to house which dates are closest, in unix timestamp
-			$unix_differences = array();
+			$past_dates = array();
 			
 			foreach ($dates as $key => $date) {
-				if ($unix_today < strtotime($date)) {
-					$unix_differences[] = PHP_INT_MAX;
-				} else {
-					$unix_differences[] = abs($unix_today - strtotime($date));
+				// If current date in loop is in the past, add its key to the array of date modifiers
+				if ($unix_today >= strtotime($date)) {
+					$past_dates[$key] = abs($unix_today - strtotime($date));
 				}
 			}
 			
-			if (!empty($unix_differences)) {
+			if (!empty($past_dates)) {
 				
 				// Sorts array from least to greatest
 				// Should pust most recent PAST date as first key in array, making grabbing the percentage associated with that day easy
-				asort($unix_differences);
-				$update_percent = (float)(($percentages[key($unix_differences)])/100);
+				asort($past_dates);
+				$update_percent = (float)(($percentages[key($past_dates)])/100);
+			} else {
+				$update_percent = 1;	
 			}
 			
 		} else {
 			$update_percent = 1;	
 		}
+		
+		echo $update_percent;
 		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
