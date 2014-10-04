@@ -59,44 +59,60 @@ function go_the_lb_ajax(){
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
 	if ($user_points >= $req_rank || $req_rank <= 0 || $penalty) {
 		$lvl_color = "g"; 
+		$re1_lvl *= -1;
 	} else { 
 		$lvl_color = "r";
 	}
 
-	if ($user_currency >= $req_currency || $req_currency <= 0 || $penalty) { 
+	if ($req_currency == 0) { 
+		$gold_color = "n"; 
+	} else if ($req_currency < 0) {
 		$gold_color = "g"; 
+		$req_points *= -1;
 	} else { 
 		$gold_color = "r";
 	}
 	
-	if ($user_points >= $req_points || $req_points <= 0 || $penalty) {
-		$points_color = "g"; 
+	if ($req_points == 0) {
+		$points_color = "n"; 
+	} else if ($req_points < 0) {
+		$points_color = "g";
+		$req_points *= -1;
 	} else { 
 		$points_color = "r"; 
 	}
 	
-	if ($user_bonus_currency >= $req_bonus_currency || $req_bonus_currency <= 0 || $penalty) {
+	if ($req_bonus_currency == 0) {
+		$bonus_currency_color = "n";
+	} else if ($req_bonus_currency < 0) {
 		$bonus_currency_color = "g";
+		$req_bonus_currency *= -1;
 	} else {
 		$bonus_currency_color = "r";
 	} 
 	
-	if ($user_penalties >= $req_penalty || $req_penalty <= 0 || $penalty){
-		$penalty_color = "g";
-	} else {
+	if ($req_penalty == 0){
+		$penalty_color = "n";
+	} else if ($req_penalty < 0) {
 		$penalty_color = "r";
+		$req_penalty *= -1;
+	} else {
+		$penalty_color = "g";
 	}
-	
-	if ($user_minutes >= $req_minutes || $req_minutes <= 0 || $penalty) {
+
+	if ($req_minutes == 0) {
+		$minutes_color = "n";
+	} else if ($req_minutes < 0) {
 		$minutes_color = "g";
+		$req_minutes *= -1;
 	} else {
 		$minutes_color = "r";
 	} 
 	
 	if ($lvl_color == "g" && $gold_color == "g" && $points_color == "g") { 
-		$buy_color = "g"; 
+		$buy_color = "gold"; 
 	} else { 
-		$buy_color = "r"; 
+		$buy_color = "gold"; 
 	}
 		
 	$user_focuses = array();
@@ -139,7 +155,7 @@ function go_the_lb_ajax(){
 	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options('go_bonus_currency_name').': '.$req_bonus_currency; ?></div>
     <div id='golb-fr-penalty' class='golb-fr-boxes-<?php echo $penalty_color; ?>' req='<?php echo $req_penalty; ?>' cur='<?php echo $user_penalties; ?>'><?php echo go_return_options('go_penalty_name').': '.$req_penalty;?></div>
     <div id="golb-fr-minutes" class="golb-fr-boxes-<?php echo $minutes_color; ?>" req="<?php echo $req_minutes; ?>" cur="<?php echo $user_minutes; ?>"><?php echo go_return_options('go_minutes_name').': '.$req_minutes; ?></div>
-	<div id="golb-fr-qty" class="golb-fr-boxes-g">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
+	<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
 	
 	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>'); this.removeAttribute('onclick');">Buy</div>
 	<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
