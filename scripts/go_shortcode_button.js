@@ -1,6 +1,6 @@
 (function() {
-	tinymce.PluginManager.add('go_shortcode_button', function( editor, url ) {
-		editor.addButton( 'go_shortcode_button', {
+	tinymce.PluginManager.add('go_shortcode_button', function(editor, url) {
+		editor.addButton('go_shortcode_button', {
 			text: "[ ]",
 			type: 'splitbutton',
 			title: 'Shortcodes',
