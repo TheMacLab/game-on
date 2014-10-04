@@ -2998,10 +2998,10 @@ function go_store_exchange() {
 	$t_exchange = $content_array[4];
 	echo "
 		<input id='go_store_exchange_checkbox' name='go_mta_store_exchange' type='checkbox' ".($is_checked == 'true' ? "checked" : "")."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_currency' type='text' style='display: none;' placeholder='".go_return_options('go_currency_name')."' ".(!empty($c_exchange) ? "value='{$c_exchange}'" : '')."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_points' type='text' style='display: none;' placeholder='".go_return_options('go_points_name')."' ".(!empty($p_exchange) ? "value='{$p_exchange}'" : '')."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_bonus_currency' type='text' style='display: none;' placeholder='".go_return_options('go_bonus_currency_name')."' ".(!empty($b_exchange) ? "value='{$b_exchange}'" : '')."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_time' type='text' style='display: none;' placeholder='".go_return_options('go_minutes_name')."' ".(!empty($t_exchange) ? "value='{$t_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_currency' type='text' placeholder='".go_return_options('go_currency_name')."' ".(!empty($c_exchange) ? "value='{$c_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_points' type='text' placeholder='".go_return_options('go_points_name')."' ".(!empty($p_exchange) ? "value='{$p_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_bonus_currency' type='text' placeholder='".go_return_options('go_bonus_currency_name')."' ".(!empty($b_exchange) ? "value='{$b_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_time' type='text' placeholder='".go_return_options('go_minutes_name')."' ".(!empty($t_exchange) ? "value='{$t_exchange}'" : '')."/>
 	";
 }
 
