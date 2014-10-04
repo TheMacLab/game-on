@@ -277,8 +277,6 @@ function go_task_shortcode($atts, $content = null) {
 			$update_percent = 1;	
 		}
 		
-		echo $update_percent;
-		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
 			$points = $req_points - $current_points;
