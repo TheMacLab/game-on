@@ -428,4 +428,20 @@ function go_get_all_posts(){
 	echo '</div>';
 	die();
 }
+
+add_filter('mce_external_plugins', "go_shortcode_button_register");
+add_filter('mce_buttons', 'go_shortcode_button_add_button', 0);
+
+function go_shortcode_button_add_button($buttons)
+{
+    array_push($buttons, "separator", "go_shortcode_button");
+    return $buttons;
+}
+
+function go_shortcode_button_register($plugin_array)
+{
+    $url = plugins_url("/scripts/go_shortcode_button.js", __FILE__);
+    $plugin_array['go_shortcode_button'] = $url;
+    return $plugin_array;
+}
 ?>
