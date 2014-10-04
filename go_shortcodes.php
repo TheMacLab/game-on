@@ -166,11 +166,61 @@ function go_get_displayname_function( $atts, $content = null ) {
 if ( is_user_logged_in() ) {
    global $current_user;
       get_currentuserinfo();
-      return '<span id="buddy-displayname">' . $current_user->display_name . "</span>";}
-	else { return '<span id="buddy-visitor">Visitor</span>'; }}
+      return '<span id="go-displayname">' . $current_user->display_name . "</span>";}
+	else { return '<span id="go-visitor">Visitor</span>'; }}
 add_shortcode('get_displayname', 'go_get_displayname_function');
 add_shortcode('go_get_displayname', 'go_get_displayname_function');
 
+
+//Gets the users first name
+function go_get_firstname_function( $atts, $content = null ) {
+if ( is_user_logged_in() ) {
+   global $current_user;
+      get_currentuserinfo();
+      return '<span id="go-firstname">' . $current_user->user_firstname . "</span>";}
+else { return '<span id="go-visitor">Visitor</span>'; }}
+add_shortcode('go_get_firstname', 'go_get_firstname_function');
+
+
+//Gets the users last name
+function go_get_lastname_function( $atts, $content = null ) {
+if ( is_user_logged_in() ) {
+   global $current_user;
+      get_currentuserinfo();
+      return '<span id="go-lastname">' . $current_user->user_lastname . "</span>";}
+else { return '<span id="go-visitor">Visitor</span>'; }}
+add_shortcode('go_get_lastname', 'go_get_lastname_function');
+
+
+//Gets the users login
+function go_get_login_function( $atts, $content = null ) {
+if ( is_user_logged_in() ) {
+   global $current_user;
+      get_currentuserinfo();
+      return '<span id="go-username">' . $current_user->user_login . "</span>";}
+else { return '<span id="go-visitor">Visitor</span>'; }}
+add_shortcode('go_get_login', 'go_get_login_function');
+
+/*
+//Gets the users focus
+function go_get_focus_function( $atts, $content = null ) {
+if ( is_user_logged_in() ) {
+   global $current_user;
+      get_currentuserinfo();
+      return '<span id="go-focus">' . $current_user->go_focus . "</span>";}
+else { return '<span id="go-visitor">Visitor</span>'; }}
+add_shortcode('go_get_focus', 'go_get_focus_function');
+
+
+//Gets the users level
+function go_get_level_function( $atts, $content = null ) {
+if ( is_user_logged_in() ) {
+   global $current_user;
+      get_currentuserinfo();
+      return '<span id="go-focus">' . $current_user->$current_rank	 . "</span>";}
+else { return '<span id="go-visitor">Visitor</span>'; }}
+add_shortcode('go_get_level', 'go_get_level_function');
+*/
 
 // creates shortcode for page grab function
 add_shortcode('page_grab', 'go_page_grabber_shortcode');
@@ -197,11 +247,6 @@ add_shortcode ('latest_post', 'go_latest_post_url_shortcode');
 add_shortcode ('go_latest_post', 'go_latest_post_url_shortcode');
 
 
-//Catigories
-
-
-
-
 //Makes content within tags only visible to people who aren't logged in
 function go_visitor_only_content_function($atts, $content = null ) {
 	if ( is_user_logged_in() ) {
@@ -226,10 +271,10 @@ add_shortcode ('user_only_content', 'go_user_only_content_function');
 add_shortcode ('go_user_only_content','go_user_only_content_function');
 
 
-//Makes content within tags visible or admins only
+//Makes content within tags visible to admins only
 function go_admin_only_content_function($atts, $content = null ) {
-	if( is_admin() ) {
-		return '<div id="admin-only-content">' .do_shortcodes($content). '</div>';
+	if( current_user_can(edit_plugins) ) {
+		return '<div id="admin-only-content" style="color:red"> <i>' .do_shortcode($content). '</i>z </div>';
 } else {
 	return '';
 		}
