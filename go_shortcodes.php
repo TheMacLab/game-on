@@ -1,36 +1,35 @@
 <?php 
-
-function listUserURL(){
+function listUserURL() {
 	$class_names = get_option('go_class_a');
-	?>
+?>
 	<select id="go_period_list_user_url">
 		<option value="select_option">Select an option</option>
 		<?php
-			foreach($class_names as $class_name){
+			foreach ($class_names as $class_name) {
 				echo '<option value="'.$class_name.'">'.$class_name.'</option>';
 			}
 		?>
 	</select>
-	 <script type="text/javascript"> 
-		var period = jQuery('#go_period_list_user_url');
-		period.change(function(){
-			var period_val = period.val();
-			var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
-			jQuery.ajax({
-				url: go_ajaxurl,
-				type: "POST",
-				data:{
-					action: 'listurl',
-					class_a_choice: period_val
-				},
-				success: function(data){
-					jQuery('#go_list_user_url').append(data);
-					period.change(function(){
-						jQuery('#go_list_user_url').html('');
-					});
-				}
-			});
+	<script type="text/javascript"> 
+	var period = jQuery('#go_period_list_user_url');
+	period.change(function(){
+		var period_val = period.val();
+		var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+		jQuery.ajax({
+			url: go_ajaxurl,
+			type: "POST",
+			data:{
+				action: 'listurl',
+				class_a_choice: period_val
+			},
+			success: function(data){
+				jQuery('#go_list_user_url').append(data);
+				period.change(function(){
+					jQuery('#go_list_user_url').html('');
+				});
+			}
 		});
+	});
 	</script>
 
 	<div id="go_list_user_url" style="margin-top:10px; width:100%;"></div>
@@ -38,7 +37,7 @@ function listUserURL(){
 	<?php
 }
 
-function listurl(){
+function listurl() {
 	global $wpdb;
 	if(isset($_POST['class_a_choice'])){
 		$class_a_choice = $_POST['class_a_choice'];
@@ -67,7 +66,7 @@ function listurl(){
 
 add_shortcode('go_list_URL', 'listUserURL');
 
-function go_display_video($atts, $video_url){
+function go_display_video($atts, $video_url) {
 	extract(shortcode_atts(array(
 		'video_url' => '',
 		'video_title' => '',
@@ -78,9 +77,9 @@ function go_display_video($atts, $video_url){
 	if($video_url){
 		if($height && $width){
 		?>
-        	<script type="text/javascript"> 
-				jQuery('.light').css({'height': '<?php echo $height;?>px', 'width': '<?php echo $width;?>px'});
-			</script>
+    	<script type="text/javascript"> 
+			jQuery('.light').css({'height': '<?php echo $height;?>px', 'width': '<?php echo $width;?>px'});
+		</script>
         <?php	
 		}
 		if($height){
@@ -99,7 +98,7 @@ function go_display_video($atts, $video_url){
 		}
 		if($video_title){
 			return '<a href="javascript:;" onclick="go_display_help_video(\''.$video_url.'\');">'.$video_title.'</a>';	
-		} else{
+		} else {
 			return '<a href="javascript:;" onclick="go_display_help_video(\''.$video_url.'\');">video</a>';	
 		}
 	}
@@ -108,98 +107,115 @@ add_shortcode('go_display_video', 'go_display_video');
 
 //Function that grabs the current page
 function go_page_grabber_shortcode() { 
-echo '';
-$args=array(
-  'child_of' => $parent
-);
-$pages = get_pages($args);  
-	if ($pages) {
-		$pageids = array();
+	echo '';
+	$args=array(
+	  'child_of' => $parent
+	);
+	$pages = get_pages($args);  
+		if ($pages) {
+			$pageids = array();
 		foreach ($pages as $page) {
-		$pageids[]= $page->ID;
+			$pageids[]= $page->ID;
+		}
+	$args=array(
+	    'include' =>  $parent . ',' . implode(",", $pageids),
+		'sort_column'  => 'post_date',
+		'sort_order' => 'DESC',
+		'show_date'    => 'created',
+	);
+	wp_list_pages($args);
+	}
 }
-$args=array(
-    'include' =>  $parent . ',' . implode(",", $pageids),
-	'sort_column'  => 'post_date',
-	'sort_order' => 'DESC',
-	'show_date'    => 'created',
-  );
-  wp_list_pages($args);
-}
- }
  
  
 //Function that grabs the current post
 function go_post_grabber_shortcode() { 
-echo '';
+	echo '';
 	$archive_query = new WP_Query('showposts=1000000000');
-		while ($archive_query->have_posts()) : $archive_query->the_post(); ?>
-	<li><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title(); ?>">
-<?php the_title(); ?></a> 
-<?php the_time(get_option('date_format'));?> 
-	<a href="/?cat=<?php get_category_link( $category_id ); the_category_ID( $echo ); ?>">
-<?php
-	$category = get_the_category(); 
-	echo $category[0]->cat_name;
-?>
-</a>
-</li>
-<?php endwhile; ?>
-<?php
- }
-
+	while ($archive_query->have_posts()) : $archive_query->the_post(); 
+	?>
+	<li>
+		<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title(); ?>">
+			<?php the_title(); ?>
+		</a> 
+			<?php the_time(get_option('date_format'));?> 
+		<a href="/?cat=<?php get_category_link( $category_id ); the_category_ID( $echo ); ?>">
+			<?php
+			$category = get_the_category(); 
+			echo $category[0]->cat_name;
+			?>
+		</a>
+	</li>
+	<?php endwhile;
+}
 
 //Creates an excerpt for grabbed post
 function go_post_grabber_content_exerpt_shortcode() { 
-echo '';
-?>
-<?php query_posts('showposts=2'); ?>
+	echo '';
+	?>
+	<?php query_posts('showposts=2'); ?>
 	<?php while (have_posts()) : the_post(); ?>
-	<h5><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></h5>
-	<?php the_excerpt(__('(more?)')); ?>
-<?php endwhile;
+		<h5>
+			<a href="<?php the_permalink() ?>">
+				<?php the_title(); ?>
+			</a>
+		</h5>
+		<?php the_excerpt(__('(more?)')); ?>
+	<?php endwhile;
 }
 
 
 //Gets the user's display name
-function go_get_displayname_function( $atts, $content = null ) {
-if ( is_user_logged_in() ) {
-   global $current_user;
-      get_currentuserinfo();
-      return '<span id="go-displayname">' . $current_user->display_name . "</span>";}
-	else { return '<span id="go-visitor">Visitor</span>'; }}
+function go_get_displayname_function($atts, $content = null) {
+	if(is_user_logged_in()) {
+		global $current_user;
+		get_currentuserinfo();
+		return '<span id="go-displayname">' . $current_user->display_name . "</span>";
+	} else { 
+		return '<span id="go-visitor">Visitor</span>'; 
+	}
+}
 add_shortcode('get_displayname', 'go_get_displayname_function');
 add_shortcode('go_get_displayname', 'go_get_displayname_function');
 
 
 //Gets the users first name
 function go_get_firstname_function( $atts, $content = null ) {
-if ( is_user_logged_in() ) {
-   global $current_user;
-      get_currentuserinfo();
-      return '<span id="go-firstname">' . $current_user->user_firstname . "</span>";}
-else { return '<span id="go-visitor">Visitor</span>'; }}
-add_shortcode('go_get_firstname', 'go_get_firstname_function');
+	if (is_user_logged_in()) {
+		global $current_user;
+		get_currentuserinfo();
+	    return '<span id="go-firstname">' . $current_user->user_firstname . "</span>";
+	} else { 
+		return '<span id="go-visitor">Visitor</span>'; 
+	}
+}
+add_shortcode('go_firstname', 'go_get_firstname_function');
 
 
 //Gets the users last name
-function go_get_lastname_function( $atts, $content = null ) {
-if ( is_user_logged_in() ) {
-   global $current_user;
-      get_currentuserinfo();
-      return '<span id="go-lastname">' . $current_user->user_lastname . "</span>";}
-else { return '<span id="go-visitor">Visitor</span>'; }}
-add_shortcode('go_get_lastname', 'go_get_lastname_function');
+function go_get_lastname_function ($atts, $content = null) {
+	if (is_user_logged_in()) {
+		global $current_user;
+		get_currentuserinfo();
+	    return '<span id="go-lastname">' . $current_user->user_lastname . "</span>";
+	} else { 
+		return '<span id="go-visitor">Visitor</span>'; 
+	}
+}
+add_shortcode('go_lastname', 'go_get_lastname_function');
 
 
 //Gets the users login
-function go_get_login_function( $atts, $content = null ) {
-if ( is_user_logged_in() ) {
-   global $current_user;
-      get_currentuserinfo();
-      return '<span id="go-username">' . $current_user->user_login . "</span>";}
-else { return '<span id="go-visitor">Visitor</span>'; }}
-add_shortcode('go_get_login', 'go_get_login_function');
+function go_get_login_function ($atts, $content = null) {
+	if (is_user_logged_in()) {
+		global $current_user;
+	    get_currentuserinfo();
+	    return '<span id="go-username">' . $current_user->user_login . "</span>";
+	} else { 
+		return '<span id="go-visitor">Visitor</span>'; 
+	}
+}
+add_shortcode('go_loginname', 'go_get_login_function');
 
 /*
 //Gets the users focus
@@ -233,26 +249,35 @@ add_shortcode('go_post_grab', 'go_post_grabber_shortcode');
 
 
 //Adds a link to the most recent post
-function go_latest_post_url_shortcode( $atts, $content = null ) { 
+function go_latest_post_url_shortcode($atts, $content = null) { 
 	extract(shortcode_atts(array(  
         "cat" => '',
 		"usetitle" => 'yes'   
-    ), $atts)); $catquery = new WP_Query( 'cat='.$cat.'&posts_per_page=1' );
+    ), $atts));
+    $catquery = new WP_Query('cat='.$cat.'&posts_per_page=1');
 	while($catquery->have_posts()) : $catquery->the_post();
 	?>
-	<a href="<?php the_permalink(); ?>"><?php if ($usetitle="yes") { the_title(); } else { return ''; }?></a>
-<?php endwhile;
+		<a href="<?php the_permalink(); ?>">
+			<?php 
+			if ($usetitle="yes") { 
+				the_title(); 
+			} else { 
+				return ''; 
+			}
+			?>
+		</a>
+	<?php endwhile;
 }
 add_shortcode ('latest_post', 'go_latest_post_url_shortcode');
 add_shortcode ('go_latest_post', 'go_latest_post_url_shortcode');
 
 
 //Makes content within tags only visible to people who aren't logged in
-function go_visitor_only_content_function($atts, $content = null ) {
-	if ( is_user_logged_in() ) {
-    echo '';
-} else {
-    return '<div id="visitor-only-content">'.do_shortcode($content).'</div>';
+function go_visitor_only_content_function($atts, $content = null) {
+	if (is_user_logged_in()) {
+    	echo '';
+	} else {
+    	return '<div id="visitor-only-content">'.do_shortcode($content).'</div>';
 	}
 }
 add_shortcode ('visitor_only_content', 'go_visitor_only_content_function');
@@ -262,22 +287,22 @@ add_shortcode ('go_visitor_only_content', 'go_visitor_only_content_function');
 //Makes content within tags visible to only people who are logged in  
 function go_user_only_content_function($atts, $content = null ) {
 	if ( is_user_logged_in() ) {
-    return '<div id="user-only-content">'.do_shortcode($content).'</div>';
-} else {
-    return '';
-		}
+    	return '<div id="user-only-content">'.do_shortcode($content).'</div>';
+	} else {
+    	return '';
+	}
 }
 add_shortcode ('user_only_content', 'go_user_only_content_function');
 add_shortcode ('go_user_only_content','go_user_only_content_function');
 
 
 //Makes content within tags visible to admins only
-function go_admin_only_content_function($atts, $content = null ) {
-	if( current_user_can(edit_plugins) ) {
-		return '<div id="admin-only-content" style="color:red"> <i>' .do_shortcode($content). '</i>z </div>';
-} else {
-	return '';
-		}
+function go_admin_only_content_function($atts, $content = null) {
+	if (current_user_can('manage_options')) {
+		return '<div id="admin-only-content" style="color:red"> <i>' .do_shortcode($content). '</i> </div>';
+	} else {
+		return '';
+	}
 }
 add_shortcode ('admin_only_content', 'go_admin_only_content_function');
 add_shortcode ('go_admin_only_content', 'go_admin_only_content_function');
@@ -285,9 +310,7 @@ add_shortcode ('go_admin_only_content', 'go_admin_only_content_function');
 
 //Sorts posts based on tags
 
-
 //Sorts posts based on focus
-
 
 //Sorts posts based on catigories
 
@@ -300,36 +323,31 @@ function go_login($atts, $content = null) {
 		"lostpass" => 'yes'
 	), $atts));
 	
-	
 	// Define Redirects for Login/Logout
 	switch ($redirect) {
-	case "current":
-	$current_page_logout = wp_logout_url( get_permalink() );
-	$current_page_login = $_SERVER["REQUEST_URI"];
-	break;
-	case  'dashboard':
-		$current_page_logout = wp_logout_url();
-		$current_page_login = wp_login_url();
-	break;
-	case 'homepage':
-		$current_page_logout = wp_logout_url( home_url() );
-		$current_page_login = wp_login_url( home_url() );
-	break;
+		case "current":
+			$current_page_logout = wp_logout_url( get_permalink() );
+			$current_page_login = $_SERVER["REQUEST_URI"];
+			break;
+		case 'dashboard':
+			$current_page_logout = wp_logout_url();
+			$current_page_login = wp_login_url();
+			break;
+		case 'homepage':
+			$current_page_logout = wp_logout_url( home_url() );
+			$current_page_login = wp_login_url( home_url() );
+			break;
 	}
-	
 	
 	// End Define Redirects
 	// Define Size 
 	if ($size == 'medium') {
 		$input_size = '20';
-	}
-	elseif ($size == 'small') {
+	} elseif ($size == 'small') {
 		$input_size = '10';
-	}
-	elseif ($size == 'large') {
+	} elseif ($size == 'large') {
 		$input_size = '30';
-	}
-	else {
+	} else {
 		$input_size = '20';
 	}
 	//End Define Size
@@ -339,48 +357,57 @@ function go_login($atts, $content = null) {
 		<a class="submit" href="<?php echo ($current_page_logout); ?>" title="Logout">Logout</a>
     <?php
 	} else {
-	?>
-<form name="loginform" id="loginform" action="<?php echo get_option('home'); ?>/wp-login.php" method="post">
-	<p>
-		<label>Username<br />
-		<input type="text" name="log" id="user_login" class="input" value="" size="<?php echo ($input_size);?>" tabindex="10" /></label>
-	</p>
-	<p>
-
-		<label>Password<br />
-		<input type="password" name="pwd" id="user_pass" class="input" value="" size="<?php echo ($input_size);?>" tabindex="20" /></label>
-	</p>
-	<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> Remember Me</label></p>
-	
-		<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100" />
-		<input type="hidden" name="redirect_to" value="<?php echo ($current_page_login); ?>" />
-		<input type="hidden" name="testcookie" value="1" />
-	
-</form>
-
-<?php 	if ($lostpass == true) { ?>
-
-				 <a href="<?php echo get_option('home'); ?>/wp-login.php?action=lostpassword" title="Password Lost and Found">Lost your password?</a><?php } 
-				 
-		elseif ($lostpass == false) { echo ''; } 
-
-		else {?> <a href="<?php echo get_option('home'); ?>/wp-login.php?action=lostpassword" title="Password Lost and Found">Lost your password?</a><?php } ?>
-<?php 
-}}
+		?>
+		<form name="loginform" id="loginform" action="<?php echo get_option('home'); ?>/wp-login.php" method="post">
+		<p>
+			<label>Username</br>
+				<input type="text" name="log" id="user_login" class="input" value="" size="<?php echo ($input_size);?>" tabindex="10"/>
+			</label>
+		</p>
+		<p>
+			<label>Password</br>
+				<input type="password" name="pwd" id="user_pass" class="input" value="" size="<?php echo ($input_size);?>" tabindex="20"/>
+			</label>
+		</p>
+		<p class="forgetmenot">
+			<label>
+				<input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> Remember Me
+			</label>
+		</p>
+		<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100"/>
+		<input type="hidden" name="redirect_to" value="<?php echo ($current_page_login); ?>"/>
+		<input type="hidden" name="testcookie" value="1"/>
+		</form>
+		<?php 	
+	if ($lostpass == true) { 
+		?>
+			<a href="<?php echo get_option('home'); ?>/wp-login.php?action=lostpassword" title="Password Lost and Found">Lost your password?</a>
+		<?php 
+	} elseif ($lostpass == false) { 
+		echo ''; 
+	} else {
+		?> 
+			<a href="<?php echo get_option('home'); ?>/wp-login.php?action=lostpassword" title="Password Lost and Found">Lost your password?</a>
+		<?php 
+	} 
+		?>
+		<?php 
+	}
+}
 add_shortcode ('sb_login', 'go_login');
 add_shortcode ('go_login', 'go_login');
 
 function go_get_category(){
 	global $wpdb;
 	$terms = get_taxonomies();
-	?>
+		?>
     <script type="text/javascript">
 		var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
 		function go_get_all_tasks(el){
 			var el = jQuery(el);
-			if(el.prop("checked")){
+			if (el.prop("checked")) {
 				var val = el.val();
-			}else{
+			} else {
 				jQuery('#' + el.val() + '_terms').remove();
 				jQuery('#go_queried_posts_' + el.val()).remove();
 			}
@@ -398,12 +425,12 @@ function go_get_category(){
 				}
 			});
 		}
-		function go_get_all_posts(taxonomy){
+		function go_get_all_posts(taxonomy) {
 			var terms = [];
 			jQuery('#go_queried_posts_' + taxonomy).remove();
 			jQuery('.term').each(function(){
 				el = jQuery(this);
-				if(el.prop('checked')){
+				if (el.prop('checked')) {
 					terms.push(el.val());
 				}
 			});
@@ -421,10 +448,10 @@ function go_get_category(){
 			});
 		}
 	</script>
-    <?php
+    	<?php
 	echo '<div id="taxonomies" style="padding: 0px; margin: 0px;">';
-	foreach($terms as $term){
-		if($term == 'post_tag' || $term == 'task_categories' || $term == 'task_focus_categories'){
+	foreach ($terms as $term) {
+		if($term == 'post_tag' || $term == 'task_categories' || $term == 'task_focus_categories') {
 			echo '<div style="padding: 0px; margin: 0px;"><input type="checkbox" id="chk" value="'.$term.'" onClick="go_get_all_tasks(this)">'.$term.'</div><br/>';
 		}
 	}
@@ -433,14 +460,14 @@ function go_get_category(){
 
 
 add_shortcode('go_get_category', 'go_get_category');
-function go_get_all_terms(){
+function go_get_all_terms() {
 	$taxonomy = $_POST['taxonomy'];
-	if($taxonomy != ''){
+	if ($taxonomy != '') {
 		echo '<div id="'.$taxonomy.'_terms">';
 	}
-	if($taxonomy){
+	if ($taxonomy) {
 		$terms = get_terms($taxonomy);
-		foreach($terms as $term){
+		foreach ($terms as $term) {
 			echo '<input type="checkbox" class="term" value="'.$term->name.'" name="'.$term->name.'" onClick="go_get_all_posts(\''.$taxonomy.'\')"/>'.$term->name.'<br/>';
 		}
 	}
@@ -467,7 +494,7 @@ function go_get_all_posts(){
 		)
 	);	
 	echo '<div id="go_queried_posts_'.$taxonomy.'" class="go_queried_posts">';
-	foreach($posts as $post){
+	foreach ($posts as $post) {
 		echo '<a href="'.get_permalink($post->ID).'" target="_blank">'.get_the_title($post->ID).'</a><br/>';	
 	}
 	echo '</div>';
@@ -477,14 +504,12 @@ function go_get_all_posts(){
 add_filter('mce_external_plugins', "go_shortcode_button_register");
 add_filter('mce_buttons', 'go_shortcode_button_add_button', 0);
 
-function go_shortcode_button_add_button($buttons)
-{
+function go_shortcode_button_add_button($buttons) {
     array_push($buttons, "separator", "go_shortcode_button");
     return $buttons;
 }
 
-function go_shortcode_button_register($plugin_array)
-{
+function go_shortcode_button_register($plugin_array) {
     $url = plugins_url("/scripts/go_shortcode_button.js", __FILE__);
     $plugin_array['go_shortcode_button'] = $url;
     return $plugin_array;
