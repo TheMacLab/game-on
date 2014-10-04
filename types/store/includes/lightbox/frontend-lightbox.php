@@ -68,7 +68,7 @@ function go_the_lb_ajax(){
 		$gold_color = "n"; 
 	} else if ($req_currency < 0) {
 		$gold_color = "g"; 
-		$output_currency = $req_curreny *= -1;
+		$output_currency = $req_currency *= -1;
 	} else { 
 		$gold_color = "r";
 	}
