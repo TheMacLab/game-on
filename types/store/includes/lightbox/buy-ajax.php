@@ -190,13 +190,18 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 		$penalty => $req_penalty, 
 		$minutes => $req_mintues
 	);
-	$received_str, $spent_str = '';
-	foreach ($req_array as $name => $val) {
+	$received_str = '';
+	$spent_str = '';
+	foreach ($req_array as $req_name => $val) {
 		if (!empty($val)) {
-			if ($val < 0) {
-				$received_str += "{$name}: {$val}\n\n";
-			} else if ($val > 0) {
-				$spent_str += "{$name}: {$val}\n\n";
+			if ($req_name === $penalty) {
+				$received_str .= "\t{$req_name}: {$val}\n\n";
+			} else {
+				if ($val < 0) {
+					$received_str .= "\t{$req_name}: ".(-$val)."\n\n";
+				} else if ($val > 0) {
+					$spent_str .= "\t{$req_name}: {$val}\n\n";
+				}
 			}
 		}
 	}
@@ -221,26 +226,10 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 		}
 		$mail->Subject .= " | {$recipient_full_name} {$recipient_username}";
 	}
-	// $body_str = "
-	// 	{$user_email}\n\n".
-	// 	"Spent: \n\n".
-	// 	(!empty($req_currency) ? "{$currency} Spent: {$req_currency}" : '')."\n\n".
-	// 	(!empty($req_points) ? "{$points} Spent: {$req_points}" : '')."\n\n".
-	// 	(!empty($req_bonus_currency) ? "{$bonus_currency} Spent: {$req_bonus_currency}" : '')."\n\n".
-	// 	(!empty($req_penalty) ? "{$penalty} Spent: {$req_penalty}" : '')."\n\n".
-	// 	(!empty($req_minutes) ? "{$minutes} Spent: {$req_minutes}": '')."\n\n".
-	// 	"Received: \n\n".
-	// 	(!empty($req_currency) ? "{$currency} Received: {$req_currency}" : '')."\n\n".
-	// 	(!empty($req_points) ? "{$points} Received: {$req_points}" : '')."\n\n".
-	// 	(!empty($req_bonus_currency) ? "{$bonus_currency} Received: {$req_bonus_currency}" : '')."\n\n".
-	// 	(!empty($req_penalty) ? "{$penalty} Received: {$req_penalty}" : '')."\n\n".
-	// 	(!empty($req_minutes) ? "{$minutes} Received: {$req_minutes}": '')
-	// ;
 
-	$mail->Body = "{$user_email}\n\n
-		".(!empty($spent_str) ? "Spent:\n\n{$spent_str}" : "")."
-		".(!empty($received_str) ? "Received:\n\n{$received_str}" : "")."
-	";
+	$mail->Body = "{$user_email}\n\n".
+		(!empty($spent_str) ? "Spent:\n\n{$spent_str}" : "").
+		(!empty($received_str) ? "Received:\n\n{$received_str}" : "");
 	$mail->WordWrap = 50;
 
 	if (!$mail->Send()) {
