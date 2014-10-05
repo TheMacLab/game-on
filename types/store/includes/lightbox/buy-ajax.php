@@ -176,6 +176,11 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 	$user_email = $user_info->user_email;
 	$user_role = $user_info->roles;
 
+	$req_currency *= $qty;
+	$req_points *= $qty;
+	$req_bonus_currency *= $qty;
+	$req_mintues *= $qty;
+
 	$to = get_option('go_admin_email','');
 	require("{$go_plugin_dir}/mail/class.phpmailer.php");
 	$mail = new PHPMailer();
@@ -196,7 +201,10 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 		}
 		$mail->Subject .= " | {$recipient_full_name} {$recipient_username}";
 	}
-	$mail->Body = "{$user_email}\n\n".(!empty($req_currency) ? "{$currency} Spent: {$req_currency}" : '')."\n\n".(!empty($req_points) ? "{$points} Spent: {$req_points}" : '')."\n\n".(!empty($req_bonus_currency) ? "{$bonus_currency} Spent: {$req_bonus_currency}" : '')."\n\n".(!empty($req_minutes) ? "{$minutes} Spent: {$req_minutes}": '');
+	$mail->Body = "{$user_email}\n\n".(!empty($req_currency) ? "{$currency} Spent: {$req_currency}" : '')."\n\n".
+		(!empty($req_points) ? "{$points} Spent: {$req_points}" : '')."\n\n".
+		(!empty($req_bonus_currency) ? "{$bonus_currency} Spent: {$req_bonus_currency}" : '')."\n\n".
+		(!empty($req_minutes) ? "{$minutes} Spent: {$req_minutes}": '');
 	$mail->WordWrap = 50;
 
 	if (!$mail->Send()) {
