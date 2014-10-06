@@ -171,15 +171,42 @@ function go_stats_move_stage () {
 	$count = $_POST['count'];
 	$message = $_POST['message'];
 	$custom_fields = get_post_custom($task_id);
+	$date_picker = ((unserialize($custom_fields['go_mta_date_picker'][0]))?array_filter(unserialize($custom_fields['go_mta_date_picker'][0])):false);
 	$rewards = unserialize($custom_fields['go_presets'][0]);
 	$current_status = $wpdb->get_var($wpdb->prepare("SELECT status FROM {$go_table_name} WHERE uid=%d AND post_id=%d",$user_id, $task_id));
 	$page_id = $wpdb->get_var($wpdb->prepare("SELECT page_id FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
 	
 	$changed = array('type' => 'json', 'points' => 0, 'currency' => 0, 'bonus_currency' => 0);
 	
+	if (!empty($date_picker)) {
+		$dates = $date_picker['date'];
+		$percentages = $date_picker['percent'];
+		$unix_today = strtotime(date('Y-m-d'));
+
+		$past_dates = array();
+		
+		foreach ($dates as $key => $date) {
+			if ($unix_today >= strtotime($date)) {
+				$past_dates[$key] = abs($unix_today - strtotime($date));
+			}
+		}
+		
+		if (!empty($past_dates)) {
+			asort($past_dates);
+			$update_percent = (float)(($percentages[key($past_dates)])/100);
+		} else {
+			$update_percent = 1;	
+		}
+	} else {
+		$update_percent = 1;
+	}
+	
 	if ($status == 1){
 		$current_rewards = $wpdb->get_results($wpdb->prepare("SELECT points, currency, bonus_currency FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
-		go_task_abandon($user_id, $task_id, $current_rewards[0]->points, $current_rewards[0]->currency, $current_rewards[0]->bonus_currency);
+		go_task_abandon($user_id, $task_id, 
+		$current_rewards[0]->points, 
+		$current_rewards[0]->currency, 
+		$current_rewards[0]->bonus_currency * $update_percent);
 		
 		$changed['points'] = -$current_rewards[0]->points;
 		$changed['currency'] = -$current_rewards[0]->currency;
@@ -198,38 +225,55 @@ function go_stats_move_stage () {
 	} else {
 		 
 		for ($count; $count > 0; $count--) {
-			go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], null, $page_id, 'on', -1, null, null, null, null);
+			go_add_post($user_id, $task_id, $current_status, 
+			floor(-$rewards['points'][$current_status] * $update_percent), 
+			floor(-$rewards['currency'][$current_status] * $update_percent), 
+			floor(-$rewards['bonus_currency'][$current_status] * $update_percent), 
+			null, $page_id, 'on', -1, null, null, null, null);
 			
-			$changed['points'] += -$rewards['points'][$current_status];
-			$changed['currency'] += -$rewards['currency'][$current_status];
-			$changed['bonus_currency'] += -$rewards['bonus_currency'][$current_status];
+			$changed['points'] += floor(-$rewards['points'][$current_status] * $update_percent);
+			$changed['currency'] += floor(-$rewards['currency'][$current_status] * $update_percent);
+			$changed['bonus_currency'] += floor(-$rewards['bonus_currency'][$current_status] * $update_percent);
 		}
 		
 		while ($current_status != $status) {
 			if ($current_status > $status) {
 				$current_status--;
 				
-				go_add_post($user_id, $task_id, $current_status, -$rewards['points'][$current_status], -$rewards['currency'][$current_status], -$rewards['bonus_currency'][$current_status], null, $page_id, null, null, null, null, null, null);
+				go_add_post($user_id, $task_id, $current_status, 
+				floor(-$rewards['points'][$current_status] * $update_percent), 
+				floor(-$rewards['currency'][$current_status] * $update_percent), 
+				floor(-$rewards['bonus_currency'][$current_status] * $update_percent), 
+				null, $page_id, null, null, null, null, null, null);
 				
-				$changed['points'] += -$rewards['points'][$current_status];
-				$changed['currency'] += -$rewards['currency'][$current_status];
-				$changed['bonus_currency'] += -$rewards['bonus_currency'][$current_status];
+				$changed['points'] += floor(-$rewards['points'][$current_status] * $update_percent);
+				$changed['currency'] += floor(-$rewards['currency'][$current_status] * $update_percent);
+				$changed['bonus_currency'] += floor(-$rewards['bonus_currency'][$current_status] * $update_percent);
 				
 			} elseif ($current_status < $status) {
 				$current_status++;
 				$current_count = $wpdb->get_var($wpdb->prepare("SELECT count FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id));
 				if ($current_status == 5 && $current_count == 0) {
-					go_add_post($user_id, $task_id, $current_status-1, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], null, $page_id, 'on', 1, null, null, null, null);
+					go_add_post($user_id, $task_id, $current_status-1, 
+					floor($rewards['points'][$current_status-1] * $update_percent), 
+					floor($rewards['currency'][$current_status-1] * $update_percent), 
+					floor($rewards['bonus_currency'][$current_status-1] * $update_percent), 
+					null, $page_id, 'on', 1, null, null, null, null);
 					
-					$changed['points'] += $rewards['points'][$current_status-1];
-					$changed['currency'] += $rewards['currency'][$current_status-1];
-					$changed['bonus_currency'] += $rewards['bonus_currency'][$current_status-1];
+					$changed['points'] += floor($rewards['points'][$current_status-1] * $update_percent);
+					$changed['currency'] += floor($rewards['currency'][$current_status-1] * $update_percent);
+					$changed['bonus_currency'] += floor($rewards['bonus_currency'][$current_status-1] * $update_percent);
+					
 				} elseif ($current_status < 5) {
-					go_add_post($user_id, $task_id, $current_status, $rewards['points'][$current_status-1], $rewards['currency'][$current_status-1], $rewards['bonus_currency'][$current_status-1], null, $page_id, null, null, null, null, null, null);
+					go_add_post($user_id, $task_id, $current_status, 
+					floor($rewards['points'][$current_status-1] * $update_percent), 
+					floor($rewards['currency'][$current_status-1] * $update_percent), 
+					floor($rewards['bonus_currency'][$current_status-1] * $update_percent), 
+					null, $page_id, null, null, null, null, null, null);
 					
-					$changed['points'] += $rewards['points'][$current_status-1];
-					$changed['currency'] += $rewards['currency'][$current_status-1];
-					$changed['bonus_currency'] += $rewards['bonus_currency'][$current_status-1];
+					$changed['points'] += floor($rewards['points'][$current_status-1] * $update_percent);
+					$changed['currency'] += floor($rewards['currency'][$current_status-1] * $update_percent);
+					$changed['bonus_currency'] += floor($rewards['bonus_currency'][$current_status-1] * $update_percent);
 				}
 			}
 		}
@@ -247,6 +291,7 @@ function go_stats_move_stage () {
 			$changed['next_rank_points'] = $updated_rank[1][1];
 		}
 	}
+	
 	echo json_encode($changed);
 	die();
 }
