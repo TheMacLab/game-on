@@ -24,6 +24,8 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 		$old_points = $wpdb->get_row("SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1");
 		$points *= $qty;
 		$currency *= $qty;
+		$bonus_currency *= $qty;
+		$minutes *= $qty;
 		$gifted = false;
 		if (get_current_user_id() != $user_id) {
 			$reason = 'Gifted';
