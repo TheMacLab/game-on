@@ -182,17 +182,11 @@ function go_update_admin_bar ($type, $title, $value, $status = null) {
 		$display = go_display_points($value); 
 		$rng = ($current_rank_points -$value) * -1;
 		$dom = ($next_rank_points - $current_rank_points);
-		if ($status == 0) { 
-			echo "<script language='javascript'>
-				jQuery(document).ready(function() {
-					jQuery('#points_needed_to_level_up').html('{$rng}/{$dom}');
-				});
-			</script>";
-		} else {
-			echo "<script language='javascript'>
-					jQuery('#points_needed_to_level_up').html('{$rng}/{$dom}');
-			</script>";
-		}
+		echo "<script language='javascript'>
+			jQuery(document).ready(function() {
+				jQuery('#points_needed_to_level_up').html('{$rng}/{$dom}');
+			});
+		</script>";
 	} else if ($type == 'currency') {
 		$display = go_display_currency($value);
 	} else if ($type == 'bonus_currency') { 
@@ -206,8 +200,10 @@ function go_update_admin_bar ($type, $title, $value, $status = null) {
 	}
 	$percentage = go_get_level_percentage(get_current_user_id());
 	echo "<script language='javascript'>
-		jQuery('#go_admin_bar_{$type}').html('{$title}: {$display}');
-		jQuery('#go_admin_bar_progress_bar').css({'width': '{$percentage}%'".(($color)?", 'background-color': '{$color}'":"")."});
+		jQuery(document).ready(function() {
+			jQuery('#go_admin_bar_{$type}').html('{$title}: {$display}');
+			jQuery('#go_admin_bar_progress_bar').css({'width': '{$percentage}%'".(($color)?", 'background-color': '{$color}'":"")."});
+		});
 	</script>";
 }
 
