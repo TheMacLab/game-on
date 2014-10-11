@@ -2752,6 +2752,91 @@ function go_clone_task () {
 	die();
 }
 
+add_action('post_submitbox_misc_actions', 'go_clone_store_item_ajax');
+function go_clone_store_item_ajax () {
+	global $post;
+
+	if (get_post_type($post) == 'go_store') {
+		echo '
+		<div class="misc-pub-section misc-pub-section-last">
+			<input id="go-button-clone" class="button button-large alignright" type="button" value="Clone" />
+		</div>
+		<script type="text/javascript">        	
+			function clone_post_ajax() {
+				jQuery("input#go-button-clone").click(function() {
+					jQuery("input#go-button-clone").prop("disabled", true);
+					jQuery.ajax({
+						url: "'.get_site_url().'/wp-admin/admin-ajax.php",
+						type: "POST",
+						data: {
+							action: "go_clone_store_item",
+							post_id: '.$post->ID.',
+						}, success: function(url) {
+							var reg = new RegExp("^(http)");
+							var match = reg.test(url);
+							if (url != \'\' && match) {
+								window.location = url;
+							}
+						}
+					});
+				});
+			}
+			jQuery(document).ready(function() {
+				clone_post_ajax();
+			});
+		</script>
+		';
+	}
+}
+
+function go_clone_store_item () {
+
+	$post_id = $_POST['post_id'];
+	$post_data = get_post($post_id, ARRAY_A);
+	$post_custom = get_post_custom($post_id);
+	$cat = get_the_terms($post_id, 'store_types');
+	$cat_ids = array();
+
+	for ($i = 0; $i < count($cat); $i++) {
+		array_push($cat_ids, $cat[$i]->term_id);
+	}
+	
+	$post_data['post_status'] = 'draft';
+	$post_data['guid'] = '';
+
+	unset($post_data['ID']);
+	unset($post_data['post_title']);
+	unset($post_data['post_name']);
+	unset($post_data['post_modified']);
+	unset($post_data['post_modified_gmt']);
+	unset($post_data['post_date']);
+	unset($post_data['post_date_gmt']);
+
+	$clone_id = wp_insert_post($post_data);
+
+	wp_set_object_terms($clone_id, $cat_ids, "store_types");
+
+	if (!empty($clone_id)) {
+
+		$url = get_admin_url()."post.php?post={$clone_id}&action=edit";
+		
+		foreach ($post_custom as $key => $value) {
+			for ($i = 0; $i < count($value); $i++) {
+				$uns = unserialize($value[$i]);
+				if ($uns !== false) {
+					add_post_meta($clone_id, $key, $uns, true);
+				} else {
+					add_post_meta($clone_id, $key, $value[$i], true);
+				}
+			}
+		}
+		echo $url;
+	} else {
+		echo 0;
+	}
+	die();
+}
+
 add_action('cmb_render_go_store_shortcode_list', 'go_cmb_render_go_store_shortcode_list');
 function go_cmb_render_go_store_shortcode_list() {
 	$post_id = get_the_id();
