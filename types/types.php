@@ -952,7 +952,7 @@ function go_test_field_encounter($field_args) {
 						$checked_intersection = array_values($intersection);
 						for ($i = 0; $i < count($checked_intersection); $i++) {
 							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
+							if (preg_match("/(\&\#39;|\&\#34;|&#91;|&#93;)+/", $value)) {
 								$str = $value;
 								if (preg_match("/(\&\#39;)+/", $str)) {
 									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
@@ -960,6 +960,14 @@ function go_test_field_encounter($field_args) {
 								
 								if (preg_match("/(\&\#34;)+/", $str)) {
 									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
+								}
+
+								if (preg_match("/(\&\#91;)+/", $str)) {
+									$str = preg_replace("/(\&\#91;)+/", '[', $str);
+								}
+								
+								if (preg_match("/(\&\#93;)+/", $str)) {
+									$str = preg_replace("/(\&\#93;)+/", ']', $str);
 								}
 								echo '"'.$str.'"';
 							} else {
@@ -1084,13 +1092,19 @@ function go_validate_test_field_encounter() {
 	$question = array();
 	if (!empty($question_temp) && is_array($question_temp)) {
 		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
+			if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 				$str = $value;
 				if (preg_match("/(\')+/", $str)) {
 					$str = preg_replace("/(\')+/", '&#39;', $str);
 				}
 				if (preg_match("/(\")+/", $str)) {
 					$str = preg_replace("/(\")+/", '&#34;', $str);
+				}
+				if (preg_match("/(\[)+/", $str)) {
+					$str = preg_replace("/(\[)+/", '&#91;', $str);
+				}
+				if (preg_match("/(\])+/", $str)) {
+					$str = preg_replace("/(\])+/", '&#93;', $str);
 				}
 				if (preg_match("/(<)+/", $str)) {
 					$str = preg_replace("/(<)+/", "", $str);
@@ -1114,8 +1128,8 @@ function go_validate_test_field_encounter() {
 			$temp_checked = $test_temp[$f][1];
 			if (!empty($temp_input) && is_array($temp_input)) {
 				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
+					if (!is_null($value) && preg_match("/\S+/", $value)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 							$str = $value;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -1123,6 +1137,14 @@ function go_validate_test_field_encounter() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
@@ -1146,8 +1168,8 @@ function go_validate_test_field_encounter() {
 
 			if (!empty($temp_checked) && is_array($temp_checked)) {
 				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
+					if (!is_null($val) && preg_match("/\S+/", $val)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $val)) {
 							$str = $val;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -1155,6 +1177,14 @@ function go_validate_test_field_encounter() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+							
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
@@ -1318,7 +1348,7 @@ function go_test_field_accept($field_args) {
 						$checked_intersection = array_values($intersection);
 						for ($i = 0; $i < count($checked_intersection); $i++) {
 							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
+							if (preg_match("/(\&\#39;|\&\#34;|&#91;|&#93;)+/", $value)) {
 								$str = $value;
 								if (preg_match("/(\&\#39;)+/", $str)) {
 									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
@@ -1326,6 +1356,14 @@ function go_test_field_accept($field_args) {
 								
 								if (preg_match("/(\&\#34;)+/", $str)) {
 									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
+								}
+
+								if (preg_match("/(\&\#91;)+/", $str)) {
+									$str = preg_replace("/(\&\#91;)+/", '[', $str);
+								}
+								
+								if (preg_match("/(\&\#93;)+/", $str)) {
+									$str = preg_replace("/(\&\#93;)+/", ']', $str);
 								}
 								echo '"'.$str.'"';
 							} else {
@@ -1451,13 +1489,19 @@ function go_validate_test_field_accept() {
 	$question = array();
 	if (!empty($question_temp) && is_array($question_temp)) {
 		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
+			if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 				$str = $value;
 				if (preg_match("/(\')+/", $str)) {
 					$str = preg_replace("/(\')+/", '&#39;', $str);
 				}
 				if (preg_match("/(\")+/", $str)) {
 					$str = preg_replace("/(\")+/", '&#34;', $str);
+				}
+				if (preg_match("/(\[)+/", $str)) {
+					$str = preg_replace("/(\[)+/", '&#91;', $str);
+				}
+				if (preg_match("/(\])+/", $str)) {
+					$str = preg_replace("/(\])+/", '&#93;', $str);
 				}
 				if (preg_match("/(<)+/", $str)) {
 					$str = preg_replace("/(<)+/", "", $str);
@@ -1481,8 +1525,8 @@ function go_validate_test_field_accept() {
 			$temp_checked = $test_temp[$f][1];
 			if (!empty($temp_input) && is_array($temp_input)) {
 				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
+					if (!is_null($value) && preg_match("/\S+/", $value)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 							$str = $value;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -1490,6 +1534,14 @@ function go_validate_test_field_accept() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
@@ -1513,8 +1565,8 @@ function go_validate_test_field_accept() {
 
 			if (!empty($temp_checked) && is_array($temp_checked)) {
 				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
+					if (!is_null($val) && preg_match("/\S+/", $val)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $val)) {
 							$str = $val;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -1522,6 +1574,14 @@ function go_validate_test_field_accept() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
@@ -1685,7 +1745,7 @@ function go_test_field_completion($field_args) {
 						$checked_intersection = array_values($intersection);
 						for ($i = 0; $i < count($checked_intersection); $i++) {
 							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
+							if (preg_match("/(\&\#39;|\&\#34;|&#91;|&#93;)+/", $value)) {
 								$str = $value;
 								if (preg_match("/(\&\#39;)+/", $str)) {
 									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
@@ -1693,6 +1753,14 @@ function go_test_field_completion($field_args) {
 								
 								if (preg_match("/(\&\#34;)+/", $str)) {
 									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
+								}
+
+								if (preg_match("/(\&\#91;)+/", $str)) {
+									$str = preg_replace("/(\&\#91;)+/", '[', $str);
+								}
+								
+								if (preg_match("/(\&\#93;)+/", $str)) {
+									$str = preg_replace("/(\&\#93;)+/", ']', $str);
 								}
 								echo '"'.$str.'"';
 							} else {
@@ -1818,13 +1886,19 @@ function go_validate_test_field_completion() {
 	$question = array();
 	if (!empty($question_temp) && is_array($question_temp)) {
 		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
+			if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 				$str = $value;
 				if (preg_match("/(\')+/", $str)) {
 					$str = preg_replace("/(\')+/", '&#39;', $str);
 				}
 				if (preg_match("/(\")+/", $str)) {
 					$str = preg_replace("/(\")+/", '&#34;', $str);
+				}
+				if (preg_match("/(\[)+/", $str)) {
+					$str = preg_replace("/(\[)+/", '&#91;', $str);
+				}
+				if (preg_match("/(\])+/", $str)) {
+					$str = preg_replace("/(\])+/", '&#93;', $str);
 				}
 				if (preg_match("/(<)+/", $str)) {
 					$str = preg_replace("/(<)+/", "", $str);
@@ -1848,8 +1922,8 @@ function go_validate_test_field_completion() {
 			$temp_checked = $test_temp[$f][1];
 			if (!empty($temp_input) && is_array($temp_input)) {
 				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
+					if (!is_null($value) && preg_match("/\S+/", $value)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 							$str = $value;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -1857,6 +1931,14 @@ function go_validate_test_field_completion() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
@@ -1880,8 +1962,8 @@ function go_validate_test_field_completion() {
 
 			if (!empty($temp_checked) && is_array($temp_checked)) {
 				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
+					if (!is_null($val) && preg_match("/\S+/", $val)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $val)) {
 							$str = $val;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -1889,6 +1971,14 @@ function go_validate_test_field_completion() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
@@ -2052,7 +2142,7 @@ function go_test_field_mastery($field_args) {
 						$checked_intersection = array_values($intersection);
 						for ($i = 0; $i < count($checked_intersection); $i++) {
 							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
+							if (preg_match("/(\&\#39;|\&\#34;|&#91;|&#93;)+/", $value)) {
 								$str = $value;
 								if (preg_match("/(\&\#39;)+/", $str)) {
 									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
@@ -2060,6 +2150,14 @@ function go_test_field_mastery($field_args) {
 								
 								if (preg_match("/(\&\#34;)+/", $str)) {
 									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
+								}
+
+								if (preg_match("/(\&\#91;)+/", $str)) {
+									$str = preg_replace("/(\&\#91;)+/", '[', $str);
+								}
+								
+								if (preg_match("/(\&\#93;)+/", $str)) {
+									$str = preg_replace("/(\&\#93;)+/", ']', $str);
 								}
 								echo '"'.$str.'"';
 							} else {
@@ -2185,13 +2283,19 @@ function go_validate_test_field_mastery() {
 	$question = array();
 	if (!empty($question_temp) && is_array($question_temp)) {
 		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
+			if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 				$str = $value;
 				if (preg_match("/(\')+/", $str)) {
 					$str = preg_replace("/(\')+/", '&#39;', $str);
 				}
 				if (preg_match("/(\")+/", $str)) {
 					$str = preg_replace("/(\")+/", '&#34;', $str);
+				}
+				if (preg_match("/(\[)+/", $str)) {
+					$str = preg_replace("/(\[)+/", '&#91;', $str);
+				}
+				if (preg_match("/(\])+/", $str)) {
+					$str = preg_replace("/(\])+/", '&#93;', $str);
 				}
 				if (preg_match("/(<)+/", $str)) {
 					$str = preg_replace("/(<)+/", "", $str);
@@ -2215,8 +2319,8 @@ function go_validate_test_field_mastery() {
 			$temp_checked = $test_temp[$f][1];
 			if (!empty($temp_input) && is_array($temp_input)) {
 				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
+					if (!is_null($value) && preg_match("/\S+/", $value)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $value)) {
 							$str = $value;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -2224,6 +2328,14 @@ function go_validate_test_field_mastery() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
@@ -2247,8 +2359,8 @@ function go_validate_test_field_mastery() {
 
 			if (!empty($temp_checked) && is_array($temp_checked)) {
 				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
+					if (!is_null($val) && preg_match("/\S+/", $val)) {
+						if (preg_match("/[\[\]\'\"\<\>]+/", $val)) {
 							$str = $val;
 							if (preg_match("/(\')+/", $str)) {
 								$str = preg_replace("/(\')+/", '&#39;', $str);
@@ -2256,6 +2368,14 @@ function go_validate_test_field_mastery() {
 
 							if (preg_match("/(\")+/", $str)) {
 								$str = preg_replace("/(\")+/", '&#34;', $str);
+							}
+
+							if (preg_match("/(\[)+/", $str)) {
+								$str = preg_replace("/(\[)+/", '&#91;', $str);
+							}
+
+							if (preg_match("/(\])+/", $str)) {
+								$str = preg_replace("/(\])+/", '&#93;', $str);
 							}
 
 							if (preg_match("/(<)+/", $str)) {
