@@ -699,16 +699,16 @@ function go_decay_table() {
 				foreach($dates as $key => $date){
 					?>
                     <tr>
-                        <td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar" class="datepicker custom_date" value="<?php echo $date;?>" type="date"/></td>
-                        <td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" value="<?php echo $percentages[$key]?>" type="text"/></td>
+                        <td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/></td>
+                        <td><input name="go_mta_task_decay_percent[]" value="<?php echo $percentages[$key]?>" type="text"/></td>
                     </tr>
                     <?php
 				}
             }else{
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar" class="datepicker custom_date" type="date" placeholder="Click for Date"/></td>
-				<td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" type="text" placeholder="Modifier"/></td>
+				<td><input name="go_mta_task_decay_calendar[]" class="datepicker custom_date" type="date" placeholder="Click for Date"/></td>
+				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
             <?php 
 			}
