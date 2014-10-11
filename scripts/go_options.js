@@ -75,6 +75,10 @@ jQuery(document).ready(function(){
 		}
 	});
 	
+	jQuery('.go_add_period').last().after('<button type="button" class="go_remove_period">-</button>');
+	jQuery('.go_add_computer').last().after('<button type="button" class="go_remove_computer">-</button>');
+	jQuery('.go_add_preset').last().after('<button type="button" class="go_remove_preset">-</button>');
+	
 	jQuery('button').click(function(e){
 		e.preventDefault();
 	});
@@ -89,14 +93,9 @@ jQuery(document).ready(function(){
 	jQuery('.go_options_preset_name_input').appendTo('#go_options_preset_name');
 	jQuery('.go_options_preset_points_input').appendTo('#go_options_preset_points');
 	jQuery('.go_options_preset_currency_input').appendTo('#go_options_preset_currency');
-	jQuery('.go_add_preset').last().after('<button type="button" class="go_remove_preset">-</button>');
-	
+		
 	jQuery('.go_options_level_points_input').appendTo('#go_options_level_points');
 	jQuery('.go_options_level_badges_input').appendTo('#go_options_level_badges');
-	
-
-	jQuery('.go_add_period').last().after('<button type="button" class="go_remove_period">-</button>');
-	jQuery('.go_add_computer').last().after('<button type="button" class="go_remove_computer">-</button>');
 	
 	jQuery('.go_options_profession_input').appendTo('#go_options_professions');
 	if(jQuery('.go_options_profession_input').length > 1){
@@ -237,6 +236,8 @@ jQuery(document).ready(function(){
 			jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().hide('slow');
 		}
 	});
+	
+	jQuery('.go_add_level').last().after('<button type="button" class="go_remove_level">-</button>');
 	
 	jQuery('.go_add_level').click(function(){
 		jQuery('.go_remove_level').remove();

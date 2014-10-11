@@ -33,7 +33,8 @@ function go_buy_item() {
 		$req_currency = $store_cost[0];
 		$req_points = $store_cost[1];
 		$req_bonus_currency = $store_cost[2];
-		$req_minutes = $store_cost[3];
+		$req_penalty = $store_cost[3];
+		$req_minutes = $store_cost[4];
 	}
 	$penalty = $custom_fields['go_mta_penalty_switch'];
 
@@ -70,11 +71,13 @@ function go_buy_item() {
 	$cur_currency = go_return_currency($user_id);
 	$cur_points = go_return_points($user_id);
 	$cur_bonus_currency = go_return_bonus_currency($user_id);
+	$cur_penalty = go_return_penalty($user_id);
 	$cur_minutes = go_return_minutes($user_id);
 	
 	$enough_currency = check_values($req_currency, $cur_currency);
 	$enough_points = check_values($req_points, $cur_points);
 	$enough_bonus_currency = check_values($req_bonus_currency, $cur_bonus_currency);
+	$enough_penalty = check_values($req_penalty, $cur_penalty);
 	$enough_minutes = check_values($req_minutes, $cur_minutes);
 
 	$within_limit = true;
@@ -104,6 +107,9 @@ function go_buy_item() {
 			$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET reason = 'Gifted' WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $post_id));
 		} else {
 			go_add_post($user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat);
+			if(!empty($req_penalty)){
+				go_add_penalty($user_id, -$req_penalty, get_the_title($post_id));	
+			}
 		}
 		if (!empty($badge_id)) {
 			if ($recipient_id) {
@@ -119,7 +125,7 @@ function go_buy_item() {
 			echo "Purchased";
 		}
 		if ($sending_receipt === 'true') {
-			$receipt = go_mail_item_reciept($user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $req_minutes, $qty, $recipient_id);
+			$receipt = go_mail_item_reciept($user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_minutes, $qty, $recipient_id);
 			if (!empty($receipt)) {
 				echo $receipt;
 			}
@@ -148,11 +154,12 @@ function go_buy_item() {
 	die();
 }
 
-function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_mintues, $qty, $recipient_id = null) {
+function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = null) {
 	global $go_plugin_dir;
 	$currency = ucwords(go_return_options('go_currency_name'));
 	$points = ucwords(go_return_options('go_points_name'));
 	$bonus_currency = ucwords(go_return_options('go_bonus_currency_name'));
+	$penalty = ucwords(go_return_options('go_penalty_name'));
 	$minutes = ucwords(go_return_options('go_minutes_name'));
 	$item_title = get_the_title($item_id);
 	$allow_full_name = get_option('go_full_student_name_switch');
@@ -169,6 +176,35 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 	}
 	$user_email = $user_info->user_email;
 	$user_role = $user_info->roles;
+
+	$req_currency *= $qty;
+	$req_points *= $qty;
+	$req_bonus_currency *= $qty;
+	$req_penalty *= -1;
+	$req_mintues *= $qty;
+
+	$req_array = array(
+		$currency => $req_currency, 
+		$points => $req_points, 
+		$bonus_currency => $req_bonus_currency, 
+		$penalty => $req_penalty, 
+		$minutes => $req_mintues
+	);
+	$received_str = '';
+	$spent_str = '';
+	foreach ($req_array as $req_name => $val) {
+		if (!empty($val)) {
+			if ($req_name === $penalty) {
+				$received_str .= "\t{$req_name}: {$val}\n\n";
+			} else {
+				if ($val < 0) {
+					$received_str .= "\t{$req_name}: ".(-$val)."\n\n";
+				} else if ($val > 0) {
+					$spent_str .= "\t{$req_name}: {$val}\n\n";
+				}
+			}
+		}
+	}
 
 	$to = get_option('go_admin_email','');
 	require("{$go_plugin_dir}/mail/class.phpmailer.php");
@@ -190,7 +226,10 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 		}
 		$mail->Subject .= " | {$recipient_full_name} {$recipient_username}";
 	}
-	$mail->Body = "{$user_email}\n\n".(!empty($req_currency) ? "{$currency} Spent: {$req_currency}" : '')."\n\n".(!empty($req_points) ? "{$points} Spent: {$req_points}" : '')."\n\n".(!empty($req_bonus_currency) ? "{$bonus_currency} Spent: {$req_bonus_currency}" : '')."\n\n".(!empty($req_minutes) ? "{$minutes} Spent: {$req_minutes}": '');
+
+	$mail->Body = "{$user_email}\n\n".
+		(!empty($spent_str) ? "Spent:\n\n{$spent_str}" : "").
+		(!empty($received_str) ? "Received:\n\n{$received_str}" : "");
 	$mail->WordWrap = 50;
 
 	if (!$mail->Send()) {
