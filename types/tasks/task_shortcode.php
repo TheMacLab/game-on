@@ -1973,10 +1973,7 @@ function task_change_stage() {
 		$is_uploaded = 0;
 	}
 
-	// The switch iterates through every value of status until it finds a value that matches a case.  So, if $status = 2, case 1 will
-	// be skipped and case 2 will be output.  NOTE:  Without the 'break' statement after each case, the switch would recursively output
-	// each case beyond the current value of $status.  Ex: if there are no 'break' statments in any of the cases and $status = 1, 
-	// every case 1 will be output and so will ever case after it, until it hits the end of the switch.
+	// Controls output of the page, after the #go_button has been pressed for the first time while viewing the page.
 	switch ($status) {
 		case 1:
 			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div>';
