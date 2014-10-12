@@ -699,16 +699,16 @@ function go_decay_table() {
 				foreach($dates as $key => $date){
 					?>
                     <tr>
-                        <td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar" class="datepicker custom_date" value="<?php echo $date;?>" type="date"/></td>
-                        <td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" value="<?php echo $percentages[$key]?>" type="text"/></td>
+                        <td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/></td>
+                        <td><input name="go_mta_task_decay_percent[]" value="<?php echo $percentages[$key]?>" type="text"/></td>
                     </tr>
                     <?php
 				}
             }else{
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar" class="datepicker custom_date" type="date" placeholder="Click for Date"/></td>
-				<td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" type="text" placeholder="Modifier"/></td>
+				<td><input name="go_mta_task_decay_calendar[]" class="datepicker custom_date" type="date" placeholder="Click for Date"/></td>
+				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
             <?php 
 			}
@@ -2995,11 +2995,13 @@ function go_store_exchange() {
 	$c_exchange = $content_array[1];
 	$p_exchange = $content_array[2];
 	$b_exchange = $content_array[3];
+	$t_exchange = $content_array[4];
 	echo "
 		<input id='go_store_exchange_checkbox' name='go_mta_store_exchange' type='checkbox' ".($is_checked == 'true' ? "checked" : "")."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_currency' type='text' style='display: none;' placeholder='".go_return_options('go_currency_name')."' ".(!empty($c_exchange) ? "value='{$c_exchange}'" : '')."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_points' type='text' style='display: none;' placeholder='".go_return_options('go_points_name')."' ".(!empty($p_exchange) ? "value='{$p_exchange}'" : '')."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_bonus_currency' type='text' style='display: none;' placeholder='".go_return_options('go_bonus_currency_name')."' ".(!empty($b_exchange) ? "value='{$b_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_currency' type='text' placeholder='".go_return_options('go_currency_name')."' ".(!empty($c_exchange) ? "value='{$c_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_points' type='text' placeholder='".go_return_options('go_points_name')."' ".(!empty($p_exchange) ? "value='{$p_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_bonus_currency' type='text' placeholder='".go_return_options('go_bonus_currency_name')."' ".(!empty($b_exchange) ? "value='{$b_exchange}'" : '')."/>
+		<input class='go_store_exchange_input' name='go_store_exchange_time' type='text' placeholder='".go_return_options('go_minutes_name')."' ".(!empty($t_exchange) ? "value='{$t_exchange}'" : '')."/>
 	";
 }
 
@@ -3014,7 +3016,8 @@ function go_validate_store_exchange() {
 	$c_exchange = $_POST['go_store_exchange_currency'];
 	$p_exchange = $_POST['go_store_exchange_points'];
 	$b_exchange = $_POST['go_store_exchange_bonus_currency'];
-	return (array($is_checked, $c_exchange, $p_exchange, $b_exchange));
+	$t_exchange = $_POST['go_store_exchange_time'];
+	return (array($is_checked, $c_exchange, $p_exchange, $b_exchange, $t_exchange));
 }
 
 add_action('cmb_render_go_badge_input', 'go_badge_input', 10, 1);

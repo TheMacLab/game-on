@@ -286,7 +286,7 @@ function go_stats_move_stage (task_id, status) {
 					jQuery('div[task="' + task_id + '"][stage="' + i +'"]').removeClass('completed').removeClass('stage_url');
 				}
 			}
-			json = JSON.parse(html.substr(html.search('{"type"'), html.length));
+			var json = JSON.parse(html.substr(html.search('{"type"'), html.length));
 			jQuery('#go_stats_user_points_value').html(parseFloat(jQuery('#go_stats_user_points_value').html()) + json['points']);
 			
 			if (json['rank']) {
