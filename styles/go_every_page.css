@@ -235,7 +235,8 @@ input#go_store_item_url_input {
 }
 
 input.go_store_exchange_input[type='text'] {
-	width: 30%;
+	display: none;
+	width: 21.7%;
 }
 
 input#go_store_badge_id_input {

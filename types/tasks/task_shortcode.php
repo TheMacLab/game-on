@@ -244,61 +244,39 @@ function go_task_shortcode($atts, $content = null) {
 			$accept_message = $custom_fields['go_mta_accept_message'][0]; // Set value of accept message equal to the task's accept message meta field value
 		}
 		
-		// If there are dates in the nerf date picker
-		if($custom_fields['go_mta_date_picker'] && $custom_fields['go_mta_date_picker'][0] != ""){
-			// Initialize arrays to be filled w/ values
-			$temp_array = array();
-			$dates = array();
-			$percentages = array();
+		$date_picker = ((unserialize($custom_fields['go_mta_date_picker'][0]))?array_filter(unserialize($custom_fields['go_mta_date_picker'][0])):false);
+		
+		// If there are dates in the date picker
+		if (!empty($date_picker)) {
 			
-			// Loops through array of dates set in task creation page
-			foreach($custom_fields['go_mta_date_picker'] as $key => $value){
-				$temp_array[$key] = unserialize($value); 
+			$dates = $date_picker['date'];
+			$percentages = $date_picker['percent'];
+			$unix_today = strtotime($today);
+			
+			// Setup empty array to house which dates are closest, in unix timestamp
+			$past_dates = array();
+			
+			foreach ($dates as $key => $date) {
+				// If current date in loop is in the past, add its key to the array of date modifiers
+				if ($unix_today >= strtotime($date)) {
+					$past_dates[$key] = abs($unix_today - strtotime($date));
+				}
 			}
 			
-			$temp_array2 = $temp_array[0];
-			if(empty($temp_array2['date']) || empty($temp_array2['percent'])){
-				$update_percent = 0;
-			}
-			$temp_array2 = array_filter($temp_array2);
-			// Loops through condensed array of dates
-			if(!empty($temp_array2) && is_array($temp_array2)){
-				foreach($temp_array2 as $key => $value){
-					if($key == 'date'){
-						foreach(array_values($value) as $date_val){
-							array_push($dates, $date_val);	
-						}
-					}elseif($key == 'percent'){
-						foreach(array_values($value) as $percent_val){
-							array_push($percentages, $percent_val);	
-						}
-					}
-				}
-				// Loops through dates to check which is closest
-				foreach($dates as $key => $val){
-					
-					// Checks numerical distance from today and the date in the array
-					$interval[] = abs(strtotime($today) - strtotime($val));
-					
-					// If current date is in the future, set its value to be large number so that when sorting it can't appear first and mess up setting the update percentage below
-					if(strtotime($today) < strtotime($val)){
-						$interval[$key] = PHP_INT_MAX; 
-					}
-				}
+			if (!empty($past_dates)) {
 				
-				if($interval){
-					// Sorts array from least to greatest
-					asort($interval);
-					
-					// Sets percent equal to the percent paired with the closest date from today
-					// Prioritizes past dates over future dates
-					$update_percent = $percentages[key($interval)]/100;
-				}
+				// Sorts array from least to greatest
+				// Should pust most recent PAST date as first key in array, making grabbing the percentage associated with that day easy
+				asort($past_dates);
+				$update_percent = (float)(($percentages[key($past_dates)])/100);
+			} else {
+				$update_percent = 1;	
 			}
 			
-		}else {
-			$update_percent = 0;	
+		} else {
+			$update_percent = 1;	
 		}
+		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
 			$points = $req_points - $current_points;
@@ -446,9 +424,9 @@ function go_task_shortcode($atts, $content = null) {
 						$user_ID, 
 						$id, 
 						0, 
-						floor($points_array[0] + ($update_percent * $points_array[0])), 
-						floor($currency_array[0] + ($update_percent * $currency_array[0])), 
-						floor($currency_array[0] + ($update_percent * $currency_array[0])),
+						floor(($update_percent * $points_array[0])), 
+						floor(($update_percent * $currency_array[0])), 
+						floor(($update_percent * $bonus_currency_array[0])),
 						null,
 						$page_id, 
 						null, 
@@ -786,9 +764,9 @@ function go_task_shortcode($atts, $content = null) {
 				data: {
 					action: "go_task_abandon",
 					post_id: "<?php echo $id; ?>",
-					encounter_points: <?php echo $points_array[0]; ?>,
-					encounter_currency: <?php echo $currency_array[0]; ?>,
-					encounter_bonus: <?php echo $bonus_currency_array[0]; ?>
+					encounter_points: <?php echo floor($points_array[0] * $update_percent); ?>,
+					encounter_currency: <?php echo floor($currency_array[0] * $update_percent); ?>,
+					encounter_bonus: <?php echo floor($bonus_currency_array[0] * $update_percent); ?>
 				}, success: function () {
 					window.location = "<?php echo home_url(); ?>";
 				}
@@ -1891,12 +1869,14 @@ function task_change_stage() {
 		if ($undo == 'true' || $undo === true) {
 			if ($task_count > 0) {
 				go_add_post($user_id, $post_id, $status, 
-				-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $points_array[$status-1])), 
+				-floor(($update_percent * $currency_array[$status-1])), 
+				-floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 			} else {
 				go_add_post($user_id, $post_id, ($status-1), 
-				-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-				-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $points_array[$status-1])), 
+				-floor(($update_percent * $currency_array[$status-1])), 
+				-floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				if ($stage_badges[$status][0] == 'true') {
 					foreach ($stage_badges[$status][1] as $badge_id) {
 						go_remove_badge($user_id, $badge_id);
@@ -1906,8 +1886,9 @@ function task_change_stage() {
 		} else {
 			// if repeat is on and undo is not hit...
 			go_add_post($user_id, $post_id, $status, 
-			floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-			floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url);
+			floor(($update_percent * $points_array[$status-1])), 
+			floor(($update_percent * $currency_array[$status-1])), 
+			floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url);
 			if ($stage_badges[$status][0] == 'true') {
 				foreach ($stage_badges[$status][1] as $badge_id) {
 					do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
@@ -1921,12 +1902,13 @@ function task_change_stage() {
 			if ($undo == 'true' || $undo === true) {
 				if ($task_count > 0) {
 					go_add_post($user_id, $post_id, $status, 
-					-floor($points_array[$status-1] + ($update_percent * $points_array[$status-1])), 
-					-floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), -floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+					-floor(($update_percent * $points_array[$status-1])), 
+					-floor(($update_percent * $currency_array[$status-1])), 
+					-floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				} else {
 					go_add_post($user_id, $post_id, ($status-2), 
-					-floor($points_array[$status-2] + ($update_percent * $points_array[$status-2])), 
-					-floor($currency_array[$status-2] + ($update_percent * $currency_array[$status-2])), -floor($bonus_currency[$status-2] + ($update_percent * $bonus_currency[$status-2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+					-floor(($update_percent * $points_array[$status-2])), 
+					-floor(($update_percent * $currency_array[$status-2])), -floor(($update_percent * $bonus_currency[$status-2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 					if ($stage_badges[$status-2][0] == 'true') {
 						foreach ($stage_badges[$status-2][1] as $badge_id) {
 							go_remove_badge($user_id, $badge_id);
@@ -1935,8 +1917,9 @@ function task_change_stage() {
 				}
 			} else {
 				go_add_post($user_id, $post_id, $status, 
-				floor($points_array[$status-1] + ($update_percent * $points_array[$status - 1])), 
-				floor($currency_array[$status-1] + ($update_percent * $currency_array[$status-1])), floor($bonus_currency[$status-1] + ($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url); 
+				floor(($update_percent * $points_array[$status - 1])), 
+				floor(($update_percent * $currency_array[$status-1])), 
+				floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url); 
 				if ($stage_badges[$status-1][0] == 'true') {
 					foreach ($stage_badges[$status-1][1] as $badge_id) {
 						do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");

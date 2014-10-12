@@ -198,23 +198,26 @@ jQuery('#go_advanced_task_settings_accordion').click(function(){
 var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 jQuery(document).ready(function(){
 	if(!is_chrome){
-		if(jQuery('.datepicker').length){
-			jQuery('.datepicker').datepicker({dateFormat: "yy-mm-dd"});
+		if(jQuery('input.go_datepicker').length){
+			jQuery('input.go_datepicker').each( function () {
+				jQuery(this).datepicker({dateFormat: "yy-mm-dd"});
+			});
 		}
 	}
 });
-var count = 1;
+
 function go_add_decay_table_row(){
-	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" id="go_mta_task_decay_calendar' + count + '" class="datepicker custom_date" type="date" placeholder="Click for Date"/></td><td><input name="go_mta_task_decay_percent[]" id="go_mta_task_decay_percent" type="text" placeholder="Modifier"/></td></tr>');	
+	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>');	
 	if(!is_chrome){
-		if(jQuery('.datepicker').length){
-			jQuery('.datepicker').datepicker({dateFormat: "yy-mm-dd"});
+		if(jQuery('input.go_datepicker').length){
+			jQuery('input.go_datepicker').each( function () {
+				jQuery(this).datepicker({dateFormat: "yy-mm-dd"});
+			});
 		}
 	}
-	count++;
 }
 function go_remove_decay_table_row(){
-	jQuery('#go_list_of_decay_dates tbody tr').last('.datepicker').remove();
+	jQuery('#go_list_of_decay_dates tbody tr').last('.go_datepicker').remove();
 }
 
 ////////////////////////////////////
