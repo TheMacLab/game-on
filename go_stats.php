@@ -222,6 +222,11 @@ function go_stats_move_stage () {
 		}
 		$changed['abandon'] = 'true';
 		
+		if ($message === 'See me') {
+			go_message_user($user_id, $message.' about, <a href="'.get_permalink($task_id).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($task_id).'</a>, please.');
+		} else {
+			go_message_user($user_id, 'RE: <a href="'.get_permalink($task_id).'">'.get_the_title($task_id).'</a> '.$message);
+		}
 	} else {
 		 
 		for ($count; $count > 0; $count--) {
