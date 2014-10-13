@@ -1479,7 +1479,7 @@ function unlock_stage() {
 	for ($i = 0; $i < count($keys); $i++) {
 		$keys_temp = implode("### ", $keys[$i][1]);
 		$str = $keys_temp;
-		if (preg_match("/(\&\#39;|\&\#34;)+/", $str)) {
+		if (preg_match("/(\&\#39;|\&\#34;|&#91;|&#93;)+/", $str)) {
 			
 			if (preg_match("/(\&\#39;)+/", $str)) {
 				$str = preg_replace("/(\&\#39;)+/", "\'", $str);
@@ -1487,6 +1487,14 @@ function unlock_stage() {
 			
 			if (preg_match("/(\&\#34;)+/", $str)) {
 				$str = preg_replace("/(\&\#34;)+/", '\"', $str);
+			}
+
+			if (preg_match("/(\&\#91;)+/", $str)) {
+				$str = preg_replace("/(\&\#91;)+/", '[', $str);
+			}
+			
+			if (preg_match("/(\&\#93;)+/", $str)) {
+				$str = preg_replace("/(\&\#93;)+/", ']', $str);
 			}
 		}
 		$all_keys_array[] = $str;
