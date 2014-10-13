@@ -492,6 +492,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
+				'name' => 'Item ID'.go_task_opt_help('post_id', 'The Store Item ID', 'http://maclab.guhsd.net/go/video/store/storeId.mp4'),
+				'id' => "{$prefix}store_post_id",
+				'type' => 'go_store_item_post_id'
+			),
+			array(
 				'name' => 'Cost'.go_task_opt_help('cost', 'The Cost of the store item', 'http://maclab.guhsd.net/go/video/store/cost.mp4'),
 				'id' => "{$prefix}store_cost",
 				'type' => 'go_store_cost',
@@ -2810,6 +2815,11 @@ function go_clone_post () {
 		echo 0;
 	}
 	die();
+}
+
+add_action('cmb_render_go_store_item_post_id', 'go_store_item_post_id');
+function go_store_item_post_id () {
+	echo "<div id='go_store_id'>".get_the_id()."</div>";
 }
 
 add_action('cmb_render_go_store_cost', 'go_store_cost');
