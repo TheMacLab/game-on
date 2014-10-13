@@ -517,6 +517,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
+				'name' => 'Item ID'.go_task_opt_help('post_id', 'The Store Item ID', 'http://maclab.guhsd.net/go/video/store/storeId.mp4'),
+				'id' => "{$prefix}store_post_id",
+				'type' => 'go_store_item_post_id'
+			),
+			array(
 				'name' => 'Cost'.go_task_opt_help('cost', 'The Cost of the store item', 'http://maclab.guhsd.net/go/video/store/cost.mp4'),
 				'id' => "{$prefix}store_cost",
 				'type' => 'go_store_cost',
@@ -2752,26 +2757,9 @@ function go_clone_task () {
 	die();
 }
 
-add_action('cmb_render_go_store_shortcode_list', 'go_cmb_render_go_store_shortcode_list');
-function go_cmb_render_go_store_shortcode_list() {
-	$post_id = get_the_id();
-	$custom = get_post_custom($post_id);
-	$is_checked = $custom['go_mta_store_shortcode_list'][0];
-	echo "
-		<input id='go_store_shortcode_list_checkbox' name='go_mta_store_shortcode_list' type='checkbox'".($is_checked ? "checked" : "")."/>";
-	echo "
-		<ul id='go_store_shortcode_list' style='display: none;'>
-			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/store/displayNameShortcode.mp4')."</span>[go_get_displayname]
-			</li>
-			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('store_by_cat', '', 'http://maclab.guhsd.net/go/video/store/storeByCat.mp4')."</span>[go_store cats=\"\"]
-			</li>
-			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('store_by_id', '', 'http://maclab.guhsd.net/go/video/store/storeById.mp4')."</span>[go_store id=\"{$post_id}\"]
-			</li>
-		</ul>
-	";
+add_action('cmb_render_go_store_item_post_id', 'go_store_item_post_id');
+function go_store_item_post_id () {
+	echo "<div id='go_store_id'>".get_the_id()."</div>";
 }
 
 add_action('cmb_render_go_store_cost', 'go_store_cost');
