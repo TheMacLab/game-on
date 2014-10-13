@@ -222,6 +222,11 @@ function go_stats_move_stage () {
 		}
 		$changed['abandon'] = 'true';
 		
+		if ($message === 'See me') {
+			go_message_user($user_id, $message.' about, <a href="'.get_permalink($task_id).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title($task_id).'</a>, please.');
+		} else {
+			go_message_user($user_id, 'RE: <a href="'.get_permalink($task_id).'">'.get_the_title($task_id).'</a> '.$message);
+		}
 	} else {
 		 
 		for ($count; $count > 0; $count--) {
@@ -403,10 +408,8 @@ function go_stats_rewards_list () {
 			foreach ($rewards as $reward) {
 				$reward_id = $reward->post_id;
 				$reward_bonus_currency = $reward->bonus_currency;
-				if ($reward_bonus_currency != 0) {
-					?>
-						<li class='go_stats_reward go_stats_reward_bonus_currency'><?php echo (!empty($reward->status)?(($reward->status == -1)?"<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title($reward_id)."</a>":(($reward->status < 6)?"<a href='".get_permalink($reward_id)."' {$new_tab}>".get_the_title($reward_id)."</a>":"{$reward->reason}")):"")."<div class='go_stats_amount'>({$reward_bonus_currency})</div>";?></li>
-					<?php
+				if ($reward_bonus_currency != 0 && !empty($reward->status) && $reward->status !== 6) {
+					echo "<li class='go_stats_reward go_stats_reward_bonus_currency'>".(($reward->status == -1) ? "<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title($reward_id)."</a>" : (($reward->status < 6) ? "<a href='".get_permalink($reward_id)."' {$new_tab}>".get_the_title($reward_id)."</a>" : "{$reward->reason}"))."<div class='go_stats_amount'>({$reward_bonus_currency})</div></li>";
 				}
 			}
 		?>
