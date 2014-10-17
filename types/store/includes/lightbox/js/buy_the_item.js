@@ -27,8 +27,8 @@ function goBuytheItem (id, buyColor, count) {
 					buy.html('Error');
 				} else {
 					buy.innerHTML = "";
-					buy.html('');
-					buy.append('<span>' + response + '</span>');
+					buy.html('Purchased');
+					jQuery("body").append('<span>' + response + '</span>');
 					// Whenever you figure out a better way to do this, implement it. 
 					jQuery('#go_admin_bar_progress_bar').css("background-color", color);
 				}
