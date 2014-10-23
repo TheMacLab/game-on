@@ -522,14 +522,6 @@ function go_get_all_focuses() {
 	return $all_focuses_sorted;
 }
 
-add_action('wp_ajax_go_new_user_focus', 'go_new_user_focus');
-function go_new_user_focus() {
-	$new_user_focus = $_POST['new_user_focus'];
-	$user_id = $_POST['user_id'];
-	update_user_meta($user_id, 'go_focus', $new_user_focus);
-	die();	
-}
-
 function go_presets_reset() {
 	global $wpdb;
 	$presets = array(

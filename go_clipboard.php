@@ -117,9 +117,11 @@ function go_clipboard_menu() {
                  </div>  
              </div>
          </div>
+		 */
+		?>
      </div>
 	 <?php
-	 */
+
 	}
 }
 
@@ -151,7 +153,7 @@ function go_clipboard_intable(){
 					$focuses_list = '';
 					$focuses_list = "<option value='No {$focus_name}' ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
 					foreach ($focuses as $focus) {
-						$focuses_list .= "<option value='{$focus}' ".($focus == $user_focuses ? "selected" : "").">{$focus}</option>";
+						$focuses_list .= "<option value='".esc_attr($focus)."' ".($focus == $user_focuses ? "selected" : "").">{$focus}</option>";
 					}
 					$bonus_currency = go_return_bonus_currency($value);
 					$penalty = go_return_penalty($value);
@@ -218,6 +220,14 @@ function go_clipboard_add(){
 		}
 	}
 	die();
+}
+
+function go_update_user_focuses() {
+	$new_user_focus = stripslashes($_POST['new_user_focus']);
+	$user_id = $_POST['user_id'];
+	update_user_meta($user_id, 'go_focus', $new_user_focus);
+	echo $new_user_focus;
+	die();	
 }
 
 function go_clipboard_collect_data(){

@@ -238,15 +238,18 @@ function go_clipboard_class_a_choice(){
 	});
 }
 
-function go_user_focus_change(user_id,element){
+function go_user_focus_change (user_id,element) {
 	jQuery.ajax({
-			type: "POST",
-			url: MyAjax.ajaxurl,
-			data:{
-				action: 'go_new_user_focus',
-				new_user_focus: jQuery(element).val(),
-				user_id: user_id
-			}
+		type: "POST",
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_update_user_focuses',
+			new_user_focus: jQuery(element).val(),
+			user_id: user_id
+		},
+		success: function(response) {
+			console.log(response);
+		}
 	});
 }
 
@@ -279,7 +282,9 @@ function go_clipboard_add (id) {
 		}
 		// console.log(reason);
 		jQuery.ajax({
-			type: "post",url: MyAjax.ajaxurl,data: { 
+			type: "post",
+			url: MyAjax.ajaxurl,
+			data: { 
 				action: 'go_clipboard_add',
 				ids: values,
 				points: add_points,

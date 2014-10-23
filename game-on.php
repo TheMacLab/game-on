@@ -97,6 +97,7 @@ add_action('wp_ajax_go_presets_save','go_presets_save');
 add_action('wp_ajax_go_fix_levels', 'go_fix_levels');
 add_action('wp_ajax_listurl', 'listurl');
 add_action('wp_ajax_nopriv_listurl', 'listurl');
+add_action('wp_ajax_go_update_user_focuses', 'go_update_user_focuses');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');
 add_action('wp_ajax_go_update_script_day', 'go_update_script_day');
 add_action('wp_ajax_go_get_all_terms', 'go_get_all_terms');
