@@ -58,113 +58,50 @@ function go_task_shortcode($atts, $content = null) {
 		$number_of_stages = 4;
 		
 		if ($test_e_active) {
-			$test_e_returns = $custom_fields['go_mta_test_encounter_lock_loot'][0];
-
-			$test_e_array = $custom_fields['go_mta_test_lock_encounter'][0];
-			$test_e_uns = unserialize($test_e_array);
-
-			$test_e_num = $test_e_uns[3];
-
-			$test_e_all_questions = $test_e_uns[0];
-			$test_e_all_types = $test_e_uns[2];
-			$test_e_all_inputs = $test_e_uns[1];
-			$test_e_all_input_num = $test_e_uns[4];
-			$test_e_all_answers = array();
-			$test_e_all_keys = array();
-			for ($i = 0; $i < count($test_e_all_inputs); $i++) {
-				if (!empty($test_e_all_inputs[$i][0])) {
-					$answer_e_temp = implode("###", $test_e_all_inputs[$i][0]);
-					$test_e_all_answers[] = $answer_e_temp;
-				}
-				if (!empty($test_e_all_inputs[$i][1])) {
-					$key_e_temp = implode("###", $test_e_all_inputs[$i][1]);
-					$test_e_all_keys[] = $key_e_temp;
-				}
-			}
+			$test_e_array = go_get_test_meta_content($custom_fields, 'encounter');
+			$test_e_returns = $test_e_array[0];
+			$test_e_num = $test_e_array[1];
+			$test_e_all_questions = $test_e_array[2][0];
+			$test_e_all_types = $test_e_array[2][1];
+			$test_e_all_answers = $test_e_array[2][2];
+			$test_e_all_keys = $test_e_array[2][3];
 		}
 		$encounter_upload = $custom_fields['go_mta_encounter_upload'][0];
 
 		if ($test_a_active) {
-			$test_a_returns = $custom_fields['go_mta_test_accept_lock_loot'][0];
-
-			$test_a_array = $custom_fields['go_mta_test_lock_accept'][0];
-			$test_a_uns = unserialize($test_a_array);
-
-			$test_a_num = $test_a_uns[3];
-
-			$test_a_all_questions = $test_a_uns[0];
-			$test_a_all_types = $test_a_uns[2];
-			$test_a_all_inputs = $test_a_uns[1];
-			$test_a_all_input_num = $test_a_uns[4];
-			$test_a_all_answers = array();
-			$test_a_all_keys = array();
-			for ($i = 0; $i < count($test_a_all_inputs); $i++) {
-				if (!empty($test_a_all_inputs[$i][0])) {
-					$answer_a_temp = implode("###", $test_a_all_inputs[$i][0]);
-					$test_a_all_answers[] = $answer_a_temp;
-				}
-				if (!empty($test_a_all_inputs[$i][1])) {
-					$key_a_temp = implode("###", $test_a_all_inputs[$i][1]);
-					$test_a_all_keys[] = $key_a_temp;
-				}
-			}
+			$test_a_array = go_get_test_meta_content($custom_fields, 'accept');
+			$test_a_returns = $test_a_array[0];
+			$test_a_num = $test_a_array[1];
+			$test_a_all_questions = $test_a_array[2][0];
+			$test_a_all_types = $test_a_array[2][1];
+			$test_a_all_answers = $test_a_array[2][2];
+			$test_a_all_keys = $test_a_array[2][3];
 		}
 		$accept_upload = $custom_fields['go_mta_accept_upload'][0];
 
 		if ($test_c_active) {
-			$test_c_returns = $custom_fields['go_mta_test_completion_lock_loot'][0];
-
-			$test_c_array = $custom_fields['go_mta_test_lock_completion'][0];
-			$test_c_uns = unserialize($test_c_array);
-
-			$test_c_num = $test_c_uns[3];
-
-			$test_c_all_questions = $test_c_uns[0];
-			$test_c_all_types = $test_c_uns[2];
-			$test_c_all_inputs = $test_c_uns[1];
-			$test_c_all_input_num = $test_c_uns[4];
-			$test_c_all_answers = array();
-			$test_c_all_keys = array();
-			for ($i = 0; $i < count($test_c_all_inputs); $i++) {
-				if (!empty($test_c_all_inputs[$i][0])) {
-					$answer_c_temp = implode("###", $test_c_all_inputs[$i][0]);
-					$test_c_all_answers[] = $answer_c_temp;
-				}
-				if (!empty($test_c_all_inputs[$i][1])) {
-					$key_c_temp = implode("###", $test_c_all_inputs[$i][1]);
-					$test_c_all_keys[] = $key_c_temp;
-				}
-			}
+			$test_c_array = go_get_test_meta_content($custom_fields, 'completion');
+			$test_c_returns = $test_c_array[0];
+			$test_c_num = $test_c_array[1];
+			$test_c_all_questions = $test_c_array[2][0];
+			$test_c_all_types = $test_c_array[2][1];
+			$test_c_all_answers = $test_c_array[2][2];
+			$test_c_all_keys = $test_c_array[2][3];
 		}
 		$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 		$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 		
 		if ($mastery_active) {
 			$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
-			$test_m_returns = $custom_fields['go_mta_test_mastery_lock_loot'][0];
 
 			if ($test_m_active) {
-				$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
-				$test_m_uns = unserialize($test_m_array);
-				
-				$test_m_num = $test_m_uns[3];
-				
-				$test_m_all_questions = $test_m_uns[0];
-				$test_m_all_types = $test_m_uns[2];
-				$test_m_all_inputs = $test_m_uns[1];
-				$test_m_all_input_num = $test_m_uns[4];
-				$test_m_all_answers = array();
-				$test_m_all_keys = array();
-				for ($i = 0; $i < count($test_m_all_inputs); $i++) {
-					if (!empty($test_m_all_inputs[$i][0])) {
-						$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
-						$test_m_all_answers[] = $answer_m_temp;
-					}
-					if (!empty($test_m_all_inputs[$i][1])) {
-						$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
-						$test_m_all_keys[] = $key_m_temp;
-					}
-				}
+				$test_m_array = go_get_test_meta_content($custom_fields, 'mastery');
+				$test_m_returns = $test_m_array[0];
+				$test_m_num = $test_m_array[1];
+				$test_m_all_questions = $test_m_array[2][0];
+				$test_m_all_types = $test_m_array[2][1];
+				$test_m_all_answers = $test_m_array[2][2];
+				$test_m_all_keys = $test_m_array[2][3];
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
@@ -1334,8 +1271,55 @@ function go_task_shortcode($atts, $content = null) {
 			}
 		}
 	}
-} // Ends function
+}
 add_shortcode('go_task','go_task_shortcode');
+
+function go_get_test_meta_content ($custom_fields, $stage) {
+	$test_returns = $custom_fields["go_mta_test_{$stage}_lock_loot"][0];
+	$test_array = $custom_fields["go_mta_test_lock_{$stage}"][0];
+	$test_uns = unserialize($test_array);
+
+	$test_num = $test_uns[3];
+	$test_all_questions = array();
+	foreach ($test_uns[0] as $question) {
+		$esc_question = htmlspecialchars($question, ENT_QUOTES);
+		if (preg_match("/[\\\[\]]/", $question)) {
+			$str = preg_replace(array("/\[/", "/\]/", "/\\\/"), array('&#91;', '&#93;', '\\\\\\\\\\\\'), $esc_question);
+			$test_all_questions[] = $str;
+		} else {
+			$test_all_questions[] = $esc_question;
+		}
+	}
+	$test_all_types = $test_uns[2];
+	$test_all_inputs = $test_uns[1];
+	$test_all_input_num = $test_uns[4];
+	$test_all_answers = array();
+	$test_all_keys = array();
+	for ($i = 0; $i < count($test_all_inputs); $i++) {
+		if (!empty($test_all_inputs[$i][0])) {
+			$answer_temp = implode("###", $test_all_inputs[$i][0]);
+			$esc_answer = htmlspecialchars($answer_temp, ENT_QUOTES);
+			if (preg_match("/[\\\[\]]/", $answer_temp)) {
+				$str = preg_replace(array("/\[/", "/\]/", "/\\\/"), array('&#91;', '&#93;', '\\\\\\\\\\\\'), $esc_answer);
+				$test_all_answers[] = $str;
+			} else {
+				$test_all_answers[] = $esc_answer;
+			}
+		}
+		if (!empty($test_all_inputs[$i][1])) {
+			$key_temp = implode("###", $test_all_inputs[$i][1]);
+			$esc_key = htmlspecialchars($key_temp, ENT_QUOTES);
+			if (preg_match("/[\\\[\]]/", $key_temp)) {
+				$str = preg_replace(array("/\[/", "/\]/", "/\\\/"), array('&#91;', '&#93;', '\\\\\\\\\\\\'), $esc_key);
+				$test_all_keys[] = $str;
+			} else {
+				$test_all_keys[] = $esc_key;
+			}
+		}
+	}
+
+	return (array($test_returns, $test_num, array($test_all_questions, $test_all_types, $test_all_answers, $test_all_keys)));
+}
 
 function test_point_update() {
 	$status = $_POST['status'];
@@ -1428,7 +1412,7 @@ function unlock_stage() {
 	$points_array = explode(" ", $points_str);
 	$point_base = $points_array[$status];
 
-	$choice = $_POST['chosen_answer'];
+	$choice = stripslashes($_POST['chosen_answer']);
 	$type = $_POST['type'];
 	if ($test_size > 1) {
 		$all_test_choices = explode("#### ", $choice);
@@ -1477,27 +1461,7 @@ function unlock_stage() {
 	$keys = $test_c_uns[1];
 	$all_keys_array = array();
 	for ($i = 0; $i < count($keys); $i++) {
-		$keys_temp = implode("### ", $keys[$i][1]);
-		$str = $keys_temp;
-		if (preg_match("/(\&\#39;|\&\#34;|&#91;|&#93;)+/", $str)) {
-			
-			if (preg_match("/(\&\#39;)+/", $str)) {
-				$str = preg_replace("/(\&\#39;)+/", "\'", $str);
-			}
-			
-			if (preg_match("/(\&\#34;)+/", $str)) {
-				$str = preg_replace("/(\&\#34;)+/", '\"', $str);
-			}
-
-			if (preg_match("/(\&\#91;)+/", $str)) {
-				$str = preg_replace("/(\&\#91;)+/", '[', $str);
-			}
-			
-			if (preg_match("/(\&\#93;)+/", $str)) {
-				$str = preg_replace("/(\&\#93;)+/", ']', $str);
-			}
-		}
-		$all_keys_array[] = $str;
+		$all_keys_array[] = implode("### ", $keys[$i][1]);
 	}
 	$key = $all_keys_array[0];
 	
@@ -1676,113 +1640,50 @@ function task_change_stage() {
 	$test_c_active = $custom_fields['go_mta_test_completion_lock'][0];
 
 	if ($test_e_active) {
-		$test_e_returns = $custom_fields['go_mta_test_encounter_lock_loot'][0];
-
-		$test_e_array = $custom_fields['go_mta_test_lock_encounter'][0];
-		$test_e_uns = unserialize($test_e_array);
-
-		$test_e_num = $test_e_uns[3];
-
-		$test_e_all_questions = $test_e_uns[0];
-		$test_e_all_types = $test_e_uns[2];
-		$test_e_all_inputs = $test_e_uns[1];
-		$test_e_all_input_num = $test_e_uns[4];
-		$test_e_all_answers = array();
-		$test_e_all_keys = array();
-		for ($i = 0; $i < count($test_e_all_inputs); $i++) {
-			if (!empty($test_e_all_inputs[$i][0])) {
-				$answer_e_temp = implode("###", $test_e_all_inputs[$i][0]);
-				$test_e_all_answers[] = $answer_e_temp;
-			}
-			if (!empty($test_e_all_inputs[$i][1])) {
-				$key_e_temp = implode("###", $test_e_all_inputs[$i][1]);
-				$test_e_all_keys[] = $key_e_temp;
-			}
-		}
+		$test_e_array = go_get_test_meta_content($custom_fields, 'encounter');
+		$test_e_returns = $test_e_array[0];
+		$test_e_num = $test_e_array[1];
+		$test_e_all_questions = $test_e_array[2][0];
+		$test_e_all_types = $test_e_array[2][1];
+		$test_e_all_answers = $test_e_array[2][2];
+		$test_e_all_keys = $test_e_array[2][3];
 	}
 	$encounter_upload = $custom_fields['go_mta_encounter_upload'][0];
 
 	if ($test_a_active) {
-		$test_a_returns = $custom_fields['go_mta_test_accept_lock_loot'][0];
-
-		$test_a_array = $custom_fields['go_mta_test_lock_accept'][0];
-		$test_a_uns = unserialize($test_a_array);
-
-		$test_a_num = $test_a_uns[3];
-
-		$test_a_all_questions = $test_a_uns[0];
-		$test_a_all_types = $test_a_uns[2];
-		$test_a_all_inputs = $test_a_uns[1];
-		$test_a_all_input_num = $test_a_uns[4];
-		$test_a_all_answers = array();
-		$test_a_all_keys = array();
-		for ($i = 0; $i < count($test_a_all_inputs); $i++) {
-			if (!empty($test_a_all_inputs[$i][0])) {
-				$answer_a_temp = implode("###", $test_a_all_inputs[$i][0]);
-				$test_a_all_answers[] = $answer_a_temp;
-			}
-			if (!empty($test_a_all_inputs[$i][1])) {
-				$key_a_temp = implode("###", $test_a_all_inputs[$i][1]);
-				$test_a_all_keys[] = $key_a_temp;
-			}
-		}
+		$test_a_array = go_get_test_meta_content($custom_fields, 'accept');
+		$test_a_returns = $test_a_array[0];
+		$test_a_num = $test_a_array[1];
+		$test_a_all_questions = $test_a_array[2][0];
+		$test_a_all_types = $test_a_array[2][1];
+		$test_a_all_answers = $test_a_array[2][2];
+		$test_a_all_keys = $test_a_array[2][3];
 	}
 	$accept_upload = $custom_fields['go_mta_accept_upload'][0];
 
 	if ($test_c_active) {
-		$test_c_returns = $custom_fields['go_mta_test_completion_lock_loot'][0];
-
-		$test_c_array = $custom_fields['go_mta_test_lock_completion'][0];
-		$test_c_uns = unserialize($test_c_array);
-
-		$test_c_num = $test_c_uns[3];
-
-		$test_c_all_questions = $test_c_uns[0];
-		$test_c_all_types = $test_c_uns[2];
-		$test_c_all_inputs = $test_c_uns[1];
-		$test_c_all_input_num = $test_c_uns[4];
-		$test_c_all_answers = array();
-		$test_c_all_keys = array();
-		for ($i = 0; $i < count($test_c_all_inputs); $i++) {
-			if (!empty($test_c_all_inputs[$i][0])) {
-				$answer_c_temp = implode("###", $test_c_all_inputs[$i][0]);
-				$test_c_all_answers[] = $answer_c_temp;
-			}
-			if (!empty($test_c_all_inputs[$i][1])) {
-				$key_c_temp = implode("###", $test_c_all_inputs[$i][1]);
-				$test_c_all_keys[] = $key_c_temp;
-			}
-		}
+		$test_c_array = go_get_test_meta_content($custom_fields, 'completion');
+		$test_c_returns = $test_c_array[0];
+		$test_c_num = $test_c_array[1];
+		$test_c_all_questions = $test_c_array[2][0];
+		$test_c_all_types = $test_c_array[2][1];
+		$test_c_all_answers = $test_c_array[2][2];
+		$test_c_all_keys = $test_c_array[2][3];
 	}
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 	
 	if ($mastery_active) {
 		$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
-		$test_m_returns = $custom_fields['go_mta_test_mastery_lock_loot'][0];
 
 		if ($test_m_active) {
-			$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
-			$test_m_uns = unserialize($test_m_array);
-			
-			$test_m_num = $test_m_uns[3];
-			
-			$test_m_all_questions = $test_m_uns[0];
-			$test_m_all_types = $test_m_uns[2];
-			$test_m_all_inputs = $test_m_uns[1];
-			$test_m_all_input_num = $test_m_uns[4];
-			$test_m_all_answers = array();
-			$test_m_all_keys = array();
-			for ($i = 0; $i < count($test_m_all_inputs); $i++) {
-				if (!empty($test_m_all_inputs[$i][0])) {
-					$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
-					$test_m_all_answers[] = $answer_m_temp;
-				}
-				if (!empty($test_m_all_inputs[$i][1])) {
-					$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
-					$test_m_all_keys[] = $key_m_temp;
-				}
-			}
+			$test_m_array = go_get_test_meta_content($custom_fields, 'mastery');
+			$test_m_returns = $test_m_array[0];
+			$test_m_num = $test_m_array[1];
+			$test_m_all_questions = $test_m_array[2][0];
+			$test_m_all_types = $test_m_array[2][1];
+			$test_m_all_answers = $test_m_array[2][2];
+			$test_m_all_keys = $test_m_array[2][3];
 		}
 		$mastery_message = $custom_fields['go_mta_mastery_message'][0];
 		$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
