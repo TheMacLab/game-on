@@ -25,8 +25,8 @@ function go_clipboard_menu() {
                 <option>...</option>
                 <?php
                 $class_a = get_option('go_class_a');
-                if($class_a){
-                    foreach($class_a as $key=> $value){
+                if ($class_a) {
+                    foreach ($class_a as $key=> $value) {
                         echo '<option class="ui-corner-all">'.$value.'</option>';
                     }
                 }

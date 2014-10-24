@@ -317,7 +317,7 @@ if (is_admin()) {
 							<?php
 							}
 							?>
-								<input type='text' class='go_options_profession_input' name='go_focus[]' value='<?php echo $focus;?>'/>
+								<input type='text' class='go_options_profession_input' name='go_focus[]' value='<?php echo esc_attr($focus);?>'/>
 							<?php
 							$first++;
 						}
