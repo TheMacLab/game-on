@@ -144,10 +144,13 @@ function go_task_shortcode($atts, $content = null) {
 		} else {
 			$req_points = null;
 		}
-		$currency_array = $rewards['currency']; // Makes an array out of currency values for each stage
-		$points_array = $rewards['points']; //Makes an array out of currency values for each stage
+		
+		$points_array = $rewards['points'];
 		$points_str = implode(" ", $points_array);
+		$currency_array = $rewards['currency'];
+		$currency_str = implode(" ", $currency_array);
 		$bonus_currency_array = $rewards['bonus_currency'];
+		$bonus_currency_str = implode(" ", $bonus_currency_array);
 		
 		$current_bonus_currency = go_return_bonus_currency($user_ID);	
 		$current_penalty = go_return_penalty($user_ID);
@@ -1061,6 +1064,8 @@ function go_task_shortcode($atts, $content = null) {
 				data: {
 					action: "test_point_update",
 					points: "<?php echo $points_str; ?>",
+					currency: "<?php echo $currency_str; ?>",
+					bonus_currency: "<?php echo $bonus_currency_str; ?>",
 					status: status,
 					page_id: <?php echo $page_id; ?>,
 					user_ID: <?php echo $user_ID; ?>,
@@ -1321,15 +1326,21 @@ function go_get_test_meta_content ($custom_fields, $stage) {
 	return (array($test_returns, $test_num, array($test_all_questions, $test_all_types, $test_all_answers, $test_all_keys)));
 }
 
-function test_point_update() {
+function test_point_update () {
 	$status = $_POST['status'];
 	$page_id = $_POST['page_id'];
 	$post_id = $_POST['post_id'];
 	$user_id = $_POST['user_ID'];
 	$points_str = $_POST['points'];
+	$currency_str = $_POST['currency'];
+	$bonus_currency_str = $_POST['bonus_currency'];
 	$update_percent = $_POST['update_percent'];
 	$points_array = explode(" ", $points_str);
 	$point_base = (int)$points_array[$status];
+	$currency_array = explode(" ", $currency_str);
+	$currency_base = (int)$currency_array[$status];
+	$bonus_currency_array = explode(" ", $bonus_currency_str);
+	$bonus_currency_base = (int)$bonus_currency_array[$status];
 	$e_fail_count = $_SESSION['test_encounter_fail_count'];
 	$a_fail_count = $_SESSION['test_accept_fail_count'];
 	$c_fail_count = $_SESSION['test_completion_fail_count'];
@@ -1381,14 +1392,21 @@ function test_point_update() {
 	$test_fail_max = ceil($test_fail_max_temp);
 	if ($fail_count < $test_fail_max) {
 		$p_num = $point_base - (($point_base * $percent) * $fail_count);
-		$target_point = floor($p_num);
+		$target_points = floor($p_num);
+		$c_num = $currency_base - (($currency_base * $percent) * $fail_count);
+		$target_currency = floor($c_num);
+		$b_num = $bonus_currency_base - (($bonus_currency_base * $percent) * $fail_count);
+		$target_bonus_currency = floor($b_num);
 	} else {
-		$target_point = 0;
+		$target_points = 0;
 	}
 	
 	if ($passed === 0 || $passed === '0') {
 		go_add_post($user_id, $post_id, $status, 
-		floor($target_point + ($update_percent * $target_point)), 0, 0, null, $page_id, null, null, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+		floor($target_points + ($update_percent * $target_points)), 
+		floor($target_currency + ($update_percent * $target_currency)), 
+		floor($target_bonus_currency + ($update_percent * $target_bonus_currency)), 
+		null, $page_id, null, null, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
 	}
 	die();
 }
