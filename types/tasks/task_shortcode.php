@@ -1393,24 +1393,26 @@ function test_point_update() {
 	die();
 }
 
-function go_inc_test_fail_count($s_name, $test_fail_max) {
-	$s_var = $_SESSION[$s_name];
-	if (isset($s_var)) {
-		if ($s_var < $test_fail_max) {
-			$_SESSION[$s_name]++;
-		} else if ($s_var > $test_fail_max) {
-			unset($_SESSION[$s_name]);
+function go_inc_test_fail_count ($s_name, $test_fail_max = null) {
+	if (!is_null($test_fail_max)) {
+		$s_var = $_SESSION[$s_name];
+		if (isset($s_var)) {
+			if ($s_var < $test_fail_max) {
+				$_SESSION[$s_name]++;
+			} else if ($s_var > $test_fail_max) {
+				unset($_SESSION[$s_name]);
+			}
 		}
 	}
 }
 
-function unlock_stage() {
+function unlock_stage () {
 	$id = $_POST['task'];
 	$status = $_POST['status'];
 	$test_size = (int)$_POST['list_size'];
 	$points_str = $_POST['points'];
 	$points_array = explode(" ", $points_str);
-	$point_base = $points_array[$status];
+	$point_base = (int)$points_array[$status];
 
 	$choice = stripslashes($_POST['chosen_answer']);
 	$type = $_POST['type'];
@@ -1450,9 +1452,11 @@ function unlock_stage() {
 			$custom_mod = 20;
 	}
 
-	$percent = $custom_mod / 100;
-	$test_fail_max_temp = $point_base / ($point_base * $percent);
-	$test_fail_max = ceil($test_fail_max_temp);
+	if ($point_base !== 0) {
+		$percent = $custom_mod / 100;
+		$test_fail_max_temp = $point_base / ($point_base * $percent);
+		$test_fail_max = ceil($test_fail_max_temp);
+	}
 	
 	$user_ID = get_current_user_id();
 
