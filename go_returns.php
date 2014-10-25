@@ -70,15 +70,15 @@ function go_display_minutes($minutes){
 	return $prefix.$minutes.$suffix;
 }
 
-function go_display_user_focuses($user_id){
+function go_display_user_focuses ($user_id) {
 	
-	if(get_user_meta($user_id, 'go_focus',true)){
-		if(!is_array(get_user_meta($user_id, 'go_focus',true))){
+	if (get_user_meta($user_id, 'go_focus',true)) {
+		if (!is_array(get_user_meta($user_id, 'go_focus',true))) {
 			$value = get_user_meta($user_id, 'go_focus',true);
-		}else{
+		} else {
 			$value = implode(', ',get_user_meta($user_id, 'go_focus', true));
 		}
-	} else{
+	} else {
 		$value = 'No '.go_return_options('go_focus_name');
 	}
 	

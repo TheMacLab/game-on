@@ -636,54 +636,58 @@ function go_extra_profile_fields($user) { ?>
 
 	<h3><?php echo go_return_options('go_class_a_name').' and '.go_return_options('go_class_b_name'); ?></h3>
 
-	<table id="go_user_form_table">
-<th><?php echo go_return_options('go_class_a_name'); ?></th><th><?php echo go_return_options('go_class_b_name'); ?></th>
-<tbody id="go_user_form_table_body">
-
-<?php
- if (get_user_meta($user->ID, 'go_classifications',true)){ 
-
-foreach (get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu) {
-?>
-		<tr>
-			<td>
-			<?php $class_a = get_option('go_class_a', false);
-			if($class_a){
-				?><select name="class_a_user[]"><option name="<?php echo $keyu; ?>" value="<?php echo $keyu; ?>"><?php echo $keyu; ?></option>
-				<option value="go_remove">Remove</option>
-				<?php
-				foreach($class_a as $key => $value){
-					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
-					}
-				  ?></select><?php
-				} ?>	
-			</td> 
-            
-            
-            <td>
-			<?php $class_b = get_option('go_class_b', false);
-			if($class_b){
-				?><select name="class_b_user[]"><option name="<?php echo $valueu; ?>" value="<?php echo $valueu; ?>"><?php echo $valueu; ?></option>
-				<option value="go_remove">Remove</option>
-				<?php
-				foreach($class_b as $key => $value){
-					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
-					}
-				  ?></select><?php
-				} ?>	
-			</td> 
-            
-            
-		</tr> <?php }} ?> </tbody>
+    <table id="go_user_form_table">
+        <th><?php echo go_return_options('go_class_a_name'); ?></th><th><?php echo go_return_options('go_class_b_name'); ?></th>
+        <tbody id="go_user_form_table_body">
+            <?php
+            if (get_user_meta($user->ID, 'go_classifications',true)) { 
+            	foreach (get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu) {
+            ?>
+                    <tr>
+                        <td>
+                            <?php 
+                            $class_a = get_option('go_class_a', false);
+                            if ($class_a) {
+                            ?>
+                                <select name="class_a_user[]"><option name="<?php echo $keyu; ?>" value="<?php echo $keyu; ?>"><?php echo $keyu; ?></option>
+                                <option value="go_remove">Remove</option>
+                                <?php
+                                foreach ($class_a as $key => $value) {
+                                    echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
+                                }
+                                ?>
+                                </select>
+                            <?php
+                            } 
+                            ?>	
+                        </td>
+                        <td>
+                            <?php 
+                            $class_b = get_option('go_class_b', false);
+                            if ($class_b) {
+                                ?> 
+                                <select name="class_b_user[]"><option name="<?php echo $valueu; ?>" value="<?php echo $valueu; ?>"><?php echo $valueu; ?></option>
+                                <option value="go_remove">Remove</option>
+                                <?php
+                                foreach ($class_b as $key => $value) {
+                                    echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
+                                }
+                                ?>
+                                </select>
+                                <?php
+                            } 
+                            ?>	
+                        </td> 
+                    </tr>
+			<?php }} ?> 
+        </tbody>
         <tr> 
-        <td><button onclick="go_add_class();" type="button">+</button></td>
-	</table>
+        	<td><button onclick="go_add_class();" type="button">+</button></td>
+        </tr>
+    </table>
 	<?php 
 		if (get_option('go_focus_switch', true) == 'On') {
-	?>
-		<h3>User <?php echo go_return_options('go_focus_name');?></h3>
-		<?php 
-			echo go_display_user_focuses($user->ID);
+			echo "<h3>User ".go_return_options('go_focus_name')."</h3>".go_display_user_focuses($user->ID)."";
 		}
     ?>
     <script type="text/javascript" language="javascript">
@@ -705,9 +709,7 @@ foreach (get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu
     </script>
 <?php
 
-
-
- }
+}
 
 
 add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
