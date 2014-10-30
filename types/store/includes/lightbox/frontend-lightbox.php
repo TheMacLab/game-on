@@ -126,18 +126,21 @@ function go_the_lb_ajax(){
 			die("You need less than {$penalty_filter} ".go_return_options('go_penalty_name')." to buy this item.");
 		}
 	}
-	// Check if user has a focus
-	if (get_user_meta($user_id, 'go_focus', true) != null) {
-		$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
+	
+	// Get focus options associated with item
+	$item_focus_array = unserialize($custom_fields['go_mta_store_focus'][0]);
+	
+	// Check if item actually has focus
+	$is_focused = (bool) filter_var($item_focus_array[0], FILTER_VALIDATE_BOOLEAN);
+	if ($is_focused) {
+		$item_focus = $item_focus_array[1];
+		// Check if user has a focus
+		if (get_user_meta($user_id, 'go_focus', true) != null) {
+			$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
+		}
 	}
 	
-	// Check if the item has a focus and the focus gateway is turned on
-	if ($custom_fields['go_mta_focuses'][0] && $custom_fields['go_mta_focus_item_switch'][0] == 'on') {
-		$item_focus = $custom_fields['go_mta_focuses'][0];
-	} 
-	
-	// If user has the focus and the item is a focus gateway echo this
-	if ($item_focus && !empty($user_focuses) && in_array($item_focus, $user_focuses)) {
+	if ($is_focused && !empty($item_focus) && !empty($user_focuses) && in_array($item_focus, $user_focuses)) {
 		die('You already have this '.go_return_options('go_focus_name').'!');	
 	}
 	if ($is_filtered === 'true' && !is_null($bonus_filter) && $user_bonus_currency < $bonus_filter) {
