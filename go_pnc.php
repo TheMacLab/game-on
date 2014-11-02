@@ -19,7 +19,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 	$time = date('m/d@H:i',current_time('timestamp',0));
 	$user_bonuses = go_return_bonus_currency($user_id);
 	$user_penalties = go_return_penalty($user_id);
-	if ($status == -1) {
+	if ($status === -1) {
 		$qty = $_POST['qty'];
 		$old_points = $wpdb->get_row("SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1");
 		$points *= $qty;
@@ -86,14 +86,23 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 		} else {
 			$url_array = serialize(array($status => $url));
 		}
-
-		if ($repeat == 'on') {
+		if ($repeat === 'on') {
 			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'count' => $count + ($old_points->count), 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
 		} else {
-			if ($status == 0) {
+			if ($status === 0) {
 				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $modded_bonus_currency, 'page_id' => $page_id));
 			} else {
-				$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
+				$columns = array(
+					'points' => $modded_points + ($old_points->points), 
+					'currency' => $modded_currency + ($old_points->currency), 
+					'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 
+					'page_id' => $page_id, 
+					'url' => $url_array
+				);
+				if (!is_null($status)) {
+					$columns['status'] = $status;
+				}
+				$wpdb->update($table_name_go, $columns, array('uid' => $user_id, 'post_id' => $post_id));
 			}
 		}
 		if ($e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null) {

@@ -862,7 +862,7 @@ function go_test_field ($field_args) {
 		?>
 		<tr>
 			<td>
-				<input id='go_test_field_add_block_button_{$ttc}' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_{$ttc}(this);' />
+				<input id='go_test_field_add_block_button_<?php echo $ttc; ?>' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_<?php echo $ttc; ?>(this);' />
 				<?php 
 				if (!empty($test_field_block_count)) {
 					echo "<input id='go_test_field_block_count_{$ttc}' name='go_test_field_block_count_{$ttc}' type='hidden' value='{$test_field_block_count}' />";
