@@ -388,7 +388,7 @@ function go_task_shortcode($atts, $content = null) {
 						0, 
 						floor($points_array[0] + ($update_percent * $points_array[0])), 
 						floor($currency_array[0] + ($update_percent * $currency_array[0])), 
-						floor($currency_array[0] + ($update_percent * $currency_array[0])),
+						floor($bonus_currency_array[0] + ($update_percent * $bonus_currency_array[0])),
 						null,
 						$page_id, 
 						null, 
@@ -1349,7 +1349,7 @@ function go_get_test_meta_content ($custom_fields, $stage) {
 }
 
 function test_point_update () {
-	$status = $_POST['status'];
+	$status = (int)$_POST['status'];
 	$page_id = $_POST['page_id'];
 	$post_id = $_POST['post_id'];
 	$user_id = $_POST['user_ID'];
@@ -1395,6 +1395,7 @@ function test_point_update () {
 			$_SESSION['test_mastery_passed'] = 1;
 			break;
 	}
+	$status++;
 
 	if (empty($fail_count)) {
 		$fail_count = 0;
@@ -2128,7 +2129,7 @@ function task_change_stage() {
 			}
 			echo '</div>';
 	}
-die();
+	die();
 }
 function go_display_rewards($points_array, $currency_array, $number_of_stages){
 	echo '<div class="go_task_rewards" style="margin: 6px 0px 6px 0px;"><strong>Rewards</strong><br/>';
