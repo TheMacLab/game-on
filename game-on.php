@@ -107,6 +107,7 @@ add_action('wp_ajax_nopriv_go_get_all_posts', 'go_get_all_posts');
 add_action('wp_ajax_go_update_task_order', 'go_update_task_order');
 add_action('wp_ajax_go_search_for_user', 'go_search_for_user');
 add_action('wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification');
+add_action('wp_ajax_go_get_purchase_count', 'go_get_purchase_count');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');

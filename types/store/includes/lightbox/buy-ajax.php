@@ -93,7 +93,7 @@ function go_buy_item() {
 
 	if ((($enough_currency && $enough_bonus_currency && $enough_points && $enough_minutes) || $penalty) && $within_limit) {
 		if ($is_focused && !empty($item_focus)) {
-			$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
+			$user_focuses = get_user_meta($user_id, 'go_focus', true);
 			$user_focuses[] = $item_focus;
 			update_user_meta($user_id, 'go_focus', $user_focuses);
 		}

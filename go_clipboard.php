@@ -151,7 +151,7 @@ function go_clipboard_intable(){
 					$focus_name = get_option('go_focus_name');
 					$focuses = get_option('go_focus');
 					$focuses_list = '';
-					$focuses_list = "<option value='No {$focus_name}' ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
+					$focuses_list = "<option>{$user_focuses}</option><option ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
 					foreach ($focuses as $focus) {
 						$focuses_list .= "<option value='".esc_attr($focus)."' ".($focus == $user_focuses ? "selected" : "").">{$focus}</option>";
 					}
@@ -225,7 +225,11 @@ function go_clipboard_add(){
 function go_update_user_focuses() {
 	$new_user_focus = stripslashes($_POST['new_user_focus']);
 	$user_id = $_POST['user_id'];
-	update_user_meta($user_id, 'go_focus', $new_user_focus);
+	if ($new_user_focus != 'No '.go_return_options('go_focus_name')) {
+		update_user_meta($user_id, 'go_focus', array($new_user_focus));
+	} else {
+		update_user_meta($user_id, 'go_focus', array());
+	}
 	echo $new_user_focus;
 	die();	
 }

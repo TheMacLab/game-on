@@ -53,7 +53,6 @@ function go_the_lb_ajax(){
 	$user_penalties = go_return_penalty($user_id);
 	$user_minutes = go_return_minutes($user_id);
 	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
-	$purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
 	$is_giftable = $custom_fields['go_mta_store_giftable'][0];
 
 	echo '<h2>'.$the_title.'</h2>';
@@ -387,7 +386,7 @@ function go_get_purchase_count(){
 	$table_name_go = $wpdb->prefix."go";
 	$the_id = $_POST["the_item_id"];
 	$user_id = get_current_user_id();
-	$purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
+	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
 	if($purchase_count == NULL){ 
 		echo '0';
 	} else{
@@ -395,7 +394,4 @@ function go_get_purchase_count(){
 	}
 	die();
 }
-add_action('wp_ajax_purchase_count', 'go_get_purchase_count');
-
-
 ?>
