@@ -1389,7 +1389,13 @@ function test_point_update () {
 	$m_passed = $_SESSION['test_mastery_passed'];
 	
 	$percent = $custom_mod / 100;
-	$test_fail_max_temp = $point_base / ($point_base * $percent);
+	if (!empty($point_base)) {
+		$test_fail_max_temp = $point_base / ($point_base * $percent);	
+	} else if (!empty($currency_base)) {
+		$test_fail_max_temp = $currency_base / ($currency_base * $percent);
+	} else if (!empty($bonus_currency_base)) {
+		$test_fail_max_temp = $bonus_currency_base / ($bonus_currency_base * $percent);
+	}
 	$test_fail_max = ceil($test_fail_max_temp);
 	if ($fail_count < $test_fail_max) {
 		$p_num = $point_base - (($point_base * $percent) * $fail_count);
