@@ -155,8 +155,8 @@ function go_the_lb_ajax(){
 	}
 	
 	// Check to see if the user has any of the focuses
-	if($category_names && $user_focus){
-		$go_ahead = array_intersect($user_focus, $category_names);
+	if($category_names && $user_focuses){
+		$go_ahead = array_intersect($user_focuses, $category_names);
 	}
 	
 	if ($is_focused && !empty($item_focus) && !empty($user_focuses) && in_array($item_focus, $user_focuses)) {
