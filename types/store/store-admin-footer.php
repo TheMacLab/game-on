@@ -55,18 +55,6 @@ jQuery(document).ready(function() {
 		}
 	});
 
-	if (jQuery('#go_store_shortcode_list_checkbox').prop('checked')) {
-		jQuery('#go_store_shortcode_list').show('slow');
-	} else {
-		jQuery('#go_store_shortcode_list').hide('slow');
-	}
-	jQuery('#go_store_shortcode_list_checkbox').click(function() {
-		if (jQuery('#go_store_shortcode_list_checkbox').prop('checked')) {
-			jQuery('#go_store_shortcode_list').show('slow');
-		} else {
-			jQuery('#go_store_shortcode_list').hide('slow');
-		}
-	});
 });
 </script>
 <?php 

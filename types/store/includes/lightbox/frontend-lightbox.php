@@ -133,14 +133,37 @@ function go_the_lb_ajax(){
 	$is_focused = (bool) filter_var($item_focus_array[0], FILTER_VALIDATE_BOOLEAN);
 	if ($is_focused) {
 		$item_focus = $item_focus_array[1];
-		// Check if user has a focus
-		if (get_user_meta($user_id, 'go_focus', true) != null) {
-			$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
+	}
+	
+	// Check if user has a focus
+	if (get_user_meta($user_id, 'go_focus', true) != null) {
+		$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
+	}
+	
+	// Check if item is locked by focus
+	if ($custom_fields['go_mta_store_focus_lock'][0]){
+		$focus_category_lock = true;
+	}
+	
+	// Grab which focuses are chosen as the locks
+	if(get_the_terms($the_id, 'store_focus_categories') && $focus_category_lock) {
+		$categories = get_the_terms($the_id, 'store_focus_categories');
+		$category_names = array();
+		foreach ($categories as $category) {
+			array_push($category_names, $category->name);	
 		}
+	}
+	
+	// Check to see if the user has any of the focuses
+	if($category_names && $user_focus){
+		$go_ahead = array_intersect($user_focus, $category_names);
 	}
 	
 	if ($is_focused && !empty($item_focus) && !empty($user_focuses) && in_array($item_focus, $user_focuses)) {
 		die('You already have this '.go_return_options('go_focus_name').'!');	
+	}
+	if (empty($go_ahead) && $focus_category_lock) {
+		die('Item only available to those in '.implode(', ', $category_names).' '.strtolower(go_return_options('go_focus_name')));
 	}
 	if ($is_filtered === 'true' && !is_null($bonus_filter) && $user_bonus_currency < $bonus_filter) {
 		die('You require more '.go_return_options('go_bonus_currency_name').' to view this item.');

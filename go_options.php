@@ -494,6 +494,9 @@ function go_focus_save() {
 		if (!term_exists($value, 'task_focus_categories')) {
 			wp_insert_term($value, 'task_focus_categories');
 		}
+		if (!term_exists($value, 'store_focus_categories')) {
+			wp_insert_term($value, 'store_focus_categories');	
+		}
 	} 
 	
 	foreach ($terms as $term) {
@@ -505,6 +508,7 @@ function go_focus_save() {
 	foreach ($delete_terms as $term) {
 		$term_id = $wpdb->get_var("SELECT `term_id` FROM $wpdb->terms WHERE `name`='".$term."'");
 		wp_delete_term($term_id, 'task_focus_categories');
+		wp_delete_term($term_id, 'store_focus_categories');
 	}
 	die();
 }
