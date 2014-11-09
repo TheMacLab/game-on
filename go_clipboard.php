@@ -147,13 +147,14 @@ function go_clipboard_intable(){
 					$user_first_name = $user_data_key->user_firstname;
 					$user_last_name =  $user_data_key->user_lastname;
 					$user_url =  $user_data_key->user_url;
-					$user_focuses = go_display_user_focuses($value);
-					$focus_name = get_option('go_focus_name');
-					$focuses = get_option('go_focus');
-					$focuses_list = '';
-					$focuses_list = "<option>{$user_focuses}</option><option ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
-					foreach ($focuses as $focus) {
-						$focuses_list .= "<option value='".esc_attr($focus)."' ".($focus == $user_focuses ? "selected" : "").">{$focus}</option>";
+					if (go_return_options('go_focus_switch') == 'On') {
+						$user_focuses = go_display_user_focuses($value);
+						$focus_name = get_option('go_focus_name');
+						$focuses = get_option('go_focus');
+						$focuses_list = "<option>{$user_focuses}</option><option ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
+						foreach ($focuses as $focus) {
+							$focuses_list .= "<option value='".esc_attr($focus)."' >{$focus}</option>";
+						}
 					}
 					$bonus_currency = go_return_bonus_currency($value);
 					$penalty = go_return_penalty($value);
