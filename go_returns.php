@@ -76,14 +76,14 @@ function go_display_user_focuses ($user_id) {
 		if (!is_array(get_user_meta($user_id, 'go_focus',true))) {
 			$value = get_user_meta($user_id, 'go_focus',true);
 		} else {
-			$value = array_filter($value, function($elem){
+			$value = array_filter(get_user_meta($user_id, 'go_focus',true), function($elem){
 				if (!strstr($elem, ':')){
 					return true;
 				} else { 
 					return false;
 				}	
 			});
-			$value = implode(', ',get_user_meta($user_id, 'go_focus', true));
+			$value = implode(', ',$value);
 		}
 	} else {
 		$value = 'No '.go_return_options('go_focus_name');
