@@ -77,7 +77,7 @@ function go_display_user_focuses ($user_id) {
 			$value = get_user_meta($user_id, 'go_focus',true);
 		} else {
 			$value = array_filter(get_user_meta($user_id, 'go_focus',true), function($elem){
-				if (!strstr($elem, ':')){
+				if (!strstr($elem, ':') || !strstr($elem, 'No '.go_return_options('go_focus_name'))){
 					return true;
 				} else { 
 					return false;
