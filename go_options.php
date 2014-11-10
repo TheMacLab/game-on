@@ -483,7 +483,7 @@ function go_update_user_sc_data () {
 
 function go_focus_save() {
 	global $wpdb;
-	$array = $_POST['focus_array'];
+	$array = array_filter($_POST['focus_array']);
 	$terms = $wpdb->get_results("SELECT * FROM $wpdb->terms", ARRAY_A);
 	$term_names = array();
 	
