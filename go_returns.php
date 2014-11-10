@@ -82,7 +82,7 @@ function go_display_user_focuses ($user_id) {
 				$output = 'No '.go_return_options('go_focus_name');
 			} else {
 				$value = array_filter($filtered_user_focuses, function($elem){
-					if (!strpos($elem, ':') && !strpos($elem, 'No '.go_return_options('go_focus_name'))){
+					if (!strstr($elem, ':') && !strstr($elem, 'No '.go_return_options('go_focus_name'))){
 						return true;
 					} else { 
 						return false;
