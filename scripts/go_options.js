@@ -519,6 +519,7 @@ jQuery(document).ready(function(){
 			});
 			
 			if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
+				jQuery('.go_options_profession_input[value=""]').attr('disabled', 'disabled');
 				var values = jQuery('.go_options_profession_input').map(function() {
 					return jQuery(this).val();
 				}).get();
