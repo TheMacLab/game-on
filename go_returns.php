@@ -70,19 +70,32 @@ function go_display_minutes($minutes){
 	return $prefix.$minutes.$suffix;
 }
 
-function go_display_user_focuses($user_id){
+function go_display_user_focuses ($user_id) {
+	$user_focuses = get_user_meta($user_id, 'go_focus',true);
 	
-	if(get_user_meta($user_id, 'go_focus',true)){
-		if(!is_array(get_user_meta($user_id, 'go_focus',true))){
-			$value = get_user_meta($user_id, 'go_focus',true);
-		}else{
-			$value = implode(', ',get_user_meta($user_id, 'go_focus', true));
+	if (!empty($user_focuses)) {
+		if (!is_array($user_focuses)) {
+			$output = $user_focuses;
+		} else {
+			$filtered_user_focuses = array_filter($user_focuses);
+			if (count(array_unique($filtered_user_focuses)) === 1 && reset($filtered_user_focuses) === ':') {
+				$output = 'No '.go_return_options('go_focus_name');
+			} else {
+				$value = array_filter($filtered_user_focuses, function($elem){
+					if (strpos($elem, ':') === false && strpos($elem, 'No '.go_return_options('go_focus_name')) === false){
+						return true;
+					} else { 
+						return false;
+					}	
+				});
+				$output = implode(', ', $value);
+			}
 		}
-	} else{
-		$value = 'No '.go_return_options('go_focus_name');
+	} else {
+		$output = 'No '.go_return_options('go_focus_name');
 	}
 	
-	return $value;
+	return $output;
 }
 
 function go_return_badge_count($user_id){

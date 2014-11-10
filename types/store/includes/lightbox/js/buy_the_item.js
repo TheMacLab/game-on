@@ -33,7 +33,7 @@ function goBuytheItem (id, buyColor, count) {
 					jQuery('#go_admin_bar_progress_bar').css("background-color", color);
 				}
 				go_count_item(id);
-				// console.log(response);
+				console.log(response);
 			}
 		});
 	});
@@ -44,7 +44,7 @@ function go_count_item (id) {
 		url: MyAjax.ajaxurl,
 		type: "POST",
 		data:{
-			action: 'purchase_count',
+			action: 'go_get_purchase_count',
 			the_item_id: id
 		},
 		success: function (data) {

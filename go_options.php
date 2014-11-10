@@ -317,7 +317,7 @@ if (is_admin()) {
 							<?php
 							}
 							?>
-								<input type='text' class='go_options_profession_input' name='go_focus[]' value='<?php echo $focus;?>'/>
+								<input type='text' class='go_options_profession_input' name='go_focus[]' value='<?php echo esc_attr($focus);?>'/>
 							<?php
 							$first++;
 						}
@@ -483,7 +483,7 @@ function go_update_user_sc_data () {
 
 function go_focus_save() {
 	global $wpdb;
-	$array = $_POST['focus_array'];
+	$array = array_values(array_filter($_POST['focus_array']));
 	$terms = $wpdb->get_results("SELECT * FROM $wpdb->terms", ARRAY_A);
 	$term_names = array();
 	
@@ -493,6 +493,9 @@ function go_focus_save() {
 		}
 		if (!term_exists($value, 'task_focus_categories')) {
 			wp_insert_term($value, 'task_focus_categories');
+		}
+		if (!term_exists($value, 'store_focus_categories')) {
+			wp_insert_term($value, 'store_focus_categories');	
 		}
 	} 
 	
@@ -505,6 +508,7 @@ function go_focus_save() {
 	foreach ($delete_terms as $term) {
 		$term_id = $wpdb->get_var("SELECT `term_id` FROM $wpdb->terms WHERE `name`='".$term."'");
 		wp_delete_term($term_id, 'task_focus_categories');
+		wp_delete_term($term_id, 'store_focus_categories');
 	}
 	die();
 }
@@ -520,14 +524,6 @@ function go_get_all_focuses() {
 		 }
 	}
 	return $all_focuses_sorted;
-}
-
-add_action('wp_ajax_go_new_user_focus', 'go_new_user_focus');
-function go_new_user_focus() {
-	$new_user_focus = $_POST['new_user_focus'];
-	$user_id = $_POST['user_id'];
-	update_user_meta($user_id, 'go_focus', $new_user_focus);
-	die();	
 }
 
 function go_presets_reset() {
@@ -644,54 +640,58 @@ function go_extra_profile_fields($user) { ?>
 
 	<h3><?php echo go_return_options('go_class_a_name').' and '.go_return_options('go_class_b_name'); ?></h3>
 
-	<table id="go_user_form_table">
-<th><?php echo go_return_options('go_class_a_name'); ?></th><th><?php echo go_return_options('go_class_b_name'); ?></th>
-<tbody id="go_user_form_table_body">
-
-<?php
- if (get_user_meta($user->ID, 'go_classifications',true)){ 
-
-foreach (get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu) {
-?>
-		<tr>
-			<td>
-			<?php $class_a = get_option('go_class_a', false);
-			if($class_a){
-				?><select name="class_a_user[]"><option name="<?php echo $keyu; ?>" value="<?php echo $keyu; ?>"><?php echo $keyu; ?></option>
-				<option value="go_remove">Remove</option>
-				<?php
-				foreach($class_a as $key => $value){
-					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
-					}
-				  ?></select><?php
-				} ?>	
-			</td> 
-            
-            
-            <td>
-			<?php $class_b = get_option('go_class_b', false);
-			if($class_b){
-				?><select name="class_b_user[]"><option name="<?php echo $valueu; ?>" value="<?php echo $valueu; ?>"><?php echo $valueu; ?></option>
-				<option value="go_remove">Remove</option>
-				<?php
-				foreach($class_b as $key => $value){
-					echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
-					}
-				  ?></select><?php
-				} ?>	
-			</td> 
-            
-            
-		</tr> <?php }} ?> </tbody>
+    <table id="go_user_form_table">
+        <th><?php echo go_return_options('go_class_a_name'); ?></th><th><?php echo go_return_options('go_class_b_name'); ?></th>
+        <tbody id="go_user_form_table_body">
+            <?php
+            if (get_user_meta($user->ID, 'go_classifications',true)) { 
+            	foreach (get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu) {
+            ?>
+                    <tr>
+                        <td>
+                            <?php 
+                            $class_a = get_option('go_class_a', false);
+                            if ($class_a) {
+                            ?>
+                                <select name="class_a_user[]"><option name="<?php echo $keyu; ?>" value="<?php echo $keyu; ?>"><?php echo $keyu; ?></option>
+                                <option value="go_remove">Remove</option>
+                                <?php
+                                foreach ($class_a as $key => $value) {
+                                    echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
+                                }
+                                ?>
+                                </select>
+                            <?php
+                            } 
+                            ?>	
+                        </td>
+                        <td>
+                            <?php 
+                            $class_b = get_option('go_class_b', false);
+                            if ($class_b) {
+                                ?> 
+                                <select name="class_b_user[]"><option name="<?php echo $valueu; ?>" value="<?php echo $valueu; ?>"><?php echo $valueu; ?></option>
+                                <option value="go_remove">Remove</option>
+                                <?php
+                                foreach ($class_b as $key => $value) {
+                                    echo '<option name="'.$value.'" value="'.$value.'">'.$value.'</option>';
+                                }
+                                ?>
+                                </select>
+                                <?php
+                            } 
+                            ?>	
+                        </td> 
+                    </tr>
+			<?php }} ?> 
+        </tbody>
         <tr> 
-        <td><button onclick="go_add_class();" type="button">+</button></td>
-	</table>
+        	<td><button onclick="go_add_class();" type="button">+</button></td>
+        </tr>
+    </table>
 	<?php 
 		if (get_option('go_focus_switch', true) == 'On') {
-	?>
-		<h3>User <?php echo go_return_options('go_focus_name');?></h3>
-		<?php 
-			echo go_display_user_focuses($user->ID);
+			echo "<h3>User ".go_return_options('go_focus_name')."</h3>".go_display_user_focuses($user->ID)."";
 		}
     ?>
     <script type="text/javascript" language="javascript">
@@ -713,9 +713,7 @@ foreach (get_user_meta($user->ID, 'go_classifications',true) as $keyu => $valueu
     </script>
 <?php
 
-
-
- }
+}
 
 
 add_action( 'personal_options_update', 'go_save_extra_profile_fields' );

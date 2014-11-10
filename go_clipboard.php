@@ -25,8 +25,8 @@ function go_clipboard_menu() {
                 <option>...</option>
                 <?php
                 $class_a = get_option('go_class_a');
-                if($class_a){
-                    foreach($class_a as $key=> $value){
+                if ($class_a) {
+                    foreach ($class_a as $key=> $value) {
                         echo '<option class="ui-corner-all">'.$value.'</option>';
                     }
                 }
@@ -117,9 +117,11 @@ function go_clipboard_menu() {
                  </div>  
              </div>
          </div>
+		 */
+		?>
      </div>
 	 <?php
-	 */
+
 	}
 }
 
@@ -145,13 +147,14 @@ function go_clipboard_intable(){
 					$user_first_name = $user_data_key->user_firstname;
 					$user_last_name =  $user_data_key->user_lastname;
 					$user_url =  $user_data_key->user_url;
-					$user_focuses = go_display_user_focuses($value);
-					$focus_name = get_option('go_focus_name');
-					$focuses = get_option('go_focus');
-					$focuses_list = '';
-					$focuses_list = "<option value='No {$focus_name}' ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
-					foreach ($focuses as $focus) {
-						$focuses_list .= "<option value='{$focus}' ".($focus == $user_focuses ? "selected" : "").">{$focus}</option>";
+					if (go_return_options('go_focus_switch') == 'On') {
+						$user_focuses = go_display_user_focuses($value);
+						$focus_name = get_option('go_focus_name');
+						$focuses = get_option('go_focus');
+						$focuses_list = "<option>{$user_focuses}</option><option ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
+						foreach ($focuses as $focus) {
+							$focuses_list .= "<option value='".esc_attr($focus)."' >{$focus}</option>";
+						}
 					}
 					$bonus_currency = go_return_bonus_currency($value);
 					$penalty = go_return_penalty($value);
@@ -218,6 +221,18 @@ function go_clipboard_add(){
 		}
 	}
 	die();
+}
+
+function go_update_user_focuses() {
+	$new_user_focus = stripslashes($_POST['new_user_focus']);
+	$user_id = $_POST['user_id'];
+	if ($new_user_focus != 'No '.go_return_options('go_focus_name')) {
+		update_user_meta($user_id, 'go_focus', array($new_user_focus));
+	} else {
+		update_user_meta($user_id, 'go_focus', array());
+	}
+	echo $new_user_focus;
+	die();	
 }
 
 function go_clipboard_collect_data(){

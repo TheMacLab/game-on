@@ -157,11 +157,6 @@ function go_mta_con_meta( array $meta_boxes ) {
  				'type' => 'go_test_field_encounter'
  			),
 			array(
-				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
-				'id' => 'stage_one_shortcode_list',
-				'type' => 'go_shortcode_list',
-			),
-			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
 				'id' => $prefix.'stage_one_badge',
 				'type' => 'go_badge_input',
@@ -241,11 +236,6 @@ function go_mta_con_meta( array $meta_boxes ) {
  				'id' => $prefix.'test_lock_accept',
  				'type' => 'go_test_field_accept'
  			),
-			array(
-				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
-				'id' => 'stage_two_shortcode_list',
-				'type' => 'go_shortcode_list'
-			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
 				'id' => $prefix.'stage_two_badge',
@@ -330,11 +320,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => '3 Stage '.go_return_options('go_tasks_name').go_task_opt_help('toggle_mastery_stage', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4'),
 				'id' => $prefix.'task_mastery',
 				'type' => 'checkbox'
-			),
-			array(
-				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
-				'id' => 'stage_three_shortcode_list',
-				'type' => 'go_shortcode_list'
 			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
@@ -427,11 +412,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
-				'id' => 'stage_four_shortcode_list',
-				'type' => 'go_shortcode_list'
-			),
-			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
 				'id' => $prefix.'stage_four_badge',
 				'type' => 'go_badge_input',
@@ -495,11 +475,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Shortcodes'.go_task_opt_help('shortcode_list', '', 'http://maclab.guhsd.net/go/video/quests/shortcodeList.mp4'),
-				'id' => 'stage_five_shortcode_list',
-				'type' => 'go_shortcode_list'
-			),
-			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
 				'id' => $prefix.'stage_five_badge',
 				'type' => 'go_badge_input',
@@ -557,12 +532,17 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_store_focus'
 			),
 			array(
+				'name' => go_return_options('go_focus_name').' Lock'.go_task_opt_help('focus_lock', '', 'http://maclab.guhsd.net/go/video/store/focusLock.mp4'),
+				'id' => "{$prefix}store_focus_lock",
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Send Receipt'.go_task_opt_help('store_receipt', '', 'http://maclab.guhsd.net/go/video/store/receipt.mp4'),
 				'id' => "{$prefix}store_receipt",
 				'type' => 'go_store_receipt'
 			),
 			array(
-				'name' => 'Giftable'.go_task_opt_help('store_shortcode', '', 'http://maclab.guhsd.net/go/video/store/Giftable.mp4'),
+				'name' => 'Giftable'.go_task_opt_help('giftable', '', 'http://maclab.guhsd.net/go/video/store/Giftable.mp4'),
 				'id' => "{$prefix}store_giftable",
 				'type' => 'checkbox'
 			),
@@ -632,39 +612,6 @@ function go_rank_list() {
 	} else {
 		echo "No <a href='".admin_url()."/?page=game-on-options.php' target='_blank'>".get_option('go_level_plural_names')."</a> were provided.";
 	}
-}
-
-add_action('cmb_render_go_shortcode_list', 'go_cmb_render_go_shortcode_list');
-function go_cmb_render_go_shortcode_list($field_args){
-	$meta_id = $field_args["id"];
-	$custom = get_post_custom(get_the_id());
-	$is_checked = $custom[$meta_id][0];
-	echo "
-		<input class='go_shortcode_list_checkbox' name='{$meta_id}' type='checkbox'";
-		if ($is_checked) {
-			echo ' checked';
-		}
-	echo "/>
-		<ul class='go_shortcode_list' style='display: none;'>
-			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/displayNameShortcode.mp4')."</span>[go_get_displayname]
-			</li>
-			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('user_only_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/userOnlyShortcode.mp4')."</span>[go_user_only_content][/go_user_only_content]
-			</li>
-			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('visitor_only_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/visitorOnlyShortcode.mp4')."</span>[go_visitor_only_content][/go_visitor_only_content]
-			</li>
-			<!--
-			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('admin_only_shortcode', '', 'http://maclab.guhsd.net/go/video/quests/adminOnlyShortcode.mp4')."</span>[go_admin_only_content][/go_admin_only_content]
-			</li>
-			-->
-			<li class='go_shortcode_list_item'><span>"
-				.go_task_opt_help('video_shortocde', '', 'http://maclab.guhsd.net/go/video/quests/videoShortcode.mp4')."</span>[go_display_video video_url=\"\" video_title=\"\" width=\"\" height=\"\"]
-			</li>
-		</ul>
-	";
 }
 
 add_action('cmb_render_go_decay_table', 'go_decay_table');
@@ -2313,7 +2260,7 @@ function go_tasks_template_function( $template_path ) {
 function go_tasks_filter_content(){
 	 global $wpdb;
 	 echo do_shortcode('[go_task id="'.get_the_id().'"]');
-	 }
+}
 	 
 function go_create_help_video_lb(){
 	?>
@@ -2755,23 +2702,7 @@ function go_clone_task () {
 add_action('cmb_render_go_store_shortcode_list', 'go_cmb_render_go_store_shortcode_list');
 function go_cmb_render_go_store_shortcode_list() {
 	$post_id = get_the_id();
-	$custom = get_post_custom($post_id);
-	$is_checked = $custom['go_mta_store_shortcode_list'][0];
-	echo "
-		<input id='go_store_shortcode_list_checkbox' name='go_mta_store_shortcode_list' type='checkbox'".($is_checked ? "checked" : "")."/>";
-	echo "
-		<ul id='go_store_shortcode_list' style='display: none;'>
-			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('display_name_shortcode', '', 'http://maclab.guhsd.net/go/video/store/displayNameShortcode.mp4')."</span>[go_get_displayname]
-			</li>
-			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('store_by_cat', '', 'http://maclab.guhsd.net/go/video/store/storeByCat.mp4')."</span>[go_store cats=\"\"]
-			</li>
-			<li class='go_store_shortcode_list_item'><span>"
-				.go_task_opt_help('store_by_id', '', 'http://maclab.guhsd.net/go/video/store/storeById.mp4')."</span>[go_store id=\"{$post_id}\"]
-			</li>
-		</ul>
-	";
+	echo "</span>[go_store id=\"{$post_id}\"]";
 }
 
 add_action('cmb_render_go_store_cost', 'go_store_cost');

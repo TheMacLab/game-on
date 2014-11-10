@@ -320,11 +320,11 @@ function go_task_shortcode($atts, $content = null) {
 			}
 			
 			if(get_user_meta($user_ID, 'go_focus', true) != ''){
-				$user_focus = (array) get_user_meta($user_ID, 'go_focus', true);	
+				$user_focus = get_user_meta($user_ID, 'go_focus', true);	
 			}
 			
 			if($category_names && $user_focus){
-				$go_ahead = array_intersect($user_focus, $category_names);	
+				$go_ahead = array_intersect($user_focus, $category_names);
 			}
 			
 			go_display_rewards($points_array, $currency_array, $number_of_stages);
@@ -711,7 +711,7 @@ function go_task_shortcode($atts, $content = null) {
 					echo "You require less than {$penalty_filter} ".go_return_options('go_penalty_name')." to view this ".go_return_options('go_tasks_name').".";
 				}
 			}
-		} else{ // If user can't access quest because they aren't part of the specialty, echo this
+		} else { // If user can't access quest because they aren't part of the specialty, echo this
 			$category_name = implode(',',$category_names);
 			$focus_name = get_option('go_focus_name', 'Profession');
 			$task_name = strtolower(get_option('go_tasks_name', 'Quest'));
