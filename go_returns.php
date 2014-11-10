@@ -77,18 +77,18 @@ function go_display_user_focuses ($user_id) {
 		if (!is_array($user_focuses)) {
 			$output = $user_focuses;
 		} else {
-			$user_focuses = array_filter($user_focuses);
-			if (count(array_unique($user_focuses)) === 1 && reset($user_focuses) === ':') {
+			$filtered_user_focuses = array_filter($user_focuses);
+			if (count(array_unique($filtered_user_focuses)) === 1 && reset($filtered_user_focuses) === ':') {
 				$output = 'No '.go_return_options('go_focus_name');
 			} else {
-				$value = array_filter($user_focuses, function($elem){
-					if (!strstr($elem, ':') && !strstr($elem, 'No '.go_return_options('go_focus_name'))){
+				$value = array_filter($filtered_user_focuses, function($elem){
+					if (!strpos($elem, ':') && !strpos($elem, 'No '.go_return_options('go_focus_name'))){
 						return true;
 					} else { 
 						return false;
 					}	
 				});
-				$output = implode(', ', array_filter($value));
+				$output = implode(', ', $value);
 			}
 		}
 	} else {
