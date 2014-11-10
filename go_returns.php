@@ -77,7 +77,8 @@ function go_display_user_focuses ($user_id) {
 		if (!is_array($user_focuses)) {
 			$output = $user_focuses;
 		} else {
-			if (count(array_unique($user_focuses)) === 1 && $user_focuses[0] === ':') {
+			$user_focuses = array_filter($user_focuses);
+			if (count(array_unique($user_focuses)) === 1 && reset($user_focuses) === ':') {
 				$output = 'No '.go_return_options('go_focus_name');
 			} else {
 				$value = array_filter($user_focuses, function($elem){
