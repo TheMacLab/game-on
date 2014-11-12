@@ -58,113 +58,50 @@ function go_task_shortcode($atts, $content = null) {
 		$number_of_stages = 4;
 		
 		if ($test_e_active) {
-			$test_e_returns = $custom_fields['go_mta_test_encounter_lock_loot'][0];
-
-			$test_e_array = $custom_fields['go_mta_test_lock_encounter'][0];
-			$test_e_uns = unserialize($test_e_array);
-
-			$test_e_num = $test_e_uns[3];
-
-			$test_e_all_questions = $test_e_uns[0];
-			$test_e_all_types = $test_e_uns[2];
-			$test_e_all_inputs = $test_e_uns[1];
-			$test_e_all_input_num = $test_e_uns[4];
-			$test_e_all_answers = array();
-			$test_e_all_keys = array();
-			for ($i = 0; $i < count($test_e_all_inputs); $i++) {
-				if (!empty($test_e_all_inputs[$i][0])) {
-					$answer_e_temp = implode("###", $test_e_all_inputs[$i][0]);
-					$test_e_all_answers[] = $answer_e_temp;
-				}
-				if (!empty($test_e_all_inputs[$i][1])) {
-					$key_e_temp = implode("###", $test_e_all_inputs[$i][1]);
-					$test_e_all_keys[] = $key_e_temp;
-				}
-			}
+			$test_e_array = go_get_test_meta_content($custom_fields, 'encounter');
+			$test_e_returns = $test_e_array[0];
+			$test_e_num = $test_e_array[1];
+			$test_e_all_questions = $test_e_array[2][0];
+			$test_e_all_types = $test_e_array[2][1];
+			$test_e_all_answers = $test_e_array[2][2];
+			$test_e_all_keys = $test_e_array[2][3];
 		}
 		$encounter_upload = $custom_fields['go_mta_encounter_upload'][0];
 
 		if ($test_a_active) {
-			$test_a_returns = $custom_fields['go_mta_test_accept_lock_loot'][0];
-
-			$test_a_array = $custom_fields['go_mta_test_lock_accept'][0];
-			$test_a_uns = unserialize($test_a_array);
-
-			$test_a_num = $test_a_uns[3];
-
-			$test_a_all_questions = $test_a_uns[0];
-			$test_a_all_types = $test_a_uns[2];
-			$test_a_all_inputs = $test_a_uns[1];
-			$test_a_all_input_num = $test_a_uns[4];
-			$test_a_all_answers = array();
-			$test_a_all_keys = array();
-			for ($i = 0; $i < count($test_a_all_inputs); $i++) {
-				if (!empty($test_a_all_inputs[$i][0])) {
-					$answer_a_temp = implode("###", $test_a_all_inputs[$i][0]);
-					$test_a_all_answers[] = $answer_a_temp;
-				}
-				if (!empty($test_a_all_inputs[$i][1])) {
-					$key_a_temp = implode("###", $test_a_all_inputs[$i][1]);
-					$test_a_all_keys[] = $key_a_temp;
-				}
-			}
+			$test_a_array = go_get_test_meta_content($custom_fields, 'accept');
+			$test_a_returns = $test_a_array[0];
+			$test_a_num = $test_a_array[1];
+			$test_a_all_questions = $test_a_array[2][0];
+			$test_a_all_types = $test_a_array[2][1];
+			$test_a_all_answers = $test_a_array[2][2];
+			$test_a_all_keys = $test_a_array[2][3];
 		}
 		$accept_upload = $custom_fields['go_mta_accept_upload'][0];
 
 		if ($test_c_active) {
-			$test_c_returns = $custom_fields['go_mta_test_completion_lock_loot'][0];
-
-			$test_c_array = $custom_fields['go_mta_test_lock_completion'][0];
-			$test_c_uns = unserialize($test_c_array);
-
-			$test_c_num = $test_c_uns[3];
-
-			$test_c_all_questions = $test_c_uns[0];
-			$test_c_all_types = $test_c_uns[2];
-			$test_c_all_inputs = $test_c_uns[1];
-			$test_c_all_input_num = $test_c_uns[4];
-			$test_c_all_answers = array();
-			$test_c_all_keys = array();
-			for ($i = 0; $i < count($test_c_all_inputs); $i++) {
-				if (!empty($test_c_all_inputs[$i][0])) {
-					$answer_c_temp = implode("###", $test_c_all_inputs[$i][0]);
-					$test_c_all_answers[] = $answer_c_temp;
-				}
-				if (!empty($test_c_all_inputs[$i][1])) {
-					$key_c_temp = implode("###", $test_c_all_inputs[$i][1]);
-					$test_c_all_keys[] = $key_c_temp;
-				}
-			}
+			$test_c_array = go_get_test_meta_content($custom_fields, 'completion');
+			$test_c_returns = $test_c_array[0];
+			$test_c_num = $test_c_array[1];
+			$test_c_all_questions = $test_c_array[2][0];
+			$test_c_all_types = $test_c_array[2][1];
+			$test_c_all_answers = $test_c_array[2][2];
+			$test_c_all_keys = $test_c_array[2][3];
 		}
 		$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 		$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 		
 		if ($mastery_active) {
 			$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
-			$test_m_returns = $custom_fields['go_mta_test_mastery_lock_loot'][0];
 
 			if ($test_m_active) {
-				$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
-				$test_m_uns = unserialize($test_m_array);
-				
-				$test_m_num = $test_m_uns[3];
-				
-				$test_m_all_questions = $test_m_uns[0];
-				$test_m_all_types = $test_m_uns[2];
-				$test_m_all_inputs = $test_m_uns[1];
-				$test_m_all_input_num = $test_m_uns[4];
-				$test_m_all_answers = array();
-				$test_m_all_keys = array();
-				for ($i = 0; $i < count($test_m_all_inputs); $i++) {
-					if (!empty($test_m_all_inputs[$i][0])) {
-						$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
-						$test_m_all_answers[] = $answer_m_temp;
-					}
-					if (!empty($test_m_all_inputs[$i][1])) {
-						$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
-						$test_m_all_keys[] = $key_m_temp;
-					}
-				}
+				$test_m_array = go_get_test_meta_content($custom_fields, 'mastery');
+				$test_m_returns = $test_m_array[0];
+				$test_m_num = $test_m_array[1];
+				$test_m_all_questions = $test_m_array[2][0];
+				$test_m_all_types = $test_m_array[2][1];
+				$test_m_all_answers = $test_m_array[2][2];
+				$test_m_all_keys = $test_m_array[2][3];
 			}
 			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
 			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
@@ -207,10 +144,13 @@ function go_task_shortcode($atts, $content = null) {
 		} else {
 			$req_points = null;
 		}
-		$currency_array = $rewards['currency']; // Makes an array out of currency values for each stage
-		$points_array = $rewards['points']; //Makes an array out of currency values for each stage
+		
+		$points_array = $rewards['points'];
 		$points_str = implode(" ", $points_array);
+		$currency_array = $rewards['currency'];
+		$currency_str = implode(" ", $currency_array);
 		$bonus_currency_array = $rewards['bonus_currency'];
+		$bonus_currency_str = implode(" ", $bonus_currency_array);
 		
 		$current_bonus_currency = go_return_bonus_currency($user_ID);	
 		$current_penalty = go_return_penalty($user_ID);
@@ -327,7 +267,7 @@ function go_task_shortcode($atts, $content = null) {
 				$go_ahead = array_intersect($user_focus, $category_names);
 			}
 			
-			go_display_rewards($points_array, $currency_array, $number_of_stages);
+			go_display_rewards($user_ID, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages);
 			echo '
 			<script type="text/javascript">
 				jQuery(".entry-title").after(jQuery(".go_task_rewards"));
@@ -1124,6 +1064,8 @@ function go_task_shortcode($atts, $content = null) {
 				data: {
 					action: "test_point_update",
 					points: "<?php echo $points_str; ?>",
+					currency: "<?php echo $currency_str; ?>",
+					bonus_currency: "<?php echo $bonus_currency_str; ?>",
 					status: status,
 					page_id: <?php echo $page_id; ?>,
 					user_ID: <?php echo $user_ID; ?>,
@@ -1334,44 +1276,98 @@ function go_task_shortcode($atts, $content = null) {
 			}
 		}
 	}
-} // Ends function
+}
 add_shortcode('go_task','go_task_shortcode');
 
-function test_point_update() {
-	$status = $_POST['status'];
+function go_get_test_meta_content ($custom_fields, $stage) {
+	$test_returns = $custom_fields["go_mta_test_{$stage}_lock_loot"][0];
+	$test_array = $custom_fields["go_mta_test_lock_{$stage}"][0];
+	$test_uns = unserialize($test_array);
+
+	$test_num = $test_uns[3];
+	$test_all_questions = array();
+	foreach ($test_uns[0] as $question) {
+		$esc_question = htmlspecialchars($question, ENT_QUOTES);
+		if (preg_match("/[\\\[\]]/", $question)) {
+			$str = preg_replace(array("/\[/", "/\]/", "/\\\/"), array('&#91;', '&#93;', '\\\\\\\\\\\\'), $esc_question);
+			$test_all_questions[] = $str;
+		} else {
+			$test_all_questions[] = $esc_question;
+		}
+	}
+	$test_all_types = $test_uns[2];
+	$test_all_inputs = $test_uns[1];
+	$test_all_input_num = $test_uns[4];
+	$test_all_answers = array();
+	$test_all_keys = array();
+	for ($i = 0; $i < count($test_all_inputs); $i++) {
+		if (!empty($test_all_inputs[$i][0])) {
+			$answer_temp = implode("###", $test_all_inputs[$i][0]);
+			$esc_answer = htmlspecialchars($answer_temp, ENT_QUOTES);
+			if (preg_match("/[\\\[\]]/", $answer_temp)) {
+				$str = preg_replace(array("/\[/", "/\]/", "/\\\/"), array('&#91;', '&#93;', '\\\\\\\\\\\\'), $esc_answer);
+				$test_all_answers[] = $str;
+			} else {
+				$test_all_answers[] = $esc_answer;
+			}
+		}
+		if (!empty($test_all_inputs[$i][1])) {
+			$key_temp = implode("###", $test_all_inputs[$i][1]);
+			$esc_key = htmlspecialchars($key_temp, ENT_QUOTES);
+			if (preg_match("/[\\\[\]]/", $key_temp)) {
+				$str = preg_replace(array("/\[/", "/\]/", "/\\\/"), array('&#91;', '&#93;', '\\\\\\\\\\\\'), $esc_key);
+				$test_all_keys[] = $str;
+			} else {
+				$test_all_keys[] = $esc_key;
+			}
+		}
+	}
+
+	return (array($test_returns, $test_num, array($test_all_questions, $test_all_types, $test_all_answers, $test_all_keys)));
+}
+
+function test_point_update () {
+	$status = (int)$_POST['status'];
 	$page_id = $_POST['page_id'];
 	$post_id = $_POST['post_id'];
 	$user_id = $_POST['user_ID'];
 	$points_str = $_POST['points'];
+	$currency_str = $_POST['currency'];
+	$bonus_currency_str = $_POST['bonus_currency'];
 	$update_percent = $_POST['update_percent'];
 	$points_array = explode(" ", $points_str);
 	$point_base = (int)$points_array[$status];
+	$currency_array = explode(" ", $currency_str);
+	$currency_base = (int)$currency_array[$status];
+	$bonus_currency_array = explode(" ", $bonus_currency_str);
+	$bonus_currency_base = (int)$bonus_currency_array[$status];
 	$e_fail_count = $_SESSION['test_encounter_fail_count'];
 	$a_fail_count = $_SESSION['test_accept_fail_count'];
 	$c_fail_count = $_SESSION['test_completion_fail_count'];
 	$m_fail_count = $_SESSION['test_mastery_fail_count'];
+	$status++;
 
 	$custom_fields = get_post_custom($post_id);
 	switch ($status) {
-		case (0):
+		case (1):
 			$fail_count = $e_fail_count;
 			$custom_mod = $custom_fields['go_mta_test_encounter_lock_loot_mod'][0];
 			$passed = $_SESSION['test_encounter_passed'];
 			$_SESSION['test_encounter_passed'] = 1;
 			break;
-		case (1):
+		case (2):
 			$fail_count = $a_fail_count;
 			$custom_mod = $custom_fields['go_mta_test_accept_lock_loot_mod'][0];
 			$passed = $_SESSION['test_accept_passed'];
 			$_SESSION['test_accept_passed'] = 1;
 			break;
-		case (2):
+		case (3):
 			$fail_count = $c_fail_count;
 			$custom_mod = $custom_fields['go_mta_test_completion_lock_loot_mod'][0];
 			$passed = $_SESSION['test_completion_passed'];
 			$_SESSION['test_completion_passed'] = 1;
 			break;
-		case (3):
+		case (4):
 			$fail_count = $m_fail_count;
 			$custom_mod = $custom_fields['go_mta_test_mastery_lock_loot_mod'][0];
 			$passed = $_SESSION['test_mastery_passed'];
@@ -1393,42 +1389,57 @@ function test_point_update() {
 	$m_passed = $_SESSION['test_mastery_passed'];
 	
 	$percent = $custom_mod / 100;
-	$test_fail_max_temp = $point_base / ($point_base * $percent);
+	if (!empty($point_base)) {
+		$test_fail_max_temp = $point_base / ($point_base * $percent);	
+	} else if (!empty($currency_base)) {
+		$test_fail_max_temp = $currency_base / ($currency_base * $percent);
+	} else if (!empty($bonus_currency_base)) {
+		$test_fail_max_temp = $bonus_currency_base / ($bonus_currency_base * $percent);
+	}
 	$test_fail_max = ceil($test_fail_max_temp);
 	if ($fail_count < $test_fail_max) {
 		$p_num = $point_base - (($point_base * $percent) * $fail_count);
-		$target_point = floor($p_num);
+		$target_points = floor($p_num);
+		$c_num = $currency_base - (($currency_base * $percent) * $fail_count);
+		$target_currency = floor($c_num);
+		$b_num = $bonus_currency_base - (($bonus_currency_base * $percent) * $fail_count);
+		$target_bonus_currency = floor($b_num);
 	} else {
-		$target_point = 0;
+		$target_points = 0;
 	}
 	
 	if ($passed === 0 || $passed === '0') {
 		go_add_post($user_id, $post_id, $status, 
-		floor($target_point + ($update_percent * $target_point)), 0, 0, null, $page_id, null, null, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
+		floor($update_percent * $target_points), 
+		floor($update_percent * $target_currency), 
+		floor($update_percent * $target_bonus_currency), 
+		null, $page_id, null, null, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null);
 	}
 	die();
 }
 
-function go_inc_test_fail_count($s_name, $test_fail_max) {
-	$s_var = $_SESSION[$s_name];
-	if (isset($s_var)) {
-		if ($s_var < $test_fail_max) {
-			$_SESSION[$s_name]++;
-		} else if ($s_var > $test_fail_max) {
-			unset($_SESSION[$s_name]);
+function go_inc_test_fail_count ($s_name, $test_fail_max = null) {
+	if (!is_null($test_fail_max)) {
+		$s_var = $_SESSION[$s_name];
+		if (isset($s_var)) {
+			if ($s_var < $test_fail_max) {
+				$_SESSION[$s_name]++;
+			} else if ($s_var > $test_fail_max) {
+				unset($_SESSION[$s_name]);
+			}
 		}
 	}
 }
 
-function unlock_stage() {
+function unlock_stage () {
 	$id = $_POST['task'];
 	$status = $_POST['status'];
 	$test_size = (int)$_POST['list_size'];
 	$points_str = $_POST['points'];
 	$points_array = explode(" ", $points_str);
-	$point_base = $points_array[$status];
+	$point_base = (int)$points_array[$status];
 
-	$choice = $_POST['chosen_answer'];
+	$choice = stripslashes($_POST['chosen_answer']);
 	$type = $_POST['type'];
 	if ($test_size > 1) {
 		$all_test_choices = explode("#### ", $choice);
@@ -1466,9 +1477,11 @@ function unlock_stage() {
 			$custom_mod = 20;
 	}
 
-	$percent = $custom_mod / 100;
-	$test_fail_max_temp = $point_base / ($point_base * $percent);
-	$test_fail_max = ceil($test_fail_max_temp);
+	if ($point_base !== 0) {
+		$percent = $custom_mod / 100;
+		$test_fail_max_temp = $point_base / ($point_base * $percent);
+		$test_fail_max = ceil($test_fail_max_temp);
+	}
 	
 	$user_ID = get_current_user_id();
 
@@ -1477,19 +1490,7 @@ function unlock_stage() {
 	$keys = $test_c_uns[1];
 	$all_keys_array = array();
 	for ($i = 0; $i < count($keys); $i++) {
-		$keys_temp = implode("### ", $keys[$i][1]);
-		$str = $keys_temp;
-		if (preg_match("/(\&\#39;|\&\#34;)+/", $str)) {
-			
-			if (preg_match("/(\&\#39;)+/", $str)) {
-				$str = preg_replace("/(\&\#39;)+/", "\'", $str);
-			}
-			
-			if (preg_match("/(\&\#34;)+/", $str)) {
-				$str = preg_replace("/(\&\#34;)+/", '\"', $str);
-			}
-		}
-		$all_keys_array[] = $str;
+		$all_keys_array[] = implode("### ", $keys[$i][1]);
 	}
 	$key = $all_keys_array[0];
 	
@@ -1668,113 +1669,50 @@ function task_change_stage() {
 	$test_c_active = $custom_fields['go_mta_test_completion_lock'][0];
 
 	if ($test_e_active) {
-		$test_e_returns = $custom_fields['go_mta_test_encounter_lock_loot'][0];
-
-		$test_e_array = $custom_fields['go_mta_test_lock_encounter'][0];
-		$test_e_uns = unserialize($test_e_array);
-
-		$test_e_num = $test_e_uns[3];
-
-		$test_e_all_questions = $test_e_uns[0];
-		$test_e_all_types = $test_e_uns[2];
-		$test_e_all_inputs = $test_e_uns[1];
-		$test_e_all_input_num = $test_e_uns[4];
-		$test_e_all_answers = array();
-		$test_e_all_keys = array();
-		for ($i = 0; $i < count($test_e_all_inputs); $i++) {
-			if (!empty($test_e_all_inputs[$i][0])) {
-				$answer_e_temp = implode("###", $test_e_all_inputs[$i][0]);
-				$test_e_all_answers[] = $answer_e_temp;
-			}
-			if (!empty($test_e_all_inputs[$i][1])) {
-				$key_e_temp = implode("###", $test_e_all_inputs[$i][1]);
-				$test_e_all_keys[] = $key_e_temp;
-			}
-		}
+		$test_e_array = go_get_test_meta_content($custom_fields, 'encounter');
+		$test_e_returns = $test_e_array[0];
+		$test_e_num = $test_e_array[1];
+		$test_e_all_questions = $test_e_array[2][0];
+		$test_e_all_types = $test_e_array[2][1];
+		$test_e_all_answers = $test_e_array[2][2];
+		$test_e_all_keys = $test_e_array[2][3];
 	}
 	$encounter_upload = $custom_fields['go_mta_encounter_upload'][0];
 
 	if ($test_a_active) {
-		$test_a_returns = $custom_fields['go_mta_test_accept_lock_loot'][0];
-
-		$test_a_array = $custom_fields['go_mta_test_lock_accept'][0];
-		$test_a_uns = unserialize($test_a_array);
-
-		$test_a_num = $test_a_uns[3];
-
-		$test_a_all_questions = $test_a_uns[0];
-		$test_a_all_types = $test_a_uns[2];
-		$test_a_all_inputs = $test_a_uns[1];
-		$test_a_all_input_num = $test_a_uns[4];
-		$test_a_all_answers = array();
-		$test_a_all_keys = array();
-		for ($i = 0; $i < count($test_a_all_inputs); $i++) {
-			if (!empty($test_a_all_inputs[$i][0])) {
-				$answer_a_temp = implode("###", $test_a_all_inputs[$i][0]);
-				$test_a_all_answers[] = $answer_a_temp;
-			}
-			if (!empty($test_a_all_inputs[$i][1])) {
-				$key_a_temp = implode("###", $test_a_all_inputs[$i][1]);
-				$test_a_all_keys[] = $key_a_temp;
-			}
-		}
+		$test_a_array = go_get_test_meta_content($custom_fields, 'accept');
+		$test_a_returns = $test_a_array[0];
+		$test_a_num = $test_a_array[1];
+		$test_a_all_questions = $test_a_array[2][0];
+		$test_a_all_types = $test_a_array[2][1];
+		$test_a_all_answers = $test_a_array[2][2];
+		$test_a_all_keys = $test_a_array[2][3];
 	}
 	$accept_upload = $custom_fields['go_mta_accept_upload'][0];
 
 	if ($test_c_active) {
-		$test_c_returns = $custom_fields['go_mta_test_completion_lock_loot'][0];
-
-		$test_c_array = $custom_fields['go_mta_test_lock_completion'][0];
-		$test_c_uns = unserialize($test_c_array);
-
-		$test_c_num = $test_c_uns[3];
-
-		$test_c_all_questions = $test_c_uns[0];
-		$test_c_all_types = $test_c_uns[2];
-		$test_c_all_inputs = $test_c_uns[1];
-		$test_c_all_input_num = $test_c_uns[4];
-		$test_c_all_answers = array();
-		$test_c_all_keys = array();
-		for ($i = 0; $i < count($test_c_all_inputs); $i++) {
-			if (!empty($test_c_all_inputs[$i][0])) {
-				$answer_c_temp = implode("###", $test_c_all_inputs[$i][0]);
-				$test_c_all_answers[] = $answer_c_temp;
-			}
-			if (!empty($test_c_all_inputs[$i][1])) {
-				$key_c_temp = implode("###", $test_c_all_inputs[$i][1]);
-				$test_c_all_keys[] = $key_c_temp;
-			}
-		}
+		$test_c_array = go_get_test_meta_content($custom_fields, 'completion');
+		$test_c_returns = $test_c_array[0];
+		$test_c_num = $test_c_array[1];
+		$test_c_all_questions = $test_c_array[2][0];
+		$test_c_all_types = $test_c_array[2][1];
+		$test_c_all_answers = $test_c_array[2][2];
+		$test_c_all_keys = $test_c_array[2][3];
 	}
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
 	
 	if ($mastery_active) {
 		$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
-		$test_m_returns = $custom_fields['go_mta_test_mastery_lock_loot'][0];
 
 		if ($test_m_active) {
-			$test_m_array = $custom_fields['go_mta_test_lock_mastery'][0];
-			$test_m_uns = unserialize($test_m_array);
-			
-			$test_m_num = $test_m_uns[3];
-			
-			$test_m_all_questions = $test_m_uns[0];
-			$test_m_all_types = $test_m_uns[2];
-			$test_m_all_inputs = $test_m_uns[1];
-			$test_m_all_input_num = $test_m_uns[4];
-			$test_m_all_answers = array();
-			$test_m_all_keys = array();
-			for ($i = 0; $i < count($test_m_all_inputs); $i++) {
-				if (!empty($test_m_all_inputs[$i][0])) {
-					$answer_m_temp = implode("###", $test_m_all_inputs[$i][0]);
-					$test_m_all_answers[] = $answer_m_temp;
-				}
-				if (!empty($test_m_all_inputs[$i][1])) {
-					$key_m_temp = implode("###", $test_m_all_inputs[$i][1]);
-					$test_m_all_keys[] = $key_m_temp;
-				}
-			}
+			$test_m_array = go_get_test_meta_content($custom_fields, 'mastery');
+			$test_m_returns = $test_m_array[0];
+			$test_m_num = $test_m_array[1];
+			$test_m_all_questions = $test_m_array[2][0];
+			$test_m_all_types = $test_m_array[2][1];
+			$test_m_all_answers = $test_m_array[2][2];
+			$test_m_all_keys = $test_m_array[2][3];
 		}
 		$mastery_message = $custom_fields['go_mta_mastery_message'][0];
 		$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
@@ -1869,14 +1807,14 @@ function task_change_stage() {
 		if ($undo == 'true' || $undo === true) {
 			if ($task_count > 0) {
 				go_add_post($user_id, $post_id, $status, 
-				-floor(($update_percent * $points_array[$status-1])), 
-				-floor(($update_percent * $currency_array[$status-1])), 
-				-floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $points_array[$status])), 
+				-floor(($update_percent * $currency_array[$status])), 
+				-floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 			} else {
-				go_add_post($user_id, $post_id, ($status-1), 
-				-floor(($update_percent * $points_array[$status-1])), 
-				-floor(($update_percent * $currency_array[$status-1])), 
-				-floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				go_add_post($user_id, $post_id, ($status - 1), 
+				-floor(($update_percent * $points_array[$status - 1])), 
+				-floor(($update_percent * $currency_array[$status - 1])), 
+				-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				if ($stage_badges[$status][0] == 'true') {
 					foreach ($stage_badges[$status][1] as $badge_id) {
 						go_remove_badge($user_id, $badge_id);
@@ -1886,9 +1824,9 @@ function task_change_stage() {
 		} else {
 			// if repeat is on and undo is not hit...
 			go_add_post($user_id, $post_id, $status, 
-			floor(($update_percent * $points_array[$status-1])), 
-			floor(($update_percent * $currency_array[$status-1])), 
-			floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url);
+			floor(($update_percent * $points_array[$status])), 
+			floor(($update_percent * $currency_array[$status])), 
+			floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url);
 			if ($stage_badges[$status][0] == 'true') {
 				foreach ($stage_badges[$status][1] as $badge_id) {
 					do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
@@ -1902,15 +1840,15 @@ function task_change_stage() {
 			if ($undo == 'true' || $undo === true) {
 				if ($task_count > 0) {
 					go_add_post($user_id, $post_id, $status, 
-					-floor(($update_percent * $points_array[$status-1])), 
-					-floor(($update_percent * $currency_array[$status-1])), 
-					-floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+					-floor(($update_percent * $points_array[$status - 1])), 
+					-floor(($update_percent * $currency_array[$status - 1])), 
+					-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				} else {
-					go_add_post($user_id, $post_id, ($status-2), 
-					-floor(($update_percent * $points_array[$status-2])), 
-					-floor(($update_percent * $currency_array[$status-2])), -floor(($update_percent * $bonus_currency[$status-2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
-					if ($stage_badges[$status-2][0] == 'true') {
-						foreach ($stage_badges[$status-2][1] as $badge_id) {
+					go_add_post($user_id, $post_id, ($status - 2), 
+					-floor(($update_percent * $points_array[$status - 2])), 
+					-floor(($update_percent * $currency_array[$status - 2])), -floor(($update_percent * $bonus_currency[$status - 2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+					if ($stage_badges[$status - 2][0] == 'true') {
+						foreach ($stage_badges[$status - 2][1] as $badge_id) {
 							go_remove_badge($user_id, $badge_id);
 						}
 					}
@@ -1918,10 +1856,10 @@ function task_change_stage() {
 			} else {
 				go_add_post($user_id, $post_id, $status, 
 				floor(($update_percent * $points_array[$status - 1])), 
-				floor(($update_percent * $currency_array[$status-1])), 
-				floor(($update_percent * $bonus_currency[$status-1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url); 
-				if ($stage_badges[$status-1][0] == 'true') {
-					foreach ($stage_badges[$status-1][1] as $badge_id) {
+				floor(($update_percent * $currency_array[$status - 1])), 
+				floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url); 
+				if ($stage_badges[$status - 1][0] == 'true') {
+					foreach ($stage_badges[$status - 1][1] as $badge_id) {
 						do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
 					}
 				}
@@ -2180,38 +2118,54 @@ function task_change_stage() {
 			}
 			echo '</div>';
 	}
-die();
+	die();
 }
-function go_display_rewards($points_array, $currency_array, $number_of_stages){
-	echo '<div class="go_task_rewards" style="margin: 6px 0px 6px 0px;"><strong>Rewards</strong><br/>';
-	for($i=0;$i<$number_of_stages;$i++){
-		if($points_array[$i] == 0){
-			$points_array[$i] = '';
-			$points_name = '';	
-		}else{
-			$points_name = go_return_options('go_points_name');	
+
+function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $date_percent = 1, $number_of_stages = 4) {
+	if (!is_null($number_of_stages) && (!is_null($points) || !is_null($currency) || !is_null($bonus_currency))) {
+		echo '<div class="go_task_rewards" style="margin: 6px 0px 6px 0px;"><strong>Rewards</strong><br/>';
+		$p_name = go_return_options('go_points_name');
+		$c_name = go_return_options('go_currency_name');
+		$bc_name = go_return_options('go_bonus_currency_name');
+		$u_bonuses = go_return_bonus_currency($user_id);
+		$u_penalties = go_return_penalty($user_id);
+		if ($date_percent !== 1 && !empty($date_percent)) {
+			$rewards_array = array($points, $currency, $bonus_currency);
+			$p_array = $rewards_array[0];
+			$c_array = $rewards_array[1];
+			$bc_array = $rewards_array[2];
+		} else {
+			$p_array = $points;
+			$c_array = $currency;
+			$bc_array = $bonus_currency;
 		}
-		if($currency_array[$i] == 0){
-			$currency_array[$i] = '';
-			$currency_name = '';
-		}else{
-			$currency_name = go_return_options('go_currency_name');	
+		for ($i = 0; $i < $number_of_stages; $i++) {
+			$mod_array = go_return_multiplier($user_id, $p_array[$i] * $date_percent, $c_array[$i] * $date_percent, $bc_array[$i] * $date_percent, $u_bonuses, $u_penalties);
+			$stage_name = '';
+			switch ($i) {
+				case 0:
+					$stage_name = go_return_options('go_first_stage_name');
+					break;
+				case 1:
+					$stage_name = go_return_options('go_second_stage_name');
+					break;
+				case 2:
+					$stage_name = go_return_options('go_third_stage_name');
+					break;
+				case 3:
+					$stage_name = go_return_options('go_fourth_stage_name');
+					break;
+				case 4:
+					$stage_name = go_return_options('go_fifth_stage_name');
+					break;
+			}
+			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "{$mod_array[0]} {$p_name}" : '').
+				" ".(!empty($mod_array[1]) && !empty($c_name) ? "{$mod_array[1]} {$c_name}" : '').
+				" ".(!empty($mod_array[2]) && !empty($bc_name) ? "{$mod_array[2]} {$bc_name}" : '').
+				"<br/>";
+			echo $output;
 		}
-		switch($i){
-			case 0:
-				echo go_return_options('go_first_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
-				break;
-			case 1:
-				echo go_return_options('go_second_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
-				break;
-			case 2:
-				echo go_return_options('go_third_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
-				break;
-			case 3:
-				echo go_return_options('go_fourth_stage_name').' - '.$points_array[$i].' '.$points_name.' '.$currency_array[$i].' '.$currency_name.'<br/>';
-				break;
-		}
+		echo '</div>';
 	}
-	echo '</div>';
 }
 ?>
