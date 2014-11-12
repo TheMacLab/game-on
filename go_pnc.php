@@ -143,7 +143,13 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 	if ($user_id != get_current_user_id()) {
 		return false;	
 	} else {
-		if ($points < 0 || $currency < 0) {
+		if ($points < 0 || $currency < 0 || $bonus_currency < 0 || $minutes < 0) {
+			$sym = '-';
+			$background = "#ff0000";
+		} else if ($penalty < 0) {
+			$sym = '+';
+			$background = "#39b54a";
+		} else if ($penalty > 0) {
 			$sym = '-';
 			$background = "#ff0000";
 		} else {
