@@ -54,7 +54,6 @@ jQuery(document).ready(function() {
 			jQuery('#go_store_focus_select').hide('slow');
 		}
 	});
-
 });
 </script>
 <?php 

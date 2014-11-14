@@ -1,6 +1,6 @@
 <?php 
-
-function go_test_shortcode ( $atts, $content ) {
+add_shortcode('go_test', 'go_test_shortcode');
+function go_test_shortcode ($atts, $content) {
 	extract(shortcode_atts(array(
 		'type' => 'radio',
 		'question' => 'What is the ultimate answer to life, the universe, and everything?',
@@ -9,19 +9,18 @@ function go_test_shortcode ( $atts, $content ) {
 		'test_id' => '0',
 		'total_num' => '1'
 	), $atts) );
-	$possible_answers_str = preg_replace("/\#\#\#\s*/", "### ", $possible_answers);
+	$possible_answers_str = preg_replace(array("/\#\#\#\s*/", "/(\&#91;)/", "/(\&#93;)/"), array("### ", '[', ']'), $possible_answers);
 	$answer_array = explode("### ", $possible_answers_str);
+	$key_decoded = preg_replace(array("/(\&#91;)/", "/(\&#93;)/"), array('[', ']'), $key);
 	if ($type == 'checkbox') {
-		$key_str = preg_replace("/\s*\#\#\#\s*/", "### ", $key);
+		$key_str = preg_replace("/\s*\#\#\#\s*/", "### ", $key_decoded);
 		$key_array = explode("### ", $key_str);
 	}
-	
 	$key_check = false;
 	$key_match = 0;
-	
 	if ($type == 'radio') {
 		for ($i = 0; $i < count($answer_array); $i++) {
-			if (strtolower($answer_array[$i]) == strtolower($key)) {
+			if (strtolower($answer_array[$i]) == strtolower($key_decoded)) {
 				$key_check = true;
 				break;
 			}
@@ -39,18 +38,17 @@ function go_test_shortcode ( $atts, $content ) {
 			$key_check = true;	
 		}
 	}
-
 	if (count($answer_array) >= 2 && $question != '' && $key_check == true) {
 		$output_array = array();
 		if ($type == 'radio') {
 			for ($i = 0; $i < count($answer_array); $i++) {
 				$upper_name = ucfirst($answer_array[$i]);
-				array_push($output_array, "<li class='go_test go_test_element'><input type='radio' name='go_test_answer_".$test_id."' value='".$upper_name."'> ".$upper_name."</input></li>");
+				array_push($output_array, "<li class='go_test go_test_element'><input type='radio' name='go_test_answer_".$test_id."' value='".$upper_name."'/> ".$upper_name."</li>");
 			}
 		} else if ($type == 'checkbox') {
 			for ($i = 0; $i < count($answer_array); $i++) {
 				$upper_name = ucfirst($answer_array[$i]);
-				array_push($output_array, "<li class='go_test go_test_element'><input type='checkbox' name='go_test_answer_".$test_id."_".$answer_array[$i]."' value='".$upper_name."'> ".$upper_name."</input></li>");
+				array_push($output_array, "<li class='go_test go_test_element'><input type='checkbox' name='go_test_answer_".$test_id."_".$answer_array[$i]."' value='".$upper_name."'/> ".$upper_name."</li>");
 			}
 		}
 		$output_array_str = implode(" ", $output_array);
@@ -60,7 +58,6 @@ function go_test_shortcode ( $atts, $content ) {
 			$rtn_output = "<div class='go_test_container'><ul id='go_test' class='go_test go_test_list go_test_".$type."'><li><div style='font-weight:700;'>".ucfirst($question)."<span class='go_wrong_answer_marker' style='display: none;'>wrong</span><span class='go_correct_answer_marker' style='display: none;'>correct</span></div></li>".$output_array_str."</ul></div>";
 			
 		}
-		
 		return $rtn_output;
 	} else {
 		if (current_user_can('manage_options')) {
@@ -80,5 +77,4 @@ function go_test_shortcode ( $atts, $content ) {
 		}
 	}
 }
-add_shortcode('go_test', 'go_test_shortcode'); 
 ?>

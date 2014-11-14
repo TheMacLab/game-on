@@ -154,7 +154,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
  				'name' => 'Format'.go_task_opt_help('encounter_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4'),
  				'id' => $prefix.'test_lock_encounter',
- 				'type' => 'go_test_field_encounter'
+ 				'type' => 'go_test_field',
+ 				'test_type' => 'e'
  			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
@@ -234,7 +235,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
  				'name' => 'Format'.go_task_opt_help('accept_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4'),
  				'id' => $prefix.'test_lock_accept',
- 				'type' => 'go_test_field_accept'
+ 				'type' => 'go_test_field',
+ 				'test_type' => 'a'
  			),
 			array(
 				'name' => 'Badge'.go_task_opt_help('badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4'),
@@ -314,7 +316,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
  				'name' => 'Format'.go_task_opt_help('complete_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4'),
  				'id' => $prefix.'test_lock_completion',
- 				'type' => 'go_test_field_completion'
+ 				'type' => 'go_test_field',
+ 				'test_type' => 'c'
  			),
 			array(
 				'name' => '3 Stage '.go_return_options('go_tasks_name').go_task_opt_help('toggle_mastery_stage', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4'),
@@ -399,7 +402,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 			array(
  				'name' => 'Format'.go_task_opt_help('mastery_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4'),
  				'id' => $prefix.'test_lock_mastery',
- 				'type' => 'go_test_field_mastery'
+ 				'type' => 'go_test_field',
+ 				'test_type' => 'm'
  			),
 			array(
 				'name' => '5 Stage '.go_return_options('go_tasks_name').go_task_opt_help('five_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/fiveStageQuest.mp4'),
@@ -492,6 +496,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
+				'name' => 'Item ID'.go_task_opt_help('post_id', 'The Store Item ID', 'http://maclab.guhsd.net/go/video/store/storeId.mp4'),
+				'id' => "{$prefix}store_post_id",
+				'type' => 'go_store_item_post_id'
+			),
+			array(
 				'name' => 'Cost'.go_task_opt_help('cost', 'The Cost of the store item', 'http://maclab.guhsd.net/go/video/store/cost.mp4'),
 				'id' => "{$prefix}store_cost",
 				'type' => 'go_store_cost',
@@ -542,14 +551,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_store_receipt'
 			),
 			array(
-				'name' => 'Giftable'.go_task_opt_help('giftable', '', 'http://maclab.guhsd.net/go/video/store/Giftable.mp4'),
+				'name' => 'Giftable'.go_task_opt_help('giftable', '', 'http://maclab.guhsd.net/go/video/store/giftable.mp4'),
 				'id' => "{$prefix}store_giftable",
 				'type' => 'checkbox'
-			),
-			array(
-				'name' => 'Shortcode'.go_task_opt_help('store_shortcode', '', 'http://maclab.guhsd.net/go/video/store/storeShortcode.mp4'),
-				'id' => "{$prefix}store_shortcode_list",
-				'type' => 'go_store_shortcode_list'
 			),
 		),
 	);
@@ -758,11 +762,14 @@ function go_validate_test_modifier($override_value, $post_id, $field_args) {
 	}
 }
 
-add_action('cmb_render_go_test_field_encounter', 'go_test_field_encounter', 10, 1);
-function go_test_field_encounter($field_args) {
+add_action('cmb_render_go_test_field', 'go_test_field', 10, 1);
+function go_test_field ($field_args) {
 	$custom = get_post_custom(get_the_id());
 
-	$temp_array = $custom["go_mta_test_lock_encounter"][0];
+	$meta_id = $field_args['id'];
+	$ttc = $field_args['test_type'];
+
+	$temp_array = $custom[$meta_id][0];
 	$temp_uns = unserialize($temp_array);
 	$test_field_input_question = $temp_uns[0];
 	$test_field_input_array = $temp_uns[1];
@@ -774,52 +781,52 @@ function go_test_field_encounter($field_args) {
 	<span class='cmb_metabox_description'>
 		<?php echo $field_args['desc']; ?>
 	</span>
-	<table id='go_test_field_table_e' class='go_test_field_table'>
+	<table id='go_test_field_table_<?php echo $ttc; ?>' class='go_test_field_table'>
 		<?php 
 		if (!empty($test_field_block_count)) {
 			for ($i = 0; $i < $test_field_block_count; $i++) {
 				echo "
-				<tr id='go_test_field_input_row_e_".$i."' class='go_test_field_input_row_e go_test_field_input_row'>
+				<tr id='go_test_field_input_row_{$ttc}_{$i}' class='go_test_field_input_row_{$ttc} go_test_field_input_row'>
 					<td>
-						<select id='go_test_field_select_e_".$i."' class='go_test_field_input_select_e' name='go_test_field_select_e[]' onchange='update_checkbox_type_e(this);'>
-							<option value='radio' class='go_test_field_input_option_e' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
-							<option value='checkbox' class='go_test_field_input_option_e' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
+						<select id='go_test_field_select_{$ttc}_{$i}' class='go_test_field_input_select_{$ttc}' name='go_test_field_select_{$ttc}[]' onchange='update_checkbox_type_{$ttc}(this);'>
+							<option value='radio' class='go_test_field_input_option_{$ttc}' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
+							<option value='checkbox' class='go_test_field_input_option_{$ttc}' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
 						</select>";
 						if (!empty($test_field_input_question)) {
-							echo "<br/><br/><input class='go_test_field_input_question_e go_test_field_input_question' name='go_test_field_input_question_e[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
+							echo "<br/><br/><input class='go_test_field_input_question_{$ttc} go_test_field_input_question' name='go_test_field_input_question_{$ttc}[]' placeholder='Shall We Play a Game?' type='text' value=\"".htmlspecialchars($test_field_input_question[$i], ENT_QUOTES)."\" />";
 						} else {
-							echo "<br/><br/><input class='go_test_field_input_question_e go_test_field_input_question' name='go_test_field_input_question_e[]' placeholder='Shall We Play a Game?' type='text' />";
+							echo "<br/><br/><input class='go_test_field_input_question_{$ttc} go_test_field_input_question' name='go_test_field_input_question_{$ttc}[]' placeholder='Shall We Play a Game?' type='text' />";
 						}
 				if (!empty($test_field_input_count)) {
 					echo "<ul>";
 					for ($x = 0; $x < $test_field_input_count[$i]; $x++) {
 						echo "
-							<li><input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_e_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_e(this);' />
-							<input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e[".$i."][1][]' type='hidden' />
-							<input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][$x]."' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' />";
+							<li><input class='go_test_field_input_checkbox_{$ttc} go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_{$ttc}_{$i}' type='{$test_field_select_array[$i]}' onchange='update_checkbox_value_{$ttc}(this);' />
+							<input class='go_test_field_input_checkbox_hidden_{$ttc}' name='go_test_field_values_{$ttc}[{$i}][1][]' type='hidden' />
+							<input class='go_test_field_input_{$ttc} go_test_field_input' name='go_test_field_values_{$ttc}[{$i}][0][]' placeholder='Enter an answer!' type='text' value=\"".htmlspecialchars($test_field_input_array[$i][0][$x], ENT_QUOTES)."\" oninput='update_checkbox_value_{$ttc}(this);' oncut='update_checkbox_value_{$ttc}(this);' onpaste='update_checkbox_value_{$ttc}(this);' />";
 						if ($x > 1) {
-							echo "<input class='go_test_field_rm go_test_field_rm_input_button_e' type='button' value='X' onclick='remove_field_e(this);'>";
+							echo "<input class='go_test_field_rm go_test_field_rm_input_button_{$ttc}' type='button' value='X' onclick='remove_field_{$ttc}(this);'>";
 						}
 						echo "</li>";
 						if (($x + 1) == $test_field_input_count[$i]) {
-							echo "<input class='go_test_field_add go_test_field_add_input_button_e' type='button' value='+' onclick='add_field_e(this);'/>";
+							echo "<input class='go_test_field_add go_test_field_add_input_button_{$ttc}' type='button' value='+' onclick='add_field_{$ttc}(this);'/>";
 						}
 					}
 					echo "</ul><ul>";
 					if ($i > 0) {
-						echo "<li><input class='go_test_field_rm_row_button_e go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_e(this);' /></li>";
+						echo "<li><input class='go_test_field_rm_row_button_{$ttc} go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_{$ttc}(this);' /></li>";
 					}
-					echo "<li><input class='go_test_field_input_count_e' name='go_test_field_input_count_e[]' type='hidden' value='".$test_field_input_count[$i]."' /></li></ul>";
+					echo "<li><input class='go_test_field_input_count_{$ttc}' name='go_test_field_input_count_{$ttc}[]' type='hidden' value='{$test_field_input_count[$i]}' /></li></ul>";
 				} else {
 					echo "
 					<ul>
-						<li><input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='go_test_field_input_checkbox_e_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_e(this);' /><input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e[".$i."][1][]' type='hidden' /><input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][0]."' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' /></li>
-						<li><input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='go_test_field_input_checkbox_e_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_e(this);' /><input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e[".$i."][1][]' type='hidden' /><input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][1]."' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' /></li>";
+						<li><input class='go_test_field_input_checkbox_{$ttc} go_test_field_input_checkbox' name='go_test_field_input_checkbox_{$ttc}_{$i}' type='{$test_field_select_array[$i]}' onchange='update_checkbox_value_{$ttc}(this);' /><input class='go_test_field_input_checkbox_hidden_{$ttc}' name='go_test_field_values_{$ttc}[{$i}][1][]' type='hidden' /><input class='go_test_field_input_{$ttc} go_test_field_input' name='go_test_field_values_{$ttc}[{$i}][0][]' placeholder='Enter an answer!' type='text' value=\"".htmlspecialchars($test_field_input_array[$i][0][0], ENT_QUOTES)."\" oninput='update_checkbox_value_{$ttc}(this);' oncut='update_checkbox_value_{$ttc}(this);' onpaste='update_checkbox_value_{$ttc}(this);' /></li>
+						<li><input class='go_test_field_input_checkbox_{$ttc} go_test_field_input_checkbox' name='go_test_field_input_checkbox_{$ttc}_{$i}' type='{$test_field_select_array[$i]}' onchange='update_checkbox_value_{$ttc}(this);' /><input class='go_test_field_input_checkbox_hidden_{$ttc}' name='go_test_field_values_{$ttc}[{$i}][1][]' type='hidden' /><input class='go_test_field_input_{$ttc} go_test_field_input' name='go_test_field_values_{$ttc}[{$i}][0][]' placeholder='Enter an answer!' type='text' value=\"".htmlspecialchars($test_field_input_array[$i][0][1], ENT_QUOTES)."\" oninput='update_checkbox_value_{$ttc}(this);' oncut='update_checkbox_value_{$ttc}(this);' onpaste='update_checkbox_value_{$ttc}(this);' /></li>";
 					echo "</ul><ul><li>";
 					if ($i > 0) {
-						echo "<input class='go_test_field_rm_row_button_e go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_e(this);' /></li><li>";
+						echo "<input class='go_test_field_rm_row_button_{$ttc} go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_{$ttc}(this);' /></li><li>";
 					}
-					echo "<input class='go_test_field_input_count_e' name='go_test_field_input_count_e[]' type='hidden' value='2' /></li></ul>";
+					echo "<input class='go_test_field_input_count_{$ttc}' name='go_test_field_input_count_{$ttc}[]' type='hidden' value='2' /></li></ul>";
 				}
 				echo "
 					</td>
@@ -827,30 +834,30 @@ function go_test_field_encounter($field_args) {
 			}
 		} else {
 			echo "
-				<tr id='go_test_field_input_row_e_0' class='go_test_field_input_row_e go_test_field_input_row'>
+				<tr id='go_test_field_input_row_{$ttc}_0' class='go_test_field_input_row_{$ttc} go_test_field_input_row'>
 					<td>
-						<select id='go_test_field_select_e_0' class='go_test_field_input_select_e' name='go_test_field_select_e[]' onchange='update_checkbox_type_e(this);'>
-							<option value='radio' class='go_test_field_input_option_e'>Multiple Choice</option>
-							<option value='checkbox' class='go_test_field_input_option_e'>Multiple Select</option>
+						<select id='go_test_field_select_{$ttc}_0' class='go_test_field_input_select_{$ttc}' name='go_test_field_select_{$ttc}[]' onchange='update_checkbox_type_{$ttc}(this);'>
+							<option value='radio' class='go_test_field_input_option_{$ttc}'>Multiple Choice</option>
+							<option value='checkbox' class='go_test_field_input_option_{$ttc}'>Multiple Select</option>
 						</select>
 						<br/><br/>
-						<input class='go_test_field_input_question_e go_test_field_input_question' name='go_test_field_input_question_e[]' placeholder='Shall We Play a Game?' type='text' />
+						<input class='go_test_field_input_question_{$ttc} go_test_field_input_question' name='go_test_field_input_question_{$ttc}[]' placeholder='Shall We Play a Game?' type='text' />
 						<ul>
 							<li>
-								<input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_e_0' type='radio' onchange='update_checkbox_value_e(this);' />
-								<input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e[0][1][]' type='hidden' />
-								<input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e[0][0][]' placeholder='Yes' type='text' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' />
+								<input class='go_test_field_input_checkbox_{$ttc} go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_{$ttc}_0' type='radio' onchange='update_checkbox_value_{$ttc}(this);' />
+								<input class='go_test_field_input_checkbox_hidden_{$ttc}' name='go_test_field_values_{$ttc}[0][1][]' type='hidden' />
+								<input class='go_test_field_input_{$ttc} go_test_field_input' name='go_test_field_values_{$ttc}[0][0][]' placeholder='Yes' type='text' oninput='update_checkbox_value_{$ttc}(this);' oncut='update_checkbox_value_{$ttc}(this);' onpaste='update_checkbox_value_{$ttc}(this);' />
 							</li>
 							<li>
-								<input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_e_0' type='radio' onchange='update_checkbox_value_e(this);' />
-								<input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e[0][1][]' type='hidden' />
-								<input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e[0][0][]' placeholder='No' type='text' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' />
+								<input class='go_test_field_input_checkbox_{$ttc} go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_{$ttc}_0' type='radio' onchange='update_checkbox_value_{$ttc}(this);' />
+								<input class='go_test_field_input_checkbox_hidden_{$ttc}' name='go_test_field_values_{$ttc}[0][1][]' type='hidden' />
+								<input class='go_test_field_input_{$ttc} go_test_field_input' name='go_test_field_values_{$ttc}[0][0][]' placeholder='No' type='text' oninput='update_checkbox_value_{$ttc}(this);' oncut='update_checkbox_value_{$ttc}(this);' onpaste='update_checkbox_value_{$ttc}(this);' />
 							</li>
-							<input class='go_test_field_add go_test_field_add_input_button_e' type='button' value='+' onclick='add_field_e(this);'/>
+							<input class='go_test_field_add go_test_field_add_input_button_{$ttc}' type='button' value='+' onclick='add_field_{$ttc}(this);'/>
 						</ul>
 						<ul>
 							<li>
-								<input class='go_test_field_input_count_e' name='go_test_field_input_count_e[]' type='hidden' value='2' />
+								<input class='go_test_field_input_count_{$ttc}' name='go_test_field_input_count_{$ttc}[]' type='hidden' value='2' />
 							</li>
 						</ul>
 					</td>
@@ -860,24 +867,24 @@ function go_test_field_encounter($field_args) {
 		?>
 		<tr>
 			<td>
-				<input id='go_test_field_add_block_button_e' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_e(this);' />
+				<input id='go_test_field_add_block_button_<?php echo $ttc; ?>' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_<?php echo $ttc; ?>(this);' />
 				<?php 
 				if (!empty($test_field_block_count)) {
-					echo "<input id='go_test_field_block_count_e' name='go_test_field_block_count_e' type='hidden' value='".$test_field_block_count."' />";
+					echo "<input id='go_test_field_block_count_{$ttc}' name='go_test_field_block_count_{$ttc}' type='hidden' value='{$test_field_block_count}' />";
 				} else {
-					echo "<input id='go_test_field_block_count_e' name='go_test_field_block_count_e' type='hidden' value='1' />";
+					echo "<input id='go_test_field_block_count_{$ttc}' name='go_test_field_block_count_{$ttc}' type='hidden' value='1' />";
 				}
 				?>
 			</td>
 		</tr>
 	</table>
 	<script type='text/javascript'>
-		var block_num_e = 0;
-		var block_type_e = 'radio';
-		var input_num_e = 0;
-		var block_count_e = <?php echo (!empty($test_field_block_count) ? $test_field_block_count : 1); ?>;
+		var block_num_<?php echo $ttc; ?> = 0;
+		var block_type_<?php echo $ttc; ?> = 'radio';
+		var input_num_<?php echo $ttc; ?> = 0;
+		var block_count_<?php echo $ttc; ?> = <?php echo (!empty($test_field_block_count) ? $test_field_block_count : 1); ?>;
 		
-		var test_field_select_array_e = new Array(
+		var test_field_select_array_<?php echo $ttc; ?> = new Array(
 			<?php 
 			if (!empty($test_field_block_count)) {
 				for ($i = 0; $i < $test_field_block_count; $i++) {
@@ -889,7 +896,7 @@ function go_test_field_encounter($field_args) {
 			}
 			?>
 		);
-		var test_field_checked_array_e = [
+		var test_field_checked_array_<?php echo $ttc; ?> = [
 			<?php
 			if (!empty($test_field_block_count)) {
 				for ($x = 0; $x < $test_field_block_count; $x++) {
@@ -898,20 +905,10 @@ function go_test_field_encounter($field_args) {
 						$intersection = array_intersect($test_field_input_array[$x][0], $test_field_input_array[$x][1]);
 						$checked_intersection = array_values($intersection);
 						for ($i = 0; $i < count($checked_intersection); $i++) {
-							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
-								$str = $value;
-								if (preg_match("/(\&\#39;)+/", $str)) {
-									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
-								}
-								
-								if (preg_match("/(\&\#34;)+/", $str)) {
-									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
-								}
-								echo '"'.$str.'"';
-							} else {
-								echo '"'.$value.'"';
-							}
+
+							// $test_field_input_array[$x][0] contains raw strings, the test field data isn't encoded
+							// when it's saved.
+							echo '"'.addslashes($checked_intersection[$i]).'"';
 							if (($i) < count($checked_intersection)) {
 								echo ", ";
 							}
@@ -925,19 +922,27 @@ function go_test_field_encounter($field_args) {
 			}
 			?>
 		];
-		for (var i = 0; i < test_field_select_array_e.length; i++) {
-			var test_field_with_select_value = '#go_test_field_select_e_'+i+' .go_test_field_input_option_e:contains(\''+test_field_select_array_e[i]+'\')';
+		for (var i = 0; i < test_field_select_array_<?php echo $ttc; ?>.length; i++) {
+			var test_field_with_select_value = '#go_test_field_select_<?php echo $ttc; ?>_'+i+' .go_test_field_input_option_<?php echo $ttc; ?>:contains(\''+test_field_select_array_<?php echo $ttc; ?>[i]+'\')';
 			jQuery(test_field_with_select_value).attr('selected', true);
 		}
-		for (var x = 0; x < block_count_e; x++) {
-			if (test_field_checked_array_e.length !== 0) {
-				for (var z = 0; z < test_field_checked_array_e[x].length; z++) {
-					var test_fields_with_checked_value = "tr#go_test_field_input_row_e_"+[x]+" .go_test_field_input_e[value='"+test_field_checked_array_e[x][z]+"']";
-					var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_e').attr('checked', true);
+		for (var x = 0; x < block_count_<?php echo $ttc; ?>; x++) {
+			if (test_field_checked_array_<?php echo $ttc; ?>.length !== 0) {
+				for (var z = 0; z < test_field_checked_array_<?php echo $ttc; ?>[x].length; z++) {
+
+					// Looping through all the test fields in a row is neccessary, since checking for inputs with a 'value'
+					// attribute containing one or more HTML tags doesn't return the input (it returns the HTML element
+					// inside the 'value' attribute, which doesn't contain a reference to it's parent node).
+					jQuery("tr#go_test_field_input_row_<?php echo $ttc; ?>_"+[x]+" .go_test_field_input_<?php echo $ttc; ?>").each(function (ind) {
+						if (test_field_checked_array_<?php echo $ttc; ?>[x][z] === this.value) {
+							jQuery(this).siblings('.go_test_field_input_checkbox_<?php echo $ttc; ?>').attr('checked', true);
+							return false;
+						}
+					});
 				}
 			}
 		}
-		var checkbox_obj_array = jQuery('.go_test_field_input_checkbox_e');
+		var checkbox_obj_array = jQuery('.go_test_field_input_checkbox_<?php echo $ttc; ?>');
 		for (var y = 0; y < checkbox_obj_array.length; y++) {
 			var next_obj = checkbox_obj_array[y].nextElementSibling;
 			if (checkbox_obj_array[y].checked) {
@@ -947,78 +952,80 @@ function go_test_field_encounter($field_args) {
 				jQuery(next_obj).removeAttr('value');
 			}
 		}
-		function update_checkbox_value_e (target) {
-			if (jQuery(target).hasClass('go_test_field_input_e')) {
-				var obj = jQuery(target).siblings('.go_test_field_input_checkbox_e');
+		function update_checkbox_value_<?php echo $ttc; ?> (target) {
+			if (jQuery(target).hasClass('go_test_field_input_<?php echo $ttc; ?>')) {
+				var obj = jQuery(target).siblings('.go_test_field_input_checkbox_<?php echo $ttc; ?>');
 			} else {
 				var obj = target;
 			}
 			var checkbox_type = jQuery(obj).prop('type');
-			var input_field_val = jQuery(obj).siblings('.go_test_field_input_e').val();
+			var input_field_val = jQuery(obj).siblings('.go_test_field_input_<?php echo $ttc; ?>').val();
 			if (checkbox_type === 'radio') {
 				var radio_name = jQuery(obj).prop('name');
-				var radio_checked_str = ".go_test_field_input_checkbox_e[name='"+radio_name+"']:checked";
+				var radio_checked_str = ".go_test_field_input_checkbox_<?php echo $ttc; ?>[name='"+radio_name+"']:checked";
 				if (jQuery(obj).prop('checked')) {
 					if (input_field_val != '') {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_e').attr('value', input_field_val);
+						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>').attr('value', input_field_val);
 					} else {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_e').removeAttr('value');
+						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>').removeAttr('value');
 					}
 				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_e').removeAttr('value');
+					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>').removeAttr('value');
 				}
-				var radios_not_checked_str = ".go_test_field_input_checkbox_e[name='"+radio_name+"']:not(:checked)";
-				jQuery(radios_not_checked_str).siblings('.go_test_field_input_checkbox_hidden_e').removeAttr('value');
+				var radios_not_checked_str = ".go_test_field_input_checkbox_<?php echo $ttc; ?>[name='"+radio_name+"']:not(:checked)";
+				jQuery(radios_not_checked_str).siblings('.go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>').removeAttr('value');
 			} else {
 				if (jQuery(obj).prop('checked')) {
 					if (input_field_val != '') {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_e').attr('value', input_field_val);	
+						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>').attr('value', input_field_val);	
 					} else {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_e').removeAttr('value');
+						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>').removeAttr('value');
 					}
 				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_e').removeAttr('value');
+					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>').removeAttr('value');
 				}
 			}
 		}
-		function update_checkbox_type_e (obj) {
-			block_type_e = jQuery(obj).children('option:selected').val();
-			jQuery(obj).siblings('ul').children('li').children('input.go_test_field_input_checkbox_e').attr('type', block_type_e);
+		function update_checkbox_type_<?php echo $ttc; ?> (obj) {
+			block_type_<?php echo $ttc; ?> = jQuery(obj).children('option:selected').val();
+			jQuery(obj).siblings('ul').children('li').children('input.go_test_field_input_checkbox_<?php echo $ttc; ?>').attr('type', block_type_<?php echo $ttc; ?>);
 		}
-		function add_block_e (obj) {
-			block_num_e = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_e').length;
-			jQuery('#go_test_field_block_count_e').attr('value', (block_num_e + 1));
-			var field_block = "<tr id='go_test_field_input_row_e_"+block_num_e+"' class='go_test_field_input_row_e go_test_field_input_row'><td><select id='go_test_field_select_e_"+block_num_e+"' class='go_test_field_input_select_e' name='go_test_field_select_e[]' onchange='update_checkbox_type_e(this);'><option value='radio' class='go_test_field_input_option_e'>Multiple Choice</option><option value='checkbox' class='go_test_field_input_option_e'>Multiple Select</option></select><br/><br/><input class='go_test_field_input_question_e go_test_field_input_question' name='go_test_field_input_question_e[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_e_"+block_num_e+"' type='"+block_type_e+"' onchange='update_checkbox_value_e(this);' /><input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e["+block_num_e+"][1][]' type='hidden' /><input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e["+block_num_e+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' /></li><li><input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_e_"+block_num_e+"' type='"+block_type_e+"' onchange='update_checkbox_value_e(this);' /><input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e["+block_num_e+"][1][]' type='hidden' /><input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e["+block_num_e+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' /></li><input class='go_test_field_add go_test_field_add_input_button_e' type='button' value='+' onclick='add_field_e(this);'/></ul><ul><li><input class='go_test_field_rm_row_button_e go_test_field_input_rm_row_button' type='button' value='Remove' style='margin-left: -2px;' onclick='remove_block_e(this);' /><input class='go_test_field_input_count_e' name='go_test_field_input_count_e[]' type='hidden' value='2' /></li></ul></td></tr>";
+		function add_block_<?php echo $ttc; ?> (obj) {
+			block_num_<?php echo $ttc; ?> = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_<?php echo $ttc; ?>').length;
+			jQuery('#go_test_field_block_count_<?php echo $ttc; ?>').attr('value', (block_num_<?php echo $ttc; ?> + 1));
+			var field_block = "<tr id='go_test_field_input_row_<?php echo $ttc; ?>_"+block_num_<?php echo $ttc; ?>+"' class='go_test_field_input_row_<?php echo $ttc; ?> go_test_field_input_row'><td><select id='go_test_field_select_<?php echo $ttc; ?>_"+block_num_<?php echo $ttc; ?>+"' class='go_test_field_input_select_<?php echo $ttc; ?>' name='go_test_field_select_<?php echo $ttc; ?>[]' onchange='update_checkbox_type_<?php echo $ttc; ?>(this);'><option value='radio' class='go_test_field_input_option_<?php echo $ttc; ?>'>Multiple Choice</option><option value='checkbox' class='go_test_field_input_option_<?php echo $ttc; ?>'>Multiple Select</option></select><br/><br/><input class='go_test_field_input_question_<?php echo $ttc; ?> go_test_field_input_question' name='go_test_field_input_question_<?php echo $ttc; ?>[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox_<?php echo $ttc; ?> go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_<?php echo $ttc; ?>_"+block_num_<?php echo $ttc; ?>+"' type='"+block_type_<?php echo $ttc; ?>+"' onchange='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>' name='go_test_field_values_<?php echo $ttc; ?>["+block_num_<?php echo $ttc; ?>+"][1][]' type='hidden' /><input class='go_test_field_input_<?php echo $ttc; ?> go_test_field_input' name='go_test_field_values_<?php echo $ttc; ?>["+block_num_<?php echo $ttc; ?>+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_<?php echo $ttc; ?>(this);' oncut='update_checkbox_value_<?php echo $ttc; ?>(this);' onpaste='update_checkbox_value_<?php echo $ttc; ?>(this);' /></li><li><input class='go_test_field_input_checkbox_<?php echo $ttc; ?> go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_<?php echo $ttc; ?>_"+block_num_<?php echo $ttc; ?>+"' type='"+block_type_<?php echo $ttc; ?>+"' onchange='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>' name='go_test_field_values_<?php echo $ttc; ?>["+block_num_<?php echo $ttc; ?>+"][1][]' type='hidden' /><input class='go_test_field_input_<?php echo $ttc; ?> go_test_field_input' name='go_test_field_values_<?php echo $ttc; ?>["+block_num_<?php echo $ttc; ?>+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_<?php echo $ttc; ?>(this);' oncut='update_checkbox_value_<?php echo $ttc; ?>(this);' onpaste='update_checkbox_value_<?php echo $ttc; ?>(this);' /></li><input class='go_test_field_add go_test_field_add_input_button_<?php echo $ttc; ?>' type='button' value='+' onclick='add_field_<?php echo $ttc; ?>(this);'/></ul><ul><li><input class='go_test_field_rm_row_button_<?php echo $ttc; ?> go_test_field_input_rm_row_button' type='button' value='Remove' style='margin-left: -2px;' onclick='remove_block_<?php echo $ttc; ?>(this);' /><input class='go_test_field_input_count_<?php echo $ttc; ?>' name='go_test_field_input_count_<?php echo $ttc; ?>[]' type='hidden' value='2' /></li></ul></td></tr>";
 			jQuery(obj).parent().parent().before(field_block);
 		}
-		function remove_block_e (obj) {
-			block_num_e = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_e').length;
-			jQuery('#go_test_field_block_count_e').attr('value', (block_num_e - 1));
-			jQuery(obj).parents('tr.go_test_field_input_row_e').remove();
+		function remove_block_<?php echo $ttc; ?> (obj) {
+			block_num_<?php echo $ttc; ?> = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_<?php echo $ttc; ?>').length;
+			jQuery('#go_test_field_block_count_<?php echo $ttc; ?>').attr('value', (block_num_<?php echo $ttc; ?> - 1));
+			jQuery(obj).parents('tr.go_test_field_input_row_<?php echo $ttc; ?>').remove();
 		}
-		function add_field_e (obj) {
-			input_num_e = jQuery(obj).siblings('li').length + 1;
-			var block_id = jQuery(obj).parents('tr.go_test_field_input_row_e').first().attr('id');
-			block_num_e = block_id.split('go_test_field_input_row_e_').pop();
-			block_type_e = jQuery(obj).parent('ul').siblings('select').children('option:selected').val();
-			jQuery(obj).parent('ul').siblings('ul').children('li').children('.go_test_field_input_count_e').attr('value', input_num_e);
-			jQuery(obj).siblings('li').last().after("<li><input class='go_test_field_input_checkbox_e go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_e_"+block_num_e+"' type='"+block_type_e+"' onchange='update_checkbox_value_e(this);' /><input class='go_test_field_input_checkbox_hidden_e' name='go_test_field_values_e["+block_num_e+"][1][]' type='hidden' /><input class='go_test_field_input_e go_test_field_input' name='go_test_field_values_e["+block_num_e+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_e(this);' oncut='update_checkbox_value_e(this);' onpaste='update_checkbox_value_e(this);' /><input class='go_test_field_rm go_test_field_rm_input_button_e' type='button' value='X' onclick='remove_field_e(this);'></li>");
+		function add_field_<?php echo $ttc; ?> (obj) {
+			input_num_<?php echo $ttc; ?> = jQuery(obj).siblings('li').length + 1;
+			var block_id = jQuery(obj).parents('tr.go_test_field_input_row_<?php echo $ttc; ?>').first().attr('id');
+			block_num_<?php echo $ttc; ?> = block_id.split('go_test_field_input_row_<?php echo $ttc; ?>_').pop();
+			block_type_<?php echo $ttc; ?> = jQuery(obj).parent('ul').siblings('select').children('option:selected').val();
+			jQuery(obj).parent('ul').siblings('ul').children('li').children('.go_test_field_input_count_<?php echo $ttc; ?>').attr('value', input_num_<?php echo $ttc; ?>);
+			jQuery(obj).siblings('li').last().after("<li><input class='go_test_field_input_checkbox_<?php echo $ttc; ?> go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_<?php echo $ttc; ?>_"+block_num_<?php echo $ttc; ?>+"' type='"+block_type_<?php echo $ttc; ?>+"' onchange='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>' name='go_test_field_values_<?php echo $ttc; ?>["+block_num_<?php echo $ttc; ?>+"][1][]' type='hidden' /><input class='go_test_field_input_<?php echo $ttc; ?> go_test_field_input' name='go_test_field_values_<?php echo $ttc; ?>["+block_num_<?php echo $ttc; ?>+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_<?php echo $ttc; ?>(this);' oncut='update_checkbox_value_<?php echo $ttc; ?>(this);' onpaste='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_test_field_rm go_test_field_rm_input_button_<?php echo $ttc; ?>' type='button' value='X' onclick='remove_field_<?php echo $ttc; ?>(this);'></li>");
 		}
-		function remove_field_e (obj) {
-			jQuery(obj).parents('tr.go_test_field_input_row_e').find('input.go_test_field_input_count_e')[0].value--;
+		function remove_field_<?php echo $ttc; ?> (obj) {
+			jQuery(obj).parents('tr.go_test_field_input_row_<?php echo $ttc; ?>').find('input.go_test_field_input_count_<?php echo $ttc; ?>')[0].value--;
 			jQuery(obj).parent('li').remove();
 		}
 	</script>
 	<?php
 }
 
-add_action('cmb_validate_go_test_field_encounter', 'go_validate_test_field_encounter');
-function go_validate_test_field_encounter() {
-	$question_temp = $_POST['go_test_field_input_question_e'];
-	$test_temp = $_POST['go_test_field_values_e'];
-	$select = $_POST['go_test_field_select_e'];
-	$block_count = (int)$_POST['go_test_field_block_count_e'];
-	$input_count_temp = $_POST['go_test_field_input_count_e'];
+add_action('cmb_validate_go_test_field', 'go_validate_test_field', 10, 3);
+function go_validate_test_field ($unused_override_value, $unused_value, $field_args) {
+	$ttc = $field_args['test_type'];
+
+	$question_temp = $_POST["go_test_field_input_question_{$ttc}"];
+	$test_temp = $_POST["go_test_field_values_{$ttc}"];
+	$select = $_POST["go_test_field_select_{$ttc}"];
+	$block_count = (int)$_POST["go_test_field_block_count_{$ttc}"];
+	$input_count_temp = $_POST["go_test_field_input_count_{$ttc}"];
 
 	$input_count = array();
 	if (!empty($input_count_temp)) {
@@ -1031,22 +1038,7 @@ function go_validate_test_field_encounter() {
 	$question = array();
 	if (!empty($question_temp) && is_array($question_temp)) {
 		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
-				$str = $value;
-				if (preg_match("/(\')+/", $str)) {
-					$str = preg_replace("/(\')+/", '&#39;', $str);
-				}
-				if (preg_match("/(\")+/", $str)) {
-					$str = preg_replace("/(\")+/", '&#34;', $str);
-				}
-				if (preg_match("/(<)+/", $str)) {
-					$str = preg_replace("/(<)+/", "", $str);
-				}
-				if (preg_match("/(>)+/", $str)) {
-					$str = preg_replace("/(>)+/", "", $str);
-				}
-				$question[] = $str;
-			} else {
+			if (!is_null($value) && preg_match("/\S+/", $value)) {
 				$question[] = $value;
 			}
 		}
@@ -1061,28 +1053,8 @@ function go_validate_test_field_encounter() {
 			$temp_checked = $test_temp[$f][1];
 			if (!empty($temp_input) && is_array($temp_input)) {
 				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
-							$str = $value;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][0][] = $str;
-						} else {
-							$test[$f][0][] = $value;
-						}
+					if (!is_null($value) && preg_match("/\S+/", $value)) {
+						$test[$f][0][] = $value;
 					} else {
 						if ($input_count[$f] > 2) {
 							$input_count[$f]--;
@@ -1092,1130 +1064,9 @@ function go_validate_test_field_encounter() {
 			}
 
 			if (!empty($temp_checked) && is_array($temp_checked)) {
-				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
-							$str = $val;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][1][] = $str;
-						} else {
-							$test[$f][1][] = $val;
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	return(array($question, $test, $select, $block_count, $input_count));
-}
-
-add_action('cmb_render_go_test_field_accept', 'go_test_field_accept', 10, 1);
-function go_test_field_accept($field_args) {
-	$custom = get_post_custom(get_the_id());
-
-	$temp_array = $custom["go_mta_test_lock_accept"][0];
-	$temp_uns = unserialize($temp_array);
-	$test_field_input_question = $temp_uns[0];
-	$test_field_input_array = $temp_uns[1];
-	$test_field_select_array = $temp_uns[2];
-	$test_field_block_count = (int)$temp_uns[3];
-	$test_field_input_count = $temp_uns[4];
-
-	?>
-	<span class='cmb_metabox_description'>
-		<?php echo $field_args['desc']; ?>
-	</span>
-	<table id='go_test_field_table_a' class='go_test_field_table'>
-		<?php 
-		if (!empty($test_field_block_count)) {
-			for ($i = 0; $i < $test_field_block_count; $i++) {
-				echo "
-				<tr id='go_test_field_input_row_a_".$i."' class='go_test_field_input_row_a go_test_field_input_row'>
-					<td>
-						<select id='go_test_field_select_a_".$i."' class='go_test_field_input_select_a' name='go_test_field_select_a[]' onchange='update_checkbox_type_a(this);'>
-						  <option value='radio' class='go_test_field_input_option_a' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
-						  <option value='checkbox' class='go_test_field_input_option_a' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
-						</select>";
-						if (!empty($test_field_input_question)) {
-							echo "<br/><br/><input class='go_test_field_input_question_a go_test_field_input_question' name='go_test_field_input_question_a[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
-						} else {
-							echo "<br/><br/><input class='go_test_field_input_question_a go_test_field_input_question' name='go_test_field_input_question_a[]' placeholder='Shall We Play a Game?' type='text' />";
-						}
-				if (!empty($test_field_input_count)) {
-					echo "<ul>";
-					for ($x = 0; $x < $test_field_input_count[$i]; $x++) {
-						echo "
-							<li><input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_a_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_a(this);' />
-							<input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a[".$i."][1][]' type='hidden' />
-							<input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][$x]."' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' />";
-						if ($x > 1) {
-							echo "<input class='go_test_field_rm go_test_field_rm_input_button_a' type='button' value='X' onclick='remove_field_a(this);'>";
-						}
-						echo "</li>";
-						if (($x + 1) == $test_field_input_count[$i]) {
-							echo "<input class='go_test_field_add go_test_field_add_input_button_a' type='button' value='+' onclick='add_field_a(this);'/>";
-						}
-					}
-					echo "</ul><ul>";
-					if ($i > 0) {
-						echo "<li><input class='go_test_field_rm_row_button_a go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_a(this);' /></li>";
-					}
-					echo "<li><input class='go_test_field_input_count_a' name='go_test_field_input_count_a[]' type='hidden' value='".$test_field_input_count[$i]."' /></li></ul>";
-				} else {
-					echo "
-					<ul>
-						<li><input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='go_test_field_input_checkbox_a_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_a(this);' /><input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a[".$i."][1][]' type='hidden' /><input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][0]."' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' /></li>
-						<li><input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='go_test_field_input_checkbox_a_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_a(this);' /><input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a[".$i."][1][]' type='hidden' /><input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][1]."' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' /></li>";
-					echo "</ul><ul><li>";
-					if ($i > 0) {
-						echo "<input class='go_test_field_rm_row_button_a go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_a(this);' /></li><li>";
-					}
-					echo "<input class='go_test_field_input_count_a' name='go_test_field_input_count_a[]' type='hidden' value='2' /></li></ul>";
-				}
-				echo "
-					</td>
-				</tr>";
-			}
-		} else {
-			echo "
-				<tr id='go_test_field_input_row_a_0' class='go_test_field_input_row_a go_test_field_input_row'>
-					<td>
-						<select id='go_test_field_select_a_0' class='go_test_field_input_select_a' name='go_test_field_select_a[]' onchange='update_checkbox_type_a(this);'>
-							<option value='radio' class='go_test_field_input_option_a'>Multiple Choice</option>
-							<option value='checkbox' class='go_test_field_input_option_a'>Multiple Select</option>
-						</select>
-						<br/><br/>
-						<input class='go_test_field_input_question_a go_test_field_input_question' name='go_test_field_input_question_a[]' placeholder='Shall We Play a Game?' type='text' />
-						<ul>
-							<li>
-								<input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_a_0' type='radio' onchange='update_checkbox_value_a(this);' />
-								<input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a[0][1][]' type='hidden' />
-								<input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a[0][0][]' placeholder='Yes' type='text' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' />
-							</li>
-							<li>
-								<input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_a_0' type='radio' onchange='update_checkbox_value_a(this);' />
-								<input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a[0][1][]' type='hidden' />
-								<input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a[0][0][]' placeholder='No' type='text' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' />
-							</li>
-							<input class='go_test_field_add go_test_field_add_input_button_a' type='button' value='+' onclick='add_field_a(this);'/>
-						</ul>
-						<ul>
-							<li>
-								<input class='go_test_field_input_count_a' name='go_test_field_input_count_a[]' type='hidden' value='2' />
-							</li>
-						</ul>
-					</td>
-				</tr>
-			";
-		}
-		?>
-		<tr>
-			<td>
-				<input id='go_test_field_add_block_button_a' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_a(this);' />
-				<?php 
-				if (!empty($test_field_block_count)) {
-					echo "<input id='go_test_field_block_count_a' name='go_test_field_block_count_a' type='hidden' value='".$test_field_block_count."' />";
-				} else {
-					echo "<input id='go_test_field_block_count_a' name='go_test_field_block_count_a' type='hidden' value='1' />";
-				}
-				?>
-			</td>
-		</tr>
-	</table>
-	<script type='text/javascript'>
-		var block_num_a = 0;
-		var block_type_a = 'radio';
-		var input_num_a = 0;
-		var block_count_a = <?php echo $test_field_block_count; ?>;
-		
-		var test_field_select_array_a = new Array(
-			<?php 
-			if (!empty($test_field_block_count)) {
-				for ($i = 0; $i < $test_field_block_count; $i++) {
-					echo '"'.ucwords($test_field_select_array[$i]).'"';
-					if (($i + 1) != $test_field_block_count) { 
-						echo ', ';
-					}
-				}
-			}
-			?>
-		);
-		var test_field_checked_array_a = [
-			<?php
-			if (!empty($test_field_block_count)) {
-				for ($x = 0; $x < $test_field_block_count; $x++) {
-					echo "[";
-					if (!empty($test_field_input_array[$x][0]) && !empty($test_field_input_array[$x][1])) {
-						$intersection = array_intersect($test_field_input_array[$x][0], $test_field_input_array[$x][1]);
-						$checked_intersection = array_values($intersection);
-						for ($i = 0; $i < count($checked_intersection); $i++) {
-							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
-								$str = $value;
-								if (preg_match("/(\&\#39;)+/", $str)) {
-									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
-								}
-								
-								if (preg_match("/(\&\#34;)+/", $str)) {
-									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
-								}
-								echo '"'.$str.'"';
-							} else {
-								echo '"'.$value.'"';
-							}
-							if (($i) < count($checked_intersection)) {
-								echo ", ";
-							}
-						}
-					}
-					echo "]";
-					if (($x + 1) < $test_field_block_count) {
-						echo ", ";
-					}
-				}
-			}
-			?>
-		];
-		for (var i = 0; i < test_field_select_array_a.length; i++) {
-			var test_field_with_select_value = '#go_test_field_select_a_'+i+' .go_test_field_input_option_a:contains(\''+test_field_select_array_a[i]+'\')';
-			jQuery(test_field_with_select_value).attr('selected', true);
-		}
-		for (var x = 0; x < block_count_a; x++) {
-			if (test_field_checked_array_a.length !== 0) {
-				for (var z = 0; z < test_field_checked_array_a[x].length; z++) {
-					var test_fields_with_checked_value = "tr#go_test_field_input_row_a_"+[x]+" .go_test_field_input_a[value='"+test_field_checked_array_a[x][z]+"']";
-					var checked_fields = jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_a').attr('checked', true);
-				}
-			}
-		}
-		var checkbox_obj_array = jQuery('.go_test_field_input_checkbox_a');
-		for (var y = 0; y < checkbox_obj_array.length; y++) {
-			var next_obj = checkbox_obj_array[y].nextElementSibling;
-			if (checkbox_obj_array[y].checked) {
-				var input_obj = next_obj.nextElementSibling.value;
-				jQuery(next_obj).attr('value', input_obj);
-			} else {
-				jQuery(next_obj).removeAttr('value');
-			}
-		}
-		function update_checkbox_value_a (target) {
-			if (jQuery(target).hasClass('go_test_field_input_a')) {
-				var obj = jQuery(target).siblings('.go_test_field_input_checkbox_a');
-			} else {
-				var obj = target;
-			}
-			var checkbox_type = jQuery(obj).prop('type');
-			var input_field_val = jQuery(obj).siblings('.go_test_field_input_a').val();
-			if (checkbox_type === 'radio') {
-				var radio_name = jQuery(obj).prop('name');
-				var radio_checked_str = ".go_test_field_input_checkbox_a[name='"+radio_name+"']:checked";
-				if (jQuery(obj).prop('checked')) {
-					if (input_field_val != '') {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_a').attr('value', input_field_val);
-					} else {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_a').removeAttr('value');
-					}
-				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_a').removeAttr('value');
-				}
-				var radios_not_checked_str = ".go_test_field_input_checkbox_a[name='"+radio_name+"']:not(:checked)";
-				jQuery(radios_not_checked_str).siblings('.go_test_field_input_checkbox_hidden_a').removeAttr('value');
-			} else {
-				if (jQuery(obj).prop('checked')) {
-					if (input_field_val != '') {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_a').attr('value', input_field_val);	
-					} else {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_a').removeAttr('value');
-					}
-				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_a').removeAttr('value');
-				}
-			}
-		}
-		function update_checkbox_type_a (obj) {
-			block_type_a = jQuery(obj).children('option:selected').val();
-			jQuery(obj).siblings('ul').children('li').children('input.go_test_field_input_checkbox_a').attr('type', block_type_a);
-		}
-		function add_block_a (obj) {
-			block_num_a = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_a').length;
-			jQuery('#go_test_field_block_count_a').attr('value', (block_num_a + 1));
-			var field_block = "<tr id='go_test_field_input_row_a_"+block_num_a+"' class='go_test_field_input_row_a go_test_field_input_row'><td><select id='go_test_field_select_a_"+block_num_a+"' class='go_test_field_input_select_a' name='go_test_field_select_a[]' onchange='update_checkbox_type_a(this);'><option value='radio' class='go_test_field_input_option_a'>Multiple Choice</option><option value='checkbox' class='go_test_field_input_option_a'>Multiple Select</option></select><br/><br/><input class='go_test_field_input_question_a go_test_field_input_question' name='go_test_field_input_question_a[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_a_"+block_num_a+"' type='"+block_type_a+"' onchange='update_checkbox_value_a(this);' /><input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a["+block_num_a+"][1][]' type='hidden' /><input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a["+block_num_a+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' /></li><li><input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_a_"+block_num_a+"' type='"+block_type_a+"' onchange='update_checkbox_value_a(this);' /><input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a["+block_num_a+"][1][]' type='hidden' /><input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a["+block_num_a+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' /></li><input class='go_test_field_add go_test_field_add_input_button_a' type='button' value='+' onclick='add_field_a(this);'/></ul><ul><li><input class='go_test_field_rm_row_button_a go_test_field_input_rm_row_button' type='button' value='Remove' style='margin-left: -2px;' onclick='remove_block_a(this);' /><input class='go_test_field_input_count_a' name='go_test_field_input_count_a[]' type='hidden' value='2' /></li></ul></td></tr>";
-			jQuery(obj).parent().parent().before(field_block);
-		}
-		function remove_block_a (obj) {
-			block_num_a = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_a').length;
-			jQuery('#go_test_field_block_count_a').attr('value', (block_num_a - 1));
-			jQuery(obj).parents('tr.go_test_field_input_row_a').remove();
-		}
-		function add_field_a (obj) {
-			input_num_a = jQuery(obj).siblings('li').length + 1;
-			var block_id = jQuery(obj).parents('tr.go_test_field_input_row_a').first().attr('id');
-			block_num_a = block_id.split('go_test_field_input_row_a_').pop();
-			block_type_a = jQuery(obj).parent('ul').siblings('select').children('option:selected').val();
-			jQuery(obj).parent('ul').siblings('ul').children('li').children('.go_test_field_input_count_a').attr('value', input_num_a);
-			jQuery(obj).siblings('li').last().after("<li><input class='go_test_field_input_checkbox_a go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_a_"+block_num_a+"' type='"+block_type_a+"' onchange='update_checkbox_value_a(this);' /><input class='go_test_field_input_checkbox_hidden_a' name='go_test_field_values_a["+block_num_a+"][1][]' type='hidden' /><input class='go_test_field_input_a go_test_field_input' name='go_test_field_values_a["+block_num_a+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_a(this);' oncut='update_checkbox_value_a(this);' onpaste='update_checkbox_value_a(this);' /><input class='go_test_field_rm go_test_field_rm_input_button_a' type='button' value='X' onclick='remove_field_a(this);'></li>");
-		}
-		function remove_field_a (obj) {
-			jQuery(obj).parents('tr.go_test_field_input_row_a').find('input.go_test_field_input_count_a')[0].value--;
-			jQuery(obj).parent('li').remove();
-		}
-		
-	</script>
-	<?php
-}
-
-add_action('cmb_validate_go_test_field_accept', 'go_validate_test_field_accept');
-function go_validate_test_field_accept() {
-	$question_temp = $_POST['go_test_field_input_question_a'];
-	$test_temp = $_POST['go_test_field_values_a'];
-	$select = $_POST['go_test_field_select_a'];
-	$block_count = (int)$_POST['go_test_field_block_count_a'];
-	$input_count_temp = $_POST['go_test_field_input_count_a'];
-
-	$input_count = array();
-	if (!empty($input_count_temp)) {
-		foreach ($input_count_temp as $key => $value) {
-			$temp = (int)$input_count_temp[$key];
-			array_push($input_count, $temp);
-		}
-	}
-
-	$question = array();
-	if (!empty($question_temp) && is_array($question_temp)) {
-		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
-				$str = $value;
-				if (preg_match("/(\')+/", $str)) {
-					$str = preg_replace("/(\')+/", '&#39;', $str);
-				}
-				if (preg_match("/(\")+/", $str)) {
-					$str = preg_replace("/(\")+/", '&#34;', $str);
-				}
-				if (preg_match("/(<)+/", $str)) {
-					$str = preg_replace("/(<)+/", "", $str);
-				}
-				if (preg_match("/(>)+/", $str)) {
-					$str = preg_replace("/(>)+/", "", $str);
-				}
-				$question[] = $str;
-			} else {
-				$question[] = $value;
-			}
-		}
-	} else {
-		$question = $question_temp;
-	}
-
-	$test = array();
-	if (!empty($test_temp)) {
-		for ($f = 0; $f < count($test_temp); $f++) {
-			$temp_input = $test_temp[$f][0];
-			$temp_checked = $test_temp[$f][1];
-			if (!empty($temp_input) && is_array($temp_input)) {
-				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
-							$str = $value;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][0][] = $str;
-						} else {
-							$test[$f][0][] = $value;
-						}
-					} else {
-						if ($input_count[$f] > 2) {
-							$input_count[$f]--;
-						}
-					}
-				}
-			}
-
-			if (!empty($temp_checked) && is_array($temp_checked)) {
-				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
-							$str = $val;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][1][] = $str;
-						} else {
-							$test[$f][1][] = $val;
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	return(array($question, $test, $select, $block_count, $input_count));
-}
-
-add_action('cmb_render_go_test_field_completion', 'go_test_field_completion', 10, 1);
-function go_test_field_completion($field_args) {
-	$custom = get_post_custom(get_the_id());
-
-	$temp_array = $custom["go_mta_test_lock_completion"][0];
-	$temp_uns = unserialize($temp_array);
-	$test_field_input_question = $temp_uns[0];
-	$test_field_input_array = $temp_uns[1];
-	$test_field_select_array = $temp_uns[2];
-	$test_field_block_count = (int)$temp_uns[3];
-	$test_field_input_count = $temp_uns[4];
-
-	?>
-	<span class='cmb_metabox_description'>
-		<?php echo $field_args['desc']; ?>
-	</span>
-	<table id='go_test_field_table_c' class='go_test_field_table'>
-		<?php 
-		if (!empty($test_field_block_count)) {
-			for ($i = 0; $i < $test_field_block_count; $i++) {
-				echo "
-				<tr id='go_test_field_input_row_c_".$i."' class='go_test_field_input_row_c go_test_field_input_row'>
-					<td>
-						<select id='go_test_field_select_c_".$i."' class='go_test_field_input_select_c' name='go_test_field_select_c[]' onchange='update_checkbox_type_c(this);'>
-						  <option value='radio' class='go_test_field_input_option_c' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
-						  <option value='checkbox' class='go_test_field_input_option_c' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
-						</select>";
-						if (!empty($test_field_input_question)) {
-							echo "<br/><br/><input class='go_test_field_input_question_c go_test_field_input_question' name='go_test_field_input_question_c[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
-						} else {
-							echo "<br/><br/><input class='go_test_field_input_question_c go_test_field_input_question' name='go_test_field_input_question_c[]' placeholder='Shall We Play a Game?' type='text' />";
-						}
-				if (!empty($test_field_input_count)) {
-					echo "<ul>";
-					for ($x = 0; $x < $test_field_input_count[$i]; $x++) {
-						echo "
-							<li><input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_c_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_c(this);' />
-							<input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c[".$i."][1][]' type='hidden' />
-							<input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][$x]."' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' />";
-						if ($x > 1) {
-							echo "<input class='go_test_field_rm go_test_field_rm_input_button_c' type='button' value='X' onclick='remove_field_c(this);'>";
-						}
-						echo "</li>";
-						if (($x + 1) == $test_field_input_count[$i]) {
-							echo "<input class='go_test_field_add go_test_field_add_input_button_c' type='button' value='+' onclick='add_field_c(this);'/>";
-						}
-					}
-					echo "</ul><ul>";
-					if ($i > 0) {
-						echo "<li><input class='go_test_field_rm_row_button_c go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_c(this);' /></li>";
-					}
-					echo "<li><input class='go_test_field_input_count_c' name='go_test_field_input_count_c[]' type='hidden' value='".$test_field_input_count[$i]."' /></li></ul>";
-				} else {
-					echo "
-					<ul>
-						<li><input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='go_test_field_input_checkbox_c_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_c(this);' /><input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c[".$i."][1][]' type='hidden' /><input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][0]."' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' /></li>
-						<li><input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='go_test_field_input_checkbox_c_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_c(this);' /><input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c[".$i."][1][]' type='hidden' /><input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][1]."' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' /></li>";
-					echo "</ul><ul><li>";
-					if ($i > 0) {
-						echo "<input class='go_test_field_rm_row_button_c go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_c(this);' /></li><li>";
-					}
-					echo "<input class='go_test_field_input_count_c' name='go_test_field_input_count_c[]' type='hidden' value='2' /></li></ul>";
-				}
-				echo "
-					</td>
-				</tr>";
-			}
-		} else {
-			echo "
-				<tr id='go_test_field_input_row_c_0' class='go_test_field_input_row_c go_test_field_input_row'>
-					<td>
-						<select id='go_test_field_select_c_0' class='go_test_field_input_select_c' name='go_test_field_select_c[]' onchange='update_checkbox_type_c(this);'>
-							<option value='radio' class='go_test_field_input_option_c'>Multiple Choice</option>
-							<option value='checkbox' class='go_test_field_input_option_c'>Multiple Select</option>
-						</select>
-						<br/><br/>
-						<input class='go_test_field_input_question_c go_test_field_input_question' name='go_test_field_input_question_c[]' placeholder='Shall We Play a Game?' type='text' />
-						<ul>
-							<li>
-								<input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_c_0' type='radio' onchange='update_checkbox_value_c(this);' />
-								<input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c[0][1][]' type='hidden' />
-								<input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c[0][0][]' placeholder='Yes' type='text' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' />
-							</li>
-							<li>
-								<input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_c_0' type='radio' onchange='update_checkbox_value_c(this);' />
-								<input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c[0][1][]' type='hidden' />
-								<input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c[0][0][]' placeholder='No' type='text' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' />
-							</li>
-							<input class='go_test_field_add go_test_field_add_input_button_c' type='button' value='+' onclick='add_field_c(this);'/>
-						</ul>
-						<ul>
-							<li>
-								<input class='go_test_field_input_count_c' name='go_test_field_input_count_c[]' type='hidden' value='2' />
-							</li>
-						</ul>
-					</td>
-				</tr>
-			";
-		}
-		?>
-		<tr>
-			<td>
-				<input id='go_test_field_add_block_button_c' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_c(this);' />
-				<?php 
-				if (!empty($test_field_block_count)) {
-					echo "<input id='go_test_field_block_count_c' name='go_test_field_block_count_c' type='hidden' value='".$test_field_block_count."' />";
-				} else {
-					echo "<input id='go_test_field_block_count_c' name='go_test_field_block_count_c' type='hidden' value='1' />";
-				}
-				?>
-			</td>
-		</tr>
-	</table>
-	<script type='text/javascript'>
-		var block_num_c = 0;
-		var block_type_c = 'radio';
-		var input_num_c = 0;
-		var block_count_c = <?php echo $test_field_block_count; ?>;
-		
-		var test_field_select_array_c = new Array(
-			<?php 
-			if (!empty($test_field_block_count)) {
-				for ($i = 0; $i < $test_field_block_count; $i++) {
-					echo '"'.ucwords($test_field_select_array[$i]).'"';
-					if (($i + 1) != $test_field_block_count) { 
-						echo ', ';
-					}
-				}
-			}
-			?>
-		);
-		var test_field_checked_array_c = [
-			<?php
-			if (!empty($test_field_block_count)) {
-				for ($x = 0; $x < $test_field_block_count; $x++) {
-					echo "[";
-					if (!empty($test_field_input_array[$x][0]) && !empty($test_field_input_array[$x][1])) {
-						$intersection = array_intersect($test_field_input_array[$x][0], $test_field_input_array[$x][1]);
-						$checked_intersection = array_values($intersection);
-						for ($i = 0; $i < count($checked_intersection); $i++) {
-							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
-								$str = $value;
-								if (preg_match("/(\&\#39;)+/", $str)) {
-									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
-								}
-								
-								if (preg_match("/(\&\#34;)+/", $str)) {
-									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
-								}
-								echo '"'.$str.'"';
-							} else {
-								echo '"'.$value.'"';
-							}
-							if (($i) < count($checked_intersection)) {
-								echo ", ";
-							}
-						}
-					}
-					echo "]";
-					if (($x + 1) < $test_field_block_count) {
-						echo ", ";
-					}
-				}
-			}
-			?>
-		];
-		for (var i = 0; i < test_field_select_array_c.length; i++) {
-			var test_field_with_select_value = '#go_test_field_select_c_'+i+' .go_test_field_input_option_c:contains(\''+test_field_select_array_c[i]+'\')';
-			jQuery(test_field_with_select_value).attr('selected', true);
-		}
-		for (var x = 0; x < block_count_c; x++) {
-			if (test_field_checked_array_c.length !== 0) {
-				for (var z = 0; z < test_field_checked_array_c[x].length; z++) {
-					var test_fields_with_checked_value = "tr#go_test_field_input_row_c_"+[x]+" .go_test_field_input_c[value='"+test_field_checked_array_c[x][z]+"']";
-					jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_c').attr('checked', true);
-				}
-			}
-		}
-		var checkbox_obj_array = jQuery('.go_test_field_input_checkbox_c');
-		for (var y = 0; y < checkbox_obj_array.length; y++) {
-			var next_obj = checkbox_obj_array[y].nextElementSibling;
-			if (checkbox_obj_array[y].checked) {
-				var input_obj = next_obj.nextElementSibling.value;
-				jQuery(next_obj).attr('value', input_obj);
-			} else {
-				jQuery(next_obj).removeAttr('value');
-			}
-		}
-		function update_checkbox_value_c (target) {
-			if (jQuery(target).hasClass('go_test_field_input_c')) {
-				var obj = jQuery(target).siblings('.go_test_field_input_checkbox_c');
-			} else {
-				var obj = target;
-			}
-			var checkbox_type = jQuery(obj).prop('type');
-			var input_field_val = jQuery(obj).siblings('.go_test_field_input_c').val();
-			if (checkbox_type === 'radio') {
-				var radio_name = jQuery(obj).prop('name');
-				var radio_checked_str = ".go_test_field_input_checkbox_c[name='"+radio_name+"']:checked";
-				if (jQuery(obj).prop('checked')) {
-					if (input_field_val != '') {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_c').attr('value', input_field_val);
-					} else {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_c').removeAttr('value');
-					}
-				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_c').removeAttr('value');
-				}
-				var radios_not_checked_str = ".go_test_field_input_checkbox_c[name='"+radio_name+"']:not(:checked)";
-				jQuery(radios_not_checked_str).siblings('.go_test_field_input_checkbox_hidden_c').removeAttr('value');
-			} else {
-				if (jQuery(obj).prop('checked')) {
-					if (input_field_val != '') {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_c').attr('value', input_field_val);	
-					} else {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_c').removeAttr('value');
-					}
-				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_c').removeAttr('value');
-				}
-			}
-		}
-		function update_checkbox_type_c (obj) {
-			block_type_c = jQuery(obj).children('option:selected').val();
-			jQuery(obj).siblings('ul').children('li').children('input.go_test_field_input_checkbox_c').attr('type', block_type_c);
-		}
-		function add_block_c (obj) {
-			block_num_c = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_c').length;
-			jQuery('#go_test_field_block_count_c').attr('value', (block_num_c + 1));
-			var field_block = "<tr id='go_test_field_input_row_c_"+block_num_c+"' class='go_test_field_input_row_c go_test_field_input_row'><td><select id='go_test_field_select_c_"+block_num_c+"' class='go_test_field_input_select_c' name='go_test_field_select_c[]' onchange='update_checkbox_type_c(this);'><option value='radio' class='go_test_field_input_option_c'>Multiple Choice</option><option value='checkbox' class='go_test_field_input_option_c'>Multiple Select</option></select><br/><br/><input class='go_test_field_input_question_c go_test_field_input_question' name='go_test_field_input_question_c[]' placeholder='' type='text' /><ul><li><input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_c_"+block_num_c+"' type='"+block_type_c+"' onchange='update_checkbox_value_c(this);' /><input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c["+block_num_c+"][1][]' type='hidden' /><input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c["+block_num_c+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' /></li><li><input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_c_"+block_num_c+"' type='"+block_type_c+"' onchange='update_checkbox_value_c(this);' /><input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c["+block_num_c+"][1][]' type='hidden' /><input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c["+block_num_c+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' /></li><input class='go_test_field_add go_test_field_add_input_button_c' type='button' value='+' onclick='add_field_c(this);'/></ul><ul><li><input class='go_test_field_rm_row_button_c go_test_field_input_rm_row_button' type='button' value='Remove' style='margin-left: -2px;' onclick='remove_block_c(this);' /><input class='go_test_field_input_count_c' name='go_test_field_input_count_c[]' type='hidden' value='2' /></li></ul></td></tr>";
-			jQuery(obj).parent().parent().before(field_block);
-		}
-		function remove_block_c (obj) {
-			block_num_c = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_c').length;
-			jQuery('#go_test_field_block_count_c').attr('value', (block_num_c - 1));
-			jQuery(obj).parents('tr.go_test_field_input_row_c').remove();
-		}
-		function add_field_c (obj) {
-			input_num_c = jQuery(obj).siblings('li').length + 1;
-			var block_id = jQuery(obj).parents('tr.go_test_field_input_row_c').first().attr('id');
-			block_num_c = block_id.split('go_test_field_input_row_c_').pop();
-			block_type_c = jQuery(obj).parent('ul').siblings('select').children('option:selected').val();
-			jQuery(obj).parent('ul').siblings('ul').children('li').children('.go_test_field_input_count_c').attr('value', input_num_c);
-			jQuery(obj).siblings('li').last().after("<li><input class='go_test_field_input_checkbox_c go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_c_"+block_num_c+"' type='"+block_type_c+"' onchange='update_checkbox_value_c(this);' /><input class='go_test_field_input_checkbox_hidden_c' name='go_test_field_values_c["+block_num_c+"][1][]' type='hidden' /><input class='go_test_field_input_c go_test_field_input' name='go_test_field_values_c["+block_num_c+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_c(this);' oncut='update_checkbox_value_c(this);' onpaste='update_checkbox_value_c(this);' /><input class='go_test_field_rm go_test_field_rm_input_button_c' type='button' value='X' onclick='remove_field_c(this);'></li>");
-		}
-		function remove_field_c (obj) {
-			jQuery(obj).parents('tr.go_test_field_input_row_c').find('input.go_test_field_input_count_c')[0].value--;
-			jQuery(obj).parent('li').remove();
-		}
-		
-	</script>
-	<?php
-}
-
-add_action('cmb_validate_go_test_field_completion', 'go_validate_test_field_completion');
-function go_validate_test_field_completion() {
-	$question_temp = $_POST['go_test_field_input_question_c'];
-	$test_temp = $_POST['go_test_field_values_c'];
-	$select = $_POST['go_test_field_select_c'];
-	$block_count = (int)$_POST['go_test_field_block_count_c'];
-	$input_count_temp = $_POST['go_test_field_input_count_c'];
-
-	$input_count = array();
-	if (!empty($input_count_temp)) {
-		foreach ($input_count_temp as $key => $value) {
-			$temp = (int)$input_count_temp[$key];
-			array_push($input_count, $temp);
-		}
-	}
-
-	$question = array();
-	if (!empty($question_temp) && is_array($question_temp)) {
-		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
-				$str = $value;
-				if (preg_match("/(\')+/", $str)) {
-					$str = preg_replace("/(\')+/", '&#39;', $str);
-				}
-				if (preg_match("/(\")+/", $str)) {
-					$str = preg_replace("/(\")+/", '&#34;', $str);
-				}
-				if (preg_match("/(<)+/", $str)) {
-					$str = preg_replace("/(<)+/", "", $str);
-				}
-				if (preg_match("/(>)+/", $str)) {
-					$str = preg_replace("/(>)+/", "", $str);
-				}
-				$question[] = $str;
-			} else {
-				$question[] = $value;
-			}
-		}
-	} else {
-		$question = $question_temp;
-	}
-
-	$test = array();
-	if (!empty($test_temp)) {
-		for ($f = 0; $f < count($test_temp); $f++) {
-			$temp_input = $test_temp[$f][0];
-			$temp_checked = $test_temp[$f][1];
-			if (!empty($temp_input) && is_array($temp_input)) {
-				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
-							$str = $value;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][0][] = $str;
-						} else {
-							$test[$f][0][] = $value;
-						}
-					} else {
-						if ($input_count[$f] > 2) {
-							$input_count[$f]--;
-						}
-					}
-				}
-			}
-
-			if (!empty($temp_checked) && is_array($temp_checked)) {
-				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
-							$str = $val;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][1][] = $str;
-						} else {
-							$test[$f][1][] = $val;
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	return(array($question, $test, $select, $block_count, $input_count));
-}
-
-add_action('cmb_render_go_test_field_mastery', 'go_test_field_mastery', 10, 1);
-function go_test_field_mastery($field_args) {
-	$custom = get_post_custom(get_the_id());
-
-	$temp_array = $custom["go_mta_test_lock_mastery"][0];
-	$temp_uns = unserialize($temp_array);
-	$test_field_input_question = $temp_uns[0];
-	$test_field_input_array = $temp_uns[1];
-	$test_field_select_array = $temp_uns[2];
-	$test_field_block_count = (int)$temp_uns[3];
-	$test_field_input_count = $temp_uns[4];
-
-	?>
-	<p>
-		<?php echo $field_args['desc']; ?>
-	</p>
-	<table id='go_test_field_table_m' class='go_test_field_table'>
-		<?php 
-		if (!empty($test_field_block_count)) {
-			for ($i = 0; $i < $test_field_block_count; $i++) {
-				echo "
-				<tr id='go_test_field_input_row_m_".$i."' class='go_test_field_input_row_m go_test_field_input_row'>
-					<td>
-						<select id='go_test_field_select_m_".$i."' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'>
-						  <option value='radio' class='go_test_field_input_option_m' ".($test_field_select_array[$i] == 'radio' ? 'selected' : '').">Multiple Choice</option>
-						  <option value='checkbox' class='go_test_field_input_option_m' ".($test_field_select_array[$i] == 'checkbox' ? 'selected' : '').">Multiple Select</option>
-						</select>";
-						if (!empty($test_field_input_question)) {
-							echo "<br/><br/><input class='go_test_field_input_question_m go_test_field_input_question' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' value='".$test_field_input_question[$i]."' />";
-						} else {
-							echo "<br/><br/><input class='go_test_field_input_question_m go_test_field_input_question' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' />";
-						}
-				if (!empty($test_field_input_count)) {
-					echo "<ul>";
-					for ($x = 0; $x < $test_field_input_count[$i]; $x++) {
-						echo "
-							<li><input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_m_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_m(this);' />
-							<input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m[".$i."][1][]' type='hidden' />
-							<input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][$x]."' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' />";
-						if ($x > 1) {
-							echo "<input class='go_test_field_rm go_test_field_rm_input_button_m' type='button' value='X' onclick='remove_field_m(this);'>";
-						}
-						echo "</li>";
-						if (($x + 1) == $test_field_input_count[$i]) {
-							echo "<input class='go_test_field_add go_test_field_add_input_button_m' type='button' value='+' onclick='add_field_m(this);'/>";
-						}
-					}
-					echo "</ul><ul>";
-					if ($i > 0) {
-						echo "<li><input class='go_test_field_rm_row_button_m go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_m(this);' /></li>";
-					}
-					echo "<li><input class='go_test_field_input_count_m' name='go_test_field_input_count_m[]' type='hidden' value='".$test_field_input_count[$i]."' /></li></ul>";
-				} else {
-					echo "
-					<ul>
-						<li><input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='go_test_field_input_checkbox_m_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m[".$i."][1][]' type='hidden' /><input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][0]."' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li>
-						<li><input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='go_test_field_input_checkbox_m_".$i."' type='".$test_field_select_array[$i]."' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m[".$i."][1][]' type='hidden' /><input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m[".$i."][0][]' placeholder='Enter an answer!' type='text' value='".$test_field_input_array[$i][0][1]."' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li>";
-					echo "</ul><ul><li>";
-					if ($i > 0) {
-						echo "<input class='go_test_field_rm_row_button_m go_test_field_input_rm_row_button' type='button' value='Remove' onclick='remove_block_m(this);' /></li><li>";
-					}
-					echo "<input class='go_test_field_input_count_m' name='go_test_field_input_count_m[]' type='hidden' value='2' /></li></ul>";
-				}
-				echo "
-					</td>
-				</tr>";
-			}
-		} else {
-			echo "
-				<tr id='go_test_field_input_row_m_0' class='go_test_field_input_row_m go_test_field_input_row'>
-					<td>
-						<select id='go_test_field_select_m_0' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'>
-							<option value='radio' class='go_test_field_input_option_m'>Multiple Choice</option>
-							<option value='checkbox' class='go_test_field_input_option_m'>Multiple Select</option>
-						</select>
-						<br/><br/>
-						<input class='go_test_field_input_question_m go_test_field_input_question' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' />
-						<ul>
-							<li>
-								<input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_m_0' type='radio' onchange='update_checkbox_value_m(this);' />
-								<input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m[0][1][]' type='hidden' />
-								<input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m[0][0][]' placeholder='Enter an answer!' type='text' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' />
-							</li>
-							<li>
-								<input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_m_0' type='radio' onchange='update_checkbox_value_m(this);' />
-								<input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m[0][1][]' type='hidden' />
-								<input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m[0][0][]' placeholder='Enter an answer!' type='text' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' />
-							</li>
-							<input class='go_test_field_add go_test_field_add_input_button_m' type='button' value='+' onclick='add_field_m(this);'/>
-						</ul>
-						<ul>
-							<li>
-								<input class='go_test_field_input_count_m' name='go_test_field_input_count_m[]' type='hidden' value='2' />
-							</li>
-						</ul>
-					</td>
-				</tr>
-			";
-		}
-		?>
-		<tr>
-			<td>
-				<input id='go_test_field_add_block_button_m' class='go_test_field_add_block_button' value='Add Question' type='button' onclick='add_block_m(this);' />
-				<?php 
-				if (!empty($test_field_block_count)) {
-					echo "<input id='go_test_field_block_count_m' name='go_test_field_block_count_m' type='hidden' value='".$test_field_block_count."' />";
-				} else {
-					echo "<input id='go_test_field_block_count_m' name='go_test_field_block_count_m' type='hidden' value='1' />";
-				}
-				?>
-			</td>
-		</tr>
-	</table>
-	<script type='text/javascript'>
-		var block_num_m = 0;
-		var block_type_m = 'radio';
-		var input_num_m = 0;
-		var block_count_m = <?php echo $test_field_block_count; ?>;
-		
-		var test_field_select_array_m = new Array(
-			<?php 
-			if (!empty($test_field_block_count)) {
-				for ($i = 0; $i < $test_field_block_count; $i++) {
-					echo '"'.ucwords($test_field_select_array[$i]).'"';
-					if (($i + 1) != $test_field_block_count) { 
-						echo ', ';
-					}
-				}
-			}
-			?>
-		);
-		var test_field_checked_array_m = [
-			<?php
-			if (!empty($test_field_block_count)) {
-				for ($x = 0; $x < $test_field_block_count; $x++) {
-					echo "[";
-					if (!empty($test_field_input_array[$x][0]) && !empty($test_field_input_array[$x][1])) {
-						$intersection = array_intersect($test_field_input_array[$x][0], $test_field_input_array[$x][1]);
-						$checked_intersection = array_values($intersection);
-						for ($i = 0; $i < count($checked_intersection); $i++) {
-							$value = $checked_intersection[$i];
-							if (preg_match("/(\&\#39;|\&\#34;)+/", $value)) {
-								$str = $value;
-								if (preg_match("/(\&\#39;)+/", $str)) {
-									$str = preg_replace("/(\&\#39;)+/", "\'", $str);
-								}
-								
-								if (preg_match("/(\&\#34;)+/", $str)) {
-									$str = preg_replace("/(\&\#34;)+/", '\"', $str);
-								}
-								echo '"'.$str.'"';
-							} else {
-								echo '"'.$value.'"';
-							}
-							if (($i) < count($checked_intersection)) {
-								echo ", ";
-							}
-						}
-					}
-					echo "]";
-					if (($x + 1) < $test_field_block_count) {
-						echo ", ";
-					}
-				}
-			}
-			?>
-		];
-		for (var i = 0; i < test_field_select_array_m.length; i++) {
-			var test_field_with_select_value_m = '#go_test_field_select_m_'+i+' .go_test_field_input_option_m:contains(\''+test_field_select_array_m[i]+'\')';
-			jQuery(test_field_with_select_value_m).attr('selected', true);
-		}
-		for (var x = 0; x < block_count_m; x++) {
-			if (test_field_checked_array_m.length !== 0) {
-				for (var z = 0; z < test_field_checked_array_m[x].length; z++) {
-					var test_fields_with_checked_value = "tr#go_test_field_input_row_m_"+[x]+" .go_test_field_input_m[value='"+test_field_checked_array_m[x][z]+"']";
-					jQuery(test_fields_with_checked_value).siblings('.go_test_field_input_checkbox_m').attr('checked', true);
-				}
-			}
-		}
-		var checkbox_obj_array_m = jQuery('.go_test_field_input_checkbox_m');
-		for (var y = 0; y < checkbox_obj_array_m.length; y++) {
-			var next_obj = checkbox_obj_array_m[y].nextElementSibling;
-			if (checkbox_obj_array_m[y].checked) {
-				var input_obj = next_obj.nextElementSibling.value;
-				jQuery(next_obj).attr('value', input_obj);
-			} else {
-				jQuery(next_obj).removeAttr('value');
-			}
-		}
-		function update_checkbox_value_m (target) {
-			if (jQuery(target).hasClass('go_test_field_input_m')) {
-				var obj = jQuery(target).siblings('.go_test_field_input_checkbox_m');
-			} else {
-				var obj = target;
-			}
-			var checkbox_type = jQuery(obj).prop('type');
-			var input_field_val = jQuery(obj).siblings('.go_test_field_input_m').val();
-			if (checkbox_type === 'radio') {
-				var radio_name = jQuery(obj).prop('name');
-				var radio_checked_str = ".go_test_field_input_checkbox_m[name='"+radio_name+"']:checked";
-				if (jQuery(obj).prop('checked')) {
-					if (input_field_val != '') {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_m').attr('value', input_field_val);
-					} else {
-						jQuery(radio_checked_str).siblings('.go_test_field_input_checkbox_hidden_m').removeAttr('value');
-					}
-				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_m').removeAttr('value');
-				}
-				var radios_not_checked_str = ".go_test_field_input_checkbox_m[name='"+radio_name+"']:not(:checked)";
-				jQuery(radios_not_checked_str).siblings('.go_test_field_input_checkbox_hidden_m').removeAttr('value');
-			} else {
-				if (jQuery(obj).prop('checked')) {
-					if (input_field_val != '') {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_m').attr('value', input_field_val);	
-					} else {
-						jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_m').removeAttr('value');
-					}
-				} else {
-					jQuery(obj).siblings('.go_test_field_input_checkbox_hidden_m').removeAttr('value');
-				}
-			}
-		}
-		function update_checkbox_type_m (obj) {
-			block_type_m = jQuery(obj).children('option:selected').val();
-			jQuery(obj).siblings('ul').children('li').children('input.go_test_field_input_checkbox_m').attr('type', block_type_m);
-		}
-		function add_block_m (obj) {
-			block_num_m = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_m').length;
-			jQuery('#go_test_field_block_count_m').attr('value', (block_num_m + 1));
-			var field_block = "<tr id='go_test_field_input_row_m_"+block_num_m+"' class='go_test_field_input_row_m go_test_field_input_row'><td><select id='go_test_field_select_m_"+block_num_m+"' class='go_test_field_input_select_m' name='go_test_field_select_m[]' onchange='update_checkbox_type_m(this);'><option value='radio' class='go_test_field_input_option_m'>Multiple Choice</option><option value='checkbox' class='go_test_field_input_option_m'>Multiple Select</option></select><br/><br/><input class='go_test_field_input_question_m go_test_field_input_question' name='go_test_field_input_question_m[]' placeholder='Shall We Play a Game?' type='text' /><ul><li><input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_m_"+block_num_m+"' type='"+block_type_m+"' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m["+block_num_m+"][1][]' type='hidden' /><input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m["+block_num_m+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li><li><input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_m_"+block_num_m+"' type='"+block_type_m+"' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m["+block_num_m+"][1][]' type='hidden' /><input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m["+block_num_m+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /></li><input class='go_test_field_add go_test_field_add_input_button_m' type='button' value='+' onclick='add_field_m(this);'/></ul><ul><li><input class='go_test_field_rm_row_button_m go_test_field_input_rm_row_button' type='button' value='Remove' style='margin-left: -2px;' onclick='remove_block_m(this);' /><input class='go_test_field_input_count_m' name='go_test_field_input_count_m[]' type='hidden' value='2' /></li></ul></td></tr>";
-			jQuery(obj).parent().parent().before(field_block);
-		}
-		function remove_block_m (obj) {
-			block_num_m = jQuery(obj).parents('tr').siblings('tr.go_test_field_input_row_m').length;
-			jQuery('#go_test_field_block_count_m').attr('value', (block_num_m -1));
-			jQuery(obj).parents('tr.go_test_field_input_row_m').remove();
-		}
-		function add_field_m (obj) {
-			input_num_m = jQuery(obj).siblings('li').length + 1;
-			var block_id = jQuery(obj).parents('tr.go_test_field_input_row_m').first().attr('id');
-			block_num_m = block_id.split('go_test_field_input_row_m_').pop();
-			block_type = jQuery(obj).parent('ul').siblings('select').children('option:selected').val();
-			jQuery(obj).parent('ul').siblings('ul').children('li').children('.go_test_field_input_count_m').attr('value', input_num_m);
-			jQuery(obj).siblings('li').last().after("<li><input class='go_test_field_input_checkbox_m go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_m_"+block_num_m+"' type='"+block_type+"' onchange='update_checkbox_value_m(this);' /><input class='go_test_field_input_checkbox_hidden_m' name='go_test_field_values_m["+block_num_m+"][1][]' type='hidden' /><input class='go_test_field_input_m go_test_field_input' name='go_test_field_values_m["+block_num_m+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_m(this);' oncut='update_checkbox_value_m(this);' onpaste='update_checkbox_value_m(this);' /><input class='go_test_field_rm go_test_field_rm_input_button_m' type='button' value='X' onclick='remove_field_m(this);'></li>");
-		}
-		function remove_field_m (obj) {
-			jQuery(obj).parents('tr.go_test_field_input_row_m').find('input.go_test_field_input_count_m')[0].value--;
-			jQuery(obj).parent('li').remove();
-		}
-		
-	</script>
-	<?php
-}
-
-add_action('cmb_validate_go_test_field_mastery', 'go_validate_test_field_mastery');
-function go_validate_test_field_mastery() {
-	$question_temp = $_POST['go_test_field_input_question_m'];
-	$test_temp = $_POST['go_test_field_values_m'];
-	$select = $_POST['go_test_field_select_m'];
-	$block_count = (int)$_POST['go_test_field_block_count_m'];
-	$input_count_temp = $_POST['go_test_field_input_count_m'];
-
-	$input_count = array();
-	if (!empty($input_count_temp)) {
-		foreach ($input_count_temp as $key => $value) {
-			$temp = (int)$input_count_temp[$key];
-			array_push($input_count, $temp);
-		}
-	}
-
-	$question = array();
-	if (!empty($question_temp) && is_array($question_temp)) {
-		foreach ($question_temp as $value) {
-			if (preg_match("/[\'\"\<\>]+/", $value)) {
-				$str = $value;
-				if (preg_match("/(\')+/", $str)) {
-					$str = preg_replace("/(\')+/", '&#39;', $str);
-				}
-				if (preg_match("/(\")+/", $str)) {
-					$str = preg_replace("/(\")+/", '&#34;', $str);
-				}
-				if (preg_match("/(<)+/", $str)) {
-					$str = preg_replace("/(<)+/", "", $str);
-				}
-				if (preg_match("/(>)+/", $str)) {
-					$str = preg_replace("/(>)+/", "", $str);
-				}
-				$question[] = $str;
-			} else {
-				$question[] = $value;
-			}
-		}
-	} else {
-		$question = $question_temp;
-	}
-
-	$test = array();
-	if (!empty($test_temp)) {
-		for ($f = 0; $f < count($test_temp); $f++) {
-			$temp_input = $test_temp[$f][0];
-			$temp_checked = $test_temp[$f][1];
-			if (!empty($temp_input) && is_array($temp_input)) {
-				foreach ($temp_input as $value) {
-					if (!empty($value) && preg_match("/\S+/", $value)) {
-						if (preg_match("/[\'\"\<\>]+/", $value)) {
-							$str = $value;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][0][] = $str;
-						} else {
-							$test[$f][0][] = $value;
-						}
-					} else {
-						if ($input_count[$f] > 2) {
-							$input_count[$f]--;
-						}
-					}
-				}
-			}
-
-			if (!empty($temp_checked) && is_array($temp_checked)) {
-				foreach ($temp_checked as $val) {
-					if (!empty($val) && preg_match("/\S+/", $val)) {
-						if (preg_match("/[\'\"\<\>]+/", $val)) {
-							$str = $val;
-							if (preg_match("/(\')+/", $str)) {
-								$str = preg_replace("/(\')+/", '&#39;', $str);
-							}
-
-							if (preg_match("/(\")+/", $str)) {
-								$str = preg_replace("/(\")+/", '&#34;', $str);
-							}
-
-							if (preg_match("/(<)+/", $str)) {
-								$str = preg_replace("/(<)+/", "", $str);
-							}
-
-							if (preg_match("/(>)+/", $str)) {
-								$str = preg_replace("/(>)+/", "", $str);
-							}
-							$test[$f][1][] = $str;
-						} else {
-							$test[$f][1][] = $val;
-						}
+				foreach ($temp_checked as $value) {
+					if (!is_null($value) && preg_match("/\S+/", $value)) {
+						$test[$f][1][] = $value;
 					}
 				}
 			}
@@ -2260,7 +1111,7 @@ function go_tasks_template_function( $template_path ) {
 function go_tasks_filter_content(){
 	 global $wpdb;
 	 echo do_shortcode('[go_task id="'.get_the_id().'"]');
-}
+	 }
 	 
 function go_create_help_video_lb(){
 	?>
@@ -2272,7 +1123,6 @@ function go_create_help_video_lb(){
     </div>
     <?php 
 }
-
 add_action('admin_head', 'go_create_help_video_lb');
 add_action('wp_head', 'go_create_help_video_lb');
 
@@ -2573,31 +1423,33 @@ function go_remove_task_chain_from_posts ($term_id) {
 	}
 }
 
-add_action('post_submitbox_misc_actions', 'go_clone_task_ajax');
-function go_clone_task_ajax () {
+add_action('post_submitbox_misc_actions', 'go_clone_post_ajax');
+function go_clone_post_ajax () {
 	global $post;
+	$post_type = get_post_type($post);
 
-	// When the "clone" button is pressed send an ajax call to the go_clone_task() function to
-	// clone the task using the sent task id.
-	if (get_post_type($post) == 'tasks') {
-		echo '
-		<div class="misc-pub-section misc-pub-section-last">
-			<input id="go-button-clone" class="button button-large alignright" type="button" value="Clone" />
+	// When the "Clone" button is pressed, send an ajax call to the go_clone_post() function to
+	// clone the post using the sent post id and post type.
+	if ($post_type == 'tasks' || $post_type == 'go_store') {
+		echo "
+		<div class='misc-pub-section misc-pub-section-last'>
+			<input id='go-button-clone' class='button button-large alignright' type='button' value='Clone' />
 		</div>
-		<script type="text/javascript">        	
+		<script type='text/javascript'>        	
 			function clone_post_ajax() {
-				jQuery("input#go-button-clone").click(function() {
-					jQuery("input#go-button-clone").prop("disabled", true);
+				jQuery('input#go-button-clone').click(function() {
+					jQuery('input#go-button-clone').prop('disabled', true);
 					jQuery.ajax({
-						url: "'.get_site_url().'/wp-admin/admin-ajax.php",
-						type: "POST",
+						url: '".admin_url('admin-ajax.php')."',
+						type: 'POST',
 						data: {
-							action: "go_clone_task",
-							post_id: '.$post->ID.',
+							action: 'go_clone_post',
+							post_id: {$post->ID},
+							post_type: '{$post_type}'
 						}, success: function(url) {
-							var reg = new RegExp("^(http)");
+							var reg = new RegExp(\"^(http)\");
 							var match = reg.test(url);
-							if (url != \'\' && match) {
+							if (url != '' && match) {
 								window.location = url;
 							}
 						}
@@ -2608,48 +1460,44 @@ function go_clone_task_ajax () {
 				clone_post_ajax();
 			});
 		</script>
-		';
+		";
 	}
 }
 
-function go_clone_task () {
+function go_clone_post () {
 
 	// Grab the post id from the ajax call and use it to grab data from the original post.
 	$post_id = $_POST['post_id'];
-
-	// Get the post's title, permalink, publishing and modification dates, etc.
+	$post_type = $_POST['post_type'];
 	$post_data = get_post($post_id, ARRAY_A);
-
-	// Grab the original post's meta data.
 	$post_custom = get_post_custom($post_id);
-
+	
 	// Grab the original post's taxonomies.
-	$terms = get_the_terms($post_id, 'task_chains');
-	$foci = get_the_terms($post_id, 'task_focus_categories');
-	$cat = get_the_terms($post_id, 'task_categories');
+	if ($post_type == 'tasks') {
+		$terms = get_the_terms($post_id, 'task_chains');
+		$foci = get_the_terms($post_id, 'task_focus_categories');
+		$cat = get_the_terms($post_id, 'task_categories');
+		$term_ids = array();
+		$focus_ids = array();
+		for ($i = 0; $i < count($terms); $i++) {
+			$term_ids[] = $terms[$i]->term_id;
+		}
+		for ($i = 0; $i < count($foci); $i++) {
+			$focus_ids[] = $foci[$i]->term_id;
+		}
+	} else {
+		$cat = get_the_terms($post_id, 'store_types');
+	}
 
-	$term_ids = array();
-	$focus_ids = array();
 	$cat_ids = array();
-
-	// Put the ids of the taxonomies that the original post was assigned to into arrays.
-	for ($i = 0; $i < count($terms); $i++) {
-		array_push($term_ids, $terms[$i]->term_id);
-	}
-
-	for ($i = 0; $i < count($foci); $i++) {
-		array_push($focus_ids, $foci[$i]->term_id);
-	}
-
 	for ($i = 0; $i < count($cat); $i++) {
-		array_push($cat_ids, $cat[$i]->term_id);
+		$cat_ids[] = $cat[$i]->term_id;
 	}
 	
-	// Change the post status to "draft" and leave the guid up to Wordpress.
+	// Change the post status to "draft", leave the guid up to Wordpress,
+	// and remove all other post data.
 	$post_data['post_status'] = 'draft';
 	$post_data['guid'] = '';
-
-	// Remove some other data to allow the post to be easily cloned.
 	unset($post_data['ID']);
 	unset($post_data['post_title']);
 	unset($post_data['post_name']);
@@ -2662,15 +1510,16 @@ function go_clone_task () {
 	$clone_id = wp_insert_post($post_data);
 
 	// Set the cloned post's taxonomies using the ids from above.
-	wp_set_object_terms($clone_id, $term_ids, "task_chains");
-	wp_set_object_terms($clone_id, $focus_ids, "task_focus_categories");
-	wp_set_object_terms($clone_id, $cat_ids, "task_categories");
+	if ($post_type == 'tasks') {
+		wp_set_object_terms($clone_id, $term_ids, "task_chains");
+		wp_set_object_terms($clone_id, $focus_ids, "task_focus_categories");
+		wp_set_object_terms($clone_id, $cat_ids, "task_categories");
+	} else {
+		wp_set_object_terms($clone_id, $cat_ids, "store_types");
+	}
 
-	// If the clone was successfully created continue, otherwise return 0.
 	if (!empty($clone_id)) {
-
-		// Setup the url to the cloned post.
-		$url = get_admin_url()."post.php?post={$clone_id}&action=edit";
+		$url = admin_url("post.php?post={$clone_id}&action=edit");
 		
 		// Add the original post's meta data to the clone.
 		foreach ($post_custom as $key => $value) {
@@ -2679,12 +1528,16 @@ function go_clone_task () {
 				if ($uns !== false) {
 					add_post_meta($clone_id, $key, $uns, true);
 				} else {
-					if ($key === 'chain_position') {
-						$terms_array = get_the_terms($post_id, 'task_chains');
-						if (!empty($terms_array)) {
-							$chain = array_shift($terms_array);
-							$end_pos = $chain->count + 1;
-							add_post_meta($clone_id, $key, $end_pos, true);
+					if ($post_type == 'tasks') {
+						if ($key === 'chain_position') {
+							$terms_array = get_the_terms($post_id, 'task_chains');
+							if (!empty($terms_array)) {
+								$chain = array_shift($terms_array);
+								$end_pos = $chain->count + 1;
+								add_post_meta($clone_id, $key, $end_pos, true);
+							}
+						} else {
+							add_post_meta($clone_id, $key, $value[$i], true);
 						}
 					} else {
 						add_post_meta($clone_id, $key, $value[$i], true);
@@ -2699,10 +1552,9 @@ function go_clone_task () {
 	die();
 }
 
-add_action('cmb_render_go_store_shortcode_list', 'go_cmb_render_go_store_shortcode_list');
-function go_cmb_render_go_store_shortcode_list() {
-	$post_id = get_the_id();
-	echo "</span>[go_store id=\"{$post_id}\"]";
+add_action('cmb_render_go_store_item_post_id', 'go_store_item_post_id');
+function go_store_item_post_id () {
+	echo "<div id='go_store_id'>".get_the_id()."</div>";
 }
 
 add_action('cmb_render_go_store_cost', 'go_store_cost');

@@ -519,7 +519,15 @@ jQuery(document).ready(function(){
 			});
 			
 			if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
-				jQuery('.go_options_profession_input[value=""]').attr('disabled', 'disabled');
+				jQuery('.go_options_profession_input').filter(function () {
+					var re = new RegExp("(\\\S)+");
+					if (this.value.length > 0 && re.test(this.value)) {
+						return true;
+					} else {
+						jQuery(this).remove();
+						return false;
+					}
+				});
 				var values = jQuery('.go_options_profession_input').map(function() {
 					return jQuery(this).val();
 				}).get();
