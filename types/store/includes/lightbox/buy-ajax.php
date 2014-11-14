@@ -62,11 +62,13 @@ function go_buy_item() {
 	$item_url = $custom_fields['go_mta_store_item_url'][0];
 	$badge_id = $custom_fields['go_mta_badge_id'][0];
 
-	$store_focus = $custom_fields['go_mta_store_focus'][0];
-	$is_focused = (bool)$store_focus[0];
+	
+	$item_focus_array = unserialize($custom_fields['go_mta_store_focus'][0]);
+	$is_focused = (bool) filter_var($item_focus_array[0], FILTER_VALIDATE_BOOLEAN);
 	if ($is_focused) {
-		$item_focus = $store_focus[1];
+		$item_focus = $item_focus_array[1];	
 	}
+	
 	$repeat = 'off';
 	
 	$cur_currency = go_return_currency($user_id);
@@ -91,7 +93,10 @@ function go_buy_item() {
 
 	if ((($enough_currency && $enough_bonus_currency && $enough_points && $enough_minutes) || $penalty) && $within_limit) {
 		if ($is_focused && !empty($item_focus)) {
-			$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
+			$user_focuses = get_user_meta($user_id, 'go_focus', true);
+			if (array_search('No '.go_return_options('go_focus_name'), $user_focuses)) {
+				unset($user_focuses[array_search('No '.go_return_options('go_focus_name'), $user_focuses)]);
+			}
 			$user_focuses[] = $item_focus;
 			update_user_meta($user_id, 'go_focus', $user_focuses);
 		}

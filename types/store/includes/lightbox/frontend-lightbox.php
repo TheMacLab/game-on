@@ -53,7 +53,6 @@ function go_the_lb_ajax(){
 	$user_penalties = go_return_penalty($user_id);
 	$user_minutes = go_return_minutes($user_id);
 	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
-	$purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
 	$is_giftable = $custom_fields['go_mta_store_giftable'][0];
 
 	echo '<h2>'.$the_title.'</h2>';
@@ -126,19 +125,45 @@ function go_the_lb_ajax(){
 			die("You need less than {$penalty_filter} ".go_return_options('go_penalty_name')." to buy this item.");
 		}
 	}
+	
+	// Get focus options associated with item
+	$item_focus_array = unserialize($custom_fields['go_mta_store_focus'][0]);
+	
+	// Check if item actually has focus
+	$is_focused = (bool) filter_var($item_focus_array[0], FILTER_VALIDATE_BOOLEAN);
+	if ($is_focused) {
+		$item_focus = $item_focus_array[1];
+	}
+	
 	// Check if user has a focus
 	if (get_user_meta($user_id, 'go_focus', true) != null) {
 		$user_focuses = (array) get_user_meta($user_id, 'go_focus', true);
 	}
 	
-	// Check if the item has a focus and the focus gateway is turned on
-	if ($custom_fields['go_mta_focuses'][0] && $custom_fields['go_mta_focus_item_switch'][0] == 'on') {
-		$item_focus = $custom_fields['go_mta_focuses'][0];
-	} 
+	// Check if item is locked by focus
+	if ($custom_fields['go_mta_store_focus_lock'][0]){
+		$focus_category_lock = true;
+	}
 	
-	// If user has the focus and the item is a focus gateway echo this
-	if ($item_focus && !empty($user_focuses) && in_array($item_focus, $user_focuses)) {
+	// Grab which focuses are chosen as the locks
+	if(get_the_terms($the_id, 'store_focus_categories') && $focus_category_lock) {
+		$categories = get_the_terms($the_id, 'store_focus_categories');
+		$category_names = array();
+		foreach ($categories as $category) {
+			array_push($category_names, $category->name);	
+		}
+	}
+	
+	// Check to see if the user has any of the focuses
+	if($category_names && $user_focuses){
+		$go_ahead = array_intersect($user_focuses, $category_names);
+	}
+	
+	if ($is_focused && !empty($item_focus) && !empty($user_focuses) && in_array($item_focus, $user_focuses)) {
 		die('You already have this '.go_return_options('go_focus_name').'!');	
+	}
+	if (empty($go_ahead) && $focus_category_lock) {
+		die('Item only available to those in '.implode(', ', $category_names).' '.strtolower(go_return_options('go_focus_name')));
 	}
 	if ($is_filtered === 'true' && !is_null($bonus_filter) && $user_bonus_currency < $bonus_filter) {
 		die('You require more '.go_return_options('go_bonus_currency_name').' to view this item.');
@@ -384,7 +409,7 @@ function go_get_purchase_count(){
 	$table_name_go = $wpdb->prefix."go";
 	$the_id = $_POST["the_item_id"];
 	$user_id = get_current_user_id();
-	$purchase_count = $wpdb->get_var("SELECT count FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
+	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
 	if($purchase_count == NULL){ 
 		echo '0';
 	} else{
@@ -392,7 +417,4 @@ function go_get_purchase_count(){
 	}
 	die();
 }
-add_action('wp_ajax_purchase_count', 'go_get_purchase_count');
-
-
 ?>

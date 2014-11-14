@@ -59,8 +59,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_encounter_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_encounter_lock_loot'),
 		jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_encounter_lock_loot_mod'),
-		jQuery('tr.cmb-type-go_test_field_encounter.cmb_id_go_mta_test_lock_encounter'),
-		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_one_shortcode_list'),
+		jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_encounter'),
 		jQuery('tr.cmb_id_go_mta_stage_one_badge')
 	],
 	2: [
@@ -73,8 +72,7 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_accept_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_accept_lock_loot'),
 		jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_accept_lock_loot_mod'),
-		jQuery('tr.cmb-type-go_test_field_accept.cmb_id_go_mta_test_lock_accept'),
-		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_two_shortcode_list'),
+		jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_accept'),
 		jQuery('tr.cmb_id_go_mta_stage_two_badge')
 	],
 	3: [
@@ -87,9 +85,8 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_completion_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_completion_lock_loot'),
 		jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_completion_lock_loot_mod'),
-		jQuery('tr.cmb-type-go_test_field_completion.cmb_id_go_mta_test_lock_completion'),
+		jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_completion'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_mastery'),
-		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_three_shortcode_list'),
 		jQuery('tr.cmb_id_go_mta_stage_three_badge')
 	],
 	4: [
@@ -102,10 +99,9 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_mastery_lock_loot'),
 		jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_mastery_lock_loot_mod'),
-		jQuery('tr.cmb-type-go_test_field_mastery.cmb_id_go_mta_test_lock_mastery'),
+		jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_mastery'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_privacy'),
-		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_four_shortcode_list'),
 		jQuery('tr.cmb_id_go_mta_stage_four_badge')
 	],
 	5: [
@@ -116,7 +112,6 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_admin_lock.cmb_id_go_mta_repeat_admin_lock'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_upload'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_repeat_privacy'),
-		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_five_shortcode_list'),
 		jQuery('tr.cmb_id_go_mta_stage_five_badge')
 	]
 }
@@ -277,7 +272,7 @@ function toggle_tests(accordion, stage) {
 						jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').hide();
 					}
 				}
-				jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).show('slow');
+				jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).show('slow');
 			} else {
 				if (jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_'+stage+'_lock_loot').is(':visible')) {
 					jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_'+stage+'_lock_loot').hide();
@@ -285,8 +280,8 @@ function toggle_tests(accordion, stage) {
 				if (jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').is(':visible')) {
 					jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').hide();
 				}
-				if (jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).is(':visible')) {
-					jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).hide();
+				if (jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).is(':visible')) {
+					jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).hide();
 				}
 			}
 		} else {
@@ -296,8 +291,8 @@ function toggle_tests(accordion, stage) {
 			if (jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').is(':visible')) {
 				jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').hide();
 			}
-			if (jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).is(':visible')) {
-				jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).hide();
+			if (jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).is(':visible')) {
+				jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).hide();
 			}
 		}
 	}
@@ -316,7 +311,7 @@ function toggle_test_all(stage) {
 					jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').hide();
 				}
 			}
-			jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).show('slow');
+			jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).show('slow');
 		} else {
 			if (jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_'+stage+'_lock_loot').is(':visible')) {
 				jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_test_'+stage+'_lock_loot').hide('hide');
@@ -324,8 +319,8 @@ function toggle_test_all(stage) {
 			if (jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').is(':visible')) {
 				jQuery('tr.cmb-type-go_test_modifier.cmb_id_go_mta_test_'+stage+'_lock_loot_mod').hide('hide');
 			}
-			if (jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).is(':visible')) {
-				jQuery('tr.cmb-type-go_test_field_'+stage+'.cmb_id_go_mta_test_lock_'+stage).hide('hide');
+			if (jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).is(':visible')) {
+				jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_'+stage).hide('hide');
 			}
 		}
 	}
@@ -353,28 +348,6 @@ jQuery('#go_mta_test_encounter_lock, #go_mta_test_accept_lock, #go_mta_test_comp
 jQuery('#go_mta_test_encounter_lock_loot, #go_mta_test_accept_lock_loot, #go_mta_test_completion_lock_loot, #go_mta_test_mastery_lock_loot').click(function() {
 	var stage = this.id.getMid("go_mta_test_", "_lock_loot");
 	toggle_test_loot(stage);
-});
-
-////////////////////////////////////
-
-// Shortcode List //
-
-function go_shortcode_list(stage) {
-	if (jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_'+stage+'_shortcode_list input.go_shortcode_list_checkbox').prop('checked')) {
-		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_'+stage+'_shortcode_list ul.go_shortcode_list').show('slow');
-	} else {
-		jQuery('tr.cmb-type-go_shortcode_list.cmb_id_stage_'+stage+'_shortcode_list ul.go_shortcode_list').hide();
-	}
-}
-
-jQuery('input.go_shortcode_list_checkbox').click(function() {
-	if (this.checked) {
-		if (!jQuery(this).siblings('ul.go_shortcode_list').is(':visible')) {
-			jQuery(this).siblings('ul.go_shortcode_list').show('slow');
-		}
-	} else {
-		jQuery(this).siblings('ul.go_shortcode_list').hide('slow');
-	}
 });
 
 ////////////////////////////////////
@@ -433,7 +406,6 @@ stage_accordions[1].click(function(){
 	go_toggle_settings_rows(stage_settings_rows[1], true);
 	toggle_admin_lock(stage_accordions[1], 'encounter');
 	toggle_tests(stage_accordions[1], 'encounter');
-	go_shortcode_list('one');
 });
 
 ////////////////////////////////////
@@ -447,7 +419,6 @@ stage_accordions[2].click(function(){
 	go_toggle_settings_rows(stage_settings_rows[2], true);
 	toggle_admin_lock(stage_accordions[2], 'accept');
 	toggle_tests(stage_accordions[2], 'accept');
-	go_shortcode_list('two');
 });
 
 ////////////////////////////////////
@@ -471,7 +442,6 @@ stage_accordions[3].click(function(){
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key').hide();
 	}
 	toggle_tests(stage_accordions[3], 'completion');
-	go_shortcode_list('three');
 });
 
 ////////////////////////////////////
@@ -498,7 +468,6 @@ stage_accordions[4].click(function(){
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_url_key').hide();
 	}
 	toggle_tests(stage_accordions[4], 'mastery');
-	go_shortcode_list('four');
 });
 
 ////////////////////////////////////
@@ -553,7 +522,6 @@ stage_accordions[5].click(function(){
 	jQuery(this).toggleClass('opened');
 	go_toggle_settings_rows(stage_settings_rows[5], true);
 	toggle_admin_lock(stage_accordions[5], 'repeat');
-	go_shortcode_list('five');
 });
 
 jQuery('#go_mta_five_stage_switch, #go_mta_task_repeat').click(function(){

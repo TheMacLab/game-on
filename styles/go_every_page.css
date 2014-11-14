@@ -244,11 +244,6 @@ input#go_store_badge_id_input {
 	width: 75px;
 }
 
-ul#go_store_shortcode_list span {
-	float: left;
-	margin-right: 10px;
-}
-
 /********************
 *	Task Styles
 ********************/
@@ -430,11 +425,6 @@ input.go_test_field_rm {
 input#go_repeat_amount_input {
 	width: 40px;
 	text-align: center;
-}
-
-.go_shortcode_list_item span {
-	float: left;
-	margin-right: 10px;
 }
 
 .go_stage_badge_container{

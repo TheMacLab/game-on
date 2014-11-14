@@ -238,15 +238,18 @@ function go_clipboard_class_a_choice(){
 	});
 }
 
-function go_user_focus_change(user_id,element){
+function go_user_focus_change (user_id,element) {
 	jQuery.ajax({
-			type: "POST",
-			url: MyAjax.ajaxurl,
-			data:{
-				action: 'go_new_user_focus',
-				new_user_focus: jQuery(element).val(),
-				user_id: user_id
-			}
+		type: "POST",
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_update_user_focuses',
+			new_user_focus: jQuery(element).val(),
+			user_id: user_id
+		},
+		success: function(response) {
+			console.log(response);
+		}
 	});
 }
 
@@ -261,7 +264,7 @@ function check_null(val){
 function go_clipboard_add (id) {
 	var values = [];
 	jQuery('#go_send_message').prop('disabled', 'disabled');
-	jQuery("input:checkbox[name=go_selected]:checked").each(function(){
+	jQuery("input:checkbox[name=go_selected]:checked").each(function () {
 		values.push(jQuery(this).val());
 	});
 
@@ -272,14 +275,16 @@ function go_clipboard_add (id) {
 		add_penalty = parseFloat(check_null(jQuery('#go_clipboard_penalty').val()));
 		add_minutes = parseFloat(check_null(jQuery('#go_clipboard_minutes').val()));
 		
-		if(jQuery('#go_clipboard_reason').val() != ''){
+		if (jQuery('#go_clipboard_reason').val() != '') {
 			reason = jQuery('#go_clipboard_reason').val();	
-		}else{
+		} else {
 			reason = jQuery('#go_clipboard_reason').attr('placeholder');	
 		}
 		// console.log(reason);
 		jQuery.ajax({
-			type: "post",url: MyAjax.ajaxurl,data: { 
+			type: "post",
+			url: MyAjax.ajaxurl,
+			data: { 
 				action: 'go_clipboard_add',
 				ids: values,
 				points: add_points,
@@ -297,7 +302,7 @@ function go_clipboard_add (id) {
 					} else {
 						badge_count = 0;	
 					}
-					for(id in values){
+					for (id in values) {
 						var user_currency = parseFloat(jQuery('#user_'+values[id]+' .user_currency').html());
 						var user_bonus_currency = parseFloat(jQuery('#user_'+values[id]+' .user_bonus_currency').html());
 						var user_penalty = parseFloat(jQuery('#user_'+values[id]+' .user_penalty').html());
@@ -313,20 +318,27 @@ function go_clipboard_add (id) {
 						jQuery('#user_'+values[id]+' .user_minutes').html(user_minutes + add_minutes);
 					}
 				}
-				
-				jQuery('#go_clipboard_points').val('');
-				jQuery('#go_clipboard_currency').val('');
-				jQuery('#go_clipboard_bonus_currency').val('');
-				jQuery('#go_clipboard_penalty').val('');
-				jQuery('#go_clipboard_reason').val('');
-				jQuery('#go_clipboard_badge').val('');
+				go_clipboard_clear_fields();
 				jQuery('#go_send_message').prop('disabled', false);
 				jQuery('#go_clipboard_table input[type="checkbox"]').removeAttr('checked');
 			}
-
 		});
+	} else {
+		go_clipboard_clear_fields();
+		jQuery('#go_send_message').prop('disabled', false);
 	}
 }
+
+function go_clipboard_clear_fields () {
+	jQuery('#go_clipboard_points').val('');
+	jQuery('#go_clipboard_currency').val('');
+	jQuery('#go_clipboard_bonus_currency').val('');
+	jQuery('#go_clipboard_minutes').val('');
+	jQuery('#go_clipboard_penalty').val('');
+	jQuery('#go_clipboard_reason').val('');
+	jQuery('#go_clipboard_badge').val('');
+}
+
 function fixmessages(){
 	jQuery.ajax({
 		type: "POST",

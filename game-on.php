@@ -5,7 +5,7 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada, Charles Leon
 Author URI: http://maclab.guhsd.net/
-Version: 2.2.6
+Version: 2.2.8
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -52,7 +52,7 @@ add_action('go_display_rewards', 'go_display_rewards');
 add_action('admin_menu', 'go_clipboard');
 add_action('go_jquery_clipboard','go_jquery_clipboard');
 add_action('go_style_clipboard','go_style_clipboard');
-add_action('wp_ajax_go_clone_task', 'go_clone_task');
+add_action('wp_ajax_go_clone_post', 'go_clone_post');
 add_action('wp_ajax_go_clipboard_intable','go_clipboard_intable');
 add_action('wp_ajax_go_user_option_add','go_user_option_add');
 add_action('go_update_totals','go_update_totals');
@@ -97,6 +97,7 @@ add_action('wp_ajax_go_presets_save','go_presets_save');
 add_action('wp_ajax_go_fix_levels', 'go_fix_levels');
 add_action('wp_ajax_listurl', 'listurl');
 add_action('wp_ajax_nopriv_listurl', 'listurl');
+add_action('wp_ajax_go_update_user_focuses', 'go_update_user_focuses');
 add_action('wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data');
 add_action('wp_ajax_go_update_script_day', 'go_update_script_day');
 add_action('wp_ajax_go_get_all_terms', 'go_get_all_terms');
@@ -106,6 +107,7 @@ add_action('wp_ajax_nopriv_go_get_all_posts', 'go_get_all_posts');
 add_action('wp_ajax_go_update_task_order', 'go_update_task_order');
 add_action('wp_ajax_go_search_for_user', 'go_search_for_user');
 add_action('wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification');
+add_action('wp_ajax_go_get_purchase_count', 'go_get_purchase_count');
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 register_activation_hook(__FILE__, 'go_tsk_actv_activate');
 add_action('admin_init', 'go_tsk_actv_redirect');
@@ -226,4 +228,5 @@ function go_weekly_schedule ($schedules) {
 	);
 	return $schedules;
 }
+
 ?>
