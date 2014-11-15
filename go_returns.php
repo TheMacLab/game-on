@@ -70,6 +70,14 @@ function go_display_minutes($minutes){
 	return $prefix.$minutes.$suffix;
 }
 
+function go_filter_focuses ($elem) {
+	if (strpos($elem, ':') === false && strpos($elem, 'No '.go_return_options('go_focus_name')) === false){
+		return true;
+	} else { 
+		return false;
+	}
+}
+
 function go_display_user_focuses ($user_id) {
 	$user_focuses = get_user_meta($user_id, 'go_focus',true);
 	
@@ -81,13 +89,7 @@ function go_display_user_focuses ($user_id) {
 			if (count(array_unique($filtered_user_focuses)) === 1 && reset($filtered_user_focuses) === ':') {
 				$output = 'No '.go_return_options('go_focus_name');
 			} else {
-				$value = array_filter($filtered_user_focuses, function($elem){
-					if (strpos($elem, ':') === false && strpos($elem, 'No '.go_return_options('go_focus_name')) === false){
-						return true;
-					} else { 
-						return false;
-					}	
-				});
+				$value = array_filter($filtered_user_focuses, 'go_filter_focuses');
 				$output = implode(', ', $value);
 			}
 		}
