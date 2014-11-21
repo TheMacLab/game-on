@@ -622,48 +622,59 @@ add_action('cmb_render_go_decay_table', 'go_decay_table');
 function go_decay_table() {
 	?>
 		<table id="go_list_of_decay_dates" stye="margin: 0px; padding: 0px;">
-			<th></th><th></th>
+        	<tbody>
             <?php
             $custom = get_post_custom(get_the_id());
-            if($custom['go_mta_date_picker']){
+            if ($custom['go_mta_date_picker']) {
 				$temp_array = array();
 				$dates = array();
+				$times = array();
 				$percentages = array();
-            	foreach($custom['go_mta_date_picker'] as $key => $value){
+				
+            	foreach ($custom['go_mta_date_picker'] as $key => $value) {
 					$temp_array[$key] = unserialize($value); 
 				}
+				
 				$temp_array2 = $temp_array[0];
 				
-				if(!empty($temp_array2)){
-					foreach($temp_array2 as $key => $value){
-						if($key == 'date'){
-							foreach(array_values($value) as $date_val){
+				if (!empty($temp_array2)) {
+					foreach ($temp_array2 as $key => $value) {
+						if ($key == 'date') {
+							foreach (array_values($value) as $date_val) {
 								array_push($dates, $date_val);	
 							}
-						}elseif($key == 'percent'){
-							foreach(array_values($value) as $percent_val){
+						} elseif ($key == 'time') {
+							foreach (array_values($value) as $time_val){
+								array_push($times, $time_val);
+							}
+						} elseif ($key == 'percent') {
+							foreach (array_values($value) as $percent_val) {
 								array_push($percentages, $percent_val);	
 							}
 						}
 					}
+					echo "<pre>";
+					print_r($temp_array2);
+					echo "</pre>";
 				}
-				foreach($dates as $key => $date){
+				foreach ($dates as $key => $date) {
 					?>
                     <tr>
-                        <td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/></td>
-                        <td><input name="go_mta_task_decay_percent[]" value="<?php echo $percentages[$key]?>" type="text"/></td>
+                        <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>'/></td>
+                        <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text"/></td>
                     </tr>
                     <?php
 				}
-            }else{
+            } else {
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" class="datepicker custom_date" type="date" placeholder="Click for Date"/></td>
+				<td><input name="go_mta_task_decay_calendar[]" class="datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00'/></td>
 				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
             <?php 
 			}
 			?>
+            </tbody>
 		</table>
 		<input type="button" id="go_mta_add_task_decay" onclick="go_add_decay_table_row()" value="+"/>
 		<input type="button" id="go_mta_remove_task_decay" onclick="go_remove_decay_table_row()" value="-"/>
@@ -672,20 +683,22 @@ function go_decay_table() {
 
 add_action('cmb_validate_go_decay_table', 'go_validate_decay_table');
 function go_validate_decay_table() {
+	// Filter empty values
 	$dates = $_POST['go_mta_task_decay_calendar'];
+	$times = $_POST['go_mta_task_decay_calendar_time'];
 	$percentages = $_POST['go_mta_task_decay_percent'];
-	if(isset($dates) && isset($percentages)){
+	if (isset($dates, $times, $percentages)) {
 		$dates_f = array_filter($dates);
+		$times_f = array_filter($times);
 		$percentages_f = array_filter($percentages);
-		$new_dates = $dates_f;
-		$new_percentages = $percentages_f;
-		if(count($dates_f) != count($dates)){
-			$new_percentages = array_intersect_key($percentages_f,$dates_f);
-		}
-		if(count($percentages_f) != count($percentages)){
-			$new_dates = array_intersect_key($dates_f,$percentages_f);
-		}
-		return array('date' => $new_dates, 'percent' => $new_percentages);
+		
+		
+		$new_dates = array_intersect_key($dates_f, $times_f, $percentages_f);
+		$new_times = array_intersect_key($times_f, $percentages_f, $times_f);
+		$new_percentages = array_intersect_key($percentages_f, $dates_f, $times_f);
+		
+		$modifier_array = array('date' => $new_dates, 'time' => $new_times, 'percent' => $new_percentages);	
+		return $modifier_array;
 	}
 }
 

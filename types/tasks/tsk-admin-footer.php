@@ -202,7 +202,7 @@ jQuery(document).ready(function(){
 });
 
 function go_add_decay_table_row(){
-	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>');	
+	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type="time" name="go_mta_task_decay_calendar_time[]" class="custom_time" placeholder="Click for Time" value="00:00"/></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>');	
 	if(!is_chrome){
 		if(jQuery('input.go_datepicker').length){
 			jQuery('input.go_datepicker').each( function () {

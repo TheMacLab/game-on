@@ -286,6 +286,10 @@ input.go_test_field_rm {
 	padding: 0px;
 }
 
+#go_list_of_decay_dates tbody tr{
+		
+}
+
 .datepicker{
 	border-width: 1px;
 	border-color: #DDD;	
