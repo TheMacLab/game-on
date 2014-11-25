@@ -653,9 +653,6 @@ function go_decay_table() {
 							}
 						}
 					}
-					echo "<pre>";
-					print_r($temp_array2);
-					echo "</pre>";
 				}
 				foreach ($dates as $key => $date) {
 					?>

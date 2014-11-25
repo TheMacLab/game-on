@@ -14,7 +14,6 @@ function go_task_shortcode($atts, $content = null) {
 	$user_ID = get_current_user_id(); // User ID
 	$page_id = get_the_ID();
 	if ($id && !empty($user_ID)) { // If the shortcode has an attribute called id, run this code
-		$today = date('Y-m-d');
 		$custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
 		$rewards = unserialize($custom_fields['go_presets'][0]);
 		$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
@@ -190,16 +189,17 @@ function go_task_shortcode($atts, $content = null) {
 		if (!empty($date_picker)) {
 			
 			$dates = $date_picker['date'];
+			$times = $date_picker['time'];
 			$percentages = $date_picker['percent'];
-			$unix_today = strtotime($today);
+			$unix_now = current_time('timestamp');
 			
 			// Setup empty array to house which dates are closest, in unix timestamp
 			$past_dates = array();
 			
 			foreach ($dates as $key => $date) {
 				// If current date in loop is in the past, add its key to the array of date modifiers
-				if ($unix_today >= strtotime($date)) {
-					$past_dates[$key] = abs($unix_today - strtotime($date));
+				if ($unix_now >= (strtotime($date) + strtotime($times[$key], 0))) {
+					$past_dates[$key] = abs($unix_now - strtotime($date));
 				}
 			}
 			
