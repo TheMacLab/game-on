@@ -121,6 +121,7 @@ var stage_settings_rows = {
 var task_settings = [
 	jQuery('tr.cmb-type-go_rank_list.cmb_id_go_mta_req_rank'),
 	jQuery('tr.cmb-type-go_decay_table.cmb_id_go_mta_date_picker'),
+	jQuery('tr.cmb-type-go_time_modifier_inputs.cmb_id_go_mta_time_modifier'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_bonus_currency_filter'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_penalty_filter'),
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_focus_category_lock'),

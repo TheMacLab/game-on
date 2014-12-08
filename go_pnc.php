@@ -13,7 +13,7 @@ function go_add_currency ($user_id, $reason, $status, $points, $currency, $updat
 }
 
 // Adds currency and points for reasons that are post tied.
-function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $url = null) {
+function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $url = null, $update_time = false) {
 	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	$time = date('m/d@H:i',current_time('timestamp',0));
@@ -87,10 +87,25 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 			$url_array = serialize(array($status => $url));
 		}
 		if ($repeat === 'on') {
-			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'count' => $count + ($old_points->count), 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
+			$wpdb->update(
+				$table_name_go, 
+				array(
+					'status' => $status, 
+					'points' => $modded_points + ($old_points->points), 
+					'currency' => $modded_currency + ($old_points->currency), 
+					'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 
+					'page_id' => $page_id, 
+					'count' => $count + ($old_points->count), 
+					'url' => $url_array
+				), 
+				array(
+					'uid' => $user_id, 
+					'post_id' => $post_id
+				)
+			);
 		} else {
 			if ($status === 0) {
-				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $modded_bonus_currency, 'page_id' => $page_id));
+				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $modded_bonus_currency, 'page_id' => $page_id, 'timestamp' => $time));
 			} else {
 				$columns = array(
 					'points' => $modded_points + ($old_points->points), 
@@ -100,13 +115,38 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 					'url' => $url_array
 				);
 				if (!is_null($status)) {
+					if ($update_time){
+						$columns['timestamp'] = $time;
+					}
 					$columns['status'] = $status;
 				}
 				$wpdb->update($table_name_go, $columns, array('uid' => $user_id, 'post_id' => $post_id));
 			}
 		}
 		if ($e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null) {
-			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'e_fail_count' => $e_fail_count, 'a_fail_count' => $a_fail_count, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'e_passed' => $e_passed, 'a_passed' => $a_passed, 'c_passed' => $c_passed, 'm_passed' => $m_passed, 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
+			$wpdb->update(
+				$table_name_go, 
+				array(
+					'status' => $status, 
+					'points' => $modded_points + ($old_points->points), 
+					'currency' => $modded_currency + ($old_points->currency), 
+					'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 
+					'page_id' => $page_id, 
+					'e_fail_count' => $e_fail_count, 
+					'a_fail_count' => $a_fail_count, 
+					'c_fail_count' => $c_fail_count, 
+					'm_fail_count' => $m_fail_count, 
+					'e_passed' => $e_passed, 
+					'a_passed' => $a_passed, 
+					'c_passed' => $c_passed, 
+					'm_passed' => $m_passed, 
+					'url' => $url_array
+				), 
+				array(
+					'uid' => $user_id, 
+					'post_id' => $post_id
+				)
+			);
 		}
 	}
 	go_update_totals($user_id, $points, $currency, $bonus_currency, 0, $minutes, $status);
@@ -120,7 +160,16 @@ function go_add_bonus_currency ($user_id, $bonus_currency, $reason, $status = 6)
 		$bonus_currency = $bonus_currency * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => $status, 'bonus_currency'=> $bonus_currency, 'reason'=> $reason, 'timestamp' => $time));
+	$wpdb->insert(
+		$table_name_go, 
+		array(
+			'uid'=> $user_id, 
+			'status' => $status, 
+			'bonus_currency'=> $bonus_currency, 
+			'reason'=> $reason, 
+			'timestamp' => $time
+		)
+	);
 	go_update_totals($user_id,0,0,$bonus_currency,0, 0);
 }
 
@@ -132,7 +181,16 @@ function go_add_penalty ($user_id, $penalty, $reason, $status = 6){
 		$penalty = $penalty * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => $status, 'penalty'=> $penalty, 'reason'=> $reason, 'timestamp' => $time) );
+	$wpdb->insert(
+		$table_name_go, 
+		array(
+			'uid'=> $user_id, 
+			'status' => $status, 
+			'penalty'=> $penalty, 
+			'reason'=> $reason, 
+			'timestamp' => $time
+		) 
+	);
 	go_update_totals($user_id,0,0,0,$penalty, 0);
 }
 
@@ -144,7 +202,16 @@ function go_add_minutes ($user_id, $minutes, $reason, $status = 6){
 		$minutes = $minutes * $_POST['qty'];
 	}
 	$time = date('m/d@H:i',current_time('timestamp',0));
-	$wpdb->insert($table_name_go, array('uid'=> $user_id, 'status' => $status, 'minutes'=> $minutes, 'reason'=> $reason, 'timestamp' => $time) );
+	$wpdb->insert(
+		$table_name_go, 
+		array(
+			'uid'=> $user_id, 
+			'status' => $status, 
+			'minutes'=> $minutes, 
+			'reason'=> $reason,
+			'timestamp' => $time
+		)
+	);
 	go_update_totals($user_id,0,0,0,0,$minutes);
 }
 	

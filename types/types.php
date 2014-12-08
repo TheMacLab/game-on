@@ -58,6 +58,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_decay_table'
 			),
 			array(
+				'name' => 'Date Filter (After Stage One)'.go_task_opt_help('time_modifier', '', 'http://maclab.guhsd.net/go/video/quests/nerfTime.mp4'),
+				'id' => $prefix.'time_modifier',
+				'type' => 'go_time_modifier_inputs'
+			),
+			array(
 				'name' => go_return_options('go_focus_name').' Filter'.go_task_opt_help('lock_by_cat', '', ' http://maclab.guhsd.net/go/video/quests/lockByProfessionCategory.mp4'),
 				'id' => $prefix.'focus_category_lock',
 				'type' => 'checkbox'
@@ -697,6 +702,37 @@ function go_validate_decay_table() {
 		$modifier_array = array('date' => $new_dates, 'time' => $new_times, 'percent' => $new_percentages);	
 		return $modifier_array;
 	}
+}
+
+add_action('cmb_render_go_time_modifier_inputs', 'go_time_modifier_inputs');
+function go_time_modifier_inputs () {
+	$custom = get_post_custom(get_the_id());
+	$time_modifier = unserialize($custom['go_mta_time_modifier'][0]);
+	if ($time_modifier){
+		?>
+		Days: <input type='text' name='go_modifier_input_days' value='<?php echo $time_modifier['days']; ?>'/>
+		Hours: <input type='text' name='go_modifier_input_hours' value='<?php echo $time_modifier['hours']; ?>'/>
+		Minutes: <input type='text' name='go_modifier_input_minutes' value='<?php echo $time_modifier['minutes']; ?>'/>
+		Modifier: <input type='text' name='go_modifier_input_percent' value='<?php echo $time_modifier['percentage']; ?>'/>
+		<?php
+	} else {
+		?>
+		Days: <input type='text' name='go_modifier_input_days'/>
+		Hours: <input type='text' name='go_modifier_input_hours'/>
+		Minutes: <input type='text' name='go_modifier_input_minutes'/>
+		Modifier: <input type='text' name='go_modifier_input_percent'/>
+		<?php
+	}
+}
+
+add_action('cmb_validate_go_time_modifier_inputs', 'go_validate_time_nerf_inputs');
+function go_validate_time_nerf_inputs(){
+	$days = (!empty($_POST['go_modifier_input_days'])?$_POST['go_modifier_input_days']:0);
+	$hours = (!empty($_POST['go_modifier_input_hours'])?$_POST['go_modifier_input_hours']:0);
+	$minutes = (!empty($_POST['go_modifier_input_minutes'])?$_POST['go_modifier_input_minutes']:0);
+	$percentage = (!empty($_POST['go_modifier_input_percent'])?$_POST['go_modifier_input_percent']:0);
+	$modifier_array = array('days' => $days, 'hours' => $hours, 'minutes' => $minutes, 'percentage' => $percentage);
+	return $modifier_array;
 }
 
 add_action('cmb_render_go_admin_lock', 'go_admin_lock', 10, 1);

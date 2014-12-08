@@ -18,6 +18,7 @@ function go_task_shortcode($atts, $content = null) {
 		$rewards = unserialize($custom_fields['go_presets'][0]);
 		$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
 		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
+		$unix_now = current_time('timestamp'); // Current unix timestamp
 		
 		$e_admin_lock = unserialize($custom_fields['go_mta_encounter_admin_lock'][0]);
 		$e_is_locked = $e_admin_lock[0];
@@ -191,7 +192,6 @@ function go_task_shortcode($atts, $content = null) {
 			$dates = $date_picker['date'];
 			$times = $date_picker['time'];
 			$percentages = $date_picker['percent'];
-			$unix_now = current_time('timestamp');
 			
 			// Setup empty array to house which dates are closest, in unix timestamp
 			$past_dates = array();
@@ -216,6 +216,24 @@ function go_task_shortcode($atts, $content = null) {
 		} else {
 			$update_percent = 1;	
 		}
+		
+		$future_modifier = ((unserialize($custom_fields['go_mta_time_modifier'][0]))?array_filter(unserialize($custom_fields['go_mta_time_modifier'][0])):false);
+		
+		if (!empty($future_modifier)) {
+			$task_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'")));
+			$days = $future_modifier['days'] ;
+			$hours = $future_modifier['hours'];
+			$minutes = $future_modifier['minutes'];
+			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $task_timestamp;
+			
+			if ($unix_now >= $future_time){
+				$update_percent = max($update_percent * (float) ($future_modifier['percentage']/100), 0);
+			}
+		} else {
+			$update_percent = 1;
+		}
+		
+		echo $update_percent;
 		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
@@ -1854,10 +1872,12 @@ function task_change_stage() {
 					}
 				}
 			} else {
+				$update_time = ($status == 2) ? true : false;
+				
 				go_add_post($user_id, $post_id, $status, 
 				floor(($update_percent * $points_array[$status - 1])), 
 				floor(($update_percent * $currency_array[$status - 1])), 
-				floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url); 
+				floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time); 
 				if ($stage_badges[$status - 1][0] == 'true') {
 					foreach ($stage_badges[$status - 1][1] as $badge_id) {
 						do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
