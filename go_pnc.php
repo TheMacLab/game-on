@@ -116,7 +116,8 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 					'url' => $url_array
 				);
 				if (!is_null($status)) {
-					if ($update_time && empty($wpdb->get_var("SELECT `timestamp` FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'"))){
+					$timestamp = $wpdb->get_var("SELECT `timestamp` FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'");
+					if ($update_time && empty($timestamp)){
 						$columns['timestamp'] = $time;
 					}
 					$columns['status'] = $status;
