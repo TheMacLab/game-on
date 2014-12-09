@@ -19,6 +19,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 	$time = date('m/d@H:i',current_time('timestamp',0));
 	$user_bonuses = go_return_bonus_currency($user_id);
 	$user_penalties = go_return_penalty($user_id);
+	
 	if ($status === -1) {
 		$qty = $_POST['qty'];
 		$old_points = $wpdb->get_row("SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1");
@@ -105,7 +106,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 			);
 		} else {
 			if ($status === 0) {
-				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $modded_bonus_currency, 'page_id' => $page_id, 'timestamp' => $time));
+				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $modded_bonus_currency, 'page_id' => $page_id));
 			} else {
 				$columns = array(
 					'points' => $modded_points + ($old_points->points), 
@@ -115,7 +116,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 					'url' => $url_array
 				);
 				if (!is_null($status)) {
-					if ($update_time){
+					if ($update_time && empty($wpdb->get_var("SELECT `timestamp` FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'"))){
 						$columns['timestamp'] = $time;
 					}
 					$columns['status'] = $status;

@@ -19,6 +19,9 @@ function go_task_shortcode($atts, $content = null) {
 		$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
 		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
 		$unix_now = current_time('timestamp'); // Current unix timestamp
+		$go_table_ind = $wpdb->prefix.'go';
+		$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
+		$status = (int)$wpdb->get_var("SELECT `status` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 		
 		$e_admin_lock = unserialize($custom_fields['go_mta_encounter_admin_lock'][0]);
 		$e_is_locked = $e_admin_lock[0];
@@ -217,7 +220,7 @@ function go_task_shortcode($atts, $content = null) {
 			$update_percent = 1;	
 		}
 		
-		$future_modifier = ((unserialize($custom_fields['go_mta_time_modifier'][0]))?array_filter(unserialize($custom_fields['go_mta_time_modifier'][0])):false);
+		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 		
 		if (!empty($future_modifier)) {
 			$task_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'")));
@@ -226,14 +229,15 @@ function go_task_shortcode($atts, $content = null) {
 			$minutes = $future_modifier['minutes'];
 			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $task_timestamp;
 			
-			if ($unix_now >= $future_time){
+			if ($unix_now >= $future_time && $status >= 2){
 				$update_percent = max($update_percent * (float) ($future_modifier['percentage']/100), 0);
+			}
+			if ($status < 2) {
+				echo "<span id='go_future_notification'><b>Upon accepting this ".strtolower(go_return_options('go_task_name'))." you will have {$days} days, {$hours} hours, and {$minutes} minutes to ".strtolower(go_return_options('go_third_stage_button'))." it or the reward will be reduced by {$future_modifier['percentage']}%. Once accepted you cannot undo the timer.</b></span>";
 			}
 		} else {
 			$update_percent = 1;
 		}
-		
-		echo $update_percent;
 		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
@@ -242,9 +246,6 @@ function go_task_shortcode($atts, $content = null) {
 			$task_name = strtolower(go_return_options('go_tasks_name'));
 			echo "You need {$points} more {$points_name} to begin this {$task_name}.";
 		} else {
-			$go_table_ind = $wpdb->prefix.'go';
-			$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
-			$status = (int)$wpdb->get_var("SELECT `status` FROM ".$go_table_ind." WHERE post_id = $id AND uid = $user_ID");
 
 			switch ($status) {
 				case (0):
@@ -1221,7 +1222,8 @@ function go_task_shortcode($atts, $content = null) {
 					update_percent: <?php echo $update_percent;?>,
 					chain_name: '<?php if($chain->name){echo $chain->name;}else{echo '';}?>',
 					next_post_id_in_chain: <?php if($next_post_id_in_chain){echo $next_post_id_in_chain;}else{echo 0;} ?>,
-					last_in_chain: <?php if($last_in_chain){echo 'true';}else{echo 'false';}?>
+					last_in_chain: <?php if($last_in_chain){echo 'true';}else{echo 'false';}?>,
+					future_time: <?php echo (!empty($future_time))?$future_time:false;?>
 				},
 				success: function(html){
 					if (html === '0') {
@@ -1233,6 +1235,7 @@ function go_task_shortcode($atts, $content = null) {
 							flash_error_msg('#go_stage_error_msg');
 						}
 					} else {
+						jQuery('#go_future_notification').remove();
 						jQuery('#go_content').html(html);
 						jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
 						jQuery("#new_content").css("display", "none");
@@ -1599,6 +1602,7 @@ function unlock_stage () {
 
 function task_change_stage() {
 	global $wpdb;
+	$unix_now = current_time('timestamp'); // Current unix timestamp
 	$post_id = $_POST['post_id']; // Post id posted from ajax function
 	$user_id = $_POST['user_id']; // User id posted from ajax function
 	$status = (int)$_POST['status']; // Task's status posted from ajax function
@@ -1612,6 +1616,7 @@ function task_change_stage() {
 	$chain_name = $_POST['chain_name']; // String which is used to display next task in a quest chain
 	$next_post_id_in_chain = $_POST['next_post_id_in_chain']; // Integer which is used to display next task in a quest chain
 	$last_in_chain = $_POST['last_in_chain']; // Boolean which determines if the current quest is last in chain
+	$future_time = $_POST['future_time']; // Future unix timestamp for percent modifications of task rewards
 	
 	$go_table_ind = $wpdb->prefix.'go';
 	$task_count = $wpdb->get_var("SELECT `count` FROM ".$go_table_ind." WHERE post_id = $post_id AND uid = $user_id");
@@ -1854,6 +1859,18 @@ function task_change_stage() {
 	// if the button pressed is NOT the repeat button...
 	} else {
 		$db_status = (int) $wpdb->get_var("SELECT `status` FROM ".$table_name_go." WHERE uid = $user_id AND post_id = $post_id");
+		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
+			
+		if (!empty($future_modifier)) {
+			$days = $future_modifier['days'] ;
+			$hours = $future_modifier['hours'];
+			$minutes = $future_modifier['minutes'];
+			
+			if ($unix_now >= $future_time && $status > 2){
+				$update_percent = max($update_percent * (float) ($future_modifier['percentage']/100), 0);
+			}
+		}
+		echo $status;
 		if ($db_status == 0 || ($db_status < $status)) {
 			if ($undo == 'true' || $undo === true) {
 				if ($task_count > 0) {
