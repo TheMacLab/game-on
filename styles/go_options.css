@@ -321,7 +321,7 @@ input[type="submit"]{
 	margin-right: 10px;
 }
 
-.go_options_additional_settings_input[name="go_email_from"]{
+.go_options_additional_settings_input[name="go_email_from"] {
 	width: 30%;
 }
 /****************************/
