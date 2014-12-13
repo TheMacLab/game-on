@@ -306,11 +306,22 @@ input[type="submit"]{
 	width: 5%;
 	min-width: 30px;
 }
+
 .go_options_additional_settings_input[name="go_admin_email"]{
 	width: 20%;
 }
-.go_options_input[name="go_video_width"],.go_options_input[name="go_video_width"]{
-	width: 10%;
+
+.go_options_input[name="go_video_width"], .go_options_input[name="go_video_height"]{
+	width: 5%;
+	margin: 0 4px 0 3px;
+}
+
+#go_options_video_dim:nth-of-type(2n) {
 	margin: 0;
+	margin-right: 10px;
+}
+
+.go_options_additional_settings_input[name="go_email_from"]{
+	width: 30%;
 }
 /****************************/

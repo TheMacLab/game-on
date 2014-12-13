@@ -215,7 +215,7 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 	$to = get_option('go_admin_email','');
 	require("{$go_plugin_dir}/mail/class.phpmailer.php");
 	$mail = new PHPMailer();
-	$mail->From = "no-reply@go.net";
+	$mail->From = get_option('go_email_from', 'no-reply@go.net');
 	$mail->FromName = $user_name;
 	$mail->AddAddress($to);
 	$mail->Subject = "Purchase: {$item_title} ({$qty}) | {$user_name} {$user_login}";
