@@ -223,18 +223,25 @@ function go_task_shortcode($atts, $content = null) {
 		$date_update_percent = $update_percent;
 		
 		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
+		$future_timer = false;
+		$user_timers = get_user_meta($user_ID, 'timers');
 		
 		if (!empty($future_modifier)) {
-			$accept_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'")));
+			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
 			$days = $future_modifier['days'] ;
 			$hours = $future_modifier['hours'];
 			$minutes = $future_modifier['minutes'];
 			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
 			
-			if (($unix_now >= $future_time && $status >= 2) || ($unix_now >= $future_time && !empty($accept_timestamp))){
+			if ($status >= 2 || !empty($accept_timestamp)){
+				go_task_timer($id, $user_ID,$future_modifier);
+			}
+			
+			if ($future_time != $accept_timestamp && (($unix_now >= $future_time && $status >= 2) || ($unix_now >= $future_time && !empty($accept_timestamp)))){
 				$future_update_percent = max($update_percent * (float) ($future_modifier['percentage']/100), 0);
+				$future_timer = true;
 			} else {
-				$future_update_percent = 1;	
+				$future_update_percent = 1;
 			}
 			if ($status < 2 && empty($accept_timestamp)) {
 				echo "<span id='go_future_notification'><b>After accepting this ".strtolower(go_return_options('go_tasks_name'))." you will have {$days} days, {$hours} hours, and {$minutes} minutes to ".strtolower(go_return_options('go_third_stage_button'))." it or the reward will be reduced by {$future_modifier['percentage']}%. Once accepted you cannot undo the timer.</b></span>";
@@ -250,7 +257,6 @@ function go_task_shortcode($atts, $content = null) {
 			$bonus_currency_array[$i] = floor($bonus_currency_array[$i] * $future_update_percent);	
 		}
 		
-		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
 			$points = $req_points - $current_points;
@@ -258,7 +264,7 @@ function go_task_shortcode($atts, $content = null) {
 			$task_name = strtolower(go_return_options('go_tasks_name'));
 			echo "You need {$points} more {$points_name} to begin this {$task_name}.";
 		} else {
-
+			
 			switch ($status) {
 				case (0):
 					$db_task_stage_upload_var = 'e_uploaded';
@@ -728,7 +734,7 @@ function go_task_shortcode($atts, $content = null) {
 			});
 			check_locks();
 		});
-
+		
 		function go_task_abandon () {
 			jQuery.ajax({
 				type: "POST",
@@ -1843,11 +1849,15 @@ function task_change_stage() {
 	
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 	if (!empty($future_modifier)) {
-		$accept_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'")));
+		$accept_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
 		$days = $future_modifier['days'] ;
 		$hours = $future_modifier['hours'];
 		$minutes = $future_modifier['minutes'];
 		$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
+	
+		if ($status == 2){
+			go_task_timer($post_id, $user_id, $future_modifier);
+		}
 		
 		if ($unix_now >= $future_time && !empty($accept_timestamp)){
 			$future_update_percent = max($update_percent * (float) ($future_modifier['percentage']/100), 0);
@@ -2224,5 +2234,35 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 		}
 		echo '</div>';
 	} 
+}
+
+function go_task_timer ($task_id, $user_id, $future_modifier) {
+	global $wpdb;
+	$unix_now = current_time('timestamp');
+	$user_timers = get_user_meta($user_id, 'timers');
+	$accept_timestamp = ((!empty($user_timers[0][$task_id]))?$user_timers[0][$task_id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
+	$days = $future_modifier['days'] ;
+	$hours = $future_modifier['hours'];
+	$minutes = $future_modifier['minutes'];
+	$future_time = (!empty($accept_timestamp))? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $unix_now;
+	$countdown = $future_time - $unix_now;
+	?>
+	<div id='go_task_timer'></div>
+	<script type='text/javascript'>
+		function go_task_timer (countdown) {
+			if (countdown > 0){
+				var hours = Math.floor(countdown/3600) < 10 ? ("0" + Math.floor(countdown/3600)):Math.floor(countdown/3600);
+				var minutes = Math.floor(countdown/60) < 10 ? ("0" + Math.floor(countdown/60)):Math.floor(countdown/60);
+				var seconds = (countdown - minutes * 60) < 10 ? ("0" + (countdown - minutes * 60)):(countdown - minutes * 60);
+				jQuery('#go_task_timer').html(hours + ':' + minutes + ':' + seconds);
+				countdown--;
+				setTimeout(go_task_timer, 1000, countdown);
+			} else {
+				jQuery('#go_task_timer').html('00:00:00');
+			}
+		}
+		go_task_timer (<?php echo $countdown; ?>);
+	</script>
+	<?php
 }
 ?>

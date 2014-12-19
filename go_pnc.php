@@ -573,6 +573,7 @@ function go_task_abandon ($user_id = null, $post_id = null, $e_points = null, $e
 		$e_bonus_currency = intval($_POST['encounter_bonus']);
 	}
 	$table_name_go = "{$wpdb->prefix}go";
+	$accept_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
 	go_update_totals($user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0, 0);
 	$wpdb->query($wpdb->prepare("
 		DELETE FROM {$table_name_go} 
@@ -581,5 +582,12 @@ function go_task_abandon ($user_id = null, $post_id = null, $e_points = null, $e
 		$user_id,
 		$post_id
 	));
+	$custom_fields = get_post_custom($post_id);
+	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
+	if (!empty($future_modifier)){
+		$user_timers = get_user_meta($user_id, 'timers', true);
+		$user_timers[$post_id] = $accept_timestamp;
+		update_user_meta($user_id, 'timers', $user_timers);
+	}
 }
 ?>
