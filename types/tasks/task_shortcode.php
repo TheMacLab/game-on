@@ -224,9 +224,10 @@ function go_task_shortcode($atts, $content = null) {
 		
 		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 		$future_timer = false;
-		$user_timers = get_user_meta($user_ID, 'timers');
 		
 		if (!empty($future_modifier)) {
+			$user_timers = get_user_meta($user_ID, 'timers');
+			print_r($user_timers);
 			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
 			$days = $future_modifier['days'] ;
 			$hours = $future_modifier['hours'];
@@ -234,7 +235,7 @@ function go_task_shortcode($atts, $content = null) {
 			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
 			
 			if ($status >= 2 || !empty($accept_timestamp)){
-				go_task_timer($id, $user_ID,$future_modifier);
+				go_task_timer($id, $user_ID, $future_modifier);
 			}
 			
 			if ($future_time != $accept_timestamp && (($unix_now >= $future_time && $status >= 2) || ($unix_now >= $future_time && !empty($accept_timestamp)))){
@@ -2226,9 +2227,10 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 					$stage_name = go_return_options('go_fifth_stage_name');
 					break;
 			}
-			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "{$mod_array[0]} {$p_name}" : '').
-				" ".(!empty($mod_array[1]) && !empty($c_name) ? "{$mod_array[1]} {$c_name}" : '').
-				" ".(!empty($mod_array[2]) && !empty($bc_name) ? "{$mod_array[2]} {$bc_name}" : '').
+			$stage = $i + 1;
+			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
+				" ".(!empty($mod_array[1]) && !empty($c_name) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
+				" ".(!empty($mod_array[2]) && !empty($bc_name) ? "<span id='go_stage_{$stage}_bonus_currency'>{$mod_array[2]}</span> {$bc_name}" : '').
 				"<br/>";
 			echo $output;
 		}
@@ -2240,10 +2242,11 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	global $wpdb;
 	$unix_now = current_time('timestamp');
 	$user_timers = get_user_meta($user_id, 'timers');
-	$accept_timestamp = ((!empty($user_timers[0][$task_id]))?$user_timers[0][$task_id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
+	$accept_timestamp = ((!empty($user_timers[0][$task_id]))?$user_timers[0][$task_id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$task_id}'"))));
 	$days = $future_modifier['days'] ;
 	$hours = $future_modifier['hours'];
 	$minutes = $future_modifier['minutes'];
+	$percentage = $future_modifier['percentage'];
 	$future_time = (!empty($accept_timestamp))? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $unix_now;
 	$countdown = $future_time - $unix_now;
 	?>
@@ -2259,6 +2262,9 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 				setTimeout(go_task_timer, 1000, countdown);
 			} else {
 				jQuery('#go_task_timer').html('00:00:00');
+				for (i = 2; i <= 3; i++) {
+					jQuery('#go_stage_' + i +'_points').html('');	
+				}
 			}
 		}
 		go_task_timer (<?php echo $countdown; ?>);
