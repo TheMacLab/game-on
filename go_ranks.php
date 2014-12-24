@@ -119,11 +119,11 @@ function go_clean_ranks () {
     	echo '<option value="'.$points.'">'.$level.'</option>';
 	}
 }
+
 function go_get_rank_key ($points) {
 	global $wpdb;
 	$ranks = get_option('go_ranks',false);
 	$key = array_search($points, $ranks['points']);
 	return $key;
 }
-
 ?>
