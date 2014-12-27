@@ -53,6 +53,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
+				'name' => ' Filter'.go_task_opt_help('penalty_filter', '', 'http://maclab.guhsd.net/go/video/quests/penaltyFilter.mp4'),
+				'id' => $prefix . 'time_filters',
+				'type' => 'go_future_filters'
+			),
+			array(
 				'name' => 'Date Filter (Calendar)'.go_task_opt_help('nerf_dates', '', 'http://maclab.guhsd.net/go/video/quests/nerfDates.mp4'),
 				'id' => $prefix.'date_picker',
 				'type' => 'go_decay_table'
@@ -622,6 +627,23 @@ function go_rank_list() {
 		echo "No <a href='".admin_url()."/?page=game-on-options.php' target='_blank'>".get_option('go_level_plural_names')."</a> were provided.";
 	}
 }
+
+add_action('cmb_render_go_future_filters', 'go_future_filters');
+function go_future_filters ($field_args) {
+	$custom = get_post_custom(get_the_id());
+	$checked = unserialize($custom['go_mta_time_filters'][0]);
+	?>
+	Calendar date: <input  type='checkbox' id='go_calendar_checkbox' name='go_time_modifier[calendar]' <?php echo (($checked['calendar'] == 'on')?'checked':'');?> />
+	Time after stage one: <input type='checkbox' id='go_future_checkbox' name='go_time_modifier[future]' <?php echo (($checked['future'] == 'on')?'checked':'');?> />
+	<?php	
+}
+
+add_action('cmb_validate_go_future_filters', 'go_validate_future_filters');
+function go_validate_future_filters () {
+	$checked = $_POST['go_time_modifier'];
+	return $checked;
+}
+
 
 add_action('cmb_render_go_decay_table', 'go_decay_table');
 function go_decay_table() {

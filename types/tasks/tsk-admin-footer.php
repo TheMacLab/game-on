@@ -120,13 +120,12 @@ var stage_settings_rows = {
 
 var task_settings = [
 	jQuery('tr.cmb-type-go_rank_list.cmb_id_go_mta_req_rank'),
-	jQuery('tr.cmb-type-go_decay_table.cmb_id_go_mta_date_picker'),
-	jQuery('tr.cmb-type-go_time_modifier_inputs.cmb_id_go_mta_time_modifier'),
+	jQuery('tr.cmb-type-go_future_filters.cmb_id_go_mta_time_filters'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_bonus_currency_filter'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_penalty_filter'),
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_focus_category_lock'),
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_three_stage_switch'),
-	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_five_stage_switch'),
+	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_five_stage_switch'), 
 	jQuery('tr.cmb-type-go_pick_order_of_chain.cmb_id_go_mta_chain_order'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message')
 ];
@@ -186,11 +185,47 @@ jQuery('#go_advanced_task_settings_accordion').click(function(){
 			jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').hide();
 		}
 	}
+	if (jQuery('#go_calendar_checkbox').prop('checked')) {
+		calendar_row.show('slow');
+		future_row.hide();
+	} else {
+		calendar_row.hide('slow');
+	}
+	if (jQuery('#go_future_checkbox').prop('checked')) {
+		future_row.show('slow');
+		calendar_row.hide();
+	} else {
+		future_row.hide('slow');
+	}
 });
 
 ////////////////////////////////////
 
 // Modifier Date Picker //
+var calendar_row = jQuery('tr.cmb-type-go_decay_table.cmb_id_go_mta_date_picker');
+var future_row = jQuery('tr.cmb-type-go_time_modifier_inputs.cmb_id_go_mta_time_modifier');
+calendar_row.hide();
+future_row.hide();
+
+jQuery('#go_calendar_checkbox').click(function () {
+	jQuery('#go_future_checkbox').prop('checked', false);
+	if (jQuery('#go_calendar_checkbox').prop('checked')) {
+		calendar_row.show('slow');
+		future_row.hide();
+	} else {
+		calendar_row.hide('slow');
+	}
+});
+jQuery('#go_future_checkbox').click(function () {
+	jQuery('#go_calendar_checkbox').prop('checked', false);
+	if (jQuery('#go_future_checkbox').prop('checked')) {
+		future_row.show('slow');
+		calendar_row.hide();
+	} else {
+		future_row.hide('slow');
+	}
+});
+
 var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 jQuery(document).ready(function(){
 	if(!is_chrome){
