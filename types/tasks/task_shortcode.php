@@ -187,10 +187,12 @@ function go_task_shortcode($atts, $content = null) {
 			$accept_message = $custom_fields['go_mta_accept_message'][0]; // Set value of accept message equal to the task's accept message meta field value
 		}
 		
-		$date_picker = ((unserialize($custom_fields['go_mta_date_picker'][0]))?array_filter(unserialize($custom_fields['go_mta_date_picker'][0])):false);
+		$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
+		
+		$date_picker = ((unserialize($custom_fields['go_mta_date_picker'][0]) )?array_filter(unserialize($custom_fields['go_mta_date_picker'][0])):false);
 		
 		// If there are dates in the date picker
-		if (!empty($date_picker)) {
+		if (!empty($date_picker) && $future_switches['calendar'] == 'on') {
 			
 			$dates = $date_picker['date'];
 			$times = $date_picker['time'];
@@ -225,9 +227,8 @@ function go_task_shortcode($atts, $content = null) {
 		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 		$future_timer = false;
 		
-		if (!empty($future_modifier)) {
+		if (!empty($future_modifier) && $future_switches['future'] == 'on') {
 			$user_timers = get_user_meta($user_ID, 'timers');
-			print_r($user_timers);
 			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
 			$days = $future_modifier['days'] ;
 			$hours = $future_modifier['hours'];
@@ -250,6 +251,7 @@ function go_task_shortcode($atts, $content = null) {
 		} else {
 			$future_update_percent = 1;
 		}
+		
 		
 		// Alter rewards for accept/completion stage of task
 		for ($i = 1; $i <= 2; $i++){
@@ -305,7 +307,7 @@ function go_task_shortcode($atts, $content = null) {
 				$go_ahead = array_intersect($user_focus, $category_names);
 			}
 			
-			go_display_rewards($user_ID, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages);
+			go_display_rewards($user_ID, $points_array, $currency_array, $bonus_currency_array, $date_update_percent, $number_of_stages);
 			echo '
 			<script type="text/javascript">
 				jQuery(".entry-title").after(jQuery(".go_task_rewards"));
@@ -1848,8 +1850,10 @@ function task_change_stage() {
 		$m_passed = 0;
 	}
 	
+	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]);
+	
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
-	if (!empty($future_modifier)) {
+	if (!empty($future_modifier) && $future_switches['future'] == 'on') {
 		$accept_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
 		$days = $future_modifier['days'] ;
 		$hours = $future_modifier['hours'];
@@ -2253,6 +2257,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	<div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		function go_task_timer (countdown) {
+			var percentage = <?php echo $percentage; ?>/100;
 			if (countdown > 0){
 				var hours = Math.floor(countdown/3600) < 10 ? ("0" + Math.floor(countdown/3600)):Math.floor(countdown/3600);
 				var minutes = Math.floor(countdown/60) < 10 ? ("0" + Math.floor(countdown/60)):Math.floor(countdown/60);
@@ -2263,7 +2268,8 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			} else {
 				jQuery('#go_task_timer').html('00:00:00');
 				for (i = 2; i <= 3; i++) {
-					jQuery('#go_stage_' + i +'_points').html('');	
+					jQuery('#go_stage_' + i +'_points').html(Math.floor(parseFloat(jQuery('#go_stage_' + i +'_points').html()) * percentage));
+					jQuery('#go_stage_' + i +'_currency').html(Math.floor(parseFloat(jQuery('#go_stage_' + i +'_currency').html()) * percentage));
 				}
 			}
 		}
