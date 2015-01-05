@@ -228,7 +228,7 @@ function go_task_shortcode($atts, $content = null) {
 		$future_timer = false;
 		
 		if (!empty($future_modifier) && $future_switches['future'] == 'on') {
-			$user_timers = get_user_meta($user_ID, 'timers');
+			$user_timers = get_user_meta($user_ID, 'go_timers');
 			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
 			$days = $future_modifier['days'] ;
 			$hours = $future_modifier['hours'];
@@ -1243,7 +1243,7 @@ function go_task_shortcode($atts, $content = null) {
 					points: <?php echo json_encode($points_array);?>,
 					currency: <?php echo json_encode($currency_array); ?>,
 					bonus_currency: <?php echo json_encode($bonus_currency_array);?>,
-					update_percent: <?php echo $date_update_percent;?>,
+					date_update_percent: <?php echo $date_update_percent;?>,
 					chain_name: '<?php if($chain->name){echo $chain->name;}else{echo '';}?>',
 					next_post_id_in_chain: <?php if($next_post_id_in_chain){echo $next_post_id_in_chain;}else{echo 0;} ?>,
 					last_in_chain: <?php if($last_in_chain){echo 'true';}else{echo 'false';}?>,
@@ -1639,8 +1639,7 @@ function task_change_stage() {
 	$points_array = $_POST['points']; // Serialized array of points rewarded for each stage
 	$currency_array = $_POST['currency']; // Serialized array of currency rewarded for each stage
 	$bonus_currency_array = $_POST['bonus_currency']; // Serialized array of bonus currency awarded for each stage
-	$update_percent = $_POST['update_percent']; // Float which is used to modify values saved to database
-	$date_update_percent = $update_percent; // Copy update percent to use in special cases
+	$date_update_percent = $_POST['date_update_percent']; // Float which is used to modify values saved to database
 	$chain_name = $_POST['chain_name']; // String which is used to display next task in a quest chain
 	$next_post_id_in_chain = $_POST['next_post_id_in_chain']; // Integer which is used to display next task in a quest chain
 	$last_in_chain = $_POST['last_in_chain']; // Boolean which determines if the current quest is last in chain
@@ -1850,11 +1849,11 @@ function task_change_stage() {
 		$m_passed = 0;
 	}
 	
-	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]);
-	
+	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]); //determine which future date modifier is on, if any
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 	if (!empty($future_modifier) && $future_switches['future'] == 'on') {
-		$accept_timestamp = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
+		$accept_timestamp_db = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
+		$accept_timestamp = (!empty($accept_timestamp_db)?$accept_timestamp_db:(($status == 2)?$unix_now:0));
 		$days = $future_modifier['days'] ;
 		$hours = $future_modifier['hours'];
 		$minutes = $future_modifier['minutes'];
@@ -1864,14 +1863,18 @@ function task_change_stage() {
 			go_task_timer($post_id, $user_id, $future_modifier);
 		}
 		
-		if ($unix_now >= $future_time && !empty($accept_timestamp)){
-			$future_update_percent = max($update_percent * (float) ($future_modifier['percentage']/100), 0);
+		if ($unix_now >= $future_time && $status >= 3){
+			$future_update_percent = (float) ($future_modifier['percentage']/100);
+		} else {
+			$future_update_percent = 1;	
 		}
 	} else {
 		$future_update_percent = 1;	
 	}
 	
-		
+	echo $future_time;
+	$update_percent = (($future_switches['calendar'] == 'on')?$date_update_percent:($future_switches['future'] == 'on')?$future_update_percent:1);
+	
 	// if the button pressed IS the repeat button...
 	if ($repeat_button == 'on') {
 		if ($undo == 'true' || $undo === true) {
@@ -2245,7 +2248,7 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 function go_task_timer ($task_id, $user_id, $future_modifier) {
 	global $wpdb;
 	$unix_now = current_time('timestamp');
-	$user_timers = get_user_meta($user_id, 'timers');
+	$user_timers = get_user_meta($user_id, 'go_timers');
 	$accept_timestamp = ((!empty($user_timers[0][$task_id]))?$user_timers[0][$task_id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$task_id}'"))));
 	$days = $future_modifier['days'] ;
 	$hours = $future_modifier['hours'];
