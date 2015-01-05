@@ -235,7 +235,7 @@ function go_task_shortcode($atts, $content = null) {
 			$minutes = $future_modifier['minutes'];
 			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
 			
-			if ($status >= 2 || !empty($accept_timestamp)){
+			if ($status == 2 || (!empty($accept_timestamp) && $status < 3)){
 				go_task_timer($id, $user_ID, $future_modifier);
 			}
 			
@@ -246,7 +246,7 @@ function go_task_shortcode($atts, $content = null) {
 				$future_update_percent = 1;
 			}
 			if ($status < 2 && empty($accept_timestamp)) {
-				echo "<span id='go_future_notification'><b>After accepting this ".strtolower(go_return_options('go_tasks_name'))." you will have {$days} days, {$hours} hours, and {$minutes} minutes to ".strtolower(go_return_options('go_third_stage_button'))." it or the reward will be reduced by {$future_modifier['percentage']}%. Once accepted you cannot undo the timer.</b></span>";
+				echo "<span id='go_future_notification'>After accepting this ".strtolower(go_return_options('go_tasks_name'))." you will have {$days} days, {$hours} hours, and {$minutes} minutes to ".strtolower(go_return_options('go_third_stage_button'))." it or the reward will be reduced by {$future_modifier['percentage']}%. Once accepted you cannot undo the timer.</span>";
 			}
 		} else {
 			$future_update_percent = 1;
@@ -2257,6 +2257,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	<div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		function go_task_timer (countdown) {
+			jQuery('#go_task_timer').empty();
 			var percentage = <?php echo $percentage; ?>/100;
 			if (countdown > 0){
 				var hours = Math.floor(countdown/3600) < 10 ? ("0" + Math.floor(countdown/3600)):Math.floor(countdown/3600);
@@ -2268,8 +2269,12 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			} else {
 				jQuery('#go_task_timer').html('00:00:00');
 				for (i = 2; i <= 3; i++) {
-					jQuery('#go_stage_' + i +'_points').html(Math.floor(parseFloat(jQuery('#go_stage_' + i +'_points').html()) * percentage));
-					jQuery('#go_stage_' + i +'_currency').html(Math.floor(parseFloat(jQuery('#go_stage_' + i +'_currency').html()) * percentage));
+					if (!jQuery('#go_stage_' + i +'_points').hasClass('go_updated')) {
+						jQuery('#go_stage_' + i +'_points').html(Math.floor(parseFloat(jQuery('#go_stage_' + i +'_points').html()) * percentage)).addClass('go_updated');
+					}
+					if (!jQuery('#go_stage_' + i +'_currency').hasClass('go_updated')) {
+						jQuery('#go_stage_' + i +'_currency').html(Math.floor(parseFloat(jQuery('#go_stage_' + i +'_currency').html()) * percentage)).addClass('go_updated');
+					}
 				}
 			}
 		}
