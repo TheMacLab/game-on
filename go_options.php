@@ -336,7 +336,7 @@ if (is_admin()) {
 				<div id='go_options_additional_settings_wrap' class='go_options_wrap'>
 					<?php 
 					go_options_field('Video Default', 2, array(1 => 'go_video_width', 2 => 'go_video_height'), 'http://maclab.guhsd.net/go/video/options/videoDefault.mp4', 'Set your default video size');
-					go_options_input('From Email Address', 'text', 'go_email_from', 'http://maclab.guhsd.net/go/video/options/emailFrom.mp4', "Set the 'from' address of the store and file-uploader emails (default: 'no-reply@go.net')");
+					go_options_input('From Email Address', 'text', 'go_email_from', 'http://maclab.guhsd.net/go/video/options/emailFrom.mp4', 'Set the "from" address of the store and file-uploader emails (default: "no-reply@go.net")');
 					go_options_input('Store Receipts', 'checkbox', 'go_store_receipt_switch', 'http://maclab.guhsd.net/go/video/options/storeReceipt.mp4', 'Receive email notification for each store purchase (off by default)');
 					go_options_input('Full Student Name', 'checkbox', 'go_full_student_name_switch', 'http://maclab.guhsd.net/go/video/options/fullStudentName.mp4', 'Display only first name and last initial (default)');
 					go_options_input(get_option('go_bonus_currency_name', 'Bonus'), 'checkbox', 'go_multiplier_switch', 'http://maclab.guhsd.net/go/video/options/multiplier.mp4', 'Enable bonus mechanism to boost rewards');
