@@ -252,7 +252,7 @@ function go_task_shortcode($atts, $content = null) {
 			$future_update_percent = 1;
 		}
 			
-		$update_percent = (($future_switches['calendar'] == 'on')?$date_update_percent:($future_switches['future'] == 'on')?$future_update_percent:1);
+		$update_percent = (($future_switches['calendar'] == 'on')?$date_update_percent:(($future_switches['future'] == 'on')?$future_update_percent:1));
 		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
@@ -310,6 +310,9 @@ function go_task_shortcode($atts, $content = null) {
 						jQuery("#go_stage_3_points").addClass("go_updated");
 						jQuery("#go_stage_3_currency").addClass("go_updated");
 				<?php } ?>
+				if (jQuery('#go_task_timer').length) {
+					jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
+				}
 			</script>
 			<div id="go_description"><div class="go_stage_message"><?php echo  do_shortcode(wpautop($description));?></div></div>
 		<?php	
@@ -2271,11 +2274,12 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	<script type='text/javascript'>
 		function go_task_timer (countdown) {
 			jQuery('#go_task_timer').empty();
+			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
 			var percentage = <?php echo $percentage; ?>/100;
 			if (countdown > 0){
 				var hours = Math.floor(countdown/3600) < 10 ? ("0" + Math.floor(countdown/3600)):Math.floor(countdown/3600);
-				var minutes = Math.floor(countdown/60) < 10 ? ("0" + Math.floor(countdown/60)):Math.floor(countdown/60);
-				var seconds = (countdown - minutes * 60) < 10 ? ("0" + (countdown - minutes * 60)):(countdown - minutes * 60);
+				var minutes = Math.floor((countdown - hours * 3600)/60) < 10 ? ("0" + Math.floor(countdown/60)):Math.floor((countdown - hours * 3600)/60);
+				var seconds = (countdown - ((minutes * 60) + (hours * 3600))) < 10 ? ("0" + (countdown - ((minutes * 60) + (hours * 3600)))):(countdown - ((minutes * 60) + (hours * 3600)));
 				jQuery('#go_task_timer').html(hours + ':' + minutes + ':' + seconds);
 				countdown--;
 				setTimeout(go_task_timer, 1000, countdown);
