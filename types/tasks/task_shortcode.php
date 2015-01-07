@@ -1866,6 +1866,12 @@ function task_change_stage() {
 		
 		if ($status == 2){
 			go_task_timer($post_id, $user_id, $future_modifier);
+		} else if ($status > 2) {
+			?>
+          	<script type='text/javascript'>
+				jQuery('#go_task_timer').empty();
+			</script>
+            <?php	
 		}
 		
 		if ($unix_now >= $future_time || !empty($user_timers[0][$post_id])){
@@ -2276,7 +2282,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			jQuery('#go_task_timer').empty();
 			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
 			var percentage = <?php echo $percentage; ?>/100;
-			if (countdown > 0){
+			if (countdown > 0) {
 				var hours = Math.floor(countdown/3600) < 10 ? ("0" + Math.floor(countdown/3600)):Math.floor(countdown/3600);
 				var minutes = Math.floor((countdown - hours * 3600)/60) < 10 ? ("0" + Math.floor(countdown/60)):Math.floor((countdown - hours * 3600)/60);
 				var seconds = (countdown - ((minutes * 60) + (hours * 3600))) < 10 ? ("0" + (countdown - ((minutes * 60) + (hours * 3600)))):(countdown - ((minutes * 60) + (hours * 3600)));
