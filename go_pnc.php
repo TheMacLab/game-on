@@ -68,10 +68,9 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 			);
 		}
 	} else {
-		$modded_array = go_return_multiplier($user_id, $points, $currency, $bonus_currency, $user_bonuses, $user_penalties);
+		$modded_array = go_return_multiplier($user_id, $points, $currency, $user_bonuses, $user_penalties);
 		$modded_points = $modded_array[0];
 		$modded_currency = $modded_array[1];
-		$modded_bonus_currency = $modded_array[2];
 		$old_points = $wpdb->get_row("select * from ".$table_name_go." where uid = $user_id and post_id = $post_id ");
 		if (!empty($old_points)) {
 			$old_url_array = unserialize($old_points->url);
@@ -87,15 +86,15 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 			$url_array = serialize(array($status => $url));
 		}
 		if ($repeat === 'on') {
-			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'count' => $count + ($old_points->count), 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
+			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'count' => $count + ($old_points->count), 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
 		} else {
 			if ($status === 0) {
-				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $modded_bonus_currency, 'page_id' => $page_id));
+				$wpdb->insert($table_name_go, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 1, 'points' => $modded_points, 'currency' => $modded_currency, 'bonus_currency' => $bonus_currency, 'page_id' => $page_id));
 			} else {
 				$columns = array(
 					'points' => $modded_points + ($old_points->points), 
 					'currency' => $modded_currency + ($old_points->currency), 
-					'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 
+					'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 
 					'page_id' => $page_id, 
 					'url' => $url_array
 				);
@@ -106,7 +105,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 			}
 		}
 		if ($e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null) {
-			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $modded_bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'e_fail_count' => $e_fail_count, 'a_fail_count' => $a_fail_count, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'e_passed' => $e_passed, 'a_passed' => $a_passed, 'c_passed' => $c_passed, 'm_passed' => $m_passed, 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
+			$wpdb->update($table_name_go, array('status' => $status, 'points' => $modded_points + ($old_points->points), 'currency' => $modded_currency + ($old_points->currency), 'bonus_currency' => $bonus_currency + ($old_points->bonus_currency), 'page_id' => $page_id, 'e_fail_count' => $e_fail_count, 'a_fail_count' => $a_fail_count, 'c_fail_count' => $c_fail_count, 'm_fail_count' => $m_fail_count, 'e_passed' => $e_passed, 'a_passed' => $a_passed, 'c_passed' => $c_passed, 'm_passed' => $m_passed, 'url' => $url_array), array('uid' => $user_id, 'post_id' => $post_id));
 		}
 	}
 	go_update_totals($user_id, $points, $currency, $bonus_currency, 0, $minutes, $status);
@@ -230,10 +229,9 @@ function go_update_totals ($user_id, $points, $currency, $bonus_currency, $penal
 	$user_bonuses = go_return_bonus_currency($user_id);
 	$user_penalties = go_return_penalty($user_id);
 	if ($status !== -1) {
-		$modded_array = go_return_multiplier($user_id, $points, $currency, $bonus_currency, $user_bonuses, $user_penalties);
+		$modded_array = go_return_multiplier($user_id, $points, $currency, $user_bonuses, $user_penalties);
 		$points = $modded_array[0];
 		$currency = $modded_array[1];
-		$bonus_currency = $modded_array[2];
 	}
 	if ($points != 0) {
 		$totalpoints = go_return_points($user_id);
@@ -364,7 +362,7 @@ function barColor ($current_bonus_currency) {
 	return $color;
 }
 
-function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $user_bonuses, $user_penalties, $return_mod = false) {
+function go_return_multiplier ($user_id, $points, $currency, $user_bonuses, $user_penalties, $return_mod = false) {
 	$points = (int)$points;
 	$currency = (int)$currency;
 	$bonus_active = get_option('go_multiplier_switch', false);
@@ -378,7 +376,7 @@ function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $u
 		$diff = $bonus_frac - $penalty_frac;
 		if ($diff == 0) {
 			if ($return_mod === false) {
-				return (array($points, $currency, $bonus_currency));
+				return (array($points, $currency));
 			} else if ($return_mod === true) {
 				return (0);
 			}
@@ -395,11 +393,6 @@ function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $u
 				} else {
 					$modded_currency = ceil($currency + ($currency * $mod));
 				}
-				if ($bonus_currency < 0) {
-					$modded_bonus_currency = floor($bonus_currency + ($bonus_currency * $mod));
-				} else {
-					$modded_bonus_currency = ceil($bonus_currency + ($bonus_currency * $mod));
-				}
 			} else if ($mod < 0) {
 				if ($points < 0) {
 					$modded_points = ceil($points + ($points * $mod));
@@ -411,14 +404,9 @@ function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $u
 				} else {
 					$modded_currency = floor($currency + ($currency * $mod));
 				}
-				if ($bonus_currency < 0) {
-					$modded_bonus_currency = ceil($bonus_currency + ($bonus_currency * $mod));
-				} else {
-					$modded_bonus_currency = floor($bonus_currency + ($bonus_currency * $mod));
-				}
 			}
 			if ($return_mod === false) {
-				return (array($modded_points, $modded_currency, $modded_bonus_currency));
+				return (array($modded_points, $modded_currency));
 			} else if ($return_mod === true) {
 				return ($mod);
 			}
@@ -429,7 +417,7 @@ function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $u
 		$bonus_frac = intval($user_bonuses / $bonus_threshold);
 		if ($bonus_frac == 0) {
 			if ($return_mod === false) {
-				return (array($points, $currency, $bonus_currency));
+				return (array($points, $currency));
 			} else if ($return_mod === true) {
 				return (0);
 			}
@@ -445,13 +433,8 @@ function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $u
 			} else {
 				$modded_currency = ceil($currency + ($currency * $mod));
 			}
-			if ($bonus_currency < 0) {
-				$modded_bonus_currency = floor($bonus_currency + ($bonus_currency * $mod));
-			} else {
-				$modded_bonus_currency = ceil($bonus_currency + ($bonus_currency * $mod));
-			}
 			if ($return_mod === false) {
-				return (array($modded_points, $modded_currency, $modded_bonus_currency));
+				return (array($modded_points, $modded_currency));
 			} else if ($return_mod === true) {
 				return ($mod);
 			}
@@ -462,7 +445,7 @@ function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $u
 		$penalty_frac = intval($user_penalties / $penalty_threshold);
 		if ($penalty_frac == 0) {
 			if ($return_mod === false) {
-				return (array($points, $currency, $bonus_currency));
+				return (array($points, $currency));
 			} else if ($return_mod === true) {
 				return (0);
 			}
@@ -478,19 +461,14 @@ function go_return_multiplier ($user_id, $points, $currency, $bonus_currency, $u
 			} else {
 				$modded_currency = floor($currency + ($currency * $mod));
 			}
-			if ($bonus_currency < 0) {
-				$modded_bonus_currency = ceil($bonus_currency + ($bonus_currency * $mod));
-			} else {
-				$modded_bonus_currency = floor($bonus_currency + ($bonus_currency * $mod));
-			}
 			if ($return_mod === false) {
-				return (array($modded_points, $modded_currency, $modded_bonus_currency));
+				return (array($modded_points, $modded_currency));
 			} else if ($return_mod === true) {
 				return ($mod);
 			}
 		}
 	} else {
-		return (array($points, $currency, $bonus_currency));
+		return (array($points, $currency));
 	}
 }
 

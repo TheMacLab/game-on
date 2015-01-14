@@ -2140,7 +2140,8 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 			$bc_array = $bonus_currency;
 		}
 		for ($i = 0; $i < $number_of_stages; $i++) {
-			$mod_array = go_return_multiplier($user_id, $p_array[$i] * $date_percent, $c_array[$i] * $date_percent, $bc_array[$i] * $date_percent, $u_bonuses, $u_penalties);
+			$mod_array = go_return_multiplier($user_id, $p_array[$i] * $date_percent, $c_array[$i] * $date_percent, $u_bonuses, $u_penalties);
+			$bc = $bc_array[$i] * $date_percent;
 			$stage_name = '';
 			switch ($i) {
 				case 0:
@@ -2161,7 +2162,7 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 			}
 			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "{$mod_array[0]} {$p_name}" : '').
 				" ".(!empty($mod_array[1]) && !empty($c_name) ? "{$mod_array[1]} {$c_name}" : '').
-				" ".(!empty($mod_array[2]) && !empty($bc_name) ? "{$mod_array[2]} {$bc_name}" : '').
+				" ".(!empty($bc) && !empty($bc_name) ? "{$bc} {$bc_name}" : '').
 				"<br/>";
 			echo $output;
 		}

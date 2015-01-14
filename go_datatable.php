@@ -309,6 +309,7 @@ function go_install_data () {
 		'go_admin_email' => '',
 		'go_video_width' => '',
 		'go_video_height' => '',
+		'go_email_from' => "no-reply@go.net",
 		'go_store_receipt_switch' => '',
 		'go_full_student_name_switch' => '',
 		'go_multiplier_switch' => '',
