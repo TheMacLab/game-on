@@ -53,10 +53,10 @@ function go_file_input ($atts, $content = null) {
 		$user_role = $user_info->roles;
 		$task_title = $post->post_title;
 		$task_name = go_return_options('go_tasks_name');
-		$to = get_option('go_admin_email','');
+		$to = get_option('go_admin_email', '');
 		require("mail/class.phpmailer.php");
 		$mail = new PHPMailer();
-		$mail->From = "no-reply@go.net";
+		$mail->From = get_option('go_email_from', 'no-reply@go.net');
 		$mail->FromName = $user_name;
 		$mail->AddAddress($to);
 		$mail->Subject = "Upload: {$task_title} | {$user_name} {$user_login}";

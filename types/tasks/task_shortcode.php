@@ -2228,13 +2228,14 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 		for ($i = 0; $i < $number_of_stages; $i++) {
 			if ($future) {
 				if ($i == 2) {
-					$mod_array = go_return_multiplier($user_id, floor($p_array[$i] * $update_percent), floor($c_array[$i] * $update_percent), floor($bc_array[$i] * $update_percent), $u_bonuses, $u_penalties);
+					$mod_array = go_return_multiplier($user_id, floor($p_array[$i] * $update_percent), floor($c_array[$i] * $update_percent), $u_bonuses, $u_penalties);
 				} else {
-					$mod_array = array($p_array[$i], $c_array[$i], $bc_array[$i]);	
+					$mod_array = array($p_array[$i], $c_array[$i]);	
 				}
 			} else {
-				$mod_array = go_return_multiplier($user_id, floor($p_array[$i] * $update_percent), floor($c_array[$i] * $update_percent), floor($bc_array[$i] * $update_percent), $u_bonuses, $u_penalties);
+				$mod_array = go_return_multiplier($user_id, floor($p_array[$i] * $update_percent), floor($c_array[$i] * $update_percent), $u_bonuses, $u_penalties);
 			}
+			$bc = floor($bc_array[$i] * $update_percent);
 			$stage_name = '';
 			switch ($i) {
 				case 0:
@@ -2256,7 +2257,7 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 			$stage = $i + 1;
 			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
 				" ".(!empty($mod_array[1]) && !empty($c_name) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
-				" ".(!empty($mod_array[2]) && !empty($bc_name) ? "<span id='go_stage_{$stage}_bonus_currency'>{$mod_array[2]}</span> {$bc_name}" : '').
+				" ".(!empty($bc) && !empty($bc_name) ? "<span id='go_stage_{$stage}_bonus_currency'>{bc}</span> {$bc_name}" : '').
 				"<br/>";
 			echo $output;
 		}

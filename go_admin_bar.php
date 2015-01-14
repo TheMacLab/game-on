@@ -23,7 +23,7 @@ function go_admin_bar(){
 	if($dom <= 0){
 		$dom = 1;
 	}
-	go_update_ranks($current_user_id, $current_points);
+	$ranks_output = go_update_ranks($current_user_id, $current_points);
 	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	
@@ -205,6 +205,7 @@ function go_admin_bar(){
 				'parent' => 'appearance'
 			));
 		}
+		echo $ranks_output;
 	}
 }
 ?>

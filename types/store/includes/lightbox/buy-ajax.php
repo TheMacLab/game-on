@@ -39,7 +39,7 @@ function go_buy_item() {
 	$penalty = $custom_fields['go_mta_penalty_switch'];
 
 	$store_limit = unserialize($custom_fields['go_mta_store_limit'][0]);
-	$is_limited = (bool)$store_limit[0];
+	$is_limited = $store_limit[0];
 	if ($is_limited) {
 		$limit = (int)$store_limit[1];
 	}
@@ -84,7 +84,7 @@ function go_buy_item() {
 	$enough_minutes = check_values($req_minutes, $cur_minutes);
 
 	$within_limit = true;
-	if (!empty($limit)) {
+	if (!empty($limit) && $is_limited === "true") {
 		$qty_diff = $limit - $current_purchase_count - $qty;
 		if ($qty_diff < 0) {
 			$within_limit = false;
@@ -152,7 +152,7 @@ function go_buy_item() {
 			$errors = implode(', ', $errors);
 			echo 'Need more '.substr($errors, 0, strlen($errors));
 		}
-		if ($is_limited && !$within_limit) {
+		if ($is_limited === "true" && !$within_limit) {
 			$qty_diff *= -1;
 			echo "You've attempted to purchase ".($qty_diff == 1 ? '1 item' : "{$qty_diff} items")." greater than the purchase limit.";
 		}
@@ -215,7 +215,7 @@ function go_mail_item_reciept ($user_id, $item_id, $req_currency, $req_points, $
 	$to = get_option('go_admin_email','');
 	require("{$go_plugin_dir}/mail/class.phpmailer.php");
 	$mail = new PHPMailer();
-	$mail->From = "no-reply@go.net";
+	$mail->From = get_option('go_email_from', 'no-reply@go.net');
 	$mail->FromName = $user_name;
 	$mail->AddAddress($to);
 	$mail->Subject = "Purchase: {$item_title} ({$qty}) | {$user_name} {$user_login}";
