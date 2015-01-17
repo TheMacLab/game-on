@@ -2283,10 +2283,11 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
 			var percentage = <?php echo $percentage; ?>/100;
 			if (countdown > 0) {
-				var hours = Math.floor(countdown/3600) < 10 ? ("0" + Math.floor(countdown/3600)):Math.floor(countdown/3600);
-				var minutes = Math.floor((countdown - (hours * 3600))/60) < 10 ? ("0" + Math.floor((countdown - (hours * 3600))/60)):Math.floor((countdown - (hours * 3600))/60);
-				var seconds = (countdown - ((minutes * 60) + (hours * 3600))) < 10 ? ("0" + (countdown - ((minutes * 60) + (hours * 3600)))):(countdown - ((minutes * 60) + (hours * 3600)));
-				jQuery('#go_task_timer').html(hours + ':' + minutes + ':' + seconds);
+				var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)):Math.floor(countdown/86400);
+				var hours = Math.floor((countdown - (days * 86400))/3600) < 10 ? ("0" + Math.floor((countdown - (days * 86400))/3600)):Math.floor((countdown - (days * 86400))/3600);
+				var minutes = Math.floor((countdown - ((days * 86400) + (hours * 3600)))/60) < 10 ? ("0" + Math.floor((countdown - (days * 86400) - (hours * 3600))/60)):Math.floor((countdown - (days * 86400) - (hours * 3600))/60);
+				var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))):(countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
+				jQuery('#go_task_timer').html(days + ':' +hours + ':' + minutes + ':' + seconds);
 				countdown--;
 				var timer = setTimeout(go_task_timer, 1000, countdown);
 			} else {
