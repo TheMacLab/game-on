@@ -2300,6 +2300,14 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 				}
 			}
 		}
+		
+		// Safari caching fix
+		jQuery(window).bind("pageshow", function(event) {
+			if (event.originalEvent.persisted) {
+				window.location.reload() 
+			}
+		});
+		
 		go_task_timer (<?php echo $countdown; ?>);
 	</script>
 	<?php

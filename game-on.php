@@ -234,7 +234,7 @@ function go_task_timer_headers () {
 	$custom_fields = get_post_custom(get_the_ID());
 	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]);
 	if (get_post_type() == 'tasks' && $future_switches['future'] == 'on') {
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header('Expires: Thu, 1 Jan 1970 00:00:00 GMT');
 		header('Cache-Control: no-store, no-cache, must-revalidate');
 		header('Cache-Control: post-check=0, pre-check=0', FALSE);
 		header('Pragma: no-cache');	
