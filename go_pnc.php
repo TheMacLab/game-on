@@ -101,7 +101,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 				);
 				if (!is_null($status)) {
 					$timestamp = $wpdb->get_var("SELECT `timestamp` FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'");
-					if ($update_time && empty($timestamp)){
+					if ($update_time && empty($timestamp)) {
 						$columns['timestamp'] = $time;
 					}
 					$columns['status'] = $status;
@@ -525,8 +525,8 @@ function go_task_abandon ($user_id = null, $post_id = null, $e_points = null, $e
 	));
 	$custom_fields = get_post_custom($post_id);
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
-	if (!empty($future_modifier)){
-		$user_timers = get_user_meta($user_id, 'go_timers', true);
+	$user_timers = get_user_meta($user_id, 'go_timers', true);
+	if (!empty($future_modifier) && empty($user_timers[$post_id])) {
 		$user_timers[$post_id] = $accept_timestamp;
 		update_user_meta($user_id, 'go_timers', $user_timers);
 	}

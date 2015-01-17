@@ -730,7 +730,7 @@ add_action('cmb_render_go_time_modifier_inputs', 'go_time_modifier_inputs');
 function go_time_modifier_inputs () {
 	$custom = get_post_custom(get_the_id());
 	$time_modifier = unserialize($custom['go_mta_time_modifier'][0]);
-	if ($time_modifier){
+	if ($time_modifier) {
 		?>
 		Days: <input type='text' name='go_modifier_input_days' value='<?php echo $time_modifier['days']; ?>'/>
 		Hours: <input type='text' name='go_modifier_input_hours' value='<?php echo $time_modifier['hours']; ?>'/>

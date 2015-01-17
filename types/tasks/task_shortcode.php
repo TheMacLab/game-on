@@ -227,19 +227,19 @@ function go_task_shortcode($atts, $content = null) {
 		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 		$future_timer = false;
 		
-		if (!empty($future_modifier) && $future_switches['future'] == 'on') {
+		if (!empty($future_modifier) && $future_switches['future'] == 'on' && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0)) {
 			$user_timers = get_user_meta($user_ID, 'go_timers');
 			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
-			$days = $future_modifier['days'] ;
+			$days = $future_modifier['days'];
 			$hours = $future_modifier['hours'];
 			$minutes = $future_modifier['minutes'];
 			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
 			
-			if ($status == 2 || (!empty($accept_timestamp) && $status < 3)){
+			if ($status == 2 || (!empty($accept_timestamp) && $status < 3)) {
 				go_task_timer($id, $user_ID, $future_modifier);
 			}
 			
-			if ($future_time != $accept_timestamp && (($unix_now >= $future_time && $status >= 2) || ($unix_now >= $future_time && !empty($accept_timestamp)))){
+			if ($future_time != $accept_timestamp && (($unix_now >= $future_time && $status >= 2) || ($unix_now >= $future_time && !empty($accept_timestamp)))) {
 				$future_update_percent = (float) ($future_modifier['percentage']/100);
 				$future_timer = true;
 			} else {
@@ -306,7 +306,7 @@ function go_task_shortcode($atts, $content = null) {
 		?>
 			<script type="text/javascript">
 				jQuery(".entry-title").after(jQuery(".go_task_rewards"));
-				<?php if ($update_percent != 1 && $future_switches['future'] == 'on'){?>
+				<?php if ($update_percent != 1 && $future_switches['future'] == 'on') {?>
 						jQuery("#go_stage_3_points").addClass("go_updated");
 						jQuery("#go_stage_3_currency").addClass("go_updated");
 				<?php } ?>
@@ -317,7 +317,7 @@ function go_task_shortcode($atts, $content = null) {
 			<div id="go_description"><div class="go_stage_message"><?php echo  do_shortcode(wpautop($description));?></div></div>
 		<?php	
 		
-		if ($future_switches['future'] == 'on' && $status < 2){
+		if ($future_switches['future'] == 'on' && $status < 2) {
 			$update_percent = 1;	
 		}
 	
@@ -683,7 +683,7 @@ function go_task_shortcode($atts, $content = null) {
 						}
 						echo '</div>';
 				}
-				if(get_post_type() == 'tasks'){
+				if (get_post_type() == 'tasks') {
 					comments_template();
 				}
 			} else {
@@ -1855,7 +1855,7 @@ function task_change_stage() {
 	
 	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]); //determine which future date modifier is on, if any
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
-	if (!empty($future_modifier) && $future_switches['future'] == 'on') {
+	if (!empty($future_modifier) && $future_switches['future'] == 'on'  && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0)) {
 		$user_timers = get_user_meta($user_id, 'go_timers');
 		$accept_timestamp_db = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
 		$accept_timestamp = ((!empty($user_timers[0][$post_id]))?$user_timers[0][$post_id]:(!empty($accept_timestamp_db)?$accept_timestamp_db:(($status == 2)?$unix_now:0)));
@@ -1864,9 +1864,9 @@ function task_change_stage() {
 		$minutes = $future_modifier['minutes'];
 		$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
 		
-		if ($status == 2){
+		if ($status == 2) {
 			go_task_timer($post_id, $user_id, $future_modifier);
-		} else if ($status > 2) {
+		} else if ($status > 2 && ($unix_now >= $future_time)) {
 			?>
           	<script type='text/javascript'>
 				jQuery('#go_task_timer').empty();
@@ -1874,7 +1874,7 @@ function task_change_stage() {
             <?php	
 		}
 		
-		if ($unix_now >= $future_time || !empty($user_timers[0][$post_id])){
+		if ($unix_now >= $future_time || !empty($user_timers[0][$post_id])) {
 			$future_update_percent = (float) ($future_modifier['percentage']/100);
 		} else {
 			$future_update_percent = 1;	
@@ -2215,7 +2215,7 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 		$bc_name = go_return_options('go_bonus_currency_name');
 		$u_bonuses = go_return_bonus_currency($user_id);
 		$u_penalties = go_return_penalty($user_id);
-		if ($date_percent !== 1 && !empty($update_percent)) {
+		if ($update_percent !== 1 && !empty($update_percent)) {
 			$rewards_array = array($points, $currency, $bonus_currency);
 			$p_array = $rewards_array[0];
 			$c_array = $rewards_array[1];
@@ -2280,16 +2280,15 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	<div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		function go_task_timer (countdown) {
-			jQuery('#go_task_timer').empty();
 			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
 			var percentage = <?php echo $percentage; ?>/100;
 			if (countdown > 0) {
 				var hours = Math.floor(countdown/3600) < 10 ? ("0" + Math.floor(countdown/3600)):Math.floor(countdown/3600);
-				var minutes = Math.floor((countdown - hours * 3600)/60) < 10 ? ("0" + Math.floor(countdown/60)):Math.floor((countdown - hours * 3600)/60);
+				var minutes = Math.floor((countdown - (hours * 3600))/60) < 10 ? ("0" + Math.floor((countdown - (hours * 3600))/60)):Math.floor((countdown - (hours * 3600))/60);
 				var seconds = (countdown - ((minutes * 60) + (hours * 3600))) < 10 ? ("0" + (countdown - ((minutes * 60) + (hours * 3600)))):(countdown - ((minutes * 60) + (hours * 3600)));
 				jQuery('#go_task_timer').html(hours + ':' + minutes + ':' + seconds);
 				countdown--;
-				setTimeout(go_task_timer, 1000, countdown);
+				var timer = setTimeout(go_task_timer, 1000, countdown);
 			} else {
 				jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards");
 				if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {

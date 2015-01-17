@@ -56,7 +56,8 @@ add_action('wp_ajax_go_clone_post', 'go_clone_post');
 add_action('wp_ajax_go_clipboard_intable','go_clipboard_intable');
 add_action('wp_ajax_go_user_option_add','go_user_option_add');
 add_action('go_update_totals','go_update_totals');
-add_action( 'init', 'go_jquery' );
+add_action('init', 'go_jquery');
+add_action('wp', 'go_task_timer_headers');
 add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
@@ -229,4 +230,14 @@ function go_weekly_schedule ($schedules) {
 	return $schedules;
 }
 
+function go_task_timer_headers () {
+	$custom_fields = get_post_custom(get_the_ID());
+	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]);
+	if (get_post_type() == 'tasks' && $future_switches['future'] == 'on') {
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header('Cache-Control: no-store, no-cache, must-revalidate');
+		header('Cache-Control: post-check=0, pre-check=0', FALSE);
+		header('Pragma: no-cache');	
+	}
+}
 ?>
