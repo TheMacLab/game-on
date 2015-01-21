@@ -230,11 +230,11 @@ function go_task_shortcode($atts, $content = null) {
 		if (!empty($future_modifier) && $future_switches['future'] == 'on' && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0)) {
 			$user_timers = get_user_meta($user_ID, 'go_timers');
 			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
-			$days = $future_modifier['days'];
-			$hours = $future_modifier['hours'];
-			$minutes = $future_modifier['minutes'];
+			$days = (int) $future_modifier['days'];
+			$hours = (int) $future_modifier['hours'];
+			$minutes =  (int) $future_modifier['minutes'];
 			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
-			
+			echo $future_time;
 			if ($status == 2 || (!empty($accept_timestamp) && $status < 3)) {
 				go_task_timer($id, $user_ID, $future_modifier);
 			}
@@ -300,7 +300,7 @@ function go_task_shortcode($atts, $content = null) {
 			if($category_names && $user_focus){
 				$go_ahead = array_intersect($user_focus, $category_names);
 			}
-				
+			echo $update_percent;
 			go_display_rewards($user_ID, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer);
 			
 		?>
@@ -1866,15 +1866,15 @@ function task_change_stage() {
 		
 		if ($status == 2) {
 			go_task_timer($post_id, $user_id, $future_modifier);
-		} else if ($status > 2 && ($unix_now >= $future_time)) {
+		} else if ($status > 2) {
 			?>
           	<script type='text/javascript'>
-				jQuery('#go_task_timer').empty();
+				jQuery('#go_task_timer').remove();
 			</script>
             <?php	
 		}
 		
-		if ($unix_now >= $future_time || !empty($user_timers[0][$post_id])) {
+		if ($unix_now >= $future_time) {
 			$future_update_percent = (float) ($future_modifier['percentage']/100);
 		} else {
 			$future_update_percent = 1;	
@@ -1886,6 +1886,7 @@ function task_change_stage() {
 	$complete_stage = ($undo)?$status - 1: $status;
 	$update_percent = (($future_switches['calendar'] == 'on')?$date_update_percent:($future_switches['future'] == 'on' && ($complete_stage == 3 && $db_status < 4))?$future_update_percent:1);
 	
+	echo $update_percent;
 	// if the button pressed IS the repeat button...
 	if ($repeat_button == 'on') {
 		if ($undo == 'true' || $undo === true) {
@@ -1893,12 +1894,12 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, $status, 
 				-floor(($update_percent * $points_array[$status])), 
 				-floor(($update_percent * $currency_array[$status])), 
-				-floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 			} else {
 				go_add_post($user_id, $post_id, ($status - 1), 
 				-floor(($update_percent * $points_array[$status - 1])), 
 				-floor(($update_percent * $currency_array[$status - 1])), 
-				-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				if ($stage_badges[$status][0] == 'true') {
 					foreach ($stage_badges[$status][1] as $badge_id) {
 						go_remove_badge($user_id, $badge_id);
@@ -1910,7 +1911,7 @@ function task_change_stage() {
 			go_add_post($user_id, $post_id, $status, 
 			floor(($update_percent * $points_array[$status])), 
 			floor(($update_percent * $currency_array[$status])), 
-			floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url);
+			floor(($update_percent * $bonus_currency_array[$status])), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url);
 			if ($stage_badges[$status][0] == 'true') {
 				foreach ($stage_badges[$status][1] as $badge_id) {
 					do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
@@ -1926,11 +1927,12 @@ function task_change_stage() {
 					go_add_post($user_id, $post_id, $status, 
 					-floor(($update_percent * $points_array[$status - 1])), 
 					-floor(($update_percent * $currency_array[$status - 1])), 
-					-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+					-floor(($update_percent * $bonus_currency_array[$status - 1])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				} else {
 					go_add_post($user_id, $post_id, ($status - 2), 
 					-floor(($update_percent * $points_array[$status - 2])), 
-					-floor(($update_percent * $currency_array[$status - 2])), -floor(($update_percent * $bonus_currency[$status - 2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+					-floor(($update_percent * $currency_array[$status - 2])), 
+					-floor(($update_percent * $bonus_currency_array[$status - 2])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 					if ($stage_badges[$status - 2][0] == 'true') {
 						foreach ($stage_badges[$status - 2][1] as $badge_id) {
 							go_remove_badge($user_id, $badge_id);
@@ -1943,7 +1945,7 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, $status, 
 				floor(($update_percent * $points_array[$status - 1])), 
 				floor(($update_percent * $currency_array[$status - 1])), 
-				floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time); 
+				floor(($update_percent * $bonus_currency_array[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time); 
 				if ($stage_badges[$status - 1][0] == 'true') {
 					foreach ($stage_badges[$status - 1][1] as $badge_id) {
 						do_shortcode("[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']");
@@ -2257,7 +2259,7 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 			$stage = $i + 1;
 			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
 				" ".(!empty($mod_array[1]) && !empty($c_name) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
-				" ".(!empty($bc) && !empty($bc_name) ? "<span id='go_stage_{$stage}_bonus_currency'>{bc}</span> {$bc_name}" : '').
+				" ".(!empty($bc) && !empty($bc_name) ? "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}" : '').
 				"<br/>";
 			echo $output;
 		}
@@ -2270,9 +2272,9 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	$unix_now = current_time('timestamp');
 	$user_timers = get_user_meta($user_id, 'go_timers');
 	$accept_timestamp = ((!empty($user_timers[0][$task_id]))?$user_timers[0][$task_id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$task_id}'"))));
-	$days = $future_modifier['days'] ;
-	$hours = $future_modifier['hours'];
-	$minutes = $future_modifier['minutes'];
+	$days = (int) $future_modifier['days'] ;
+	$hours = (int) $future_modifier['hours'];
+	$minutes = (int) $future_modifier['minutes'];
 	$percentage = $future_modifier['percentage'];
 	$future_time = (!empty($accept_timestamp))? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $unix_now;
 	$countdown = $future_time - $unix_now;
@@ -2291,7 +2293,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 				countdown--;
 				var timer = setTimeout(go_task_timer, 1000, countdown);
 			} else {
-				jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards");
+				jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
 				if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
 					jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
 				}

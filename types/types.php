@@ -53,17 +53,17 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => ' Filter'.go_task_opt_help('penalty_filter', '', 'http://maclab.guhsd.net/go/video/quests/penaltyFilter.mp4'),
+				'name' => 'Time Filters'.go_task_opt_help('penalty_filter', '', 'http://maclab.guhsd.net/go/video/quests/timeFilter.mp4'),
 				'id' => $prefix . 'time_filters',
 				'type' => 'go_future_filters'
 			),
 			array(
-				'name' => 'Date Filter (Calendar)'.go_task_opt_help('nerf_dates', '', 'http://maclab.guhsd.net/go/video/quests/nerfDates.mp4'),
+				'name' => 'Date'.go_task_opt_help('nerf_dates', '', 'http://maclab.guhsd.net/go/video/quests/nerfDates.mp4'),
 				'id' => $prefix.'date_picker',
 				'type' => 'go_decay_table'
 			),
 			array(
-				'name' => 'Date Filter (After Stage One)'.go_task_opt_help('time_modifier', '', 'http://maclab.guhsd.net/go/video/quests/nerfTime.mp4'),
+				'name' => 'Time'.go_task_opt_help('time_modifier', '', 'http://maclab.guhsd.net/go/video/quests/nerfTime.mp4'),
 				'id' => $prefix.'time_modifier',
 				'type' => 'go_time_modifier_inputs'
 			),
@@ -633,8 +633,8 @@ function go_future_filters ($field_args) {
 	$custom = get_post_custom(get_the_id());
 	$checked = unserialize($custom['go_mta_time_filters'][0]);
 	?>
-	Calendar date: <input  type='checkbox' id='go_calendar_checkbox' name='go_time_modifier[calendar]' <?php echo (($checked['calendar'] == 'on')?'checked':'');?> />
-	Time after stage one: <input type='checkbox' id='go_future_checkbox' name='go_time_modifier[future]' <?php echo (($checked['future'] == 'on')?'checked':'');?> />
+	Date: <input  type='checkbox' id='go_calendar_checkbox' name='go_time_modifier[calendar]' <?php echo (($checked['calendar'] == 'on')?'checked':'');?> />
+	Time: <input type='checkbox' id='go_future_checkbox' name='go_time_modifier[future]' <?php echo (($checked['future'] == 'on')?'checked':'');?> />
 	<?php	
 }
 

@@ -25,8 +25,7 @@ function go_toggle_settings_rows(stage_settings, condensed) {
 	condensed = typeof condensed !== 'undefined' ? condensed : false;
 	for(setting in stage_settings){
 		if(condensed === true){
-			stage_settings[setting].addClass('condensed');
-			stage_settings[setting].children().addClass('condensed');
+			stage_settings[setting].addClass('condensed').children().addClass('condensed');
 		}
 		stage_settings[setting].toggle('slow');
 	}
@@ -204,8 +203,12 @@ jQuery('#go_advanced_task_settings_accordion').click(function(){
 // Modifier Date Picker //
 var calendar_row = jQuery('tr.cmb-type-go_decay_table.cmb_id_go_mta_date_picker');
 var future_row = jQuery('tr.cmb-type-go_time_modifier_inputs.cmb_id_go_mta_time_modifier');
+
 calendar_row.hide();
 future_row.hide();
+
+calendar_row.addClass('condensed').children().addClass('condensed');
+future_row.addClass('condensed').children().addClass('condensed');
 
 jQuery('#go_calendar_checkbox').click(function () {
 	jQuery('#go_future_checkbox').prop('checked', false);
