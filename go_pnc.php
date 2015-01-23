@@ -13,7 +13,7 @@ function go_add_currency ($user_id, $reason, $status, $points, $currency, $updat
 }
 
 // Adds currency and points for reasons that are post tied.
-function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $url = null) {
+function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $url = null, $reason = null) {
 	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	$time = date('m/d@H:i',current_time('timestamp',0));
@@ -42,7 +42,7 @@ function go_add_post ($user_id, $post_id, $status, $points, $currency, $bonus_cu
 					'currency'=>$currency,
 					'bonus_currency' => $bonus_currency,
 					'page_id' => $page_id, 
-					'count'=> $qty,
+					'count'=> $qty + $count,
 					'reason' => $reason,
 					'timestamp' => $time,
 					'gifted' => $gifted,

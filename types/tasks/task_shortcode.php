@@ -15,6 +15,7 @@ function go_task_shortcode($atts, $content = null) {
 	$page_id = get_the_ID();
 	if ($id && !empty($user_ID)) { // If the shortcode has an attribute called id, run this code
 		$today = date('Y-m-d');
+		$task_name = go_return_options('go_tasks_name');
 		$custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
 		$rewards = unserialize($custom_fields['go_presets'][0]);
 		$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
@@ -221,7 +222,6 @@ function go_task_shortcode($atts, $content = null) {
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
 			$points = $req_points - $current_points;
 			$points_name = strtolower(go_return_options('go_points_name'));
-			$task_name = strtolower(go_return_options('go_tasks_name'));
 			echo "You need {$points} more {$points_name} to begin this {$task_name}.";
 		} else {
 			$go_table_ind = $wpdb->prefix.'go';
@@ -1701,9 +1701,9 @@ function task_change_stage() {
 	}
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
-	
 	if ($mastery_active) {
 		$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
+		$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 
 		if ($test_m_active) {
 			$test_m_array = go_get_test_meta_content($custom_fields, 'mastery');
@@ -2108,6 +2108,45 @@ function task_change_stage() {
 				}
 				if ($mastery_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
+				}
+				if ($bonus_loot[0]) {
+					if (!empty($bonus_loot[1])) {
+						foreach ($bonus_loot[1] as $store_item => $on) {
+							if ($on === 'on') {
+								$random_number = rand(1, 999);
+								$custom_fields = get_post_custom($store_item);
+								$bonus_loot_currency = unserialize($custom_fields['go_mta_store_cost'][0]);
+								if ($random_number < $bonus_loot[2][$store_item] * 10) {
+									if ($bonus_loot[2][$store_item] * 10 > 999) {
+										go_notify('custom', 0, 0, 0, 0, 0, $user_id, get_option('go_task_loot_name'));
+										go_add_post($user_id, $store_item, -1, 0, 0, 0, 0, null, 'off', 1, null, null, null, null, null, null, null, null, null, get_the_title($post_id));
+										if ($bonus_loot_currency[0] < 0) {
+											go_add_currency($user_id, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>".': '.get_the_title($post_id), 6, 0, -$bonus_loot_currency[0], false);
+										}
+										if ($bonus_loot_currency[1] < 0) {
+											go_add_currency($user_id, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>".': '.get_the_title($post_id), 6, -$bonus_loot_currency[1], 0, false);
+										}
+										if ($bonus_loot_currency[2] < 0) {
+											go_add_bonus_currency($user_id, -$bonus_loot_currency[2], "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>".': '.get_the_title($post_id));
+										}
+									} else {
+										go_notify('custom', 0, 0, 0, 0, 0, $user_id, get_option('go_bonus_loot_name'));
+										go_add_post($user_id, $store_item, -1, 0, 0, 0, 0, null, 'off', 1, null, null, null, null, null, null, null, null, null, get_the_title($post_id));
+										if ($bonus_loot_currency[0] < 0) {
+											go_add_currency($user_id, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>".': '.get_the_title($post_id), 6, 0, -$bonus_loot_currency[0], false);
+										}
+										if ($bonus_loot_currency[1] < 0) {
+											go_add_currency($user_id, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>".': '.get_the_title($post_id), 6, -$bonus_loot_currency[1], 0, false);
+										}
+										if ($bonus_loot_currency[2] < 0) {
+											go_add_bonus_currency($user_id, -$bonus_loot_currency[2], "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>".': '.get_the_title($post_id));
+										}
+									}
+									echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
+								}
+							}
+						}
+					}
 				}
 				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 			}

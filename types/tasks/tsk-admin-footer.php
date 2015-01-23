@@ -102,7 +102,8 @@ var stage_settings_rows = {
 		jQuery('tr.cmb-type-go_test_field.cmb_id_go_mta_test_lock_mastery'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_task_repeat'),
 		jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_mastery_privacy'),
-		jQuery('tr.cmb_id_go_mta_stage_four_badge')
+		jQuery('tr.cmb_id_go_mta_stage_four_badge'),
+		jQuery('tr.cmb-type-go_bonus_loot.cmb_id_go_mta_mastery_bonus_loot')
 	],
 	5: [
 		jQuery('tr.cmb-type-go_stage_reward.cmb_id_go_mta_stage_five_points'),
@@ -568,6 +569,26 @@ if (stage_five) {
 } else {
 	jQuery('tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message').hide('slow');
 	stage_accordion_rows[5].hide('slow');
+}
+
+////////////////////////////////////
+
+//bonus loot toggle//
+
+var go_bonus_loot_check_box = jQuery("#go_bonus_loot_checkbox");
+var go_bonus_loot_items = jQuery("#go_bonus_loot_wrap");
+go_bonus_loot_items.prop("hidden", true);
+go_bonus_loot_check_box.click(function () {
+	if (jQuery(this).is(":checked")) {
+		go_bonus_loot_items.prop("hidden", false);
+	} else {
+		go_bonus_loot_items.prop("hidden", true);
+	}
+});
+if (go_bonus_loot_check_box.is(":checked")) {
+	go_bonus_loot_items.prop("hidden", false);
+} else {
+	go_bonus_loot_items.prop("hidden", true);
 }
 
 ////////////////////////////////////
