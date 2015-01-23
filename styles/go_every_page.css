@@ -115,12 +115,14 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 
 #go_admin_bar_task_search_submit {
 	height: 24px;
-	padding-bottom: 2px;
-	padding-top: 0;
-	padding-left: 5px;
-	padding-right: 5px;
-	line-height: 1;
+	/* padding-bottom: 2px; */
+	/* padding-top: 0; */
+	/* padding-left: 5px; */
+	/* padding-right: 5px; */
 	margin-bottom: 3px;
+	font-size: 10px;
+	line-height: 24px;
+	width: 50px;
 }
 
 input[name="go_admin_bar_submit"]{

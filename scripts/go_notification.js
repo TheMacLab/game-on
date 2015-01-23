@@ -4,7 +4,7 @@
 
 function go_notification (timer, el) {	
 	if (typeof timer === 'undefined') {
-		timer = 1500;	
+		timer = 3000;	
 	}
 	if (typeof el === 'undefined') {
 		el = false;
