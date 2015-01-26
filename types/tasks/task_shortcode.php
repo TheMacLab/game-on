@@ -1823,8 +1823,11 @@ function task_change_stage() {
 								$minutes = ($bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
 								$go_table_name = $wpdb->prefix."go";
 								$user_id = get_current_user_id();
-								go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
-								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								if ($received) {
+									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
+								}
+								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d  ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								}
 							}
 						}
@@ -1848,8 +1851,11 @@ function task_change_stage() {
 								$minutes = ($bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
 								$go_table_name = $wpdb->prefix."go";
 								$user_id = get_current_user_id();
-								go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
-								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								if ($received) {
+									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
+								}
+								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								}
 							}
 						}
