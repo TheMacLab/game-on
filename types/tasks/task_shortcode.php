@@ -2182,8 +2182,10 @@ function task_change_stage() {
 }
 
 function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $date_percent = 1, $number_of_stages = 4) {
+	global $wpdb;
 	if (!is_null($number_of_stages) && (!is_null($points) || !is_null($currency) || !is_null($bonus_currency))) {
 		echo '<div class="go_task_rewards" style="margin: 6px 0px 6px 0px;"><strong>Rewards</strong><br/>';
+		$custom_fields = get_post_custom($post_id); 
 		$p_name = go_return_options('go_points_name');
 		$c_name = go_return_options('go_currency_name');
 		$bc_name = go_return_options('go_bonus_currency_name');
@@ -2225,18 +2227,29 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 				" ".(!empty($bc) && !empty($bc_name) ? "{$bc} {$bc_name}" : '').
 				"<br/>";
 			echo $output;
-				if ($bonus_loot[2][$item] * 10 < 999 && $bonus_loot_name) {
-					echo "<br/>-".$bonus_loot_name.": ";
-					foreach ($bonus_loot[1] as $b_item) {
-						echo "<a href='#' onclick='go_lb_opener({$item})'>".get_the_title($t_item)."</a> |";
+			$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
+		}
+		if ($bonus_loot[0]) {
+			$bonus_loot_display = true;
+					if (!empty($bonus_loot[1])) {
+						foreach ($bonus_loot[1] as $store_item => $on) {
+							if ($on === 'on') {
+								if ($bonus_loot[2][$store_item] * 10 > 999) {
+									$quest_items = $quest_items."<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
+								} else if ($bonus_loot[2][$store_item] * 10 <= 999) {
+									$bonus_items = $bonus_items."<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
+						}
 					}
 				}
-				if ($bonus_loot[2][$item] * 10 > 999 && $task_loot_name) {
-					echo "<br/>-".$task_loot_name.": ";
-					foreach ($store_item as $t_item) {
-						echo "<a href='#' onclick='go_lb_opener({$item})'>".get_the_title($t_item)."</a> |";
-					}
-				}
+			}
+		}
+		$bonus_loot_name = go_return_options('go_bonus_loot_name');
+		$task_loot_name = go_return_options('go_task_loot_name');
+		if ($quest_items) {
+			echo "{$task_loot_name} - ".$quest_items."</br>";
+		}
+		if ($bonus_items) {
+			echo "{$bonus_loot_name} - ".$bonus_items;
 		}
 		echo '</div>';
 	}
