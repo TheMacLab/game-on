@@ -735,6 +735,7 @@ function go_time_modifier_inputs () {
 		Days: <input type='text' name='go_modifier_input_days' value='<?php echo $time_modifier['days']; ?>'/>
 		Hours: <input type='text' name='go_modifier_input_hours' value='<?php echo $time_modifier['hours']; ?>'/>
 		Minutes: <input type='text' name='go_modifier_input_minutes' value='<?php echo $time_modifier['minutes']; ?>'/>
+		Seconds: <input type='text' name='go_modifier_input_seconds' value='<?php echo $time_modifier['seconds']; ?>'/>
 		Modifier: <input type='text' name='go_modifier_input_percent' value='<?php echo $time_modifier['percentage']; ?>'/>
 		<?php
 	} else {
@@ -742,6 +743,7 @@ function go_time_modifier_inputs () {
 		Days: <input type='text' name='go_modifier_input_days'/>
 		Hours: <input type='text' name='go_modifier_input_hours'/>
 		Minutes: <input type='text' name='go_modifier_input_minutes'/>
+		Seconds: <input type='text' name='go_modifier_input_seconds'/>
 		Modifier: <input type='text' name='go_modifier_input_percent'/>
 		<?php
 	}
@@ -749,11 +751,12 @@ function go_time_modifier_inputs () {
 
 add_action('cmb_validate_go_time_modifier_inputs', 'go_validate_time_nerf_inputs');
 function go_validate_time_nerf_inputs(){
-	$days = (!empty($_POST['go_modifier_input_days'])?$_POST['go_modifier_input_days']:0);
-	$hours = (!empty($_POST['go_modifier_input_hours'])?$_POST['go_modifier_input_hours']:0);
-	$minutes = (!empty($_POST['go_modifier_input_minutes'])?$_POST['go_modifier_input_minutes']:0);
-	$percentage = (!empty($_POST['go_modifier_input_percent'])?$_POST['go_modifier_input_percent']:0);
-	$modifier_array = array('days' => $days, 'hours' => $hours, 'minutes' => $minutes, 'percentage' => $percentage);
+	$days = round((!empty($_POST['go_modifier_input_days'])?$_POST['go_modifier_input_days']:0));
+	$hours = round((!empty($_POST['go_modifier_input_hours'])?$_POST['go_modifier_input_hours']:0));
+	$minutes = round((!empty($_POST['go_modifier_input_minutes'])?$_POST['go_modifier_input_minutes']:0));
+	$seconds = round((!empty($_POST['go_modifier_input_seconds'])?$_POST['go_modifier_input_seconds']:0));
+	$percentage = (float) (!empty($_POST['go_modifier_input_percent'])?$_POST['go_modifier_input_percent']:0);
+	$modifier_array = array('days' => $days, 'hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds, 'percentage' => $percentage);
 	return $modifier_array;
 }
 

@@ -227,14 +227,14 @@ function go_task_shortcode($atts, $content = null) {
 		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 		$future_timer = false;
 		
-		if (!empty($future_modifier) && $future_switches['future'] == 'on' && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0)) {
+		if (!empty($future_modifier) && $future_switches['future'] == 'on' && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'])) {
 			$user_timers = get_user_meta($user_ID, 'go_timers');
 			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
 			$days = (int) $future_modifier['days'];
 			$hours = (int) $future_modifier['hours'];
 			$minutes =  (int) $future_modifier['minutes'];
-			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
-			echo $future_time;
+			$seconds = (int) $future_modifier['seconds'];
+			$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp;
 			if ($status == 2 || (!empty($accept_timestamp) && $status < 3)) {
 				go_task_timer($id, $user_ID, $future_modifier);
 			}
@@ -246,7 +246,7 @@ function go_task_shortcode($atts, $content = null) {
 				$future_update_percent = 1;
 			}
 			if ($status < 2 && empty($accept_timestamp)) {
-				echo "<span id='go_future_notification'>After accepting this ".strtolower(go_return_options('go_tasks_name'))." you will have {$days} days, {$hours} hours, and {$minutes} minutes to ".strtolower(go_return_options('go_third_stage_button'))." it or the reward will be reduced by {$future_modifier['percentage']}%. Once accepted you cannot undo the timer.</span>";
+				echo "<span id='go_future_notification'>After accepting this ".strtolower(go_return_options('go_tasks_name'))." you will have {$days} days, {$hours} hours, {$minutes} minutes, and {$seconds} seconds to ".strtolower(go_return_options('go_third_stage_button'))." it or the reward will be reduced by {$future_modifier['percentage']}%. Once accepted you cannot undo the timer.</span>";
 			}
 		} else {
 			$future_update_percent = 1;
@@ -300,7 +300,6 @@ function go_task_shortcode($atts, $content = null) {
 			if($category_names && $user_focus){
 				$go_ahead = array_intersect($user_focus, $category_names);
 			}
-			echo $update_percent;
 			go_display_rewards($user_ID, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer);
 			
 		?>
@@ -1855,14 +1854,15 @@ function task_change_stage() {
 	
 	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]); //determine which future date modifier is on, if any
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
-	if (!empty($future_modifier) && $future_switches['future'] == 'on'  && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0)) {
+	if (!empty($future_modifier) && $future_switches['future'] == 'on'  && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0)) {
 		$user_timers = get_user_meta($user_id, 'go_timers');
 		$accept_timestamp_db = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
 		$accept_timestamp = ((!empty($user_timers[0][$post_id]))?$user_timers[0][$post_id]:(!empty($accept_timestamp_db)?$accept_timestamp_db:(($status == 2)?$unix_now:0)));
-		$days = $future_modifier['days'] ;
-		$hours = $future_modifier['hours'];
-		$minutes = $future_modifier['minutes'];
-		$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp;
+		$days = (int) $future_modifier['days'] ;
+		$hours = (int) $future_modifier['hours'];
+		$minutes = (int) $future_modifier['minutes'];
+		$seconds = (int) $future_modifier['seconds'];
+		$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp;
 		
 		if ($status == 2) {
 			go_task_timer($post_id, $user_id, $future_modifier);
@@ -1886,7 +1886,6 @@ function task_change_stage() {
 	$complete_stage = ($undo)?$status - 1: $status;
 	$update_percent = (($future_switches['calendar'] == 'on')?$date_update_percent:($future_switches['future'] == 'on' && ($complete_stage == 3 && $db_status < 4))?$future_update_percent:1);
 	
-	echo $update_percent;
 	// if the button pressed IS the repeat button...
 	if ($repeat_button == 'on') {
 		if ($undo == 'true' || $undo === true) {
@@ -2275,8 +2274,9 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	$days = (int) $future_modifier['days'] ;
 	$hours = (int) $future_modifier['hours'];
 	$minutes = (int) $future_modifier['minutes'];
+	$seconds = (int) $future_modifier['seconds'];
 	$percentage = $future_modifier['percentage'];
-	$future_time = (!empty($accept_timestamp))? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + $unix_now;
+	$future_time = (!empty($accept_timestamp))? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $unix_now;
 	$countdown = $future_time - $unix_now;
 	?>
 	<div id='go_task_timer'></div>
