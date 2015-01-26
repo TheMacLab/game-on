@@ -1823,11 +1823,11 @@ function task_change_stage() {
 								$minutes = ($bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
 								$go_table_name = $wpdb->prefix."go";
 								$user_id = get_current_user_id();
-								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								if ($received) {
 									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
 								}
-								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d  ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								}
 							}
 						}
@@ -1851,11 +1851,11 @@ function task_change_stage() {
 								$minutes = ($bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
 								$go_table_name = $wpdb->prefix."go";
 								$user_id = get_current_user_id();
-								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								if ($received) {
 									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
 								}
-								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								}
 							}
 						}
@@ -2167,7 +2167,7 @@ function task_change_stage() {
 								$penalty = ($bonus_loot_currency[3] > 0) ? -$bonus_loot_currency[3] : 0;
 								$minutes = ($bonus_loot_currency[4] < 0) ? -$bonus_loot_currency[4] : 0;
 								if ($random_number < $bonus_loot[2][$store_item] * 10) {
-									$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest Loot' : 'Bonus Loot';
+									$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest' : 'Bonus';
 										go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
 									echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
 								}
