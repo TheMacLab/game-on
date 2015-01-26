@@ -227,7 +227,7 @@ function go_task_shortcode($atts, $content = null) {
 		$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 		$future_timer = false;
 		
-		if (!empty($future_modifier) && $future_switches['future'] == 'on' && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'])) {
+		if (!empty($future_modifier) && $future_switches['future'] == 'on' && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0)) {
 			$user_timers = get_user_meta($user_ID, 'go_timers');
 			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
 			$days = (int) $future_modifier['days'];
