@@ -2191,7 +2191,7 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 	global $wpdb;
 	if (!is_null($number_of_stages) && (!is_null($points) || !is_null($currency) || !is_null($bonus_currency))) {
 		echo '<div class="go_task_rewards" style="margin: 6px 0px 6px 0px;"><strong>Rewards</strong><br/>';
-		$custom_fields = get_post_custom($post_id); 
+		$custom_fields = get_post_custom(); 
 		$p_name = go_return_options('go_points_name');
 		$c_name = go_return_options('go_currency_name');
 		$bc_name = go_return_options('go_bonus_currency_name');
@@ -2233,7 +2233,9 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 				" ".(!empty($bc) && !empty($bc_name) ? "{$bc} {$bc_name}" : '').
 				"<br/>";
 			echo $output;
-			$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
+			if (!empty($custom_fields['go_mta_mastery_bonus_loot'][0])) {
+				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
+			}
 		}
 		if ($bonus_loot[0]) {
 			$bonus_loot_display = true;
@@ -2243,11 +2245,9 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 						foreach ($bonus_loot[1] as $store_item => $on) {
 							if ($on === 'on') {
 								if ($bonus_loot[2][$store_item] * 10 > 999) {
-									$quest_items = $quest_items."<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
-									array_push($quest_items_array, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ");
+									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
 								} else if ($bonus_loot[2][$store_item] * 10 <= 999) {
-									$bonus_items = $bonus_items."<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
-									array_push($bonus_items_array, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ");
+									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
 						}
 					}
 				}
@@ -2255,11 +2255,13 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 		}
 		$bonus_loot_name = go_return_options('go_bonus_loot_name');
 		$task_loot_name = go_return_options('go_task_loot_name');
+		$quest_items_array_keys = array_keys($quest_items_array);
+		$bonus_items_array_keys = array_keys($bonus_items_array);
 		if (!empty($quest_items_array)) {
 			echo "{$task_loot_name} - ";
-			foreach (array_keys($quest_items_array) as $index => $key) {
+			foreach ($quest_items_array_keys as $index => $key) {
 				echo $quest_items_array[$key];
-				if ($index < max(array_keys($quest_items_array))) {
+				if ($index < max($quest_items_array_keys)) {
 					echo ", ";
 				}
 			}
@@ -2267,9 +2269,9 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 		}
 		if (!empty($bonus_items_array)) {
 			echo "{$bonus_loot_name} - ";
-			foreach (array_keys($bonus_items_array) as $index => $key) {
+			foreach ($bonus_items_array_keys as $index => $key) {
 				echo $bonus_items_array[$key];
-				if ($index < max(array_keys($bonus_items_array))) {
+				if ($index < max($bonus_items_array_keys)) {
 					echo ", ";
 				}
 			}
