@@ -2168,7 +2168,7 @@ function task_change_stage() {
 								$minutes = ($bonus_loot_currency[4] < 0) ? -$bonus_loot_currency[4] : 0;
 								if ($random_number < $bonus_loot[2][$store_item] * 10) {
 									$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest' : 'Bonus';
-										go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
+										go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
 									echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
 								}
 							}
@@ -2238,12 +2238,16 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 		if ($bonus_loot[0]) {
 			$bonus_loot_display = true;
 					if (!empty($bonus_loot[1])) {
+						$quest_items_array = array();
+						$bonus_items_array = array();
 						foreach ($bonus_loot[1] as $store_item => $on) {
 							if ($on === 'on') {
 								if ($bonus_loot[2][$store_item] * 10 > 999) {
 									$quest_items = $quest_items."<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
+									array_push($quest_items_array, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ");
 								} else if ($bonus_loot[2][$store_item] * 10 <= 999) {
 									$bonus_items = $bonus_items."<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
+									array_push($bonus_items_array, "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ");
 						}
 					}
 				}
@@ -2251,11 +2255,24 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 		}
 		$bonus_loot_name = go_return_options('go_bonus_loot_name');
 		$task_loot_name = go_return_options('go_task_loot_name');
-		if ($quest_items) {
-			echo "{$task_loot_name} - ".$quest_items."</br>";
+		if (!empty($quest_items_array)) {
+			echo "{$task_loot_name} - ";
+			foreach (array_keys($quest_items_array) as $index => $key) {
+				echo $quest_items_array[$key];
+				if ($index < max(array_keys($quest_items_array))) {
+					echo ", ";
+				}
+			}
+		echo "</br>";
 		}
-		if ($bonus_items) {
-			echo "{$bonus_loot_name} - ".$bonus_items;
+		if (!empty($bonus_items_array)) {
+			echo "{$bonus_loot_name} - ";
+			foreach (array_keys($bonus_items_array) as $index => $key) {
+				echo $bonus_items_array[$key];
+				if ($index < max(array_keys($bonus_items_array))) {
+					echo ", ";
+				}
+			}
 		}
 		echo '</div>';
 	}
