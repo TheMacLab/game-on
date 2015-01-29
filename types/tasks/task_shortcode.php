@@ -2257,9 +2257,9 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 						foreach ($bonus_loot[1] as $store_item => $on) {
 							if ($on === 'on') {
 								if ($bonus_loot[2][$store_item] * 10 > 999) {
-									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>";
+									$quest_items_array[] = get_the_title($store_item).": ".$bonus_loot[2][$store_item]."%";
 								} else if ($bonus_loot[2][$store_item] * 10 <= 999) {
-									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>";
+									$bonus_items_array[] = get_the_title($store_item).": ".$bonus_loot[2][$store_item]."%";
 						}
 					}
 				}
