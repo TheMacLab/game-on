@@ -2154,6 +2154,9 @@ function task_change_stage() {
 				if ($mastery_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}
+				$go_table_name = "{$wpdb->prefix}go";
+				$user_id = get_current_user_id();
+				$mastered = $wpdb->get_var($wpdb->prepare("SELECT mastered FROM {$go_table_name} WHERE uid = %d AND post_id = %d", $user_id, $post_id));
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
 						foreach ($bonus_loot[1] as $store_item => $on) {
@@ -2168,12 +2171,21 @@ function task_change_stage() {
 								$minutes = ($bonus_loot_currency[4] < 0) ? -$bonus_loot_currency[4] : 0;
 								if ($random_number < $bonus_loot[2][$store_item] * 10) {
 									$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest' : 'Bonus';
-										go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
-									echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
+										if ($mastered != 1) {
+											$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET mastered = 1 WHERE uid = %d AND status = %d", $user_id, 4));
+											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
+											echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
+										}
+										elseif ($mastered == 1 && $loot_reason == 'Quest') {
+											$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET mastered = 1 WHERE uid = %d AND status = %d", $user_id, 4));
+											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
+											echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
+										}
 								}
 							}
 						}
 					}
+					echo "</br>";
 				}
 				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 			}
@@ -2245,9 +2257,9 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $dat
 						foreach ($bonus_loot[1] as $store_item => $on) {
 							if ($on === 'on') {
 								if ($bonus_loot[2][$store_item] * 10 > 999) {
-									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
+									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>";
 								} else if ($bonus_loot[2][$store_item] * 10 <= 999) {
-									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a> ";
+									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>";
 						}
 					}
 				}
