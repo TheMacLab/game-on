@@ -4,6 +4,8 @@
 	Allows administrator to edit points required for each ranking and to delete certain rankings/add others. 
 */
 
+// $output has two possible boolean values: true and false. True will echo any rank notification,
+// false will return any rank notifications.
 function go_update_ranks ($user_id, $total_points, $output = true) {
 	global $wpdb;
 	global $current_rank;
