@@ -240,7 +240,7 @@ function go_task_shortcode($atts, $content = null) {
 			}
 			
 			if ($future_time != $accept_timestamp && (($unix_now >= $future_time && $status >= 2) || ($unix_now >= $future_time && !empty($accept_timestamp)))) {
-				$future_update_percent = (float) ($future_modifier['percentage']/100);
+				$future_update_percent = (float) ((100 - $future_modifier['percentage'])/100);
 				$future_timer = true;
 			} else {
 				$future_update_percent = 1;
@@ -258,7 +258,7 @@ function go_task_shortcode($atts, $content = null) {
 			$future_update_percent = 1;
 		}
 			
-		$update_percent = (($future_switches['calendar'] == 'on') ? $date_update_percent : (($future_switches['future'] == 'on')?$future_update_percent:1));
+		$update_percent = (($future_switches['calendar'] == 'on') ? $date_update_percent : (($future_switches['future'] == 'on') ? $future_update_percent:1));
 		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
@@ -1870,7 +1870,7 @@ function task_change_stage() {
 		$seconds = (int) $future_modifier['seconds'];
 		$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp;
 		
-		if ($status == 2 || ($undo && $status >= 2)) {
+		if ($status == 2 || (($undo == 'true' || $undo === true) && $status >= 2)) {
 			go_task_timer($post_id, $user_id, $future_modifier);
 		} else if ($status > 2) {
 			?>
@@ -1881,7 +1881,7 @@ function task_change_stage() {
 		}
 		
 		if ($unix_now >= $future_time) {
-			$future_update_percent = (float) ($future_modifier['percentage']/100);
+			$future_update_percent = (float) ((100 - $future_modifier['percentage'])/100);
 		} else {
 			$future_update_percent = 1;	
 		}
@@ -2288,9 +2288,9 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
     <div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		function go_task_timer (countdown) {
-			jQuery('.go_stage_message').last().before(jQuery('#go_task_timer'));
-			jQuery('#go_task_timer').show();
-			var percentage = <?php echo $percentage; ?>/100;
+			jQuery('#go_task_timer').empty();
+			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
+			var percentage = <?php echo 100 - $percentage; ?>/100;
 			if (countdown > 0) {
 				var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)) : Math.floor(countdown/86400);
 				var hours = Math.floor((countdown - (days * 86400))/3600) < 10 ? ("0" + Math.floor((countdown - (days * 86400))/3600)) : Math.floor((countdown - (days * 86400))/3600);
