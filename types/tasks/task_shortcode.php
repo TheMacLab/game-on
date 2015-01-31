@@ -247,12 +247,12 @@ function go_task_shortcode($atts, $content = null) {
 			}
 			if ($status < 2 && empty($accept_timestamp)) {
 				$task_opt_name = strtolower(go_return_options('go_tasks_name'));
-				$time_string = ((!empty($days)) ? "{$days} day(s)".((!empty($hours)) ? ", " : "") : ""). 
-							   ((!empty($hours)) ? "{$hours} hour(s)".((!empty($minutes)) ? ", " : "") : "").
-							   ((!empty($minutes)) ? "{$minutes} minute(s)".((!empty($seconds)) ? ", " : "") : "").
-							   ((!empty($seconds)) ? "{$seconds} second(s)" : "");
+				$time_string = ((!empty($days)) ? "{$days} day".(($days > 1) ? "s" : "").((!empty($hours) || !empty($minutes) || !empty($seconds)) ? ", " : "") : ""). 
+							   ((!empty($hours)) ? "{$hours} hour".(($hours > 1) ? "s" : "").((!empty($minutes) || !empty($seconds)) ? ", " : "") : "").
+							   ((!empty($minutes)) ? "{$minutes} minute".(($minutes > 1) ? "s" : "").((!empty($seconds)) ? ", " : "") : "").
+							   ((!empty($seconds)) ? "{$seconds} second".(($seconds > 1) ? "s" : "") : "");
 				
-				echo "<span id='go_future_notification'>Timed ".ucfirst($task_opt_name).": After accepting you will have {$time_string} to ".strtolower(go_return_options('go_third_stage_button'))." the {$task_opt_name} or the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
+				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Timed ".ucfirst($task_opt_name).":</span><br/> After accepting you will have {$time_string} to ".strtolower(go_return_options('go_third_stage_button'))." the {$task_opt_name} or the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
 			}
 		} else {
 			$future_update_percent = 1;
@@ -1870,7 +1870,7 @@ function task_change_stage() {
 		$seconds = (int) $future_modifier['seconds'];
 		$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp;
 		
-		if ($status == 2) {
+		if ($status == 2 || ($undo && $status >= 2)) {
 			go_task_timer($post_id, $user_id, $future_modifier);
 		} else if ($status > 2) {
 			?>
@@ -2284,11 +2284,12 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	$percentage = $future_modifier['percentage'];
 	$future_time = (!empty($accept_timestamp)) ? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $unix_now;
 	$countdown = $future_time - $unix_now;
-	?>
-	<div id='go_task_timer'></div>
+	?>	
+    <div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		function go_task_timer (countdown) {
-			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
+			jQuery('.go_stage_message').last().before(jQuery('#go_task_timer'));
+			jQuery('#go_task_timer').show();
 			var percentage = <?php echo $percentage; ?>/100;
 			if (countdown > 0) {
 				var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)) : Math.floor(countdown/86400);

@@ -447,6 +447,22 @@ input.go_current {
 	padding: 7px !important;
 }
 
+#go_future_notification { 
+	color: red;
+}
+
+#go_future_notification_task_name { 
+	font-weight: bold;
+	color: black !important;
+}
+
+#go_task_timer{
+	color: red;
+	font-weight: bold;
+}
+
+
+
 /* Tasks Style | Front-end */
 
 div#go_description p, 
