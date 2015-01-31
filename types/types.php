@@ -521,6 +521,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox',
 			),
 			array(
+				'name' => 'Unpurchasable'.go_task_opt_help('Unpurchasable', 'Make this item unavailable for purchase'),
+				'id' => "{$prefix}store_unpurchasable",
+				'type' => 'checkbox',
+			),
+			array(
 				'name' => 'Penalty'.go_task_opt_help('penalty', "Allows student's currency to become negative", 'http://maclab.guhsd.net/go/video/store/penalty.mp4'),
 				'id' => "{$prefix}penalty_switch",
 				'type' => 'checkbox'
@@ -739,6 +744,34 @@ function go_validate_bonus_loot() {
 		}
 	}
 	return (array($is_checked, $selected_loot, $loot_rarity));
+}
+
+add_action('cmb_render_go_store_unpurchasable', 'go_unpurchasable');
+function go_unpurchasable() {
+	$custom = get_post_custom(get_the_id());
+	$unpurchasable = get_option('go_store_unpurchasable_switch');
+	$is_checked = $custom['go_mta_unpurchasable'][0];
+	if ($unpurchasable == 'On') {
+		if (empty($is_checked)) {
+			$is_checked = "true";
+		}
+	} else {
+		if (empty($is_checked)) {
+			$is_checked = "false";
+		}
+	}
+	echo "<input id='go_unpurchasable_checkbox' name='go_unpurchasable' type='checkbox'".($is_checked == 'true' ? "checked" : "")."/>";
+}
+
+add_action('cmb_validate_go_unpurchasable', 'go_validate_unpurchasable');
+function go_validate_unpurchasable() {
+	$is_checked = $_POST['go_unpurchasable'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	return ($is_checked);
 }
 
 add_action('cmb_render_go_admin_lock', 'go_admin_lock', 10, 1);

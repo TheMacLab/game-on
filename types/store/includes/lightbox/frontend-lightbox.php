@@ -54,6 +54,7 @@ function go_the_lb_ajax(){
 	$user_minutes = go_return_minutes($user_id);
 	$purchase_count = $wpdb->get_var("SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1");
 	$is_giftable = $custom_fields['go_mta_store_giftable'][0];
+	$is_unpurchasable = $custom_fields['go_mta_store_unpurchasable'][0];
 
 	echo '<h2>'.$the_title.'</h2>';
 	echo '<div id="go-lb-the-content">'.do_shortcode($the_content).'</div>';
@@ -181,17 +182,20 @@ function go_the_lb_ajax(){
 	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options('go_bonus_currency_name').': '.(empty($req_bonus_currency) ? 0 : ($req_bonus_currency < 0 ? $output_bonus_currency : $req_bonus_currency)); ?></div>
     <div id='golb-fr-penalty' class='golb-fr-boxes-<?php echo $penalty_color; ?>' req='<?php echo $req_penalty; ?>' cur='<?php echo $user_penalties; ?>'><?php echo go_return_options('go_penalty_name').': '.(empty($req_penalty) ? 0 : ($req_penalty < 0 ? $output_penalty : $req_penalty));?></div>
     <div id="golb-fr-minutes" class="golb-fr-boxes-<?php echo $minutes_color; ?>" req="<?php echo $req_minutes; ?>" cur="<?php echo $user_minutes; ?>"><?php echo go_return_options('go_minutes_name').': '.(empty($req_minutes) ? 0 : ($req_minutes < 0 ? $output_minutes : $req_minutes)); ?></div>
-	<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
-	
-	<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>'); this.removeAttribute('onclick');">Buy</div>
-	<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
-	<div id="golb-purchased">
-	<?php 
+	<?
+	if ($is_unpurchasable != 'on') {
+		?>
+		<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
+		<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem('<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>'); this.removeAttribute('onclick');">Buy</div>
+		<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit;?>"><?php if($purchase_limit == 0){echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
+		<div id="golb-purchased">
+		<?
 		if (is_null($purchase_count)) { 
 			echo 'Quantity purchased: 0';
 		} else {
 			echo "Quantity purchased: {$purchase_count}";
 		} 
+	}
 	 if(!$item_focus && !$penalty && $is_giftable == "on"){?>
  		<br />
 		Gift this item <input type='checkbox' id='go_toggle_gift_fields'/>

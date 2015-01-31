@@ -1825,7 +1825,7 @@ function task_change_stage() {
 								$user_id = get_current_user_id();
 								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								if ($received) {
-									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
+									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true);
 								}
 								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								}
@@ -1849,11 +1849,12 @@ function task_change_stage() {
 								$bonus_currency = ($bonus_loot_currency[2] < 0) ? $bonus_loot_currency[2] : 0;
 								$penalty = ($bonus_loot_currency[3] > 0) ? $bonus_loot_currency[3] : 0;
 								$minutes = ($bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
+								$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'quest' : 'bonus';
 								$go_table_name = $wpdb->prefix."go";
 								$user_id = get_current_user_id();
 								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								if ($received) {
-									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false);
+									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, $loot_reason, true, false);
 								}
 								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
 								}
@@ -2173,12 +2174,12 @@ function task_change_stage() {
 									$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest' : 'Bonus';
 										if ($mastered != 1) {
 											$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET mastered = 1 WHERE uid = %d AND status = %d", $user_id, 4));
-											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
+											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, 'bonus', false, false);
 											echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
 										}
 										elseif ($mastered == 1 && $loot_reason == 'Quest') {
 											$wpdb->query($wpdb->prepare("UPDATE {$go_table_name} SET mastered = 1 WHERE uid = %d AND status = %d", $user_id, 4));
-											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, true);
+											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, $loot_reason, 'quest', false, false);
 											echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
 										}
 								}
