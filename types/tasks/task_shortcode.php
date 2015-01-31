@@ -229,7 +229,7 @@ function go_task_shortcode($atts, $content = null) {
 		
 		if (!empty($future_modifier) && $future_switches['future'] == 'on' && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0)) {
 			$user_timers = get_user_meta($user_ID, 'go_timers');
-			$accept_timestamp = ((!empty($user_timers[0][$id]))?$user_timers[0][$id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
+			$accept_timestamp = ((!empty($user_timers[0][$id])) ? $user_timers[0][$id] : strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'"))));
 			$days = (int) $future_modifier['days'];
 			$hours = (int) $future_modifier['hours'];
 			$minutes =  (int) $future_modifier['minutes'];
@@ -246,13 +246,19 @@ function go_task_shortcode($atts, $content = null) {
 				$future_update_percent = 1;
 			}
 			if ($status < 2 && empty($accept_timestamp)) {
-				echo "<span id='go_future_notification'>After accepting this ".strtolower(go_return_options('go_tasks_name'))." you will have {$days} days, {$hours} hours, {$minutes} minutes, and {$seconds} seconds to ".strtolower(go_return_options('go_third_stage_button'))." it or the reward will be reduced by {$future_modifier['percentage']}%. Once accepted you cannot undo the timer.</span>";
+				$task_opt_name = strtolower(go_return_options('go_tasks_name'));
+				$time_string = ((!empty($days)) ? "{$days} day(s)".((!empty($hours)) ? ", " : "") : ""). 
+							   ((!empty($hours)) ? "{$hours} hour(s)".((!empty($minutes)) ? ", " : "") : "").
+							   ((!empty($minutes)) ? "{$minutes} minute(s)".((!empty($seconds)) ? ", " : "") : "").
+							   ((!empty($seconds)) ? "{$seconds} second(s)" : "");
+				
+				echo "<span id='go_future_notification'>Timed ".ucfirst($task_opt_name).": After accepting you will have {$time_string} to ".strtolower(go_return_options('go_third_stage_button'))." the {$task_opt_name} or the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
 			}
 		} else {
 			$future_update_percent = 1;
 		}
 			
-		$update_percent = (($future_switches['calendar'] == 'on')?$date_update_percent:(($future_switches['future'] == 'on')?$future_update_percent:1));
+		$update_percent = (($future_switches['calendar'] == 'on') ? $date_update_percent : (($future_switches['future'] == 'on')?$future_update_percent:1));
 		
 		global $current_points;
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
@@ -1857,7 +1863,7 @@ function task_change_stage() {
 	if (!empty($future_modifier) && $future_switches['future'] == 'on'  && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0)) {
 		$user_timers = get_user_meta($user_id, 'go_timers');
 		$accept_timestamp_db = strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'")));
-		$accept_timestamp = ((!empty($user_timers[0][$post_id]))?$user_timers[0][$post_id]:(!empty($accept_timestamp_db)?$accept_timestamp_db:(($status == 2)?$unix_now:0)));
+		$accept_timestamp = ((!empty($user_timers[0][$post_id])) ? $user_timers[0][$post_id] : (!empty($accept_timestamp_db)?$accept_timestamp_db:(($status == 2)?$unix_now:0)));
 		$days = (int) $future_modifier['days'] ;
 		$hours = (int) $future_modifier['hours'];
 		$minutes = (int) $future_modifier['minutes'];
@@ -1883,8 +1889,8 @@ function task_change_stage() {
 		$future_update_percent = 1;	
 	}
 	$db_status = (int) $wpdb->get_var("SELECT `status` FROM ".$table_name_go." WHERE uid = $user_id AND post_id = $post_id");
-	$complete_stage = ($undo)?$status - 1: $status;
-	$update_percent = (($future_switches['calendar'] == 'on')?$date_update_percent:($future_switches['future'] == 'on' && ($complete_stage == 3 && $db_status < 4))?$future_update_percent:1);
+	$complete_stage = (($undo) ? $status - 1 : $status);
+	$update_percent = (($future_switches['calendar'] == 'on') ? $date_update_percent : ($future_switches['future'] == 'on' && ($complete_stage == 3 && $db_status < 4)) ? $future_update_percent : 1);
 	
 	// if the button pressed IS the repeat button...
 	if ($repeat_button == 'on') {
@@ -2270,13 +2276,13 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	global $wpdb;
 	$unix_now = current_time('timestamp');
 	$user_timers = get_user_meta($user_id, 'go_timers');
-	$accept_timestamp = ((!empty($user_timers[0][$task_id]))?$user_timers[0][$task_id]:strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$task_id}'"))));
+	$accept_timestamp = ((!empty($user_timers[0][$task_id])) ? $user_timers[0][$task_id] : strtotime(str_replace('@', ' ', $wpdb->get_var("SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$task_id}'"))));
 	$days = (int) $future_modifier['days'] ;
 	$hours = (int) $future_modifier['hours'];
 	$minutes = (int) $future_modifier['minutes'];
 	$seconds = (int) $future_modifier['seconds'];
 	$percentage = $future_modifier['percentage'];
-	$future_time = (!empty($accept_timestamp))? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $unix_now;
+	$future_time = (!empty($accept_timestamp)) ? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $unix_now;
 	$countdown = $future_time - $unix_now;
 	?>
 	<div id='go_task_timer'></div>
@@ -2285,10 +2291,10 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
 			var percentage = <?php echo $percentage; ?>/100;
 			if (countdown > 0) {
-				var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)):Math.floor(countdown/86400);
-				var hours = Math.floor((countdown - (days * 86400))/3600) < 10 ? ("0" + Math.floor((countdown - (days * 86400))/3600)):Math.floor((countdown - (days * 86400))/3600);
-				var minutes = Math.floor((countdown - ((days * 86400) + (hours * 3600)))/60) < 10 ? ("0" + Math.floor((countdown - (days * 86400) - (hours * 3600))/60)):Math.floor((countdown - (days * 86400) - (hours * 3600))/60);
-				var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))):(countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
+				var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)) : Math.floor(countdown/86400);
+				var hours = Math.floor((countdown - (days * 86400))/3600) < 10 ? ("0" + Math.floor((countdown - (days * 86400))/3600)) : Math.floor((countdown - (days * 86400))/3600);
+				var minutes = Math.floor((countdown - ((days * 86400) + (hours * 3600)))/60) < 10 ? ("0" + Math.floor((countdown - (days * 86400) - (hours * 3600))/60)) : Math.floor((countdown - (days * 86400) - (hours * 3600))/60);
+				var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))) : (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
 				jQuery('#go_task_timer').html(days + ':' +hours + ':' + minutes + ':' + seconds);
 				countdown--;
 				var timer = setTimeout(go_task_timer, 1000, countdown);
@@ -2306,7 +2312,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 		// Safari caching fix
 		jQuery(window).bind("pageshow", function(event) {
 			if (event.originalEvent.persisted) {
-				window.location.reload() 
+				window.location.reload();
 			}
 		});
 		

@@ -692,7 +692,7 @@ function go_decay_table() {
             } else {
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" class="datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00'/></td>
+				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00'/></td>
 				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
             <?php 
