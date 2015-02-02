@@ -36,20 +36,25 @@ jQuery(document).ready(function(){
 	];
 	
 	jQuery('.go_options_accordion').click(function(){
+		if (jQuery('.go_data_reset_disclaimer').length === 0) {
+			jQuery('input[name="go_data_reset_switch"]').parent('div').append("<span class='go_data_reset_disclaimer' style='display: none;'>Select data to reset.</span>");
+		}
 		jQuery('.go_options_triangle', this).toggleClass('go_triangle_up');
-		wrap = jQuery(this).parent('.go_options_accordion_wrap').attr('opt')
+		var wrap = jQuery(this).parent('.go_options_accordion_wrap').attr('opt');
 		option_wraps[wrap].toggle('slow');
-		if(jQuery('input[name="go_focus_switch"]').is(':checked')){
+		if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
 			jQuery('#go_options_professions_names_wrap').show('slow');
-		}else{
+		} else {
 			jQuery('#go_options_professions_names_wrap').hide('slow');
 		}
-		if(jQuery('input[name="go_data_reset_switch"]').is(':checked')){
-			for(display in data_reset_display){
+		if (jQuery('input[name="go_data_reset_switch"]').is(':checked')) {
+			jQuery('.go_data_reset_disclaimer').show('slow');
+			for (display in data_reset_display) {
 				data_reset_display[display].show('slow');
 			}
-		}else{
-			for(display in data_reset_display){
+		} else {
+			jQuery('.go_data_reset_disclaimer').hide('slow');
+			for (display in data_reset_display) {
 				data_reset_display[display].hide('slow');
 			}
 		}
@@ -63,13 +68,15 @@ jQuery(document).ready(function(){
 		}
 	});
 	
-	jQuery('input[name="go_data_reset_switch"]').click(function(){
-		if(jQuery('input[name="go_data_reset_switch"]').is(':checked')){
-			for(display in data_reset_display){
+	jQuery('input[name="go_data_reset_switch"]').click(function () {
+		if (jQuery('input[name="go_data_reset_switch"]').is(':checked')) {
+			jQuery('.go_data_reset_disclaimer').show('slow');
+			for (display in data_reset_display) {
 				data_reset_display[display].show('slow');
 			}
-		}else{
-			for(display in data_reset_display){
+		} else {
+			jQuery('.go_data_reset_disclaimer').hide('slow');
+			for (display in data_reset_display) {
 				data_reset_display[display].hide('slow');
 			}
 		}
@@ -440,20 +447,24 @@ jQuery(document).ready(function(){
 					reset_data.push(data_reset_inputs[input].attr('reset'));
 				}
 			}
-			var reset_all = jQuery("input[name='go_data_reset_all']").is(':checked');
-			if (confirm("WARNING: What you are about to do will reset the chosen types of data from EVERY user on your database. Do you wish to continue?")) {
-				jQuery.ajax({
-					type: 'post',
-					url: MyAjax.ajaxurl,
-					data: {
-						action: 'go_reset_data',
-						reset_data: reset_data,
-						reset_all: reset_all
-					},
-					success: function (html){
-						location.reload();
-					}
-				});
+			if (reset_data.length >= 1) {
+				var reset_all = jQuery("input[name='go_data_reset_all']").is(':checked');
+				if (confirm("WARNING: What you are about to do will reset the chosen types of data from EVERY user on your database. Do you wish to continue?")) {
+					jQuery.ajax({
+						type: 'post',
+						url: MyAjax.ajaxurl,
+						data: {
+							action: 'go_reset_data',
+							reset_data: reset_data,
+							reset_all: reset_all
+						},
+						success: function (html){
+							location.reload();
+						}
+					});
+				}
+			} else {
+				alert("ATTENTION: Please select data to reset, and try again!");
 			}
 		}
 	});
