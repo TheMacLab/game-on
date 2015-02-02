@@ -125,7 +125,7 @@ function go_buy_item() {
 			}
 		}
 		if (!empty($item_url) && isset($item_url)) {
-			$item_hyperlink = '<a target="_blank" href="'.$item_url.'">Grab your loot!</a>';
+			$item_hyperlink = '<a target="_blank" href="'.$item_url.'">Link</a>';
 			echo $item_hyperlink;
 		} else {
 			echo "Purchased";

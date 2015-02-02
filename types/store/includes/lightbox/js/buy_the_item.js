@@ -8,6 +8,7 @@ function goBuytheItem (id, buyColor, count) {
 			recipient: jQuery('#go_recipient').val(),
 			purchase_count: count
 		};
+
 		// Whenever you figure out a better way to do this, implement it. 
 		var color = jQuery('#go_admin_bar_progress_bar').css("background-color");
 		jQuery.ajax({
@@ -16,7 +17,7 @@ function goBuytheItem (id, buyColor, count) {
 			data: gotoBuy,
 			beforeSend: function() {
 				jQuery("#golb-fr-buy").innerHTML = "";
-				jQuery("#golb-fr-buy").html(''); 
+				jQuery("#golb-fr-buy").html('');
 				jQuery("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_'+buyColor+'"></div>');
 			},
 			dataType: "html",
@@ -27,13 +28,29 @@ function goBuytheItem (id, buyColor, count) {
 					buy.html('Error');
 				} else {
 					buy.innerHTML = "";
-					buy.html('Purchased');
-					jQuery("body").append('<span>' + response + '</span>');
+
+					// This checks for the existance of a <script> block in the "response" variable.
+					// The index is used to split the "response" message, into a string for notifications,
+					// and one for everything else.
+					var script_index = response.lastIndexOf("</script>");
+					if (script_index != -1) {
+						var go_notifications = response.slice(0, script_index + 9);
+						var parsed_res = response.slice(script_index + 9);
+						jQuery("body").append(go_notifications);
+						if (parsed_res.indexOf("Purchased") != -1) {
+							buy.html(parsed_res);
+						} else if (parsed_res.indexOf("Link") != -1) {
+							buy.html('<span>' + parsed_res + '</span>');
+						}
+					} else {
+						buy.html(response);
+					}
+
 					// Whenever you figure out a better way to do this, implement it. 
 					jQuery('#go_admin_bar_progress_bar').css("background-color", color);
 				}
 				go_count_item(id);
-				console.log(response);
+				// console.log(response);
 			}
 		});
 	});
@@ -51,5 +68,5 @@ function go_count_item (id) {
 			var count = data.toString();
 			jQuery('#golb-purchased').html("Quantity purchased: " + count);
 		}
-	});	
+	});
 }
