@@ -4,7 +4,9 @@
 	Allows administrator to edit points required for each ranking and to delete certain rankings/add others. 
 */
 
-function go_update_ranks ($user_id, $total_points) {
+// $output has two possible boolean values: true and false. True will echo any rank notification,
+// false will return any rank notifications.
+function go_update_ranks ($user_id, $total_points, $output = true) {
 	global $wpdb;
 	global $current_rank;
 	go_get_rank($user_id);
@@ -81,12 +83,18 @@ function go_update_ranks ($user_id, $total_points) {
 		global $counter;
 		$counter++;
 		$space = $counter*85;
-		return '
-		<div id="go_notification_level" class="go_notification" style="top: '.($space - 17).'px; color: white; background: #ffcc00; text-align: center; width: 300px; line-height: 68px; height: 81.6px; font-size: 52px;"> '.$current_rank.'!</div>
-		<script type="text/javascript" language="javascript">
-			go_notification(3000, jQuery("#go_notification_level"));
-			jQuery("#go_admin_bar_rank").html("'.$current_rank.'");
-		</script>';
+		$notification = '
+			<div id="go_notification_level" class="go_notification" style="top: '.($space - 17).'px; color: white; background: #ffcc00; text-align: center; width: 300px; line-height: 68px; height: 81.6px; font-size: 52px;"> '.$current_rank.'!</div>
+			<script type="text/javascript" language="javascript">
+				go_notification(3000, jQuery("#go_notification_level"));
+				jQuery("#go_admin_bar_rank").html("'.$current_rank.'");
+			</script>
+		';
+		if ($output === true) {
+			echo $notification;	
+		} else if ($output === false) {
+			return $notification;
+		}
 	}
 }
 

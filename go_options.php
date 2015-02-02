@@ -621,12 +621,21 @@ function go_reset_data() {
 			update_user_meta($user->ID, 'go_badges', '');
 		}
 	}
-	if ($reset_all === 'true') {
+
+	// the check for $reset_data equaling 6 will have to be changed if more data reset options are added
+	if ($reset_all === 'true' && count($reset_data) === 6) {
 		$wpdb->query("TRUNCATE TABLE {$go_table_name}");
 	} else {
-		$erase_list = implode(',', $reset_data);
-		$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".(in_array('points', $reset_data) && !in_array('currency', $reset_data) ? 'AND status != -1' : (in_array('currency', $reset_data) && !in_array('points', $reset_data)? 'AND status = -1': ''));
-		$wpdb->query($query);
+		$reset_data_go = $reset_data;
+		if (in_array('badge_count', $reset_data_go)) {
+			$badge_count_loc = array_search('badge_count', $reset_data_go);
+			unset($reset_data_go[$badge_count_loc]);
+		}
+		$erase_list = ((!empty($reset_data_go) && count($reset_data_go) > 1) ? implode(' IS NOT NULL AND ', $reset_data_go) : $reset_data_go[0]);
+		if (!empty($erase_list)) {
+			$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".(in_array('points', $reset_data) && !in_array('currency', $reset_data) ? 'AND status != -1' : (in_array('currency', $reset_data) && !in_array('points', $reset_data) ? 'AND status = -1': ''));
+			$wpdb->query($query);
+		}
 	}
 	$erase_update = "SET ".implode('=0,', $reset_data)."=0 WHERE uid IS NOT NULL";
 	$wpdb->query("UPDATE {$go_table_totals_name} ".$erase_update);

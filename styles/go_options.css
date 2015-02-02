@@ -324,4 +324,8 @@ input[type="submit"]{
 .go_options_additional_settings_input[name="go_email_from"] {
 	width: 30%;
 }
+
+.go_data_reset_disclaimer {
+	vertical-align: super;
+}
 /****************************/
