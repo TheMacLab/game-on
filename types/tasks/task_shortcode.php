@@ -2287,37 +2287,38 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	?>	
     <div id='go_task_timer'></div>
 	<script type='text/javascript'>
-		function go_task_timer (countdown) {
-			jQuery('#go_task_timer').empty();
-			jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
-			var percentage = <?php echo 100 - $percentage; ?>/100;
-			if (countdown > 0) {
-				var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)) : Math.floor(countdown/86400);
-				var hours = Math.floor((countdown - (days * 86400))/3600) < 10 ? ("0" + Math.floor((countdown - (days * 86400))/3600)) : Math.floor((countdown - (days * 86400))/3600);
-				var minutes = Math.floor((countdown - ((days * 86400) + (hours * 3600)))/60) < 10 ? ("0" + Math.floor((countdown - (days * 86400) - (hours * 3600))/60)) : Math.floor((countdown - (days * 86400) - (hours * 3600))/60);
-				var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))) : (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
-				jQuery('#go_task_timer').html(days + ':' +hours + ':' + minutes + ':' + seconds);
-				countdown--;
-				var timer = setTimeout(go_task_timer, 1000, countdown);
-			} else {
-				jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
-				if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
-					jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
-				}
-				if (!jQuery('#go_stage_3_currency').hasClass('go_updated')) {
-					jQuery('#go_stage_3_currency').html(Math.floor(parseFloat(jQuery('#go_stage_3_currency').html()) * percentage)).addClass('go_updated');
+		jQuery(document).ready( function () {
+			function go_task_timer (countdown) {
+				jQuery('#go_task_timer').empty();
+				jQuery('.go_stage_message').last().parent().before(jQuery('#go_task_timer'));
+				var percentage = <?php echo 100 - $percentage; ?>/100;
+				if (countdown > 0) {
+					var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)) : Math.floor(countdown/86400);
+					var hours = Math.floor((countdown - (days * 86400))/3600) < 10 ? ("0" + Math.floor((countdown - (days * 86400))/3600)) : Math.floor((countdown - (days * 86400))/3600);
+					var minutes = Math.floor((countdown - ((days * 86400) + (hours * 3600)))/60) < 10 ? ("0" + Math.floor((countdown - (days * 86400) - (hours * 3600))/60)) : Math.floor((countdown - (days * 86400) - (hours * 3600))/60);
+					var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))) : (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
+					jQuery('#go_task_timer').html(days + ':' +hours + ':' + minutes + ':' + seconds);
+					countdown--;
+					var timer = setTimeout(go_task_timer, 1000, countdown);
+				} else {
+					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
+					if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
+						jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
+					}
+					if (!jQuery('#go_stage_3_currency').hasClass('go_updated')) {
+						jQuery('#go_stage_3_currency').html(Math.floor(parseFloat(jQuery('#go_stage_3_currency').html()) * percentage)).addClass('go_updated');
+					}
 				}
 			}
-		}
-		
-		// Safari caching fix
-		jQuery(window).bind("pageshow", function(event) {
-			if (event.originalEvent.persisted) {
-				window.location.reload();
-			}
+			
+			// Safari caching fix
+			jQuery(window).bind("pageshow", function(event) {
+				if (event.originalEvent.persisted) {
+					window.location.reload();
+				}
+			});
+			go_task_timer (<?php echo $countdown; ?>);
 		});
-		
-		go_task_timer (<?php echo $countdown; ?>);
 	</script>
 	<?php
 }
