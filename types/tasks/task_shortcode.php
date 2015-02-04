@@ -2288,7 +2288,21 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
     <div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		jQuery(document).ready( function () {
-			function go_task_timer (countdown) {
+			var timer = setInterval(go_task_timer, 1000);
+			var countdown = <?php echo $countdown;?>;
+			var before = new Date();
+			console.log(before);
+			jQuery(window).focus(function () {
+				clearInterval(timer);
+				timer = setInterval(go_task_timer, 1000);
+				var now = new Date();
+				console.log(now.getTime());
+				countdown = Math.floor((now.getTime()/1000) - (before.getTime()/1000));
+				console.log(countdown);
+			});
+			function go_task_timer () {
+				countdown = countdown - 1;
+				console.log(countdown);
 				jQuery('#go_task_timer').empty();
 				jQuery('.go_stage_message').last().parent().before(jQuery('#go_task_timer'));
 				var percentage = <?php echo 100 - $percentage; ?>/100;
@@ -2298,9 +2312,8 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 					var minutes = Math.floor((countdown - ((days * 86400) + (hours * 3600)))/60) < 10 ? ("0" + Math.floor((countdown - (days * 86400) - (hours * 3600))/60)) : Math.floor((countdown - (days * 86400) - (hours * 3600))/60);
 					var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))) : (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
 					jQuery('#go_task_timer').html(days + ':' +hours + ':' + minutes + ':' + seconds);
-					countdown--;
-					var timer = setTimeout(go_task_timer, 1000, countdown);
 				} else {
+					clearInterval(timer);
 					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
 					if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
 						jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
