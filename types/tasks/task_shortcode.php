@@ -2290,19 +2290,15 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 		jQuery(document).ready( function () {
 			var timer = setInterval(go_task_timer, 1000);
 			var countdown = <?php echo $countdown;?>;
-			var before = new Date();
-			console.log(before);
+			var before = <?php echo $future_time?>;
 			jQuery(window).focus(function () {
 				clearInterval(timer);
 				timer = setInterval(go_task_timer, 1000);
 				var now = new Date();
-				console.log(now.getTime());
-				countdown = Math.floor((now.getTime()/1000) - (before.getTime()/1000));
-				console.log(countdown);
+				countdown = Math.floor(before - (now.getTime()/1000) + (now.getTimezoneOffset() * 60));
 			});
 			function go_task_timer () {
 				countdown = countdown - 1;
-				console.log(countdown);
 				jQuery('#go_task_timer').empty();
 				jQuery('.go_stage_message').last().parent().before(jQuery('#go_task_timer'));
 				var percentage = <?php echo 100 - $percentage; ?>/100;
