@@ -310,6 +310,7 @@ function go_task_shortcode($atts, $content = null) {
 			
 		?>
 			<script type="text/javascript">
+				var timers = [];
 				jQuery(".entry-title").after(jQuery(".go_task_rewards"));
 				<?php if ($update_percent != 1 && $future_switches['future'] == 'on') {?>
 						jQuery("#go_stage_3_points").addClass("go_updated");
@@ -2290,21 +2291,25 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
     <div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		jQuery(document).ready( function () {
-			clearInterval(timer);
 			var timer = setInterval(go_task_timer, 1000);
+			timers.push(timer);
 			var countdown = <?php echo $countdown;?>;
 			var before = <?php echo $future_time?>;
+			var percentage = <?php echo 100 - $percentage; ?>/100;
 			jQuery(window).focus(function () {
 				clearInterval(timer);
 				timer = setInterval(go_task_timer, 1000);
+				timers.push(timer);
 				var now = new Date();
 				countdown = Math.floor(before - (now.getTime()/1000) + (now.getTimezoneOffset() * 60));
 			});
+			for (i = 0; i < timers.length - 1; i++){
+				clearInterval(timers[i]);
+			}
 			function go_task_timer () {
 				countdown = countdown - 1;
 				jQuery('#go_task_timer').empty();
 				jQuery('.go_stage_message').last().parent().before(jQuery('#go_task_timer'));
-				var percentage = <?php echo 100 - $percentage; ?>/100;
 				if (countdown > 0) {
 					var days = Math.floor(countdown/86400) < 10 ? ("0" + Math.floor(countdown/86400)) : Math.floor(countdown/86400);
 					var hours = Math.floor((countdown - (days * 86400))/3600) < 10 ? ("0" + Math.floor((countdown - (days * 86400))/3600)) : Math.floor((countdown - (days * 86400))/3600);
