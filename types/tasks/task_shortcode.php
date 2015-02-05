@@ -1858,6 +1858,8 @@ function task_change_stage() {
 		$m_passed = 0;
 	}
 	
+	$db_status = (int) $wpdb->get_var("SELECT `status` FROM ".$table_name_go." WHERE uid = $user_id AND post_id = $post_id");
+	
 	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]); //determine which future date modifier is on, if any
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 	if (!empty($future_modifier) && $future_switches['future'] == 'on'  && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0)) {
@@ -1870,7 +1872,7 @@ function task_change_stage() {
 		$seconds = (int) $future_modifier['seconds'];
 		$future_time = strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp;
 		
-		if ($status == 2 || (($undo == 'true' || $undo === true) && $status >= 2)) {
+		if ($status == 2 || (($undo == 'true' || $undo === true) && $status >= 2 && $db_status < 4)) {
 			go_task_timer($post_id, $user_id, $future_modifier);
 		} else if ($status > 2) {
 			?>
@@ -1888,7 +1890,7 @@ function task_change_stage() {
 	} else {
 		$future_update_percent = 1;	
 	}
-	$db_status = (int) $wpdb->get_var("SELECT `status` FROM ".$table_name_go." WHERE uid = $user_id AND post_id = $post_id");
+
 	$complete_stage = (($undo) ? $status - 1 : $status);
 	$update_percent = (($future_switches['calendar'] == 'on') ? $date_update_percent : ($future_switches['future'] == 'on' && ($complete_stage == 3 && $db_status < 4)) ? $future_update_percent : 1);
 	
@@ -2288,6 +2290,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
     <div id='go_task_timer'></div>
 	<script type='text/javascript'>
 		jQuery(document).ready( function () {
+			clearInterval(timer);
 			var timer = setInterval(go_task_timer, 1000);
 			var countdown = <?php echo $countdown;?>;
 			var before = <?php echo $future_time?>;
