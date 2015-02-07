@@ -1893,7 +1893,7 @@ function task_change_stage() {
 	}
 
 	$complete_stage = (($undo) ? $status - 1 : $status);
-	$update_percent = (($future_switches['calendar'] == 'on') ? $date_update_percent : ($future_switches['future'] == 'on' && ($complete_stage == 3 && $db_status < 4)) ? $future_update_percent : 1);
+	$update_percent = (($future_switches['calendar'] == 'on') ? $date_update_percent : (($future_switches['future'] == 'on' && ($complete_stage == 3 && $db_status < 4)) ? $future_update_percent : 1));
 	
 	// if the button pressed IS the repeat button...
 	if ($repeat_button == 'on') {
