@@ -78,7 +78,6 @@
 	width: 25%;
 	height: 25px;
 	border: 2px solid #BBB;
-	border-radius: 15px;
 	top: 14px;
 	margin-right: 40px;
 }
@@ -99,8 +98,6 @@
 
 #go_stats_progress_fill{
 	height: 100%;
-	border-top-left-radius: 15px;
-	border-bottom-left-radius: 15px;
 	position: absolute;
 	z-index: 0;
 }

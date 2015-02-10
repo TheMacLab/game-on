@@ -5,7 +5,7 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada, Charles Leon
 Author URI: http://maclab.guhsd.net/
-Version: 2.3.1
+Version: 2.3.3
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -56,7 +56,8 @@ add_action('wp_ajax_go_clone_post', 'go_clone_post');
 add_action('wp_ajax_go_clipboard_intable','go_clipboard_intable');
 add_action('wp_ajax_go_user_option_add','go_user_option_add');
 add_action('go_update_totals','go_update_totals');
-add_action( 'init', 'go_jquery' );
+add_action('init', 'go_jquery');
+add_action('wp', 'go_task_timer_headers');
 add_shortcode('testbutton','testbutton');
 add_action('admin_bar_init','go_global_defaults');
 add_action('admin_bar_init','go_global_info');
@@ -229,4 +230,14 @@ function go_weekly_schedule ($schedules) {
 	return $schedules;
 }
 
+function go_task_timer_headers () {
+	$custom_fields = get_post_custom(get_the_ID());
+	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]);
+	if (get_post_type() == 'tasks' && $future_switches['future'] == 'on') {
+		header('Expires: Thu, 1 Jan 1970 00:00:00 GMT');
+		header('Cache-Control: no-store, no-cache, must-revalidate');
+		header('Cache-Control: post-check=0, pre-check=0', FALSE);
+		header('Pragma: no-cache');	
+	}
+}
 ?>

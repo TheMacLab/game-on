@@ -34,7 +34,6 @@ function go_table_individual () {
 			bonus_currency INT,
 			penalty INT,
 			gifted BOOLEAN DEFAULT 0,
-			mastered BOOLEAN DEFAULT 0,
 			minutes INT,
 			reason VARCHAR (200),
 			url VARCHAR (200),

@@ -107,16 +107,6 @@ function go_store_post_type() {
 	);
 }
 
-function go_store_editor_content ($content, $post) {
-	$post_type = $post->post_type;
-	$post_id = $post->ID;
-	if ($post_type === 'go_store') {
-		$content = '[go_store id="'.$post_id.'"]';
-	}
-	return $content;
-}
-add_filter('default_content', 'go_store_editor_content', 10, 2);
-
 function go_new_item_permalink ($return, $post_id, $new_title, $new_slug) {
 	if (strpos($return, 'edit-slug') !== false) {
 		$return .= '<span id="edit-slug button button-small hide-if-no-js"><a href="javascript:void(0)" onclick = "document.getElementById(\'go_lightbox\').style.display=\'block\';document.getElementById(\'fade\').style.display=\'block\'" class="button button-small" >Insert </a></span>';

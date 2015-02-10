@@ -53,9 +53,19 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Date Filter (Calendar)'.go_task_opt_help('nerf_dates', '', 'http://maclab.guhsd.net/go/video/quests/nerfDates.mp4'),
+				'name' => 'Time Filters'.go_task_opt_help('penalty_filter', '', 'http://maclab.guhsd.net/go/video/quests/timeFilter.mp4'),
+				'id' => $prefix . 'time_filters',
+				'type' => 'go_future_filters'
+			),
+			array(
+				'name' => 'Date'.go_task_opt_help('nerf_dates', '', 'http://maclab.guhsd.net/go/video/quests/nerfDates.mp4'),
 				'id' => $prefix.'date_picker',
 				'type' => 'go_decay_table'
+			),
+			array(
+				'name' => 'Time'.go_task_opt_help('time_modifier', '', 'http://maclab.guhsd.net/go/video/quests/nerfTime.mp4'),
+				'id' => $prefix.'time_modifier',
+				'type' => 'go_time_modifier_inputs'
 			),
 			array(
 				'name' => go_return_options('go_focus_name').' Filter'.go_task_opt_help('lock_by_cat', '', ' http://maclab.guhsd.net/go/video/quests/lockByProfessionCategory.mp4'),
@@ -633,52 +643,77 @@ function go_rank_list() {
 	}
 }
 
+add_action('cmb_render_go_future_filters', 'go_future_filters');
+function go_future_filters ($field_args) {
+	$custom = get_post_custom(get_the_id());
+	$checked = unserialize($custom['go_mta_time_filters'][0]);
+	?>
+	Date: <input  type='checkbox' id='go_calendar_checkbox' name='go_time_modifier[calendar]' <?php echo (($checked['calendar'] == 'on')?'checked':'');?> />
+	Time: <input type='checkbox' id='go_future_checkbox' name='go_time_modifier[future]' <?php echo (($checked['future'] == 'on')?'checked':'');?> />
+	<?php	
+}
+
+add_action('cmb_validate_go_future_filters', 'go_validate_future_filters');
+function go_validate_future_filters () {
+	$checked = $_POST['go_time_modifier'];
+	return $checked;
+}
+
+
 add_action('cmb_render_go_decay_table', 'go_decay_table');
 function go_decay_table() {
 	?>
 		<table id="go_list_of_decay_dates" stye="margin: 0px; padding: 0px;">
-			<th></th><th></th>
+        	<tbody>
             <?php
             $custom = get_post_custom(get_the_id());
-            if($custom['go_mta_date_picker']){
+            if ($custom['go_mta_date_picker']) {
 				$temp_array = array();
 				$dates = array();
+				$times = array();
 				$percentages = array();
-            	foreach($custom['go_mta_date_picker'] as $key => $value){
+				
+            	foreach ($custom['go_mta_date_picker'] as $key => $value) {
 					$temp_array[$key] = unserialize($value); 
 				}
+				
 				$temp_array2 = $temp_array[0];
 				
-				if(!empty($temp_array2)){
-					foreach($temp_array2 as $key => $value){
-						if($key == 'date'){
-							foreach(array_values($value) as $date_val){
+				if (!empty($temp_array2)) {
+					foreach ($temp_array2 as $key => $value) {
+						if ($key == 'date') {
+							foreach (array_values($value) as $date_val) {
 								array_push($dates, $date_val);	
 							}
-						}elseif($key == 'percent'){
-							foreach(array_values($value) as $percent_val){
+						} elseif ($key == 'time') {
+							foreach (array_values($value) as $time_val){
+								array_push($times, $time_val);
+							}
+						} elseif ($key == 'percent') {
+							foreach (array_values($value) as $percent_val) {
 								array_push($percentages, $percent_val);	
 							}
 						}
 					}
 				}
-				foreach($dates as $key => $date){
+				foreach ($dates as $key => $date) {
 					?>
                     <tr>
-                        <td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/></td>
-                        <td><input name="go_mta_task_decay_percent[]" value="<?php echo $percentages[$key]?>" type="text"/></td>
+                        <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>'/></td>
+                        <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text"/></td>
                     </tr>
                     <?php
 				}
-            }else{
+            } else {
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" class="datepicker custom_date" type="date" placeholder="Click for Date"/></td>
+				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00'/></td>
 				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
             <?php 
 			}
 			?>
+            </tbody>
 		</table>
 		<input type="button" id="go_mta_add_task_decay" onclick="go_add_decay_table_row()" value="+"/>
 		<input type="button" id="go_mta_remove_task_decay" onclick="go_remove_decay_table_row()" value="-"/>
@@ -687,22 +722,25 @@ function go_decay_table() {
 
 add_action('cmb_validate_go_decay_table', 'go_validate_decay_table');
 function go_validate_decay_table() {
+	// Filter empty values
 	$dates = $_POST['go_mta_task_decay_calendar'];
+	$times = $_POST['go_mta_task_decay_calendar_time'];
 	$percentages = $_POST['go_mta_task_decay_percent'];
-	if(isset($dates) && isset($percentages)){
+	if (isset($dates, $times, $percentages)) {
 		$dates_f = array_filter($dates);
+		$times_f = array_filter($times);
 		$percentages_f = array_filter($percentages);
-		$new_dates = $dates_f;
-		$new_percentages = $percentages_f;
-		if(count($dates_f) != count($dates)){
-			$new_percentages = array_intersect_key($percentages_f,$dates_f);
-		}
-		if(count($percentages_f) != count($percentages)){
-			$new_dates = array_intersect_key($dates_f,$percentages_f);
-		}
-		return array('date' => $new_dates, 'percent' => $new_percentages);
+		
+		
+		$new_dates = array_intersect_key($dates_f, $times_f, $percentages_f);
+		$new_times = array_intersect_key($times_f, $percentages_f, $times_f);
+		$new_percentages = array_intersect_key($percentages_f, $dates_f, $times_f);
+		
+		$modifier_array = array('date' => $new_dates, 'time' => $new_times, 'percent' => $new_percentages);	
+		return $modifier_array;
 	}
 }
+
 
 add_action('cmb_render_go_bonus_loot', 'go_bonus_loot');
 function go_bonus_loot($field_args) {
@@ -772,6 +810,40 @@ function go_validate_unpurchasable() {
 		$is_checked = "true";
 	}
 	return ($is_checked);
+}
+
+add_action('cmb_render_go_time_modifier_inputs', 'go_time_modifier_inputs');
+function go_time_modifier_inputs () {
+	$custom = get_post_custom(get_the_id());
+	$time_modifier = unserialize($custom['go_mta_time_modifier'][0]);
+	if ($time_modifier) {
+		?>
+		Days: <input type='text' name='go_modifier_input_days' value='<?php echo $time_modifier['days']; ?>'/>
+		Hours: <input type='text' name='go_modifier_input_hours' value='<?php echo $time_modifier['hours']; ?>'/>
+		Minutes: <input type='text' name='go_modifier_input_minutes' value='<?php echo $time_modifier['minutes']; ?>'/>
+		Seconds: <input type='text' name='go_modifier_input_seconds' value='<?php echo $time_modifier['seconds']; ?>'/>
+		Modifier: <input type='text' name='go_modifier_input_percent' value='<?php echo $time_modifier['percentage']; ?>'/>
+		<?php
+	} else {
+		?>
+		Days: <input type='text' name='go_modifier_input_days'/>
+		Hours: <input type='text' name='go_modifier_input_hours'/>
+		Minutes: <input type='text' name='go_modifier_input_minutes'/>
+		Seconds: <input type='text' name='go_modifier_input_seconds'/>
+		Modifier: <input type='text' name='go_modifier_input_percent'/>
+		<?php
+	}
+}
+
+add_action('cmb_validate_go_time_modifier_inputs', 'go_validate_time_nerf_inputs');
+function go_validate_time_nerf_inputs(){
+	$days = round((!empty($_POST['go_modifier_input_days'])?$_POST['go_modifier_input_days']:0));
+	$hours = round((!empty($_POST['go_modifier_input_hours'])?$_POST['go_modifier_input_hours']:0));
+	$minutes = round((!empty($_POST['go_modifier_input_minutes'])?$_POST['go_modifier_input_minutes']:0));
+	$seconds = round((!empty($_POST['go_modifier_input_seconds'])?$_POST['go_modifier_input_seconds']:0));
+	$percentage = (float) (!empty($_POST['go_modifier_input_percent'])?$_POST['go_modifier_input_percent']:0);
+	$modifier_array = array('days' => $days, 'hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds, 'percentage' => $percentage);
+	return $modifier_array;
 }
 
 add_action('cmb_render_go_admin_lock', 'go_admin_lock', 10, 1);
