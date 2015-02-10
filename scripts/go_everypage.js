@@ -436,19 +436,19 @@ function go_mark_seen (date, type) {
 				jQuery('#wp-admin-bar-'+data[0]).remove();
 				jQuery('#go_messages_bar').html(data[2]);
 				if (data[2] == 0) {
-					jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient(5px -9px, circle, white 8%, green 26px)');
+					jQuery('#go_messages_bar').css('background', '#222222');
 				}
 			} else if (data[1] == 'unseen') {
-				jQuery('#wp-admin-bar-'+data[0]+' div').css('color','');
+				jQuery('#wp-admin-bar-'+data[0]+' div').css('color','white');
 				jQuery('#go_messages_bar').html(data[2]);
 				if (data[2] == 0) {
-					jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient(5px -9px, circle, white 8%, green 26px)');
+					jQuery('#go_messages_bar').css('background', '#222222');
 				}
 			} else if (data[1] == 'seen') {
-				jQuery('#wp-admin-bar-'+data[0]+' a:first-of-type div').css('color','rgba(255, 215, 0, .4)');
+				jQuery('#wp-admin-bar-'+data[0]+' a:first-of-type div').css('color','red');
 				jQuery('#go_messages_bar').html(data[2]);
 				if (data[2] == 1) {
-					jQuery('#go_messages_bar').css('background', ' -webkit-radial-gradient(5px -9px, circle, white 8%, red 26px)');
+					jQuery('#go_messages_bar').css('background', 'red');
 				}
 			}
 		}
@@ -456,10 +456,10 @@ function go_mark_seen (date, type) {
 }
 function go_change_seen (date, type, obj) {
 	if (type == 'unseen') {
-		jQuery(obj).text('Mark Unseen');
+		jQuery(obj).text('Mark Unread');
 		jQuery(obj).attr('onClick', 'go_mark_seen("'+date+'", "seen"); go_change_seen("'+date+'", "seen", this);');
 	} else if (type == 'seen') {
-		jQuery(obj).text('Mark Seen');
+		jQuery(obj).text('Mark Read');
 		jQuery(obj).attr('onClick', 'go_mark_seen("'+date+'", "unseen"); go_change_seen("'+date+'", "unseen", this);');
 	}
 }

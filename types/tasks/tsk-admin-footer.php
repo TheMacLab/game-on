@@ -25,8 +25,7 @@ function go_toggle_settings_rows(stage_settings, condensed) {
 	condensed = typeof condensed !== 'undefined' ? condensed : false;
 	for(setting in stage_settings){
 		if(condensed === true){
-			stage_settings[setting].addClass('condensed');
-			stage_settings[setting].children().addClass('condensed');
+			stage_settings[setting].addClass('condensed').children().addClass('condensed');
 		}
 		stage_settings[setting].toggle('slow');
 	}
@@ -120,12 +119,12 @@ var stage_settings_rows = {
 
 var task_settings = [
 	jQuery('tr.cmb-type-go_rank_list.cmb_id_go_mta_req_rank'),
-	jQuery('tr.cmb-type-go_decay_table.cmb_id_go_mta_date_picker'),
+	jQuery('tr.cmb-type-go_future_filters.cmb_id_go_mta_time_filters'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_bonus_currency_filter'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_penalty_filter'),
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_focus_category_lock'),
 	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_three_stage_switch'),
-	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_five_stage_switch'),
+	jQuery('tr.cmb-type-checkbox.cmb_id_go_mta_five_stage_switch'), 
 	jQuery('tr.cmb-type-go_pick_order_of_chain.cmb_id_go_mta_chain_order'),
 	jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message')
 ];
@@ -185,11 +184,51 @@ jQuery('#go_advanced_task_settings_accordion').click(function(){
 			jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').hide();
 		}
 	}
+	if (jQuery('#go_calendar_checkbox').prop('checked') && jQuery(this).hasClass('opened')) {
+		calendar_row.show('slow');
+		future_row.hide();
+	} else {
+		calendar_row.hide('slow');
+	}
+	if (jQuery('#go_future_checkbox').prop('checked') && jQuery(this).hasClass('opened')) {
+		future_row.show('slow');
+		calendar_row.hide();
+	} else {
+		future_row.hide('slow');
+	}
 });
 
 ////////////////////////////////////
 
 // Modifier Date Picker //
+var calendar_row = jQuery('tr.cmb-type-go_decay_table.cmb_id_go_mta_date_picker');
+var future_row = jQuery('tr.cmb-type-go_time_modifier_inputs.cmb_id_go_mta_time_modifier');
+
+calendar_row.hide();
+future_row.hide();
+
+calendar_row.addClass('condensed').children().addClass('condensed');
+future_row.addClass('condensed').children().addClass('condensed');
+
+jQuery('#go_calendar_checkbox').click(function () {
+	jQuery('#go_future_checkbox').prop('checked', false);
+	if (jQuery('#go_calendar_checkbox').prop('checked')) {
+		calendar_row.show('slow');
+		future_row.hide();
+	} else {
+		calendar_row.hide('slow');
+	}
+});
+jQuery('#go_future_checkbox').click(function () {
+	jQuery('#go_calendar_checkbox').prop('checked', false);
+	if (jQuery('#go_future_checkbox').prop('checked')) {
+		future_row.show('slow');
+		calendar_row.hide();
+	} else {
+		future_row.hide('slow');
+	}
+});
+
 var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 jQuery(document).ready(function(){
 	if(!is_chrome){
@@ -202,7 +241,7 @@ jQuery(document).ready(function(){
 });
 
 function go_add_decay_table_row(){
-	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>');	
+	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type="time" name="go_mta_task_decay_calendar_time[]" class="custom_time" placeholder="Click for Time" value="00:00"/></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>');	
 	if(!is_chrome){
 		if(jQuery('input.go_datepicker').length){
 			jQuery('input.go_datepicker').each( function () {
