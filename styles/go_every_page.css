@@ -32,17 +32,17 @@
 }
 
 #go_admin_bar_progress_bar_border {
-	height:15px;
+	height:16px;
 	width:120px;
-	border:thin grey solid;
+	border:thin white solid;
 	-moz-border-radius: 2em 2em 2em 2em;
-	border-radius: 2em 2em 2em 2em;
+	margin-top: 2px;
 }
 
 #go_admin_bar_hitpoint_bar_border {
-	height:15px;
+	height:16px;
     width:120px;
-    border:thin grey solid;
+    border:1px white solid;
     -moz-border-radius: 2em 2em 2em 2em;
     border-radius: 2em 2em 2em 2em;
 }
@@ -68,7 +68,7 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 }
 
 #points_needed_to_level_up:hover{
-	color:black;
+	color: white;
 }
 
 .go_admin_bar_text {
@@ -82,24 +82,20 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 }
 
 .progress_bar{
-	height:15px !important;
-	-moz-border-radius: 2em 2em 2em 2em !important;
-	border-radius: 2em 2em 2em 2em !important;
+	height:16px !important;
 	background-color: #ff6600;
 }
 
 #go_messages_bar{
 	background-color: red;
-	border: 2px solid white;
-	border-radius: 12px;
+	border: 1px solid white;
 	box-shadow: 1px 1px 1px black;
 	color: white;
-	font: bold 15px/13px Helvetica, Verdana, Tahoma;
 	height: 16px;
-	padding: 0px 1px 0px 1px;
 	text-align: center;
 	min-width: 14px;
-	line-height:16px;
+	line-height:17px;
+	margin-top: 2px;
 }
 
 .go_messages_anchor {

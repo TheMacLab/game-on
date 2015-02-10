@@ -759,7 +759,6 @@ function go_validate_time_nerf_inputs(){
 	$modifier_array = array('days' => $days, 'hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds, 'percentage' => $percentage);
 	return $modifier_array;
 }
-
 add_action('cmb_render_go_admin_lock', 'go_admin_lock', 10, 1);
 function go_admin_lock($field_args) {
 	$custom = get_post_custom($post_id);
