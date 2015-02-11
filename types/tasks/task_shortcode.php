@@ -2252,7 +2252,7 @@ function task_change_stage() {
 				if ($mastery_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}
-				$mastered = get_user_meta($user_id, 'mastered_tasks', true);
+				$mastered = (array) get_user_meta($user_id, 'mastered_tasks', true);
 				$go_table_name = "{$wpdb->prefix}go";
 				$user_id = get_current_user_id();
 				if ($bonus_loot[0]) {
@@ -2366,9 +2366,9 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 						foreach ($bonus_loot[1] as $store_item => $on) {
 							if ($on === 'on') {
 								if ($bonus_loot[2][$store_item] * 10 > 999) {
-									$quest_items_array[] = get_the_title($store_item).": ".$bonus_loot[2][$store_item]."%";
+									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>";
 								} else if ($bonus_loot[2][$store_item] * 10 <= 999) {
-									$bonus_items_array[] = get_the_title($store_item).": ".$bonus_loot[2][$store_item]."%";
+									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>: ".$bonus_loot[2][$store_item]."%";
 						}
 					}
 				}
@@ -2376,8 +2376,12 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 		}
 		$bonus_loot_name = go_return_options('go_bonus_loot_name');
 		$task_loot_name = go_return_options('go_task_loot_name');
-		$quest_items_array_keys = array_keys($quest_items_array);
-		$bonus_items_array_keys = array_keys($bonus_items_array);
+		if(!empty($quest_items_array)) {
+			$quest_items_array_keys = array_keys($quest_items_array);
+		}
+		if (!empty($bonus_items_array)) {
+			$bonus_items_array_keys = array_keys($bonus_items_array);
+		}
 		if (!empty($quest_items_array)) {
 			echo "{$task_loot_name} - ";
 			foreach ($quest_items_array_keys as $index => $key) {
