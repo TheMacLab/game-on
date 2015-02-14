@@ -451,6 +451,13 @@ function go_mark_seen (date, type) {
 					jQuery('#go_messages_bar').css('background', 'red');
 				}
 			}
+			if (data[2] > 1) {
+				jQuery('#wp-admin-bar-no-new-messages-from-admin .ab-item').text("New messages from admin");
+			} else if (data[2] == 1) {
+				jQuery('#wp-admin-bar-no-new-messages-from-admin .ab-item').text("New message from admin");
+			} else {
+				jQuery('#wp-admin-bar-no-new-messages-from-admin .ab-item').text("No new messages from admin");
+			}
 		}
 	});
 }

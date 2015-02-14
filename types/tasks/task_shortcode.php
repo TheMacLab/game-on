@@ -202,9 +202,10 @@ function go_task_shortcode($atts, $content = null) {
 			
 			// Setup empty array to house which dates are closest, in unix timestamp
 			$past_dates = array();
-			
 			foreach ($dates as $key => $date) {
 				// If current date in loop is in the past, add its key to the array of date modifiers
+				$english_date = date("D, F j, Y", strtotime($date));
+				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'> ".ucfirst($task_opt_name)."</span><br/> After {$times[0]} on {$english_date} the rewards will be irrevocably reduced by {$percentages[0]}%.</span>";
 				if ($unix_now >= (strtotime($date) + strtotime($times[$key], 0))) {
 					$past_dates[$key] = abs($unix_now - strtotime($date));
 				}
@@ -219,6 +220,8 @@ function go_task_shortcode($atts, $content = null) {
 			} else {
 				$update_percent = 1;	
 			}
+
+			
 			
 		} else {
 			$update_percent = 1;	
