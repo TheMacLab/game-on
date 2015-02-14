@@ -121,15 +121,16 @@ function go_stats_task_list () {
 				<?php
 				if ($is_admin) {
 				?>
-					<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me'/>
-                    <button class='go_stats_task_admin_submit' task='<?php echo $task->post_id;?>'></button>
+				<button class='go_stats_task_admin_submit' task='<?php echo $task->post_id;?>'>SEND</button>
+					<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me' style= "width: 200px;"/>
+                    
 				<?php 
 				}
 				?>
 				<div class='go_stats_task_status_wrap'>
 				<?php
 				
-				$stage_count = (($custom['go_mta_three_stage_switch'][0] == 'on')?3:(($custom['go_mta_five_stage_switch'][0] == 'on')?5:4));
+				$stage_count = (($custom['go_mta_three_stage_switch'][0] == 'on')? 3 : (($custom['go_mta_five_stage_switch'][0] == 'on')? 5 : 4));
 				
 				$url_switch = array(
 					1 => !empty($custom['go_mta_encounter_url_key'][0]),
