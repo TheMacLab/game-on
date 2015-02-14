@@ -2348,10 +2348,13 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 					break;
 			}
 			$stage = $i + 1;
-			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
-				" ".(!empty($mod_array[1]) && !empty($c_name) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
-				" ".(!empty($bc) && !empty($bc_name) ? "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}" : '').
-				"<br/>";
+			$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>".((!empty($mod_array[0]) && !empty($p_name)) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
+				" ".((!empty($mod_array[1]) && !empty($c_name)) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
+				" ".((!empty($bc) && !empty($bc_name)) ? "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}" : '').
+				"</span><br/>";
+			if ($update_percent == 0 && $stage == 3) {
+				$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>Expired: No Rewards</span><br/>";
+			}
 			echo $output;
 			$custom_fields = get_post_custom($post_id);
 			if (!empty($custom_fields['go_mta_mastery_bonus_loot'][0])) {
@@ -2449,11 +2452,15 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 				} else {
 					clearInterval(timer);
 					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
-					if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
-						jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
-					}
-					if (!jQuery('#go_stage_3_currency').hasClass('go_updated')) {
-						jQuery('#go_stage_3_currency').html(Math.floor(parseFloat(jQuery('#go_stage_3_currency').html()) * percentage)).addClass('go_updated');
+					if (percentage != 0) {
+						if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
+							jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
+						}
+						if (!jQuery('#go_stage_3_currency').hasClass('go_updated')) {
+							jQuery('#go_stage_3_currency').html(Math.floor(parseFloat(jQuery('#go_stage_3_currency').html()) * percentage)).addClass('go_updated');
+						}
+					} else {
+						jQuery('#go_task_stage_3_rewards').html('Expired: No Rewards');
 					}
 				}
 			}
