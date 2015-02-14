@@ -700,7 +700,7 @@ function go_decay_table() {
 					?>
                     <tr>
                         <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>'/></td>
-                        <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text"/></td>
+                        <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
                     </tr>
                     <?php
 				}
@@ -822,7 +822,7 @@ function go_time_modifier_inputs () {
 		Hours: <input type='text' name='go_modifier_input_hours' value='<?php echo $time_modifier['hours']; ?>'/>
 		Minutes: <input type='text' name='go_modifier_input_minutes' value='<?php echo $time_modifier['minutes']; ?>'/>
 		Seconds: <input type='text' name='go_modifier_input_seconds' value='<?php echo $time_modifier['seconds']; ?>'/>
-		Modifier: <input type='text' name='go_modifier_input_percent' value='<?php echo $time_modifier['percentage']; ?>'/>
+		Modifier: <input type='text' name='go_modifier_input_percent' value='<?php echo $time_modifier['percentage']; ?>'/>%
 		<?php
 	} else {
 		?>
