@@ -2267,9 +2267,9 @@ function task_change_stage() {
 								$bonus_currency = ($bonus_loot_currency[2] < 0) ? -$bonus_loot_currency[2] : 0;
 								$penalty = ($bonus_loot_currency[3] > 0) ? -$bonus_loot_currency[3] : 0;
 								$minutes = ($bonus_loot_currency[4] < 0) ? -$bonus_loot_currency[4] : 0;
+								$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest' : 'Bonus';
 								if ($random_number < $bonus_loot[2][$store_item] * 10) {
-									$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest' : 'Bonus';
-										if (!in_array($post_id, $mastered)) {
+										if (!in_array($post_id, $mastered) && $loot_reason == 'Bonus') {
 											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, false, $loot_reason, 'bonus', false, false);
 											echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
 										}

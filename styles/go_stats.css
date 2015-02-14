@@ -77,7 +77,7 @@
 #go_stats_user_progress{
 	width: 25%;
 	height: 25px;
-	border: 2px solid #BBB;
+	border: 2px solid #AAA;
 	top: 14px;
 	margin-right: 40px;
 }
@@ -94,6 +94,7 @@
 	z-index: 1;
 	float: left;
 	left: -50%;
+	line-height: 25px;
 }
 
 #go_stats_progress_fill{
