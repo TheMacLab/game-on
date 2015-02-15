@@ -205,7 +205,7 @@ function go_task_shortcode($atts, $content = null) {
 			foreach ($dates as $key => $date) {
 				// If current date in loop is in the past, add its key to the array of date modifiers
 				$english_date = date("D, F j, Y", strtotime($date));
-				$correct_time = date("g:i a", strtotime($times[$key]));
+				$correct_time = date("g:i A", strtotime($times[$key]));
 				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'> ".ucfirst($task_opt_name)."</span><br/> After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[$key]}%.</span>";
 				if ($unix_now >= (strtotime($date) + strtotime($times[$key], 0))) {
 					$past_dates[$key] = abs($unix_now - strtotime($date));
