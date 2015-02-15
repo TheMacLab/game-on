@@ -222,15 +222,14 @@
 }
 
 .go_stats_task_admin_message{
-	float: right;
-	font-size: 12px;
-	line-height: 14px;
-	height: 16px;
-	width: 40%;
+	float: right !important;
+	line-height: 14px !important;
+	height: 16px !important;
 	display: inline-block;
-	margin: 5.5px 0px 2px 4px;
-	padding: 0px;
+	margin: 5.5px 0px 2px 4px !important;
+	padding: 0px !important;
 	overflow: hidden;
+	width: 200px !important;
 }
 
 .go_stats_task_stage_url{

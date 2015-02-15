@@ -122,7 +122,7 @@ function go_stats_task_list () {
 				if ($is_admin) {
 				?>
 				<button class='go_stats_task_admin_submit' task='<?php echo $task->post_id;?>'>SEND</button>
-					<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me' style= "width: 200px;"/>
+					<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me'/>
                     
 				<?php 
 				}
