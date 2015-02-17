@@ -41,7 +41,20 @@ jQuery(document).ready(function(){
 		}
 		jQuery('.go_options_triangle', this).toggleClass('go_triangle_up');
 		var wrap = jQuery(this).parent('.go_options_accordion_wrap').attr('opt');
-		option_wraps[wrap].toggle('slow');
+		jQuery.each(option_wraps, function(index, value){
+			if (option_wraps[index] != wrap && jQuery(option_wraps[index]).is(":visible")) {
+				option_wraps[index].toggle('slow');
+				console.log(index);
+				console.log(wrap);
+			}
+		});
+		if (jQuery(option_wraps[wrap]).is(':visible')) {
+			jQuery(option_wraps[wrap]).hide('slow');
+		} else {
+			option_wraps[wrap].toggle('slow');
+		}
+
+
 		if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
 			jQuery('#go_options_professions_names_wrap').show('slow');
 		} else {
