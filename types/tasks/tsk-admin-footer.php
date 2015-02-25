@@ -21,13 +21,24 @@ jQuery('.go_task_settings_accordion').click(function(){
 	jQuery(this).children('.go_triangle_container').children('.go_task_accordion_triangle').toggleClass('down');
 });
 
-function go_toggle_settings_rows(stage_settings, condensed) {
+function go_toggle_settings_rows(stage_settings, condensed, number) {
 	condensed = typeof condensed !== 'undefined' ? condensed : false;
 	for(setting in stage_settings){
 		if(condensed === true){
 			stage_settings[setting].addClass('condensed').children().addClass('condensed');
 		}
 		stage_settings[setting].toggle('slow');
+	}
+
+	for (i = 1; i < 6; i++) {
+		if (i == number) {	
+			continue;
+		}
+		for (settings in stage_settings_rows[i]) {
+			if (stage_settings_rows[i][settings] != null) {
+				stage_settings_rows[i][settings].hide('slow');
+			}
+		}
 	}
 }
 
@@ -443,7 +454,7 @@ go_toggle_settings_rows(stage_settings_rows[1]);
 
 stage_accordions[1].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[1], true);
+	go_toggle_settings_rows(stage_settings_rows[1], true, 1);
 	toggle_admin_lock(stage_accordions[1], 'encounter');
 	toggle_tests(stage_accordions[1], 'encounter');
 });
@@ -456,7 +467,7 @@ go_toggle_settings_rows(stage_settings_rows[2]);
 
 stage_accordions[2].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[2], true);
+	go_toggle_settings_rows(stage_settings_rows[2], true, 2);
 	toggle_admin_lock(stage_accordions[2], 'accept');
 	toggle_tests(stage_accordions[2], 'accept');
 });
@@ -469,7 +480,7 @@ go_toggle_settings_rows(stage_settings_rows[3]);
 
 stage_accordions[3].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[3], true);
+	go_toggle_settings_rows(stage_settings_rows[3], true, 3);
 	toggle_admin_lock(stage_accordions[3], 'completion');
 	if (jQuery(this).hasClass('opened')) {
 		if (!jQuery('#go_mta_task_mastery').prop('checked')) {
@@ -491,7 +502,7 @@ go_toggle_settings_rows(stage_settings_rows[4]);
 
 stage_accordions[4].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[4], true);
+	go_toggle_settings_rows(stage_settings_rows[4], true, 4);
 	toggle_admin_lock(stage_accordions[4], 'mastery');
 	if (jQuery(this).hasClass('opened')) {
 		if (!jQuery('#go_mta_task_repeat').prop('checked')) {
@@ -560,7 +571,7 @@ if(stage_three){
 go_toggle_settings_rows(stage_settings_rows[5], true);
 stage_accordions[5].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[5], true);
+	go_toggle_settings_rows(stage_settings_rows[5], true, 5);
 	toggle_admin_lock(stage_accordions[5], 'repeat');
 });
 
