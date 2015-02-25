@@ -29,14 +29,27 @@ function go_toggle_settings_rows(stage_settings, condensed, number) {
 		}
 		stage_settings[setting].toggle('slow');
 	}
-
-	for (i = 1; i < 6; i++) {
-		if (i == number) {	
-			continue;
-		}
-		for (settings in stage_settings_rows[i]) {
-			if (stage_settings_rows[i][settings] != null) {
-				stage_settings_rows[i][settings].hide('slow');
+	if (number) {
+		for (i = 1; i < 6; i++) {
+			if (i == number) {	
+				continue;
+			}
+			if (stage_settings != task_settings){
+				for (settings in task_settings) {
+					task_settings[settings].hide('slow');
+				}
+			} else {
+				for (settings in stage_settings_rows[i]) {
+					if (stage_settings_rows[i][settings] != null) {
+					stage_settings_rows[i][settings].hide('slow');
+					
+					}
+				}
+			}
+			for (settings in stage_settings_rows[i]) {
+				if (stage_settings_rows[i][settings] != null) {
+					stage_settings_rows[i][settings].hide('slow');
+				}
 			}
 		}
 	}
@@ -178,7 +191,7 @@ var is_final_task =
 
 jQuery('#go_advanced_task_settings_accordion').click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(task_settings, true);
+	go_toggle_settings_rows(task_settings, true, 6);
 	if (in_chain && jQuery(this).hasClass('opened')) {
 		jQuery('tr.cmb-type-go_pick_order_of_chain.cmb_id_go_mta_chain_order').show('slow');
 		if (is_final_task) {
