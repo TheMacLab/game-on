@@ -1907,7 +1907,7 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, $status, 
 				-floor(($update_percent * $points_array[$status])), 
 				-floor(($update_percent * $currency_array[$status])), 
-				-floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
@@ -1934,7 +1934,7 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, ($status - 1), 
 				-floor(($update_percent * $points_array[$status - 1])), 
 				-floor(($update_percent * $currency_array[$status - 1])), 
-				-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
