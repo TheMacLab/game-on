@@ -35,6 +35,23 @@ function go_toggle_settings_rows(stage_settings, condensed, number) {
 				continue;
 			}
 				stage_accordions[i].removeClass("opened");
+				if (stage_settings != task_settings) {
+					jQuery("#go_advanced_task_settings_accordion").removeClass("opened");
+				}
+			if (jQuery('#go_calendar_checkbox').prop('checked') && jQuery("#go_advanced_task_settings_accordion").hasClass('opened')) {
+				calendar_row.show('slow');
+				future_row.hide();
+			} else {
+				calendar_row.hide('slow');
+				future_row.hide();
+			}
+			if (jQuery('#go_future_checkbox').prop('checked') && jQuery("#go_advanced_task_settings_accordion").hasClass('opened')) {
+				future_row.show('slow');
+				calendar_row.hide();
+			} else {
+				future_row.hide('slow');
+				calendar_row.hide();
+			}
 			if (stage_settings != task_settings){
 				for (settings in task_settings) {
 					task_settings[settings].hide('slow');
@@ -209,18 +226,7 @@ jQuery('#go_advanced_task_settings_accordion').click(function(){
 			jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').hide();
 		}
 	}
-	if (jQuery('#go_calendar_checkbox').prop('checked') && jQuery(this).hasClass('opened')) {
-		calendar_row.show('slow');
-		future_row.hide();
-	} else {
-		calendar_row.hide('slow');
-	}
-	if (jQuery('#go_future_checkbox').prop('checked') && jQuery(this).hasClass('opened')) {
-		future_row.show('slow');
-		calendar_row.hide();
-	} else {
-		future_row.hide('slow');
-	}
+	
 });
 
 ////////////////////////////////////
