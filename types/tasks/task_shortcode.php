@@ -14,6 +14,8 @@ function go_task_shortcode($atts, $content = null) {
 	$user_ID = get_current_user_id(); // User ID
 	$page_id = get_the_ID();
 	if ($id && !empty($user_ID)) { // If the shortcode has an attribute called id, run this code
+		$today = date('Y-m-d');
+		$task_name = go_return_options('go_tasks_name');
 		$custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
 		$rewards = unserialize($custom_fields['go_presets'][0]);
 		$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
@@ -200,9 +202,11 @@ function go_task_shortcode($atts, $content = null) {
 			
 			// Setup empty array to house which dates are closest, in unix timestamp
 			$past_dates = array();
-			
 			foreach ($dates as $key => $date) {
 				// If current date in loop is in the past, add its key to the array of date modifiers
+				$english_date = date("D, F j, Y", strtotime($date));
+				$correct_time = date("g:i A", strtotime($times[$key]));
+				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'> ".ucfirst($task_opt_name)."</span><br/> After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[$key]}%.</span>";
 				if ($unix_now >= (strtotime($date) + strtotime($times[$key], 0))) {
 					$past_dates[$key] = abs($unix_now - strtotime($date));
 				}
@@ -217,6 +221,8 @@ function go_task_shortcode($atts, $content = null) {
 			} else {
 				$update_percent = 1;	
 			}
+
+			
 			
 		} else {
 			$update_percent = 1;	
@@ -264,7 +270,6 @@ function go_task_shortcode($atts, $content = null) {
 		if ($is_admin === false && !empty($req_points) && $current_points < $req_points) {
 			$points = $req_points - $current_points;
 			$points_name = strtolower(go_return_options('go_points_name'));
-			$task_name = strtolower(go_return_options('go_tasks_name'));
 			echo "You need {$points} more {$points_name} to begin this {$task_name}.";
 		} else {
 			
@@ -1760,9 +1765,9 @@ function task_change_stage() {
 	}
 	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
 	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
-	
 	if ($mastery_active) {
 		$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
+		$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 
 		if ($test_m_active) {
 			$test_m_array = go_get_test_meta_content($custom_fields, 'mastery');
@@ -1902,12 +1907,58 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, $status, 
 				-floor(($update_percent * $points_array[$status])), 
 				-floor(($update_percent * $currency_array[$status])), 
-				-floor(($update_percent * $bonus_currency_array[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
+				if ($bonus_loot[0]) {
+					if (!empty($bonus_loot[1])) {
+						foreach ($bonus_loot[1] as $store_item => $on) {
+							if ($on === 'on') {
+								$custom_fields = get_post_custom($store_item);
+								$currency = ($bonus_loot_currency[0] < 0 ) ? $bonus_loot_currency[0] : 0;
+								$points = ($bonus_loot_currency[1] < 0) ? $bonus_loot_currency[1] : 0;
+								$bonus_currency = ($bonus_loot_currency[2] < 0) ? $bonus_loot_currency[2] : 0;
+								$penalty = ($bonus_loot_currency[3] > 0) ? $bonus_loot_currency[3] : 0;
+								$minutes = ($bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
+								$go_table_name = $wpdb->prefix."go";
+								$user_id = get_current_user_id();
+								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								if ($received) {
+									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true);
+								}
+								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								}
+							}
+						}
+					}
 			} else {
 				go_add_post($user_id, $post_id, ($status - 1), 
 				-floor(($update_percent * $points_array[$status - 1])), 
 				-floor(($update_percent * $currency_array[$status - 1])), 
-				-floor(($update_percent * $bonus_currency_array[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
+				if ($bonus_loot[0]) {
+					if (!empty($bonus_loot[1])) {
+						foreach ($bonus_loot[1] as $store_item => $on) {
+							if ($on === 'on') {
+								$custom_fields = get_post_custom($store_item);
+								$bonus_loot_currency = unserialize($custom_fields['go_mta_store_cost'][0]);
+								$currency = ($bonus_loot_currency[0] < 0 ) ? $bonus_loot_currency[0] : 0;
+								$points = ($bonus_loot_currency[1] < 0) ? $bonus_loot_currency[1] : 0;
+								$bonus_currency = ($bonus_loot_currency[2] < 0) ? $bonus_loot_currency[2] : 0;
+								$penalty = ($bonus_loot_currency[3] > 0) ? $bonus_loot_currency[3] : 0;
+								$minutes = ($bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
+								$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'quest' : 'bonus';
+								$go_table_name = $wpdb->prefix."go";
+								$user_id = get_current_user_id();
+								$received = $wpdb->query($wpdb->prepare("SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								if ($received) {
+									go_update_totals ($user_id, $points, $currency, $bonus_currency, 0, $minutes, null, $loot_reason, true, false);
+								}
+								$wpdb->query($wpdb->prepare("DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item));
+								}
+							}
+						}
+					}
 				if ($stage_badges[$status][0] == 'true') {
 					foreach ($stage_badges[$status][1] as $badge_id) {
 						go_remove_badge($user_id, $badge_id);
@@ -2205,6 +2256,42 @@ function task_change_stage() {
 				if ($mastery_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}
+				$mastered = (array) get_user_meta($user_id, 'mastered_tasks', true);
+				$go_table_name = "{$wpdb->prefix}go";
+				$user_id = get_current_user_id();
+				if ($bonus_loot[0]) {
+					if (!empty($bonus_loot[1])) {
+						foreach ($bonus_loot[1] as $store_item => $on) {
+							if ($on === 'on') {
+								$random_number = rand(1, 999);
+								$custom_fields = get_post_custom($store_item);
+								$bonus_loot_currency = unserialize($custom_fields['go_mta_store_cost'][0]);
+								$currency = ($bonus_loot_currency[0] < 0 ) ? -$bonus_loot_currency[0] : 0;
+								$points = ($bonus_loot_currency[1] < 0) ? -$bonus_loot_currency[1] : 0;
+								$bonus_currency = ($bonus_loot_currency[2] < 0) ? -$bonus_loot_currency[2] : 0;
+								$penalty = ($bonus_loot_currency[3] > 0) ? -$bonus_loot_currency[3] : 0;
+								$minutes = ($bonus_loot_currency[4] < 0) ? -$bonus_loot_currency[4] : 0;
+								$loot_reason = ($bonus_loot[2][$store_item] * 10 > 999) ? 'Quest' : 'Bonus';
+								if ($random_number < $bonus_loot[2][$store_item] * 10) {
+										if (!in_array($post_id, $mastered) && $loot_reason == 'Bonus') {
+											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, false, $loot_reason, 'bonus', false, false);
+											echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
+										}
+										else if ($loot_reason == 'Quest') {
+											go_add_post($user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, false, $loot_reason, 'quest', false, false);
+											echo "Congrats, " . do_shortcode('[go_get_displayname]') . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a></br>";
+										}
+								}
+							}
+						}
+					}
+					if(!in_array($post_id, $mastered)){
+						$mastered[] = $post_id;
+						update_user_meta($user_id, 'mastered_tasks', $mastered);
+					}
+					echo "</br>";
+				}
+				add_user_meta($user_id, 'ever_mastered', $post_id, true);
 				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 			}
 			if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
@@ -2265,11 +2352,61 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 					break;
 			}
 			$stage = $i + 1;
-			$output = "{$stage_name} - ".(!empty($mod_array[0]) && !empty($p_name) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
-				" ".(!empty($mod_array[1]) && !empty($c_name) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
-				" ".(!empty($bc) && !empty($bc_name) ? "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}" : '').
-				"<br/>";
+			$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>".((!empty($mod_array[0]) && !empty($p_name)) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
+				" ".((!empty($mod_array[1]) && !empty($c_name)) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
+				" ".((!empty($bc) && !empty($bc_name)) ? "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}" : '').
+				"</span><br/>";
+			if ($update_percent == 0 && $stage == 3) {
+				$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>Expired: No Rewards</span><br/>";
+			}
 			echo $output;
+			$custom_fields = get_post_custom($post_id);
+			if (!empty($custom_fields['go_mta_mastery_bonus_loot'][0])) {
+				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
+			}
+		}
+		if ($bonus_loot[0]) {
+			$bonus_loot_display = true;
+					if (!empty($bonus_loot[1])) {
+						$quest_items_array = array();
+						$bonus_items_array = array();
+						foreach ($bonus_loot[1] as $store_item => $on) {
+							if ($on === 'on') {
+								if ($bonus_loot[2][$store_item] * 10 > 999) {
+									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>";
+								} else if ($bonus_loot[2][$store_item] * 10 <= 999) {
+									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title($store_item)."</a>: ".$bonus_loot[2][$store_item]."%";
+						}
+					}
+				}
+			}
+		}
+		$bonus_loot_name = go_return_options('go_bonus_loot_name');
+		$task_loot_name = go_return_options('go_task_loot_name');
+		if(!empty($quest_items_array)) {
+			$quest_items_array_keys = array_keys($quest_items_array);
+		}
+		if (!empty($bonus_items_array)) {
+			$bonus_items_array_keys = array_keys($bonus_items_array);
+		}
+		if (!empty($quest_items_array)) {
+			echo "{$task_loot_name} - ";
+			foreach ($quest_items_array_keys as $index => $key) {
+				echo $quest_items_array[$key];
+				if ($index < max($quest_items_array_keys)) {
+					echo ", ";
+				}
+			}
+		echo "</br>";
+		}
+		if (!empty($bonus_items_array)) {
+			echo "{$bonus_loot_name} - ";
+			foreach ($bonus_items_array_keys as $index => $key) {
+				echo $bonus_items_array[$key];
+				if ($index < max($bonus_items_array_keys)) {
+					echo ", ";
+				}
+			}
 		}
 		echo '</div>';
 	} 
@@ -2319,11 +2456,15 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 				} else {
 					clearInterval(timer);
 					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
-					if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
-						jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
-					}
-					if (!jQuery('#go_stage_3_currency').hasClass('go_updated')) {
-						jQuery('#go_stage_3_currency').html(Math.floor(parseFloat(jQuery('#go_stage_3_currency').html()) * percentage)).addClass('go_updated');
+					if (percentage != 0) {
+						if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
+							jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
+						}
+						if (!jQuery('#go_stage_3_currency').hasClass('go_updated')) {
+							jQuery('#go_stage_3_currency').html(Math.floor(parseFloat(jQuery('#go_stage_3_currency').html()) * percentage)).addClass('go_updated');
+						}
+					} else {
+						jQuery('#go_task_stage_3_rewards').html('Expired: No Rewards');
 					}
 				}
 			}

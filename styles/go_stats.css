@@ -77,8 +77,7 @@
 #go_stats_user_progress{
 	width: 25%;
 	height: 25px;
-	border: 2px solid #BBB;
-	border-radius: 15px;
+	border: 2px solid #AAA;
 	top: 14px;
 	margin-right: 40px;
 }
@@ -95,12 +94,11 @@
 	z-index: 1;
 	float: left;
 	left: -50%;
+	line-height: 25px;
 }
 
 #go_stats_progress_fill{
 	height: 100%;
-	border-top-left-radius: 15px;
-	border-bottom-left-radius: 15px;
 	position: absolute;
 	z-index: 0;
 }
@@ -216,21 +214,22 @@
 	float: right !important; 
 	margin: 5.5px 0px 3px 4px !important;
 	height: 15px !important; 
-	width: 15px !important;
+	width: 50px !important;
+	line-height: 10px !important;
 	background-color: silver !important;
 	padding: 2px 6px 3px 6px !important;
+	font-size: 10px !important;
 }
 
 .go_stats_task_admin_message{
-	float: right;
-	font-size: 12px;
-	line-height: 14px;
-	height: 16px;
-	width: 40%;
+	float: right !important;
+	height: 16px !important;
 	display: inline-block;
-	margin: 5.5px 0px 2px 4px;
-	padding: 0px;
+	margin: 5.5px 0px 2px 4px !important;
+	padding: 0px !important;
 	overflow: hidden;
+	width: 200px !important;
+	font-size: 12px !important;
 }
 
 .go_stats_task_stage_url{

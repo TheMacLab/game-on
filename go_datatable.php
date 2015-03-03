@@ -271,6 +271,8 @@ function go_install_data () {
 		'go_fourth_stage_button' => 'Master',
 		'go_fifth_stage_button' => 'Repeat Mastery',
 		'go_store_name' => 'Store',
+		'go_task_loot_name' => 'Quest Loot',
+		'go_bonus_loot_name' => 'Bonus Loot',
 		'go_points_name' => 'Experience',
 		'go_points_prefix' => '',
 		'go_points_suffix' => 'XP',

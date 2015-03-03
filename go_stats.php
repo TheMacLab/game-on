@@ -121,15 +121,16 @@ function go_stats_task_list () {
 				<?php
 				if ($is_admin) {
 				?>
+				<button class='go_stats_task_admin_submit' task='<?php echo $task->post_id;?>'>SEND</button>
 					<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me'/>
-                    <button class='go_stats_task_admin_submit' task='<?php echo $task->post_id;?>'></button>
+                    
 				<?php 
 				}
 				?>
 				<div class='go_stats_task_status_wrap'>
 				<?php
 				
-				$stage_count = (($custom['go_mta_three_stage_switch'][0] == 'on')?3:(($custom['go_mta_five_stage_switch'][0] == 'on')?5:4));
+				$stage_count = (($custom['go_mta_three_stage_switch'][0] == 'on')? 3 : (($custom['go_mta_five_stage_switch'][0] == 'on')? 5 : 4));
 				
 				$url_switch = array(
 					1 => !empty($custom['go_mta_encounter_url_key'][0]),
@@ -314,11 +315,17 @@ function go_stats_item_list () {
 	} else {
 		$user_id = get_current_user_id();
 	}
-	$items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1, 0));
+	$items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, id DESC, reason DESC", $user_id, -1, 0));
 	$gifted_items = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1, 1));
 	?>
+		<div style="width: 99%;">
+	 <div style="float: left; width: 33%;"><strong>PURCHASES</strong></div>
+	 <div style="float: left; width: 33%;"><strong>RECEIVED</strong></div>
+	 <div style="float: left; width: 33%;"><strong>SOLD</strong></div>
+ 	 <br style="clear: left;" />
+	</div>
+
 	<ul id='go_stats_item_list_purchases' class='go_stats_body_list'>
-		<li class='go_stats_body_list_head'>PURCHASES</li>
 		<?php
 		
 		foreach ($items as $item) {
@@ -338,7 +345,6 @@ function go_stats_item_list () {
 		?>
 	</ul>
 	<ul id='go_stats_item_list_recieved' class='go_stats_body_list'>
-		<li class='go_stats_body_list_head'>RECEIVED</li>
         <?php
 		
 		if (!empty($gifted_items)) {		
@@ -360,7 +366,6 @@ function go_stats_item_list () {
 		?>
 	</ul>
 	<ul class='go_stats_body_list'>
-		<li class='go_stats_body_list_head'>SOLD (coming soon)</li>
 	</ul>
 	<?php
 	die();
@@ -377,8 +382,13 @@ function go_stats_rewards_list () {
 	$new_tab = ($user_id != get_current_user_id())?"target='_blank'":"";
 	$rewards = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$go_table_name} WHERE uid = %d AND (points != %d OR currency != 0 OR bonus_currency != 0) ORDER BY id DESC", $user_id, 0));
 	?>
+	<div style="width: 99%;">
+	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper(go_return_options('go_points_name'));?></strong></div>
+	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper(go_return_options('go_currency_name'));?></strong></div>
+	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper(go_return_options('go_bonus_currency_name'));?></strong></div>
+ 	 <br style="clear: left;" />
+	</div>
 	<ul id='go_stats_rewards_list_points' class='go_stats_body_list'>
-		<li class='go_stats_body_list_head'><?php echo strtoupper(go_return_options('go_points_name'));?></li>
 		<?php
 			foreach ($rewards as $reward) {
 				$reward_id = $reward->post_id;
@@ -393,7 +403,6 @@ function go_stats_rewards_list () {
 		?>
 	</ul>
 	<ul id='go_stats_rewards_list_currency' class='go_stats_body_list'>
-		<li class='go_stats_body_list_head'><?php echo strtoupper(go_return_options('go_currency_name'));?></li>
 		<?php
 			foreach ($rewards as $reward) {
 				$reward_id = $reward->post_id;
@@ -408,7 +417,6 @@ function go_stats_rewards_list () {
 		?>
 	</ul>
 	<ul id='go_stats_rewards_list_bonus_currency' class='go_stats_body_list'>
-		<li class='go_stats_body_list_head'><?php echo strtoupper(go_return_options('go_bonus_currency_name'));?></li>
 		<?php
 			foreach ($rewards as $reward) {
 				$reward_id = $reward->post_id;

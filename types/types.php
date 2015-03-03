@@ -432,6 +432,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'stage' => 4
 			),
 			array(
+				'name' => 'Bonus Loot'.go_task_opt_help('mastery_bonus', '', 'http://maclab.guhsd.net/go/video/quests/bonus.mp4'),
+				'id' => $prefix.'mastery_bonus_loot',
+				'type' => 'go_bonus_loot'
+			),
+			array(
 				'name' => 'Stage 5'.go_task_opt_help('repeat_message', '', 'http://maclab.guhsd.net/go/video/quests/stageFive.mp4'),
 				'id' => $prefix . 'repeat_message',
 				'type' => 'wysiwyg',
@@ -516,37 +521,47 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_store_cost',
 			),
 			array(
-				'name' => 'Limit'.go_task_opt_help('store_limit', '', 'http://maclab.guhsd.net/go/video/store/storeLimit.mp4'),
+				'name' => 'Limit'.go_task_opt_help('store_limit', 'Limit the amount of times a player can purchase this item', 'http://maclab.guhsd.net/go/video/store/storeLimit.mp4'),
 				'id' => "{$prefix}store_limit",
 				'type' => 'go_store_limit'
 			),
 			array(
-				'name' => 'Penalty'.go_task_opt_help('penalty', '', 'http://maclab.guhsd.net/go/video/store/penalty.mp4'),
+				'name' => 'Bonus Loot'.go_task_opt_help('Bonus', 'Make this item available as bonus loot from quests', 'http://maclab.guhsd.net/go/video/store/bonus.mp4'),
+				'id' => "{$prefix}store_bonus",
+				'type' => 'checkbox',
+			),
+			array(
+				'name' => 'Unpurchasable'.go_task_opt_help('Unpurchasable', 'Make this item unavailable for purchase'),
+				'id' => "{$prefix}store_unpurchasable",
+				'type' => 'checkbox',
+			),
+			array(
+				'name' => 'Penalty'.go_task_opt_help('penalty', "Allows student's currency to become negative", 'http://maclab.guhsd.net/go/video/store/penalty.mp4'),
 				'id' => "{$prefix}penalty_switch",
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Filter'.go_task_opt_help('filter', '', 'http://maclab.guhsd.net/go/video/store/filter.mp4'),
+				'name' => 'Filter'.go_task_opt_help('filter', 'Require students to have certain amounts of levels/honor/damage to buy this item', 'http://maclab.guhsd.net/go/video/store/filter.mp4'),
 				'id' => "{$prefix}store_filter",
 				'type' => 'go_store_filter'
 			),
 			array(
-				'name' => 'Exchange'.go_task_opt_help('exchange', '', 'http://maclab.guhsd.net/go/video/store/exchange.mp4'),
+				'name' => 'Exchange'.go_task_opt_help('exchange', 'Make item exchangeable between students', 'http://maclab.guhsd.net/go/video/store/exchange.mp4'),
 				'id' => "{$prefix}store_exchange",
 				'type' => 'go_store_exchange'
 			),
 			array(
-				'name' => 'URL'.go_task_opt_help('item_url', '', 'http://maclab.guhsd.net/go/video/store/itemURL.mp4'),
+				'name' => 'URL'.go_task_opt_help('item_url', 'Have URL appear upon purchase', 'http://maclab.guhsd.net/go/video/store/itemURL.mp4'),
 				'id' => "{$prefix}store_item_url",
 				'type' => 'go_item_url'	
 			),
 			array(
-				'name' => 'Badge'.go_task_opt_help('badge_id', '', 'http://maclab.guhsd.net/go/video/store/badgeID.mp4'),
+				'name' => 'Badge'.go_task_opt_help('badge_id', 'Award a badge upon purchase', 'http://maclab.guhsd.net/go/video/store/badgeID.mp4'),
 				'id' => "{$prefix}badge_id",
 				'type' => 'go_badge_id'
 			),
 			array(
-				'name' => go_return_options('go_focus_name').go_task_opt_help('focus', '', 'http://maclab.guhsd.net/go/video/store/focus.mp4'),
+				'name' => go_return_options('go_focus_name').go_task_opt_help('focus', 'Turn item into a profession', 'http://maclab.guhsd.net/go/video/store/focus.mp4'),
 				'id' => "{$prefix}store_focus",
 				'type' => 'go_store_focus'
 			),
@@ -556,12 +571,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Send Receipt'.go_task_opt_help('store_receipt', '', 'http://maclab.guhsd.net/go/video/store/receipt.mp4'),
+				'name' => 'Send Receipt'.go_task_opt_help('store_receipt', 'Send email to admin upon purchase', 'http://maclab.guhsd.net/go/video/store/receipt.mp4'),
 				'id' => "{$prefix}store_receipt",
 				'type' => 'go_store_receipt'
 			),
 			array(
-				'name' => 'Giftable'.go_task_opt_help('giftable', '', 'http://maclab.guhsd.net/go/video/store/giftable.mp4'),
+				'name' => 'Giftable'.go_task_opt_help('giftable', 'Allow students to purchase item for other students', 'http://maclab.guhsd.net/go/video/store/giftable.mp4'),
 				'id' => "{$prefix}store_giftable",
 				'type' => 'checkbox'
 			),
@@ -685,7 +700,7 @@ function go_decay_table() {
 					?>
                     <tr>
                         <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>'/></td>
-                        <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text"/></td>
+                        <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
                     </tr>
                     <?php
 				}
@@ -726,6 +741,77 @@ function go_validate_decay_table() {
 	}
 }
 
+
+add_action('cmb_render_go_bonus_loot', 'go_bonus_loot');
+function go_bonus_loot($field_args) {
+	$custom = get_post_custom($post_id);
+	$check_array = unserialize($custom['go_mta_mastery_bonus_loot'][0]);
+	$meta_id = $field_args["id"];
+	echo "<input id='go_bonus_loot_checkbox' class='go_bonus_loot_checkbox' name='{$meta_id}' type='checkbox' ".(!empty($check_array[0]) ? "checked" : "")."/><br/>";
+	$store_list = get_posts(array(
+		'post_type' => 'go_store',
+		'orderby' => 'post_date',
+		'order' => 'DESC',
+		'meta_query' => array(
+			array(
+				'key' => 'go_mta_store_bonus',
+				'value' => 'on',
+			)
+		)
+ 	));
+	echo "<div id='go_bonus_loot_wrap'>";
+	foreach ($store_list as $store_item) {
+		echo "<input type='checkbox' class='go_bonus_loot_checkbox' name='go_task_bonus_loot_select[$store_item->ID]' ".(!empty($check_array[1][$store_item->ID]) ? "checked" : "")." style='margin-left: 50px;'/>{$store_item->post_title}<input type='text' id='rarity' name='go_bonus_loot_rarity[$store_item->ID]' value='".(!empty($check_array[2][$store_item->ID]) ? $check_array[2][$store_item->ID] : "")."' style='margin-left: 10px;' value = '' size='2' maxlength='4'>%</br></br>";
+	}
+	echo "</div>";
+}
+
+add_action('cmb_validate_go_bonus_loot', 'go_validate_bonus_loot');
+function go_validate_bonus_loot() {
+	$is_checked = $_POST['go_mta_mastery_bonus_loot'];
+	$selected_loot = $_POST['go_task_bonus_loot_select'];
+	$loot_rarity = $_POST['go_bonus_loot_rarity'];
+	$rarity_array = array();
+	if (!empty($loot_rarity)) {
+		foreach ($loot_rarity as $item_id => $perc) {
+			if ($perc !== "0" && $perc !== '' && intval($perc) >= 1) {
+				$rarity_array[$item_id] = $perc;
+			} else {
+				$rarity_array[$item_id] = '25';
+			}
+		}
+	}
+	return (array($is_checked, $selected_loot, $loot_rarity));
+}
+
+add_action('cmb_render_go_store_unpurchasable', 'go_unpurchasable');
+function go_unpurchasable() {
+	$custom = get_post_custom(get_the_id());
+	$unpurchasable = get_option('go_store_unpurchasable_switch');
+	$is_checked = $custom['go_mta_unpurchasable'][0];
+	if ($unpurchasable == 'On') {
+		if (empty($is_checked)) {
+			$is_checked = "true";
+		}
+	} else {
+		if (empty($is_checked)) {
+			$is_checked = "false";
+		}
+	}
+	echo "<input id='go_unpurchasable_checkbox' name='go_unpurchasable' type='checkbox'".($is_checked == 'true' ? "checked" : "")."/>";
+}
+
+add_action('cmb_validate_go_unpurchasable', 'go_validate_unpurchasable');
+function go_validate_unpurchasable() {
+	$is_checked = $_POST['go_unpurchasable'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	return ($is_checked);
+}
+
 add_action('cmb_render_go_time_modifier_inputs', 'go_time_modifier_inputs');
 function go_time_modifier_inputs () {
 	$custom = get_post_custom(get_the_id());
@@ -736,7 +822,7 @@ function go_time_modifier_inputs () {
 		Hours: <input type='text' name='go_modifier_input_hours' value='<?php echo $time_modifier['hours']; ?>'/>
 		Minutes: <input type='text' name='go_modifier_input_minutes' value='<?php echo $time_modifier['minutes']; ?>'/>
 		Seconds: <input type='text' name='go_modifier_input_seconds' value='<?php echo $time_modifier['seconds']; ?>'/>
-		Modifier: <input type='text' name='go_modifier_input_percent' value='<?php echo $time_modifier['percentage']; ?>'/>
+		Modifier: <input type='text' name='go_modifier_input_percent' value='<?php echo $time_modifier['percentage']; ?>'/>%
 		<?php
 	} else {
 		?>
@@ -759,6 +845,7 @@ function go_validate_time_nerf_inputs(){
 	$modifier_array = array('days' => $days, 'hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds, 'percentage' => $percentage);
 	return $modifier_array;
 }
+
 add_action('cmb_render_go_admin_lock', 'go_admin_lock', 10, 1);
 function go_admin_lock($field_args) {
 	$custom = get_post_custom($post_id);
@@ -1906,5 +1993,27 @@ function go_validate_badge_input ($override_value, $value, $field_args) {
 	$badges = $_POST['go_badge_input_stage_'.$field_args['stage']];
 
 	return(array($checked, $badges));
+}
+
+add_action('cmb_render_go_store_bonus', 'go_store_bonus');
+function go_store_bonus () {
+	$custom = get_post_custom(get_the_id());
+	$is_checked = $custom['go_mta_store_bonus'][0];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	}
+	var_dump(unserialize($custom['go_mta_store_bonus'][0]));
+	echo "<input id='go_store_bonus_checkbox' name='go_store_bonus' type='checkbox'".($is_checked == 'true' ? "checked" : "")."/>";
+}
+
+add_action('cmb_validate_go_store_bonus', 'go_validate_store_bonus');
+function go_validate_store_bonus () {
+	$is_checked = $_POST['go_store_bonus'];
+	if (empty($is_checked)) {
+		$is_checked = "false";
+	} else {
+		$is_checked = "true";
+	}
+	return ($is_checked);
 }
 ?>
