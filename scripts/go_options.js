@@ -44,8 +44,6 @@ jQuery(document).ready(function(){
 		jQuery.each(option_wraps, function(index, value){
 			if (option_wraps[index] != wrap && jQuery(option_wraps[index]).is(":visible")) {
 				option_wraps[index].toggle('slow');
-				console.log(index);
-				console.log(wrap);
 			}
 		});
 		if (jQuery(option_wraps[wrap]).is(':visible')) {

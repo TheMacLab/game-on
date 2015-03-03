@@ -34,6 +34,7 @@ function go_toggle_settings_rows(stage_settings, condensed, number) {
 			if (i == number) {	
 				continue;
 			}
+				stage_accordions[i].removeClass("opened");
 			if (stage_settings != task_settings){
 				for (settings in task_settings) {
 					task_settings[settings].hide('slow');
@@ -42,7 +43,6 @@ function go_toggle_settings_rows(stage_settings, condensed, number) {
 				for (settings in stage_settings_rows[i]) {
 					if (stage_settings_rows[i][settings] != null) {
 					stage_settings_rows[i][settings].hide('slow');
-					
 					}
 				}
 			}
@@ -292,7 +292,7 @@ function toggle_admin_lock(accordion, stage) {
 				}
 			} else {
 				if (jQuery('#go_mta_'+stage+'_admin_lock_input').is(':visible')) {
-					jQuery('#go_mta_'+stage+'_admin_lock_input').hide();
+					jQuery('#go_mta_'+stage+'_admin_lock_input').hide('slow');
 				}
 			}
 		} else {
