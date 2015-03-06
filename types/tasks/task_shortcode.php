@@ -15,7 +15,7 @@ function go_task_shortcode($atts, $content = null) {
 	$page_id = get_the_ID();
 	if ($id && !empty($user_ID)) { // If the shortcode has an attribute called id, run this code
 		$today = date('Y-m-d');
-		$task_name = go_return_options('go_tasks_name');
+		$task_name = strtolower(go_return_options('go_tasks_name'));
 		$custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
 		$rewards = unserialize($custom_fields['go_presets'][0]);
 		$mastery_active = !$custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
@@ -206,7 +206,7 @@ function go_task_shortcode($atts, $content = null) {
 				// If current date in loop is in the past, add its key to the array of date modifiers
 				$english_date = date("D, F j, Y", strtotime($date));
 				$correct_time = date("g:i A", strtotime($times[$key]));
-				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'> ".ucfirst($task_opt_name)."</span><br/> After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[$key]}%.</span>";
+				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst($task_name).":</span><br/> After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[$key]}%.</span>";
 				if ($unix_now >= (strtotime($date) + strtotime($times[$key], 0))) {
 					$past_dates[$key] = abs($unix_now - strtotime($date));
 				}
@@ -217,7 +217,7 @@ function go_task_shortcode($atts, $content = null) {
 				// Sorts array from least to greatest
 				// Should pust most recent PAST date as first key in array, making grabbing the percentage associated with that day easy
 				asort($past_dates);
-				$update_percent = (float)(($percentages[key($past_dates)])/100);
+				$update_percent = (float)((100 - $percentages[key($past_dates)])/100);
 			} else {
 				$update_percent = 1;	
 			}
@@ -251,15 +251,13 @@ function go_task_shortcode($atts, $content = null) {
 			} else {
 				$future_update_percent = 1;
 			}
-			if ($status < 2 && empty($accept_timestamp)) {
-				$task_opt_name = strtolower(go_return_options('go_tasks_name'));
+			if ($status < 3) {
 				$time_string = ((!empty($days)) ? "{$days} day".(($days > 1) ? "s" : "").((!empty($hours) || !empty($minutes) || !empty($seconds)) ? ", " : "") : ""). 
 							   ((!empty($hours)) ? "{$hours} hour".(($hours > 1) ? "s" : "").((!empty($minutes) || !empty($seconds)) ? ", " : "") : "").
 							   ((!empty($minutes)) ? "{$minutes} minute".(($minutes > 1) ? "s" : "").((!empty($seconds)) ? ", " : "") : "").
 							   ((!empty($seconds)) ? "{$seconds} second".(($seconds > 1) ? "s" : "") : "");
-				
-				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Timed ".ucfirst($task_opt_name).":</span><br/> After accepting you will have {$time_string} to ".strtolower(go_return_options('go_third_stage_button'))." the {$task_opt_name} or the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
 			}
+			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst($task_name).":</span><br/> After accepting you will have {$time_string} to ".strtolower(go_return_options('go_third_stage_button'))." the {$task_name} or the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
 		} else {
 			$future_update_percent = 1;
 		}
@@ -317,10 +315,20 @@ function go_task_shortcode($atts, $content = null) {
 			<script type="text/javascript">
 				var timers = [];
 				jQuery(".entry-title").after(jQuery(".go_task_rewards"));
-				<?php if ($update_percent != 1 && $future_switches['future'] == 'on') {?>
+				<?php 
+					if ($update_percent != 1 && $future_switches['future'] == 'on') {
+					?>
 						jQuery("#go_stage_3_points").addClass("go_updated");
 						jQuery("#go_stage_3_currency").addClass("go_updated");
-				<?php } ?>
+					<?php 
+					} 
+					if ($status >= 3 && $future_switches['future'] == 'on') {
+						?>
+							jQuery('#go_future_notification').hide();
+						<?php	
+					}	
+				?>
+				
 				if (jQuery('#go_task_timer').length) {
 					jQuery('.go_task_rewards').after(jQuery('#go_task_timer'));
 				}
@@ -1274,7 +1282,6 @@ function go_task_shortcode($atts, $content = null) {
 							flash_error_msg('#go_stage_error_msg');
 						}
 					} else {
-						jQuery('#go_future_notification').remove();
 						jQuery('#go_content').html(html);
 						jQuery('#go_admin_bar_progress_bar').css({"background-color": color});
 						jQuery("#new_content").css("display", "none");
@@ -1883,6 +1890,7 @@ function task_change_stage() {
 		} else if ($status > 2) {
 			?>
           	<script type='text/javascript'>
+				jQuery('#go_future_notification').hide();
 				jQuery('#go_task_timer').remove();
 			</script>
             <?php	
@@ -2352,8 +2360,8 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 					break;
 			}
 			$stage = $i + 1;
-			$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>".((!empty($mod_array[0]) && !empty($p_name)) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
-				" ".((!empty($mod_array[1]) && !empty($c_name)) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
+			$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>".(((!empty($mod_array[0]) || !empty($p_array[$i])) && !empty($p_name)) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '').
+				" ".(((!empty($mod_array[1]) || !empty($c_array[$i])) && !empty($c_name)) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '').
 				" ".((!empty($bc) && !empty($bc_name)) ? "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}" : '').
 				"</span><br/>";
 			if ($update_percent == 0 && $stage == 3) {
@@ -2475,6 +2483,11 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 					window.location.reload();
 				}
 			});
+			
+			if(!jQuery('#go_future_notification').is(':visible')){
+				jQuery('#go_future_notification').show();
+			}
+			
 			go_task_timer (<?php echo $countdown; ?>);
 		});
 	</script>
