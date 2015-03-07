@@ -217,7 +217,7 @@ function go_task_shortcode($atts, $content = null) {
 				// Sorts array from least to greatest
 				// Should pust most recent PAST date as first key in array, making grabbing the percentage associated with that day easy
 				asort($past_dates);
-				$update_percent = (float)(($percentages[key($past_dates)])/100);
+				$update_percent = (float)((100 -$percentages[key($past_dates)])/100);
 			} else {
 				$update_percent = 1;	
 			}
