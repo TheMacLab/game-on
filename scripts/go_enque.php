@@ -15,7 +15,6 @@ function go_jquery() {
 	wp_enqueue_script( 'go_notification', plugin_dir_url(__FILE__).'go_notification.js');
 	wp_enqueue_script( 'go_everypage', plugin_dir_url(__FILE__).'go_everypage.js');
 	wp_localize_script( 'go_everypage', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-	wp_enqueue_script( 'go_css_pie', plugin_dir_url(__FILE__).'CSSpie.js');
 	wp_enqueue_script('video', plugin_dir_url(__FILE__).'/video-js/video.js');
 	wp_enqueue_style('video-js', plugin_dir_url(__FILE__).'/video-js/video-js.css');
 	wp_enqueue_script('jquery-ui-progressbar');

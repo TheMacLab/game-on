@@ -9,7 +9,7 @@ function task_edit_jquery() {
 	$custom = get_post_custom(get_the_id());
 ?>
 <script type="text/javascript">
-
+console.log("<?php echo plugin_dir_url(__FILE__);?>");
 
 jQuery('.go_reward_points, .go_reward_currency, .go_reward_bonus_currency').on('keyup', function(){
 	var reward_stage = jQuery(this).attr('stage');
@@ -231,11 +231,24 @@ jQuery('#go_future_checkbox').click(function () {
 });
 
 var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-jQuery(document).ready(function(){
-	if(!is_chrome){
-		if(jQuery('input.go_datepicker').length){
-			jQuery('input.go_datepicker').each( function () {
-				jQuery(this).datepicker({dateFormat: "yy-mm-dd"});
+jQuery( document ).ready( function(){
+	if( !is_chrome ){
+		if ( jQuery( 'input.go_datepicker' ).length ){
+			jQuery( 'input.go_datepicker' ).each( function () {
+				jQuery( this ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+		}
+		<?php 
+		wp_enqueue_style('ptTimeSelectCSS', plugin_dir_url(__FILE__).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.css');
+		wp_enqueue_script('ptTimeSelectJS', plugin_dir_url(__FILE__).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.js');
+		?>
+		if ( jQuery('input.custom_time').length ) {
+			jQuery('input.custom_time').each( function () {
+				jQuery( this ).ptTimeSelect();
+				var time = jQuery( this ).val();
+				var hour = (((parseInt(time) - 12) >= 10) ? time.substring( 0, time.search( ':' ) ): '0' + (parseInt(time.substring( 0, time.search( ':' ))) - 12));
+				console.log(hour);
+				jQuery( this ).html( hour );
 			});
 		}
 	}

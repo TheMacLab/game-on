@@ -731,6 +731,11 @@ function go_validate_decay_table() {
 		$times_f = array_filter($times);
 		$percentages_f = array_filter($percentages);
 		
+		foreach ($times_f as $key => $time) {
+			if (strpos($time, 'PM') !== false) {
+				$times_f[ $key ] = intval( substr( $time, 0, strpos( $time, ':' ) ) + 12 ).':'.substr( $time, strpos ( $time, ':' ), strpos( $time, ':' ) + 1);
+			}
+		}
 		
 		$new_dates = array_intersect_key($dates_f, $times_f, $percentages_f);
 		$new_times = array_intersect_key($times_f, $percentages_f, $times_f);
