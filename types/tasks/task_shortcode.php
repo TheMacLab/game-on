@@ -2454,6 +2454,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 					var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))) : (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
 					jQuery('#go_task_timer').html(days + ':' +hours + ':' + minutes + ':' + seconds);
 				} else {
+					
 					clearInterval(timer);
 					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
 					if (percentage != 0) {
