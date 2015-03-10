@@ -374,6 +374,7 @@ function barColor ($current_bonus_currency, $current_penalty) {
 	$bonus_threshold = (int)get_option('go_multiplier_threshold', 10);
 	$penalty_threshold = (int)get_option('go_penalty_threshold', 5);
 	$current_penatly = (int)$current_penalty;
+	$color = "#39b54a";
 	if ($current_bonus_currency >= $bonus_threshold && $current_penatly <= $penalty_threshold) {
 		$color = "#1E90FF";
 	}
@@ -389,6 +390,7 @@ function barColor ($current_bonus_currency, $current_penalty) {
 	if ($current_penatly >= $penalty_threshold * 4) {
 		$color = "#464646";
 	}
+
 	return $color;
 }
 
