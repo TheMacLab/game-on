@@ -53,7 +53,7 @@ function go_admin_bar_stats () {
 				<div id="go_stats_progress_text_wrap">
 					<div id='go_stats_progress_text'><?php echo "<span id='go_stats_user_progress_top_value'>{$display_current_rank_points}</span>/<span id='go_stats_user_progress_bottom_value'>{$display_next_rank_points}</span>";?></div>
 				</div>
-				<div id='go_stats_progress_fill' style='width: <?php echo $percentage_of_level;?>%;<?php $color = barColor($current_bonus_currency); echo "background-color: {$color}";if($percentage_of_level >= 98){echo "border-radius: 15px";}?>'></div>
+				<div id='go_stats_progress_fill' style='width: <?php echo $percentage_of_level;?>%;<?php $color = barColor($current_bonus_currency, $current_penalty); echo "background-color: {$color}";if($percentage_of_level >= 98){echo "border-radius: 15px";}?>'></div>
 			</div>
             <?php if (go_return_options('go_focus_switch') == 'On') {?>
             <div id='go_stats_user_focuses'><?php echo ((!empty($user_focuses))?$user_focuses:'');?></div>

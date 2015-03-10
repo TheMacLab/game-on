@@ -3,35 +3,35 @@
 function go_return_currency($user_id){
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$currency = (int)$wpdb->get_var("select currency from ".$table_name_go_totals." where uid = $user_id");
+	$currency = (int)$wpdb->get_var("SELECT currency FROM ".$table_name_go_totals." WHERE uid = $user_id");
 	return $currency;
 }
 	
 function go_return_points($user_id){
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$points = (int)$wpdb->get_var("select points from ".$table_name_go_totals." where uid = $user_id");
+	$points = (int)$wpdb->get_var("SELECT points FROM ".$table_name_go_totals." WHERE uid = $user_id");
 	return $points;
 }
 
 function go_return_bonus_currency($user_id){
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$bonus_currency = (int)$wpdb->get_var("select bonus_currency from ".$table_name_go_totals." where uid = $user_id");
+	$bonus_currency = (int)$wpdb->get_var("SELECT bonus_currency FROM ".$table_name_go_totals." WHERE uid = $user_id");
 	return $bonus_currency;
 }
 
 function go_return_penalty($user_id){
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$penalty = (int)$wpdb->get_var("select penalty from ".$table_name_go_totals." where uid = $user_id");
+	$penalty = (int)$wpdb->get_var("SELECT penalty FROM ".$table_name_go_totals." WHERE uid = $user_id");
 	return $penalty;
 }
 
 function go_return_minutes($user_id){
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$minutes = (int)$wpdb->get_var("select minutes from ".$table_name_go_totals." where uid = $user_id");
+	$minutes = (int)$wpdb->get_var("SELECT minutes FROM ".$table_name_go_totals." WHERE uid = $user_id");
 	return $minutes;
 }
 
@@ -106,7 +106,7 @@ function go_return_badge_count($user_id){
 	return $badge_count;
 }
 
-// Optionally returns user's correct current rank name from the go_ranks option, based on user's current points.
+// Optionally returns user's correct current rank name FROM the go_ranks option, based on user's current points.
 // Updates current_rank global regardless.
 function go_return_clean_rank($user_id, $return_rank = true) {
 	if (!empty($user_id)) {
