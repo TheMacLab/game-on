@@ -163,6 +163,11 @@ table.pretty tbody td {
 	background: #F4F4F4;
 }
 
+table.pretty tbody td.message {
+	text-align: left;
+	background: #F4F4F4;
+}
+
 table.pretty tbody tr.odd td { 
 	background: #F4F4F4;
 }
