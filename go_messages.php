@@ -97,7 +97,8 @@ function go_mark_read () {
 }
 
 function go_message_user ($user_id, $message) {
-	$timestamp = strtotime(time());
+	date_default_timezone_set('America/Los_Angeles');
+	$timestamp = time();
 	$current_messages = get_user_meta($user_id, 'go_admin_messages',true);
 	$current_messages[1][$timestamp] = array($message, 1);
 	$is_admin = false;
