@@ -111,7 +111,7 @@ function go_admin_bar(){
 				'id' => 'go_add',
 			));
 			
-			if (go_return_options('go_admin_bar_add_minutes_switch') != 'On'){
+			if (go_return_options('go_admin_bar_add_minutes_switch') != 'On' || $role === 'administrator'){
 			
 				$wp_admin_bar->add_node( array(
 					'title' => 
