@@ -38,7 +38,6 @@ function register_cpt_task() {
         'rewrite' => true ,
         'capability_type' => 'post'
     );
-	
     register_post_type( 'tasks', $args );
 }
 

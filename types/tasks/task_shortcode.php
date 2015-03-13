@@ -696,6 +696,7 @@ function go_task_shortcode($atts, $content = null) {
 				}
 				if (get_post_type() == 'tasks') {
 					comments_template();
+					wp_list_comments();
 				}
 			} else {
 				if (($current_bonus_currency < $bonus_currency_required && !empty($bonus_currency_required)) && ($current_penalty > $penalty_filter && !empty($penalty_filter))) {
