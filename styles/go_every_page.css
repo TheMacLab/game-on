@@ -555,3 +555,7 @@ input#go_pass_lock:-moz-placeholder {
 	z-index: 999999;
 	padding: 10px 10px 10px 10px;
 }
+
+li.comment {
+    list-style: none;
+}
