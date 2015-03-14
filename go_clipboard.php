@@ -226,7 +226,6 @@ function go_clipboard_intable_messages () {
 		$user_last_name =  $user_data_key->user_lastname;
 		$user_url =  $user_data_key->user_url;
 		$array_count = count($messages);
-		error_log(serialize($class_a_messages));
 		if (!empty($class_a_messages[$class_a_choice_messages])) {
 			for ($i = $array_count - 1; $i >= 0; $i--) {
 				echo "<tr id='user_{$value}'>
@@ -236,18 +235,20 @@ function go_clipboard_intable_messages () {
 					<td>{$user_display}</td>
 					<td>{$messages[$i][time]}</td>
 					<td class='message'>{$messages[$i][message]}</td>
-				  </tr>";
+				  	</tr>";
 			}
-		} else {
-			for ($i = $array_count - 1; $i >= 0; $i--) {
-				echo "<tr id='user_{$value}'>
-					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
-					<td>{$class_a_messages[$class_a_choice_messages]}</td>
-					<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
-					<td>{$user_display}</td>
-					<td>{$messages[$i][time]}</td>
-					<td class='message'>{$messages[$i][message]}</td>
-				  </tr>";
+		}  else if ($class_a_choice_messages == 'All') {
+			foreach ($class_a_messages as $computer) {
+				for ($i = $array_count - 1; $i >= 0; $i--) {
+					echo "<tr id='user_{$value}'>
+						<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
+						<td>{$computer}</td>
+						<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
+						<td>{$user_display}</td>
+						<td>{$messages[$i][time]}</td>
+						<td class='message'>{$messages[$i][message]}</td>
+					 	</tr>";
+				}
 			}
 		}
 	}
