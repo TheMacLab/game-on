@@ -248,12 +248,13 @@ function go_clipboard_class_a_choice_messages () {
 		},
 		success: function(html){
 			jQuery('#go_clipboard_messages_body').html('');
-			var oTable = jQuery('#go_clipboard_table').dataTable();
+			var oTable = jQuery('#go_clipboard_messages').dataTable();
 			oTable.fnDestroy();
 			jQuery('#go_clipboard_messages_body').html(html);
 			jQuery('#go_clipboard_messages').dataTable( {
-				'bPaginate': false,
-				"aaSorting": [[1, "asc"]]
+				"bPaginate": false,
+				"aaSorting": [[1, "asc"]],
+				"destroy": true
 			});
 		}
 	});

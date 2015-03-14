@@ -65,7 +65,7 @@ function go_clipboard_menu() {
                             <th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?></a></th>
                         </tr>
                     </thead>
-                <tbody id="go_clipboard_table_body"></tbody>
+                	<tbody id="go_clipboard_table_body"></tbody>
                 </table>
 			</div>
 		</div>
