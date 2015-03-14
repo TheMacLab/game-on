@@ -136,6 +136,10 @@ html[xmlns] .dataTables_wrapper {
 table.pretty {
 	width: 100% !important;
 	clear: both;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
 }
 
 table.pretty td,

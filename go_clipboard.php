@@ -84,13 +84,12 @@ function go_clipboard_menu() {
         <table id="go_clipboard_messages" class="pretty">
         	<thead>
             	<tr>
-                	<th><input type="checkbox" onClick="go_toggle(this);" /></th>
-                    <th class="header"><a href="#" >ID</a></th>
-                    <th class="header"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
-                    <th class="header"><a href="#" >Student Name</a></th>
-                    <th class="header"><a href="#" >Display Name</a></th>
-                    <th class="header" width="50%"><a href="#" >Message</a></th>
-                    <th class="header"><a href="#" >Date</a></th>
+                    <th class="header" width="5%" id="messages_id"><a href="#" >ID</a></th>
+                    <th class="header" width="5%" id="messages_computer"><a href="#"><?php echo go_return_options('go_class_b_name'); ?></a></th>
+                    <th class="header" width="6.5%" id="messages_student"><a href="#">Student Name</a></th>
+                    <th class="header" width="6.5%" id="messages_display"><a href="#">Display Name</a></th>
+                    <th class="header" width="6%" id="messages_date"><a href="#">Date</a></th>
+                    <th class="header" id="messages_message"><a href="#">Message</a></th>
                 </tr>
             </thead>
             <tbody id="go_clipboard_messages_body"></tbody>
@@ -229,13 +228,12 @@ function go_clipboard_intable_messages () {
 		if (!empty($class_a_messages[$class_a_choice_messages])) {
 			for ($i = $array_count - 1; $i >= 0; $i--) {
 				echo "<tr id='user_{$value}'>
-					<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'/></td>
-					<td>{$user_login}</td>
+					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
 					<td>{$class_a_messages[$class_a_choice_messages]}</td>
 					<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
 					<td>{$user_display}</td>
-					<td class='message'>{$messages[$i][message]}</td>
 					<td>{$messages[$i][time]}</td>
+					<td class='message'>{$messages[$i][message]}</td>
 				  </tr>";
 			}
 		}
