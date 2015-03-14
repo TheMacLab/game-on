@@ -27,7 +27,7 @@ function go_admin_bar(){
 	$percentage = $rng/$dom*100;
 	if($percentage <= 0){ $percentage = 0;} else if($percentage >= 100){$percentage = 100;}
 	
-	$color = barColor($current_bonus_currency);
+	$color = barColor($current_bonus_currency, $current_penalty);
 	
 	$wp_admin_bar->remove_menu('wp-logo');
 	

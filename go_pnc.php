@@ -223,7 +223,9 @@ function go_notify ($type, $points = '', $currency = '', $bonus_currency = '', $
 function go_update_admin_bar ($type, $title, $value, $status = null) {
 	global $next_rank_points;
 	global $current_rank_points;
-	
+	$current_bonus_currency = go_return_bonus_currency(get_current_user_id());
+		$current_penatly = go_return_penalty(get_current_user_id());
+		$color = barColor($current_bonus_currency, $current_penatly);
 	if ($type == 'points') {
 		$display = go_display_points($value); 
 		$rng = ($current_rank_points -$value) * -1;
@@ -237,8 +239,6 @@ function go_update_admin_bar ($type, $title, $value, $status = null) {
 		$display = go_display_currency($value);
 	} else if ($type == 'bonus_currency') { 
 		$display = go_display_bonus_currency($value);
-		$current_bonus_currency = go_return_bonus_currency(get_current_user_id());
-		$color = barColor($current_bonus_currency);
 	} else if ($type == 'penalty') {
 		$display = go_display_penalty($value);
 	} else if ($type == 'minutes') {
@@ -370,31 +370,27 @@ function go_return_options ($option) {
 	}
 }
 
-function barColor ($current_bonus_currency) {
-	$color = '#00c100';
-	switch ($current_bonus_currency) {
-		case inRange($current_bonus_currency, 0, PHP_INT_MAX):
-			$color = '#00c100';
-			return $color; 
-			break;
-		case inRange($current_bonus_currency, -301, -1):
-			$color = '#ffe400';
-			return $color;
-			break;
-		case inRange($current_bonus_currency, -601, -300):
-			$color = '#ff6700';
-			return $color;
-			break;
-		case inRange($current_bonus_currency, -901, -600):
-			$color = '#cc0000';
-			return $color;
-			break;
-		case inRange($current_bonus_currency, -PHP_INT_MAX, -900):
-			$color = '#464646';
-			return $color;
-			break;
-	} 
-	
+function barColor ($current_bonus_currency, $current_penalty) {
+	$bonus_threshold = (int)get_option('go_multiplier_threshold', 10);
+	$penalty_threshold = (int)get_option('go_penalty_threshold', 5);
+	$current_penatly = (int)$current_penalty;
+	$color = "#39b54a";
+	if ($current_bonus_currency >= $bonus_threshold && $current_penatly <= $penalty_threshold) {
+		$color = "#1E90FF";
+	}
+	if ($current_penatly >= $penalty_threshold) {
+		$color = "#ffcc00";
+	}
+	if ($current_penatly >= $penalty_threshold * 2) {
+		$color = "#ff6700";
+	}
+	if ($current_penatly >= $penalty_threshold * 3) {
+		$color = "#ff0000";
+	}
+	if ($current_penatly >= $penalty_threshold * 4) {
+		$color = "#464646";
+	}
+
 	return $color;
 }
 

@@ -6,7 +6,7 @@ function go_messages_bar () {
 	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages', true);
 		$msg_count = intval($mesages[0]);
 		if ($messages[0] > 0) {
-			$style = 'background: red;';
+			$style = 'background: #ff0000;';
 			if ($messages[0] == 1) {
 				$wp_admin_bar->add_menu( array(
 					'title' => 'New message from admin',
