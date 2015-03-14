@@ -1915,7 +1915,7 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, $status, 
 				-floor(($update_percent * $points_array[$status])), 
 				-floor(($update_percent * $currency_array[$status])), 
-				-floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
@@ -1942,7 +1942,7 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, ($status - 1), 
 				-floor(($update_percent * $points_array[$status - 1])), 
 				-floor(($update_percent * $currency_array[$status - 1])), 
-				-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
@@ -2432,6 +2432,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 	$percentage = $future_modifier['percentage'];
 	$future_time = (!empty($accept_timestamp)) ? strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $accept_timestamp : strtotime("{$days} days", 0) + strtotime("{$hours} hours", 0) + strtotime("{$minutes} minutes", 0) + strtotime("{$seconds} seconds", 0) + $unix_now;
 	$countdown = $future_time - $unix_now;
+	$sounded_array = (array) get_user_meta( $user_id, 'go_sounded_tasks', true );
 	?>	
     <div id='go_task_timer'></div>
 	<script type='text/javascript'>
@@ -2441,11 +2442,13 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			var countdown = <?php echo $countdown;?>;
 			var before = <?php echo $future_time?>;
 			var percentage = <?php echo 100 - $percentage; ?>/100;
+			var sounded = <?php echo (($sounded_array[ $task_id ])? 'true' :'false'); ?>;
 			jQuery(window).focus(function () {
 				clearInterval(timer);
 				timer = setInterval(go_task_timer, 1000);
 				timers.push(timer);
 				var now = new Date();
+				var sounded = <?php echo (($sounded_array[ $task_id ])? 'true' :'false'); ?>;
 				countdown = Math.floor(before - (now.getTime()/1000) + (now.getTimezoneOffset() * 60));
 			});
 			for (i = 0; i < timers.length - 1; i++){
@@ -2462,7 +2465,16 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 					var seconds = (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60))) < 10 ? ("0" + (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)))) : (countdown - ((days * 86400) + (hours * 3600) + (minutes * 60)));
 					jQuery('#go_task_timer').html(days + ':' +hours + ':' + minutes + ':' + seconds);
 				} else {
+					
 					clearInterval(timer);
+					if ( sounded === false) {
+						go_sounds('timer');
+					} else {
+						<?php
+							$sounded_array[$task_id] = true;
+							update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array);
+						?>
+					}
 					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
 					if (percentage != 0) {
 						if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {

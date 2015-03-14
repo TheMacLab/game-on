@@ -11,6 +11,16 @@ function go_deactivate_plugin () {
 	});	
 }
 
+function go_sounds (type) {
+    if (type == 'store') {
+        var audio = new Audio(PluginDir["url"] + 'media/gold.mp3');
+        audio.play();
+    } else if (type == 'timer') {
+    	var audio = new Audio(PluginDir["url"] + 'media/airhorn.mp3');
+        audio.play();
+    }
+}
+
 function hideVid () {
 	if (jQuery('#go_option_help_video').length) {
 		myplayer = videojs('go_option_help_video');

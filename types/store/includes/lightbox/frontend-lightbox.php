@@ -182,7 +182,7 @@ function go_the_lb_ajax(){
 	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options('go_bonus_currency_name').': '.(empty($req_bonus_currency) ? 0 : ($req_bonus_currency < 0 ? $output_bonus_currency : $req_bonus_currency)); ?></div>
     <div id='golb-fr-penalty' class='golb-fr-boxes-<?php echo $penalty_color; ?>' req='<?php echo $req_penalty; ?>' cur='<?php echo $user_penalties; ?>'><?php echo go_return_options('go_penalty_name').': '.(empty($req_penalty) ? 0 : ($req_penalty < 0 ? $output_penalty : $req_penalty));?></div>
     <div id="golb-fr-minutes" class="golb-fr-boxes-<?php echo $minutes_color; ?>" req="<?php echo $req_minutes; ?>" cur="<?php echo $user_minutes; ?>"><?php echo go_return_options('go_minutes_name').': '.(empty($req_minutes) ? 0 : ($req_minutes < 0 ? $output_minutes : $req_minutes)); ?></div>
-	<?
+	<?php
 	if ($is_unpurchasable != 'on') {
 		?>
 		<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
@@ -196,12 +196,12 @@ function go_the_lb_ajax(){
 			echo "Quantity purchased: {$purchase_count}";
 		} 
 	}
-	 if(!$item_focus && !$penalty && $is_giftable == "on"){?>
+	 if(!$item_focus && !$penalty && $is_giftable == "on"){
+	 ?>
  		<br />
 		Gift this item <input type='checkbox' id='go_toggle_gift_fields'/>
         <div id="go_recipient_wrap" class="golb-fr-boxes-giftable">Gift To: <input id="go_recipient" type="text"/></div>
-        <div id="go_search_results"></div>
-        
+        <div id="go_search_results"></div> 
      <script>   
 		var go_gift_check_box = jQuery("#go_toggle_gift_fields");
 		var go_gift_text_box = jQuery("#go_recipient_wrap");

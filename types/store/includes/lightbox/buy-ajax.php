@@ -17,7 +17,7 @@ function go_buy_item() {
     $post_id = $_POST["the_id"];
 	$qty = $_POST['qty'];
 	$current_purchase_count = $_POST['purchase_count'];
-
+	
 	if (isset($_POST['recipient']) && !empty($_POST['recipient']) && $_POST['recipient'] != '') {
 		$recipient = $_POST['recipient'];
 		$recipient_id = $wpdb->get_var('SELECT id FROM '.$wpdb->users.' WHERE display_name="'.$recipient.'"'); 
