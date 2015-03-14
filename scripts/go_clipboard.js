@@ -5,19 +5,19 @@ jQuery(document).ready( function () {
 	});
 	go_update_graph();
 });
-function go_toggle (source){
+function go_toggle (source) {
 	checkboxes = jQuery('.go_checkbox');
 	for(var i=0, n=checkboxes.length;i<n;i++) {
 		checkboxes[i].checked = source.checked;
 	}
 }
-function analysis_toggle (source){
+function analysis_toggle (source) {
 	checkboxes = jQuery('#choices input');
 	for (var i=0, n=checkboxes.length; i<n; i++) {
 		checkboxes[i].checked = source.checked;
 	}
 }
-function go_graphs (datasets){
+function go_graphs (datasets) {
 	// hard-code color indices to prevent them from shifting as
 	// countries are turned on/off
 	jQuery('#placeholder').empty();
@@ -217,7 +217,7 @@ function go_select_all_from_class(el, class_a){
 	}
 }
 
-function go_clipboard_class_a_choice(){
+function go_clipboard_class_a_choice () {
 	jQuery.ajax({
 		type: "post",
 		url: MyAjax.ajaxurl,
@@ -229,10 +229,32 @@ function go_clipboard_class_a_choice(){
 			jQuery('#go_clipboard_table_body').html('');
 			var oTable = jQuery('#go_clipboard_table').dataTable();
 			oTable.fnDestroy();
-			jQuery('#go_clipboard_table_body').html(html);	
+			jQuery('#go_clipboard_table_body').html(html);
 			jQuery('#go_clipboard_table').dataTable( {
 				"bPaginate": false,
-				"aaSorting": [[2, "asc" ]]
+				"aaSorting": [[2, "asc"]]
+			});
+		}
+	});
+}
+
+function go_clipboard_class_a_choice_messages () {
+	jQuery.ajax({
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: { 
+			action: 'go_clipboard_intable_messages',
+			go_clipboard_class_a_choice_messages: jQuery('#go_clipboard_class_a_choice_messages').val()
+		},
+		success: function(html){
+			jQuery('#go_clipboard_messages_body').html('');
+			var oTable = jQuery('#go_clipboard_messages').dataTable();
+			oTable.fnDestroy();
+			jQuery('#go_clipboard_messages_body').html(html);
+			jQuery('#go_clipboard_messages').dataTable( {
+				"bPaginate": false,
+				"aaSorting": [[1, "asc"]],
+				"destroy": true
 			});
 		}
 	});
@@ -248,7 +270,7 @@ function go_user_focus_change (user_id,element) {
 			user_id: user_id
 		},
 		success: function(response) {
-			console.log(response);
+			//console.log(response);
 		}
 	});
 }
@@ -362,6 +384,7 @@ function go_update_script_day(){
 		},
 	});
 }
+
 
 	/*
  * File:        jquery.dataTables.min.js
