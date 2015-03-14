@@ -739,7 +739,7 @@ function go_validate_decay_table() {
 				}
 				$times_f[ $key ] = str_replace( 'PM', '', $times_f[ $key ] ); // remove PM from the string
 			} else if ( strpos( $time, 'AM' ) !== false ) {
-				if ( $hour > 10 ) {
+				if ( $hour < 10 ) {
 					$times_f[ $key ] = '0' . $times_f[ $key ];
 				}
 				$times_f[ $key ] = str_replace( 'AM', '', $times_f[ $key ] );
