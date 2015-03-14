@@ -732,9 +732,19 @@ function go_validate_decay_table() {
 		$percentages_f = array_filter($percentages);
 		
 		foreach ($times_f as $key => $time) {
-			if (strpos($time, 'PM') !== false) {
-				$times_f[ $key ] = intval( substr( $time, 0, strpos( $time, ':' ) ) + 12 ).':'.substr( $time, strpos ( $time, ':' ), strpos( $time, ':' ) + 1);
+			$hour = intval( substr( $time, 0, strpos( $time, ':' ) ) );
+			if (strpos($time, 'PM') !== false) { // check if PM is in the saved string
+				if ( $hour < 12 ) { // check if the hour is less than 12
+					$times_f[ $key ] = ($hour + 12).substr( $time, strpos ( $time, ':' ), strpos( $time, ':' ) + 2); // set the time saved to be the correct 24-hour representation
+				}
+				$times_f[ $key ] = str_replace( 'PM', '', $times_f[ $key ] ); // remove PM from the string
+			} else if ( strpos( $time, 'AM' ) !== false ) {
+				if ( $hour > 10 ) {
+					$times_f[ $key ] = '0' . $times_f[ $key ];
+				}
+				$times_f[ $key ] = str_replace( 'AM', '', $times_f[ $key ] );
 			}
+			$times_f[ $key ] = trim( $times_f[ $key ] );
 		}
 		
 		$new_dates = array_intersect_key($dates_f, $times_f, $percentages_f);

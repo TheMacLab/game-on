@@ -275,11 +275,12 @@ jQuery( document ).ready( function(){
 		if ( jQuery('input.custom_time').length ) {
 			jQuery('input.custom_time').each( function () {
 				jQuery( this ).ptTimeSelect();
-				var time = jQuery( this ).attr('value');
-				console.log(parseInt(time.substring( 0, time.search( ':' ))));
-				var hour = (((parseInt(time.substring( 0, time.search( ':' ))) - 12) >= 10) ? time.substring( 0, time.search( ':' ) ): '0' + (parseInt(time.substring( 0, time.search( ':' ))) - 12));
-				console.log(hour);
-				jQuery( this ).text( 'what' );
+				var timer = jQuery( this ).val();
+				var ampm = (( parseInt(timer.substring( 0, timer.search( ':' ))) < 12 ) ? 'AM' : 'PM' );
+				var hour = parseInt(timer.substring( 0, timer.search( ':' )));
+				var minutes = timer.substring(timer.search(':'), timer.length);
+				var hour_pretty = (( ampm == 'PM' && hour != 12) ? (( hour - 12 >= 10 ) ? hour - 12 : '0' + hour - 12 ) : hour);
+				jQuery( this ).val( hour_pretty + minutes + ' ' + ampm );
 			});
 		}
 	}
