@@ -21,13 +21,54 @@ jQuery('.go_task_settings_accordion').click(function(){
 	jQuery(this).children('.go_triangle_container').children('.go_task_accordion_triangle').toggleClass('down');
 });
 
-function go_toggle_settings_rows(stage_settings, condensed) {
+function go_toggle_settings_rows(stage_settings, condensed, number) {
 	condensed = typeof condensed !== 'undefined' ? condensed : false;
 	for(setting in stage_settings){
 		if(condensed === true){
 			stage_settings[setting].addClass('condensed').children().addClass('condensed');
 		}
 		stage_settings[setting].toggle('slow');
+	}
+	if (number) {
+		for (i = 1; i < 6; i++) {
+			if (i == number) {	
+				continue;
+			}
+				stage_accordions[i].removeClass("opened");
+				if (stage_settings != task_settings) {
+					jQuery("#go_advanced_task_settings_accordion").removeClass("opened");
+				}
+			if (jQuery('#go_calendar_checkbox').prop('checked') && jQuery("#go_advanced_task_settings_accordion").hasClass('opened')) {
+				calendar_row.show('slow');
+				future_row.hide();
+			} else {
+				calendar_row.hide('slow');
+				future_row.hide();
+			}
+			if (jQuery('#go_future_checkbox').prop('checked') && jQuery("#go_advanced_task_settings_accordion").hasClass('opened')) {
+				future_row.show('slow');
+				calendar_row.hide();
+			} else {
+				future_row.hide('slow');
+				calendar_row.hide();
+			}
+			if (stage_settings != task_settings){
+				for (settings in task_settings) {
+					task_settings[settings].hide('slow');
+				}
+			} else {
+				for (settings in stage_settings_rows[i]) {
+					if (stage_settings_rows[i][settings] != null) {
+					stage_settings_rows[i][settings].hide('slow');
+					}
+				}
+			}
+			for (settings in stage_settings_rows[i]) {
+				if (stage_settings_rows[i][settings] != null) {
+					stage_settings_rows[i][settings].hide('slow');
+				}
+			}
+		}
 	}
 }
 
@@ -167,7 +208,7 @@ var is_final_task =
 
 jQuery('#go_advanced_task_settings_accordion').click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(task_settings, true);
+	go_toggle_settings_rows(task_settings, true, 6);
 	if (in_chain && jQuery(this).hasClass('opened')) {
 		jQuery('tr.cmb-type-go_pick_order_of_chain.cmb_id_go_mta_chain_order').show('slow');
 		if (is_final_task) {
@@ -185,18 +226,7 @@ jQuery('#go_advanced_task_settings_accordion').click(function(){
 			jQuery('tr.cmb-type-text.cmb_id_go_mta_final_chain_message').hide();
 		}
 	}
-	if (jQuery('#go_calendar_checkbox').prop('checked') && jQuery(this).hasClass('opened')) {
-		calendar_row.show('slow');
-		future_row.hide();
-	} else {
-		calendar_row.hide('slow');
-	}
-	if (jQuery('#go_future_checkbox').prop('checked') && jQuery(this).hasClass('opened')) {
-		future_row.show('slow');
-		calendar_row.hide();
-	} else {
-		future_row.hide('slow');
-	}
+	
 });
 
 ////////////////////////////////////
@@ -268,7 +298,7 @@ function toggle_admin_lock(accordion, stage) {
 				}
 			} else {
 				if (jQuery('#go_mta_'+stage+'_admin_lock_input').is(':visible')) {
-					jQuery('#go_mta_'+stage+'_admin_lock_input').hide();
+					jQuery('#go_mta_'+stage+'_admin_lock_input').hide('slow');
 				}
 			}
 		} else {
@@ -443,7 +473,7 @@ go_toggle_settings_rows(stage_settings_rows[1]);
 
 stage_accordions[1].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[1], true);
+	go_toggle_settings_rows(stage_settings_rows[1], true, 1);
 	toggle_admin_lock(stage_accordions[1], 'encounter');
 	toggle_tests(stage_accordions[1], 'encounter');
 });
@@ -456,7 +486,7 @@ go_toggle_settings_rows(stage_settings_rows[2]);
 
 stage_accordions[2].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[2], true);
+	go_toggle_settings_rows(stage_settings_rows[2], true, 2);
 	toggle_admin_lock(stage_accordions[2], 'accept');
 	toggle_tests(stage_accordions[2], 'accept');
 });
@@ -469,7 +499,7 @@ go_toggle_settings_rows(stage_settings_rows[3]);
 
 stage_accordions[3].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[3], true);
+	go_toggle_settings_rows(stage_settings_rows[3], true, 3);
 	toggle_admin_lock(stage_accordions[3], 'completion');
 	if (jQuery(this).hasClass('opened')) {
 		if (!jQuery('#go_mta_task_mastery').prop('checked')) {
@@ -491,7 +521,7 @@ go_toggle_settings_rows(stage_settings_rows[4]);
 
 stage_accordions[4].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[4], true);
+	go_toggle_settings_rows(stage_settings_rows[4], true, 4);
 	toggle_admin_lock(stage_accordions[4], 'mastery');
 	if (jQuery(this).hasClass('opened')) {
 		if (!jQuery('#go_mta_task_repeat').prop('checked')) {
@@ -560,7 +590,7 @@ if(stage_three){
 go_toggle_settings_rows(stage_settings_rows[5], true);
 stage_accordions[5].click(function(){
 	jQuery(this).toggleClass('opened');
-	go_toggle_settings_rows(stage_settings_rows[5], true);
+	go_toggle_settings_rows(stage_settings_rows[5], true, 5);
 	toggle_admin_lock(stage_accordions[5], 'repeat');
 });
 

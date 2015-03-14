@@ -41,7 +41,18 @@ jQuery(document).ready(function(){
 		}
 		jQuery('.go_options_triangle', this).toggleClass('go_triangle_up');
 		var wrap = jQuery(this).parent('.go_options_accordion_wrap').attr('opt');
-		option_wraps[wrap].toggle('slow');
+		jQuery.each(option_wraps, function(index, value){
+			if (option_wraps[index] != wrap && jQuery(option_wraps[index]).is(":visible")) {
+				option_wraps[index].toggle('slow');
+			}
+		});
+		if (jQuery(option_wraps[wrap]).is(':visible')) {
+			jQuery(option_wraps[wrap]).hide('slow');
+		} else {
+			option_wraps[wrap].toggle('slow');
+		}
+
+
 		if (jQuery('input[name="go_focus_switch"]').is(':checked')) {
 			jQuery('#go_options_professions_names_wrap').show('slow');
 		} else {
@@ -231,16 +242,32 @@ jQuery(document).ready(function(){
 	});
 	
 	if (jQuery('input[name="go_admin_bar_add_switch"]').is(':checked')) {
-		jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().show('slow');
+		jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().show('slow')
+		jQuery('input[name="go_admin_bar_add_points_switch"]').parent().show('slow');
+		jQuery('input[name="go_admin_bar_add_currency_switch"]').parent().show('slow');
+		jQuery('input[name="go_admin_bar_add_bonus_currency_switch"]').parent().show('slow');
+		jQuery('input[name="go_admin_bar_add_penalty_switch"]').parent().show('slow');
 	} else {
 		jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().hide('slow');
+		jQuery('input[name="go_admin_bar_add_points_switch"]').parent().hide('slow');
+		jQuery('input[name="go_admin_bar_add_currency_switch"]').parent().hide('slow');
+		jQuery('input[name="go_admin_bar_add_bonus_currency_switch"]').parent().hide('slow');
+		jQuery('input[name="go_admin_bar_add_penalty_switch"]').parent().hide('slow');
 	}
 	
 	jQuery('input[name="go_admin_bar_add_switch"]').click(function(){
 		if (jQuery('input[name="go_admin_bar_add_switch"]').is(':checked')) {
 			jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().show('slow');
+			jQuery('input[name="go_admin_bar_add_points_switch"]').parent().show('slow');
+		jQuery('input[name="go_admin_bar_add_currency_switch"]').parent().show('slow');
+		jQuery('input[name="go_admin_bar_add_bonus_currency_switch"]').parent().show('slow');
+		jQuery('input[name="go_admin_bar_add_penalty_switch"]').parent().show('slow');
 		} else {
 			jQuery('input[name="go_admin_bar_add_minutes_switch"]').parent().hide('slow');
+			jQuery('input[name="go_admin_bar_add_points_switch"]').parent().hide('slow');
+		jQuery('input[name="go_admin_bar_add_currency_switch"]').parent().hide('slow');
+		jQuery('input[name="go_admin_bar_add_bonus_currency_switch"]').parent().hide('slow');
+		jQuery('input[name="go_admin_bar_add_penalty_switch"]').parent().hide('slow');	
 		}
 	});
 	

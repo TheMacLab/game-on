@@ -83,7 +83,7 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 
 .progress_bar{
 	height:16px !important;
-	background-color: #ff6600;
+	background-color: #39b54a;
 }
 
 #go_messages_bar{
@@ -554,4 +554,8 @@ input#go_pass_lock:-moz-placeholder {
 	background-color: white;
 	z-index: 999999;
 	padding: 10px 10px 10px 10px;
+}
+
+li.comment {
+    list-style: none;
 }

@@ -217,7 +217,7 @@ function go_task_shortcode($atts, $content = null) {
 				// Sorts array from least to greatest
 				// Should pust most recent PAST date as first key in array, making grabbing the percentage associated with that day easy
 				asort($past_dates);
-				$update_percent = (float)(($percentages[key($past_dates)])/100);
+				$update_percent = (float)((100 -$percentages[key($past_dates)])/100);
 			} else {
 				$update_percent = 1;	
 			}
@@ -696,6 +696,7 @@ function go_task_shortcode($atts, $content = null) {
 				}
 				if (get_post_type() == 'tasks') {
 					comments_template();
+					wp_list_comments();
 				}
 			} else {
 				if (($current_bonus_currency < $bonus_currency_required && !empty($bonus_currency_required)) && ($current_penalty > $penalty_filter && !empty($penalty_filter))) {
@@ -1907,7 +1908,7 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, $status, 
 				-floor(($update_percent * $points_array[$status])), 
 				-floor(($update_percent * $currency_array[$status])), 
-				-floor(($update_percent * $bonus_currency[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status])), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
@@ -1934,7 +1935,7 @@ function task_change_stage() {
 				go_add_post($user_id, $post_id, ($status - 1), 
 				-floor(($update_percent * $points_array[$status - 1])), 
 				-floor(($update_percent * $currency_array[$status - 1])), 
-				-floor(($update_percent * $bonus_currency[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				-floor(($update_percent * $bonus_currency_array[$status - 1])), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
 				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
