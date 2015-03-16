@@ -5,7 +5,7 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada, Charles Leon
 Author URI: http://maclab.guhsd.net/
-Version: 2.3.6
+Version: 2.3.7
 */
 include('go_datatable.php');
 include('types/types.php');
@@ -54,6 +54,7 @@ add_action('go_jquery_clipboard','go_jquery_clipboard');
 add_action('go_style_clipboard','go_style_clipboard');
 add_action('wp_ajax_go_clone_post', 'go_clone_post');
 add_action('wp_ajax_go_clipboard_intable','go_clipboard_intable');
+add_action('wp_ajax_go_clipboard_intable_messages','go_clipboard_intable_messages');
 add_action('wp_ajax_go_user_option_add','go_user_option_add');
 add_action('go_update_totals','go_update_totals');
 add_action('init', 'go_jquery');
