@@ -9,7 +9,6 @@ function task_edit_jquery() {
 	$custom = get_post_custom(get_the_id());
 ?>
 <script type="text/javascript">
-console.log("<?php echo plugin_dir_url(__FILE__);?>");
 
 jQuery('.go_reward_points, .go_reward_currency, .go_reward_bonus_currency').on('keyup', function(){
 	var reward_stage = jQuery(this).attr('stage');
@@ -260,8 +259,20 @@ jQuery('#go_future_checkbox').click(function () {
 	}
 });
 
-var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+var is_chrome = navigator.userAgent.toLowerCase().indexOf( 'chrome' ) > -1;
 jQuery( document ).ready( function(){
+	jQuery ( 'input.custom_time' ).each( function () {
+		jQuery( this ).keypress( function (e) {
+			var regex = new RegExp("^[0-9+:+A+P+M]$");
+			var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+			if ( !regex.test( key ) || jQuery( this).val().length > 7 ){
+				e.preventDefault();
+			}
+			if ( jQuery( this ).val().length > 7 ) {
+				jQuery( this ).val( jQuery( this ).val().substr(0, 8) );
+			}
+		});
+	});
 	if( !is_chrome ){
 		if ( jQuery( 'input.go_datepicker' ).length ){
 			jQuery( 'input.go_datepicker' ).each( function () {
@@ -269,29 +280,32 @@ jQuery( document ).ready( function(){
 			});
 		}
 		<?php 
-		wp_enqueue_style('ptTimeSelectCSS', plugin_dir_url(__FILE__).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.css');
-		wp_enqueue_script('ptTimeSelectJS', plugin_dir_url(__FILE__).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.js');
+		wp_enqueue_style( 'ptTimeSelectCSS', plugin_dir_url(__FILE__).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.css' );
+		wp_enqueue_script( 'ptTimeSelectJS', plugin_dir_url(__FILE__).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.js' );
 		?>
-		if ( jQuery('input.custom_time').length ) {
-			jQuery('input.custom_time').each( function () {
-				jQuery( this ).ptTimeSelect();
-				var timer = jQuery( this ).val();
-				var ampm = (( parseInt(timer.substring( 0, timer.search( ':' ))) < 12 ) ? 'AM' : 'PM' );
-				var hour = parseInt(timer.substring( 0, timer.search( ':' )));
-				var minutes = timer.substring(timer.search(':'), timer.length);
-				var hour_pretty = (( ampm == 'PM' && hour != 12) ? (( hour - 12 >= 10 ) ? hour - 12 : '0' + hour - 12 ) : hour);
-				jQuery( this ).val( hour_pretty + minutes + ' ' + ampm );
+		if ( jQuery( 'input.custom_time' ).length ) {
+			jQuery( 'input.custom_time' ).each( function () {
+				jQuery( this ).ptTimeSelect(); // Turn input[type='time'] into a custom jquery ui time picker
+				var timer = jQuery( this ).val(); // Retrieve time value in 00:00 (hh:mm) format
+				var ampm = ( ( parseInt(timer.substring( 0, timer.search( ':' ) ) ) < 12 ) ? 'AM' : 'PM' ); // Check to see if the time is AM/PM for 12 traditional clocks
+				var hour = parseInt( timer.substring( 0, timer.search( ':' ) ) ); // Retrieve the first part (hours) of time as a number
+				var minutes = timer.substring( timer.search( ':' ) + 1, timer.search( ':' ) + 3); // Retrieve the second part (minutes) of time
+				var hour_pretty = ( ( ampm == 'PM' && hour != 12 ) ? ( ( hour - 12 >= 10 ) ? hour - 12 : '0' + hour - 12 ) : ( ( ampm == 'AM' && hour == 0 ) ? 12 : hour ) ); // Format the hour string to be within 1-12 numerically, rather than 24 hour cycle as is saved to database
+				jQuery( this ).val( hour_pretty + ':' + minutes + ' ' + ampm ); // Reconstruct into hh:mm AM/PM human-readable format
 			});
 		}
 	}
 });
 
 function go_add_decay_table_row(){
-	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type="time" name="go_mta_task_decay_calendar_time[]" class="custom_time" placeholder="Click for Time" value="00:00"/></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>');	
+	jQuery('#go_list_of_decay_dates tbody').last().append('<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input type="time" name="go_mta_task_decay_calendar_time[]" class="custom_time" placeholder="Click for Time" value="00:00" /></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>');	
 	if(!is_chrome){
 		if(jQuery('input.go_datepicker').length){
 			jQuery('input.go_datepicker').each( function () {
 				jQuery(this).datepicker({dateFormat: "yy-mm-dd"});
+			});
+			jQuery('input.custom_time').each( function () {
+				jQuery( this ).ptTimeSelect();
 			});
 		}
 	}

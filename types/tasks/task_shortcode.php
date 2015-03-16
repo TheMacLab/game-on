@@ -201,16 +201,19 @@ function go_task_shortcode($atts, $content = null) {
 			$percentages = $date_picker['percent'];
 			
 			// Setup empty array to house which dates are closest, in unix timestamp
+			
 			$past_dates = array();
+			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst($task_name).":</span><br/>";
 			foreach ($dates as $key => $date) {
 				// If current date in loop is in the past, add its key to the array of date modifiers
 				$english_date = date("D, F j, Y", strtotime($date));
 				$correct_time = date("g:i A", strtotime($times[$key]));
-				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst($task_name).":</span><br/> After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[$key]}%.</span>";
+				echo "After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[$key]}%.<br/>";
 				if ($unix_now >= (strtotime($date) + strtotime($times[$key], 0))) {
 					$past_dates[$key] = abs($unix_now - strtotime($date));
 				}
 			}
+			echo "</span>";
 			
 			if (!empty($past_dates)) {
 				
@@ -221,8 +224,6 @@ function go_task_shortcode($atts, $content = null) {
 			} else {
 				$update_percent = 1;	
 			}
-
-			
 			
 		} else {
 			$update_percent = 1;	
@@ -313,6 +314,23 @@ function go_task_shortcode($atts, $content = null) {
 			
 		?>
 			<script type="text/javascript">
+				<?php if ( $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
+					var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
+					for ( i = 1; i <= num_of_stages; i++ ){
+						var stage_points = jQuery( '#go_stage_' + i + '_points' );
+						var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
+						var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
+						if ( stage_points.length && !stage_points.hasClass( 'go_updated' ) ){
+							stage_points.addClass('go_updated');
+						}
+						if ( stage_currency.length && !stage_currency.hasClass( 'go_updated' ) ){
+							stage_currency.addClass('go_updated');
+						}
+						if ( stage_bonus_currency.length && !stage_bonus_currency.hasClass( 'go_updated' ) ) {
+							stage_bonus_currency.addClass('go_updated');
+						}
+					}
+				<?php } ?>
 				var timers = [];
 				jQuery(".entry-title").after(jQuery(".go_task_rewards"));
 				<?php 
@@ -403,7 +421,7 @@ function go_task_shortcode($atts, $content = null) {
 				// Check if current post in loop has been completed/mastered, depending on the number of stages in the task that needs to be completed
 				if ($post_status_in_chain[$post_id_in_chain] < $post_number_of_stages_in_chain) {
 					$previous_task = '<a href="'.get_permalink($post_id_in_chain).'">'.get_the_title($post_id_in_chain).'</a>';
-					echo 'You must finish '.$previous_task.' to do this '.strtolower(go_return_options('go_tasks_name'));
+					echo "You must finish {$previous_task} to do this {$task_name}";
 					return false;	
 				}
 			}
@@ -570,7 +588,7 @@ function go_task_shortcode($atts, $content = null) {
 							<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 							
 							if($next_post_in_chain && !$last_in_chain){
-								echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
+								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
 							}else{
 								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 							}
@@ -592,7 +610,7 @@ function go_task_shortcode($atts, $content = null) {
 							}
 							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 							if($next_post_in_chain && !$last_in_chain){
-								echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
+								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
 							}else{
 								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 							}
@@ -696,7 +714,7 @@ function go_task_shortcode($atts, $content = null) {
 							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 						}
 						if($next_post_in_chain && !$last_in_chain){
-							echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain->name.': '.$next_post_in_chain.'</div>';
+							echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
 						}else{
 							echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 						}
@@ -760,7 +778,7 @@ function go_task_shortcode($atts, $content = null) {
 				url: '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php'
 			});
 			check_locks();
-		});
+		});	
 		
 		function go_task_abandon () {
 			jQuery.ajax({
@@ -1875,6 +1893,51 @@ function task_change_stage() {
 	$db_status = (int) $wpdb->get_var("SELECT `status` FROM ".$table_name_go." WHERE uid = $user_id AND post_id = $post_id");
 	
 	$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]); //determine which future date modifier is on, if any
+	$date_picker = ((unserialize($custom_fields['go_mta_date_picker'][0]) )?array_filter(unserialize($custom_fields['go_mta_date_picker'][0])):false);
+		
+	// If there are dates in the date picker
+	if (!empty($date_picker) && $future_switches['calendar'] == 'on') {
+		
+		$dates = $date_picker['date'];
+		$times = $date_picker['time'];
+		$percentages = $date_picker['percent'];
+		
+		$past_dates = array();
+		foreach ($dates as $key => $date) {
+			if ($unix_now >= (strtotime($date) + strtotime($times[$key], 0))) {
+				$past_dates[$key] = abs($unix_now - strtotime($date));
+			}
+		}
+		if (!empty($past_dates)) {
+			asort($past_dates);
+			$date_update_percent = (float)((100 - $percentages[key($past_dates)])/100);
+		} else {
+			$date_update_percent = 1;	
+		}
+		?>
+		<script type='text/javascript'>
+			var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
+			var date_modifier = parseFloat(<?php echo $date_update_percent; ?>);
+			for ( i = 1; i <= num_of_stages; i++ ){
+				var stage_points = jQuery( '#go_stage_' + i + '_points' );
+				var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
+				var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
+				if ( stage_points.length && !stage_points.hasClass( 'go_updated' ) ){
+					stage_points.html( Math.floor( parseInt( stage_points.html() ) * date_modifier ) ).addClass('go_updated');
+				}
+				if ( stage_currency.length && !stage_currency.hasClass( 'go_updated' ) ){
+					stage_currency.html( Math.floor( parseInt( stage_currency.html() ) * date_modifier ) ).addClass('go_updated');
+				}
+				if ( stage_bonus_currency.length && !stage_bonus_currency.hasClass( 'go_updated' ) ) {
+					stage_bonus_currency.html( Math.floor( parseInt( stage_bonus_currency.html()) * date_modifier ) ).addClass('go_updated');
+				}
+			}
+		</script>
+		<?php
+	} else {
+		$date_update_percent = 1;	
+	}
+	
 	$future_modifier = unserialize($custom_fields['go_mta_time_modifier'][0]);
 	if (!empty($future_modifier) && $future_switches['future'] == 'on'  && !($future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0)) {
 		$user_timers = get_user_meta($user_id, 'go_timers');
@@ -2331,6 +2394,7 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 			$c_array = $currency;
 			$bc_array = $bonus_currency;
 		}
+		$custom_fields = get_post_custom($post_id);
 		for ($i = 0; $i < $number_of_stages; $i++) {
 			if ($future) {
 				if ($i == 2) {
@@ -2369,7 +2433,6 @@ function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $upd
 				$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>Expired: No Rewards</span><br/>";
 			}
 			echo $output;
-			$custom_fields = get_post_custom($post_id);
 			if (!empty($custom_fields['go_mta_mastery_bonus_loot'][0])) {
 				$bonus_loot = unserialize($custom_fields['go_mta_mastery_bonus_loot'][0]);
 			}
