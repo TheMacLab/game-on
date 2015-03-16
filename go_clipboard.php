@@ -1,23 +1,22 @@
 <?php
-function go_clipboard() {
+function go_clipboard () {
 global $wpdb;
 $dir = plugin_dir_url(__FILE__);
- add_submenu_page( 'game-on-options.php', 'Clipboard', 'Clipboard', 'manage_options', 'go_clipboard', 'go_clipboard_menu');
+add_submenu_page('game-on-options.php', 'Clipboard', 'Clipboard', 'manage_options', 'go_clipboard', 'go_clipboard_menu');
 }
 
 function go_clipboard_menu() {
 	global $wpdb;
-	if (!current_user_can('manage_options'))  { 
-		wp_die( __('You do not have sufficient permissions to access this page.') );
-	}
-	else{
+	if (!current_user_can('manage_options')) { 
+		wp_die( __('You do not have sufficient permissions to access this page.'));
+	} else {
 		go_style_clipboard();
 		go_jquery_clipboard();
-		
 	?>
     <div id="records_tabs">
         <ul>
             <li><a href="#clipboard_wrap">Clipboard</a></li>
+            <li><a href="#clipboard_messages_wrap">Messages</a></li>
             <!--<li><a href="#go_analysis">Analysis</a></li>-->
         </ul>
         <div id="clipboard_wrap">
@@ -34,13 +33,13 @@ function go_clipboard_menu() {
             </select>
         
             <div id="go_clipboard_add">
-                <?php go_options_help('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'SAMPLE TEXT'); ?>
+                <?php go_options_help('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'Clipboard Help'); ?>
                 <label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
                 <label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
                 <label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
                 <label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
                 <label for="go_clipboard_minutes"><?php echo go_return_options('go_minutes_name'); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
-                <label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br />
+                <label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br/>
                 <label name="go_clipboard_reason">Message: </label>
                 <div>
                     <textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><br/>
@@ -66,10 +65,37 @@ function go_clipboard_menu() {
                             <th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?></a></th>
                         </tr>
                     </thead>
-                <tbody id="go_clipboard_table_body"></tbody>
+                	<tbody id="go_clipboard_table_body"></tbody>
                 </table>
-            </div>
-         </div>
+			</div>
+		</div>
+	<div id="clipboard_messages_wrap">
+		<select class="menuitem" id="go_clipboard_class_a_choice_messages" onchange="go_clipboard_class_a_choice_messages();">
+            <option>...</option>
+            <?php
+            $class_a_messages = get_option('go_class_a');
+            if ($class_a_messages) {
+                foreach ($class_a_messages as $key => $value) {
+                    echo '<option class="ui-corner-all">'.$value.'</option>';
+                }
+            }
+            ?>
+            <option>All</option>
+		</select>
+        <table id="go_clipboard_messages" class="pretty">
+        	<thead>
+            	<tr>
+                    <th class="header" width="5%" id="messages_id"><a href="#" >ID</a></th>
+                    <th class="header" width="5%" id="messages_computer"><a href="#"><?php echo go_return_options('go_class_b_name'); ?></a></th>
+                    <th class="header" width="6.5%" id="messages_student"><a href="#">Student Name</a></th>
+                    <th class="header" width="6.5%" id="messages_display"><a href="#">Display Name</a></th>
+                    <th class="header" width="6%" id="messages_date"><a href="#">Date</a></th>
+                    <th class="header" id="messages_message"><a href="#">Message</a></th>
+                </tr>
+            </thead>
+            <tbody id="go_clipboard_messages_body"></tbody>
+        </table>
+	</div>
          <?php /*
          <div id="go_analysis">
             Choose the day at which data will be collected at midnight (0:00 AM)
@@ -125,7 +151,7 @@ function go_clipboard_menu() {
 	}
 }
 
-function go_clipboard_intable(){
+function go_clipboard_intable () {
 	global $wpdb;
 	$class_a_choice = $_POST['go_clipboard_class_a_choice'];
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
@@ -138,7 +164,7 @@ function go_clipboard_intable(){
 	print_r($uid);
 	foreach ($uid as $id) {
 		foreach ($id as $value) {
-			$class_a = get_user_meta($value, 'go_classifications',true);
+			$class_a = get_user_meta($value, 'go_classifications', true);
 			if ($class_a) { 
 				if ($class_a[$class_a_choice]) {
 					$user_data_key = get_userdata( $value ); 
@@ -180,6 +206,48 @@ function go_clipboard_intable(){
 							<td class='user_minutes'>{$minutes}</td>
 							<td class='user_badge_count'>{$badge_count}</td>
 						  </tr>";
+				}
+			}
+		}
+	}
+	die();
+}
+
+function go_clipboard_intable_messages () {
+	global $wpdb;
+	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true);
+	foreach ($admin_messages as $student_id => $messages) {
+		$user_data_key = get_userdata($student_id);
+		$class_a_messages = get_user_meta($student_id, 'go_classifications', true);
+		$class_a_choice_messages = $_POST['go_clipboard_class_a_choice_messages'];
+		$user_login = $user_data_key->user_login;
+		$user_display = $user_data_key->display_name;
+		$user_first_name = $user_data_key->user_firstname;
+		$user_last_name =  $user_data_key->user_lastname;
+		$user_url =  $user_data_key->user_url;
+		$array_count = count($messages);
+		if (!empty($class_a_messages[$class_a_choice_messages])) {
+			for ($i = $array_count - 1; $i >= 0; $i--) {
+				echo "<tr id='user_{$value}'>
+					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
+					<td>{$class_a_messages[$class_a_choice_messages]}</td>
+					<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
+					<td>{$user_display}</td>
+					<td>{$messages[$i][time]}</td>
+					<td class='message'>{$messages[$i][message]}</td>
+				  	</tr>";
+			}
+		}  else if ($class_a_choice_messages == 'All') {
+			foreach ($class_a_messages as $computer) {
+				for ($i = $array_count - 1; $i >= 0; $i--) {
+					echo "<tr id='user_{$value}'>
+						<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
+						<td>{$computer}</td>
+						<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
+						<td>{$user_display}</td>
+						<td>{$messages[$i][time]}</td>
+						<td class='message'>{$messages[$i][message]}</td>
+					 	</tr>";
 				}
 			}
 		}

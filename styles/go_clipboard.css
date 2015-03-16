@@ -136,6 +136,10 @@ html[xmlns] .dataTables_wrapper {
 table.pretty {
 	width: 100% !important;
 	clear: both;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
 }
 
 table.pretty td,
@@ -160,6 +164,11 @@ table.pretty tbody th {
 	
 table.pretty tbody td {
 	text-align: center;
+	background: #F4F4F4;
+}
+
+table.pretty tbody td.message {
+	text-align: left;
 	background: #F4F4F4;
 }
 

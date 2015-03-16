@@ -97,8 +97,33 @@ function go_mark_read () {
 }
 
 function go_message_user ($user_id, $message) {
+	date_default_timezone_set('America/Los_Angeles');
+	$timestamp = time();
 	$current_messages = get_user_meta($user_id, 'go_admin_messages',true);
-	$current_messages[1][time()] = array($message, 1);
+	$current_messages[1][$timestamp] = array($message, 1);
+	$is_admin = false;
+	$admin_user = get_user_by('id', get_current_user_id());
+	if (!empty($admin_user)) {
+		$admin_user_roles = $admin_user->roles;
+		if (is_array($admin_user_roles)) {
+			foreach ($admin_user_roles as $key => $role) {
+				if ($role === 'administrator') {
+					$is_admin = true;
+					break;
+				}
+			}
+		}
+	}
+	$message_time = date("m/d @ h:i", $timestamp);
+	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true);
+	$admin_messages[$user_id][] = array(
+		'message' => $message,
+		'time' => $message_time
+	);
+	krsort($admin_messages[$user_id]);
+	if ($is_admin = true) {
+		update_user_meta($admin_user->ID, 'go_admin_message_history', $admin_messages);
+	}
 	krsort($current_messages[1]);
 	if(count($current_messages[1]) > 9){
 		array_pop($current_messages[1]);
@@ -111,6 +136,6 @@ function go_message_user ($user_id, $message) {
 			(int)$current_messages[0] = 9;
 		}
 	}
-	update_user_meta( $user_id, 'go_admin_messages', $current_messages);
+	update_user_meta($user_id, 'go_admin_messages', $current_messages);
 }
 ?>
