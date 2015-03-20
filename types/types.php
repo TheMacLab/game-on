@@ -746,17 +746,17 @@ function go_validate_decay_table() {
 				
 			} else if ( strpos( $time, 'AM' ) !== false ) { // If AM found
 				
-				$times_f[ $key ] = str_replace( 'AM', '', $times_f[ $key ] ); // Remove AM from the string
-				
 				if ( $hour < 10 ) {
 					$times_f[ $key ] = '0' . $times_f[ $key ]; // Add leading 0 to hour to maintain 00:00 format
 				} else if ($hour == 12) {
 					$times_f[ $key ] = '00:'.$minutes;
 				}
+				
+				$times_f[ $key ] = str_replace( 'AM', '', $times_f[ $key ] ); // Remove AM from the string
 			}
 			$times_f[ $key ] = trim( $times_f[ $key ] ); // Remove spaces around time
 		}
-		
+
 		$new_dates = array_intersect_key($dates_f, $times_f, $percentages_f);
 		$new_times = array_intersect_key($times_f, $percentages_f, $times_f);
 		$new_percentages = array_intersect_key($percentages_f, $dates_f, $times_f);
