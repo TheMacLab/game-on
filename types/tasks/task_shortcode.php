@@ -192,6 +192,7 @@ function go_task_shortcode($atts, $content = null) {
 		$future_switches = unserialize($custom_fields['go_mta_time_filters'][0]); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
 		
 		$date_picker = ((unserialize($custom_fields['go_mta_date_picker'][0]) )?array_filter(unserialize($custom_fields['go_mta_date_picker'][0])):false);
+		$sounded_array = (array) get_user_meta( $user_ID, 'go_sounded_tasks', true );
 		
 		// If there are dates in the date picker
 		if (!empty($date_picker) && $future_switches['calendar'] == 'on') {
@@ -221,6 +222,16 @@ function go_task_shortcode($atts, $content = null) {
 				// Should pust most recent PAST date as first key in array, making grabbing the percentage associated with that day easy
 				asort($past_dates);
 				$update_percent = (float)((100 - $percentages[key($past_dates)])/100);
+				$sounded_date = $sounded_array['date'][$id];
+				if (!$sounded_date) {
+					?>
+					<script type='text/javascript'>
+						go_sounds('timer');
+					</script>
+					<?php
+					$sounded_array['date'][$id] = true;
+					update_user_meta($user_ID, 'go_sounded_tasks', $sounded_array);
+				}
 			} else {
 				$update_percent = 1;	
 			}
@@ -2506,13 +2517,13 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			var countdown = <?php echo $countdown;?>;
 			var before = <?php echo $future_time?>;
 			var percentage = <?php echo 100 - $percentage; ?>/100;
-			var sounded = <?php echo (($sounded_array[ $task_id ])? 'true' :'false'); ?>;
+			var sounded = <?php echo (($sounded_array['future'][ $task_id ])? 'true' :'false'); ?>;
 			jQuery(window).focus(function () {
 				clearInterval(timer);
 				timer = setInterval(go_task_timer, 1000);
 				timers.push(timer);
 				var now = new Date();
-				var sounded = <?php echo (($sounded_array[ $task_id ])? 'true' :'false'); ?>;
+				var sounded = <?php echo (($sounded_array['future'][ $task_id ])? 'true' :'false'); ?>;
 				countdown = Math.floor(before - (now.getTime()/1000) + (now.getTimezoneOffset() * 60));
 			});
 			for (i = 0; i < timers.length - 1; i++){
@@ -2535,7 +2546,7 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 						go_sounds('timer');
 					} else {
 						<?php
-							$sounded_array[$task_id] = true;
+							$sounded_array['future'][$task_id] = true;
 							update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array);
 						?>
 					}
