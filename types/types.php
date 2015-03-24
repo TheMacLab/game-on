@@ -699,7 +699,7 @@ function go_decay_table() {
 				foreach ($dates as $key => $date) {
 					?>
                     <tr>
-                        <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>'/></td>
+                        <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>' /></td>
                         <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
                     </tr>
                     <?php
@@ -707,7 +707,7 @@ function go_decay_table() {
             } else {
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00'/></td>
+				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00' /></td>
 				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
             <?php 
@@ -731,7 +731,32 @@ function go_validate_decay_table() {
 		$times_f = array_filter($times);
 		$percentages_f = array_filter($percentages);
 		
-		
+		foreach ($times_f as $key => $time) {
+			$time = substr($time, 0, 8); // Make sure no more than 8 characters are in the string
+			$hour = intval( substr( $time, 0, strpos( $time, ':' ) ) ); // Grab numerical value of hour
+			$minutes = substr( $time, strpos( $time, ':' ) + 1, strlen( $time) ); // Grab minutes string
+			
+			if (strpos($time, 'PM') !== false) { // If PM found
+			
+				if ( $hour < 12 ) { 
+					$times_f[ $key ] = ($hour + 12).substr( $time, strpos ( $time, ':' ), strpos( $time, ':' ) + 2); // Set the time saved to be the correct 24-hour representation
+				}
+				
+				$times_f[ $key ] = str_replace( 'PM', '', $times_f[ $key ] ); // Remove PM from the string
+				
+			} else if ( strpos( $time, 'AM' ) !== false ) { // If AM found
+				
+				if ( $hour < 10 ) {
+					$times_f[ $key ] = '0' . $times_f[ $key ]; // Add leading 0 to hour to maintain 00:00 format
+				} else if ($hour == 12) {
+					$times_f[ $key ] = '00:'.$minutes;
+				}
+				
+				$times_f[ $key ] = str_replace( 'AM', '', $times_f[ $key ] ); // Remove AM from the string
+			}
+			$times_f[ $key ] = trim( $times_f[ $key ] ); // Remove spaces around time
+		}
+
 		$new_dates = array_intersect_key($dates_f, $times_f, $percentages_f);
 		$new_times = array_intersect_key($times_f, $percentages_f, $times_f);
 		$new_percentages = array_intersect_key($percentages_f, $dates_f, $times_f);
