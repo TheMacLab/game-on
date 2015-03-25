@@ -19,40 +19,21 @@ function go_display_comment_author() {
 			$is_admin = true;
 		}
 	}
-	if ($is_admin) {
-		return $author;
-	} else {
-		$points = get_user_meta($author_id, 'go_rank', true);
-		$focus = get_user_meta($author_id, 'go_focus', true);
-		if (!empty($focus)) {
-			if (is_array($focus)) {
-				for ($i = 0; $i < count($focus); $i++) {
-					if (!empty($focus[$i])) {
-						$careers .= $focus[$i];
-						if (($i + 1) < count($focus)) {
-							$careers .= '/';
-						}
-					}
-				}
-			} else {
-				$no_focus_str = 'No '.get_option('go_focus_name', 'Profession');
-				if ($focus != $no_focus_str) {
-					$careers = $focus;
-				}
-			}
-		}
-		if (!empty($careers)) {
-			if (!empty($points)) {
-				return $author.'<br/>'.'('.$careers.', '.$points[0][0].')';
-			} else {
-				return $author;
-			}
+	
+	$points = get_user_meta($author_id, 'go_rank', true);
+	$focus = get_user_meta($author_id, 'go_focus', true);
+	$careers = go_display_user_focuses($author_id);
+	if (!empty($careers)) {
+		if (!empty($points)) {
+			return "<a href='#' onclick='go_admin_bar_stats_page_button(\"{$author_id}\");'>{$author}</a><br/>({$careers}, {$points[0][0]})";
 		} else {
-			if (!empty($points)) {
-				return $author.'<br/>'.'('.$points[0][0].')';
-			} else {
-				return $author;
-			}
+			return $author;
+		}
+	} else {
+		if (!empty($points)) {
+			return "<a href='#' onclick='go_admin_bar_stats_page_button(\"{$author_id}\");'>{$author}</a><br/>({$points[0][0]})";
+		} else {
+			return $author;
 		}
 	}
 }
