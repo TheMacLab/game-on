@@ -2517,19 +2517,18 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 			var countdown = <?php echo $countdown;?>;
 			var before = <?php echo $future_time?>;
 			var percentage = <?php echo 100 - $percentage; ?>/100;
-			var sounded = <?php echo (($sounded_array['future'][ $task_id ])? 'true' :'false'); ?>;
 			jQuery(window).focus(function () {
 				clearInterval(timer);
 				timer = setInterval(go_task_timer, 1000);
 				timers.push(timer);
 				var now = new Date();
-				var sounded = <?php echo (($sounded_array['future'][ $task_id ])? 'true' :'false'); ?>;
 				countdown = Math.floor(before - (now.getTime()/1000) + (now.getTimezoneOffset() * 60));
 			});
 			for (i = 0; i < timers.length - 1; i++){
 				clearInterval(timers[i]);
 			}
 			function go_task_timer () {
+				var sounded = <?php echo (($sounded_array['future'][ $task_id ])? 'true' :'false'); ?>;
 				countdown = countdown - 1;
 				jQuery('#go_task_timer').empty();
 				jQuery('.go_stage_message').last().parent().before(jQuery('#go_task_timer'));
@@ -2542,15 +2541,15 @@ function go_task_timer ($task_id, $user_id, $future_modifier) {
 				} else {
 					
 					clearInterval(timer);
-					if ( sounded === false) {
-						go_sounds('timer');
-					} else {
+					if ( sounded === false && !jQuery( '#go_task_timer' ).hasClass( 'sounded' ) ) {
+						go_sounds( 'timer' );
+						jQuery( '#go_task_timer' ).addClass( 'sounded' );
 						<?php
 							$sounded_array['future'][$task_id] = true;
 							update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array);
 						?>
-					}
-					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards").css('color', 'red');
+					} 
+					jQuery('#go_task_timer').html("You've run out of time to <?php echo strtolower(go_return_options('go_third_stage_button'));?> this <?php echo strtolower(go_return_options('go_tasks_name'));?> for full rewards.").css('color', 'red');
 					if (percentage != 0) {
 						if (!jQuery('#go_stage_3_points').hasClass('go_updated')) {
 							jQuery('#go_stage_3_points').html(Math.floor(parseFloat(jQuery('#go_stage_3_points').html()) * percentage)).addClass('go_updated');
