@@ -20,6 +20,10 @@ function go_update_ranks ($user_id, $total_points, $output = true) {
 	$update = false;
 	
 	if ($next_rank != '') {
+		$last_rank = end($points_array);
+		if ($total_points >= $last_rank) { //This fixes the website crashing on a user's end if their EXP is above maximum
+			return;
+		}
 		if ($total_points >= $next_rank_points) {
 			while (current($points_array) != $next_rank_points) {
 				next($points_array);
@@ -89,7 +93,7 @@ function go_update_ranks ($user_id, $total_points, $output = true) {
 				go_notification(3000, jQuery("#go_notification_level"));
 				jQuery("#go_admin_bar_rank").html("'.$current_rank.'");
 			</script>
-		';
+		'; //Why is this stuff included in style, when you could not just put it into a class or ID, like you have defined right now? It would save so much more time
 		if ($output === true) {
 			echo $notification;	
 		} else if ($output === false) {
