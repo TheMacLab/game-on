@@ -1,39 +1,52 @@
-#class_a_container{
-	width:80%px;
+#class_a_container {
+	width: 80%px;
 	border: thin solid black;
-	margin-top:10px;
-	padding:5px;
-	}
-.go_list{
-	border-bottom:thin grey solid;
-	padding:7px;
-	width:155px;
-	margin-bottom:0px;}
-#go_class_a_input{
-	width:80%px;
-	margin-left:20px;}
+	margin-top: 10px;
+	padding: 5px;
+}
+
+.go_list {
+	border-bottom: thin grey solid;
+	padding: 7px;
+	width: 155px;
+	margin-bottom: 0px;
+}
+
+#go_class_a_input {
+	width: 80%px;
+	margin-left: 20px;
+}
 	
-#go_class_b_input{
-	width:80%px;
-	margin-left:20px;}
-#grip{
+#go_class_b_input {
+	width: 80%px;
+	margin-left: 20px;
+}
+
+#grip {
 	height: 24px;
-width: 18px;
-float: right;
-margin-top: 3px;
-opacity: .7;}
-.squares{
-	
+	width: 18px;
+	float: right;
+	margin-top: 3px;
+	opacity: 0.7;
+}
+
+.squares {
 	display: list-item;
-width: 7px;
-background-color: grey;
-height: 7px;
-margin: 1px;}
-.ui-icon-arrowthick-2-n-s{
-	position:absolute;}
-#sortable_go_presets input{
-	
-	width:65px;
-	height:20px;}
-#sortable_go_presets{
-	font-size:10px;}
+	width: 7px;
+	background-color: grey;
+	height: 7px;
+	margin: 1px;
+}
+
+.ui-icon-arrowthick-2-n-s {
+	position: absolute;
+}
+
+#sortable_go_presets input {
+	width: 65px;
+	height: 20px;
+}
+
+#sortable_go_presets {
+	font-size: 10px;
+}
