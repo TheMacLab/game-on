@@ -40,11 +40,14 @@ function hideVid () {
 function go_display_help_video (url) {
 	jQuery('.dark').show();
 	if (url.indexOf('youtube') != -1 || url.indexOf('vimeo') != -1) {
-		if (url.indexOf('youtube') != -1 ) {
+		if (url.indexOf('youtube') != -1 || url.indexOf( 'youtu.be' ) ) {
+			url = url.replace( 'watch?v=', 'v/' );
 			jQuery('#go_help_video_container').html('<iframe id="go_video_iframe" width="100%" height="100%" src="'+ url +'" frameborder="0" allowfullscreen></iframe>');
 		}
 		if (url.indexOf('vimeo') != -1) {
-			jQuery('#go_help_video_container').html('<iframe id="go_video_iframe" src="' + url + '" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+			vimeo_vid_num = url.match( /\d+$/ )[0];
+			new_url = 'https://player.vimeo.com/video/' + vimeo_vid_num;
+			jQuery('#go_help_video_container').html('<iframe id="go_video_iframe" src="' + new_url + '" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
 		}
 	}
 	jQuery('#go_help_video_container').show();
