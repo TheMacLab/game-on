@@ -40,8 +40,11 @@ function hideVid () {
 function go_display_help_video (url) {
 	jQuery('.dark').show();
 	if (url.indexOf('youtube') != -1 || url.indexOf('vimeo') != -1) {
-		if (url.indexOf('youtube') != -1 || url.indexOf( 'youtu.be' ) ) {
+		if ( url.indexOf('youtube') != -1 || url.indexOf( 'youtu.be' ) ) {
 			url = url.replace( 'watch?v=', 'v/' );
+			if ( url.indexOf( '&rel=0' ) == -1 ) {
+				url = url + '&rel=0';	
+			}
 			jQuery('#go_help_video_container').html('<iframe id="go_video_iframe" width="100%" height="100%" src="'+ url +'" frameborder="0" allowfullscreen></iframe>');
 		}
 		if (url.indexOf('vimeo') != -1) {
