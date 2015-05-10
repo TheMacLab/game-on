@@ -1,14 +1,15 @@
 <?php
+
 function go_clipboard () {
-global $wpdb;
-$dir = plugin_dir_url(__FILE__);
-add_submenu_page('game-on-options.php', 'Clipboard', 'Clipboard', 'manage_options', 'go_clipboard', 'go_clipboard_menu');
+	global $wpdb;
+	$dir = plugin_dir_url( __FILE__ );
+	add_submenu_page( 'game-on-options.php', 'Clipboard', 'Clipboard', 'manage_options', 'go_clipboard', 'go_clipboard_menu' );
 }
 
 function go_clipboard_menu() {
 	global $wpdb;
-	if (!current_user_can('manage_options')) { 
-		wp_die( __('You do not have sufficient permissions to access this page.'));
+	if ( ! current_user_can( 'manage_options' ) ) { 
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} else {
 		go_style_clipboard();
 		go_jquery_clipboard();
@@ -23,22 +24,22 @@ function go_clipboard_menu() {
             <select class="menuitem" id="go_clipboard_class_a_choice" onchange="go_clipboard_class_a_choice();">
                 <option>...</option>
                 <?php
-                $class_a = get_option('go_class_a');
-                if ($class_a) {
-                    foreach ($class_a as $key=> $value) {
-                        echo '<option class="ui-corner-all">'.$value.'</option>';
+                $class_a = get_option( 'go_class_a' );
+                if ( $class_a ) {
+                    foreach ( $class_a as $key => $value ) {
+                        echo "<option class='ui-corner-all'>{$value}</option>";
                     }
                 }
                 ?>
             </select>
         
             <div id="go_clipboard_add">
-                <?php go_options_help('http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'Clipboard Help'); ?>
-                <label for="go_clipboard_points"><?php echo go_return_options('go_points_name'); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
-                <label for="go_clipboard_currency"><?php echo go_return_options('go_currency_name'); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
-                <label for="go_clipboard_bonus_currency"><?php echo go_return_options('go_bonus_currency_name'); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
-                <label for="go_clipboard_penalty"><?php echo go_return_options('go_penalty_name'); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
-                <label for="go_clipboard_minutes"><?php echo go_return_options('go_minutes_name'); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
+                <?php go_options_help( 'http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'Clipboard Help' ); ?>
+                <label for="go_clipboard_points"><?php echo go_return_options( 'go_points_name' ); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
+                <label for="go_clipboard_currency"><?php echo go_return_options( 'go_currency_name' ); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
+                <label for="go_clipboard_bonus_currency"><?php echo go_return_options( 'go_bonus_currency_name' ); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
+                <label for="go_clipboard_penalty"><?php echo go_return_options( 'go_penalty_name' ); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
+                <label for="go_clipboard_minutes"><?php echo go_return_options( 'go_minutes_name' ); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
                 <label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br/>
                 <label name="go_clipboard_reason">Message: </label>
                 <div>
@@ -52,17 +53,17 @@ function go_clipboard_menu() {
                         <tr>
                             <th><input type="checkbox" onClick="go_toggle(this);" /></th>
                             <th class="header"><a href="#" >ID</a></th>
-                            <th class="header"><a href="#" ><?php echo go_return_options('go_class_b_name'); ?></a></th>
+                            <th class="header"><a href="#" ><?php echo go_return_options( 'go_class_b_name' ); ?></a></th>
                             <th class="header"><a href="#" >Student Name</a></th>
                             <th class="header"><a href="#" >Display Name</a></th>
-                            <th class="header"><a href="#" ><?php echo go_return_options('go_level_names'); ?></a></th>
-                            <?php if(go_return_options('go_focus_switch') == 'On'){?><th class="header"><a href="#" ><?php echo go_return_options('go_focus_name'); ?></a></th><?php }?>
-                            <th class="header"><a href="#"><?php echo go_return_options('go_points_name'); ?></a></th>
-                            <th class="header"><a href="#" ><?php echo go_return_options('go_currency_name'); ?></a></th>
-                            <th class="header"><a href="#"><?php echo go_return_options('go_bonus_currency_name'); ?></a></th>
-                            <th class="header"><a href="#"><?php echo go_return_options('go_penalty_name'); ?></a></th>
-                            <th class="header"><a href="#"><?php echo go_return_options('go_minutes_name'); ?></a></th>
-                            <th class="header"><a href="#"><?php echo go_return_options('go_badges_name');?></a></th>
+                            <th class="header"><a href="#" ><?php echo go_return_options( 'go_level_names' ); ?></a></th>
+                            <?php if ( go_return_options( 'go_focus_switch' ) == 'On' ) { ?><th class="header"><a href="#" ><?php echo go_return_options( 'go_focus_name' ); ?></a></th><?php } ?>
+                            <th class="header"><a href="#"><?php echo go_return_options( 'go_points_name' ); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options( 'go_currency_name' ); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options( 'go_bonus_currency_name' ); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options( 'go_penalty_name' ); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options( 'go_minutes_name' ); ?></a></th>
+                            <th class="header"><a href="#"><?php echo go_return_options( 'go_badges_name' ); ?></a></th>
                         </tr>
                     </thead>
                 	<tbody id="go_clipboard_table_body"></tbody>
@@ -73,10 +74,10 @@ function go_clipboard_menu() {
 		<select class="menuitem" id="go_clipboard_class_a_choice_messages" onchange="go_clipboard_class_a_choice_messages();">
             <option>...</option>
             <?php
-            $class_a_messages = get_option('go_class_a');
-            if ($class_a_messages) {
-                foreach ($class_a_messages as $key => $value) {
-                    echo '<option class="ui-corner-all">'.$value.'</option>';
+            $class_a_messages = get_option( 'go_class_a' );
+            if ( $class_a_messages ) {
+                foreach ( $class_a_messages as $key => $value ) {
+                    echo "<option class='ui-corner-all'>{$value}</option>";
                 }
             }
             ?>
@@ -86,7 +87,7 @@ function go_clipboard_menu() {
         	<thead>
             	<tr>
                     <th class="header" width="5%" id="messages_id"><a href="#" >ID</a></th>
-                    <th class="header" width="5%" id="messages_computer"><a href="#"><?php echo go_return_options('go_class_b_name'); ?></a></th>
+                    <th class="header" width="5%" id="messages_computer"><a href="#"><?php echo go_return_options( 'go_class_b_name' ); ?></a></th>
                     <th class="header" width="6.5%" id="messages_student"><a href="#">Student Name</a></th>
                     <th class="header" width="6.5%" id="messages_display"><a href="#">Display Name</a></th>
                     <th class="header" width="6%" id="messages_date"><a href="#">Date</a></th>
@@ -102,8 +103,8 @@ function go_clipboard_menu() {
             <select id='go_day_select' onchange='go_update_script_day()'>
                 <?php 
                 
-                $script_day = go_return_options('go_analysis_script_day');
-                if($script_day){
+                $script_day = go_return_options( 'go_analysis_script_day' );
+                if ( $script_day) {
                     echo "<option value='{$script_day}'>{$script_day}</option>";
                 }
                 
@@ -117,21 +118,21 @@ function go_clipboard_menu() {
                 <option value='Sunday'>Sunday</option>
             </select>
              <select id="go_selection" onchange="go_update_graph();">
-                <option value="1"><?php echo go_return_options('go_points_name'); ?></option>
-                <option value="4"><?php echo go_return_options('go_currency_name');?></option>
-                <option value="0"><?php echo go_return_options('go_bonus_currency_name'); ?></option>
-                <option value="0"><?php echo go_return_options('go_penalty_name'); ?></option>
-                <option value="0"><?php echo go_return_options('go_minutes_name'); ?></option>
-                <option value="2"><?php echo go_return_options('go_third_stage_name'); ?></option>
-                <option value="3"><?php echo go_return_options('go_fourth_stage_name'); ?></option>
+                <option value="1"><?php echo go_return_options( 'go_points_name' ); ?></option>
+                <option value="4"><?php echo go_return_options( 'go_currency_name' ); ?></option>
+                <option value="0"><?php echo go_return_options( 'go_bonus_currency_name' ); ?></option>
+                <option value="0"><?php echo go_return_options( 'go_penalty_name' ); ?></option>
+                <option value="0"><?php echo go_return_options( 'go_minutes_name' ); ?></option>
+                <option value="2"><?php echo go_return_options( 'go_third_stage_name' ); ?></option>
+                <option value="3"><?php echo go_return_options( 'go_fourth_stage_name' ); ?></option>
              </select>
              <div id="choices">
              <?php
-                if($class_a){
-                    foreach($class_a as $class){
+                if ( $class_a) {
+                    foreach ( $class_a as $class) {
                     ?>
-                        <input type="checkbox" class="go_class_a" name="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" value="<?php echo $class;?>" onclick="go_update_graph(this)"/><?php echo $class;?><br />
-                        <div id="<?php echo strtolower(preg_replace('/\s+/', '', $class)); ?>" class="go_class_a_results"></div>
+                        <input type="checkbox" class="go_class_a" name="<?php echo strtolower(preg_replace( '/\s+/', '', $class) ); ?>" value="<?php echo $class; ?>" onclick="go_update_graph(this)"/><?php echo $class; ?><br />
+                        <div id="<?php echo strtolower(preg_replace( '/\s+/', '', $class) ); ?>" class="go_class_a_results"></div>
                     <?php	
                         $i++;
                     }
@@ -156,49 +157,49 @@ function go_clipboard_intable () {
 	$class_a_choice = $_POST['go_clipboard_class_a_choice'];
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
 	$table_name_go = $wpdb->prefix.'go';
-	$uid = $wpdb->get_results("SELECT user_id 
+	$uid = $wpdb->get_results( "SELECT user_id 
 		FROM {$table_name_user_meta} 
 		WHERE meta_key = '{$wpdb->prefix}capabilities' 
 		AND meta_value NOT LIKE '%administrator%'"
 	);
-	print_r($uid);
-	foreach ($uid as $id) {
-		foreach ($id as $value) {
-			$class_a = get_user_meta($value, 'go_classifications', true);
-			if ($class_a) { 
-				if ($class_a[$class_a_choice]) {
+	print_r( $uid );
+	foreach ( $uid as $id ) {
+		foreach ( $id as $value ) {
+			$class_a = get_user_meta( $value, 'go_classifications', true );
+			if ( $class_a ) { 
+				if ( $class_a[ $class_a_choice ] ) {
 					$user_data_key = get_userdata( $value ); 
 					$user_login = $user_data_key->user_login;
 					$user_display = $user_data_key->display_name;
 					$user_first_name = $user_data_key->user_firstname;
 					$user_last_name =  $user_data_key->user_lastname;
 					$user_url =  $user_data_key->user_url;
-					if (go_return_options('go_focus_switch') == 'On') {
-						$user_focuses = go_display_user_focuses($value);
-						$focus_name = get_option('go_focus_name');
-						$focuses = get_option('go_focus');
-						$focuses_list = "<option>{$user_focuses}</option><option ".((empty($user_focuses) || $user_focuses == "No {$focus_name}")?"selected":"").">No {$focus_name}</option>";
-						foreach ($focuses as $focus) {
-							$focuses_list .= "<option value='".esc_attr($focus)."' >{$focus}</option>";
+					if ( go_return_options( 'go_focus_switch' ) == 'On' ) {
+						$user_focuses = go_display_user_focuses( $value );
+						$focus_name = get_option( 'go_focus_name' );
+						$focuses = get_option( 'go_focus' );
+						$focuses_list = "<option>{$user_focuses}</option><option ".( ( empty( $user_focuses) || $user_focuses == "No {$focus_name}" ) ? "selected" : '' ).">No {$focus_name}</option>";
+						foreach ( $focuses as $focus ) {
+							$focuses_list .= "<option value='".esc_attr( $focus )."' >{$focus}</option>";
 						}
 					}
-					$bonus_currency = go_return_bonus_currency($value);
-					$penalty = go_return_penalty($value);
-					$minutes = go_return_minutes($value);
-					$currency = go_return_currency($value);
-					$points = go_return_points($value);
-					$badge_count = go_return_badge_count($value);
-					go_get_rank($value);
+					$bonus_currency = go_return_bonus_currency( $value );
+					$penalty = go_return_penalty( $value );
+					$minutes = go_return_minutes( $value );
+					$currency = go_return_currency( $value );
+					$points = go_return_points( $value );
+					$badge_count = go_return_badge_count( $value );
+					go_get_rank( $value );
 					global $current_rank;
 					
 					echo "<tr id='user_{$value}'>
 							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'/></td>
 							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$value}&quot;);'>{$user_login}</a></td>
-							<td>{$class_a[$class_a_choice]}</td>
+							<td>{$class_a[ $class_a_choice]}</td>
 							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
 							<td>{$user_display}</td>
 							<td>{$current_rank}</td>
-							".((go_return_options('go_focus_switch') == 'On')?"<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>{$focuses_list}</select</td>":"")."
+							".( (go_return_options( 'go_focus_switch' ) == 'On' ) ? "<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>{$focuses_list}</select</td>" : '' )."
 							<td class='user_points'>{$points}</td>
 							<td class='user_currency'>{$currency}</td>
 							<td class='user_bonus_currency'>{$bonus_currency}</td>
@@ -215,19 +216,19 @@ function go_clipboard_intable () {
 
 function go_clipboard_intable_messages () {
 	global $wpdb;
-	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true);
-	foreach ($admin_messages as $student_id => $messages) {
-		$user_data_key = get_userdata($student_id);
-		$class_a_messages = get_user_meta($student_id, 'go_classifications', true);
+	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true );
+	foreach ( $admin_messages as $student_id => $messages ) {
+		$user_data_key = get_userdata( $student_id );
+		$class_a_messages = get_user_meta( $student_id, 'go_classifications', true );
 		$class_a_choice_messages = $_POST['go_clipboard_class_a_choice_messages'];
 		$user_login = $user_data_key->user_login;
 		$user_display = $user_data_key->display_name;
 		$user_first_name = $user_data_key->user_firstname;
 		$user_last_name =  $user_data_key->user_lastname;
 		$user_url =  $user_data_key->user_url;
-		$array_count = count($messages);
-		if (!empty($class_a_messages[$class_a_choice_messages])) {
-			for ($i = $array_count - 1; $i >= 0; $i--) {
+		$array_count = count( $messages );
+		if ( ! empty( $class_a_messages[ $class_a_choice_messages ] ) ) {
+			for ( $i = $array_count - 1; $i >= 0; $i-- ) {
 				echo "<tr id='user_{$value}'>
 					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
 					<td>{$class_a_messages[$class_a_choice_messages]}</td>
@@ -237,9 +238,9 @@ function go_clipboard_intable_messages () {
 					<td class='message'>{$messages[$i][message]}</td>
 				  	</tr>";
 			}
-		}  else if ($class_a_choice_messages == 'All') {
-			foreach ($class_a_messages as $computer) {
-				for ($i = $array_count - 1; $i >= 0; $i--) {
+		}  elseif ( $class_a_choice_messages == 'All' ) {
+			foreach ( $class_a_messages as $computer ) {
+				for ( $i = $array_count - 1; $i >= 0; $i-- ) {
 					echo "<tr id='user_{$value}'>
 						<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
 						<td>{$computer}</td>
@@ -255,8 +256,8 @@ function go_clipboard_intable_messages () {
 	die();
 }
 
-add_action('wp_ajax_go_clipboard_add','go_clipboard_add');
-function go_clipboard_add(){
+add_action( 'wp_ajax_go_clipboard_add','go_clipboard_add' );
+function go_clipboard_add() {
 	$ids = $_POST['ids'];
 	$points = $_POST['points'];
 	$currency = $_POST['currency'];
@@ -265,72 +266,72 @@ function go_clipboard_add(){
 	$minutes = $_POST['minutes'];
 	$reason = $_POST['reason'];
 	$badge_ID = $_POST['badge_ID'];
-	foreach($ids as $key=>$value){
-		if($reason != ''){
-			if($points != ''){
-				go_add_currency($value,$reason, 6, $points, 0, false);
+	foreach ( $ids as $key => $value ) {
+		if ( $reason != '' ) {
+			if ( $points != '' ) {
+				go_add_currency( $value, $reason, 6, $points, 0, false );
 			}
-			if($currency!= ''){
-				go_add_currency($value, $reason, 6, 0, $currency, false);
+			if ( $currency!= '' ) {
+				go_add_currency( $value, $reason, 6, 0, $currency, false );
 			}
-			if($bonus_currency!= ''){
-				go_add_bonus_currency($value, $bonus_currency, $reason);
+			if ( $bonus_currency!= '' ) {
+				go_add_bonus_currency( $value, $bonus_currency, $reason );
 			}
-			if($penalty!= ''){
-				go_add_penalty($value, $penalty, $reason);
+			if ( $penalty!= '' ) {
+				go_add_penalty( $value, $penalty, $reason );
 			}
-			if($minutes!= ''){
-				go_add_minutes($value, $minutes, $reason);
+			if ( $minutes!= '' ) {
+				go_add_minutes( $value, $minutes, $reason );
 			}
-			if($badge_ID != ''){
-				do_shortcode('[go_award_badge id="'.$badge_ID.'" repeat = "off" uid="'.$value.'"]');
+			if ( $badge_ID != '' ) {
+				do_shortcode( "[go_award_badge id='{$badge_ID}' repeat = 'off' uid='{$value}']" );
 			}
-			go_message_user($value, $reason);
+			go_message_user( $value, $reason );
 		}
 	}
 	die();
 }
 
 function go_update_user_focuses() {
-	$new_user_focus = stripslashes($_POST['new_user_focus']);
+	$new_user_focus = stripslashes( $_POST['new_user_focus'] );
 	$user_id = $_POST['user_id'];
-	if ($new_user_focus != 'No '.go_return_options('go_focus_name')) {
-		update_user_meta($user_id, 'go_focus', array($new_user_focus));
+	if ( $new_user_focus != 'No '.go_return_options( 'go_focus_name' ) ) {
+		update_user_meta( $user_id, 'go_focus', array( $new_user_focus ) );
 	} else {
-		update_user_meta($user_id, 'go_focus', array());
+		update_user_meta( $user_id, 'go_focus', array() );
 	}
 	echo $new_user_focus;
 	die();	
 }
 
-function go_clipboard_collect_data(){
+function go_clipboard_collect_data() {
 	global $wpdb;
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
 	$table_name_go = $wpdb->prefix.'go';
-	$uid = $wpdb->get_results("SELECT user_id 
+	$uid = $wpdb->get_results( "SELECT user_id 
 		FROM {$table_name_user_meta} 
 		WHERE meta_key = '{$wpdb->prefix}capabilities' 
 		AND meta_value NOT LIKE '%administrator%'"
 	);
-	$time = round(microtime(true));
-	$array = get_option('go_graphing_data');
-	foreach($uid as $id){
-		foreach($id as $value){
-			$bonus_currency = go_return_bonus_currency($value);
-			$penalty = go_return_penalty($value);
-			$currency = go_return_currency($value);
-			$points = go_return_points($value);
-			$third_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 3");
-			$fourth_stage = (int)$wpdb->get_var("select count(*) from ".$table_name_go." where uid = $value and status = 4");
-			$minutes = go_return_minutes($value);
-			$array[$value][$time] = $bonus_currency.','. $penalty.','. $points.','. $third_stage.','. $fourth_stage.','.$currency.','.$minutes;
+	$time = round( microtime( true ) );
+	$array = get_option( 'go_graphing_data' );
+	foreach ( $uid as $id ) {
+		foreach ( $id as $value ) {
+			$bonus_currency = go_return_bonus_currency( $value );
+			$penalty = go_return_penalty( $value );
+			$currency = go_return_currency( $value );
+			$points = go_return_points( $value );
+			$third_stage  = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table_name_go} WHERE uid = $value AND status = 3" );
+			$fourth_stage = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table_name_go} WHERE uid = $value AND status = 4" );
+			$minutes = go_return_minutes( $value );
+			$array[ $value ][ $time ] = $bonus_currency.','. $penalty.','. $points.','. $third_stage.','. $fourth_stage.','.$currency.','.$minutes;
 		}
 	}
 	update_option( 'go_graphing_data', $array );
 }
 	
 //function which is run when the analysis tab is clicked, when a user collects data, or when a different selection (points, currency, time) is picked in the analysis tab
-function go_clipboard_get_data(){
+function go_clipboard_get_data() {
 	global $wpdb;
 	
 	//grabs the selection
@@ -342,106 +343,107 @@ function go_clipboard_get_data(){
 	// 5 = penalty
 	// 6 = minutes
 	$selection = $_POST['go_graph_selection'];
-	if(isset($_POST['go_class_a'])){
+	if ( isset( $_POST['go_class_a'] ) ) {
 		$class_a_choice = $_POST['go_class_a'];
-	}else{
+	} else {
 		$class_a_choice = array();	
 	}
-	if(isset($_POST['go_choices_checked_names'])){
+	if ( isset( $_POST['go_choices_checked_names'] ) ) {
 		$go_choices_checked_names = $_POST['go_choices_checked_names'];
-	}else{
+	} else {
 		$go_choices_checked_names = array();
 	}
 	
-	$array = get_option('go_graphing_data',false);
+	$array = get_option( 'go_graphing_data',false );
 	
 	$users_in_class = array();
-	foreach($class_a_choice as $value){
-		if(!array_key_exists($value, $users_in_class)){
-			$users_in_class[$value] = array();	
+	foreach ( $class_a_choice as $value ) {
+		if ( ! array_key_exists( $value, $users_in_class) ) {
+			$users_in_class[ $value] = array();	
 		}
 	}
 	
 	$table_name_go_totals= $wpdb->prefix.'go_totals';
-	$uids = $wpdb->get_results("SELECT uid FROM ".$table_name_go_totals."");
+	$uids = $wpdb->get_results( "SELECT uid FROM ".$table_name_go_totals.'' );
 	// loops through game on users and places each user in their respective class_a 
-	foreach($uids as $uid){
-		foreach($uid as $id){
-			$user_class = get_user_meta($id, 'go_classifications', true);
-			if($user_class){
-				$class = array_keys($user_class);
-				$check = array_intersect($class, array_keys($users_in_class));
-				if($check){
-					if(count($check) > 1 || count($class) > 1){
-						foreach($check as $value){
-							$users_in_class[$value][] = $id;
+	foreach ( $uids as $uid) {
+		foreach ( $uid as $id) {
+			$user_class = get_user_meta( $id, 'go_classifications', true );
+			if ( $user_class ) {
+				$class = array_keys( $user_class );
+				$check = array_intersect( $class, array_keys( $users_in_class ) );
+				if ( $check ) {
+					if (count( $check ) > 1 || count( $class ) > 1) {
+						foreach ( $check as $value ) {
+							$users_in_class[ $value ][] = $id;
 						}
 					}else{
-						$key = (string)$check[0];
-						$users_in_class[$key][] = $id;	
+						$key = (string) $check[0];
+						$users_in_class[ $key ][] = $id;	
 					}
 				}
 			}
 		}
 	}
 	// loops through users in each class and creates array of all their data
-	foreach($users_in_class as $class => $students){
+	foreach ( $users_in_class as $class => $students ) {
 		// date is the unix timestamp of the last time data was collected using the go_clipboard_collect_data function
-		foreach($array as $id => $date){
-			if(in_array($id, $students)){
+		foreach ( $array as $id => $date ) {
+			if ( in_array( $id, $students ) ) {
 				$getinfo = get_userdata( $id );
 				$id = $getinfo -> user_login;
 				$first = $getinfo-> first_name;
 				$last = $getinfo-> last_name;
-				$info[$id]['label'] = $last.', '.$first.' ('.$id.')';
-				$info[$id]['class_a'][] = $class;
-				foreach($date as $date => $content){
+				$info[ $id]['label'] = $last.', '.$first.' ( '.$id.' )';
+				$info[ $id]['class_a'][] = $class;
+				foreach ( $date as $date => $content ) {
 					// Bonus Currency, penalty, points, completed, and mastered array associated with the unix timestamp when go_clipboard_collect_data function ran
-					$content_array = explode(',',$content);
+					$content_array = explode( ',', $content );
 					// generates array of user data associated with a unix timestamp, then appends the unix timestamp$content_array's element which corresponds to the graph selection key above
-					$info[$id]['data'][] = array($date*1000,$content_array[$selection]);	
+					$info[ $id ]['data'][] = array( $date * 1000, $content_array[ $selection ] );	
 				}
 			}
 		}
 	}
-	if($go_choices_checked_names){
+	if ( $go_choices_checked_names ) {
 		$info['checked'] = $go_choices_checked_names;
 	}	
 	// stringifies the php array into a json object
-	echo JSON_encode($info);
+	echo JSON_encode( $info );
 	die();
 }
 
-add_action('wp_ajax_fixmessages', 'fixmessages');					
-function fixmessages(){
+add_action( 'wp_ajax_fixmessages', 'fixmessages' );					
+function fixmessages() {
 	global $wpdb;
-	$users = get_users(array('role' => 'Subscriber'));
-	foreach($users as $user){
-		$messages = get_user_meta($user->ID, 'go_admin_messages',true);
+	$users = get_users(array( 'role' => 'Subscriber' ) );
+	foreach ( $users as $user ) {
+		$messages = get_user_meta( $user->ID, 'go_admin_messages',true );
 		$messages_array = $messages[1];
-		$messages_unread = array_values($messages_array);
+		$messages_unread = array_values( $messages_array );
 		$messages_unread_count = 0;
-		foreach($messages_unread as $message_unread){
-			if($message_unread[1] == 1){
+		foreach ( $messages_unread as $message_unread ) {
+			if ( $message_unread[1] == 1) {
 				$messages_unread_count++;	
 			}
 		}
-		if($messages[0] != $message_unread_count){
+		if ( $messages[0] != $message_unread_count ) {
 			$messages[0] = $messages_unread_count;
-			update_user_meta($user->ID, 'go_admin_messages', $messages);
+			update_user_meta( $user->ID, 'go_admin_messages', $messages );
 		}
 	}
 	
 	die();
 }
 
-function go_update_script_day(){
+function go_update_script_day() {
 	$new_day = $_POST['new_day'];
-	update_option('go_analysis_script_day', $new_day);
-	wp_clear_scheduled_hook('go_clipboard_collect_data');
-	$script_day = go_return_options('go_analysis_script_day');
-	$script_timestamp = strtotime("this {$script_day}");
-	wp_schedule_event($script_timestamp, 'go_weekly', 'go_clipboard_collect_data');
+	update_option( 'go_analysis_script_day', $new_day );
+	wp_clear_scheduled_hook( 'go_clipboard_collect_data' );
+	$script_day = go_return_options( 'go_analysis_script_day' );
+	$script_timestamp = strtotime( "this {$script_day}" );
+	wp_schedule_event( $script_timestamp, 'go_weekly', 'go_clipboard_collect_data' );
 	die();
 }
+
 ?>

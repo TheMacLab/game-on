@@ -8,9 +8,10 @@
 	background-color: black;
 	z-index: 999999;
 	-moz-opacity: 0.8;
-	opacity:.80;
+	opacity: 0.8;
 	filter: alpha(opacity=80);
 }
+
 .white_content {
 	display: none;
 	position: fixed;
@@ -25,11 +26,13 @@
 	border-radius: 3px;
 	border: 1px solid black !important;
 }
+
 .go_lb_closer {
 	position: absolute;
 	top: 7px;
 	right: 13px;
 }
+
 .go-lb-loading {
 	background: url('../../../images/ajax-loader.gif');
 	width: 16px;
@@ -37,6 +40,7 @@
 	margin: 0 auto;
 	margin-top: 25%;
 }
+
 #go-buy-loading {
 	background: url('../../../images/ajax-loader-buy-green.gif');
 	width: 16px;
@@ -45,12 +49,15 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
+
 .buy_g {
 	background: url('../../../images/ajax-loader-buy-green.gif');
 }
+
 .buy_r {
 	background: url('../../../images/ajax-loader-buy-red.gif');
 }
+
 .golb-fr-boxes-r {
 	float: left;
 	width: 18%;
@@ -64,121 +71,127 @@
 	background-color: #ff0000;
 	border: 1px solid #c00;
 	border-radius: 3px;
-	cursor:pointer;
+	cursor: pointer;
 	height: 24px;
 }
-.golb-fr-boxes-r:hover {
+
+.golb-fr-boxes-r: hover {
 	border-color: black;
 }
-.golb-fr-boxes-r:active {
+
+.golb-fr-boxes-r: active {
 	border-color: black;
 }
+
 .golb-fr-boxes-n {
-float: left;
-width: 18%;
-padding: 5px 0px 5px 0px;
-margin-top: 7px;
-text-align: center;
-font-size: 15px;
-font-weight: bold;
-margin-right: 1.5%;
-background-color: #808080;
-color: white;
-border: 1px solid;
-border-radius: 3px;
-cursor: pointer;
-height: 24px;
+	float: left;
+	width: 18%;
+	padding: 5px 0px 5px 0px;
+	margin-top: 7px;
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	margin-right: 1.5%;
+	background-color: #808080;
+	color: white;
+	border: 1px solid;
+	border-radius: 3px;
+	cursor: pointer;
+	height: 24px;
 }
 
 .golb-fr-boxes-gold {
-float: left;
-width: 18%;
-padding: 5px 0px 5px 0px;
-margin-top: 7px;
-text-align: center;
-font-size: 15px;
-font-weight: bold;
-margin-right: 1.5%;
-background-color: #ffcc00;
-color: white;
-border: 1px solid;
-border-radius: 3px;
-cursor: pointer;
-height: 24px;
+	float: left;
+	width: 18%;
+	padding: 5px 0px 5px 0px;
+	margin-top: 7px;
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	margin-right: 1.5%;
+	background-color: #ffcc00;
+	color: white;
+	border: 1px solid;
+	border-radius: 3px;
+	cursor: pointer;
+	height: 24px;
 }
 
-
 .golb-fr-boxes-g {
-float: left;
-width: 18%;
-padding: 5px 0px 5px 0px;
-margin-top: 7px;
-text-align: center;
-font-size: 15px;
-font-weight: bold;
-margin-right: 1.5%;
-background-color: #39b54a;
-color: white;
-border: 1px solid;
-border-radius: 3px;
-cursor: pointer;
-height: 24px;
+	float: left;
+	width: 18%;
+	padding: 5px 0px 5px 0px;
+	margin-top: 7px;
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	margin-right: 1.5%;
+	background-color: #39b54a;
+	color: white;
+	border: 1px solid;
+	border-radius: 3px;
+	cursor: pointer;
+	height: 24px;
 }
 
 .golb-fr-boxes-giftable {
-width: 300px;
-padding: 5px 0px 5px 5px;
-margin-top: 7px;
-text-align: center;
-font-size: 15px;
-font-weight: bold;
-background-color: #808080;
-color: white;
-border: 1px solid;
-border-radius: 3px;
-cursor: pointer;
-height: 24px;
+	width: 300px;
+	padding: 5px 0px 5px 5px;
+	margin-top: 7px;
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	background-color: #808080;
+	color: white;
+	border: 1px solid;
+	border-radius: 3px;
+	cursor: pointer;
+	height: 24px;
 }
 
-.golb-fr-boxes-g:hover {
+.golb-fr-boxes-g: hover {
 	border-color: black;
 }
-.golb-fr-boxes-g:active {
+
+.golb-fr-boxes-g: active {
 	border-color: black;
 }
+
 .go_str_item {
-	cursor:pointer;
+	cursor: pointer;
 }
-.go_str_item:hover {
-	cursor:pointer;
+
+.go_str_item: hover {
+	cursor: pointer;
 }
+
 #lb-content h2 {
 	font-size: 30px;
 	margin: 0px 0px 5px 0px;
 	padding: 0px;
 }
 
-#golb-fr-purchase-limit{
+#golb-fr-purchase-limit {
 	position: realtive;
 	top: 80%;	
 }
 
-.ui-spinner{
+.ui-spinner {
 	bottom: 1px;	
 }
 
-#go_recipient_wrap{
+#go_recipient_wrap {
 	text-align: left;	
 }
 
-#go_recipient{
+#go_recipient {
 	position: relative; 
 	margin: 0px; 
 	padding: 0px; 
 	width: 60%;	
 }
 
-#go_search_results{
+#go_search_results {
 	padding: 0px;
 	margin: 0px;
 	display: inline-block;
@@ -187,13 +200,15 @@ height: 24px;
 	font-size: 15px;
 	background-color: white;
 }
-.go_search_res_user{
+
+.go_search_res_user {
 	display: inline-block;
 	text-decoration: none;
 	color: black;	
 	width: 100%;
 }
-.go_search_res_user:hover{
+
+.go_search_res_user: hover {
 	color: black;
 	text-decoration: none;
 	background-color: #eee;	

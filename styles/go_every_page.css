@@ -8,11 +8,11 @@
 	height: 68px;
 	width: 250px;
 	color: white;
-	display:none;
+	display: none;
 	padding: 4px 1px 1px 1px;
 	border-radius: 3px;
 	background: #111111;
-	opacity: .9;
+	opacity: 0.9;
 	z-index: 9999999;
 }
 
@@ -32,61 +32,61 @@
 }
 
 #go_admin_bar_progress_bar_border {
-	height:16px;
-	width:120px;
-	border:thin white solid;
+	height: 16px;
+	width: 120px;
+	border: thin white solid;
 	-moz-border-radius: 2em 2em 2em 2em;
 	margin-top: 2px;
 }
 
 #go_admin_bar_hitpoint_bar_border {
-	height:16px;
-    width:120px;
-    border:1px white solid;
+	height: 16px;
+    width: 120px;
+    border: 1px white solid;
     -moz-border-radius: 2em 2em 2em 2em;
     border-radius: 2em 2em 2em 2em;
 }
 
-#go_admin_bar_title{
-	text-align:left;
+#go_admin_bar_title {
+	text-align: left;
 }
 
-#go_admin_bar_input{
-	width:250px;
+#go_admin_bar_input {
+	width: 250px;
 }
 
-.go_admin_bar_points{
-	width:50px !important;
+.go_admin_bar_points {
+	width: 50px !important;
 }
 
-.go_admin_bar_reason{
-	width:175px !important;
+.go_admin_bar_reason {
+	width: 175px !important;
 }
 
-ul#wp-admin-bar-go_add-default.ab-submenu{
+ul#wp-admin-bar-go_add-default.ab-submenu {
 	height: 380px;
 }
 
-#points_needed_to_level_up:hover{
+#points_needed_to_level_up:hover {
 	color: white;
 }
 
 .go_admin_bar_text {
-	position:absolute !important;
+	position: absolute !important;
 	width: inherit !important;
 	text-align: center !important;
 	height: inherit !important;
-	margin-top:-8px !important;
+	margin-top: -8px !important;
 	color: white;
 	text-shadow: 0px 0px #ff6600;
 }
 
-.progress_bar{
-	height:16px !important;
+.progress_bar {
+	height: 16px !important;
 	background-color: #39b54a;
 }
 
-#go_messages_bar{
+#go_messages_bar {
 	background-color: red;
 	border: 1px solid white;
 	box-shadow: 1px 1px 1px black;
@@ -94,7 +94,7 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 	height: 16px;
 	text-align: center;
 	min-width: 14px;
-	line-height:17px;
+	line-height: 17px;
 	margin-top: 2px;
 }
 
@@ -121,7 +121,7 @@ ul#wp-admin-bar-go_add-default.ab-submenu{
 	width: 50px;
 }
 
-input[name="go_admin_bar_submit"]{
+input[name="go_admin_bar_submit"] {
 	height: 40px !important;
 }
 
@@ -232,7 +232,7 @@ input#go_store_item_url_input {
 	width: 50%;
 }
 
-input.go_store_exchange_input[type='text'] {
+input.go_store_exchange_input[type="text"] {
 	display: none;
 	width: 21.7%;
 }
@@ -284,26 +284,26 @@ input.go_test_field_rm {
 	padding: 0px;
 }
 
-.datepicker{
+.datepicker {
 	border-width: 1px;
 	border-color: #DDD;	
 }
 
-.cmb_id_go_mta_time_modifier td input{
+.cmb_id_go_mta_time_modifier td input {
 	width: 30px;
 }
 
-.go_task_settings_accordion{
-	font-size:16px;
-	border-style:solid;
-	border-width:1px;
-	border-color:#ddd;
+.go_task_settings_accordion {
+	font-size: 16px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ddd;
 	padding: 5px;
 	cursor: pointer;
 }
 
 .go_triangle_container {
-	float:right;
+	float: right;
 	cursor: pointer;
 	display: block;
 	width: 27px;
@@ -331,11 +331,11 @@ input.go_test_field_rm {
 	border-bottom: 5px solid #AAA;
 }
 
-ul#go_task_order_in_chain {
+#go_task_order_in_chain {
 	margin: 0;
 }
 
-input#go_mta_final_chain_message {
+#go_mta_final_chain_message {
 	width: 100%;
 }
 
@@ -345,15 +345,15 @@ input#go_mta_final_chain_message {
 	width: 40px;
 }
 
-input.go_admin_lock_text {
+.go_admin_lock_text {
 	width: 50%;
 }
 
-input.go_admin_lock_text::-webkit-input-placeholder {
+.go_admin_lock_text::-webkit-input-placeholder {
 	padding-top: 2px;
 }
 
-input.go_admin_lock_text:-moz-placeholder {
+.go_admin_lock_text::-moz-placeholder {
 	padding-top: 2px;
 }
 
@@ -383,25 +383,25 @@ input.go_admin_lock_text:-moz-placeholder {
 	width: 100%;
 }
 
-input.go_test_field_input_question::-webkit-input-placeholder {
+.go_test_field_input_question::-webkit-input-placeholder {
 	padding-top: 2px;
 }
 
-input.go_test_field_input_question:-moz-placeholder {
+.go_test_field_input_question::-moz-placeholder {
 	padding-top: 2px;
 }
 
-input.go_test_field_input {
+.go_test_field_input {
 	width: 75%;
 	margin: 0 5px 0 5px !important;
 	padding-top: 4px;
 }
 
-input.go_test_field_input::-webkit-input-placeholder {
+.go_test_field_input::-webkit-input-placeholder {
    padding-top: 2px;
 }
 
-input.go_test_field_input:-moz-placeholder {
+.go_test_field_input::-moz-placeholder {
    padding-top: 2px;  
 }
 
@@ -409,12 +409,12 @@ input.go_test_field_input:-moz-placeholder {
 	margin: 0 0 4px -2px !important;
 }
 
-input.go_test_field_add {
+.go_test_field_add {
 	color: green;
 	font-size: 250%;
 }
 
-input.go_test_field_rm {
+.go_test_field_rm {
 	color: red;
 	font-size: 250%;
 	margin-left: 5px;
@@ -424,16 +424,16 @@ input.go_test_field_rm {
 	margin-left: -2px !important;
 }
 
-input#go_repeat_amount_input {
+#go_repeat_amount_input {
 	width: 40px;
 	text-align: center;
 }
 
-.go_stage_badge_container{
+.go_stage_badge_container {
 	display: inline-block;
 }
 
-.go_badge_input{
+.go_badge_input {
 	width: 75px;
 }
 
@@ -454,85 +454,85 @@ input.go_current {
 	color: black !important;
 }
 
-#go_task_timer{
+#go_task_timer {
 	color: red;
 	font-weight: bold;
 }
 
 /* Tasks Style | Front-end */
 
-div#go_description p, 
-div#go_content p,
-div#new_content p {
+#go_description p, 
+#go_content p,
+#new_content p {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
-div.go_stage_message p:last-of-type {
+.go_stage_message p:last-of-type {
 	border-bottom: 1px solid;
 	border-bottom-color: inherit;
 }
 
-div.go_test_container {
+.go_test_container {
 	margin-bottom: 10px;
 }
 
-div.go_test_container:last-of-type {
+.go_test_container:last-of-type {
 	margin-bottom: 0px;
 }
 
-ul.go_test li {
+.go_test li {
 	list-style: none;
 }
 
-ul.go_test li:first-of-type {
+.go_test li:first-of-type {
 	display: inline;
 }
 
-ul.go_test li p {
+.go_test li p {
 	margin: 0px !important;
 	padding: 0px !important;
 }
 
-p#go_test_error_msg {
+#go_test_error_msg {
 	margin: 0 !important;
 }
 
-span.go_wrong_answer_marker {
+.go_wrong_answer_marker {
 	color: red;
 	margin: 0 0 0 10px !important;
 	padding: 0px !important;
 }
 
-span.go_correct_answer_marker {
+.go_correct_answer_marker {
 	color: green;
 	margin: 0 0 0 10px !important;
 	padding: 0px !important;
 }
 
-div.go_chain_message {
+.go_chain_message {
 	margin-top: 10px;
 }
 
-button.go_test_submit {
+.go_test_submit {
 	margin: 10px 0 10px 2px !important;
 }
 
-input#go_pass_lock {
+#go_pass_lock {
 	margin: 0 0 10px 0;
 }
 
-input#go_pass_lock::-webkit-input-placeholder {
+#go_pass_lock::-webkit-input-placeholder {
 	padding-left: 4px;
 }
 
-input#go_pass_lock:-moz-placeholder {
+input#go_pass_lock::-moz-placeholder {
 	padding-left: 4px;
 }
 
-.dark{
+.dark {
 	display: none;
 	position: fixed;
 	top: 0%;
@@ -540,13 +540,13 @@ input#go_pass_lock:-moz-placeholder {
 	width: 100%;
 	height: 100%;
 	background-color: black;
-	z-index:1001;
+	z-index: 1001;
 	-moz-opacity: 0.8;
-	opacity:.80;
+	opacity: .80;
 	filter: alpha(opacity=80);
 }
 
-.light{
+.light {
 	display: none;
 	position: fixed;
 	top: 50%;
@@ -556,6 +556,6 @@ input#go_pass_lock:-moz-placeholder {
 	padding: 10px 10px 10px 10px;
 }
 
-li.comment {
+.comment {
     list-style: none;
 }
