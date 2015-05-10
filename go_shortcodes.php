@@ -73,6 +73,8 @@ function go_display_video ( $atts, $video_url ) {
 		), 
 		$atts
 	);
+	$video_url = ( ! empty ( $video_url ) ? $video_url : $atts['video_url'] );
+	$video_title = $atts['video_title'];
 	if ( $video_url ) {
 		if ( $atts['height'] && $atts['width'] ) {
 		?>
@@ -96,9 +98,9 @@ function go_display_video ( $atts, $video_url ) {
         <?php
 		}
 		if ( $video_title ) {
-			return "<a href='javascript:;' onclick='go_display_help_video(\'{$video_url}\' );'>{$video_title}</a>";	
+			return "<a href='javascript:;' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );'>{$video_title}</a>";	
 		} else {
-			return "<a href='javascript:;' onclick='go_display_help_video(\'{$video_url}\' );'>video</a>";	
+			return "<a href='javascript:;' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );'>video</a>";	
 		}
 	}
 }
