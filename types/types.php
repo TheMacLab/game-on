@@ -54,7 +54,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
-				'name' => 'Time Filters'.go_task_opt_help( 'penalty_filter', '', 'http://maclab.guhsd.net/go/video/quests/timeFilter.mp4' ),
+				'name' => 'Start Filter'.go_task_opt_help( 'start_filter', '', 'http://maclab.guhsd.net/go/video/quests/startFilter.mp4' ),
+				'id' => "{$prefix}start_filter",
+				'type' => 'go_start_filter'
+			),
+			array(
+				'name' => 'Time Filters'.go_task_opt_help( 'time_filters', '', 'http://maclab.guhsd.net/go/video/quests/timeFilter.mp4' ),
 				'id' => "{$prefix}time_filters",
 				'type' => 'go_future_filters'
 			),
@@ -642,6 +647,53 @@ function go_rank_list() {
 	} else {
 		echo "No <a href='".admin_url()."/?page=game-on-options.php' target='_blank'>".get_option( 'go_level_plural_names' )."</a> were provided.";
 	}
+}
+
+add_action( 'cmb_render_go_start_filter', 'go_render_start_filter' );
+function go_render_start_filter () {
+	$custom = get_post_custom( get_the_id() );
+	$start_info = unserialize( $custom['go_mta_start_filter'][0] );
+	$checked = $start_info[0];
+	$date = $start_info[1];
+	$time = $start_info[2];
+	?>
+    <input name='go_mta_task_start_date_switch' type='checkbox' id='go_start_checkbox' <?php echo ( $checked ) ? 'checked' : '' ; ?>/>
+    <div id='go_start_info'>
+    	<input name="go_mta_task_start_date" class='go_datepicker' type="date" <?php echo ( ! empty( $date ) ) ? "value='{$date}'" : 'placeholder="Click for Date"'; ?>/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_start_time' class='custom_time' <?php echo ( ! empty( $time ) ) ? "value='{$time}'" : 'placeholder="Click for Time" value="00:00"';?> />
+   	</div>
+    <?php
+}
+
+add_action( 'cmb_validate_go_start_filter', 'go_validate_start_filter' );
+function go_validate_start_filter () { 
+	$checked = $_POST['go_mta_task_start_date_switch'];
+	$date = $_POST['go_mta_task_start_date'];
+	$time = $_POST['go_mta_task_start_time'];
+	$time = substr( $time, 0, 8 ); // Make sure no more than 8 characters are in the string
+	$hour = intval( substr( $time, 0, strpos( $time, ':' ) ) ); // Grab numerical value of hour
+	$minutes = substr( $time, strpos( $time, ':' ) + 1, strlen( $time ) ); // Grab minutes string
+	
+	if ( strpos( $time, 'PM' ) !== false ) { // If PM found
+	
+		if ( $hour < 12 ) { 
+			$time = ( $hour + 12 ).substr( $time, strpos ( $time, ':' ), strpos( $time, ':' ) + 2 ); // Set the time saved to be the correct 24-hour representation
+		}
+		
+		$time = str_replace( 'PM', '', $time ); // Remove PM from the string
+		
+	} elseif ( strpos( $time, 'AM' ) !== false ) { // If AM found
+		
+		if ( $hour < 10 ) {
+			$time = "0{$time}"; // Add leading 0 to hour to maintain 00:00 format
+		} elseif ( $hour == 12) {
+			$time = "00:{$minutes}";
+		}
+		
+		$time = str_replace( 'AM', '', $time ); // Remove AM from the string
+	}
+	$time = trim( $time ); // Remove spaces around time
+	$start_info = array( $checked, $date, $time );
+	return $start_info;
 }
 
 add_action( 'cmb_render_go_future_filters', 'go_future_filters' );

@@ -160,6 +160,7 @@ function task_edit_jquery () {
 		
 		var task_settings = [
 			jQuery( 'tr.cmb-type-go_rank_list.cmb_id_go_mta_req_rank' ),
+			jQuery( 'tr.cmb-type-go_start_filter.cmb_id_go_mta_start_filter' ),
 			jQuery( 'tr.cmb-type-go_future_filters.cmb_id_go_mta_time_filters' ),
 			jQuery( 'tr.cmb-type-text.cmb_id_go_mta_bonus_currency_filter' ),
 			jQuery( 'tr.cmb-type-text.cmb_id_go_mta_penalty_filter' ),
@@ -227,9 +228,23 @@ function task_edit_jquery () {
 					jQuery( 'tr.cmb-type-text.cmb_id_go_mta_final_chain_message' ).hide();
 				}
 			}
-			
+			if ( jQuery( '#go_start_checkbox' ).prop( 'checked' ) ) {
+				jQuery( '#go_start_info' ).show( 'slow' );
+			} else {
+				jQuery( '#go_start_info' ).hide( 'slow' );
+			}
 		});
 		
+		////////////////////////////////////
+		
+		// Modifier Date Picker //
+		jQuery( '#go_start_checkbox' ).click( function () {
+			if ( jQuery( '#go_start_checkbox' ).prop( 'checked' ) ) {
+				jQuery( '#go_start_info' ).show( 'slow' );
+			} else {
+				jQuery( '#go_start_info' ).hide( 'slow' );
+			}
+		});
 		////////////////////////////////////
 		
 		// Modifier Date Picker //

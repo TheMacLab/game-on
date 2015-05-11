@@ -275,6 +275,10 @@ input.go_test_field_rm {
 	cursor: -moz-grabbing;
 }
 
+#go_start_info {
+	display: inline-block;
+}
+
 #go_list_of_decay_dates, 
 #go_list_of_decay_dates tbody, 
 #go_list_of_decay_dates th, 

@@ -191,6 +191,18 @@ function go_task_shortcode( $atts, $content = null ) {
 			$accept_message = $custom_fields['go_mta_accept_message'][0]; // Set value of accept message equal to the task's accept message meta field value
 		}
 		
+		$start_filter_info = unserialize( $custom_fields['go_mta_start_filter'][0] );
+		$start_filter = $start_filter_info[0];
+		if ( ! empty ( $start_filter ) ) { 
+			$start_date = $start_filter_info[1];
+			$start_time = $start_filter_info[2];
+			$start_unix = strtotime( $start_time, strtotime( $start_date ) );
+			if ( $unix_now < $start_unix ) {
+				$time_string = date( 'g:i A', $start_unix )." on ".date( 'D, F j, Y', $start_unix );
+				return "<span id='go_future_notification'>Will be available at {$time_string}.</span>";	
+			}
+		}
+		
 		$future_switches = unserialize( $custom_fields['go_mta_time_filters'][0] ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
 		
 		$date_picker = ( ( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
