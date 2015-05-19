@@ -21,6 +21,10 @@ function go_update_ranks ( $user_id, $total_points, $output = true ) {
 	$update = false;
 	
 	if ( $next_rank != '' ) {
+		$last_points = end( $points_array );
+		if( $total_points > $last_points ){
+			return;
+		};
 		if ( $total_points >= $next_rank_points ) {
 			while ( current( $points_array ) != $next_rank_points ) {
 				next( $points_array );
