@@ -111,10 +111,6 @@ ul#wp-admin-bar-go_add-default.ab-submenu {
 
 #go_admin_bar_task_search_submit {
 	height: 24px;
-	/* padding-bottom: 2px; */
-	/* padding-top: 0; */
-	/* padding-left: 5px; */
-	/* padding-right: 5px; */
 	margin-bottom: 3px;
 	font-size: 10px;
 	line-height: 24px;
@@ -137,6 +133,15 @@ input[name="go_admin_bar_submit"] {
 	height: 25px;
 	line-height: 10px;
 	width: 70px;
+}
+
+#wp-admin-bar-go_toolbar_login {
+	display: inline !important;
+	padding: 0 8px 0 7px !important;
+}
+
+#wp-admin-bar-go_toolbar_login a {
+	padding: 0 8px 0 7px !important;
 }
 
 /********************

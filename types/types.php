@@ -1659,56 +1659,54 @@ function go_remove_task_chain_from_posts ( $term_id) {
 }
 
 add_action( 'post_submitbox_misc_actions', 'go_clone_post_ajax' );
-function go_clone_post_ajax () {
+function go_clone_post_ajax() {
 	global $post;
 	$post_type = get_post_type( $post );
 
 	// When the "Clone" button is pressed, send an ajax call to the go_clone_post() function to
 	// clone the post using the sent post id and post type.
-	if ( $post_type == 'tasks' || $post_type == 'go_store' ) {
-		echo "
-		<div class='misc-pub-section misc-pub-section-last'>
-			<input id='go-button-clone' class='button button-large alignright' type='button' value='Clone' />
-		</div>
-		<script type='text/javascript'>        	
-			function clone_post_ajax() {
-				jQuery( 'input#go-button-clone' ).click(function() {
-					jQuery( 'input#go-button-clone' ).prop( 'disabled', true );
-					jQuery.ajax({
-						url: '".admin_url( 'admin-ajax.php' )."',
-						type: 'POST',
-						data: {
-							action: 'go_clone_post',
-							post_id: {$post->ID},
-							post_type: '{$post_type}'
-						}, success: function(url) {
-							var reg = new RegExp(\"^(http)\" );
-							var match = reg.test(url);
-							if (url != '' && match) {
-								window.location = url;
-							}
+	echo "
+	<div class='misc-pub-section misc-pub-section-last'>
+		<input id='go-button-clone' class='button button-large alignright' type='button' value='Clone' />
+	</div>
+	<script type='text/javascript'>        	
+		function clone_post_ajax() {
+			jQuery( 'input#go-button-clone' ).click(function() {
+				jQuery( 'input#go-button-clone' ).prop( 'disabled', true );
+				jQuery.ajax({
+					url: '".admin_url( 'admin-ajax.php' )."',
+					type: 'POST',
+					data: {
+						action: 'go_clone_post',
+						post_id: {$post->ID},
+						post_type: '{$post_type}'
+					}, success: function( url ) {
+						var reg = new RegExp( \"^(http)\" );
+						var match = reg.test( url );
+						if ( '' != url && match ) {
+							window.location = url;
 						}
-					});
+					}
 				});
-			}
-			jQuery(document).ready(function() {
-				clone_post_ajax();
 			});
-		</script>
-		";
-	}
+		}
+		jQuery( document ).ready(function() {
+			clone_post_ajax();
+		});
+	</script>
+	";
 }
 
-function go_clone_post () {
+function go_clone_post() {
 
 	// Grab the post id from the ajax call and use it to grab data from the original post.
 	$post_id = $_POST['post_id'];
 	$post_type = $_POST['post_type'];
 	$post_data = get_post( $post_id, ARRAY_A );
-	$post_custom = get_post_custom( $post_id) ;
+	$post_custom = get_post_custom( $post_id );
 	
 	// Grab the original post's taxonomies.
-	if ( $post_type == 'tasks' ) {
+	if ( 'tasks' == $post_type ) {
 		$terms = get_the_terms( $post_id, 'task_chains' );
 		$foci = get_the_terms( $post_id, 'task_focus_categories' );
 		$cat = get_the_terms( $post_id, 'task_categories' );
@@ -1720,8 +1718,10 @@ function go_clone_post () {
 		for ( $i = 0; $i < count( $foci ); $i++ ) {
 			$focus_ids[] = $foci[ $i ]->term_id;
 		}
-	} else {
+	} elseif ( 'go_store' == $post_type ) {
 		$cat = get_the_terms( $post_id, 'store_types' );
+	} else {
+		$cat = get_the_terms( $post_id, 'category' );
 	}
 
 	$cat_ids = array();
@@ -1745,28 +1745,32 @@ function go_clone_post () {
 	$clone_id = wp_insert_post( $post_data );
 
 	// Set the cloned post's taxonomies using the ids from above.
-	if ( $post_type == 'tasks' ) {
-		wp_set_object_terms( $clone_id, $term_ids, "task_chains" );
-		wp_set_object_terms( $clone_id, $focus_ids, "task_focus_categories" );
-		wp_set_object_terms( $clone_id, $cat_ids, "task_categories" );
+	if ( 'tasks' == $post_type ) {
+		wp_set_object_terms( $clone_id, $term_ids, 'task_chains' );
+		wp_set_object_terms( $clone_id, $focus_ids, 'task_focus_categories' );
+		wp_set_object_terms( $clone_id, $cat_ids, 'task_categories' );
+	} elseif ( 'go_store' == $post_type ) {
+		wp_set_object_terms( $clone_id, $cat_ids, 'store_types' );
 	} else {
-		wp_set_object_terms( $clone_id, $cat_ids, "store_types" );
+		wp_set_object_terms( $clone_id, $cat_ids, 'category' );
 	}
 
-	if ( !empty( $clone_id ) ) {
+	if ( ! empty( $clone_id ) ) {
 		$url = admin_url( "post.php?post={$clone_id}&action=edit" );
 		
 		// Add the original post's meta data to the clone.
 		foreach ( $post_custom as $key => $value ) {
 			for ( $i = 0; $i < count( $value ); $i++ ) {
 				$uns = unserialize( $value[ $i ] );
-				if ( $uns !== false ) {
+				if ( false !== $uns ) {
 					add_post_meta( $clone_id, $key, $uns, true );
 				} else {
-					if ( $post_type == 'tasks' ) {
-						if ( $key === 'chain_position' ) {
+
+					// Handles chain_position meta data for tasks only
+					if ( 'tasks' == $post_type ) {
+						if ( 'chain_position' === $key ) {
 							$terms_array = get_the_terms( $post_id, 'task_chains' );
-							if ( !empty( $terms_array ) ) {
+							if ( ! empty( $terms_array ) ) {
 								$chain = array_shift( $terms_array );
 								$end_pos = $chain->count + 1;
 								add_post_meta( $clone_id, $key, $end_pos, true );

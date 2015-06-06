@@ -1,12 +1,12 @@
 <?php
 
-function go_display_admin_bar () {
+function go_display_admin_bar() {
 	if ( go_return_options( 'go_admin_bar_display_switch' ) == 'On' ) {
 		return true;
 	}
 }
 
-function go_admin_bar () {
+function go_admin_bar() {
 	global $wpdb;
 	global $current_user_id;
 	global $wp_admin_bar;
