@@ -13,7 +13,6 @@ function go_init_mtbxs() {
 		require_once 'init.php';
 }
 function go_mta_con_meta( array $meta_boxes ) {
-
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = 'go_mta_';
 	// Tasks Meta Boxes
@@ -86,6 +85,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Chain Order'.go_task_opt_help('task_chain_order', '', 'http://maclab.guhsd.net/go/video/quests/tasksInChain.mp4'),
 				'id' => $prefix.'chain_order',
 				'type' => 'go_pick_order_of_chain'
+			),
+			array(
+				'name' => 'Pod'.go_task_opt_help('task_pod', 'Group '.go_return_options('go_tasks_plural_name').' into pods where students must complete set amount of '.go_return_options('go_tasks_plural_name').' to continue.', 'http://maclab.guhsd.net/go/video/quests/taskPod.mp4'),
+				'id' => $prefix . 'task_pod',
+				'type' => 'go_task_pod'
 			),
 			array(
 				'name' => 'Final '.go_return_options('go_tasks_name').' Message'.go_task_opt_help('final_chain_message', '', 'http://maclab.guhsd.net/go/video/quests/finalChainMessage.mp4'),
@@ -699,7 +703,7 @@ function go_decay_table() {
 				foreach ($dates as $key => $date) {
 					?>
                     <tr>
-                        <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>'/></td>
+                        <td><input name="go_mta_task_decay_calendar[<?php echo $key;?>]" class="go_datepicker custom_date" value="<?php echo $date;?>" type="date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key;?>]' class='custom_time' value='<?php echo $times[$key]; ?>' /></td>
                         <td><input name="go_mta_task_decay_percent[<?php echo $key;?>]" value="<?php echo $percentages[$key]?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
                     </tr>
                     <?php
@@ -707,7 +711,7 @@ function go_decay_table() {
             } else {
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ <input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00'/></td>
+				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00' /></td>
 				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
             <?php 
@@ -731,7 +735,32 @@ function go_validate_decay_table() {
 		$times_f = array_filter($times);
 		$percentages_f = array_filter($percentages);
 		
-		
+		foreach ($times_f as $key => $time) {
+			$time = substr($time, 0, 8); // Make sure no more than 8 characters are in the string
+			$hour = intval( substr( $time, 0, strpos( $time, ':' ) ) ); // Grab numerical value of hour
+			$minutes = substr( $time, strpos( $time, ':' ) + 1, strlen( $time) ); // Grab minutes string
+			
+			if (strpos($time, 'PM') !== false) { // If PM found
+			
+				if ( $hour < 12 ) { 
+					$times_f[ $key ] = ($hour + 12).substr( $time, strpos ( $time, ':' ), strpos( $time, ':' ) + 2); // Set the time saved to be the correct 24-hour representation
+				}
+				
+				$times_f[ $key ] = str_replace( 'PM', '', $times_f[ $key ] ); // Remove PM from the string
+				
+			} else if ( strpos( $time, 'AM' ) !== false ) { // If AM found
+				
+				if ( $hour < 10 ) {
+					$times_f[ $key ] = '0' . $times_f[ $key ]; // Add leading 0 to hour to maintain 00:00 format
+				} else if ($hour == 12) {
+					$times_f[ $key ] = '00:'.$minutes;
+				}
+				
+				$times_f[ $key ] = str_replace( 'AM', '', $times_f[ $key ] ); // Remove AM from the string
+			}
+			$times_f[ $key ] = trim( $times_f[ $key ] ); // Remove spaces around time
+		}
+
 		$new_dates = array_intersect_key($dates_f, $times_f, $percentages_f);
 		$new_times = array_intersect_key($times_f, $percentages_f, $times_f);
 		$new_percentages = array_intersect_key($percentages_f, $dates_f, $times_f);
@@ -1372,6 +1401,91 @@ function go_pick_order_of_chain(){
         <?php
 	}
 }
+
+/*add_action('cmb_render_go_task_pod', 'go_task_pod');
+function go_task_pod () {
+	$post_custom = get_post_custom( get_the_id() );
+	$pods_options = get_option('go_task_pod_globals');
+	$pods_array = array();
+	//list terms in a given taxonomy using wp_list_categories  (also useful as a widget)
+	$orderby = 'name';
+	$show_count = 0; // 1 for yes, 0 for no
+	$pad_counts = 1; // 1 for yes, 0 for no
+	$hierarchical = 1; // 1 for yes, 0 for no
+	$taxonomy = 'task_pods';
+	$title = '';
+	$args = array(
+	  'orderby' => $orderby,
+	  'show_count' => $show_count,
+	  'pad_counts' => $pad_counts,
+	  'hierarchical' => $hierarchical,
+	  'taxonomy' => $taxonomy,
+	  'title_li' => $title
+	);
+	?>
+	<ul>
+	<?php
+	foreach (get_categories($args) as $category) {
+		$pods_array[] = $category;
+	}
+	foreach ($pods_array as $pod ) {
+		global $post;
+		$terms = wp_get_post_terms($post->ID, 'task_pods');
+		for ($i = 0; $i <= count($terms); $i++) {
+			if ($pod->slug === $terms[$i]->slug) {
+				$link = get_category_link($pod);
+				echo "<b><a href ='{$link}' target='_blank'>".$pod->name."</a></b>";
+				?>
+                <input type='text' name='go_pod_link[<?php echo $pod->slug ?>]' id='go_pod_link' value='<?php echo (!empty($pods_options[3][$i])) ? $pods_options[3][$i]: '' ; ?>'/><br/>
+				Must Complete 
+				<select name='go_pod_stage_select[<?php echo $pod->slug ?>]' id='go_pod_stage_select'>
+					<option <?php echo ($pods_options[0][$i] == 'third_stage') ? 'selected': '' ; ?> value='third_stage'><?php echo go_return_options('go_third_stage_name'); ?></option>
+					<option <?php echo ($pods_options[0][$i] == 'fourth_stage') ? 'selected': '' ; ?> value='fourth_stage'><?php echo go_return_options('go_fourth_stage_name'); ?></option>
+				</select> 
+				of 
+				<input type='number' name='go_pod_number[<?php echo $pod->slug ?>]' id='go_pod_number' value='<?php echo (!empty($pods_options[1][$i])) ? $pods_options[1][$i]: 1 ; ?>' style='width: 45px;'/> <?php echo go_return_options('go_tasks_plural_name'); ?> to continue to next Pod
+				</br>
+				Next Pod: 
+				<select name='go_next_pod_select[<?php echo $pod->slug ?>]' id='go_next_pod_select'>
+					<option>...</option>
+					<?php
+					foreach ($pods_array as $pod) {
+						if ($pod->slug !== $terms[$i]->slug) {
+							$pod_name = $pod->name;
+							?>
+							<option <?php echo ($pods_options[2][$i] == $pod_name) ? 'selected': '...' ; ?> value='<?php echo $pod_name; ?>'><?php echo $pod_name; ?></option>
+							<?php
+						}
+					}
+					?>
+				</select>
+				</br>
+				</br>
+				<?php
+			}
+		}
+	}
+}
+
+add_action('cmb_validate_go_task_pod', 'go_validate_task_pod');
+function go_validate_task_pod () {
+	$task_id = get_the_id();
+	$stage_required = $_POST['go_pod_stage_select'];
+	$tasks_required = $_POST['go_pod_number'];
+	$next_pod = $_POST['go_next_pod_select'];
+	$pod_link = $_POST['go_pod_link'];
+	$task_pod_info = array(
+		'stage_required' => $stage_required, 
+		'tasks_required' => $tasks_required, 
+		'next_pod' => $next_pod, 
+		'pod_link' => $pod_link
+	);
+	$task_pod_globals = array();
+	$task_pod_globals = get_option('go_task_pod_globals');
+	$task_pod_globals[ $task_id ] = $task_pod_info;
+	update_option('go_task_pod_globals', $task_pod_globals);
+	return $task_pod_info;
+}*/
 
 add_action('cmb_render_go_settings_accordion', 'go_settings_accordion', 10, 1);
 function go_settings_accordion($field_args){

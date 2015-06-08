@@ -19,6 +19,7 @@
 				{text: '[go_store cats]', onclick: function() {go_tinymce_insert_content (editor, '[go_store cats=""]');}},
 				{text: '[go_store id]', onclick: function() {go_tinymce_insert_content (editor, '[go_store id=""]');}},
 				{text: '[go_get_category]', onclick: function() {go_tinymce_insert_content (editor, '[go_get_category]');}},
+				{text: '[go_task_pod]', onclick: function() {go_tinymce_insert_content (editor, '[go_task_pod pod_name=""]');}},
 			],
 		});
 	});

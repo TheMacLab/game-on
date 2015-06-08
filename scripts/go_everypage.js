@@ -11,6 +11,65 @@ function go_deactivate_plugin () {
 	});	
 }
 
+function go_submit_pods () {
+	var podInfo = [];
+	var links = [];
+	jQuery( "input[name='go_pod_link[]']" ).each( function() {
+		links.push( jQuery( this ).val() );
+		
+	});
+	podInfo.push( links );
+	console.log( links );
+	
+	var stage = [];
+	jQuery( "select[name='go_pod_stage_select[]']" ).each( function() {
+		stage.push( jQuery( this ).val() );
+	});
+	console.log( stage );
+	podInfo.push( stage );
+	
+	var number = [];
+	jQuery( "input[name='go_pod_number[]']" ).each( function() {
+		number.push( jQuery( this ).val() );
+	});
+	console.log( number );
+	podInfo.push( number );
+	
+	var next = [];
+	jQuery( "select[name='go_next_pod_select[]']" ).each( function() {
+		next.push( jQuery( this ).val() );
+	});
+	console.log( next );
+	podInfo.push( next );
+	
+	console.log(podInfo);
+	return podInfo;
+	/*jQuery.ajax({
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_submit_pods',
+			podLink: jQuery("input[name='go_pod_link[]']").each(),
+			podStage: jQuery("input[name='go_pod_stage_select[]']").each(),
+			podNumber: jQuery("input[name='go_pod_number[]']").each(),
+			podNext: jQuery("input[name='go_next_pod_select[]']").each()
+		},
+		success: function (html) {
+			
+		}
+	});*/
+}
+
+function go_sounds (type) {
+    if (type == 'store') {
+        var audio = new Audio(PluginDir["url"] + 'media/gold.mp3');
+        audio.play();
+    } else if (type == 'timer') {
+    	var audio = new Audio(PluginDir["url"] + 'media/airhorn.mp3');
+        audio.play();
+    }
+}
+
 function hideVid () {
 	if (jQuery('#go_option_help_video').length) {
 		myplayer = videojs('go_option_help_video');

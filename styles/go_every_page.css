@@ -459,6 +459,40 @@ input.go_current {
 	font-weight: bold;
 }
 
+div.pod_unfinished {
+	border-style: solid;
+	border-width: 2px;
+	padding: 10px;
+	border-radius: 3px;
+	border-color: #ACACAC;
+	border-bottom-color: red;
+	position: relative;
+	height: 30px;
+	line-height: 30px;
+}
+
+div.pod_finished {
+	border-style: solid;
+	border-width: 2px;
+	padding: 10px;
+	border-radius: 3px;
+	border-color: #ACACAC;
+	border-bottom-color: green;
+	position: relative;
+	height: 30px;
+	line-height: 30px;
+}
+
+a.pod_link {
+	position:absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	text-decoration: none;
+	z-index: 10;
+}
+
 /* Tasks Style | Front-end */
 
 div#go_description p, 
@@ -513,6 +547,10 @@ span.go_correct_answer_marker {
 }
 
 div.go_chain_message {
+	margin-top: 10px;
+}
+
+div.go_pod_message {
 	margin-top: 10px;
 }
 

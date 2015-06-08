@@ -141,6 +141,37 @@ function register_taxonomy_task_categories() {
 	);
 	
 	register_taxonomy('task_chains', array('tasks'), $args_task_chains);
+	
+	$labels_task_pods = array(
+		'name' => _x( go_return_options('go_tasks_name').' Pods', 'task_pods' ),
+        'singular_name' => _x( go_return_options('go_tasks_name').' Pod', 'task_pods' ),
+        'search_items' => _x( 'Search '.go_return_options('go_tasks_name').' Pods', 'task_pods' ),
+        'popular_items' => _x( 'Popular '.go_return_options('go_tasks_name').' Pods', 'task_pods' ),
+        'all_items' => _x( 'All '.go_return_options('go_tasks_name').' Pods', 'task_pods' ),
+        'parent_item' => _x( go_return_options('go_tasks_name').' Pod Parent', 'task_pods' ),
+        'parent_item_colon' => _x( 'Parent '.go_return_options('go_tasks_name').' Pod:', 'task_pods' ),
+        'edit_item' => _x( 'Edit '.go_return_options('go_tasks_name').' Pod', 'task_pods' ),
+        'update_item' => _x( 'Update '.go_return_options('go_tasks_name').' Pod', 'task_pods' ),
+        'add_new_item' => _x( 'Add New '.go_return_options('go_tasks_name').' Pod', 'task_pods' ),
+        'new_item_name' => _x( 'New '.go_return_options('go_tasks_name').' Pod', 'task_pods' ),
+        'separate_items_with_commas' => _x( 'Separate '.go_return_options('go_tasks_name').' pods with commas', 'task_pods' ),
+        'add_or_remove_items' => _x( 'Add or remove '.go_return_options('go_tasks_name').' pods', 'task_pods' ),
+        'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options('go_tasks_name').' pods', 'task_pods' ),
+        'menu_name' => _x( go_return_options('go_tasks_name').' Pods', 'task_pods' ),
+	);
+	$args_task_pods = array(
+		'labels' => $labels_task_pods,
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_ui' => true,
+        'show_tagcloud' => true,
+        'show_admin_column' => false,
+        'hierarchical' => true,
+        'rewrite' => true,
+        'query_var' => true
+	);
+	
+	register_taxonomy('task_pods', array('tasks'), $args_task_pods);
 }
 
 ?>
