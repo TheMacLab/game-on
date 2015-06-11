@@ -8,11 +8,11 @@ function goCattheItem( the_cat_id ) {
 			url: cat_item.ajaxurl,
 			type: 'POST',
 			data: gotoCat,
-			beforeSend: function () { 
+			beforeSend: function() { 
 				jQuery( '#golb-fr-cat' ).append( '<div id="go-cat-loading" class="cat_loader"></div>' );
 			},
 			dataType: 'html',
-			success: function ( response ) {
+			success: function( response ) {
 				jQuery( '#golb-fr-cat' ).innerHTML = '';
 				jQuery( '#golb-fr-cat' ).html('');  
 				jQuery( '#golb-fr-cat' ).append( '<span>' + response + '</span>' );

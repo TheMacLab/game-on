@@ -1,4 +1,4 @@
-( function () {
+( function() {
 	tinymce.PluginManager.add( 'go_shortcode_button', function( editor, url ) {
 		editor.addButton( 'go_shortcode_button', {
 			text: "[ ]",
@@ -8,23 +8,23 @@
 				go_tinymce_insert_content ( editor, '[go_get_displayname]' );
 			},
 			menu: [
-				{text: '[go_get_displayname]', onclick: function () { go_tinymce_insert_content( editor, '[go_get_displayname]' ); } },
-				{text: '[go_firstname]', onclick: function () { go_tinymce_insert_content( editor, '[go_firstname]' ); } },
-				{text: '[go_lastname]', onclick: function () { go_tinymce_insert_content( editor, '[go_lastname]' ); } },
-				{text: '[go_loginname]', onclick: function () { go_tinymce_insert_content( editor, '[go_loginname]' ); } },
-				{text: '[go_display_video video_url]', onclick: function () { go_tinymce_insert_content( editor, '[go_display_video video_url="" video_title="" width="" height=""]' ); } },
-				{text: '[go_user_only_content]', onclick: function () { go_tinymce_insert_content( editor, '[go_user_only_content][/go_user_only_content]' ); } },
-				{text: '[go_visitor_only_content]', onclick: function () { go_tinymce_insert_content( editor, '[go_visitor_only_content][/go_visitor_only_content]' ); } },
-				{text: '[go_admin_only_content]', onclick: function () { go_tinymce_insert_content( editor, '[go_admin_only_content][/go_admin_only_content]' ); } },
-				{text: '[go_store cats]', onclick: function () { go_tinymce_insert_content( editor, '[go_store cats=""]' ); } },
-				{text: '[go_store id]', onclick: function () { go_tinymce_insert_content( editor, '[go_store id=""]' ); } },
-				{text: '[go_get_category]', onclick: function () { go_tinymce_insert_content( editor, '[go_get_category]' ); } },
+				{text: '[go_get_displayname]', onclick: function() { go_tinymce_insert_content( editor, '[go_get_displayname]' ); } },
+				{text: '[go_firstname]', onclick: function() { go_tinymce_insert_content( editor, '[go_firstname]' ); } },
+				{text: '[go_lastname]', onclick: function() { go_tinymce_insert_content( editor, '[go_lastname]' ); } },
+				{text: '[go_loginname]', onclick: function() { go_tinymce_insert_content( editor, '[go_loginname]' ); } },
+				{text: '[go_display_video video_url]', onclick: function() { go_tinymce_insert_content( editor, '[go_display_video video_url="" video_title="" width="" height=""]' ); } },
+				{text: '[go_user_only_content]', onclick: function() { go_tinymce_insert_content( editor, '[go_user_only_content][/go_user_only_content]' ); } },
+				{text: '[go_visitor_only_content]', onclick: function() { go_tinymce_insert_content( editor, '[go_visitor_only_content][/go_visitor_only_content]' ); } },
+				{text: '[go_admin_only_content]', onclick: function() { go_tinymce_insert_content( editor, '[go_admin_only_content][/go_admin_only_content]' ); } },
+				{text: '[go_store cats]', onclick: function() { go_tinymce_insert_content( editor, '[go_store cats=""]' ); } },
+				{text: '[go_store id]', onclick: function() { go_tinymce_insert_content( editor, '[go_store id=""]' ); } },
+				{text: '[go_get_category]', onclick: function() { go_tinymce_insert_content( editor, '[go_get_category]' ); } },
 			],
 		});
 	});
 })();
 
-function go_tinymce_insert_content ( editor, content ) {
+function go_tinymce_insert_content( editor, content ) {
 	if ( content.search( '("|\' )' ) !== -1 ) {
 		var content_index = content.search( '("|\' )' ) + 1;
 	} else if ( content.search( '\\]\\[' ) !== -1 ) {

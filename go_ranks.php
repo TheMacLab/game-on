@@ -7,7 +7,7 @@
 
 // $output has two possible boolean values: true and false. True will echo any rank notification,
 // false will return any rank notifications.
-function go_update_ranks ( $user_id, $total_points, $output = true ) {
+function go_update_ranks( $user_id, $total_points, $output = true ) {
 	global $wpdb;
 	global $current_rank;
 	go_get_rank( $user_id);
@@ -99,7 +99,7 @@ function go_update_ranks ( $user_id, $total_points, $output = true ) {
 	}
 }
 
-function go_get_rank ( $user_id ) {
+function go_get_rank( $user_id ) {
 	global $wpdb;
 	$rank = get_user_meta( $user_id, 'go_rank' );
 	global $current_rank;
@@ -112,7 +112,7 @@ function go_get_rank ( $user_id ) {
 	$next_rank_points = $rank[0][1][1];
 }
 
-function go_get_all_ranks () {
+function go_get_all_ranks() {
 	$all_ranks = get_option( 'go_ranks' );
 	$all_ranks_sorted = array();
 	foreach ( $all_ranks as $level => $points ) {
@@ -121,7 +121,7 @@ function go_get_all_ranks () {
 	return $all_ranks_sorted;
 }
 
-function go_clean_ranks () {
+function go_clean_ranks() {
 	$all_ranks = get_option( 'go_ranks' );
 	$all_ranks_sorted = array();
 	foreach ( $all_ranks as $level => $points ) {
@@ -129,7 +129,7 @@ function go_clean_ranks () {
 	}
 }
 
-function go_get_rank_key ( $points ) {
+function go_get_rank_key( $points ) {
 	global $wpdb;
 	$ranks = get_option( 'go_ranks', false );
 	$key = array_search( $points, $ranks['points'] );

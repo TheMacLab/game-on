@@ -1,17 +1,17 @@
-function go_deactivate_plugin () {
+function go_deactivate_plugin() {
 	jQuery.ajax({
 		type: 'post', 
 		url: MyAjax.ajaxurl,
 		data:{
 			action: 'go_deactivate_plugin'
 		},
-		success: function () {
+		success: function() {
 			location.reload();
 		}
 	});	
 }
 
-function go_sounds ( type ) {
+function go_sounds( type ) {
     if ( type == 'store' ) {
         var audio = new Audio( PluginDir["url"] + 'media/gold.mp3' );
         audio.play();
@@ -21,7 +21,7 @@ function go_sounds ( type ) {
     }
 }
 
-function hideVid () {
+function hideVid() {
 	if ( jQuery( '#go_option_help_video' ).length ) {
 		myplayer = videojs( 'go_option_help_video' );
 	}
@@ -37,7 +37,7 @@ function hideVid () {
 	jQuery( '#go_help_video_container' ).append( '<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video>' );
 }
 
-function go_display_help_video ( url ) {
+function go_display_help_video( url ) {
 	jQuery( '.dark' ).show();
 	if ( url.indexOf( 'youtube' ) != -1 || url.indexOf( 'vimeo' ) != -1 ) {
 		if ( url.indexOf( 'youtube' ) != -1 || url.indexOf( 'youtu.be' ) ) {
@@ -56,7 +56,7 @@ function go_display_help_video ( url ) {
 	jQuery( '#go_help_video_container' ).show();
 	if ( jQuery( '#go_option_help_video' ).length != 0 ) {
 		var myplayer = videojs( 'go_option_help_video' );
-		myplayer.ready( function () {
+		myplayer.ready( function() {
 			myplayer.src( url );
 			myplayer.load();
 			myplayer.play();
@@ -83,7 +83,7 @@ function go_display_help_video ( url ) {
 				}
 			}
 		});	
-		jQuery( '.dark' ).click( function () {
+		jQuery( '.dark' ).click( function() {
 			hideVid();
 		});
 	}
@@ -123,7 +123,7 @@ function go_admin_bar_add() {
 	});	
 }
 	
-function go_admin_bar_stats_page_button ( id ) {
+function go_admin_bar_stats_page_button( id ) {
 	jQuery.ajax({
 		type: "post",
 		url: MyAjax.ajaxurl,
@@ -131,13 +131,13 @@ function go_admin_bar_stats_page_button ( id ) {
 			action: 'go_admin_bar_stats',
 			uid: id
 		},
-		success: function ( html ) {
+		success: function( html ) {
 			jQuery( '#go_stats_white_overlay' ).html( html );
 			jQuery( '#go_stats_page_black_bg' ).show();
 			jQuery( '#go_stats_white_overlay' ).show();
 			jQuery( '#go_stats_hidden_input' ).val( id );
 			
-			jQuery( '.go_stats_body_selectors' ).click( function () {
+			jQuery( '.go_stats_body_selectors' ).click( function() {
 				if ( jQuery( '#go_stats_help_video' ).length ) {
 					myplayer = videojs( 'go_stats_help_video' );
 					myplayer.pause();
@@ -193,7 +193,7 @@ function go_admin_bar_stats_page_button ( id ) {
 						go_stats_close(); //Close out stats panel
 					}
 				});
-				jQuery( '#go_stats_page_black_bg' ).click( function () {
+				jQuery( '#go_stats_page_black_bg' ).click( function() {
 					go_stats_close();
 				});
 			}
@@ -201,7 +201,7 @@ function go_admin_bar_stats_page_button ( id ) {
 	});
 }
 
-function go_stats_close () {
+function go_stats_close() {
 	if ( jQuery( '#go_stats_help_video' ).length ) {
 		myplayer = videojs( 'go_stats_help_video' );
 		myplayer.pause();
@@ -212,13 +212,13 @@ function go_stats_close () {
 	jQuery( '#go_stats_lay' ).hide();
 }
 
-function go_stats_help () {
+function go_stats_help() {
 	jQuery( '#go_stats_body' ).append( '<div id="go_stats_help_video_container"></div>' );
 	jQuery( '#go_stats_help_video_container' ).css({ 'margin': '0px 10% 0px 15%', 'height': '100%', 'width': '100%' });
 	jQuery( '#go_option_help_video' ).clone().prop( 'id', 'go_stats_help_video' ).attr( 'width', '70%' ).attr( 'height', '100%' ).appendTo( '#go_stats_help_video_container' );
 	if ( jQuery( '#go_stats_help_video' ).length ) {
 		myplayer = videojs( 'go_stats_help_video' );
-		myplayer.ready( function () {
+		myplayer.ready( function() {
 			myplayer.src( 'http://maclab.guhsd.net/go/video/stats/help.mp4' );
 			myplayer.load();
 			myplayer.play();
@@ -227,7 +227,7 @@ function go_stats_help () {
 	}
 }
 	
-function go_stats_task_list () {
+function go_stats_task_list() {
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
@@ -235,9 +235,9 @@ function go_stats_task_list () {
 			action: 'go_stats_task_list',
 			user_id: jQuery( '#go_stats_hidden_input' ).val()
 		},
-		success:function ( html ) {
+		success:function( html ) {
 			jQuery( '#go_stats_body' ).html( html );
-			jQuery( '.go_stats_task_status_wrap a.go_stats_task_admin_stage_wrap' ).click( function () {
+			jQuery( '.go_stats_task_status_wrap a.go_stats_task_admin_stage_wrap' ).click( function() {
 				if ( jQuery( this ).attr( 'href' ) == '#' ) {
 					jQuery( '.chosen' ).not( jQuery( this ).children( 'div' ) ).removeClass( 'chosen' );
 					jQuery( this ).children( 'div' ).not( jQuery( '.go_stage_does_not_exist' ) ).toggleClass( 'chosen' );
@@ -250,10 +250,10 @@ function go_stats_task_list () {
 			jQuery( '.go_stage_does_not_exist' ).parent().on( 'click', function( e ) {
 				e.preventDefault();
 			});
-			jQuery( '.go_user' ).not( '.go_stats_task_stage_url' ).click( function ( e ) {
+			jQuery( '.go_user' ).not( '.go_stats_task_stage_url' ).click( function( e ) {
 				e.preventDefault();
 			});
-			jQuery( '.go_stats_task_admin_submit' ).click( function () {
+			jQuery( '.go_stats_task_admin_submit' ).click( function() {
 				task_id = jQuery( this ).attr( 'task' );
 				stage = '';
 				if ( jQuery( 'div[task="' + task_id + '"].chosen' ).length ) {
@@ -268,7 +268,7 @@ function go_stats_task_list () {
 	});
 }
 
-function go_stats_move_stage ( task_id, status ) {
+function go_stats_move_stage( task_id, status ) {
 	task_message = jQuery( '#go_stats_task_' + task_id + '_message' );
 	if ( task_message.val() != '' ) {
 		message = task_message.val();
@@ -291,7 +291,7 @@ function go_stats_move_stage ( task_id, status ) {
 			count: count,
 			message: message
 		},
-		success: function ( html ) {
+		success: function( html ) {
 			task_message.val( '' );
 			for ( i = 5; i > 0; i-- ) {
 				if ( i <= status ) {
@@ -329,7 +329,7 @@ function go_stats_move_stage ( task_id, status ) {
 	});
 }
 
-function go_stats_item_list () {
+function go_stats_item_list() {
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
@@ -337,13 +337,13 @@ function go_stats_item_list () {
 			action: 'go_stats_item_list',
 			user_id: jQuery( '#go_stats_hidden_input' ).val()	
 		}, 
-		success: function ( html ) {
+		success: function( html ) {
 			jQuery( '#go_stats_body' ).html( html );
 		}
 	});	
 }
 
-function go_stats_rewards_list () {
+function go_stats_rewards_list() {
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
@@ -351,13 +351,13 @@ function go_stats_rewards_list () {
 			action: 'go_stats_rewards_list',
 			user_id: jQuery( '#go_stats_hidden_input' ).val()
 		},
-		success: function ( html ) {
+		success: function( html ) {
 			jQuery( '#go_stats_body' ).html( html );
 		}
 	});
 }	
 
-function go_stats_minutes_list () {
+function go_stats_minutes_list() {
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
@@ -365,13 +365,13 @@ function go_stats_minutes_list () {
 			action: 'go_stats_minutes_list',
 			user_id: jQuery( '#go_stats_hidden_input' ).val()
 		},
-		success: function ( html ) {
+		success: function( html ) {
 			jQuery( '#go_stats_body' ).html( html );
 		}
 	});
 }
 
-function go_stats_penalties_list () {
+function go_stats_penalties_list() {
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
@@ -379,13 +379,13 @@ function go_stats_penalties_list () {
 			action: 'go_stats_penalties_list',
 			user_id: jQuery( '#go_stats_hidden_input' ).val()	
 		},
-		success: function ( html ) {
+		success: function( html ) {
 			jQuery( '#go_stats_body' ).html( html );
 		}
 	});
 }
 
-function go_stats_badges_list () {
+function go_stats_badges_list() {
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
@@ -393,30 +393,30 @@ function go_stats_badges_list () {
 			action: 'go_stats_badges_list',
 			user_id: jQuery( '#go_stats_hidden_input' ).val()
 		},
-		success: function ( html ) {
+		success: function( html ) {
 			jQuery( '#go_stats_body' ).html( html );
 		}
 	});
 }
 
-function go_stats_leaderboard () {
+function go_stats_leaderboard() {
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
 		data: {
 			action: 'go_stats_leaderboard_choices',
 		},
-		success: function ( html ) {
+		success: function( html ) {
 			jQuery( '#go_stats_body' ).html( html );
-			jQuery( '.go_stats_leaderboard_focus_choice, .go_stats_leaderboard_class_choice' ).click( function () {
+			jQuery( '.go_stats_leaderboard_focus_choice, .go_stats_leaderboard_class_choice' ).click( function() {
 				var class_values = [];
 				var focus_values = [];
-				jQuery( '.go_stats_leaderboard_class_choice' ).each( function () {
+				jQuery( '.go_stats_leaderboard_class_choice' ).each( function() {
 					if ( jQuery( this ).prop( 'checked' ) ) {
 						class_values.push( jQuery( this ).val() );
 					}
 				});
-				jQuery( '.go_stats_leaderboard_focus_choice' ).each( function () {
+				jQuery( '.go_stats_leaderboard_focus_choice' ).each( function() {
 					if ( jQuery( this ).prop( 'checked' ) ) {
 						focus_values.push( jQuery( this ).val() );
 					}
@@ -430,7 +430,7 @@ function go_stats_leaderboard () {
 						focuses: focus_values,
 						date: jQuery( '.go_stats_leaderboard_date_choice:checked' ).val()
 					},
-					success: function ( html ) {
+					success: function( html ) {
 						jQuery( '#go_stats_leaderboard' ).html( html );
 					}
 				});
@@ -439,7 +439,7 @@ function go_stats_leaderboard () {
 		}
 	});
 }
-function go_mark_seen ( date, type ) {
+function go_mark_seen( date, type ) {
 	jQuery.ajax({
 		url: MyAjax.ajaxurl,
 		type: "POST",
@@ -448,7 +448,7 @@ function go_mark_seen ( date, type ) {
 			date: date,
 			type: type
 		},
-		success: function ( data ) {
+		success: function( data ) {
 			data = JSON.parse( data );
 			if ( data[1] == 'remove' ) {
 				jQuery( '#wp-admin-bar-' + data[0] ).remove();
@@ -479,7 +479,7 @@ function go_mark_seen ( date, type ) {
 		}
 	});
 }
-function go_change_seen ( date, type, obj ) {
+function go_change_seen( date, type, obj ) {
 	if ( type == 'unseen' ) {
 		jQuery( obj ).text( 'Mark Unread' );
 		jQuery( obj ).attr( 'onClick', 'go_mark_seen("' + date + '", "seen"); go_change_seen("' + date + '", "seen", this);' );

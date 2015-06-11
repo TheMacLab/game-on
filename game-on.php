@@ -1,10 +1,10 @@
 <?php
-
 /*
 Plugin Name: Game-On
 Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
-Authors: Semar Yousif, Vincent Astolfi, Ezio Ballarin, Forest Hoffman, Austin Vuong, Spencer Nussbaum, Isaac Canada, Charles Leon
+Authors: Ezio Ballarin, Forest Hoffman, Austin Vuong, Charles Leon
+Previous Authors: Semar Yousif, Vincent Astolfi
 Author URI: http://maclab.guhsd.net/
 Version: 2.4.3
 */
@@ -61,7 +61,6 @@ add_action( 'wp_ajax_go_user_option_add','go_user_option_add' );
 add_action( 'go_update_totals','go_update_totals' );
 add_action( 'init', 'go_jquery' );
 add_action( 'wp', 'go_task_timer_headers' );
-add_shortcode( 'testbutton','testbutton' );
 add_action( 'admin_bar_init','go_global_defaults' );
 add_action( 'admin_bar_init','go_global_info' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
@@ -133,32 +132,32 @@ add_action( 'check_custom', 'check_custom' );
 add_action( 'check_values', 'check_values' );
 add_action( 'go_message_user', 'go_message_user' );
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
-add_action( 'login_redirect', 'go_user_redirect', 10, 3);
+add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 add_action( 'go_clipboard_collect_data', 'go_clipboard_collect_data' );
 add_filter( 'cron_schedules', 'go_weekly_schedule' );
 
-function go_deactivate_plugin () {
+function go_deactivate_plugin() {
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	$plugin = plugin_basename( __FILE__ );
 	deactivate_plugins( $plugin );
 	die();
 }
 
-function go_tsk_actv_activate () {
-    add_option( 'go_tsk_actv_do_activation_redirect', true );
+function go_tsk_actv_activate() {
+	add_option( 'go_tsk_actv_do_activation_redirect', true );
 	update_option( 'go_display_admin_explanation', true );
 }
 
 function go_tsk_actv_redirect() {
-    if ( get_option( 'go_tsk_actv_do_activation_redirect', false ) ) {
-        delete_option( 'go_tsk_actv_do_activation_redirect' );
-        if( !isset( $_GET['activate-multi'] ) ) {
-            wp_redirect( 'admin.php?page=game-on-options.php&settings-updated=true' );
-        }
-    }
+	if ( get_option( 'go_tsk_actv_do_activation_redirect', false ) ) {
+		delete_option( 'go_tsk_actv_do_activation_redirect' );
+		if( !isset( $_GET['activate-multi'] ) ) {
+			wp_redirect( 'admin.php?page=game-on-options.php&settings-updated=true' );
+		}
+	}
 }
 
-function inRange ( $int, $min, $max ) {
+function inRange( $int, $min, $max ) {
 	return ( $int > $min && $int <= $max );
 } 
 
@@ -170,7 +169,7 @@ function isEven( $value ) {
 	}
 }
 
-function check_values ( $req = null, $cur = null ) {
+function check_values( $req = null, $cur = null ) {
 	if ( $cur >= $req || $req <= 0 ) {
 		return true;
 	} else {
@@ -178,32 +177,32 @@ function check_values ( $req = null, $cur = null ) {
 	}
 }
 
-function go_user_redirect ( $redirect_to, $request, $user ) {
-    if ( get_option( 'go_admin_bar_user_redirect', true ) ) {
-    	$roles = $user->roles;
-    	if ( is_array( $roles) ) {
-	    	if ( in_array( 'administrator', $roles ) ) {
-	    		return admin_url();
-	    	} else {
-	    		return site_url();
-	    	}
-	    } else {
-	    	if ( $roles == 'administrator' ) {
-	    		return admin_url();
-	    	} else {
-	    		return site_url();
-	    	}
-	    }
-    } else {
-    	return $redirect_to;
-    }
+function go_user_redirect( $redirect_to, $request, $user ) {
+	if ( get_option( 'go_admin_bar_user_redirect', true ) ) {
+		$roles = $user->roles;
+		if ( is_array( $roles) ) {
+			if ( in_array( 'administrator', $roles ) ) {
+				return admin_url();
+			} else {
+				return site_url();
+			}
+		} else {
+			if ( $roles == 'administrator' ) {
+				return admin_url();
+			} else {
+				return site_url();
+			}
+		}
+	} else {
+		return $redirect_to;
+	}
 }
 
-function go_admin_head_notification () {
+function go_admin_head_notification() {
 	if ( get_option( 'go_display_admin_explanation' ) && current_user_can( 'manage_options' ) ) {
 		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
 		echo "<script>
-			function go_remove_admin_notification () {
+			function go_remove_admin_notification() {
 				jQuery.ajax( {
 					type: 'post',
 					url: MyAjax.ajaxurl,
@@ -219,12 +218,12 @@ function go_admin_head_notification () {
 	}
 }
 
-function go_admin_remove_notification () {
+function go_admin_remove_notification() {
 	update_option( 'go_display_admin_explanation', false );
 	die();
 }
 
-function go_weekly_schedule ( $schedules ) {
+function go_weekly_schedule( $schedules ) {
 	$schedules['go_weekly'] = array(
 		'interval' => 604800,
 		'display' => __( 'Once Weekly' )
@@ -232,10 +231,10 @@ function go_weekly_schedule ( $schedules ) {
 	return $schedules;
 }
 
-function go_task_timer_headers () {
+function go_task_timer_headers() {
 	$custom_fields = get_post_custom(get_the_ID() );
-	$future_switches = unserialize( $custom_fields['go_mta_time_filters'][0] );
-	if ( get_post_type() == 'tasks' && $future_switches['future'] == 'on' ) {
+	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : '' );
+	if ( 'tasks' == get_post_type() && 'on' == $future_switches['future'] ) {
 		header( 'Expires: Thu, 1 Jan 1970 00:00:00 GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
 		header( 'Cache-Control: post-check=0, pre-check=0', FALSE );

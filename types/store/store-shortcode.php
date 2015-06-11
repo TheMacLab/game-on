@@ -2,7 +2,7 @@
 // Includes
 include( 'includes/lightbox/frontend-lightbox.php' );
 // Store Shortcode
-function go_gold_store_sc ( $atts, $content = null ) {
+function go_gold_store_sc( $atts, $content = null ) {
 	$args = array( 'post_type' => 'go_store', 'posts_per_page' => 10 ); // Defines args used to get custom post type content
 	$loop = new WP_Query( $args ); // Loops in custom post type content
 	

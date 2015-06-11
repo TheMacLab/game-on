@@ -5,17 +5,17 @@ add_action( 'media_upload_tab_create_badge', 'badge_designer' );
 add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 add_shortcode( 'go_award_badge', 'go_award_badge' );
 
-function go_media_upload_tab_name ( $tabs ) {
+function go_media_upload_tab_name( $tabs ) {
     $newtab = array( 'tab_create_badge' => 'Create Badge' );
     return array_merge( $tabs, $newtab );
 }
 
-function go_media_badge_list ( $tabs ) {
+function go_media_badge_list( $tabs ) {
     $newtab = array( 'tab_badge_list' => 'Badges List' );
     return array_merge( $tabs, $newtab );
 }
 
-function go_badge_add_attachment ( $form_fields, $post ) {
+function go_badge_add_attachment( $form_fields, $post ) {
     $form_fields['location'] = array(
         'value' => "[go_award_badge id='{$post->ID}' repeat = 'off']",
         'label' => __( 'Shortcode' ),
@@ -24,7 +24,7 @@ function go_badge_add_attachment ( $form_fields, $post ) {
     return $form_fields;	
 }
 
-function go_award_badge ( $atts ) {
+function go_award_badge( $atts ) {
 	global $wpdb;
 	global $counter;
 	$counter++;
@@ -63,7 +63,7 @@ function go_award_badge ( $atts ) {
 	$wpdb->update( "{$wpdb->prefix}go_totals", array( 'badge_count' => $badge_count ), array( 'uid' => $user_id ) );
 }
 
-function go_remove_badge ( $user_id, $badge_id ) {
+function go_remove_badge( $user_id, $badge_id ) {
 	global $wpdb;
 	$existing_badges = get_user_meta( $user_id, 'go_badges', true );
 	unset( $existing_badges[ array_search( $badge_id, $existing_badges ) ] );

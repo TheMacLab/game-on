@@ -2,7 +2,7 @@
 
 //Shortcode for Email input
 add_shortcode( 'go_upload','go_file_input' );
-function go_file_input ( $atts, $content = null ) {
+function go_file_input( $atts, $content = null ) {
 	$atts = shortcode_atts(
 		array(
 			'is_uploaded' => '0',

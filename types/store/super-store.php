@@ -15,7 +15,7 @@ include ( 'store-admin-footer.php' );
 //////////////////////////////////////////////////////////////////////////////////////
 //Adds Store Texonomy
 add_action( 'init' , 'go_store_taxonomy' );
-function go_store_taxonomy () {
+function go_store_taxonomy() {
 	$labels = array(
 		'name' => _x( get_option( 'go_store_name' ).' Categories', 'taxonomy general name' ),
 		'singular_name' => _x( get_option( 'go_store_name' ).' Item Category', 'taxonomy singular name' ),
@@ -110,7 +110,7 @@ function go_store_post_type() {
 	);
 }
 
-function go_new_item_permalink ( $return, $post_id, $new_title, $new_slug ) {
+function go_new_item_permalink( $return, $post_id, $new_title, $new_slug ) {
 	if ( strpos( $return, 'edit-slug' ) !== false ) {
 		$return .= '<span id="edit-slug button button-small hide-if-no-js"><a href="javascript:void(0)" onclick = "document.getElementById(\'go_lightbox\' ).style.display=\'block\';document.getElementById(\'fade\' ).style.display=\'block\'" class="button button-small" >Insert </a></span>';
 		return $return;

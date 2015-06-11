@@ -1,7 +1,7 @@
 <?php
 add_action( 'wp_enqueue_scripts', 'go_buy_the_item' ); //add plugin script; 
 
-function go_buy_the_item () { 
+function go_buy_the_item() { 
     if ( !is_admin() ) { 
         wp_enqueue_script( 'more-posts', plugins_url( 'js/buy_the_item.js' , __FILE__ ), array( 'jquery' ), 1.0, true ); 
         wp_localize_script( 'more-posts', 'buy_item', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )); //create ajaxurl global for front-end AJAX call; 
@@ -11,7 +11,7 @@ function go_buy_the_item () {
 add_action( 'wp_ajax_buy_item', 'go_buy_item' ); //fire go_buy_item on AJAX call for the backend; 
 add_action( 'wp_ajax_nopriv_buy_item', 'go_buy_item' ); //fire go_buy_item on AJAX call for all users; 
 
-function go_buy_item () { 
+function go_buy_item() { 
 	global $wpdb;
 	$go_table_name = $wpdb->prefix."go";
     $post_id = $_POST["the_id"];
@@ -165,7 +165,7 @@ function go_buy_item () {
 	die();
 }
 
-function go_mail_item_reciept ( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = null ) {
+function go_mail_item_reciept( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = null ) {
 	global $go_plugin_dir;
 	$currency = ucwords( go_return_options( 'go_currency_name' ) );
 	$points = ucwords( go_return_options( 'go_points_name' ) );

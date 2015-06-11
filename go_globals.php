@@ -2,12 +2,12 @@
 
 $go_plugin_dir = dirname( __FILE__ );
 
-function go_global_defaults () {
+function go_global_defaults() {
 	global $role_default;
 	$role_default = 'subscriber';
 }
 
-function go_global_info () {
+function go_global_info() {
 	global $wpdb;
 	global $current_user_id;
 	global $current_points;

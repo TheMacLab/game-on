@@ -60,14 +60,15 @@ function go_admin_bar() {
 	
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_info',
 				'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up" class="go_admin_bar_text">'.( $rng).'/'.( $dom).'</div><div id="go_admin_bar_progress_bar" class="progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
 				'href' => '#',
-				'id' => 'go_info',
 			) 
 		);
 		
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_rank',
 				'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank( $current_user_id ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
@@ -76,6 +77,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_points',
 				'title' => '<div id="go_admin_bar_points">'.go_return_options( 'go_points_name' ).': '.go_display_points( $current_points ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
@@ -84,6 +86,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_points',
 				'title' => '<div id="go_admin_bar_currency">'.go_return_options( 'go_currency_name' ).': '.go_display_currency( $current_currency ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
@@ -92,6 +95,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_currency',
 				'title' => '<div id="go_admin_bar_bonus_currency">'.go_return_options( 'go_bonus_currency_name' ).': '.go_display_bonus_currency( $current_bonus_currency ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
@@ -100,6 +104,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_penalty',
 				'title' => '<div id="go_admin_bar_penalty">'.go_return_options( 'go_penalty_name' ).': '.go_display_penalty( $current_penalty ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
@@ -108,6 +113,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_minutes',
 				'title' => '<div id="go_admin_bar_minutes">'.go_return_options( 'go_minutes_name' ).': '.go_display_minutes( $current_minutes ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
@@ -117,6 +123,7 @@ function go_admin_bar() {
 		if ( current_user_can( 'manage_options' ) ) {
 			$wp_admin_bar->add_node( 
 				array(
+					'id' => 'go_deactivate',
 					'title' => '<input type="button" id="go_admin_bar_deactivation" name="go_admin_bar_deactivation" value="Deactivate" onclick="go_deactivate_plugin()"/>',
 					'parent'=>'go_info'
 				) 
@@ -127,9 +134,9 @@ function go_admin_bar() {
 			
 			$wp_admin_bar->add_node( 
 				array(
+					'id' => 'go_add',
 					'title' => 'Add',
 					'href' => '#',
-					'id' => 'go_add',
 				) 
 			);
 			
@@ -137,6 +144,7 @@ function go_admin_bar() {
 			
 				$wp_admin_bar->add_node( 
 					array(
+						'id' => 'go_add_bar',
 						'title' => 
 						'<div id="go_admin_bar_title">'.go_return_options( 'go_points_name' ).'</div>
 						<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_points_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_points_reason"/></div>
@@ -158,6 +166,7 @@ function go_admin_bar() {
 			
 				$wp_admin_bar->add_node( 
 					array(
+						'id' => 'go_add_bar',
 						'title' => 
 						'<div id="go_admin_bar_title">'.go_return_options( 'go_minutes_name' ).'</div>
 						<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_points" id="go_admin_bar_minutes_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_minutes_reason"/></div>
@@ -174,14 +183,15 @@ function go_admin_bar() {
 
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_stats',
 				'title' => '<div onclick="go_admin_bar_stats_page_button();">Stats</div><div id="go_stats_page"></div>',
 				'href' => '#',
-				'id' => 'go_stats',
 			) 
 		);
 		
 		$wp_admin_bar->add_node( 
 			array(
+				'id' => 'go_task_search',
 				'title' => '
 					<form role="search" method="get" id="go_admin_bar_task_search_form" class="searchform" action="'.home_url( '/' ).'">
 						<div><label class="screen-reader-text" for="s">'.__( 'Search for:' ).'</label>
@@ -190,7 +200,6 @@ function go_admin_bar() {
 							<input type="submit" id="go_admin_bar_task_search_submit" value="'.esc_attr__( 'Search' ).'"/>
 						</div>
 					</form>',
-				'id' => 'go_task_search'
 			) 
 		);
 		
@@ -205,6 +214,7 @@ function go_admin_bar() {
 
 			$wp_admin_bar->add_node(
 				array(
+					'id' => 'go_nav_clipboard',
 					'title' => 'Clipboard',
 					'href' => get_admin_url().'admin.php?page=go_clipboard',
 					'parent' => 'go_site_name_menu',
@@ -214,6 +224,7 @@ function go_admin_bar() {
 
 			$wp_admin_bar->add_node(
 				array(
+					'id' => 'go_nav_tasks',
 					'title' => get_option( 'go_tasks_plural_name' ),
 					'href' => get_admin_url().'edit.php?post_type=tasks',
 					'parent' => 'go_site_name_menu',
@@ -223,6 +234,7 @@ function go_admin_bar() {
 
 			$wp_admin_bar->add_node(
 				array(
+					'id' => 'go_nav_store',
 					'title' => get_option( 'go_store_name' ),
 					'href' => get_admin_url().'edit.php?post_type=go_store',
 					'parent' => 'go_site_name_menu',
@@ -232,6 +244,7 @@ function go_admin_bar() {
 
 			$wp_admin_bar->add_node(
 				array(
+					'id' => 'go_nav_options',
 					'title' => 'Game-On',
 					'href' => get_admin_url().'admin.php?page=game-on-options.php',
 					'parent' => 'go_site_name_menu',
@@ -241,6 +254,7 @@ function go_admin_bar() {
 
 			$wp_admin_bar->add_node(
 				array(
+					'id' => 'go_nav_plugins',
 					'title' => 'Plugins',
 					'href' => get_admin_url().'plugins.php',
 					'parent' => 'appearance'

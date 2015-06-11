@@ -1,16 +1,17 @@
 <?php
 
 add_action( 'admin_bar_init','go_messages_bar' );
-function go_messages_bar () {
+function go_messages_bar() {
 	global $wpdb;
 	global $wp_admin_bar;
 	$messages = get_user_meta( get_current_user_id(), 'go_admin_messages', true );
-	$msg_count = intval( $mesages[0] );
+	$msg_count = intval( $messages[0] );
 	if ( $messages[0] > 0) {
 		$style = 'background: #ff0000;';
 		if ( $messages[0] == 1 ) {
 			$wp_admin_bar->add_menu( 
 				array(
+					'id' => 'go_messages_blurb',
 					'title' => 'New message from admin',
 					'href' => '#',
 					'parent' => 'go_messages'
@@ -19,6 +20,7 @@ function go_messages_bar () {
 		} else {
 			$wp_admin_bar->add_menu( 
 				array(
+					'id' => 'go_messages_blurb',
 					'title' => 'New messages from admin',
 					'href' => '#',
 					'parent' => 'go_messages'
@@ -29,6 +31,7 @@ function go_messages_bar () {
 		$style = 'background: #222222;';
 		$wp_admin_bar->add_menu( 
 			array(
+				'id' => 'go_messages_blurb',
 				'title' => 'No new messages from admin',
 				'href' => '#',
 				'parent' => 'go_messages'
@@ -40,9 +43,9 @@ function go_messages_bar () {
 	}
 	$wp_admin_bar->add_menu( 
 		array(
+			'id' => 'go_messages',
 			'title' => '<div style="padding-top:5px;"><div id="go_messages_bar" style="'.$style.'">'.(int) $messages[0].'</div></div>',
 			'href' => '#',
-			'id' => 'go_messages',
 		) 
 	);
 	if ( ! empty( $messages[1] ) ) {
@@ -66,18 +69,21 @@ function go_messages_bar () {
 			}
 			$wp_admin_bar->add_menu( 
 				array(
+					'id' => $date,
 					'title' => '<div style="'.$style.'">'.$title.'...</div>',
 					'href' => '#',
-					'id' => $date,
-					'parent' => 'go_messages'
+					'parent' => 'go_messages',
 				) 
 			);
 			$wp_admin_bar->add_menu( 
 				array(
+					'id' => 'go_message',
 					'title' => $seen_elem,
 					'parent' => $date,
-					'meta' => array( 'html' =>  '<div class="go_message_container" style="width:350px;">'.$values[0].'</div>' ),
-					'id' => rand()
+					'meta' => array( 
+						'html' =>  '<div class="go_message_container" style="width:350px;">'.$values[0].'</div>',
+						'class' => 'go_message_item'
+					),
 				) 
 			);
 		}
@@ -85,7 +91,7 @@ function go_messages_bar () {
 }
 
 add_action( 'wp_ajax_go_mark_read','go_mark_read' );
-function go_mark_read () {
+function go_mark_read() {
 	global $wpdb;
 	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages',true );
 	if ( $_POST['type'] == 'unseen' ) {
@@ -109,7 +115,7 @@ function go_mark_read () {
 	die();
 }
 
-function go_message_user ( $user_id, $message ) {
+function go_message_user( $user_id, $message ) {
 	date_default_timezone_set( 'America/Los_Angeles' );
 	$timestamp = time();
 	$current_messages = get_user_meta( $user_id, 'go_admin_messages',true );

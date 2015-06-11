@@ -1,6 +1,6 @@
 <?php 
 add_shortcode( 'go_test', 'go_test_shortcode' );
-function go_test_shortcode ( $atts, $content ) {
+function go_test_shortcode( $atts, $content ) {
 	$atts = shortcode_atts( array(
 		'type' => 'radio',
 		'question' => 'What is the ultimate answer to life, the universe, and everything?',

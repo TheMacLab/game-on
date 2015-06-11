@@ -1,6 +1,6 @@
 <?php
 
-function go_display_comment_author () {
+function go_display_comment_author() {
 	global $comment;
 	$author_id = $comment->user_id;
 	$author = $comment->comment_author;

@@ -650,7 +650,7 @@ function go_rank_list() {
 }
 
 add_action( 'cmb_render_go_start_filter', 'go_render_start_filter' );
-function go_render_start_filter () {
+function go_render_start_filter() {
 	$custom = get_post_custom( get_the_id() );
 	$start_info = unserialize( $custom['go_mta_start_filter'][0] );
 	$checked = $start_info[0];
@@ -665,7 +665,7 @@ function go_render_start_filter () {
 }
 
 add_action( 'cmb_validate_go_start_filter', 'go_validate_start_filter' );
-function go_validate_start_filter () { 
+function go_validate_start_filter() { 
 	$checked = $_POST['go_mta_task_start_date_switch'];
 	$date = $_POST['go_mta_task_start_date'];
 	$time = $_POST['go_mta_task_start_time'];
@@ -697,7 +697,7 @@ function go_validate_start_filter () {
 }
 
 add_action( 'cmb_render_go_future_filters', 'go_future_filters' );
-function go_future_filters ( $field_args ) {
+function go_future_filters( $field_args ) {
 	$custom = get_post_custom( get_the_id() );
 	$checked = unserialize( $custom['go_mta_time_filters'][0] );
 	?>
@@ -707,7 +707,7 @@ function go_future_filters ( $field_args ) {
 }
 
 add_action( 'cmb_validate_go_future_filters', 'go_validate_future_filters' );
-function go_validate_future_filters () {
+function go_validate_future_filters() {
 	$checked = $_POST['go_time_modifier'];
 	return $checked;
 }
@@ -891,7 +891,7 @@ function go_validate_unpurchasable() {
 }
 
 add_action( 'cmb_render_go_time_modifier_inputs', 'go_time_modifier_inputs' );
-function go_time_modifier_inputs () {
+function go_time_modifier_inputs() {
 	$custom = get_post_custom( get_the_id() );
 	$time_modifier = unserialize( $custom['go_mta_time_modifier'][0] );
 	if ( $time_modifier ) {
@@ -998,7 +998,7 @@ function go_validate_test_modifier( $override_value, $post_id, $field_args ) {
 }
 
 add_action( 'cmb_render_go_test_field', 'go_test_field', 10, 1 );
-function go_test_field ( $field_args ) {
+function go_test_field( $field_args ) {
 	$custom = get_post_custom( get_the_id() );
 
 	$meta_id = $field_args['id'];
@@ -1168,7 +1168,7 @@ function go_test_field ( $field_args ) {
 					// Looping through all the test fields in a row is neccessary, since checking for inputs with a 'value'
 					// attribute containing one or more HTML tags doesn't return the input (it returns the HTML element
 					// inside the 'value' attribute, which doesn't contain a reference to it's parent node).
-					jQuery( "tr#go_test_field_input_row_<?php echo $ttc; ?>_" + [ x ] + " .go_test_field_input_<?php echo $ttc; ?>" ).each( function ( ind ) {
+					jQuery( "tr#go_test_field_input_row_<?php echo $ttc; ?>_" + [ x ] + " .go_test_field_input_<?php echo $ttc; ?>" ).each( function( ind ) {
 						if ( test_field_checked_array_<?php echo $ttc; ?>[ x ][ z ] === this.value ) {
 							jQuery( this ).siblings( '.go_test_field_input_checkbox_<?php echo $ttc; ?>' ).attr( 'checked', true );
 							return false;
@@ -1253,7 +1253,7 @@ function go_test_field ( $field_args ) {
 }
 
 add_action( 'cmb_validate_go_test_field', 'go_validate_test_field', 10, 3);
-function go_validate_test_field ( $unused_override_value, $unused_value, $field_args ) {
+function go_validate_test_field( $unused_override_value, $unused_value, $field_args ) {
 	$ttc = $field_args['test_type'];
 
 	$question_temp = $_POST["go_test_field_input_question_{$ttc}"];
@@ -1343,12 +1343,12 @@ function go_tasks_template_function( $template_path ) {
     return $template_path;
 }
 
-function go_tasks_filter_content () {
+function go_tasks_filter_content() {
 	 global $wpdb;
 	 echo do_shortcode( '[go_task id="'.get_the_id().'"]' );
 	 }
 	 
-function go_create_help_video_lb () {
+function go_create_help_video_lb() {
 	?>
 	<div class="dark" style="display: none;"> </div>
     <div class="light" style="display: none; <?php if ( is_admin() ) {?> height: 540px; width: 864px; margin: -270px 0 0 -432px;<?php } else { ?>height: <?php echo ( go_return_options( 'go_video_height' ) ) ?go_return_options( 'go_video_height' ) : '540';?>px; width: <?php echo ( go_return_options( 'go_video_width' ) ) ? go_return_options( 'go_video_width' ) : '864' ;?>px; margin: <?php echo ( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_height' ) / 2) : "-270" )."px 0 0 ".( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_width' ) / 2):"-432" )."px;"; } ?>">
@@ -1391,19 +1391,19 @@ function go_pick_order_of_chain() {
             ?>
 		</ul>
         <script type="text/javascript">
-			jQuery( 'document' ).ready( function ( e ) {
+			jQuery( 'document' ).ready( function( e ) {
 				var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
 				var post_id = "<?php echo $task_id; ?>";
 	           	jQuery( '#go_task_order_in_chain' ).sortable({
 				   	axis: "y", 
-				   	start: function ( event, ui ) {
+				   	start: function( event, ui ) {
 				   		jQuery( ui.item ).addClass( 'go_sortable_item' );
 				   	},
-				   	stop: function ( event, ui ) {
+				   	stop: function( event, ui ) {
 				   		jQuery( ui.item ).removeClass( 'go_sortable_item' );
 					  	var order = [];
 					  	var chain = '<?php echo $chain->name;?>';
-					  	jQuery( '.go_task_in_chain' ).each( function ( i, el ) {
+					  	jQuery( '.go_task_in_chain' ).each( function( i, el ) {
 							order[ i+1 ] = jQuery( this ).attr( 'post_id' );
 					  	});
 					  	jQuery.ajax({
@@ -1419,7 +1419,7 @@ function go_pick_order_of_chain() {
 				   }
 				});
 
-				jQuery( 'input#publish' ).click( function ( event, skip ) {
+				jQuery( 'input#publish' ).click( function( event, skip ) {
 					// The default value for skip is false, this way the post's custom metadata "chain_position" will always be updated.
 					// The first time this fucntion is called, skip will be undefined.
 					if ( typeof( skip ) === undefined ) {
@@ -1431,7 +1431,7 @@ function go_pick_order_of_chain() {
 						event.preventDefault();
 						// Get the order of the task chain from the "Chain Order" meta box.
 						var order = [];
-						jQuery( '.go_task_in_chain' ).each( function ( i, el ) {
+						jQuery( '.go_task_in_chain' ).each( function( i, el ) {
 							order[ i+1 ] = jQuery(this).attr( 'post_id' );
 					  	});
 						// Get the position of this task in the chain and get the current value of the meta value "chain_position".
@@ -1452,7 +1452,7 @@ function go_pick_order_of_chain() {
 }
 
 add_action( 'cmb_render_go_settings_accordion', 'go_settings_accordion', 10, 1);
-function go_settings_accordion ( $field_args ) {
+function go_settings_accordion( $field_args ) {
 	echo "
 		<div id='{$field_args['settings_id']}' class='go_task_settings_accordion'>
 			<strong>{$field_args['message']}</strong>
@@ -1492,7 +1492,7 @@ function go_stage_reward( $field_args ) {
 	echo "</div>";
 }
 
-function go_update_task_order () {
+function go_update_task_order() {
 	global $wpdb;
 	$order = $_POST['order'];
 	$chain = $_POST['chain'];
@@ -1504,7 +1504,7 @@ function go_update_task_order () {
 }
 
 add_action( 'transition_post_status', 'go_add_new_task_in_chain', 10, 3);
-function go_add_new_task_in_chain ( $new_status, $old_status, $post ) {
+function go_add_new_task_in_chain( $new_status, $old_status, $post ) {
 	$task_id = $post->ID;
 	if ( get_post_type( $task_id) == 'tasks' ) {
 		$task_chains = get_the_terms( $task_id, 'task_chains' );
@@ -1594,7 +1594,7 @@ function go_add_new_task_in_chain ( $new_status, $old_status, $post ) {
 }
 
 add_action( 'save_post', 'go_update_task_chain_meta' );
-function go_update_task_chain_meta ( $post_id ) {
+function go_update_task_chain_meta( $post_id ) {
 	$post_type = get_post_type( $post_id );
 	if ( $post_type == 'tasks' ) {
 		$terms = get_the_terms( $post_id, 'task_chains' );
@@ -1631,7 +1631,7 @@ function go_update_task_chain_meta ( $post_id ) {
 }
 
 add_action( 'delete_term_taxonomy', 'go_remove_task_chain_from_posts', 10, 1);
-function go_remove_task_chain_from_posts ( $term_id) {
+function go_remove_task_chain_from_posts( $term_id) {
 	$term = get_term_by( 'id', $term_id, 'task_chains' );
 	$posts_in_chain = get_posts(array(
 		'post_type' => 'tasks',
@@ -1792,12 +1792,12 @@ function go_clone_post() {
 }
 
 add_action( 'cmb_render_go_store_item_post_id', 'go_store_item_post_id' );
-function go_store_item_post_id () {
+function go_store_item_post_id() {
 	echo "<div id='go_store_id'>".get_the_id()."</div>";
 }
 
 add_action( 'cmb_render_go_store_cost', 'go_store_cost' );
-function go_store_cost () {
+function go_store_cost() {
 	$custom = get_post_custom( get_the_id() );
 	$cost_array = unserialize( $custom['go_mta_store_cost'][0] );
 	if ( !empty( $cost_array ) ) {
@@ -1817,7 +1817,7 @@ function go_store_cost () {
 }
 
 add_action( 'cmb_validate_go_store_cost', 'go_validate_store_cost' );
-function go_validate_store_cost () {
+function go_validate_store_cost() {
 	$go_currency_cost = $_POST['go_currency_cost'];
 	$go_point_cost = $_POST['go_point_cost'];
 	$go_bonus_currency_cost = $_POST['go_bonus_currency_cost'];
@@ -1842,7 +1842,7 @@ function go_validate_store_cost () {
 }
 
 add_action( 'cmb_render_go_store_limit', 'go_store_limit' );
-function go_store_limit () {
+function go_store_limit() {
 	$custom = get_post_custom( get_the_id() );
 	$content_array = unserialize( $custom['go_mta_store_limit'][0] );
 	$is_checked = $content_array[0];
@@ -1857,7 +1857,7 @@ function go_store_limit () {
 }
 
 add_action( 'cmb_validate_go_store_limit', 'go_validate_store_limit' );
-function go_validate_store_limit () {
+function go_validate_store_limit() {
 	$is_checked = $_POST['go_store_limit'];
 	if ( empty( $is_checked ) ) {
 		$is_checked = "false";
@@ -1906,7 +1906,7 @@ function go_store_focus() {
 }
 
 add_action( 'cmb_validate_go_store_focus', 'go_validate_store_focus' );
-function go_validate_store_focus () {
+function go_validate_store_focus() {
 	$is_checked = $_POST['go_mta_store_focus'];
 	if ( empty( $is_checked ) ) {
 		$is_checked = "false";
@@ -1918,7 +1918,7 @@ function go_validate_store_focus () {
 }
 
 add_action( 'cmb_render_go_store_receipt', 'go_store_receipt' );
-function go_store_receipt () {
+function go_store_receipt() {
 	$custom = get_post_custom( get_the_id() );
 	$store_receipt_option = get_option( 'go_store_receipt_switch' );
 	$is_checked = $custom['go_mta_store_receipt'][0];
@@ -1935,7 +1935,7 @@ function go_store_receipt () {
 }
 
 add_action( 'cmb_validate_go_store_receipt', 'go_validate_store_receipt' );
-function go_validate_store_receipt () {
+function go_validate_store_receipt() {
 	$is_checked = $_POST['go_store_receipt'];
 	if ( empty( $is_checked ) ) {
 		$is_checked = "false";
@@ -1946,7 +1946,7 @@ function go_validate_store_receipt () {
 }
 
 add_action( 'cmb_render_go_store_filter', 'go_store_filter' );
-function go_store_filter () {
+function go_store_filter() {
 	$custom = get_post_custom(get_the_id() );
 	$content_array = unserialize( $custom['go_mta_store_filter'][0] );
 	$is_checked = $content_array[0];
@@ -1979,7 +1979,7 @@ function go_store_filter () {
 }
 
 add_action( 'cmb_validate_go_store_filter', 'go_validate_store_filter' );
-function go_validate_store_filter () {
+function go_validate_store_filter() {
 	$is_checked = $_POST['go_mta_store_filter'];
 	if ( empty( $is_checked ) ) {
 		$is_checked = "false";
@@ -1993,21 +1993,21 @@ function go_validate_store_filter () {
 }
 
 add_action( 'cmb_render_go_item_url', 'go_item_url' );
-function go_item_url () {
+function go_item_url() {
 	$custom = get_post_custom( get_the_id() );
 	$url = $custom['go_mta_store_item_url'][0];
 	echo "<input id='go_store_item_url_input' name='go_mta_store_item_url' type='text' placeholder='http://yourlink.com' ".( ( !empty( $url) ) ? "value='{$url}'" : '' )."/>";
 }
 
 add_action( 'cmb_render_go_badge_id', 'go_badge_id' );
-function go_badge_id () {
+function go_badge_id() {
 	$custom = get_post_custom( get_the_id() );
 	$id = $custom['go_mta_badge_id'][0];
 	echo "<input id='go_store_badge_id_input' name='go_mta_badge_id' type='text' placeholder='Badge ID' ".( ( !empty( $id ) ) ? "value='{$id}'" : '' )."/>";
 }
 
 add_action( 'cmb_render_go_store_exchange', 'go_store_exchange' );
-function go_store_exchange () {
+function go_store_exchange() {
 	$custom = get_post_custom( get_the_id() );
 	$content_array = unserialize( $custom['go_mta_store_exchange'][0] );
 	$is_checked = $content_array[0];
@@ -2028,7 +2028,7 @@ function go_store_exchange () {
 }
 
 add_action( 'cmb_validate_go_store_exchange', 'go_validate_store_exchange' );
-function go_validate_store_exchange () {
+function go_validate_store_exchange() {
 	$is_checked = $_POST['go_mta_store_exchange'];
 	if ( empty( $is_checked ) ) {
 		$is_checked = "false";
@@ -2043,7 +2043,7 @@ function go_validate_store_exchange () {
 }
 
 add_action( 'cmb_render_go_badge_input', 'go_badge_input', 10, 1);
-function go_badge_input ( $field_args ) {
+function go_badge_input( $field_args ) {
 	$custom = get_post_custom( $post_id );
 	$content = unserialize( $custom[ $field_args['id']][0] );
 	$checked = $content[0];
@@ -2069,7 +2069,7 @@ function go_badge_input ( $field_args ) {
 }
 
 add_action( 'cmb_validate_go_badge_input', 'go_validate_badge_input', 10, 3);
-function go_validate_badge_input ( $override_value, $value, $field_args ) {
+function go_validate_badge_input( $override_value, $value, $field_args ) {
 	$checkbox_id = $field_args["id"];
 	$checked = $_POST[ $checkbox_id ] ? 'true' : 'false';
 	$badges = $_POST['go_badge_input_stage_'.$field_args['stage']];
@@ -2078,7 +2078,7 @@ function go_validate_badge_input ( $override_value, $value, $field_args ) {
 }
 
 add_action( 'cmb_render_go_store_bonus', 'go_store_bonus' );
-function go_store_bonus () {
+function go_store_bonus() {
 	$custom = get_post_custom( get_the_id() );
 	$is_checked = $custom['go_mta_store_bonus'][0];
 	if ( empty( $is_checked ) ) {
@@ -2089,7 +2089,7 @@ function go_store_bonus () {
 }
 
 add_action( 'cmb_validate_go_store_bonus', 'go_validate_store_bonus' );
-function go_validate_store_bonus () {
+function go_validate_store_bonus() {
 	$is_checked = $_POST['go_store_bonus'];
 	if ( empty( $is_checked ) ) {
 		$is_checked = "false";

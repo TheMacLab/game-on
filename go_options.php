@@ -7,12 +7,12 @@ if ( is_admin() ) {
 	}
 	
 	add_action( 'admin_enqueue_scripts', 'go_opt_style' );
-	function go_opt_style () {
+	function go_opt_style() {
 		wp_register_style( 'go_opt_css', plugins_url( 'styles/go_options.css', __FILE__ ), false, '1.0.0' );
 		wp_enqueue_style ( 'go_opt_css' );
 	}
 	
-	function go_options_accordion_help ( $video_url = null, $explanation = null ) {
+	function go_options_accordion_help( $video_url = null, $explanation = null ) {
 		?>
         <a class='go_options_help_link' href='#' onclick='go_display_help_video( "<?php echo $video_url; ?>" )' tooltip='<?php echo $explanation; ?>'>
 			<div class='go_options_accordion_help_wrap'>
@@ -24,7 +24,7 @@ if ( is_admin() ) {
         <?php	
 	}
 	
-	function go_options_help ( $video_url = null, $explanation = null, $help = true ) {
+	function go_options_help( $video_url = null, $explanation = null, $help = true ) {
 		?>
     	<a class='go_options_help_link <?php if ( !$help ) { echo 'go_options_no_help'; } ?>' href='javascript:;' onclick='go_display_help_video( "<?php echo $video_url; ?>" )' tooltip='<?php echo $explanation; ?>'>
 			<div class='go_options_help_wrap <?php if ( !$help ) { echo 'go_options_no_help'; } ?>'>
@@ -36,7 +36,7 @@ if ( is_admin() ) {
         <?php
 	}
 	
-	function go_options_field ( $title, $fields, $field_args, $video_url = null, $explanation = null ) {
+	function go_options_field( $title, $fields, $field_args, $video_url = null, $explanation = null ) {
 		?> 
         <div class='go_options'>
 			<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo $title; go_options_help( $video_url, $explanation ); ?></span></div>
@@ -51,7 +51,7 @@ if ( is_admin() ) {
         <?php
 	}	
 	
-	function go_options_input ( $title, $type, $name, $video_url, $explanation, $help = true, $reset = null ) {
+	function go_options_input( $title, $type, $name, $video_url, $explanation, $help = true, $reset = null ) {
 		?>
 		<div class='go_options'>
 			<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo $title; go_options_help( $video_url, $explanation, $help ); ?></span></div>
@@ -60,7 +60,7 @@ if ( is_admin() ) {
 		<?php
 	}
 	
-	function game_on_options () {
+	function game_on_options() {
 		wp_enqueue_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/go_options.js' );
 		if ( $_GET['settings-updated'] == true || $_GET['settings-updated'] == 'true' ) {
 			go_update_globals();
@@ -373,13 +373,13 @@ if ( is_admin() ) {
 }
 
 add_action( 'admin_menu', 'add_game_on_options' );
-function add_game_on_options () {  
+function add_game_on_options() {  
     add_menu_page   ( 'Game On', 'Game On', 'manage_options', 'game-on-options.php','game_on_options', plugins_url( 'images/ico.png' , __FILE__ ), '81' );  
 	add_submenu_page( 'game-on-options.php', 'Options', 'Options', 'manage_options', 'game-on-options.php', 'game_on_options' );
 
 }
 
-function go_reset_levels () {
+function go_reset_levels() {
 	$rank_prefix = get_option( 'go_level_names' );
 	if ( empty( $rank_prefix ) ) {
 		$rank_prefix = 'Level';
@@ -413,7 +413,7 @@ function go_reset_levels () {
 	die();
 }
 
-function go_save_levels () {
+function go_save_levels() {
 	$go_level_names = $_POST['go_level_names'];
 	$go_level_points = $_POST['go_level_points'];
 	$go_level_badges = $_POST['go_level_badges'];
@@ -426,7 +426,7 @@ function go_save_levels () {
 	die();
 }	
 
-function go_fix_levels () {
+function go_fix_levels() {
 	global $default_role;
 	global $wpdb;
 	$role = get_option( 'go_role', $default_role );
@@ -459,7 +459,7 @@ function go_fix_levels () {
 	die();
 }
 
-function go_update_user_sc_data () {
+function go_update_user_sc_data() {
 	$old_class_a_array = $_POST['old_class_a'];
 	$old_class_b_array = $_POST['old_class_b'];
 	$new_class_a_array = $_POST['new_class_a'];
@@ -486,7 +486,7 @@ function go_update_user_sc_data () {
 	die();
 }
 
-function go_focus_save () {
+function go_focus_save() {
 	global $wpdb;
 	$array = array_values( array_filter( $_POST['focus_array'] ) );
 	$terms = $wpdb->get_results( "SELECT * FROM $wpdb->terms", ARRAY_A );
@@ -518,7 +518,7 @@ function go_focus_save () {
 	die();
 }
 
-function go_get_all_focuses () {
+function go_get_all_focuses() {
 	if ( get_option( 'go_focus' ) ) {
 		$all_focuses = get_option( 'go_focus' );
 	}
@@ -531,7 +531,7 @@ function go_get_all_focuses () {
 	return $all_focuses_sorted;
 }
 
-function go_presets_reset () {
+function go_presets_reset() {
 	global $wpdb;
 	$presets = array(
 		'name' => array(
@@ -581,7 +581,7 @@ function go_presets_reset () {
 	die();
 }
 
-function go_presets_save () {
+function go_presets_save() {
 	global $wpdb;
 	$preset_name = $_POST['go_preset_name'];
 	$preset_points = $_POST['go_preset_points'];
@@ -595,7 +595,7 @@ function go_presets_save () {
 	die();
 }
 
-function go_reset_data () {
+function go_reset_data() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
@@ -649,7 +649,7 @@ function go_reset_data () {
 add_action( 'show_user_profile', 'go_extra_profile_fields' );
 add_action( 'edit_user_profile', 'go_extra_profile_fields' );
 
-function go_extra_profile_fields ( $user ) { ?>
+function go_extra_profile_fields( $user ) { ?>
 
 	<h3><?php echo go_return_options( 'go_class_a_name' ).' and '.go_return_options( 'go_class_b_name' ); ?></h3>
 
@@ -708,7 +708,7 @@ function go_extra_profile_fields ( $user ) { ?>
 		}
     ?>
     <script type="text/javascript" language="javascript">
-		function go_add_class () {
+		function go_add_class() {
 			var ajaxurl = "<?php global $wpdb;
 			echo admin_url( 'admin-ajax.php' ) ; ?>";
 			jQuery.ajax({
@@ -718,7 +718,7 @@ function go_extra_profile_fields ( $user ) { ?>
 					action: 'go_user_option_add',
 					go_clipboard_class_a_choice: jQuery( '#go_clipboard_class_a_choice' ).val()
 				},
-				success: function ( html ) {
+				success: function( html ) {
 					jQuery( '#go_user_form_table_body' ).append( html );
 				}
 			});
@@ -731,7 +731,7 @@ function go_extra_profile_fields ( $user ) { ?>
 add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
 
-function go_user_option_add () {
+function go_user_option_add() {
 	?> 
     <tr>
         <td>
@@ -785,7 +785,7 @@ function go_save_extra_profile_fields( $user_id ) {
 	}
 }	
 
-function go_update_globals () {
+function go_update_globals() {
 	global $wpdb;
 	$file_name = $real_file = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
 	$array = explode( ',','go_tasks_name, go_tasks_plural_name, go_first_stage_name, go_second_stage_name, go_third_stage_name, go_fourth_stage_name, go_fifth_stage_name, go_abandon_stage_button, go_second_stage_button, go_third_stage_button, go_fourth_stage_button, go_fifth_stage_button, go_store_name, go_task_loot_name, go_bonus_loot_name, go_points_name, go_points_prefix, go_points_suffix, go_currency_name, go_currency_prefix, go_currency_suffix, go_bonus_currency_name, go_bonus_currency_prefix, go_bonus_currency_suffix, go_penalty_name, go_penalty_prefix, go_penalty_suffix, go_minutes_name, go_minutes_prefix, go_minutes_suffix, go_level_names, go_level_plural_names, go_organization_name, go_class_a_name, go_class_b_name, go_focus_name, go_stats_name, go_inventory_name, go_badges_name, go_leaderboard_name, go_presets, go_admin_bar_display_switch, go_admin_bar_user_redirect, go_admin_bar_add_switch, go_admin_bar_add_minutes_switch, go_ranks, go_class_a, go_class_b, go_focus_switch, go_focus, go_admin_email, go_video_width, go_video_height, go_store_receipt_switch, go_full_student_name_switch, go_multiplier_switch, go_multiplier_threshold, go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch' );

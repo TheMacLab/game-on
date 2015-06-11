@@ -1,5 +1,5 @@
-function goBuytheItem ( id, buyColor, count ) {
-	jQuery( document ).ready( function ( jQuery ) {
+function goBuytheItem( id, buyColor, count ) {
+	jQuery( document ).ready( function( jQuery ) {
 		var gotoBuy = {
 			action: 'buy_item',
 			nonce: '',
@@ -15,13 +15,13 @@ function goBuytheItem ( id, buyColor, count ) {
 			url: buy_item.ajaxurl,
 			type: 'POST',
 			data: gotoBuy,
-			beforeSend: function () {
+			beforeSend: function() {
 				jQuery( '#golb-fr-buy' ).innerHTML = '';
 				jQuery( '#golb-fr-buy' ).html( '' );
 				jQuery( '#golb-fr-buy' ).append( '<div id="go-buy-loading" class="buy_' + buyColor + '"></div>' );
 			},
 			dataType: 'html',
-			success: function ( response ) {
+			success: function( response ) {
 				var buy = jQuery( '#golb-fr-buy' );
 				if ( response.indexOf( 'Need more' ) != -1 || response.indexOf( 'You\'ve attempted to purchase' ) != -1 ) {
 					alert( response );
@@ -56,7 +56,7 @@ function goBuytheItem ( id, buyColor, count ) {
 	});
 }
 
-function go_count_item ( id ) {
+function go_count_item( id ) {
 	jQuery.ajax({
 		url: MyAjax.ajaxurl,
 		type: 'POST',
@@ -64,7 +64,7 @@ function go_count_item ( id ) {
 			action: 'go_get_purchase_count',
 			the_item_id: id
 		},
-		success: function ( data ) {
+		success: function( data ) {
 			var count = data.toString();
 			jQuery( '#golb-purchased' ).html( 'Quantity purchased: ' + count );
 		}

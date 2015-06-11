@@ -5,7 +5,7 @@
 // re-create them on plugin activation, as that would wipe vital user data.
 
 // Creates table for indivual logs.
-function go_table_individual () {
+function go_table_individual() {
 	global $wpdb;
 	$table_name = "{$wpdb->prefix}go";
 	$sql = "
@@ -46,7 +46,7 @@ function go_table_individual () {
 }
 
 // Creates a table for totals.
-function go_table_totals () {
+function go_table_totals() {
 	global $wpdb;
 	$table_name = "{$wpdb->prefix}go_totals";
 	$sql = "
@@ -68,7 +68,7 @@ function go_table_totals () {
 }
 
 // Updates the rank totals upon activation of plugin.
-function go_ranks_registration () {
+function go_ranks_registration() {
 	global $wpdb;
 	$ranks = get_option( 'go_ranks', false );
 	if ( ! $ranks || ! in_array( 'name', array_keys( $ranks ) ) ) {
@@ -99,7 +99,7 @@ function go_ranks_registration () {
 }
 
 // Updates the presets for task creation upon activation of plugin. 
-function go_presets_registration () {
+function go_presets_registration() {
 	global $wpdb;
 	$presets = get_option( 'go_presets' );
 	if ( ! $presets || ! in_array( 'name', array_keys( $presets ) ) ) {
@@ -150,7 +150,7 @@ function go_presets_registration () {
 	}
 }
 
-function go_install_data () {
+function go_install_data() {
 	global $wpdb;
 	$table_name_user_meta = "{$wpdb->prefix}usermeta";
 	$table_name_go_totals = "{$wpdb->prefix}go_totals";
@@ -365,7 +365,7 @@ function go_install_data () {
 }
 	
 // Adds user id to the totals table upon user creation.
-function go_user_registration ( $user_id ) {
+function go_user_registration( $user_id ) {
 	global $wpdb;
 	global $role_default;
 	$table_name_go_totals = "{$wpdb->prefix}go_totals";
@@ -385,7 +385,7 @@ function go_user_registration ( $user_id ) {
 }	
 
 // Deletes all rows related to a user in the individual and total tables upon deleting said user.
-function go_user_delete ( $user_id ) {
+function go_user_delete( $user_id ) {
  	global $wpdb;
 	$table_name_go_totals = "{$wpdb->prefix}go_totals";
 	$table_name_go = "{$wpdb->prefix}go";
@@ -394,7 +394,7 @@ function go_user_delete ( $user_id ) {
 	$wpdb->delete( $table_name_go, array( 'uid' => $user_id ) );
 }
 
-function go_open_comments () {
+function go_open_comments() {
 	global $wpdb;
 	$wpdb->update( $wpdb->posts, array( 'comment_status' => 'open', 'ping_status' => 'open' ), array( 'post_type' => 'tasks' ) );	
 }

@@ -70,7 +70,7 @@ function go_display_minutes( $minutes ) {
 	return $prefix . $minutes . $suffix;
 }
 
-function go_filter_focuses ( $elem ) {
+function go_filter_focuses( $elem ) {
 	if ( strpos( $elem, ':' ) === false && strpos( $elem, 'No '.go_return_options( 'go_focus_name' ) ) === false) {
 		return true;
 	} else { 
@@ -78,7 +78,7 @@ function go_filter_focuses ( $elem ) {
 	}
 }
 
-function go_display_user_focuses ( $user_id ) {
+function go_display_user_focuses( $user_id ) {
 	$user_focuses = get_user_meta( $user_id , 'go_focus', true );
 	
 	if ( !empty( $user_focuses ) ) {

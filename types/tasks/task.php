@@ -3,7 +3,7 @@
 include( 'task_shortcode.php' ); 
 include( 'tsk-admin-footer.php' );
 
-function register_cpt_task () {
+function register_cpt_task() {
     $labels = array( 
         'name' => _x( go_return_options( 'go_tasks_plural_name' ), 'task' ),
         'singular_name' => _x( go_return_options( 'go_tasks_name' ), 'task' ),

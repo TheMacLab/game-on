@@ -4,13 +4,13 @@
 // The Author: Vincent Astolfi (http://nueue.net/)
 ////////////////////////////////////////
 include( 'cat-item-ajax.php' );
-function go_store_head () { // Run this function that inserts things into the head
+function go_store_head() { // Run this function that inserts things into the head
 	global $post_type; // Bring the post type into global scope
 	if ( $post_type != 'go_store' ) { // If the current post type isn't go_store, do the following
 	?>
 	<script type="text/javascript">
 	
-			function go_close_lb () { // Close Lightbox Function ( changes styles to display nothing )
+			function go_close_lb() { // Close Lightbox Function ( changes styles to display nothing )
 				document.getElementById( 'go_lightbox' ).style.display = 'none';
 				document.getElementById( 'fade' ).style.display = 'none'; 
 			}
@@ -35,7 +35,7 @@ function go_store_head () { // Run this function that inserts things into the he
 				document.getElementById( data ).className = 'lightbox-inner-box-selected';
 			}
 			gosboxArray = [];
-			function gogetid () {
+			function gogetid() {
 				jQuery( '.lightbox-inner-box-selected' ).each(function() {
 					uncutID = this.id
 					theID = uncutID.substring( 4 );

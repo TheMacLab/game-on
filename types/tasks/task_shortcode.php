@@ -799,14 +799,14 @@ function go_task_shortcode( $atts, $content = null ) {
 		}
 ?>
 	<script language="javascript">
-		jQuery( document ).ready( function () {
+		jQuery( document ).ready( function() {
 			jQuery.ajaxSetup({ 
 				url: '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php'
 			});
 			check_locks();
 		});	
 		
-		function go_task_abandon () {
+		function go_task_abandon() {
 			jQuery.ajax({
 				type: "POST",
 				data: {
@@ -815,7 +815,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					encounter_points: <?php echo floor( $points_array[0] * $update_percent ); ?>,
 					encounter_currency: <?php echo floor( $currency_array[0] * $update_percent ); ?>,
 					encounter_bonus: <?php echo floor( $bonus_currency_array[0] * $update_percent ); ?>
-				}, success: function () {
+				}, success: function() {
 					window.location = "<?php echo home_url(); ?>";
 				}
 			});
@@ -830,7 +830,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				if ( jQuery( '#go_pass_lock' ).length == 0 && jQuery( '#go_button' ).attr( 'admin_lock' ) !== 'true' ) {
 					jQuery( '#go_button' ).attr( 'disabled', 'true' );
 				}
-				jQuery( '.go_test_submit' ).click( function () {
+				jQuery( '.go_test_submit' ).click( function() {
 					var test_list = jQuery( '.go_test_list' );
 					var current_error_msg = jQuery( '#go_test_error_msg' ).text();
 					if ( test_list.length > 1 ) {
@@ -889,7 +889,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						}
 					}
 				});
-				jQuery( '#go_upload_submit' ).click( function () {
+				jQuery( '#go_upload_submit' ).click( function() {
 					var test_list = jQuery( ".go_test_list" );
 					var current_error_msg = jQuery( '#go_test_error_msg' ).text();
 					if ( test_list.length > 1 ) {
@@ -952,7 +952,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				if ( jQuery( '#go_pass_lock' ).length == 0 && jQuery( '#go_button' ).attr( 'admin_lock' ) !== 'true' ) {
 					jQuery( '#go_button' ).attr( 'disabled', 'true' );
 				}
-				jQuery( '.go_test_submit' ).click( function () {
+				jQuery( '.go_test_submit' ).click( function() {
 					var test_list = jQuery( ".go_test_list" );
 					if ( test_list.length > 1 ) {
 						var checked_ans = 0;
@@ -988,7 +988,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				if ( jQuery( '#go_pass_lock' ).length == 0 && jQuery( '#go_button' ).attr( 'admin_lock' ) !== 'true' ) {
 					jQuery( '#go_button' ).attr( 'disabled', 'true' );
 				}
-				jQuery( '#go_upload_submit' ).click( function () {
+				jQuery( '#go_upload_submit' ).click( function() {
 					if ( jQuery( '#go_pass_lock' ).length > 0 && jQuery( '#go_pass_lock' ).attr( 'value' ).length == 0 ) {
 						var error = "Retrieve the password from <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>.";
 						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
@@ -1013,21 +1013,21 @@ function go_task_shortcode( $atts, $content = null ) {
 			}
 		}
 
-		function flash_error_msg ( elem ) {
+		function flash_error_msg( elem ) {
 			var bg_color = jQuery( elem ).css( 'background-color' );
 			if ( typeof bg_color === undefined ) {
 				bg_color = "white";
 			}
 			jQuery( elem ).animate({
   				color: bg_color
-  			}, 200, function () {
+  			}, 200, function() {
   				jQuery( elem ).animate({
   					color: "red"
   				}, 200 );
   			});
 		}
 
-		function task_unlock () {
+		function task_unlock() {
 			if ( jQuery( ".go_test_list" ).length != 0) {
 				var test_list = jQuery( ".go_test_list" );
 				var list_size = test_list.length;
@@ -1102,7 +1102,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					status: status,
 					points: "<?php echo $points_str; ?>",
 				},
-				success: function ( response ) {
+				success: function( response ) {
 					if ( response === 1 || response === '1' ) {
 						jQuery( '.go_test_container' ).hide( 'slow' );
 						jQuery( '#test_failure_msg' ).hide( 'slow' );
@@ -1160,7 +1160,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			});
 		}
 		
-		function test_point_update () {
+		function test_point_update() {
 			var is_repeating = jQuery( '#go_button' ).attr( 'repeat' );
 			if (is_repeating !== 'on' ) {
 				var status = jQuery( '#go_button' ).attr( 'status' ) - 2;
@@ -1180,7 +1180,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					post_id: <?php echo $id; ?>,
 					update_percent: <?php echo $date_update_percent; ?>
 				},
-				success: function ( response ) {
+				success: function( response ) {
 					// the three following lines are required for the go_notification to work
 					var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
 					jQuery( '#go_content' ).append( response );
@@ -1190,18 +1190,18 @@ function go_task_shortcode( $atts, $content = null ) {
 			});
 		}
 		
-		function go_repeat_hide ( target ) {
+		function go_repeat_hide( target ) {
 			// hides the div#repeat_quest to create the repeat cycle.
 			// jQuery( "#repeat_quest" ).hide( 'slow' );
 			
-			setTimeout( function () {
+			setTimeout( function() {
 				// passes the jQuery object received in the parameter of the go_repeat_hide function
 				// as an argument for the task_stage_change function, after 500 milliseconds (1.5 seconds).
 				task_stage_change( target );
 			}, 500 );
 		}
 		
-		function go_repeat_replace () {
+		function go_repeat_replace() {
  			jQuery( '#go_repeat_unclicked' ).remove();
 			jQuery( '#go_repeat_clicked' ).show( 'slow' );	 
 		}
@@ -1317,7 +1317,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					last_in_chain: <?php if ( $last_in_chain ) { echo 'true'; } else { echo 'false'; } ?>,
 					number_of_stages: <?php echo $number_of_stages; ?>
 				},
-				success: function ( html ) {
+				success: function( html ) {
 					if ( html === '0' ) {
 						jQuery( '#go_stage_error_msg' ).show();
 						var error = "Retrieve the password from <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>.";
@@ -1334,7 +1334,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						if ( jQuery( '#go_button' ).attr( 'status' ) == 2 ) {
 							jQuery( '#new_content' ).children().first().remove();	
 						}
-						jQuery( '#go_button' ).ready( function () {
+						jQuery( '#go_button' ).ready( function() {
 							check_locks();
 						});
 					}
@@ -1392,7 +1392,7 @@ function go_task_shortcode( $atts, $content = null ) {
 
 add_shortcode( 'go_task','go_task_shortcode' );
 
-function go_get_test_meta_content ( $custom_fields, $stage ) {
+function go_get_test_meta_content( $custom_fields, $stage ) {
 	$test_returns = $custom_fields["go_mta_test_{$stage}_lock_loot"][0];
 	$test_array = $custom_fields["go_mta_test_lock_{$stage}"][0];
 	$test_uns = unserialize( $test_array );
@@ -1439,7 +1439,7 @@ function go_get_test_meta_content ( $custom_fields, $stage ) {
 	return ( array( $test_returns, $test_num, array( $test_all_questions, $test_all_types, $test_all_answers, $test_all_keys ) ) );
 }
 
-function test_point_update () {
+function test_point_update() {
 	$status = (int) $_POST['status'];
 	$page_id = $_POST['page_id'];
 	$post_id = $_POST['post_id'];
@@ -1531,7 +1531,7 @@ function test_point_update () {
 	die();
 }
 
-function go_inc_test_fail_count ( $s_name, $test_fail_max = null ) {
+function go_inc_test_fail_count( $s_name, $test_fail_max = null ) {
 	if ( ! is_null( $test_fail_max ) ) {
 		$s_var = $_SESSION[ $s_name ];
 		if ( isset( $s_var ) ) {
@@ -1544,7 +1544,7 @@ function go_inc_test_fail_count ( $s_name, $test_fail_max = null ) {
 	}
 }
 
-function unlock_stage () {
+function unlock_stage() {
 	$id = $_POST['task'];
 	$status = $_POST['status'];
 	$test_size = (int) $_POST['list_size'];
@@ -2398,7 +2398,7 @@ function task_change_stage() {
 	die();
 }
 
-function go_display_rewards ( $user_id, $points, $currency, $bonus_currency, $update_percent = 1, $number_of_stages = 4, $future = false ) {
+function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $update_percent = 1, $number_of_stages = 4, $future = false ) {
 	if ( ! is_null( $number_of_stages ) && ( ! is_null( $points ) || ! is_null( $currency ) || ! is_null( $bonus_currency ) ) ) {
 		echo "<div class='go_task_rewards' style='margin: 6px 0px 6px 0px;'><strong>Rewards</strong><br/>";
 		$p_name = go_return_options( 'go_points_name' );
@@ -2506,7 +2506,7 @@ function go_display_rewards ( $user_id, $points, $currency, $bonus_currency, $up
 	} 
 }
 
-function go_task_timer ( $task_id, $user_id, $future_modifier ) {
+function go_task_timer( $task_id, $user_id, $future_modifier ) {
 	global $wpdb;
 	$unix_now = current_time( 'timestamp' );
 	$user_timers = get_user_meta( $user_id, 'go_timers' );
@@ -2522,13 +2522,13 @@ function go_task_timer ( $task_id, $user_id, $future_modifier ) {
 	?>	
     <div id='go_task_timer'></div>
 	<script type='text/javascript'>
-		jQuery( document ).ready( function () {
+		jQuery( document ).ready( function() {
 			var timer = setInterval( go_task_timer, 1000 );
 			timers.push( timer );
 			var countdown = <?php echo $countdown; ?>;
 			var before = <?php echo $future_time?>;
 			var percentage = <?php echo 100 - $percentage; ?> / 100;
-			jQuery( window ).focus( function () {
+			jQuery( window ).focus( function() {
 				clearInterval( timer );
 				timer = setInterval( go_task_timer, 1000 );
 				timers.push( timer );
@@ -2538,7 +2538,7 @@ function go_task_timer ( $task_id, $user_id, $future_modifier ) {
 			for ( i = 0; i < timers.length - 1; i++ ) {
 				clearInterval( timers[ i ] );
 			}
-			function go_task_timer () {
+			function go_task_timer() {
 				var sounded = <?php echo ( ( $sounded_array['future'][ $task_id ] ) ? 'true' : 'false' ); ?>;
 				countdown = countdown - 1;
 				jQuery( '#go_task_timer' ).empty();
@@ -2576,7 +2576,7 @@ function go_task_timer ( $task_id, $user_id, $future_modifier ) {
 			}
 			
 			// Safari caching fix
-			jQuery( window ).bind( "pageshow", function ( event ) {
+			jQuery( window ).bind( "pageshow", function( event ) {
 				if ( event.originalEvent.persisted ) {
 					window.location.reload();
 				}

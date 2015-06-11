@@ -20,7 +20,7 @@ function go_jquery() {
 	wp_enqueue_script ( 'jquery-ui-progressbar' );
 }
 
-function go_jquery_periods () {
+function go_jquery_periods() {
     wp_enqueue_script ( 'jquery' );
 	wp_enqueue_script ( 'go_jquery_periods', plugin_dir_url( __FILE__ ).'go_periods.js' );
 	wp_localize_script( 'go_jquery_periods', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
@@ -30,7 +30,7 @@ function go_jquery_periods () {
 	wp_enqueue_script ( 'jquery-ui-sortable' );
 }
 
-function go_jquery_clipboard () {
+function go_jquery_clipboard() {
     wp_enqueue_script ( 'jquery' );
 	wp_enqueue_script ( 'jquery-ui-tabs' );
 	wp_enqueue_script ( 'jquery-ui-accordion' );
@@ -49,7 +49,7 @@ function go_jquery_clipboard () {
 	wp_localize_script( 'go_jquery_clipboard', 'Minutes_limit', array( 'limit' => go_return_options( 'go_minutes_color_limit' ) ) );
 }
 
-function go_presets_js () {
+function go_presets_js() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'go_presets', plugin_dir_url( __FILE__ ).'go_presets.js' );
 }

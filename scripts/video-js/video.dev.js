@@ -277,7 +277,7 @@ vjs.on = function(elem, type, fn){
   if (!data.dispatcher) {
     data.disabled = false;
 
-    data.dispatcher = function (event){
+    data.dispatcher = function(event){
 
       if (data.disabled) return;
       event = vjs.fixEvent(event);
@@ -442,7 +442,7 @@ vjs.fixEvent = function(event) {
       event.fromElement;
 
     // Stop the default browser action
-    event.preventDefault = function () {
+    event.preventDefault = function() {
       if (old.preventDefault) {
         old.preventDefault();
       }
@@ -453,7 +453,7 @@ vjs.fixEvent = function(event) {
     event.isDefaultPrevented = returnFalse;
 
     // Stop the event from bubbling
-    event.stopPropagation = function () {
+    event.stopPropagation = function() {
       if (old.stopPropagation) {
         old.stopPropagation();
       }
@@ -464,7 +464,7 @@ vjs.fixEvent = function(event) {
     event.isPropagationStopped = returnFalse;
 
     // Stop the event from bubbling and executing other handlers
-    event.stopImmediatePropagation = function () {
+    event.stopImmediatePropagation = function() {
       if (old.stopImmediatePropagation) {
         old.stopImmediatePropagation();
       }
@@ -1110,10 +1110,10 @@ vjs.formatTime = function(seconds, guide) {
 // Attempt to block the ability to select text while dragging controls
 vjs.blockTextSelection = function(){
   document.body.focus();
-  document.onselectstart = function () { return false; };
+  document.onselectstart = function() { return false; };
 };
 // Turn off text selection blocking
-vjs.unblockTextSelection = function(){ document.onselectstart = function () { return true; }; };
+vjs.unblockTextSelection = function(){ document.onselectstart = function() { return true; }; };
 
 /**
  * Trim whitespace from the ends of a string.
@@ -1166,7 +1166,7 @@ vjs.get = function(url, onSuccess, onError){
   var local, request;
 
   if (typeof XMLHttpRequest === 'undefined') {
-    window.XMLHttpRequest = function () {
+    window.XMLHttpRequest = function() {
       try { return new window.ActiveXObject('Msxml2.XMLHTTP.6.0'); } catch (e) {}
       try { return new window.ActiveXObject('Msxml2.XMLHTTP.3.0'); } catch (f) {}
       try { return new window.ActiveXObject('Msxml2.XMLHTTP'); } catch (g) {}
@@ -6987,7 +6987,7 @@ if (typeof window.JSON !== 'undefined' && window.JSON.parse === 'function') {
    * @memberof vjs.JSON
    * @return {Object|Array} The parsed JSON
    */
-  vjs.JSON.parse = function (text, reviver) {
+  vjs.JSON.parse = function(text, reviver) {
       var j;
 
       function walk(holder, key) {
@@ -7009,7 +7009,7 @@ if (typeof window.JSON !== 'undefined' && window.JSON.parse === 'function') {
       text = String(text);
       cx.lastIndex = 0;
       if (cx.test(text)) {
-          text = text.replace(cx, function (a) {
+          text = text.replace(cx, function(a) {
               return '\\u' +
                   ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
           });

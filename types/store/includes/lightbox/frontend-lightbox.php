@@ -10,7 +10,7 @@
 //Includes
 include ( 'buy-ajax.php' ); // Ajax run when buying something
 // Main Lightbox Ajax Function
-function go_the_lb_ajax () {
+function go_the_lb_ajax() {
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
 	global $wpdb;
 	$table_name_go = "{$wpdb->prefix}go";
@@ -206,7 +206,7 @@ function go_the_lb_ajax () {
 		var go_gift_check_box = jQuery( "#go_toggle_gift_fields" );
 		var go_gift_text_box = jQuery( "#go_recipient_wrap" );
 		go_gift_text_box.prop( "hidden", true );
-		go_gift_check_box.click( function () {
+		go_gift_check_box.click( function() {
 			if ( jQuery( this ).is( ":checked" ) ) {
 				go_gift_text_box.prop( "hidden", false );
 			} else {
@@ -230,7 +230,7 @@ function go_the_lb_ajax () {
 add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
 add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
 ////////////////////////////////////////////////////
-function go_frontend_lightbox_css () {
+function go_frontend_lightbox_css() {
 	$go_lb_css_dir = plugins_url( '/css/go-lightbox.css' , __FILE__ );
 	echo '<link rel="stylesheet" href="'.$go_lb_css_dir.'" />';
 }
@@ -291,7 +291,7 @@ function go_frontend_lightbox_html() {
 							jQuery( this ).change();
 						}
 					});
-					jQuery( '#go_qty' ).change( function () {
+					jQuery( '#go_qty' ).change( function() {
 						var price_raw = jQuery( '#golb-fr-price' ).html();
 						var price_sub = price_raw.substr(price_raw.indexOf( ":" )+2);
 						if (price_sub.length > 0 ) {
@@ -321,12 +321,12 @@ function go_frontend_lightbox_html() {
 						}
 					});
 					if ( jQuery( '.white_content' ).css( 'display' ) != 'none' ) {
-						jQuery(document).keyup( function ( e ) { 
+						jQuery(document).keyup( function( e ) { 
 							if ( e.keyCode == 27 ) { // If keypressed is escape, run this
 								go_lb_closer();
 							} 
 						});
-						jQuery( '.black_overlay' ).click( function () {
+						jQuery( '.black_overlay' ).click( function() {
 							go_lb_closer();
 						});
 					}
@@ -334,17 +334,17 @@ function go_frontend_lightbox_html() {
 					var typing_timer;
 					var recipient = jQuery( '#go_recipient' );
 					var search_res = jQuery( '#go_search_results' );
-					recipient.keyup( function () {
+					recipient.keyup( function() {
 						clearTimeout(typing_timer);
 						if ( recipient.val().length != 0 ) {
-							typing_timer = setTimeout( function () {
+							typing_timer = setTimeout( function() {
 								go_search_for_user( recipient.val() );
 							}, done_typing);
 						} else {
 							jQuery( '#go_search_results' ).hide();
 						}
 					});
-					recipient.focus( function () {
+					recipient.focus( function() {
 						if ( search_res.is( ':hidden' ) ) {
 							search_res.empty();
 							search_res.show();	
@@ -355,7 +355,7 @@ function go_frontend_lightbox_html() {
 		}
 	}
 	
-	function go_fill_recipient ( el ) {
+	function go_fill_recipient( el ) {
 		var el = jQuery( el );
 		var val = el.text();
 		var recipient = jQuery( '#go_recipient' );
@@ -363,11 +363,11 @@ function go_frontend_lightbox_html() {
 		el.parent().hide();
 	}
 	
-	function go_close_this ( el ) {
+	function go_close_this( el ) {
 		jQuery( el ).parent().hide();	
 	}
 	
-	function go_search_for_user ( user ) {
+	function go_search_for_user( user ) {
 		var url_action = "<?php echo admin_url( '/admin-ajax.php' ); ?>";
 		jQuery.ajax({
 			url: url_action,
@@ -376,7 +376,7 @@ function go_frontend_lightbox_html() {
 				action: 'go_search_for_user',
 				user: user
 			},
-			success: function ( data ) {
+			success: function( data ) {
 				var recipient = jQuery( '#go_recipient' );
 				var search_res = jQuery( '#go_search_results' );
 				var position = recipient.position();
@@ -400,7 +400,7 @@ function go_frontend_lightbox_html() {
 }
 add_action( 'wp_head', 'go_frontend_lightbox_html' );
 
-function go_search_for_user () {
+function go_search_for_user() {
 	global $wpdb;
 	$user = $_POST['user'];
 	$users = $wpdb->get_results( "SELECT display_name FROM {$wpdb->users} WHERE display_name LIKE '%{$user}%' LIMIT 0, 4" );

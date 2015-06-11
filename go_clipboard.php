@@ -1,6 +1,6 @@
 <?php
 
-function go_clipboard () {
+function go_clipboard() {
 	global $wpdb;
 	$dir = plugin_dir_url( __FILE__ );
 	add_submenu_page( 'game-on-options.php', 'Clipboard', 'Clipboard', 'manage_options', 'go_clipboard', 'go_clipboard_menu' );
@@ -152,7 +152,7 @@ function go_clipboard_menu() {
 	}
 }
 
-function go_clipboard_intable () {
+function go_clipboard_intable() {
 	global $wpdb;
 	$class_a_choice = $_POST['go_clipboard_class_a_choice'];
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
@@ -214,7 +214,7 @@ function go_clipboard_intable () {
 	die();
 }
 
-function go_clipboard_intable_messages () {
+function go_clipboard_intable_messages() {
 	global $wpdb;
 	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true );
 	foreach ( $admin_messages as $student_id => $messages ) {

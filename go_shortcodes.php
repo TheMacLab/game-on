@@ -23,7 +23,7 @@ function go_list_user_URL() {
 				action: 'listurl',
 				class_a_choice: period_val
 			},
-			success: function ( data ) {
+			success: function( data ) {
 				jQuery( '#go_list_user_url' ).append( data );
 				period.change( function() {
 					jQuery( '#go_list_user_url' ).html( '' );
@@ -63,7 +63,7 @@ function listurl() {
 }
 add_shortcode( 'go_list_URL', 'go_list_user_URL' );
 
-function go_display_video ( $atts, $video_url ) {
+function go_display_video( $atts, $video_url ) {
 	$atts = shortcode_atts( 
 		array(
 			'video_url' => '',
@@ -107,7 +107,7 @@ function go_display_video ( $atts, $video_url ) {
 add_shortcode( 'go_display_video', 'go_display_video' );
 
 //Function that grabs the current page
-function go_page_grabber_shortcode () { 
+function go_page_grabber_shortcode() { 
 	echo '';
 	$args=array(
 	  'child_of' => $parent
@@ -129,7 +129,7 @@ function go_page_grabber_shortcode () {
 }
  
 //Function that grabs the current post
-function go_post_grabber_shortcode () { 
+function go_post_grabber_shortcode() { 
 	echo '';
 	$archive_query = new WP_Query( 'showposts=1000000000' );
 	while ( $archive_query->have_posts() ) : $archive_query->the_post(); 
@@ -151,7 +151,7 @@ function go_post_grabber_shortcode () {
 }
 
 //Creates an excerpt for grabbed post
-function go_post_grabber_content_exerpt_shortcode () { 
+function go_post_grabber_content_exerpt_shortcode() { 
 	echo '';
 	query_posts( 'showposts=2' ); 
 	while ( have_posts() ) : the_post(); 
@@ -168,7 +168,7 @@ function go_post_grabber_content_exerpt_shortcode () {
 
 
 //Gets the user's display name
-function go_get_displayname_function ( $atts, $content = null ) {
+function go_get_displayname_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
 		global $current_user;
 		get_currentuserinfo();
@@ -182,7 +182,7 @@ add_shortcode( 'go_get_displayname', 'go_get_displayname_function' );
 
 
 //Gets the users first name
-function go_get_firstname_function ( $atts, $content = null ) {
+function go_get_firstname_function( $atts, $content = null ) {
 	if (is_user_logged_in() ) {
 		global $current_user;
 		get_currentuserinfo();
@@ -195,7 +195,7 @@ add_shortcode( 'go_firstname', 'go_get_firstname_function' );
 
 
 //Gets the users last name
-function go_get_lastname_function ( $atts, $content = null ) {
+function go_get_lastname_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
 		global $current_user;
 		get_currentuserinfo();
@@ -208,7 +208,7 @@ add_shortcode( 'go_lastname', 'go_get_lastname_function' );
 
 
 //Gets the users login
-function go_get_login_function ( $atts, $content = null ) {
+function go_get_login_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
 		global $current_user;
 	    get_currentuserinfo();
@@ -251,7 +251,7 @@ add_shortcode( 'go_post_grab', 'go_post_grabber_shortcode' );
 
 
 //Adds a link to the most recent post
-function go_latest_post_url_shortcode ( $atts, $content = null ) { 
+function go_latest_post_url_shortcode( $atts, $content = null ) { 
 	$atts = shortcode_atts(
 		array(  
 			"cat" => '',
@@ -279,7 +279,7 @@ add_shortcode ( 'go_latest_post', 'go_latest_post_url_shortcode' );
 
 
 //Makes content within tags only visible to people who aren't logged in
-function go_visitor_only_content_function ( $atts, $content = null ) {
+function go_visitor_only_content_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
     	echo '';
 	} else {
@@ -291,7 +291,7 @@ add_shortcode ( 'go_visitor_only_content', 'go_visitor_only_content_function' );
 
 
 //Makes content within tags visible to only people who are logged in  
-function go_user_only_content_function ( $atts, $content = null ) {
+function go_user_only_content_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
     	return '<div id="user-only-content">'.do_shortcode( $content).'</div>';
 	} else {
@@ -303,7 +303,7 @@ add_shortcode ( 'go_user_only_content','go_user_only_content_function' );
 
 
 //Makes content within tags visible to admins only
-function go_admin_only_content_function ( $atts, $content = null ) {
+function go_admin_only_content_function( $atts, $content = null ) {
 	if ( current_user_can( 'manage_options' ) ) {
 		return '<div id="admin-only-content" style="color:red"> <i>' .do_shortcode( $content). '</i> </div>';
 	} else {
@@ -322,7 +322,7 @@ add_shortcode ( 'go_admin_only_content', 'go_admin_only_content_function' );
 
 
 //Adds the ability to put a login box anywhere it is needed
-function go_login ( $atts, $content = null ) {
+function go_login( $atts, $content = null ) {
 	$atts = shortcode_atts(
 		array(
 			"size" => 'medium',
@@ -405,7 +405,7 @@ function go_login ( $atts, $content = null ) {
 add_shortcode ( 'sb_login', 'go_login' );
 add_shortcode ( 'go_login', 'go_login' );
 
-function go_get_category () {
+function go_get_category() {
 	global $wpdb;
 	$terms = get_taxonomies();
 	?>
