@@ -28,7 +28,6 @@ include('go_mail.php');
 include('go_messages.php');
 include('go_task_search.php');
 include( 'go_pods.php' );
-include( 'go_pod_form.php' );
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );

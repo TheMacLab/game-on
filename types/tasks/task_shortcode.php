@@ -15,7 +15,9 @@ function go_task_shortcode($atts, $content = null) {
 	$page_id = get_the_ID();
 	if ($id && !empty($user_ID)) { // If the shortcode has an attribute called id, run this code
 		$task_pods = get_option( 'go_task_pod_globals' );
-		$pod_link = $task_pods['pod_link'][0];
+		$pods_array = wp_get_post_terms( get_the_id(), 'task_pods' );
+		$pod_slug = $pods_array[0]->slug;
+		$pod_link = $task_pods[ $pod_slug ][ 'go_pod_link' ];
 		$today = date('Y-m-d');
 		$task_name = strtolower(go_return_options('go_tasks_name'));
 		$custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
@@ -110,7 +112,7 @@ function go_task_shortcode($atts, $content = null) {
 				$test_m_all_answers = $test_m_array[2][2];
 				$test_m_all_keys = $test_m_array[2][3];
 			}
-			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
+			$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' ); // Mastery Message
 			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
 
 			if ($repeat == 'on') {	// Checks if the task is repeatable and if it has a repeat limit
@@ -497,9 +499,8 @@ function go_task_shortcode($atts, $content = null) {
 					?>
 					<button id="go_button" status= "2" onclick="task_stage_change(this);" <?php if ($e_is_locked === 'true' && empty($e_pass_lock)) {echo "admin_lock='true'";} ?>><?php echo go_return_options('go_second_stage_button') ?></button>
 					<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option('go_abandon_stage_button', 'Abandon'); ?></button>
-                     <?php echo ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ); ?>
 					</div>
-		<?php		
+                    <?php echo ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ); 		
 					break;
 					
 					// Encountered
@@ -532,9 +533,8 @@ function go_task_shortcode($atts, $content = null) {
 					?>
 					<button id="go_button" status= "2" onclick="task_stage_change(this);" <?php if ($e_is_locked === 'true' && empty($e_pass_lock)) {echo "admin_lock='true'";} ?>><?php echo go_return_options('go_second_stage_button') ?></button>
 					<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option('go_abandon_stage_button', 'Abandon'); ?></button>
-                    <?php echo ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ); ?>
 					</div>   
-		<?php
+                    <?php echo ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 					break;
 					
 					// Accepted
@@ -565,7 +565,7 @@ function go_task_shortcode($atts, $content = null) {
 							echo "admin_lock='true'";
 						}
 						echo '>'.go_return_options('go_third_stage_button').'</button>
-						<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) . '</div>';
+						<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button></div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 						break;
 					
 					// Completed
@@ -598,14 +598,14 @@ function go_task_shortcode($atts, $content = null) {
 								echo "admin_lock='true'";
 							}
 							echo '>'.go_return_options('go_fourth_stage_button').'</button> 
-							<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+							<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 							
 							if($next_post_in_chain && !$last_in_chain){
 								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
 							}else{
 								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 							}
-							echo "</div>";
+							echo "</div>" . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 						} else {
 							if ($test_c_active) {
 								echo "<p id='go_test_error_msg' style='color: red;'></p>";
@@ -621,13 +621,13 @@ function go_task_shortcode($atts, $content = null) {
 							if ($completion_upload) {
 								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 							}
-							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 							if($next_post_in_chain && !$last_in_chain){
 								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
 							}else{
 								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 							}
-							echo "</div>";
+							echo "</div>" . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 						}
 					break;
 					
@@ -667,18 +667,15 @@ function go_task_shortcode($atts, $content = null) {
 									}
 									echo '>'.go_return_options('go_fourth_stage_button')." Again". 
 												'</button>
-												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-												. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
-											'</div>
-											<div id="go_repeat_unclicked">
+												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+											</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) . 
+											'<div id="go_repeat_unclicked">
 												<button id="go_button" status="4" onclick="go_repeat_replace();">
 													See '.get_option('go_fifth_stage_name').
 												'</button>
-												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-												. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
-											'</div>
-										</div>
-									';
+												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+											</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
+										'</div>';
 								} else {
 									if ($repeat_upload) {
 										echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
@@ -697,21 +694,19 @@ function go_task_shortcode($atts, $content = null) {
 									}
 									echo '>'.go_return_options('go_fourth_stage_button')." Again". 
 												'</button>
-												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-												. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
-											'</div>
-											<div id="go_repeat_unclicked">
+												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+											</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
+											'<div id="go_repeat_unclicked">
 												<button id="go_button" status="4" onclick="go_repeat_replace();">'
 													.get_option('go_fifth_stage_button').
 												'</button>
-												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-												. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) . 
-											'</div>
-										</div>
+												<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+											</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
+										'</div>
 									';
 								}
 							} else {
-								echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+								echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 							}
 						} else {
 							if ($test_m_active) {
@@ -728,14 +723,14 @@ function go_task_shortcode($atts, $content = null) {
 							if ($mastery_upload) {
 								echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]")."<br/>";
 							}
-							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 						}
 						if($next_post_in_chain && !$last_in_chain){
 							echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
 						}else{
 							echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 						}
-						echo '</div>';
+						echo '</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 				}
 				if (get_post_type() == 'tasks') {
 					comments_template();
@@ -1821,7 +1816,7 @@ function task_change_stage() {
 			$test_m_all_answers = $test_m_array[2][2];
 			$test_m_all_keys = $test_m_array[2][3];
 		}
-		$mastery_message = $custom_fields['go_mta_mastery_message'][0];
+		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
 		$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
 
 		if ($repeat == 'on') {
@@ -2159,7 +2154,7 @@ function task_change_stage() {
 				echo "admin_lock='true'";
 			}
 			echo ">".go_return_options('go_second_stage_button')."</button>
-			<button id='go_abandon_task' onclick='go_task_abandon(); this.disabled = true;'>" . get_option( "go_abandon_stage_button", "Abandon" )."</button>" . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) . "</div>";
+			<button id='go_abandon_task' onclick='go_task_abandon(); this.disabled = true;'>" . get_option( "go_abandon_stage_button", "Abandon" )."</button></div>" . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 			break;
 		case 2:
 			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div>';
@@ -2187,7 +2182,7 @@ function task_change_stage() {
 			if ($a_is_locked === 'true' && empty($a_pass_lock)) {
 				echo "admin_lock='true'";
 			}
-			echo '>'.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) . '</div>';
+			echo '>'.go_return_options('go_third_stage_button').'</button> <button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button></div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 			break;
 		case 3:
 			echo '<div class="go_stage_message">'.do_shortcode(wpautop($accept_message, false)).'</div>'.'<div id="new_content"><div class="go_stage_message">'
@@ -2218,13 +2213,13 @@ function task_change_stage() {
 					echo "admin_lock='true'";
 				}
 				echo '>'.go_return_options('go_fourth_stage_button').'</button> 
-				<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+				<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 				if ($next_post_id_in_chain != 0 && $last_in_chain !== 'true') {
 					echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
 				} else {
 					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 				}
-				echo "</div>";
+				echo "</div>" . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 			} else {
 				if ($test_c_active) {
 					echo "<p id='go_test_error_msg' style='color: red;'></p>";
@@ -2240,13 +2235,13 @@ function task_change_stage() {
 				if ($completion_upload) {
 					echo do_shortcode("[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]")."<br/>";
 				}
-				echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+				echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 				if ($next_post_id_in_chain != 0 && $last_in_chain !== 'true') {
 					echo '<div class="go_chain_message">Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
 				} else {
 					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 				}
-				echo "</div>";
+				echo "</div>" . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 			}
 			break;
 		case 4:
@@ -2288,17 +2283,15 @@ function task_change_stage() {
 						}
 						echo '>'.go_return_options('go_fourth_stage_button')." Again". 
 									'</button>
-									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-									. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
-								'</div>
-								<div id="go_repeat_unclicked">
+									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+								</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
+								'<div id="go_repeat_unclicked">
 									<button id="go_button" status="4" onclick="go_repeat_replace();">'
 										.get_option('go_fifth_stage_button').
 									'</button>
-									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-									. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
-								'</div>
-							</div>
+									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+								</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
+							'</div>
 						';
 					} else {
 						if ($repeat_upload) {
@@ -2318,21 +2311,19 @@ function task_change_stage() {
 						}
 						echo '>'.go_return_options('go_fourth_stage_button')." Again". 
 									'</button>
-									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-									. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
-								'</div>
-								<div id="go_repeat_unclicked">
+									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+								</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
+								'<div id="go_repeat_unclicked">
 									<button id="go_button" status="4" onclick="go_repeat_replace();">'
 										.get_option('go_fifth_stage_button').
 									'</button>
-									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>'
-									. ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
-								'</div>
-							</div>
+									<button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>
+								</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" ) .
+							'</div>
 						';
 					}
 				} else {
-					echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+					echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 				}
 			} else {
 				if ($test_m_active) {
@@ -2352,8 +2343,7 @@ function task_change_stage() {
 				$mastered = (array) get_user_meta($user_id, 'mastered_tasks', true);
 				$go_table_name = "{$wpdb->prefix}go";
 				$user_id = get_current_user_id();
-				echo ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-				var_dump($task_pods);
+				echo ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 				if ($bonus_loot[0]) {
 					if (!empty($bonus_loot[1])) {
 						foreach ($bonus_loot[1] as $store_item => $on) {
@@ -2387,24 +2377,20 @@ function task_change_stage() {
 					echo "</br>";
 				}
 				add_user_meta($user_id, 'ever_mastered', $post_id, true);
-				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>' . ( $task_pods ? "<br/><br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change(this);" undo="true">Undo</button>';
 			}
 			if($next_post_id_in_chain != 0 && $last_in_chain !== 'true'){
 				echo '<div class="go_chain_message"><p>Next '.strtolower(go_return_options('go_tasks_name')).' in '.$chain_name.': <a href="'.get_permalink($next_post_id_in_chain).'">'.get_the_title($next_post_id_in_chain).'</a></div>';
 			}else{
 				echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
 			}
-			echo '</div>';
+			echo '</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 	}
 	die();
 }
 
 function go_display_rewards ($user_id, $points, $currency, $bonus_currency, $update_percent = 1, $number_of_stages = 4, $future = false) {
 	if (!is_null($number_of_stages) && (!is_null($points) || !is_null($currency) || !is_null($bonus_currency))) {
-		$task_pods = get_option( 'go_task_pod_globals' );
-		echo '<pre>';
-		print_r($task_pods);
-		echo '</pre>';
 		echo "<div class='go_task_rewards' style='margin: 6px 0px 6px 0px;'><strong>Rewards</strong><br/>";
 		$p_name = go_return_options('go_points_name');
 		$c_name = go_return_options('go_currency_name');

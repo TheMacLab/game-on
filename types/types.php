@@ -87,11 +87,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_pick_order_of_chain'
 			),
 			array(
-				'name' => 'Pod'.go_task_opt_help('task_pod', 'Group '.go_return_options('go_tasks_plural_name').' into pods where students must complete set amount of '.go_return_options('go_tasks_plural_name').' to continue.', 'http://maclab.guhsd.net/go/video/quests/taskPod.mp4'),
-				'id' => $prefix . 'task_pod',
-				'type' => 'go_task_pod'
-			),
-			array(
 				'name' => 'Final '.go_return_options('go_tasks_name').' Message'.go_task_opt_help('final_chain_message', '', 'http://maclab.guhsd.net/go/video/quests/finalChainMessage.mp4'),
 				'id' => $prefix.'final_chain_message',
 				'type' => 'text'
@@ -1401,92 +1396,7 @@ function go_pick_order_of_chain(){
         <?php
 	}
 }
-
-/*add_action('cmb_render_go_task_pod', 'go_task_pod');
-function go_task_pod () {
-	$post_custom = get_post_custom( get_the_id() );
-	$pods_options = get_option('go_task_pod_globals');
-	$pods_array = array();
-	//list terms in a given taxonomy using wp_list_categories  (also useful as a widget)
-	$orderby = 'name';
-	$show_count = 0; // 1 for yes, 0 for no
-	$pad_counts = 1; // 1 for yes, 0 for no
-	$hierarchical = 1; // 1 for yes, 0 for no
-	$taxonomy = 'task_pods';
-	$title = '';
-	$args = array(
-	  'orderby' => $orderby,
-	  'show_count' => $show_count,
-	  'pad_counts' => $pad_counts,
-	  'hierarchical' => $hierarchical,
-	  'taxonomy' => $taxonomy,
-	  'title_li' => $title
-	);
-	?>
-	<ul>
-	<?php
-	foreach (get_categories($args) as $category) {
-		$pods_array[] = $category;
-	}
-	foreach ($pods_array as $pod ) {
-		global $post;
-		$terms = wp_get_post_terms($post->ID, 'task_pods');
-		for ($i = 0; $i <= count($terms); $i++) {
-			if ($pod->slug === $terms[$i]->slug) {
-				$link = get_category_link($pod);
-				echo "<b><a href ='{$link}' target='_blank'>".$pod->name."</a></b>";
-				?>
-                <input type='text' name='go_pod_link[<?php echo $pod->slug ?>]' id='go_pod_link' value='<?php echo (!empty($pods_options[3][$i])) ? $pods_options[3][$i]: '' ; ?>'/><br/>
-				Must Complete 
-				<select name='go_pod_stage_select[<?php echo $pod->slug ?>]' id='go_pod_stage_select'>
-					<option <?php echo ($pods_options[0][$i] == 'third_stage') ? 'selected': '' ; ?> value='third_stage'><?php echo go_return_options('go_third_stage_name'); ?></option>
-					<option <?php echo ($pods_options[0][$i] == 'fourth_stage') ? 'selected': '' ; ?> value='fourth_stage'><?php echo go_return_options('go_fourth_stage_name'); ?></option>
-				</select> 
-				of 
-				<input type='number' name='go_pod_number[<?php echo $pod->slug ?>]' id='go_pod_number' value='<?php echo (!empty($pods_options[1][$i])) ? $pods_options[1][$i]: 1 ; ?>' style='width: 45px;'/> <?php echo go_return_options('go_tasks_plural_name'); ?> to continue to next Pod
-				</br>
-				Next Pod: 
-				<select name='go_next_pod_select[<?php echo $pod->slug ?>]' id='go_next_pod_select'>
-					<option>...</option>
-					<?php
-					foreach ($pods_array as $pod) {
-						if ($pod->slug !== $terms[$i]->slug) {
-							$pod_name = $pod->name;
-							?>
-							<option <?php echo ($pods_options[2][$i] == $pod_name) ? 'selected': '...' ; ?> value='<?php echo $pod_name; ?>'><?php echo $pod_name; ?></option>
-							<?php
-						}
-					}
-					?>
-				</select>
-				</br>
-				</br>
-				<?php
-			}
-		}
-	}
-}
-
-add_action('cmb_validate_go_task_pod', 'go_validate_task_pod');
-function go_validate_task_pod () {
-	$task_id = get_the_id();
-	$stage_required = $_POST['go_pod_stage_select'];
-	$tasks_required = $_POST['go_pod_number'];
-	$next_pod = $_POST['go_next_pod_select'];
-	$pod_link = $_POST['go_pod_link'];
-	$task_pod_info = array(
-		'stage_required' => $stage_required, 
-		'tasks_required' => $tasks_required, 
-		'next_pod' => $next_pod, 
-		'pod_link' => $pod_link
-	);
-	$task_pod_globals = array();
-	$task_pod_globals = get_option('go_task_pod_globals');
-	$task_pod_globals[ $task_id ] = $task_pod_info;
-	update_option('go_task_pod_globals', $task_pod_globals);
-	return $task_pod_info;
-}*/
-
+	
 add_action('cmb_render_go_settings_accordion', 'go_settings_accordion', 10, 1);
 function go_settings_accordion($field_args){
 	echo "
