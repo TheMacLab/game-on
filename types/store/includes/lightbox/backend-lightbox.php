@@ -242,10 +242,9 @@ function go_store_head() { // Run this function that inserts things into the hea
 				<div class="description">These buttons create a new instance of the selected post type with the shortcode automatically inserted in their respective content areas. You will be forwarded to the edit interface for this node.</div>
 			</div>
 			<?php
-			$go_get_post_types = get_post_types(); 
+			$go_get_post_types = get_post_types();
+			$go_store_id = ( ! empty( $_GET['post'] ) ? $_GET['post'] : null );
 			foreach ( $go_get_post_types as $type ) {
-				$go_store_id = ( ! empty( $_GET['post'] ) ? $_GET['post'] : null );
-				error_log( $go_store_id );
 				$get_type = get_post_type_object( $type );
 				$sing_name = $get_type->labels->singular_name;
 				echo '<a href="/wp-admin/post-new.php?post_type='.$type.'&go_store=true&go_store_id='.$go_store_id.'" target="_blank" /><div id="go_store_lightbox_'.$type.'" class="lightbox-inner-box"><span>New '.$sing_name.'</span></div></a> ';

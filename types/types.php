@@ -625,9 +625,9 @@ function go_presets( $field_args ) {
 
 add_action( 'cmb_validate_go_presets', 'go_validate_stage_reward' );
 function go_validate_stage_reward() {
-	$points = $_POST['stage_1_points'];
-	$currency = $_POST['stage_1_currency'];
-	$bonus_currency = $_POST['stage_1_bonus_currency'];
+	$points = ( ! empty( $_POST['stage_1_points'] ) ? $_POST['stage_1_points'] : null );
+	$currency = ( ! empty( $_POST['stage_1_currency'] ) ? $_POST['stage_1_currency'] : null );
+	$bonus_currency = ( ! empty( $_POST['stage_1_bonus_currency'] ) ? $_POST['stage_1_bonus_currency'] : null );
 	$task_rewards = array( 'points' => $points, 'currency' => $currency, 'bonus_currency' => $bonus_currency );
 	return $task_rewards;
 }
@@ -670,8 +670,8 @@ function go_render_start_filter() {
 add_action( 'cmb_validate_go_start_filter', 'go_validate_start_filter' );
 function go_validate_start_filter() { 
 	$checked = ( ! empty( $_POST['go_mta_task_start_date_switch'] ) ? $_POST['go_mta_task_start_date_switch'] : null );
-	$date = $_POST['go_mta_task_start_date'];
-	$time = $_POST['go_mta_task_start_time'];
+	$date = ( ! empty( $_POST['go_mta_task_start_date'] ) ? $_POST['go_mta_task_start_date'] : null );
+	$time = ( ! empty( $_POST['go_mta_task_start_time'] ) ? $_POST['go_mta_task_start_time'] : '' );
 	$time = substr( $time, 0, 8 ); // Make sure no more than 8 characters are in the string
 	$hour = intval( substr( $time, 0, strpos( $time, ':' ) ) ); // Grab numerical value of hour
 	$minutes = substr( $time, strpos( $time, ':' ) + 1, strlen( $time ) ); // Grab minutes string
@@ -711,7 +711,7 @@ function go_future_filters( $field_args ) {
 
 add_action( 'cmb_validate_go_future_filters', 'go_validate_future_filters' );
 function go_validate_future_filters() {
-	$checked = $_POST['go_time_modifier'];
+	$checked = ( ! empty( $_POST['go_time_modifier'] ) ? $_POST['go_time_modifier'] : '' );
 	return $checked;
 }
 
@@ -956,13 +956,13 @@ add_action( 'cmb_validate_go_admin_lock', 'go_validate_admin_lock', 10, 3 );
 function go_validate_admin_lock( $override_value, $post_id, $field_args ) {
 	$meta_id = $field_args['id'];
 	$is_checked = ( ! empty( $_POST[ $meta_id ] ) ? $_POST[ $meta_id ] : null );
-	$temp_pass = $_POST["{$meta_id}_input"];
+	$temp_pass = ( ! empty( $_POST["{$meta_id}_input"] ) ? $_POST["{$meta_id}_input"] : '' );
 	if ( preg_match( "/['\"\<>]+/", $temp_pass ) ) {
 		$pass = preg_replace( "/['\"<>]+/", '', $temp_pass );
 	} else {
 		$pass = $temp_pass;
 	}
-	if ( empty( $is_checked) ) {
+	if ( empty( $is_checked ) ) {
 		$is_checked = 'false';
 	} else {
 		$is_checked = 'true';
@@ -986,7 +986,7 @@ function go_test_modifier( $field_args ) {
 add_action( 'cmb_validate_go_test_modifier', 'go_validate_test_modifier', 10, 3 );
 function go_validate_test_modifier( $override_value, $post_id, $field_args ) {
 	$meta_id = $field_args['id'];
-	$mod_temp = $_POST[ $meta_id ];
+	$mod_temp = ( ! empty( $_POST[ $meta_id ] ) ? $_POST[ $meta_id ] : null );
 	if ( ! empty( $mod_temp ) ) {
 		if ( ! preg_match( "/[0-9]+/", $mod_temp ) ) {
 			return 20;
@@ -1270,11 +1270,11 @@ add_action( 'cmb_validate_go_test_field', 'go_validate_test_field', 10, 3);
 function go_validate_test_field( $unused_override_value, $unused_value, $field_args ) {
 	$ttc = $field_args['test_type'];
 
-	$question_temp = $_POST["go_test_field_input_question_{$ttc}"];
-	$test_temp = $_POST["go_test_field_values_{$ttc}"];
-	$select = $_POST["go_test_field_select_{$ttc}"];
-	$block_count = (int) $_POST["go_test_field_block_count_{$ttc}"];
-	$input_count_temp = $_POST["go_test_field_input_count_{$ttc}"];
+	$question_temp = ( ! empty( $_POST["go_test_field_input_question_{$ttc}"] ) ? $_POST["go_test_field_input_question_{$ttc}"] : null );
+	$test_temp = ( ! empty( $_POST["go_test_field_values_{$ttc}"] ) ? $_POST["go_test_field_values_{$ttc}"] : null );
+	$select = ( ! empty( $_POST["go_test_field_select_{$ttc}"] ) ? $_POST["go_test_field_select_{$ttc}"] : null );
+	$block_count = ( ! empty( $_POST["go_test_field_block_count_{$ttc}"] ) ? (int) $_POST["go_test_field_block_count_{$ttc}"] : null );
+	$input_count_temp = ( ! empty( $_POST["go_test_field_input_count_{$ttc}"] ) ? $_POST["go_test_field_input_count_{$ttc}"] : null );
 
 	$input_count = array();
 	if ( ! empty( $input_count_temp ) ) {
@@ -2049,7 +2049,7 @@ add_action( 'cmb_validate_go_badge_input', 'go_validate_badge_input', 10, 3);
 function go_validate_badge_input( $override_value, $value, $field_args ) {
 	$checkbox_id = $field_args['id'];
 	$checked = ( ! empty( $_POST[ $checkbox_id ] ) ? 'true' : 'false' );
-	$badges = $_POST['go_badge_input_stage_'.$field_args['stage']];
+	$badges = ( ! empty( $_POST['go_badge_input_stage_'.$field_args['stage']] ) ? $_POST['go_badge_input_stage_'.$field_args['stage']] : null );
 
 	return( array( $checked, $badges ) );
 }
