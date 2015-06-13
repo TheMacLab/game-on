@@ -6,7 +6,7 @@ Description: Gamification tools for teachers.
 Authors: Ezio Ballarin, Forest Hoffman, Austin Vuong, Charles Leon
 Previous Authors: Semar Yousif, Vincent Astolfi
 Author URI: http://maclab.guhsd.net/
-Version: 2.4.3
+Version: 2.4.4
 */
 
 include( 'go_datatable.php' );
