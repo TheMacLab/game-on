@@ -259,15 +259,16 @@ function go_latest_post_url_shortcode( $atts, $content = null ) {
 		), 
 		$atts
 	);
-    $catquery = new WP_Query( "cat={$atts['cat']}&posts_per_page=1" );
+	$catquery = new WP_Query( "cat={$atts['cat']}&posts_per_page=1" );
+	$usetitle = $atts['usetitle'];
 	while( $catquery->have_posts () ) : $catquery->the_post();
 	?>
 		<a href="<?php the_permalink(); ?>">
 			<?php 
-			if ( $usetitle = "yes" ) { 
-				the_title(); 
+			if ( $usetitle = "yes" ) {
+				the_title();
 			} else { 
-				return ''; 
+				return '';
 			}
 			?>
 		</a>

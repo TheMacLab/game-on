@@ -38,9 +38,9 @@ function go_gold_store_sc( $atts, $content = null ) {
 			$output_array = implode( ' ', $output_array );
 			return $output_array;
 		} elseif ( $atts['id'] ) {
-			$the_title = get_the_title( $atts['id'] ); // get item title
-			$custom_fields = get_post_custom( $atts['id'] );
-			$req_currency = $custom_fields['go_mta_store_currency'][0];
+
+			// get item title
+			$the_title = get_the_title( $atts['id'] );
 			return "<a class='go_str_item' onclick='go_lb_opener( {$atts['id']} );'>{$the_title}</a>";
 		}
 	}

@@ -6,7 +6,7 @@ function task_edit_jquery() {
 	if ( ! empty( $task_chains) ) {
 		$chain = array_shift( array_values( $task_chains ) )->name;
 	}
-	$custom = get_post_custom( get_the_id() );
+	$custom = get_post_custom();
 	?>
 	<script type="text/javascript">
 	
@@ -619,7 +619,7 @@ function task_edit_jquery() {
 			}
 		});
 		
-		var stage_three = <?php echo ( $custom['go_mta_three_stage_switch'][0] == 'on' ) ? 'true' : 'false'; ?>;
+		var stage_three = <?php echo ( ! empty( $custom['go_mta_three_stage_switch'][0] ) && $custom['go_mta_three_stage_switch'][0] == 'on' ? 'true' : 'false' ); ?>;
 		
 		if ( stage_three ) {
 			jQuery( 'tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message' ).toggle( 'slow' );
@@ -676,7 +676,7 @@ function task_edit_jquery() {
 			}
 		});
 		
-		var stage_five = <?php echo ( $custom['go_mta_five_stage_switch'][0] == 'on' ) ? 'true' : 'false'; ?>;
+		var stage_five = <?php echo ( ! empty( $custom['go_mta_five_stage_switch'][0] ) && $custom['go_mta_five_stage_switch'][0] == 'on' ? 'true' : 'false' ); ?>;
 		
 		if ( stage_five ) {
 			jQuery( 'tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message' ).show( 'slow' );

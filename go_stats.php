@@ -7,12 +7,14 @@ function go_stats_overlay() {
 function go_admin_bar_stats() { 
  	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
-	if ( $_POST['uid'] ) {
+	if ( ! empty( $_POST['uid'] ) ) {
 		$current_user = get_userdata( $_POST['uid'] );
 	} else {
 		$current_user = wp_get_current_user();
 	}
-	?><input type="hidden" id="go_stats_hidden_input" value="<?php echo $_POST['uid'] ?>"/><?php
+	?>
+	<input type="hidden" id="go_stats_hidden_input" value="<?php echo ( ! empty( $_POST['uid'] ) ? $_POST['uid'] : null ); ?>"/>
+	<?php
 	$user_fullname = $current_user->first_name.' '.$current_user->last_name;
 	$user_login =  $current_user->user_login;
 	$user_display_name = $current_user->display_name;
@@ -35,7 +37,7 @@ function go_admin_bar_stats() {
 	$current_currency = go_return_currency( $current_user_id );
 	$current_bonus_currency = go_return_bonus_currency( $current_user_id );
 	$current_penalty = go_return_penalty( $current_user_id );
-	$current_minutes = go_return_minutes( $current_user_id) ;
+	$current_minutes = go_return_minutes( $current_user_id );
 	global $current_rank;
 	global $current_rank_points;
 	global $next_rank;
@@ -132,9 +134,15 @@ function go_stats_task_list() {
 				?>
 				<div class='go_stats_task_status_wrap'>
 				<?php
-				
-				$stage_count = ( ( $custom['go_mta_three_stage_switch'][0] == 'on' ) ? 3 : ( ( $custom['go_mta_five_stage_switch'][0] == 'on' ) ? 5 : 4) );
-				
+								
+				if ( ! empty( $custom['go_mta_three_stage_switch'][0] ) && $custom['go_mta_three_stage_switch'][0] == 'on' ) {
+					$stage_count = 3;
+				} elseif ( ! empty( $custom['go_mta_five_stage_switch'][0] ) && $custom['go_mta_five_stage_switch'][0] == 'on' ) {
+					$stage_count = 5;
+				} else {
+					$stage_count = 4;
+				}
+
 				$url_switch = array(
 					1 => ! empty( $custom['go_mta_encounter_url_key'][0] ),
 					2 => ! empty( $custom['go_mta_accept_url_key'][0] ),
@@ -180,7 +188,8 @@ function go_stats_move_stage() {
 	$count   = $_POST['count'];
 	$message = $_POST['message'];
 	$custom_fields = get_post_custom( $task_id );
-	$date_picker = ( ( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
+	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? 
+		array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : null );
 	$rewards = unserialize( $custom_fields['go_presets'][0] );
 	$current_status = $wpdb->get_var( $wpdb->prepare( "SELECT status FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
 	$page_id = $wpdb->get_var( $wpdb->prepare( "SELECT page_id FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
@@ -502,7 +511,7 @@ function go_stats_badges_list() {
 	$badges = get_user_meta( $user_id, 'go_badges', true );
 	if ( $badges) {
 		foreach ( $badges as $id => $badge ) {
-			$img = wp_get_attachment_image( $badge, array( 100, 100 ), false, $atts );
+			$img = wp_get_attachment_image( $badge, array( 100, 100 ) );
 			echo "<div class='go_badge_wrap'><div class='go_badge_container'><div class='go_badge'>{$img}</div></div></div>";
 		}
 	}
@@ -624,8 +633,8 @@ function go_return_user_leaderboard( $users, $class_a_choice, $focuses, $type, $
 function go_stats_leaderboard() {
 	global $wpdb;
 	$go_totals_table_name = "{$wpdb->prefix}go_totals";
-	$class_a_choice = $_POST['class_a_choice'];
-	$focuses = $_POST['focuses'];
+	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? $_POST['class_a_choice'] : null );
+	$focuses = ( ! empty( $_POST['focuses'] ) ? $_POST['focuses'] : array() );
 	$date = $_POST['date'];
 	?>
 	<ul id='go_stats_leaderboard_list_points' class='go_stats_body_list go_stats_leaderboard_list'>

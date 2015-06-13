@@ -101,8 +101,6 @@ add_action( 'wp_ajax_go_fix_levels', 'go_fix_levels' );
 add_action( 'wp_ajax_listurl', 'listurl' );
 add_action( 'wp_ajax_nopriv_listurl', 'listurl' );
 add_action( 'wp_ajax_go_update_user_focuses', 'go_update_user_focuses' );
-add_action( 'wp_ajax_go_clipboard_get_data', 'go_clipboard_get_data' );
-add_action( 'wp_ajax_go_update_script_day', 'go_update_script_day' );
 add_action( 'wp_ajax_go_get_all_terms', 'go_get_all_terms' );
 add_action( 'wp_ajax_nopriv_go_get_all_terms', 'go_get_all_terms' );
 add_action( 'wp_ajax_go_get_all_posts', 'go_get_all_posts' );
@@ -133,7 +131,6 @@ add_action( 'check_values', 'check_values' );
 add_action( 'go_message_user', 'go_message_user' );
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
 add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
-add_action( 'go_clipboard_collect_data', 'go_clipboard_collect_data' );
 add_filter( 'cron_schedules', 'go_weekly_schedule' );
 
 function go_deactivate_plugin() {
@@ -151,7 +148,7 @@ function go_tsk_actv_activate() {
 function go_tsk_actv_redirect() {
 	if ( get_option( 'go_tsk_actv_do_activation_redirect', false ) ) {
 		delete_option( 'go_tsk_actv_do_activation_redirect' );
-		if( !isset( $_GET['activate-multi'] ) ) {
+		if( ! isset( $_GET['activate-multi'] ) ) {
 			wp_redirect( 'admin.php?page=game-on-options.php&settings-updated=true' );
 		}
 	}
@@ -232,9 +229,9 @@ function go_weekly_schedule( $schedules ) {
 }
 
 function go_task_timer_headers() {
-	$custom_fields = get_post_custom(get_the_ID() );
+	$custom_fields = get_post_custom();
 	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : '' );
-	if ( 'tasks' == get_post_type() && 'on' == $future_switches['future'] ) {
+	if ( 'tasks' == get_post_type() && ! empty( $future_switches['future'] ) && 'on' == $future_switches['future'] ) {
 		header( 'Expires: Thu, 1 Jan 1970 00:00:00 GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
 		header( 'Cache-Control: post-check=0, pre-check=0', FALSE );

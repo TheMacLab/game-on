@@ -49,7 +49,7 @@ function go_admin_bar() {
 		$is_admin = false;
 		$user_obj = get_user_by( 'id', $current_user_id );
 		$user_roles = $user_obj->roles;
-		if ( !empty( $user_roles ) ) {
+		if ( ! empty( $user_roles ) ) {
 			foreach ( $user_roles as $role ) {
 				if ( $role === "administrator" ) {
 					$is_admin = true;

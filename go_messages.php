@@ -77,7 +77,7 @@ function go_messages_bar() {
 			);
 			$wp_admin_bar->add_menu( 
 				array(
-					'id' => 'go_message',
+					'id' => rand(),
 					'title' => $seen_elem,
 					'parent' => $date,
 					'meta' => array( 
@@ -93,7 +93,7 @@ function go_messages_bar() {
 add_action( 'wp_ajax_go_mark_read','go_mark_read' );
 function go_mark_read() {
 	global $wpdb;
-	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages',true );
+	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages', true );
 	if ( $_POST['type'] == 'unseen' ) {
 		if ( $messages[1][ $_POST['date'] ][1] == 1) {
 			$messages[1][ $_POST['date'] ][1] = 0;

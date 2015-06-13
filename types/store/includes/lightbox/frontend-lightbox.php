@@ -24,7 +24,7 @@ function go_the_lb_ajax() {
 		$penalty = true;
 	}
 	
-	$store_cost = unserialize( $custom_fields['go_mta_store_cost'][0] );
+	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {
 		$req_currency = $store_cost[0];
 		$req_points = $store_cost[1];
@@ -33,17 +33,22 @@ function go_the_lb_ajax() {
 		$req_minutes = $store_cost[4];
 	}
 
-	$store_filter = unserialize( $custom_fields['go_mta_store_filter'][0] );
-	$is_filtered = $store_filter[0];
-	if ( $is_filtered ) {
-		$req_rank = $store_filter[1];
-		$bonus_filter = ( $store_filter[2].length > 0 ? (int) $store_filter[2] : null ); // 
-		$penalty_filter = ( $store_filter[3].length > 0 ? (int) $store_filter[3] : null ); // 
+	$store_filter = ( ! empty( $custom_fields['go_mta_store_filter'][0] ) ? unserialize( $custom_fields['go_mta_store_filter'][0] ) : null );
+	if ( ! empty( $store_filter ) ) {
+		$is_filtered = $store_filter[0];
+		if ( $is_filtered ) {
+			$req_rank = $store_filter[1];
+			$bonus_filter = ( count( $store_filter[2] ) > 0 ? (int) $store_filter[2] : null );
+			$penalty_filter = ( count( $store_filter[3] ) > 0 ? (int) $store_filter[3] : null );
+		}
 	}
-	$store_limit = unserialize( $custom_fields['go_mta_store_limit'][0] );
-	$is_limited = $store_limit[0];
-	if ( $is_limited == 'true' ) {
-		$purchase_limit = $store_limit[1];
+
+	$store_limit = ( ! empty( $custom_fields['go_mta_store_limit'][0] ) ? unserialize( $custom_fields['go_mta_store_limit'][0] ) : null );
+	if ( ! empty( $store_limit ) ) {
+		$is_limited = $store_limit[0];
+		if ( $is_limited == 'true' ) {
+			$purchase_limit = $store_limit[1];
+		}
 	}
 	
 	$user_id = get_current_user_id();
@@ -53,14 +58,14 @@ function go_the_lb_ajax() {
 	$user_penalties = go_return_penalty( $user_id );
 	$user_minutes = go_return_minutes( $user_id );
 	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
-	$is_giftable = $custom_fields['go_mta_store_giftable'][0];
-	$is_unpurchasable = $custom_fields['go_mta_store_unpurchasable'][0];
+	$is_giftable = ( ! empty( $custom_fields['go_mta_store_giftable'][0] ) ? $custom_fields['go_mta_store_giftable'][0] : '' );
+	$is_unpurchasable = ( ! empty( $custom_fields['go_mta_store_unpurchasable'][0] ) ? $custom_fields['go_mta_store_unpurchasable'][0] : '' );
 
 	echo "<h2>{$the_title}</h2>";
 	echo '<div id="go-lb-the-content">'.do_shortcode( $the_content ).'</div>';
 	if ( $user_points >= $req_rank || $req_rank <= 0 || $penalty ) {
 		$lvl_color = "g"; 
-		$output_level = $req_lvl *= -1;
+		$output_level = $req_rank *= -1;
 	} else { 
 		$lvl_color = "r";
 	}
@@ -128,7 +133,7 @@ function go_the_lb_ajax() {
 	}
 	
 	// Get focus options associated with item
-	$item_focus_array = unserialize( $custom_fields['go_mta_store_focus'][0] );
+	$item_focus_array = ( ! empty( $custom_fields['go_mta_store_focus'][0] ) ? unserialize( $custom_fields['go_mta_store_focus'][0] ) : null );
 	
 	// Check if item actually has focus
 	$is_focused = (bool) filter_var( $item_focus_array[0], FILTER_VALIDATE_BOOLEAN);
@@ -142,7 +147,8 @@ function go_the_lb_ajax() {
 	}
 	
 	// Check if item is locked by focus
-	if ( $custom_fields['go_mta_store_focus_lock'][0] ) {
+	$locked_by_focus = ( ! empty( $custom_fields['go_mta_store_focus_lock'][0] ) ? $custom_fields['go_mta_store_focus_lock'][0] : null );
+	if ( ! empty( $locked_by_focus ) ) {
 		$focus_category_lock = true;
 	}
 	
@@ -156,17 +162,17 @@ function go_the_lb_ajax() {
 	}
 	
 	// Check to see if the user has any of the focuses
-	if ( $category_names && $user_focuses ) {
+	if ( ! empty( $category_names ) && $user_focuses ) {
 		$go_ahead = array_intersect( $user_focuses, $category_names );
 	}
 	
-	if ( $is_focused && ! empty( $item_focus) && ! empty( $user_focuses) && in_array( $item_focus, $user_focuses ) ) {
+	if ( $is_focused && ! empty( $item_focus ) && ! empty( $user_focuses ) && in_array( $item_focus, $user_focuses ) ) {
 		die( 'You already have this '.go_return_options( 'go_focus_name' ).'!' );	
 	}
-	if ( empty( $go_ahead ) && $focus_category_lock ) {
+	if ( empty( $go_ahead ) && ! empty( $focus_category_lock ) ) {
 		die( 'Item only available to those in '.implode( ', ', $category_names ).' '.strtolower( go_return_options( 'go_focus_name' ) ) );
 	}
-	if ( $is_filtered === 'true' && ! is_null( $bonus_filter) && $user_bonus_currency < $bonus_filter) {
+	if ( $is_filtered === 'true' && ! is_null( $bonus_filter ) && $user_bonus_currency < $bonus_filter) {
 		die( 'You require more '.go_return_options( 'go_bonus_currency_name' ).' to view this item.' );
 	}
 	if ( ! empty( $purchase_limit) && $purchase_count >= $purchase_limit ) {
@@ -187,7 +193,7 @@ function go_the_lb_ajax() {
 		?>
 		<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
 		<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem( '<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>' ); this.removeAttribute( 'onclick' );">Buy</div>
-		<div id="golb-fr-purchase-limit" val="<?php echo $purchase_limit; ?>"><?php if ( $purchase_limit == 0 ) {echo 'No limit';} else{ echo 'Limit '.$purchase_limit; }?> </div>
+		<div id="golb-fr-purchase-limit" val="<?php echo ( ! empty( $purchase_limit ) ? $purchase_limit : 0 ); ?>"><?php echo ( ! empty( $purchase_limit ) ? "Limit {$purchase_limit}" : 'No limit' ); ?></div>
 		<div id="golb-purchased">
 		<?
 		if ( is_null( $purchase_count ) ) { 
@@ -196,7 +202,7 @@ function go_the_lb_ajax() {
 			echo "Quantity purchased: {$purchase_count}";
 		} 
 	}
-	 if ( ! $item_focus && ! $penalty && $is_giftable == 'on' ) {
+	 if ( ! empty( $item_focus ) && ! empty( $penalty ) && $is_giftable == 'on' ) {
 	 ?>
  		<br />
 		Gift this item <input type='checkbox' id='go_toggle_gift_fields'/>

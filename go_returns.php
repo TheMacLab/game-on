@@ -81,8 +81,8 @@ function go_filter_focuses( $elem ) {
 function go_display_user_focuses( $user_id ) {
 	$user_focuses = get_user_meta( $user_id , 'go_focus', true );
 	
-	if ( !empty( $user_focuses ) ) {
-		if ( !is_array( $user_focuses) ) {
+	if ( ! empty( $user_focuses ) ) {
+		if ( ! is_array( $user_focuses) ) {
 			$output = $user_focuses;
 		} else {
 			$filtered_user_focuses = array_filter( $user_focuses );
@@ -109,13 +109,13 @@ function go_return_badge_count( $user_id ) {
 // Optionally returns user's correct current rank name FROM the go_ranks option, based on user's current points.
 // Updates current_rank global regardless.
 function go_return_clean_rank( $user_id, $return_rank = true) {
-	if ( !empty( $user_id ) ) {
+	if ( ! empty( $user_id ) ) {
 		global $current_rank;
 		global $current_points;
 		$ranks = get_option( 'go_ranks' );
 		$names = $ranks['name'];
 		$points = $ranks['points'];
-		if ( !empty( $names ) && !empty( $points ) ) {
+		if ( ! empty( $names ) && ! empty( $points ) ) {
 			for ( $i = 0; $i < count( $points ); $i++) {
 				if ( (int) $points[ $i + 1 ] > (int) $current_points ) {
 					$name = $names[ $i ];

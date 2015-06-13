@@ -320,7 +320,6 @@ function go_install_data() {
 		'go_penalty_threshold' => 5,
 		'go_multiplier_percentage' => 10,
 		'go_data_reset_switch' => '',
-		'go_analysis_script_day' => 'Friday'
 	);
 	foreach ( $options_array as $key => $value ) {
 		add_option( $key, $value );

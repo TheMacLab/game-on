@@ -1,8 +1,8 @@
 <?php
 session_start();
 /*
-	This is the file that displays content in a post/page with a task. 
-	This file interprets and executes the shortcode in a post's body. 
+	This is the file that displays content in a post/page with a task.
+	This file interprets and executes the shortcode in a post's body.
 */
 // Task Shortcode
 function go_task_shortcode( $atts, $content = null ) {
@@ -18,38 +18,48 @@ function go_task_shortcode( $atts, $content = null ) {
 		$today = date( 'Y-m-d' );
 		$task_name = strtolower( go_return_options( 'go_tasks_name' ) );
 		$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
-		$rewards = unserialize( $custom_fields['go_presets'][0] );
-		$mastery_active = ! $custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
-		$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
+		$rewards = ( ! empty( $custom_fields['go_presets'][0] ) ? unserialize( $custom_fields['go_presets'][0] ) : null );
+		$mastery_active = ( ! empty( $custom_fields['go_mta_task_mastery'][0] ) ? ! $custom_fields['go_mta_task_mastery'][0] : true ); // whether or not the mastery stage is active
+		$repeat = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : '' ); // Whether or not you can repeat the task
 		$unix_now = current_time( 'timestamp' ); // Current unix timestamp
 		$go_table_name = "{$wpdb->prefix}go";
 		$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
 		$status = (int) $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
 		
-		$e_admin_lock = unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] );
-		$e_is_locked = $e_admin_lock[0];
-		if ( $e_is_locked === 'true' ) {
-			$e_pass_lock = $e_admin_lock[1];
+		$e_admin_lock = ( ! empty( $custom_fields['go_mta_encounter_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] ) : null );
+		if ( ! empty( $e_admin_lock ) ) {
+			$e_is_locked = $e_admin_lock[0];
+			if ( $e_is_locked === 'true' ) {
+				$e_pass_lock = $e_admin_lock[1];
+			}
 		}
-		$a_admin_lock = unserialize( $custom_fields['go_mta_accept_admin_lock'][0] );
-		$a_is_locked = $a_admin_lock[0];
-		if ( $a_is_locked === 'true' ) {
-			$a_pass_lock = $a_admin_lock[1];
+		$a_admin_lock = ( ! empty( $custom_fields['go_mta_accept_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_accept_admin_lock'][0] ) : null );
+		if ( ! empty( $a_admin_lock ) ) {
+			$a_is_locked = $a_admin_lock[0];
+			if ( $a_is_locked === 'true' ) {
+				$a_pass_lock = $a_admin_lock[1];
+			}
 		}
-		$c_admin_lock = unserialize( $custom_fields['go_mta_completion_admin_lock'][0] );
-		$c_is_locked = $c_admin_lock[0];
-		if ( $c_is_locked === 'true' ) {
-			$c_pass_lock = $c_admin_lock[1];
+		$c_admin_lock = ( ! empty( $custom_fields['go_mta_completion_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_completion_admin_lock'][0] ) : null );
+		if ( ! empty( $c_admin_lock ) ) {
+			$c_is_locked = $c_admin_lock[0];
+			if ( $c_is_locked === 'true' ) {
+				$c_pass_lock = $c_admin_lock[1];
+			}
 		}
-		$m_admin_lock = unserialize( $custom_fields['go_mta_mastery_admin_lock'][0] );
-		$m_is_locked = $m_admin_lock[0];
-		if ( $m_is_locked === 'true' ) {
-			$m_pass_lock = $m_admin_lock[1];
+		$m_admin_lock = ( ! empty( $custom_fields['go_mta_mastery_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_mastery_admin_lock'][0] ) : null );
+		if ( ! empty( $m_admin_lock ) ) {
+			$m_is_locked = $m_admin_lock[0];
+			if ( $m_is_locked === 'true' ) {
+				$m_pass_lock = $m_admin_lock[1];
+			}
 		}
-		$r_admin_lock = unserialize( $custom_fields['go_mta_repeat_admin_lock'][0] );
-		$r_is_locked = $r_admin_lock[0];
-		if ( $r_is_locked === 'true' ) {
-			$r_pass_lock = $r_admin_lock[1];
+		$r_admin_lock = ( ! empty( $custom_fields['go_mta_repeat_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_repeat_admin_lock'][0] ) : null );
+		if ( ! empty( $r_admin_lock ) ) {
+			$r_is_locked = $r_admin_lock[0];
+			if ( $r_is_locked === 'true' ) {
+				$r_pass_lock = $r_admin_lock[1];
+			}
 		}
 
 		$e_url_is_locked = ( ! empty( $custom_fields['go_mta_encounter_url_key'][0] ) ? true : false );
@@ -57,9 +67,9 @@ function go_task_shortcode( $atts, $content = null ) {
 		$c_url_is_locked = ( ! empty( $custom_fields['go_mta_completion_url_key'][0] ) ? true : false );
 		$m_url_is_locked = ( ! empty( $custom_fields['go_mta_mastery_url_key'][0] ) ? true : false );
 
-		$test_e_active = $custom_fields['go_mta_test_encounter_lock'][0];
-		$test_a_active = $custom_fields['go_mta_test_accept_lock'][0];
-		$test_c_active = $custom_fields['go_mta_test_completion_lock'][0];
+		$test_e_active = ( ! empty( $custom_fields['go_mta_test_encounter_lock'][0] ) ? $custom_fields['go_mta_test_encounter_lock'][0] : false );
+		$test_a_active = ( ! empty( $custom_fields['go_mta_test_accept_lock'][0] ) ? $custom_fields['go_mta_test_accept_lock'][0] : false );
+		$test_c_active = ( ! empty( $custom_fields['go_mta_test_completion_lock'][0] ) ? $custom_fields['go_mta_test_completion_lock'][0] : false );
 		
 		$number_of_stages = 4;
 		
@@ -72,7 +82,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			$test_e_all_answers = $test_e_array[2][2];
 			$test_e_all_keys = $test_e_array[2][3];
 		}
-		$encounter_upload = $custom_fields['go_mta_encounter_upload'][0];
+		$encounter_upload = ( ! empty( $custom_fields['go_mta_encounter_upload'][0] ) ? $custom_fields['go_mta_encounter_upload'][0] : false );
 
 		if ( $test_a_active ) {
 			$test_a_array = go_get_test_meta_content( $custom_fields, 'accept' );
@@ -83,7 +93,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			$test_a_all_answers = $test_a_array[2][2];
 			$test_a_all_keys = $test_a_array[2][3];
 		}
-		$accept_upload = $custom_fields['go_mta_accept_upload'][0];
+		$accept_upload = ( ! empty( $custom_fields['go_mta_accept_upload'][0] ) ? $custom_fields['go_mta_accept_upload'][0] : false );
 
 		if ( $test_c_active ) {
 			$test_c_array = go_get_test_meta_content( $custom_fields, 'completion' );
@@ -94,11 +104,11 @@ function go_task_shortcode( $atts, $content = null ) {
 			$test_c_all_answers = $test_c_array[2][2];
 			$test_c_all_keys = $test_c_array[2][3];
 		}
-		$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
-		$completion_upload = $custom_fields['go_mta_completion_upload'][0];
+		$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' ); // Completion Message
+		$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
 		
 		if ( $mastery_active ) {
-			$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
+			$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
 
 			if ( $test_m_active ) {
 				$test_m_array = go_get_test_meta_content( $custom_fields, 'mastery' );
@@ -109,17 +119,13 @@ function go_task_shortcode( $atts, $content = null ) {
 				$test_m_all_answers = $test_m_array[2][2];
 				$test_m_all_keys = $test_m_array[2][3];
 			}
-			$mastery_message = $custom_fields['go_mta_mastery_message'][0]; // Mastery Message
-			$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
+			$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' ); // Mastery Message
+			$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
 
 			if ( $repeat == 'on' ) {	// Checks if the task is repeatable and if it has a repeat limit
-				if ( $custom_fields['go_mta_repeat_amount'][0] ) {
-					$repeat_amount = $custom_fields['go_mta_repeat_amount'][0]; // Sets the limit equal to the meta field value decalred in the task creation page	
-				} else {
-					$repeat_amount = 0;
-				}
-				$repeat_message = $custom_fields['go_mta_repeat_message'][0];
-				$repeat_upload = $custom_fields['go_mta_repeat_upload'][0];
+				$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
+				$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+				$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
 				$number_of_stages = 5;
 			}
 		} else {
@@ -128,18 +134,16 @@ function go_task_shortcode( $atts, $content = null ) {
 		
 		// Checks if the task has a bonus currency filter
 		// Sets the filter equal to the meta field value declared in the task creation page, if none exists defaults to 0
-		$bonus_currency_required = $custom_fields['go_mta_bonus_currency_filter'][0];
+		$bonus_currency_required = ( ! empty( $custom_fields['go_mta_bonus_currency_filter'][0] ) ? $custom_fields['go_mta_bonus_currency_filter'][0] : 0 );
 		
 		// Checks if the task has a penalty filter
-		$penalty_filter = $custom_fields['go_mta_penalty_filter'][0];
+		$penalty_filter = ( ! empty( $custom_fields['go_mta_penalty_filter'][0] ) ? $custom_fields['go_mta_penalty_filter'][0] : null );
 		
+		$locked_by_category = ( ! empty( $custom_fields['go_mta_focus_category_lock'][0] ) ? $custom_fields['go_mta_focus_category_lock'][0] : null );
+		$focus_category_lock = ( ! empty( $locked_by_category ) ? true : false );
 
-		if ( $custom_fields['go_mta_focus_category_lock'][0] ) {
-			$focus_category_lock = true;
-		}
-
-		$description = $custom_fields['go_mta_quick_desc'][0]; // Description
-		$req_rank = $custom_fields['go_mta_req_rank'][0]; // Required Rank to accept task
+		$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' ); // Description
+		$req_rank = ( ! empty( $custom_fields['go_mta_req_rank'][0] ) ? $custom_fields['go_mta_req_rank'][0] : null ); // Required Rank to accept task
 		if ( ! empty( $req_rank ) ) {
 			$ranks = get_option( 'go_ranks' );
 			if ( ! empty( $ranks['name'] ) && ! empty( $ranks['points'] ) ) {
@@ -152,11 +156,11 @@ function go_task_shortcode( $atts, $content = null ) {
 			$req_points = null;
 		}
 		
-		$points_array = $rewards['points'];
+		$points_array = ( ! empty( $rewards['points'] ) ? $rewards['points'] : array() );
 		$points_str = implode( ' ', $points_array );
-		$currency_array = $rewards['currency'];
+		$currency_array = ( ! empty( $rewards['currency'] ) ? $rewards['currency'] : array() );
 		$currency_str = implode( ' ', $currency_array );
-		$bonus_currency_array = $rewards['bonus_currency'];
+		$bonus_currency_array = ( ! empty( $rewards['bonus_currency'] ) ? $rewards['bonus_currency'] : array() );
 		$bonus_currency_str = implode( ' ', $bonus_currency_array );
 		
 		$current_bonus_currency = go_return_bonus_currency( $user_ID );	
@@ -165,7 +169,13 @@ function go_task_shortcode( $atts, $content = null ) {
 		$go_admin_email = get_option( 'go_admin_email' );
 		if ( $go_admin_email ) {
 			$admin = get_user_by( 'email', $go_admin_email );
+		}
+
+		// use display name of admin with store email, or use default name
+		if ( ! empty( $admin ) ) {
 			$admin_name = addslashes( $admin->display_name );
+		} else {
+			$admin_name = 'an administrator';
 		}
 		$is_admin = false;
 		$user_obj = get_user_by( 'id', $user_ID );
@@ -179,37 +189,36 @@ function go_task_shortcode( $atts, $content = null ) {
 			}
 		}
 		
-
 		$content_post = get_post( $id ); // Grabs content of a task from the post table in your wordpress database where post_id = id in the shortcode. 
 		$task_content = $content_post->post_content; // Grabs what the task actually says in the body of it
 		
-		if ( $task_content == '' ) { // If the task is empty, run this code
-			$accept_message = $custom_fields['go_mta_accept_message'][0]; // Accept message meta field exists, set accept message equal to the meta field's content
-		} elseif ( $task_content != '' && ! $custom_fields['go_mta_accept_message'] ) { // If content is returned from the post table, and the post doesn't have an accept message meta field, run this code
+		if ( $task_content != '' && empty( $custom_fields['go_mta_accept_message'] ) ) { // If content is returned from the post table, and the post doesn't have an accept message meta field, run this code
 			add_post_meta( $id, 'go_mta_accept_message', $task_content ); // Add accept message meta field with value of the post's content from post table
 		} else { // If the task has content in the post table, and has a meta field, run this code
-			$accept_message = $custom_fields['go_mta_accept_message'][0]; // Set value of accept message equal to the task's accept message meta field value
+			$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' ); // Set value of accept message equal to the task's accept message meta field value
 		}
 		
-		$start_filter_info = unserialize( $custom_fields['go_mta_start_filter'][0] );
-		$start_filter = $start_filter_info[0];
-		if ( ! empty ( $start_filter ) ) { 
-			$start_date = $start_filter_info[1];
-			$start_time = $start_filter_info[2];
-			$start_unix = strtotime( $start_time, strtotime( $start_date ) );
-			if ( $unix_now < $start_unix ) {
-				$time_string = date( 'g:i A', $start_unix )." on ".date( 'D, F j, Y', $start_unix );
-				return "<span id='go_future_notification'>Will be available at {$time_string}.</span>";	
+		$start_filter_info = ( ! empty( $custom_fields['go_mta_start_filter'][0] ) ? unserialize( $custom_fields['go_mta_start_filter'][0] ) : null );
+		if ( ! empty( $start_filter_info ) ) {
+			$start_filter = $start_filter_info[0];
+			if ( ! empty ( $start_filter ) ) { 
+				$start_date = $start_filter_info[1];
+				$start_time = $start_filter_info[2];
+				$start_unix = strtotime( $start_time, strtotime( $start_date ) );
+				if ( $unix_now < $start_unix ) {
+					$time_string = date( 'g:i A', $start_unix )." on ".date( 'D, F j, Y', $start_unix );
+					return "<span id='go_future_notification'>Will be available at {$time_string}.</span>";	
+				}
 			}
 		}
 		
-		$future_switches = unserialize( $custom_fields['go_mta_time_filters'][0] ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
+		$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
 		
-		$date_picker = ( ( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
-		$sounded_array = ( array) get_user_meta( $user_ID, 'go_sounded_tasks', true );
+		$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
+		$sounded_array = (array) get_user_meta( $user_ID, 'go_sounded_tasks', true );
 		
 		// If there are dates in the date picker
-		if ( ! empty( $date_picker) && $future_switches['calendar'] == 'on' ) {
+		if ( ! empty( $date_picker) && ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) ) {
 			
 			$dates = $date_picker['date'];
 			$times = $date_picker['time'];
@@ -256,7 +265,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		
 		$date_update_percent = $update_percent;
 		
-		$future_modifier = unserialize( $custom_fields['go_mta_time_modifier'][0] );
+		$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : null );
 		$future_timer = false;
 		
 		if ( ! empty( $future_modifier ) && $future_switches['future'] == 'on' && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
@@ -287,8 +296,14 @@ function go_task_shortcode( $atts, $content = null ) {
 		} else {
 			$future_update_percent = 1;
 		}
-			
-		$update_percent = ( ( $future_switches['calendar'] == 'on' ) ? $date_update_percent : ( ( $future_switches['future'] == 'on' ) ? $future_update_percent : 1 ) );
+
+		if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) {
+			$update_percent = $date_update_percent;
+		} elseif ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) {
+			$update_percent = $future_update_percent;
+		} else {
+			$update_percent = 1;
+		}
 		
 		global $current_points;
 		if ( $is_admin === false && ! empty( $req_points) && $current_points < $req_points ) {
@@ -332,14 +347,14 @@ function go_task_shortcode( $atts, $content = null ) {
 				$user_focus = get_user_meta( $user_ID, 'go_focus', true );	
 			}
 			
-			if ( $category_names && $user_focus ) {
+			if ( ! empty( $category_names ) && $user_focus ) {
 				$go_ahead = array_intersect( $user_focus, $category_names );
 			}
 			go_display_rewards( $user_ID, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
 			
 		?>
 			<script type="text/javascript">
-				<?php if ( $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
+				<?php if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
 					var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
 					for ( i = 1; i <= num_of_stages; i++ ) {
 						var stage_points = jQuery( '#go_stage_' + i + '_points' );
@@ -384,8 +399,9 @@ function go_task_shortcode( $atts, $content = null ) {
 		}
 	
 		// If current post in a chain and user logged in
-		if ( $custom_fields['chain'][0] != null ) {
+		if ( ! empty( $custom_fields['chain'][0] ) ) {
 			
+			$final_chain_message = ( ! empty( $custom_fields['go_mta_final_chain_message'][0] ) ? $custom_fields['go_mta_final_chain_message'][0] : null );
 			$current_position_in_chain = get_post_meta( $id, 'chain_position', true );
 			$chain_tax = get_the_terms( $id, 'task_chains' );
 			
@@ -435,7 +451,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 				
 				$post_custom_in_chain = get_post_custom( $post_id_in_chain );
-				$post_mastery_active_in_chain = ! $post_custom_in_chain['go_mta_task_mastery'][0];
+				$post_mastery_active_in_chain = ( ! empty( $post_custom_in_chain['go_mta_task_mastery'][0] ) ? ! $post_custom_in_chain['go_mta_task_mastery'][0] : true );
 				// $post_number_of_stages_in_chain will later be designated by an admin option that will be toggleable per task chain.
 				if ( $post_mastery_active_in_chain ) {
 					$post_number_of_stages_in_chain = 3;
@@ -468,20 +484,20 @@ function go_task_shortcode( $atts, $content = null ) {
 
 					// sending go_add_post the $repeat var was the problem, that is why it is now sending a null value.
 					go_add_post(
-						$user_ID, 
-						$id, 
-						0, 
-						floor( ( $update_percent * $points_array[0] ) ), 
-						floor( ( $update_percent * $currency_array[0] ) ), 
+						$user_ID,
+						$id,
+						0,
+						floor( ( $update_percent * $points_array[0] ) ),
+						floor( ( $update_percent * $currency_array[0] ) ),
 						floor( ( $update_percent * $bonus_currency_array[0] ) ),
 						null,
-						$page_id, 
-						null, 
-						0, 
-						0, 
-						0, 
-						$c_passed, 
-						$m_passed
+						$page_id,
+						null,
+						0,
+						0,
+						0,
+						0,
+						0
 					);
 		?>
 					<div id="go_content">
@@ -613,10 +629,10 @@ function go_task_shortcode( $atts, $content = null ) {
 							echo '>'.go_return_options( 'go_fourth_stage_button' ).'</button> 
 							<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
 							
-							if ( $next_post_in_chain && ! $last_in_chain ) {
+							if ( ! empty( $next_post_in_chain ) && ! $last_in_chain ) {
 								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
-							} else {
-								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+							} elseif ( ! empty( $final_chain_message ) ) {
+								echo '<div class="go_chain_message">'.$final_chain_message.'</div>';	
 							}
 							echo "</div>";
 						} else {
@@ -638,7 +654,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							if ( $next_post_in_chain && ! $last_in_chain ) {
 								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
 							} else {
-								echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+								echo '<div class="go_chain_message">'.$final_chain_message.'</div>';	
 							}
 							echo "</div>";
 						}
@@ -739,10 +755,10 @@ function go_task_shortcode( $atts, $content = null ) {
 							}
 							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
 						}
-						if ( $next_post_in_chain && ! $last_in_chain ) {
+						if ( ! empty( $next_post_in_chain ) && ! $last_in_chain ) {
 							echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
-						} else {
-							echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+						} elseif ( ! empty( $final_chain_message ) ) {
+							echo '<div class="go_chain_message">'.$final_chain_message.'</div>';	
 						}
 						echo '</div>';
 				}
@@ -990,7 +1006,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 				jQuery( '#go_upload_submit' ).click( function() {
 					if ( jQuery( '#go_pass_lock' ).length > 0 && jQuery( '#go_pass_lock' ).attr( 'value' ).length == 0 ) {
-						var error = "Retrieve the password from <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>.";
+						var error = "Retrieve the password from <?php echo $admin_name; ?>.";
 						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
 							jQuery( '#go_stage_error_msg' ).text( error );
 						} else {
@@ -1003,7 +1019,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			}
 			if ( ( jQuery( '#go_pass_lock' ).length > 0 && jQuery( '#go_pass_lock' ).attr( 'value' ).length == 0 ) && ( jQuery( '#go_upload_form' ).length != 0 && is_uploaded == 0 ) || jQuery( ".go_test_list" ).length != 0 ) {
 				if ( jQuery( '#go_stage_error_msg' ).is( ":visible" ) ) {
-					var error = "Retrieve the password from <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>.";
+					var error = "Retrieve the password from <?php echo $admin_name; ?>.";
 					if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
 						jQuery( '#go_stage_error_msg' ).text( error );
 					} else {
@@ -1113,13 +1129,13 @@ function go_task_shortcode( $atts, $content = null ) {
 							jQuery( '#go_test_error_msg' ).attr( 'style', 'color:green' );
 							jQuery( '#go_test_error_msg' ).text( "Well done, continue!" );
 						} else {
-							jQuery( '#go_test_error_msg' ).text( "This stage can only be unlocked by <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>." );
+							jQuery( '#go_test_error_msg' ).text( "This stage can only be unlocked by <?php echo $admin_name; ?>." );
 						}
 						
-						var test_e_returns = "<?php echo $test_e_returns; ?>";
-						var test_a_returns = "<?php echo $test_a_returns; ?>";
-						var test_c_returns = "<?php echo $test_c_returns; ?>";
-						var test_m_returns = "<?php echo $test_m_returns; ?>";
+						var test_e_returns = "<?php echo ( ! empty( $test_e_returns ) ? $test_e_returns : ''); ?>";
+						var test_a_returns = "<?php echo ( ! empty( $test_a_returns ) ? $test_a_returns : ''); ?>";
+						var test_c_returns = "<?php echo ( ! empty( $test_c_returns ) ? $test_c_returns : ''); ?>";
+						var test_m_returns = "<?php echo ( ! empty( $test_m_returns ) ? $test_m_returns : ''); ?>";
 						if ( ( status == 0 && test_e_returns == 'on' ) ||
 							( status == 1 && test_a_returns == 'on' ) ||
 							( status == 2 && test_c_returns == 'on' ) || 
@@ -1208,20 +1224,23 @@ function go_task_shortcode( $atts, $content = null ) {
 		
 		function task_stage_change( target ) {
 			var undoing = jQuery( target ).attr( 'undo' );
-			if ( undoing !== 'true' && jQuery( '#go_button' ).length > 0 ) {
+			if ( typeof( undoing ) === 'undefined' ) {
+				undoing = 'false';
+			}
+			if ( 'true' !== undoing && jQuery( '#go_button' ).length > 0 ) {
 				var perma_locked = jQuery( '#go_button' ).attr( 'admin_lock' );
 				if ( perma_locked === 'true' ) {
 					jQuery( '#go_stage_error_msg' ).show();
 					jQuery( '#go_button' ).removeAttr( 'disabled' );
-					jQuery( '#go_stage_error_msg' ).text( "This stage can only be unlocked by <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>." );
+					jQuery( '#go_stage_error_msg' ).text( "This stage can only be unlocked by <?php echo $admin_name; ?>." );
 					return;
 				}
 			}
-			if ( undoing !== 'true' && jQuery( '#go_pass_lock' ).length > 0) {
+			if ( 'true' !== undoing && jQuery( '#go_pass_lock' ).length > 0) {
 				var pass_entered = jQuery( '#go_pass_lock' ).attr( 'value' ).length > 0 ? true : false;
 				if ( ! pass_entered ) {
 					jQuery( '#go_stage_error_msg' ).show();
-					var error = "Retrieve the password from <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>.";
+					var error = "Retrieve the password from <?php echo $admin_name; ?>.";
 					if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
 						jQuery( '#go_stage_error_msg' ).text( error );
 					} else {
@@ -1229,7 +1248,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					}
 					return;
 				}
-			} else if ( undoing !== 'true' && jQuery( '#go_url_key' ).length > 0 ) {
+			} else if ( 'true' !== undoing && jQuery( '#go_url_key' ).length > 0 ) {
 				var the_url = jQuery( '#go_url_key' ).attr( 'value' ).replace(/\s+/, '' );
 				if ( the_url.length > 0 ) {
 					if ( the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && ! ( the_url.lastIndexOf( 'http://' ) > 0 ) && ! ( the_url.lastIndexOf( 'https://' ) > 0 ) ) {
@@ -1283,6 +1302,10 @@ function go_task_shortcode( $atts, $content = null ) {
 				// set repeat_attr equal to the value of the attribute of button#go_back_button.
 				var repeat_attr = jQuery( '#go_back_button' ).attr( 'repeat' );
 			}
+			if ( typeof( repeat_attr ) === 'undefined' ) {
+				repeat_attr = '';
+			}
+
 			
 			// send the following data to the function 'task_change_stage' and use the POST method to do so...
 			// when it succeeds update the content of the page: update the admin bar; set the css display attribute to none for
@@ -1295,13 +1318,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					post_id: <?php echo $id; ?>, 
 					user_id: <?php echo $user_ID; ?>,
 					admin_name: '<?php echo $admin_name; ?>',
-					task_count: <?php 
-									if ( $task_count == null ) {
-										echo '0';
-									} else {
-										echo $task_count;
-									}
-								?>,
+					task_count: <?php echo ( ! empty( $task_count ) ? $task_count : 0 ); ?>,
 					status: task_status,
 					repeat: repeat_attr,
 					undo: undoing,
@@ -1312,15 +1329,16 @@ function go_task_shortcode( $atts, $content = null ) {
 					currency: <?php echo json_encode( $currency_array ); ?>,
 					bonus_currency: <?php echo json_encode( $bonus_currency_array ); ?>,
 					date_update_percent: <?php echo $date_update_percent; ?>,
-					chain_name: '<?php if ( $chain->name ) { echo $chain->name; } else { echo ''; } ?>',
-					next_post_id_in_chain: <?php if ( $next_post_id_in_chain ) { echo $next_post_id_in_chain; } else { echo 0; } ?>,
-					last_in_chain: <?php if ( $last_in_chain ) { echo 'true'; } else { echo 'false'; } ?>,
+					chain_name: '<?php echo ( ! empty( $chain ) ? $chain->name : ''); ?>',
+					next_post_id_in_chain: <?php echo ( ! empty( $next_post_id_in_chain ) ? $next_post_id_in_chain : 0 ); ?>,
+					last_in_chain: <?php echo ( ! empty( $last_in_chain ) ? 'true' : 'false' ); ?>,
+					final_chain_message: '<?php echo ( ! empty( $final_chain_message ) ? $final_chain_message :  ''); ?>',
 					number_of_stages: <?php echo $number_of_stages; ?>
 				},
 				success: function( html ) {
 					if ( html === '0' ) {
 						jQuery( '#go_stage_error_msg' ).show();
-						var error = "Retrieve the password from <?php echo ( $admin_name ? $admin_name : 'an administrator' ); ?>.";
+						var error = "Retrieve the password from <?php echo $admin_name; ?>.";
 						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
 							jQuery( '#go_stage_error_msg' ).text( error );
 						} else {
@@ -1343,26 +1361,25 @@ function go_task_shortcode( $atts, $content = null ) {
 		}
 	</script>
 <?php	
-			echo $the_stage; // Just for Testing Purposes
 			// this is an edit link.
-			edit_post_link( 'Edit '.go_return_options( 'go_tasks_name' ), '<br />
-	<p>', '</p>', $id );
+			edit_post_link( 'Edit '.go_return_options( 'go_tasks_name' ), 
+				'<br/><p>', '</p>', $id );
 		} // Ends else statement
 	} else {
 		$custom_fields = get_post_custom( $id );
-		$encounter_message = $custom_fields['go_mta_quick_desc'][0];
-		$accept_message = $custom_fields['go_mta_accept_message'][0];
-		$complete_message = $custom_fields['go_mta_complete_message'][0];
-		$mastery_active = ! $custom_fields['go_mta_task_mastery'][0];
+		$encounter_message = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
+		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
+		$complete_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+		$mastery_active = ( ! empty( $custom_fields['go_mta_task_mastery'][0] ) ? ! $custom_fields['go_mta_task_mastery'][0] : true );
 		if ( $mastery_active ) {
-			$mastery_privacy = ! $custom_fields['go_mta_mastery_privacy'][0];
+			$mastery_privacy = ( ! empty( $custom_fields['go_mta_mastery_privacy'][0] ) ? ! $custom_fields['go_mta_mastery_privacy'][0] : true );
 			if ( $mastery_privacy ) {
-				$mastery_message = $custom_fields['go_mta_mastery_message'][0];
-				$repeat_active = $custom_fields['go_mta_task_repeat'][0];
+				$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
+				$repeat_active = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : false );
 				if ( $repeat_active && $mastery_privacy ) {
-					$repeat_privacy = ! $custom_fields['go_mta_repeat_privacy'][0];
+					$repeat_privacy = ( ! empty( $custom_fields['go_mta_repeat_privacy'][0] ) ? ! $custom_fields['go_mta_repeat_privacy'][0] : true );
 					if ( $repeat_privacy ) {
-						$repeat_message = $custom_fields['go_mta_repeat_message'][0];
+						$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
 					} else {
 						$repeat_message = "This stage has been hidden by the administrator.";
 					}
@@ -1393,50 +1410,54 @@ function go_task_shortcode( $atts, $content = null ) {
 add_shortcode( 'go_task','go_task_shortcode' );
 
 function go_get_test_meta_content( $custom_fields, $stage ) {
-	$test_returns = $custom_fields["go_mta_test_{$stage}_lock_loot"][0];
-	$test_array = $custom_fields["go_mta_test_lock_{$stage}"][0];
-	$test_uns = unserialize( $test_array );
+	$test_returns = ( ! empty( $custom_fields["go_mta_test_{$stage}_lock_loot"][0] ) ? $custom_fields["go_mta_test_{$stage}_lock_loot"][0] : null );
+	$test_array = ( ! empty( $custom_fields["go_mta_test_lock_{$stage}"][0] ) ? $custom_fields["go_mta_test_lock_{$stage}"][0] : null );
+	$test_uns = ( ! empty( $test_array ) ? unserialize( $test_array ) : null );
 
-	$test_num = $test_uns[3];
-	$test_all_questions = array();
-	foreach ( $test_uns[0] as $question ) {
-		$esc_question = htmlspecialchars( $question, ENT_QUOTES );
-		if ( preg_match( "/[\\\[\]]/", $question ) ) {
-			$str = preg_replace( array( "/\[/', '/\]/', '/\\\/" ), array( '&#91;', '&#93;', '\\\\\\\\\\\\' ), $esc_question );
-			$test_all_questions[] = $str;
-		} else {
-			$test_all_questions[] = $esc_question;
-		}
-	}
-	$test_all_types = $test_uns[2];
-	$test_all_inputs = $test_uns[1];
-	$test_all_input_num = $test_uns[4];
-	$test_all_answers = array();
-	$test_all_keys = array();
-	for ( $i = 0; $i < count( $test_all_inputs ); $i++ ) {
-		if ( ! empty( $test_all_inputs[ $i ][0] ) ) {
-			$answer_temp = implode( "###", $test_all_inputs[ $i ][0] );
-			$esc_answer = htmlspecialchars( $answer_temp, ENT_QUOTES );
-			if ( preg_match( "/[\\\[\]]/", $answer_temp ) ) {
-				$str = preg_replace( array( "/\[/', '/\]/', '/\\\/" ), array( '&#91;', '&#93;', '\\\\\\\\\\\\' ), $esc_answer );
-				$test_all_answers[] = $str;
+	if ( ! empty( $test_uns ) ) {
+		$test_num = $test_uns[3];
+		$test_all_questions = array();
+		foreach ( $test_uns[0] as $question ) {
+			$esc_question = htmlspecialchars( $question, ENT_QUOTES );
+			if ( preg_match( "/[\\\[\]]/", $question ) ) {
+				$str = preg_replace( array( "/\[/", "/\]/", "/\\\/" ), array( '&#91;', '&#93;', '\\\\\\\\\\\\' ), $esc_question );
+				$test_all_questions[] = $str;
 			} else {
-				$test_all_answers[] = $esc_answer;
+				$test_all_questions[] = $esc_question;
 			}
 		}
-		if ( ! empty( $test_all_inputs[ $i ][1] ) ) {
-			$key_temp = implode( "###", $test_all_inputs[ $i ][1] );
-			$esc_key = htmlspecialchars( $key_temp, ENT_QUOTES );
-			if (preg_match( "/[\\\[\]]/", $key_temp) ) {
-				$str = preg_replace( array( "/\[/', '/\]/', '/\\\/" ), array( '&#91;', '&#93;', '\\\\\\\\\\\\' ), $esc_key );
-				$test_all_keys[] = $str;
-			} else {
-				$test_all_keys[] = $esc_key;
+		$test_all_types = $test_uns[2];
+		$test_all_inputs = $test_uns[1];
+		$test_all_input_num = $test_uns[4];
+		$test_all_answers = array();
+		$test_all_keys = array();
+		for ( $i = 0; $i < count( $test_all_inputs ); $i++ ) {
+			if ( ! empty( $test_all_inputs[ $i ][0] ) ) {
+				$answer_temp = implode( "###", $test_all_inputs[ $i ][0] );
+				$esc_answer = htmlspecialchars( $answer_temp, ENT_QUOTES );
+				if ( preg_match( "/[\\\[\]]/", $answer_temp ) ) {
+					$str = preg_replace( array( "/\[/", "/\]/", "/\\\/" ), array( '&#91;', '&#93;', '\\\\\\\\\\\\' ), $esc_answer );
+					$test_all_answers[] = $str;
+				} else {
+					$test_all_answers[] = $esc_answer;
+				}
+			}
+			if ( ! empty( $test_all_inputs[ $i ][1] ) ) {
+				$key_temp = implode( "###", $test_all_inputs[ $i ][1] );
+				$esc_key = htmlspecialchars( $key_temp, ENT_QUOTES );
+				if (preg_match( "/[\\\[\]]/", $key_temp) ) {
+					$str = preg_replace( array( "/\[/", "/\]/", "/\\\/" ), array( '&#91;', '&#93;', '\\\\\\\\\\\\' ), $esc_key );
+					$test_all_keys[] = $str;
+				} else {
+					$test_all_keys[] = $esc_key;
+				}
 			}
 		}
-	}
 
-	return ( array( $test_returns, $test_num, array( $test_all_questions, $test_all_types, $test_all_answers, $test_all_keys ) ) );
+		return ( array( $test_returns, $test_num, array( $test_all_questions, $test_all_types, $test_all_answers, $test_all_keys ) ) );
+	} else {
+		return null;
+	}
 }
 
 function test_point_update() {
@@ -1533,8 +1554,8 @@ function test_point_update() {
 
 function go_inc_test_fail_count( $s_name, $test_fail_max = null ) {
 	if ( ! is_null( $test_fail_max ) ) {
-		$s_var = $_SESSION[ $s_name ];
-		if ( isset( $s_var ) ) {
+		if ( isset( $_SESSION[ $s_name ] ) ) {
+			$s_var = $_SESSION[ $s_name ];
 			if ( $s_var < $test_fail_max ) {
 				$_SESSION[ $s_name ]++;
 			} elseif ( $s_var > $test_fail_max ) {
@@ -1711,39 +1732,50 @@ function task_change_stage() {
 	$chain_name = $_POST['chain_name']; // String which is used to display next task in a quest chain
 	$next_post_id_in_chain = $_POST['next_post_id_in_chain']; // Integer which is used to display next task in a quest chain
 	$last_in_chain = $_POST['last_in_chain']; // Boolean which determines if the current quest is last in chain
+	$final_chain_message = $_POST['final_chain_message'];
 	$number_of_stages = $_POST['number_of_stages']; // Integer with number of stages in the task
 	
 	$go_table_name = "{$wpdb->prefix}go";
 	$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = $post_id AND uid = $user_id" );
 	
 	$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
-	$mastery_active = ! $custom_fields['go_mta_task_mastery'][0]; // whether or not the mastery stage is active
-	$repeat = $custom_fields['go_mta_task_repeat'][0]; // Whether or not you can repeat the task
+	$mastery_active = ( ! empty( $custom_fields['go_mta_task_mastery'][0] ) ? ! $custom_fields['go_mta_task_mastery'][0] : true ); // whether or not the mastery stage is active
+	$repeat = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : '' ); // Whether or not you can repeat the task
 
-	$e_admin_lock = unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] );
-	$e_is_locked = $e_admin_lock[0];
-	if ( $e_is_locked === 'true' ) {
-		$e_pass_lock = $e_admin_lock[1];
+	$e_admin_lock = ( ! empty( $custom_fields['go_mta_encounter_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] ) : null );
+	if ( ! empty( $e_admin_lock ) ) {
+		$e_is_locked = $e_admin_lock[0];
+		if ( $e_is_locked === 'true' ) {
+			$e_pass_lock = $e_admin_lock[1];
+		}
 	}
-	$a_admin_lock = unserialize( $custom_fields['go_mta_accept_admin_lock'][0] );
-	$a_is_locked = $a_admin_lock[0];
-	if ( $a_is_locked === 'true' ) {
-		$a_pass_lock = $a_admin_lock[1];
+	$a_admin_lock = ( ! empty( $custom_fields['go_mta_accept_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_accept_admin_lock'][0] ) : null );
+	if ( ! empty( $a_admin_lock ) ) {
+		$a_is_locked = $a_admin_lock[0];
+		if ( $a_is_locked === 'true' ) {
+			$a_pass_lock = $a_admin_lock[1];
+		}
 	}
-	$c_admin_lock = unserialize( $custom_fields['go_mta_completion_admin_lock'][0] );
-	$c_is_locked = $c_admin_lock[0];
-	if ( $c_is_locked === 'true' ) {
-		$c_pass_lock = $c_admin_lock[1];
+	$c_admin_lock = ( ! empty( $custom_fields['go_mta_completion_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_completion_admin_lock'][0] ) : null );
+	if ( ! empty( $c_admin_lock ) ) {
+		$c_is_locked = $c_admin_lock[0];
+		if ( $c_is_locked === 'true' ) {
+			$c_pass_lock = $c_admin_lock[1];
+		}
 	}
-	$m_admin_lock = unserialize( $custom_fields['go_mta_mastery_admin_lock'][0] );
-	$m_is_locked = $m_admin_lock[0];
-	if ( $m_is_locked === 'true' ) {
-		$m_pass_lock = $m_admin_lock[1];
+	$m_admin_lock = ( ! empty( $custom_fields['go_mta_mastery_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_mastery_admin_lock'][0] ) : null );
+	if ( ! empty( $m_admin_lock ) ) {
+		$m_is_locked = $m_admin_lock[0];
+		if ( $m_is_locked === 'true' ) {
+			$m_pass_lock = $m_admin_lock[1];
+		}
 	}
-	$r_admin_lock = unserialize( $custom_fields['go_mta_repeat_admin_lock'][0] );
-	$r_is_locked = $r_admin_lock[0];
-	if ( $r_is_locked === 'true' ) {
-		$r_pass_lock = $r_admin_lock[1];
+	$r_admin_lock = ( ! empty( $custom_fields['go_mta_repeat_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_repeat_admin_lock'][0] ) : null );
+	if ( ! empty( $r_admin_lock ) ) {
+		$r_is_locked = $r_admin_lock[0];
+		if ( $r_is_locked === 'true' ) {
+			$r_pass_lock = $r_admin_lock[1];
+		}
 	}
 
 	$e_url_is_locked = ( ! empty( $custom_fields['go_mta_encounter_url_key'][0] ) ? true : false );
@@ -1781,9 +1813,9 @@ function task_change_stage() {
 		}
 	}
 
-	$test_e_active = $custom_fields['go_mta_test_encounter_lock'][0];
-	$test_a_active = $custom_fields['go_mta_test_accept_lock'][0];
-	$test_c_active = $custom_fields['go_mta_test_completion_lock'][0];
+	$test_e_active = ( ! empty( $custom_fields['go_mta_test_encounter_lock'][0] ) ? $custom_fields['go_mta_test_encounter_lock'][0] : false );
+	$test_a_active = ( ! empty( $custom_fields['go_mta_test_accept_lock'][0] ) ? $custom_fields['go_mta_test_accept_lock'][0] : false );
+	$test_c_active = ( ! empty( $custom_fields['go_mta_test_completion_lock'][0] ) ? $custom_fields['go_mta_test_completion_lock'][0] : false );
 
 	if ( $test_e_active ) {
 		$test_e_array = go_get_test_meta_content( $custom_fields, 'encounter' );
@@ -1794,7 +1826,7 @@ function task_change_stage() {
 		$test_e_all_answers = $test_e_array[2][2];
 		$test_e_all_keys = $test_e_array[2][3];
 	}
-	$encounter_upload = $custom_fields['go_mta_encounter_upload'][0];
+	$encounter_upload = ( ! empty( $custom_fields['go_mta_encounter_upload'][0] ) ? $custom_fields['go_mta_encounter_upload'][0] : false );
 
 	if ( $test_a_active ) {
 		$test_a_array = go_get_test_meta_content( $custom_fields, 'accept' );
@@ -1805,7 +1837,7 @@ function task_change_stage() {
 		$test_a_all_answers = $test_a_array[2][2];
 		$test_a_all_keys = $test_a_array[2][3];
 	}
-	$accept_upload = $custom_fields['go_mta_accept_upload'][0];
+	$accept_upload = ( ! empty( $custom_fields['go_mta_accept_upload'][0] ) ? $custom_fields['go_mta_accept_upload'][0] : false );
 
 	if ( $test_c_active ) {
 		$test_c_array = go_get_test_meta_content( $custom_fields, 'completion' );
@@ -1816,11 +1848,11 @@ function task_change_stage() {
 		$test_c_all_answers = $test_c_array[2][2];
 		$test_c_all_keys = $test_c_array[2][3];
 	}
-	$completion_message = $custom_fields['go_mta_complete_message'][0]; // Completion Message
-	$completion_upload = $custom_fields['go_mta_completion_upload'][0];
+	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+	$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
 	if ( $mastery_active ) {
-		$test_m_active = $custom_fields['go_mta_test_mastery_lock'][0];
-		$bonus_loot = unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] );
+		$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
+		$bonus_loot = ( ! empty( $custom_fields['go_mta_mastery_bonus_loot'][0] ) ? unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] ) : null );
 
 		if ( $test_m_active ) {
 			$test_m_array = go_get_test_meta_content( $custom_fields, 'mastery' );
@@ -1831,37 +1863,33 @@ function task_change_stage() {
 			$test_m_all_answers = $test_m_array[2][2];
 			$test_m_all_keys = $test_m_array[2][3];
 		}
-		$mastery_message = $custom_fields['go_mta_mastery_message'][0];
-		$mastery_upload = $custom_fields['go_mta_mastery_upload'][0];
+		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
+		$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
 
 		if ( $repeat == 'on' ) {
-			if ( $custom_fields['go_mta_repeat_amount'][0] ) {
-				$repeat_amount = $custom_fields['go_mta_repeat_amount'][0];
-			} else {
-				$repeat_amount = 0;
-			}
-			$repeat_message = $custom_fields['go_mta_repeat_message'][0];
-			$repeat_upload = $custom_fields['go_mta_repeat_upload'][0];
+			$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
+			$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+			$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
 		}
 	}
 
-	$description = $custom_fields['go_mta_quick_desc'][0];
+	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
 	
 	// Array of badge switch and badges associated with a stage
-	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true ) and the badge IDs are 263 and 276
+	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
 	$stage_badges = array(
-		unserialize( $custom_fields['go_mta_stage_one_badge'][0] ),
-		unserialize( $custom_fields['go_mta_stage_two_badge'][0] ),
-		unserialize( $custom_fields['go_mta_stage_three_badge'][0] ),
-		unserialize( $custom_fields['go_mta_stage_four_badge'][0] ),
-		unserialize( $custom_fields['go_mta_stage_five_badge'][0] ),
+		( ! empty( $custom_fields['go_mta_stage_one_badge'][0] ) ? unserialize( $custom_fields['go_mta_stage_one_badge'][0] ) : null ),
+		( ! empty( $custom_fields['go_mta_stage_two_badge'][0] ) ? unserialize( $custom_fields['go_mta_stage_two_badge'][0] ) : null ),
+		( ! empty( $custom_fields['go_mta_stage_three_badge'][0] ) ? unserialize( $custom_fields['go_mta_stage_three_badge'][0] ) : null ),
+		( ! empty( $custom_fields['go_mta_stage_four_badge'][0] ) ? unserialize( $custom_fields['go_mta_stage_four_badge'][0] ) : null ),
+		( ! empty( $custom_fields['go_mta_stage_five_badge'][0] ) ? unserialize( $custom_fields['go_mta_stage_five_badge'][0] ) : null ),
 	);
 
 	// Stage Stuff
 	$content_post = get_post( $post_id );
 	$task_content = $content_post->post_content;
 	if ( $task_content == '' ) {
-		$accept_message = $custom_fields['go_mta_accept_message'][0]; // Completion Message
+		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
 	} else {
 		$accept_message = $content_post->post_content;
 	}
@@ -1918,11 +1946,11 @@ function task_change_stage() {
 	
 	$db_status = (int) $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE uid = $user_id AND post_id = $post_id" );
 	
-	$future_switches = unserialize( $custom_fields['go_mta_time_filters'][0] ); //determine which future date modifier is on, if any
-	$date_picker = ( ( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
+	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); //determine which future date modifier is on, if any
+	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
 		
 	// If there are dates in the date picker
-	if ( ! empty( $date_picker ) && $future_switches['calendar'] == 'on' ) {
+	if ( ! empty( $date_picker ) && ( ! empty( $future_switches ) && $future_switches['calendar'] == 'on' ) ) {
 		
 		$dates = $date_picker['date'];
 		$times = $date_picker['time'];
@@ -1964,7 +1992,7 @@ function task_change_stage() {
 		$date_update_percent = 1;	
 	}
 	
-	$future_modifier = unserialize( $custom_fields['go_mta_time_modifier'][0] );
+	$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : null );
 	if ( ! empty( $future_modifier ) && $future_switches['future'] == 'on'  && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
 		$user_timers = get_user_meta( $user_id, 'go_timers' );
 		$accept_timestamp_db = strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" ) ) );
@@ -1995,8 +2023,17 @@ function task_change_stage() {
 		$future_update_percent = 1;	
 	}
 
-	$complete_stage = ( ( $undo) ? $status - 1 : $status );
-	$update_percent = ( ( $future_switches['calendar'] == 'on' ) ? $date_update_percent : ( ( $future_switches['future'] == 'on' && ( $complete_stage == 3 && $db_status < 4 ) ) ? $future_update_percent : 1 ) );
+	$complete_stage = ( $undo ? $status - 1 : $status );
+	if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) {
+		$update_percent = $date_update_percent;
+	} elseif ( ! empty( $future_switches['future'] )
+		&& $future_switches['future'] == 'on'
+		&& $complete_stage == 3 && $db_status < 4 )
+	{
+		$update_percent = $future_update_percent;
+	} else {
+		$update_percent = 1;
+	}
 	
 	// if the button pressed IS the repeat button...
 	if ( $repeat_button == 'on' ) {
@@ -2006,17 +2043,17 @@ function task_change_stage() {
 				-floor( ( $update_percent * $points_array[ $status ] ) ), 
 				-floor( ( $update_percent * $currency_array[ $status ] ) ), 
 				-floor( ( $update_percent * $bonus_currency_array[ $status ] ) ), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
-				$bonus_loot = unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] );
 				if ( $bonus_loot[0] ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
 							if ( $on === 'on' ) {
-								$custom_fields = get_post_custom( $store_item );
-								$currency = ( $bonus_loot_currency[0] < 0 ) ? $bonus_loot_currency[0] : 0;
-								$points = ( $bonus_loot_currency[1] < 0 ) ? $bonus_loot_currency[1] : 0;
-								$bonus_currency = ( $bonus_loot_currency[2] < 0 ) ? $bonus_loot_currency[2] : 0;
-								$penalty = ( $bonus_loot_currency[3] > 0 ) ? $bonus_loot_currency[3] : 0;
-								$minutes = ( $bonus_loot_currency[4] < 0 ) ? $bonus_loot_currency[4] : 0;
+								$store_custom_fields = get_post_custom( $store_item );
+								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
+								$currency = ( $store_cost[0] < 0 ) ? $store_cost[0] : 0;
+								$points = ( $store_cost[1] < 0 ) ? $store_cost[1] : 0;
+								$bonus_currency = ( $store_cost[2] < 0 ) ? $store_cost[2] : 0;
+								$penalty = ( $store_cost[3] > 0 ) ? $store_cost[3] : 0;
+								$minutes = ( $store_cost[4] < 0 ) ? $store_cost[4] : 0;
 								$user_id = get_current_user_id();
 								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
 								if ( $received) {
@@ -2032,18 +2069,17 @@ function task_change_stage() {
 				-floor( ( $update_percent * $points_array[ $status - 1] ) ), 
 				-floor( ( $update_percent * $currency_array[ $status - 1] ) ), 
 				-floor( ( $update_percent * $bonus_currency_array[ $status - 1] ) ), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
-				$bonus_loot = unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] );
 				if ( $bonus_loot[0] ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on) {
 							if ( $on === 'on' ) {
-								$custom_fields = get_post_custom( $store_item);
-								$bonus_loot_currency = unserialize( $custom_fields['go_mta_store_cost'][0] );
-								$currency = ( $bonus_loot_currency[0] < 0 ) ? $bonus_loot_currency[0] : 0;
-								$points = ( $bonus_loot_currency[1] < 0) ? $bonus_loot_currency[1] : 0;
-								$bonus_currency = ( $bonus_loot_currency[2] < 0) ? $bonus_loot_currency[2] : 0;
-								$penalty = ( $bonus_loot_currency[3] > 0) ? $bonus_loot_currency[3] : 0;
-								$minutes = ( $bonus_loot_currency[4] < 0) ? $bonus_loot_currency[4] : 0;
+								$store_custom_fields = get_post_custom( $store_item );
+								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
+								$currency = ( $store_cost[0] < 0 ) ? $store_cost[0] : 0;
+								$points = ( $store_cost[1] < 0) ? $store_cost[1] : 0;
+								$bonus_currency = ( $store_cost[2] < 0) ? $store_cost[2] : 0;
+								$penalty = ( $store_cost[3] > 0) ? $store_cost[3] : 0;
+								$minutes = ( $store_cost[4] < 0) ? $store_cost[4] : 0;
 								$loot_reason = ( $bonus_loot[2][ $store_item] * 10 > 999) ? 'quest' : 'bonus';
 								$user_id = get_current_user_id();
 								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
@@ -2051,10 +2087,10 @@ function task_change_stage() {
 									go_update_totals ( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, $loot_reason, true, false );
 								}
 								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
-								}
 							}
 						}
 					}
+				}
 				if ( $stage_badges[ $status ][0] == 'true' ) {
 					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 						go_remove_badge( $user_id, $badge_id );
@@ -2228,7 +2264,7 @@ function task_change_stage() {
 				if ( $next_post_id_in_chain != 0 && $last_in_chain !== 'true' ) {
 					echo '<div class="go_chain_message">Next '.strtolower( go_return_options( 'go_tasks_name' ) ).' in '.$chain_name.': <a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a></div>';
 				} else {
-					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+					echo '<div class="go_chain_message">'.$final_chain_message.'</div>';	
 				}
 				echo "</div>";
 			} else {
@@ -2250,7 +2286,7 @@ function task_change_stage() {
 				if ( $next_post_id_in_chain != 0 && $last_in_chain !== 'true' ) {
 					echo '<div class="go_chain_message">Next '.strtolower( go_return_options( 'go_tasks_name' ) ).' in '.$chain_name.': <a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a></div>';
 				} else {
-					echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+					echo '<div class="go_chain_message">'.$final_chain_message.'</div>';	
 				}
 				echo "</div>";
 			}
@@ -2358,13 +2394,13 @@ function task_change_stage() {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
 							if ( $on === 'on' ) {
 								$random_number = rand( 1, 999 );
-								$custom_fields = get_post_custom( $store_item );
-								$bonus_loot_currency = unserialize( $custom_fields['go_mta_store_cost'][0] );
-								$currency = ( $bonus_loot_currency[0] < 0 ) ? -$bonus_loot_currency[0] : 0;
-								$points = ( $bonus_loot_currency[1] < 0 ) ? -$bonus_loot_currency[1] : 0;
-								$bonus_currency = ( $bonus_loot_currency[2] < 0 ) ? -$bonus_loot_currency[2] : 0;
-								$penalty = ( $bonus_loot_currency[3] > 0 ) ? -$bonus_loot_currency[3] : 0;
-								$minutes = ( $bonus_loot_currency[4] < 0 ) ? -$bonus_loot_currency[4] : 0;
+								$store_custom_fields = get_post_custom( $store_item );
+								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
+								$currency = ( $store_cost[0] < 0 ) ? -$store_cost[0] : 0;
+								$points = ( $store_cost[1] < 0 ) ? -$store_cost[1] : 0;
+								$bonus_currency = ( $store_cost[2] < 0 ) ? -$store_cost[2] : 0;
+								$penalty = ( $store_cost[3] > 0 ) ? -$store_cost[3] : 0;
+								$minutes = ( $store_cost[4] < 0 ) ? -$store_cost[4] : 0;
 								$loot_reason = ( $bonus_loot[2][ $store_item ] * 10 > 999 ) ? 'Quest' : 'Bonus';
 								if ( $random_number < $bonus_loot[2][ $store_item ] * 10 ) {
 										if ( ! in_array( $post_id, $mastered ) && $loot_reason == 'Bonus' ) {
@@ -2391,7 +2427,7 @@ function task_change_stage() {
 			if ( $next_post_id_in_chain != 0 && $last_in_chain !== 'true' ) {
 				echo '<div class="go_chain_message"><p>Next '.strtolower( go_return_options( 'go_tasks_name' ) ).' in '.$chain_name.': <a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a></div>';
 			} else {
-				echo '<div class="go_chain_message">'.$custom_fields['go_mta_final_chain_message'][0].'</div>';	
+				echo '<div class="go_chain_message">'.$final_chain_message.'</div>';
 			}
 			echo '</div>';
 	}
@@ -2416,7 +2452,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 			$c_array = $currency;
 			$bc_array = $bonus_currency;
 		}
-		$custom_fields = get_post_custom( $post_id );
+		$custom_fields = get_post_custom();
 		for ( $i = 0; $i < $number_of_stages; $i++ ) {
 			if ( $future ) {
 				if ( $i == 2 ) {
@@ -2459,7 +2495,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 				$bonus_loot = unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] );
 			}
 		}
-		if ( $bonus_loot[0] ) {
+		if ( ! empty( $bonus_loot ) && $bonus_loot[0] ) {
 			$bonus_loot_display = true;
 					if ( ! empty( $bonus_loot[1] ) ) {
 						$quest_items_array = array();
@@ -2553,7 +2589,7 @@ function go_task_timer( $task_id, $user_id, $future_modifier ) {
 				
 					clearInterval(timer);
 					
-					if ( sounded === false && !jQuery( '#go_task_timer' ).hasClass( 'sounded' ) ) {
+					if ( sounded === false && ! jQuery( '#go_task_timer' ).hasClass( 'sounded' ) ) {
 						go_sounds( 'timer' );
 						jQuery( '#go_task_timer' ).addClass( 'sounded' );
 						<?php
@@ -2586,7 +2622,7 @@ function go_task_timer( $task_id, $user_id, $future_modifier ) {
 				jQuery( '#go_future_notification' ).show();
 			}
 			
-			go_task_timer ( <?php echo $countdown; ?>);
+			go_task_timer( <?php echo $countdown; ?>);
 		});
 	</script>
 	<?php

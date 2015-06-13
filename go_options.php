@@ -26,10 +26,10 @@ if ( is_admin() ) {
 	
 	function go_options_help( $video_url = null, $explanation = null, $help = true ) {
 		?>
-    	<a class='go_options_help_link <?php if ( !$help ) { echo 'go_options_no_help'; } ?>' href='javascript:;' onclick='go_display_help_video( "<?php echo $video_url; ?>" )' tooltip='<?php echo $explanation; ?>'>
-			<div class='go_options_help_wrap <?php if ( !$help ) { echo 'go_options_no_help'; } ?>'>
-                <div class='go_options_help_text_wrap <?php if ( !$help ) { echo 'go_options_no_help'; } ?>'>
-                    <span class='go_options_help <?php if ( !$help ) { echo 'go_options_no_help'; } ?>' href='javascript:;' onclick=''>?</span>
+    	<a class='go_options_help_link <?php if ( ! $help ) { echo 'go_options_no_help'; } ?>' href='javascript:;' onclick='go_display_help_video( "<?php echo $video_url; ?>" )' tooltip='<?php echo $explanation; ?>'>
+			<div class='go_options_help_wrap <?php if ( ! $help ) { echo 'go_options_no_help'; } ?>'>
+                <div class='go_options_help_text_wrap <?php if ( ! $help ) { echo 'go_options_no_help'; } ?>'>
+                    <span class='go_options_help <?php if ( ! $help ) { echo 'go_options_no_help'; } ?>' href='javascript:;' onclick=''>?</span>
                 </div>
              </div>
          </a>
@@ -62,7 +62,7 @@ if ( is_admin() ) {
 	
 	function game_on_options() {
 		wp_enqueue_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/go_options.js' );
-		if ( $_GET['settings-updated'] == true || $_GET['settings-updated'] == 'true' ) {
+		if ( ! empty( $_GET['settings-updated'] ) && true === $_GET['settings-updated'] || ! empty( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
 			go_update_globals();
 			echo "
 			<script type='text/javascript'>
@@ -798,7 +798,7 @@ function go_update_globals() {
 		$string .= 'define( "'.$value.'",\''.$content.'\', TRUE );';
 	}
 
-	file_put_contents ( $file_name, "<?php {$string} ?>" );
+	file_put_contents( $file_name, "<?php {$string} ?>" );
 }
 
 ?>

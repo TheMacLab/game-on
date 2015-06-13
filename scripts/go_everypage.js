@@ -75,7 +75,7 @@ function go_display_help_video( url ) {
 				} 
 				if (e.keyCode == 32) {
 					e.preventDefault();
-					if( !myplayer.paused() ) {
+					if( ! myplayer.paused() ) {
 						myplayer.pause();
 					} else {
 						myplayer.play();	

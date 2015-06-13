@@ -12,6 +12,10 @@ function go_file_input( $atts, $content = null ) {
 		), 
 		$atts
 	);
+	$is_uploaded = (int) $atts['is_uploaded'];
+	$status = (int) $atts['status'];
+	$user_id = (int) $atts['user_id'];
+	$post_id = (int) $atts['post_id'];
 	global $wpdb;
 	global $post;
 	$table_go = "{$wpdb->prefix}go";
@@ -66,11 +70,15 @@ function go_file_input( $atts, $content = null ) {
 		$mail->Body = "{$user_email}\n\nUser comments: \n\t{$_POST['go_attachment_com']}";
 		$mail->WordWrap = 50;
 
-		// This loop will upload all the files you have attached to your email. 
-		for ( $i=0; $i < count( $_FILES['go_attachment'] ); $i++ ) { 
-			$name=$_FILES['go_attachment']['name'][ $i ];
-			$path=$_FILES['go_attachment']['tmp_name'][ $i ];
-			//And attach it using attachment method of PHPmailer.
+		// This loop will upload all the files you have attached to your email.
+		for ( $i = 0; $i < count( $_FILES['go_attachment'] ); $i++ ) { 
+			if ( empty( $_FILES['go_attachment']['name'][ $i ] ) || empty( $_FILES['go_attachment']['tmp_name'][ $i ] ) ) {
+				continue;
+			}
+			$name = $_FILES['go_attachment']['name'][ $i ];
+			$path = $_FILES['go_attachment']['tmp_name'][ $i ];
+
+			// And attach it using attachment method of PHPmailer.
 			$mail->AddAttachment( $path, $name ); 
 		}
 		if( ! $mail->Send() ) {

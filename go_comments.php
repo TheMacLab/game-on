@@ -24,10 +24,10 @@ function go_display_comment_author() {
 	} else {
 		$points = get_user_meta( $author_id, 'go_rank', true );
 		$focus = get_user_meta( $author_id, 'go_focus', true );
-		if ( !empty( $focus ) ) {
+		if ( ! empty( $focus ) ) {
 			if ( is_array( $focus ) ) {
 				for ( $i = 0; $i < count( $focus ); $i++ ) {
-					if ( !empty( $focus[ $i ] ) ) {
+					if ( ! empty( $focus[ $i ] ) ) {
 						$careers .= $focus[ $i ];
 						if ( ( $i + 1 ) < count( $focus ) ) {
 							$careers .= '/';
@@ -41,14 +41,14 @@ function go_display_comment_author() {
 				}
 			}
 		}
-		if ( !empty( $careers ) ) {
-			if ( !empty( $points ) ) {
+		if ( ! empty( $careers ) ) {
+			if ( ! empty( $points ) ) {
 				return $author.'<br/>'.'('.$careers.', '.$points[0][0].')';
 			} else {
 				return $author;
 			}
 		} else {
-			if ( !empty( $points ) ) {
+			if ( ! empty( $points ) ) {
 				return $author.'<br/>'.'('.$points[0][0].')';
 			} else {
 				return $author;
