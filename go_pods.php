@@ -1,8 +1,10 @@
 <?php
 add_action( 'admin_menu', 'go_pod_submenu' );
+
 function go_pod_submenu() {
 	add_submenu_page( 'game-on-options.php', 'Pods', 'Pods', 'manage_options', 'go_pods', 'go_task_pods' );
 }
+
 function go_task_pods() {
 	if ( $_GET[ 'settings-updated' ] == true || $_GET[ 'settings-updated' ] == 'true' ) {
 		 echo "
@@ -31,7 +33,7 @@ function go_task_pods() {
 	);
 	?>
     <div class="wrap go_wrap">
-    <h2>Pods</h2>
+    <h2>Pods</h2><?php  go_options_help( 'http://maclab.guhsd.net/go/video/pods.mp4', 'Group ' . go_return_options( 'go_tasks_plural_name' ) . ' into pods where user must complete a designated amount of ' . go_return_options( 'go_tasks_plural_name' ) . ' to continue.', true ); ?>
     <form method="post" action="options.php" id="go_pod_form">    
             <ul>
             <?php
@@ -82,39 +84,4 @@ function go_task_pods() {
 	</div>
     <?php
 }
-
-/*function go_update_pods () {
-	$go_pod_link = $_POST[ 'go_pod_link' ];
-	$go_pod_stage_select = $_POST[ 'go_pod_stage_select' ];
-	$go_pod_number = $_POST[ 'go_pod_number' ];
-	$go_next_pod_select = $_POST[ 'go_next_pod_select' ];
-	$pods_array = array(
-		'pod_link'   => $go_pod_link,
-		'pod_stage'  => $go_pod_stage_select,
-		'pod-number' => $go_pod_number,
-		'next_pod'   => $go_next_pod_select
-	);
-	update_option( 'go_task_pod_globals', $pods_array );
-	die();
-}*/
-
-/*add_action('cmb_validate_go_task_pod', 'go_validate_task_pod');
-function go_validate_task_pod () {
-	$task_id = get_the_id();
-	$stage_required = $_POST['go_pod_stage_select'];
-	$tasks_required = $_POST['go_pod_number'];
-	$next_pod = $_POST['go_next_pod_select'];
-	$pod_link = $_POST['go_pod_link'];
-	$task_pod_info = array(
-		'stage_required' => $stage_required, 
-		'tasks_required' => $tasks_required, 
-		'next_pod' => $next_pod, 
-		'pod_link' => $pod_link
-	);
-	$task_pod_globals = array();
-	$task_pod_globals = get_option('go_task_pod_globals');
-	$task_pod_globals[ $task_id ] = $task_pod_info;
-	update_option('go_task_pod_globals', $task_pod_globals);
-	return $task_pod_info;
-}*/
 ?>
