@@ -538,7 +538,6 @@ function go_task_pod_tasks( $atts ) {
 	$custom = get_post_custom( $task->ID );
 	$pods_options = get_option( 'go_task_pod_globals' );
 	$name_entered = $atts[ 'pod_name' ];
-	strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $name_entered ) ) );
 	$slug = strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $name_entered ) ) );
 	$stage_required = $pods_options[ $slug ][ 'go_pod_stage_select' ];
 	foreach ( $posts as $task ) {	
@@ -560,7 +559,7 @@ function go_task_pod_tasks( $atts ) {
 	}
 	$tasks_required = $pods_options[ $slug ]['go_pod_number'];
 	$next_pod = $pods_options[ $slug ]['go_next_pod_select'];
-	$next_pod_slug = strtolower( $next_pod );
+	$next_pod_slug = strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $next_pod ) ) );
 	$pod_link = $pods_options[ $next_pod_slug ]['go_pod_link'];
 	$tasks_plural_name = go_return_options('go_tasks_plural_name');
 	if ( $stage_required === 'third_stage' ) {
