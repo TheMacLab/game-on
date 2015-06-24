@@ -560,7 +560,8 @@ function go_task_pod_tasks( $atts ) {
 	}
 	$tasks_required = $pods_options[ $slug ]['go_pod_number'];
 	$next_pod = $pods_options[ $slug ]['go_next_pod_select'];
-	$pod_link = $pods_options[ $next_pod ]['go_pod_link'];
+	$next_pod_slug = strtolower( $next_pod );
+	$pod_link = $pods_options[ $next_pod_slug ]['go_pod_link'];
 	$tasks_plural_name = go_return_options('go_tasks_plural_name');
 	if ( $stage_required === 'third_stage' ) {
 		$stage = go_return_options('go_third_stage_name');

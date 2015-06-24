@@ -204,6 +204,15 @@ function go_admin_bar(){
 				'href' => get_admin_url().'plugins.php',
 				'parent' => 'appearance'
 			));
+			$wp_admin_bar->add_node(
+				array(
+					'id' => 'go_nav_pods',
+					'title' => get_option('go_tasks_name') . ' Pods',
+					'href' => esc_url( get_admin_url() ).'admin.php?page=go_pods',
+					'parent' => 'go_site_name_menu',
+					'meta' => array( 'class' => 'go_site_name_menu_item' )
+				) 
+			);
 		}
 		echo $ranks_output;
 	}
