@@ -45,9 +45,9 @@ function go_task_pods() {
                 global $post;
                 $terms = wp_get_post_terms( $post->ID, 'task_pods' );
                 for ( $i = 0; $i <= count( $terms ); $i++ ) {
-					
                     $link = get_category_link( $pod );
 					$slug = $pod->slug;
+					$total = $pod->count;
                     echo "<b><a href='{$link}' target='_blank'>".$pod->name."</a></b>";
                     ?>
 					<br/><input type='text' id='go_pod_link[ <?php echo $pod->slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_link]' value='<?php echo ( ! empty( $pods_options[ $slug ][ 'go_pod_link' ] )  ? $pods_options[ $slug ][ 'go_pod_link' ] : '' ); ?>' placeholder='Link'/><br/>
@@ -57,7 +57,7 @@ function go_task_pods() {
 						<option <?php echo ( ( $pods_options[ $slug ][ 'go_pod_stage_select' ] == 'fourth_stage' ) ? 'selected' : '' ); ?> value='fourth_stage'><?php echo go_return_options( 'go_fourth_stage_name' ); ?></option>
 					</select> 
                     of 
-                    <input type='number' id='go_pod_number[ <?php echo $pod->slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_number]' value='<?php echo ( ! empty( $pods_options[ $slug ][ 'go_pod_number' ] )  ? $pods_options[ $slug ][ 'go_pod_number' ] : 1 ); ?>' style='width : 45px;'/> <?php echo go_return_options( 'go_tasks_plural_name' ); ?> to continue to 
+                    <input type='number' id='go_pod_number[ <?php echo $pod->slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_number]' value='<?php echo ( ! empty( $pods_options[ $slug ][ 'go_pod_number' ] )  ? $pods_options[ $slug ][ 'go_pod_number' ] : 1 ); ?>' style='width : 45px;' max='<?php echo $total ?>'/> <?php echo go_return_options( 'go_tasks_plural_name' ); ?> to continue to 
                     <select id='go_next_pod_select[ <?php echo $pod->slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_next_pod_select]'>
                         <option>...</option>
                         <?php
