@@ -201,7 +201,9 @@ function go_user_redirect ( $redirect_to, $request, $user ) {
 
 function go_admin_head_notification () {
 	if ( get_option( 'go_display_admin_explanation' ) && current_user_can( 'manage_options' ) ) {
-		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On.<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
+		$plugin_data = get_plugin_data( __FILE__, false, false );
+		$plugin_version = $plugin_data['Version'];
+		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
 		echo "<script>
 			function go_remove_admin_notification () {
 				jQuery.ajax( {
