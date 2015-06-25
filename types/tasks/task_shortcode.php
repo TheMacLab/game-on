@@ -406,7 +406,8 @@ function go_task_shortcode( $atts, $content = null ) {
 			$chain_tax = get_the_terms( $id, 'task_chains' );
 			
 			//Grab chain object for this post
-			$chain = array_shift( array_values( $chain_tax ) );
+			$chain_tax_array = array_values( $chain_tax );
+			$chain = array_shift( $chain_tax_array );
 			//Grab all posts in the current chain in order
 			$posts_in_chain = get_posts( array(
 				'post_type' => 'tasks',

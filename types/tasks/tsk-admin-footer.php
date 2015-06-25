@@ -4,7 +4,9 @@ function task_edit_jquery() {
 	$id = get_the_id();
 	$task_chains = get_the_terms( $id, 'task_chains' );
 	if ( ! empty( $task_chains) ) {
-		$chain = array_shift( array_values( $task_chains ) )->name;
+		$task_chains_array = array_values( $task_chains );
+		$task_chains_fist = array_shift( $task_chains_array );
+		$chain = $task_chains_fist->name;
 	}
 	$custom = get_post_custom();
 	?>

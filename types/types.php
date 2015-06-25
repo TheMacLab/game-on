@@ -1384,7 +1384,8 @@ function go_pick_order_of_chain() {
 	global $wpdb;
 	$task_id = get_the_id();
 	if( get_the_terms( $task_id, 'task_chains' ) ) {
-		$chain = array_shift( array_values( get_the_terms( $task_id, 'task_chains' ) ) );
+		$chain_terms_array = array_values( get_the_terms( $task_id, 'task_chains' ) );
+		$chain = array_shift( $chain_terms_array );
 		$posts_in_chain = get_posts(array(
 			'post_type' => 'tasks',
 			'post_status' => 'publish',
