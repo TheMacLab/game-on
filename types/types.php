@@ -783,7 +783,7 @@ function go_validate_decay_table() {
 	$dates = ( ! empty( $_POST['go_mta_task_decay_calendar'] ) ? $_POST['go_mta_task_decay_calendar'] : null );
 	$times = ( ! empty( $_POST['go_mta_task_decay_calendar_time'] ) ? $_POST['go_mta_task_decay_calendar_time'] : null );
 	$percentages = ( ! empty( $_POST['go_mta_task_decay_percent'] ) ? $_POST['go_mta_task_decay_percent'] : null );
-	if ( ! empty( $dates ) && ! empty( $tiems ) && ! empty( $percentages ) ) {
+	if ( ! empty( $dates ) && ! empty( $times ) && ! empty( $percentages ) ) {
 		$dates_f = array_filter( $dates );
 		$times_f = array_filter( $times );
 		$percentages_f = array_filter( $percentages );
