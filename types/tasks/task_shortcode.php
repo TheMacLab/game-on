@@ -204,9 +204,11 @@ function go_task_shortcode( $atts, $content = null ) {
 			if ( ! empty ( $start_filter ) ) { 
 				$start_date = $start_filter_info[1];
 				$start_time = $start_filter_info[2];
-				$start_unix = strtotime( $start_time, strtotime( $start_date ) );
+
+				// storing the unix timestamp by concatenating start date and time strings
+				$start_unix = strtotime( $start_date . $start_time );
 				if ( $unix_now < $start_unix ) {
-					$time_string = date( 'g:i A', $start_unix )." on ".date( 'D, F j, Y', $start_unix );
+					$time_string = date( 'g:i A', $start_unix ) . " on " . date( 'D, F j, Y', $start_unix );
 					return "<span id='go_future_notification'>Will be available at {$time_string}.</span>";	
 				}
 			}
@@ -229,6 +231,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			$past_dates = array();
 			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/>";
 			foreach ( $dates as $key => $date ) {
+				
 				// If current date in loop is in the past, add its key to the array of date modifiers
 				$english_date = date( "D, F j, Y", strtotime( $date ) );
 				$correct_time = date( "g:i A", strtotime( $times[ $key ] ) );
@@ -268,7 +271,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : null );
 		$future_timer = false;
 		
-		if ( ! empty( $future_modifier ) && $future_switches['future'] == 'on' && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
+		if ( ! empty( $future_modifier ) && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
 			$user_timers = get_user_meta( $user_ID, 'go_timers' );
 			$accept_timestamp = ( ( ! empty( $user_timers[0][ $id ] ) ) ? $user_timers[0][ $id ] : strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'" ) ) ) );
 			$days = (int) $future_modifier['days'];
@@ -374,13 +377,13 @@ function go_task_shortcode( $atts, $content = null ) {
 				var timers = [];
 				jQuery( '.entry-title' ).after( jQuery( '.go_task_rewards' ) );
 				<?php 
-					if ( $update_percent != 1 && $future_switches['future'] == 'on' ) {
+					if ( $update_percent != 1 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
 					?>
 						jQuery( '#go_stage_3_points' ).addClass( 'go_updated' );
 						jQuery( '#go_stage_3_currency' ).addClass( 'go_updated' );
 					<?php 
 					} 
-					if ( $status >= 3 && $future_switches['future'] == 'on' ) {
+					if ( $status >= 3 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
 						?>
 							jQuery( '#go_future_notification' ).hide();
 						<?php	
@@ -394,7 +397,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			<div id="go_description"><div class="go_stage_message"><?php echo  do_shortcode( wpautop( $description ) ); ?></div></div>
 		<?php	
 		
-		if ( $future_switches['future'] == 'on' && $status < 2 ) {
+		if ( ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) && $status < 2 ) {
 			$update_percent = 1;	
 		}
 	
@@ -1994,7 +1997,7 @@ function task_change_stage() {
 	}
 	
 	$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : null );
-	if ( ! empty( $future_modifier ) && $future_switches['future'] == 'on'  && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
+	if ( ! empty( $future_modifier ) && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' )  && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
 		$user_timers = get_user_meta( $user_id, 'go_timers' );
 		$accept_timestamp_db = strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" ) ) );
 		$accept_timestamp = ( ( ! empty( $user_timers[0][ $post_id ] ) ) ? $user_timers[0][ $post_id ] : ( ! empty( $accept_timestamp_db ) ? $accept_timestamp_db : ( ( $status == 2 ) ? $unix_now : 0) ) );
@@ -2576,7 +2579,7 @@ function go_task_timer( $task_id, $user_id, $future_modifier ) {
 				clearInterval( timers[ i ] );
 			}
 			function go_task_timer() {
-				var sounded = <?php echo ( ( $sounded_array['future'][ $task_id ] ) ? 'true' : 'false' ); ?>;
+				var sounded = <?php echo ( ( ! empty( $sounded_array['future'][ $task_id ] ) && $sounded_array['future'][ $task_id ] ) ? 'true' : 'false' ); ?>;
 				countdown = countdown - 1;
 				jQuery( '#go_task_timer' ).empty();
 				jQuery( '.go_stage_message' ).last().parent().before( jQuery( '#go_task_timer' ) );
