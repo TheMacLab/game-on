@@ -94,7 +94,6 @@ function go_clipboard_add( id ) {
 		} else {
 			reason = jQuery( '#go_clipboard_reason' ).attr( 'placeholder' );	
 		}
-		// console.log(reason);
 		jQuery.ajax({
 			type: "post",
 			url: MyAjax.ajaxurl,
