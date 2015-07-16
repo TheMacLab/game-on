@@ -1773,31 +1773,25 @@ function go_clone_post() {
 
 	if ( ! empty( $clone_id ) ) {
 		$url = admin_url( "post.php?post={$clone_id}&action=edit" );
-		
+
 		// Add the original post's meta data to the clone.
 		foreach ( $post_custom as $key => $value ) {
-			for ( $i = 0; $i < count( $value ); $i++ ) {
-				$uns = unserialize( $value[ $i ] );
-				if ( false !== $uns ) {
-					add_post_meta( $clone_id, $key, $uns, true );
-				} else {
+			$uns = maybe_unserialize( $value[0] );
 
-					// Handles chain_position meta data for tasks only
-					if ( 'tasks' == $post_type ) {
-						if ( 'chain_position' === $key ) {
-							$terms_array = get_the_terms( $post_id, 'task_chains' );
-							if ( ! empty( $terms_array ) ) {
-								$chain = array_shift( $terms_array );
-								$end_pos = $chain->count + 1;
-								add_post_meta( $clone_id, $key, $end_pos, true );
-							}
-						} else {
-							add_post_meta( $clone_id, $key, $value[ $i ], true );
-						}
-					} else {
-						add_post_meta( $clone_id, $key, $value[ $i ], true );
+			// Handles chain_position meta data for tasks only
+			if ( 'tasks' == $post_type ) {
+				if ( 'chain_position' === $key ) {
+					$terms_array = get_the_terms( $post_id, 'task_chains' );
+					if ( ! empty( $terms_array ) ) {
+						$chain = array_shift( $terms_array );
+						$end_pos = $chain->count + 1;
+						add_post_meta( $clone_id, $key, $end_pos, true );
 					}
+				} else {
+					add_post_meta( $clone_id, $key, $uns, true );
 				}
+			} else {
+				add_post_meta( $clone_id, $key, $uns, true );
 			}
 		}
 		echo $url;
