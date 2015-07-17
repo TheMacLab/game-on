@@ -61,6 +61,7 @@ add_action( 'wp_ajax_go_clipboard_intable_messages','go_clipboard_intable_messag
 add_action( 'wp_ajax_go_user_option_add','go_user_option_add' );
 add_action( 'go_update_totals','go_update_totals' );
 add_action( 'init', 'go_jquery' );
+add_action( 'init', 'go_admin_menu_js' );
 add_action( 'wp', 'go_task_timer_headers' );
 add_action( 'admin_bar_init','go_global_defaults' );
 add_action( 'admin_bar_init','go_global_info' );

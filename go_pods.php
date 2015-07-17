@@ -2,6 +2,7 @@
 add_action( 'admin_menu', 'go_pod_submenu' );
 function go_pod_submenu() {
 	add_submenu_page( 'game-on-options.php', 'Pods', 'Pods', 'manage_options', 'go_pods', 'go_task_pods' );
+	wp_enqueue_script( 'go_pod_options_js' );
 }
 
 function go_task_pods() {
@@ -33,6 +34,7 @@ function go_task_pods() {
 				$link = get_category_link( $pod_category );
 				$slug = $pod_category->slug;
 				$total = $pod_category->count;
+				$name = $pod_category->name;
 				echo "<span class='go_pod_list_item' id='go_pod_span_{$slug}'><b><a href='{$link}' target='_blank'>".$pod_category->name."</a></b>";
 				?>
 				<br/>
@@ -59,6 +61,7 @@ function go_task_pods() {
 							?>
 							<option <?php echo ( ( ! empty( $pods_options[ $slug ]['go_next_pod_select'] ) && $pods_options[ $slug ]['go_next_pod_select'] == $pod_name ) ? 'selected' : '' ); ?> 
 								value='<?php echo $pod_name; ?>'
+								slug='<?php echo $pod->slug ?>'
 							>
 								<?php echo $pod_name; ?>
 							</option>
@@ -67,6 +70,10 @@ function go_task_pods() {
 					}
 					?>
 				</select>
+				<input type='hidden' class='go_pod_previous_pod_slug' id='go_previous_pod[ <?php echo $slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_previous_pod]' 
+					value='<?php echo ( isset( $pod_options[ $slug ]['go_previous_pod'] ) ? $pod_options[ $slug ]['go_previous_pod'] : '' ); ?>'/>
+				<input type='hidden' class='go_pod_current_pod_name' id='go_pod_name[ <?php echo $slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_name]' value='<?php echo $name ?>'/>
+				<input type='hidden' class='go_pod_current_pod_slug' value='<?php echo $slug ?>'/>
 				</span>
 				</br>
 				</br>

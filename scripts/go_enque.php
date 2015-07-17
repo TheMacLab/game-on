@@ -47,4 +47,8 @@ function go_presets_js() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'go_presets', plugin_dir_url( __FILE__ ).'go_presets.js' );
 }
+
+function go_admin_menu_js() {
+	wp_register_script( 'go_pod_options_js', plugins_url( '/scripts/go_pod_options.js', dirname( __FILE__ ) ), array( 'jquery' ), false, true );
+}
 ?>

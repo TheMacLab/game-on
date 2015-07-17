@@ -515,7 +515,7 @@ add_shortcode( 'go_task_pod', 'go_task_pod_tasks' );
 function go_task_pod_tasks( $atts ) {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
-	$posts = get_posts( 
+	$current_tasks = get_posts( 
 		array(
 			'posts_per_page' => -1,
 			'post_type' => 'tasks',
@@ -531,12 +531,12 @@ function go_task_pod_tasks( $atts ) {
 		)
 	);
 	$pod_task_ids = array();
-	foreach ( $posts as $task ) {
-		$pod_task_ids[] = $task->ID;
+	foreach ( $current_tasks as $curr_task_obj ) {
+		$pod_task_ids[] = $curr_task_obj->ID;
 	}
 	$user_id = get_current_user_id();
-	$pod_task_ids = implode( ', ', $pod_task_ids );
-	$task_statuses = $wpdb->get_results("SELECT post_id, status FROM {$go_table_name} WHERE uid={$user_id} AND post_id IN ({$pod_task_ids})");
+	$pod_task_id_str = implode( ', ', $pod_task_ids );
+	$task_statuses = $wpdb->get_results("SELECT post_id, status FROM {$go_table_name} WHERE uid={$user_id} AND post_id IN ({$pod_task_id_str})");
 	$pod_task_statuses = array();
 
 	foreach ( $task_statuses as $task_status ) {
@@ -544,40 +544,89 @@ function go_task_pod_tasks( $atts ) {
 	}
 	$string = '';
 	$tasks_finished = 0;
-	$custom = get_post_custom( $task->ID );
+	
 	$pods_options = get_option( 'go_task_pod_globals' );
 	$name_entered = $atts['pod_name'];
 	$slug = strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $name_entered ) ) );
 	$stage_required = $pods_options[ $slug ]['go_pod_stage_select'];
-	foreach ( $posts as $task ) {	
+	foreach ( $current_tasks as $curr_task ) {	
 		if ( 'third_stage' == $stage_required ) {
-			if ( $pod_task_statuses[ $task->ID ] >= 3 ) {
+			if ( isset( $pod_task_statuses[ $curr_task->ID ] ) && $pod_task_statuses[ $curr_task->ID ] >= 3 ) {
 				$tasks_finished++;
-				$string .= '<div class="pod_finished" name="pod_div" value=""><h2><a href="'.get_permalink( $task->ID ).'" class="pod_link">'.get_the_title( $task->ID ).'</a></h2></div><br/>';
-			} else if ( $pod_task_statuses[ $task->ID ] < 3 ) {
-				$string .= '<div class="pod_unfinished" name="pod_div" value=""><h2><a href="'.get_permalink( $task->ID ).'" class="pod_link">'.get_the_title( $task->ID ).'</a></h2></div><br/>';
+				$string .= '<div class="pod_finished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
+			} else if ( ! isset( $pod_task_statuses[ $curr_task->ID ] ) || $pod_task_statuses[ $curr_task->ID ] < 3 ) {
+				$string .= '<div class="pod_unfinished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
 			}
 		} else {
-			if ( $pod_task_statuses[ $task->ID ] >= 4 ) {
+			if ( isset( $pod_task_statuses[ $curr_task->ID ] ) && $pod_task_statuses[ $curr_task->ID ] >= 4 ) {
 				$tasks_finished++;
-				$string .= '<div class="pod_finished" name="pod_div" value=""><h2><a href="'.get_permalink( $task->ID ).'" class="pod_link">'.get_the_title( $task->ID ).'</a></h2></div><br/>';
-			} else if ( $pod_task_statuses[ $task->ID ] < 4 ) {
-				$string .= '<div class="pod_unfinished" name="pod_div" value=""><h2><a href="'.get_permalink( $task->ID ).'" class="pod_link">'.get_the_title( $task->ID ).'</a></h2></div><br/>';
+				$string .= '<div class="pod_finished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
+			} else if ( ! isset( $pod_task_statuses[ $curr_task->ID ] ) || $pod_task_statuses[ $curr_task->ID ] < 4 ) {
+				$string .= '<div class="pod_unfinished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
 			}
 		}
 	}
+	$previous_pod_slug = ( ! empty( $pods_options[ $slug ]['go_previous_pod'] ) ? $pods_options[ $slug ]['go_previous_pod'] : '' );
+	if ( ! empty( $previous_pod_slug ) ) {
+		$previous_pod_tasks_finished = 0;
+		$previous_pod_tasks_required = $pods_options[ $previous_pod_slug ]['go_pod_number'];
+		$previous_pod_stage_required = $pods_options[ $previous_pod_slug ]['go_pod_stage_select'];
+		$previous_tasks = get_posts( 
+			array(
+				'posts_per_page' => -1,
+				'post_type' => 'tasks',
+				'orderby' => 'ID',
+				'order' => 'ASC',
+				'tax_query' => array(
+					array(
+						'taxonomy' => 'task_pods',
+						'field' => 'slug',
+						'terms' => array( $previous_pod_slug )
+					)
+				)
+			)
+		);
+		$previous_pod_task_ids = array();
+		foreach ( $previous_tasks as $prev_task_obj ) {
+			$previous_pod_task_ids[] = $prev_task_obj->ID;
+		}
+		$previous_pod_task_id_str = implode( ', ', $previous_pod_task_ids );
+		$previous_task_statuses = $wpdb->get_results("SELECT post_id, status FROM {$go_table_name} WHERE uid={$user_id} AND post_id IN ({$previous_pod_task_id_str})");
+		$previous_pod_task_statuses = array();
+
+		foreach ( $previous_task_statuses as $task_status ) {
+			$previous_pod_task_statuses[ $task_status->post_id ] = $task_status->status;
+		}
+		foreach ( $previous_tasks as $prev_task ) {
+			if ( 'third_stage' == $previous_pod_stage_required ) {
+				if ( isset( $previous_pod_task_statuses[ $prev_task->ID ] ) && $previous_pod_task_statuses[ $prev_task->ID ] >= 3 ) {
+					$previous_pod_tasks_finished++;
+				}
+			} else {
+				if ( isset( $previous_pod_task_statuses[ $prev_task->ID ] ) && $previous_pod_task_statuses[ $prev_task->ID ] >= 4 ) {
+					$previous_pod_tasks_finished++;
+				}
+			}
+		}
+	}
+	
 	$tasks_required = $pods_options[ $slug ]['go_pod_number'];
 	$next_pod = $pods_options[ $slug ]['go_next_pod_select'];
 	$next_pod_slug = strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $next_pod ) ) );
-	$pod_link = $pods_options[ $next_pod_slug ]['go_pod_link'];
 	$tasks_plural_name = go_return_options( 'go_tasks_plural_name' );
 	if ( 'third_stage' === $stage_required ) {
 		$stage = go_return_options( 'go_third_stage_name' );
 	} else {
 		$stage = go_return_options( 'go_fourth_stage_name' );
 	}
+	if ( ! empty( $previous_pod_slug ) && $previous_pod_tasks_finished < $previous_pod_tasks_required ) {
+		$previous_pod_name = $pods_options[ $previous_pod_slug ]['go_pod_name'];
+		$previous_pod_link = $pods_options[ $previous_pod_slug ]['go_pod_link'];
+		return "<b>The previous Pod must be finished first: <a href='".esc_url( $previous_pod_link )." target='_top'>{$previous_pod_name}</a></b><br/>";
+	}
 	if ( '...' !== $next_pod ) {
 		if ( $tasks_finished >= $tasks_required ) {
+			$pod_link = $pods_options[ $next_pod_slug ]['go_pod_link'];
 			return "{$string}<b>Continue to next Pod: <a href='{$pod_link}' target='_top'>{$next_pod}</a></b><br/>";
 		} else {
 			return "{$string}<b>Stage required to complete: {$stage}<br/>You have finished {$tasks_finished} of {$tasks_required} {$tasks_plural_name} required to continue to the next Pod.</b>";
