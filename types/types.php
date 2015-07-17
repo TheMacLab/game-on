@@ -1724,13 +1724,30 @@ function go_clone_post() {
 		$terms = get_the_terms( $post_id, 'task_chains' );
 		$foci = get_the_terms( $post_id, 'task_focus_categories' );
 		$cat = get_the_terms( $post_id, 'task_categories' );
+		$pods = get_the_terms( $post_id, 'task_pods' );
 		$term_ids = array();
 		$focus_ids = array();
-		for ( $i = 0; $i < count( $terms ); $i++ ) {
-			$term_ids[] = $terms[ $i ]->term_id;
+		$pod_ids = array();
+		if ( ! empty( $terms ) ) {
+			foreach ( $terms as $key => $term ) {
+				if ( ! empty( $term->term_id ) ) {
+					$term_ids[] = $term->term_id;
+				}
+			}
 		}
-		for ( $i = 0; $i < count( $foci ); $i++ ) {
-			$focus_ids[] = $foci[ $i ]->term_id;
+		if ( ! empty( $foci ) ) {
+			foreach ( $foci as $key => $focus_term ) {
+				if ( ! empty( $focus_term->term_id ) ) {
+					$focus_ids[] = $focus_term->term_id;
+				}
+			}
+		}
+		if ( ! empty( $pods ) ) {
+			foreach ( $pods as $key => $pod_term ) {
+				if ( ! empty( $pod_term->term_id ) ) {
+					$pod_ids[] = $pod_term->term_id;
+				}
+			}
 		}
 	} elseif ( 'go_store' == $post_type ) {
 		$cat = get_the_terms( $post_id, 'store_types' );
@@ -1739,8 +1756,12 @@ function go_clone_post() {
 	}
 
 	$cat_ids = array();
-	for ( $i = 0; $i < count( $cat ); $i++ ) {
-		$cat_ids[] = $cat[ $i ]->term_id;
+	if ( ! empty( $cat ) && is_array( $cat ) ) {
+		foreach ( $cat as $key => $cat_term ) {
+			if ( ! empty( $cat_term->term_id ) ) {
+				$cat_ids[] = $cat_term->term_id;
+			}
+		}
 	}
 	
 	// Change the post status to "draft", leave the guid up to Wordpress,
@@ -1763,6 +1784,7 @@ function go_clone_post() {
 		wp_set_object_terms( $clone_id, $term_ids, 'task_chains' );
 		wp_set_object_terms( $clone_id, $focus_ids, 'task_focus_categories' );
 		wp_set_object_terms( $clone_id, $cat_ids, 'task_categories' );
+		wp_set_object_terms( $clone_id, $pod_ids, 'task_pods' );
 	} elseif ( 'go_store' == $post_type ) {
 		wp_set_object_terms( $clone_id, $cat_ids, 'store_types' );
 	} else {

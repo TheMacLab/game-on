@@ -149,7 +149,7 @@ function go_tsk_actv_activate() {
 function go_tsk_actv_redirect() {
 	if ( get_option( 'go_tsk_actv_do_activation_redirect', false ) ) {
 		delete_option( 'go_tsk_actv_do_activation_redirect' );
-		if( ! isset( $_GET['activate-multi'] ) ) {
+		if ( ! isset( $_GET['activate-multi'] ) ) {
 			wp_redirect( 'admin.php?page=game-on-options.php&settings-updated=true' );
 		}
 	}

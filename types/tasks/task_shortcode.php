@@ -18,7 +18,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		$task_pods = get_option( 'go_task_pod_globals' );
 		$pods_array = wp_get_post_terms( get_the_id(), 'task_pods' );
 		$pod_slug = $pods_array[0]->slug;
-		$pod_link = $task_pods[ $pod_slug ][ 'go_pod_link' ];
+		$pod_link = ( ! empty( $task_pods[ $pod_slug ][ 'go_pod_link' ] ) ? $task_pods[ $pod_slug ][ 'go_pod_link' ] : '' );
 		$today = date( 'Y-m-d' );
 		$task_name = strtolower( go_return_options( 'go_tasks_name' ) );
 		$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
@@ -2442,7 +2442,7 @@ function task_change_stage() {
 			} else {
 				echo '<div class="go_chain_message">'.$final_chain_message.'</div>';
 			}
-			echo '</div>' . ( $task_pods ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+			echo '</div>' . ( ! empty( $task_pods ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 	}
 	die();
 }
