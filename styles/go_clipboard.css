@@ -1,51 +1,51 @@
-#go_clipboard_table_wrapper{
+#go_clipboard_table_wrapper {
 	overflow: auto;
 }
 
-.widefat th{
-	border-right:grey dashed thin;
+.widefat th {
+	border-right: grey dashed thin;
 	font-size: 9px;
 }
 
-.widefat td{
-	border-right:grey dashed thin;
-	font-size:9px;
+.widefat td {
+	border-right: grey dashed thin;
+	font-size: 9px;
 }
 
-table.sortable tbody {
+.sortable tbody {
     counter-reset: sortabletablescope;
 }
 
-table.sortable thead tr::before {
+.sortable thead tr::before {
     content: "";
     display: table-cell;
 }
 
-table.sortable tbody tr::before {
+.sortable tbody tr::before {
     content: counter(sortabletablescope);
     counter-increment: sortabletablescope;
     display: table-cell;
 }
 
-.go_clipboard_add{
-	width:100px;
-	height:20px;	
+.go_clipboard_add {
+	width: 100px;
+	height: 20px;	
 }
 
-#go_clipboard_add{
-	border:thin solid #999;
-	background-color:#FFF;
+#go_clipboard_add {
+	border: thin solid #999;
+	background-color: #FFF;
 	width: 865 px;
 	padding: 3px;
 }
 
-#go_clipboard_table_filter{
+#go_clipboard_table_filter {
 	display: inline-block;
 	float: right;
 }
 	
-	/*
- * Colour dictionary:
+/*
+ * Colour dictionary: 
  *
  * Table control elements:   #719ba7
  * Header cells:             #66A9BD
@@ -60,6 +60,7 @@ table.sortable tbody tr::before {
 /*
  * Page setup styles
  */
+ 
 body {
 	font: 80%/1.45em Arial, Verdana, Helvetica, sans-serif;
 	margin: 0;
@@ -84,34 +85,36 @@ h1 {
 /*
  * DataTables framework
  */
-div.dataTables_wrapper {
+ 
+.dataTables_wrapper {
 	background-color: #FFF;
 }
 
-div.dataTables_length {
+.dataTables_length {
 	float: left;
 }
 
-div.dataTables_filter {
+.dataTables_filter {
 	float: right;
 }
 
-div.dataTables_info {
+.dataTables_info {
 	padding: 9px 6px 6px 6px;
 	float: left;
 }
 
-div.dataTables_paginate {
+.dataTables_paginate {
 	float: right;
 }
 
-div.dataTables_length,
-div.dataTables_filter,
-div.dataTables_paginate {
+.dataTables_length,
+.dataTables_filter,
+.dataTables_paginate {
 	padding: 6px;
 }
 
-/* Self clearing - http://www.webtoolkit.info/css-clearfix.html */
+/* Self clearing - http: //www.webtoolkit.info/css-clearfix.html */
+
 .dataTables_wrapper:after {
 	content: ".";
 	display: block;
@@ -131,58 +134,59 @@ html[xmlns] .dataTables_wrapper {
 
 
 /*
- * Table styles
- */
-table.pretty {
+* Table styles
+*/
+ 
+.pretty {
 	width: 100% !important;
 	clear: both;
-	-moz-user-select: none;
-	-khtml-user-select: none;
 	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
 	-o-user-select: none;
 }
 
-table.pretty td,
-table.pretty th {
+.pretty td,
+.pretty th {
 	padding: 5px;
 	border: 1px solid #fff;
 	font-size: 12px;
 }
 
 /* Header cells */
-table.pretty thead th {
+.pretty thead th {
 	text-align: center;
 	background: #F4F4F4;
 	font-size: 14px;
 }
 
 /* Body cells */
-table.pretty tbody th {
+.pretty tbody th {
 	text-align: left;
 	background: #F4F4F4;
 }
 	
-table.pretty tbody td {
+.pretty tbody td {
 	text-align: center;
 	background: #F4F4F4;
 }
 
-table.pretty tbody td.message {
+.pretty tbody td.message {
 	text-align: left;
 	background: #F4F4F4;
 }
 
-table.pretty tbody tr.odd td { 
+.pretty tbody tr.odd td { 
 	background: #F4F4F4;
 }
 
 /* Footer cells */	
-table.pretty tfoot th {
+.pretty tfoot th {
 	background: #F4F4F4;
 	text-align: left;
 }
 	
-table.pretty tfoot td {
+.pretty tfoot td {
 	background: #F4F4F4;
 	text-align: center;
 	font-weight: bold;
@@ -191,6 +195,7 @@ table.pretty tfoot td {
 /*
  * Pagination
  */
+ 
 a.paginate_button,
 a.paginate_active {
 	display: inline-block;
@@ -218,7 +223,7 @@ a.paginate_button_disabled {
 	text-decoration: none;
 }
 
-div.dataTables_paginate span>a {
+.dataTables_paginate span>a {
 	width: 15px;
 	text-align: center;
 }
@@ -226,16 +231,17 @@ div.dataTables_paginate span>a {
 /*
  * Sorting
  */
-table.pretty thead th.sorting_asc {
-	background: #E2E2E2 url('images/sort_asc.png') no-repeat right center;
+ 
+.pretty thead th.sorting_asc {
+	background: #E2E2E2 url("images/sort_asc.png") no-repeat right center;
 }
 
-table.pretty thead th.sorting_desc {
-	background: #F4F4F4 url('images/sort_desc.png') no-repeat right center;
+.pretty thead th.sorting_desc {
+	background: #F4F4F4 url("images/sort_desc.png") no-repeat right center;
 }
 
-table.pretty thead th.sorting {
-	background: #E2E2E2 url('images/sort_both.png') no-repeat right center;
+.pretty thead th.sorting {
+	background: #E2E2E2 url("images/sort_both.png") no-repeat right center;
 }
 
 .container {
@@ -252,10 +258,10 @@ table.pretty thead th.sorting {
 	background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
 	background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
 	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+	-o-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 #placeholder .button {
@@ -263,7 +269,7 @@ table.pretty thead th.sorting {
 	cursor: pointer;
 }
 
-#placeholder div.button {
+#placeholder .button {
 	font-size: smaller;
 	color: #999;
 	background-color: #eee;
@@ -272,11 +278,11 @@ table.pretty thead th.sorting {
 
 #choices {
 	width: 10.416666666%;
-	height:450px;
-	overflow:hidden; 
+	height: 450px;
+	overflow: hidden; 
 	margin: 15px 10px 0px 0px; 
-	border:solid grey thin;
-	text-align:left;
+	border: solid grey thin;
+	text-align: left;
 	font-size: 16px;
 	line-height: 1.5;
 	background-color: white;
@@ -285,57 +291,57 @@ table.pretty thead th.sorting {
 	overflow: auto;
 }
 
-.go_class_a_results{
-	font-size:13px;
+.go_class_a_results {
+	font-size: 13px;
 	position: relative;
 	left: 10%;
 }
 
-.go_#F4F4F4_all{
+.go_#F4F4F4_all {
 	display: none;	
 }
 
-.highlight_box{
+.highlight_box {
 	height: 10px;
 	width: 50px;
 	font-size: 8px;
-	padding: .2px .2px .2px .2px;
+	padding: 0.2px 0.2px 0.2px 0.2px;
 	border: thin grey solid;
 	color: grey;
 	padding-top: 3px;
 }
 
-.highlight_box:hover{
+.highlight_box: hover {
 	height: 10px;
 	width: 50px;
 	font-size: 8px;
-	padding: .2px .2px .2px .2px;
+	padding: 0.2px 0.2px 0.2px 0.2px;
 	border: thin grey solid;
 	color: white;
 	padding-top: 3px;
-	background-color:grey;
+	background-color: grey;
 }
 
-.highlight_box_clicked{
+.highlight_box_clicked {
 	height: 10px;
 	width: 50px;
 	font-size: 8px;
-	padding: .2px .2px .2px .2px;
+	padding: 0.2px 0.2px 0.2px 0.2px;
 	border: thin grey solid;
 	color: white;
 	padding-top: 3px;
-	background-color:grey;
+	background-color: grey;
 }
 
-tr.even td{
+tr.even td {
 	background-color: #E2E2E2 !important; 	
 }
 
-tr:hover td{
+tr: hover td {
 	background-color: #CFCFCF !important;
 }
 
-.go_focus{
+.go_focus {
 	margin: 0px;
 	height: 22px !important;
 	font-size: 12px !important;

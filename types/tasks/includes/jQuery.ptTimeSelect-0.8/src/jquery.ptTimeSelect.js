@@ -116,9 +116,9 @@
      * @memberOf jQuery.ptTimeSelect
      * @return {undefined}
      */
-    jQuery.ptTimeSelect._ptTimeSelectInit = function () {
+    jQuery.ptTimeSelect._ptTimeSelectInit = function() {
         jQuery(document).ready(
-            function () {
+            function() {
                 //if the html is not yet created in the document, then do it now
                 if (!jQuery('#ptTimeSelectCntr').length) {
                     jQuery("body").append(
@@ -297,7 +297,7 @@
      * @return {undefined}
      * 
      */
-    jQuery.ptTimeSelect.openCntr = function (ele) {
+    jQuery.ptTimeSelect.openCntr = function(ele) {
         jQuery.ptTimeSelect.closeCntr();
         jQuery(".isPtTimeSelectActive").removeClass("isPtTimeSelectActive");
         var cntr            = jQuery("#ptTimeSelectCntr");
@@ -445,7 +445,7 @@
      *  $('#fooTime').ptTimeSelect();
      * 
      */
-    jQuery.fn.ptTimeSelect = function (opt) {
+    jQuery.fn.ptTimeSelect = function(opt) {
         return this.each(function(){
             if(this.nodeName.toLowerCase() != 'input') return;
             var e = jQuery(this);

@@ -1,22 +1,22 @@
 #go_stats_page_black_bg {
-	display:block;
+	display: block;
 	position: fixed !important;
 	top: 0% !important;
 	left: 0% !important;
 	width: 100% !important;
 	height: 100% !important;
 	background-color: black;
-	z-index:999998;
+	z-index: 999998;
 	-moz-opacity: 0.8;
-	opacity:.80;
+	opacity: 0.80;
 	filter: alpha(opacity=80) !important;
 }
 
-#go_stats_white_overlay{
+#go_stats_white_overlay {
 	display: none;
 	position: fixed;
 	top: 75px;
-	left:10%;
+	left: 10%;
 	width: 80%;
 	height: 80%;
 	padding: 16px;
@@ -26,7 +26,7 @@
 	border-radius: 3px;
 }
 
-#go_stats_lay{
+#go_stats_lay {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
@@ -34,7 +34,7 @@
 
 /** Header Styles **/
 
-#go_stats_gravatar{
+#go_stats_gravatar {
 	display: inline-block;
 	width: 161px;
 	height: 161px;
@@ -44,7 +44,7 @@
 	margin: 0px 10px 0px 20px;
 }
 
-#go_stats_header{
+#go_stats_header {
 	position: relative;
 	overflow: hidden;
 	font-family: verdana;
@@ -52,29 +52,31 @@
 	margin-right: 20px;
 }
 
-#go_stats_user_info{
+#go_stats_user_info {
 	display: inline-block;
 	float: left;
 	font-size: 16px;
 	line-height: 18px;
 }
 
-#go_stats_user_info div{
+#go_stats_user_info div {
 	margin: 0px;
 	padding: 0px;	
 }
 
-.go_stats_reward_name{
+.go_stats_reward_name {
 	display: inline-block;	
 }
 
-#go_stats_user_progress, #go_stats_user_rank, #go_stats_user_focuses{
+#go_stats_user_progress, 
+#go_stats_user_rank, 
+#go_stats_user_focuses {
 	display: inline-block;	
 	float: right;
 	position: relative;
 }
 
-#go_stats_user_progress{
+#go_stats_user_progress {
 	width: 25%;
 	height: 25px;
 	border: 2px solid #AAA;
@@ -82,13 +84,13 @@
 	margin-right: 40px;
 }
 
-#go_stats_progress_text_wrap{
+#go_stats_progress_text_wrap {
 	float: left;
 	position: relative;
 	left: 50%;
 }
 
-#go_stats_progress_text{
+#go_stats_progress_text {
 	position: relative;
 	font-size: 18px;
 	z-index: 1;
@@ -97,13 +99,13 @@
 	line-height: 25px;
 }
 
-#go_stats_progress_fill{
+#go_stats_progress_fill {
 	height: 100%;
 	position: absolute;
 	z-index: 0;
 }
 
-#go_stats_user_rank{
+#go_stats_user_rank {
 	height: auto;
 	font-size: 36px;
 	font-weight: bold;
@@ -111,30 +113,30 @@
 	top: 18px;
 }
 
-#go_stats_user_focuses{
+#go_stats_user_focuses {
 	height: auto;
 	font-size: 24px;
 	clear: right;
 	top: 22px;
 }
 
-#go_stats_user_tabs{
+#go_stats_user_tabs {
 	display: inline-block;
 	float: right;
 	clear: both;
 	font-size: 14px;
 }
 
-#go_stats_user_tabs a{
+#go_stats_user_tabs a {
 	text-decoration: none;
 	color: inherit;
 }
 
-#go_stats_admin_help{
+#go_stats_admin_help {
 	color: #FF0000 !important;	
 }
 
-#go_stats_body{
+#go_stats_body {
 	position: relative;
 	height: 70%;
 	margin: 25px 20px 0px 20px;
@@ -144,13 +146,13 @@
 	overflow: hidden;
 }
 
-#go_stats_body a{
+#go_stats_body a {
 	text-decoration: none;
 }
 
 /** Task Styles **/
 
-#go_stats_tasks_list{
+#go_stats_tasks_list {
 	list-style-type: none;
 	height: 100%;
 	position: relative;
@@ -162,24 +164,24 @@
 	overflow-y: auto;
 }
 
-.go_stats_tasks_list_admin{
+.go_stats_tasks_list_admin {
 	float: none !important;
 	display: inherit !important;
 	margin: 0px !important;
 	width: 100% !important;	
 }
 
-#go_stats_tasks_list:last-child{
+#go_stats_tasks_list:last-child {
 	border-bottom: 1px solid #BBB;
 }
 
-.go_stats_task{
+.go_stats_task {
 	margin: 4px 0px 4px 0px;
 	border-top: 1px solid #BBB;
 	overflow: hidden;
 }
 
-.go_stats_task_list_name{
+.go_stats_task_list_name {
 	display: inline-block;
 	float: left;
 	width: 25%;
@@ -189,7 +191,7 @@
 	height: 20px;
 }
 
-.go_stats_task_status_wrap{
+.go_stats_task_status_wrap {
 	float: right;
 	position: relative;
 	width: 30%;
@@ -197,7 +199,7 @@
 	margin-top: 1.5px;
 }
 
-.go_stats_task_status{
+.go_stats_task_status {
 	text-align: center;
 	color: #FFF;
 	display: inline-block;
@@ -209,7 +211,7 @@
 	line-height: 14px;
 }
 
-.go_stats_task_admin_submit{
+.go_stats_task_admin_submit {
 	cursor: pointer !important;
 	float: right !important; 
 	margin: 5.5px 0px 3px 4px !important;
@@ -221,7 +223,7 @@
 	font-size: 10px !important;
 }
 
-.go_stats_task_admin_message{
+.go_stats_task_admin_message {
 	float: right !important;
 	height: 16px !important;
 	display: inline-block;
@@ -232,35 +234,35 @@
 	font-size: 12px !important;
 }
 
-.go_stats_task_stage_url{
+.go_stats_task_stage_url {
 	cursor: pointer !important;
 }
 
-.go_user{
+.go_user {
 	cursor: default;
 }
 
-.future_url{
-	box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	-webkit-box-sizing:border-box;
+.future_url {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	border: 1px solid;
 	background-color: #FFF;
 }
 
-.completed{
+.completed {
 	background-color: #AAA;
 }
 
-.chosen{
+.chosen {
 	background-color: #000;
 }
 
-.go_stage_does_not_exist{
+.go_stage_does_not_exist {
 	background-color: #FFF;
 }
 
-.go_stats_body_list{
+.go_stats_body_list {
 	display: inline-block;
 	width: 30%;
 	height: 100%;
@@ -270,43 +272,43 @@
 	overflow-y: auto;
 }
 
-#go_stats_body .go_stats_body_list:last-of-type{
+#go_stats_body .go_stats_body_list:last-of-type {
 	margin-right: 0px;
 }
 
-.go_stats_body_list li:last-of-type{
+.go_stats_body_list li:last-of-type {
 	border-bottom: 1px solid #BBB;
 }
 
-.go_stats_body_list_head{
+.go_stats_body_list_head {
 	font-weight: bold;
 	border-top: 0px !important;
 }
 
-.go_stats_body_list li{
+.go_stats_body_list li {
 	width: 100%;
 	margin: 0px 0px 0px 0px;
 	border-top: 1px solid #BBB;
 }
 
 /** Reward Styles **/
-.go_stats_reward{
+.go_stats_reward {
 	white-space: pre-wrap;	
 }
 
 /** Minutes  List **/
-#go_stats_minutes_list{
+#go_stats_minutes_list {
 	width: 100% !important;
 }
 
 /** Penalties  List **/
-#go_stats_penalties_list{
+#go_stats_penalties_list {
 	width: 100% !important;
 }
 
 /** Badge Styles **/
 
-.go_badge_wrap{
+.go_badge_wrap {
 	display: inline-block;
 	float: left;
 	margin-right: 5.8%;
@@ -314,14 +316,14 @@
 	width: 120px;
 }
 
-.go_badge_container{
+.go_badge_container {
 	position: relative;
 	float: left;
 	left: 50%;
 	top: 13%;
 }
 
-.go_badge{
+.go_badge {
 	position: relative;
 	float: left;
 	left: -50%;
@@ -329,14 +331,14 @@
 
 /** Leaderboard Styles **/
 
-#go_stats_leaderboard{
+#go_stats_leaderboard {
 	height: 100%;
 	position: relative;
 	overflow: hidden;
 	white-space: nowrap;
 }
 
-#go_stats_leaderboard_filters{
+#go_stats_leaderboard_filters {
 	position: relative;
 	display: inline-block;
 	float: right;
@@ -344,30 +346,30 @@
 	overflow-y: auto;
 }
 
-#go_stats_leaderboard_classes{
+#go_stats_leaderboard_classes {
 	margin-bottom: 40px;
 }
 
-#go_stats_leaderboard_filters_head{
+#go_stats_leaderboard_filters_head {
 	font-weight: bold;
 	margin-top: 5px;
 }
 
-.go_stats_leaderboard_class_wrap{
+.go_stats_leaderboard_class_wrap {
 	margin-top: 10px;
 }
 
-#go_stats_leaderboard_focuses{
+#go_stats_leaderboard_focuses {
 	margin-bottom: 40px;
 }
 
-.go_stats_leaderboard_list{
+.go_stats_leaderboard_list {
 	display: inline-block;
 	width: 23%;
 	margin: 0px 15px 0px 0px !important;
 	float: none !important;
 }
 
-.go_stats_amount{
+.go_stats_amount {
 	float: right;
 }
