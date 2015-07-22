@@ -12,6 +12,22 @@ If you think Game-On could use a new feature or you found a bug please refer to 
 
 * * *
 
+### Lovelying Created By
+
+Current Authors:
+
+* Ezio Ballarin
+* <a href='http://forest.stfhs.net/forest' target='_blank'>Forest Hoffman</a>
+* Charles Leon
+* Austin Vuong
+
+Previous Authors/Contributors:
+
+* Vincent Astolfi
+* Semar Yousif
+
+* * *
+
 ### For Contributors
 
 Everything you need should be in the [wiki](https://github.com/TheMacLab/game-on/wiki/).

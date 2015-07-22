@@ -486,11 +486,20 @@ div.pod_finished {
 
 div.pod_unfinished h2, div.pod_finished h2 {
 	margin: 0px;
+	padding: 0px;
 }
 
 a.pod_link {
 	text-decoration: none;
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 5px 0px 5px 5px;
 	z-index: 10;
+}
+
+a.pod_link:hover {
+	color: #ACACAC;
 }
 
 /* Tasks Style | Front-end */

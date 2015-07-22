@@ -43,9 +43,9 @@ function go_task_pods() {
 				Must Complete 
 				<select id='go_pod_stage_select[<?php echo $slug ?>]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_stage_select]'>
 					<option <?php echo ( ( ! empty( $pods_options[ $slug ]['go_pod_stage_select'] ) && 'third_stage' == $pods_options[ $slug ]['go_pod_stage_select'] ) ? 'selected' : '' ); ?> 
-						value='third_stage'><?php echo go_return_options( 'go_third_stage_name' ); ?></option>
+						value='third_stage'>Stage 3</option>
 					<option <?php echo ( ( ! empty( $pods_options[ $slug ]['go_pod_stage_select'] ) && 'fourth_stage' == $pods_options[ $slug ]['go_pod_stage_select'] ) ? 'selected' : '' ); ?> 
-						value='fourth_stage'><?php echo go_return_options( 'go_fourth_stage_name' ); ?></option>
+						value='fourth_stage'>Stage 4</option>
 				</select> 
 				of 
 				<input type='number' id='go_pod_number[ <?php echo $slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_number]' 
