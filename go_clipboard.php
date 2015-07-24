@@ -1,13 +1,10 @@
 <?php
 
 function go_clipboard() {
-	global $wpdb;
-	$dir = plugin_dir_url( __FILE__ );
 	add_submenu_page( 'game-on-options.php', 'Clipboard', 'Clipboard', 'manage_options', 'go_clipboard', 'go_clipboard_menu' );
 }
 
 function go_clipboard_menu() {
-	global $wpdb;
 	if ( ! current_user_can( 'manage_options' ) ) { 
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} else {
@@ -47,7 +44,7 @@ function go_clipboard_menu() {
 						<button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button>
 					</div>
 				
-					<table  id="go_clipboard_table" class="pretty" >
+					<table id="go_clipboard_table" class="pretty">
 						<thead>
 							<tr>
 								<th><input type="checkbox" onClick="go_toggle(this);" /></th>
@@ -103,61 +100,55 @@ function go_clipboard_menu() {
 
 function go_clipboard_intable() {
 	global $wpdb;
-	$class_a_choice = $_POST['go_clipboard_class_a_choice'];
+	$class_a_choice = $_POST[ 'go_clipboard_class_a_choice' ];
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
-	$table_name_go = $wpdb->prefix.'go';
 	$uid = $wpdb->get_results( "SELECT user_id 
 		FROM {$table_name_user_meta} 
 		WHERE meta_key = '{$wpdb->prefix}capabilities' 
 		AND meta_value NOT LIKE '%administrator%'"
 	);
-	print_r( $uid );
 	foreach ( $uid as $id ) {
-		foreach ( $id as $value ) {
-			$class_a = get_user_meta( $value, 'go_classifications', true );
-			if ( $class_a ) { 
-				if ( $class_a[ $class_a_choice ] ) {
-					$user_data_key = get_userdata( $value ); 
-					$user_login = $user_data_key->user_login;
-					$user_display = $user_data_key->display_name;
-					$user_first_name = $user_data_key->user_firstname;
-					$user_last_name =  $user_data_key->user_lastname;
-					$user_url =  $user_data_key->user_url;
-					if ( go_return_options( 'go_focus_switch' ) == 'On' ) {
-						$user_focuses = go_display_user_focuses( $value );
-						$focus_name = get_option( 'go_focus_name' );
-						$focuses = get_option( 'go_focus' );
-						$focuses_list = "<option>{$user_focuses}</option><option ".( ( empty( $user_focuses) || $user_focuses == "No {$focus_name}" ) ? "selected" : '' ).">No {$focus_name}</option>";
-						foreach ( $focuses as $focus ) {
-							$focuses_list .= "<option value='".esc_attr( $focus )."' >{$focus}</option>";
-						}
-					}
-					$bonus_currency = go_return_bonus_currency( $value );
-					$penalty = go_return_penalty( $value );
-					$minutes = go_return_minutes( $value );
-					$currency = go_return_currency( $value );
-					$points = go_return_points( $value );
-					$badge_count = go_return_badge_count( $value );
-					go_get_rank( $value );
-					global $current_rank;
-					
-					echo "<tr id='user_{$value}'>
-							<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$value}'/></td>
-							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$value}&quot;);'>{$user_login}</a></td>
-							<td>{$class_a[ $class_a_choice]}</td>
-							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
-							<td>{$user_display}</td>
-							<td>{$current_rank}</td>
-							".( (go_return_options( 'go_focus_switch' ) == 'On' ) ? "<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$value}&quot;, this);'>{$focuses_list}</select</td>" : '' )."
-							<td class='user_points'>{$points}</td>
-							<td class='user_currency'>{$currency}</td>
-							<td class='user_bonus_currency'>{$bonus_currency}</td>
-							<td class='user_penalty'>{$penalty}</td>
-							<td class='user_minutes'>{$minutes}</td>
-							<td class='user_badge_count'>{$badge_count}</td>
-						  </tr>";
+		$class_a = get_user_meta( $id->user_id, 'go_classifications', true );
+		if ( ! empty( $class_a[ $class_a_choice ] ) ) {
+			$user_data_key = get_userdata( $id->user_id ); 
+			$user_login = $user_data_key->user_login;
+			$user_display = $user_data_key->display_name;
+			$user_first_name = $user_data_key->user_firstname;
+			$user_last_name =  $user_data_key->user_lastname;
+			$user_url =  $user_data_key->user_url;
+			if ( go_return_options( 'go_focus_switch' ) == 'On' ) {
+				$user_focuses = go_display_user_focuses( $id->user_id );
+				$focus_name = get_option( 'go_focus_name' );
+				$focuses = get_option( 'go_focus' );
+				$focuses_list = "<option>{$user_focuses}</option><option ".( ( empty( $user_focuses) || $user_focuses == "No {$focus_name}" ) ? "selected" : '' ).">No {$focus_name}</option>";
+				foreach ( $focuses as $focus ) {
+					$focuses_list .= "<option value='".esc_attr( $focus )."' >{$focus}</option>";
 				}
 			}
+			$bonus_currency = go_return_bonus_currency( $id->user_id );
+			$penalty = go_return_penalty( $id->user_id );
+			$minutes = go_return_minutes( $id->user_id );
+			$currency = go_return_currency( $id->user_id );
+			$points = go_return_points( $id->user_id );
+			$badge_count = go_return_badge_count( $id->user_id );
+			go_get_rank( $id->user_id );
+			global $current_rank;
+			
+			echo "<tr id='user_{$id->user_id}'>
+					<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$id->user_id}'/></td>
+					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$id->user_id}&quot;);'>{$user_login}</a></td>
+					<td>{$class_a[ $class_a_choice]}</td>
+					<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
+					<td>{$user_display}</td>
+					<td>{$current_rank}</td>
+					".( (go_return_options( 'go_focus_switch' ) == 'On' ) ? "<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$id->user_id}&quot;, this);'>{$focuses_list}</select</td>" : '' )."
+					<td class='user_points'>{$points}</td>
+					<td class='user_currency'>{$currency}</td>
+					<td class='user_bonus_currency'>{$bonus_currency}</td>
+					<td class='user_penalty'>{$penalty}</td>
+					<td class='user_minutes'>{$minutes}</td>
+					<td class='user_badge_count'>{$badge_count}</td>
+				  </tr>";
 		}
 	}
 	die();

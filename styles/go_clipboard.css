@@ -160,6 +160,10 @@ html[xmlns] .dataTables_wrapper {
 	font-size: 14px;
 }
 
+.pretty th > input[type='checkbox'] {
+	width: 1em !important;
+}
+
 /* Body cells */
 .pretty tbody th {
 	text-align: left;

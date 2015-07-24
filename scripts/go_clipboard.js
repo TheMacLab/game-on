@@ -27,7 +27,9 @@ function go_clipboard_class_a_choice() {
 			jQuery( '#go_clipboard_table_body' ).html( html );
 			jQuery( '#go_clipboard_table' ).dataTable( {
 				"bPaginate": false,
-				"aaSorting": [[2, "asc"]]
+				"aaSorting": [ 
+					[ 2, "asc" ]
+				]
 			});
 		}
 	});
