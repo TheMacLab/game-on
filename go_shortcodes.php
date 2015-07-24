@@ -553,16 +553,16 @@ function go_task_pod_tasks( $atts ) {
 		if ( 'third_stage' == $stage_required ) {
 			if ( isset( $pod_task_statuses[ $curr_task->ID ] ) && $pod_task_statuses[ $curr_task->ID ] >= 3 ) {
 				$tasks_finished++;
-				$string .= '<div class="pod_finished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
+				$string .= '<div class="pod_finished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			} else if ( ! isset( $pod_task_statuses[ $curr_task->ID ] ) || $pod_task_statuses[ $curr_task->ID ] < 3 ) {
-				$string .= '<div class="pod_unfinished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
+				$string .= '<div class="pod_unfinished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			}
 		} else {
 			if ( isset( $pod_task_statuses[ $curr_task->ID ] ) && $pod_task_statuses[ $curr_task->ID ] >= 4 ) {
 				$tasks_finished++;
-				$string .= '<div class="pod_finished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
+				$string .= '<div class="pod_finished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			} else if ( ! isset( $pod_task_statuses[ $curr_task->ID ] ) || $pod_task_statuses[ $curr_task->ID ] < 4 ) {
-				$string .= '<div class="pod_unfinished" name="pod_div" value=""><h2><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></h2></div><br/>';
+				$string .= '<div class="pod_unfinished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			}
 		}
 	}

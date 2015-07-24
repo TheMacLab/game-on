@@ -35,7 +35,7 @@ function go_task_pods() {
 				$slug = $pod_category->slug;
 				$total = $pod_category->count;
 				$name = $pod_category->name;
-				echo "<span class='go_pod_list_item' id='go_pod_span_{$slug}'><b><a href='{$link}' target='_blank'>".$pod_category->name."</a></b>";
+				echo "<span class='go_pod_list_item' id='go_pod_span_{$slug}'><b><a href='{$link}'>".$pod_category->name."</a></b>";
 				?>
 				<br/>
 				<input type='text' id='go_pod_link[<?php echo $slug ?>]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_link]' 
