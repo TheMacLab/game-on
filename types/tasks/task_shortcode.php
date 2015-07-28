@@ -507,6 +507,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						0,
 						0
 					);
+					go_record_stage_time( $page_id, 1 );
 		?>
 					<div id="go_content">
 					<?php
@@ -2159,6 +2160,14 @@ function task_change_stage() {
 	// redefine the status and task_count because they have been updated as soon as the above go_add_post() calls are made.
 	$status = $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE uid = $user_id AND post_id = $post_id" );
 	$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = $post_id AND uid = $user_id" );
+
+	if ( $undo == "false" ) {
+		if ( $task_count == 1 ) {
+			go_record_stage_time( $post_id, 5 );	
+		} else {
+			go_record_stage_time( $post_id, $status );
+		}	
+	}
 	
 	switch ( $status ) {
 		case ( 0 ):
@@ -2641,4 +2650,36 @@ function go_task_timer( $task_id, $user_id, $future_modifier ) {
 	</script>
 	<?php
 }
+
+function go_record_stage_time($post_id = null, $status = null) {
+	if ( ! empty( $_POST['user_id'] ) ) {
+		$user_id = $_POST['user_id'];
+	} else {
+		$user_id = get_current_user_id();
+	}
+	if ( ! empty( $_POST['page_id'] ) ) {
+		$post_id = $_POST['page_id']; // Post id posted from ajax function
+	}
+	if ( is_null( $status ) ) {
+		$status = (int)$_POST['status']; // Task's status posted from ajax function
+	}
+	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
+	$timestamps = get_user_meta( $user_id, 'go_task_timestamps', true );
+	if ( ! empty( $timestamps ) ) {
+		foreach ($timestamps as $key => $value) {
+			foreach ( $timestamps[ $key ] as $newkey => $oldtime ) {
+					$timestamps[ $key ][ $newkey ] = $oldtime;
+			}		
+		}
+	}
+	if ( empty( $timestamps[ $post_id ][ $status ] ) ) {
+		$timestamps[ $post_id ][ $status ][0] = $time;
+		$timestamps[ $post_id ][ $status ][1] = $time;
+	} else if ( $status == 5 ) {
+		$timestamps[ $post_id ][ $status ][0] = $time;
+	} else {
+		$timestamps[ $post_id ][ $status ][1] = $time;
+	}
+	update_user_meta( $user_id, 'go_task_timestamps', $timestamps );
+ }
 ?>
