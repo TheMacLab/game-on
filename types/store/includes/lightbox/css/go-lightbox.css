@@ -72,7 +72,6 @@
 	border: 1px solid #c00;
 	border-radius: 3px;
 	cursor: pointer;
-	height: 24px;
 }
 
 .golb-fr-boxes-r: hover {
@@ -97,7 +96,6 @@
 	border: 1px solid;
 	border-radius: 3px;
 	cursor: pointer;
-	height: 24px;
 }
 
 .golb-fr-boxes-gold {
@@ -114,7 +112,6 @@
 	border: 1px solid;
 	border-radius: 3px;
 	cursor: pointer;
-	height: 24px;
 }
 
 .golb-fr-boxes-g {
@@ -131,7 +128,6 @@
 	border: 1px solid;
 	border-radius: 3px;
 	cursor: pointer;
-	height: 24px;
 }
 
 .golb-fr-boxes-giftable {
@@ -146,7 +142,6 @@
 	border: 1px solid;
 	border-radius: 3px;
 	cursor: pointer;
-	height: 24px;
 }
 
 .golb-fr-boxes-g: hover {
