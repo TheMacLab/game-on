@@ -36,6 +36,7 @@ register_activation_hook( __FILE__, 'go_presets_registration' );
 register_activation_hook( __FILE__, 'go_install_data' );
 register_activation_hook( __FILE__, 'go_define_options' );
 register_activation_hook( __FILE__, 'go_open_comments' );
+register_activation_hook( __FILE__, 'go_tsk_actv_activate' );
 add_action( 'user_register', 'go_user_registration' );
 add_action( 'delete_user', 'go_user_delete' );
 add_action( 'wp_ajax_go_deactivate_plugin', 'go_deactivate_plugin' );
@@ -61,6 +62,7 @@ add_action( 'wp_ajax_go_user_option_add','go_user_option_add' );
 add_action( 'go_update_totals','go_update_totals' );
 add_action( 'init', 'go_jquery' );
 add_action( 'init', 'go_admin_menu_js' );
+add_action( 'init', 'go_register_tax_and_cpt' );
 add_action( 'wp', 'go_task_timer_headers' );
 add_action( 'admin_bar_init','go_global_defaults' );
 add_action( 'admin_bar_init','go_global_info' );
@@ -111,7 +113,6 @@ add_action( 'wp_ajax_go_search_for_user', 'go_search_for_user' );
 add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' );
 add_action( 'wp_ajax_go_get_purchase_count', 'go_get_purchase_count' );
 add_shortcode( 'go_stats_page', 'go_stats_page' );
-register_activation_hook(__FILE__, 'go_tsk_actv_activate' );
 add_action( 'admin_init', 'go_tsk_actv_redirect' );
 add_action( 'inRange', 'inRange' );
 add_action( 'isEven','isEven' );
@@ -153,6 +154,11 @@ function go_tsk_actv_redirect() {
 			wp_redirect( 'admin.php?page=game-on-options.php&settings-updated=true' );
 		}
 	}
+}
+
+function go_register_tax_and_cpt() {
+	go_register_task_tax_and_cpt();
+	go_register_store_tax_and_cpt();
 }
 
 function inRange( $int, $min, $max ) {

@@ -3,8 +3,144 @@
 include( 'task_shortcode.php' ); 
 include( 'tsk-admin-footer.php' );
 
-function register_cpt_task() {
-	$labels = array( 
+function go_register_task_tax_and_cpt() {
+	
+	/*
+	 * Task Category Taxonomy
+	 */
+	$task_cat_labels = array( 
+		'name' => _x( go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
+		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
+		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
+		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
+		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
+		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Category Parent', 'task_categories' ),
+		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Category:', 'task_categories' ),
+		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
+		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
+		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
+		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
+		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' categories with commas', 'task_categories' ),
+		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' categories', 'task_categories' ),
+		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' categories', 'task_categories' ),
+		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
+	);
+	$task_cat_args = array( 
+		'labels' => $task_cat_labels,
+		'public' => true,
+		'show_in_nav_menus' => true,
+		'show_ui' => true,
+		'show_tagcloud' => true,
+		'show_admin_column' => false,
+		'hierarchical' => true,
+		'rewrite' => true,
+		'query_var' => true
+	);
+	register_taxonomy( 'task_categories', array( 'tasks' ), $task_cat_args );
+	
+	/*
+	 * Task Focus Categories Taxonomy
+	 */
+	$focus_labels = array( 
+		'name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
+		'singular_name' => _x( go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
+		'search_items' => _x( 'Search '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
+		'popular_items' => _x( 'Popular '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
+		'all_items' => _x( 'All '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
+		'parent_item' => _x( go_return_options( 'go_focus_name' ).' Category Parent', 'task_focus_categories' ),
+		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_focus_name' ).' Category:', 'task_focus_categories' ),
+		'edit_item' => _x( 'Edit '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
+		'update_item' => _x( 'Update '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
+		'add_new_item' => _x( 'Add New '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
+		'new_item_name' => _x( 'New '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
+		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_focus_name' ).' categories with commas', 'task_focus_categories' ),
+		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_focus_name' ).' categories', 'task_focus_categories' ),
+		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_focus_name' ).' categories', 'task_focus_categories' ),
+		'menu_name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
+	);
+	$focus_args = array(
+		'labels' => $focus_labels,
+		'public' => true,
+		'show_in_nav_menus' => true,
+		'show_ui' => true,
+		'show_tagcloud' => true,
+		'show_admin_column' => false,
+		'hierarchical' => true,
+		'rewrite' => true,
+		'query_var' => true
+	);
+	register_taxonomy( 'task_focus_categories', array( 'tasks' ), $focus_args );
+	
+	/*
+	 * Task Chains Taxonomy
+	 */
+	$task_chains_labels = array(
+		'name' => _x( go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
+		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
+		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
+		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
+		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
+		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Chain Parent', 'task_chains' ),
+		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Chain:', 'task_chains' ),
+		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
+		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
+		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
+		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
+		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' chains with commas', 'task_chains' ),
+		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' chains', 'task_chains' ),
+		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' chains', 'task_chains' ),
+		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
+	);
+	$task_chains_args = array(
+		'labels' => $task_chains_labels,
+		'public' => true,
+		'show_in_nav_menus' => true,
+		'show_ui' => true,
+		'show_tagcloud' => true,
+		'show_admin_column' => false,
+		'hierarchical' => true,
+		'rewrite' => true,
+		'query_var' => true
+	);
+	register_taxonomy( 'task_chains', array( 'tasks' ), $task_chains_args );
+	
+	/*
+	 * Task Pods Taxonomy
+	 */
+	$task_pods_labels = array(
+		'name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
+		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
+		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
+		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
+		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
+		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Pod Parent', 'task_pods' ),
+		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Pod:', 'task_pods' ),
+		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
+		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
+		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
+		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
+		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' pods with commas', 'task_pods' ),
+		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
+		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
+		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
+	);
+	$task_pods_args = array(
+		'labels' => $task_pods_labels,
+		'public' => true,
+		'show_in_nav_menus' => true,
+		'show_ui' => true,
+		'show_tagcloud' => true,
+		'show_admin_column' => false,
+		'hierarchical' => true,
+		'rewrite' => true,
+		'query_var' => true
+	);
+	register_taxonomy( 'task_pods', array( 'tasks' ), $task_pods_args );
+
+	/*
+	 * Task Custom Post Type
+	 */
+	$labels_cpt = array( 
 		'name' => _x( go_return_options( 'go_tasks_plural_name' ), 'task' ),
 		'singular_name' => _x( go_return_options( 'go_tasks_name' ), 'task' ),
 		'add_new' => _x( 'Add New '.go_return_options( 'go_tasks_name' ), 'task' ),
@@ -18,9 +154,8 @@ function register_cpt_task() {
 		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).':', 'task' ),
 		'menu_name' => _x( go_return_options( 'go_tasks_plural_name' ), 'task' )
 	);
-
-	$args = array( 
-		'labels' => $labels,
+	$args_cpt = array(
+		'labels' => $labels_cpt,
 		'hierarchical' => false,
 		'description' => go_return_options( 'go_tasks_plural_name' ),
 		'supports' => array( 'title', 'publicize', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes', 'comments' ),
@@ -38,138 +173,6 @@ function register_cpt_task() {
 		'rewrite' => true ,
 		'capability_type' => 'post'
 	);
-	register_post_type( 'tasks', $args );
-}
-
-add_action( 'init', 'register_cpt_task' );
-
-add_action( 'init', 'register_taxonomy_task_categories' );
-
-function register_taxonomy_task_categories() {
-
-	$labels = array( 
-		'name' => _x( go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
-		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
-		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Category Parent', 'task_categories' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Category:', 'task_categories' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' categories with commas', 'task_categories' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' categories', 'task_categories' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' categories', 'task_categories' ),
-		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
-	);
-
-	$args = array( 
-		'labels' => $labels,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => true,
-		'query_var' => true
-	);
-
-	register_taxonomy( 'task_categories', array( 'tasks' ), $args );
-	
-	$labels_focus = array( 
-		'name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'singular_name' => _x( go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'parent_item' => _x( go_return_options( 'go_focus_name' ).' Category Parent', 'task_focus_categories' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_focus_name' ).' Category:', 'task_focus_categories' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_focus_name' ).' categories with commas', 'task_focus_categories' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_focus_name' ).' categories', 'task_focus_categories' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_focus_name' ).' categories', 'task_focus_categories' ),
-		'menu_name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-	);
-	$args_focus = array( 
-		'labels' => $labels_focus,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => true,
-		'query_var' => true
-	);
-	
-	register_taxonomy( 'task_focus_categories', array( 'tasks' ), $args_focus );
-	
-	$labels_task_chains = array( 
-		'name' => _x( go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
-		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
-		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Chain Parent', 'task_chains' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Chain:', 'task_chains' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' chains with commas', 'task_chains' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' chains', 'task_chains' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' chains', 'task_chains' ),
-		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
-	);
-	$args_task_chains = array(
-		'labels' => $labels_task_chains,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => true,
-		'query_var' => true
-	);
-
-	register_taxonomy( 'task_chains', array( 'tasks' ), $args_task_chains );
-	
-	$labels_task_pods = array(
-		'name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Pod Parent', 'task_pods' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Pod:', 'task_pods' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' pods with commas', 'task_pods' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
-		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-	);
-	$args_task_pods = array(
-		'labels' => $labels_task_pods,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => true,
-		'query_var' => true
-	);
-	
-	register_taxonomy( 'task_pods', array( 'tasks' ), $args_task_pods );
+	register_post_type( 'tasks', $args_cpt );
 }
 ?>

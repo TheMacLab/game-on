@@ -1,11 +1,12 @@
 <?php
 
-//Task Includes
+// task includes
 include( 'tasks/task.php' );
 
-//Store Includes
+// store includes
 include( 'store/super-store.php' );
 
+// test includes
 include( 'test/test_shortcode.php' );
 
 // Meta Boxes

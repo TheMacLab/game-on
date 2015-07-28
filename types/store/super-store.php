@@ -7,15 +7,15 @@ Contributing Author: Semar Yousif
 Creation Date: 05/09/13
 */
 // Includes
-include ( 'store-shortcode.php' );
-include ( 'includes/lightbox/backend-lightbox.php' );
-include ( 'store-admin-footer.php' );
-//////////////////////////////////////////////////////////////////////////////////////
-/////////////////////          Store Taxonomy             ////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
-//Adds Store Texonomy
-add_action( 'init' , 'go_store_taxonomy' );
-function go_store_taxonomy() {
+include( 'store-shortcode.php' );
+include( 'includes/lightbox/backend-lightbox.php' );
+include( 'store-admin-footer.php' );
+
+function go_register_store_tax_and_cpt() {
+	
+	/*
+	 * Store Types Taxonomy
+	 */
 	$labels = array(
 		'name' => _x( get_option( 'go_store_name' ).' Categories', 'taxonomy general name' ),
 		'singular_name' => _x( get_option( 'go_store_name' ).' Item Category', 'taxonomy singular name' ),
@@ -27,7 +27,7 @@ function go_store_taxonomy() {
 		'update_item' => __( 'Update '.get_option( 'go_store_name' ).' Category' ),
 		'add_new_item' => __( 'Add New '.get_option( 'go_store_name' ).' Category' ),
 		'new_item_name' => __( 'New '.get_option( 'go_store_name' ).' Category' ),
-	);    
+	);   
 	register_taxonomy( 
 		'store_types', 
 		array( 'jobs' ), 
@@ -37,10 +37,13 @@ function go_store_taxonomy() {
 			'show_ui' => true,
 			'query_var' => true,
 			'show_in_nav_menus' => true,
-			'rewrite' => array( 'slug' => 'store-types', 'with_front' => false),
+			'rewrite' => array( 'slug' => 'store-types', 'with_front' => false ),
 		)
 	);
-  
+	
+	/*
+	 * Store Focus Category Taxonomy
+	 */
 	$labels_focus = array( 
 		'name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'store_focus_categories' ),
 		'singular_name' => _x( go_return_options( 'go_focus_name' ).' Category', 'store_focus_categories' ),
@@ -58,7 +61,6 @@ function go_store_taxonomy() {
 		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_focus_name' ).' categories', 'store_focus_categories' ),
 		'menu_name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'store_focus_categories' ),
 	);
-	
 	$args_focus = array( 
 		'labels' => $labels_focus,
 		'public' => true,
@@ -70,21 +72,17 @@ function go_store_taxonomy() {
 		'rewrite' => true,
 		'query_var' => true
 	);
-	
-	register_taxonomy( 'store_focus_categories', array( 'go_store' ), $args_focus);
+	register_taxonomy( 'store_focus_categories', array( 'go_store' ), $args_focus );
 
-}
-//////////////////////////////////////////////////////////////////////////////////////
-/////////////////////           Store Post Type           ////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
-add_action( 'init', 'go_store_post_type' );
-function go_store_post_type() {
+	/*
+	 * Store Custom Post Type
+	 */
 	register_post_type( 'go_store',
 		array(
 			'labels' => array(
-				'name' => __(get_option( 'go_store_name' )),
-				'menu_name' => __(get_option( 'go_store_name' )),
-				'singular_name' => __(get_option( 'go_store_name' ).' Item' ),
+				'name' => __( get_option( 'go_store_name' ) ),
+				'menu_name' => __( get_option( 'go_store_name' ) ),
+				'singular_name' => __( get_option( 'go_store_name' ).' Item' ),
 				'add_new' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
 				'add_new_item' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
 				'edit' => __( 'Edit '.get_option( 'go_store_name' ).' Items' ),
@@ -101,11 +99,19 @@ function go_store_post_type() {
 			'public' => true,
 			'has_archive' => true,
 			'rewrite' => array( 'slug' => 'store' ),
-			'menu_icon' => plugins_url( '/images/little-ico.png' , __FILE__ ),  // Icon Path
+			'menu_icon' => plugins_url( '/images/little-ico.png' , __FILE__ ),
 			'hierachical' => true,
 			'menu_position' => 21,
-			'supports' => array( 'title', 'thumbnail', 'excerpt', 'page-attributes', 'editor', 'custom-fields', 'revisions', 'comments' )
-			
+			'supports' => array( 
+				'title',
+				'thumbnail',
+				'excerpt',
+				'page-attributes',
+				'editor',
+				'custom-fields',
+				'revisions',
+				'comments'
+			)
 		)
 	);
 }
