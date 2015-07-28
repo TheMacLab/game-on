@@ -114,6 +114,7 @@ add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notificatio
 add_action( 'wp_ajax_go_get_purchase_count', 'go_get_purchase_count' );
 add_shortcode( 'go_stats_page', 'go_stats_page' );
 add_action( 'admin_init', 'go_tsk_actv_redirect' );
+add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'inRange', 'inRange' );
 add_action( 'isEven','isEven' );
 add_action( 'wp_head', 'go_stats_overlay' );
@@ -156,6 +157,22 @@ function go_tsk_actv_redirect() {
 	}
 }
 
+function go_add_delete_post_hook() {
+	if ( current_user_can( 'delete_posts' ) ) {
+		add_action( 'delete_post', 'go_delete_cpt_data' );
+	}
+}
+
+function go_delete_cpt_data( $cpt_id ) {
+	global $wpdb;
+	if ( "tasks" == get_post_type( $cpt_id ) || "go_store" == get_post_type( $cpt_id ) ) {
+		$cpt_to_delete = $wpdb->get_var( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}go WHERE post_id = %d", $cpt_id ) );
+		if ( $cpt_to_delete ) {
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}go WHERE post_id = %d", $cpt_id ) );
+		}
+	}
+	return true;
+}
 
 /* 
  * Registers Game On custom post types and taxonomies, then
