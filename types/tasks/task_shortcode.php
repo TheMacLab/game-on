@@ -2530,7 +2530,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 								if ( $bonus_loot[2][ $store_item ] * 10 > 999 ) {
 									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a>";
 								} elseif ( $bonus_loot[2][ $store_item ] * 10 <= 999 ) {
-									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a>: ".$bonus_loot[2][ $store_item ]."%";
+									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a> ".$bonus_loot[2][ $store_item ]."% Drop Rate";
 						}
 					}
 				}
@@ -2555,7 +2555,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 		echo "</br>";
 		}
 		if ( ! empty( $bonus_items_array ) ) {
-			echo "{$bonus_loot_name} - ";
+			echo "<strong>{$bonus_loot_name} </strong>- ";
 			foreach ( $bonus_items_array_keys as $index => $key ) {
 				echo $bonus_items_array[ $key ];
 				if ( $index < max( $bonus_items_array_keys ) ) {
