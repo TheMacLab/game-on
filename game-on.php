@@ -156,9 +156,18 @@ function go_tsk_actv_redirect() {
 	}
 }
 
+
+/* 
+ * Registers Game On custom post types and taxonomies, then
+ * updates the site's rewrite rules to mitigate cpt and 
+ * permalink conflicts. flush_rewrite_rules() must always
+ * be called AFTER custom post types and taxonomies are
+ * registered.
+ */
 function go_register_tax_and_cpt() {
 	go_register_task_tax_and_cpt();
 	go_register_store_tax_and_cpt();
+	flush_rewrite_rules();
 }
 
 function inRange( $int, $min, $max ) {
