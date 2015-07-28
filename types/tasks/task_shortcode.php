@@ -17,7 +17,9 @@ function go_task_shortcode( $atts, $content = null ) {
 	if ( $id && ! empty( $user_ID ) ) { // If the shortcode has an attribute called id, run this code
 		$task_pods = get_option( 'go_task_pod_globals' );
 		$pods_array = wp_get_post_terms( get_the_id(), 'task_pods' );
-		$pod_slug = $pods_array[0]->slug;
+		if ( ! empty( $pods_array ) ) {
+			$pod_slug = $pods_array[0]->slug;
+		}
 		$pod_link = ( ! empty( $task_pods[ $pod_slug ][ 'go_pod_link' ] ) ? $task_pods[ $pod_slug ][ 'go_pod_link' ] : '' );
 		$today = date( 'Y-m-d' );
 		$task_name = strtolower( go_return_options( 'go_tasks_name' ) );
