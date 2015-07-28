@@ -559,6 +559,7 @@ function go_stats_leaderboard_choices() {
 	<?php
 	die();
 }
+
 function go_return_user_data( $id, $counter, $sort ) {
 	$points = go_return_points( $id );
 	$currency = go_return_currency( $id );
