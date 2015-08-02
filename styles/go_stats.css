@@ -236,12 +236,31 @@
 
 .go_stats_task_status p {
 	margin-top: -4px;
+	margin-bottom: 0;
 }
 
-/* This makes up for the space that the border takes up. */
+/* 
+ * This makes up for the space that the border takes up on
+ * stage boxes with the future_url class.
+ */
 .go_stats_task_status.future_url p,
 .go_stats_task_status.future_url.completed p {
 	margin-top: -5px;
+}
+
+/* This only applies to the stats page viewed from the dashboard. */
+body.wp-admin .go_stats_task_status p {
+	margin-top: -2px;
+}
+
+/* 
+ * This makes up for the space that the border takes up on
+ * stage boxes with the future_url class. This only applies
+ * to the stats page viewed from the dashboard.
+ */
+body.wp-admin .go_stats_task_status.future_url p,
+body.wp-admin .go_stats_task_status.future_url.completed p {
+	margin-top: -3px;
 }
 
 .go_stats_task_stage_url {
