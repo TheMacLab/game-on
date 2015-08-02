@@ -376,6 +376,9 @@ function go_stats_move_stage( task_id, status ) {
 			}
 			jQuery( '#go_stats_user_currency_value' ).html( parseFloat( jQuery( '#go_stats_user_currency_value' ).html() ) + json['currency']);
 			jQuery( '#go_stats_user_bonus_currency_value' ).html( parseFloat( jQuery( '#go_stats_user_bonus_currency_value' ).html() ) + json['bonus_currency']);
+
+			// refreshes the stats page task list
+			go_stats_task_list();
 		}
 	});
 }
