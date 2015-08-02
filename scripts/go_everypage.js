@@ -326,11 +326,10 @@ function go_stats_move_stage( task_id, status ) {
 		message = task_message.val();
 	} else {
 		message = task_message.prop( 'placeholder' );
-	} 
-	if ( jQuery( 'div[task="' + task_id + '"][stage="' + status + '"]' ).attr( 'count' ) ) {
-		count = jQuery( 'div[task="' + task_id + '"][stage="' + status + '"]' ).attr( 'count' );
-	} else {
-		count = 0;	
+	}
+	var count = jQuery( 'div[task="' + task_id + '"][stage="' + status + '"]' ).attr( 'count' );
+	if ( 'undefined' == typeof( count ) || '' == count ) {
+		count = 0;
 	}
 	jQuery.ajax({
 		type: 'post',

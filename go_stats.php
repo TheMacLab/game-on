@@ -151,14 +151,123 @@ function go_stats_task_list() {
 				);
 				
 				for ( $i = 5; $i > 0; $i--) {
+
+					/* 
+					 * Produces an empty string when the user hasn't viewed any quests yet.
+					 * When populated, the timestamps variable will contain an array. The
+					 * array will contain arrays, indexed by the post id of the task, which
+					 * will contain timestamps indexed by stage.
+					 *  
+					 * e.g. $timestamps[342][2][0] will grab the first registered attempt
+					 *		at the accept stage of task with the post id 342.
+					 *		$timestamps[342][2][1] will grab the most recent attempt.
+					 */
 					$timestamps = get_user_meta( $user_id, 'go_task_timestamps', true );
-					$stage_url = ( ( ! empty( $task_urls[ $i ] ) ) ? $task_urls[ $i ] : ( ( $i == 5 && ! empty( $task_urls[4] ) && $task->status == 4 && $task->count >= 1 ) ? $task_urls[4] : '' ) );
-					
-					?>
-					<a href='<?php echo ( ( ! empty( $stage_url ) ) ? $stage_url : "#" ); ?>' class='<?php echo ( ( $is_admin ) ? "go_stats_task_admin_stage_wrap" : "go_stats_task_stage_wrap go_user" ); ?> <?php echo ( ( ! empty( $stage_url ) ) ? "go_stats_task_stage_url" : '' ); ?>' <?php echo ( ( ! empty( $stage_url) ) ? 'target="_blank"' : '' ); ?>>
-					<div title='<?php if( ! empty( $timestamps[ $task->post_id ][ $i ] )) { echo "First attempt: ".$timestamps[ $task->post_id ][ $i ][0]."\nMost recent:  ".$timestamps[ $task->post_id ][ $i ][1]; } ?>' task='<?php echo $task->post_id; ?>' stage='<?php echo $i; ?>' class='go_stats_task_status <?php if ( $task->status >= $i || $task->count >= 1 ) { echo 'completed'; } if ( $i > $stage_count ) { echo 'go_stage_does_not_exist'; } ?> <?php echo ( ( $i <= 4 && $task->count < 1 ) ? ( ( ! empty( $stage_url) ) ? "stage_url" : '' ) : ( ( $i == 5 && $task->count >= 1 && ! empty( $stage_url ) ) ? "stage_url" : '' ) ); ?> <?php echo ( ( ! empty( $url_switch[ $i-1 ] ) && $task->status < $i && $task->count < 1 && $i <= $stage_count ) ? 'future_url' : '' ); ?>' <?php if ( $task->count >= 1 ) { echo "count='{$task->count}'"; } ?>><?php if ( $i == 5 && $task->count > 1 ) { echo $task->count; } ?><?php if ( ! empty ( $timestamps[ $task->post_id ][ $i ][0] ) ) { if ($i != 5)  { echo substr($timestamps[ $task->post_id ][ $i ][0], 0, 5); } } ?></div>
-					</a>
-					<?php 
+
+					// Used for the class attribute in the stage box anchor tag.
+					$link_class_list_str = 'go_stats_task_stage_wrap go_user';
+
+					/*
+					 * Used for the href attribute in the stage box anchor tag.
+					 * The stage URL is not set to "#" by default, because the
+					 * stage box div tag's class list relies on the stage URL
+					 * being empty. An inline empty check is made for the stage
+					 * URL as the stage box is being output.
+					 */
+					$link_stage_url = '';
+
+					// Used for the target attribute in the stage box anchor tag.
+					$link_target_string = '';
+
+					// Used for the class attribute in the stage box div tag.
+					$div_class_list_str = 'go_stats_task_status';
+
+					// Used for the title attribute in the stage box div tag.
+					$div_title_str = '';
+
+					// Used for the count attribute in the repeat stage box div tag.
+					$div_count_str = '';
+
+					/*
+					 * Used for the date timestamp in the content of the stage box div tag
+					 * (for all except the repeat stage box).
+					 */
+					$div_timestamp_date_str = '';
+
+					if ( ! empty( $task_urls[ $i ] ) ) {
+						$link_stage_url = $task_urls[ $i ];
+					} else if ( 5 == $i &&
+							! empty( $task_urls[4] ) &&
+							4 == $task->status &&
+							$task->count >= 1 ) {
+						$link_stage_url = $task_urls[4];
+					}
+
+					if ( $is_admin ) {
+						$link_class_list_str = 'go_stats_task_admin_stage_wrap';
+					}
+
+					if ( ! empty( $link_stage_url ) ) {
+						$link_class_list_str .= ' go_stats_task_stage_url';
+					}
+
+					if ( is_array( $timestamps ) && ! empty( $timestamps[ $task->post_id ] ) &&
+							! empty( $timestamps[ $task->post_id ][ $i ] ) ) {
+						$div_title_str = "First attempt: {$timestamps[ $task->post_id ][ $i ][0]}\n".
+							"Most recent: {$timestamps[ $task->post_id ][ $i ][1]}";
+					}
+
+					if ( $task->status >= $i || $task->count >= 1 ) {
+						$div_class_list_str .= ' completed';
+					} else if ( $i > $stage_count ) {
+						$div_class_list_str .= ' go_stage_does_not_exist';
+					}
+
+					if ( ! empty( $link_stage_url ) &&
+							( ( $i <= 4 && $task->count < 1 ) ||
+							( $i == 5 && $task->count >= 1 ) ) ) {
+						$div_class_list_str .= ' stage_url';
+					}
+
+					if ( ! empty( $url_switch[ $i - 1 ] ) &&
+							$task->status < $i &&
+							$task->count < 1 &&
+							$i <= $stage_count ) {
+						$div_class_list_str .= ' future_url';
+					}
+
+					if ( $i == 5 && $task->count > 1 ) {
+						$div_count_str = $task->count;
+					}
+
+					if ( 5 != $i &&
+							is_array( $timestamps ) &&
+							! empty( $timestamps[ $task->post_id ] ) &&
+							! empty( $timestamps[ $task->post_id ][ $i ][0] ) ) {
+						$div_timestamp_date_str = substr(
+							$timestamps[ $task->post_id ][ $i ][0],
+							0,
+							5
+						);
+					}
+
+					/*
+					 * This echo statement displays the stage boxes in the stats panel.
+					 * We simply check for the task count string being empty, as the count
+					 * attribute should be added to the div when the repeat stage's box is
+					 * being displayed. There is no check for the date timestamp string being
+					 * empty because it will simply output an empty string on the repeat
+					 * stage's box.
+					 */
+					echo "
+						<a class='{$link_class_list_str}' href='".( ! empty( $link_stage_url ) ? $link_stage_url : '#' )."' ".
+								( ! empty( $link_stage_url ) ? 'target="_blank"' : '' ).">
+							<div class='{$div_class_list_str}' title='{$div_title_str}' task='{$task->post_id}' stage='{$i}' ".
+									( ! empty( $div_count_str ) ? "count='{$div_count_str}'>{$div_count_str}" : '>' ).
+								"<p>{$div_timestamp_date_str}</p>
+							</div>
+						</a>
+					";
 				}
 				?>
 				</div>
