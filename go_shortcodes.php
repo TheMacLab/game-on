@@ -622,7 +622,13 @@ function go_task_pod_tasks( $atts ) {
 	if ( ! empty( $previous_pod_slug ) && $previous_pod_tasks_finished < $previous_pod_tasks_required ) {
 		$previous_pod_name = $pods_options[ $previous_pod_slug ]['go_pod_name'];
 		$previous_pod_link = $pods_options[ $previous_pod_slug ]['go_pod_link'];
-		return "<b>The previous Pod must be finished first: <a href='".esc_url( $previous_pod_link )." target='_top'>{$previous_pod_name}</a></b><br/>";
+		return "<b>The previous Pod must be finished first: <a href='".
+			(
+				! empty( $previous_pod_link ) ?
+				esc_url( $previous_pod_link ) :
+				'#'
+			).
+			"' target='_top'>{$previous_pod_name}</a></b><br/>";
 	}
 	if ( '...' !== $next_pod ) {
 		if ( $tasks_finished >= $tasks_required ) {

@@ -35,11 +35,17 @@ function go_task_pods() {
 				$slug = $pod_category->slug;
 				$total = $pod_category->count;
 				$name = $pod_category->name;
-				echo "<span class='go_pod_list_item' id='go_pod_span_{$slug}'><b><a href='{$link}'>".$pod_category->name."</a></b>";
+				echo "<span class='go_pod_list_item' id='go_pod_span_{$slug}'><b><a href='".
+					( 
+						! empty( $pods_options[ $slug ]['go_pod_link'] ) ?
+						$pods_options[ $slug ]['go_pod_link'] :
+						'#'
+					).
+					"'>".$pod_category->name."</a></b>";
 				?>
 				<br/>
 				<input type='text' id='go_pod_link[<?php echo $slug ?>]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_link]' 
-					value='<?php echo ( ! empty( $pods_options[ $slug ]['go_pod_link'] ) ? $pods_options[ $slug ]['go_pod_link'] : '' ); ?>' placeholder='Link'/><br/>
+					value='<?php echo ( ! empty( $pods_options[ $slug ]['go_pod_link'] ) ? $pods_options[ $slug ]['go_pod_link'] : '' ); ?>' placeholder='Link to Pod Page'/><br/>
 				Must Complete 
 				<select id='go_pod_stage_select[<?php echo $slug ?>]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_stage_select]'>
 					<option <?php echo ( ( ! empty( $pods_options[ $slug ]['go_pod_stage_select'] ) && 'third_stage' == $pods_options[ $slug ]['go_pod_stage_select'] ) ? 'selected' : '' ); ?> 
