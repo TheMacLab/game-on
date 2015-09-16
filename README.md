@@ -12,7 +12,7 @@ If you think Game-On could use a new feature or you found a bug please refer to 
 
 * * *
 
-### Lovelying Created By
+### Lovingly Created By
 
 Current Authors:
 

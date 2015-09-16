@@ -1249,7 +1249,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					return;
 				}
 			}
-			if ( 'true' !== undoing && jQuery( '#go_pass_lock' ).length > 0) {
+			if ( 'true' !== undoing && jQuery( '#go_pass_lock' ).length > 0 ) {
 				var pass_entered = jQuery( '#go_pass_lock' ).attr( 'value' ).length > 0 ? true : false;
 				if ( ! pass_entered ) {
 					jQuery( '#go_stage_error_msg' ).show();
@@ -1796,7 +1796,7 @@ function task_change_stage() {
 	$c_url_is_locked = ( ! empty( $custom_fields['go_mta_completion_url_key'][0] ) ? true : false );
 	$m_url_is_locked = ( ! empty( $custom_fields['go_mta_mastery_url_key'][0] ) ? true : false );
 
-	if ( ! empty( $pass ) ) {
+	if ( ! empty( $pass ) || "0" === $pass ) {
 		if ( $status == 4 ) {
 			$temp_status = $status;
 		} else {
