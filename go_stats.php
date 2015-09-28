@@ -31,20 +31,33 @@ function go_admin_bar_stats() {
 	$penalty_name = go_return_options( 'go_penalty_name' );
 	$minutes_name = go_return_options( 'go_minutes_name' );
 
-	// user pnc 
-	go_get_rank( $current_user_id );
 	$current_points = go_return_points( $current_user_id );
 	$current_currency = go_return_currency( $current_user_id );
 	$current_bonus_currency = go_return_bonus_currency( $current_user_id );
 	$current_penalty = go_return_penalty( $current_user_id );
 	$current_minutes = go_return_minutes( $current_user_id );
-	global $current_rank;
-	global $current_rank_points;
-	global $next_rank;
-	global $next_rank_points;
-	$display_current_rank_points = $current_points - $current_rank_points;
-	$display_next_rank_points = $next_rank_points - $current_rank_points;
-	$percentage_of_level = ( $display_current_rank_points / $display_next_rank_points ) * 100;
+
+	$display_current_rank_points = 0;
+	$display_next_rank_points = 0;
+	$percentage_of_level = 1;
+
+	// user pnc 
+	$rank = go_get_rank( $current_user_id );
+	if ( ! empty( $rank ) ) {
+		$current_rank = $rank[0];
+		$current_rank_points = $rank[1];
+		$next_rank = $rank[2];
+		$next_rank_points = $rank[3];
+		
+		$display_current_rank_points = $current_points - $current_rank_points;
+		$display_next_rank_points = $next_rank_points - $current_rank_points;
+		$percentage_of_level = ( $display_current_rank_points / $display_next_rank_points ) * 100;
+	} else {
+		error_log( 
+			"Game On Error: rank variable was empty in go_stats.php"
+		);
+	}
+	
 	?>
 	<div id='go_stats_lay'>
 		<div id='go_stats_gravatar'><?php echo $user_avatar; ?></div>

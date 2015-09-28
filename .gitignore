@@ -1,1 +1,6 @@
 go_definitions.php
+
+# NodeJS and GruntJS
+node_modules/
+package.json
+Gruntfile.js

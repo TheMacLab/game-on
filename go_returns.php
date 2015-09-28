@@ -110,17 +110,26 @@ function go_return_badge_count( $user_id ) {
 // Updates current_rank global regardless.
 function go_return_clean_rank( $user_id, $return_rank = true) {
 	if ( ! empty( $user_id ) ) {
-		global $current_rank;
-		global $current_points;
+		$go_current_points = go_return_points( $user_id );
+		$user_rank = go_get_rank( $user_id );
+		if ( empty( $user_rank ) ) {
+			error_log( 
+				"Game On Error: user meta value was empty ".
+				"in go_return_clean_rank() in go_returns.php"
+			);
+			return;
+		} else {
+			$current_rank = $user_rank[0];
+		}
 		$ranks = get_option( 'go_ranks' );
 		$names = $ranks['name'];
 		$points = $ranks['points'];
 		if ( ! empty( $names ) && ! empty( $points ) ) {
 			for ( $i = 0; $i < count( $points ); $i++) {
-				if ( (int) $points[ $i + 1 ] > (int) $current_points ) {
+				if ( (int) $points[ $i + 1 ] > (int) $go_current_points ) {
 					$name = $names[ $i ];
 					$current_rank = $name;
-					if ( $return_rank === true) {
+					if ( $return_rank === true ) {
 						return ( $name );
 					}
 				}

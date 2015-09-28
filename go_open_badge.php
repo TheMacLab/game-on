@@ -26,9 +26,9 @@ function go_badge_add_attachment( $form_fields, $post ) {
 
 function go_award_badge( $atts ) {
 	global $wpdb;
-	global $counter;
-	$counter++;
-	$space = $counter*85;
+	global $go_notify_counter;
+	$go_notify_counter++;
+	$space = $go_notify_counter*85;
 	
 	$id = $atts['id'];
 	$repeat = $atts['repeat'] ? $atts['repeat'] : 'off';

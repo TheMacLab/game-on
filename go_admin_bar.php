@@ -7,23 +7,43 @@ function go_display_admin_bar() {
 }
 
 function go_admin_bar() {
-	global $wpdb;
-	global $current_user_id;
 	global $wp_admin_bar;
-	global $current_points; //users current experience
-	global $current_currency; //users current money
-	global $current_rank;
-	global $next_rank_points;
-	global $current_rank_points;
+
+	$user_id = get_current_user_id();
+	
+	// the user's current amount of experience (points)
+	$go_current_points = go_return_points( $user_id );
+	
+	// the user's current amount of currency
+	$go_current_currency = go_return_currency( $user_id );
+
+	$ranks_output = go_update_ranks( $user_id, $go_current_points, false );
+
+	$rank = go_get_rank( $user_id );
+	if ( ! empty( $rank ) ) {
+		$current_rank = $rank[0];
+		$current_rank_points = $rank[1];
+		$next_rank = $rank[2];
+		$next_rank_points = $rank[3];
+	}
+
+	error_log(
+		"##### go_admin_bar #####\n".
+		"\$go_current_points: $go_current_points\n".
+		"\$current_rank: $current_rank\n".
+		"\$current_rank_points: $current_rank_points\n".
+		"\$next_rank_points: $next_rank_points\n".
+		"\$next_rank: $next_rank"
+	);
+
 	$dom = ( $next_rank_points - $current_rank_points );
-	$rng = ( $current_points - $current_rank_points);
-	$current_bonus_currency = go_return_bonus_currency( get_current_user_id() );
-	$current_penalty = go_return_penalty( get_current_user_id() );
-	$current_minutes = go_return_minutes( get_current_user_id() );
+	$rng = ( $go_current_points - $current_rank_points );
+	$current_bonus_currency = go_return_bonus_currency( $user_id );
+	$current_penalty = go_return_penalty( $user_id );
+	$current_minutes = go_return_minutes( $user_id );
 	if ( $dom <= 0 ) {
 		$dom = 1;
 	}
-	$ranks_output = go_update_ranks( $current_user_id, $current_points, false );
 	$percentage = $rng / $dom * 100;
 	if ( $percentage <= 0 ) { 
 		$percentage = 0;
@@ -47,7 +67,7 @@ function go_admin_bar() {
 	
 	if ( is_admin_bar_showing() && is_user_logged_in() ) {
 		$is_admin = false;
-		$user_obj = get_user_by( 'id', $current_user_id );
+		$user_obj = get_user_by( 'id', $user_id );
 		$user_roles = $user_obj->roles;
 		if ( ! empty( $user_roles ) ) {
 			foreach ( $user_roles as $role ) {
@@ -69,7 +89,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_rank',
-				'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank( $current_user_id ).'</div>',
+				'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank( $user_id ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -78,7 +98,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_points',
-				'title' => '<div id="go_admin_bar_points">'.go_return_options( 'go_points_name' ).': '.go_display_points( $current_points ).'</div>',
+				'title' => '<div id="go_admin_bar_points">'.go_return_options( 'go_points_name' ).': '.go_display_points( $go_current_points ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -87,7 +107,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_points',
-				'title' => '<div id="go_admin_bar_currency">'.go_return_options( 'go_currency_name' ).': '.go_display_currency( $current_currency ).'</div>',
+				'title' => '<div id="go_admin_bar_currency">'.go_return_options( 'go_currency_name' ).': '.go_display_currency( $go_current_currency ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 

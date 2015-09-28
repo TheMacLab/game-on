@@ -12,9 +12,11 @@ function go_task_shortcode( $atts, $content = null ) {
 	), $atts);
 	$id = $atts['id'];
 	global $wpdb;
-	$user_ID = get_current_user_id(); // User ID
+
+	// the current user's id
+	$user_id = get_current_user_id();
 	$page_id = get_the_ID();
-	if ( $id && ! empty( $user_ID ) ) { // If the shortcode has an attribute called id, run this code
+	if ( $id && ! empty( $user_id ) ) { // If the shortcode has an attribute called id, run this code
 		$task_pods = get_option( 'go_task_pod_globals' );
 		$pods_array = wp_get_post_terms( get_the_id(), 'task_pods' );
 		if ( ! empty( $pods_array ) ) {
@@ -29,8 +31,8 @@ function go_task_shortcode( $atts, $content = null ) {
 		$repeat = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : '' ); // Whether or not you can repeat the task
 		$unix_now = current_time( 'timestamp' ); // Current unix timestamp
 		$go_table_name = "{$wpdb->prefix}go";
-		$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
-		$status = (int) $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+		$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+		$status = (int) $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 		
 		$e_admin_lock = ( ! empty( $custom_fields['go_mta_encounter_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] ) : null );
 		if ( ! empty( $e_admin_lock ) ) {
@@ -169,8 +171,8 @@ function go_task_shortcode( $atts, $content = null ) {
 		$bonus_currency_array = ( ! empty( $rewards['bonus_currency'] ) ? $rewards['bonus_currency'] : array() );
 		$bonus_currency_str = implode( ' ', $bonus_currency_array );
 		
-		$current_bonus_currency = go_return_bonus_currency( $user_ID );	
-		$current_penalty = go_return_penalty( $user_ID );
+		$current_bonus_currency = go_return_bonus_currency( $user_id );	
+		$current_penalty = go_return_penalty( $user_id );
 
 		$go_admin_email = get_option( 'go_admin_email' );
 		if ( $go_admin_email ) {
@@ -184,7 +186,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			$admin_name = 'an administrator';
 		}
 		$is_admin = false;
-		$user_obj = get_user_by( 'id', $user_ID );
+		$user_obj = get_user_by( 'id', $user_id );
 		$user_roles = $user_obj->roles;
 		if ( ! empty( $user_roles ) ) {
 			foreach ( $user_roles as $role ) {
@@ -223,7 +225,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
 		
 		$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
-		$sounded_array = (array) get_user_meta( $user_ID, 'go_sounded_tasks', true );
+		$sounded_array = (array) get_user_meta( $user_id, 'go_sounded_tasks', true );
 		
 		// If there are dates in the date picker
 		if ( ! empty( $date_picker) && ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) ) {
@@ -262,7 +264,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					</script>
 					<?php
 					$sounded_array['date'][ $id ] = true;
-					update_user_meta( $user_ID, 'go_sounded_tasks', $sounded_array );
+					update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array );
 				}
 			} else {
 				$update_percent = 1;	
@@ -278,15 +280,15 @@ function go_task_shortcode( $atts, $content = null ) {
 		$future_timer = false;
 		
 		if ( ! empty( $future_modifier ) && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
-			$user_timers = get_user_meta( $user_ID, 'go_timers' );
-			$accept_timestamp = ( ( ! empty( $user_timers[0][ $id ] ) ) ? $user_timers[0][ $id ] : strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_ID}' AND post_id='{$id}'" ) ) ) );
+			$user_timers = get_user_meta( $user_id, 'go_timers' );
+			$accept_timestamp = ( ( ! empty( $user_timers[0][ $id ] ) ) ? $user_timers[0][ $id ] : strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$id}'" ) ) ) );
 			$days = (int) $future_modifier['days'];
 			$hours = (int) $future_modifier['hours'];
 			$minutes =  (int) $future_modifier['minutes'];
 			$seconds = (int) $future_modifier['seconds'];
 			$future_time = strtotime( "{$days} days", 0) + strtotime( "{$hours} hours", 0) + strtotime( "{$minutes} minutes", 0) + strtotime( "{$seconds} seconds", 0) + $accept_timestamp;
 			if ( $status == 2 || ( ! empty( $accept_timestamp) && $status < 3 ) ) {
-				go_task_timer( $id, $user_ID, $future_modifier );
+				go_task_timer( $id, $user_id, $future_modifier );
 			}
 			
 			if ( $future_time != $accept_timestamp && ( ( $unix_now >= $future_time && $status >= 2 ) || ( $unix_now >= $future_time && ! empty( $accept_timestamp ) ) ) ) {
@@ -314,9 +316,9 @@ function go_task_shortcode( $atts, $content = null ) {
 			$update_percent = 1;
 		}
 		
-		global $current_points;
-		if ( $is_admin === false && ! empty( $req_points) && $current_points < $req_points ) {
-			$points = $req_points - $current_points;
+		$go_current_points = go_return_points( $user_id );
+		if ( $is_admin === false && ! empty( $req_points) && $go_current_points < $req_points ) {
+			$points = $req_points - $go_current_points;
 			$points_name = strtolower( go_return_options( 'go_points_name' ) );
 			echo "You need {$points} more {$points_name} to begin this {$task_name}.";
 		} else {
@@ -339,7 +341,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					break;
 			}
 			if ( ! empty( $db_task_stage_upload_var ) ) {
-				$is_uploaded = $wpdb->get_var( "SELECT {$db_task_stage_upload_var} FROM {$go_table_name} WHERE uid = {$user_ID} AND post_id = {$id}" );
+				$is_uploaded = $wpdb->get_var( "SELECT {$db_task_stage_upload_var} FROM {$go_table_name} WHERE uid = {$user_id} AND post_id = {$id}" );
 			} else {
 				$is_uploaded = 0;
 			}
@@ -352,14 +354,14 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 			}
 			
-			if ( get_user_meta( $user_ID, 'go_focus', true ) != '' ) {
-				$user_focus = get_user_meta( $user_ID, 'go_focus', true );	
+			if ( get_user_meta( $user_id, 'go_focus', true ) != '' ) {
+				$user_focus = get_user_meta( $user_id, 'go_focus', true );	
 			}
 			
 			if ( ! empty( $category_names ) && $user_focus ) {
 				$go_ahead = array_intersect( $user_focus, $category_names );
 			}
-			go_display_rewards( $user_ID, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
+			go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
 			
 		?>
 			<script type="text/javascript">
@@ -445,7 +447,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			$list = $wpdb->get_results( "
 				SELECT post_id,status
 				FROM {$go_table_name}
-				WHERE uid = {$user_ID}
+				WHERE uid = {$user_id}
 				AND post_id IN ( {$post_ids_in_chain_string} )
 				ORDER BY FIELD( post_id, {$post_ids_in_chain_string} )
 			" );
@@ -494,7 +496,7 @@ function go_task_shortcode( $atts, $content = null ) {
 
 					// sending go_add_post the $repeat var was the problem, that is why it is now sending a null value.
 					go_add_post(
-						$user_ID,
+						$user_id,
 						$id,
 						0,
 						floor( ( $update_percent * $points_array[0] ) ),
@@ -525,7 +527,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							}
 						}
 						if ( $encounter_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 						}
 					?>
 					<p id='go_stage_error_msg' style='display: none; color: red;'></p>
@@ -559,7 +561,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							}
 						}
 						if ( $encounter_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 						}
 					?>
 					<p id='go_stage_error_msg' style='display: none; color: red;'></p>
@@ -591,7 +593,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							}
 						}
 						if ( $accept_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 						}
 						echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 						if ( $a_is_locked === 'true' && ! empty( $a_pass_lock ) ) {
@@ -625,7 +627,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								}
 							}
 							if ( $completion_upload ) {
-								echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+								echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 							}
 							echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
 							if ( $c_is_locked === 'true' && ! empty( $c_pass_lock ) ) {
@@ -659,7 +661,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								}
 							}
 							if ( $completion_upload ) {
-								echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+								echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 							}
 
 							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
@@ -690,7 +692,7 @@ function go_task_shortcode( $atts, $content = null ) {
 										}
 									}
 									if ( $mastery_upload ) {
-										echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+										echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 									}
 									echo '
 										<div id="repeat_quest">
@@ -720,7 +722,7 @@ function go_task_shortcode( $atts, $content = null ) {
 									';
 								} else {
 									if ( $repeat_upload ) {
-										echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+										echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 									}
 									echo '
 										<div id="repeat_quest">
@@ -764,7 +766,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								}
 							}
 							if ( $mastery_upload ) {
-								echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_ID} post_id={$id}]" )."<br/>";
+								echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 							}
 							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
 						}
@@ -796,34 +798,34 @@ function go_task_shortcode( $atts, $content = null ) {
 		}
 
 		if ( $test_e_active && $test_e_returns ) {
-			$db_test_encounter_fail_count = $wpdb->get_var( "SELECT `e_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$db_test_encounter_fail_count = $wpdb->get_var( "SELECT `e_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_encounter_fail_count'] = $db_test_encounter_fail_count;
 			
-			$db_test_encounter_passed = $wpdb->get_var( "SELECT `e_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$db_test_encounter_passed = $wpdb->get_var( "SELECT `e_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_encounter_passed'] = $db_test_encounter_passed;
 		}
 
 		if ( $test_a_active && $test_a_returns ) {
-			$db_test_accept_fail_count = $wpdb->get_var( "SELECT `a_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$db_test_accept_fail_count = $wpdb->get_var( "SELECT `a_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_accept_fail_count'] = $db_test_accept_fail_count;
 			
-			$db_test_accept_passed = $wpdb->get_var( "SELECT `a_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$db_test_accept_passed = $wpdb->get_var( "SELECT `a_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_accept_passed'] = $db_test_accept_passed;
 		}
 
 		if ( $test_c_active && $test_c_returns ) {
-			$db_test_completion_fail_count = $wpdb->get_var( "SELECT `c_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$db_test_completion_fail_count = $wpdb->get_var( "SELECT `c_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_completion_fail_count'] = $db_test_completion_fail_count;
 			
-			$db_test_completion_passed = $wpdb->get_var( "SELECT `c_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$db_test_completion_passed = $wpdb->get_var( "SELECT `c_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_completion_passed'] = $db_test_completion_passed;
 		}
 
 		if ( $test_m_active && $test_m_returns ) {
-			$db_test_mastery_fail_count = $wpdb->get_var( "SELECT `m_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$db_test_mastery_fail_count = $wpdb->get_var( "SELECT `m_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_mastery_fail_count'] = $db_test_mastery_fail_count;
 			
-			$test_mastery_passed = $wpdb->get_var( "SELECT `m_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" );
+			$test_mastery_passed = $wpdb->get_var( "SELECT `m_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
 			$_SESSION['test_mastery_passed'] = $test_mastery_passed;
 		}
 ?>
@@ -1205,7 +1207,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					bonus_currency: "<?php echo $bonus_currency_str; ?>",
 					status: status,
 					page_id: <?php echo $page_id; ?>,
-					user_ID: <?php echo $user_ID; ?>,
+					user_id: <?php echo $user_id; ?>,
 					post_id: <?php echo $id; ?>,
 					update_percent: <?php echo $date_update_percent; ?>
 				},
@@ -1291,7 +1293,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
 
 			// redeclare (also called "overloading" ) the variable $task_count to the value of the 'count' var on the database.
-			<?php $task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_ID}" ); ?>
+			<?php $task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" ); ?>
 	  		
 			// if the button#go_button exists, set var 'task_status' to the value of the 'status' attribute on the current button#go_button.
 			if ( jQuery( '#go_button' ).length != 0 ) {
@@ -1329,7 +1331,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				data: { 
 					action: 'task_change_stage', 
 					post_id: <?php echo $id; ?>, 
-					user_id: <?php echo $user_ID; ?>,
+					user_id: <?php echo $user_id; ?>,
 					admin_name: '<?php echo $admin_name; ?>',
 					task_count: <?php echo ( ! empty( $task_count ) ? $task_count : 0 ); ?>,
 					status: task_status,
@@ -1477,7 +1479,7 @@ function test_point_update() {
 	$status = (int) $_POST['status'];
 	$page_id = $_POST['page_id'];
 	$post_id = $_POST['post_id'];
-	$user_id = $_POST['user_ID'];
+	$user_id = $_POST['user_id'];
 	$points_str = $_POST['points'];
 	$currency_str = $_POST['currency'];
 	$bonus_currency_str = $_POST['bonus_currency'];
@@ -1630,7 +1632,7 @@ function unlock_stage() {
 		$test_fail_max = ceil( $test_fail_max_temp );
 	}
 	
-	$user_ID = get_current_user_id();
+	$user_id = get_current_user_id();
 
 	$test_c_array = $custom_fields[ $test_stage ][0];
 	$test_c_uns = unserialize( $test_c_array );

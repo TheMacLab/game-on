@@ -366,7 +366,6 @@ function go_install_data() {
 // Adds user id to the totals table upon user creation.
 function go_user_registration( $user_id ) {
 	global $wpdb;
-	global $role_default;
 	$table_name_go_totals = "{$wpdb->prefix}go_totals";
 	$table_name_user_meta = "{$wpdb->prefix}usermeta";
 	$role = get_option( 'go_role', 'subscriber' );
