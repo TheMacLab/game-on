@@ -161,7 +161,7 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 			);
 		}
 	}
-	go_update_totals( $user_id, $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
+	go_update_totals( intval( $user_id ), $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
 }
 	
 // Adds bonus currency.
@@ -280,8 +280,8 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	}
 
 	$current_bonus_currency = go_return_bonus_currency( $user_id );
-		$current_penatly = go_return_penalty( $user_id );
-		$color = barColor( $current_bonus_currency, $current_penatly );
+	$current_penatly = go_return_penalty( $user_id );
+	$color = barColor( $current_bonus_currency, $current_penatly );
 	if ( $type == 'points' ) {
 		$display = go_display_points( $value ); 
 		$rng = ( $current_rank_points -$value ) * -1;

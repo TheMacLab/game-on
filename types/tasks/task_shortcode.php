@@ -2073,7 +2073,7 @@ function task_change_stage() {
 								$user_id = get_current_user_id();
 								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
 								if ( $received) {
-									go_update_totals ( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true );
+									go_update_totals( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true );
 								}
 								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item) );
 								}

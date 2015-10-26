@@ -181,16 +181,18 @@ function go_clipboard_intable_messages() {
 					</tr>";
 			}
 		}  elseif ( $class_a_choice_messages == 'All' ) {
-			foreach ( $class_a_messages as $computer ) {
-				for ( $i = $array_count - 1; $i >= 0; $i-- ) {
-					echo "<tr id='user_{$student_id}'>
-						<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
-						<td>{$computer}</td>
-						<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
-						<td>{$user_display}</td>
-						<td>{$messages[$i]['time']}</td>
-						<td class='message'>{$messages[$i]['message']}</td>
-						</tr>";
+			if ( ! empty( $class_a_messages ) ) {
+				foreach ( $class_a_messages as $key => $computer ) {
+					for ( $i = $array_count - 1; $i >= 0; $i-- ) {
+						echo "<tr id='user_{$student_id}'>
+							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
+							<td>{$computer}</td>
+							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
+							<td>{$user_display}</td>
+							<td>{$messages[$i]['time']}</td>
+							<td class='message'>{$messages[$i]['message']}</td>
+							</tr>";
+					}
 				}
 			}
 		}
@@ -208,27 +210,28 @@ function go_clipboard_add() {
 	$minutes = $_POST['minutes'];
 	$reason = $_POST['reason'];
 	$badge_ID = $_POST['badge_ID'];
-	foreach ( $ids as $key => $value ) {
+	foreach ( $ids as $key => $user_id ) {
+		$user_id = intval( $user_id );
 		if ( $reason != '' ) {
 			if ( $points != '' ) {
-				go_add_currency( $value, $reason, 6, $points, 0, false );
+				go_add_currency( $user_id, $reason, 6, $points, 0, false );
 			}
 			if ( $currency!= '' ) {
-				go_add_currency( $value, $reason, 6, 0, $currency, false );
+				go_add_currency( $user_id, $reason, 6, 0, $currency, false );
 			}
 			if ( $bonus_currency!= '' ) {
-				go_add_bonus_currency( $value, $bonus_currency, $reason );
+				go_add_bonus_currency( $user_id, $bonus_currency, $reason );
 			}
 			if ( $penalty!= '' ) {
-				go_add_penalty( $value, $penalty, $reason );
+				go_add_penalty( $user_id, $penalty, $reason );
 			}
 			if ( $minutes!= '' ) {
-				go_add_minutes( $value, $minutes, $reason );
+				go_add_minutes( $user_id, $minutes, $reason );
 			}
 			if ( $badge_ID != '' ) {
-				do_shortcode( "[go_award_badge id='{$badge_ID}' repeat = 'off' uid='{$value}']" );
+				do_shortcode( "[go_award_badge id='{$badge_ID}' repeat = 'off' uid='{$user_id}']" );
 			}
-			go_message_user( $value, $reason );
+			go_message_user( $user_id, $reason );
 		}
 	}
 	die();
