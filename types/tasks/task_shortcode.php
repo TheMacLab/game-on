@@ -786,13 +786,13 @@ function go_task_shortcode( $atts, $content = null ) {
 				if ( ( ! empty( $bonus_currency_required ) &&
 							$current_bonus_currency < $bonus_currency_required ) &&
 						( ! empty( $penalty_filter ) && 
-							$current_penalty > $penalty_filter ) ) {
+							$current_penalty >= $penalty_filter ) ) {
 					echo "<span class='go_error_red'>You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." and less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
 				} else if ( ( ! empty( $bonus_currency_required ) &&
 						$current_bonus_currency < $bonus_currency_required ) ) {
 					echo "<span class='go_error_red'>You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
 				} else if ( ( ! empty( $penalty_filter ) &&
-						$current_penalty > $penalty_filter ) ) {
+						$current_penalty >= $penalty_filter ) ) {
 					echo "<span class='go_error_red'>You require less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
 				}
 			}
