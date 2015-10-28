@@ -488,7 +488,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		if ( $is_admin === true || $go_ahead || ! isset( $focus_category_lock ) || empty( $category_names ) ) {
 			if ( ( empty( $bonus_currency_required ) || 
 						( ! empty( $bonus_currency_required ) && $current_bonus_currency >= $bonus_currency_required ) ) &&
-					( empty( $bonus_currency_required ) ||
+					( empty( $penalty_filter ) ||
 						( ! empty( $penalty_filter ) && $current_penalty < $penalty_filter ) ) ) {
 				switch ( $status ) {
 					
