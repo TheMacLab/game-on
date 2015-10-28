@@ -773,7 +773,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						}
 						if ( ! empty( $next_post_in_chain ) && ! $last_in_chain ) {
 							echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
-						} elseif ( ! empty( $final_chain_message ) ) {
+						} else if ( ! empty( $final_chain_message ) ) {
 							echo '<div class="go_chain_message">'.$final_chain_message.'</div>';
 						}
 						echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
@@ -783,19 +783,24 @@ function go_task_shortcode( $atts, $content = null ) {
 					wp_list_comments();
 				}
 			} else {
-				if ( ( $current_bonus_currency < $bonus_currency_required && ! empty( $bonus_currency_required ) ) && ( $current_penalty > $penalty_filter && ! empty( $penalty_filter ) ) ) {
-					echo "You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." and less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".";
-				} elseif ( ( $current_bonus_currency < $bonus_currency_required && ! empty( $bonus_currency_required ) ) ) {
-					echo "You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." to view this ".go_return_options( 'go_tasks_name' ).".";
-				} elseif ( ( $current_penalty > $penalty_filter && ! empty( $penalty_filter ) ) ) {
-					echo "You require less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".";
+				if ( ( ! empty( $bonus_currency_required ) &&
+							$current_bonus_currency < $bonus_currency_required ) &&
+						( ! empty( $penalty_filter ) && 
+							$current_penalty > $penalty_filter ) ) {
+					echo "<span class='go_error_red'>You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." and less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
+				} else if ( ( ! empty( $bonus_currency_required ) &&
+						$current_bonus_currency < $bonus_currency_required ) ) {
+					echo "<span class='go_error_red'>You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
+				} else if ( ( ! empty( $penalty_filter ) &&
+						$current_penalty > $penalty_filter ) ) {
+					echo "<span class='go_error_red'>You require less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
 				}
 			}
 		} else { // If user can't access quest because they aren't part of the specialty, echo this
 			$category_name = implode( ',',$category_names );
 			$focus_name = get_option( 'go_focus_name', 'Profession' );
 			$task_name = strtolower( get_option( 'go_tasks_name', 'Quest' ) );
-			echo "This {$task_name} is only available to the \"{$category_name}\" {$focus_name}.";
+			echo "<span class='go_error_red'>This {$task_name} is only available to the \"{$category_name}\" {$focus_name}.</span>";
 		}
 
 		if ( $test_e_active && $test_e_returns ) {

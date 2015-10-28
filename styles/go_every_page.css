@@ -16,6 +16,10 @@
 	z-index: 9999999;
 }
 
+.go_error_red {
+	color: red;
+}
+
 /********************
 *	Admin-Bar Styles
 ********************/
