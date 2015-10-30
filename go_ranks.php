@@ -90,7 +90,9 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		error_log( "\ncurrent points are greater than the max rank" );
 		if ( $current_rank !== $max_rank ) {
 			error_log( "\ncurrent rank isn't equal to the max rank" );
+			
 			// ...set the user's rank to the max rank
+			$new_rank = go_set_rank( $user_id, $max_rank_index, $ranks, true );
 		}
 	} else {
 		error_log( "\ncurrent points are less than the max rank" );

@@ -37,8 +37,12 @@ function go_admin_bar_stats() {
 	$current_penalty = go_return_penalty( $current_user_id );
 	$current_minutes = go_return_minutes( $current_user_id );
 
-	$display_current_rank_points = 0;
-	$display_next_rank_points = 0;
+	$go_option_ranks = get_option( 'go_ranks' );
+	$points_array = $go_option_ranks['points'];
+
+	$max_rank_index = count( $points_array ) - 1;
+	$max_rank_points = $points_array[ $max_rank_index ];
+
 	$percentage_of_level = 1;
 
 	// user pnc 
@@ -49,9 +53,25 @@ function go_admin_bar_stats() {
 		$next_rank = $rank[2];
 		$next_rank_points = $rank[3];
 		
-		$display_current_rank_points = $current_points - $current_rank_points;
-		$display_next_rank_points = $next_rank_points - $current_rank_points;
-		$percentage_of_level = ( $display_current_rank_points / $display_next_rank_points ) * 100;
+		if ( ! empty( $next_rank_points ) ) {
+			$rank_threshold_diff = ( $next_rank_points - $current_rank_points );
+		} else {
+			$rank_threshold_diff = 1;
+		}
+		$pts_to_rank_threshold = ( $current_points - $current_rank_points );
+
+		if ( $max_rank_points === $current_rank_points ) {
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - Prestige";
+		} else {
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
+		}
+
+		$percentage_of_level = ( $pts_to_rank_threshold / $rank_threshold_diff ) * 100;
+		if ( $percentage_of_level <= 0 ) { 
+			$percentage_of_level = 0;
+		} else if ( $percentage_of_level >= 100 ) {
+			$percentage_of_level = 100;
+		}
 	} else {
 		error_log( 
 			"Game On Error: rank variable was empty in go_stats.php"
@@ -68,9 +88,9 @@ function go_admin_bar_stats() {
 			<div id='go_stats_user_rank'><?php echo $current_rank; ?></div>
 			<div id='go_stats_user_progress'>
 				<div id="go_stats_progress_text_wrap">
-					<div id='go_stats_progress_text'><?php echo "<span id='go_stats_user_progress_top_value'>{$display_current_rank_points}</span>/<span id='go_stats_user_progress_bottom_value'>{$display_next_rank_points}</span>"; ?></div>
+					<div id='go_stats_progress_text'><?php echo $pts_to_rank_up_str; ?></div>
 				</div>
-				<div id='go_stats_progress_fill' style='width: <?php echo $percentage_of_level; ?>%;<?php $color = barColor( $current_bonus_currency, $current_penalty ); echo "background-color: {$color}";if ( $percentage_of_level >= 98 ) { echo "border-radius: 15px"; } ?>'></div>
+				<div id='go_stats_progress_fill' style='width: <?php echo $percentage_of_level; ?>%;<?php $color = barColor( $current_bonus_currency, $current_penalty ); echo "background-color: {$color}; ";?>'></div>
 			</div>
             <?php if ( go_return_options( 'go_focus_switch' ) == 'On' ) {?>
             <div id='go_stats_user_focuses'><?php echo ( ( ! empty( $user_focuses) ) ? $user_focuses : '' ); ?></div>
@@ -316,11 +336,18 @@ function go_stats_move_stage() {
 	$current_status = $wpdb->get_var( $wpdb->prepare( "SELECT status FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
 	$page_id = $wpdb->get_var( $wpdb->prepare( "SELECT page_id FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
 	
+	$go_option_ranks = get_option( 'go_ranks' );
+	$points_array = $go_option_ranks['points'];
+
+	$max_rank_index = count( $points_array ) - 1;
+	$max_rank_points = $points_array[ $max_rank_index ];
+
 	$changed = array( 
 		'type' => 'json', 
 		'points' => 0, 
 		'currency' => 0, 
-		'bonus_currency' => 0
+		'bonus_currency' => 0,
+		'max_rank_points' => $max_rank_points
 	);
 	
 	if ( ! empty( $date_picker ) ) {
@@ -359,12 +386,12 @@ function go_stats_move_stage() {
 		
 		$current_points = go_return_points( $user_id );
 		$updated_rank = get_user_meta( $user_id, 'go_rank', true );
-		if ( $current_rank[0][0] != $updated_rank[0][0] ) {
-			$changed['current_points'] = $current_points;
+		if ( $current_rank[0][1] != $updated_rank[0][1] ) {
 			$changed['rank'] = $updated_rank[0][0];
-			$changed['rank_points'] = $updated_rank[0][1];
-			$changed['next_rank_points'] = $updated_rank[1][1];
 		}
+		$changed['current_points'] = $current_points;
+		$changed['current_rank_points'] = $updated_rank[0][1];
+		$changed['next_rank_points'] = $updated_rank[1][1];
 		$changed['abandon'] = 'true';
 		
 		if ( $message === 'See me' ) {
@@ -434,12 +461,12 @@ function go_stats_move_stage() {
 		}
 		$current_points = go_return_points( $user_id );
 		$updated_rank = get_user_meta( $user_id, 'go_rank', true );
-		if ( $current_rank[0][0] != $updated_rank[0][0] ) {
-			$changed['current_points'] = $current_points;
+		if ( $current_rank[0][1] != $updated_rank[0][1] ) {
 			$changed['rank'] = $updated_rank[0][0];
-			$changed['rank_points'] = $updated_rank[0][1];
-			$changed['next_rank_points'] = $updated_rank[1][1];
 		}
+		$changed['current_points'] = $current_points;
+		$changed['current_rank_points'] = $updated_rank[0][1];
+		$changed['next_rank_points'] = $updated_rank[1][1];
 	}
 	
 	echo json_encode( $changed );

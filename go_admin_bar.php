@@ -17,6 +17,17 @@ function go_admin_bar() {
 	// the user's current amount of currency
 	$go_current_currency = go_return_currency( $user_id );
 
+	// the user's current amount of bonus currency,
+	// also used for coloring the admin bar
+	$go_current_bonus_currency = go_return_bonus_currency( $user_id );
+
+	// the user's current amount of penalties,
+	// also used for coloring the admin bar
+	$go_current_penalty = go_return_penalty( $user_id );
+
+	// the user's current amount of minutes
+	$go_current_minutes = go_return_minutes( $user_id );
+
 	$ranks_output = go_update_ranks( $user_id, $go_current_points, false );
 
 	$rank = go_get_rank( $user_id );
@@ -27,31 +38,48 @@ function go_admin_bar() {
 		$next_rank_points = $rank[3];
 	}
 
+	$go_option_ranks = get_option( 'go_ranks' );
+	$points_array = $go_option_ranks['points'];
+
+	/*
+	 * Here we are referring to last element manually,
+	 * since we don't want to modifiy
+	 * the arrays with the array_pop function.
+	 */
+	$max_rank_index = count( $points_array ) - 1;
+	$max_rank_points = $points_array[ $max_rank_index ];
+
 	error_log(
 		"##### go_admin_bar #####\n".
 		"\$go_current_points: $go_current_points\n".
 		"\$current_rank: $current_rank\n".
 		"\$current_rank_points: $current_rank_points\n".
 		"\$next_rank_points: $next_rank_points\n".
-		"\$next_rank: $next_rank"
+		"\$next_rank: $next_rank".
+		"\$max_rank_points: $max_rank_points"
 	);
 
-	$dom = ( $next_rank_points - $current_rank_points );
-	$rng = ( $go_current_points - $current_rank_points );
-	$current_bonus_currency = go_return_bonus_currency( $user_id );
-	$current_penalty = go_return_penalty( $user_id );
-	$current_minutes = go_return_minutes( $user_id );
-	if ( $dom <= 0 ) {
-		$dom = 1;
+	if ( ! empty( $next_rank_points ) ) {
+		$rank_threshold_diff = $next_rank_points - $current_rank_points;
+	} else {
+		$rank_threshold_diff = 1;
 	}
-	$percentage = $rng / $dom * 100;
+	$pts_to_rank_threshold = $go_current_points - $current_rank_points;
+
+	if ( $max_rank_points === $current_rank_points ) {
+		$pts_to_rank_up_str = "{$pts_to_rank_threshold} - Prestige";
+	} else {
+		$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
+	}
+
+	$percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
 	if ( $percentage <= 0 ) { 
 		$percentage = 0;
-	} elseif ( $percentage >= 100 ) {
+	} else if ( $percentage >= 100 ) {
 		$percentage = 100;
 	}
 	
-	$color = barColor( $current_bonus_currency, $current_penalty );
+	$color = barColor( $go_current_bonus_currency, $go_current_penalty );
 	
 	$wp_admin_bar->remove_menu( 'wp-logo' );
 	
@@ -81,7 +109,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_info',
-				'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up" class="go_admin_bar_text">'.( $rng).'/'.( $dom).'</div><div id="go_admin_bar_progress_bar" class="progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
+				'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up" class="go_admin_bar_text">'.$pts_to_rank_up_str.'</div><div id="go_admin_bar_progress_bar" class="progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
 				'href' => '#',
 			) 
 		);
@@ -89,7 +117,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_rank',
-				'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank( $user_id ).'</div>',
+				'title' => '<div id="go_admin_bar_rank">'.$current_rank.'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -116,7 +144,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_currency',
-				'title' => '<div id="go_admin_bar_bonus_currency">'.go_return_options( 'go_bonus_currency_name' ).': '.go_display_bonus_currency( $current_bonus_currency ).'</div>',
+				'title' => '<div id="go_admin_bar_bonus_currency">'.go_return_options( 'go_bonus_currency_name' ).': '.go_display_bonus_currency( $go_current_bonus_currency ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -125,7 +153,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_penalty',
-				'title' => '<div id="go_admin_bar_penalty">'.go_return_options( 'go_penalty_name' ).': '.go_display_penalty( $current_penalty ).'</div>',
+				'title' => '<div id="go_admin_bar_penalty">'.go_return_options( 'go_penalty_name' ).': '.go_display_penalty( $go_current_penalty ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -134,7 +162,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_minutes',
-				'title' => '<div id="go_admin_bar_minutes">'.go_return_options( 'go_minutes_name' ).': '.go_display_minutes( $current_minutes ).'</div>',
+				'title' => '<div id="go_admin_bar_minutes">'.go_return_options( 'go_minutes_name' ).': '.go_display_minutes( $go_current_minutes ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 

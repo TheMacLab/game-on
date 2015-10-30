@@ -280,24 +280,48 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	}
 
 	$current_bonus_currency = go_return_bonus_currency( $user_id );
-	$current_penatly = go_return_penalty( $user_id );
-	$color = barColor( $current_bonus_currency, $current_penatly );
-	if ( $type == 'points' ) {
-		$display = go_display_points( $value ); 
-		$rng = ( $current_rank_points -$value ) * -1;
-		$dom = ( $next_rank_points - $current_rank_points );
+	$current_penalty = go_return_penalty( $user_id );
+
+	$go_option_ranks = get_option( 'go_ranks' );
+	$points_array = $go_option_ranks['points'];
+
+	/*
+	 * Here we are referring to last element manually,
+	 * since we don't want to modifiy
+	 * the arrays with the array_pop function.
+	 */
+	$max_rank_index = count( $points_array ) - 1;
+	$max_rank_points = $points_array[ $max_rank_index ];
+
+	$color = barColor( $current_bonus_currency, $current_penalty );
+	
+	if ( 'points' == $type ) {
+		$display = go_display_points( $value );
+		
+		if ( ! empty( $next_rank_points ) ) {
+			$rank_threshold_diff = ( $next_rank_points - $current_rank_points );
+		} else {
+			$rank_threshold_diff = 1;
+		}
+		$pts_to_rank_threshold = ( $value - $current_rank_points );
+
+		if ( $max_rank_points === $current_rank_points ) {
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - Prestige";
+		} else {
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
+		}
 		echo "<script language='javascript'>
 			jQuery(document).ready(function() {
-				jQuery( '#points_needed_to_level_up' ).html( '{$rng}/{$dom}' );
+				jQuery( '#points_needed_to_level_up' ).html( '{$pts_to_rank_up_str}' );
 			} );
 		</script>";
-	} elseif ( $type == 'currency' ) {
+	} else if ( 'currency' == $type ) {
 		$display = go_display_currency( $value );
-	} elseif ( $type == 'bonus_currency' ) { 
+	} else if ( 'bonus_currency' == $type ) { 
 		$display = go_display_bonus_currency( $value );
-	} elseif ( $type == 'penalty' ) {
+	} else if ( 'penalty' == $type ) {
 		$display = go_display_penalty( $value );
-	} elseif ( $type == 'minutes' ) {
+	} else if ( 'minutes' == $type ) {
 		$display = go_display_minutes( $value );
 	}
 	$percentage = go_get_level_percentage( $user_id );
@@ -469,21 +493,21 @@ function go_return_options( $option ) {
 function barColor( $current_bonus_currency, $current_penalty ) {
 	$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
 	$penalty_threshold = (int) get_option( 'go_penalty_threshold', 5 );
-	$current_penatly = (int) $current_penalty;
+	$current_penalty = (int) $current_penalty;
 	$color = "#39b54a";
-	if ( $current_bonus_currency >= $bonus_threshold && $current_penatly <= $penalty_threshold ) {
+	if ( $current_bonus_currency >= $bonus_threshold && $current_penalty <= $penalty_threshold ) {
 		$color = "#1E90FF";
 	}
-	if ( $current_penatly >= $penalty_threshold ) {
+	if ( $current_penalty >= $penalty_threshold ) {
 		$color = "#ffcc00";
 	}
-	if ( $current_penatly >= $penalty_threshold * 2 ) {
+	if ( $current_penalty >= $penalty_threshold * 2 ) {
 		$color = "#ff6700";
 	}
-	if ( $current_penatly >= $penalty_threshold * 3 ) {
+	if ( $current_penalty >= $penalty_threshold * 3 ) {
 		$color = "#ff0000";
 	}
-	if ( $current_penatly >= $penalty_threshold * 4 ) {
+	if ( $current_penalty >= $penalty_threshold * 4 ) {
 		$color = "#464646";
 	}
 

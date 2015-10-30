@@ -358,19 +358,38 @@ function go_stats_move_stage( task_id, status ) {
 			var json = JSON.parse( html.substr( html.search( '{"type"' ), html.length ) );
 			jQuery( '#go_stats_user_points_value' ).html( parseFloat( jQuery( '#go_stats_user_points_value' ).html() ) + json['points']);
 			
-			if ( json['rank'] ) {
-				top_val = json['current_points'] - json['rank_points'];
-				bottom_val = json['next_rank_points'] - json['rank_points'];
-				percentage = ( top_val / bottom_val ) * 100;
-				jQuery( '#go_stats_user_rank' ).html( json['rank'] );
-				jQuery( '#go_stats_user_progress_top_value' ).html( top_val );
-				jQuery( '#go_stats_user_progress_bottom_value' ).html( bottom_val );
-				jQuery( '#go_stats_progress_fill' ).css( 'width', '' + percentage + '%' );
-			} else {
-				jQuery( '#go_stats_user_progress_top_value' ).html( parseFloat( jQuery( '#go_stats_user_progress_top_value' ).html() ) + json['points']);
-				percentage = ( parseFloat( jQuery( '#go_stats_user_progress_top_value' ).html() ) / parseFloat( jQuery( '#go_stats_user_progress_bottom_value' ).html() ) ) * 100;
-				jQuery( '#go_stats_progress_fill' ).css( 'width', '' + percentage + '%' );
+			var current_rank_points = json.current_rank_points;
+			var next_rank_points = json.next_rank_points;
+			var max_rank_points = json.max_rank_points;
+			var pts_to_rank_threshold = 0;
+			var rank_threshold_diff = 1;
+			var pts_to_rank_up_str = '';
+			var percentage = 0;
+
+			pts_to_rank_threshold = json.current_points - current_rank_points;
+			if ( 0 !== next_rank_points ) {
+				rank_threshold_diff = next_rank_points - current_rank_points;
 			}
+
+			if ( max_rank_points === current_rank_points ) {
+				pts_to_rank_up_str = pts_to_rank_threshold + ' - Prestige';
+			} else {
+				pts_to_rank_up_str = pts_to_rank_threshold + ' / ' + rank_threshold_diff;
+			}
+
+			percentage = ( pts_to_rank_threshold / rank_threshold_diff ) * 100;
+			if ( percentage <= 0 ) { 
+				percentage = 0;
+			} else if ( percentage >= 100 ) {
+				percentage = 100;
+			}
+
+			if ( json['rank'] ) {
+				jQuery( '#go_stats_user_rank' ).html( json['rank'] );
+			}
+			jQuery( '#go_stats_progress_text' ).html( pts_to_rank_up_str );
+			jQuery( '#go_stats_progress_fill' ).css( 'width', percentage + '%' );
+
 			if ( json['abandon'] ) {
 				task_message.parent( 'li' ).remove();
 			}
