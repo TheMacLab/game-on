@@ -302,7 +302,6 @@ function go_install_data() {
 		'go_admin_bar_display_switch' => 'On',
 		'go_admin_bar_user_redirect' => 'On',
 		'go_admin_bar_add_switch' => '',
-		'go_admin_bar_add_minutes_switch' => '',
 		'go_ranks' => $ranks,
 		'go_class_a' => $period_defaults,
 		'go_class_b' => $computer_defaults,
