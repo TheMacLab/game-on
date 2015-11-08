@@ -11,6 +11,37 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
+
+	$ranks = get_option( 'go_ranks' );
+	$name_array = $ranks['name'];
+	$points_array = $ranks['points'];
+	$badges_array = $ranks['badges'];
+	$new_rank = '';
+
+	if ( empty( $ranks ) ) {
+		error_log( 
+			"Game On Error: the go_ranks option is empty in ".
+			"go_update_ranks() in go_ranks.php! ".
+			"Ranks have to be provided in the settings page"
+		);
+		return;
+	}
+
+	/*
+	 * Here we are referring to last element manually,
+	 * since we don't want to modify
+	 * the arrays with the array_pop function.
+	 */
+	$max_rank_index = count( $name_array ) - 1;
+	$max_rank = $name_array[ $max_rank_index ];
+	$max_rank_points = $points_array[ $max_rank_index ];
+
+	/*
+	 * Here we search for the index of the current rank by point threshold,
+	 * which should be unique (it's not guaranteed to be unique).
+	 */
+	$current_rank_index = array_search( $current_rank_points, $points_array );
+
 	$current_points = go_return_points( $user_id );
 	$user_rank = go_get_rank( $user_id );
 	if ( ! empty( $user_rank ) ) {
@@ -43,36 +74,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	// error_log( $next_rank );
 	// error_log( $next_rank_points );
 
-	$ranks = get_option( 'go_ranks' );
-	$name_array = $ranks['name'];
-	$points_array = $ranks['points'];
-	$badges_array = $ranks['badges'];
-	$new_rank = '';
-
-	if ( empty( $ranks ) ) {
-		error_log( 
-			"Game On Error: the go_ranks option is empty in ".
-			"go_update_ranks() in go_ranks.php! ".
-			"Ranks have to be provided in the settings page"
-		);
-		return;
-	}
 	// $update = false;
-
-	/*
-	 * Here we are referring to last element manually,
-	 * since we don't want to modifiy
-	 * the arrays with the array_pop function.
-	 */
-	$max_rank_index = count( $name_array ) - 1;
-	$max_rank = $name_array[ $max_rank_index ];
-	$max_rank_points = $points_array[ $max_rank_index ];
-
-	/*
-	 * Here we search for the index of the current rank by point threshold,
-	 * which should be unique (it's not guaranteed to be unique).
-	 */
-	$current_rank_index = array_search( $current_rank_points, $points_array );
 
 	// error_log( print_r( $current_rank, true ) );
 	// error_log( print_r( $current_rank_points, true ) );
@@ -96,7 +98,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		}
 	} else {
 		error_log( "\ncurrent points are less than the max rank" );
-		if ( ! empty( $next_rank_points ) && $current_points > $next_rank_points ) {
+		if ( $current_points > $next_rank_points ) {
 			error_log( "\ncurrent points are greater than the next rank point threshold" );
 
 			/*
@@ -420,8 +422,8 @@ function go_get_rank( $user_id ) {
 			"##### go_get_rank #####\n".
 			"\$current_rank: $current_rank\n".
 			"\$current_rank_points: $current_rank_points\n".
-			"\$next_rank_points: $next_rank_points\n".
-			"\$next_rank: $next_rank"
+			"\$next_rank: $next_rank\n".
+			"\$next_rank_points: $next_rank_points\n"
 		);
 
 		return array(

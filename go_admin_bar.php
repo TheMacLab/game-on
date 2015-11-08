@@ -55,7 +55,7 @@ function go_admin_bar() {
 		"\$current_rank: $current_rank\n".
 		"\$current_rank_points: $current_rank_points\n".
 		"\$next_rank_points: $next_rank_points\n".
-		"\$next_rank: $next_rank".
+		"\$next_rank: $next_rank\n".
 		"\$max_rank_points: $max_rank_points"
 	);
 
@@ -134,7 +134,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->add_node( 
 			array(
-				'id' => 'go_points',
+				'id' => 'go_currency',
 				'title' => '<div id="go_admin_bar_currency">'.go_return_options( 'go_currency_name' ).': '.go_display_currency( $go_current_currency ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
@@ -143,7 +143,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->add_node( 
 			array(
-				'id' => 'go_currency',
+				'id' => 'go_bonus_currency',
 				'title' => '<div id="go_admin_bar_bonus_currency">'.go_return_options( 'go_bonus_currency_name' ).': '.go_display_bonus_currency( $go_current_bonus_currency ).'</div>',
 				'href' => '#',
 				'parent' => 'go_info',

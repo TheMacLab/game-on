@@ -39,35 +39,35 @@ function go_display_points( $points ) {
 	global $wpdb;
 	$prefix = go_return_options( 'go_points_prefix' );
 	$suffix = go_return_options( 'go_points_suffix' );
-	return $prefix.$points.$suffix;
+	return "{$prefix} {$points} {$suffix}";
 }
 	
 function go_display_currency( $currency ) {
 	global $wpdb;
 	$prefix = go_return_options( 'go_currency_prefix' );
 	$suffix = go_return_options( 'go_currency_suffix' );
-	return $prefix . $currency . $suffix;
+	return "{$prefix} {$currency} {$suffix}";
 }
 
 function go_display_bonus_currency( $bonus_currency ) {
 	global $wpdb;
 	$prefix = go_return_options( 'go_bonus_currency_prefix' );
 	$suffix = go_return_options( 'go_bonus_currency_suffix' );
-	return $prefix . $bonus_currency . $suffix;
+	return "{$prefix} {$bonus_currency} {$suffix}";
 }
 
 function go_display_penalty( $penalty ) {
 	global $wpdb;
 	$prefix = go_return_options( 'go_penalty_prefix' );
 	$suffix = go_return_options( 'go_penalty_suffix' );
-	return $prefix . $penalty . $suffix;
+	return "{$prefix} {$penalty} {$suffix}";
 }
 
 function go_display_minutes( $minutes ) {
 	global $wpdb;
 	$prefix = go_return_options( 'go_minutes_prefix' );
 	$suffix = go_return_options( 'go_minutes_suffix' );
-	return $prefix . $minutes . $suffix;
+	return "{$prefix} {$minutes} {$suffix}";
 }
 
 function go_filter_focuses( $elem ) {
