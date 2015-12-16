@@ -94,7 +94,7 @@ function go_display_help_video( url ) {
 			if ( -1 == url.indexOf( '&rel=0' ) ) {
 				url = url + '&rel=0';	
 			}
-			jQuery( '#go_help_video_container' ).html( '<iframe id="go_video_iframe" width="100%" height="100%" src="' + url + '" frameborder="0" allowfullscreen></iframe>' );
+			jQuery( '#go_help_video_container' ).html( '<iframe id="go_video_iframe" width="100%" height="100%" src="' + url + '" frameborder="0" cc_load_policy="1" allowfullscreen></iframe>' );
 		}
 		if ( -1 != url.indexOf( 'vimeo' ) ) {
 			vimeo_vid_num = url.match( /\d+$/ )[0];
