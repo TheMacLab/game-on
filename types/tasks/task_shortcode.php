@@ -2065,7 +2065,7 @@ function task_change_stage() {
 				-floor( ( $update_percent * $points_array[ $status ] ) ), 
 				-floor( ( $update_percent * $currency_array[ $status ] ) ), 
 				-floor( ( $update_percent * $bonus_currency_array[ $status ] ) ), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
-				if ( $bonus_loot[0] ) {
+				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
 							if ( $on === 'on' ) {
@@ -2082,16 +2082,16 @@ function task_change_stage() {
 									go_update_totals ( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true );
 								}
 								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item) );
-								}
 							}
 						}
 					}
+				}
 			} else {
 				go_add_post( $user_id, $post_id, ( $status - 1), 
 				-floor( ( $update_percent * $points_array[ $status - 1] ) ), 
 				-floor( ( $update_percent * $currency_array[ $status - 1] ) ), 
 				-floor( ( $update_percent * $bonus_currency_array[ $status - 1] ) ), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
-				if ( $bonus_loot[0] ) {
+				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on) {
 							if ( $on === 'on' ) {
@@ -2403,6 +2403,8 @@ function task_change_stage() {
 					echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 				}
 			} else {
+
+				// if repeat is off...
 				if ( $test_m_active ) {
 					echo "<p id='go_test_error_msg' style='color: red;'></p>";
 					if ( $test_m_num > 1 ) {
@@ -2421,7 +2423,7 @@ function task_change_stage() {
 				$user_id = get_current_user_id();
 
 				echo ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-				if ( $bonus_loot[0] ) {
+				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
 							if ( $on === 'on' ) {
@@ -2438,8 +2440,7 @@ function task_change_stage() {
 										if ( ! in_array( $post_id, $mastered ) && $loot_reason == 'Bonus' ) {
 											go_add_post( $user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, false, $loot_reason, 'bonus', false, false );
 											echo "Congrats, " . do_shortcode( '[go_get_displayname]' ) . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a></br>";
-										}
-										elseif ( $loot_reason == 'Quest' ) {
+										} else if ( $loot_reason == 'Quest' ) {
 											go_add_post( $user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, false, $loot_reason, 'quest', false, false );
 											echo "Congrats, " . do_shortcode( '[go_get_displayname]' ) . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a></br>";
 										}
@@ -2528,7 +2529,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 				$bonus_loot = unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] );
 			}
 		}
-		if ( ! empty( $bonus_loot ) && $bonus_loot[0] ) {
+		if ( ! empty( $bonus_loot ) && ! empty( $bonus_loot[0] ) ) {
 			$bonus_loot_display = true;
 					if ( ! empty( $bonus_loot[1] ) ) {
 						$quest_items_array = array();
