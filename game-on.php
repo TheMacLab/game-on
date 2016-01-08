@@ -24,7 +24,6 @@ include( 'go_clipboard.php' );
 include( 'go_open_badge.php' );
 include( 'go_shortcodes.php' );
 include( 'go_comments.php' );
-include( 'go_definitions.php' );
 include( 'go_mail.php' );
 include( 'go_messages.php' );
 include( 'go_task_search.php' );
