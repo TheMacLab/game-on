@@ -20,6 +20,10 @@
 	color: red;
 }
 
+.go_no_scroll {
+	overflow: hidden;
+}
+
 /********************
 *	Admin-Bar Styles
 ********************/

@@ -185,6 +185,9 @@ function go_admin_bar_stats_page_button( id ) {
 			jQuery( '#go_stats_page_black_bg' ).show();
 			jQuery( '#go_stats_white_overlay' ).show();
 			jQuery( '#go_stats_hidden_input' ).val( id );
+
+			// this will stop the body from scrolling behind the stats page
+			jQuery( 'body' ).addClass( 'go_no_scroll' );
 			
 			jQuery( '.go_stats_body_selectors' ).click( function() {
 				if ( jQuery( '#go_stats_help_video' ).length ) {
@@ -259,6 +262,7 @@ function go_stats_close() {
 		myplayer.pause();
 		myplayer.dispose();
 	}
+	jQuery( 'body' ).removeClass( 'go_no_scroll' );
 	jQuery( '#go_stats_white_overlay' ).hide();
 	jQuery( '#go_stats_page_black_bg' ).hide();
 	jQuery( '#go_stats_lay' ).hide();
