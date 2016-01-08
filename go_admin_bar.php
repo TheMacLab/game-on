@@ -69,7 +69,7 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_rank',
-				'title' => '<div id="go_admin_bar_rank">'.go_return_clean_rank( $current_user_id ).'</div>',
+				'title' => '<div id="go_admin_bar_rank">' . $current_rank . '</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -78,16 +78,12 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_points',
-				'title' => '<div id="go_admin_bar_points">'.go_return_options( 'go_points_name' ).': '.go_display_points( $current_points ).'</div>',
-				'href' => '#',
-				'parent' => 'go_info',
-			) 
-		);
-		
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_points',
-				'title' => '<div id="go_admin_bar_currency">'.go_return_options( 'go_currency_name' ).': '.go_display_currency( $current_currency ).'</div>',
+				'title' => '<div id="go_admin_bar_points">' .
+					go_display_longhand_currency(
+						'points',
+						$current_points
+					) .
+					'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -96,7 +92,26 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_currency',
-				'title' => '<div id="go_admin_bar_bonus_currency">'.go_return_options( 'go_bonus_currency_name' ).': '.go_display_bonus_currency( $current_bonus_currency ).'</div>',
+				'title' => '<div id="go_admin_bar_currency">' .
+					go_display_longhand_currency(
+						'currency',
+						$current_currency
+					) .
+					'</div>',
+				'href' => '#',
+				'parent' => 'go_info',
+			) 
+		);
+		
+		$wp_admin_bar->add_node( 
+			array(
+				'id' => 'go_bonus_currency',
+				'title' => '<div id="go_admin_bar_bonus_currency">' .
+					go_display_longhand_currency(
+						'bonus_currency',
+						$current_bonus_currency
+					) .
+					'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -105,7 +120,12 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_penalty',
-				'title' => '<div id="go_admin_bar_penalty">'.go_return_options( 'go_penalty_name' ).': '.go_display_penalty( $current_penalty ).'</div>',
+				'title' => '<div id="go_admin_bar_penalty">' .
+					go_display_longhand_currency(
+						'penalty',
+						$current_penalty
+					) .
+					'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 
@@ -114,7 +134,12 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_minutes',
-				'title' => '<div id="go_admin_bar_minutes">'.go_return_options( 'go_minutes_name' ).': '.go_display_minutes( $current_minutes ).'</div>',
+				'title' => '<div id="go_admin_bar_minutes">' .
+					go_display_longhand_currency(
+						'minutes',
+						$current_minutes
+					) .
+					'</div>',
 				'href' => '#',
 				'parent' => 'go_info',
 			) 

@@ -36,38 +36,68 @@ function go_return_minutes( $user_id ) {
 }
 
 function go_display_points( $points ) {
-	global $wpdb;
 	$prefix = go_return_options( 'go_points_prefix' );
 	$suffix = go_return_options( 'go_points_suffix' );
-	return $prefix.$points.$suffix;
+	return "{$prefix} {$points} {$suffix}";
 }
 	
 function go_display_currency( $currency ) {
-	global $wpdb;
 	$prefix = go_return_options( 'go_currency_prefix' );
 	$suffix = go_return_options( 'go_currency_suffix' );
-	return $prefix . $currency . $suffix;
+	return "{$prefix} {$currency} {$suffix}";
 }
 
 function go_display_bonus_currency( $bonus_currency ) {
-	global $wpdb;
 	$prefix = go_return_options( 'go_bonus_currency_prefix' );
 	$suffix = go_return_options( 'go_bonus_currency_suffix' );
-	return $prefix . $bonus_currency . $suffix;
+	return "{$prefix} {$bonus_currency} {$suffix}";
 }
 
 function go_display_penalty( $penalty ) {
-	global $wpdb;
 	$prefix = go_return_options( 'go_penalty_prefix' );
 	$suffix = go_return_options( 'go_penalty_suffix' );
-	return $prefix . $penalty . $suffix;
+	return "{$prefix} {$penalty} {$suffix}";
 }
 
 function go_display_minutes( $minutes ) {
-	global $wpdb;
 	$prefix = go_return_options( 'go_minutes_prefix' );
 	$suffix = go_return_options( 'go_minutes_suffix' );
-	return $prefix . $minutes . $suffix;
+	return "{$prefix} {$minutes} {$suffix}";
+}
+
+/**
+ * Output currency formatted for the admin bar dropdown.
+ *
+ * Outputs any currency in the format (without quotations): "1234 Experience (XP)".
+ *
+ * @since 2.5.6
+ *
+ * @param STRING $currency_type Contains the base name of the currency to be displayed
+ * 		(e.g. "points", "currency", "bonus_currency", or "penalty" ).
+ * @param BOOLEAN $output Optional. TRUE will echo the currency, FALSE will return it (default).
+ * @return STRING/NULL Either echos or returns the currency. Returns FALSE on failure.
+ */
+
+function go_display_longhand_currency ( $currency_type, $amount, $output = false ) {
+	if ( "points" === $currency_type || 
+			"currency" === $currency_type ||
+			"bonus_currency" === $currency_type ||
+			"penalty" === $currency_type ||
+			"minutes" === $currency_type
+		) {
+
+		$currency_name = go_return_options( "go_{$currency_type}_name" );
+		$suffix = go_return_options( "go_{$currency_type}_suffix" );
+		$str = "{$amount} {$currency_name} ({$suffix})";
+
+		if ( $output ) {
+			echo $str;
+		} else {
+			return $str;
+		}
+	} else {
+		return false;
+	}
 }
 
 function go_filter_focuses( $elem ) {
@@ -104,29 +134,6 @@ function go_return_badge_count( $user_id ) {
 	global $wpdb;
 	$badge_count = (int) $wpdb->get_var( "SELECT badge_count FROM {$wpdb->prefix}go_totals WHERE uid = {$user_id}" );
 	return $badge_count;
-}
-
-// Optionally returns user's correct current rank name FROM the go_ranks option, based on user's current points.
-// Updates current_rank global regardless.
-function go_return_clean_rank( $user_id, $return_rank = true) {
-	if ( ! empty( $user_id ) ) {
-		global $current_rank;
-		global $current_points;
-		$ranks = get_option( 'go_ranks' );
-		$names = $ranks['name'];
-		$points = $ranks['points'];
-		if ( ! empty( $names ) && ! empty( $points ) ) {
-			for ( $i = 0; $i < count( $points ); $i++) {
-				if ( (int) $points[ $i + 1 ] > (int) $current_points ) {
-					$name = $names[ $i ];
-					$current_rank = $name;
-					if ( $return_rank === true) {
-						return ( $name );
-					}
-				}
-			}
-		}
-	}
 }
 
 ?>
