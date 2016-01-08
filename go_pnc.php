@@ -13,7 +13,12 @@ function go_add_currency( $user_id, $reason, $status, $points, $currency, $updat
 }
 
 // Adds currency and points for reasons that are post tied.
-function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $url = null, $update_time = false, $reason = null, $bonus_loot = null, $notify = true ) {
+function go_add_post(
+		$user_id, $post_id, $status, $points, $currency, $bonus_currency = null,
+		$minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null,
+		$c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null,
+		$url = null, $update_time = false, $reason = null, $bonus_loot = false, $notify = true
+	) {
 	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
@@ -21,7 +26,7 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 	$user_penalties = go_return_penalty( $user_id );
 	
 	if ( $status === -1 ) {
-		$qty = ( $bonus_loot == false ) ? $_POST['qty'] : 1;
+		$qty = ( false === $bonus_loot ) ? $_POST['qty'] : 1;
 		$old_points = $wpdb->get_row( "SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1" );
 		$points *= $qty;
 		$currency *= $qty;
@@ -237,11 +242,11 @@ function go_notify( $type, $points = '', $currency = '', $bonus_currency = '', $
 			$background = "#ff0000";
 		} elseif ( $penalty < 0 ) {
 			$sym = '+';
-			$background = ( $bonus_loot == false ) ? "#39b54a" : "#1E90FF";
+			$background = ( false === $bonus_loot ) ? "#39b54a" : "#1E90FF";
 		} elseif ( $penalty > 0 ) {
 			$sym = '-';
 			$background = "#ff0000";
-		} elseif ( $bonus_loot == true ) {
+		} elseif ( true === $bonus_loot ) {
 			$background = "#1E90FF";
 		} else {
 			$sym = '+';
@@ -305,7 +310,7 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 }
 
 //Update totals
-function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penalty, $minutes, $status = null, $bonus_loot = null, $undo = false, $notify = true ) {
+function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penalty, $minutes, $status = null, $bonus_loot = false, $undo = false, $notify = true ) {
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$user_bonuses = go_return_bonus_currency( $user_id );
@@ -396,10 +401,8 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 			go_notify( 'minutes', 0, 0, 0, 0, $minutes, $user_id, null, $bonus_loot );
 		}
 	}
-	if ( $bonus_loot == 'bonus' ) {
+	if ( true === $bonus_loot ) {
 		go_notify( 'custom', 0, 0, 0, 0, 0, $user_id, 'Bonus Loot', $bonus_loot, $undo );
-	} elseif ( $bonus_loot == 'quest' ) {
-		go_notify( 'custom', 0, 0, 0, 0, 0, $user_id, 'Quest Loot', $bonus_loot, $undo );
 	}
 }
 

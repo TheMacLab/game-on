@@ -1564,11 +1564,15 @@ function test_point_update() {
 	}
 	
 	if ( $passed === 0 || $passed === '0' ) {
-		go_add_post( $user_id, $post_id, $status, 
-		floor( $update_percent * $target_points ), 
-		floor( $update_percent * $target_currency ), 
-		floor( $update_percent * $target_bonus_currency ), 
-		null, $page_id, null, null, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null );
+		go_add_post(
+			$user_id, $post_id, $status,
+			floor( $update_percent * $target_points ),
+			floor( $update_percent * $target_currency ),
+			floor( $update_percent * $target_bonus_currency ),
+			null, $page_id, null, null,
+			$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+			$e_passed, $a_passed, $c_passed, $m_passed
+		);
 	}
 	die();
 }
@@ -2061,10 +2065,15 @@ function task_change_stage() {
 	if ( $repeat_button == 'on' ) {
 		if ( $undo == 'true' || $undo === true ) {
 			if ( $task_count > 0 ) {
-				go_add_post( $user_id, $post_id, $status, 
-				-floor( ( $update_percent * $points_array[ $status ] ) ), 
-				-floor( ( $update_percent * $currency_array[ $status ] ) ), 
-				-floor( ( $update_percent * $bonus_currency_array[ $status ] ) ), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				go_add_post(
+					$user_id, $post_id, $status,
+					-floor( ( $update_percent * $points_array[ $status ] ) ),
+					-floor( ( $update_percent * $currency_array[ $status ] ) ),
+					-floor( ( $update_percent * $bonus_currency_array[ $status ] ) ),
+					null, $page_id, $repeat_button, -1,
+					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+					$e_passed, $a_passed, $c_passed, $m_passed
+				);
 				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
@@ -2077,20 +2086,25 @@ function task_change_stage() {
 								$penalty = ( $store_cost[3] > 0 ) ? $store_cost[3] : 0;
 								$minutes = ( $store_cost[4] < 0 ) ? $store_cost[4] : 0;
 								$user_id = get_current_user_id();
-								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
-								if ( $received) {
-									go_update_totals ( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true );
+								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
+								if ( $received ) {
+									go_update_totals( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true );
 								}
-								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item) );
+								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item) );
 							}
 						}
 					}
 				}
 			} else {
-				go_add_post( $user_id, $post_id, ( $status - 1), 
-				-floor( ( $update_percent * $points_array[ $status - 1] ) ), 
-				-floor( ( $update_percent * $currency_array[ $status - 1] ) ), 
-				-floor( ( $update_percent * $bonus_currency_array[ $status - 1] ) ), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed);
+				go_add_post(
+					$user_id, $post_id, ( $status - 1 ),
+					-floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
+					-floor( ( $update_percent * $currency_array[ $status - 1 ] ) ),
+					-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
+					null, $page_id, $repeat_button, 0,
+					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+					$e_passed, $a_passed, $c_passed, $m_passed
+				);
 				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on) {
@@ -2102,13 +2116,13 @@ function task_change_stage() {
 								$bonus_currency = ( $store_cost[2] < 0) ? $store_cost[2] : 0;
 								$penalty = ( $store_cost[3] > 0) ? $store_cost[3] : 0;
 								$minutes = ( $store_cost[4] < 0) ? $store_cost[4] : 0;
-								$loot_reason = ( $bonus_loot[2][ $store_item] * 10 > 999) ? 'quest' : 'bonus';
+								$loot_reason = 'Bonus';
 								$user_id = get_current_user_id();
-								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
-								if ( $received) {
-									go_update_totals ( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, $loot_reason, true, false );
+								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
+								if ( $received ) {
+									go_update_totals( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, $loot_reason, true, false );
 								}
-								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Quest' OR reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
+								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
 							}
 						}
 					}
@@ -2121,10 +2135,15 @@ function task_change_stage() {
 			}
 		} else {
 			// if repeat is on and undo is not hit...
-			go_add_post( $user_id, $post_id, $status, 
-			floor( ( $update_percent * $points_array[ $status ] ) ), 
-			floor( ( $update_percent * $currency_array[ $status ] ) ), 
-			floor( ( $update_percent * $bonus_currency_array[ $status ] ) ), null, $page_id, $repeat_button, 1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url );
+			go_add_post(
+				$user_id, $post_id, $status,
+				floor( ( $update_percent * $points_array[ $status ] ) ),
+				floor( ( $update_percent * $currency_array[ $status ] ) ),
+				floor( ( $update_percent * $bonus_currency_array[ $status ] ) ),
+				null, $page_id, $repeat_button, 1,
+				$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+				$e_passed, $a_passed, $c_passed, $m_passed, $url
+			);
 			if ( $stage_badges[ $status ][0] == 'true' ) {
 				foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 					do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
@@ -2137,15 +2156,25 @@ function task_change_stage() {
 		if ( $db_status == 0 || ( $db_status < $status ) ) {
 			if ( $undo == 'true' || $undo === true ) {
 				if ( $task_count > 0 ) {
-					go_add_post( $user_id, $post_id, $status, 
-					-floor( ( $update_percent * $points_array[ $status - 1 ] ) ), 
-					-floor( ( $update_percent * $currency_array[ $status - 1 ] ) ), 
-					-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ), null, $page_id, $repeat_button, -1, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed );
+					go_add_post(
+						$user_id, $post_id, $status,
+						-floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
+						-floor( ( $update_percent * $currency_array[ $status - 1 ] ) ),
+						-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
+						null, $page_id, $repeat_button, -1,
+						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+						$e_passed, $a_passed, $c_passed, $m_passed
+					);
 				} else {
-					go_add_post( $user_id, $post_id, ( $status - 2), 
-					-floor( ( $update_percent * $points_array[ $status - 2 ] ) ), 
-					-floor( ( $update_percent * $currency_array[ $status - 2 ] ) ), 
-					-floor( ( $update_percent * $bonus_currency_array[ $status - 2 ] ) ), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed );
+					go_add_post(
+						$user_id, $post_id, ( $status - 2 ),
+						-floor( ( $update_percent * $points_array[ $status - 2 ] ) ),
+						-floor( ( $update_percent * $currency_array[ $status - 2 ] ) ),
+						-floor( ( $update_percent * $bonus_currency_array[ $status - 2 ] ) ),
+						null, $page_id, $repeat_button, 0,
+						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+						$e_passed, $a_passed, $c_passed, $m_passed
+					);
 					if ( $stage_badges[ $status - 2 ][0] == 'true' ) {
 						foreach ( $stage_badges[ $status - 2 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
@@ -2154,10 +2183,15 @@ function task_change_stage() {
 				}
 			} else {
 				$update_time = ( $status == 2 ) ? true : false;
-				go_add_post( $user_id, $post_id, $status, 
-				floor( ( $update_percent * $points_array[ $status - 1 ] ) ), 
-				floor( ( $update_percent * $currency_array[ $status - 1 ] ) ), 
-				floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ), null, $page_id, $repeat_button, 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time ); 
+				go_add_post(
+					$user_id, $post_id, $status,
+					floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
+					floor( ( $update_percent * $currency_array[ $status - 1 ] ) ),
+					floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
+					null, $page_id, $repeat_button, 0,
+					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+					$e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time
+				);
 				if ( $stage_badges[ $status - 1 ][0] == 'true' ) {
 					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
 						do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
@@ -2428,6 +2462,7 @@ function task_change_stage() {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
 							if ( $on === 'on' ) {
 								$random_number = rand( 1, 999 );
+								$drop_chance = $bonus_loot[2][ $store_item ] * 10;
 								$store_custom_fields = get_post_custom( $store_item );
 								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
 								$currency = ( $store_cost[0] < 0 ) ? -$store_cost[0] : 0;
@@ -2435,15 +2470,21 @@ function task_change_stage() {
 								$bonus_currency = ( $store_cost[2] < 0 ) ? -$store_cost[2] : 0;
 								$penalty = ( $store_cost[3] > 0 ) ? -$store_cost[3] : 0;
 								$minutes = ( $store_cost[4] < 0 ) ? -$store_cost[4] : 0;
-								$loot_reason = ( $bonus_loot[2][ $store_item ] * 10 > 999 ) ? 'Quest' : 'Bonus';
-								if ( $random_number < $bonus_loot[2][ $store_item ] * 10 ) {
-										if ( ! in_array( $post_id, $mastered ) && $loot_reason == 'Bonus' ) {
-											go_add_post( $user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, false, $loot_reason, 'bonus', false, false );
-											echo "Congrats, " . do_shortcode( '[go_get_displayname]' ) . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a></br>";
-										} else if ( $loot_reason == 'Quest' ) {
-											go_add_post( $user_id, $store_item, -1, $points, $currency, $bonus_currency, $minutes, null, 'off', 0, $e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count, $e_passed, $a_passed, $c_passed, $m_passed, null, false, $loot_reason, 'quest', false, false );
-											echo "Congrats, " . do_shortcode( '[go_get_displayname]' ) . "!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a></br>";
-										}
+								$loot_reason = 'Bonus';
+								if ( $random_number < $drop_chance ) {
+									if ( ! in_array( $post_id, $mastered ) ) {
+										go_add_post(
+											$user_id, $store_item, -1,
+											$points, $currency, $bonus_currency, $minutes,
+											null, 'off', 0,
+											$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+											$e_passed, $a_passed, $c_passed, $m_passed, null, false,
+											$loot_reason, true, false
+										);
+										echo "Congrats, " . do_shortcode( '[go_get_displayname]' ) .
+											"!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>" .
+											get_the_title( $store_item ) . "</a></br>";
+									}
 								}
 							}
 						}
@@ -2531,37 +2572,20 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 		}
 		if ( ! empty( $bonus_loot ) && ! empty( $bonus_loot[0] ) ) {
 			$bonus_loot_display = true;
-					if ( ! empty( $bonus_loot[1] ) ) {
-						$quest_items_array = array();
-						$bonus_items_array = array();
-						foreach ( $bonus_loot[1] as $store_item => $on ) {
-							if ( $on === 'on' ) {
-								if ( $bonus_loot[2][ $store_item ] * 10 > 999 ) {
-									$quest_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a>";
-								} elseif ( $bonus_loot[2][ $store_item ] * 10 <= 999 ) {
-									$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a> ".$bonus_loot[2][ $store_item ]."% Drop Rate";
-						}
+			if ( ! empty( $bonus_loot[1] ) ) {
+				$bonus_items_array = array();
+				foreach ( $bonus_loot[1] as $store_item => $on ) {
+					if ( $on === 'on' ) {
+						$drop_chance_percentile = $bonus_loot[2][ $store_item ];
+						$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a> ".$drop_chance_percentile."% Drop Rate";
 					}
 				}
 			}
 		}
 		$bonus_loot_name = go_return_options( 'go_bonus_loot_name' );
 		$task_loot_name = go_return_options( 'go_task_loot_name' );
-		if ( ! empty( $quest_items_array ) ) {
-			$quest_items_array_keys = array_keys( $quest_items_array );
-		}
 		if ( ! empty( $bonus_items_array ) ) {
 			$bonus_items_array_keys = array_keys( $bonus_items_array );
-		}
-		if ( ! empty( $quest_items_array ) ) {
-			echo "{$task_loot_name} - ";
-			foreach ( $quest_items_array_keys as $index => $key ) {
-				echo $quest_items_array[ $key ];
-				if ( $index < max( $quest_items_array_keys ) ) {
-					echo ', ';
-				}
-			}
-		echo "</br>";
 		}
 		if ( ! empty( $bonus_items_array ) ) {
 			echo "<strong>{$bonus_loot_name} </strong>- ";
