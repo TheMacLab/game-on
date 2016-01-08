@@ -276,34 +276,26 @@ function go_notify( $type, $points = '', $currency = '', $bonus_currency = '', $
 	}
 }
 
-function go_update_admin_bar( $type, $title, $value, $status = null ) {
+function go_update_admin_bar( $type, $title, $amount, $status = null ) {
 	global $next_rank_points;
 	global $current_rank_points;
 	$current_bonus_currency = go_return_bonus_currency( get_current_user_id() );
-		$current_penatly = go_return_penalty( get_current_user_id() );
-		$color = barColor( $current_bonus_currency, $current_penatly );
+	$current_penalty = go_return_penalty( get_current_user_id() );
+	$color = barColor( $current_bonus_currency, $current_penalty );
+	$display = go_display_longhand_currency( $type, $amount );
 	if ( $type == 'points' ) {
-		$display = go_display_points( $value ); 
-		$rng = ( $current_rank_points -$value ) * -1;
+		$rng = ( $current_rank_points -$amount ) * -1;
 		$dom = ( $next_rank_points - $current_rank_points );
 		echo "<script language='javascript'>
 			jQuery(document).ready(function() {
 				jQuery( '#points_needed_to_level_up' ).html( '{$rng}/{$dom}' );
 			} );
 		</script>";
-	} elseif ( $type == 'currency' ) {
-		$display = go_display_currency( $value );
-	} elseif ( $type == 'bonus_currency' ) { 
-		$display = go_display_bonus_currency( $value );
-	} elseif ( $type == 'penalty' ) {
-		$display = go_display_penalty( $value );
-	} elseif ( $type == 'minutes' ) {
-		$display = go_display_minutes( $value );
 	}
 	$percentage = go_get_level_percentage( get_current_user_id() );
 	echo "<script language='javascript'>
 		jQuery(document).ready(function() {
-			jQuery( '#go_admin_bar_{$type}' ).html( '{$title}: {$display}' );
+			jQuery( '#go_admin_bar_{$type}' ).html( '{$display}' );
 			jQuery( '#go_admin_bar_progress_bar' ).css( {'width': '{$percentage}%'".( ( $color ) ? ", 'background-color' : '{$color}'" : '' )."} );
 		} );
 	</script>";
