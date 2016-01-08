@@ -362,7 +362,7 @@ function go_stats_move_stage() {
 	} else {
 		 
 		for ( $count; $count > 0; $count-- ) {
-			go_add_post( 
+			go_add_post(
 				$user_id, $task_id, $current_status, 
 				floor( -$rewards['points'][ $current_status] * $update_percent ), 
 				floor( -$rewards['currency'][ $current_status] * $update_percent ), 

@@ -2462,7 +2462,7 @@ function task_change_stage() {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
 							if ( $on === 'on' ) {
 								$random_number = rand( 1, 999 );
-								$drop_chance = $bonus_loot[2][ $store_item ] * 10;
+								$drop_chance = floatval( $bonus_loot[2][ $store_item ] ) * 10;
 								$store_custom_fields = get_post_custom( $store_item );
 								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
 								$currency = ( $store_cost[0] < 0 ) ? -$store_cost[0] : 0;
@@ -2588,7 +2588,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 			$bonus_items_array_keys = array_keys( $bonus_items_array );
 		}
 		if ( ! empty( $bonus_items_array ) ) {
-			echo "<strong>{$bonus_loot_name} </strong>- ";
+			echo "<strong>{$bonus_loot_name}</strong> - ";
 			foreach ( $bonus_items_array_keys as $index => $key ) {
 				echo $bonus_items_array[ $key ];
 				if ( $index < max( $bonus_items_array_keys ) ) {

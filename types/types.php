@@ -828,27 +828,37 @@ function go_bonus_loot( $field_args ) {
 	$custom = get_post_custom();
 	$check_array = ( ! empty( $custom['go_mta_mastery_bonus_loot'][0] ) ? unserialize( $custom['go_mta_mastery_bonus_loot'][0] ) : null );
 	$meta_id = $field_args['id'];
-	echo "<input id='go_bonus_loot_checkbox' class='go_bonus_loot_checkbox' name='{$meta_id}' type='checkbox' ".( ! empty( $check_array[0] ) ? 'checked' : '' )."/><br/>";
-	$store_list = get_posts(array(
-		'post_type' => 'go_store',
-		'orderby' => 'post_date',
-		'order' => 'DESC',
-		'meta_query' => array(
-			array(
-				'key' => 'go_mta_store_bonus',
-				'value' => 'on',
+	$bonus_loot_opt_checked = ( ! empty( $check_array[0] ) ? 'checked' : '' );
+	echo "
+		<input id='go_bonus_loot_checkbox' class='go_bonus_loot_checkbox' 
+			name='{$meta_id}' type='checkbox' {$bonus_loot_opt_checked}/>
+		<br/>
+	";
+	$store_list = get_posts(
+		array(
+			'post_type' => 'go_store',
+			'orderby' => 'post_date',
+			'order' => 'DESC',
+			'meta_query' => array(
+				array(
+					'key' => 'go_mta_store_bonus',
+					'value' => 'on'
+				)
 			)
-		)
- 	) );
+ 		)
+	);
 	echo "<div id='go_bonus_loot_wrap'>";
 	foreach ( $store_list as $store_item ) {
+		$rarity = ( ! empty( $check_array[2][ $store_item->ID ] ) ? $check_array[2][ $store_item->ID ] : 50 );
+		$item_checked = ( ! empty( $check_array[1][ $store_item->ID ] ) ? 'checked' : '' );
 		echo "
-			<input type='checkbox' class='go_bonus_loot_checkbox' name='go_task_bonus_loot_select[{$store_item->ID}]' ".( ! empty( $check_array[1][ $store_item->ID ] ) ? 'checked' : '' ).
-				" style='margin-left: 50px;'/>
-					{$store_item->post_title}
-			<input type='text' id='rarity' name='go_bonus_loot_rarity[{$store_item->ID}]' value='".( ! empty( $check_array[2][ $store_item->ID ] ) ? $check_array[2][ $store_item->ID ] : '' ).
-				"' style='margin-left: 10px;' value = '' size='2' maxlength='4'>
-					%
+			<input type='checkbox' class='go_bonus_loot_checkbox' 
+					name='go_task_bonus_loot_select[{$store_item->ID}]' 
+					style='margin-left: 50px;' {$item_checked}/>
+				{$store_item->post_title}
+			<input type='number' id='rarity' name='go_bonus_loot_rarity[{$store_item->ID}]' 
+					value='{$rarity}' style='margin-left: 10px;' min='0.1' max='99.9' step='0.1'/>
+				%
 			</br></br>
 		";
 	}
