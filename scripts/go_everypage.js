@@ -74,6 +74,9 @@ function hideVid() {
 	if ( jQuery( '#go_option_help_video' ).length ) {
 		myplayer = videojs( 'go_option_help_video' );
 	}
+
+	// this will stop the body from scrolling behind the video
+	jQuery( 'html' ).removeClass( 'go_no_scroll' );
 	jQuery( '.dark' ).hide();
 	jQuery( '.light' ).hide();
 	if ( jQuery( '#go_option_help_video' ).length ) {
@@ -114,6 +117,9 @@ function go_display_help_video( url ) {
 	}
 
 	jQuery( '.light' ).show();
+	
+	// this will stop the body from scrolling behind the video
+	jQuery( 'html' ).addClass( 'go_no_scroll' );
 	if ( 'none' != jQuery( '.dark' ).css( 'display' ) ) {
 		jQuery(document).keydown( function( e ) { 
 			if ( jQuery( '#go_help_video_container' ).is(":visible") ) {
