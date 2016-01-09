@@ -857,7 +857,7 @@ function go_bonus_loot( $field_args ) {
 					style='margin-left: 50px;' {$item_checked}/>
 				{$store_item->post_title}
 			<input type='number' id='rarity' name='go_bonus_loot_rarity[{$store_item->ID}]' 
-					value='{$rarity}' style='margin-left: 10px;' min='0.1' max='99.9' step='0.1'/>
+					value='{$rarity}' style='margin-left: 10px;' min='0.01' max='99.99' step='0.01'/>
 				%
 			</br></br>
 		";
