@@ -250,7 +250,7 @@ function go_frontend_lightbox_html() {
 		document.getElementById( 'light' ).style.display='none';
 		document.getElementById( 'fade' ).style.display='none';
 		document.getElementById( 'lb-content' ).innerHTML = '';
-		jQuery( 'body' ).removeClass( 'go_no_scroll' );
+		jQuery( 'html' ).removeClass( 'go_no_scroll' );
 	}
 	
 	function go_lb_opener( id ) {
@@ -260,7 +260,7 @@ function go_frontend_lightbox_html() {
 		}
 
 		// this will stop the body from scrolling behind the lightbox
-		jQuery( 'body' ).addClass( 'go_no_scroll' );
+		jQuery( 'html' ).addClass( 'go_no_scroll' );
 		if ( ! jQuery.trim( jQuery( '#lb-content' ).html() ).length ) {
 			var get_id = id;
 			var gotoSend = {
