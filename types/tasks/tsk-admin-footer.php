@@ -298,10 +298,6 @@ function task_edit_jquery() {
 						jQuery( this ).datepicker({ dateFormat: "yy-mm-dd" });
 					});
 				}
-				<?php 
-				wp_enqueue_style( 'ptTimeSelectCSS', plugin_dir_url( __FILE__ ).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.css' );
-				wp_enqueue_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.js' );
-				?>
 				if ( jQuery( 'input.custom_time' ).length ) {
 					jQuery( 'input.custom_time' ).each( function() {
 						jQuery( this ).ptTimeSelect(); // Turn input[type='time'] into a custom jquery ui time picker
@@ -713,6 +709,4 @@ function task_edit_jquery() {
 	</script>
 	<?php
 }
-add_action( 'admin_footer', 'task_edit_jquery' );
-
 ?>

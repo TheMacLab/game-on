@@ -591,7 +591,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 	return $meta_boxes;
 }
 
-add_action( 'cmb_render_go_presets', 'go_presets_js' );
 add_filter( 'cmb_meta_boxes', 'go_mta_con_meta' );
 add_action( 'init', 'go_init_mtbxs', 9999 );
 
@@ -606,7 +605,7 @@ function go_presets( $field_args ) {
 		$custom_currency_str = implode( ',', $custom_currency );
 	}
 	?>
-	<select id="go_presets" onchange="apply_presets();">
+	<select id="go_presets">
         <?php
 			$presets = get_option( 'go_presets', false );
 			foreach( $presets['name'] as $key => $name ) {

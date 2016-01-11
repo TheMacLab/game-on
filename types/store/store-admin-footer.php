@@ -58,5 +58,4 @@ function store_edit_jquery() {
 	</script>
 	<?php 
 }
-add_action( 'admin_footer', 'store_edit_jquery' );
 ?>

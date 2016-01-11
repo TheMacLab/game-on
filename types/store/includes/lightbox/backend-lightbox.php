@@ -359,5 +359,4 @@ function go_store_head() { // Run this function that inserts things into the hea
 	<?php
 	}
 }
-add_action( 'admin_head', 'go_store_head' );
 ?>

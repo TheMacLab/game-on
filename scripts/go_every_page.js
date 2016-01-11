@@ -62,10 +62,10 @@ function go_submit_pods () {
 
 function go_sounds( type ) {
 	if ( 'store' == type ) {
-		var audio = new Audio( PluginDir["url"] + 'media/gold.mp3' );
+		var audio = new Audio( PluginDir.path + 'media/gold.mp3' );
 		audio.play();
 	} else if ( 'timer' == type ) {
-		var audio = new Audio( PluginDir["url"] + 'media/airhorn.mp3' );
+		var audio = new Audio( PluginDir.path + 'media/airhorn.mp3' );
 		audio.play();
 	}
 }
