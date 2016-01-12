@@ -841,6 +841,20 @@ function task_edit_jquery() {
 			}
 		}
 		jQuery( 'input#publish' ).on( 'click submit', go_before_task_publish );
+
+		/* 
+		 * This is meant to prevent the page from being submitted via 
+		 * the enter button, which would bypass the validation functions 
+		 * that are run when the publish button is triggered.
+		 */
+		jQuery( 'form#post' ).keydown( function( e ) {
+
+			// if the enter key is hit, trigger the "submit" event on the publish button
+			if ( 13 === e.keyCode ) {
+				e.preventDefault();
+				jQuery( 'input#publish' ).trigger( 'submit' );
+			}
+		});
 		
 		////////////////////////////////////
 	
