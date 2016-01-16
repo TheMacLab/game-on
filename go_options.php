@@ -6,12 +6,6 @@ if ( is_admin() ) {
 		
 	}
 	
-	add_action( 'admin_enqueue_scripts', 'go_opt_style' );
-	function go_opt_style() {
-		wp_register_style( 'go_opt_css', plugins_url( 'styles/go_options.css', __FILE__ ), false, '1.0.0' );
-		wp_enqueue_style ( 'go_opt_css' );
-	}
-	
 	function go_options_accordion_help( $video_url = null, $explanation = null ) {
 		?>
 		<a class='go_options_help_link' href='#' onclick='go_display_help_video( "<?php echo $video_url; ?>" )' tooltip='<?php echo $explanation; ?>'>
@@ -61,7 +55,6 @@ if ( is_admin() ) {
 	}
 	
 	function game_on_options() {
-		wp_enqueue_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/go_options.js' );
 		if ( ! empty( $_GET['settings-updated'] ) && true === $_GET['settings-updated'] || ! empty( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
 			go_update_definitions();
 			echo "
@@ -404,11 +397,9 @@ if ( is_admin() ) {
 
 }
 
-add_action( 'admin_menu', 'add_game_on_options' );
-function add_game_on_options() {  
-	add_menu_page   ( 'Game On', 'Game On', 'manage_options', 'game-on-options.php','game_on_options', plugins_url( 'images/ico.png' , __FILE__ ), '81' );  
+function add_game_on_options() {
+	add_menu_page( 'Game On', 'Game On', 'manage_options', 'game-on-options.php', 'game_on_options', plugins_url( 'images/ico.png' , __FILE__ ), '81' );  
 	add_submenu_page( 'game-on-options.php', 'Options', 'Options', 'manage_options', 'game-on-options.php', 'game_on_options' );
-
 }
 
 function go_reset_levels() {
@@ -550,19 +541,6 @@ function go_focus_save() {
 	die();
 }
 
-function go_get_all_focuses() {
-	if ( get_option( 'go_focus' ) ) {
-		$all_focuses = get_option( 'go_focus' );
-	}
-	$all_focuses_sorted = array();
-	if ( $all_focuses ) {
-		foreach ( $all_focuses as $focus ) {
-			 $all_focuses_sorted[] = array( 'name' => $focus , 'value' => $focus );
-		 }
-	}
-	return $all_focuses_sorted;
-}
-
 function go_presets_reset() {
 	global $wpdb;
 	$presets = array(
@@ -678,9 +656,6 @@ function go_reset_data() {
 	die();
 }
 
-add_action( 'show_user_profile', 'go_extra_profile_fields' );
-add_action( 'edit_user_profile', 'go_extra_profile_fields' );
-
 function go_extra_profile_fields( $user ) { ?>
 
 	<h3><?php echo go_return_options( 'go_class_a_name' ).' and '.go_return_options( 'go_class_b_name' ); ?></h3>
@@ -760,9 +735,6 @@ function go_extra_profile_fields( $user ) { ?>
 <?php
 
 }
-
-add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
-add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
 
 function go_user_option_add() {
 	?> 

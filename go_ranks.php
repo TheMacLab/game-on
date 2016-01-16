@@ -112,15 +112,6 @@ function go_get_rank( $user_id ) {
 	$next_rank_points = $rank[0][1][1];
 }
 
-function go_get_all_ranks() {
-	$all_ranks = get_option( 'go_ranks' );
-	$all_ranks_sorted = array();
-	foreach ( $all_ranks as $level => $points ) {
-		$all_ranks_sorted[] = array( 'name' => $level , 'value' => $points );
-	}
-	return $all_ranks_sorted;
-}
-
 function go_clean_ranks() {
 	$all_ranks = get_option( 'go_ranks' );
 	$all_ranks_sorted = array();

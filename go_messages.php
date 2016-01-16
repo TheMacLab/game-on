@@ -1,6 +1,4 @@
 <?php
-
-add_action( 'admin_bar_init','go_messages_bar' );
 function go_messages_bar() {
 	global $wpdb;
 	global $wp_admin_bar;
@@ -90,7 +88,6 @@ function go_messages_bar() {
 	}
 }
 
-add_action( 'wp_ajax_go_mark_read','go_mark_read' );
 function go_mark_read() {
 	global $wpdb;
 	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages', true );

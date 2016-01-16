@@ -2077,7 +2077,7 @@ function task_change_stage() {
 				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
-							if ( $on === 'on' ) {
+							if ( $on === 'on' && ! empty( $bonus_loot[2][ $store_item ] ) ) {
 								$store_custom_fields = get_post_custom( $store_item );
 								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
 								$currency = ( $store_cost[0] < 0 ) ? $store_cost[0] : 0;
@@ -2108,7 +2108,7 @@ function task_change_stage() {
 				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on) {
-							if ( $on === 'on' ) {
+							if ( $on === 'on' && ! empty( $bonus_loot[2][ $store_item ] ) ) {
 								$store_custom_fields = get_post_custom( $store_item );
 								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
 								$currency = ( $store_cost[0] < 0 ) ? $store_cost[0] : 0;
@@ -2460,7 +2460,7 @@ function task_change_stage() {
 				if ( ! empty( $bonus_loot[0] ) ) {
 					if ( ! empty( $bonus_loot[1] ) ) {
 						foreach ( $bonus_loot[1] as $store_item => $on ) {
-							if ( $on === 'on' ) {
+							if ( $on === 'on' && ! empty( $bonus_loot[2][ $store_item ] ) ) {
 								$random_number = rand( 1, 999 );
 								$drop_chance = floatval( $bonus_loot[2][ $store_item ] ) * 10;
 								$store_custom_fields = get_post_custom( $store_item );
@@ -2575,7 +2575,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 			if ( ! empty( $bonus_loot[1] ) ) {
 				$bonus_items_array = array();
 				foreach ( $bonus_loot[1] as $store_item => $on ) {
-					if ( $on === 'on' ) {
+					if ( $on === 'on' && ! empty( $bonus_loot[2][ $store_item ] ) ) {
 						$drop_chance_percentile = $bonus_loot[2][ $store_item ];
 						$bonus_items_array[] = "<a href='#' onclick='go_lb_opener({$store_item})'>".get_the_title( $store_item )."</a> ".$drop_chance_percentile."% Drop Rate";
 					}

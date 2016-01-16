@@ -233,15 +233,7 @@ function go_the_lb_ajax() {
     die();
 }
 
-add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
-add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
 ////////////////////////////////////////////////////
-function go_frontend_lightbox_css() {
-	$go_lb_css_dir = plugins_url( '/css/go-lightbox.css' , __FILE__ );
-	echo '<link rel="stylesheet" href="'.$go_lb_css_dir.'" />';
-}
-add_action( 'wp_head', 'go_frontend_lightbox_css' );
-
 function go_frontend_lightbox_html() {
 	?>
 	<script type="text/javascript">
@@ -408,7 +400,6 @@ function go_frontend_lightbox_html() {
 		<div id="fade" class="black_overlay"></div>
 	<?php
 }
-add_action( 'wp_head', 'go_frontend_lightbox_html' );
 
 function go_search_for_user() {
 	global $wpdb;
