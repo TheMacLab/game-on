@@ -877,7 +877,7 @@ function go_validate_bonus_loot() {
 	$selected_loot = ( ! empty( $_POST['go_task_bonus_loot_select'] ) ? $_POST['go_task_bonus_loot_select'] : null );
 	$loot_rarity = ( ! empty( $_POST['go_bonus_loot_rarity'] ) ? $_POST['go_bonus_loot_rarity'] : null );
 	$range_values_str = ( ! empty( $_POST['go_bonus_loot_rarity_range'] ) ? $_POST['go_bonus_loot_rarity_range'] : null );
-	$range_values_array = explode( $range_values_str, ',' );
+	$range_values_array = explode( ',', $range_values_str );
 	$range_min = $range_values_array[0];
 	$range_max = $range_values_array[1];
 	$rarity_array = array();
