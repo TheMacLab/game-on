@@ -5,78 +5,114 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 2.5.5
+Version: 2.5.8
 */
 
 include( 'go_datatable.php' );
-include( 'types/types.php' );
 include( 'go_pnc.php' );
 include( 'go_returns.php' );
 include( 'go_ranks.php' );
-include( 'scripts/go_enque.php' );
+include( 'go_enque.php' );
 include( 'go_globals.php' );
 include( 'go_admin_bar.php' );
 include( 'go_message.php' );
-include( 'styles/go_enque_styles.php' );
 include( 'go_options.php' );
 include( 'go_stats.php' );
 include( 'go_clipboard.php' );
 include( 'go_open_badge.php' );
 include( 'go_shortcodes.php' );
 include( 'go_comments.php' );
-include( 'go_definitions.php' );
 include( 'go_mail.php' );
 include( 'go_messages.php' );
 include( 'go_task_search.php' );
 include( 'go_pods.php' );
+include( 'types/types.php' );
+
+/*
+ * Plugin Activation Hooks
+ */
+
 register_activation_hook( __FILE__, 'go_table_totals' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
 register_activation_hook( __FILE__, 'go_presets_registration' );
 register_activation_hook( __FILE__, 'go_install_data' );
-register_activation_hook( __FILE__, 'go_define_options' );
+register_activation_hook( __FILE__, 'go_update_definitions' );
 register_activation_hook( __FILE__, 'go_open_comments' );
 register_activation_hook( __FILE__, 'go_tsk_actv_activate' );
-add_action( 'user_register', 'go_user_registration' );
-add_action( 'delete_user', 'go_user_delete' );
-add_action( 'wp_ajax_go_deactivate_plugin', 'go_deactivate_plugin' );
-add_action( 'go_add_post', 'go_add_post' );
-add_action( 'go_add_currency', 'go_add_currency' );
-add_action( 'go_add_bonus_currency', 'go_add_bonus_currency' );
-add_action( 'go_add_penalty', 'go_add_penalty' );
-add_action( 'go_add_minutes', 'go_add_minutes' );
-add_action( 'go_return_currency', 'go_return_currency' );
-add_action( 'go_return_points', 'go_return_points' );
-add_action( 'go_return_bonus_currency', 'go_return_bonus_currency' );
-add_action( 'go_return_penalty', 'go_return_penalty' );
-add_action( 'go_return_minutes', 'go_return_minutes' );
-add_action( 'go_display_user_focuses', 'go_display_user_focuses' );
-add_action( 'go_display_rewards', 'go_display_rewards' );
+
+/*
+ * Init
+ */
+
+add_action( 'init', 'go_register_tax_and_cpt' );
+add_action( 'init', 'go_register_admin_scripts_and_styles' );
+add_action( 'init', 'go_register_scripts_and_styles' );
+
+/*
+ * Admin Menu & Admin Bar
+ */
+
+// actions
+add_action( 'admin_menu', 'add_game_on_options' );
 add_action( 'admin_menu', 'go_clipboard' );
-add_action( 'go_jquery_clipboard', 'go_jquery_clipboard' );
-add_action( 'go_style_clipboard', 'go_style_clipboard' );
+add_action( 'admin_menu', 'go_pod_submenu' );
+add_action( 'admin_bar_init', 'go_messages_bar' );
+add_action( 'admin_bar_init', 'go_admin_bar' );
+
+// filters
+add_filter( 'show_admin_bar', 'go_display_admin_bar' );
+
+/*
+ * Admin & Login Page
+ */
+
+add_action( 'admin_init', 'go_tsk_actv_redirect' );
+add_action( 'admin_init', 'go_add_delete_post_hook' );
+add_action( 'admin_head', 'go_stats_overlay' );
+add_action( 'admin_head', 'go_store_head' );
+add_action( 'admin_footer', 'store_edit_jquery' );
+add_action( 'admin_footer', 'task_edit_jquery' );
+add_action( 'admin_notices', 'go_admin_head_notification' );
+add_action( 'admin_enqueue_scripts', 'go_enqueue_admin_scripts_and_styles' );
+add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
+
+/*
+ * Front-end
+ */
+
+// actions
+add_action( 'wp_head', 'go_stats_overlay' );
+add_action( 'wp_head', 'go_frontend_lightbox_html' );
+add_action( 'wp_enqueue_scripts', 'go_enqueue_scripts_and_styles' );
+
+// filters
+add_filter( 'get_comment_author', 'go_display_comment_author' );
+
+/*
+ * User Data
+ */
+
+add_action( 'delete_user', 'go_user_delete' );
+add_action( 'user_register', 'go_user_registration' );
+add_action( 'show_user_profile', 'go_extra_profile_fields' );
+add_action( 'edit_user_profile', 'go_extra_profile_fields' );
+add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
+add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
+
+/*
+ * AJAX Hooks
+ */
+
+add_action( 'wp_ajax_go_deactivate_plugin', 'go_deactivate_plugin' );
 add_action( 'wp_ajax_go_clone_post', 'go_clone_post' );
 add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' );
 add_action( 'wp_ajax_go_clipboard_intable_messages', 'go_clipboard_intable_messages' );
 add_action( 'wp_ajax_go_user_option_add', 'go_user_option_add' );
-add_action( 'go_update_totals', 'go_update_totals' );
-add_action( 'init', 'go_jquery' );
-add_action( 'init', 'go_admin_menu_js' );
-add_action( 'init', 'go_register_tax_and_cpt' );
-add_action( 'wp', 'go_task_timer_headers' );
-add_action( 'admin_bar_init', 'go_admin_bar' );
-add_action( 'admin_bar_init', 'go_style_everypage' );
-add_action( 'admin_bar_init', 'go_style_stats' );
-add_action( 'show_admin_bar', 'go_display_admin_bar' );
 add_action( 'wp_ajax_test_point_update', 'test_point_update' );
-add_action( 'go_get_all_focuses', 'go_get_all_focuses' );
 add_action( 'wp_ajax_unlock_stage', 'unlock_stage' );
 add_action( 'wp_ajax_task_change_stage', 'task_change_stage' );
 add_action( 'wp_ajax_go_task_abandon', 'go_task_abandon' );
-add_action( 'go_update_admin_bar', 'go_update_admin_bar' );
-add_action( 'go_update_progress_bar', 'go_update_progress_bar' );
-add_action( 'go_style_periods', 'go_style_periods' );
-add_action( 'go_jquery_periods', 'go_jquery_periods' );
 add_action( 'wp_ajax_go_admin_bar_add', 'go_admin_bar_add' );
 add_action( 'wp_ajax_go_admin_bar_stats', 'go_admin_bar_stats' );
 add_action( 'wp_ajax_go_class_a_save', 'go_class_a_save' );
@@ -109,28 +145,31 @@ add_action( 'wp_ajax_go_update_task_order', 'go_update_task_order' );
 add_action( 'wp_ajax_go_search_for_user', 'go_search_for_user' );
 add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' );
 add_action( 'wp_ajax_go_get_purchase_count', 'go_get_purchase_count' );
-add_shortcode( 'go_stats_page', 'go_stats_page' );
-add_action( 'admin_init', 'go_tsk_actv_redirect' );
-add_action( 'admin_init', 'go_add_delete_post_hook' );
-add_action( 'inRange', 'inRange' );
-add_action( 'isEven', 'isEven' );
-add_action( 'wp_head', 'go_stats_overlay' );
-add_action( 'admin_head', 'go_stats_overlay' );
-add_action( 'admin_notices', 'go_admin_head_notification' );
-add_action( 'go_display_points', 'go_display_points' );
-add_action( 'go_display_currency', 'go_display_currency' );
-add_action( 'go_display_penalty', 'go_display_penalty' );
-add_action( 'go_display_minutes', 'go_display_minutes' );
-add_action( 'go_return_options', 'go_return_options' );
-add_action( 'barColor', 'barColor' );
-add_action( 'go_return_multiplier', 'go_return_multiplier' );
-add_filter( 'get_comment_author', 'go_display_comment_author' );
-add_action( 'check_custom', 'check_custom' );
-add_action( 'check_values', 'check_values' );
-add_action( 'go_message_user', 'go_message_user' );
-add_filter( 'jetpack_enable_open_graph', '__return_false' );
-add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
+add_action( 'wp_ajax_buy_item', 'go_buy_item' );
+add_action( 'wp_ajax_nopriv_buy_item', 'go_buy_item' );
+add_action( 'wp_ajax_cat_item', 'go_cat_item' );
+add_action( 'wp_ajax_nopriv_cat_item', 'go_cat_item' );
+add_action( 'wp_ajax_go_clipboard_add', 'go_clipboard_add' );
+add_action( 'wp_ajax_fixmessages', 'fixmessages' );
+add_action( 'wp_ajax_go_mark_read', 'go_mark_read' );
+add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
+add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
+
+/*
+ * Miscellaneous Filters
+ */
+
 add_filter( 'cron_schedules', 'go_weekly_schedule' );
+add_filter( 'media_upload_tabs', 'go_media_upload_tab_name' );
+add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
+
+// mitigating compatibility issues with Jetpack plugin by Automatic
+// (https://wordpress.org/plugins/jetpack/).
+add_filter( 'jetpack_enable_open_graph', '__return_false' );
+
+/*
+ * Important Functions
+ */
 
 function go_deactivate_plugin() {
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -181,18 +220,6 @@ function go_register_tax_and_cpt() {
 	go_register_task_tax_and_cpt();
 	go_register_store_tax_and_cpt();
 	flush_rewrite_rules();
-}
-
-function inRange( $int, $min, $max ) {
-	return ( $int > $min && $int <= $max );
-} 
-
-function isEven( $value ) {
-	if ( $value % 2 == 0 ) {
-		return 'even';
-	} else {
-		return 'odd';
-	}
 }
 
 function check_values( $req = null, $cur = null ) {
@@ -269,5 +296,4 @@ function go_task_timer_headers() {
 		header( 'Pragma: no-cache' );	
 	}
 }
-
 ?>

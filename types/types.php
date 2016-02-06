@@ -591,7 +591,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 	return $meta_boxes;
 }
 
-add_action( 'cmb_render_go_presets', 'go_presets_js' );
 add_filter( 'cmb_meta_boxes', 'go_mta_con_meta' );
 add_action( 'init', 'go_init_mtbxs', 9999 );
 
@@ -606,7 +605,7 @@ function go_presets( $field_args ) {
 		$custom_currency_str = implode( ',', $custom_currency );
 	}
 	?>
-	<select id="go_presets" onchange="apply_presets();">
+	<select id="go_presets">
         <?php
 			$presets = get_option( 'go_presets', false );
 			foreach( $presets['name'] as $key => $name ) {
@@ -828,27 +827,44 @@ function go_bonus_loot( $field_args ) {
 	$custom = get_post_custom();
 	$check_array = ( ! empty( $custom['go_mta_mastery_bonus_loot'][0] ) ? unserialize( $custom['go_mta_mastery_bonus_loot'][0] ) : null );
 	$meta_id = $field_args['id'];
-	echo "<input id='go_bonus_loot_checkbox' class='go_bonus_loot_checkbox' name='{$meta_id}' type='checkbox' ".( ! empty( $check_array[0] ) ? 'checked' : '' )."/><br/>";
-	$store_list = get_posts(array(
-		'post_type' => 'go_store',
-		'orderby' => 'post_date',
-		'order' => 'DESC',
-		'meta_query' => array(
-			array(
-				'key' => 'go_mta_store_bonus',
-				'value' => 'on',
+	$bonus_loot_opt_checked = ( ! empty( $check_array[0] ) ? 'checked' : '' );
+	$min = 0.01;
+	$max = 99.99;
+	echo "
+		<input id='go_bonus_loot_checkbox' class='go_bonus_loot_checkbox' 
+			name='{$meta_id}' type='checkbox' {$bonus_loot_opt_checked}/>
+		<br/>
+	";
+	$store_list = get_posts(
+		array(
+			'post_type' => 'go_store',
+			'orderby' => 'post_date',
+			'order' => 'DESC',
+			'meta_query' => array(
+				array(
+					'key' => 'go_mta_store_bonus',
+					'value' => 'on'
+				)
 			)
-		)
- 	) );
-	echo "<div id='go_bonus_loot_wrap'>";
+ 		)
+	);
+	echo "
+		<div id='go_bonus_loot_wrap'>
+			<div id='go_bonus_loot_error_msg' class='go_error' style='display: none;'></div>
+			<input type='hidden' name='go_bonus_loot_rarity_range' value='{$min}, {$max}'/>
+	";
 	foreach ( $store_list as $store_item ) {
+		$rarity = ( ! empty( $check_array[2][ $store_item->ID ] ) ? $check_array[2][ $store_item->ID ] : 50 );
+		$item_checked = ( ! empty( $check_array[1][ $store_item->ID ] ) ? 'checked' : '' );
 		echo "
-			<input type='checkbox' class='go_bonus_loot_checkbox' name='go_task_bonus_loot_select[{$store_item->ID}]' ".( ! empty( $check_array[1][ $store_item->ID ] ) ? 'checked' : '' ).
-				" style='margin-left: 50px;'/>
-					{$store_item->post_title}
-			<input type='text' id='rarity' name='go_bonus_loot_rarity[{$store_item->ID}]' value='".( ! empty( $check_array[2][ $store_item->ID ] ) ? $check_array[2][ $store_item->ID ] : '' ).
-				"' style='margin-left: 10px;' value = '' size='2' maxlength='4'>
-					%
+			<input type='checkbox' class='go_bonus_loot_checkbox go_bonus_loot_item_checkbox'
+					name='go_task_bonus_loot_select[{$store_item->ID}]' 
+					{$item_checked}/>
+				{$store_item->post_title}
+			<input type='text' id='go_bonus_loot_rarity_{$store_item->ID}' class='go_bonus_loot_rarity' 
+					name='go_bonus_loot_rarity[{$store_item->ID}]' 
+					value='{$rarity}' min='{$min}' max='{$max}'/>
+				%
 			</br></br>
 		";
 	}
@@ -860,17 +876,36 @@ function go_validate_bonus_loot() {
 	$is_checked = ( ! empty( $_POST['go_mta_mastery_bonus_loot'] ) ? $_POST['go_mta_mastery_bonus_loot'] : false );
 	$selected_loot = ( ! empty( $_POST['go_task_bonus_loot_select'] ) ? $_POST['go_task_bonus_loot_select'] : null );
 	$loot_rarity = ( ! empty( $_POST['go_bonus_loot_rarity'] ) ? $_POST['go_bonus_loot_rarity'] : null );
+	$range_values_str = ( ! empty( $_POST['go_bonus_loot_rarity_range'] ) ? $_POST['go_bonus_loot_rarity_range'] : null );
+	$range_values_array = explode( ',', $range_values_str );
+	$range_min = $range_values_array[0];
+	$range_max = $range_values_array[1];
 	$rarity_array = array();
 	if ( ! empty( $loot_rarity ) ) {
 		foreach ( $loot_rarity as $item_id => $perc ) {
-			if ( $perc !== "0" && $perc !== '' && intval( $perc ) >= 1 ) {
-				$rarity_array[ $item_id ] = $perc;
+
+			// test the rarity value against the desired float pattern
+			// (i.e. "XX" or "XX.X+", where "X" is a number 0 through 9 and
+			// + indicates "X" once or more times)
+			$float_regex = "/^([0-9]{1,2}|[0-9]{0,2}\.[0-9]{1,})$/";
+			$float_match = preg_match( $float_regex, $perc );
+			if ( 0 === $float_match ) {
+				$rarity_array[ $item_id ] = null;
 			} else {
-				$rarity_array[ $item_id ] = '25';
+
+				// check for the input being within the field's min and max values
+				$perc_float = floatval( $perc );
+				$rounded_perc = round( $perc_float, 2 );
+				if ( $rounded_perc < $range_min && $rounded_perc > $range_max ) {
+					$rarity_array[ $item_id ] = null;
+				} else {
+					$rarity_array[ $item_id ] = $rounded_perc;
+				}
 			}
 		}
 	}
-	return ( array( $is_checked, $selected_loot, $loot_rarity ) );
+
+	return ( array( $is_checked, $selected_loot, $rarity_array ) );
 }
 
 add_action( 'cmb_render_go_store_unpurchasable', 'go_unpurchasable' );

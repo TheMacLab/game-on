@@ -1,14 +1,16 @@
 <?php
-
-add_action( 'admin_bar_init','go_messages_bar' );
 function go_messages_bar() {
+	if ( ! is_admin_bar_showing() || ! is_user_logged_in() ) {
+		return;
+	}
 	global $wpdb;
 	global $wp_admin_bar;
 	$messages = get_user_meta( get_current_user_id(), 'go_admin_messages', true );
 	$msg_count = intval( $messages[0] );
-	if ( $messages[0] > 0) {
+	$msg_array = ( ! empty( $messages[1] ) ? $messages[1] : null );
+	if ( $msg_count > 0 ) {
 		$style = 'background: #ff0000;';
-		if ( $messages[0] == 1 ) {
+		if ( 1 === $msg_count ) {
 			$wp_admin_bar->add_menu( 
 				array(
 					'id' => 'go_messages_blurb',
@@ -38,59 +40,96 @@ function go_messages_bar() {
 			) 
 		);
 	}
-	if ( ! is_admin_bar_showing() || ! is_user_logged_in() ) {
-		return;
-	}
 	$wp_admin_bar->add_menu( 
 		array(
 			'id' => 'go_messages',
-			'title' => '<div style="padding-top:5px;"><div id="go_messages_bar" style="'.$style.'">'.(int) $messages[0].'</div></div>',
+			'title' => 
+				"<div style='padding-top:5px;'>" .
+					"<div id='go_messages_bar' style='{$style}'>" .
+						"{$msg_count}" .
+					"</div>" .
+				"</div>",
 			'href' => '#',
-		) 
+		)
 	);
-	if ( ! empty( $messages[1] ) ) {
-		foreach ( $messages[1] as $date => $values ) {
-			if ( preg_match( "/[<>]+/", $values[0] ) ) {
-				$title_temp = preg_replace( "/(<a\s?href=\".*\">)+/", '', $values[0] );
-				$title = preg_replace( "/(<\/a>)+/", '', $title_temp );
+	if ( ! empty( $msg_array ) ) {
+		foreach ( $msg_array as $date => $message_obj ) {
+			$msg_body = $message_obj[0];
+
+			// $message_obj[1] will contain 0 (int) when read or 1 (int) when unread
+			$msg_already_seen = ( empty( $message_obj[1] ) ? true : false );
+			
+			// if the message has already been read, apply no styling
+			$style = ( $msg_already_seen ? '' : 'color: red;' );
+			$formatted_date = date( 'm-d-Y', $date );
+			$seen_elem = '';
+			$title = '';
+
+			if ( preg_match( "/[<>]+/", $msg_body ) ) {
+				$title = preg_replace( "/(<a[^>]+>|<\/a>)+/", '', $msg_body );
 			} else {
-				$title = $values[0];
+				$title = $msg_body;
 			}
-			$style = '';
-			$is_seen = true;
-			if ( (int) $values[1] == 1 ) {
-				$style = 'color: red;';
-				$is_seen = false;
-			}
-			if ( $is_seen == false ) {
-				$seen_elem = date( 'm-d-Y', $date )." <a class='go_messages_anchor' onClick='go_mark_seen({$date}, \"unseen\" ); go_change_seen({$date}, \"unseen\", this);' style='display: inline;' href='#'>Mark Read</a> <a class='go_messages_anchor' onClick='go_mark_seen({$date}, \"remove\" );' style='display:inline;' href='#'>Delete</a>";
+
+			if ( ! $msg_already_seen ) {
+				$seen_elem = "{$formatted_date} " .
+					"<a class='go_messages_anchor' " .
+							"onClick='go_mark_seen({$date}, \"unseen\" ); " .
+								"go_change_seen({$date}, \"unseen\", this);' " .
+							"style='display: inline;' " .
+							"href='#' >" .
+						"Mark Read" .
+					"</a> " .
+					"<a class='go_messages_anchor' " .
+							"onClick='go_mark_seen({$date}, \"remove\" );' " .
+							"style='display:inline;' " .
+							"href='#' >" .
+						"Delete" .
+					"</a>";
 			} else {
-				$seen_elem = date( 'm-d-Y', $date )." <a class='go_messages_anchor' onClick='go_mark_seen({$date}, \"seen\" ); go_change_seen({$date}, \"seen\", this);' style='display: inline;' href='#'>Mark Unread</a> <a class='go_messages_anchor' onClick='go_mark_seen({$date}, \"remove\" );' style='display:inline;' href='#'>Delete</a>";
+				$seen_elem = "{$formatted_date} " .
+					"<a class='go_messages_anchor' " .
+							"onClick='go_mark_seen({$date}, \"seen\" ); " .
+								"go_change_seen({$date}, \"seen\", this);' " .
+							"style='display: inline;' " .
+							"href='#' >" .
+						"Mark Unread".
+					"</a> ".
+					"<a class='go_messages_anchor' ".
+							"onClick='go_mark_seen({$date}, \"remove\" );' " .
+							"style='display:inline;' ".
+							"href='#' >".
+						"Delete".
+					"</a>";
 			}
+
 			$wp_admin_bar->add_menu( 
 				array(
 					'id' => $date,
-					'title' => '<div style="'.$style.'">'.$title.'...</div>',
+					'title' => "<div style='{$style}'>{$title}...</div>",
 					'href' => '#',
-					'parent' => 'go_messages',
+					'parent' => 'go_messages'
 				) 
 			);
+
 			$wp_admin_bar->add_menu( 
 				array(
 					'id' => rand(),
 					'title' => $seen_elem,
 					'parent' => $date,
 					'meta' => array( 
-						'html' =>  '<div class="go_message_container" style="width:350px;">'.$values[0].'</div>',
+						'html' => 
+							"<div class='go_message_container' style='width:350px;'>".
+								$msg_body .
+							"</div>",
 						'class' => 'go_message_item'
-					),
+					)
 				) 
 			);
 		}
 	}
 }
 
-add_action( 'wp_ajax_go_mark_read','go_mark_read' );
 function go_mark_read() {
 	global $wpdb;
 	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages', true );

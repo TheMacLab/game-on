@@ -5,11 +5,9 @@ function go_clipboard() {
 }
 
 function go_clipboard_menu() {
-	if ( ! current_user_can( 'manage_options' ) ) { 
+	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} else {
-		go_style_clipboard();
-		go_jquery_clipboard();
 	?>
 		<div id="records_tabs">
 			<ul>
@@ -199,8 +197,7 @@ function go_clipboard_intable_messages() {
 	}
 	die();
 }
-
-add_action( 'wp_ajax_go_clipboard_add','go_clipboard_add' );
+ 
 function go_clipboard_add() {
 	$ids = $_POST['ids'];
 	$points = $_POST['points'];
@@ -249,7 +246,6 @@ function go_update_user_focuses() {
 	die();	
 }
 
-add_action( 'wp_ajax_fixmessages', 'fixmessages' );					
 function fixmessages() {
 	global $wpdb;
 	$users = get_users(array( 'role' => 'Subscriber' ) );

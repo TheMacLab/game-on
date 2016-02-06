@@ -298,10 +298,6 @@ function task_edit_jquery() {
 						jQuery( this ).datepicker({ dateFormat: "yy-mm-dd" });
 					});
 				}
-				<?php 
-				wp_enqueue_style( 'ptTimeSelectCSS', plugin_dir_url( __FILE__ ).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.css' );
-				wp_enqueue_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'includes/jQuery.ptTimeSelect-0.8/src/jquery.ptTimeSelect.js' );
-				?>
 				if ( jQuery( 'input.custom_time' ).length ) {
 					jQuery( 'input.custom_time' ).each( function() {
 						jQuery( this ).ptTimeSelect(); // Turn input[type='time'] into a custom jquery ui time picker
@@ -707,12 +703,162 @@ function task_edit_jquery() {
 		} else {
 			go_bonus_loot_items.prop( "hidden", true );
 		}
+
+		function go_bonus_loot_rarity_validate ( item_rarities ) {
+			var accordion_id = 'go_stage_four_settings_accordion';
+
+			// will contain the ids of any failing elements
+			var invalid_el_ids = [];
+			var range_min_str = '';
+			var range_max_str = '';
+			
+			jQuery.each( item_rarities, function ( index, input_field ) {
+				var id = input_field.id;
+				var range_min = input_field.min;
+				range_min_str = range_min;
+				var range_max = input_field.max;
+				range_max_str = range_max;
+				var rarity_val = input_field.value;
+
+				// test the rarity value against the desired float pattern
+				// (i.e. "XX" or "XX.X+", where "X" is a number 0 through 9 and
+				// + indicates "X" once or more times)
+				var float_regex = /^([0-9]{1,2}|[0-9]{0,2}\.[0-9]{1,})$/;
+				var float_match = float_regex.test( rarity_val );
+				if ( false === float_match ) {
+					invalid_el_ids.push( id );
+					return true;
+				}
+
+				// round the number to the hundredths place
+				// check for the input being within the field's min and max values
+				var rarity_float = parseFloat( rarity_val );
+				var rounded_rarity = Math.round10( rarity_float, -2 );
+				if ( rounded_rarity < range_min && rounded_rarity > range_max ) {
+					invalid_el_ids.push( id );
+					return true;
+				} else {
+					jQuery( '#' + id ).val( rounded_rarity );
+				}
+			});
+
+			// validation failed, throw an error
+			if ( invalid_el_ids.length > 0 ) {
+				var error = new Error(
+					'In the rarity field, only decimals (to the hundredths place) from ' +
+					range_min_str +
+					' to ' +
+					range_max_str +
+					' are allowed.'
+				);
+				// will jump to the first failing element
+				error.name = 'Game On Error';
+				error.el_ids = invalid_el_ids;
+				error.accord_id = '#' + accordion_id;
+				throw error;
+			}
+		}
+
+		function go_add_errors ( id_array, error_elem, error_msg ) {
+			jQuery.each( id_array, function ( index, input_id ) {
+				jQuery( '#' + input_id ).addClass( 'go_error_red' );
+			});
+
+			jQuery( '.go_error' ).show();
+			jQuery( '.go_error' ).html( error_msg );
+		}
+
+		function go_remove_errors ( id_array, error_elem ) {
+			jQuery.each( id_array, function ( index, input_id ) {
+				jQuery( '#' + input_id ).removeClass( 'go_error_red' );
+			});
+
+			jQuery( '.go_error' ).hide();
+			jQuery( '.go_error' ).html();
+		}
+
+		function go_before_task_publish ( e, skip_default ) {
+
+			// the skip_default argument allows input validation to occur
+			// before the task is published
+			if ( "undefined" === typeof( skip_default ) ) {
+				skip_default = true;
+			}
+
+			if ( true === skip_default ) {
+				e.preventDefault();
+				window.location.hash = '';
+				var error_marked_elems = [];
+				jQuery( '.go_error_red' ).each( function ( index, element ) {
+					error_marked_elems.push( element.id );
+				});
+				if ( error_marked_elems.length > 0 ) {
+					go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
+				}
+				
+				var task_error = false;
+				try {
+
+					// bonus loot rarity field validation
+					var go_bonus_loot_on = go_bonus_loot_check_box[0].checked;
+					var go_bonus_loot_items_checked = jQuery( go_bonus_loot_items ).children( '.go_bonus_loot_checkbox:checked' );
+					var go_bonus_loot_active_item_rarities = jQuery( go_bonus_loot_items_checked ).next( '.go_bonus_loot_rarity' );
+
+					if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
+						go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
+					}
+				} catch ( err ) {
+
+					// if an input is causing an issue (e.g. failed validation),
+					// stop the task from being updated
+					if ( 'Game On Error' === err.name && 'undefined' !== typeof( err.el_ids ) ) {
+						
+						// open the accordion that the problematic element is under
+						if ( ! jQuery( err.accord_id ).hasClass( 'opened' ) ) {
+							jQuery( err.accord_id ).trigger( 'click' );
+						}
+
+						// direct the user to the problematic element
+						window.location.hash = err.el_ids[0];
+
+						go_add_errors( err.el_ids, 'go_bonus_loot_error_msg', err.message );
+
+						task_error = true;
+					}
+				}
+
+				if ( false === task_error ) {
+					jQuery( 'input#publish' ).trigger( 'click', [false] );
+				}
+			} else {
+				var error_marked_elems = [];
+				jQuery( '.go_error_red' ).each( function ( index, element ) {
+					error_marked_elems.push( element.id );
+				});
+				if ( error_marked_elems.length > 0 ) {
+					go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
+				}
+			}
+		}
+		jQuery( 'input#publish' ).on( 'click submit', go_before_task_publish );
+
+		/* 
+		 * This is meant to prevent the page from being submitted via 
+		 * the enter button, which would bypass the validation functions 
+		 * that are run when the publish button is triggered.
+		 */
+		jQuery( 'form#post' ).keydown( function( e ) {
+
+			// if the enter key is hit, trigger the "submit" event on the publish button
+			if ( 13 === e.keyCode ) {
+				e.preventDefault();
+				jQuery( 'input#publish' ).trigger( 'submit' );
+			}
+		});
 		
 		////////////////////////////////////
 	
 	</script>
 	<?php
 }
-add_action( 'admin_footer', 'task_edit_jquery' );
-
 ?>

@@ -1,8 +1,6 @@
 <?php
-add_action( 'admin_menu', 'go_pod_submenu' );
 function go_pod_submenu() {
 	add_submenu_page( 'game-on-options.php', 'Pods', 'Pods', 'manage_options', 'go_pods', 'go_task_pods' );
-	wp_enqueue_script( 'go_pod_options_js' );
 }
 
 function go_task_pods() {
