@@ -1,20 +1,8 @@
 <?php
-add_action( 'wp_enqueue_scripts', 'go_buy_the_item' ); //add plugin script; 
-
-function go_buy_the_item() { 
-    if ( ! is_admin() ) { 
-        wp_enqueue_script( 'more-posts', plugins_url( 'js/buy_the_item.js' , __FILE__ ), array( 'jquery' ), 1.0, true ); 
-        wp_localize_script( 'more-posts', 'buy_item', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )); //create ajaxurl global for front-end AJAX call; 
-    } 
-} 
-
-add_action( 'wp_ajax_buy_item', 'go_buy_item' ); //fire go_buy_item on AJAX call for the backend; 
-add_action( 'wp_ajax_nopriv_buy_item', 'go_buy_item' ); //fire go_buy_item on AJAX call for all users; 
-
 function go_buy_item() { 
 	global $wpdb;
 	$go_table_name = $wpdb->prefix."go";
-    $post_id = $_POST["the_id"];
+	$post_id = $_POST["the_id"];
 	$qty = $_POST['qty'];
 	$current_purchase_count = $_POST['purchase_count'];
 	
@@ -109,11 +97,11 @@ function go_buy_item() {
 			update_user_meta( $user_id, 'go_focus', $user_focuses );
 		}
 		if ( ! empty( $recipient_id ) ) {
-			
-			go_message_user( $recipient_id, get_userdata( $user_id )->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title( $post_id )."</a> for you." );
+			$curr_user_obj = get_userdata( $user_id );
+			go_message_user( $recipient_id, $curr_user_obj->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title( $post_id )."</a> for you." );
 			if ( $exchange_currency || $exchange_points || $exchange_bonus_currency || $exchange_minutes ) {
 				go_add_post( $recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, $exchange_minutes, null, $repeat );
-				go_add_bonus_currency( $recipient_id, $exchange_bonus_currency, get_userdata( $user_id )->display_name." purchase of {$qty} ".get_the_title( $post_id )."." );
+				go_add_bonus_currency( $recipient_id, $exchange_bonus_currency, $curr_user_obj->display_name." purchase of {$qty} ".get_the_title( $post_id )."." );
 			} else {
 				go_add_post( $recipient_id, $post_id, -1,  0,  0, 0, null, $repeat );
 			}

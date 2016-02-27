@@ -16,6 +16,23 @@
 	z-index: 9999999;
 }
 
+.go_error {
+	padding: 5px 0 5px 0;
+}
+
+.go_error_red, .go_error {
+	color: red;
+}
+
+input[type='text'].go_error_red {
+	border: 2px solid red;
+	outline: none;
+}
+
+.go_no_scroll {
+	overflow: hidden;
+}
+
 /********************
 *	Admin-Bar Styles
 ********************/
@@ -53,6 +70,11 @@
 
 #go_admin_bar_input {
 	width: 250px;
+}
+
+#go_admin_bar_rank {
+	font-size: 1.2em;
+	color: #eee;
 }
 
 .go_admin_bar_points {
@@ -498,6 +520,16 @@ a.pod_link {
 .pod_finished:hover,
 .pod_unfinished:hover {
 	background-color: #eee;
+}
+
+.go_bonus_loot_item_checkbox,
+#go_bonus_loot_wrap .go_error {
+	margin-left: 50px !important;
+}
+
+.go_bonus_loot_rarity {
+	margin-left: 10px !important;
+	width: 50px;
 }
 
 /* Tasks Style | Front-end */

@@ -1,8 +1,5 @@
 <?php 
 
-add_filter( 'media_upload_tabs', 'go_media_upload_tab_name' );
-add_action( 'media_upload_tab_create_badge', 'badge_designer' );
-add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 add_shortcode( 'go_award_badge', 'go_award_badge' );
 
 function go_media_upload_tab_name( $tabs ) {

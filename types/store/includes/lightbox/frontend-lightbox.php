@@ -20,9 +20,7 @@ function go_the_lb_ajax() {
 	$item_content = get_post_field( 'post_content', $the_id );
 	$the_content = wpautop( $item_content );
 	$custom_fields = get_post_custom( $the_id );
-	if ( isset( $custom_fields['go_mta_penalty_switch'] ) ) {
-		$penalty = true;
-	}
+	$penalty = ( ! empty( $custom_fields['go_mta_penalty_switch'][0] ) ? true : false );
 	
 	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {
@@ -58,7 +56,7 @@ function go_the_lb_ajax() {
 	$user_penalties = go_return_penalty( $user_id );
 	$user_minutes = go_return_minutes( $user_id );
 	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
-	$is_giftable = ( ! empty( $custom_fields['go_mta_store_giftable'][0] ) ? $custom_fields['go_mta_store_giftable'][0] : '' );
+	$is_giftable = ( ! empty( $custom_fields['go_mta_store_giftable'][0] ) ? true : false );
 	$is_unpurchasable = ( ! empty( $custom_fields['go_mta_store_unpurchasable'][0] ) ? $custom_fields['go_mta_store_unpurchasable'][0] : '' );
 
 	echo "<h2>{$the_title}</h2>";
@@ -136,7 +134,7 @@ function go_the_lb_ajax() {
 	$item_focus_array = ( ! empty( $custom_fields['go_mta_store_focus'][0] ) ? unserialize( $custom_fields['go_mta_store_focus'][0] ) : null );
 	
 	// Check if item actually has focus
-	$is_focused = (bool) filter_var( $item_focus_array[0], FILTER_VALIDATE_BOOLEAN);
+	$is_focused = filter_var( $item_focus_array[0], FILTER_VALIDATE_BOOLEAN );
 	if ( $is_focused ) {
 		$item_focus = $item_focus_array[1];
 	}
@@ -202,26 +200,26 @@ function go_the_lb_ajax() {
 			echo "Quantity purchased: {$purchase_count}";
 		} 
 	}
-	 if ( ! empty( $item_focus ) && ! empty( $penalty ) && $is_giftable == 'on' ) {
-	 ?>
- 		<br />
+	if ( empty( $item_focus ) && ! $penalty && $is_giftable ) {
+	?>
+		<br />
 		Gift this item <input type='checkbox' id='go_toggle_gift_fields'/>
-        <div id="go_recipient_wrap" class="golb-fr-boxes-giftable">Gift To: <input id="go_recipient" type="text"/></div>
-        <div id="go_search_results"></div> 
-     <script>   
-		var go_gift_check_box = jQuery( "#go_toggle_gift_fields" );
-		var go_gift_text_box = jQuery( "#go_recipient_wrap" );
-		go_gift_text_box.prop( "hidden", true );
-		go_gift_check_box.click( function() {
-			if ( jQuery( this ).is( ":checked" ) ) {
-				go_gift_text_box.prop( "hidden", false );
-			} else {
-				go_gift_text_box.prop( "hidden", true );
-				jQuery( '#go_search_results' ).hide();
-				jQuery( "#go_recipient" ).val( '' );
-			}
-		});
-	</script>
+		<div id="go_recipient_wrap" class="golb-fr-boxes-giftable">Gift To: <input id="go_recipient" type="text"/></div>
+		<div id="go_search_results"></div>
+		<script>
+			var go_gift_check_box = jQuery( "#go_toggle_gift_fields" );
+			var go_gift_text_box = jQuery( "#go_recipient_wrap" );
+			go_gift_text_box.prop( "hidden", true );
+			go_gift_check_box.click( function() {
+				if ( jQuery( this ).is( ":checked" ) ) {
+					go_gift_text_box.prop( "hidden", false );
+				} else {
+					go_gift_text_box.prop( "hidden", true );
+					jQuery( '#go_search_results' ).hide();
+					jQuery( "#go_recipient" ).val( '' );
+				}
+			});
+		</script>
     
 	<?php 
 	}
@@ -233,15 +231,7 @@ function go_the_lb_ajax() {
     die();
 }
 
-add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
-add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
 ////////////////////////////////////////////////////
-function go_frontend_lightbox_css() {
-	$go_lb_css_dir = plugins_url( '/css/go-lightbox.css' , __FILE__ );
-	echo '<link rel="stylesheet" href="'.$go_lb_css_dir.'" />';
-}
-add_action( 'wp_head', 'go_frontend_lightbox_css' );
-
 function go_frontend_lightbox_html() {
 	?>
 	<script type="text/javascript">
@@ -250,6 +240,7 @@ function go_frontend_lightbox_html() {
 		document.getElementById( 'light' ).style.display='none';
 		document.getElementById( 'fade' ).style.display='none';
 		document.getElementById( 'lb-content' ).innerHTML = '';
+		jQuery( 'html' ).removeClass( 'go_no_scroll' );
 	}
 	
 	function go_lb_opener( id ) {
@@ -257,6 +248,9 @@ function go_frontend_lightbox_html() {
 		if ( jQuery( '#go_stats_page_black_bg' ).css( 'display' ) == 'none' ) {
 			jQuery( '#fade' ).css( 'display', 'block' );
 		}
+
+		// this will stop the body from scrolling behind the lightbox
+		jQuery( 'html' ).addClass( 'go_no_scroll' );
 		if ( ! jQuery.trim( jQuery( '#lb-content' ).html() ).length ) {
 			var get_id = id;
 			var gotoSend = {
@@ -404,7 +398,6 @@ function go_frontend_lightbox_html() {
 		<div id="fade" class="black_overlay"></div>
 	<?php
 }
-add_action( 'wp_head', 'go_frontend_lightbox_html' );
 
 function go_search_for_user() {
 	global $wpdb;
