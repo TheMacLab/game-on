@@ -529,8 +529,8 @@ function go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $use
 		$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
 		$penalty_threshold = (int) get_option( 'go_penalty_threshold', 5 );
 		$multiplier = ( (int) get_option( 'go_multiplier_percentage', 10 ) ) / 100;
-		$bonus_frac = intval( $user_bonuses / $bonus_threshold );
-		$penalty_frac = intval( $user_penalties / $penalty_threshold );
+		$bonus_frac = ( $user_bonuses > 0 ? intval( $user_bonuses / $bonus_threshold ) : 0 );
+		$penalty_frac = ( $user_penalties > 0 ? intval( $user_penalties / $penalty_threshold ) : 0 );
 		$diff = $bonus_frac - $penalty_frac;
 		if ( $diff == 0 ) {
 			if ( $return_mod === false ) {
