@@ -72,12 +72,11 @@ function go_display_minutes( $minutes ) {
  *
  * @since 2.5.6
  *
- * @param STRING $currency_type Contains the base name of the currency to be displayed
- * 		(e.g. "points", "currency", "bonus_currency", or "penalty" ).
- * @param BOOLEAN $output Optional. TRUE will echo the currency, FALSE will return it (default).
+ * @param  STRING $currency_type Contains the base name of the currency to be displayed
+ * 			(e.g. "points", "currency", "bonus_currency", or "penalty" ).
+ * @param  BOOLEAN $output Optional. TRUE will echo the currency, FALSE will return it (default).
  * @return STRING/NULL Either echos or returns the currency. Returns FALSE on failure.
  */
-
 function go_display_longhand_currency ( $currency_type, $amount, $output = false ) {
 	if ( "points" === $currency_type || 
 			"currency" === $currency_type ||

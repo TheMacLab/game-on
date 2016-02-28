@@ -526,113 +526,164 @@ function barColor( $current_bonus_currency, $current_penalty ) {
 	return $color;
 }
 
-function go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties, $return_mod = false ) {
+/**
+ * Handles applying and returning the super modifier on a set of experience and gold. 
+ * 
+ * Description: The modified currencies are also rounded before they are output. Under the influence
+ * 			of a positive super modifier, negative currencies are rounded down, and positive 
+ * 			currencies are rounded up. Under a negative super modifier, negative currencies are 
+ * 			rounded up, and positive currencies are rounded down.
+ *
+ * @since 2.5.9
+ * 
+ * @param  INT $user_id, the user's id number.
+ * @param  INT $points, the number of experience points that the modifier is being applied against.
+ * @param  INT $currency, the number of gold that the modifier is being applied against.
+ * @param  INT $user_bonuses, the number of bonuses that the user holds.
+ * @param  INT $user_penalties, the number of penalties that the user holds.
+ * @param  BOOLEAN $return_mod Optional. False, to return an array of the modified currencies. True,
+ * 			to return the modifier ONLY.
+ * @return ARRAY/INT Returns an array of modified currencies, or returns the modifier itself. If
+ * 			the bonus and penalty features are both off, an array of the unmodified currencies are
+ * 			returned.
+ */
+function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $user_penalties, $return_mod = false ) {
 	$points = (int) $points;
 	$currency = (int) $currency;
-	$bonus_active = get_option( 'go_multiplier_switch', false );
-	$penalty_active = get_option( 'go_penalty_switch', false );
-	if ( $bonus_active === 'On' && $penalty_active === 'On' ) {
+	$bonus_active = ( 'On' === get_option( 'go_multiplier_switch', false ) ? true : false );
+	$penalty_active = ( 'On' === get_option( 'go_penalty_switch', false ) ? true : false );
+
+	if ( ! $bonus_active && ! $penalty_active ) {
+		return array( $points, $currency );
+	}
+
+	$is_max_rank = go_user_at_max_rank( $user_id );
+	$prestige_buff = 2;
+
+	if ( $bonus_active && $penalty_active ) {
 		$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
 		$penalty_threshold = (int) get_option( 'go_penalty_threshold', 5 );
 		$multiplier = ( (int) get_option( 'go_multiplier_percentage', 10 ) ) / 100;
 		$bonus_frac = ( $user_bonuses > 0 ? intval( $user_bonuses / $bonus_threshold ) : 0 );
 		$penalty_frac = ( $user_penalties > 0 ? intval( $user_penalties / $penalty_threshold ) : 0 );
 		$diff = $bonus_frac - $penalty_frac;
-		if ( $diff == 0 ) {
-			if ( $return_mod === false ) {
-				return ( array( $points, $currency ) );
-			} elseif ( $return_mod === true ) {
-				return (0);
+		if ( 0 == $diff ) {
+			if ( ! $return_mod ) {
+				return array( $points, $currency );
+			} else {
+				return 0;
 			}
 		} else {
+			$rounded_points = 0;
+			$rounded_currency = 0;
 			$mod = $multiplier * $diff;
-			if ( $mod > 0)  {
+			$modded_points = $points + ( $points * $mod );
+			$modded_currency = $currency + ( $currency * $mod );
+			if ( $is_max_rank && 0 === $penalty_frac ) {
+				$modded_currency *= $prestige_buff;
+			}
+
+			if ( $mod > 0 )  {
 				if ( $points < 0 ) {
-					$modded_points = floor( $points + ( $points * $mod) );
+					$rounded_points = floor( $modded_points );
 				} else {
-					$modded_points = ceil( $points + ( $points * $mod) );
+					$rounded_points = ceil( $modded_points );
 				}
 				if ( $currency < 0 ) {
-					$modded_currency = floor( $currency + ( $currency * $mod) );
+					$rounded_currency = floor( $modded_currency );
 				} else {
-					$modded_currency = ceil( $currency + ( $currency * $mod) );
+					$rounded_currency = ceil( $modded_currency );
 				}
-			} elseif ( $mod < 0 ) {
+			} else if ( $mod < 0 ) {
 				if ( $points < 0 ) {
-					$modded_points = ceil( $points + ( $points * $mod) );
+					$rounded_points = ceil( $modded_points );
 				} else {
-					$modded_points = floor( $points + ( $points * $mod) );
+					$rounded_points = floor( $modded_points );
 				}
 				if ( $currency < 0 ) {
-					$modded_currency = ceil( $currency + ( $currency * $mod) );
+					$rounded_currency = ceil( $modded_currency );
 				} else {
-					$modded_currency = floor( $currency + ( $currency * $mod) );
+					$rounded_currency = floor( $modded_currency );
 				}
 			}
-			if ( $return_mod === false ) {
-				return (array( $modded_points, $modded_currency ) );
-			} elseif ( $return_mod === true ) {
-				return ( $mod );
+			if ( ! $return_mod ) {
+				return array( $rounded_points, $rounded_currency );
+			} else {
+				return $mod;
 			}
 		}
-	} elseif ( $bonus_active === 'On' ) {
+	} else if ( $bonus_active ) {
 		$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
 		$multiplier = ( (int) get_option( 'go_multiplier_percentage', 10 ) ) / 100;
 		$bonus_frac = intval( $user_bonuses / $bonus_threshold );
-		if ( $bonus_frac == 0 ) {
-			if ( $return_mod === false ) {
-				return ( array( $points, $currency ) );
-			} elseif ( $return_mod === true ) {
-				return ( 0 );
+		if ( 0 == $bonus_frac ) {
+			if ( ! $return_mod ) {
+				return array( $points, $currency );
+			} else {
+				return 0;
 			}
 		} else {
+			$rounded_points = 0;
+			$rounded_currency = 0;
 			$mod = $multiplier * $bonus_frac;
+			$modded_points = $points + ( $points * $mod );
+			$modded_currency = $currency + ( $currency * $mod );
+			if ( $is_max_rank ) {
+				$modded_currency *= $prestige_buff;
+			}
+
 			if ( $points < 0 ) {
-				$modded_points = floor( $points + ( $points * $mod ) );
+				$rounded_points = floor( $modded_points );
 			} else {
-				$modded_points = ceil( $points + ( $points * $mod ) );
+				$rounded_points = ceil( $modded_points );
 			}
 			if ( $currency < 0 ) {
-				$modded_currency = floor( $currency + ( $currency * $mod ) );
+				$rounded_currency = floor( $modded_currency );
 			} else {
-				$modded_currency = ceil( $currency + ( $currency * $mod ) );
+				$rounded_currency = ceil( $modded_currency );
 			}
-			if ( $return_mod === false ) {
-				return ( array( $modded_points, $modded_currency ) );
-			} elseif ( $return_mod === true ) {
-				return ( $mod );
+			if ( ! $return_mod ) {
+				return array( $rounded_points, $rounded_currency );
+			} else {
+				return $mod;
 			}
 		}
-	} elseif ( $penalty_active === 'On' ) {
+	} else if ( $penalty_active ) {
 		$penalty_threshold = (int) get_option( 'go_penalty_threshold', 5 );
 		$multiplier = ( (int) get_option( 'go_multiplier_percentage', 10 ) ) / 100;
 		$penalty_frac = intval( $user_penalties / $penalty_threshold );
-		if ( $penalty_frac == 0) {
-			if ( $return_mod === false ) {
-				return ( array( $points, $currency ) );
-			} elseif ( $return_mod === true ) {
-				return ( 0 );
+		if ( 0 == $penalty_frac ) {
+			if ( ! $return_mod ) {
+				return array( $points, $currency );
+			} else {
+				return 0;
 			}
 		} else {
+			$rounded_points = 0;
+			$rounded_currency = 0;
 			$mod = $multiplier * ( - $penalty_frac );
+			$modded_points = $points + ( $points * $mod );
+			$modded_currency = $currency + ( $currency * $mod );
+			if ( $is_max_rank && 0 === $penalty_frac ) {
+				$modded_currency *= $prestige_buff;
+			}
+
 			if ( $points < 0 ) {
-				$modded_points = ceil( $points + ( $points * $mod ) );
+				$rounded_points = ceil( $modded_points );
 			} else {
-				$modded_points = floor( $points + ( $points * $mod ) );
+				$rounded_points = floor( $modded_points );
 			}
 			if ( $currency < 0 ) {
-				$modded_currency = ceil( $currency + ( $currency * $mod ) );
+				$rounded_currency = ceil( $modded_currency );
 			} else {
-				$modded_currency = floor( $currency + ( $currency * $mod ) );
+				$rounded_currency = floor( $modded_currency );
 			}
-			if ( $return_mod === false ) {
-				return ( array( $modded_points, $modded_currency ) );
-			} elseif ( $return_mod === true ) {
-				return ( $mod );
+			if ( ! $return_mod ) {
+				return array( $rounded_points, $rounded_currency );
+			} else {
+				return $mod;
 			}
 		}
-	} else {
-		return ( array( $points, $currency ) );
 	}
 }
 

@@ -1,10 +1,5 @@
 <?php
 
-/*
-	This is the file that displays a page on the admin side of wordpress for the list of rankings.
-	Allows administrator to edit points required for each ranking and to delete certain rankings/add others. 
-*/
-
 // $output has two possible boolean values: true and false. True will echo any rank notification,
 // false will return any rank notifications.
 function go_update_ranks( $user_id, $total_points = null, $output = false ) {
@@ -27,15 +22,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		return;
 	}
 
-	/*
-	 * Here we are referring to last element manually,
-	 * since we don't want to modify
-	 * the arrays with the array_pop function.
-	 */
-	$max_rank_index = count( $name_array ) - 1;
-	$max_rank = $name_array[ $max_rank_index ];
-	$max_rank_points = $points_array[ $max_rank_index ];
-
 	$current_points = go_return_points( $user_id );
 	$user_rank = go_get_rank( $user_id );
 	if ( ! empty( $user_rank ) ) {
@@ -51,6 +37,17 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 			$next_rank_points = $points_array[1];
 		}
 	}
+
+
+	/*
+	 * Here we are referring to last element manually,
+	 * since we don't want to modify
+	 * the arrays with the array_pop function.
+	 */
+	$max_rank_index = count( $name_array ) - 1;
+	$max_rank = $name_array[ $max_rank_index ];
+	$max_rank_points = $points_array[ $max_rank_index ];
+	$is_max_rank = go_user_at_max_rank( $user_id, $max_rank_points, $current_rank_points );
 
 	/*
 	 * Here we search for the index of the current rank by point threshold,
@@ -91,7 +88,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	 */
 	if ( $current_points >= $max_rank_points ) {
 		error_log( "\ncurrent points are greater than the max rank" );
-		if ( $current_rank !== $max_rank ) {
+		if ( ! $is_max_rank ) {
 			error_log( "\ncurrent rank isn't equal to the max rank" );
 			
 			// ...set the user's rank to the max rank
@@ -99,7 +96,10 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		}
 	} else {
 		error_log( "\ncurrent points are less than the max rank" );
-		if ( $current_points > $next_rank_points ) {
+
+		// we don't want to enter this block when the user is at the max rank, because in that
+		// case the user's current points will always be greater than the next rank's points
+		if ( $current_points > $next_rank_points && ! $is_max_rank ) {
 			error_log( "\ncurrent points are greater than the next rank point threshold" );
 
 			/*
@@ -168,8 +168,14 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 	if ( ! empty( $new_rank ) ) {
 		if ( $output ) {
+
+			error_log( "@@@ THE NOTIFICATION WAS OUTPUT!" );
+
 			echo $new_rank;
 		} else {
+
+			error_log( "@@@ NO NOTIFICATION!" );
+
 			return $new_rank;
 		}
 	}
@@ -439,6 +445,43 @@ function go_get_all_ranks() {
 		$all_ranks_sorted[] = array( 'name' => $level , 'value' => $points );
 	}
 	return $all_ranks_sorted;
+}
+
+/**
+ * Determine whether or not the user is at the max rank.
+ * 
+ * Description: When a user is at the max rank, their current rank's point threshold will match
+ * 			that of the max rank.
+ * 
+ * @since  2.5.9
+ * 
+ * @param  INT $user_id
+ * @param  INT $max_rank_points
+ * @param  INT $current_rank_points
+ * @return BOOL true/false
+ */
+function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_points = null ) {
+	if ( empty( $user_id ) && ( empty( $max_rank_points ) || empty( $current_rank_points ) ) ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( empty( $max_rank_points ) ) {
+		$ranks = get_option( 'go_ranks' );
+		$max_rank_index = count( $ranks['name'] ) - 1;
+		$max_rank_points = $ranks['points'][ $max_rank_index ];
+	}
+
+	if ( empty( $current_rank_points ) ) {
+		$user_rank = go_get_rank( $user_id );
+		$current_rank_points = $user_rank[1];
+	}
+
+	// compare the point thresholds
+	if ( $current_rank_points === $max_rank_points ) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 ?>
