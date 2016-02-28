@@ -36,12 +36,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	$max_rank = $name_array[ $max_rank_index ];
 	$max_rank_points = $points_array[ $max_rank_index ];
 
-	/*
-	 * Here we search for the index of the current rank by point threshold,
-	 * which should be unique (it's not guaranteed to be unique).
-	 */
-	$current_rank_index = array_search( $current_rank_points, $points_array );
-
 	$current_points = go_return_points( $user_id );
 	$user_rank = go_get_rank( $user_id );
 	if ( ! empty( $user_rank ) ) {
@@ -58,6 +52,12 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		}
 	}
 
+	/*
+	 * Here we search for the index of the current rank by point threshold,
+	 * which should be unique (it's not guaranteed to be unique).
+	 */
+	$current_rank_index = array_search( $current_rank_points, $points_array );
+
 	if ( empty( $total_points ) ) {
 		$total_points = $current_points;
 	}
@@ -65,7 +65,8 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	error_log( 
 		"#### go_update_ranks ####\n".
 		"\$current_points = {$current_points}\n".
-		"\$current_rank = {$current_rank}"
+		"\$current_rank = {$current_rank}\n".
+		"\$current_rank_index = {$current_rank_index}\n"
 	);
 
 	// error_log( $next_rank );
@@ -123,10 +124,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 					// ...set the user's rank to the rank at the current index
 					$new_rank = go_set_rank( $user_id, $i - 1, $ranks, true );
 
-					error_log(
-						"\nold rank = {$current_rank}:{$current_rank_points},".
-						" new rank = {$new_rank}:{$new_rank_points}"
-					);
+					error_log( "## upper ##\n new rank = {$new_rank}" );
 					break;
 				}
 			}
@@ -138,38 +136,35 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 				error_log( "#### looping through ranks... {$current_points} ####" );
 
-				for ( $x = 0; $x < $current_rank_index + 1; $x++ ) {
+				for ( $x = $current_rank_index - 1; $x > 0; $x-- ) {
 
 					// this reflects the points required to reach the rank at the current index
 					$rank_point_threshold = $points_array[ $x ];
 
 					error_log(
-						"{$x} => {$name_array[ $x ]}:{$rank_point_threshold}\n".
-						"\tis {$current_points} < {$rank_point_threshold}?...".
-						( $current_points < $rank_point_threshold ?  'true' : 'false' )
+						"\n{$x} => {$name_array[ $x ]}:{$rank_point_threshold}\n".
+						"\tis {$current_points} > {$rank_point_threshold}?...".
+						( $current_points > $rank_point_threshold ?  'true' : 'false' )
 					);
 
-					// this checks if the user's points fall under the rank at the current index
-					if ( $current_points < $rank_point_threshold ) {
+					// this checks that the rank threshold at the current index falls under the user's points
+					if ( $current_points > $rank_point_threshold ) {
 
 						// ...set the user's rank to the rank at the current index,
 						// and remove an badges assigned to the current rank
 
-						$new_rank = go_set_rank( $user_id, $x - 1, $ranks, true );
+						$new_rank = go_set_rank( $user_id, $x, $ranks, true );
 
-						error_log(
-							"\nold rank = {$current_rank}:{$current_rank_points},".
-							" new rank = {$new_rank}:{$new_rank_points}"
-						);
+						error_log( "## lower ##\n new rank = {$new_rank}" );
 						break;
 					}
 				}
 			} else {
 				// ...set the user's rank to the minimum rank,
-				// and remove an badges assigned to the current rank
+				// and remove any badges assigned to the current rank
 			}
 		}
-	} // end-if current points are less than the max level's point threshold
+	} // end-if current points are less than the max rank's point threshold
 
 	if ( ! empty( $new_rank ) ) {
 		if ( $output ) {

@@ -150,28 +150,28 @@ function go_admin_bar_add() {
 		url: MyAjax.ajaxurl,
 		data: { 
 			action: 'go_admin_bar_add',
-			go_admin_bar_points_points: jQuery( '#go_admin_bar_points_points' ).val(),
-			go_admin_bar_points_reason: jQuery( '#go_admin_bar_points_reason' ).val(),
-			go_admin_bar_currency_points: jQuery( '#go_admin_bar_currency_points' ).val(),
-			go_admin_bar_currency_reason: jQuery( '#go_admin_bar_currency_reason' ).val(),
-			go_admin_bar_bonus_currency_points: jQuery( '#go_admin_bar_bonus_currency_points' ).val(),
-			go_admin_bar_bonus_currency_reason: jQuery( '#go_admin_bar_bonus_currency_reason' ).val(),
-			go_admin_bar_minutes_points: jQuery( '#go_admin_bar_minutes_points' ).val(),
-			go_admin_bar_minutes_reason: jQuery( '#go_admin_bar_minutes_reason' ).val(),
-			go_admin_bar_penalty_points: jQuery( '#go_admin_bar_penalty_points' ).val(),
-			go_admin_bar_penalty_reason: jQuery( '#go_admin_bar_penalty_reason' ).val()
+			go_admin_bar_add_points: jQuery( '#go_admin_bar_add_points' ).val(),
+			go_admin_bar_add_points_reason: jQuery( '#go_admin_bar_add_points_reason' ).val(),
+			go_admin_bar_add_currency: jQuery( '#go_admin_bar_add_currency' ).val(),
+			go_admin_bar_add_currency_reason: jQuery( '#go_admin_bar_add_currency_reason' ).val(),
+			go_admin_bar_add_bonus_currency: jQuery( '#go_admin_bar_add_bonus_currency' ).val(),
+			go_admin_bar_add_bonus_currency_reason: jQuery( '#go_admin_bar_add_bonus_currency_reason' ).val(),
+			go_admin_bar_add_minutes: jQuery( '#go_admin_bar_add_minutes' ).val(),
+			go_admin_bar_add_minutes_reason: jQuery( '#go_admin_bar_add_minutes_reason' ).val(),
+			go_admin_bar_add_penalty: jQuery( '#go_admin_bar_add_penalty' ).val(),
+			go_admin_bar_add_penalty_reason: jQuery( '#go_admin_bar_add_penalty_reason' ).val()
 		},
 		success: function( html ) {
-			jQuery( '#go_admin_bar_points_points' ).val( '' );
-			jQuery( '#go_admin_bar_points_reason' ).val( '' );
-			jQuery( '#go_admin_bar_currency_points' ).val( '' );
-			jQuery( '#go_admin_bar_currency_reason' ).val( '' );
-			jQuery( '#go_admin_bar_bonus_currency_points' ).val( '' );
-			jQuery( '#go_admin_bar_bonus_currency_reason' ).val( '' );
-			jQuery( '#go_admin_bar_minutes_points' ).val( '' );
-			jQuery( '#go_admin_bar_minutes_reason' ).val( '' );
-			jQuery( '#go_admin_bar_penalty_points' ).val( '' );
-			jQuery( '#go_admin_bar_penalty_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_points' ).val( '' );
+			jQuery( '#go_admin_bar_add_points_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_currency' ).val( '' );
+			jQuery( '#go_admin_bar_add_currency_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_bonus_currency' ).val( '' );
+			jQuery( '#go_admin_bar_add_bonus_currency_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_minutes' ).val( '' );
+			jQuery( '#go_admin_bar_add_minutes_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_penalty' ).val( '' );
+			jQuery( '#go_admin_bar_add_penalty_reason' ).val( '' );
 			jQuery( '#admin_bar_add_return' ).html( html );
 			jQuery( '#go_admin_bar_add_button' ).prop( 'disabled', false );
 		}

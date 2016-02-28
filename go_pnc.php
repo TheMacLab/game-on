@@ -284,6 +284,12 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 		$next_rank_points = $rank[3];
 	}
 
+	error_log(
+		"\n##### go_update_admin_bar #####\n".
+		"\n\$value = \t{$value}\n".
+		"\n\$current_rank_points = \t{$current_rank_points}\n"
+	);
+
 	$current_bonus_currency = go_return_bonus_currency( $user_id );
 	$current_penalty = go_return_penalty( $user_id );
 
@@ -300,7 +306,7 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 
 	$color = barColor( $current_bonus_currency, $current_penalty );
 
-	$display = go_display_longhand_currency( $type, $amount );
+	$display = go_display_longhand_currency( $type, $value );
 	
 	if ( 'points' == $type ) {
 		
@@ -325,7 +331,7 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	$percentage = go_get_level_percentage( $user_id );
 	echo "<script language='javascript'>
 		jQuery(document).ready(function() {
-			jQuery( '#go_admin_bar_{$type}' ).html( '{$title}: {$display}' );
+			jQuery( '#go_admin_bar_{$type}' ).html( '{$display}' );
 			jQuery( '#go_admin_bar_progress_bar' ).css( {'width': '{$percentage}%'".( ( $color ) ? ", 'background-color' : '{$color}'" : '' )."} );
 		} );
 	</script>";
@@ -353,7 +359,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 				'uid' => $user_id 
 			) 
 		);
-		go_update_ranks( $user_id, ( $points + $total_points ) );
+		go_update_ranks( $user_id, ( $points + $total_points ), true );
 		$p = (string) ( $points + $total_points );
 		go_update_admin_bar( 'points', go_return_options( 'go_points_name' ), $p, $status );
 		if ( true === $notify ) {
@@ -428,39 +434,39 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 	}
 }
 
-function go_admin_bar_add() {
-	$points_points = $_POST['go_admin_bar_points_points'];
-	$points_reason = $_POST['go_admin_bar_points_reason'];
+function go_admin_bar_add () {
+	$points = $_POST['go_admin_bar_add_points'];
+	$points_reason = $_POST['go_admin_bar_add_points_reason'];
 	
-	$currency_points = $_POST['go_admin_bar_currency_points'];
-	$currency_reason = $_POST['go_admin_bar_currency_reason'];
+	$currency = $_POST['go_admin_bar_add_currency'];
+	$currency_reason = $_POST['go_admin_bar_add_currency_reason'];
 	
-	$bonus_currency_points = $_POST['go_admin_bar_bonus_currency_points'];
-	$bonus_currency_reason = $_POST['go_admin_bar_bonus_currency_reason'];
+	$bonus_currency = $_POST['go_admin_bar_add_bonus_currency'];
+	$bonus_currency_reason = $_POST['go_admin_bar_add_bonus_currency_reason'];
 	
-	$penalty_points = $_POST['go_admin_bar_penalty_points'];
-	$penalty_reason = $_POST['go_admin_bar_penalty_reason'];
+	$penalty = $_POST['go_admin_bar_add_penalty'];
+	$penalty_reason = $_POST['go_admin_bar_add_penalty_reason'];
 	
-	$minutes_points = $_POST['go_admin_bar_minutes_points'];
-	$minutes_reason = $_POST['go_admin_bar_minutes_reason'];
+	$minutes = $_POST['go_admin_bar_add_minutes'];
+	$minutes_reason = $_POST['go_admin_bar_add_minutes_reason'];
 	
 	$user_id = get_current_user_id();
 	
-	if ( $points_points != '' && $points_reason != '' ) {
-		go_add_currency( $user_id, $points_reason, 6, $points_points, 0, false );
-		go_update_ranks( $user_id, $points_points, true );
+	if ( '' != $points && '' != $points_reason ) {
+		go_add_currency( $user_id, $points_reason, 6, $points, 0, false );
+		go_update_ranks( $user_id, $points, true );
 	}
-	if ( $currency_points != '' && $currency_reason != '' ) {
-		go_add_currency( $user_id, $currency_reason, 6, 0, $currency_points, false );
+	if ( '' != $currency && '' != $currency_reason ) {
+		go_add_currency( $user_id, $currency_reason, 6, 0, $currency, false );
 	}
-	if ( $bonus_currency_points != '' && $bonus_currency_reason != '' ) {
-		go_add_bonus_currency( $user_id, $bonus_currency_points, $bonus_currency_reason );
+	if ( '' != $bonus_currency && '' != $bonus_currency_reason ) {
+		go_add_bonus_currency( $user_id, $bonus_currency, $bonus_currency_reason );
 	}
-	if ( $penalty_points != '' && $penalty_reason != '' ) {
-		go_add_penalty( $user_id, $penalty_points, $penalty_reason);
+	if ( '' != $penalty && '' != $penalty_reason ) {
+		go_add_penalty( $user_id, $penalty, $penalty_reason);
 	}
-	if ( $minutes_points != '' && $minutes_reason != '' ) {
-		go_add_minutes( $user_id, $minutes_points, $minutes_reason);
+	if ( '' != $minutes && '' != $minutes_reason ) {
+		go_add_minutes( $user_id, $minutes, $minutes_reason);
 	}
 	
 	die();
