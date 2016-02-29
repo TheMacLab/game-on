@@ -1,8 +1,11 @@
 <?php
 
 //adds currency and points for reasons that are not post tied.
-function go_add_currency( $user_id, $reason, $status, $points, $currency, $update, $bonus_loot = false ) {	
+function go_add_currency( $user_id, $reason, $status, $points, $currency, $update, $bonus_loot = false ) {
 	global $wpdb;
+
+	error_log( "\$points = {$points}" );
+
 	$table_name_go = $wpdb->prefix . "go";
 	if ( $update == false ) {
 		$wpdb->insert( $table_name_go, array( 'uid' => $user_id, 'reason' => $reason, 'status' => $status, 'points' => $points, 'currency' => $currency ) );
@@ -59,11 +62,11 @@ function go_add_post(
 			$wpdb->update(
 				$table_name_go,
 				array(
-					'points' => $points + ( $old_points->points ), 
-					'currency' => $currency + ( $old_points->currency ), 
+					'points' => $points + ( $old_points->points ),
+					'currency' => $currency + ( $old_points->currency ),
 					'bonus_currency' => $bonus_currency + ( $old_points->bonus_currency ),
 					'minutes' => $minutes + ( $old_points->minutes ),
-					'page_id' => $page_id, 
+					'page_id' => $page_id,
 					'count' => ( ( $old_points->count ) + $qty ),
 					'reason' => $reason
 				), 
@@ -92,15 +95,15 @@ function go_add_post(
 			$url_array = serialize( array( $status => $url ) );
 		}
 		if ( $repeat === 'on' ) {
-			$wpdb->update( 
-				$table_name_go, 
-				array( 
-					'status' => $status, 
-					'points' => $modded_points + ( $old_points->points ), 
-					'currency' => $modded_currency + ( $old_points->currency ), 
-					'bonus_currency' => $bonus_currency + ( $old_points->bonus_currency ), 
-					'page_id' => $page_id, 
-					'count' => $count + ( $old_points->count ), 
+			$wpdb->update(
+				$table_name_go,
+				array(
+					'status' => $status,
+					'points' => $modded_points + ( $old_points->points ),
+					'currency' => $modded_currency + ( $old_points->currency ),
+					'bonus_currency' => $bonus_currency + ( $old_points->bonus_currency ),
+					'page_id' => $page_id,
+					'count' => $count + ( $old_points->count ),
 					'url' => $url_array
 				), 
 				array( 
@@ -165,7 +168,7 @@ function go_add_post(
 				)
 			);
 		}
-	}
+	} // end if status isn't equal to -1
 	go_update_totals( intval( $user_id ), $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
 }
 	
@@ -351,20 +354,25 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 	}
 	if ( $points != 0 ) {
 		$total_points = go_return_points( $user_id );
+		$new_point_total = ( $points + $total_points > 0 ? $points + $total_points : 0 );
+
+		error_log( "The user's new point total should be {$new_point_total}" );
+
 		$wpdb->update( 
 			$table_name_go_totals, 
 			array( 
-				'points' => $points + $total_points 
+				'points' => $new_point_total
 			), 
 			array( 
 				'uid' => $user_id 
 			) 
 		);
-		go_update_ranks( $user_id, ( $points + $total_points ), true );
-		$p = (string) ( $points + $total_points );
-		go_update_admin_bar( 'points', go_return_options( 'go_points_name' ), $p, $status );
+
+		go_update_ranks( $user_id, $new_point_total, true );
+		$total_string = (string) $new_point_total;
+		go_update_admin_bar( 'points', go_return_options( 'go_points_name' ), $total_string, $status );
 		if ( true === $notify ) {
-			go_notify( 'points', $points, 0, 0, 0, 0, $user_id, null, $bonus_loot );	
+			go_notify( 'points', $new_point_total, 0, 0, 0, 0, $user_id, null, $bonus_loot );
 		}
 	}
 	if ( $currency != 0 ) {
