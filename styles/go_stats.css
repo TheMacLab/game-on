@@ -88,15 +88,18 @@
 	float: left;
 	position: relative;
 	left: 50%;
+	height: 25px;
 }
 
 #go_stats_progress_text {
 	position: relative;
+	height: 100%;
 	font-size: 18px;
 	z-index: 1;
-	float: left;
 	left: -50%;
 	line-height: 25px;
+	overflow: hidden;
+	word-break: break-all;
 }
 
 #go_stats_progress_fill {

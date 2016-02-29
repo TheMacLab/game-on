@@ -371,6 +371,7 @@ function go_stats_move_stage( task_id, status ) {
 			var current_rank_points = json.current_rank_points;
 			var next_rank_points = json.next_rank_points;
 			var max_rank_points = json.max_rank_points;
+			var prestige_name = json.prestige_name;
 			var pts_to_rank_threshold = 0;
 			var rank_threshold_diff = 1;
 			var pts_to_rank_up_str = '';
@@ -382,7 +383,7 @@ function go_stats_move_stage( task_id, status ) {
 			}
 
 			if ( max_rank_points === current_rank_points ) {
-				pts_to_rank_up_str = pts_to_rank_threshold + ' - Prestige';
+				pts_to_rank_up_str = pts_to_rank_threshold + ' - ' + prestige_name;
 			} else {
 				pts_to_rank_up_str = pts_to_rank_threshold + ' / ' + rank_threshold_diff;
 			}

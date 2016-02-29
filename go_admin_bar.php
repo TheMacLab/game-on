@@ -67,7 +67,8 @@ function go_admin_bar() {
 	$pts_to_rank_threshold = $go_current_points - $current_rank_points;
 
 	if ( $max_rank_points === $current_rank_points ) {
-		$pts_to_rank_up_str = "{$pts_to_rank_threshold} - Prestige";
+		$prestige_name = go_return_options( 'go_prestige_name' );
+		$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
 	} else {
 		$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
 	}
@@ -109,7 +110,17 @@ function go_admin_bar() {
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_info',
-				'title' => '<div style="padding-top:5px;"><div id="go_admin_bar_progress_bar_border"><div id="points_needed_to_level_up" class="go_admin_bar_text">'.$pts_to_rank_up_str.'</div><div id="go_admin_bar_progress_bar" class="progress_bar" style="width: '.$percentage.'%; background-color: '.$color.' ;"></div></div></div>',
+				'title' => 
+					'<div style="padding-top:5px;">'.
+						'<div id="go_admin_bar_progress_bar_border">'.
+							'<div id="go_admin_bar_progress_bar" class="progress_bar" '.
+								'style="width: '.$percentage.'%; background-color: '.$color.' ;">'.
+							'</div>'.
+							'<div id="points_needed_to_level_up" class="go_admin_bar_text">'.
+								$pts_to_rank_up_str.
+							'</div>'.
+						'</div>'.
+					'</div>',
 				'href' => '#',
 			) 
 		);

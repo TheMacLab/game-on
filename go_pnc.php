@@ -318,7 +318,8 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 		$pts_to_rank_threshold = ( $value - $current_rank_points );
 
 		if ( $max_rank_points === $current_rank_points ) {
-			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - Prestige";
+			$prestige_name = go_return_options( 'go_prestige_name' );
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
 		}

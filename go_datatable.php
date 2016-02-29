@@ -289,6 +289,7 @@ function go_install_data() {
 		'go_minutes_suffix' => 'M',
 		'go_level_names' => 'Level',
 		'go_level_plural_names' => 'Levels',
+		'go_prestige_name' => 'Prestige',
 		'go_organization_name' => 'Seating Chart',
 		'go_class_a_name' => 'Period',
 		'go_class_b_name' => 'Computer',

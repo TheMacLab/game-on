@@ -61,7 +61,8 @@ function go_admin_bar_stats() {
 		$pts_to_rank_threshold = ( $current_points - $current_rank_points );
 
 		if ( $max_rank_points === $current_rank_points ) {
-			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - Prestige";
+			$prestige_name = go_return_options( 'go_prestige_name' );
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
 		}
@@ -341,13 +342,15 @@ function go_stats_move_stage() {
 
 	$max_rank_index = count( $points_array ) - 1;
 	$max_rank_points = $points_array[ $max_rank_index ];
+	$prestige_name = go_return_options( 'go_prestige_name' );
 
 	$changed = array( 
 		'type' => 'json', 
 		'points' => 0, 
 		'currency' => 0, 
 		'bonus_currency' => 0,
-		'max_rank_points' => $max_rank_points
+		'max_rank_points' => $max_rank_points,
+		'prestige_name' => $prestige_name
 	);
 	
 	if ( ! empty( $date_picker ) ) {
