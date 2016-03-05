@@ -93,7 +93,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 					// ...set the user's rank to the rank at the current index
 					$new_rank = go_set_rank( $user_id, $i - 1, $ranks, true );
-
 					break;
 				}
 			}
@@ -111,9 +110,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 						// ...set the user's rank to the rank at the current index,
 						// and remove an badges assigned to the current rank
-
-						$new_rank = go_set_rank( $user_id, $x, $ranks, true );
-
+						$new_rank = go_set_rank( $user_id, $x, $ranks, false );
 						break;
 					}
 				}
@@ -124,7 +121,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 					// ...set the user's rank to the minimum rank,
 					// and remove any badges assigned to the current rank					
-					$new_rank = go_set_rank( $user_id, 0, $ranks, true );
+					$new_rank = go_set_rank( $user_id, 0, $ranks, false );
 				}
 			}
 		}
@@ -137,84 +134,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 			return $new_rank;
 		}
 	}
-
-	// if ( $next_rank != '' ) {
-	// 	if ( $total_points >= $next_rank_points ) {
-	// 		while ( current( $points_array ) != $next_rank_points ) {
-	// 			next( $points_array );
-	// 		}
-			
-	// 		while ( $total_points >= current( $points_array ) ) {
-	// 			$current_key = key( $points_array );
-	// 			$new_rank = $name_array[ $current_key ];
-	// 			$new_rank_points = $points_array[ $current_key ];
-	// 			$new_next_rank = $name_array[ $current_key + 1 ];
-	// 			$new_next_rank_points = $points_array[ $current_key + 1 ];
-	// 			if ( $ranks['badges'][ $current_key ] ) {
-	// 				$badge_id = $ranks['badges'][ $current_key ];
-	// 				do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
-	// 			}
-	// 			next( $points_array );
-	// 		}
-	// 		$new_rank = array(
-	// 			array( $new_rank, $new_rank_points ),	
-	// 			array( $new_next_rank, $new_next_rank_points )
-	// 		);
-	// 		$update = true;
-	// 	}
-		
-	// 	if ( ! empty( $points_array ) ) {
-	// 		reset( $points_array );
-	// 	}
-		
-	// 	if ( $total_points < $current_rank_points ) {
-			
-	// 		while ( current( $points_array ) != $current_rank_points ) {
-	// 			next( $points_array );
-	// 		}
-		
-	// 		while ( $total_points < current( $points_array ) ) {
-	// 			$current_key = key( $points_array );
-	// 			$new_rank = $name_array[ $current_key - 1 ];
-	// 			$new_rank_points = $points_array[ $current_key - 1 ];
-	// 			$new_next_rank = $name_array[ $current_key ];
-	// 			$new_next_rank_points = $points_array[ $current_key ];
-	// 			if( $ranks['badges'][ $current_key ] ) {
-	// 				go_remove_badge( $user_id, $ranks['badges'][ $current_key ] );
-	// 			}
-	// 			prev( $points_array );
-	// 		}
-	// 		$new_rank = array(
-	// 			array( $new_rank, $new_rank_points ),	
-	// 			array( $new_next_rank, $new_next_rank_points )
-	// 		);
-	// 		$update = true;
-	// 	}
-	// }
-	
-	// if ( $update ) {
-	// 	update_user_meta( $user_id, 'go_rank', $new_rank );
-	// 	go_get_rank( $user_id );
-	// 	global $current_rank;
-	// 	global $current_rank_points;
-	// 	global $next_rank;
-	// 	global $next_rank_points;
-	// 	global $go_notify_counter;
-	// 	$go_notify_counter++;
-	// 	$space = $go_notify_counter * 85;
-	// 	$notification = '
-	// 		<div id="go_notification_level" class="go_notification" style="top: '.( $space - 17).'px; color: white; background: #ffcc00; text-align: center; width: 300px; line-height: 68px; height: 81.6px; font-size: 52px;"> '.$current_rank.'!</div>
-	// 		<script type="text/javascript" language="javascript">
-	// 			go_notification(3000, jQuery( "#go_notification_level" ) );
-	// 			jQuery( "#go_admin_bar_rank" ).html( "'.$current_rank.'" );
-	// 		</script>
-	// 	';
-	// 	if ( $output === true ) {
-	// 		echo $notification;	
-	// 	} elseif ( $output === false ) {
-	// 		return $notification;
-	// 	}
-	// }
 }
 
 /**
@@ -234,35 +153,22 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
  * @param  INT $new_rank_index The index of the user's new rank within the "points" array of the
  *			"go_ranks" GO-option.
  * @param  ARRAY $ranks Contains the rank data stored in the "go_ranks" GO-option.
- * @param  boolean $is_level_up Determines whether the user is leveling up or leveling down.
+ * @param  boolean $is_rank_up Determines whether the user is leveling up or leveling down.
  * @return STRING/NULL Returns the notification of the user's new level on success. Returns NULL 
  *			on failure and may output errors to the PHP error log.
  */
-function go_set_rank( $user_id, $new_rank_index, $ranks, $is_level_up = true ) {
+function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true ) {
 	global $go_notify_counter;
 
 	if ( ! isset( $user_id ) || ! isset( $new_rank_index ) ||
 			! isset( $ranks ) || ! is_int( $user_id ) ||
 			! is_int( $new_rank_index ) || ! is_array( $ranks ) ||
-			! is_bool( $is_level_up ) || $new_rank_index < 0 ) {
-		
-		error_log(
-			( 
-				'! isset( $user_id ) => '.( ! isset( $user_id ) ? 'true' : 'false' )."\n".
-				'! isset( $new_rank_index ) => '.( ! isset( $new_rank_index ) ? 'true' : 'false' )."\n".
-				'! isset( $ranks )  => '.( ! isset( $ranks ) ? 'true' : 'false' )."\n".
-				'! is_int( $user_id ) => '.( ! is_int( $user_id ) ? 'true' : 'false' )."\n".
-				'! is_int( $new_rank_index ) => '.( ! is_int( $new_rank_index ) ? 'true' : 'false' )."\n".
-				'! is_array( $ranks ) => '.( ! is_array( $ranks ) ? 'true' : 'false' )."\n".
-				'! is_bool( $is_level_up ) => '.( ! is_bool( $is_level_up ) ? 'true' : 'false' )."\n".
-				'( $new_rank_index < 0 ) => '.( $new_rank_index < 0 ? 'true' : 'false' )
-			)
-		);
+			! is_bool( $is_rank_up ) || $new_rank_index < 0 ) {
 
 		error_log(
 			"Game On Error: invalid call to go_set_rank() in go_ranks.php, ".
 			"args( user_id={$user_id}, new_rank_index={$new_rank_index}, ranks=".
-			print_r( $ranks, true ).", is_level_up={$is_level_up} )"
+			print_r( $ranks, true ).", is_rank_up={$is_rank_up} )"
 		);
 		return;
 	}
@@ -278,73 +184,17 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_level_up = true ) {
 	$new_next_rank = '';
 	$new_next_rank_points = 0;
 
-	// $current_key = key( $points_array );
-	// $new_rank = $name_array[ $current_key - 1 ];
-	// $new_rank_points = $points_array[ $current_key - 1 ];
-	// $new_next_rank = $name_array[ $current_key ];
-	// $new_next_rank_points = $points_array[ $current_key ];
-	// if( $ranks['badges'][ $current_key ] ) {
-	// 		go_remove_badge( $user_id, $ranks['badges'][ $current_key ] );
-	// }
-	// prev( $points_array );
+	$new_rank = $name_array[ $new_rank_index ];
+	$new_rank_points = $points_array[ $new_rank_index ];
+	if ( isset( $name_array[ $new_rank_index + 1 ] ) &&
+			isset( $points_array[ $new_rank_index + 1 ] ) ) {
+		$new_next_rank = $name_array[ $new_rank_index + 1 ];
+		$new_next_rank_points = $points_array[ $new_rank_index + 1 ];
+	}
 
-	// if( $ranks['badges'][ $current_key ] ) {
-	// 		go_remove_badge( $user_id, $ranks['badges'][ $current_key ] );
-	// }
-
-	// if ( $ranks['badges'][ $current_key ] ) {
-	// 		$badge_id = $ranks['badges'][ $current_key ];
-	// 		do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
-	// }
-
-	// $new_rank = array(
-	// 	array( $new_rank, $new_rank_points ),	
-	// 	array( $new_next_rank, $new_next_rank_points )
-	// );
-
-	// if ( $update ) {
-	// 	update_user_meta( $user_id, 'go_rank', $new_rank );
-	// 	go_get_rank( $user_id );
-	// 	global $current_rank;
-	// 	global $current_rank_points;
-	// 	global $next_rank;
-	// 	global $next_rank_points;
-	// 	global $go_notify_counter;
-	// 	$go_notify_counter++;
-	// 	$space = $go_notify_counter * 85;
-	// 	$notification = '
-	// 		<div id="go_notification_level" class="go_notification" style="top: '.( $space - 17).'px; color: white; background: #ffcc00; text-align: center; width: 300px; line-height: 68px; height: 81.6px; font-size: 52px;"> '.$current_rank.'!</div>
-	// 		<script type="text/javascript" language="javascript">
-	// 			go_notification(3000, jQuery( "#go_notification_level" ) );
-	// 			jQuery( "#go_admin_bar_rank" ).html( "'.$current_rank.'" );
-	// 		</script>
-	// 	';
-	// 	if ( $output === true ) {
-	// 		echo $notification;	
-	// 	} elseif ( $output === false ) {
-	// 		return $notification;
-	// 	}
-	// }
-
-	if ( $is_level_up ) {
-		$new_rank = $name_array[ $new_rank_index ];
-		$new_rank_points = $points_array[ $new_rank_index ];
-		if ( isset( $name_array[ $new_rank_index + 1 ] ) &&
-				isset( $points_array[ $new_rank_index + 1 ] ) ) {
-			$new_next_rank = $name_array[ $new_rank_index + 1 ];
-			$new_next_rank_points = $points_array[ $new_rank_index + 1 ];
-		}
-
+	if ( $is_rank_up ) {
 		do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
 	} else {
-		$new_rank = $name_array[ $new_rank_index - 1 ];
-		$new_rank_points = $points_array[ $new_rank_index - 1 ];
-		if ( isset( $name_array[ $new_rank_index ] ) &&
-				isset( $points_array[ $new_rank_index ] ) ) {
-			$new_next_rank = $name_array[ $new_rank_index ];
-			$new_next_rank_points = $points_array[ $new_rank_index ];
-		}
-
 		go_remove_badge( $user_id, $badge_id );
 	}
 
