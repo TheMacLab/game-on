@@ -1,15 +1,11 @@
 <?php
 
-// NOTE: go_table_individual() & go_table_totals() will throws errors if the tables already exist 
-// within the wordpress database.  However, we're not going to drop the tables and then 
-// re-create them on plugin activation, as that would wipe vital user data.
-
 // Creates table for indivual logs.
 function go_table_individual() {
 	global $wpdb;
 	$table_name = "{$wpdb->prefix}go";
 	$sql = "
-		CREATE TABLE $table_name (
+		CREATE TABLE IF NOT EXISTS $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			uid INT,
 			status INT,
@@ -50,7 +46,7 @@ function go_table_totals() {
 	global $wpdb;
 	$table_name = "{$wpdb->prefix}go_totals";
 	$sql = "
-		CREATE TABLE $table_name (
+		CREATE TABLE IF NOT EXISTS $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			uid  INT,
 			currency  INT,
