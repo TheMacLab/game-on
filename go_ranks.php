@@ -3,10 +3,6 @@
 // $output has two possible boolean values: true and false. True will echo any rank notification,
 // false will return any rank notifications.
 function go_update_ranks( $user_id, $total_points = null, $output = false ) {
-
-	$error = new Exception;
-	error_log( print_r( $error->getTraceAsString(), true ) );
-
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
@@ -63,13 +59,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	if ( empty( $total_points ) ) {
 		$total_points = $current_points;
 	}
-
-	error_log( 
-		"#### go_update_ranks ####\n".
-		"\$current_points = {$current_points}\n".
-		"\$current_rank = {$current_rank}\n".
-		"\$current_rank_index = {$current_rank_index}\n"
-	);
 	
 	/*
 	 * If the user's current points are greater than or equal
@@ -77,20 +66,16 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	 * slightly differently than normal.
 	 */
 	if ( $current_points >= $max_rank_points ) {
-		error_log( "\ncurrent points are greater than the max rank" );
 		if ( ! $is_max_rank ) {
-			error_log( "\ncurrent rank isn't equal to the max rank" );
 			
 			// ...set the user's rank to the max rank
 			$new_rank = go_set_rank( $user_id, $max_rank_index, $ranks, true );
 		}
 	} else {
-		error_log( "\ncurrent points are less than the max rank" );
 
 		// we don't want to enter this block when the user is at the max rank, because in that
 		// case the user's current points will always be greater than the next rank's points
 		if ( $current_points > $next_rank_points && ! $is_max_rank ) {
-			error_log( "\ncurrent points are greater than the next rank point threshold" );
 
 			/*
 			 * We can safely start the loop at the index immediately after the
@@ -106,37 +91,20 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 				// this checks if the user's points fall under the rank at the current index
 				if ( $current_points < $rank_point_threshold ) {
 
-					error_log(
-						"\ncurrent points ({$current_points}) are less than rank's points ".
-						"({$name_array[ $i ]}:{$rank_point_threshold})"
-					);
-
 					// ...set the user's rank to the rank at the current index
 					$new_rank = go_set_rank( $user_id, $i - 1, $ranks, true );
-
-					error_log( "## upper ##\n new rank = {$new_rank}" );
 
 					break;
 				}
 			}
 		} else if ( $current_points < $current_rank_points ) {
-			error_log( "\ncurrent points are less than the current rank point threshold" );
-
 			if ( $current_points > 0 ) {
+
 				// loop through to find rank lower than the current one
-
-				error_log( "#### looping through ranks... {$current_points} ####" );
-
 				for ( $x = $current_rank_index - 1; $x > 0; $x-- ) {
 
 					// this reflects the points required to reach the rank at the current index
 					$rank_point_threshold = $points_array[ $x ];
-
-					error_log(
-						"\n{$x} => {$name_array[ $x ]}:{$rank_point_threshold}\n".
-						"\tis {$current_points} > {$rank_point_threshold}?...".
-						( $current_points > $rank_point_threshold ?  'true' : 'false' )
-					);
 
 					// this checks that the rank threshold at the current index falls under the user's points
 					if ( $current_points > $rank_point_threshold ) {
@@ -145,8 +113,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 						// and remove an badges assigned to the current rank
 
 						$new_rank = go_set_rank( $user_id, $x, $ranks, true );
-
-						error_log( "## lower ##\n new rank = {$new_rank}" );
 
 						break;
 					}
@@ -157,11 +123,8 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 				if ( ! $is_min_rank ) {
 
 					// ...set the user's rank to the minimum rank,
-					// and remove any badges assigned to the current rank
-					
+					// and remove any badges assigned to the current rank					
 					$new_rank = go_set_rank( $user_id, 0, $ranks, true );
-
-					error_log( "## lower-MIN ##\n new rank = {$new_rank}" );
 				}
 			}
 		}
@@ -169,14 +132,8 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 	if ( ! empty( $new_rank ) ) {
 		if ( $output ) {
-
-			error_log( "@@@ THE NOTIFICATION WAS OUTPUT!" );
-
 			echo $new_rank;
 		} else {
-
-			error_log( "@@@ NO NOTIFICATION!" );
-
 			return $new_rank;
 		}
 	}
@@ -302,7 +259,7 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_level_up = true ) {
 			)
 		);
 
-		error_log( 
+		error_log(
 			"Game On Error: invalid call to go_set_rank() in go_ranks.php, ".
 			"args( user_id={$user_id}, new_rank_index={$new_rank_index}, ranks=".
 			print_r( $ranks, true ).", is_level_up={$is_level_up} )"
@@ -388,18 +345,8 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_level_up = true ) {
 			$new_next_rank_points = $points_array[ $new_rank_index ];
 		}
 
-		error_log(
-			"UPDATING RANK: \n".
-			"\$new_rank 			= {$new_rank}\n".
-			"\$new_rank_points 		= {$new_rank_points}\n".
-			"\$new_next_rank 		= {$new_next_rank}\n".
-			"\$new_next_rank_points = {$new_next_rank_points}"
-		);
-
 		go_remove_badge( $user_id, $badge_id );
 	}
-
-	error_log( $new_rank );
 
 	$new_rank_array = array(
 		array( 
@@ -440,14 +387,6 @@ function go_get_rank( $user_id ) {
 		$current_rank_points = $rank[0][0][1];
 		$next_rank = $rank[0][1][0];
 		$next_rank_points = $rank[0][1][1];
-
-		error_log(
-			"##### go_get_rank #####\n".
-			"\$current_rank: $current_rank\n".
-			"\$current_rank_points: $current_rank_points\n".
-			"\$next_rank: $next_rank\n".
-			"\$next_rank_points: $next_rank_points\n"
-		);
 
 		return array(
 			$current_rank,

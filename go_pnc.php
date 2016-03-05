@@ -4,11 +4,6 @@
 function go_add_currency( $user_id, $reason, $status, $points, $currency, $update, $bonus_loot = false ) {
 	global $wpdb;
 
-	error_log(
-		"go_add_currency():\n".
-		"\$points = {$points}"
-	);
-
 	$table_name_go = "{$wpdb->prefix}go";
 	if ( $update == false ) {
 		$wpdb->insert( $table_name_go, array( 'uid' => $user_id, 'reason' => $reason, 'status' => $status, 'points' => $points, 'currency' => $currency ) );
@@ -289,12 +284,6 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 		$next_rank_points = $rank[3];
 	}
 
-	error_log(
-		"\n##### go_update_admin_bar #####\n".
-		"\n\$value = \t{$value}\n".
-		"\n\$current_rank_points = \t{$current_rank_points}\n"
-	);
-
 	$current_bonus_currency = go_return_bonus_currency( $user_id );
 	$current_penalty = go_return_penalty( $user_id );
 
@@ -357,8 +346,6 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 	if ( $points != 0 ) {
 		$total_points = go_return_points( $user_id );
 		$new_point_total = ( $points + $total_points > 0 ? $points + $total_points : 0 );
-
-		error_log( "The user's new point total should be {$new_point_total}" );
 
 		$wpdb->update( 
 			$table_name_go_totals, 
@@ -462,8 +449,6 @@ function go_admin_bar_add () {
 	$minutes_reason = $_POST['go_admin_bar_add_minutes_reason'];
 	
 	$user_id = get_current_user_id();
-	
-	error_log( "go_admin_bar_add()\n" );
 
 	if ( '' != $points && '' != $points_reason ) {
 		go_add_currency( $user_id, $points_reason, 6, $points, 0, false );

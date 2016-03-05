@@ -49,16 +49,6 @@ function go_admin_bar() {
 	$max_rank_index = count( $points_array ) - 1;
 	$max_rank_points = $points_array[ $max_rank_index ];
 
-	error_log(
-		"##### go_admin_bar #####\n".
-		"\$go_current_points: $go_current_points\n".
-		"\$current_rank: $current_rank\n".
-		"\$current_rank_points: $current_rank_points\n".
-		"\$next_rank_points: $next_rank_points\n".
-		"\$next_rank: $next_rank\n".
-		"\$max_rank_points: $max_rank_points"
-	);
-
 	if ( ! empty( $next_rank_points ) ) {
 		$rank_threshold_diff = $next_rank_points - $current_rank_points;
 	} else {
