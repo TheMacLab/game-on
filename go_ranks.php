@@ -3,6 +3,10 @@
 // $output has two possible boolean values: true and false. True will echo any rank notification,
 // false will return any rank notifications.
 function go_update_ranks( $user_id, $total_points = null, $output = false ) {
+
+	$error = new Exception;
+	error_log( print_r( $error->getTraceAsString(), true ) );
+
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
@@ -111,6 +115,8 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 					$new_rank = go_set_rank( $user_id, $i - 1, $ranks, true );
 
 					error_log( "## upper ##\n new rank = {$new_rank}" );
+
+					break;
 				}
 			}
 		} else if ( $current_points < $current_rank_points ) {
@@ -141,6 +147,8 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 						$new_rank = go_set_rank( $user_id, $x, $ranks, true );
 
 						error_log( "## lower ##\n new rank = {$new_rank}" );
+
+						break;
 					}
 				}
 			} else {
