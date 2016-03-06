@@ -89,14 +89,14 @@ function go_award_badge ( $atts ) {
 	$repeat = $atts['repeat'];
 	$user_id = $atts['uid'];
 
-	if ( ! empty( $badge_id ) ) {
+	if ( ! empty( $badge_id ) && is_bool( $repeat ) ) {
 		global $wpdb;
 		global $go_notify_counter;
 		$go_notify_counter++;
 		$space = $go_notify_counter * 85;
 		
 		$display = wp_get_attachment_image( $badge_id, array( 200, 200 ), false );
-		$existing_badges = get_user_meta( $user_id, 'go_badges', true);
+		$existing_badges = get_user_meta( $user_id, 'go_badges', true );
 		if ( false === $repeat ) {
 			if ( empty( $existing_badges ) || ! in_array( $badge_id, $existing_badges ) ) {
 				$existing_badges[] = $badge_id;
@@ -171,17 +171,61 @@ function go_remove_badge_r ( $user_id, $old_rank_index, $rank_count, $badges_arr
  * @param  int $badge_id The badge's id.
  */
 function go_remove_badge ( $user_id, $badge_id = -1 ) {
-	if ( ! empty( $user_id ) && ! empty( $badge_id ) && ! empty( $badge_id ) && $badge_id > 0 ) {
+	if ( ! empty( $user_id ) && ! empty( $badge_id ) && $badge_id > 0 ) {
 		global $wpdb;
 		$existing_badges = get_user_meta( $user_id, 'go_badges', true );
 		$badge_count = count( $existing_badges );
-		$matching_badge_id = array_search( $badge_id, $existing_badges );
-		if ( false !== $matching_badge_id && $matching_badge_id > -1 ) {
-			unset( $existing_badges[ $matching_badge_id ] );
+		$matching_keys = array_keys( $existing_badges, $badge_id );
+		if ( ! empty( $matching_keys ) && count( $matching_keys ) > 0 ) {
+			foreach ( $matching_keys as $key ) {
+				unset( $existing_badges[ $key ] );
+				$badge_count--;
+			}
 			update_user_meta( $user_id, 'go_badges', $existing_badges );
-			$new_badge_count = $badge_count - 1;
-			$wpdb->update( "{$wpdb->prefix}go_totals", array( 'badge_count' => $new_badge_count ), array( 'uid' => $user_id ) );
+			$wpdb->update( "{$wpdb->prefix}go_totals", array( 'badge_count' => $badge_count ), array( 'uid' => $user_id ) );
 		}
+	}
+}
+
+/**
+ * Removes non-existent badges from user's "go_badges" meta data.
+ *
+ * Loops through the badges that the user has and removes any that do not have an existing media
+ * file attached to their id. This prevents the badges from taking up space in the stats page.
+ *
+ * @since 2.5.9
+ *
+ * @param  int	$user_id The user's id.
+ * @return null Return null if the user id is missing or invalid.
+ */
+function go_clean_badges ( $user_id ) {
+	if ( empty( $user_id ) || $user_id <= 0 ) {
+		error_log(
+			"Game On Error: invalid call to go_clean_badges() in go_open_badge.php, ".
+			"args( user_id(" . gettype( $user_id ) . ")={$user_id} )"
+		);
+		return;
+	}
+
+	$user_badges = get_user_meta( $user_id, 'go_badges', true );
+	$modified_badges = $user_badges;
+	$attachment_link = '';
+	
+	foreach ( $user_badges as $key => $badge_id ) {
+
+		// this will hold the url for the media attachment, if it exists
+		$attachment_link = wp_get_attachment_link( $badge_id );
+		if ( 'Missing Attachment' === $attachment_link ) {
+			unset( $modified_badges[ $key ] );
+		}
+	}
+
+	// if we actually made changes, update the user's meta data
+	if ( $modified_badges != $user_badges ) {
+
+		// unset() can leave holes in an array, this will reorganize the array to deal with that
+		$modified_badges = array_values( $modified_badges );
+		update_user_meta( $user_id, 'go_badges', $modified_badges );
 	}
 }
 ?>

@@ -246,6 +246,7 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $ol
 		$rank_index_diff = $old_rank_index - $new_rank_index;
 		go_remove_badge_r( $user_id, $old_rank_index, $rank_index_diff, $badges_array );
 	}
+	go_clean_badges( $user_id );
 
 	$new_rank_array = array(
 		array( 
