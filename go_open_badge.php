@@ -1,18 +1,16 @@
-<?php 
-
-add_shortcode( 'go_award_badge', 'go_award_badge' );
-
-function go_media_upload_tab_name( $tabs ) {
-    $newtab = array( 'tab_create_badge' => 'Create Badge' );
-    return array_merge( $tabs, $newtab );
-}
-
-function go_media_badge_list( $tabs ) {
-    $newtab = array( 'tab_badge_list' => 'Badges List' );
-    return array_merge( $tabs, $newtab );
-}
-
-function go_badge_add_attachment( $form_fields, $post ) {
+<?php
+/**
+ * Add a badge shortcode to every media file.
+ *
+ * Adds a field on every media file's edit page, so that an admin can easily copy and paste
+ * the badge if they'd like to use it in a post/page/task.
+ *
+ * @param  array $form_fields An array containing the fields that are displayed on the media file's
+ *							  edit page.
+ * @param  obj 	 $post 		  The WP_Post instance for the media file.
+ * @return array The modified array of form fields for the media file.
+ */
+function go_badge_add_attachment ( $form_fields, $post ) {
     $form_fields['location'] = array(
         'value' => "[go_award_badge id={$post->ID} repeat=false]",
         'label' => __( 'Shortcode' ),
@@ -21,7 +19,21 @@ function go_badge_add_attachment( $form_fields, $post ) {
     return $form_fields;	
 }
 
-function go_award_badge_r ( $user_id, $new_rank_index, $rank_count, $badges_array = null ) {
+/**
+ * Recursively award badges.
+ *
+ * Loops through all possible badges and awards them based on the starting and ending rank of the user.
+ * If the rank doesn't have a badge id attached to it, the loop skips that rank.
+ *
+ * @since 2.5.9
+ *
+ * @param  int   $user_id 		 The user's id.
+ * @param  int   $new_rank_index The index of the user's new rank (zero-indexed).
+ * @param  int   $rank_count 	 The number of ranks that the user has leveled-up by.
+ * @param  array $badges_array 	 Optional. Contains the badge ids of all the ranks, ordered in descending
+ *								 order by rank.
+ */
+function go_award_badge_r ( $user_id, $new_rank_index, $rank_count = 0, $badges_array = null ) {
 	if ( ! empty( $user_id ) && $new_rank_index > 0 && $rank_count >= 1 ) {
 		if ( empty( $badges_array ) ) {
 			$ranks = get_option( 'go_ranks' );
@@ -45,6 +57,26 @@ function go_award_badge_r ( $user_id, $new_rank_index, $rank_count, $badges_arra
 	}
 }
 
+/**
+ * Awards an individual badge.
+ *
+ * Awards a single badge and echos the necessary notification for the badge. Unique badges will not
+ * be awarded a second time. This is hooked up to the shortcode "[go_award_badge]" by admins. Calling
+ * "do_shortcode('[go_award_badge]')" in the back-end must be avoided unless absolutely necessary;
+ * instead, call the function directly.
+ *
+ * @since 1.0.0
+ *
+ * @global object $wpdb				 Instance of the wpdb class from WP core.
+ * @global int 	  $go_notify_counter Keeps track of the number of notifications on screen and is used
+ *									 to space notifications.
+ *
+ * @param array $atts {
+ *		@type int 	  $id 	  Contains the id of the badge to add. IS NOT the user's id.
+ *		@type boolean $repeat Whether or not the badge should be unique.
+ *		@type int 	  $uid 	  The user's id.
+ * }
+ */
 function go_award_badge ( $atts ) {
 	$defaults = array(
 		'id' => null,
@@ -93,6 +125,20 @@ function go_award_badge ( $atts ) {
 	}
 }
 
+/**
+ * Recursively removes badges.
+ *
+ * Loops through all possible badges and removes them based on the starting and ending rank of the user.
+ * If the rank doesn't have a badge id attached to it, the loop skips that rank.
+ *
+ * @since 2.5.9
+ *
+ * @param  int 	 $user_id 		 The user's id.
+ * @param  int 	 $old_rank_index The index of the user's old rank (zero-indexed).
+ * @param  int 	 $rank_count 	 The number of ranks that the user has leveled-down by.
+ * @param  array $badges_array 	 Optional. Contains the badge ids of all the ranks, ordered in descending
+ *								 order by rank.
+ */
 function go_remove_badge_r ( $user_id, $old_rank_index, $rank_count, $badges_array = null ) {
 	if ( ! empty( $user_id ) && $old_rank_index > 0 && $rank_count >= 1 ) {
 		if ( empty( $badges_array ) ) {
@@ -111,6 +157,19 @@ function go_remove_badge_r ( $user_id, $old_rank_index, $rank_count, $badges_arr
 	}
 }
 
+/**
+ * Removes an individual badge.
+ *
+ * Removes the badge id from the user's meta data and decrements the user's badge count in the
+ * "%go_totals" table.
+ *
+ * @since 2.0.2
+ *
+ * @global object $wpdb	Instance of the wpdb class from WP core.
+ *
+ * @param  int $user_id  The user's id.
+ * @param  int $badge_id The badge's id.
+ */
 function go_remove_badge ( $user_id, $badge_id = -1 ) {
 	if ( ! empty( $user_id ) && ! empty( $badge_id ) && ! empty( $badge_id ) && $badge_id > 0 ) {
 		global $wpdb;
@@ -125,5 +184,4 @@ function go_remove_badge ( $user_id, $badge_id = -1 ) {
 		}
 	}
 }
-
 ?>

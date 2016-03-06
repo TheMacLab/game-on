@@ -219,27 +219,6 @@ function go_get_login_function( $atts, $content = null ) {
 }
 add_shortcode( 'go_loginname', 'go_get_login_function' );
 
-/*
-//Gets the users focus
-function go_get_focus_function( $atts, $content = null ) {
-if ( is_user_logged_in() ) {
-   global $current_user;
-      get_currentuserinfo();
-      return '<span id="go-focus">' . $current_user->go_focus . "</span>";}
-else { return '<span id="go-visitor">Visitor</span>'; }}
-add_shortcode( 'go_get_focus', 'go_get_focus_function' );
-
-
-//Gets the users level
-function go_get_level_function( $atts, $content = null ) {
-if ( is_user_logged_in() ) {
-   global $current_user;
-      get_currentuserinfo();
-      return '<span id="go-focus">' . $current_user->$current_rank	 . "</span>";}
-else { return '<span id="go-visitor">Visitor</span>'; }}
-add_shortcode( 'go_get_level', 'go_get_level_function' );
-*/
-
 // creates shortcode for page grab function
 add_shortcode( 'page_grab', 'go_page_grabber_shortcode' );
 add_shortcode( 'go_page_grab', 'go_page_grabber_shortcode' );
@@ -659,4 +638,6 @@ function go_shortcode_button_register( $plugin_array ) {
     return $plugin_array;
 }
 
+// from go_open_badge.php
+add_shortcode( 'go_award_badge', 'go_award_badge' );
 ?>

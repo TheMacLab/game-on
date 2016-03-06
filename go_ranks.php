@@ -1,8 +1,22 @@
 <?php
-
-// $output has two possible boolean values: true and false. True will echo any rank notification,
-// false will return any rank notifications.
-function go_update_ranks( $user_id, $total_points = null, $output = false ) {
+/**
+ * Determines what level the user should be at.
+ *
+ * Uses the user's current points (XP), the rank thresholds stored in the "go_ranks" option, and the
+ * user's rank data (stored in "go_rank" meta data) to iterate through the available ranks and 
+ * assign the user an appropriate rank.
+ *
+ * @since 1.0.0
+ * @see go_get_rank(), go_set_rank(), go_return_points(), go_user_at_max_rank(), go_user_at_min_rank()
+ *
+ * @param  int 	   $user_id 	 Optional. The user's id.
+ * @param  int 	   $total_points Optional. The user's new point total.
+ * @param  boolean $output 		 Optional. Whether to echo the new rank notification or return it.
+ * @return string|null If there is a new rank to assign and the output parameter is true, the rank's
+ *					   notification will be echoed. If the output parameter is false, the rank's
+ *					   notification will be returned. Otherwise, null will be returned.
+ */
+function go_update_ranks ( $user_id = null, $total_points = null, $output = false ) {
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
@@ -17,6 +31,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	$points_array = $ranks['points'];
 	$badges_array = $ranks['badges'];
 	$new_rank = '';
+	$current_points = 0;
 
 	if ( empty( $ranks ) ) {
 		error_log( 
@@ -27,7 +42,11 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		return;
 	}
 
-	$current_points = go_return_points( $user_id );
+	if ( null !== $total_points && $total_points >= 0 ) {
+		$current_points = $total_points;
+	} else {
+		$current_points = go_return_points( $user_id );
+	}
 	$user_rank = go_get_rank( $user_id );
 	if ( ! empty( $user_rank ) ) {
 		$current_rank = $user_rank[0];
@@ -63,10 +82,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	$max_rank_index = count( $name_array ) - 1;
 	$max_rank_points = $points_array[ $max_rank_index ];
 	$is_max_rank = go_user_at_max_rank( $user_id, $max_rank_points, $current_rank_points );
-
-	if ( empty( $total_points ) ) {
-		$total_points = $current_points;
-	}
 	
 	/*
 	 * If the user's current points are greater than or equal
@@ -165,25 +180,24 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
  * Update the user's rank.
  *
  * Update the user's rank to the one at the passed index. Add or remove badges depending on
- * 			whether the user is leveling up or leveling down. Then return the level notification,
- *			so that it can be manipulated elsewhere.
+ * whether the user is leveling up or leveling down. Then return the level notification,
+ * so that it can be manipulated elsewhere.
  *
  * @since 2.5.9
- * @see go_update_ranks()
  *
- * @global INT $go_notify_counter Keeps track of the number of notifications on screen and is used
- *			to space notifications.
+ * @global int 	   $go_notify_counter Keeps track of the number of notifications on screen and is used
+ *									  to space notifications.
  *
- * @param  INT $user_id The user's id.
- * @param  INT $new_rank_index The index of the user's new rank within the "points" array of the
- *			"go_ranks" GO-option.
- * @param  ARRAY $ranks Contains the rank data stored in the "go_ranks" GO-option.
- * @param  boolean $is_rank_up Determines whether the user is leveling up or leveling down.
- * @param  INT $old_rank_index (Optional) The index of the user's current rank within the "points"
- *			array of the "go_ranks" GO-option. Only needed when the user is leveling down 
- *			(i.e. $is_rank_up == false).
- * @return STRING/NULL Returns the notification of the user's new level on success. Returns NULL 
- *			on failure and may output errors to the PHP error log.
+ * @param  int 	   $user_id 		  The user's id.
+ * @param  int 	   $new_rank_index 	  The index of the user's new rank within the "points" array of the
+ *									  "go_ranks" GO-option.
+ * @param  array   $ranks 			  Contains the rank data stored in the "go_ranks" GO-option.
+ * @param  boolean $is_rank_up 		  Determines whether the user is leveling up or leveling down.
+ * @param  int 	   $old_rank_index 	  Optional. The index of the user's current rank within the "points"
+ *									  array of the "go_ranks" GO-option. Only needed when the user
+ *									  is leveling down (i.e. $is_rank_up == false).
+ * @return string|null Returns the notification of the user's new level on success.
+ *					   Returns NULL on failure and may output errors to the PHP error log.
  */
 function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $old_rank_index = -1 ) {
 	global $go_notify_counter;
@@ -265,7 +279,22 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $ol
 	return $notification;
 }
 
+/**
+ * Returns an array containing data for the user's current and next rank.
+ *
+ * Uses the user's "go_rank" meta data value to return the name and point threshold of the current
+ * and next rank.
+ *
+ * @since 2.4.4
+ *
+ * @param  int $user_id The user's id.
+ * @return array|null Returns null on when the user's "go_rank" meta data is empty. On success,
+ *					  returns array of rank data.
+ */
 function go_get_rank( $user_id ) {
+	if ( empty( $user_id ) ) {
+		return;
+	}
 	$rank = get_user_meta( $user_id, 'go_rank' );
 	if ( ! empty( $rank[0] ) ) {
 		$current_rank = $rank[0][0][0];
@@ -284,28 +313,19 @@ function go_get_rank( $user_id ) {
 	}
 }
 
-function go_get_all_ranks() {
-	$all_ranks = get_option( 'go_ranks' );
-	$all_ranks_sorted = array();
-	foreach ( $all_ranks as $level => $points ) {
-		$all_ranks_sorted[] = array( 'name' => $level , 'value' => $points );
-	}
-	return $all_ranks_sorted;
-}
-
 /**
  * Determines whether or not the user is at the max rank.
  * 
- * Description: When a user is at the max rank, their current rank's point threshold will match
- * 			that of the max rank.
+ * When a user is at the max rank, their current rank's point threshold will match
+ * that of the max rank.
  * 
  * @since 2.5.9
- * @see go_update_ranks()
+ * @see go_get_rank()
  * 
- * @param  INT $user_id The user's id.
- * @param  INT $max_rank_points The point threshold of the max rank.
- * @param  INT $current_rank_points The point threshold of the user's current rank.
- * @return BOOL true/false TRUE on success. FALSE on failure.
+ * @param  int $user_id 			The user's id.
+ * @param  int $max_rank_points 	The point threshold of the max rank.
+ * @param  int $current_rank_points The point threshold of the user's current rank.
+ * @return boolean TRUE on success. FALSE on failure.
  */
 function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_points = null ) {
 	if ( empty( $user_id ) && ( empty( $max_rank_points ) || empty( $current_rank_points ) ) ) {
@@ -334,17 +354,17 @@ function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_
 /**
  * Determines whether or not the user is at the min rank.
  * 
- * Description: When a user is at the min rank, their current rank's point threshold will match
- * 			that of the min rank. By default that would be a threshold of zero. However, that
- * 			threshold can be modified, so we must not expect that the min rank will always be zero.
+ * When a user is at the min rank, their current rank's point threshold will match
+ * that of the min rank. By default that would be a threshold of zero. However, that
+ * threshold can be modified, so we must not expect that the min rank will always be zero.
  * 
  * @since 2.5.9
- * @see go_update_ranks()
+ * @see go_get_rank()
  * 
- * @param  INT $user_id The user's id.
- * @param  INT $min_rank_points The point threshold of the min rank.
- * @param  INT $current_rank_points The point threshold of the user's current rank.
- * @return BOOL true/false TRUE on success. FALSE on failure.
+ * @param  int $user_id 			The user's id.
+ * @param  int $min_rank_points 	The point threshold of the min rank.
+ * @param  int $current_rank_points The point threshold of the user's current rank.
+ * @return boolean TRUE on success. FALSE on failure.
  */
 function go_user_at_min_rank ( $user_id, $min_rank_points = null, $current_rank_points = null ) {
 	if ( empty( $user_id ) && ( empty( $min_rank_points ) || empty( $current_rank_points ) ) ) {
@@ -368,5 +388,4 @@ function go_user_at_min_rank ( $user_id, $min_rank_points = null, $current_rank_
 		return false;
 	}
 }
-
 ?>

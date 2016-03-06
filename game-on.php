@@ -160,7 +160,6 @@ add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
  */
 
 add_filter( 'cron_schedules', 'go_weekly_schedule' );
-add_filter( 'media_upload_tabs', 'go_media_upload_tab_name' );
 add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 
 // mitigating compatibility issues with Jetpack plugin by Automatic
