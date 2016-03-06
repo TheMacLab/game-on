@@ -114,11 +114,13 @@ function go_buy_item() {
 			}
 		}
 		if ( ! empty( $badge_id ) ) {
-			if ( $recipient_id ) {
-				do_shortcode( '[go_award_badge id="'.$badge_id.'" repeat = "off" uid="'.$recipient_id.'"]' );
-			} else {
-				do_shortcode( '[go_award_badge id="'.$badge_id.'" repeat = "off" uid="'.$user_id.'"]' );
-			}
+			go_award_badge(
+				array(
+					'id' 		=> $badge_id,
+					'repeat' 	=> false,
+					'uid' 		=> ( ! empty( $recipient_id ) ? $recipient_id : $user_id )
+				)
+			);
 		}
 		if ( ! empty( $item_url ) && isset( $item_url ) ) {
 			$item_hyperlink = "<a target='_blank' href='{$item_url}'>Link</a>";

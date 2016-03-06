@@ -7,6 +7,11 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		$user_id = get_current_user_id();
 	}
 
+	/**
+	 * Passed to go_set_rank() to determine whether to add or remove badges. The default assumes
+	 * that the user is leveling up. This gets modified below, when the user is down-leveling.
+	 */
+	$is_level_up = true;
 	$ranks = get_option( 'go_ranks' );
 	$name_array = $ranks['name'];
 	$points_array = $ranks['points'];
@@ -38,6 +43,15 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		}
 	}
 
+	/*
+	 * Here we search for the index of the current rank by point threshold,
+	 * which should be unique (it's not guaranteed to be unique).
+	 */
+	$current_rank_index = array_search( $current_rank_points, $points_array );
+
+	// the current rank's badge id, used when the user is at the minimum rank already
+	$current_rank_badge_id = $badges_array[ $current_rank_index ];
+
 	$min_rank_points = $points_array[ 0 ];
 	$is_min_rank = go_user_at_min_rank( $user_id, $min_rank_points, $current_rank_points );
 
@@ -49,12 +63,6 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 	$max_rank_index = count( $name_array ) - 1;
 	$max_rank_points = $points_array[ $max_rank_index ];
 	$is_max_rank = go_user_at_max_rank( $user_id, $max_rank_points, $current_rank_points );
-
-	/*
-	 * Here we search for the index of the current rank by point threshold,
-	 * which should be unique (it's not guaranteed to be unique).
-	 */
-	$current_rank_index = array_search( $current_rank_points, $points_array );
 
 	if ( empty( $total_points ) ) {
 		$total_points = $current_points;
@@ -69,7 +77,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 		if ( ! $is_max_rank ) {
 			
 			// ...set the user's rank to the max rank
-			$new_rank = go_set_rank( $user_id, $max_rank_index, $ranks, true );
+			$new_rank = go_set_rank( $user_id, $max_rank_index, $ranks, $is_level_up );
 		}
 	} else {
 
@@ -92,15 +100,19 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 				if ( $current_points < $rank_point_threshold ) {
 
 					// ...set the user's rank to the rank at the current index
-					$new_rank = go_set_rank( $user_id, $i - 1, $ranks, true );
+					$new_rank = go_set_rank( $user_id, $i - 1, $ranks, $is_level_up );
 					break;
 				}
 			}
+
+		// end-if current points are greater than the next rank's point threshold (up-leveling)
 		} else if ( $current_points < $current_rank_points ) {
+			$is_level_up = false;
+
 			if ( $current_points > 0 ) {
 
 				// loop through to find rank lower than the current one
-				for ( $x = $current_rank_index - 1; $x > 0; $x-- ) {
+				for ( $x = $current_rank_index - 1; $x >= 0; $x-- ) {
 
 					// this reflects the points required to reach the rank at the current index
 					$rank_point_threshold = $points_array[ $x ];
@@ -110,7 +122,7 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 						// ...set the user's rank to the rank at the current index,
 						// and remove an badges assigned to the current rank
-						$new_rank = go_set_rank( $user_id, $x, $ranks, false );
+						$new_rank = go_set_rank( $user_id, $x, $ranks, $is_level_up, $current_rank_index );
 						break;
 					}
 				}
@@ -121,11 +133,24 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
 
 					// ...set the user's rank to the minimum rank,
 					// and remove any badges assigned to the current rank					
-					$new_rank = go_set_rank( $user_id, 0, $ranks, false );
+					$new_rank = go_set_rank( $user_id, 0, $ranks, $is_level_up, $current_rank_index );
 				}
 			}
+
+		// end-if current points are less than the current rank's point threshold (down-leveling)
+		} else if ( $is_min_rank ) {
+			go_award_badge(
+				array(
+					'id' 		=> $current_rank_badge_id,
+					'repeat' 	=> false,
+					'uid' 		=> $user_id
+				)
+			);
+		// end-if user is already at the minimum rank (generally new users)
 		}
-	} // end-if current points are less than the max rank's point threshold
+
+	// end-if current points are less than the max rank's point threshold
+	}
 
 	if ( ! empty( $new_rank ) ) {
 		if ( $output ) {
@@ -154,21 +179,25 @@ function go_update_ranks( $user_id, $total_points = null, $output = false ) {
  *			"go_ranks" GO-option.
  * @param  ARRAY $ranks Contains the rank data stored in the "go_ranks" GO-option.
  * @param  boolean $is_rank_up Determines whether the user is leveling up or leveling down.
+ * @param  INT $old_rank_index (Optional) The index of the user's current rank within the "points"
+ *			array of the "go_ranks" GO-option. Only needed when the user is leveling down 
+ *			(i.e. $is_rank_up == false).
  * @return STRING/NULL Returns the notification of the user's new level on success. Returns NULL 
  *			on failure and may output errors to the PHP error log.
  */
-function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true ) {
+function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $old_rank_index = -1 ) {
 	global $go_notify_counter;
 
 	if ( ! isset( $user_id ) || ! isset( $new_rank_index ) ||
 			! isset( $ranks ) || ! is_int( $user_id ) ||
 			! is_int( $new_rank_index ) || ! is_array( $ranks ) ||
-			! is_bool( $is_rank_up ) || $new_rank_index < 0 ) {
+			! is_bool( $is_rank_up ) || ! is_int( $old_rank_index ) ||
+			$new_rank_index < 0 ) {
 
 		error_log(
 			"Game On Error: invalid call to go_set_rank() in go_ranks.php, ".
 			"args( user_id={$user_id}, new_rank_index={$new_rank_index}, ranks=".
-			print_r( $ranks, true ).", is_rank_up={$is_rank_up} )"
+			print_r( $ranks, true ).", is_rank_up={$is_rank_up}, old_rank_index={$old_rank_index} )"
 		);
 		return;
 	}
@@ -176,7 +205,11 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true ) {
 	$name_array = $ranks['name'];
 	$points_array = $ranks['points'];
 	$badges_array = $ranks['badges'];
-	$badge_id = $badges_array[ $new_rank_index ];
+
+	$new_rank_badge_id = $badges_array[ $new_rank_index ];
+
+	// the number of ranks that the user is decreasing or increasing by
+	$rank_index_diff = 0;
 
 	$new_rank_array = array();
 	$new_rank = '';
@@ -193,9 +226,11 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true ) {
 	}
 
 	if ( $is_rank_up ) {
-		do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
-	} else {
-		go_remove_badge( $user_id, $badge_id );
+		$rank_index_diff = $new_rank_index - $old_rank_index;
+		go_award_badge_r( $user_id, $new_rank_index, $rank_index_diff, $badges_array );
+	} else if ( $old_rank_index >= 0 ) {
+		$rank_index_diff = $old_rank_index - $new_rank_index;
+		go_remove_badge_r( $user_id, $old_rank_index, $rank_index_diff, $badges_array );
 	}
 
 	$new_rank_array = array(

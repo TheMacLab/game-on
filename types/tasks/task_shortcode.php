@@ -2149,7 +2149,13 @@ function task_change_stage() {
 			);
 			if ( $stage_badges[ $status ][0] == 'true' ) {
 				foreach ( $stage_badges[ $status ][1] as $badge_id ) {
-					do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
+					go_award_badge(
+						array(
+							'id' 		=> $badge_id,
+							'repeat' 	=> false,
+							'uid' 		=> $user_id
+						)
+					);
 				}
 			}
 		}	
@@ -2197,7 +2203,13 @@ function task_change_stage() {
 				);
 				if ( $stage_badges[ $status - 1 ][0] == 'true' ) {
 					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
-						do_shortcode( "[go_award_badge id='{$badge_id}' repeat='off' uid='{$user_id}']" );
+						go_award_badge(
+							array(
+								'id' 		=> $badge_id,
+								'repeat' 	=> false,
+								'uid' 		=> $user_id
+							)
+						);
 					}
 				}
 			}

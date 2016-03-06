@@ -206,7 +206,7 @@ function go_clipboard_add() {
 	$penalty = $_POST['penalty'];
 	$minutes = $_POST['minutes'];
 	$reason = $_POST['reason'];
-	$badge_ID = $_POST['badge_ID'];
+	$badge_id = $_POST['badge_ID'];
 	foreach ( $ids as $key => $user_id ) {
 		$user_id = intval( $user_id );
 		if ( $reason != '' ) {
@@ -225,8 +225,14 @@ function go_clipboard_add() {
 			if ( $minutes!= '' ) {
 				go_add_minutes( $user_id, $minutes, $reason );
 			}
-			if ( $badge_ID != '' ) {
-				do_shortcode( "[go_award_badge id='{$badge_ID}' repeat = 'off' uid='{$user_id}']" );
+			if ( '' != $badge_id ) {
+				go_award_badge(
+					array(
+						'id'		=> $badge_id,
+						'repeat'	=> false,
+						'uid'		=> $user_id
+					)
+				);
 			}
 			go_message_user( $user_id, $reason );
 		}
