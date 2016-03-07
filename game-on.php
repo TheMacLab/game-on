@@ -87,7 +87,7 @@ add_action( 'wp_head', 'go_frontend_lightbox_html' );
 add_action( 'wp_enqueue_scripts', 'go_enqueue_scripts_and_styles' );
 
 // filters
-add_filter( 'get_comment_author', 'go_display_comment_author' );
+add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
 
 /*
  * User Data

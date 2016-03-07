@@ -6,7 +6,7 @@ function go_messages_bar() {
 	global $wpdb;
 	global $wp_admin_bar;
 	$messages = get_user_meta( get_current_user_id(), 'go_admin_messages', true );
-	$msg_count = intval( $messages[0] );
+	$msg_count = ( isset( $messages[0] ) ? intval( $messages[0] ) : 0 );
 	$msg_array = ( ! empty( $messages[1] ) ? $messages[1] : null );
 	if ( $msg_count > 0 ) {
 		$style = 'background: #ff0000;';
