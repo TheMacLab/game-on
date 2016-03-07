@@ -28,8 +28,6 @@ function go_admin_bar() {
 	// the user's current amount of minutes
 	$go_current_minutes = go_return_minutes( $user_id );
 
-	$ranks_output = go_update_ranks( $user_id, $go_current_points, false );
-
 	$rank = go_get_rank( $user_id );
 	if ( ! empty( $rank ) ) {
 		$current_rank = $rank[0];
@@ -212,8 +210,8 @@ function go_admin_bar() {
 					'href' => '#',
 				) 
 			);
+			$title = '';
 			if ($role !== 'administrator') {
-				$title = '';
 				if ( go_return_options( 'go_bar_add_points_switch' ) == 'On' ) {
 					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_points_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_points_reason"/></div>';
@@ -411,7 +409,6 @@ function go_admin_bar() {
 				)
 			);
 		}
-		echo $ranks_output;
 	}
 }
 

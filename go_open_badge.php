@@ -39,7 +39,7 @@ function go_award_badge_r ( $user_id, $new_rank_index, $rank_count = 0, $badges_
 			$ranks = get_option( 'go_ranks' );
 			$badges_array = $ranks['badges'];
 		}
-		$old_rank_index = $new_rank_index - $rank_count;
+		$old_rank_index = $new_rank_index - ( $rank_count - 1 );
 
 		// iterate down the ranks badge array, removing each of the user's badges
 		for ( $rank_index = $old_rank_index; $rank_index <= $new_rank_index; $rank_index++ ) {
