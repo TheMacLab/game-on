@@ -230,19 +230,22 @@ function check_values( $req = null, $cur = null ) {
 }
 
 function go_user_redirect( $redirect_to, $request, $user ) {
-	if ( get_option( 'go_admin_bar_user_redirect', true ) ) {
-		$roles = $user->roles;
-		if ( is_array( $roles) ) {
-			if ( in_array( 'administrator', $roles ) ) {
-				return admin_url();
+	$redirect_on = get_option( 'go_admin_bar_user_redirect', true );
+	if ( $redirect_on && isset( $user ) && ( $user instanceof WP_User ) ) {
+		if ( isset( $user->roles ) && is_array( $user->roles ) ) {
+			$roles = $user->roles;
+			if ( is_array( $roles) ) {
+				if ( in_array( 'administrator', $roles ) ) {
+					return admin_url();
+				} else {
+					return site_url();
+				}
 			} else {
-				return site_url();
-			}
-		} else {
-			if ( $roles == 'administrator' ) {
-				return admin_url();
-			} else {
-				return site_url();
+				if ( $roles == 'administrator' ) {
+					return admin_url();
+				} else {
+					return site_url();
+				}
 			}
 		}
 	} else {
