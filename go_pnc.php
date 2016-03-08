@@ -531,7 +531,7 @@ function barColor( $current_bonus_currency, $current_penalty ) {
  * 			currencies are rounded up. Under a negative super modifier, negative currencies are 
  * 			rounded up, and positive currencies are rounded down.
  *
- * @since 2.5.9
+ * @since 2.6.0
  * 
  * @param  INT $user_id, the user's id number.
  * @param  INT $points, the number of experience points that the modifier is being applied against.

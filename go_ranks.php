@@ -183,7 +183,7 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
  * whether the user is leveling up or leveling down. Then return the level notification,
  * so that it can be manipulated elsewhere.
  *
- * @since 2.5.9
+ * @since 2.6.0
  *
  * @global int 	   $go_notify_counter Keeps track of the number of notifications on screen and is used
  *									  to space notifications.
@@ -320,7 +320,7 @@ function go_get_rank( $user_id ) {
  * When a user is at the max rank, their current rank's point threshold will match
  * that of the max rank.
  * 
- * @since 2.5.9
+ * @since 2.6.0
  * @see go_get_rank()
  * 
  * @param  int $user_id 			The user's id.
@@ -359,7 +359,7 @@ function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_
  * that of the min rank. By default that would be a threshold of zero. However, that
  * threshold can be modified, so we must not expect that the min rank will always be zero.
  * 
- * @since 2.5.9
+ * @since 2.6.0
  * @see go_get_rank()
  * 
  * @param  int $user_id 			The user's id.

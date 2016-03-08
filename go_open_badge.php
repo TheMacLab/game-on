@@ -25,7 +25,7 @@ function go_badge_add_attachment ( $form_fields, $post ) {
  * Loops through all possible badges and awards them based on the starting and ending rank of the user.
  * If the rank doesn't have a badge id attached to it, the loop skips that rank.
  *
- * @since 2.5.9
+ * @since 2.6.0
  *
  * @param  int   $user_id 		 The user's id.
  * @param  int   $new_rank_index The index of the user's new rank (zero-indexed).
@@ -131,7 +131,7 @@ function go_award_badge ( $atts ) {
  * Loops through all possible badges and removes them based on the starting and ending rank of the user.
  * If the rank doesn't have a badge id attached to it, the loop skips that rank.
  *
- * @since 2.5.9
+ * @since 2.6.0
  *
  * @param  int 	 $user_id 		 The user's id.
  * @param  int 	 $old_rank_index The index of the user's old rank (zero-indexed).
@@ -193,7 +193,7 @@ function go_remove_badge ( $user_id, $badge_id = -1 ) {
  * Loops through the badges that the user has and removes any that do not have an existing media
  * file attached to their id. This prevents the badges from taking up space in the stats page.
  *
- * @since 2.5.9
+ * @since 2.6.0
  *
  * @param  int	$user_id The user's id.
  * @return null Return null if the user id is missing or invalid.
