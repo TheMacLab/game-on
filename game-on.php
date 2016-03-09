@@ -59,6 +59,7 @@ add_action( 'admin_menu', 'go_clipboard' );
 add_action( 'admin_menu', 'go_pod_submenu' );
 add_action( 'admin_bar_init', 'go_messages_bar' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
+add_action( 'wp_loaded', 'go_ranks_wp_loaded' );
 
 // filters
 add_filter( 'show_admin_bar', 'go_display_admin_bar' );

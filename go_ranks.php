@@ -1,5 +1,25 @@
 <?php
 /**
+ * Updates the user's ranks, if need be, when the page is fully loaded.
+ *
+ * Calls go_update_ranks() when the "wp_loaded" action is fired. This occurs when WordPress is done
+ * loading and has plenty of time to send any necessary headers. Processing the user's rank at this
+ * point prevents any unwanted header errors.
+ *
+ * @since 2.6.0
+ *
+ * @see go_update_ranks()
+ */
+function go_ranks_wp_loaded () {
+	$user_id = get_current_user_id();
+	$go_current_points = go_return_points( $user_id );
+	$rank_notification = go_update_ranks( $user_id, $go_current_points, true );
+	if ( ! empty( $rank_notification ) ) {
+		echo $rank_notification;
+	}
+}
+
+/**
  * Determines what level the user should be at.
  *
  * Uses the user's current points (XP), the rank thresholds stored in the "go_ranks" option, and the
@@ -173,6 +193,8 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 		} else {
 			return $new_rank;
 		}
+	} else {
+		return null;
 	}
 }
 
