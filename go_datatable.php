@@ -146,7 +146,7 @@ function go_presets_registration() {
 	}
 }
 
-function go_install_data() {
+function go_install_data () {
 	global $wpdb;
 	$table_name_user_meta = "{$wpdb->prefix}usermeta";
 	$table_name_go_totals = "{$wpdb->prefix}go_totals";
@@ -319,42 +319,53 @@ function go_install_data() {
 	foreach ( $options_array as $key => $value ) {
 		add_option( $key, $value );
 	}
-	$uid = $wpdb->get_results( "
+	$user_id_array = $wpdb->get_results( "
 		SELECT user_id
 		FROM {$table_name_user_meta}
 		WHERE meta_key =  '{$wpdb->prefix}capabilities'
 		AND (meta_value LIKE  '%{$role}%' or meta_value like '%administrator%' )
 	" );
-	foreach ( $uid as $id ) {
-		foreach ( $id as $uids) {
-			$check = (int) $wpdb->get_var( "SELECT uid FROM {$table_name_go_totals} WHERE uid = $uids" );
-			$total_points = (int) $wpdb->get_var( "SELECT sum(points) FROM {$table_name_go} WHERE uid = $uids" );
-			$total_currency = (int) $wpdb->get_var( "SELECT sum(currency) FROM {$table_name_go} WHERE uid = $uids" );
-
-			if ( $check == 0) {
-				$wpdb->insert( $table_name_go_totals, array( 'uid' => $uids, 'points' => $total_points, 'currency' => $total_currency), array( '%d' ) );
-			} else {
-		 		$wpdb->update( $table_name_go_totals, array( 'uid' => $uids, 'points' => $total_points, 'currency' => $total_currency), array( 'uid' => $uids), array( '%d' ), array( '%d' ) );
-			}
-			$badges_ids = get_user_meta( $uids, 'go_badges', true );
-			if ( ! $badges_ids ) {
-				update_user_meta( $uids, 'go_badges', array() );
-			}
-			$rank_check = get_user_meta( $uids, 'go_rank' );
-			if ( empty( $rank_check) || $rank_check == '' ) { 
-				$ranks = get_option( 'go_ranks', false );
-				$current_points = go_return_points( $uids );
-				while ( $current_points >= current( $ranks['points'] ) ) {
-					next( $ranks['points'] );
-				}
-				$next_rank_points = current( $ranks['points'] );
-				$next_rank = $ranks['name'][ array_search( $next_rank_points, $ranks['points'] ) ];
-				$rank_points = prev( $ranks['points'] );
-				$new_rank = $ranks['name'][ array_search( $rank_points, $ranks['points'] ) ];
-				$new_rank_array = array( array( $new_rank, $rank_points ), array( $next_rank, $next_rank_points ) );
-				update_user_meta( $uids, 'go_rank', $new_rank_array );
-			}								
+	
+	for ( $index = 0; $index < count( $user_id_array ); $index++ ) {
+		$user_id = $user_id_array[ $index ]->user_id;
+		$total_points = 0;
+		$total_currency = 0;
+		$bonus_currency = 0;
+		$penalty = 0;
+		$minutes = 0;
+		$status = -1;
+		$user_has_progress = (bool) $wpdb->get_var( "SELECT `uid` FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
+		if ( $user_has_progress ) {
+			$stored_points = (int) $wpdb->get_var( "SELECT sum( `points` ) FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
+			$total_points = ( $stored_points >= 0 ? $stored_points : 0 );
+			$total_currency = (int) $wpdb->get_var( "SELECT sum( `currency` ) FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
 		}
+		$user_has_totals = (bool) $wpdb->get_var( "SELECT `uid` FROM `{$table_name_go_totals}` WHERE `uid` = {$user_id}" );
+		if ( $user_has_totals && $total_points > 0 ) {
+			$wpdb->update(
+				$table_name_go_totals,
+				array(
+					'points' => $total_points,
+					'currency' => $total_currency
+				),
+				array(
+					'uid' => $user_id
+				),
+				array( '%d' )
+			);
+		} else {
+			$wpdb->insert(
+				$table_name_go_totals,
+				array(
+					'uid' => $user_id,
+					'points' => $total_points,
+					'currency' => $total_currency
+				),
+				array( '%d' )
+			);
+		}
+
+		go_update_ranks( $user_id, $total_points );
 	}
 }
 	

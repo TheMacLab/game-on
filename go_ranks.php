@@ -147,7 +147,7 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 				if ( ! $is_min_rank ) {
 
 					// ...set the user's rank to the minimum rank,
-					// and remove any badges assigned to the current rank					
+					// and remove any badges assigned to the current rank
 					$new_rank = go_set_rank( $user_id, 0, $ranks, $is_level_up, $current_rank_index );
 				}
 			}
