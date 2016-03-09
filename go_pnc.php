@@ -432,6 +432,36 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 	}
 }
 
+/**
+ * Updates the user's ranks, if need be, after script/style enqueueing has occurred.
+ *
+ * Calls go_update_ranks() when the "wp_footer" action is fired, with a priority of 21. This occurs 
+ * after default enqueueing has occurred (default priority for enqueued scripts is 20). 
+ * Processing the user's rank at this point prevents any unwanted header errors. We can assume
+ * that the notifications will succeed, since jQuery should be loaded by the time that they are
+ * output.
+ *
+ * @since 2.6.0
+ *
+ * @see go_update_totals()
+ */
+function go_update_totals_out_of_bounds () {
+	$user_id = get_current_user_id();
+	$go_current_points = go_return_points( $user_id );
+	if ( $go_current_points < 0 ) {
+		$points = $go_current_points * -1;
+		$currency = 0;
+		$bonus_currency = 0;
+		$penalty = 0;
+		$minutes = 0;
+
+		// this is not a store item, but we don't want the super modifier to be applied
+		$status = -1;
+
+		go_update_totals( $user_id, $points, $currency, $bonus_currency, $penalty, $minutes, $status );
+	}
+}
+
 function go_admin_bar_add () {
 	$points = $_POST['go_admin_bar_add_points'];
 	$points_reason = $_POST['go_admin_bar_add_points_reason'];

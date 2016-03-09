@@ -59,7 +59,6 @@ add_action( 'admin_menu', 'go_clipboard' );
 add_action( 'admin_menu', 'go_pod_submenu' );
 add_action( 'admin_bar_init', 'go_messages_bar' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
-add_action( 'wp_loaded', 'go_ranks_wp_loaded' );
 
 // filters
 add_filter( 'show_admin_bar', 'go_display_admin_bar' );
@@ -100,6 +99,7 @@ add_action( 'show_user_profile', 'go_extra_profile_fields' );
 add_action( 'edit_user_profile', 'go_extra_profile_fields' );
 add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
+add_action( 'wp_footer', 'go_update_totals_out_of_bounds', 21 );
 
 /*
  * AJAX Hooks
