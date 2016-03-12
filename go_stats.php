@@ -47,36 +47,30 @@ function go_admin_bar_stats() {
 
 	// user pnc 
 	$rank = go_get_rank( $current_user_id );
-	if ( ! empty( $rank ) ) {
-		$current_rank = $rank[0];
-		$current_rank_points = $rank[1];
-		$next_rank = $rank[2];
-		$next_rank_points = $rank[3];
-		
-		if ( ! empty( $next_rank_points ) ) {
-			$rank_threshold_diff = ( $next_rank_points - $current_rank_points );
-		} else {
-			$rank_threshold_diff = 1;
-		}
-		$pts_to_rank_threshold = ( $current_points - $current_rank_points );
-
-		if ( $max_rank_points === $current_rank_points ) {
-			$prestige_name = go_return_options( 'go_prestige_name' );
-			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
-		} else {
-			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
-		}
-
-		$percentage_of_level = ( $pts_to_rank_threshold / $rank_threshold_diff ) * 100;
-		if ( $percentage_of_level <= 0 ) { 
-			$percentage_of_level = 0;
-		} else if ( $percentage_of_level >= 100 ) {
-			$percentage_of_level = 100;
-		}
+	$current_rank = $rank['current_rank'];
+	$current_rank_points = $rank['current_rank_points'];
+	$next_rank = $rank['next_rank'];
+	$next_rank_points = $rank['next_rank_points'];
+	
+	if ( null !== $next_rank_points ) {
+		$rank_threshold_diff = ( $next_rank_points - $current_rank_points );
 	} else {
-		error_log( 
-			"Game On Error: rank variable was empty in go_stats.php"
-		);
+		$rank_threshold_diff = 1;
+	}
+	$pts_to_rank_threshold = ( $current_points - $current_rank_points );
+
+	if ( $max_rank_points === $current_rank_points ) {
+		$prestige_name = go_return_options( 'go_prestige_name' );
+		$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
+	} else {
+		$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
+	}
+
+	$percentage_of_level = ( $pts_to_rank_threshold / $rank_threshold_diff ) * 100;
+	if ( $percentage_of_level <= 0 ) { 
+		$percentage_of_level = 0;
+	} else if ( $percentage_of_level >= 100 ) {
+		$percentage_of_level = 100;
 	}
 	
 	?>

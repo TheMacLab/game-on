@@ -130,9 +130,7 @@ function go_clipboard_intable() {
 			$points = go_return_points( $id->user_id );
 			$badge_count = go_return_badge_count( $id->user_id );
 			$rank = go_get_rank( $id->user_id );
-			if ( ! empty( $rank ) ) {
-				$current_rank = $rank[0];
-			}
+			$current_rank = $rank['current_rank'];
 			
 			echo "<tr id='user_{$id->user_id}'>
 					<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$id->user_id}'/></td>

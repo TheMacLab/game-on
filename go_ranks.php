@@ -48,19 +48,10 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 		$current_points = go_return_points( $user_id );
 	}
 	$user_rank = go_get_rank( $user_id );
-	if ( ! empty( $user_rank ) ) {
-		$current_rank = $user_rank[0];
-		$current_rank_points = $user_rank[1];
-		$next_rank = $user_rank[2];
-		$next_rank_points = $user_rank[3];
-	} else {
-		$current_rank = $name_array[0];
-		$current_rank_points = $points_array[0];
-		if ( ! empty ( $name_array[1] ) && ! empty( $points_array[1] ) ) {
-			$next_rank = $name_array[1];
-			$next_rank_points = $points_array[1];
-		}
-	}
+	$current_rank = $user_rank['current_rank'];
+	$current_rank_points = $user_rank['current_rank_points'];
+	$next_rank = $user_rank['next_rank'];
+	$next_rank_points = $user_rank['next_rank_points'];
 
 	/*
 	 * Here we search for the index of the current rank by point threshold,
@@ -71,7 +62,7 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 	// the current rank's badge id, used when the user is at the minimum rank already
 	$current_rank_badge_id = $badges_array[ $current_rank_index ];
 
-	$min_rank_points = $points_array[ 0 ];
+	$min_rank_points = (int) $points_array[ 0 ];
 	$is_min_rank = go_user_at_min_rank( $user_id, $min_rank_points, $current_rank_points );
 
 	/*
@@ -291,28 +282,47 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $ol
  * @since 2.4.4
  *
  * @param  int $user_id The user's id.
- * @return array|null Returns null on when the user's "go_rank" meta data is empty. On success,
- *					  returns array of rank data.
+ * @return array Returns an array of defaults on when the user's "go_rank" meta data is empty. 
+ * 				 On success, returns array of rank data.
  */
-function go_get_rank( $user_id ) {
+function go_get_rank ( $user_id ) {
 	if ( empty( $user_id ) ) {
 		return;
 	}
 	$rank = get_user_meta( $user_id, 'go_rank' );
 	if ( ! empty( $rank[0] ) ) {
 		$current_rank = $rank[0][0][0];
-		$current_rank_points = $rank[0][0][1];
+		$current_rank_points = (int) $rank[0][0][1];
 		$next_rank = $rank[0][1][0];
-		$next_rank_points = $rank[0][1][1];
+		$next_rank_points = (int) $rank[0][1][1];
 
 		return array(
-			$current_rank,
-			$current_rank_points,
-			$next_rank,
-			$next_rank_points
+			'current_rank' 		  => $current_rank,
+			'current_rank_points' => $current_rank_points,
+			'next_rank' 		  => $next_rank,
+			'next_rank_points' 	  => $next_rank_points
 		);
 	} else {
-		return;
+		$ranks_option = get_option( 'go_ranks' );
+		$points_array = $ranks_option['points'];
+		$name_array = $ranks_option['name'];
+
+		$current_rank = $name_array[0];
+		$current_rank_points = (int) $points_array[0];
+		if ( isset( $name_array[1] ) && isset( $points_array[1] ) ) {
+			$next_rank = $name_array[1];
+			$next_rank_points = (int) $points_array[1];
+		} else {
+			$next_rank = null;
+			$next_rank_points = null;
+		}
+
+		return array(
+			'current_rank' 		  => $current_rank,
+			'current_rank_points' => $current_rank_points,
+			'next_rank' 		  => $next_rank,
+			'next_rank_points' 	  => $next_rank_points
+		);
 	}
 }
 
@@ -331,19 +341,19 @@ function go_get_rank( $user_id ) {
  * @return boolean TRUE on success. FALSE on failure.
  */
 function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_points = null ) {
-	if ( empty( $user_id ) && ( empty( $max_rank_points ) || empty( $current_rank_points ) ) ) {
+	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( empty( $max_rank_points ) ) {
+	if ( null === $max_rank_points || $max_rank_points < 0 ) {
 		$ranks = get_option( 'go_ranks' );
 		$max_rank_index = count( $ranks['name'] ) - 1;
 		$max_rank_points = $ranks['points'][ $max_rank_index ];
 	}
 
-	if ( empty( $current_rank_points ) ) {
+	if ( null === $current_rank_points || $current_rank_points < 0 ) {
 		$user_rank = go_get_rank( $user_id );
-		$current_rank_points = $user_rank[1];
+		$current_rank_points = $user_rank['current_rank_points'];
 	}
 
 	// compare the point thresholds
@@ -370,18 +380,18 @@ function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_
  * @return boolean TRUE on success. FALSE on failure.
  */
 function go_user_at_min_rank ( $user_id, $min_rank_points = null, $current_rank_points = null ) {
-	if ( empty( $user_id ) && ( empty( $min_rank_points ) || empty( $current_rank_points ) ) ) {
+	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( empty( $min_rank_points ) ) {
+	if ( null === $min_rank_points || $min_rank_points < 0 ) {
 		$ranks = get_option( 'go_ranks' );
-		$min_rank_points = $ranks['points'][ 0 ];
+		$min_rank_points = $ranks['points'][0];
 	}
 
-	if ( empty( $current_rank_points ) ) {
+	if ( null === $current_rank_points || $current_rank_points < 0 ) {
 		$user_rank = go_get_rank( $user_id );
-		$current_rank_points = $user_rank[1];
+		$current_rank_points = $user_rank['current_rank_points'];
 	}
 
 	// compare the point thresholds

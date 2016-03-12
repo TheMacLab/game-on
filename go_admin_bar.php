@@ -9,69 +9,6 @@ function go_display_admin_bar() {
 function go_admin_bar() {
 	global $wp_admin_bar;
 
-	$user_id = get_current_user_id();
-	
-	// the user's current amount of experience (points)
-	$go_current_points = go_return_points( $user_id );
-	
-	// the user's current amount of currency
-	$go_current_currency = go_return_currency( $user_id );
-
-	// the user's current amount of bonus currency,
-	// also used for coloring the admin bar
-	$go_current_bonus_currency = go_return_bonus_currency( $user_id );
-
-	// the user's current amount of penalties,
-	// also used for coloring the admin bar
-	$go_current_penalty = go_return_penalty( $user_id );
-
-	// the user's current amount of minutes
-	$go_current_minutes = go_return_minutes( $user_id );
-
-	$rank = go_get_rank( $user_id );
-	if ( ! empty( $rank ) ) {
-		$current_rank = $rank[0];
-		$current_rank_points = $rank[1];
-		$next_rank = $rank[2];
-		$next_rank_points = $rank[3];
-	}
-
-	$go_option_ranks = get_option( 'go_ranks' );
-	$points_array = $go_option_ranks['points'];
-
-	/*
-	 * Here we are referring to last element manually,
-	 * since we don't want to modifiy
-	 * the arrays with the array_pop function.
-	 */
-	$max_rank_index = count( $points_array ) - 1;
-	$max_rank_points = $points_array[ $max_rank_index ];
-
-	if ( ! empty( $next_rank_points ) ) {
-		$rank_threshold_diff = $next_rank_points - $current_rank_points;
-	} else {
-		$rank_threshold_diff = 1;
-	}
-	$pts_to_rank_threshold = $go_current_points - $current_rank_points;
-
-	if ( $max_rank_points === $current_rank_points ) {
-		$prestige_name = go_return_options( 'go_prestige_name' );
-		$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
-	} else {
-		$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
-	}
-
-	$percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
-	if ( $percentage <= 0 ) { 
-		$percentage = 0;
-	} else if ( $percentage >= 100 ) {
-		$percentage = 100;
-	}
-	
-	$color = barColor( $go_current_bonus_currency, $go_current_penalty );
-	
-	$wp_admin_bar->remove_menu( 'wp-logo' );
-	
 	if ( ! is_user_logged_in() ) {
 		$wp_admin_bar->add_node(
 			array(
@@ -80,9 +17,68 @@ function go_admin_bar() {
 				'href' => wp_login_url()
 			)
 		);
-	}
-	
-	if ( is_admin_bar_showing() && is_user_logged_in() ) {
+	} else if ( is_admin_bar_showing() && is_user_logged_in() ) {
+		$user_id = get_current_user_id();
+		
+		// the user's current amount of experience (points)
+		$go_current_points = go_return_points( $user_id );
+		
+		// the user's current amount of currency
+		$go_current_currency = go_return_currency( $user_id );
+
+		// the user's current amount of bonus currency,
+		// also used for coloring the admin bar
+		$go_current_bonus_currency = go_return_bonus_currency( $user_id );
+
+		// the user's current amount of penalties,
+		// also used for coloring the admin bar
+		$go_current_penalty = go_return_penalty( $user_id );
+
+		// the user's current amount of minutes
+		$go_current_minutes = go_return_minutes( $user_id );
+
+		$rank = go_get_rank( $user_id );
+		$current_rank = $rank['current_rank'];
+		$current_rank_points = $rank['current_rank_points'];
+		$next_rank = $rank['next_rank'];
+		$next_rank_points = $rank['next_rank_points'];
+
+		$go_option_ranks = get_option( 'go_ranks' );
+		$points_array = $go_option_ranks['points'];
+
+		/*
+		 * Here we are referring to last element manually,
+		 * since we don't want to modifiy
+		 * the arrays with the array_pop function.
+		 */
+		$max_rank_index = count( $points_array ) - 1;
+		$max_rank_points = $points_array[ $max_rank_index ];
+
+		if ( null !== $next_rank_points ) {
+			$rank_threshold_diff = $next_rank_points - $current_rank_points;
+		} else {
+			$rank_threshold_diff = 1;
+		}
+		$pts_to_rank_threshold = $go_current_points - $current_rank_points;
+
+		if ( $max_rank_points === $current_rank_points ) {
+			$prestige_name = go_return_options( 'go_prestige_name' );
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
+		} else {
+			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
+		}
+
+		$percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
+		if ( $percentage <= 0 ) { 
+			$percentage = 0;
+		} else if ( $percentage >= 100 ) {
+			$percentage = 100;
+		}
+		
+		$color = barColor( $go_current_bonus_currency, $go_current_penalty );
+		
+		$wp_admin_bar->remove_menu( 'wp-logo' );
+
 		$is_admin = false;
 		$user_obj = get_user_by( 'id', $user_id );
 		$user_roles = $user_obj->roles;
@@ -409,6 +405,8 @@ function go_admin_bar() {
 				)
 			);
 		}
+
+	// end-if the admin bar is turned on and the user is logged in
 	}
 }
 

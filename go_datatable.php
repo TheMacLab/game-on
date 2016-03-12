@@ -370,21 +370,19 @@ function go_install_data () {
 }
 	
 // Adds user id to the totals table upon user creation.
-function go_user_registration( $user_id ) {
+function go_user_registration ( $user_id ) {
 	global $wpdb;
 	$table_name_go_totals = "{$wpdb->prefix}go_totals";
-	$table_name_user_meta = "{$wpdb->prefix}usermeta";
+	$table_name_capabilities = "{$wpdb->prefix}capabilities";
 	$role = get_option( 'go_role', 'subscriber' );
-	$user_role = get_user_meta( $user_id, "{$wpdb->prefix}capabilities", true );
+	$user_role = get_user_meta( $user_id, "{$table_name_capabilities}", true );
 	if ( array_search( 1, $user_role ) == $role || array_search( 1, $user_role ) == 'administrator' ) {
-		$ranks = get_option( 'go_ranks' );
-		$current_rank_points = current( $ranks['points'] );
-		$current_rank = $ranks['name'][ array_search( $current_rank_points, $ranks['points'] ) ];
-		$next_rank_points = next( $ranks['points'] );
-		$next_rank = $ranks['name'][ array_search( $next_rank_points, $ranks['points'] ) ];
-		$new_rank = array( array( $current_rank, $current_rank_points ), array( $next_rank, $next_rank_points ) );
+
+		// this should update the user's rank metadata
+		go_update_ranks( $user_id, 0 );
+
+		// this should set the user's points to 0
 		$wpdb->insert( $table_name_go_totals, array( 'uid' => $user_id, 'points' => 0 ), array( '%s' ) );
-		update_user_meta( $user_id, 'go_rank', $new_rank );
 	}
 }	
 

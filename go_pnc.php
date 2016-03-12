@@ -279,10 +279,8 @@ function go_notify( $type, $points = '', $currency = '', $bonus_currency = '', $
 function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	$user_id = get_current_user_id();
 	$rank = go_get_rank( $user_id );
-	if ( ! empty( $rank ) ) {
-		$current_rank_points = $rank[1];
-		$next_rank_points = $rank[3];
-	}
+	$current_rank_points = $rank['current_rank_points'];
+	$next_rank_points = $rank['next_rank_points'];
 
 	$current_bonus_currency = go_return_bonus_currency( $user_id );
 	$current_penalty = go_return_penalty( $user_id );
@@ -304,7 +302,7 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	
 	if ( 'points' == $type ) {
 		
-		if ( ! empty( $next_rank_points ) ) {
+		if ( null !== $next_rank_points ) {
 			$rank_threshold_diff = ( $next_rank_points - $current_rank_points );
 		} else {
 			$rank_threshold_diff = 1;
@@ -503,11 +501,10 @@ function go_get_level_percentage( $user_id ) {
 	global $wpdb;
 	$current_points = go_return_points( $user_id );
 	$rank = go_get_rank( $user_id );
-	if ( ! empty( $rank ) ) {
-		$current_rank = $rank[0];
-		$current_rank_points = $rank[1];
-		$next_rank_points = $rank[3];
-	}
+	$current_rank = $rank['current_rank'];
+	$current_rank_points = $rank['current_rank_points'];
+	$next_rank_points = $rank['next_rank_points'];
+
 	$dom = ( $next_rank_points - $current_rank_points );
 	if ( $dom <= 0 ) { 
 		$dom = 1;
