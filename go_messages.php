@@ -186,7 +186,7 @@ function go_message_user( $user_id, $message ) {
 	if (count( $current_messages[1] ) > 9) {
 		array_pop( $current_messages[1] );
 	}
-	if ( ! $current_messages[0] ) {
+	if ( ! isset( $current_messages[0] ) ) {
 		$current_messages[0] = 1;
 	} else {
 		(int) $current_messages[0] = (int) $current_messages[0] + 1;

@@ -204,8 +204,10 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $ol
 		error_log(
 			"Game On Error: invalid call to go_set_rank() in go_ranks.php, ".
 			"args( user_id={$user_id}, new_rank_index={$new_rank_index}, ranks=".
-			print_r( $ranks, true ).", is_rank_up={$is_rank_up}, old_rank_index={$old_rank_index} )"
+			print_r( $ranks, true ).", is_rank_up=" . ( $is_rank_up ? 'true' : 'false' ) . 
+			", old_rank_index={$old_rank_index} )"
 		);
+
 		return;
 	}
 
@@ -290,7 +292,11 @@ function go_get_rank ( $user_id ) {
 		return;
 	}
 	$rank = get_user_meta( $user_id, 'go_rank' );
-	if ( ! empty( $rank[0] ) ) {
+	if ( ! empty( $rank[0] ) &&
+			! empty( $rank[0][0][0] ) &&
+			! empty( $rank[0][0][1] ) &&
+			! empty( $rank[0][1][0] ) &&
+			! empty( $rank[0][1][1] ) ) {
 		$current_rank = $rank[0][0][0];
 		$current_rank_points = (int) $rank[0][0][1];
 		$next_rank = $rank[0][1][0];

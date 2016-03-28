@@ -198,44 +198,68 @@ function go_clipboard_intable_messages() {
  
 function go_clipboard_add() {
 	$ids = $_POST['ids'];
-	$points = $_POST['points'];
-	$currency = $_POST['currency'];
-	$bonus_currency = $_POST['bonus_currency'];
-	$penalty = $_POST['penalty'];
-	$minutes = $_POST['minutes'];
+	$points = intval( $_POST['points'] );
+	$currency = intval( $_POST['currency'] );
+	$bonus_currency = intval( $_POST['bonus_currency'] );
+	$penalty = intval( $_POST['penalty'] );
+	$minutes = intval( $_POST['minutes'] );
 	$reason = $_POST['reason'];
-	$badge_id = $_POST['badge_ID'];
+	$badge_id = intval( $_POST['badge_ID'] );
+	$status = 6;
+	$bonus_loot_default = null;
+	$undo_default = false;
+	$show_notification = false;
+
+	$output_data = array(
+		"update_status" => false
+	);
+
 	foreach ( $ids as $key => $user_id ) {
 		$user_id = intval( $user_id );
-		if ( $reason != '' ) {
-			if ( $points != '' ) {
-				go_add_currency( $user_id, $reason, 6, $points, 0, false );
-			}
-			if ( $currency!= '' ) {
-				go_add_currency( $user_id, $reason, 6, 0, $currency, false );
-			}
-			if ( $bonus_currency!= '' ) {
-				go_add_bonus_currency( $user_id, $bonus_currency, $reason );
-			}
-			if ( $penalty!= '' ) {
-				go_add_penalty( $user_id, $penalty, $reason );
-			}
-			if ( $minutes!= '' ) {
-				go_add_minutes( $user_id, $minutes, $reason );
-			}
-			if ( '' != $badge_id ) {
+		if ( '' != $reason ) {
+			if ( null != $badge_id ) {
 				go_award_badge(
 					array(
-						'id'		=> $badge_id,
-						'repeat'	=> false,
-						'uid'		=> $user_id
+						'id' 		=> $badge_id,
+						'repeat' 	=> false,
+						'uid' 		=> $user_id
 					)
 				);
 			}
+			go_update_totals(
+				$user_id,
+				$points,
+				$currency,
+				$bonus_currency,
+				$penalty,
+				$minutes,
+				$status,
+				$bonus_loot_default,
+				$undo_default,
+				$show_notification
+			);
 			go_message_user( $user_id, $reason );
+
+			// returning information to the AJAX call to update the clipboard
+			$new_point_total = go_return_points( $user_id );
+			$new_currency_total = go_return_currency( $user_id );
+			$new_bonus_currency_total = go_return_bonus_currency( $user_id );
+			$new_penalty_total = go_return_penalty( $user_id );
+			$new_minute_total = go_return_minutes( $user_id );
+			$new_badge_count = go_return_badge_count( $user_id );
+
+			$output_data[ 'update_status' ] = true;
+			$output_data[ $user_id ] = array(
+				"points" => $new_point_total,
+				"currency" => $new_currency_total,
+				"bonus_currency" => $new_bonus_currency_total,
+				"penalty" => $new_penalty_total,
+				"minutes" => $new_minute_total,
+				"badge_count" => $new_badge_count
+			);
 		}
 	}
-	die();
+	wp_die( json_encode( $output_data ) );
 }
 
 function go_update_user_focuses() {

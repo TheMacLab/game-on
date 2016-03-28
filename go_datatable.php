@@ -327,13 +327,15 @@ function go_install_data () {
 	" );
 	
 	for ( $index = 0; $index < count( $user_id_array ); $index++ ) {
-		$user_id = $user_id_array[ $index ]->user_id;
+		$user_id = (int) $user_id_array[ $index ]->user_id;
+		$stored_points = 0;
 		$total_points = 0;
 		$total_currency = 0;
 		$bonus_currency = 0;
 		$penalty = 0;
 		$minutes = 0;
 		$status = -1;
+
 		$user_has_progress = (bool) $wpdb->get_var( "SELECT `uid` FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
 		if ( $user_has_progress ) {
 			$stored_points = (int) $wpdb->get_var( "SELECT sum( `points` ) FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
@@ -353,7 +355,7 @@ function go_install_data () {
 				),
 				array( '%d' )
 			);
-		} else {
+		} else if ( ! $user_has_totals ) {
 			$wpdb->insert(
 				$table_name_go_totals,
 				array(
@@ -368,7 +370,7 @@ function go_install_data () {
 		go_update_ranks( $user_id, $total_points );
 	}
 }
-	
+
 // Adds user id to the totals table upon user creation.
 function go_user_registration ( $user_id ) {
 	global $wpdb;

@@ -77,60 +77,62 @@ function check_null( val ) {
 	}
 }
 
-function go_clipboard_add( id ) {
-	var values = [];
+function go_clipboard_add() {
+	var id_array = [];
 	jQuery( '#go_send_message' ).prop( 'disabled', 'disabled' );
 	jQuery( "input:checkbox[name=go_selected]:checked" ).each( function() {
-		values.push( jQuery( this ).val() );
+		id_array.push( jQuery( this ).val() );
 	});
 
-	if ( values.length > 0 ) {
-		add_points = parseFloat( check_null( jQuery( '#go_clipboard_points' ).val() ) );
-		add_currency = parseFloat( check_null( jQuery( '#go_clipboard_currency' ).val() ) );
-		add_bonus_currency = parseFloat( check_null( jQuery( '#go_clipboard_bonus_currency' ).val() ) );
-		add_penalty = parseFloat( check_null( jQuery( '#go_clipboard_penalty' ).val() ) );
-		add_minutes = parseFloat( check_null( jQuery( '#go_clipboard_minutes' ).val() ) );
-		
+	if ( id_array.length > 0 ) {
+		var add_points = parseFloat( check_null( jQuery( '#go_clipboard_points' ).val() ) );
+		var add_currency = parseFloat( check_null( jQuery( '#go_clipboard_currency' ).val() ) );
+		var add_bonus_currency = parseFloat( check_null( jQuery( '#go_clipboard_bonus_currency' ).val() ) );
+		var add_penalty = parseFloat( check_null( jQuery( '#go_clipboard_penalty' ).val() ) );
+		var add_minutes = parseFloat( check_null( jQuery( '#go_clipboard_minutes' ).val() ) );
+		var badge_id = parseFloat( check_null( jQuery( '#go_clipboard_badge' ).val() ) );
+		var reason;
 		if ( jQuery( '#go_clipboard_reason' ).val() != '' ) {
 			reason = jQuery( '#go_clipboard_reason' ).val();	
 		} else {
-			reason = jQuery( '#go_clipboard_reason' ).attr( 'placeholder' );	
+			reason = jQuery( '#go_clipboard_reason' ).attr( 'placeholder' );
 		}
 		jQuery.ajax({
 			type: "post",
 			url: MyAjax.ajaxurl,
 			data: { 
 				action: 'go_clipboard_add',
-				ids: values,
+				ids: id_array,
 				points: add_points,
 				currency: add_currency,
 				bonus_currency: add_bonus_currency,
 				penalty: add_penalty,
 				reason: reason,
 				minutes: add_minutes,
-				badge_ID: jQuery( '#go_clipboard_badge' ).val()
+				badge_ID: badge_id
 			},
-			success: function( html ) {
-				if ( jQuery( '#go_clipboard_reason' ).val() != '' ) {
-					if ( jQuery( '#go_clipboard_badge' ).val() != '' ) {
-						badge_count = 1;
-					} else {
-						badge_count = 0;	
-					}
-					for ( id in values ) {
-						var user_currency = parseFloat( jQuery( '#user_' + values[ id ] + ' .user_currency' ).html() );
-						var user_bonus_currency = parseFloat( jQuery( '#user_' +values[ id ]+ ' .user_bonus_currency' ).html() );
-						var user_penalty = parseFloat( jQuery( '#user_' +values[ id ]+ ' .user_penalty' ).html() );
-						var user_points = parseFloat( jQuery( '#user_' +values[ id ]+ ' .user_points' ).html() );
-						var user_badge_count = parseFloat( jQuery( '#user_' +values[ id ]+ ' .user_badge_count' ).html() );
-						var user_minutes = parseFloat( jQuery( '#user_' +values[ id ]+ ' .user_minutes' ).html() );
-			
-						jQuery( '#user_' +values[ id ]+ ' .user_currency' ).html(user_currency + add_currency);
-						jQuery( '#user_' +values[ id ]+ ' .user_bonus_currency' ).html(user_bonus_currency + add_bonus_currency);
-						jQuery( '#user_' +values[ id ]+ ' .user_penalty' ).html(user_penalty + add_penalty);
-						jQuery( '#user_' +values[ id ]+ ' .user_points' ).html(user_points + add_points);
-						jQuery( '#user_' +values[ id ]+ ' .user_badge_count' ).html(user_badge_count + badge_count);
-						jQuery( '#user_' +values[ id ]+ ' .user_minutes' ).html(user_minutes + add_minutes);
+			success: function( res ) {
+				var json_index = res.indexOf( '{"update_status":' );
+				var json_data = res.substr( json_index );
+				var res_obj = JSON.parse( json_data );
+				var succeeded = res_obj.update_status;
+
+				if ( jQuery( '#go_clipboard_reason' ).val() != '' && succeeded ) {
+					for ( index in id_array ) {
+						var current_id = id_array[ index ];
+						var user_points = res_obj[ current_id ].points;
+						var user_currency = res_obj[ current_id ].currency;
+						var user_bonus_currency = res_obj[ current_id ].bonus_currency;
+						var user_penalty = res_obj[ current_id ].penalty;
+						var user_minutes = res_obj[ current_id ].minutes;
+						var user_badge_count = res_obj[ current_id ].badge_count;
+
+						jQuery( '#user_' + current_id + ' .user_points' ).html( user_points );
+						jQuery( '#user_' + current_id + ' .user_currency' ).html( user_currency );
+						jQuery( '#user_' + current_id + ' .user_bonus_currency' ).html( user_bonus_currency );
+						jQuery( '#user_' + current_id + ' .user_penalty' ).html( user_penalty );
+						jQuery( '#user_' + current_id + ' .user_minutes' ).html( user_minutes );
+						jQuery( '#user_' + current_id + ' .user_badge_count' ).html( user_badge_count );
 					}
 				}
 				go_clipboard_clear_fields();
