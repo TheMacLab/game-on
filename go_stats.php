@@ -662,11 +662,21 @@ function go_stats_badges_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
-	$badges = get_user_meta( $user_id, 'go_badges', true );
-	if ( $badges) {
-		foreach ( $badges as $id => $badge ) {
-			$img = wp_get_attachment_image( $badge, array( 100, 100 ) );
-			echo "<div class='go_badge_wrap'><div class='go_badge_container'><div class='go_badge'>{$img}</div></div></div>";
+	$badges_array = get_user_meta( $user_id, 'go_badges', true );
+	if ( is_array( $badges_array ) && ! empty( $badges_array ) ) {
+		foreach ( $badges_array as $key => $badge_id ) {
+			$img = wp_get_attachment_image( $badge_id, array( 100, 100 ) );
+			$img_post = get_post( $badge_id );
+			$img_caption = ( ! empty( $img_post->post_excerpt ) ? $img_post->post_excerpt : "No caption available." );
+			if ( ! empty( $img ) ) {
+				echo "
+					<div class='go_badge_wrap'>
+						<div class='go_badge_container'>
+							<div class='go_badge' title='{$img_caption}'>{$img}</div>
+						</div>
+					</div>
+				";
+			}
 		}
 	}
 	die();

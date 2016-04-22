@@ -54,78 +54,80 @@ function go_messages_bar() {
 	);
 	if ( ! empty( $msg_array ) ) {
 		foreach ( $msg_array as $date => $message_obj ) {
-			$msg_body = $message_obj[0];
+			if ( ! empty( $message_obj[0] ) ) {
+				$msg_body = $message_obj[0];
 
-			// $message_obj[1] will contain 0 (int) when read or 1 (int) when unread
-			$msg_already_seen = ( empty( $message_obj[1] ) ? true : false );
-			
-			// if the message has already been read, apply no styling
-			$style = ( $msg_already_seen ? '' : 'color: red;' );
-			$formatted_date = date( 'm-d-Y', $date );
-			$seen_elem = '';
-			$title = '';
+				// $message_obj[1] will contain 0 (int) when read or 1 (int) when unread
+				$msg_already_seen = ( empty( $message_obj[1] ) ? true : false );
+				
+				// if the message has already been read, apply no styling
+				$style = ( $msg_already_seen ? '' : 'color: red;' );
+				$formatted_date = date( 'm-d-Y', $date );
+				$seen_elem = '';
+				$title = '';
 
-			if ( preg_match( "/[<>]+/", $msg_body ) ) {
-				$title = preg_replace( "/(<a[^>]+>|<\/a>)+/", '', $msg_body );
-			} else {
-				$title = $msg_body;
+				if ( preg_match( "/[<>]+/", $msg_body ) ) {
+					$title = preg_replace( "/(<a[^>]+>|<\/a>)+/", '', $msg_body );
+				} else {
+					$title = $msg_body;
+				}
+
+				if ( ! $msg_already_seen ) {
+					$seen_elem = "{$formatted_date} " .
+						"<a class='go_messages_anchor' " .
+								"onClick='go_mark_seen({$date}, \"unseen\" ); " .
+									"go_change_seen({$date}, \"unseen\", this);' " .
+								"style='display: inline;' " .
+								"href='#' >" .
+							"Mark Read" .
+						"</a> " .
+						"<a class='go_messages_anchor' " .
+								"onClick='go_mark_seen({$date}, \"remove\" );' " .
+								"style='display:inline;' " .
+								"href='#' >" .
+							"Delete" .
+						"</a>";
+				} else {
+					$seen_elem = "{$formatted_date} " .
+						"<a class='go_messages_anchor' " .
+								"onClick='go_mark_seen({$date}, \"seen\" ); " .
+									"go_change_seen({$date}, \"seen\", this);' " .
+								"style='display: inline;' " .
+								"href='#' >" .
+							"Mark Unread".
+						"</a> ".
+						"<a class='go_messages_anchor' ".
+								"onClick='go_mark_seen({$date}, \"remove\" );' " .
+								"style='display:inline;' ".
+								"href='#' >".
+							"Delete".
+						"</a>";
+				}
+
+				$wp_admin_bar->add_menu( 
+					array(
+						'id' => $date,
+						'title' => "<div style='{$style}'>{$title}...</div>",
+						'href' => '#',
+						'parent' => 'go_messages'
+					) 
+				);
+
+				$wp_admin_bar->add_menu( 
+					array(
+						'id' => rand(),
+						'title' => $seen_elem,
+						'parent' => $date,
+						'meta' => array( 
+							'html' => 
+								"<div class='go_message_container' style='width:350px;'>".
+									$msg_body .
+								"</div>",
+							'class' => 'go_message_item'
+						)
+					) 
+				);
 			}
-
-			if ( ! $msg_already_seen ) {
-				$seen_elem = "{$formatted_date} " .
-					"<a class='go_messages_anchor' " .
-							"onClick='go_mark_seen({$date}, \"unseen\" ); " .
-								"go_change_seen({$date}, \"unseen\", this);' " .
-							"style='display: inline;' " .
-							"href='#' >" .
-						"Mark Read" .
-					"</a> " .
-					"<a class='go_messages_anchor' " .
-							"onClick='go_mark_seen({$date}, \"remove\" );' " .
-							"style='display:inline;' " .
-							"href='#' >" .
-						"Delete" .
-					"</a>";
-			} else {
-				$seen_elem = "{$formatted_date} " .
-					"<a class='go_messages_anchor' " .
-							"onClick='go_mark_seen({$date}, \"seen\" ); " .
-								"go_change_seen({$date}, \"seen\", this);' " .
-							"style='display: inline;' " .
-							"href='#' >" .
-						"Mark Unread".
-					"</a> ".
-					"<a class='go_messages_anchor' ".
-							"onClick='go_mark_seen({$date}, \"remove\" );' " .
-							"style='display:inline;' ".
-							"href='#' >".
-						"Delete".
-					"</a>";
-			}
-
-			$wp_admin_bar->add_menu( 
-				array(
-					'id' => $date,
-					'title' => "<div style='{$style}'>{$title}...</div>",
-					'href' => '#',
-					'parent' => 'go_messages'
-				) 
-			);
-
-			$wp_admin_bar->add_menu( 
-				array(
-					'id' => rand(),
-					'title' => $seen_elem,
-					'parent' => $date,
-					'meta' => array( 
-						'html' => 
-							"<div class='go_message_container' style='width:350px;'>".
-								$msg_body .
-							"</div>",
-						'class' => 'go_message_item'
-					)
-				) 
-			);
 		}
 	}
 }
@@ -133,20 +135,22 @@ function go_messages_bar() {
 function go_mark_read() {
 	global $wpdb;
 	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages', true );
-	if ( $_POST['type'] == 'unseen' ) {
-		if ( $messages[1][ $_POST['date'] ][1] == 1) {
-			$messages[1][ $_POST['date'] ][1] = 0;
-			(int) $messages[0] = (int) $messages[0] - 1;
-		}
-	} elseif ( $_POST['type'] == 'remove' ) {
-		if ( $messages[1][ $_POST['date'] ][1] == 1) {
-			(int) $messages[0] = (int) $messages[0] - 1;
-		}	
-		unset( $messages[1][ $_POST['date'] ] );
-	} elseif ( $_POST['type'] == 'seen' ) {
-		if ( $messages[1][ $_POST['date'] ][1] == 0) {
-			$messages[1][ $_POST['date'] ][1] = 1;
-			(int) $messages[0] = (int) $messages[0] + 1;
+	if ( ! empty( $messages[1][ $_POST['date'] ] ) ) {
+		if ( $_POST['type'] == 'unseen' ) {
+			if ( $messages[1][ $_POST['date'] ][1] == 1) {
+				$messages[1][ $_POST['date'] ][1] = 0;
+				(int) $messages[0] = (int) $messages[0] - 1;
+			}
+		} elseif ( $_POST['type'] == 'remove' ) {
+			if ( $messages[1][ $_POST['date'] ][1] == 1) {
+				(int) $messages[0] = (int) $messages[0] - 1;
+			}	
+			unset( $messages[1][ $_POST['date'] ] );
+		} elseif ( $_POST['type'] == 'seen' ) {
+			if ( $messages[1][ $_POST['date'] ][1] == 0) {
+				$messages[1][ $_POST['date'] ][1] = 1;
+				(int) $messages[0] = (int) $messages[0] + 1;
+			}
 		}
 	}
 	update_user_meta( get_current_user_id(), 'go_admin_messages', $messages );

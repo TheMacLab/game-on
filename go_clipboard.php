@@ -217,14 +217,23 @@ function go_clipboard_add() {
 	foreach ( $ids as $key => $user_id ) {
 		$user_id = intval( $user_id );
 		if ( '' != $reason ) {
-			if ( null != $badge_id ) {
-				go_award_badge(
-					array(
-						'id' 		=> $badge_id,
-						'repeat' 	=> false,
-						'uid' 		=> $user_id
-					)
-				);
+			if ( ! empty( $badge_id ) ) {
+				if ( $badge_id > 0 ) {
+
+					// the badge id is positive, so award it to the user if they don't have it
+					go_award_badge(
+						array(
+							'id' 		=> $badge_id,
+							'repeat' 	=> false,
+							'uid' 		=> $user_id
+						)
+					);
+				} else if ( $badge_id < 0 ) {
+
+					// the badge id is negative, so remove that badge from the user
+					$badge_id *= -1;
+					go_remove_badge( $user_id, $badge_id );
+				}
 			}
 			go_update_totals(
 				$user_id,
