@@ -1,16 +1,52 @@
 <?php
 
 //adds currency and points for reasons that are not post tied.
-function go_add_currency( $user_id, $reason, $status, $points, $currency, $update, $bonus_loot = false ) {
+function go_add_currency( $user_id, $reason, $status, $raw_points, $raw_currency, $update, $bonus_loot = false ) {
 	global $wpdb;
-
 	$table_name_go = "{$wpdb->prefix}go";
-	if ( $update == false ) {
-		$wpdb->insert( $table_name_go, array( 'uid' => $user_id, 'reason' => $reason, 'status' => $status, 'points' => $points, 'currency' => $currency ) );
-	} elseif ( $update == true ) {
-		$wpdb->update( $table_name_go, array( 'status' => $status, 'points' => $points, 'currency' => $currency), array( 'uid' => $user_id, 'reason' => $reason ) );
+
+	$user_bonuses = go_return_bonus_currency( $user_id );
+	$user_penalties = go_return_penalty( $user_id );
+	$points = $raw_points;
+	$currency = $raw_currency;
+	if ( $status !== -1 ) {
+		$modded_array = go_return_multiplier(
+			$user_id,
+			$raw_points,
+			$raw_currency,
+			$user_bonuses,
+			$user_penalties
+		);
+		$points = $modded_array[0];
+		$currency = $modded_array[1];
 	}
-	go_update_totals( $user_id, $points, $currency, 0, 0, 0, $status, $bonus_loot );
+
+	if ( $update == false ) {
+		$wpdb->insert(
+			$table_name_go,
+			array(
+				'uid' => $user_id,
+				'reason' => $reason,
+				'status' => $status,
+				'points' => $points,
+				'currency' => $currency
+			)
+		);
+	} elseif ( $update == true ) {
+		$wpdb->update(
+			$table_name_go,
+			array(
+				'status' => $status,
+				'points' => $points,
+				'currency' => $currency
+			),
+			array(
+				'uid' => $user_id,
+				'reason' => $reason
+			)
+		);
+	}
+	go_update_totals( $user_id, $raw_points, $raw_currency, 0, 0, 0, $status, $bonus_loot );
 }
 
 // Adds currency and points for reasons that are post tied.
