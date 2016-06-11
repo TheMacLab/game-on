@@ -766,7 +766,7 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 			AND post_id = %d",
 			$user_id,
 			$post_id
-		) 
+		)
 	);
 	$custom_fields = get_post_custom( $post_id );
 	$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : '' );

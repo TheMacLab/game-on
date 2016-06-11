@@ -71,7 +71,7 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 	 * the arrays with the array_pop function.
 	 */
 	$max_rank_index = count( $name_array ) - 1;
-	$max_rank_points = $points_array[ $max_rank_index ];
+	$max_rank_points = (int) $points_array[ $max_rank_index ];
 	$is_max_rank = go_user_at_max_rank( $user_id, $max_rank_points, $current_rank_points );
 	
 	/*
