@@ -294,13 +294,11 @@ function go_get_rank ( $user_id ) {
 	$rank = get_user_meta( $user_id, 'go_rank' );
 	if ( ! empty( $rank[0] ) &&
 			! empty( $rank[0][0][0] ) &&
-			! empty( $rank[0][0][1] ) &&
-			! empty( $rank[0][1][0] ) &&
-			! empty( $rank[0][1][1] ) ) {
+			! empty( $rank[0][0][1] ) ) {
 		$current_rank = $rank[0][0][0];
 		$current_rank_points = (int) $rank[0][0][1];
-		$next_rank = $rank[0][1][0];
-		$next_rank_points = (int) $rank[0][1][1];
+		$next_rank = empty( $rank[0][1][0] ) ? null : $rank[0][1][0];
+		$next_rank_points = empty( $rank[0][1][1] ) ? null : (int) $rank[0][1][1];
 
 		return array(
 			'current_rank' 		  => $current_rank,

@@ -330,7 +330,7 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	 * the arrays with the array_pop function.
 	 */
 	$max_rank_index = count( $points_array ) - 1;
-	$max_rank_points = $points_array[ $max_rank_index ];
+	$max_rank_points = (int) $points_array[ $max_rank_index ];
 
 	$color = barColor( $current_bonus_currency, $current_penalty );
 

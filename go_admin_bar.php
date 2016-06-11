@@ -52,7 +52,7 @@ function go_admin_bar() {
 		 * the arrays with the array_pop function.
 		 */
 		$max_rank_index = count( $points_array ) - 1;
-		$max_rank_points = $points_array[ $max_rank_index ];
+		$max_rank_points = (int) $points_array[ $max_rank_index ];
 
 		if ( null !== $next_rank_points ) {
 			$rank_threshold_diff = $next_rank_points - $current_rank_points;
