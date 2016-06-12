@@ -348,7 +348,7 @@ function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
-
+	
 	if ( null === $max_rank_points || $max_rank_points < 0 ) {
 		$ranks = get_option( 'go_ranks' );
 		$max_rank_index = count( $ranks['name'] ) - 1;
@@ -361,7 +361,7 @@ function go_user_at_max_rank ( $user_id, $max_rank_points = null, $current_rank_
 	}
 
 	// compare the point thresholds
-	if ( $current_rank_points === $max_rank_points ) {
+	if ( (int) $current_rank_points === (int) $max_rank_points ) {
 		return true;
 	} else {
 		return false;

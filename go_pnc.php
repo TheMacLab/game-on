@@ -619,6 +619,7 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 
 	$is_max_rank = go_user_at_max_rank( $user_id );
 	$prestige_buff = 2;
+	$prestige_debuff = 0.5;
 
 	if ( $bonus_active && $penalty_active ) {
 		$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
@@ -639,8 +640,15 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 			$mod = $multiplier * $diff;
 			$modded_points = $points + ( $points * $mod );
 			$modded_currency = $currency + ( $currency * $mod );
-			if ( $is_max_rank && 0 === $penalty_frac ) {
-				$modded_currency *= $prestige_buff;
+			if ( $is_max_rank ) {
+
+				// the user suffers a debuff when they reach the max rank with penalties
+				if ( $penalty_frac > 0 ) {
+					$modded_points *= $prestige_debuff;
+					$modded_currency *= $prestige_debuff;
+				} else {
+					$modded_currency *= $prestige_buff;
+				}
 			}
 
 			if ( $mod > 0 )  {
@@ -711,7 +719,7 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 	} else if ( $penalty_active ) {
 		$penalty_threshold = (int) get_option( 'go_penalty_threshold', 5 );
 		$multiplier = ( (int) get_option( 'go_multiplier_percentage', 10 ) ) / 100;
-		$penalty_frac = intval( $user_penalties / $penalty_threshold );
+		$penalty_frac = ( $user_penalties > 0 ? intval( $user_penalties / $penalty_threshold ) : 0 );
 		if ( 0 == $penalty_frac ) {
 			if ( ! $return_mod ) {
 				return array( $points, $currency );
@@ -721,11 +729,18 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 		} else {
 			$rounded_points = 0;
 			$rounded_currency = 0;
-			$mod = $multiplier * ( - $penalty_frac );
+			$mod = $multiplier * ( -$penalty_frac );
 			$modded_points = $points + ( $points * $mod );
 			$modded_currency = $currency + ( $currency * $mod );
-			if ( $is_max_rank && 0 === $penalty_frac ) {
-				$modded_currency *= $prestige_buff;
+			if ( $is_max_rank ) {
+
+				// the user suffers a debuff when they reach the max rank with penalties
+				if ( $penalty_frac > 0 ) {
+					$modded_points *= $prestige_debuff;
+					$modded_currency *= $prestige_debuff;
+				} else {
+					$modded_currency *= $prestige_buff;
+				}
 			}
 
 			if ( $points < 0 ) {
