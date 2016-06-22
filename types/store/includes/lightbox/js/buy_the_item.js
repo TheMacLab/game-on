@@ -12,7 +12,7 @@ function goBuytheItem( id, buyColor, count ) {
 		// Whenever you figure out a better way to do this, implement it. 
 		var color = jQuery( '#go_admin_bar_progress_bar' ).css( 'background-color' );
 		jQuery.ajax({
-			url: buy_item.ajaxurl,
+			url: MyAjax.ajaxurl,
 			type: 'POST',
 			data: gotoBuy,
 			beforeSend: function() {

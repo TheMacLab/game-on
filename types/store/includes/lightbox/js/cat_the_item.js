@@ -5,7 +5,7 @@ function goCattheItem( the_cat_id ) {
 			nonce: '',
 		};
 		jQuery.ajax({
-			url: cat_item.ajaxurl,
+			url: MyAjax.ajaxurl,
 			type: 'POST',
 			data: gotoCat,
 			beforeSend: function() { 

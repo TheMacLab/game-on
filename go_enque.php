@@ -34,7 +34,8 @@ function go_register_admin_scripts_and_styles () {
 	 */
 
 	// Tasks
-	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/go_tasks_admin.js', array( 'jquery' ) );
+	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/go_tasks_admin.js', array( 'jquery' ), false, true );
+	wp_register_script( 'go_tasks_chains', plugin_dir_url( __FILE__ ).'scripts/go_tasks_chains.js', array( 'jquery' ), false, true );
 	wp_register_script( 'go_presets', plugin_dir_url( __FILE__ ).'scripts/go_presets.js', array( 'jquery' ), false, true );
 	wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/jquery.ptTimeSelect.js', array( 'jquery' ) );
 
@@ -126,6 +127,7 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 			 */
 
 			wp_enqueue_script( 'go_tasks' );
+			wp_enqueue_script( 'go_tasks_chains' );
 			wp_enqueue_script( 'go_presets' );
 			wp_enqueue_script( 'ptTimeSelectJS' );
 
@@ -197,7 +199,6 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 		wp_enqueue_script( 'go_jquery_clipboard_tablesorter' );
 		
 		// Localization
-		wp_localize_script( 'go_jquery_clipboard', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		wp_localize_script( 'go_jquery_clipboard', 'Minutes_limit', array( 'limit' => go_return_options( 'go_minutes_color_limit' ) ) );
 
 		/*
@@ -275,8 +276,6 @@ function go_enqueue_scripts_and_styles () {
 	// Localization
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	wp_localize_script( 'go_every_page', 'PluginDir', array( 'url' => plugin_dir_url( __FILE__ ) ) );
-	wp_localize_script( 'buy_the_item', 'buy_item', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-	wp_localize_script( 'cat_the_item', 'cat_item', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); //create ajaxurl global for front-end AJAX call; 
 
 	/*
 	 * Common Styles

@@ -747,8 +747,9 @@ function go_remove_errors ( id_array ) {
 }
 
 function go_before_task_publish ( e, skip_default ) {
+
 	e.preventDefault();
-	e.stopPropagation();
+
 	// the skip_default argument allows input validation to occur
 	// before the task is published
 	if ( "undefined" === typeof( skip_default ) ) {
@@ -763,6 +764,7 @@ function go_before_task_publish ( e, skip_default ) {
 
 	// if ( true === skip_default ) {
 	// 	e.preventDefault();
+
 	// 	window.location.hash = '';
 	// 	jQuery( '.go_error_red' ).each( function ( index, element ) {
 	// 		error_marked_elems.push( element.id );
@@ -782,6 +784,9 @@ function go_before_task_publish ( e, skip_default ) {
 	// 		if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
 	// 			go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
 	// 		}
+
+	// 		// update the order of the task's chain, if the task is in a chain
+	// 		go_update_task_order_before_publish();
 	// 	} catch ( err ) {
 
 	// 		// if an input is causing an issue (e.g. failed validation),

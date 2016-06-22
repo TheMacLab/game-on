@@ -1439,63 +1439,6 @@ function go_pick_order_of_chain() {
             }
             ?>
 		</ul>
-        <script type="text/javascript">
-			jQuery( 'document' ).ready( function( e ) {
-				var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
-				var post_id = "<?php echo $task_id; ?>";
-	           	jQuery( '#go_task_order_in_chain' ).sortable({
-				   	axis: "y", 
-				   	start: function( event, ui ) {
-				   		jQuery( ui.item ).addClass( 'go_sortable_item' );
-				   	},
-				   	stop: function( event, ui ) {
-				   		jQuery( ui.item ).removeClass( 'go_sortable_item' );
-					  	var order = [];
-					  	var chain = '<?php echo $chain->name;?>';
-					  	jQuery( '.go_task_in_chain' ).each( function( i, el ) {
-							order[ i+1 ] = jQuery( this ).attr( 'post_id' );
-					  	});
-					  	jQuery.ajax({
-						   	url: go_ajaxurl,
-						   	type: 'POST',
-						   	data: {
-								action: 'go_update_task_order',
-								order: order,
-								chain: chain,
-								post_id: "<?php echo $task_id; ?>",
-						   	}
-					   	}); 
-				   }
-				});
-
-				jQuery( 'input#publish' ).click( function( event, skip ) {
-					// The default value for skip is false, this way the post's custom metadata "chain_position" will always be updated.
-					// The first time this fucntion is called, skip will be undefined.
-					if ( typeof( skip ) === undefined ) {
-						skip = false;
-					}
-					// If skip is false, prevent the page from saving and update the metadata value "chain_position".
-					if ( ! skip ) {
-						// Prevent the default functionality (saving).
-						event.preventDefault();
-						// Get the order of the task chain from the "Chain Order" meta box.
-						var order = [];
-						jQuery( '.go_task_in_chain' ).each( function( i, el ) {
-							order[ i+1 ] = jQuery(this).attr( 'post_id' );
-					  	});
-						// Get the position of this task in the chain and get the current value of the meta value "chain_position".
-						// Compare them and update the meta value if they are not equal and the task id does exist in the chain.
-						var n_position = order.indexOf( post_id );
-						var c_position = jQuery( "#the-list .left" ).children( "input[value='chain_position']" ).first().parent( 'td.left' ).siblings( "td" ).children( "textarea" ).text();
-						if ( n_position != c_position && n_position != -1 ) {
-							jQuery( "#the-list .left" ).children( "input[value='chain_position']" ).first().parent( 'td.left' ).siblings( "td" ).children( "textarea" ).text( n_position );
-						}
-						// Trigger the click event again, and pass it a true value for skip so that the task will resume normal function.
-						jQuery( 'input#publish' ).trigger( 'click', [true] );
-					}
-				});
-	        });
-		</script>
         <?php
 	}
 }
@@ -1541,14 +1484,14 @@ function go_stage_reward( $field_args ) {
 	echo "</div>";
 }
 
-function go_update_task_order() {
+function go_update_task_order () {
 	global $wpdb;
 	$order = $_POST['order'];
-	$chain = $_POST['chain'];
+	$chain_name = $_POST['chain_name'];
 	$id = $_POST['post_id'];
-	foreach( $order as $key => $value ) {
-		add_post_meta( $value, 'chain', $chain, true );
-		update_post_meta( $value, 'chain_position', $key );
+	foreach( $order as $pos => $task_id ) {
+		add_post_meta( $task_id, 'chain', $chain_name, true );
+		update_post_meta( $task_id, 'chain_position', $pos );
 	}
 }
 
