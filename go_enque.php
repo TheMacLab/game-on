@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Registering and enqueueing scripts/styles for admin pages
+ * Registering Scripts/Styles For Admin Pages
  */
 
 function go_register_admin_scripts_and_styles () {
@@ -34,6 +34,7 @@ function go_register_admin_scripts_and_styles () {
 	 */
 
 	// Tasks
+	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/go_tasks_admin.js', array( 'jquery' ) );
 	wp_register_script( 'go_presets', plugin_dir_url( __FILE__ ).'scripts/go_presets.js', array( 'jquery' ), false, true );
 	wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/jquery.ptTimeSelect.js', array( 'jquery' ) );
 
@@ -68,6 +69,10 @@ function go_register_admin_scripts_and_styles () {
 	wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/go_clipboard.css' );
 
 }
+
+/*
+ * Enqueueing Scripts/Styles For Admin Pages
+ */
 
 function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	global $post;
@@ -120,10 +125,13 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 			 * Task Scripts
 			 */
 
+			wp_enqueue_script( 'go_tasks' );
 			wp_enqueue_script( 'go_presets' );
 			wp_enqueue_script( 'ptTimeSelectJS' );
 
 			// Localization
+
+			wp_localize_script( 'go_tasks', 'GO_TASK_DATA', go_localize_task_data() );
 
 			/*
 			 * Task Styles
@@ -202,7 +210,7 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 }
 
 /*
- * Registering and enqueueing scripts/styles for the front-end
+ * Registering Scripts/Styles For The Front-end
  */
 
 function go_register_scripts_and_styles () {
@@ -234,6 +242,10 @@ function go_register_scripts_and_styles () {
 	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
 	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
 }
+
+/*
+ * Enqueueing Scripts/Styles For The Front-end
+ */
 
 function go_enqueue_scripts_and_styles () {
 

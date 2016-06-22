@@ -26,6 +26,7 @@ include( 'go_mail.php' );
 include( 'go_messages.php' );
 include( 'go_task_search.php' );
 include( 'go_pods.php' );
+include( 'types/tasks/task_chains.php' );
 include( 'types/types.php' );
 
 /*
@@ -72,7 +73,6 @@ add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'admin_head', 'go_stats_overlay' );
 add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_footer', 'store_edit_jquery' );
-add_action( 'admin_footer', 'task_edit_jquery' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
 add_action( 'admin_enqueue_scripts', 'go_enqueue_admin_scripts_and_styles' );
 add_action( 'login_redirect', 'go_user_redirect', 10, 3 );

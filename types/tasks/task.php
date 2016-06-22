@@ -1,7 +1,7 @@
 <?php
 
 include( 'task_shortcode.php' ); 
-include( 'tsk-admin-footer.php' );
+include( 'task_admin.php' );
 
 function go_register_task_tax_and_cpt() {
 	

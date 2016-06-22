@@ -436,7 +436,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			}
 			
 			// Setup next task in chain 
-			if ( $id != end( $post_ids_in_chain ) ) {
+			if ( $id != end( $post_ids_in_chain ) && false !== array_search( $id, $post_ids_in_chain ) ) {
 				$next_post_id_in_chain = $post_ids_in_chain[ array_search( $id, $post_ids_in_chain ) + 1 ];
 				$next_post_in_chain = '<a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a>';
 			}
