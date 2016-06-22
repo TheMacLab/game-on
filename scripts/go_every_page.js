@@ -368,9 +368,9 @@ function go_stats_move_stage( task_id, status ) {
 			var json = JSON.parse( html.substr( html.search( '{"type"' ), html.length ) );
 			jQuery( '#go_stats_user_points_value' ).html( parseFloat( jQuery( '#go_stats_user_points_value' ).html() ) + json['points']);
 			
-			var current_rank_points = json.current_rank_points;
-			var next_rank_points = json.next_rank_points;
-			var max_rank_points = json.max_rank_points;
+			var current_rank_points = parseInt( json.current_rank_points );
+			var next_rank_points = parseInt( json.next_rank_points );
+			var max_rank_points = parseInt( json.max_rank_points );
 			var prestige_name = json.prestige_name;
 			var pts_to_rank_threshold = 0;
 			var rank_threshold_diff = 1;

@@ -41,7 +41,7 @@ function go_admin_bar_stats() {
 	$points_array = $go_option_ranks['points'];
 
 	$max_rank_index = count( $points_array ) - 1;
-	$max_rank_points = $points_array[ $max_rank_index ];
+	$max_rank_points = (int) $points_array[ $max_rank_index ];
 
 	$percentage_of_level = 1;
 
@@ -335,7 +335,7 @@ function go_stats_move_stage() {
 	$points_array = $go_option_ranks['points'];
 
 	$max_rank_index = count( $points_array ) - 1;
-	$max_rank_points = $points_array[ $max_rank_index ];
+	$max_rank_points = (int) $points_array[ $max_rank_index ];
 	$prestige_name = go_return_options( 'go_prestige_name' );
 
 	$changed = array( 
