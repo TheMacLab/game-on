@@ -56,12 +56,6 @@ function go_toggle_settings_rows( stage_settings, condensed, number ) {
 				future_row.hide( 'slow' );
 				calendar_row.hide();
 			}
-			//! needed ??
-			// for ( var setting_rows in stage_settings_rows[ i ] ) {
-			// 	if ( null !== stage_settings_rows[ i ][ setting_rows ] ) {
-			// 		stage_settings_rows[ i ][ setting_rows ].hide( 'slow' );
-			// 	}
-			// }
 		}
 	}
 }
@@ -276,6 +270,9 @@ jQuery( document ).ready( function () {
 			});
 		}
 	}
+
+	// prepare the task chain sortable list
+	go_prepare_sortable_list();
 });
 
 function go_add_decay_table_row () {
@@ -748,76 +745,70 @@ function go_remove_errors ( id_array ) {
 
 function go_before_task_publish ( e, skip_default ) {
 
-	e.preventDefault();
-
 	// the skip_default argument allows input validation to occur
 	// before the task is published
 	if ( "undefined" === typeof( skip_default ) ) {
 		skip_default = true;
 	}
 
-	console.log( e, skip_default );
+	var error_marked_elems = [];
 
-	return;
+	if ( true === skip_default ) {
+		e.preventDefault();
 
-	// var error_marked_elems = [];
-
-	// if ( true === skip_default ) {
-	// 	e.preventDefault();
-
-	// 	window.location.hash = '';
-	// 	jQuery( '.go_error_red' ).each( function ( index, element ) {
-	// 		error_marked_elems.push( element.id );
-	// 	});
-	// 	if ( error_marked_elems.length > 0 ) {
-	// 		go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
-	// 	}
+		window.location.hash = '';
+		jQuery( '.go_error_red' ).each( function ( index, element ) {
+			error_marked_elems.push( element.id );
+		});
+		if ( error_marked_elems.length > 0 ) {
+			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
+		}
 		
-	// 	var task_error = false;
-	// 	try {
+		var task_error = false;
+		try {
 
-	// 		// bonus loot rarity field validation
-	// 		var go_bonus_loot_on = go_bonus_loot_check_box[0].checked;
-	// 		var go_bonus_loot_items_checked = jQuery( go_bonus_loot_items ).children( '.go_bonus_loot_checkbox:checked' );
-	// 		var go_bonus_loot_active_item_rarities = jQuery( go_bonus_loot_items_checked ).next( '.go_bonus_loot_rarity' );
+			// bonus loot rarity field validation
+			var go_bonus_loot_on = go_bonus_loot_check_box[0].checked;
+			var go_bonus_loot_items_checked = jQuery( go_bonus_loot_items ).children( '.go_bonus_loot_checkbox:checked' );
+			var go_bonus_loot_active_item_rarities = jQuery( go_bonus_loot_items_checked ).next( '.go_bonus_loot_rarity' );
 
-	// 		if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
-	// 			go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
-	// 		}
+			if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
+				go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
+			}
 
-	// 		// update the order of the task's chain, if the task is in a chain
-	// 		go_update_task_order_before_publish();
-	// 	} catch ( err ) {
+			// update the order of the task's chain, if the task is in a chain
+			go_update_task_order_before_publish();
+		} catch ( err ) {
 
-	// 		// if an input is causing an issue (e.g. failed validation),
-	// 		// stop the task from being updated
-	// 		if ( 'Game On Error' === err.name && 'undefined' !== typeof( err.el_ids ) ) {
+			// if an input is causing an issue (e.g. failed validation),
+			// stop the task from being updated
+			if ( 'Game On Error' === err.name && 'undefined' !== typeof( err.el_ids ) ) {
 				
-	// 			// open the accordion that the problematic element is under
-	// 			if ( ! jQuery( err.accord_id ).hasClass( 'opened' ) ) {
-	// 				jQuery( err.accord_id ).trigger( 'click' );
-	// 			}
+				// open the accordion that the problematic element is under
+				if ( ! jQuery( err.accord_id ).hasClass( 'opened' ) ) {
+					jQuery( err.accord_id ).trigger( 'click' );
+				}
 
-	// 			// direct the user to the problematic element
-	// 			window.location.hash = err.el_ids[0];
+				// direct the user to the problematic element
+				window.location.hash = err.el_ids[0];
 
-	// 			go_add_errors( err.el_ids, 'go_bonus_loot_error_msg', err.message );
+				go_add_errors( err.el_ids, 'go_bonus_loot_error_msg', err.message );
 
-	// 			task_error = true;
-	// 		}
-	// 	}
+				task_error = true;
+			}
+		}
 
-	// 	if ( false === task_error ) {
-	// 		jQuery( 'input#publish' ).trigger( 'click', [false] );
-	// 	}
-	// } else {
-	// 	jQuery( '.go_error_red' ).each( function ( index, element ) {
-	// 		error_marked_elems.push( element.id );
-	// 	});
-	// 	if ( error_marked_elems.length > 0 ) {
-	// 		go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
-	// 	}
-	// }
+		if ( false === task_error ) {
+			jQuery( 'input#publish' ).trigger( 'click', [false] );
+		}
+	} else {
+		jQuery( '.go_error_red' ).each( function ( index, element ) {
+			error_marked_elems.push( element.id );
+		});
+		if ( error_marked_elems.length > 0 ) {
+			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
+		}
+	}
 }
 jQuery( 'input#publish' ).on( 'click submit', go_before_task_publish );
 
