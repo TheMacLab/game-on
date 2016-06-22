@@ -472,7 +472,9 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 				
 				// Check if current post in loop has been completed/mastered, depending on the number of stages in the task that needs to be completed
-				if ( $post_status_in_chain[ $post_id_in_chain ] < $post_number_of_stages_in_chain ) {
+				if ( isset( $post_status_in_chain[ $post_id_in_chain ] ) &&
+						$post_status_in_chain[ $post_id_in_chain ] < $post_number_of_stages_in_chain ) {
+					
 					$previous_task = '<a href="'.get_permalink( $post_id_in_chain ).'">'.get_the_title( $post_id_in_chain ).'</a>';
 					echo "You must finish {$previous_task} to do this {$task_name}";
 					return false;	
