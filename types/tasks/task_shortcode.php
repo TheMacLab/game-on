@@ -2555,7 +2555,17 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 			} else {
 				$mod_array = go_return_multiplier( $user_id, floor( $p_array[ $i ] * $update_percent ), floor( $c_array[ $i ] * $update_percent ), $u_bonuses, $u_penalties );
 			}
-			$bc = floor( $bc_array[ $i ] * $update_percent );
+			if ( ! empty( $mod_array[0] ) ) {
+				$modded_points = (int) $mod_array[0];
+			} else {
+				$modded_points = 0;
+			}
+			if ( ! empty( $mod_array[1] ) ) {
+				$modded_currency = (int) $mod_array[1];
+			} else {
+				$modded_currency = 0;
+			}
+			$bc = (int) floor( $bc_array[ $i ] * $update_percent );
 			$stage_name = '';
 			switch ( $i ) {
 				case 0:
@@ -2575,12 +2585,35 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 					break;
 			}
 			$stage = $i + 1;
-			$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>".( ( ( ! empty( $mod_array[0] ) || ! empty( $p_array[ $i ] ) ) && ! empty( $p_name ) ) ? "<span id='go_stage_{$stage}_points'>{$mod_array[0]}</span> {$p_name}" : '' ).
-				' '.( ( ( ! empty( $mod_array[1] ) || ! empty( $c_array[ $i ] ) ) && ! empty( $c_name ) ) ? "<span id='go_stage_{$stage}_currency'>{$mod_array[1]}</span> {$c_name}" : '' ).
-				' '.( ( ! empty( $bc ) && ! empty( $bc_name ) ) ? "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}" : '' ).
-				"</span><br/>";
 			if ( $update_percent == 0 && $stage == 3 ) {
 				$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>Expired: No Rewards</span><br/>";
+			} else if ( 0 === $modded_points && 0 === $modded_currency && 0 === $bc ) {
+				$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>No Rewards</span><br/>";
+			} else {
+				$point_output = '';
+				$currency_output = '';
+				$bc_output = '';
+				if ( 0 !== $modded_points && ! empty( $p_name ) ) {
+					$point_output = "<span id='go_stage_{$stage}_points'>{$modded_points}</span> {$p_name}";
+				} else {
+					$point_output = "";
+				}
+				if ( 0 !== $modded_currency && ! empty( $c_name ) ) {
+					$currency_output = "<span id='go_stage_{$stage}_currency'>{$modded_currency}</span> {$c_name}";
+				} else {
+					$currency_output = "";
+				}
+				if ( 0 !== $bc && ! empty( $bc_name ) ) {
+					$bc_output = "<span id='go_stage_{$stage}_bonus_currency'>{$bc}</span> {$bc_name}";
+				} else {
+					$bc_output = "";
+				}
+				$output = 
+					"{$stage_name} - " .
+					"<span id='go_task_stage_{$stage}_rewards'>" .
+						"{$point_output} {$currency_output} {$bc_output}" .
+					"</span>" .
+					"<br/>";
 			}
 			echo $output;
 			if ( ! empty( $custom_fields['go_mta_mastery_bonus_loot'][0] ) ) {

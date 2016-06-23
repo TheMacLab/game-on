@@ -347,7 +347,7 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 
 		if ( $max_rank_points === $current_rank_points ) {
 			$prestige_name = go_return_options( 'go_prestige_name' );
-			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
+			$pts_to_rank_up_str = $prestige_name;
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
 		}
@@ -613,13 +613,21 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 	$bonus_active = ( 'On' === get_option( 'go_multiplier_switch', false ) ? true : false );
 	$penalty_active = ( 'On' === get_option( 'go_penalty_switch', false ) ? true : false );
 
+	$is_max_rank = go_user_at_max_rank( $user_id );
+
+	// the prestige system should disable XP rewards
+	$prestige_xp_nullifier = 0;
+	$prestige_buff = 2;
+	$prestige_debuff = 0.5;
+
+	if ( $is_max_rank ) {
+		$points *= $prestige_xp_nullifier;
+		$currency *= $prestige_buff;
+	}
+
 	if ( ! $bonus_active && ! $penalty_active ) {
 		return array( $points, $currency );
 	}
-
-	$is_max_rank = go_user_at_max_rank( $user_id );
-	$prestige_buff = 2;
-	$prestige_debuff = 0.5;
 
 	if ( $bonus_active && $penalty_active ) {
 		$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
@@ -635,21 +643,15 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 				return 0;
 			}
 		} else {
+			if ( $is_max_rank && $penalty_frac > 0 ) {
+				$currency = ( $currency / $prestige_buff ) * $prestige_debuff;
+			}
+
 			$rounded_points = 0;
 			$rounded_currency = 0;
 			$mod = $multiplier * $diff;
 			$modded_points = $points + ( $points * $mod );
 			$modded_currency = $currency + ( $currency * $mod );
-			if ( $is_max_rank ) {
-
-				// the user suffers a debuff when they reach the max rank with penalties
-				if ( $penalty_frac > 0 ) {
-					$modded_points *= $prestige_debuff;
-					$modded_currency *= $prestige_debuff;
-				} else {
-					$modded_currency *= $prestige_buff;
-				}
-			}
 
 			if ( $mod > 0 )  {
 				if ( $points < 0 ) {
@@ -696,10 +698,7 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 			$mod = $multiplier * $bonus_frac;
 			$modded_points = $points + ( $points * $mod );
 			$modded_currency = $currency + ( $currency * $mod );
-			if ( $is_max_rank ) {
-				$modded_currency *= $prestige_buff;
-			}
-
+			
 			if ( $points < 0 ) {
 				$rounded_points = floor( $modded_points );
 			} else {
@@ -727,21 +726,15 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 				return 0;
 			}
 		} else {
+			if ( $is_max_rank && $penalty_frac > 0 ) {
+				$currency = ( $currency / $prestige_buff ) * $prestige_debuff;
+			}
+			
 			$rounded_points = 0;
 			$rounded_currency = 0;
 			$mod = $multiplier * ( -$penalty_frac );
 			$modded_points = $points + ( $points * $mod );
 			$modded_currency = $currency + ( $currency * $mod );
-			if ( $is_max_rank ) {
-
-				// the user suffers a debuff when they reach the max rank with penalties
-				if ( $penalty_frac > 0 ) {
-					$modded_points *= $prestige_debuff;
-					$modded_currency *= $prestige_debuff;
-				} else {
-					$modded_currency *= $prestige_buff;
-				}
-			}
 
 			if ( $points < 0 ) {
 				$rounded_points = ceil( $modded_points );

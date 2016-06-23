@@ -63,7 +63,7 @@ function go_admin_bar() {
 
 		if ( $max_rank_points === $current_rank_points ) {
 			$prestige_name = go_return_options( 'go_prestige_name' );
-			$pts_to_rank_up_str = "{$pts_to_rank_threshold} - {$prestige_name}";
+			$pts_to_rank_up_str = $prestige_name;
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
 		}

@@ -383,7 +383,7 @@ function go_stats_move_stage( task_id, status ) {
 			}
 
 			if ( max_rank_points === current_rank_points ) {
-				pts_to_rank_up_str = pts_to_rank_threshold + ' - ' + prestige_name;
+				pts_to_rank_up_str = prestige_name;
 			} else {
 				pts_to_rank_up_str = pts_to_rank_threshold + ' / ' + rank_threshold_diff;
 			}

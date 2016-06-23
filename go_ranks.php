@@ -34,7 +34,7 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 	$current_points = 0;
 
 	if ( empty( $ranks ) ) {
-		error_log( 
+		error_log(
 			"Game On Error: the go_ranks option is empty in ".
 			"go_update_ranks() in go_ranks.php! ".
 			"Ranks have to be provided in the settings page"
