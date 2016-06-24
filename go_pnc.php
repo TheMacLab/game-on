@@ -621,7 +621,9 @@ function go_return_multiplier ( $user_id, $points, $currency, $user_bonuses, $us
 	$prestige_debuff = 0.5;
 
 	if ( $is_max_rank ) {
-		$points *= $prestige_xp_nullifier;
+		if ( $points > 0 ) {
+			$points *= $prestige_xp_nullifier;
+		}
 		$currency *= $prestige_buff;
 	}
 
