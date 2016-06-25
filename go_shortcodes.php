@@ -386,7 +386,6 @@ add_shortcode ( 'sb_login', 'go_login' );
 add_shortcode ( 'go_login', 'go_login' );
 
 function go_get_category() {
-	global $wpdb;
 	$terms = get_taxonomies();
 	?>
     <script type="text/javascript">

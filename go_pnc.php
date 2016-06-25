@@ -86,7 +86,7 @@ function go_add_post(
 					'bonus_currency' => $bonus_currency,
 					'page_id' => $page_id, 
 					'count' => $qty + $count,
-					'reason' => $reason,
+					'reason' => esc_html( $reason ),
 					'timestamp' => $time,
 					'gifted' => $gifted,
 					'minutes' => $minutes
@@ -102,7 +102,7 @@ function go_add_post(
 					'minutes' => $minutes + ( $old_points->minutes ),
 					'page_id' => $page_id,
 					'count' => ( ( $old_points->count ) + $qty ),
-					'reason' => $reason
+					'reason' => esc_html( $reason )
 				), 
 				array(
 					'uid' => $user_id, 
@@ -138,11 +138,11 @@ function go_add_post(
 					'bonus_currency' => $bonus_currency + ( $old_points->bonus_currency ),
 					'page_id' => $page_id,
 					'count' => $count + ( $old_points->count ),
-					'url' => $url_array
-				), 
-				array( 
-						'uid' => $user_id, 
-						'post_id' => $post_id
+					'url' => $url_array,
+				),
+				array(
+					'uid' => $user_id,
+					'post_id' => $post_id,
 				)
 			);
 		} else {
@@ -220,7 +220,7 @@ function go_add_bonus_currency( $user_id, $bonus_currency, $reason, $status = 6 
 			'uid' => $user_id, 
 			'status' => $status, 
 			'bonus_currency' => $bonus_currency, 
-			'reason' => $reason, 
+			'reason' => esc_html( $reason ),
 			'timestamp' => $time
 		)
 	);
@@ -534,7 +534,6 @@ function go_admin_bar_add () {
 }
 
 function go_get_level_percentage( $user_id ) {
-	global $wpdb;
 	$current_points = go_return_points( $user_id );
 	$rank = go_get_rank( $user_id );
 	$current_rank = $rank['current_rank'];
@@ -761,7 +760,7 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 	global $wpdb;
 	if ( empty( $user_id ) && empty( $post_id ) && empty( $e_points ) && empty( $e_currency ) && empty( $e_bonus_currency ) ) {
 		$user_id = get_current_user_id();
-		$post_id = $_POST['post_id'];
+		$post_id = intval( $_POST['post_id'] );
 		$e_points = intval( $_POST['encounter_points'] );
 		$e_currency = intval( $_POST['encounter_currency'] );
 		$e_bonus_currency = intval( $_POST['encounter_bonus'] );

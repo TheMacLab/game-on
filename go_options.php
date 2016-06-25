@@ -766,7 +766,7 @@ function go_focus_save() {
 	}
 	$delete_terms = array_diff( $term_names, $array );
 	foreach ( $delete_terms as $term ) {
-		$term_id = $wpdb->get_var( "SELECT `term_id` FROM $wpdb->terms WHERE `name`='{$term}'" );
+		$term_id = $wpdb->get_var( "SELECT `term_id` FROM {$wpdb->terms} WHERE `name`='" . esc_html( $term ) . "'" );
 		wp_delete_term( $term_id, 'task_focus_categories' );
 		wp_delete_term( $term_id, 'store_focus_categories' );
 	}
@@ -774,7 +774,6 @@ function go_focus_save() {
 }
 
 function go_presets_reset() {
-	global $wpdb;
 	$presets = array(
 		'name' => array(
 			'Tier 1',
@@ -824,7 +823,6 @@ function go_presets_reset() {
 }
 
 function go_presets_save() {
-	global $wpdb;
 	$preset_name = $_POST['go_preset_name'];
 	$preset_points = $_POST['go_preset_points'];
 	$preset_currency = $_POST['go_preset_currency'];
@@ -838,6 +836,11 @@ function go_presets_save() {
 }
 
 function go_reset_data() {
+	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+		go_error_log( 'Only admins with correct permissions can resest data' );
+		die();
+	}
+
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
@@ -873,17 +876,27 @@ function go_reset_data() {
 		$wpdb->query( "TRUNCATE TABLE {$go_table_name}" );
 	} else {
 		$reset_data_go = $reset_data;
+		$erase_list = '';
 		if ( in_array( 'badge_count', $reset_data_go ) ) {
 			$badge_count_loc = array_search( 'badge_count', $reset_data_go );
 			unset( $reset_data_go[ $badge_count_loc ] );
 		}
-		$erase_list = ( ( ( ! empty( $reset_data_go) && count( $reset_data_go) > 1) ) ? implode( ' IS NOT NULL AND ', $reset_data_go) : $reset_data_go[0] );
-		if ( ! empty( $erase_list) ) {
-			$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".( ( in_array( 'points', $reset_data) && ! in_array( 'currency', $reset_data) ) ? 'AND status != -1' : ( ( in_array( 'currency', $reset_data) && ! in_array( 'points', $reset_data) )  ? 'AND status = -1': '' ) );
+		if ( ! empty( $reset_data_go ) && count( $reset_data_go ) > 1 ) {
+			$erase_list = esc_html( implode( ' IS NOT NULL AND ', $reset_data_go ) );
+		} else {
+			$erase_list = esc_html( $reset_data_go[0] );
+		}
+		if ( ! empty( $erase_list ) ) {
+			$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ";
+			if ( in_array( 'points', $reset_data ) && ! in_array( 'currency', $reset_data ) ) {
+				$query .= 'AND status != -1';
+			} else if ( ! in_array( 'points', $reset_data ) && in_array( 'currency', $reset_data ) ) {
+				$query .= 'AND status = -1';
+			}
 			$wpdb->query( $query );
 		}
 	}
-	$erase_update = "SET ".implode( '=0,', $reset_data)."=0 WHERE uid IS NOT NULL";
+	$erase_update = esc_html( 'SET ' . implode( '=0,', $reset_data ) . '=0 WHERE uid IS NOT NULL' );
 	$wpdb->query( "UPDATE {$go_table_totals_name} " . $erase_update );
 	die();
 }
@@ -1024,7 +1037,6 @@ function go_save_extra_profile_fields( $user_id ) {
 }	
 
 function go_update_definitions() {
-	global $wpdb;
 	$file_name = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
 	$array = explode(
 		',',

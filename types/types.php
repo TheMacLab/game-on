@@ -102,10 +102,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 1'.go_task_opt_help( 'encounter', '', 'http://maclab.guhsd.net/go/video/quests/stageOne.mp4' ),
 				'id' => "{$prefix}quick_desc",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-          			'textarea_rows' => '5',
-           		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_one_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageOneSettings.mp4' ),
@@ -168,11 +168,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'encounter_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_encounter",
- 				'type' => 'go_test_field',
- 				'test_type' => 'e'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'encounter_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_encounter",
+				'type' => 'go_test_field',
+				'test_type' => 'e'
+			),
 			array(
 				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_one_badge",
@@ -183,10 +183,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 2'.go_task_opt_help( 'accept', '', 'http://maclab.guhsd.net/go/video/quests/acceptMessage.mp4' ),
 				'id' => "{$prefix}accept_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-          			'textarea_rows' => '5',
-           		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_two_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageTwoSettings.mp4' ),
@@ -249,11 +249,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'accept_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_accept",
- 				'type' => 'go_test_field',
- 				'test_type' => 'a'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'accept_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_accept",
+				'type' => 'go_test_field',
+				'test_type' => 'a'
+			),
 			array(
 				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_two_badge",
@@ -264,10 +264,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 3'.go_task_opt_help( 'complete', '', 'http://maclab.guhsd.net/go/video/quests/completionMessage.mp4' ),
 				'id' => "{$prefix}complete_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-           			'textarea_rows' => '5',
-         		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_three_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageThreeSettings.mp4' ),
@@ -309,9 +309,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help( 'completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4' ),
- 				'id' => "{$prefix}completion_upload",
- 				'type' => 'checkbox'
- 			),
+				'id' => "{$prefix}completion_upload",
+				'type' => 'checkbox'
+			),
 			array(
 				'name' => 'Test'.go_task_opt_help( 'complete_understand', '', 'http://maclab.guhsd.net/go/video/quests/completionCheckForUnderstanding.mp4' ),
 				'id' => "{$prefix}test_completion_lock",
@@ -330,11 +330,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'complete_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_completion",
- 				'type' => 'go_test_field',
- 				'test_type' => 'c'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'complete_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_completion",
+				'type' => 'go_test_field',
+				'test_type' => 'c'
+			),
 			array(
 				'name' => '3 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'toggle_mastery_stage', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4' ),
 				'id' => "{$prefix}task_mastery",
@@ -350,10 +350,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 4'.go_task_opt_help( 'mastery', '', 'http://maclab.guhsd.net/go/video/quests/stageFour.mp4' ),
 				'id' => "{$prefix}mastery_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-           			'textarea_rows' => '5',
-         		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_four_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageFourSettings.mp4' ),
@@ -416,11 +416,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'mastery_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_mastery",
- 				'type' => 'go_test_field',
- 				'test_type' => 'm'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'mastery_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_mastery",
+				'type' => 'go_test_field',
+				'test_type' => 'm'
+			),
 			array(
 				'name' => '5 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'five_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/fiveStageQuest.mp4' ),
 				'id'   => "{$prefix}task_repeat",
@@ -446,7 +446,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 5'.go_task_opt_help( 'repeat_message', '', 'http://maclab.guhsd.net/go/video/quests/stageFive.mp4' ),
 				'id' => "{$prefix}repeat_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
+				'options' => array(
 					'wpautop' => true,
 					'textarea_rows' => '5',
 				),		
@@ -606,7 +606,7 @@ function go_presets( $field_args ) {
 	}
 	?>
 	<select id="go_presets">
-        <?php
+		<?php
 			$presets = get_option( 'go_presets', false );
 			foreach( $presets['name'] as $key => $name ) {
 				$points = implode( ',', $presets['points'][ $key ] );
@@ -658,12 +658,12 @@ function go_render_start_filter() {
 		$time = $start_info[2];
 	}
 	?>
-    <input name='go_mta_task_start_date_switch' type='checkbox' id='go_start_checkbox' <?php echo ( ! empty( $checked ) ) ? 'checked' : '' ; ?>/>
-    <div id='go_start_info'>
-    	<input name="go_mta_task_start_date" class='go_datepicker' type="date" <?php echo ( ! empty( $date ) ) ? "value='{$date}'" : 'placeholder="Click for Date"'; ?>/> @ (hh:mm AM/PM)
-    	<input type='time' name='go_mta_task_start_time' class='custom_time' <?php echo ( ! empty( $time ) ) ? "value='{$time}'" : 'placeholder="Click for Time" value="00:00"';?> />
-   	</div>
-    <?php
+	<input name='go_mta_task_start_date_switch' type='checkbox' id='go_start_checkbox' <?php echo ( ! empty( $checked ) ) ? 'checked' : '' ; ?>/>
+	<div id='go_start_info'>
+		<input name="go_mta_task_start_date" class='go_datepicker' type="date" <?php echo ( ! empty( $date ) ) ? "value='{$date}'" : 'placeholder="Click for Date"'; ?>/> @ (hh:mm AM/PM)
+		<input type='time' name='go_mta_task_start_time' class='custom_time' <?php echo ( ! empty( $time ) ) ? "value='{$time}'" : 'placeholder="Click for Time" value="00:00"';?> />
+	</div>
+	<?php
 }
 
 add_action( 'cmb_validate_go_start_filter', 'go_validate_start_filter' );
@@ -719,17 +719,17 @@ add_action( 'cmb_render_go_decay_table', 'go_decay_table' );
 function go_decay_table() {
 	?>
 		<table id="go_list_of_decay_dates" stye="margin: 0px; padding: 0px;">
-        	<tbody>
-            <?php
-            $custom = get_post_custom();
-            $date_picker = ( ! empty( $custom['go_mta_date_picker'] ) ? $custom['go_mta_date_picker'] : null );
-            if ( ! empty( $date_picker ) ) {
+			<tbody>
+			<?php
+			$custom = get_post_custom();
+			$date_picker = ( ! empty( $custom['go_mta_date_picker'] ) ? $custom['go_mta_date_picker'] : null );
+			if ( ! empty( $date_picker ) ) {
 				$temp_array = array();
 				$dates = array();
 				$times = array();
 				$percentages = array();
 				
-            	foreach ( $date_picker as $key => $value ) {
+				foreach ( $date_picker as $key => $value ) {
 					$temp_array[ $key ] = unserialize( $value );
 				}
 				
@@ -754,22 +754,22 @@ function go_decay_table() {
 				}
 				foreach ( $dates as $key => $date ) {
 					?>
-                    <tr>
-                        <td><input name="go_mta_task_decay_calendar[<?php echo $key; ?>]" class="go_datepicker custom_date" value="<?php echo $date; ?>" type="date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key; ?>]' class='custom_time' value='<?php echo $times[ $key ]; ?>' /></td>
-                        <td><input name="go_mta_task_decay_percent[<?php echo $key; ?>]" value="<?php echo $percentages[ $key ] ?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
-                    </tr>
-                    <?php
+					<tr>
+						<td><input name="go_mta_task_decay_calendar[<?php echo $key; ?>]" class="go_datepicker custom_date" value="<?php echo $date; ?>" type="date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key; ?>]' class='custom_time' value='<?php echo $times[ $key ]; ?>' /></td>
+						<td><input name="go_mta_task_decay_percent[<?php echo $key; ?>]" value="<?php echo $percentages[ $key ] ?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
+					</tr>
+					<?php
 				}
-            } else {
+			} else {
 			?>
 			<tr>
 				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00' /></td>
 				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
-            <?php 
+			<?php 
 			}
 			?>
-            </tbody>
+			</tbody>
 		</table>
 		<input type="button" id="go_mta_add_task_decay" onclick="go_add_decay_table_row()" value="+"/>
 		<input type="button" id="go_mta_remove_task_decay" onclick="go_remove_decay_table_row()" value="-"/>
@@ -846,7 +846,7 @@ function go_bonus_loot( $field_args ) {
 					'value' => 'on'
 				)
 			)
- 		)
+		)
 	);
 	echo "
 		<div id='go_bonus_loot_wrap'>
@@ -1373,38 +1373,37 @@ function go_repeat_amount() {
 
 add_filter( 'template_include', 'go_tasks_template_function', 1 );
 function go_tasks_template_function( $template_path ) {
-    if ( get_post_type() == 'tasks' ) {
-        if ( is_single() ) {
-            // checks if the file exists in the theme first,
-            // otherwise serve the file from the plugin
+	if ( get_post_type() == 'tasks' ) {
+		if ( is_single() ) {
+			// checks if the file exists in the theme first,
+			// otherwise serve the file from the plugin
 			
 			
 			
-            if ( $theme_file = locate_template( array (  'index.php' ) )
+			if ( $theme_file = locate_template( array (  'index.php' ) )
 		//$theme_file =	get_page_template()
 		 ) {
-                $template_path = $theme_file;
+				$template_path = $theme_file;
 				add_filter( 'the_content', 'go_tasks_filter_content' );
-            } 
-        }
-    }
-    return $template_path;
+			} 
+		}
+	}
+	return $template_path;
 }
 
 function go_tasks_filter_content() {
-	 global $wpdb;
-	 echo do_shortcode( '[go_task id="'.get_the_id().'"]' );
-	 }
+	echo do_shortcode( '[go_task id="'.get_the_id().'"]' );
+}
 	 
 function go_create_help_video_lb() {
 	?>
 	<div class="dark" style="display: none;"> </div>
-    <div class="light" style="display: none; <?php if ( is_admin() ) {?> height: 540px; width: 864px; margin: -270px 0 0 -432px;<?php } else { ?>height: <?php echo ( go_return_options( 'go_video_height' ) ) ?go_return_options( 'go_video_height' ) : '540';?>px; width: <?php echo ( go_return_options( 'go_video_width' ) ) ? go_return_options( 'go_video_width' ) : '864' ;?>px; margin: <?php echo ( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_height' ) / 2) : "-270" )."px 0 0 ".( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_width' ) / 2):"-432" )."px;"; } ?>">
-        <div id="go_help_video_container" style="height: 100%; width: 100%;">
-        	<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video/options>
-        </div>
-    </div>
-    <?php 
+	<div class="light" style="display: none; <?php if ( is_admin() ) {?> height: 540px; width: 864px; margin: -270px 0 0 -432px;<?php } else { ?>height: <?php echo ( go_return_options( 'go_video_height' ) ) ?go_return_options( 'go_video_height' ) : '540';?>px; width: <?php echo ( go_return_options( 'go_video_width' ) ) ? go_return_options( 'go_video_width' ) : '864' ;?>px; margin: <?php echo ( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_height' ) / 2) : "-270" )."px 0 0 ".( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_width' ) / 2):"-432" )."px;"; } ?>">
+		<div id="go_help_video_container" style="height: 100%; width: 100%;">
+			<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video/options>
+		</div>
+	</div>
+	<?php 
 }
 add_action( 'admin_head', 'go_create_help_video_lb' );
 add_action( 'wp_head', 'go_create_help_video_lb' );
@@ -1415,7 +1414,6 @@ function go_task_opt_help( $field, $title, $video_url = null ) {
 
 add_action( 'cmb_render_go_pick_order_of_chain', 'go_pick_order_of_chain' );
 function go_pick_order_of_chain() {
-	global $wpdb;
 	$task_id = get_the_id();
 	if( get_the_terms( $task_id, 'task_chains' ) ) {
 		$chain_terms_array = array_values( get_the_terms( $task_id, 'task_chains' ) );
@@ -1432,14 +1430,14 @@ function go_pick_order_of_chain() {
 		) );
 		
 		?>
-        <ul id="go_task_order_in_chain" class="go_sortable">
+		<ul id="go_task_order_in_chain" class="go_sortable">
 			<?php
-            foreach( $posts_in_chain as $post => $obj ) {
-            	echo "<li class='go_task_in_chain' post_id='{$obj->ID}'>{$obj->post_title}</li>";
-            }
-            ?>
+			foreach( $posts_in_chain as $post => $obj ) {
+				echo "<li class='go_task_in_chain' post_id='{$obj->ID}'>{$obj->post_title}</li>";
+			}
+			?>
 		</ul>
-        <?php
+		<?php
 	}
 }
 
@@ -1485,7 +1483,6 @@ function go_stage_reward( $field_args ) {
 }
 
 function go_update_task_order () {
-	global $wpdb;
 	$order = $_POST['order'];
 	$chain_name = $_POST['chain_name'];
 	$id = $_POST['post_id'];

@@ -65,7 +65,6 @@ function go_table_totals() {
 
 // Updates the rank totals upon activation of plugin.
 function go_ranks_registration() {
-	global $wpdb;
 	$ranks = get_option( 'go_ranks', false );
 	if ( ! $ranks || ! in_array( 'name', array_keys( $ranks ) ) ) {
 		$rank_prefix = get_option( 'go_level_names' );
@@ -96,7 +95,6 @@ function go_ranks_registration() {
 
 // Updates the presets for task creation upon activation of plugin. 
 function go_presets_registration() {
-	global $wpdb;
 	$presets = get_option( 'go_presets' );
 	if ( ! $presets || ! in_array( 'name', array_keys( $presets ) ) ) {
 		$presets = array(

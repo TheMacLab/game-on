@@ -171,6 +171,35 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
  * Important Functions
  */
 
+/**
+ * Appends errors to the configured PHP error log.
+ *
+ * Use this function to easily output Game On errors.
+ *
+ * @since 2.6.2
+ *
+ * @param  string	   $error			The error message.
+ * @param  string	   $func			The name of the function which is calling go_error_log().
+ * @param  string	   $file			The name of the file in which go_error_log() is being called.
+ * @param  boolean	   $trace			Whether or not to output a stack trace.
+ */
+function go_error_log( $error = '', $func = __FUNCTION__, $file = __FILE__, $trace = false ) {
+	if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+		return;
+	}
+
+	if ( '' !== $error ) {
+		$log = "Game On Error: {$error}. " .
+			( ! empty( $func ) ? "from {$func}() " : '' ) .
+			( ! empty( $file ) ? "in {$file}" : 'erring file not provided' );
+		if ( true === $trace ) {
+			$exception = new Exception;
+			$log .= print_r( "\nTrace:\n" . $exception->getTraceAsString(), true );
+		}
+		error_log( $log );
+	}
+}
+
 function go_deactivate_plugin() {
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	$plugin = plugin_basename( __FILE__ );

@@ -2,8 +2,8 @@
 function go_buy_item() { 
 	global $wpdb;
 	$go_table_name = $wpdb->prefix."go";
-	$post_id = $_POST["the_id"];
-	$qty = $_POST['qty'];
+	$post_id = (int) $_POST["the_id"];
+	$qty = (int) $_POST['qty'];
 	$current_purchase_count = $_POST['purchase_count'];
 	
 	if ( isset( $_POST['recipient'] ) && ! empty( $_POST['recipient'] ) && $_POST['recipient'] != '' ) {

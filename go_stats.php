@@ -4,9 +4,7 @@ function go_stats_overlay() {
 	echo '<div id="go_stats_page_black_bg" style="display:none !important;"></div><div id="go_stats_white_overlay" style="display:none;"></div>';
 }
 
-function go_admin_bar_stats() { 
- 	global $wpdb;
-	$table_name_go = $wpdb->prefix . "go";
+function go_admin_bar_stats() {
 	if ( ! empty( $_POST['uid'] ) ) {
 		$current_user = get_userdata( $_POST['uid'] );
 	} else {

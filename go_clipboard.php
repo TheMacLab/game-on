@@ -153,7 +153,6 @@ function go_clipboard_intable() {
 }
 
 function go_clipboard_intable_messages() {
-	global $wpdb;
 	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true );
 	foreach ( $admin_messages as $student_id => $messages ) {
 		$user_data_key = get_userdata( $student_id );
@@ -284,7 +283,6 @@ function go_update_user_focuses() {
 }
 
 function fixmessages() {
-	global $wpdb;
 	$users = get_users(array( 'role' => 'Subscriber' ) );
 	foreach ( $users as $user ) {
 		$messages = get_user_meta( $user->ID, 'go_admin_messages',true );
