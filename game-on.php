@@ -328,4 +328,25 @@ function go_task_timer_headers() {
 		header( 'Pragma: no-cache' );	
 	}
 }
+
+/**
+ * Determines if the string has a boolean value of true (case is ignored).
+ *
+ * This exists because `boolval( 'true' )` equals the boolean value of true, as does
+ * `boolval( 'false' )`. Typecasting a string as a boolean (using `(boolean) $var`) doesn't work
+ * either. That achieves the same undesired effect. This function isn't insanely helpful, but it
+ * does save a few lines.
+ *
+ * @since 2.6.2
+ *
+ * @param  string $str The string to check for a boolean value of true.
+ * @return boolean Returns true if the string is equal to 'true', otherwise it returns false.
+ */
+function go_is_true_str( string $str ) {
+	if ( ! empty( $str ) && 'true' === strtolower( $str ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
 ?>

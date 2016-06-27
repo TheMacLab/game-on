@@ -98,22 +98,31 @@ function go_clipboard_menu() {
 
 function go_clipboard_intable() {
 	global $wpdb;
-	$class_a_choice = $_POST[ 'go_clipboard_class_a_choice' ];
+
+	// do not continue if a class hasn't been selected
+	$class_slug = ( ! empty( $_POST['go_clipboard_class_a_choice'] ) ? sanitize_text_field( $_POST['go_clipboard_class_a_choice'] ) : '' );
+	if ( empty( $class_slug ) ) {
+		die();
+	}
+
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
 	$uid = $wpdb->get_results( "SELECT user_id 
 		FROM {$table_name_user_meta} 
 		WHERE meta_key = '{$wpdb->prefix}capabilities' 
 		AND meta_value NOT LIKE '%administrator%'"
 	);
+
 	foreach ( $uid as $id ) {
-		$class_a = get_user_meta( $id->user_id, 'go_classifications', true );
-		if ( ! empty( $class_a[ $class_a_choice ] ) ) {
-			$user_data_key = get_userdata( $id->user_id ); 
+		$class_array = get_user_meta( $id->user_id, 'go_classifications', true );
+
+		// continue if the user has the selected class in their class list
+		if ( ! empty( $class_array[ $class_slug ] ) ) {
+			$user_data_key = get_userdata( $id->user_id );
 			$user_login = $user_data_key->user_login;
-			$user_display = $user_data_key->display_name;
-			$user_first_name = $user_data_key->user_firstname;
-			$user_last_name =  $user_data_key->user_lastname;
-			$user_url =  $user_data_key->user_url;
+			$user_display_name = $user_data_key->display_name;
+			$user_firstname = $user_data_key->user_firstname;
+			$user_lastname = $user_data_key->user_lastname;
+			$user_website = $user_data_key->user_url;
 			if ( go_return_options( 'go_focus_switch' ) == 'On' ) {
 				$user_focuses = go_display_user_focuses( $id->user_id );
 				$focus_name = get_option( 'go_focus_name' );
@@ -135,9 +144,9 @@ function go_clipboard_intable() {
 			echo "<tr id='user_{$id->user_id}'>
 					<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$id->user_id}'/></td>
 					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$id->user_id}&quot;);'>{$user_login}</a></td>
-					<td>{$class_a[ $class_a_choice]}</td>
-					<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
-					<td>{$user_display}</td>
+					<td>{$class_array[ $class_slug ]}</td>
+					<td><a href='{$user_website}' target='_blank'>{$user_lastname}, {$user_firstname}</a></td>
+					<td>{$user_display_name}</td>
 					<td>{$current_rank}</td>
 					".( (go_return_options( 'go_focus_switch' ) == 'On' ) ? "<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$id->user_id}&quot;, this);'>{$focuses_list}</select</td>" : '' )."
 					<td class='user_points'>{$points}</td>
@@ -153,32 +162,45 @@ function go_clipboard_intable() {
 }
 
 function go_clipboard_intable_messages() {
-	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true );
+
+	// do not continue if a class hasn't been selected
+	$class_slug = ( ! empty( $_POST['go_clipboard_class_a_choice_messages'] ) ? sanitize_text_field( $_POST['go_clipboard_class_a_choice_messages'] ) : '' );
+	if ( empty( $class_slug ) ) {
+		die();
+	}
+
+	// do not continue if no admin messages are registered on the current admin account
+	$admin_messages = get_user_meta( get_current_user_id(), 'go_admin_message_history', true );
+	if ( empty( $admin_messages ) ) {
+		die();
+	}
+
 	foreach ( $admin_messages as $student_id => $messages ) {
+		$class_messages_array = get_user_meta( $student_id, 'go_classifications', true );
+		
 		$user_data_key = get_userdata( $student_id );
-		$class_a_messages = get_user_meta( $student_id, 'go_classifications', true );
-		$class_a_choice_messages = $_POST['go_clipboard_class_a_choice_messages'];
 		$user_login = $user_data_key->user_login;
 		$user_display = $user_data_key->display_name;
 		$user_first_name = $user_data_key->user_firstname;
-		$user_last_name =  $user_data_key->user_lastname;
-		$user_url =  $user_data_key->user_url;
-		$array_count = count( $messages );
-		if ( ! empty( $class_a_messages[ $class_a_choice_messages ] ) ) {
-			for ( $i = $array_count - 1; $i >= 0; $i-- ) {
+		$user_last_name = $user_data_key->user_lastname;
+		$user_url = $user_data_key->user_url;
+		$array_len = count( $messages );
+
+		if ( ! empty( $class_messages_array[ $class_slug ] ) ) {
+			for ( $i = $array_len - 1; $i >= 0; $i-- ) {
 				echo "<tr id='user_{$student_id}'>
 					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
-					<td>{$class_a_messages[$class_a_choice_messages]}</td>
+					<td>{$class_messages_array[ $class_slug ]}</td>
 					<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
 					<td>{$user_display}</td>
 					<td>{$messages[$i]['time']}</td>
 					<td class='message'>{$messages[$i]['message']}</td>
 					</tr>";
 			}
-		}  elseif ( $class_a_choice_messages == 'All' ) {
-			if ( ! empty( $class_a_messages ) ) {
-				foreach ( $class_a_messages as $key => $computer ) {
-					for ( $i = $array_count - 1; $i >= 0; $i-- ) {
+		}  elseif ( $class_slug == 'All' ) {
+			if ( ! empty( $class_messages_array ) ) {
+				foreach ( $class_messages_array as $key => $computer ) {
+					for ( $i = $array_len - 1; $i >= 0; $i-- ) {
 						echo "<tr id='user_{$student_id}'>
 							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
 							<td>{$computer}</td>
@@ -196,83 +218,84 @@ function go_clipboard_intable_messages() {
 }
  
 function go_clipboard_add() {
-	$ids = $_POST['ids'];
-	$points = intval( $_POST['points'] );
-	$currency = intval( $_POST['currency'] );
-	$bonus_currency = intval( $_POST['bonus_currency'] );
-	$penalty = intval( $_POST['penalty'] );
-	$minutes = intval( $_POST['minutes'] );
-	$reason = $_POST['reason'];
-	$badge_id = intval( $_POST['badge_ID'] );
+	$user_id_array = (array) $_POST['ids'];
+	$points = (int) $_POST['points'];
+	$currency = (int) $_POST['currency'];
+	$bonus_currency = (int) $_POST['bonus_currency'];
+	$penalty = (int) $_POST['penalty'];
+	$minutes = (int) $_POST['minutes'];
+	$reason = sanitize_text_field( $_POST['reason'] );
+	$badge_id = (int) $_POST['badge_ID'];
+
 	$status = 6;
 	$bonus_loot_default = null;
 	$undo_default = false;
 	$show_notification = false;
-
 	$output_data = array(
 		"update_status" => false
 	);
 
-	foreach ( $ids as $key => $user_id ) {
-		$user_id = intval( $user_id );
-		if ( '' != $reason ) {
-			if ( ! empty( $badge_id ) ) {
-				if ( $badge_id > 0 ) {
+	foreach ( $user_id_array as $key => $user_id ) {
+		$user_id = (int) $user_id;
 
-					// the badge id is positive, so award it to the user if they don't have it
-					go_award_badge(
-						array(
-							'id' 		=> $badge_id,
-							'repeat' 	=> false,
-							'uid' 		=> $user_id
-						)
-					);
-				} else if ( $badge_id < 0 ) {
+		if ( ! empty( $badge_id ) ) {
+			if ( $badge_id > 0 ) {
 
-					// the badge id is negative, so remove that badge from the user
-					$badge_id *= -1;
-					go_remove_badge( $user_id, $badge_id );
-				}
+				// the badge id is positive, so award it to the user if they don't have it
+				go_award_badge(
+					array(
+						'id' 		=> $badge_id,
+						'repeat' 	=> false,
+						'uid' 		=> $user_id
+					)
+				);
+			} else if ( $badge_id < 0 ) {
+
+				// the badge id is negative, so remove that badge from the user
+				$badge_id *= -1;
+				go_remove_badge( $user_id, $badge_id );
 			}
-			go_update_totals(
-				$user_id,
-				$points,
-				$currency,
-				$bonus_currency,
-				$penalty,
-				$minutes,
-				$status,
-				$bonus_loot_default,
-				$undo_default,
-				$show_notification
-			);
-			go_message_user( $user_id, $reason );
-
-			// returning information to the AJAX call to update the clipboard
-			$new_point_total = go_return_points( $user_id );
-			$new_currency_total = go_return_currency( $user_id );
-			$new_bonus_currency_total = go_return_bonus_currency( $user_id );
-			$new_penalty_total = go_return_penalty( $user_id );
-			$new_minute_total = go_return_minutes( $user_id );
-			$new_badge_count = go_return_badge_count( $user_id );
-
-			$output_data[ 'update_status' ] = true;
-			$output_data[ $user_id ] = array(
-				"points" => $new_point_total,
-				"currency" => $new_currency_total,
-				"bonus_currency" => $new_bonus_currency_total,
-				"penalty" => $new_penalty_total,
-				"minutes" => $new_minute_total,
-				"badge_count" => $new_badge_count
-			);
 		}
+		go_update_totals(
+			$user_id,
+			$points,
+			$currency,
+			$bonus_currency,
+			$penalty,
+			$minutes,
+			$status,
+			$bonus_loot_default,
+			$undo_default,
+			$show_notification
+		);
+		go_message_user( $user_id, $reason );
+
+		// returning information to the AJAX call to update the clipboard
+		$new_point_total = go_return_points( $user_id );
+		$new_currency_total = go_return_currency( $user_id );
+		$new_bonus_currency_total = go_return_bonus_currency( $user_id );
+		$new_penalty_total = go_return_penalty( $user_id );
+		$new_minute_total = go_return_minutes( $user_id );
+		$new_badge_count = go_return_badge_count( $user_id );
+
+		if ( ! $output_data[ 'update_status' ] ) {
+			$output_data[ 'update_status' ] = true;
+		}
+		$output_data[ $user_id ] = array(
+			"points" => $new_point_total,
+			"currency" => $new_currency_total,
+			"bonus_currency" => $new_bonus_currency_total,
+			"penalty" => $new_penalty_total,
+			"minutes" => $new_minute_total,
+			"badge_count" => $new_badge_count
+		);
 	}
 	wp_die( json_encode( $output_data ) );
 }
 
 function go_update_user_focuses() {
-	$new_user_focus = stripslashes( $_POST['new_user_focus'] );
-	$user_id = $_POST['user_id'];
+	$new_user_focus = sanitize_text_field( stripslashes( $_POST['new_user_focus'] ) );
+	$user_id = (int) $_POST['user_id'];
 	if ( $new_user_focus != 'No '.go_return_options( 'go_focus_name' ) ) {
 		update_user_meta( $user_id, 'go_focus', array( $new_user_focus ) );
 	} else {

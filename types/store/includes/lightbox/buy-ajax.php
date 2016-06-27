@@ -2,13 +2,13 @@
 function go_buy_item() { 
 	global $wpdb;
 	$go_table_name = $wpdb->prefix."go";
-	$post_id = (int) $_POST["the_id"];
-	$qty = (int) $_POST['qty'];
-	$current_purchase_count = $_POST['purchase_count'];
-	
-	if ( isset( $_POST['recipient'] ) && ! empty( $_POST['recipient'] ) && $_POST['recipient'] != '' ) {
-		$recipient = $_POST['recipient'];
-		$recipient_id = $wpdb->get_var( "SELECT id FROM {$wpdb->users} WHERE display_name='{$recipient}'" ); 
+	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
+	$qty = ( ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 0 );
+	$current_purchase_count = ( ! empty( $_POST['purchase_count'] ) ? (int) $_POST['purchase_count'] : 0 );
+
+	if ( ! empty( $_POST['recipient'] ) ) {
+		$recipient = sanitize_text_field( $_POST['recipient'] );
+		$recipient_id = $wpdb->get_var( "SELECT id FROM {$wpdb->users} WHERE display_name='{$recipient}'" );
 		$recipient_purchase_count = $wpdb->get_var( "SELECT count FROM {$go_table_name} WHERE post_id={$post_id} AND uid={$recipient_id} LIMIT 1" );
 	}
 	

@@ -39,7 +39,7 @@ function go_list_user_URL() {
 function listurl() {
 	global $wpdb;
 	if ( isset( $_POST['class_a_choice'] ) ) {
-		$class_a_choice = $_POST['class_a_choice'];
+		$class_a_choice = sanitize_text_field( $_POST['class_a_choice'] );
 		$table_name_go_totals= $wpdb->prefix.'go_totals';
 		$uids = $wpdb->get_results( "SELECT uid FROM {$table_name_go_totals}" );
 		foreach( $uids as $uid ) {
@@ -448,7 +448,7 @@ function go_get_category() {
 
 add_shortcode( 'go_get_category', 'go_get_category' );
 function go_get_all_terms() {
-	$taxonomy = $_POST['taxonomy'];
+	$taxonomy = ( ! empty( $_POST['taxonomy'] ) ? sanitize_key( $_POST['taxonomy'] ) : '' );
 	if ( $taxonomy != '' ) {
 		echo "<div id='{$taxonomy}_terms'>";
 	}
@@ -464,8 +464,8 @@ function go_get_all_terms() {
 
 function go_get_all_posts() {
 	//what posts should be returned???
-	$taxonomy = $_POST['taxonomy'];
-	$terms = $_POST['terms'];
+	$taxonomy = ( ! empty( $_POST['taxonomy'] ) ? sanitize_key( $_POST['taxonomy'] ) : '' );
+	$terms = ( ! empty( $_POST['terms'] ) ? (array) $_POST['terms'] : array() );
 	$posts = get_posts(
 		array(
 			'posts_per_page' => -1,

@@ -669,9 +669,9 @@ function go_reset_levels() {
 }
 
 function go_save_levels() {
-	$go_level_names = $_POST['go_level_names'];
-	$go_level_points = $_POST['go_level_points'];
-	$go_level_badges = $_POST['go_level_badges'];
+	$go_level_names = sanitize_text_field( $_POST['go_level_names'] );
+	$go_level_points = sanitize_text_field( $_POST['go_level_points'] );
+	$go_level_badges = sanitize_text_field( $_POST['go_level_badges'] );
 	$ranks = array(
 		'name' => $go_level_names,
 		'points' => $go_level_points,
@@ -715,12 +715,16 @@ function go_fix_levels() {
 }
 
 function go_update_user_sc_data() {
-	$old_class_a_array = $_POST['old_class_a'];
-	$old_class_b_array = $_POST['old_class_b'];
-	$new_class_a_array = $_POST['new_class_a'];
-	$new_class_b_array = $_POST['new_class_b'];
+	$old_class_a_array = (array) $_POST['old_class_a'];
+	$old_class_b_array = (array) $_POST['old_class_b'];
 	
+	$new_class_a_array = (array) $_POST['new_class_a'];
+	$new_class_b_array = (array) $_POST['new_class_b'];
+	
+	// get the new class settings, by comparing the new and old arrays
 	$class_a_diff = array_diff( $old_class_a_array, $new_class_a_array );
+
+	// get the new computer/seating settings, by comparing the new and old arrays
 	$class_b_diff = array_diff( $old_class_b_array, $new_class_b_array );
 	
 	$users = get_users();
@@ -743,7 +747,7 @@ function go_update_user_sc_data() {
 
 function go_focus_save() {
 	global $wpdb;
-	$array = array_values( array_filter( $_POST['focus_array'] ) );
+	$array = array_values( array_filter( (array) $_POST['focus_array'] ) );
 	$terms = $wpdb->get_results( "SELECT * FROM $wpdb->terms", ARRAY_A );
 	$term_names = array();
 	
@@ -823,9 +827,10 @@ function go_presets_reset() {
 }
 
 function go_presets_save() {
-	$preset_name = $_POST['go_preset_name'];
-	$preset_points = $_POST['go_preset_points'];
-	$preset_currency = $_POST['go_preset_currency'];
+	$preset_name = (array) $_POST['go_preset_name'];
+	$preset_points = (array) $_POST['go_preset_points'];
+	$preset_currency = (array) $_POST['go_preset_currency'];
+	
 	$preset_array = array(
 		'name' => $preset_name,
 		'points' => $preset_points,
@@ -845,7 +850,7 @@ function go_reset_data() {
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
 	$reset_data = (array) $_POST['reset_data'];
-	$reset_all = $_POST['reset_all'];
+	$reset_all = (boolean) $_POST['reset_all'];
 	$users = get_users( 'orderby=ID' );
 	$ranks = get_option( 'go_ranks' );
 	if ( in_array( 'points', $reset_data ) ) {
@@ -1027,8 +1032,11 @@ function go_save_extra_profile_fields( $user_id ) {
 	if ( isset( $_POST['class_a_user'] ) ) {
 		foreach ( $_POST['class_a_user'] as $key => $value ) {
 			if ( $value != 'go_remove' ) {
+				if ( ! isset( $_POST['class_b_user'] ) || ! isset( $_POST['class_b_user'][ $key ] ) ) {
+					return;
+				}
 				$class_a = $value;
-				$class_b = $_POST['class_b_user'][ $key ];
+				$class_b = sanitize_text_field( $_POST['class_b_user'][ $key ] );
 				$class[ $class_a ] = $class_b;
 			}
 		}
