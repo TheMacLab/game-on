@@ -509,7 +509,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						floor( ( $update_percent * $bonus_currency_array[0] ) ),
 						null,
 						$page_id,
-						null,
+						false,
 						0,
 						0,
 						0,
@@ -1602,7 +1602,7 @@ function test_point_update() {
 			floor( $update_percent * $target_points ),
 			floor( $update_percent * $target_currency ),
 			floor( $update_percent * $target_bonus_currency ),
-			null, $page_id, null, null,
+			null, $page_id, false, null,
 			$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 			$e_passed, $a_passed, $c_passed, $m_passed
 		);
@@ -2059,7 +2059,7 @@ function task_change_stage() {
 	}
 	
 	// if the button pressed IS the repeat button...
-	if ( $repeat_button == 'on' ) {
+	if ( $repeat_button ) {
 		if ( $undo ) {
 			if ( $task_count > 0 ) {
 				go_add_post(
@@ -2524,7 +2524,7 @@ function task_change_stage() {
 										go_add_post(
 											$user_id, $store_item, -1,
 											$points, $currency, $bonus_currency, $minutes,
-											null, 'off', 0,
+											null, false, 0,
 											$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 											$e_passed, $a_passed, $c_passed, $m_passed, null, false,
 											$loot_reason, true, false

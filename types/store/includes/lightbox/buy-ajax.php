@@ -65,7 +65,7 @@ function go_buy_item() {
 		}
 	}
 
-	$repeat = 'off';
+	$repeat = false;
 	
 	$cur_currency = go_return_currency( $user_id );
 	$cur_points = go_return_points( $user_id );

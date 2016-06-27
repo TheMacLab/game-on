@@ -402,7 +402,7 @@ function go_stats_move_stage() {
 				floor( -$rewards['points'][ $current_status] * $update_percent ), 
 				floor( -$rewards['currency'][ $current_status] * $update_percent ), 
 				floor( -$rewards['bonus_currency'][ $current_status] * $update_percent ), 
-				null, $page_id, 'on', -1
+				null, $page_id, true, -1
 			);
 			
 			$changed['points'] += floor( -$rewards['points'][ $current_status] * $update_percent );
@@ -419,7 +419,7 @@ function go_stats_move_stage() {
 					floor( -$rewards['points'][ $current_status] * $update_percent ), 
 					floor( -$rewards['currency'][ $current_status] * $update_percent ), 
 					floor( -$rewards['bonus_currency'][ $current_status] * $update_percent ), 
-					null, $page_id, null, null
+					null, $page_id, false, null
 				);
 				
 				$changed['points'] += floor( -$rewards['points'][ $current_status] * $update_percent );
@@ -435,7 +435,7 @@ function go_stats_move_stage() {
 						floor( $rewards['points'][ $current_status - 1 ] * $update_percent ), 
 						floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ), 
 						floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ), 
-						null, $page_id, 'on', 1
+						null, $page_id, true, 1
 					);
 					
 					$changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );
@@ -448,7 +448,7 @@ function go_stats_move_stage() {
 						floor( $rewards['points'][ $current_status - 1 ] * $update_percent ), 
 						floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ), 
 						floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ), 
-						null, $page_id, null, null
+						null, $page_id, false, null
 					);
 					
 					$changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );

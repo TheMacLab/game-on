@@ -52,7 +52,7 @@ function go_add_currency( $user_id, $reason, $status, $raw_points, $raw_currency
 // Adds currency and points for reasons that are post tied.
 function go_add_post(
 		$user_id, $post_id, $status, $points, $currency, $bonus_currency = null,
-		$minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null,
+		$minutes = null, $page_id, $repeat = false, $count = null, $e_fail_count = null, $a_fail_count = null,
 		$c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null,
 		$url = null, $update_time = false, $reason = null, $bonus_loot = false, $notify = true
 	) {
@@ -74,7 +74,7 @@ function go_add_post(
 			$reason = 'Gifted';
 			$gifted = true;
 		}
-	   	if ( $repeat != 'on' || empty( $old_points ) ) {
+	   	if ( ! $repeat || empty( $old_points ) ) {
 			$wpdb->insert(
 				$table_name_go, 
 				array(
@@ -128,7 +128,7 @@ function go_add_post(
 		} else {
 			$url_array = serialize( array( $status => $url ) );
 		}
-		if ( $repeat === 'on' ) {
+		if ( $repeat ) {
 			$wpdb->update(
 				$table_name_go,
 				array(
