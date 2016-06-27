@@ -207,6 +207,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		}
 		
 		$start_filter_info = ( ! empty( $custom_fields['go_mta_start_filter'][0] ) ? unserialize( $custom_fields['go_mta_start_filter'][0] ) : null );
+		$time_string = '';
 		if ( ! empty( $start_filter_info ) ) {
 			$start_filter = $start_filter_info[0];
 			if ( ! empty ( $start_filter ) ) { 
@@ -303,7 +304,9 @@ function go_task_shortcode( $atts, $content = null ) {
 							   ( ( ! empty( $minutes) ) ? "{$minutes} minute".( ( $minutes > 1) ? 's' : '' ).( ( ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
 							   ( ( ! empty( $seconds) ) ? "{$seconds} second".( ( $seconds > 1) ? 's' : '' ) : '' );
 			}
-			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to ".strtolower(  go_return_options( 'go_third_stage_button' ) )." the {$task_name} or the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
+			if ( ! empty( $time_string ) ) {
+				echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to ".strtolower(  go_return_options( 'go_third_stage_button' ) )." the {$task_name} or the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
+			}
 		} else {
 			$future_update_percent = 1;
 		}
@@ -458,23 +461,27 @@ function go_task_shortcode( $atts, $content = null ) {
 			}
 			
 			foreach ( $post_ids_in_chain as $post_id_in_chain ) {
-				if ( $post_id_in_chain == $id ) {
-					break;	
+				
+				// loop will stop when the current post's id is found
+				if ( (int) $post_id_in_chain === (int) $id ) {
+					break;
 				}
 				
 				$post_custom_in_chain = get_post_custom( $post_id_in_chain );
 				$post_mastery_active_in_chain = ( ! empty( $post_custom_in_chain['go_mta_task_mastery'][0] ) ? ! $post_custom_in_chain['go_mta_task_mastery'][0] : true );
 				// $post_number_of_stages_in_chain will later be designated by an admin option that will be toggleable per task chain.
 				if ( $post_mastery_active_in_chain ) {
-					$post_number_of_stages_in_chain = 3;
+					$post_number_of_stages_in_chain = 4;
 				} else {
 					$post_number_of_stages_in_chain = 3;
 				}
+
+				$is_task_data_available = ( isset( $post_status_in_chain[ $post_id_in_chain ] )                        ? true : false );
+				$task_status            = ( $is_task_data_available                                                    ? $post_status_in_chain[ $post_id_in_chain ] : 0 );
+				$is_task_finished       = ( $is_task_data_available && $task_status >= $post_number_of_stages_in_chain ? true : false );
 				
 				// Check if current post in loop has been completed/mastered, depending on the number of stages in the task that needs to be completed
-				if ( isset( $post_status_in_chain[ $post_id_in_chain ] ) &&
-						$post_status_in_chain[ $post_id_in_chain ] < $post_number_of_stages_in_chain ) {
-					
+				if ( ! $is_task_finished && ! current_user_can( 'manage_options' ) ) {
 					$previous_task = '<a href="'.get_permalink( $post_id_in_chain ).'">'.get_the_title( $post_id_in_chain ).'</a>';
 					echo "You must finish {$previous_task} to do this {$task_name}";
 					return false;	
@@ -646,13 +653,6 @@ function go_task_shortcode( $atts, $content = null ) {
 							}
 							echo '>'.go_return_options( 'go_fourth_stage_button' ).'</button> 
 							<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-							
-							if ( ! empty( $next_post_in_chain ) && ! $last_in_chain ) {
-								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
-							} elseif ( ! empty( $final_chain_message ) ) {
-								echo '<div class="go_chain_message">'.$final_chain_message.'</div>';
-							}
-							echo "</div>" . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 						} else {
 							if ( $test_c_active ) {
 								echo "<p id='go_test_error_msg' style='color: red;'></p>";
@@ -1764,7 +1764,7 @@ function task_change_stage() {
 	$last_in_chain = $_POST['last_in_chain']; // Boolean which determines if the current quest is last in chain
 	$final_chain_message = $_POST['final_chain_message'];
 	$number_of_stages = $_POST['number_of_stages']; // Integer with number of stages in the task
-	
+
 	$go_table_name = "{$wpdb->prefix}go";
 	$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = $post_id AND uid = $user_id" );
 	
@@ -2342,12 +2342,6 @@ function task_change_stage() {
 				}
 				echo '>'.go_return_options( 'go_fourth_stage_button' ).'</button> 
 				<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-				if ( $next_post_id_in_chain != 0 && $last_in_chain !== 'true' ) {
-					echo '<div class="go_chain_message">Next '.strtolower( go_return_options( 'go_tasks_name' ) ).' in '.$chain_name.': <a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a></div>';
-				} else {
-					echo '<div class="go_chain_message">'.$final_chain_message.'</div>';	
-				}
-				echo "</div>" . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 			} else {
 				if ( $test_c_active ) {
 					echo "<p id='go_test_error_msg' style='color: red;'></p>";
