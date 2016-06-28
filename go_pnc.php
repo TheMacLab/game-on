@@ -270,7 +270,7 @@ function go_add_minutes( $user_id, $minutes, $reason, $status = 6 ) {
 }
 
 function go_notify( $type, $points = '', $currency = '', $bonus_currency = '', $penalty = '', $minutes = '', $user_id = null, $display = null, $bonus_loot = false, $undo = false ) {
-	if ( $user_id != get_current_user_id() ) {
+	if ( $user_id !== get_current_user_id() ) {
 		return false;	
 	} else {
 		if ( $points < 0 || $currency < 0 || $bonus_currency < 0 || $minutes < 0 || $undo == true ) {
@@ -372,6 +372,10 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 	$table_name_go_totals = "{$wpdb->prefix}go_totals";
 	$user_bonuses = go_return_bonus_currency( $user_id );
 	$user_penalties = go_return_penalty( $user_id );
+	if ( $user_id !== get_current_user_id() ) {
+		$notify = false;
+	}
+
 	if ( $status !== -1 ) {
 		$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties );
 		$points = $modded_array[0];
@@ -393,9 +397,9 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 
 		go_update_ranks( $user_id, $new_point_total, true );
 		$total_string = (string) $new_point_total;
-		go_update_admin_bar( 'points', go_return_options( 'go_points_name' ), $total_string, $status );
 		if ( true === $notify ) {
 			go_notify( 'points', $points, 0, 0, 0, 0, $user_id, null, $bonus_loot );
+			go_update_admin_bar( 'points', go_return_options( 'go_points_name' ), $total_string, $status );
 		}
 	}
 	if ( $currency != 0 ) {
@@ -409,9 +413,9 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 				'uid' => $user_id
 			) 
 		);
-		go_update_admin_bar( 'currency', go_return_options( 'go_currency_name' ), ( $currency + $total_currency ) );
 		if ( true === $notify ) {
 			go_notify( 'currency', 0, $currency, 0, 0, 0, $user_id, null, $bonus_loot );
+			go_update_admin_bar( 'currency', go_return_options( 'go_currency_name' ), ( $currency + $total_currency ) );
 		}
 	}
 	if ( $bonus_currency != 0 ) {
@@ -425,9 +429,9 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 				'uid' => $user_id
 			) 
 		);
-		go_update_admin_bar( 'bonus_currency', go_return_options( 'go_bonus_currency_name' ), $total_bonus_currency + $bonus_currency );
 		if ( true === $notify ) {
 			go_notify( 'bonus_currency', 0, 0, $bonus_currency, 0, 0, $user_id, null, $bonus_loot );
+			go_update_admin_bar( 'bonus_currency', go_return_options( 'go_bonus_currency_name' ), $total_bonus_currency + $bonus_currency );
 		}
 	}
 	if ( $penalty != 0 ) {
@@ -441,9 +445,9 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 				'uid' => $user_id
 			) 
 		);
-		go_update_admin_bar( 'penalty', go_return_options( 'go_penalty_name' ), $total_penalty + $penalty );
 		if ( true === $notify ) {
 			go_notify( 'penalty', 0, 0, 0, $penalty, 0, $user_id, null, $bonus_loot );
+			go_update_admin_bar( 'penalty', go_return_options( 'go_penalty_name' ), $total_penalty + $penalty );
 		}
 	}
 	if ( $minutes != 0 ) {
@@ -456,12 +460,12 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 				'uid' => $user_id
 			) 
 		);
-		go_update_admin_bar( 'minutes', go_return_options( 'go_minutes_name' ), $total_minutes + $minutes );
 		if ( true === $notify ) {
 			go_notify( 'minutes', 0, 0, 0, 0, $minutes, $user_id, null, $bonus_loot );
+			go_update_admin_bar( 'minutes', go_return_options( 'go_minutes_name' ), $total_minutes + $minutes );
 		}
 	}
-	if ( true === $bonus_loot ) {
+	if ( true === $bonus_loot && true === $notify ) {
 		go_notify( 'custom', 0, 0, 0, 0, 0, $user_id, 'Bonus Loot', $bonus_loot, $undo );
 	}
 }
