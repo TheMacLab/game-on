@@ -561,23 +561,23 @@ if ( is_admin() ) {
 				go_options_input(go_return_options( 'go_penalty_name' ), 'checkbox', 'go_penalty_switch', 'http://maclab.guhsd.net/go/video/options/penalty2.mp4', 'Enable penalty mechanism to reduce rewards' );
 				go_options_input(go_return_options( 'go_penalty_name' ).' Threshold', 'text', 'go_penalty_threshold', 'http://maclab.guhsd.net/go/video/options/penaltyThreshold.mp4', 'Number of penalty points required to reduce rewards' );
 				go_options_input( 'Multiplier %', 'text', 'go_multiplier_percentage', 'http://maclab.guhsd.net/go/video/options/multiplierPercentage.mp4', 'Percentage of rewards awarded or deducted at each threshold' );
-				go_options_input( 'Data Reset', 'checkbox', 'go_data_reset_switch', 'http://maclab.guhsd.net/go/video/options/dataReset.mp4', 'Clear all user data for specific categories DANGER!' );
+				go_options_input( '<span class="go_error_red">Data Reset</span>', 'checkbox', 'go_data_reset_switch', 'http://maclab.guhsd.net/go/video/options/dataReset.mp4', 'DANGER! Clears all user data for the specified categories. Includes ' . ucfirst( get_option( 'go_tasks_plural_name', 'Quests' ) ) . '.' );
 				go_options_input(go_return_options( 'go_points_name' ), 'checkbox', 'go_data_reset_points', '', null, false, 'points' );
 				go_options_input(go_return_options( 'go_currency_name' ), 'checkbox', 'go_data_reset_currency', '', null, false, 'currency' );
 				go_options_input(go_return_options( 'go_bonus_currency_name' ), 'checkbox', 'go_data_reset_bonus_currency', '', null, false, 'bonus_currency' );
 				go_options_input(go_return_options( 'go_penalty_name' ), 'checkbox', 'go_data_reset_penalty', '', null, false, 'penalty' );
 				go_options_input(go_return_options( 'go_minutes_name' ), 'checkbox', 'go_data_reset_minutes', '', null, false, 'minutes' );
 				go_options_input(go_return_options( 'go_badges_name' ), 'checkbox', 'go_data_reset_badges', '', null, false, 'badges' );
-				go_options_input( 'All', 'checkbox', 'go_data_reset_all', '', null, false );
+				go_options_input( 'All', 'checkbox', 'go_data_reset_all', 'http://maclab.guhsd.net/go/video/options/dataReset.mp4', 'Includes ' . ucfirst( get_option( 'go_tasks_plural_name', 'Quests' ) ) . ' AND Store Items.' );
 				?>
 				<div class='go_options'>
 					<div class='go_options_field_title_wrap'>
-						<span class='go_options_field_title'>
+						<span class='go_options_field_title go_error_red'>
 							Reset
 							<?php
 							go_options_help(
 								'http://maclab.guhsd.net/go/video/options/dataReset2.mp4',
-								'Clear all user data for specific categories DANGER!'
+								'DANGER! Clears all user data for the specified categories. Includes ' . ucfirst( get_option( 'go_tasks_plural_name', 'Quests' ) ) . '.'
 							);
 							?>
 						</span>
@@ -868,6 +868,18 @@ function go_reset_data() {
 		}
 	}
 
+	// removes all task timestamps
+	$get_users_args = array(
+		'meta_key' => 'go_task_timestamps',
+		'fields'   => 'ID',
+	);
+	$users_with_timestamps = get_users( $get_users_args );
+
+	// for every user that has timestamps stored in their meta data, delete the timestamps
+	foreach ( $users_with_timestamps as $user_id ) {
+		delete_user_meta( $user_id, $get_users_args['meta_key'] );
+	}
+
 	// the check for $reset_data equaling 6 will have to be changed if more data reset options are added
 	if ( $reset_all === 'true' && count( $reset_data ) === 6 ) {
 		$wpdb->query( "TRUNCATE TABLE {$go_table_name}" );
@@ -877,9 +889,9 @@ function go_reset_data() {
 			$badge_count_loc = array_search( 'badge_count', $reset_data_go );
 			unset( $reset_data_go[ $badge_count_loc ] );
 		}
-		$erase_list = ( ( ( ! empty( $reset_data_go) && count( $reset_data_go) > 1) ) ? implode( ' IS NOT NULL AND ', $reset_data_go) : $reset_data_go[0] );
+		$erase_list = ( ( ( ! empty( $reset_data_go ) && count( $reset_data_go ) > 1 ) ) ? implode( ' IS NOT NULL AND ', $reset_data_go ) : $reset_data_go[0] );
 		if ( ! empty( $erase_list) ) {
-			$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".( ( in_array( 'points', $reset_data) && ! in_array( 'currency', $reset_data) ) ? 'AND status != -1' : ( ( in_array( 'currency', $reset_data) && ! in_array( 'points', $reset_data) )  ? 'AND status = -1': '' ) );
+			$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".( ( in_array( 'points', $reset_data) && ! in_array( 'currency', $reset_data) ) ? 'AND status != -1' : ( ( in_array( 'currency', $reset_data ) && ! in_array( 'points', $reset_data) )  ? 'AND status = -1': '' ) );
 			$wpdb->query( $query );
 		}
 	}
