@@ -250,7 +250,7 @@ input.go_store_cost_input::-webkit-input-placeholder,
 input.go_store_filter_input::-webkit-input-placeholder,
 input#go_store_item_url_input::-webkit-input-placeholder,
 input#go_store_badge_id_input::-webkit-input-placeholder,
-input.go_store_exchange_input::-webkit-input-placeholder {
+input.go_store_gift_input::-webkit-input-placeholder {
 	padding-top: 2px;
 }
 
@@ -259,7 +259,7 @@ input.go_store_cost_input,
 input.go_store_filter_input,
 input#go_store_item_url_input,
 input#go_store_badge_id_input,
-input.go_store_exchange_input {
+input.go_store_gift_input {
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
@@ -276,7 +276,7 @@ input#go_store_item_url_input {
 	width: 50%;
 }
 
-input.go_store_exchange_input[type="text"] {
+input.go_store_gift_input[type="text"] {
 	display: none;
 	width: 21.7%;
 }

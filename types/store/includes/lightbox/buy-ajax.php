@@ -6,10 +6,10 @@ function go_buy_item() {
 	$qty = $_POST['qty'];
 	$current_purchase_count = $_POST['purchase_count'];
 	
-	if ( isset( $_POST['recipient'] ) && ! empty( $_POST['recipient'] ) && $_POST['recipient'] != '' ) {
-		$recipient = $_POST['recipient'];
-		$recipient_id = $wpdb->get_var( "SELECT id FROM {$wpdb->users} WHERE display_name='{$recipient}'" ); 
-		$recipient_purchase_count = $wpdb->get_var( "SELECT count FROM {$go_table_name} WHERE post_id={$post_id} AND uid={$recipient_id} LIMIT 1" );
+	if ( ! empty( $_POST['recipient'] ) ) {
+		$recipient = sanitize_text_field( $_POST['recipient'] );
+		$recipient_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$wpdb->users}` WHERE display_name=%s", $recipient ), 0, 0 );
+		$recipient_purchase_count = $wpdb->get_var( $wpdb->prepare( "SELECT count FROM `{$go_table_name}` WHERE post_id=%d AND uid=%d LIMIT 1", $post_id, $recipient_id ), 0, 0 );
 	}
 	
 	$user_id = get_current_user_id(); 
@@ -43,14 +43,15 @@ function go_buy_item() {
 		}
 	}
 	
-	$store_exchange = ( ! empty( $custom_fields['go_mta_store_exchange'][0] ) ? unserialize( $custom_fields['go_mta_store_exchange'][0] ) : null );
-	if ( ! empty( $store_exchange ) ) {
-		$is_exchangeable = (bool) $store_exchange[0];
-		if ( $is_exchangeable ) {
-			$exchange_currency = $store_exchange[1];
-			$exchange_points = $store_exchange[2];
-			$exchange_bonus_currency = $store_exchange[3];
-			$exchange_minutes = $store_exchange[4];
+	$store_gift = ( ! empty( $custom_fields['go_mta_store_gift'][0] ) ? unserialize( $custom_fields['go_mta_store_gift'][0] ) : null );
+	$is_giftable = false;
+	if ( ! empty( $store_gift ) ) {
+		$is_giftable = (bool) $store_gift[0];
+		if ( $is_giftable ) {
+			$gift_currency = $store_gift[1];
+			$gift_points = $store_gift[2];
+			$gift_bonus_currency = $store_gift[3];
+			$gift_minutes = $store_gift[4];
 		}
 	}
 	$item_url = ( ! empty( $custom_fields['go_mta_store_item_url'][0] ) ? $custom_fields['go_mta_store_item_url'][0] : null );
@@ -99,9 +100,9 @@ function go_buy_item() {
 		if ( ! empty( $recipient_id ) ) {
 			$curr_user_obj = get_userdata( $user_id );
 			go_message_user( $recipient_id, $curr_user_obj->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title( $post_id )."</a> for you." );
-			if ( $exchange_currency || $exchange_points || $exchange_bonus_currency || $exchange_minutes ) {
-				go_add_post( $recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, $exchange_minutes, null, $repeat );
-				go_add_bonus_currency( $recipient_id, $exchange_bonus_currency, $curr_user_obj->display_name." purchase of {$qty} ".get_the_title( $post_id )."." );
+			if ( $gift_currency || $gift_points || $gift_bonus_currency || $gift_minutes ) {
+				go_add_post( $recipient_id, $post_id, -1, $gift_points, $gift_currency, $gift_bonus_currency, $gift_minutes, null, $repeat );
+				go_add_bonus_currency( $recipient_id, $gift_bonus_currency, $curr_user_obj->display_name." purchase of {$qty} ".get_the_title( $post_id )."." );
 			} else {
 				go_add_post( $recipient_id, $post_id, -1,  0,  0, 0, null, $repeat );
 			}

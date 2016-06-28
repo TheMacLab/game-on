@@ -170,8 +170,7 @@ function go_post_grabber_content_exerpt_shortcode() {
 //Gets the user's display name
 function go_get_displayname_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
-		global $current_user;
-		get_currentuserinfo();
+		$current_user = wp_get_current_user();
 		return "<span id='go-displayname'>{$current_user->display_name}</span>";
 	} else { 
 		return '<span id="go-visitor">Visitor</span>'; 
@@ -184,8 +183,7 @@ add_shortcode( 'go_get_displayname', 'go_get_displayname_function' );
 //Gets the users first name
 function go_get_firstname_function( $atts, $content = null ) {
 	if (is_user_logged_in() ) {
-		global $current_user;
-		get_currentuserinfo();
+		$current_user = wp_get_current_user();
 	    return "<span id='go-firstname'>{$current_user->user_firstname}</span>";
 	} else { 
 		return '<span id="go-visitor">Visitor</span>'; 
@@ -197,8 +195,7 @@ add_shortcode( 'go_firstname', 'go_get_firstname_function' );
 //Gets the users last name
 function go_get_lastname_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
-		global $current_user;
-		get_currentuserinfo();
+		$current_user = wp_get_current_user();
 	    return "<span id='go-lastname'>{$current_user->user_lastname}</span>";
 	} else { 
 		return '<span id="go-visitor">Visitor</span>'; 
@@ -210,8 +207,7 @@ add_shortcode( 'go_lastname', 'go_get_lastname_function' );
 //Gets the users login
 function go_get_login_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
-		global $current_user;
-	    get_currentuserinfo();
+	    $current_user = wp_get_current_user();
 	    return "<span id='go-username'>{$current_user->user_login}</span>";
 	} else { 
 		return '<span id="go-visitor">Visitor</span>'; 

@@ -56,7 +56,11 @@ function go_the_lb_ajax() {
 	$user_penalties = go_return_penalty( $user_id );
 	$user_minutes = go_return_minutes( $user_id );
 	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
-	$is_giftable = ( ! empty( $custom_fields['go_mta_store_giftable'][0] ) ? true : false );
+	$store_gift = ( ! empty( $custom_fields['go_mta_store_gift'][0] ) ? unserialize( $custom_fields['go_mta_store_gift'][0] ) : null );
+	$is_giftable = false;
+	if ( ! empty( $store_gift ) ) {
+		$is_giftable = (bool) $store_gift[0];
+	}
 	$is_unpurchasable = ( ! empty( $custom_fields['go_mta_store_unpurchasable'][0] ) ? $custom_fields['go_mta_store_unpurchasable'][0] : '' );
 
 	echo "<h2>{$the_title}</h2>";

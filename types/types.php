@@ -552,9 +552,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_store_filter'
 			),
 			array(
-				'name' => 'Exchange'.go_task_opt_help( 'exchange', 'Make item exchangeable between students', 'http://maclab.guhsd.net/go/video/store/exchange.mp4' ),
-				'id' => "{$prefix}store_exchange",
-				'type' => 'go_store_exchange'
+				'name' => 'Gift'.go_task_opt_help( 'item_gift', 'Allow an item to be bought for another student', 'http://maclab.guhsd.net/go/video/store/exchange.mp4' ),
+				'id' => "{$prefix}store_gift",
+				'type' => 'go_store_gift'
 			),
 			array(
 				'name' => 'URL'.go_task_opt_help( 'item_url', 'Have URL appear upon purchase', 'http://maclab.guhsd.net/go/video/store/itemURL.mp4' ),
@@ -580,11 +580,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Send Receipt'.go_task_opt_help( 'store_receipt', 'Send email to admin upon purchase', 'http://maclab.guhsd.net/go/video/store/receipt.mp4' ),
 				'id' => "{$prefix}store_receipt",
 				'type' => 'go_store_receipt'
-			),
-			array(
-				'name' => 'Giftable'.go_task_opt_help( 'giftable', 'Allow students to purchase item for other students', 'http://maclab.guhsd.net/go/video/store/giftable.mp4' ),
-				'id' => "{$prefix}store_giftable",
-				'type' => 'checkbox'
 			),
 		),
 	);
@@ -876,12 +871,14 @@ function go_validate_bonus_loot() {
 	$is_checked = ( ! empty( $_POST['go_mta_mastery_bonus_loot'] ) ? $_POST['go_mta_mastery_bonus_loot'] : false );
 	$selected_loot = ( ! empty( $_POST['go_task_bonus_loot_select'] ) ? $_POST['go_task_bonus_loot_select'] : null );
 	$loot_rarity = ( ! empty( $_POST['go_bonus_loot_rarity'] ) ? $_POST['go_bonus_loot_rarity'] : null );
-	$range_values_str = ( ! empty( $_POST['go_bonus_loot_rarity_range'] ) ? $_POST['go_bonus_loot_rarity_range'] : null );
-	$range_values_array = explode( ',', $range_values_str );
-	$range_min = $range_values_array[0];
-	$range_max = $range_values_array[1];
+	$range_values_str = ( ! empty( $_POST['go_bonus_loot_rarity_range'] ) ? $_POST['go_bonus_loot_rarity_range'] : '' );
+	$range_values_array = ( ! empty( $range_values_str ) ? explode( ',', $range_values_str ) : array() );
+	if ( ! empty( $range_values_array ) ) {
+		$range_min = $range_values_array[0];
+		$range_max = $range_values_array[1];
+	}
 	$rarity_array = array();
-	if ( ! empty( $loot_rarity ) ) {
+	if ( ! empty( $loot_rarity ) && isset( $range_min ) && isset( $range_max ) ) {
 		foreach ( $loot_rarity as $item_id => $perc ) {
 
 			// test the rarity value against the desired float pattern
@@ -1982,35 +1979,35 @@ function go_badge_id() {
 	echo "<input id='go_store_badge_id_input' name='go_mta_badge_id' type='text' placeholder='Badge ID' ".( ( ! empty( $id ) ) ? "value='{$id}'" : '' )."/>";
 }
 
-add_action( 'cmb_render_go_store_exchange', 'go_store_exchange' );
-function go_store_exchange() {
+add_action( 'cmb_render_go_store_gift', 'go_store_gift' );
+function go_store_gift() {
 	$custom = get_post_custom();
-	$content_array = ( ! empty( $custom['go_mta_store_exchange'][0] ) ? unserialize( $custom['go_mta_store_exchange'][0] ) : null );
-	$is_checked = ( ! empty( $content_array ) ? $content_array[0] : null );
-	if ( empty( $is_checked ) ) {
-		$is_checked = "false";
-	}
-	$c_exchange = $content_array[1];
-	$p_exchange = $content_array[2];
-	$b_exchange = $content_array[3];
-	$t_exchange = $content_array[4];
+	$content_array = ( ! empty( $custom['go_mta_store_gift'][0] ) ? unserialize( $custom['go_mta_store_gift'][0] ) : null );
+	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
+	
+	$c_gift = $content_array[1];
+	$p_gift = $content_array[2];
+	$b_gift = $content_array[3];
+	$t_gift = $content_array[4];
+
 	echo "
-		<input id='go_store_exchange_checkbox' name='go_mta_store_exchange' type='checkbox' ".( ( $is_checked == 'true' ) ? "checked" : "" )."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_currency' type='text' placeholder='".go_return_options( 'go_currency_name' )."' ".( ( ! empty( $c_exchange ) ) ? "value='{$c_exchange}'" : '' )."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_points' type='text' placeholder='".go_return_options( 'go_points_name' )."' ".( ( ! empty( $p_exchange ) ) ? "value='{$p_exchange}'" : '' )."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_bonus_currency' type='text' placeholder='".go_return_options( 'go_bonus_currency_name' )."' ".( ( ! empty( $b_exchange ) ) ? "value='{$b_exchange}'" : '' )."/>
-		<input class='go_store_exchange_input' name='go_store_exchange_time' type='text' placeholder='".go_return_options( 'go_minutes_name' )."' ".( ( ! empty( $t_exchange ) ) ? "value='{$t_exchange}'" : '' )."/>
+		<input id='go_store_gift_checkbox' name='go_mta_store_gift' type='checkbox' {$is_checked}/>
+		<input class='go_store_gift_input' name='go_store_gift_currency' type='text' placeholder='".go_return_options( 'go_currency_name' )."' ".( ( ! empty( $c_gift ) ) ? "value='{$c_gift}'" : '' )."/>
+		<input class='go_store_gift_input' name='go_store_gift_points' type='text' placeholder='".go_return_options( 'go_points_name' )."' ".( ( ! empty( $p_gift ) ) ? "value='{$p_gift}'" : '' )."/>
+		<input class='go_store_gift_input' name='go_store_gift_bonus_currency' type='text' placeholder='".go_return_options( 'go_bonus_currency_name' )."' ".( ( ! empty( $b_gift ) ) ? "value='{$b_gift}'" : '' )."/>
+		<input class='go_store_gift_input' name='go_store_gift_time' type='text' placeholder='".go_return_options( 'go_minutes_name' )."' ".( ( ! empty( $t_gift ) ) ? "value='{$t_gift}'" : '' )."/>
 	";
 }
 
-add_action( 'cmb_validate_go_store_exchange', 'go_validate_store_exchange' );
-function go_validate_store_exchange() {
-	$is_checked = ( ! empty( $_POST['go_mta_store_exchange'] ) ? 'true' : 'false' );
-	$c_exchange = ( ! empty( $_POST['go_store_exchange_currency'] ) ? $_POST['go_store_exchange_currency'] : null );
-	$p_exchange = ( ! empty( $_POST['go_store_exchange_points'] ) ? $_POST['go_store_exchange_points'] : null );
-	$b_exchange = ( ! empty( $_POST['go_store_exchange_bonus_currency'] ) ? $_POST['go_store_exchange_bonus_currency'] : null );
-	$t_exchange = ( ! empty( $_POST['go_store_exchange_time'] ) ? $_POST['go_store_exchange_time'] : null );
-	return ( array( $is_checked, $c_exchange, $p_exchange, $b_exchange, $t_exchange ) );
+add_action( 'cmb_validate_go_store_gift', 'go_validate_store_gift' );
+function go_validate_store_gift() {
+	$is_checked = ( ! empty( $_POST['go_mta_store_gift'] ) ? true : false );
+	$c_gift = ( ! empty( $_POST['go_store_gift_currency'] ) ? $_POST['go_store_gift_currency'] : null );
+	$p_gift = ( ! empty( $_POST['go_store_gift_points'] ) ? $_POST['go_store_gift_points'] : null );
+	$b_gift = ( ! empty( $_POST['go_store_gift_bonus_currency'] ) ? $_POST['go_store_gift_bonus_currency'] : null );
+	$t_gift = ( ! empty( $_POST['go_store_gift_time'] ) ? $_POST['go_store_gift_time'] : null );
+
+	return ( array( $is_checked, $c_gift, $p_gift, $b_gift, $t_gift ) );
 }
 
 add_action( 'cmb_render_go_badge_input', 'go_badge_input', 10, 1);
