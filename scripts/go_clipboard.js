@@ -91,12 +91,11 @@ function go_clipboard_add() {
 		var add_penalty = parseFloat( check_null( jQuery( '#go_clipboard_penalty' ).val() ) );
 		var add_minutes = parseFloat( check_null( jQuery( '#go_clipboard_minutes' ).val() ) );
 		var badge_id = parseFloat( check_null( jQuery( '#go_clipboard_badge' ).val() ) );
-		var reason;
-		if ( jQuery( '#go_clipboard_reason' ).val() != '' ) {
-			reason = jQuery( '#go_clipboard_reason' ).val();	
-		} else {
+		var reason = jQuery( '#go_clipboard_reason' ).val();
+		if ( '' === reason ) {
 			reason = jQuery( '#go_clipboard_reason' ).attr( 'placeholder' );
 		}
+
 		jQuery.ajax({
 			type: "post",
 			url: MyAjax.ajaxurl,
@@ -117,7 +116,7 @@ function go_clipboard_add() {
 				var res_obj = JSON.parse( json_data );
 				var succeeded = res_obj.update_status;
 
-				if ( jQuery( '#go_clipboard_reason' ).val() != '' && succeeded ) {
+				if ( succeeded ) {
 					for ( index in id_array ) {
 						var current_id = id_array[ index ];
 						var user_points = res_obj[ current_id ].points;
