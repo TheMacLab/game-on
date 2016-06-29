@@ -16,7 +16,15 @@ function go_task_shortcode( $atts, $content = null ) {
 	// the current user's id
 	$user_id = get_current_user_id();
 	$page_id = get_the_ID();
-	if ( $id && ! empty( $user_id ) ) { // If the shortcode has an attribute called id, run this code
+
+	// If the shortcode has an attribute called id, run this code
+	if ( $id && ! empty( $user_id ) ) {
+		$task_shortcode_nonces = array(
+			'go_task_abandon' => wp_create_nonce( 'go_task_abandon_' . $id . '_' . $user_id ),
+			'go_unlock_stage' => wp_create_nonce( 'go_unlock_stage_' . $id . '_' . $user_id ),
+			'go_test_point_update' => wp_create_nonce( 'go_test_point_update_' . $id . '_' . $user_id ),
+			'go_task_change_stage' => wp_create_nonce( 'go_task_change_stage_' . $id . '_' . $user_id ),
+		);
 		$task_pods = get_option( 'go_task_pod_globals' );
 		$pods_array = wp_get_post_terms( get_the_id(), 'task_pods' );
 		if ( ! empty( $pods_array ) ) {
@@ -875,14 +883,17 @@ function go_task_shortcode( $atts, $content = null ) {
 			jQuery.ajax({
 				type: "POST",
 				data: {
+					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_task_abandon']; ?>',
 					action: "go_task_abandon",
 					user_id: <?php echo $user_id; ?>,
 					post_id: <?php echo $id; ?>,
 					encounter_points: <?php echo floor( $points_array[0] * $update_percent ); ?>,
 					encounter_currency: <?php echo floor( $currency_array[0] * $update_percent ); ?>,
 					encounter_bonus: <?php echo floor( $bonus_currency_array[0] * $update_percent ); ?>
-				}, success: function() {
-					window.location = "<?php echo home_url(); ?>";
+				}, success: function( res ) {
+					if ( -1 !== res ) {
+						window.location = "<?php echo home_url(); ?>";
+					}
 				}
 			});
 		}
@@ -1160,8 +1171,10 @@ function go_task_shortcode( $atts, $content = null ) {
 			jQuery.ajax({
 				type: "POST",
 				data:{
-					action: 'unlock_stage',
-					task: <?php echo $id; ?>,
+					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_unlock_stage']; ?>',
+					action: 'go_unlock_stage',
+					task_id: <?php echo $id; ?>,
+					user_id: <?php echo $user_id; ?>,
 					list_size: list_size,
 					chosen_answer: choice,
 					type: type,
@@ -1187,10 +1200,11 @@ function go_task_shortcode( $atts, $content = null ) {
 						var test_c_returns = "<?php echo ( ! empty( $test_c_returns ) ? $test_c_returns : ''); ?>";
 						var test_m_returns = "<?php echo ( ! empty( $test_m_returns ) ? $test_m_returns : ''); ?>";
 						if ( ( status == 0 && test_e_returns == 'on' ) ||
-							( status == 1 && test_a_returns == 'on' ) ||
-							( status == 2 && test_c_returns == 'on' ) || 
-							( status == 3 && test_m_returns == 'on' ) ) {
-							test_point_update();
+								( status == 1 && test_a_returns == 'on' ) ||
+								( status == 2 && test_c_returns == 'on' ) || 
+								( status == 3 && test_m_returns == 'on' ) ) {
+								
+							go_test_point_update();
 						}
 					} else {
 						if ( typeof response === 'string' && list_size > 1 ) {
@@ -1225,7 +1239,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			});
 		}
 		
-		function test_point_update() {
+		function go_test_point_update() {
 			var is_repeating = jQuery( '#go_button' ).attr( 'repeat' );
 			if (is_repeating !== 'on' ) {
 				var status = jQuery( '#go_button' ).attr( 'status' ) - 2;
@@ -1235,7 +1249,8 @@ function go_task_shortcode( $atts, $content = null ) {
 			jQuery.ajax({
 				type: "POST",
 				data: {
-					action: "test_point_update",
+					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_test_point_update']; ?>',
+					action: "go_test_point_update",
 					points: "<?php echo $points_str; ?>",
 					currency: "<?php echo $currency_str; ?>",
 					bonus_currency: "<?php echo $bonus_currency_str; ?>",
@@ -1246,10 +1261,13 @@ function go_task_shortcode( $atts, $content = null ) {
 					update_percent: <?php echo $date_update_percent; ?>
 				},
 				success: function( response ) {
-					// the three following lines are required for the go_notification to work
-					var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
-					jQuery( '#go_content' ).append( response );
-					jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
+					if ( -1 !== response ) {
+
+						// the three following lines are required for the go_notification to work
+						var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
+						jQuery( '#go_content' ).append( response );
+						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
+					}
 				}
 			});
 		}
@@ -1352,14 +1370,15 @@ function go_task_shortcode( $atts, $content = null ) {
 				repeat_attr = true;
 			}
 			
-			// send the following data to the function 'task_change_stage' and use the POST method to do so...
+			// send the following data to the 'wp_ajax_go_task_change_stage' action and use the POST method to do so...
 			// when it succeeds update the content of the page: update the admin bar; set the css display attribute to none for
 			// div#new_content; then slowly display div#new_content; if the button#go_button 'status' attribute is equal to 2
 			// and remove the first child element of div#new_content.
 			jQuery.ajax({
 				type: "POST",
-				data: { 
-					action: 'task_change_stage', 
+				data: {
+					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_task_change_stage']; ?>',
+					action: 'go_task_change_stage',
 					post_id: <?php echo $id; ?>, 
 					user_id: <?php echo $user_id; ?>,
 					admin_name: '<?php echo $admin_name; ?>',
@@ -1380,8 +1399,8 @@ function go_task_shortcode( $atts, $content = null ) {
 					final_chain_message: '<?php echo ( ! empty( $final_chain_message ) ? $final_chain_message :  ''); ?>',
 					number_of_stages: <?php echo $number_of_stages; ?>
 				},
-				success: function( html ) {
-					if ( html === '0' ) {
+				success: function( res ) {
+					if ( '0' === res || -1 === res ) {
 						jQuery( '#go_stage_error_msg' ).show();
 						var error = "Retrieve the password from <?php echo $admin_name; ?>.";
 						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
@@ -1390,7 +1409,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
 					} else {
-						jQuery( '#go_content' ).html( html );
+						jQuery( '#go_content' ).html( res );
 						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
 						jQuery( "#new_content" ).css( "display', 'none" );
 						jQuery( "#new_content" ).show( 'slow' );
@@ -1505,11 +1524,14 @@ function go_get_test_meta_content( $custom_fields, $stage ) {
 	}
 }
 
-function test_point_update() {
-	$status             = ( ! empty( $_POST['status'] )         ? (int) $_POST['status'] : 0 );
-	$page_id            = ( ! empty( $_POST['page_id'] )        ? (int) $_POST['page_id'] : 0 );
+function go_test_point_update() {
 	$post_id            = ( ! empty( $_POST['post_id'] )        ? (int) $_POST['post_id'] : 0 );
 	$user_id            = ( ! empty( $_POST['user_id'] )        ? (int) $_POST['user_id'] : 0 );
+
+	check_ajax_referer( 'go_test_point_update_' . $post_id . '_' . $user_id );
+
+	$status             = ( ! empty( $_POST['status'] )         ? (int) $_POST['status'] : 0 );
+	$page_id            = ( ! empty( $_POST['page_id'] )        ? (int) $_POST['page_id'] : 0 );
 	$points_str         = ( ! empty( $_POST['points'] )         ? sanitize_text_field( $_POST['points'] ) : '' );
 	$currency_str       = ( ! empty( $_POST['currency'] )       ? sanitize_text_field( $_POST['currency'] ) : '' );
 	$bonus_currency_str = ( ! empty( $_POST['bonus_currency'] ) ? sanitize_text_field( $_POST['bonus_currency'] ) : '' );
@@ -1623,8 +1645,12 @@ function go_inc_test_fail_count( $s_name, $test_fail_max = null ) {
 	}
 }
 
-function unlock_stage() {
-	$id         = ( ! empty( $_POST['task'] ) ? (int) $_POST['task'] : 0 );
+function go_unlock_stage() {
+	$task_id = ( ! empty( $_POST['task_id'] ) ? (int) $_POST['task_id'] : 0 );
+	$user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 );
+
+	check_ajax_referer( 'go_unlock_stage_' . $task_id . '_' . $user_id );
+
 	$status     = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 );
 	$test_size  = ( ! empty( $_POST['list_size'] ) ? (int) $_POST['list_size'] : 0 );
 	$points_str = ( ! empty( $_POST['points'] ) ? sanitize_text_field( $_POST['points'] ) : '' );
@@ -1643,7 +1669,7 @@ function unlock_stage() {
 		}
 	}
 	
-	$custom_fields = get_post_custom( $id );
+	$custom_fields = get_post_custom( $task_id );
 
 	switch ( $status ) {
 		case ( 0 ):
@@ -1772,11 +1798,14 @@ function unlock_stage() {
 	die();
 }
 
-function task_change_stage() {
+function go_task_change_stage() {
 	global $wpdb;
 
-	$post_id                = ( ! empty( $_POST['post_id'] )                ? (int) $_POST['post_id'] : 0 ); // Post id posted from ajax function
-	$user_id                = ( ! empty( $_POST['user_id'] )                ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
+	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 ); // Post id posted from ajax function
+	$user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
+
+	check_ajax_referer( 'go_task_change_stage_' . $post_id . '_' . $user_id );
+
 	$status                 = ( ! empty( $_POST['status'] )                 ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
 	$page_id                = ( ! empty( $_POST['page_id'] )                ? (int) $_POST['page_id'] : 0 ); // Page id posted from ajax function
 	$admin_name             = ( ! empty( $_POST['admin_name'] )             ? (string) $_POST['admin_name'] : '' );

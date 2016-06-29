@@ -3,7 +3,6 @@
 // Lightbox for BACK END Game On Store Inserts
 // The Author: Vincent Astolfi (http://nueue.net/)
 ////////////////////////////////////////
-include( 'cat-item-ajax.php' );
 
 function go_store_head() { // Run this function that inserts things into the head
 	global $post_type; // Bring the post type into global scope

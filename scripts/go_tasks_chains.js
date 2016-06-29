@@ -21,6 +21,7 @@ function go_prepare_sortable_list () {
 		var task_id = GO_TASK_DATA.task_id;
 		var in_chain = GO_TASK_DATA.task_chains.in_chain;
 		var chain_name = GO_TASK_DATA.task_chains.chain_name;
+		var nonce = GO_TASK_DATA.nonces.go_update_task_order;
 	
 		if ( null !== task_id && in_chain ) {
 			var order = [];
@@ -33,10 +34,12 @@ function go_prepare_sortable_list () {
 				stop: function( event, ui ) {
 					jQuery( ui.item ).removeClass( 'go_sortable_item' );
 					order = go_chain_get_task_ids();
+
 					jQuery.ajax({
 						url: MyAjax.ajaxurl,
 						type: 'POST',
 						data: {
+							_ajax_nonce: nonce,
 							action: 'go_update_task_order',
 							order: order,
 							chain_name: chain_name,

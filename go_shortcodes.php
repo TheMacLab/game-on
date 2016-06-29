@@ -2,6 +2,7 @@
 
 function go_list_user_URL() {
 	$class_names = get_option( 'go_class_a' );
+	$nonce = wp_create_nonce( 'go_list_user_url_' . get_current_user_id() );
 ?>
 	<select id="go_period_list_user_url">
 		<option value="select_option">Select an option</option>
@@ -20,14 +21,17 @@ function go_list_user_URL() {
 			url: go_ajaxurl,
 			type: "POST",
 			data:{
+				_ajax_nonce: '<?php echo $nonce; ?>',
 				action: 'listurl',
 				class_a_choice: period_val
 			},
-			success: function( data ) {
-				jQuery( '#go_list_user_url' ).append( data );
-				period.change( function() {
-					jQuery( '#go_list_user_url' ).html( '' );
-				});
+			success: function( res ) {
+				if ( -1 !== res ) {
+					jQuery( '#go_list_user_url' ).append( res );
+					period.change( function() {
+						jQuery( '#go_list_user_url' ).html( '' );
+					});
+				}
 			}
 		});
 	});
@@ -39,19 +43,22 @@ function go_list_user_URL() {
 function listurl() {
 	global $wpdb;
 	if ( isset( $_POST['class_a_choice'] ) ) {
+		check_ajax_referer( 'go_list_user_url_' . get_current_user_id() );
+
 		$class_a_choice = sanitize_text_field( $_POST['class_a_choice'] );
-		$table_name_go_totals= $wpdb->prefix.'go_totals';
-		$uids = $wpdb->get_results( "SELECT uid FROM {$table_name_go_totals}" );
-		foreach( $uids as $uid ) {
-			foreach( $uid as $id ) {
-				$user = get_user_by( 'id', $id );
-				$user_class = get_user_meta( $id, 'go_classifications', true );
-				if ( $user_class) {
-					$class = array_keys( $user_class );
-					$check = in_array( $class_a_choice, $class );
-					if ( $check ) {
-						$user_url = $user->user_url;
-						$user_username = $user->display_name;
+		$table_name_go_totals = $wpdb->prefix.'go_totals';
+		$go_user_id_array = $wpdb->get_results( "SELECT uid FROM {$table_name_go_totals}" );
+		foreach ( $go_user_id_array as $user_id_obj ) {
+			$user_id = $user_id_obj->uid;
+			$user_class = get_user_meta( $user_id, 'go_classifications', true );
+			if ( ! empty( $user_class ) ) {
+				$class = array_keys( $user_class );
+				$user_in_class = in_array( $class_a_choice, $class );
+				if ( $user_in_class ) {
+					$user = get_user_by( 'id', $user_id );
+					$user_url = $user->user_url;
+					if ( ! empty( $user->user_url ) ) {
+						$user_username = $user->user_name;
 						$user_complete_url = "<a class='go_user_url' href='{$user_url}' target='_blank' >{$user_username}</a><br/>";
 						echo $user_complete_url;
 					}
@@ -59,7 +66,7 @@ function listurl() {
 			}
 		}
 	}
-	die();
+	die( -1 );
 }
 add_shortcode( 'go_list_URL', 'go_list_user_URL' );
 
@@ -387,6 +394,9 @@ add_shortcode ( 'go_login', 'go_login' );
 
 function go_get_category() {
 	$terms = get_taxonomies();
+	$post_id = get_the_ID();
+	$nonce_terms = wp_create_nonce( 'go_get_all_terms_' . $post_id );
+	$nonce_posts = wp_create_nonce( 'go_get_all_posts_' . $post_id );
 	?>
     <script type="text/javascript">
 		var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
@@ -402,12 +412,13 @@ function go_get_category() {
 				type:"POST", 
 				url: go_ajaxurl, 
 				data: {
+					_ajax_nonce: '<?php echo $nonce_terms; ?>',
+					action: 'go_get_all_terms',
 					taxonomy: val,
-					action: 'go_get_all_terms'
 				}, 
-				success: function( data ) {
-					if ( data ) {
-						el.parent().after( data );
+				success: function( res ) {
+					if ( -1 !== res ) {
+						el.parent().after( res );
 					}
 				}
 			});
@@ -425,12 +436,15 @@ function go_get_category() {
 				type: "POST",
 				url: go_ajaxurl,
 				data:{
+					_ajax_nonce: '<?php echo $nonce_posts; ?>',
+					action: 'go_get_all_posts',
 					taxonomy: taxonomy,
 					terms: terms,
-					action: 'go_get_all_posts'
 				},
-				success: function( data ) {
-					jQuery( '#' + taxonomy + '_terms' ).after( data );
+				success: function( res ) {
+					if ( -1 !== res ) {
+						jQuery( '#' + taxonomy + '_terms' ).after( res );
+					}
 				}
 			});
 		}
@@ -448,6 +462,8 @@ function go_get_category() {
 
 add_shortcode( 'go_get_category', 'go_get_category' );
 function go_get_all_terms() {
+	check_ajax_referer( 'go_get_all_terms_' . get_the_ID() );
+
 	$taxonomy = ( ! empty( $_POST['taxonomy'] ) ? sanitize_key( $_POST['taxonomy'] ) : '' );
 	if ( $taxonomy != '' ) {
 		echo "<div id='{$taxonomy}_terms'>";
@@ -463,7 +479,8 @@ function go_get_all_terms() {
 }
 
 function go_get_all_posts() {
-	//what posts should be returned???
+	check_ajax_referer( 'go_get_all_posts_' . get_the_ID() );
+
 	$taxonomy = ( ! empty( $_POST['taxonomy'] ) ? sanitize_key( $_POST['taxonomy'] ) : '' );
 	$terms = ( ! empty( $_POST['terms'] ) ? (array) $_POST['terms'] : array() );
 	$posts = get_posts(

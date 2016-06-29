@@ -373,6 +373,7 @@ function go_frontend_lightbox_html() {
 			url: url_action,
 			type: "POST",
 			data: {
+				_ajax_nonce: '<?php echo wp_create_nonce( 'go_search_for_user' ); ?>',
 				action: 'go_search_for_user',
 				user: user
 			},
@@ -419,10 +420,18 @@ function go_search_for_user() {
 function go_get_purchase_count() {
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
-	$the_id = (int) $_POST["the_item_id"];
+	$the_id = ( ! empty( $_POST['item_id'] ) ? (int) $_POST['item_id'] : 0 );
+
+	if ( empty( $the_id ) ) {
+		die( '0' );
+	}
+
 	$user_id = get_current_user_id();
-	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
-	if ( $purchase_count == NULL ) { 
+	check_ajax_referer( 'go_get_purchase_count_' . $user_id );
+	
+	$purchase_count = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM `{$table_name_go}` WHERE post_id=%d AND uid=%d LIMIT 1", $the_id, $user_id ) );
+	
+	if ( empty( $purchase_count ) ) {
 		echo '0';
 	} else{
 		echo $purchase_count;

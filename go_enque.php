@@ -35,7 +35,7 @@ function go_register_admin_scripts_and_styles () {
 
 	// Tasks
 	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/go_tasks_admin.js', array( 'jquery' ), false, true );
-	wp_register_script( 'go_tasks_chains', plugin_dir_url( __FILE__ ).'scripts/go_tasks_chains.js', array( 'jquery' ), false, true );
+	wp_register_script( 'go_tasks_chains', plugin_dir_url( __FILE__ ).'scripts/go_tasks_chains.js', array( 'jquery', 'go_tasks' ), false, true );
 	wp_register_script( 'go_presets', plugin_dir_url( __FILE__ ).'scripts/go_presets.js', array( 'jquery' ), false, true );
 	wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/jquery.ptTimeSelect.js', array( 'jquery' ) );
 
@@ -77,6 +77,7 @@ function go_register_admin_scripts_and_styles () {
 
 function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	global $post;
+	$user_id = get_current_user_id();
 
 	/*
 	 * Common Scripts
@@ -126,7 +127,6 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 			 * Task Scripts
 			 */
 
-			wp_enqueue_script( 'go_tasks' );
 			wp_enqueue_script( 'go_tasks_chains' );
 			wp_enqueue_script( 'go_presets' );
 			wp_enqueue_script( 'ptTimeSelectJS' );
@@ -164,6 +164,23 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 
 		// Localization
 
+		wp_localize_script(
+			'go_options',
+			'GO_OPTION_DATA',
+			array(
+				'nonces' => array(
+					'go_presets_reset'       => wp_create_nonce( 'go_presets_reset_' . $user_id ),
+					'go_presets_save'        => wp_create_nonce( 'go_presets_save_' . $user_id ),
+					'go_reset_levels'        => wp_create_nonce( 'go_reset_levels_' . $user_id ),
+					'go_save_levels'         => wp_create_nonce( 'go_save_levels_' . $user_id ),
+					'go_fix_levels'          => wp_create_nonce( 'go_fix_levels_' . $user_id ),
+					'go_reset_data'          => wp_create_nonce( 'go_reset_data_' . $user_id ),
+					'go_update_user_sc_data' => wp_create_nonce( 'go_update_user_sc_data_' . $user_id ),
+					'go_focus_save'          => wp_create_nonce( 'go_focus_save_' . $user_id ),
+				),
+			)
+		);
+
 		/*
 		 * Options Page Styles
 		 */
@@ -199,7 +216,21 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 		wp_enqueue_script( 'go_jquery_clipboard_tablesorter' );
 		
 		// Localization
+
 		wp_localize_script( 'go_jquery_clipboard', 'Minutes_limit', array( 'limit' => go_return_options( 'go_minutes_color_limit' ) ) );
+		wp_localize_script(
+			'go_jquery_clipboard',
+			'GO_CLIPBOARD_DATA',
+			array(
+				'nonces' => array(
+					'go_clipboard_intable'          => wp_create_nonce( 'go_clipboard_intable_' . $user_id ),
+					'go_clipboard_intable_messages' => wp_create_nonce( 'go_clipboard_intable_messages_' . $user_id ),
+					'go_update_user_focuses'        => wp_create_nonce( 'go_update_user_focuses_' . $user_id ),
+					'go_clipboard_add'              => wp_create_nonce( 'go_clipboard_add_' . $user_id ),
+					'go_fix_messages'               => wp_create_nonce( 'go_fix_messages_' . $user_id ),
+				),
+			)
+		);
 
 		/*
 		 * Clipboard Styles
@@ -274,8 +305,41 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_script( 'cat_the_item' );
 
 	// Localization
+	$user_id = get_current_user_id();
+
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	wp_localize_script( 'go_every_page', 'PluginDir', array( 'url' => plugin_dir_url( __FILE__ ) ) );
+	wp_localize_script(
+		'go_every_page',
+		'GO_EVERY_PAGE_DATA',
+		array(
+			'nonces' => array(
+				'go_deactivate_plugin'         => wp_create_nonce( 'go_deactivate_plugin_' . $user_id ),
+				'go_admin_bar_add'             => wp_create_nonce( 'go_admin_bar_add_' . $user_id ),
+				'go_admin_bar_stats'           => wp_create_nonce( 'go_admin_bar_stats_' . $user_id ),
+				'go_stats_task_list'           => wp_create_nonce( 'go_stats_task_list_' . $user_id ),
+				'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' . $user_id ),
+				'go_stats_item_list'           => wp_create_nonce( 'go_stats_item_list_' . $user_id ),
+				'go_stats_rewards_list'        => wp_create_nonce( 'go_stats_rewards_list_' . $user_id ),
+				'go_stats_minutes_list'        => wp_create_nonce( 'go_stats_minutes_list_' . $user_id ),
+				'go_stats_penalties_list'      => wp_create_nonce( 'go_stats_penalties_list_' . $user_id ),
+				'go_stats_badges_list'         => wp_create_nonce( 'go_stats_badges_list_' . $user_id ),
+				'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' . $user_id ),
+				'go_stats_leaderboard'         => wp_create_nonce( 'go_stats_leaderboard_' . $user_id ),
+				'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
+			)
+		)
+	);
+	wp_localize_script(
+		'buy_the_item',
+		'GO_BUY_ITEM_DATA',
+		array(
+			'nonces' => array(
+				'go_buy_item'           => wp_create_nonce( 'go_buy_item_' . $user_id ),
+				'go_get_purchase_count' => wp_create_nonce( 'go_get_purchase_count_' . $user_id ),
+			)
+		)
+	);
 
 	/*
 	 * Common Styles

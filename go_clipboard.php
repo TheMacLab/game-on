@@ -39,7 +39,7 @@ function go_clipboard_menu() {
 					<div>
 						<textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><br/>
 						<button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button>
-						<button id="go_fix_messages" onclick="fixmessages()">Fix Messages</button>
+						<button id="go_fix_messages" onclick="go_fix_messages()">Fix Messages</button>
 					</div>
 				
 					<table id="go_clipboard_table" class="pretty">
@@ -98,6 +98,7 @@ function go_clipboard_menu() {
 
 function go_clipboard_intable() {
 	global $wpdb;
+	check_ajax_referer( 'go_clipboard_intable_' . get_current_user_id() );
 
 	// do not continue if a class hasn't been selected
 	$class_slug = ( ! empty( $_POST['go_clipboard_class_a_choice'] ) ? sanitize_text_field( $_POST['go_clipboard_class_a_choice'] ) : '' );
@@ -162,6 +163,7 @@ function go_clipboard_intable() {
 }
 
 function go_clipboard_intable_messages() {
+	check_ajax_referer( 'go_clipboard_intable_messages_' . get_current_user_id() );
 
 	// do not continue if a class hasn't been selected
 	$class_slug = ( ! empty( $_POST['go_clipboard_class_a_choice_messages'] ) ? sanitize_text_field( $_POST['go_clipboard_class_a_choice_messages'] ) : '' );
@@ -218,14 +220,13 @@ function go_clipboard_intable_messages() {
 }
  
 function go_clipboard_add() {
-	$user_id_array = (array) $_POST['ids'];
-	$points = (int) $_POST['points'];
-	$currency = (int) $_POST['currency'];
-	$bonus_currency = (int) $_POST['bonus_currency'];
-	$penalty = (int) $_POST['penalty'];
-	$minutes = (int) $_POST['minutes'];
-	$reason = sanitize_text_field( $_POST['reason'] );
-	$badge_id = (int) $_POST['badge_ID'];
+
+	// the third param in the `check_ajax_referer()` call prevents the function from dying with 
+	// a "-1" response
+	$referer_passed = false;
+	if ( check_ajax_referer( 'go_clipboard_add_' . get_current_user_id(), false, false ) ) {
+		$referer_passed = true;
+	}
 
 	$status = 6;
 	$bonus_loot_default = null;
@@ -235,65 +236,78 @@ function go_clipboard_add() {
 		"update_status" => false
 	);
 
-	foreach ( $user_id_array as $key => $user_id ) {
-		$user_id = (int) $user_id;
-
-		if ( ! empty( $badge_id ) ) {
-			if ( $badge_id > 0 ) {
-
-				// the badge id is positive, so award it to the user if they don't have it
-				go_award_badge(
-					array(
-						'id' 		=> $badge_id,
-						'repeat' 	=> false,
-						'uid' 		=> $user_id
-					)
-				);
-			} else if ( $badge_id < 0 ) {
-
-				// the badge id is negative, so remove that badge from the user
-				$badge_id *= -1;
-				go_remove_badge( $user_id, $badge_id );
+	if ( $referer_passed ) {
+		$user_id_array = (array) $_POST['ids'];
+		$points = (int) $_POST['points'];
+		$currency = (int) $_POST['currency'];
+		$bonus_currency = (int) $_POST['bonus_currency'];
+		$penalty = (int) $_POST['penalty'];
+		$minutes = (int) $_POST['minutes'];
+		$reason = sanitize_text_field( $_POST['reason'] );
+		$badge_id = (int) $_POST['badge_ID'];
+	
+		foreach ( $user_id_array as $key => $user_id ) {
+			$user_id = (int) $user_id;
+	
+			if ( ! empty( $badge_id ) ) {
+				if ( $badge_id > 0 ) {
+	
+					// the badge id is positive, so award it to the user if they don't have it
+					go_award_badge(
+						array(
+							'id' 		=> $badge_id,
+							'repeat' 	=> false,
+							'uid' 		=> $user_id
+						)
+					);
+				} else if ( $badge_id < 0 ) {
+	
+					// the badge id is negative, so remove that badge from the user
+					$badge_id *= -1;
+					go_remove_badge( $user_id, $badge_id );
+				}
 			}
+			go_update_totals(
+				$user_id,
+				$points,
+				$currency,
+				$bonus_currency,
+				$penalty,
+				$minutes,
+				$status,
+				$bonus_loot_default,
+				$undo_default,
+				$show_notification
+			);
+			go_message_user( $user_id, $reason );
+	
+			// returning information to the AJAX call to update the clipboard
+			$new_point_total = go_return_points( $user_id );
+			$new_currency_total = go_return_currency( $user_id );
+			$new_bonus_currency_total = go_return_bonus_currency( $user_id );
+			$new_penalty_total = go_return_penalty( $user_id );
+			$new_minute_total = go_return_minutes( $user_id );
+			$new_badge_count = go_return_badge_count( $user_id );
+	
+			if ( ! $output_data[ 'update_status' ] ) {
+				$output_data[ 'update_status' ] = true;
+			}
+			$output_data[ $user_id ] = array(
+				"points" => $new_point_total,
+				"currency" => $new_currency_total,
+				"bonus_currency" => $new_bonus_currency_total,
+				"penalty" => $new_penalty_total,
+				"minutes" => $new_minute_total,
+				"badge_count" => $new_badge_count
+			);
 		}
-		go_update_totals(
-			$user_id,
-			$points,
-			$currency,
-			$bonus_currency,
-			$penalty,
-			$minutes,
-			$status,
-			$bonus_loot_default,
-			$undo_default,
-			$show_notification
-		);
-		go_message_user( $user_id, $reason );
-
-		// returning information to the AJAX call to update the clipboard
-		$new_point_total = go_return_points( $user_id );
-		$new_currency_total = go_return_currency( $user_id );
-		$new_bonus_currency_total = go_return_bonus_currency( $user_id );
-		$new_penalty_total = go_return_penalty( $user_id );
-		$new_minute_total = go_return_minutes( $user_id );
-		$new_badge_count = go_return_badge_count( $user_id );
-
-		if ( ! $output_data[ 'update_status' ] ) {
-			$output_data[ 'update_status' ] = true;
-		}
-		$output_data[ $user_id ] = array(
-			"points" => $new_point_total,
-			"currency" => $new_currency_total,
-			"bonus_currency" => $new_bonus_currency_total,
-			"penalty" => $new_penalty_total,
-			"minutes" => $new_minute_total,
-			"badge_count" => $new_badge_count
-		);
 	}
 	wp_die( json_encode( $output_data ) );
 }
 
 function go_update_user_focuses() {
+	check_ajax_referer( 'go_update_user_focuses_' . get_current_user_id() );
+
 	$new_user_focus = sanitize_text_field( stripslashes( $_POST['new_user_focus'] ) );
 	$user_id = (int) $_POST['user_id'];
 	if ( $new_user_focus != 'No '.go_return_options( 'go_focus_name' ) ) {
@@ -305,7 +319,9 @@ function go_update_user_focuses() {
 	die();	
 }
 
-function fixmessages() {
+function go_fix_messages() {
+	check_ajax_referer( 'go_fix_messages_' . get_current_user_id() );
+
 	$users = get_users(array( 'role' => 'Subscriber' ) );
 	foreach ( $users as $user ) {
 		$messages = get_user_meta( $user->ID, 'go_admin_messages',true );

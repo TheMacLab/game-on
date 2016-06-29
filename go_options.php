@@ -635,6 +635,8 @@ function add_game_on_options() {
 }
 
 function go_reset_levels() {
+	check_ajax_referer( 'go_reset_levels_' . get_current_user_id() );
+
 	$rank_prefix = get_option( 'go_level_names' );
 	if ( empty( $rank_prefix ) ) {
 		$rank_prefix = 'Level';
@@ -669,6 +671,8 @@ function go_reset_levels() {
 }
 
 function go_save_levels() {
+	check_ajax_referer( 'go_save_levels_' . get_current_user_id() );
+
 	$go_level_names = sanitize_text_field( $_POST['go_level_names'] );
 	$go_level_points = sanitize_text_field( $_POST['go_level_points'] );
 	$go_level_badges = sanitize_text_field( $_POST['go_level_badges'] );
@@ -684,6 +688,8 @@ function go_save_levels() {
 function go_fix_levels() {
 	global $default_role;
 	global $wpdb;
+	check_ajax_referer( 'go_fix_levels_' . get_current_user_id() );
+
 	$role = get_option( 'go_role', $default_role );
 	$ranks = get_option( 'go_ranks' );
 	$uids = $wpdb->get_results( "
@@ -715,6 +721,8 @@ function go_fix_levels() {
 }
 
 function go_update_user_sc_data() {
+	check_ajax_referer( 'go_update_user_sc_data_' . get_current_user_id() );
+
 	$old_class_a_array = (array) $_POST['old_class_a'];
 	$old_class_b_array = (array) $_POST['old_class_b'];
 	
@@ -747,6 +755,8 @@ function go_update_user_sc_data() {
 
 function go_focus_save() {
 	global $wpdb;
+	check_ajax_referer( 'go_focus_save_' . get_current_user_id() );
+
 	$array = array_values( array_filter( (array) $_POST['focus_array'] ) );
 	$terms = $wpdb->get_results( "SELECT * FROM $wpdb->terms", ARRAY_A );
 	$term_names = array();
@@ -778,6 +788,8 @@ function go_focus_save() {
 }
 
 function go_presets_reset() {
+	check_ajax_referer( 'go_presets_reset_' . get_current_user_id() );
+
 	$presets = array(
 		'name' => array(
 			'Tier 1',
@@ -827,6 +839,8 @@ function go_presets_reset() {
 }
 
 function go_presets_save() {
+	check_ajax_referer( 'go_presets_save_' . get_current_user_id() );
+
 	$preset_name = (array) $_POST['go_preset_name'];
 	$preset_points = (array) $_POST['go_preset_points'];
 	$preset_currency = (array) $_POST['go_preset_currency'];
@@ -841,6 +855,8 @@ function go_presets_save() {
 }
 
 function go_reset_data() {
+	check_ajax_referer( 'go_reset_data_' . get_current_user_id() );
+
 	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
 		go_error_log( 'Only admins with correct permissions can resest data' );
 		die();
@@ -906,7 +922,9 @@ function go_reset_data() {
 	die();
 }
 
-function go_extra_profile_fields( $user ) { ?>
+function go_extra_profile_fields( $user ) {
+	$nonce = wp_create_nonce( 'go_user_option_add_class_' . $user->ID );
+?>
 
 	<h3><?php echo go_return_options( 'go_class_a_name' ).' and '.go_return_options( 'go_class_b_name' ); ?></h3>
 
@@ -972,12 +990,16 @@ function go_extra_profile_fields( $user ) { ?>
 			jQuery.ajax({
 				type: 'post',
 				url: MyAjax.ajaxurl,
-				data: { 
+				data: {
+					_ajax_nonce: '<?php echo $nonce; ?>',
 					action: 'go_user_option_add',
+					user_id: <?php echo $user->ID; ?>,
 					go_clipboard_class_a_choice: jQuery( '#go_clipboard_class_a_choice' ).val()
 				},
-				success: function( html ) {
-					jQuery( '#go_user_form_table_body' ).append( html );
+				success: function( res ) {
+					if ( -1 !== res ) {
+						jQuery( '#go_user_form_table_body' ).append( res );
+					}
 				}
 			});
 		}
@@ -987,6 +1009,12 @@ function go_extra_profile_fields( $user ) { ?>
 }
 
 function go_user_option_add() {
+	if ( empty( $_POST['user_id'] ) ) {
+		die( -1 );
+	}
+	$user_id = (int) $_POST['user_id'];
+	check_ajax_referer( 'go_user_option_add_class_' . $user_id );
+
 	?> 
 	<tr>
 		<td>
@@ -1025,6 +1053,7 @@ function go_user_option_add() {
 		</td> 
 	</tr>  
 	<?php
+	die();
 }
 	
 function go_save_extra_profile_fields( $user_id ) {

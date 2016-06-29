@@ -1,6 +1,12 @@
 <?php
 function go_buy_item() { 
 	global $wpdb;
+
+	$user_id = get_current_user_id();
+	if ( ! check_ajax_referer( 'go_buy_item_' . $user_id, false ) ) {
+		die( 'WordPress hiccuped, try logging in again.' );
+	}
+
 	$go_table_name = $wpdb->prefix."go";
 	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
 	$qty = ( ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 0 );
@@ -12,7 +18,6 @@ function go_buy_item() {
 		$recipient_purchase_count = $wpdb->get_var( "SELECT count FROM {$go_table_name} WHERE post_id={$post_id} AND uid={$recipient_id} LIMIT 1" );
 	}
 	
-	$user_id = get_current_user_id(); 
 	$custom_fields = get_post_custom( $post_id );
 	$sending_receipt = ( ! empty( $custom_fields['go_mta_store_receipt'][0] ) ? $custom_fields['go_mta_store_receipt'][0] : false );
 

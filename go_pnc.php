@@ -497,6 +497,9 @@ function go_update_totals_out_of_bounds () {
 }
 
 function go_admin_bar_add() {
+	$user_id = get_current_user_id();
+	check_ajax_referer( 'go_admin_bar_add_' . $user_id );
+
 	$points = 0;
 	$points_reason = '';
 	if ( ! empty( $_POST['go_admin_bar_add_points'] ) ) {
@@ -541,8 +544,6 @@ function go_admin_bar_add() {
 	if ( ! empty( $_POST['go_admin_bar_add_minutes_reason'] ) ) {
 		$minutes_reason = sanitize_text_field( $_POST['go_admin_bar_add_minutes_reason'] );
 	}
-
-	$user_id = get_current_user_id();
 
 	if ( 0 !== $points && '' !== $points_reason ) {
 		go_add_currency( $user_id, $points_reason, 6, $points, 0, false );
@@ -795,6 +796,9 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 		$e_currency = ( ! empty( $_POST['encounter_currency'] ) ? (int) $_POST['encounter_currency'] : 0 );
 		$e_bonus_currency = ( ! empty( $_POST['encounter_bonus'] ) ? (int) $_POST['encounter_bonus'] : 0 );
 	}
+
+	check_ajax_referer( 'go_task_abandon_' . $post_id . '_' . $user_id );
+
 	$table_name_go = "{$wpdb->prefix}go";
 	$accept_timestamp = strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" ) ) );
 	go_update_totals( $user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0, 0 );

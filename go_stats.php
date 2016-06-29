@@ -13,6 +13,8 @@ function go_admin_bar_stats() {
 		$current_user = wp_get_current_user();
 		$user_id = $current_user->ID;
 	}
+	check_ajax_referer( 'go_admin_bar_stats_' . $user_id );
+	
 	?>
 	<input type="hidden" id="go_stats_hidden_input" value="<?php echo $user_id; ?>"/>
 	<?php
@@ -137,6 +139,8 @@ function go_stats_task_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_task_list_' . $user_id );
+
 	$is_admin = current_user_can( 'manage_options' );
 	$task_list = $wpdb->get_results( $wpdb->prepare( "SELECT status, post_id, count, url FROM {$go_table_name} WHERE uid=%d AND (status = %d OR status = 2 OR status = 3 OR status = 4) ORDER BY id DESC", $user_id, 1 ) );
 	$counter = 1;
@@ -317,6 +321,8 @@ function go_stats_move_stage() {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_move_stage_' . $user_id );
+
 	$current_rank = get_user_meta( $user_id, 'go_rank', true );
 	$task_id = ( ! empty( $_POST['task_id'] ) ? (int) $_POST['task_id'] : 0 );
 	$status  = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 1 );
@@ -484,6 +490,8 @@ function go_stats_item_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_item_list_' . $user_id );
+
 	$items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, id DESC, reason DESC", $user_id, -1, 0 ) );
 	$gifted_items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1, 1 ) );
 	?>
@@ -548,6 +556,8 @@ function go_stats_rewards_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_rewards_list_' . $user_id );
+
 	$new_tab = ( $user_id != get_current_user_id() ) ? "target='_blank'" : '';
 	$rewards = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND (points != %d OR currency != 0 OR bonus_currency != 0) ORDER BY id DESC", $user_id, 0 ) );
 	?>
@@ -608,6 +618,8 @@ function go_stats_minutes_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_minutes_list_' . $user_id );
+
 	$minutes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND (minutes != %d) ORDER BY id DESC", $user_id, 0 ) ); 
 	?>
 	<ul id='go_stats_minutes_list' class='go_stats_body_list'>
@@ -634,6 +646,8 @@ function go_stats_penalties_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_penalties_list_' . $user_id );
+
 	$penalties = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND (penalty != %d) ORDER BY id DESC", $user_id, 0 ) ); 
 	?>
 	<ul id='go_stats_penalties_list' class='go_stats_body_list'>
@@ -660,6 +674,8 @@ function go_stats_badges_list() {
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_badges_list_' . $user_id );
+
 	$badges_array = get_user_meta( $user_id, 'go_badges', true );
 	if ( is_array( $badges_array ) && ! empty( $badges_array ) ) {
 		foreach ( $badges_array as $key => $badge_id ) {
@@ -681,6 +697,8 @@ function go_stats_badges_list() {
 }
 
 function go_stats_leaderboard_choices() {
+	check_ajax_referer( 'go_stats_leaderboard_choices_' . get_current_user_id() );
+
 	?>
 	<div id='go_stats_leaderboard_filters'>
 		<div id='go_stats_leaderboard_filters_head'>FILTER</div>
@@ -795,6 +813,8 @@ function go_return_user_leaderboard( $users, $class_a_choice, $focuses, $type, $
 
 function go_stats_leaderboard() {
 	global $wpdb;
+	check_ajax_referer( 'go_stats_leaderboard_' . get_current_user_id() );
+
 	$go_totals_table_name = "{$wpdb->prefix}go_totals";
 	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? sanitize_text_field( $_POST['class_a_choice'] ) : '' );
 	$focuses = ( ! empty( $_POST['focuses'] ) ? (array) $_POST['focuses'] : array() );
