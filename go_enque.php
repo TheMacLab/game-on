@@ -103,6 +103,27 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	// Localization
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	wp_localize_script( 'go_every_page', 'PluginDir', array( 'url' => plugin_dir_url( __FILE__ ) ) );
+	wp_localize_script(
+		'go_every_page',
+		'GO_EVERY_PAGE_DATA',
+		array(
+			'nonces' => array(
+				'go_deactivate_plugin'         => wp_create_nonce( 'go_deactivate_plugin_' . $user_id ),
+				'go_admin_bar_add'             => wp_create_nonce( 'go_admin_bar_add_' . $user_id ),
+				'go_admin_bar_stats'           => wp_create_nonce( 'go_admin_bar_stats_' ),
+				'go_stats_task_list'           => wp_create_nonce( 'go_stats_task_list_' ),
+				'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' ),
+				'go_stats_item_list'           => wp_create_nonce( 'go_stats_item_list_' ),
+				'go_stats_rewards_list'        => wp_create_nonce( 'go_stats_rewards_list_' ),
+				'go_stats_minutes_list'        => wp_create_nonce( 'go_stats_minutes_list_' ),
+				'go_stats_penalties_list'      => wp_create_nonce( 'go_stats_penalties_list_' ),
+				'go_stats_badges_list'         => wp_create_nonce( 'go_stats_badges_list_' ),
+				'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' ),
+				'go_stats_leaderboard'         => wp_create_nonce( 'go_stats_leaderboard_' ),
+				'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
+			),
+		)
+	);
 
 	/*
 	 * Common Styles
@@ -259,7 +280,6 @@ function go_register_scripts_and_styles () {
 	wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/go_every_page.js' );
 
 	wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/js/buy_the_item.js', array( 'jquery' ), 1.0, true );
-	wp_register_script( 'cat_the_item', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/js/cat_the_item.js', array( 'jquery' ), 1.0, true );
 
 	/*
 	 * Common Styles
@@ -302,7 +322,6 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );
 	wp_enqueue_script( 'buy_the_item' );
-	wp_enqueue_script( 'cat_the_item' );
 
 	// Localization
 	$user_id = get_current_user_id();
@@ -316,16 +335,16 @@ function go_enqueue_scripts_and_styles () {
 			'nonces' => array(
 				'go_deactivate_plugin'         => wp_create_nonce( 'go_deactivate_plugin_' . $user_id ),
 				'go_admin_bar_add'             => wp_create_nonce( 'go_admin_bar_add_' . $user_id ),
-				'go_admin_bar_stats'           => wp_create_nonce( 'go_admin_bar_stats_' . $user_id ),
-				'go_stats_task_list'           => wp_create_nonce( 'go_stats_task_list_' . $user_id ),
-				'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' . $user_id ),
-				'go_stats_item_list'           => wp_create_nonce( 'go_stats_item_list_' . $user_id ),
-				'go_stats_rewards_list'        => wp_create_nonce( 'go_stats_rewards_list_' . $user_id ),
-				'go_stats_minutes_list'        => wp_create_nonce( 'go_stats_minutes_list_' . $user_id ),
-				'go_stats_penalties_list'      => wp_create_nonce( 'go_stats_penalties_list_' . $user_id ),
-				'go_stats_badges_list'         => wp_create_nonce( 'go_stats_badges_list_' . $user_id ),
-				'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' . $user_id ),
-				'go_stats_leaderboard'         => wp_create_nonce( 'go_stats_leaderboard_' . $user_id ),
+				'go_admin_bar_stats'           => wp_create_nonce( 'go_admin_bar_stats_' ),
+				'go_stats_task_list'           => wp_create_nonce( 'go_stats_task_list_' ),
+				'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' ),
+				'go_stats_item_list'           => wp_create_nonce( 'go_stats_item_list_' ),
+				'go_stats_rewards_list'        => wp_create_nonce( 'go_stats_rewards_list_' ),
+				'go_stats_minutes_list'        => wp_create_nonce( 'go_stats_minutes_list_' ),
+				'go_stats_penalties_list'      => wp_create_nonce( 'go_stats_penalties_list_' ),
+				'go_stats_badges_list'         => wp_create_nonce( 'go_stats_badges_list_' ),
+				'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' ),
+				'go_stats_leaderboard'         => wp_create_nonce( 'go_stats_leaderboard_' ),
 				'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
 			)
 		)

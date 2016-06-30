@@ -476,9 +476,12 @@ function go_task_shortcode( $atts, $content = null ) {
 				'posts_per_page' => '-1'
 			) );
 
+			$list_query_args = array( $user_id );
+
 			// Loop through each one and make array of their ids
 			foreach ( $posts_in_chain as $post_in_chain ) {
 				$post_ids_in_chain[] = $post_in_chain->ID;
+				$list_query_args[] = $post_in_chain->ID;
 			}
 			
 			// Setup next task in chain 
@@ -487,17 +490,22 @@ function go_task_shortcode( $atts, $content = null ) {
 				$next_post_in_chain = '<a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a>';
 			}
 			
-			$post_ids_in_chain_string = sanitize_text_field( join( ',', $post_ids_in_chain ) );
+			$list_query_ids_format = '';
+
+			for ( $q = 0; $q < count( $post_ids_in_chain ); $q++ ) {
+				if ( 0 !== $q ) {
+					$list_query_ids_format .= ',';
+				}
+				$list_query_ids_format .= '%d';
+			}
 			
 			// Grab all posts in chain statuses
 			$list = $wpdb->get_results(
 				$wpdb->prepare(
-					'SELECT post_id, status
-					FROM ' . $go_table_name . '
-					WHERE uid = %1$d AND post_id IN ( %2$s )
-					ORDER BY FIELD ( post_id, %2$s )',
-					$user_id,
-					$post_ids_in_chain_string
+					"SELECT post_id, status 
+					FROM {$go_table_name} 
+					WHERE uid = %d AND post_id IN ({$list_query_ids_format})",
+					$list_query_args
 				)
 			);
 			

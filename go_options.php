@@ -673,17 +673,17 @@ function go_reset_levels() {
 function go_save_levels() {
 	check_ajax_referer( 'go_save_levels_' . get_current_user_id() );
 
-	$go_level_names = sanitize_text_field( $_POST['go_level_names'] );
-	$go_level_points = sanitize_text_field( $_POST['go_level_points'] );
-	$go_level_badges = sanitize_text_field( $_POST['go_level_badges'] );
+	$go_level_names  = ( ! empty( $_POST['go_level_names'] )  ? (array) $_POST['go_level_names'] : array() );
+	$go_level_points = ( ! empty( $_POST['go_level_points'] ) ? (array) $_POST['go_level_points'] : array() );
+	$go_level_badges = ( ! empty( $_POST['go_level_badges'] ) ? (array) $_POST['go_level_badges'] : array() );
 	$ranks = array(
 		'name' => $go_level_names,
 		'points' => $go_level_points,
-		'badges' => $go_level_badges
+		'badges' => $go_level_badges,
 	);
 	update_option( 'go_ranks', $ranks );
 	die();
-}	
+}
 
 function go_fix_levels() {
 	global $default_role;
@@ -866,18 +866,31 @@ function go_presets_save() {
 }
 
 function go_reset_data() {
-	check_ajax_referer( 'go_reset_data_' . get_current_user_id() );
-
 	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
 		go_error_log( 'Only admins with correct permissions can resest data' );
 		die();
 	}
 
+	check_ajax_referer( 'go_reset_data_' . get_current_user_id() );
+
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
-	$reset_data = (array) $_POST['reset_data'];
-	$reset_all = (boolean) $_POST['reset_all'];
+	$reset_data = ( ! empty( $_POST['reset_data'] ) ? (array) $_POST['reset_data'] : array() );
+	if ( empty( $reset_data ) ) {
+		die();
+	}
+
+	$reset_all = ( ! empty( $_POST['reset_all'] ) ? (boolean) $_POST['reset_all'] : false );
+	$default_reset_keys = array(
+		'points',
+		'currency',
+		'bonus_currency',
+		'penalty',
+		'minutes',
+		'badge_count',
+	);
+
 	$users = get_users( 'orderby=ID' );
 	$ranks = get_option( 'go_ranks' );
 	if ( in_array( 'points', $reset_data ) ) {
@@ -928,9 +941,28 @@ function go_reset_data() {
 			$wpdb->query( $wpdb->prepare( $query, $erase_list ) );
 		}
 	}
-	$reset_data_str = implode( '=0,', $reset_data );
-	$erase_update_clause = sanitize_text_field( "SET {$reset_data_str}=0 WHERE uid IS NOT NULL" );
-	$wpdb->query( $wpdb->prepare( "UPDATE {$go_table_totals_name} %s", $erase_update_clause ) );
+
+	$reset_data_str = '';
+	foreach ( $default_reset_keys as $index => $key_name ) {
+		if ( in_array( $key_name, $reset_data ) ) {
+			$key_value_pair = "{$key_name} = 0";
+			if ( '' !== $reset_data_str ) {
+				$reset_data_str .= ", {$key_value_pair}";
+			} else {
+				$reset_data_str .= "{$key_value_pair}";
+			}
+		}
+	}
+
+	/**
+	 * This query doesn't make use of the `$wpdb->prepare()` function, because the list of columns to
+	 * set was being wrapped in single quotes. This resulted in an invalid query and a DB error.
+	 * Instead, the AJAX (considered user-input) is compared with a list of expected values. If
+	 * the arrays match up, then the expected value is used in the query, not the user input. With
+	 * no data to sanitize, the query doesn't need to be passed through the prepare function.
+	 */
+	$wpdb->query( "UPDATE {$go_table_totals_name} SET {$reset_data_str} WHERE uid IS NOT NULL" );
+
 	die();
 }
 
