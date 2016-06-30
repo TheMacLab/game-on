@@ -110,9 +110,9 @@ add_action( 'wp_ajax_go_clone_post', 'go_clone_post' );
 add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' );
 add_action( 'wp_ajax_go_clipboard_intable_messages', 'go_clipboard_intable_messages' );
 add_action( 'wp_ajax_go_user_option_add', 'go_user_option_add' );
-add_action( 'wp_ajax_test_point_update', 'test_point_update' );
-add_action( 'wp_ajax_unlock_stage', 'unlock_stage' );
-add_action( 'wp_ajax_task_change_stage', 'task_change_stage' );
+add_action( 'wp_ajax_go_test_point_update', 'go_test_point_update' );
+add_action( 'wp_ajax_go_unlock_stage', 'go_unlock_stage' );
+add_action( 'wp_ajax_go_task_change_stage', 'go_task_change_stage' );
 add_action( 'wp_ajax_go_task_abandon', 'go_task_abandon' );
 add_action( 'wp_ajax_go_admin_bar_add', 'go_admin_bar_add' );
 add_action( 'wp_ajax_go_admin_bar_stats', 'go_admin_bar_stats' );
@@ -136,25 +136,18 @@ add_action( 'wp_ajax_go_presets_reset', 'go_presets_reset' );
 add_action( 'wp_ajax_go_presets_save', 'go_presets_save' );
 add_action( 'wp_ajax_go_fix_levels', 'go_fix_levels' );
 add_action( 'wp_ajax_listurl', 'listurl' );
-add_action( 'wp_ajax_nopriv_listurl', 'listurl' );
 add_action( 'wp_ajax_go_update_user_focuses', 'go_update_user_focuses' );
 add_action( 'wp_ajax_go_get_all_terms', 'go_get_all_terms' );
-add_action( 'wp_ajax_nopriv_go_get_all_terms', 'go_get_all_terms' );
 add_action( 'wp_ajax_go_get_all_posts', 'go_get_all_posts' );
-add_action( 'wp_ajax_nopriv_go_get_all_posts', 'go_get_all_posts' );
 add_action( 'wp_ajax_go_update_task_order', 'go_update_task_order' );
 add_action( 'wp_ajax_go_search_for_user', 'go_search_for_user' );
 add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' );
 add_action( 'wp_ajax_go_get_purchase_count', 'go_get_purchase_count' );
-add_action( 'wp_ajax_buy_item', 'go_buy_item' );
-add_action( 'wp_ajax_nopriv_buy_item', 'go_buy_item' );
-add_action( 'wp_ajax_cat_item', 'go_cat_item' );
-add_action( 'wp_ajax_nopriv_cat_item', 'go_cat_item' );
+add_action( 'wp_ajax_go_buy_item', 'go_buy_item' );
 add_action( 'wp_ajax_go_clipboard_add', 'go_clipboard_add' );
-add_action( 'wp_ajax_fixmessages', 'fixmessages' );
+add_action( 'wp_ajax_go_fix_messages', 'go_fix_messages' );
 add_action( 'wp_ajax_go_mark_read', 'go_mark_read' );
 add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
-add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
 
 /*
  * Miscellaneous Filters
@@ -171,7 +164,38 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
  * Important Functions
  */
 
+/**
+ * Appends errors to the configured PHP error log.
+ *
+ * Use this function to easily output Game On errors.
+ *
+ * @since 2.6.2
+ *
+ * @param  string	   $error			The error message.
+ * @param  string	   $func			The name of the function which is calling go_error_log().
+ * @param  string	   $file			The name of the file in which go_error_log() is being called.
+ * @param  boolean	   $trace			Whether or not to output a stack trace.
+ */
+function go_error_log( $error = '', $func = __FUNCTION__, $file = __FILE__, $trace = false ) {
+	if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+		return;
+	}
+
+	if ( '' !== $error ) {
+		$log = "Game On Error: {$error}. " .
+			( ! empty( $func ) ? "from {$func}() " : '' ) .
+			( ! empty( $file ) ? "in {$file}" : 'erring file not provided' );
+		if ( true === $trace ) {
+			$exception = new Exception;
+			$log .= print_r( "\nTrace:\n" . $exception->getTraceAsString(), true );
+		}
+		error_log( $log );
+	}
+}
+
 function go_deactivate_plugin() {
+	check_ajax_referer( 'go_deactivate_plugin_' . get_current_user_id() );
+
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	$plugin = plugin_basename( __FILE__ );
 	deactivate_plugins( $plugin );
@@ -258,6 +282,8 @@ function go_admin_head_notification() {
 	if ( get_option( 'go_display_admin_explanation' ) && current_user_can( 'manage_options' ) ) {
 		$plugin_data = get_plugin_data( __FILE__, false, false );
 		$plugin_version = $plugin_data['Version'];
+		$nonce = wp_create_nonce( 'go_admin_remove_notification_' . get_current_user_id() );
+
 		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
 		echo "<script>
 			function go_remove_admin_notification() {
@@ -265,10 +291,13 @@ function go_admin_head_notification() {
 					type: 'post',
 					url: MyAjax.ajaxurl,
 					data: {
+						_ajax_nonce: '{$nonce}',
 						action: 'go_admin_remove_notification'
 					},
-					success: function( html ) {
-						location.reload();
+					success: function( res ) {
+						if ( 'success' === res ) {
+							location.reload();
+						}
 					}
 				} );
 			}
@@ -277,8 +306,11 @@ function go_admin_head_notification() {
 }
 
 function go_admin_remove_notification() {
+	check_ajax_referer( 'go_admin_remove_notification_' . get_current_user_id() );
+
 	update_option( 'go_display_admin_explanation', false );
-	die();
+
+	die( 'success' );
 }
 
 function go_weekly_schedule( $schedules ) {
@@ -297,6 +329,27 @@ function go_task_timer_headers() {
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
 		header( 'Cache-Control: post-check=0, pre-check=0', FALSE );
 		header( 'Pragma: no-cache' );	
+	}
+}
+
+/**
+ * Determines if the string has a boolean value of true (case is ignored).
+ *
+ * This exists because `boolval( 'true' )` equals the boolean value of true, as does
+ * `boolval( 'false' )`. Typecasting a string as a boolean (using `(boolean) $var`) doesn't work
+ * either. That achieves the same undesired effect. This function isn't insanely helpful, but it
+ * does save a few lines.
+ *
+ * @since 2.6.2
+ *
+ * @param  string $str The string to check for a boolean value of true.
+ * @return boolean Returns true if the string is equal to 'true', otherwise it returns false.
+ */
+function go_is_true_str( string $str ) {
+	if ( ! empty( $str ) && 'true' === strtolower( $str ) ) {
+		return true;
+	} else {
+		return false;
 	}
 }
 ?>

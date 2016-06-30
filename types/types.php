@@ -102,10 +102,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 1'.go_task_opt_help( 'encounter', '', 'http://maclab.guhsd.net/go/video/quests/stageOne.mp4' ),
 				'id' => "{$prefix}quick_desc",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-          			'textarea_rows' => '5',
-           		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_one_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageOneSettings.mp4' ),
@@ -168,11 +168,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'encounter_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_encounter",
- 				'type' => 'go_test_field',
- 				'test_type' => 'e'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'encounter_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_encounter",
+				'type' => 'go_test_field',
+				'test_type' => 'e'
+			),
 			array(
 				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_one_badge",
@@ -183,10 +183,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 2'.go_task_opt_help( 'accept', '', 'http://maclab.guhsd.net/go/video/quests/acceptMessage.mp4' ),
 				'id' => "{$prefix}accept_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-          			'textarea_rows' => '5',
-           		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_two_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageTwoSettings.mp4' ),
@@ -249,11 +249,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'accept_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_accept",
- 				'type' => 'go_test_field',
- 				'test_type' => 'a'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'accept_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_accept",
+				'type' => 'go_test_field',
+				'test_type' => 'a'
+			),
 			array(
 				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_two_badge",
@@ -264,10 +264,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 3'.go_task_opt_help( 'complete', '', 'http://maclab.guhsd.net/go/video/quests/completionMessage.mp4' ),
 				'id' => "{$prefix}complete_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-           			'textarea_rows' => '5',
-         		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_three_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageThreeSettings.mp4' ),
@@ -309,9 +309,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Upload'.go_task_opt_help( 'completion_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4' ),
- 				'id' => "{$prefix}completion_upload",
- 				'type' => 'checkbox'
- 			),
+				'id' => "{$prefix}completion_upload",
+				'type' => 'checkbox'
+			),
 			array(
 				'name' => 'Test'.go_task_opt_help( 'complete_understand', '', 'http://maclab.guhsd.net/go/video/quests/completionCheckForUnderstanding.mp4' ),
 				'id' => "{$prefix}test_completion_lock",
@@ -330,11 +330,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'complete_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_completion",
- 				'type' => 'go_test_field',
- 				'test_type' => 'c'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'complete_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_completion",
+				'type' => 'go_test_field',
+				'test_type' => 'c'
+			),
 			array(
 				'name' => '3 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'toggle_mastery_stage', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4' ),
 				'id' => "{$prefix}task_mastery",
@@ -350,10 +350,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 4'.go_task_opt_help( 'mastery', '', 'http://maclab.guhsd.net/go/video/quests/stageFour.mp4' ),
 				'id' => "{$prefix}mastery_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
-           			'wpautop' => true,
-           			'textarea_rows' => '5',
-         		),
+				'options' => array(
+					'wpautop' => true,
+					'textarea_rows' => '5',
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_four_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageFourSettings.mp4' ),
@@ -416,11 +416,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_test_modifier'
 			),
 			array(
- 				'name' => 'Format'.go_task_opt_help( 'mastery_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
- 				'id' => "{$prefix}test_lock_mastery",
- 				'type' => 'go_test_field',
- 				'test_type' => 'm'
- 			),
+				'name' => 'Format'.go_task_opt_help( 'mastery_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
+				'id' => "{$prefix}test_lock_mastery",
+				'type' => 'go_test_field',
+				'test_type' => 'm'
+			),
 			array(
 				'name' => '5 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'five_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/fiveStageQuest.mp4' ),
 				'id'   => "{$prefix}task_repeat",
@@ -446,7 +446,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Stage 5'.go_task_opt_help( 'repeat_message', '', 'http://maclab.guhsd.net/go/video/quests/stageFive.mp4' ),
 				'id' => "{$prefix}repeat_message",
 				'type' => 'wysiwyg',
-        		'options' => array(
+				'options' => array(
 					'wpautop' => true,
 					'textarea_rows' => '5',
 				),		
@@ -593,7 +593,7 @@ add_action( 'cmb_render_go_presets', 'go_presets', 10, 1 );
 function go_presets( $field_args ) {
 	$custom = get_post_custom();
 	$content_array = ( ! empty( $custom['go_presets'][0] ) ? unserialize( $custom['go_presets'][0] ) : null );
-	if ( ! empty( $content_array) ) {
+	if ( ! empty( $content_array ) ) {
 		$custom_points = $content_array['points'];
 		$custom_points_str = implode( ',', $custom_points );
 		$custom_currency = $content_array['currency'];
@@ -601,7 +601,7 @@ function go_presets( $field_args ) {
 	}
 	?>
 	<select id="go_presets">
-        <?php
+		<?php
 			$presets = get_option( 'go_presets', false );
 			foreach( $presets['name'] as $key => $name ) {
 				$points = implode( ',', $presets['points'][ $key ] );
@@ -619,11 +619,15 @@ function go_presets( $field_args ) {
 
 add_action( 'cmb_validate_go_presets', 'go_validate_stage_reward' );
 function go_validate_stage_reward() {
-	$points = ( ! empty( $_POST['stage_1_points'] ) ? $_POST['stage_1_points'] : null );
-	$currency = ( ! empty( $_POST['stage_1_currency'] ) ? $_POST['stage_1_currency'] : null );
-	$bonus_currency = ( ! empty( $_POST['stage_1_bonus_currency'] ) ? $_POST['stage_1_bonus_currency'] : null );
-	$task_rewards = array( 'points' => $points, 'currency' => $currency, 'bonus_currency' => $bonus_currency );
-	return $task_rewards;
+	$points 		= ( ! empty( $_POST['stage_1_points'] ) 		? (array) $_POST['stage_1_points'] : array() );
+	$currency 		= ( ! empty( $_POST['stage_1_currency'] ) 		? (array) $_POST['stage_1_currency'] : array() );
+	$bonus_currency = ( ! empty( $_POST['stage_1_bonus_currency'] ) ? (array) $_POST['stage_1_bonus_currency'] : array() );
+
+	return array(
+		'points' => $points,
+		'currency' => $currency,
+		'bonus_currency' => $bonus_currency,
+	);
 }
 
 add_action( 'cmb_render_go_rank_list', 'go_rank_list' );
@@ -646,28 +650,28 @@ function go_rank_list() {
 add_action( 'cmb_render_go_start_filter', 'go_render_start_filter' );
 function go_render_start_filter() {
 	$custom = get_post_custom();
-	$start_info = ( ! empty( $custom['go_mta_start_filter'][0] ) ? unserialize( $custom['go_mta_start_filter'][0] ) : null );
-	if ( ! empty( $start_info ) ) {
-		$checked = $start_info[0];
-		$date = $start_info[1];
-		$time = $start_info[2];
-	}
+	$custom_array = ( ! empty( $custom['go_mta_start_filter'][0] ) ? unserialize( $custom['go_mta_start_filter'][0] ) : null );
+	$checked     = ( ! empty( $custom_array['checked'] ) ? 'checked' : '' );
+	$date_output = ( ! empty( $custom_array['date'] )    ? "value='{$custom_array['date']}'" : 'placeholder="Click for Date"' );
+	$time_output = ( ! empty( $custom_array['time'] )    ? "value='{$custom_array['time']}'" : 'placeholder="Click for Time" value="00:00"' );
+
 	?>
-    <input name='go_mta_task_start_date_switch' type='checkbox' id='go_start_checkbox' <?php echo ( ! empty( $checked ) ) ? 'checked' : '' ; ?>/>
-    <div id='go_start_info'>
-    	<input name="go_mta_task_start_date" class='go_datepicker' type="date" <?php echo ( ! empty( $date ) ) ? "value='{$date}'" : 'placeholder="Click for Date"'; ?>/> @ (hh:mm AM/PM)
-    	<input type='time' name='go_mta_task_start_time' class='custom_time' <?php echo ( ! empty( $time ) ) ? "value='{$time}'" : 'placeholder="Click for Time" value="00:00"';?> />
-   	</div>
-    <?php
+	<input name='go_mta_task_start_date_switch' type='checkbox' id='go_start_checkbox' <?php echo $checked; ?>/>
+	<div id='go_start_info'>
+		<input name="go_mta_task_start_date" class='go_datepicker' type="date" <?php echo $date_output; ?>/> @ (hh:mm AM/PM)
+		<input type='time' name='go_mta_task_start_time' class='custom_time' <?php echo $time_output;?> />
+	</div>
+	<?php
 }
 
 add_action( 'cmb_validate_go_start_filter', 'go_validate_start_filter' );
 function go_validate_start_filter() { 
-	$checked = ( ! empty( $_POST['go_mta_task_start_date_switch'] ) ? $_POST['go_mta_task_start_date_switch'] : null );
-	$date = ( ! empty( $_POST['go_mta_task_start_date'] ) ? $_POST['go_mta_task_start_date'] : null );
-	$time = ( ! empty( $_POST['go_mta_task_start_time'] ) ? $_POST['go_mta_task_start_time'] : '' );
-	$time = substr( $time, 0, 8 ); // Make sure no more than 8 characters are in the string
-	$hour = intval( substr( $time, 0, strpos( $time, ':' ) ) ); // Grab numerical value of hour
+	$checked = ( ! empty( $_POST['go_mta_task_start_date_switch'] )	? true : false );
+	$date    = ( ! empty( $_POST['go_mta_task_start_date'] )        ? sanitize_text_field( $_POST['go_mta_task_start_date'] ) : '' );
+	$time    = ( ! empty( $_POST['go_mta_task_start_time'] )        ? sanitize_text_field( $_POST['go_mta_task_start_time'] ) : '' );
+	
+	$time    = substr( $time, 0, 8 ); // Make sure no more than 8 characters are in the string
+	$hour    = intval( substr( $time, 0, strpos( $time, ':' ) ) ); // Grab numerical value of hour
 	$minutes = substr( $time, strpos( $time, ':' ) + 1, strlen( $time ) ); // Grab minutes string
 	
 	if ( strpos( $time, 'PM' ) !== false ) { // If PM found
@@ -689,24 +693,34 @@ function go_validate_start_filter() {
 		$time = str_replace( 'AM', '', $time ); // Remove AM from the string
 	}
 	$time = trim( $time ); // Remove spaces around time
-	$start_info = array( $checked, $date, $time );
-	return $start_info;
+
+	return array(
+		'checked' => $checked,
+		'date' => $date,
+		'time' => $time,
+	);
 }
 
 add_action( 'cmb_render_go_future_filters', 'go_future_filters' );
 function go_future_filters( $field_args ) {
 	$custom = get_post_custom();
-	$checked = ( ! empty( $custom['go_mta_time_filters'][0] ) ? unserialize( $custom['go_mta_time_filters'][0] ) : null );
-	?>
-	Date: <input  type='checkbox' id='go_calendar_checkbox' name='go_time_modifier[calendar]' <?php echo ( ( ! empty( $checked['calendar'] ) && $checked['calendar'] == 'on' ) ? 'checked' : '' );?> />
-	Time: <input type='checkbox' id='go_future_checkbox' name='go_time_modifier[future]' <?php echo ( ( ! empty( $checked['future'] ) && $checked['future'] == 'on' ) ? 'checked' : '' );?> />
-	<?php	
+	$checked_array    = ( ! empty( $custom['go_mta_time_filters'][0] ) ? unserialize( $custom['go_mta_time_filters'][0] ) : null );
+	$calendar_checked = ( ! empty( $checked_array['calendar'] )        ? 'checked' : '' );
+	$future_checked   = ( ! empty( $checked_array['future'] )          ? 'checked' : '' );
+
+	echo "Date: <input  type='checkbox' id='go_calendar_checkbox' name='go_time_modifier[calendar]' {$calendar_checked}/>".
+		"Time: <input type='checkbox' id='go_future_checkbox' name='go_time_modifier[future]' {$future_checked}/>";
 }
 
 add_action( 'cmb_validate_go_future_filters', 'go_validate_future_filters' );
 function go_validate_future_filters() {
-	$checked = ( ! empty( $_POST['go_time_modifier'] ) ? $_POST['go_time_modifier'] : '' );
-	return $checked;
+	$calendar_checked = ( ! empty( $_POST['go_time_modifier']['calendar'] ) ? true : false );
+	$future_checked   = ( ! empty( $_POST['go_time_modifier']['future'] ) ? true : false );
+
+	return array(
+		'calendar' => $calendar_checked,
+		'future' => $future_checked,
+	);
 }
 
 
@@ -714,17 +728,17 @@ add_action( 'cmb_render_go_decay_table', 'go_decay_table' );
 function go_decay_table() {
 	?>
 		<table id="go_list_of_decay_dates" stye="margin: 0px; padding: 0px;">
-        	<tbody>
-            <?php
-            $custom = get_post_custom();
-            $date_picker = ( ! empty( $custom['go_mta_date_picker'] ) ? $custom['go_mta_date_picker'] : null );
-            if ( ! empty( $date_picker ) ) {
+			<tbody>
+			<?php
+			$custom = get_post_custom();
+			$date_picker = ( ! empty( $custom['go_mta_date_picker'] ) ? $custom['go_mta_date_picker'] : null );
+			if ( ! empty( $date_picker ) ) {
 				$temp_array = array();
 				$dates = array();
 				$times = array();
 				$percentages = array();
 				
-            	foreach ( $date_picker as $key => $value ) {
+				foreach ( $date_picker as $key => $value ) {
 					$temp_array[ $key ] = unserialize( $value );
 				}
 				
@@ -749,22 +763,22 @@ function go_decay_table() {
 				}
 				foreach ( $dates as $key => $date ) {
 					?>
-                    <tr>
-                        <td><input name="go_mta_task_decay_calendar[<?php echo $key; ?>]" class="go_datepicker custom_date" value="<?php echo $date; ?>" type="date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key; ?>]' class='custom_time' value='<?php echo $times[ $key ]; ?>' /></td>
-                        <td><input name="go_mta_task_decay_percent[<?php echo $key; ?>]" value="<?php echo $percentages[ $key ] ?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
-                    </tr>
-                    <?php
+					<tr>
+						<td><input name="go_mta_task_decay_calendar[<?php echo $key; ?>]" class="go_datepicker custom_date" value="<?php echo $date; ?>" type="date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key; ?>]' class='custom_time' value='<?php echo $times[ $key ]; ?>' /></td>
+						<td><input name="go_mta_task_decay_percent[<?php echo $key; ?>]" value="<?php echo $percentages[ $key ] ?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
+					</tr>
+					<?php
 				}
-            } else {
+			} else {
 			?>
 			<tr>
 				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00' /></td>
 				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
 			</tr>
-            <?php 
+			<?php 
 			}
 			?>
-            </tbody>
+			</tbody>
 		</table>
 		<input type="button" id="go_mta_add_task_decay" onclick="go_add_decay_table_row()" value="+"/>
 		<input type="button" id="go_mta_remove_task_decay" onclick="go_remove_decay_table_row()" value="-"/>
@@ -773,10 +787,12 @@ function go_decay_table() {
 
 add_action( 'cmb_validate_go_decay_table', 'go_validate_decay_table' );
 function go_validate_decay_table() {
+	
 	// Filter empty values
-	$dates = ( ! empty( $_POST['go_mta_task_decay_calendar'] ) ? $_POST['go_mta_task_decay_calendar'] : null );
-	$times = ( ! empty( $_POST['go_mta_task_decay_calendar_time'] ) ? $_POST['go_mta_task_decay_calendar_time'] : null );
-	$percentages = ( ! empty( $_POST['go_mta_task_decay_percent'] ) ? $_POST['go_mta_task_decay_percent'] : null );
+	$dates 			= ( ! empty( $_POST['go_mta_task_decay_calendar'] ) 		? (array) $_POST['go_mta_task_decay_calendar'] : array() );
+	$times 			= ( ! empty( $_POST['go_mta_task_decay_calendar_time'] ) 	? (array) $_POST['go_mta_task_decay_calendar_time'] : array() );
+	$percentages 	= ( ! empty( $_POST['go_mta_task_decay_percent'] ) 			? (array) $_POST['go_mta_task_decay_percent'] : array() );
+
 	if ( ! empty( $dates ) && ! empty( $times ) && ! empty( $percentages ) ) {
 		$dates_f = array_filter( $dates );
 		$times_f = array_filter( $times );
@@ -841,7 +857,7 @@ function go_bonus_loot( $field_args ) {
 					'value' => 'on'
 				)
 			)
- 		)
+		)
 	);
 	echo "
 		<div id='go_bonus_loot_wrap'>
@@ -868,15 +884,17 @@ function go_bonus_loot( $field_args ) {
 
 add_action( 'cmb_validate_go_bonus_loot', 'go_validate_bonus_loot' );
 function go_validate_bonus_loot() {
-	$is_checked = ( ! empty( $_POST['go_mta_mastery_bonus_loot'] ) ? $_POST['go_mta_mastery_bonus_loot'] : false );
-	$selected_loot = ( ! empty( $_POST['go_task_bonus_loot_select'] ) ? $_POST['go_task_bonus_loot_select'] : null );
-	$loot_rarity = ( ! empty( $_POST['go_bonus_loot_rarity'] ) ? $_POST['go_bonus_loot_rarity'] : null );
-	$range_values_str = ( ! empty( $_POST['go_bonus_loot_rarity_range'] ) ? $_POST['go_bonus_loot_rarity_range'] : '' );
+	$is_checked         = ( ! empty( $_POST['go_mta_mastery_bonus_loot'] )  ? true : false );
+	$selected_loot      = ( ! empty( $_POST['go_task_bonus_loot_select'] )  ? (array) $_POST['go_task_bonus_loot_select'] : array() );
+	$loot_rarity        = ( ! empty( $_POST['go_bonus_loot_rarity'] )       ? (array) $_POST['go_bonus_loot_rarity'] : array() );
+	$range_values_str   = ( ! empty( $_POST['go_bonus_loot_rarity_range'] ) ? sanitize_text_field( $_POST['go_bonus_loot_rarity_range'] ) : '' );
+
 	$range_values_array = ( ! empty( $range_values_str ) ? explode( ',', $range_values_str ) : array() );
 	if ( ! empty( $range_values_array ) ) {
 		$range_min = $range_values_array[0];
 		$range_max = $range_values_array[1];
 	}
+
 	$rarity_array = array();
 	if ( ! empty( $loot_rarity ) && isset( $range_min ) && isset( $range_max ) ) {
 		foreach ( $loot_rarity as $item_id => $perc ) {
@@ -884,7 +902,7 @@ function go_validate_bonus_loot() {
 			// test the rarity value against the desired float pattern
 			// (i.e. "XX" or "XX.X+", where "X" is a number 0 through 9 and
 			// + indicates "X" once or more times)
-			$float_regex = "/^([0-9]{1,2}|[0-9]{0,2}\.[0-9]{1,})$/";
+			$float_regex = '/^([0-9]{1,2}|[0-9]{0,2}\.[0-9]{1,})$/';
 			$float_match = preg_match( $float_regex, $perc );
 			if ( 0 === $float_match ) {
 				$rarity_array[ $item_id ] = null;
@@ -902,35 +920,27 @@ function go_validate_bonus_loot() {
 		}
 	}
 
-	return ( array( $is_checked, $selected_loot, $rarity_array ) );
+	return array(
+		$is_checked,
+		$selected_loot,
+		$rarity_array,
+	);
 }
 
 add_action( 'cmb_render_go_store_unpurchasable', 'go_unpurchasable' );
 function go_unpurchasable() {
 	$custom = get_post_custom();
 	$unpurchasable = get_option( 'go_store_unpurchasable_switch' );
-	$is_checked = ( ! empty( $custom['go_mta_unpurchasable'][0] ) ? $custom['go_mta_unpurchasable'][0] : null );
-	if ( $unpurchasable == 'On' ) {
-		if ( empty( $is_checked ) ) {
-			$is_checked = "true";
-		}
-	} else {
-		if ( empty( $is_checked ) ) {
-			$is_checked = "false";
-		}
-	}
-	echo "<input id='go_unpurchasable_checkbox' name='go_unpurchasable' type='checkbox'".( ( $is_checked == 'true' ) ? 'checked' : '' )."/>";
+	$is_checked = ( ! empty( $custom['go_mta_unpurchasable'][0] ) ? 'checked' : '' );
+
+	echo "<input id='go_unpurchasable_checkbox' name='go_unpurchasable' type='checkbox' {$is_checked}/>";
 }
 
 add_action( 'cmb_validate_go_unpurchasable', 'go_validate_unpurchasable' );
 function go_validate_unpurchasable() {
-	$is_checked = $_POST['go_unpurchasable'];
-	if ( empty( $is_checked ) ) {
-		$is_checked = 'false';
-	} else {
-		$is_checked = 'true';
-	}
-	return ( $is_checked );
+	$is_checked = ( ! empty( $_POST['go_unpurchasable'] ) ? true : false );
+
+	return $is_checked;
 }
 
 add_action( 'cmb_render_go_time_modifier_inputs', 'go_time_modifier_inputs' );
@@ -958,13 +968,19 @@ function go_time_modifier_inputs() {
 
 add_action( 'cmb_validate_go_time_modifier_inputs', 'go_validate_time_nerf_inputs' );
 function go_validate_time_nerf_inputs() {
-	$days  = round( ( ! empty( $_POST['go_modifier_input_days'] ) ? $_POST['go_modifier_input_days'] : 0) );
-	$hours = round( ( ! empty( $_POST['go_modifier_input_hours'] ) ? $_POST['go_modifier_input_hours'] : 0) );
-	$minutes = round( ( ! empty( $_POST['go_modifier_input_minutes'] ) ? $_POST['go_modifier_input_minutes'] : 0) );
-	$seconds = round( ( ! empty( $_POST['go_modifier_input_seconds'] ) ? $_POST['go_modifier_input_seconds'] : 0) );
-	$percentage = (float) ( ! empty( $_POST['go_modifier_input_percent'] ) ? $_POST['go_modifier_input_percent'] : 0);
-	$modifier_array = array( 'days' => $days, 'hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds, 'percentage' => $percentage );
-	return $modifier_array;
+	$days       = ( ! empty( $_POST['go_modifier_input_days'] )     ? round( (int) $_POST['go_modifier_input_days'] ) : 0 );
+	$hours      = ( ! empty( $_POST['go_modifier_input_hours'] )    ? round( (int) $_POST['go_modifier_input_hours'] ) : 0 );
+	$minutes    = ( ! empty( $_POST['go_modifier_input_minutes'] )  ? round( (int) $_POST['go_modifier_input_minutes'] ) : 0 );
+	$seconds    = ( ! empty( $_POST['go_modifier_input_seconds'] )  ? round( (int) $_POST['go_modifier_input_seconds'] ) : 0 );
+	$percentage = ( ! empty( $_POST['go_modifier_input_percent'] )  ? (double) $_POST['go_modifier_input_percent'] : 0.0 );
+
+	return array(
+		'days' => $days,
+		'hours' => $hours,
+		'minutes' => $minutes,
+		'seconds' => $seconds,
+		'percentage' => $percentage,
+	);
 }
 
 add_action( 'cmb_render_go_admin_lock', 'go_admin_lock', 10, 1 );
@@ -972,13 +988,10 @@ function go_admin_lock( $field_args ) {
 	$custom = get_post_custom();
 	$meta_id = $field_args['id'];
 	$content_array = ( ! empty( $custom[ $meta_id ][0] ) ? unserialize( $custom[ $meta_id ][0] ) : null );
-	$is_checked = $content_array[0];
-	if ( empty( $is_checked ) ) {
-		$is_checked = 'false';
-	}
+	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
 	$pass = $content_array[1];
 	echo "
-		<input id='{$meta_id}_checkbox' class='go_admin_lock_checkbox' name='{$meta_id}' type='checkbox' ".( ( $is_checked == 'true' ) ? 'checked' : '' )."/>
+		<input id='{$meta_id}_checkbox' class='go_admin_lock_checkbox' name='{$meta_id}' type='checkbox' {$is_checked}/>
 		<input id='{$meta_id}_input' class='go_admin_lock_text' name='{$meta_id}_input' type='text' placeholder='Enter A Password' ".( ( ! empty( $pass ) ) ? "value='{$pass}'": '' )."/>
 	";
 }
@@ -986,19 +999,15 @@ function go_admin_lock( $field_args ) {
 add_action( 'cmb_validate_go_admin_lock', 'go_validate_admin_lock', 10, 3 );
 function go_validate_admin_lock( $override_value, $post_id, $field_args ) {
 	$meta_id = $field_args['id'];
-	$is_checked = ( ! empty( $_POST[ $meta_id ] ) ? $_POST[ $meta_id ] : null );
-	$temp_pass = ( ! empty( $_POST["{$meta_id}_input"] ) ? $_POST["{$meta_id}_input"] : '' );
+	$is_checked = ( ! empty( $_POST[ $meta_id ] )           ? true : false );
+	$temp_pass 	= ( ! empty( $_POST[ "{$meta_id}_input" ] ) ? sanitize_text_field( $_POST[ "{$meta_id}_input" ] ) : '' );
+
 	if ( preg_match( "/['\"\<>]+/", $temp_pass ) ) {
 		$pass = preg_replace( "/['\"<>]+/", '', $temp_pass );
 	} else {
 		$pass = $temp_pass;
 	}
-	if ( empty( $is_checked ) ) {
-		$is_checked = 'false';
-	} else {
-		$is_checked = 'true';
-	}
-	return( array( $is_checked, $pass ) );
+	return array( $is_checked, $pass );
 }
 
 add_action( 'cmb_render_go_test_modifier', 'go_test_modifier' );
@@ -1017,14 +1026,15 @@ function go_test_modifier( $field_args ) {
 add_action( 'cmb_validate_go_test_modifier', 'go_validate_test_modifier', 10, 3 );
 function go_validate_test_modifier( $override_value, $post_id, $field_args ) {
 	$meta_id = $field_args['id'];
-	$mod_temp = ( ! empty( $_POST[ $meta_id ] ) ? $_POST[ $meta_id ] : null );
+	$mod_temp = ( ! empty( $_POST[ $meta_id ] ) ? sanitize_text_field( $_POST[ $meta_id ] ) : '' );
 	if ( ! empty( $mod_temp ) ) {
-		if ( ! preg_match( "/[0-9]+/", $mod_temp ) ) {
+		if ( ! preg_match( '/[0-9]+/', $mod_temp ) ) {
 			return 20;
 		} else {
 			if ( preg_match( "/[^0-9]+/", $mod_temp ) ) {
 				$mod = preg_replace( "/[^0-9]+/", '', $mod_temp );
-				if ( $mod > 0 && $mod <= 100) {
+				$mod = (int) $mod;
+				if ( $mod > 0 && $mod <= 100 ) {
 					return $mod;
 				} else {
 					return 20;
@@ -1301,11 +1311,11 @@ add_action( 'cmb_validate_go_test_field', 'go_validate_test_field', 10, 3);
 function go_validate_test_field( $unused_override_value, $unused_value, $field_args ) {
 	$ttc = $field_args['test_type'];
 
-	$question_temp = ( ! empty( $_POST["go_test_field_input_question_{$ttc}"] ) ? $_POST["go_test_field_input_question_{$ttc}"] : null );
-	$test_temp = ( ! empty( $_POST["go_test_field_values_{$ttc}"] ) ? $_POST["go_test_field_values_{$ttc}"] : null );
-	$select = ( ! empty( $_POST["go_test_field_select_{$ttc}"] ) ? $_POST["go_test_field_select_{$ttc}"] : null );
-	$block_count = ( ! empty( $_POST["go_test_field_block_count_{$ttc}"] ) ? (int) $_POST["go_test_field_block_count_{$ttc}"] : null );
-	$input_count_temp = ( ! empty( $_POST["go_test_field_input_count_{$ttc}"] ) ? $_POST["go_test_field_input_count_{$ttc}"] : null );
+	$question_temp 		= ( ! empty( $_POST["go_test_field_input_question_{$ttc}"] )	? $_POST["go_test_field_input_question_{$ttc}"] : null );
+	$test_temp 			= ( ! empty( $_POST["go_test_field_values_{$ttc}"] ) 			? $_POST["go_test_field_values_{$ttc}"] : null );
+	$select 			= ( ! empty( $_POST["go_test_field_select_{$ttc}"] ) 			? $_POST["go_test_field_select_{$ttc}"] : null );
+	$block_count 		= ( ! empty( $_POST["go_test_field_block_count_{$ttc}"] ) 		? (int) $_POST["go_test_field_block_count_{$ttc}"] : null );
+	$input_count_temp 	= ( ! empty( $_POST["go_test_field_input_count_{$ttc}"] ) 		? $_POST["go_test_field_input_count_{$ttc}"] : null );
 
 	$input_count = array();
 	if ( ! empty( $input_count_temp ) ) {
@@ -1370,38 +1380,37 @@ function go_repeat_amount() {
 
 add_filter( 'template_include', 'go_tasks_template_function', 1 );
 function go_tasks_template_function( $template_path ) {
-    if ( get_post_type() == 'tasks' ) {
-        if ( is_single() ) {
-            // checks if the file exists in the theme first,
-            // otherwise serve the file from the plugin
+	if ( get_post_type() == 'tasks' ) {
+		if ( is_single() ) {
+			// checks if the file exists in the theme first,
+			// otherwise serve the file from the plugin
 			
 			
 			
-            if ( $theme_file = locate_template( array (  'index.php' ) )
+			if ( $theme_file = locate_template( array (  'index.php' ) )
 		//$theme_file =	get_page_template()
 		 ) {
-                $template_path = $theme_file;
+				$template_path = $theme_file;
 				add_filter( 'the_content', 'go_tasks_filter_content' );
-            } 
-        }
-    }
-    return $template_path;
+			} 
+		}
+	}
+	return $template_path;
 }
 
 function go_tasks_filter_content() {
-	 global $wpdb;
-	 echo do_shortcode( '[go_task id="'.get_the_id().'"]' );
-	 }
+	echo do_shortcode( '[go_task id="'.get_the_id().'"]' );
+}
 	 
 function go_create_help_video_lb() {
 	?>
 	<div class="dark" style="display: none;"> </div>
-    <div class="light" style="display: none; <?php if ( is_admin() ) {?> height: 540px; width: 864px; margin: -270px 0 0 -432px;<?php } else { ?>height: <?php echo ( go_return_options( 'go_video_height' ) ) ?go_return_options( 'go_video_height' ) : '540';?>px; width: <?php echo ( go_return_options( 'go_video_width' ) ) ? go_return_options( 'go_video_width' ) : '864' ;?>px; margin: <?php echo ( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_height' ) / 2) : "-270" )."px 0 0 ".( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_width' ) / 2):"-432" )."px;"; } ?>">
-        <div id="go_help_video_container" style="height: 100%; width: 100%;">
-        	<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video/options>
-        </div>
-    </div>
-    <?php 
+	<div class="light" style="display: none; <?php if ( is_admin() ) {?> height: 540px; width: 864px; margin: -270px 0 0 -432px;<?php } else { ?>height: <?php echo ( go_return_options( 'go_video_height' ) ) ?go_return_options( 'go_video_height' ) : '540';?>px; width: <?php echo ( go_return_options( 'go_video_width' ) ) ? go_return_options( 'go_video_width' ) : '864' ;?>px; margin: <?php echo ( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_height' ) / 2) : "-270" )."px 0 0 ".( ( go_return_options( 'go_video_width' ) ) ? "-".( go_return_options( 'go_video_width' ) / 2):"-432" )."px;"; } ?>">
+		<div id="go_help_video_container" style="height: 100%; width: 100%;">
+			<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video/options>
+		</div>
+	</div>
+	<?php 
 }
 add_action( 'admin_head', 'go_create_help_video_lb' );
 add_action( 'wp_head', 'go_create_help_video_lb' );
@@ -1412,7 +1421,6 @@ function go_task_opt_help( $field, $title, $video_url = null ) {
 
 add_action( 'cmb_render_go_pick_order_of_chain', 'go_pick_order_of_chain' );
 function go_pick_order_of_chain() {
-	global $wpdb;
 	$task_id = get_the_id();
 	if( get_the_terms( $task_id, 'task_chains' ) ) {
 		$chain_terms_array = array_values( get_the_terms( $task_id, 'task_chains' ) );
@@ -1429,14 +1437,14 @@ function go_pick_order_of_chain() {
 		) );
 		
 		?>
-        <ul id="go_task_order_in_chain" class="go_sortable">
+		<ul id="go_task_order_in_chain" class="go_sortable">
 			<?php
-            foreach( $posts_in_chain as $post => $obj ) {
-            	echo "<li class='go_task_in_chain' post_id='{$obj->ID}'>{$obj->post_title}</li>";
-            }
-            ?>
+			foreach( $posts_in_chain as $post => $obj ) {
+				echo "<li class='go_task_in_chain' post_id='{$obj->ID}'>{$obj->post_title}</li>";
+			}
+			?>
 		</ul>
-        <?php
+		<?php
 	}
 }
 
@@ -1458,9 +1466,11 @@ function go_stage_reward( $field_args ) {
 		$presets = get_option( 'go_presets' );
 		$points = $presets['points'];
 		$currency = $presets['currency'];
+
 		$rewards = array(
 			'points' => $points[0],
-			'currency' => $currency[0]
+			'currency' => $currency[0],
+			'bonus_currency' => array( 0, 0, 0, 0, 0 ),
 		);
 	} else {
 		$rewards = unserialize( $custom['go_presets'][0] );
@@ -1481,12 +1491,13 @@ function go_stage_reward( $field_args ) {
 	echo "</div>";
 }
 
-function go_update_task_order () {
-	global $wpdb;
-	$order = $_POST['order'];
-	$chain_name = $_POST['chain_name'];
-	$id = $_POST['post_id'];
-	foreach( $order as $pos => $task_id ) {
+function go_update_task_order() {
+	check_ajax_referer( 'go_update_task_order_' . get_the_ID() );
+
+	$order = ( ! empty( $_POST['order'] ) ? (array) $_POST['order'] : array() );
+	$chain_name = ( ! empty( $_POST['chain_name'] ) ? sanitize_text_field( $_POST['chain_name'] ) : '' );
+
+	foreach ( $order as $pos => $task_id ) {
 		add_post_meta( $task_id, 'chain', $chain_name, true );
 		update_post_meta( $task_id, 'chain_position', $pos );
 	}
@@ -1621,7 +1632,7 @@ function go_update_task_chain_meta( $post_id ) {
 }
 
 add_action( 'delete_term_taxonomy', 'go_remove_task_chain_from_posts', 10, 1);
-function go_remove_task_chain_from_posts( $term_id) {
+function go_remove_task_chain_from_posts( $term_id ) {
 	$term = get_term_by( 'id', $term_id, 'task_chains' );
 	$posts_in_chain = get_posts(array(
 		'post_type' => 'tasks',
@@ -1632,7 +1643,7 @@ function go_remove_task_chain_from_posts( $term_id) {
 	if ( ! empty( $posts_in_chain ) ) {
 		foreach ( $posts_in_chain as $key => $post ) {
 			$post_chain_name = get_post_meta( $post->ID, 'chain', true );
-			if ( $post_chain_name == $term->name ) {
+			if ( ! empty( $term->name ) && $post_chain_name === $term->name ) {
 				delete_post_meta( $post->ID, 'chain' );
 				delete_post_meta( $post->ID, 'chain_position' );
 				
@@ -1652,6 +1663,7 @@ add_action( 'post_submitbox_misc_actions', 'go_clone_post_ajax' );
 function go_clone_post_ajax() {
 	global $post;
 	$post_type = get_post_type( $post );
+	$nonce = wp_create_nonce( 'go_clone_post_' . $post->ID );
 
 	// When the "Clone" button is pressed, send an ajax call to the go_clone_post() function to
 	// clone the post using the sent post id and post type.
@@ -1667,14 +1679,17 @@ function go_clone_post_ajax() {
 					url: '".admin_url( 'admin-ajax.php' )."',
 					type: 'POST',
 					data: {
+						_ajax_nonce: '{$nonce}',
 						action: 'go_clone_post',
 						post_id: {$post->ID},
 						post_type: '{$post_type}'
-					}, success: function( url ) {
-						var reg = new RegExp( \"^(http)\" );
-						var match = reg.test( url );
-						if ( '' != url && match ) {
-							window.location = url;
+					}, success: function( res ) {
+						if ( -1 !== res && '' !== res ) {
+							var reg = new RegExp( \"^(http)\" );
+							var url_match = reg.test( res );
+							if ( url_match ) {
+								window.location = res;
+							}
 						}
 					}
 				});
@@ -1690,8 +1705,12 @@ function go_clone_post_ajax() {
 function go_clone_post() {
 
 	// Grab the post id from the ajax call and use it to grab data from the original post.
-	$post_id = $_POST['post_id'];
-	$post_type = $_POST['post_type'];
+	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : get_the_ID() );
+
+	// verify the nonce passed in the AJAX request
+	check_ajax_referer( 'go_clone_post_' . $post_id );
+
+	$post_type = ( ! empty( $_POST['post_type'] ) ? sanitize_key( $_POST['post_type'] ) : '' );
 	$post_data = get_post( $post_id, ARRAY_A );
 	$post_custom = get_post_custom( $post_id );
 	
@@ -1824,16 +1843,18 @@ function go_store_cost() {
 
 add_action( 'cmb_validate_go_store_cost', 'go_validate_store_cost' );
 function go_validate_store_cost() {
-	$go_currency_cost = ( ! empty( $_POST['go_currency_cost'] ) ? $_POST['go_currency_cost'] : 0 );
-	$go_point_cost = ( ! empty( $_POST['go_point_cost'] ) ? $_POST['go_point_cost'] : 0 );
-	$go_bonus_currency_cost = ( ! empty( $_POST['go_bonus_currency_cost'] ) ? $_POST['go_bonus_currency_cost'] : 0 );
-	$go_penalty_cost = ( ! empty( $_POST['go_penalty_cost'] ) ? $_POST['go_penalty_cost'] : 0 );
-	$go_minutes_cost = ( ! empty( $_POST['go_minutes_cost'] ) ? $_POST['go_minutes_cost'] : 0 );
-	return ( 
-		array(
-			$go_currency_cost, $go_point_cost, $go_bonus_currency_cost, 
-			$go_penalty_cost, $go_minutes_cost 
-		)
+	$go_currency_cost       = ( ! empty( $_POST['go_currency_cost'] )       ? (int) $_POST['go_currency_cost'] : 0 );
+	$go_point_cost          = ( ! empty( $_POST['go_point_cost'] )          ? (int) $_POST['go_point_cost'] : 0 );
+	$go_bonus_currency_cost = ( ! empty( $_POST['go_bonus_currency_cost'] ) ? (int) $_POST['go_bonus_currency_cost'] : 0 );
+	$go_penalty_cost        = ( ! empty( $_POST['go_penalty_cost'] )        ? (int) $_POST['go_penalty_cost'] : 0 );
+	$go_minutes_cost        = ( ! empty( $_POST['go_minutes_cost'] )        ? (int) $_POST['go_minutes_cost'] : 0 );
+
+	return array(
+		$go_currency_cost,
+		$go_point_cost,
+		$go_bonus_currency_cost,
+		$go_penalty_cost,
+		$go_minutes_cost,
 	);
 }
 
@@ -1841,32 +1862,32 @@ add_action( 'cmb_render_go_store_limit', 'go_store_limit' );
 function go_store_limit() {
 	$custom = get_post_custom();
 	$content_array = ( ! empty( $custom['go_mta_store_limit'][0] ) ? unserialize( $custom['go_mta_store_limit'][0] ) : null );
-	$is_checked = $content_array[0];
-	if ( empty( $is_checked ) ) {
-		$is_checked = "true";
+
+	// turn the option on by default
+	if ( ! isset( $content_array[0] ) ) {
+		$content_array[0] = true;
 	}
+	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
 	$limit = $content_array[1];
 	echo "
-		<input id='go_store_limit_checkbox' name='go_store_limit' type='checkbox' ".( ( $is_checked == 'true' ) ? 'checked' : '' )."/>
+		<input id='go_store_limit_checkbox' name='go_store_limit' type='checkbox' {$is_checked}/>
 		<input id='go_store_limit_input' name='go_store_limit_input' type='text' style='display: none;' placeholder='Limit'".( ! empty( $limit ) ? "value='{$limit}'" : '' )."/>
 	";
 }
 
 add_action( 'cmb_validate_go_store_limit', 'go_validate_store_limit' );
 function go_validate_store_limit() {
-	$is_checked = ( ! empty( $_POST['go_store_limit'] ) ? 'true' : 'false' );
-	$limit = ( ! empty( $_POST['go_store_limit_input'] ) ? $_POST['go_store_limit_input'] : null );
-	return ( array( $is_checked, $limit ) );
+	$is_checked = ( ! empty( $_POST['go_store_limit'] )       ? true : false );
+	$limit 		= ( ! empty( $_POST['go_store_limit_input'] ) ? sanitize_text_field( $_POST['go_store_limit_input'] ) : '' );
+
+	return array( $is_checked, $limit );
 }
 
 add_action( 'cmb_render_go_store_focus', 'go_store_focus' );
 function go_store_focus() {
 	$custom = get_post_custom();
 	$content_array = ( ! empty( $custom['go_mta_store_focus'][0] ) ? unserialize( $custom['go_mta_store_focus'][0] ) : null );
-	$is_checked = ( ! empty( $content_array ) ? $content_array[0] : null );
-	if ( empty( $is_checked ) ) {
-		$is_checked = "false";
-	}
+	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
 	$profession = $content_array[1];
 	$user_id = get_current_user_id();
 	$focus_switch = go_return_options( 'go_focus_switch' );
@@ -1876,7 +1897,7 @@ function go_store_focus() {
 		if ( ! empty( $go_foci ) ) {
 			if ( count( $go_foci ) > 1 || ( count( $go_foci ) == 1 && ! empty( $go_foci[0] ) ) ) {
 				echo "
-					<input id='go_store_focus_checkbox' name='go_mta_store_focus' type='checkbox' ".( ( $is_checked == 'true' ) ? "checked" : '' )."/>
+					<input id='go_store_focus_checkbox' name='go_mta_store_focus' type='checkbox' {$is_checked}/>
 					<select id='go_store_focus_select' name='go_store_focus_select' style='display: none;'>
 				";
 				foreach ( $go_foci as $key => $focus ) {
@@ -1898,46 +1919,44 @@ function go_store_focus() {
 
 add_action( 'cmb_validate_go_store_focus', 'go_validate_store_focus' );
 function go_validate_store_focus() {
-	$is_checked = ( ! empty( $_POST['go_mta_store_focus'] ) ? 'true' : 'false' );
-	$focus_select = ( ! empty( $_POST['go_store_focus_select'] ) ? $_POST['go_store_focus_select'] : null );
-	return ( array( $is_checked, $focus_select ) );
+	$is_checked   = ( ! empty( $_POST['go_mta_store_focus'] )    ? true : false );
+	$focus_select = ( ! empty( $_POST['go_store_focus_select'] ) ? sanitize_text_field( $_POST['go_store_focus_select'] ) : '' );
+
+	return array( $is_checked, $focus_select );
 }
 
 add_action( 'cmb_render_go_store_receipt', 'go_store_receipt' );
 function go_store_receipt() {
 	$custom = get_post_custom();
 	$store_receipt_option = get_option( 'go_store_receipt_switch' );
-	$is_checked = ( ! empty( $custom['go_mta_store_receipt'][0] ) ? $custom['go_mta_store_receipt'][0] : null );
-	if ( $store_receipt_option == 'On' ) {
-		if ( empty( $is_checked ) ) {
-			$is_checked = "true";
-		}
-	} else {
-		if ( empty( $is_checked ) ) {
-			$is_checked = "false";
-		}
+
+	// turn the option on by default
+	if ( ! isset( $custom['go_mta_store_receipt'][0] ) ) {
+		$custom['go_mta_store_receipt'][0] = true;
 	}
-	echo "<input id='go_store_receipt_checkbox' name='go_store_receipt' type='checkbox'".( ( $is_checked == 'true' ) ? "checked" : '' )."/>";
+	$is_checked = ( ! empty( $custom['go_mta_store_receipt'][0] ) ? 'checked' : '' );
+
+	echo "<input id='go_store_receipt_checkbox' name='go_store_receipt' type='checkbox' {$is_checked}/>";
 }
 
 add_action( 'cmb_validate_go_store_receipt', 'go_validate_store_receipt' );
 function go_validate_store_receipt() {
-	$is_checked = ( ! empty( $_POST['go_store_receipt'] ) ? 'true' : 'false' );
-	return ( $is_checked );
+	$is_checked = ( ! empty( $_POST['go_store_receipt'] ) ? true : false );
+
+	return $is_checked;
 }
 
 add_action( 'cmb_render_go_store_filter', 'go_store_filter' );
 function go_store_filter() {
 	$custom = get_post_custom();
 	$content_array = ( ! empty( $custom['go_mta_store_filter'][0] ) ? unserialize( $custom['go_mta_store_filter'][0] ) : null );
-	$is_checked = ( ! empty( $content_array[0] ) ? 'true' : 'false' );
+	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
 	$chosen_rank = $content_array[1];
 	$bonus_currency_filter = $content_array[2];
 	$penalty_filter = $content_array[3];
 	$ranks_array = get_option( 'go_ranks' );
 	$ranks = $ranks_array['name'];
-	echo "
-		<input id='go_store_filter_checkbox' name='go_mta_store_filter' type='checkbox' ".( ( $is_checked == 'true' ) ? "checked" : '' )."/>";
+	echo "<input id='go_store_filter_checkbox' name='go_mta_store_filter' type='checkbox' {$is_checked}/>";
 
 	if ( ! empty( $ranks ) && is_array( $ranks ) ) {
 		echo "<select id='go_store_filter_select' class='go_store_filter_input' name='go_store_filter_select' style='display: none;'>";
@@ -1958,11 +1977,17 @@ function go_store_filter() {
 
 add_action( 'cmb_validate_go_store_filter', 'go_validate_store_filter' );
 function go_validate_store_filter() {
-	$is_checked = ( ! empty( $_POST['go_mta_store_filter'] ) ? 'true' : 'false' );
-	$chosen_rank = ( ! empty( $_POST['go_store_filter_select'] ) ? $_POST['go_store_filter_select'] : null );
-	$b_filter = ( ! empty( $_POST['go_store_filter_bonus_currency'] ) ? $_POST['go_store_filter_bonus_currency'] : null );
-	$d_filter = ( ! empty( $_POST['go_store_filter_penalty'] ) ? $_POST['go_store_filter_penalty'] : null );
-	return ( array( $is_checked, $chosen_rank, $b_filter, $d_filter ) );
+	$is_checked     = ( ! empty( $_POST['go_mta_store_filter'] )            ? true : false );
+	$chosen_rank    = ( ! empty( $_POST['go_store_filter_select'] )         ? sanitize_text_field( $_POST['go_store_filter_select'] ) : '' );
+	$b_filter       = ( ! empty( $_POST['go_store_filter_bonus_currency'] ) ? (int) $_POST['go_store_filter_bonus_currency'] : 0 );
+	$d_filter       = ( ! empty( $_POST['go_store_filter_penalty'] )        ? (int) $_POST['go_store_filter_penalty'] : 0 );
+
+	return array(
+		$is_checked,
+		$chosen_rank,
+		$b_filter,
+		$d_filter,
+	);
 }
 
 add_action( 'cmb_render_go_item_url', 'go_item_url' );
@@ -1985,39 +2010,47 @@ function go_store_gift() {
 	$content_array = ( ! empty( $custom['go_mta_store_gift'][0] ) ? unserialize( $custom['go_mta_store_gift'][0] ) : null );
 	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
 	
-	$c_gift = $content_array[1];
-	$p_gift = $content_array[2];
-	$b_gift = $content_array[3];
-	$t_gift = $content_array[4];
+	$c_gift = ( ! empty( $content_array[1] ) ? (int) $content_array[1] : '' );
+	$p_gift = ( ! empty( $content_array[2] ) ? (int) $content_array[2] : '' );
+	$b_gift = ( ! empty( $content_array[3] ) ? (int) $content_array[3] : '' );
+	$t_gift = ( ! empty( $content_array[4] ) ? (int) $content_array[4] : '' );
 
 	echo "
 		<input id='go_store_gift_checkbox' name='go_mta_store_gift' type='checkbox' {$is_checked}/>
-		<input class='go_store_gift_input' name='go_store_gift_currency' type='text' placeholder='".go_return_options( 'go_currency_name' )."' ".( ( ! empty( $c_gift ) ) ? "value='{$c_gift}'" : '' )."/>
-		<input class='go_store_gift_input' name='go_store_gift_points' type='text' placeholder='".go_return_options( 'go_points_name' )."' ".( ( ! empty( $p_gift ) ) ? "value='{$p_gift}'" : '' )."/>
-		<input class='go_store_gift_input' name='go_store_gift_bonus_currency' type='text' placeholder='".go_return_options( 'go_bonus_currency_name' )."' ".( ( ! empty( $b_gift ) ) ? "value='{$b_gift}'" : '' )."/>
-		<input class='go_store_gift_input' name='go_store_gift_time' type='text' placeholder='".go_return_options( 'go_minutes_name' )."' ".( ( ! empty( $t_gift ) ) ? "value='{$t_gift}'" : '' )."/>
+		<input class='go_store_gift_input' name='go_store_gift_currency' type='text' placeholder='".go_return_options( 'go_currency_name' )."' value='{$c_gift}'/>
+		<input class='go_store_gift_input' name='go_store_gift_points' type='text' placeholder='".go_return_options( 'go_points_name' )."' value='{$p_gift}'/>
+		<input class='go_store_gift_input' name='go_store_gift_bonus_currency' type='text' placeholder='".go_return_options( 'go_bonus_currency_name' )."' value='{$b_gift}'/>
+		<input class='go_store_gift_input' name='go_store_gift_time' type='text' placeholder='".go_return_options( 'go_minutes_name' )."' value='{$t_gift}'/>
 	";
 }
 
 add_action( 'cmb_validate_go_store_gift', 'go_validate_store_gift' );
 function go_validate_store_gift() {
-	$is_checked = ( ! empty( $_POST['go_mta_store_gift'] ) ? true : false );
-	$c_gift = ( ! empty( $_POST['go_store_gift_currency'] ) ? $_POST['go_store_gift_currency'] : null );
-	$p_gift = ( ! empty( $_POST['go_store_gift_points'] ) ? $_POST['go_store_gift_points'] : null );
-	$b_gift = ( ! empty( $_POST['go_store_gift_bonus_currency'] ) ? $_POST['go_store_gift_bonus_currency'] : null );
-	$t_gift = ( ! empty( $_POST['go_store_gift_time'] ) ? $_POST['go_store_gift_time'] : null );
+	$is_checked = ( ! empty( $_POST['go_mta_store_gift'] )            ? true : false );
+	$c_gift     = ( ! empty( $_POST['go_store_gift_currency'] )       ? $_POST['go_store_gift_currency'] : null );
+	$p_gift     = ( ! empty( $_POST['go_store_gift_points'] )         ? $_POST['go_store_gift_points'] : null );
+	$b_gift     = ( ! empty( $_POST['go_store_gift_bonus_currency'] ) ? $_POST['go_store_gift_bonus_currency'] : null );
+	$t_gift     = ( ! empty( $_POST['go_store_gift_time'] )           ? $_POST['go_store_gift_time'] : null );
 
-	return ( array( $is_checked, $c_gift, $p_gift, $b_gift, $t_gift ) );
+	return array(
+		$is_checked,
+		$c_gift,
+		$p_gift,
+		$b_gift,
+		$t_gift
+	);
 }
 
 add_action( 'cmb_render_go_badge_input', 'go_badge_input', 10, 1);
 function go_badge_input( $field_args ) {
 	$custom = get_post_custom();
 	$content = ( ! empty( $custom[ $field_args['id'] ][0] ) ? unserialize( $custom[ $field_args['id'] ][0] ) : null );
-	$checked = ( ! empty( $content ) ? $content[0] : 'false' );
-	$badges = ( ! empty( $content ) ? $content[1] : null );
+	
+	$checked = ( ! empty( $content[0] ) ? 'checked' : '' );
+	$badges  = ( ! empty( $content[1] ) ? (array) $content[1] : array() );
+	
 	?>
-	<input type='checkbox' name='<?php echo $field_args['id']; ?>' class='go_badge_input_toggle' stage='<?php echo $field_args['stage']; ?>' <?php echo ( ( $checked  == 'true' ) ? "checked" : '' ); ?>/>
+	<input type='checkbox' name='<?php echo $field_args['id']; ?>' class='go_badge_input_toggle' stage='<?php echo $field_args['stage']; ?>' <?php echo $checked; ?>/>
 	<div id='go_stage_<?php echo $field_args['stage']; ?>_badges' class='go_stage_badge_container'>
 	<?php
 	if ( ! empty( $badges ) ) {
@@ -2036,34 +2069,32 @@ function go_badge_input( $field_args ) {
 	<?php
 }
 
-add_action( 'cmb_validate_go_badge_input', 'go_validate_badge_input', 10, 3);
+add_action( 'cmb_validate_go_badge_input', 'go_validate_badge_input', 10, 3 );
 function go_validate_badge_input( $override_value, $value, $field_args ) {
 	$checkbox_id = $field_args['id'];
-	$checked = ( ! empty( $_POST[ $checkbox_id ] ) ? 'true' : 'false' );
-	$badges = ( ! empty( $_POST['go_badge_input_stage_'.$field_args['stage']] ) ? $_POST['go_badge_input_stage_'.$field_args['stage']] : null );
 
-	return( array( $checked, $badges ) );
+	$checked = ( ! empty( $_POST[ $checkbox_id ] ) ? true : false );
+	$badges = array();
+	if ( ! empty( $_POST[ "go_badge_input_stage_{$field_args['stage']}" ] ) ) {
+		$badges = (array) $_POST[ "go_badge_input_stage_{$field_args['stage']}" ];
+	}
+
+	return array( $checked, $badges );
 }
 
 add_action( 'cmb_render_go_store_bonus', 'go_store_bonus' );
 function go_store_bonus() {
 	$custom = get_post_custom();
-	$is_checked = ( ! empty( $custom['go_mta_store_bonus'][0] ) ? $custom['go_mta_store_bonus'][0] : null );
-	if ( empty( $is_checked ) ) {
-		$is_checked = "false";
-	}
-	echo "<input id='go_store_bonus_checkbox' name='go_store_bonus' type='checkbox'".( ( $is_checked == 'true' ) ? "checked" : '' )."/>";
+	$is_checked = ( ! empty( $custom['go_mta_store_bonus'][0] ) ? 'checked' : '' );
+
+	echo "<input id='go_store_bonus_checkbox' name='go_store_bonus' type='checkbox' {$is_checked}/>";
 }
 
 add_action( 'cmb_validate_go_store_bonus', 'go_validate_store_bonus' );
 function go_validate_store_bonus() {
-	$is_checked = $_POST['go_store_bonus'];
-	if ( empty( $is_checked ) ) {
-		$is_checked = "false";
-	} else {
-		$is_checked = "true";
-	}
-	return ( $is_checked );
+	$is_checked = ( ! empty( $_POST['go_store_bonus'] ) ? true : false );
+
+	return $is_checked;
 }
 
 ?>

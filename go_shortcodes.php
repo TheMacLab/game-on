@@ -2,6 +2,7 @@
 
 function go_list_user_URL() {
 	$class_names = get_option( 'go_class_a' );
+	$nonce = wp_create_nonce( 'go_list_user_url_' . get_current_user_id() );
 ?>
 	<select id="go_period_list_user_url">
 		<option value="select_option">Select an option</option>
@@ -20,14 +21,17 @@ function go_list_user_URL() {
 			url: go_ajaxurl,
 			type: "POST",
 			data:{
+				_ajax_nonce: '<?php echo $nonce; ?>',
 				action: 'listurl',
 				class_a_choice: period_val
 			},
-			success: function( data ) {
-				jQuery( '#go_list_user_url' ).append( data );
-				period.change( function() {
-					jQuery( '#go_list_user_url' ).html( '' );
-				});
+			success: function( res ) {
+				if ( -1 !== res ) {
+					jQuery( '#go_list_user_url' ).append( res );
+					period.change( function() {
+						jQuery( '#go_list_user_url' ).html( '' );
+					});
+				}
 			}
 		});
 	});
@@ -39,19 +43,22 @@ function go_list_user_URL() {
 function listurl() {
 	global $wpdb;
 	if ( isset( $_POST['class_a_choice'] ) ) {
-		$class_a_choice = $_POST['class_a_choice'];
-		$table_name_go_totals= $wpdb->prefix.'go_totals';
-		$uids = $wpdb->get_results( "SELECT uid FROM {$table_name_go_totals}" );
-		foreach( $uids as $uid ) {
-			foreach( $uid as $id ) {
-				$user = get_user_by( 'id', $id );
-				$user_class = get_user_meta( $id, 'go_classifications', true );
-				if ( $user_class) {
-					$class = array_keys( $user_class );
-					$check = in_array( $class_a_choice, $class );
-					if ( $check ) {
-						$user_url = $user->user_url;
-						$user_username = $user->display_name;
+		check_ajax_referer( 'go_list_user_url_' . get_current_user_id() );
+
+		$class_a_choice = sanitize_text_field( $_POST['class_a_choice'] );
+		$table_name_go_totals = $wpdb->prefix.'go_totals';
+		$go_user_id_array = $wpdb->get_results( "SELECT uid FROM {$table_name_go_totals}" );
+		foreach ( $go_user_id_array as $user_id_obj ) {
+			$user_id = $user_id_obj->uid;
+			$user_class = get_user_meta( $user_id, 'go_classifications', true );
+			if ( ! empty( $user_class ) ) {
+				$class = array_keys( $user_class );
+				$user_in_class = in_array( $class_a_choice, $class );
+				if ( $user_in_class ) {
+					$user = get_user_by( 'id', $user_id );
+					$user_url = $user->user_url;
+					if ( ! empty( $user->user_url ) ) {
+						$user_username = $user->user_name;
 						$user_complete_url = "<a class='go_user_url' href='{$user_url}' target='_blank' >{$user_username}</a><br/>";
 						echo $user_complete_url;
 					}
@@ -59,7 +66,7 @@ function listurl() {
 			}
 		}
 	}
-	die();
+	die( -1 );
 }
 add_shortcode( 'go_list_URL', 'go_list_user_URL' );
 
@@ -382,8 +389,10 @@ add_shortcode ( 'sb_login', 'go_login' );
 add_shortcode ( 'go_login', 'go_login' );
 
 function go_get_category() {
-	global $wpdb;
 	$terms = get_taxonomies();
+	$post_id = get_the_ID();
+	$nonce_terms = wp_create_nonce( 'go_get_all_terms_' . $post_id );
+	$nonce_posts = wp_create_nonce( 'go_get_all_posts_' . $post_id );
 	?>
     <script type="text/javascript">
 		var go_ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
@@ -399,12 +408,13 @@ function go_get_category() {
 				type:"POST", 
 				url: go_ajaxurl, 
 				data: {
+					_ajax_nonce: '<?php echo $nonce_terms; ?>',
+					action: 'go_get_all_terms',
 					taxonomy: val,
-					action: 'go_get_all_terms'
 				}, 
-				success: function( data ) {
-					if ( data ) {
-						el.parent().after( data );
+				success: function( res ) {
+					if ( -1 !== res ) {
+						el.parent().after( res );
 					}
 				}
 			});
@@ -422,12 +432,15 @@ function go_get_category() {
 				type: "POST",
 				url: go_ajaxurl,
 				data:{
+					_ajax_nonce: '<?php echo $nonce_posts; ?>',
+					action: 'go_get_all_posts',
 					taxonomy: taxonomy,
 					terms: terms,
-					action: 'go_get_all_posts'
 				},
-				success: function( data ) {
-					jQuery( '#' + taxonomy + '_terms' ).after( data );
+				success: function( res ) {
+					if ( -1 !== res ) {
+						jQuery( '#' + taxonomy + '_terms' ).after( res );
+					}
 				}
 			});
 		}
@@ -445,7 +458,9 @@ function go_get_category() {
 
 add_shortcode( 'go_get_category', 'go_get_category' );
 function go_get_all_terms() {
-	$taxonomy = $_POST['taxonomy'];
+	check_ajax_referer( 'go_get_all_terms_' . get_the_ID() );
+
+	$taxonomy = ( ! empty( $_POST['taxonomy'] ) ? sanitize_key( $_POST['taxonomy'] ) : '' );
 	if ( $taxonomy != '' ) {
 		echo "<div id='{$taxonomy}_terms'>";
 	}
@@ -460,9 +475,10 @@ function go_get_all_terms() {
 }
 
 function go_get_all_posts() {
-	//what posts should be returned???
-	$taxonomy = $_POST['taxonomy'];
-	$terms = $_POST['terms'];
+	check_ajax_referer( 'go_get_all_posts_' . get_the_ID() );
+
+	$taxonomy = ( ! empty( $_POST['taxonomy'] ) ? sanitize_key( $_POST['taxonomy'] ) : '' );
+	$terms = ( ! empty( $_POST['terms'] ) ? (array) $_POST['terms'] : array() );
 	$posts = get_posts(
 		array(
 			'posts_per_page' => -1,
@@ -505,21 +521,34 @@ function go_task_pod_tasks( $atts ) {
 			)
 		)
 	);
-	$pod_task_ids = array();
-	foreach ( $current_tasks as $curr_task_obj ) {
-		$pod_task_ids[] = $curr_task_obj->ID;
-	}
 	$user_id = get_current_user_id();
-	$pod_task_id_str = implode( ', ', $pod_task_ids );
-	$task_statuses = $wpdb->get_results("SELECT post_id, status FROM {$go_table_name} WHERE uid={$user_id} AND post_id IN ({$pod_task_id_str})");
-	$pod_task_statuses = array();
 
-	foreach ( $task_statuses as $task_status ) {
-		$pod_task_statuses[ $task_status->post_id ] = $task_status->status;
+	$task_in_pod_args = array( $user_id );
+	foreach ( $current_tasks as $curr_task_obj ) {
+		$task_in_pod_args[] = $curr_task_obj->ID;
 	}
-	$string = '';
+
+	$task_in_pod_query = "
+		SELECT post_id, status 
+		FROM {$go_table_name} 
+		WHERE uid = %d AND post_id IN (";
+	for ( $i = 0; $i < count( $current_tasks ); $i++ ) {
+		if ( 0 !== $i ) {
+			$task_in_pod_query .= ',';
+		}
+		$task_in_pod_query .= '%d';
+	}
+	$task_in_pod_query .= ')';
+
+	$task_in_pod = $wpdb->get_results( $wpdb->prepare( $task_in_pod_query, $task_in_pod_args ) );
+
+	$pod_task_statuses = array();
+	foreach ( $task_in_pod as $task_data ) {
+		$pod_task_statuses[ $task_data->post_id ] = $task_data->status;
+	}
+	$output_str = '';
 	$tasks_finished = 0;
-	
+
 	$pods_options = get_option( 'go_task_pod_globals' );
 	$name_entered = $atts['pod_name'];
 	$slug = strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $name_entered ) ) );
@@ -528,16 +557,16 @@ function go_task_pod_tasks( $atts ) {
 		if ( 'third_stage' == $stage_required ) {
 			if ( isset( $pod_task_statuses[ $curr_task->ID ] ) && $pod_task_statuses[ $curr_task->ID ] >= 3 ) {
 				$tasks_finished++;
-				$string .= '<div class="pod_finished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
+				$output_str .= '<div class="pod_finished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			} else if ( ! isset( $pod_task_statuses[ $curr_task->ID ] ) || $pod_task_statuses[ $curr_task->ID ] < 3 ) {
-				$string .= '<div class="pod_unfinished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
+				$output_str .= '<div class="pod_unfinished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			}
 		} else {
 			if ( isset( $pod_task_statuses[ $curr_task->ID ] ) && $pod_task_statuses[ $curr_task->ID ] >= 4 ) {
 				$tasks_finished++;
-				$string .= '<div class="pod_finished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
+				$output_str .= '<div class="pod_finished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			} else if ( ! isset( $pod_task_statuses[ $curr_task->ID ] ) || $pod_task_statuses[ $curr_task->ID ] < 4 ) {
-				$string .= '<div class="pod_unfinished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
+				$output_str .= '<div class="pod_unfinished" name="pod_div" value=""><a href="'.get_permalink( $curr_task->ID ).'" class="pod_link">'.get_the_title( $curr_task->ID ).'</a></div><br/>';
 			}
 		}
 	}
@@ -561,14 +590,30 @@ function go_task_pod_tasks( $atts ) {
 				)
 			)
 		);
-		$previous_pod_task_ids = array();
+		$previous_tasks_in_pod_args = array( $user_id );
 		foreach ( $previous_tasks as $prev_task_obj ) {
-			$previous_pod_task_ids[] = $prev_task_obj->ID;
+			$previous_tasks_in_pod_args[] = $prev_task_obj->ID;
 		}
-		$previous_pod_task_id_str = implode( ', ', $previous_pod_task_ids );
-		$previous_task_statuses = $wpdb->get_results("SELECT post_id, status FROM {$go_table_name} WHERE uid={$user_id} AND post_id IN ({$previous_pod_task_id_str})");
-		$previous_pod_task_statuses = array();
+		$previous_tasks_in_pod_query = "
+			SELECT post_id, status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id IN (";
+		for ( $x = 0; $x < count( $previous_tasks ); $x++ ) {
+			if ( 0 !== $x ) {
+				$previous_tasks_in_pod_query .= ',';
+			}
+			$previous_tasks_in_pod_query .= '%d';
+		}
+		$previous_tasks_in_pod_query .= ')';
 
+		$previous_task_statuses = $wpdb->get_results(
+			$wpdb->prepare(
+				$previous_tasks_in_pod_query,
+				$previous_tasks_in_pod_args
+			)
+		);
+
+		$previous_pod_task_statuses = array();
 		foreach ( $previous_task_statuses as $task_status ) {
 			$previous_pod_task_statuses[ $task_status->post_id ] = $task_status->status;
 		}
@@ -608,15 +653,15 @@ function go_task_pod_tasks( $atts ) {
 	if ( '...' !== $next_pod ) {
 		if ( $tasks_finished >= $tasks_required ) {
 			$pod_link = $pods_options[ $next_pod_slug ]['go_pod_link'];
-			return "{$string}<b>Continue to next Pod: <a href='{$pod_link}' target='_top'>{$next_pod}</a></b><br/>";
+			return "{$output_str}<b>Continue to next Pod: <a href='{$pod_link}' target='_top'>{$next_pod}</a></b><br/>";
 		} else {
-			return "{$string}<b>Stage required to complete: {$stage}<br/>You have finished {$tasks_finished} of {$tasks_required} {$tasks_plural_name} required to continue to the next Pod.</b>";
+			return "{$output_str}<b>Stage required to complete: {$stage}<br/>You have finished {$tasks_finished} of {$tasks_required} {$tasks_plural_name} required to continue to the next Pod.</b>";
 		}
 	} else {		
 		if ( $tasks_finished >= $tasks_required ) {
-			return "{$string}<b>You have completed this Pod Chain.</b><br/>";
+			return "{$output_str}<b>You have completed this Pod Chain.</b><br/>";
 		} else {
-			return "{$string}<b>Stage required to complete: {$stage}<br/>You have finished {$tasks_finished} of {$tasks_required} {$tasks_plural_name} required to complete this Pod.</b>";
+			return "{$output_str}<b>Stage required to complete: {$stage}<br/>You have finished {$tasks_finished} of {$tasks_required} {$tasks_plural_name} required to complete this Pod.</b>";
 		}
 	}
 }

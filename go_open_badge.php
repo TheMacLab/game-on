@@ -210,22 +210,24 @@ function go_clean_badges ( $user_id ) {
 	$user_badges = get_user_meta( $user_id, 'go_badges', true );
 	$modified_badges = $user_badges;
 	$attachment_link = '';
-	
-	foreach ( $user_badges as $key => $badge_id ) {
 
-		// this will hold the url for the media attachment, if it exists
-		$attachment_link = wp_get_attachment_link( $badge_id );
-		if ( 'Missing Attachment' === $attachment_link ) {
-			unset( $modified_badges[ $key ] );
+	if ( ! empty( $user_badges ) ) {
+		foreach ( $user_badges as $key => $badge_id ) {
+
+			// this will hold the url for the media attachment, if it exists
+			$attachment_link = wp_get_attachment_link( $badge_id );
+			if ( 'Missing Attachment' === $attachment_link ) {
+				unset( $modified_badges[ $key ] );
+			}
 		}
-	}
 
-	// if we actually made changes, update the user's meta data
-	if ( $modified_badges != $user_badges ) {
+		// if we actually made changes, update the user's meta data
+		if ( $modified_badges != $user_badges ) {
 
-		// unset() can leave holes in an array, this will reorganize the array to deal with that
-		$modified_badges = array_values( $modified_badges );
-		update_user_meta( $user_id, 'go_badges', $modified_badges );
+			// unset() can leave holes in an array, this will reorganize the array to deal with that
+			$modified_badges = array_values( $modified_badges );
+			update_user_meta( $user_id, 'go_badges', $modified_badges );
+		}
 	}
 }
 ?>

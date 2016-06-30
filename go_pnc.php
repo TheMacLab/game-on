@@ -52,7 +52,7 @@ function go_add_currency( $user_id, $reason, $status, $raw_points, $raw_currency
 // Adds currency and points for reasons that are post tied.
 function go_add_post(
 		$user_id, $post_id, $status, $points, $currency, $bonus_currency = null,
-		$minutes = null, $page_id, $repeat = null, $count = null, $e_fail_count = null, $a_fail_count = null,
+		$minutes = null, $page_id, $repeat = false, $count = null, $e_fail_count = null, $a_fail_count = null,
 		$c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null,
 		$url = null, $update_time = false, $reason = null, $bonus_loot = false, $notify = true
 	) {
@@ -63,8 +63,16 @@ function go_add_post(
 	$user_penalties = go_return_penalty( $user_id );
 	
 	if ( $status === -1 ) {
-		$qty = ( false === $bonus_loot ) ? $_POST['qty'] : 1;
-		$old_points = $wpdb->get_row( "SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1" );
+		$qty = ( false === $bonus_loot && ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1 );
+		$old_points = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * 
+				FROM {$table_name_go} 
+				WHERE uid = %d and post_id = %d LIMIT 1",
+				$user_id,
+				$post_id
+			)
+		);
 		$points *= $qty;
 		$currency *= $qty;
 		$bonus_currency *= $qty;
@@ -74,7 +82,7 @@ function go_add_post(
 			$reason = 'Gifted';
 			$gifted = true;
 		}
-	   	if ( $repeat != 'on' || empty( $old_points ) ) {
+	   	if ( ! $repeat || empty( $old_points ) ) {
 			$wpdb->insert(
 				$table_name_go, 
 				array(
@@ -86,7 +94,7 @@ function go_add_post(
 					'bonus_currency' => $bonus_currency,
 					'page_id' => $page_id, 
 					'count' => $qty + $count,
-					'reason' => $reason,
+					'reason' => esc_html( $reason ),
 					'timestamp' => $time,
 					'gifted' => $gifted,
 					'minutes' => $minutes
@@ -102,7 +110,7 @@ function go_add_post(
 					'minutes' => $minutes + ( $old_points->minutes ),
 					'page_id' => $page_id,
 					'count' => ( ( $old_points->count ) + $qty ),
-					'reason' => $reason
+					'reason' => esc_html( $reason )
 				), 
 				array(
 					'uid' => $user_id, 
@@ -114,7 +122,15 @@ function go_add_post(
 		$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties );
 		$modded_points = $modded_array[0];
 		$modded_currency = $modded_array[1];
-		$old_points = $wpdb->get_row( "SELECT * FROM {$table_name_go} WHERE uid = {$user_id} AND post_id = {$post_id}" );
+		$old_points = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * 
+				FROM {$table_name_go} 
+				WHERE uid = %d AND post_id = %d",
+				$user_id,
+				$post_id
+			)
+		);
 		if ( ! empty( $old_points ) ) {
 			$old_url_array = unserialize( $old_points->url );
 			$url_array = array();
@@ -128,7 +144,7 @@ function go_add_post(
 		} else {
 			$url_array = serialize( array( $status => $url ) );
 		}
-		if ( $repeat === 'on' ) {
+		if ( $repeat ) {
 			$wpdb->update(
 				$table_name_go,
 				array(
@@ -138,11 +154,11 @@ function go_add_post(
 					'bonus_currency' => $bonus_currency + ( $old_points->bonus_currency ),
 					'page_id' => $page_id,
 					'count' => $count + ( $old_points->count ),
-					'url' => $url_array
-				), 
-				array( 
-						'uid' => $user_id, 
-						'post_id' => $post_id
+					'url' => $url_array,
+				),
+				array(
+					'uid' => $user_id,
+					'post_id' => $post_id,
 				)
 			);
 		} else {
@@ -168,7 +184,15 @@ function go_add_post(
 					'url' => $url_array
 				);
 				if ( ! is_null( $status ) ) {
-					$timestamp = $wpdb->get_var( "SELECT `timestamp` FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" );
+					$timestamp = $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT timestamp 
+							FROM {$wpdb->prefix}go 
+							WHERE uid = %d AND post_id = %d",
+							$user_id,
+							$post_id
+						)
+					);
 					if ( $update_time && empty( $timestamp ) ) {
 						$columns['timestamp'] = $time;
 					}
@@ -211,7 +235,7 @@ function go_add_bonus_currency( $user_id, $bonus_currency, $reason, $status = 6 
 	global $wpdb;
 	$table_name_go = $wpdb->prefix . "go";
 	if ( ! empty( $_POST['qty'] ) ) {
-		$bonus_currency = $bonus_currency * $_POST['qty'];
+		$bonus_currency = $bonus_currency * (int) $_POST['qty'];
 	}
 	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
 	$wpdb->insert(
@@ -220,7 +244,7 @@ function go_add_bonus_currency( $user_id, $bonus_currency, $reason, $status = 6 
 			'uid' => $user_id, 
 			'status' => $status, 
 			'bonus_currency' => $bonus_currency, 
-			'reason' => $reason, 
+			'reason' => esc_html( $reason ),
 			'timestamp' => $time
 		)
 	);
@@ -232,7 +256,7 @@ function go_add_penalty( $user_id, $penalty, $reason, $status = 6, $bonus_loot =
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
 	if ( ! empty( $_POST['qty'] ) ) {
-		$penalty = $penalty * $_POST['qty'];
+		$penalty = $penalty * (int) $_POST['qty'];
 	}
 	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
 	$wpdb->insert( 
@@ -253,7 +277,7 @@ function go_add_minutes( $user_id, $minutes, $reason, $status = 6 ) {
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
 	if ( ! empty( $_POST['qty'] ) ) {
-		$minutes = $minutes * $_POST['qty'];
+		$minutes = $minutes * (int) $_POST['qty'];
 	}
 	$time = date( 'm/d@H:i', current_time( 'timestamp',0 ) );
 	$wpdb->insert(
@@ -500,45 +524,75 @@ function go_update_totals_out_of_bounds () {
 	}
 }
 
-function go_admin_bar_add () {
-	$points = $_POST['go_admin_bar_add_points'];
-	$points_reason = $_POST['go_admin_bar_add_points_reason'];
-	
-	$currency = $_POST['go_admin_bar_add_currency'];
-	$currency_reason = $_POST['go_admin_bar_add_currency_reason'];
-	
-	$bonus_currency = $_POST['go_admin_bar_add_bonus_currency'];
-	$bonus_currency_reason = $_POST['go_admin_bar_add_bonus_currency_reason'];
-	
-	$penalty = $_POST['go_admin_bar_add_penalty'];
-	$penalty_reason = $_POST['go_admin_bar_add_penalty_reason'];
-	
-	$minutes = $_POST['go_admin_bar_add_minutes'];
-	$minutes_reason = $_POST['go_admin_bar_add_minutes_reason'];
-	
+function go_admin_bar_add() {
 	$user_id = get_current_user_id();
+	check_ajax_referer( 'go_admin_bar_add_' . $user_id );
 
-	if ( '' != $points && '' != $points_reason ) {
+	$points = 0;
+	$points_reason = '';
+	if ( ! empty( $_POST['go_admin_bar_add_points'] ) ) {
+		$points = (int) $_POST['go_admin_bar_add_points'];
+	}
+	if ( ! empty( $_POST['go_admin_bar_add_points_reason'] ) ) {
+		$points_reason = sanitize_text_field( $_POST['go_admin_bar_add_points_reason'] );
+	}
+
+	$currency = 0;
+	$currency_reason = '';
+	if ( ! empty( $_POST['go_admin_bar_add_currency'] ) ) {
+		$currency = (int) $_POST['go_admin_bar_add_currency'];
+	}
+	if ( ! empty( $_POST['go_admin_bar_add_currency_reason'] ) ) {
+		$currency_reason = sanitize_text_field( $_POST['go_admin_bar_add_currency_reason'] );
+	}
+
+	$bonus_currency = 0;
+	$bonus_currency_reason = '';
+	if ( ! empty( $_POST['go_admin_bar_add_bonus_currency'] ) ) {
+		$bonus_currency = (int) $_POST['go_admin_bar_add_bonus_currency'];
+	}
+	if ( ! empty( $_POST['go_admin_bar_add_bonus_currency_reason'] ) ) {
+		$bonus_currency_reason = sanitize_text_field( $_POST['go_admin_bar_add_bonus_currency_reason'] );
+	}
+
+	$penalty = 0;
+	$penalty_reason = '';
+	if ( ! empty( $_POST['go_admin_bar_add_penalty'] ) ) {
+		$penalty = (int) $_POST['go_admin_bar_add_penalty'];
+	}
+	if ( ! empty( $_POST['go_admin_bar_add_penalty_reason'] ) ) {
+		$penalty_reason = sanitize_text_field( $_POST['go_admin_bar_add_penalty_reason'] );
+	}
+
+	$minutes = 0;
+	$minutes_reason = '';
+	if ( ! empty( $_POST['go_admin_bar_add_minutes'] ) ) {
+		$minutes = (int) $_POST['go_admin_bar_add_minutes'];
+	}
+	if ( ! empty( $_POST['go_admin_bar_add_minutes_reason'] ) ) {
+		$minutes_reason = sanitize_text_field( $_POST['go_admin_bar_add_minutes_reason'] );
+	}
+
+	if ( 0 !== $points && '' !== $points_reason ) {
 		go_add_currency( $user_id, $points_reason, 6, $points, 0, false );
 	}
-	if ( '' != $currency && '' != $currency_reason ) {
+	if ( 0 !== $currency && '' !== $currency_reason ) {
 		go_add_currency( $user_id, $currency_reason, 6, 0, $currency, false );
 	}
-	if ( '' != $bonus_currency && '' != $bonus_currency_reason ) {
+	if ( 0 !== $bonus_currency && '' !== $bonus_currency_reason ) {
 		go_add_bonus_currency( $user_id, $bonus_currency, $bonus_currency_reason );
 	}
-	if ( '' != $penalty && '' != $penalty_reason ) {
-		go_add_penalty( $user_id, $penalty, $penalty_reason);
+	if ( 0 !== $penalty && '' !== $penalty_reason ) {
+		go_add_penalty( $user_id, $penalty, $penalty_reason );
 	}
-	if ( '' != $minutes && '' != $minutes_reason ) {
-		go_add_minutes( $user_id, $minutes, $minutes_reason);
+	if ( 0 !== $minutes && '' !== $minutes_reason ) {
+		go_add_minutes( $user_id, $minutes, $minutes_reason );
 	}
-	
+
 	die();
 }
 
 function go_get_level_percentage( $user_id ) {
-	global $wpdb;
 	$current_points = go_return_points( $user_id );
 	$rank = go_get_rank( $user_id );
 	$current_rank = $rank['current_rank'];
@@ -765,19 +819,31 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 	global $wpdb;
 	if ( empty( $user_id ) && empty( $post_id ) && empty( $e_points ) && empty( $e_currency ) && empty( $e_bonus_currency ) ) {
 		$user_id = get_current_user_id();
-		$post_id = $_POST['post_id'];
-		$e_points = intval( $_POST['encounter_points'] );
-		$e_currency = intval( $_POST['encounter_currency'] );
-		$e_bonus_currency = intval( $_POST['encounter_bonus'] );
+		$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : get_the_ID() );
+		$e_points = ( ! empty( $_POST['encounter_points'] ) ? (int) $_POST['encounter_points'] : 0 );
+		$e_currency = ( ! empty( $_POST['encounter_currency'] ) ? (int) $_POST['encounter_currency'] : 0 );
+		$e_bonus_currency = ( ! empty( $_POST['encounter_bonus'] ) ? (int) $_POST['encounter_bonus'] : 0 );
 	}
+
+	check_ajax_referer( 'go_task_abandon_' . $post_id . '_' . $user_id );
+
 	$table_name_go = "{$wpdb->prefix}go";
-	$accept_timestamp = strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" ) ) );
-	go_update_totals( $user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0, 0);
-	$wpdb->query( 
-		$wpdb->prepare( "
-			DELETE FROM {$table_name_go} 
-			WHERE uid = %d 
-			AND post_id = %d",
+	$raw_timestamp = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT timestamp 
+			FROM {$wpdb->prefix}go 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$post_id
+		)
+	);
+	$accept_timestamp = strtotime( str_replace( '@', ' ', $raw_timestamp ) );
+
+	go_update_totals( $user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0, 0 );
+	$wpdb->query(
+		$wpdb->prepare(
+			"DELETE FROM {$table_name_go} 
+			WHERE uid = %d AND post_id = %d",
 			$user_id,
 			$post_id
 		)

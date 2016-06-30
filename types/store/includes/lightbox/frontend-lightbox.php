@@ -14,7 +14,7 @@ function go_the_lb_ajax() {
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
 	global $wpdb;
 	$table_name_go = "{$wpdb->prefix}go";
-	$the_id = $_POST['the_item_id'];
+	$the_id = (int) $_POST['the_item_id'];
 	$the_post = get_post( $the_id );
 	$the_title = $the_post->post_title;
 	$item_content = get_post_field( 'post_content', $the_id );
@@ -55,7 +55,16 @@ function go_the_lb_ajax() {
 	$user_currency = go_return_currency( $user_id );
 	$user_penalties = go_return_penalty( $user_id );
 	$user_minutes = go_return_minutes( $user_id );
-	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
+	$purchase_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT SUM( count ) 
+			FROM {$table_name_go} 
+			WHERE post_id = %d AND uid = %d 
+			LIMIT 1",
+			$the_id,
+			$user_id
+		)
+	);
 	$store_gift = ( ! empty( $custom_fields['go_mta_store_gift'][0] ) ? unserialize( $custom_fields['go_mta_store_gift'][0] ) : null );
 	$is_giftable = false;
 	if ( ! empty( $store_gift ) ) {
@@ -377,6 +386,7 @@ function go_frontend_lightbox_html() {
 			url: url_action,
 			type: "POST",
 			data: {
+				_ajax_nonce: '<?php echo wp_create_nonce( 'go_search_for_user' ); ?>',
 				action: 'go_search_for_user',
 				user: user
 			},
@@ -405,11 +415,22 @@ function go_frontend_lightbox_html() {
 
 function go_search_for_user() {
 	global $wpdb;
-	$user = $_POST['user'];
-	$users = $wpdb->get_results( "SELECT display_name FROM {$wpdb->users} WHERE display_name LIKE '%{$user}%' LIMIT 0, 4" );
-	if ( $users ) {
-		foreach ( $users as $user_name ) {
-			echo '<a href="javascript:;" class="go_search_res_user" onclick="go_fill_recipient( this )">'.$user_name->display_name."</a><br/>";
+	if ( empty( $_POST['user'] ) ) {
+		die();
+	}
+	$display_name = sanitize_text_field( $_POST['user'] );
+	$display_name_array = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT display_name 
+			FROM {$wpdb->users} 
+			WHERE display_name LIKE %s 
+			LIMIT 0, 4",
+			"%{$display_name}%"
+		)
+	);
+	if ( ! empty( $display_name_array ) ) {
+		foreach ( $display_name_array as $name ) {
+			echo '<a href="javascript:;" class="go_search_res_user" onclick="go_fill_recipient( this )">'.$name->display_name."</a><br/>";
 		}
 	} else {
 		echo '<a href="javascript:;" class="go_search_res_user" onclick="go_close_this( this )">No users found</a>';	
@@ -420,12 +441,29 @@ function go_search_for_user() {
 function go_get_purchase_count() {
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
-	$the_id = $_POST["the_item_id"];
+	$the_id = ( ! empty( $_POST['item_id'] ) ? (int) $_POST['item_id'] : 0 );
+
+	if ( empty( $the_id ) ) {
+		die( '0' );
+	}
+
 	$user_id = get_current_user_id();
-	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
-	if ( $purchase_count == NULL ) { 
+	check_ajax_referer( 'go_get_purchase_count_' . $user_id );
+
+	$purchase_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT SUM( count ) 
+			FROM {$table_name_go} 
+			WHERE post_id = %d AND uid = %d 
+			LIMIT 1",
+			$the_id,
+			$user_id
+		)
+	);
+
+	if ( empty( $purchase_count ) ) {
 		echo '0';
-	} else{
+	} else {
 		echo $purchase_count;
 	}
 	die();

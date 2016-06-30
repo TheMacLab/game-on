@@ -1,18 +1,39 @@
 <?php
 function go_buy_item() { 
 	global $wpdb;
+
+	$user_id = get_current_user_id();
+	if ( ! check_ajax_referer( 'go_buy_item_' . $user_id, false ) ) {
+		die( 'WordPress hiccuped, try logging in again.' );
+	}
+
 	$go_table_name = $wpdb->prefix."go";
-	$post_id = $_POST["the_id"];
-	$qty = $_POST['qty'];
-	$current_purchase_count = $_POST['purchase_count'];
-	
+	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
+	$qty = ( ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 0 );
+	$current_purchase_count = ( ! empty( $_POST['purchase_count'] ) ? (int) $_POST['purchase_count'] : 0 );
+
 	if ( ! empty( $_POST['recipient'] ) ) {
 		$recipient = sanitize_text_field( $_POST['recipient'] );
-		$recipient_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$wpdb->users}` WHERE display_name=%s", $recipient ), 0, 0 );
-		$recipient_purchase_count = $wpdb->get_var( $wpdb->prepare( "SELECT count FROM `{$go_table_name}` WHERE post_id=%d AND uid=%d LIMIT 1", $post_id, $recipient_id ), 0, 0 );
+		$recipient_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id 
+				FROM {$wpdb->users} 
+				WHERE display_name = %s",
+				$recipient
+			)
+		);
+		$recipient_purchase_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT count 
+				FROM {$go_table_name} 
+				WHERE post_id = %d AND uid = %d 
+				LIMIT 1",
+				$post_id,
+				$recipient_id
+			)
+		);
 	}
 	
-	$user_id = get_current_user_id(); 
 	$custom_fields = get_post_custom( $post_id );
 	$sending_receipt = ( ! empty( $custom_fields['go_mta_store_receipt'][0] ) ? $custom_fields['go_mta_store_receipt'][0] : false );
 
@@ -107,7 +128,19 @@ function go_buy_item() {
 				go_add_post( $recipient_id, $post_id, -1,  0,  0, 0, null, $repeat );
 			}
 			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
-			$wpdb->query( $wpdb->prepare( "UPDATE {$go_table_name} SET reason = 'Gifted' WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $post_id ) );
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$go_table_name} 
+					SET reason = 'Gifted' 
+					WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d 
+					ORDER BY timestamp DESC, reason DESC, id DESC 
+					LIMIT 1",
+					$user_id,
+					-1,
+					0,
+					$post_id
+				)
+			);
 		} else {
 			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
 			if ( ! empty( $req_penalty ) ) {

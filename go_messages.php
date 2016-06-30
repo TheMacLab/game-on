@@ -3,7 +3,6 @@ function go_messages_bar() {
 	if ( ! is_admin_bar_showing() || ! is_user_logged_in() ) {
 		return;
 	}
-	global $wpdb;
 	global $wp_admin_bar;
 	$messages = get_user_meta( get_current_user_id(), 'go_admin_messages', true );
 	$msg_count = ( isset( $messages[0] ) ? intval( $messages[0] ) : 0 );
@@ -133,8 +132,10 @@ function go_messages_bar() {
 }
 
 function go_mark_read() {
-	global $wpdb;
-	$messages = get_user_meta(get_current_user_id(), 'go_admin_messages', true );
+	$user_id = get_current_user_id();
+	check_ajax_referer( 'go_mark_read_' . $user_id );
+
+	$messages = get_user_meta( $user_id, 'go_admin_messages', true );
 	if ( ! empty( $messages[1][ $_POST['date'] ] ) ) {
 		if ( $_POST['type'] == 'unseen' ) {
 			if ( $messages[1][ $_POST['date'] ][1] == 1) {
@@ -153,7 +154,7 @@ function go_mark_read() {
 			}
 		}
 	}
-	update_user_meta( get_current_user_id(), 'go_admin_messages', $messages );
+	update_user_meta( $user_id, 'go_admin_messages', $messages );
 	echo JSON_encode( array (0 => $_POST['date'], 1 => $_POST['type'], 2 => $messages[0] ) );
 	die();
 }

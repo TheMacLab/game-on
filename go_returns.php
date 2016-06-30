@@ -3,35 +3,70 @@
 function go_return_currency( $user_id ) {
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$currency = (int) $wpdb->get_var( "SELECT currency FROM {$table_name_go_totals} WHERE uid = {$user_id}" );
+	$currency = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT currency 
+			FROM {$table_name_go_totals} 
+			WHERE uid = %d",
+			$user_id
+		)
+	);
 	return $currency;
 }
 	
 function go_return_points( $user_id ) {
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$points = (int) $wpdb->get_var( "SELECT points FROM {$table_name_go_totals} WHERE uid = {$user_id}" );
+	$points = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT points 
+			FROM {$table_name_go_totals} 
+			WHERE uid = %d",
+			$user_id
+		)
+	);
 	return $points;
 }
 
 function go_return_bonus_currency( $user_id ) {
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$bonus_currency = (int) $wpdb->get_var( "SELECT bonus_currency FROM {$table_name_go_totals} WHERE uid = {$user_id}" );
+	$bonus_currency = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT bonus_currency 
+			FROM {$table_name_go_totals} 
+			WHERE uid = %d",
+			$user_id
+		)
+	);
 	return $bonus_currency;
 }
 
 function go_return_penalty( $user_id ) {
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$penalty = (int) $wpdb->get_var( "SELECT penalty FROM {$table_name_go_totals} WHERE uid = {$user_id}" );
+	$penalty = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT penalty 
+			FROM {$table_name_go_totals} 
+			WHERE uid = %d",
+			$user_id
+		)
+	);
 	return $penalty;
 }
 
 function go_return_minutes( $user_id ) {
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
-	$minutes = (int) $wpdb->get_var( "SELECT minutes FROM {$table_name_go_totals} WHERE uid = {$user_id}" );
+	$minutes = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT minutes 
+			FROM {$table_name_go_totals} 
+			WHERE uid = %d",
+			$user_id
+		)
+	);
 	return $minutes;
 }
 
@@ -131,7 +166,14 @@ function go_display_user_focuses( $user_id ) {
 
 function go_return_badge_count( $user_id ) {
 	global $wpdb;
-	$badge_count = (int) $wpdb->get_var( "SELECT badge_count FROM {$wpdb->prefix}go_totals WHERE uid = {$user_id}" );
+	$badge_count = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT badge_count 
+			FROM {$wpdb->prefix}go_totals 
+			WHERE uid = %d",
+			$user_id
+		)
+	);
 	return $badge_count;
 }
 

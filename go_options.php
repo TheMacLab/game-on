@@ -635,6 +635,8 @@ function add_game_on_options() {
 }
 
 function go_reset_levels() {
+	check_ajax_referer( 'go_reset_levels_' . get_current_user_id() );
+
 	$rank_prefix = get_option( 'go_level_names' );
 	if ( empty( $rank_prefix ) ) {
 		$rank_prefix = 'Level';
@@ -669,29 +671,37 @@ function go_reset_levels() {
 }
 
 function go_save_levels() {
-	$go_level_names = $_POST['go_level_names'];
-	$go_level_points = $_POST['go_level_points'];
-	$go_level_badges = $_POST['go_level_badges'];
+	check_ajax_referer( 'go_save_levels_' . get_current_user_id() );
+
+	$go_level_names  = ( ! empty( $_POST['go_level_names'] )  ? (array) $_POST['go_level_names'] : array() );
+	$go_level_points = ( ! empty( $_POST['go_level_points'] ) ? (array) $_POST['go_level_points'] : array() );
+	$go_level_badges = ( ! empty( $_POST['go_level_badges'] ) ? (array) $_POST['go_level_badges'] : array() );
 	$ranks = array(
 		'name' => $go_level_names,
 		'points' => $go_level_points,
-		'badges' => $go_level_badges
+		'badges' => $go_level_badges,
 	);
 	update_option( 'go_ranks', $ranks );
 	die();
-}	
+}
 
 function go_fix_levels() {
 	global $default_role;
 	global $wpdb;
+	check_ajax_referer( 'go_fix_levels_' . get_current_user_id() );
+
 	$role = get_option( 'go_role', $default_role );
 	$ranks = get_option( 'go_ranks' );
-	$uids = $wpdb->get_results( "
-		SELECT user_id
-		FROM {$wpdb->usermeta}
-		WHERE meta_key =  '{$wpdb->prefix}capabilities'
-		AND (meta_value LIKE  '%{$role}%' or meta_value LIKE '%administrator%' )
-	" );
+	$uids = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id
+			FROM {$wpdb->usermeta}
+			WHERE meta_key = %s AND ( meta_value LIKE %s OR meta_value LIKE %s )",
+			"{$wpdb->prefix}capabilities",
+			"%{$role}%",
+			'%administrator%'
+		)
+	);
 	foreach ( $uids as $uid ) {
 		foreach ( $uid as $user_id ) {
 			$current_points = go_return_points( $user_id );
@@ -715,12 +725,18 @@ function go_fix_levels() {
 }
 
 function go_update_user_sc_data() {
-	$old_class_a_array = $_POST['old_class_a'];
-	$old_class_b_array = $_POST['old_class_b'];
-	$new_class_a_array = $_POST['new_class_a'];
-	$new_class_b_array = $_POST['new_class_b'];
+	check_ajax_referer( 'go_update_user_sc_data_' . get_current_user_id() );
+
+	$old_class_a_array = (array) $_POST['old_class_a'];
+	$old_class_b_array = (array) $_POST['old_class_b'];
 	
+	$new_class_a_array = (array) $_POST['new_class_a'];
+	$new_class_b_array = (array) $_POST['new_class_b'];
+	
+	// get the new class settings, by comparing the new and old arrays
 	$class_a_diff = array_diff( $old_class_a_array, $new_class_a_array );
+
+	// get the new computer/seating settings, by comparing the new and old arrays
 	$class_b_diff = array_diff( $old_class_b_array, $new_class_b_array );
 	
 	$users = get_users();
@@ -743,8 +759,13 @@ function go_update_user_sc_data() {
 
 function go_focus_save() {
 	global $wpdb;
-	$array = array_values( array_filter( $_POST['focus_array'] ) );
-	$terms = $wpdb->get_results( "SELECT * FROM $wpdb->terms", ARRAY_A );
+	check_ajax_referer( 'go_focus_save_' . get_current_user_id() );
+
+	$array = array_values( array_filter( (array) $_POST['focus_array'] ) );
+	$terms = $wpdb->get_results(
+		"SELECT * FROM {$wpdb->terms}",
+		ARRAY_A
+	);
 	$term_names = array();
 	
 	foreach ( $array as $key => $value ) {
@@ -766,7 +787,11 @@ function go_focus_save() {
 	}
 	$delete_terms = array_diff( $term_names, $array );
 	foreach ( $delete_terms as $term ) {
-		$term_id = $wpdb->get_var( "SELECT `term_id` FROM $wpdb->terms WHERE `name`='{$term}'" );
+		$term_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT term_id FROM {$wpdb->terms} WHERE name = %s", sanitize_text_field( $term )
+			)
+		);
 		wp_delete_term( $term_id, 'task_focus_categories' );
 		wp_delete_term( $term_id, 'store_focus_categories' );
 	}
@@ -774,7 +799,8 @@ function go_focus_save() {
 }
 
 function go_presets_reset() {
-	global $wpdb;
+	check_ajax_referer( 'go_presets_reset_' . get_current_user_id() );
+
 	$presets = array(
 		'name' => array(
 			'Tier 1',
@@ -824,10 +850,12 @@ function go_presets_reset() {
 }
 
 function go_presets_save() {
-	global $wpdb;
-	$preset_name = $_POST['go_preset_name'];
-	$preset_points = $_POST['go_preset_points'];
-	$preset_currency = $_POST['go_preset_currency'];
+	check_ajax_referer( 'go_presets_save_' . get_current_user_id() );
+
+	$preset_name = (array) $_POST['go_preset_name'];
+	$preset_points = (array) $_POST['go_preset_points'];
+	$preset_currency = (array) $_POST['go_preset_currency'];
+	
 	$preset_array = array(
 		'name' => $preset_name,
 		'points' => $preset_points,
@@ -838,11 +866,31 @@ function go_presets_save() {
 }
 
 function go_reset_data() {
+	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+		go_error_log( 'Only admins with correct permissions can resest data' );
+		die();
+	}
+
+	check_ajax_referer( 'go_reset_data_' . get_current_user_id() );
+
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	$go_table_totals_name = "{$wpdb->prefix}go_totals";
-	$reset_data = (array) $_POST['reset_data'];
-	$reset_all = $_POST['reset_all'];
+	$reset_data = ( ! empty( $_POST['reset_data'] ) ? (array) $_POST['reset_data'] : array() );
+	if ( empty( $reset_data ) ) {
+		die();
+	}
+
+	$reset_all = ( ! empty( $_POST['reset_all'] ) ? (boolean) $_POST['reset_all'] : false );
+	$default_reset_keys = array(
+		'points',
+		'currency',
+		'bonus_currency',
+		'penalty',
+		'minutes',
+		'badge_count',
+	);
+
 	$users = get_users( 'orderby=ID' );
 	$ranks = get_option( 'go_ranks' );
 	if ( in_array( 'points', $reset_data ) ) {
@@ -885,22 +933,55 @@ function go_reset_data() {
 		$wpdb->query( "TRUNCATE TABLE {$go_table_name}" );
 	} else {
 		$reset_data_go = $reset_data;
+		$erase_list = '';
 		if ( in_array( 'badge_count', $reset_data_go ) ) {
 			$badge_count_loc = array_search( 'badge_count', $reset_data_go );
 			unset( $reset_data_go[ $badge_count_loc ] );
 		}
-		$erase_list = ( ( ( ! empty( $reset_data_go ) && count( $reset_data_go ) > 1 ) ) ? implode( ' IS NOT NULL AND ', $reset_data_go ) : $reset_data_go[0] );
-		if ( ! empty( $erase_list) ) {
-			$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ".( ( in_array( 'points', $reset_data) && ! in_array( 'currency', $reset_data) ) ? 'AND status != -1' : ( ( in_array( 'currency', $reset_data ) && ! in_array( 'points', $reset_data) )  ? 'AND status = -1': '' ) );
-			$wpdb->query( $query );
+
+		if ( ! empty( $reset_data_go ) && count( $reset_data_go ) > 1 ) {
+			$erase_list = sanitize_text_field( implode( ' IS NOT NULL AND ', $reset_data_go ) );
+		} else {
+			$erase_list = sanitize_text_field( $reset_data_go[0] );
+		}
+		if ( ! empty( $erase_list ) ) {
+			$query = "DELETE FROM {$go_table_name} WHERE %s IS NOT NULL ";
+			if ( in_array( 'points', $reset_data ) && ! in_array( 'currency', $reset_data ) ) {
+				$query .= 'AND status != -1';
+			} else if ( ! in_array( 'points', $reset_data ) && in_array( 'currency', $reset_data ) ) {
+				$query .= 'AND status = -1';
+			}
+			$wpdb->query( $wpdb->prepare( $query, $erase_list ) );
 		}
 	}
-	$erase_update = "SET ".implode( '=0,', $reset_data)."=0 WHERE uid IS NOT NULL";
-	$wpdb->query( "UPDATE {$go_table_totals_name} " . $erase_update );
+
+	$reset_data_str = '';
+	foreach ( $default_reset_keys as $index => $key_name ) {
+		if ( in_array( $key_name, $reset_data ) ) {
+			$key_value_pair = "{$key_name} = 0";
+			if ( '' !== $reset_data_str ) {
+				$reset_data_str .= ", {$key_value_pair}";
+			} else {
+				$reset_data_str .= "{$key_value_pair}";
+			}
+		}
+	}
+
+	/**
+	 * This query doesn't make use of the `$wpdb->prepare()` function, because the list of columns to
+	 * set was being wrapped in single quotes. This resulted in an invalid query and a DB error.
+	 * Instead, the AJAX (considered user-input) is compared with a list of expected values. If
+	 * the arrays match up, then the expected value is used in the query, not the user input. With
+	 * no data to sanitize, the query doesn't need to be passed through the prepare function.
+	 */
+	$wpdb->query( "UPDATE {$go_table_totals_name} SET {$reset_data_str} WHERE uid IS NOT NULL" );
+
 	die();
 }
 
-function go_extra_profile_fields( $user ) { ?>
+function go_extra_profile_fields( $user ) {
+	$nonce = wp_create_nonce( 'go_user_option_add_class_' . $user->ID );
+?>
 
 	<h3><?php echo go_return_options( 'go_class_a_name' ).' and '.go_return_options( 'go_class_b_name' ); ?></h3>
 
@@ -966,12 +1047,16 @@ function go_extra_profile_fields( $user ) { ?>
 			jQuery.ajax({
 				type: 'post',
 				url: MyAjax.ajaxurl,
-				data: { 
+				data: {
+					_ajax_nonce: '<?php echo $nonce; ?>',
 					action: 'go_user_option_add',
+					user_id: <?php echo $user->ID; ?>,
 					go_clipboard_class_a_choice: jQuery( '#go_clipboard_class_a_choice' ).val()
 				},
-				success: function( html ) {
-					jQuery( '#go_user_form_table_body' ).append( html );
+				success: function( res ) {
+					if ( -1 !== res ) {
+						jQuery( '#go_user_form_table_body' ).append( res );
+					}
 				}
 			});
 		}
@@ -981,6 +1066,12 @@ function go_extra_profile_fields( $user ) { ?>
 }
 
 function go_user_option_add() {
+	if ( empty( $_POST['user_id'] ) ) {
+		die( -1 );
+	}
+	$user_id = (int) $_POST['user_id'];
+	check_ajax_referer( 'go_user_option_add_class_' . $user_id );
+
 	?> 
 	<tr>
 		<td>
@@ -1019,6 +1110,7 @@ function go_user_option_add() {
 		</td> 
 	</tr>  
 	<?php
+	die();
 }
 	
 function go_save_extra_profile_fields( $user_id ) {
@@ -1026,8 +1118,11 @@ function go_save_extra_profile_fields( $user_id ) {
 	if ( isset( $_POST['class_a_user'] ) ) {
 		foreach ( $_POST['class_a_user'] as $key => $value ) {
 			if ( $value != 'go_remove' ) {
+				if ( ! isset( $_POST['class_b_user'] ) || ! isset( $_POST['class_b_user'][ $key ] ) ) {
+					return;
+				}
 				$class_a = $value;
-				$class_b = $_POST['class_b_user'][ $key ];
+				$class_b = sanitize_text_field( $_POST['class_b_user'][ $key ] );
 				$class[ $class_a ] = $class_b;
 			}
 		}
@@ -1036,7 +1131,6 @@ function go_save_extra_profile_fields( $user_id ) {
 }	
 
 function go_update_definitions() {
-	global $wpdb;
 	$file_name = plugin_dir_path( __FILE__ ) . '/' . 'go_definitions.php';
 	$array = explode(
 		',',
