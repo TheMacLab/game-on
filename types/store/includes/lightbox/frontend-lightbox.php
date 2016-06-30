@@ -55,7 +55,16 @@ function go_the_lb_ajax() {
 	$user_currency = go_return_currency( $user_id );
 	$user_penalties = go_return_penalty( $user_id );
 	$user_minutes = go_return_minutes( $user_id );
-	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
+	$purchase_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT SUM( count ) 
+			FROM {$table_name_go} 
+			WHERE post_id = %d AND uid = %d 
+			LIMIT 1",
+			$the_id,
+			$user_id
+		)
+	);
 	$is_giftable = ( ! empty( $custom_fields['go_mta_store_giftable'][0] ) ? true : false );
 	$is_unpurchasable = ( ! empty( $custom_fields['go_mta_store_unpurchasable'][0] ) ? $custom_fields['go_mta_store_unpurchasable'][0] : '' );
 
@@ -406,7 +415,15 @@ function go_search_for_user() {
 		die();
 	}
 	$display_name = sanitize_text_field( $_POST['user'] );
-	$display_name_array = $wpdb->get_results( "SELECT display_name FROM {$wpdb->users} WHERE display_name LIKE '%{$display_name}%' LIMIT 0, 4" );
+	$display_name_array = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT display_name 
+			FROM {$wpdb->users} 
+			WHERE display_name LIKE %s 
+			LIMIT 0, 4",
+			"%{$display_name}%"
+		)
+	);
 	if ( ! empty( $display_name_array ) ) {
 		foreach ( $display_name_array as $name ) {
 			echo '<a href="javascript:;" class="go_search_res_user" onclick="go_fill_recipient( this )">'.$name->display_name."</a><br/>";
@@ -428,12 +445,21 @@ function go_get_purchase_count() {
 
 	$user_id = get_current_user_id();
 	check_ajax_referer( 'go_get_purchase_count_' . $user_id );
-	
-	$purchase_count = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM `{$table_name_go}` WHERE post_id=%d AND uid=%d LIMIT 1", $the_id, $user_id ) );
-	
+
+	$purchase_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT SUM( count ) 
+			FROM {$table_name_go} 
+			WHERE post_id = %d AND uid = %d 
+			LIMIT 1",
+			$the_id,
+			$user_id
+		)
+	);
+
 	if ( empty( $purchase_count ) ) {
 		echo '0';
-	} else{
+	} else {
 		echo $purchase_count;
 	}
 	die();

@@ -317,13 +317,17 @@ function go_install_data () {
 	foreach ( $options_array as $key => $value ) {
 		add_option( $key, $value );
 	}
-	$user_id_array = $wpdb->get_results( "
-		SELECT user_id
-		FROM {$table_name_user_meta}
-		WHERE meta_key =  '{$wpdb->prefix}capabilities'
-		AND (meta_value LIKE  '%{$role}%' or meta_value like '%administrator%' )
-	" );
-	
+	$user_id_array = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id
+			FROM {$table_name_user_meta}
+			WHERE meta_key = %s AND ( meta_value LIKE %s OR meta_value LIKE %s )",
+			"{$wpdb->prefix}capabilities",
+			"%{$role}%",
+			'%administrator%'
+		)
+	);
+
 	for ( $index = 0; $index < count( $user_id_array ); $index++ ) {
 		$user_id = (int) $user_id_array[ $index ]->user_id;
 		$stored_points = 0;
@@ -334,13 +338,21 @@ function go_install_data () {
 		$minutes = 0;
 		$status = -1;
 
-		$user_has_progress = (bool) $wpdb->get_var( "SELECT `uid` FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
+		$user_has_progress = (bool) $wpdb->get_var(
+			$wpdb->prepare( "SELECT uid FROM {$table_name_go} WHERE uid = %d", $user_id )
+		);
 		if ( $user_has_progress ) {
-			$stored_points = (int) $wpdb->get_var( "SELECT sum( `points` ) FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
+			$stored_points = (int) $wpdb->get_var(
+				$wpdb->prepare( "SELECT sum( points ) FROM {$table_name_go} WHERE uid = %d", $user_id )
+			);
 			$total_points = ( $stored_points >= 0 ? $stored_points : 0 );
-			$total_currency = (int) $wpdb->get_var( "SELECT sum( `currency` ) FROM `{$table_name_go}` WHERE `uid` = {$user_id}" );
+			$total_currency = (int) $wpdb->get_var(
+				$wpdb->prepare( "SELECT sum( currency ) FROM {$table_name_go} WHERE uid = %d", $user_id )
+			);
 		}
-		$user_has_totals = (bool) $wpdb->get_var( "SELECT `uid` FROM `{$table_name_go_totals}` WHERE `uid` = {$user_id}" );
+		$user_has_totals = (bool) $wpdb->get_var(
+			$wpdb->prepare( "SELECT uid FROM {$table_name_go_totals} WHERE uid = %d", $user_id )
+		);
 		if ( $user_has_totals && $total_points > 0 ) {
 			$wpdb->update(
 				$table_name_go_totals,

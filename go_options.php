@@ -692,12 +692,16 @@ function go_fix_levels() {
 
 	$role = get_option( 'go_role', $default_role );
 	$ranks = get_option( 'go_ranks' );
-	$uids = $wpdb->get_results( "
-		SELECT user_id
-		FROM {$wpdb->usermeta}
-		WHERE meta_key =  '{$wpdb->prefix}capabilities'
-		AND (meta_value LIKE  '%{$role}%' or meta_value LIKE '%administrator%' )
-	" );
+	$uids = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id
+			FROM {$wpdb->usermeta}
+			WHERE meta_key = %s AND ( meta_value LIKE %s OR meta_value LIKE %s )",
+			"{$wpdb->prefix}capabilities",
+			"%{$role}%",
+			'%administrator%'
+		)
+	);
 	foreach ( $uids as $uid ) {
 		foreach ( $uid as $user_id ) {
 			$current_points = go_return_points( $user_id );
@@ -758,7 +762,10 @@ function go_focus_save() {
 	check_ajax_referer( 'go_focus_save_' . get_current_user_id() );
 
 	$array = array_values( array_filter( (array) $_POST['focus_array'] ) );
-	$terms = $wpdb->get_results( "SELECT * FROM $wpdb->terms", ARRAY_A );
+	$terms = $wpdb->get_results(
+		"SELECT * FROM {$wpdb->terms}",
+		ARRAY_A
+	);
 	$term_names = array();
 	
 	foreach ( $array as $key => $value ) {
@@ -780,7 +787,11 @@ function go_focus_save() {
 	}
 	$delete_terms = array_diff( $term_names, $array );
 	foreach ( $delete_terms as $term ) {
-		$term_id = $wpdb->get_var( "SELECT `term_id` FROM {$wpdb->terms} WHERE `name`='" . esc_html( $term ) . "'" );
+		$term_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT term_id FROM {$wpdb->terms} WHERE name = %s", sanitize_text_field( $term )
+			)
+		);
 		wp_delete_term( $term_id, 'task_focus_categories' );
 		wp_delete_term( $term_id, 'store_focus_categories' );
 	}
@@ -903,22 +914,23 @@ function go_reset_data() {
 			unset( $reset_data_go[ $badge_count_loc ] );
 		}
 		if ( ! empty( $reset_data_go ) && count( $reset_data_go ) > 1 ) {
-			$erase_list = esc_html( implode( ' IS NOT NULL AND ', $reset_data_go ) );
+			$erase_list = sanitize_text_field( implode( ' IS NOT NULL AND ', $reset_data_go ) );
 		} else {
-			$erase_list = esc_html( $reset_data_go[0] );
+			$erase_list = sanitize_text_field( $reset_data_go[0] );
 		}
 		if ( ! empty( $erase_list ) ) {
-			$query = "DELETE FROM {$go_table_name} WHERE {$erase_list} IS NOT NULL ";
+			$query = "DELETE FROM {$go_table_name} WHERE %s IS NOT NULL ";
 			if ( in_array( 'points', $reset_data ) && ! in_array( 'currency', $reset_data ) ) {
 				$query .= 'AND status != -1';
 			} else if ( ! in_array( 'points', $reset_data ) && in_array( 'currency', $reset_data ) ) {
 				$query .= 'AND status = -1';
 			}
-			$wpdb->query( $query );
+			$wpdb->query( $wpdb->prepare( $query, $erase_list ) );
 		}
 	}
-	$erase_update = esc_html( 'SET ' . implode( '=0,', $reset_data ) . '=0 WHERE uid IS NOT NULL' );
-	$wpdb->query( "UPDATE {$go_table_totals_name} " . $erase_update );
+	$reset_data_str = implode( '=0,', $reset_data );
+	$erase_update_clause = sanitize_text_field( "SET {$reset_data_str}=0 WHERE uid IS NOT NULL" );
+	$wpdb->query( $wpdb->prepare( "UPDATE {$go_table_totals_name} %s", $erase_update_clause ) );
 	die();
 }
 

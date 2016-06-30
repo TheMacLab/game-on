@@ -64,7 +64,15 @@ function go_add_post(
 	
 	if ( $status === -1 ) {
 		$qty = ( false === $bonus_loot && ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1 );
-		$old_points = $wpdb->get_row( "SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1" );
+		$old_points = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * 
+				FROM {$table_name_go} 
+				WHERE uid = %d and post_id = %d LIMIT 1",
+				$user_id,
+				$post_id
+			)
+		);
 		$points *= $qty;
 		$currency *= $qty;
 		$bonus_currency *= $qty;
@@ -114,7 +122,15 @@ function go_add_post(
 		$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties );
 		$modded_points = $modded_array[0];
 		$modded_currency = $modded_array[1];
-		$old_points = $wpdb->get_row( "SELECT * FROM {$table_name_go} WHERE uid = {$user_id} AND post_id = {$post_id}" );
+		$old_points = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * 
+				FROM {$table_name_go} 
+				WHERE uid = %d AND post_id = %d",
+				$user_id,
+				$post_id
+			)
+		);
 		if ( ! empty( $old_points ) ) {
 			$old_url_array = unserialize( $old_points->url );
 			$url_array = array();
@@ -168,7 +184,15 @@ function go_add_post(
 					'url' => $url_array
 				);
 				if ( ! is_null( $status ) ) {
-					$timestamp = $wpdb->get_var( "SELECT `timestamp` FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" );
+					$timestamp = $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT timestamp 
+							FROM {$wpdb->prefix}go 
+							WHERE uid = %d AND post_id = %d",
+							$user_id,
+							$post_id
+						)
+					);
 					if ( $update_time && empty( $timestamp ) ) {
 						$columns['timestamp'] = $time;
 					}
@@ -800,13 +824,22 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 	check_ajax_referer( 'go_task_abandon_' . $post_id . '_' . $user_id );
 
 	$table_name_go = "{$wpdb->prefix}go";
-	$accept_timestamp = strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" ) ) );
+	$raw_timestamp = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT timestamp 
+			FROM {$wpdb->prefix}go 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$post_id
+		)
+	);
+	$accept_timestamp = strtotime( str_replace( '@', ' ', $raw_timestamp ) );
+
 	go_update_totals( $user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0, 0 );
-	$wpdb->query( 
-		$wpdb->prepare( "
-			DELETE FROM {$table_name_go} 
-			WHERE uid = %d 
-			AND post_id = %d",
+	$wpdb->query(
+		$wpdb->prepare(
+			"DELETE FROM {$table_name_go} 
+			WHERE uid = %d AND post_id = %d",
 			$user_id,
 			$post_id
 		)

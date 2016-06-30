@@ -530,8 +530,16 @@ function go_task_pod_tasks( $atts ) {
 		$pod_task_ids[] = $curr_task_obj->ID;
 	}
 	$user_id = get_current_user_id();
-	$pod_task_id_str = implode( ', ', $pod_task_ids );
-	$task_statuses = $wpdb->get_results("SELECT post_id, status FROM {$go_table_name} WHERE uid={$user_id} AND post_id IN ({$pod_task_id_str})");
+	$pod_task_id_str = sanitize_text_field( implode( ', ', $pod_task_ids ) );
+	$task_statuses = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT post_id, status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id IN (%s)",
+			$user_id,
+			$pod_task_id_str
+		)
+	);
 	$pod_task_statuses = array();
 
 	foreach ( $task_statuses as $task_status ) {
@@ -585,8 +593,16 @@ function go_task_pod_tasks( $atts ) {
 		foreach ( $previous_tasks as $prev_task_obj ) {
 			$previous_pod_task_ids[] = $prev_task_obj->ID;
 		}
-		$previous_pod_task_id_str = implode( ', ', $previous_pod_task_ids );
-		$previous_task_statuses = $wpdb->get_results("SELECT post_id, status FROM {$go_table_name} WHERE uid={$user_id} AND post_id IN ({$previous_pod_task_id_str})");
+		$previous_pod_task_id_str = sanitize_text_field( implode( ', ', $previous_pod_task_ids ) );
+		$previous_task_statuses = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT post_id, status 
+				FROM {$go_table_name} 
+				WHERE uid = %d AND post_id IN (%s)",
+				$user_id,
+				$previous_pod_task_id_str
+			)
+		);
 		$previous_pod_task_statuses = array();
 
 		foreach ( $previous_task_statuses as $task_status ) {

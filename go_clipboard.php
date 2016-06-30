@@ -106,11 +106,16 @@ function go_clipboard_intable() {
 		die();
 	}
 
+	// grabs all user ids for non-admin users
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
-	$uid = $wpdb->get_results( "SELECT user_id 
-		FROM {$table_name_user_meta} 
-		WHERE meta_key = '{$wpdb->prefix}capabilities' 
-		AND meta_value NOT LIKE '%administrator%'"
+	$uid = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id 
+			FROM {$table_name_user_meta} 
+			WHERE meta_key = %s AND meta_value NOT LIKE %s",
+			"{$wpdb->prefix}capabilities",
+			'%administrator%'
+		)
 	);
 
 	foreach ( $uid as $id ) {

@@ -1634,7 +1634,7 @@ function go_update_task_chain_meta( $post_id ) {
 }
 
 add_action( 'delete_term_taxonomy', 'go_remove_task_chain_from_posts', 10, 1);
-function go_remove_task_chain_from_posts( $term_id) {
+function go_remove_task_chain_from_posts( $term_id ) {
 	$term = get_term_by( 'id', $term_id, 'task_chains' );
 	$posts_in_chain = get_posts(array(
 		'post_type' => 'tasks',
@@ -1645,7 +1645,7 @@ function go_remove_task_chain_from_posts( $term_id) {
 	if ( ! empty( $posts_in_chain ) ) {
 		foreach ( $posts_in_chain as $key => $post ) {
 			$post_chain_name = get_post_meta( $post->ID, 'chain', true );
-			if ( $post_chain_name == $term->name ) {
+			if ( ! empty( $term->name ) && $post_chain_name === $term->name ) {
 				delete_post_meta( $post->ID, 'chain' );
 				delete_post_meta( $post->ID, 'chain_position' );
 				

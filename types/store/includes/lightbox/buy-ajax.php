@@ -14,8 +14,24 @@ function go_buy_item() {
 
 	if ( ! empty( $_POST['recipient'] ) ) {
 		$recipient = sanitize_text_field( $_POST['recipient'] );
-		$recipient_id = $wpdb->get_var( "SELECT id FROM {$wpdb->users} WHERE display_name='{$recipient}'" );
-		$recipient_purchase_count = $wpdb->get_var( "SELECT count FROM {$go_table_name} WHERE post_id={$post_id} AND uid={$recipient_id} LIMIT 1" );
+		$recipient_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id 
+				FROM {$wpdb->users} 
+				WHERE display_name = %s",
+				$recipient
+			)
+		);
+		$recipient_purchase_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT count 
+				FROM {$go_table_name} 
+				WHERE post_id = %d AND uid = %d 
+				LIMIT 1",
+				$post_id,
+				$recipient_id
+			)
+		);
 	}
 	
 	$custom_fields = get_post_custom( $post_id );
@@ -111,7 +127,19 @@ function go_buy_item() {
 				go_add_post( $recipient_id, $post_id, -1,  0,  0, 0, null, $repeat );
 			}
 			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
-			$wpdb->query( $wpdb->prepare( "UPDATE {$go_table_name} SET reason = 'Gifted' WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $post_id ) );
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$go_table_name} 
+					SET reason = 'Gifted' 
+					WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d 
+					ORDER BY timestamp DESC, reason DESC, id DESC 
+					LIMIT 1",
+					$user_id,
+					-1,
+					0,
+					$post_id
+				)
+			);
 		} else {
 			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
 			if ( ! empty( $req_penalty ) ) {

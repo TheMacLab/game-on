@@ -39,8 +39,24 @@ function go_task_shortcode( $atts, $content = null ) {
 		$repeat = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : '' ); // Whether or not you can repeat the task
 		$unix_now = current_time( 'timestamp' ); // Current unix timestamp
 		$go_table_name = "{$wpdb->prefix}go";
-		$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
-		$status = (int) $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+		$task_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT count 
+				FROM {$go_table_name} 
+				WHERE post_id = %d AND uid = %d",
+				$id,
+				$user_id
+			)
+		);
+		$status = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT status 
+				FROM {$go_table_name} 
+				WHERE post_id = %d AND uid = %d",
+				$id,
+				$user_id
+			)
+		);
 		
 		$e_admin_lock = ( ! empty( $custom_fields['go_mta_encounter_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] ) : null );
 		if ( ! empty( $e_admin_lock ) ) {
@@ -216,7 +232,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		
 		$start_filter_info = ( ! empty( $custom_fields['go_mta_start_filter'][0] ) ? unserialize( $custom_fields['go_mta_start_filter'][0] ) : null );
 		if ( ! empty( $start_filter_info ) ) {
-			$start_filter = $start_filter_info[0];
+			$start_filter = ( ! empty( $start_filter_info[0] ) ? $start_filter_info[0] : array() );
 			if ( ! empty ( $start_filter ) ) { 
 				$start_date = $start_filter_info[1];
 				$start_time = $start_filter_info[2];
@@ -289,7 +305,21 @@ function go_task_shortcode( $atts, $content = null ) {
 		
 		if ( ! empty( $future_modifier ) && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
 			$user_timers = get_user_meta( $user_id, 'go_timers' );
-			$accept_timestamp = ( ( ! empty( $user_timers[0][ $id ] ) ) ? $user_timers[0][ $id ] : strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$id}'" ) ) ) );
+			$accept_timestamp = 0;
+			if ( ! empty( $user_timers[0][ $id ] ) ) {
+				$accept_timestamp = $user_timers[0][ $id ];
+			} else {
+				$accept_timestamp_raw = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT timestamp 
+						FROM {$wpdb->prefix}go 
+						WHERE uid = %d AND post_id = %d",
+						$user_id,
+						$id
+					)
+				);
+				$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
+			}
 			$days = (int) $future_modifier['days'];
 			$hours = (int) $future_modifier['hours'];
 			$minutes =  (int) $future_modifier['minutes'];
@@ -349,7 +379,15 @@ function go_task_shortcode( $atts, $content = null ) {
 					break;
 			}
 			if ( ! empty( $db_task_stage_upload_var ) ) {
-				$is_uploaded = $wpdb->get_var( "SELECT {$db_task_stage_upload_var} FROM {$go_table_name} WHERE uid = {$user_id} AND post_id = {$id}" );
+				$is_uploaded = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT {$db_task_stage_upload_var} 
+						FROM {$go_table_name} 
+						WHERE uid = %d AND post_id = %d",
+						$user_id,
+						$id
+					)
+				);
 			} else {
 				$is_uploaded = 0;
 			}
@@ -449,16 +487,19 @@ function go_task_shortcode( $atts, $content = null ) {
 				$next_post_in_chain = '<a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a>';
 			}
 			
-			$post_ids_in_chain_string = join( ',', $post_ids_in_chain );
+			$post_ids_in_chain_string = sanitize_text_field( join( ',', $post_ids_in_chain ) );
 			
 			// Grab all posts in chain statuses
-			$list = $wpdb->get_results( "
-				SELECT post_id,status
-				FROM {$go_table_name}
-				WHERE uid = {$user_id}
-				AND post_id IN ( {$post_ids_in_chain_string} )
-				ORDER BY FIELD( post_id, {$post_ids_in_chain_string} )
-			" );
+			$list = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT post_id, status
+					FROM ' . $go_table_name . '
+					WHERE uid = %1$d AND post_id IN ( %2$s )
+					ORDER BY FIELD ( post_id, %2$s )',
+					$user_id,
+					$post_ids_in_chain_string
+				)
+			);
 			
 			// Make array of statuses in chain indexed by post id
 			foreach ( $list as $post_obj ) {
@@ -840,34 +881,98 @@ function go_task_shortcode( $atts, $content = null ) {
 		}
 
 		if ( $test_e_active && $test_e_returns ) {
-			$db_test_encounter_fail_count = $wpdb->get_var( "SELECT `e_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$db_test_encounter_fail_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT e_fail_count 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_encounter_fail_count'] = $db_test_encounter_fail_count;
 			
-			$db_test_encounter_passed = $wpdb->get_var( "SELECT `e_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$db_test_encounter_passed = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT e_passed 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_encounter_passed'] = $db_test_encounter_passed;
 		}
 
 		if ( $test_a_active && $test_a_returns ) {
-			$db_test_accept_fail_count = $wpdb->get_var( "SELECT `a_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$db_test_accept_fail_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT a_fail_count 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_accept_fail_count'] = $db_test_accept_fail_count;
 			
-			$db_test_accept_passed = $wpdb->get_var( "SELECT `a_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$db_test_accept_passed = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT a_passed 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_accept_passed'] = $db_test_accept_passed;
 		}
 
 		if ( $test_c_active && $test_c_returns ) {
-			$db_test_completion_fail_count = $wpdb->get_var( "SELECT `c_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$db_test_completion_fail_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT c_fail_count 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_completion_fail_count'] = $db_test_completion_fail_count;
 			
-			$db_test_completion_passed = $wpdb->get_var( "SELECT `c_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$db_test_completion_passed = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT c_passed 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_completion_passed'] = $db_test_completion_passed;
 		}
 
 		if ( $test_m_active && $test_m_returns ) {
-			$db_test_mastery_fail_count = $wpdb->get_var( "SELECT `m_fail_count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$db_test_mastery_fail_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT m_fail_count 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_mastery_fail_count'] = $db_test_mastery_fail_count;
 			
-			$test_mastery_passed = $wpdb->get_var( "SELECT `m_passed` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" );
+			$test_mastery_passed = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT m_passed 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
 			$_SESSION['test_mastery_passed'] = $test_mastery_passed;
 		}
 ?>
@@ -1344,7 +1449,17 @@ function go_task_shortcode( $atts, $content = null ) {
 			var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
 
 			// redeclare (also called "overloading" ) the variable $task_count to the value of the 'count' var on the database.
-			<?php $task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = {$id} AND uid = {$user_id}" ); ?>
+			<?php
+			$task_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT count 
+					FROM {$go_table_name} 
+					WHERE post_id = %d AND uid = %d",
+					$id,
+					$user_id
+				)
+			);
+			?>
 			
 			// if the button#go_button exists, set var 'task_status' to the value of the 'status' attribute on the current button#go_button.
 			if ( jQuery( '#go_button' ).length != 0 ) {
@@ -1825,7 +1940,15 @@ function go_task_change_stage() {
 
 	$unix_now = current_time( 'timestamp' ); // Current unix timestamp
 	$go_table_name = "{$wpdb->prefix}go";
-	$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = $post_id AND uid = $user_id" );
+	$task_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT count 
+			FROM {$go_table_name} 
+			WHERE post_id = %d AND uid = %d",
+			$post_id,
+			$user_id
+		)
+	);
 
 	$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
 	$mastery_active = ( ! empty( $custom_fields['go_mta_task_mastery'][0] ) ? ! $custom_fields['go_mta_task_mastery'][0] : true ); // whether or not the mastery stage is active
@@ -1995,7 +2118,15 @@ function go_task_change_stage() {
 	$c_passed = ( ! empty( $_SESSION['test_completion_passed'] )    ? (int) $_SESSION['test_completion_passed'] : 0 );
 	$m_passed = ( ! empty( $_SESSION['test_mastery_passed'] )       ? (int) $_SESSION['test_mastery_passed'] : 0 );
 
-	$db_status = (int) $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE uid = $user_id AND post_id = $post_id" );
+	$db_status = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$post_id
+		)
+	);
 
 	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); //determine which future date modifier is on, if any
 	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
@@ -2047,8 +2178,27 @@ function go_task_change_stage() {
 	$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : null );
 	if ( ! empty( $future_modifier ) && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' )  && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
 		$user_timers = get_user_meta( $user_id, 'go_timers' );
-		$accept_timestamp_db = strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$post_id}'" ) ) );
-		$accept_timestamp = ( ( ! empty( $user_timers[0][ $post_id ] ) ) ? $user_timers[0][ $post_id ] : ( ! empty( $accept_timestamp_db ) ? $accept_timestamp_db : ( ( $status == 2 ) ? $unix_now : 0) ) );
+		
+		$accept_timestamp = 0;
+		if ( ! empty( $user_timers[0][ $post_id ] ) ) {
+			$accept_timestamp = $user_timers[0][ $post_id ];
+		} else {
+			$accept_timestamp_raw = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT timestamp 
+					FROM {$wpdb->prefix}go 
+					WHERE uid = %d AND post_id = %d",
+					$user_id,
+					$post_id
+				)
+			);
+			if ( ! empty( $accept_timestamp_raw ) ) {
+				$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
+			} elseif ( 2 === $status ) {
+				$accept_timestamp = $unix_now;
+			}
+		}
+
 		$days = (int) $future_modifier['days'] ;
 		$hours = (int) $future_modifier['hours'];
 		$minutes = (int) $future_modifier['minutes'];
@@ -2112,11 +2262,34 @@ function go_task_change_stage() {
 								$penalty = ( $store_cost[3] > 0 ) ? $store_cost[3] : 0;
 								$minutes = ( $store_cost[4] < 0 ) ? $store_cost[4] : 0;
 								$user_id = get_current_user_id();
-								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
+								$received = $wpdb->query(
+									$wpdb->prepare(
+										"SELECT * 
+										FROM {$go_table_name} 
+										WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' 
+										ORDER BY timestamp DESC, reason DESC, id DESC 
+										LIMIT 1",
+										$user_id,
+										-1,
+										0,
+										$store_item
+									)
+								);
 								if ( $received ) {
 									go_update_totals( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, false, true );
 								}
-								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item) );
+								$wpdb->query(
+									$wpdb->prepare(
+										"DELETE FROM {$go_table_name} 
+										WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' 
+										ORDER BY timestamp DESC, reason DESC, id DESC 
+										LIMIT 1",
+										$user_id,
+										-1,
+										0,
+										$store_item
+									)
+								);
 							}
 						}
 					}
@@ -2144,11 +2317,34 @@ function go_task_change_stage() {
 								$minutes = ( $store_cost[4] < 0) ? $store_cost[4] : 0;
 								$loot_reason = 'Bonus';
 								$user_id = get_current_user_id();
-								$received = $wpdb->query( $wpdb->prepare( "SELECT * FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
+								$received = $wpdb->query(
+									$wpdb->prepare(
+										"SELECT * 
+										FROM {$go_table_name} 
+										WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' 
+										ORDER BY timestamp DESC, reason DESC, id DESC 
+										LIMIT 1",
+										$user_id,
+										-1,
+										0,
+										$store_item
+									)
+								);
 								if ( $received ) {
 									go_update_totals( $user_id, $points, $currency, $bonus_currency, 0, $minutes, null, $loot_reason, true, false );
 								}
-								$wpdb->query( $wpdb->prepare( "DELETE FROM {$go_table_name}  WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $store_item ) );
+								$wpdb->query(
+									$wpdb->prepare(
+										"DELETE FROM {$go_table_name} 
+										WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d AND reason = 'Bonus' 
+										ORDER BY timestamp DESC, reason DESC, id DESC 
+										LIMIT 1",
+										$user_id,
+										-1,
+										0,
+										$store_item
+									)
+								);
 							}
 						}
 					}
@@ -2184,7 +2380,15 @@ function go_task_change_stage() {
 		}   
 	// if the button pressed is NOT the repeat button...
 	} else {
-		$db_status = (int) $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE uid = $user_id AND post_id = $post_id" );
+		$db_status = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT status 
+				FROM {$go_table_name} 
+				WHERE uid = %d AND post_id = %d",
+				$user_id,
+				$post_id
+			)
+		);
 		if ( $db_status == 0 || ( $db_status <= $status ) ) {
 			if ( $undo ) {
 				if ( $task_count > 0 ) {
@@ -2255,8 +2459,24 @@ function go_task_change_stage() {
 	}
 	
 	// redefine the status and task_count because they have been updated as soon as the above go_add_post() calls are made.
-	$status = $wpdb->get_var( "SELECT `status` FROM {$go_table_name} WHERE uid = $user_id AND post_id = $post_id" );
-	$task_count = $wpdb->get_var( "SELECT `count` FROM {$go_table_name} WHERE post_id = $post_id AND uid = $user_id" );
+	$status = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$post_id
+		)
+	);
+	$task_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT count 
+			FROM {$go_table_name} 
+			WHERE post_id = %d AND uid = %d",
+			$post_id,
+			$user_id
+		)
+	);
 
 	if ( ! $undo ) {
 		if ( $task_count == 1 ) {
@@ -2284,7 +2504,15 @@ function go_task_change_stage() {
 			break;
 	}
 	if ( ! empty( $db_task_stage_upload_var ) ) {
-		$is_uploaded = $wpdb->get_var( "SELECT {$db_task_stage_upload_var} FROM {$go_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}" );
+		$is_uploaded = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT {$db_task_stage_upload_var} 
+				FROM {$go_table_name} 
+				WHERE uid = %d AND post_id = %d",
+				$user_id,
+				$post_id
+			)
+		);
 	} else {
 		$is_uploaded = 0;
 	}
@@ -2714,7 +2942,23 @@ function go_task_timer( $task_id, $user_id, $future_modifier ) {
 	global $wpdb;
 	$unix_now = current_time( 'timestamp' );
 	$user_timers = get_user_meta( $user_id, 'go_timers' );
-	$accept_timestamp = ( ( ! empty( $user_timers[0][ $task_id ] ) ) ? $user_timers[0][ $task_id ] : strtotime( str_replace( '@', ' ', $wpdb->get_var( "SELECT timestamp FROM {$wpdb->prefix}go WHERE uid='{$user_id}' AND post_id='{$task_id}'" ) ) ) );
+	$accept_timestamp = 0;
+
+	if ( ! empty( $user_timers[0][ $task_id ] ) ) {
+		$accept_timestamp = $user_timers[0][ $task_id ];
+	} else {
+		$accept_timestamp_raw = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT timestamp 
+				FROM {$wpdb->prefix}go 
+				WHERE uid = %d AND post_id = %d",
+				$user_id,
+				$task_id
+			)
+		);
+		$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
+	}
+
 	$days = (int) $future_modifier['days'] ;
 	$hours = (int) $future_modifier['hours'];
 	$minutes = (int) $future_modifier['minutes'];
