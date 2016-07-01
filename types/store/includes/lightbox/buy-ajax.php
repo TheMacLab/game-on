@@ -54,15 +54,6 @@ function go_buy_item() {
 			$limit = (int) $store_limit[1];
 		}
 	}
-
-	$store_filter = ( ! empty( $custom_fields['go_mta_store_filter'][0] ) ? unserialize( $custom_fields['go_mta_store_filter'][0] ) : null );
-	if ( ! empty( $store_filter ) ) {
-		$is_filtered = (bool) $store_filter[0];
-		if ( $is_filtered ) {
-			$req_rank = $store_filter[1];
-			$bonus_filter = $store_filter[2];
-		}
-	}
 	
 	$store_gift = ( ! empty( $custom_fields['go_mta_store_gift'][0] ) ? unserialize( $custom_fields['go_mta_store_gift'][0] ) : null );
 	$is_giftable = false;

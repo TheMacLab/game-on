@@ -1874,10 +1874,10 @@ function go_store_limit() {
 		$content_array[0] = true;
 	}
 	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
-	$limit = $content_array[1];
+	$limit = ( ! empty( $content_array[1] ) ? "value='{$content_array[1]}'" : '' );
 	echo "
 		<input id='go_store_limit_checkbox' name='go_store_limit' type='checkbox' {$is_checked}/>
-		<input id='go_store_limit_input' name='go_store_limit_input' type='text' style='display: none;' placeholder='Limit'".( ! empty( $limit ) ? "value='{$limit}'" : '' )."/>
+		<input id='go_store_limit_input' name='go_store_limit_input' type='text' style='display: none;' placeholder='Limit' {$limit}/>
 	";
 }
 
