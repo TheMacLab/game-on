@@ -635,6 +635,9 @@ function add_game_on_options() {
 }
 
 function go_reset_levels() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_reset_levels_' . get_current_user_id() );
 
 	$rank_prefix = get_option( 'go_level_names' );
@@ -671,6 +674,9 @@ function go_reset_levels() {
 }
 
 function go_save_levels() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_save_levels_' . get_current_user_id() );
 
 	$go_level_names  = ( ! empty( $_POST['go_level_names'] )  ? (array) $_POST['go_level_names'] : array() );
@@ -688,6 +694,10 @@ function go_save_levels() {
 function go_fix_levels() {
 	global $default_role;
 	global $wpdb;
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_fix_levels_' . get_current_user_id() );
 
 	$role = get_option( 'go_role', $default_role );
@@ -725,6 +735,9 @@ function go_fix_levels() {
 }
 
 function go_update_user_sc_data() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_update_user_sc_data_' . get_current_user_id() );
 
 	$old_class_a_array = (array) $_POST['old_class_a'];
@@ -759,6 +772,10 @@ function go_update_user_sc_data() {
 
 function go_focus_save() {
 	global $wpdb;
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_focus_save_' . get_current_user_id() );
 
 	$array = array_values( array_filter( (array) $_POST['focus_array'] ) );
@@ -799,6 +816,9 @@ function go_focus_save() {
 }
 
 function go_presets_reset() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_presets_reset_' . get_current_user_id() );
 
 	$presets = array(
@@ -850,6 +870,9 @@ function go_presets_reset() {
 }
 
 function go_presets_save() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_presets_save_' . get_current_user_id() );
 
 	$preset_name = (array) $_POST['go_preset_name'];
@@ -866,11 +889,10 @@ function go_presets_save() {
 }
 
 function go_reset_data() {
-	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		go_error_log( 'Only admins with correct permissions can resest data' );
-		die();
+		die( -1 );
 	}
-
 	check_ajax_referer( 'go_reset_data_' . get_current_user_id() );
 
 	global $wpdb;
@@ -1067,6 +1089,10 @@ function go_extra_profile_fields( $user ) {
 
 function go_user_option_add() {
 	if ( empty( $_POST['user_id'] ) ) {
+		die( -1 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
 		die( -1 );
 	}
 	$user_id = (int) $_POST['user_id'];

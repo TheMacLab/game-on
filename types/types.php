@@ -1492,6 +1492,9 @@ function go_stage_reward( $field_args ) {
 }
 
 function go_update_task_order() {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_update_task_order_' . get_the_ID() );
 
 	$order = ( ! empty( $_POST['order'] ) ? (array) $_POST['order'] : array() );
@@ -1703,6 +1706,9 @@ function go_clone_post_ajax() {
 }
 
 function go_clone_post() {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		die( -1 );
+	}
 
 	// Grab the post id from the ajax call and use it to grab data from the original post.
 	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : get_the_ID() );

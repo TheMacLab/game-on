@@ -171,10 +171,10 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
  *
  * @since 2.6.2
  *
- * @param  string	   $error			The error message.
- * @param  string	   $func			The name of the function which is calling go_error_log().
- * @param  string	   $file			The name of the file in which go_error_log() is being called.
- * @param  boolean	   $trace			Whether or not to output a stack trace.
+ * @param  string  $error The error message.
+ * @param  string  $func  The name of the function which is calling go_error_log().
+ * @param  string  $file  The name of the file in which go_error_log() is being called.
+ * @param  boolean $trace Whether or not to output a stack trace.
  */
 function go_error_log( $error = '', $func = __FUNCTION__, $file = __FILE__, $trace = false ) {
 	if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
@@ -194,6 +194,9 @@ function go_error_log( $error = '', $func = __FUNCTION__, $file = __FILE__, $tra
 }
 
 function go_deactivate_plugin() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_deactivate_plugin_' . get_current_user_id() );
 
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -306,6 +309,9 @@ function go_admin_head_notification() {
 }
 
 function go_admin_remove_notification() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_admin_remove_notification_' . get_current_user_id() );
 
 	update_option( 'go_display_admin_explanation', false );

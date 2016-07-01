@@ -98,6 +98,9 @@ function go_clipboard_menu() {
 
 function go_clipboard_intable() {
 	global $wpdb;
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_clipboard_intable_' . get_current_user_id() );
 
 	// do not continue if a class hasn't been selected
@@ -168,6 +171,9 @@ function go_clipboard_intable() {
 }
 
 function go_clipboard_intable_messages() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_clipboard_intable_messages_' . get_current_user_id() );
 
 	// do not continue if a class hasn't been selected
@@ -229,7 +235,7 @@ function go_clipboard_add() {
 	// the third param in the `check_ajax_referer()` call prevents the function from dying with 
 	// a "-1" response
 	$referer_passed = false;
-	if ( check_ajax_referer( 'go_clipboard_add_' . get_current_user_id(), false, false ) ) {
+	if ( current_user_can( 'manage_options' ) && check_ajax_referer( 'go_clipboard_add_' . get_current_user_id(), false, false ) ) {
 		$referer_passed = true;
 	}
 
@@ -311,6 +317,9 @@ function go_clipboard_add() {
 }
 
 function go_update_user_focuses() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_update_user_focuses_' . get_current_user_id() );
 
 	$new_user_focus = sanitize_text_field( stripslashes( $_POST['new_user_focus'] ) );
@@ -325,6 +334,9 @@ function go_update_user_focuses() {
 }
 
 function go_fix_messages() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	check_ajax_referer( 'go_fix_messages_' . get_current_user_id() );
 
 	$users = get_users(array( 'role' => 'Subscriber' ) );

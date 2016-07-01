@@ -323,6 +323,10 @@ function go_stats_task_list() {
 
 function go_stats_move_stage() {
 	global $wpdb;
+	
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
 		$user_id = (int) $_POST['user_id'];
