@@ -36,8 +36,8 @@ function go_the_lb_ajax() {
 		$is_filtered = ( ! empty( $store_filter[0] ) ? true : false );
 		if ( $is_filtered ) {
 			$req_rank       = ( ! empty( $store_filter[1] ) ? (string) $store_filter[1] : '' );
-			$bonus_filter   = ( ! empty( $store_filter[2] ) && count( $store_filter[2] ) > 0 ? (int) $store_filter[2] : null );
-			$penalty_filter = ( ! empty( $store_filter[3] ) && count( $store_filter[3] ) > 0 ? (int) $store_filter[3] : null );
+			$bonus_filter   = ( ! empty( $store_filter[2] ) ? (int) $store_filter[2] : 0 );
+			$penalty_filter = ( ! empty( $store_filter[3] ) ? (int) $store_filter[3] : 0 );
 		}
 	}
 
@@ -131,17 +131,19 @@ function go_the_lb_ajax() {
 	} else { 
 		$buy_color = "gold"; 
 	}
+
+	$passed_bonus_filter = true;
+	$passed_penalty_filter = true;
+	
+	if ( $is_filtered && ! empty( $bonus_filter ) && $user_bonus_currency < $bonus_filter ) {
+		$passed_bonus_filter = false;
+	}
+
+	if ( $is_filtered && ! empty( $penalty_filter ) && $user_penalties >= $penalty_filter ) {
+		$passed_penalty_filter = false;
+	}
 		
 	$user_focuses = array();
-
-	if ( $is_filtered && ! is_null( $penalty_filter ) && $user_penalties >= $penalty_filter ) {
-		$penalty_diff = $user_penalties - $penalty_filter;
-		if ( $penalty_diff > 0 ) {
-			die( "You have {$penalty_diff} too many ".go_return_options( 'go_penalty_name' )."." );	
-		} elseif ( $penalty_diff == 0 ) {
-			die( "You need less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to buy this item." );
-		}
-	}
 	
 	// Get focus options associated with item
 	$item_focus_array = ( ! empty( $custom_fields['go_mta_store_focus'][0] ) ? unserialize( $custom_fields['go_mta_store_focus'][0] ) : null );
@@ -183,8 +185,24 @@ function go_the_lb_ajax() {
 	if ( empty( $go_ahead ) && ! empty( $focus_category_lock ) ) {
 		die( 'Item only available to those in '.implode( ', ', $category_names ).' '.strtolower( go_return_options( 'go_focus_name' ) ) );
 	}
-	if ( $is_filtered && ! is_null( $bonus_filter ) && $user_bonus_currency < $bonus_filter) {
-		die( 'You require more '.go_return_options( 'go_bonus_currency_name' ).' to view this item.' );
+	if ( ! $passed_bonus_filter || ! $passed_penalty_filter ) {
+		$filter_error_str = '';
+
+		if ( ! $passed_bonus_filter ) {
+			$bonus_diff = $bonus_filter - $user_bonus_currency;
+			$filter_error_str .= "You need {$bonus_diff} more ".go_return_options( 'go_bonus_currency_name' ).' to view this item.';
+		}
+
+		if ( ! $passed_penalty_filter ) {
+			$penalty_diff = $user_penalties - $penalty_filter;
+			if ( $penalty_diff > 0 ) {
+				$filter_error_str .= "\nYou have {$penalty_diff} too many ".go_return_options( 'go_penalty_name' ).'.';
+			} elseif ( 0 === $penalty_diff ) {
+				$filter_error_str .= "\nYou need less than {$penalty_filter} ".go_return_options( 'go_penalty_name' ).' to view this item.';
+			}
+		}
+
+		die( $filter_error_str );
 	}
 	if ( ! empty( $purchase_limit) && $purchase_count >= $purchase_limit ) {
 		die( "You've reached the maximum purchase limit." );
