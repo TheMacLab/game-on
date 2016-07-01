@@ -9,7 +9,7 @@ function go_add_currency( $user_id, $reason, $status, $raw_points, $raw_currency
 	$user_penalties = go_return_penalty( $user_id );
 	$points = $raw_points;
 	$currency = $raw_currency;
-	if ( $status !== -1 ) {
+	if ( -1 !== $status && 6 !== $status ) {
 		$modded_array = go_return_multiplier(
 			$user_id,
 			$raw_points,
@@ -400,7 +400,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		$notify = false;
 	}
 
-	if ( $status !== -1 ) {
+	if ( -1 !== $status && 6 !== $status ) {
 		$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties );
 		$points = $modded_array[0];
 		$currency = $modded_array[1];
