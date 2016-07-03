@@ -74,7 +74,7 @@ function go_the_lb_ajax() {
 
 	echo "<h2>{$the_title}</h2>";
 	echo '<div id="go-lb-the-content">'.do_shortcode( $the_content ).'</div>';
-	if ( $user_points >= $req_rank || $req_rank <= 0 || $penalty ) {
+	if ( ! empty( $req_rank ) && ( $user_points >= $req_rank || $req_rank <= 0 || $penalty ) ) {
 		$lvl_color = "g"; 
 		$output_level = $req_rank *= -1;
 	} else { 
@@ -207,7 +207,7 @@ function go_the_lb_ajax() {
 	if ( ! empty( $purchase_limit) && $purchase_count >= $purchase_limit ) {
 		die( "You've reached the maximum purchase limit." );
 	}
-	if ( $user_points < $req_rank ) {
+	if ( ( ! empty( $req_rank ) ) && $user_points < $req_rank ) {
 		die( "You need to reach {$req_rank_key} to purchase this item." );
 	}
 	
