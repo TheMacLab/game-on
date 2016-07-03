@@ -351,8 +351,8 @@ function go_task_timer_headers() {
  * @param  string $str The string to check for a boolean value of true.
  * @return boolean Returns true if the string is equal to 'true', otherwise it returns false.
  */
-function go_is_true_str( string $str ) {
-	if ( ! empty( $str ) && 'true' === strtolower( $str ) ) {
+function go_is_true_str( $str ) {
+	if ( ! empty( $str ) && 'string' === gettype( $str ) && 'true' === strtolower( $str ) ) {
 		return true;
 	} else {
 		return false;
