@@ -542,9 +542,9 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox',
 			),
 			array(
-				'name' => 'Penalty'.go_task_opt_help( 'penalty', "Allows student's currency to become negative", 'http://maclab.guhsd.net/go/video/store/penalty.mp4' ),
-				'id' => "{$prefix}penalty_switch",
-				'type' => 'checkbox'
+				'name' => 'Debt'.go_task_opt_help( 'debt', 'Allows students to accrue debt when purchasing this item', 'http://maclab.guhsd.net/go/video/store/penalty.mp4' ),
+				'id' => "{$prefix}debt_switch",
+				'type' => 'checkbox',
 			),
 			array(
 				'name' => 'Filter'.go_task_opt_help( 'filter', 'Require students to have certain amounts of levels/honor/damage to buy this item', 'http://maclab.guhsd.net/go/video/store/filter.mp4' ),

@@ -1,5 +1,23 @@
 <?php
-function go_buy_item() { 
+
+/**
+ * Determines if the user has enough of XP, Gold, Honor, Damage, and/or Minutes to purchase the item.
+ *
+ * @since <2.0.0
+ *
+ * @param  int $req The currency required by the store item.
+ * @param  int $cr  The currency that the user currently has.
+ * @return boolean True if the user can purchase the item, and false if they can't.
+ */
+function go_has_enough_curr( $req = 0, $cur = 0 ) {
+	if ( $req > 0 && $cur < $req ) {
+		return false;
+	}
+
+	return true;
+}
+
+function go_buy_item() {
 	global $wpdb;
 
 	$user_id = get_current_user_id();
@@ -45,7 +63,7 @@ function go_buy_item() {
 		$req_penalty = $store_cost[3];
 		$req_minutes = $store_cost[4];
 	}
-	$penalty = ( ! empty( $custom_fields['go_mta_penalty_switch'] ) ? $custom_fields['go_mta_penalty_switch'] : false );
+	$debt_enabled = ( ! empty( $custom_fields['go_mta_debt_switch'] ) ? true : false );
 
 	$store_limit = ( ! empty( $custom_fields['go_mta_store_limit'][0] ) ? unserialize( $custom_fields['go_mta_store_limit'][0] ) : null );
 	if ( ! empty( $store_limit ) ) {
@@ -85,12 +103,12 @@ function go_buy_item() {
 	$cur_bonus_currency = go_return_bonus_currency( $user_id );
 	$cur_penalty = go_return_penalty( $user_id );
 	$cur_minutes = go_return_minutes( $user_id );
-	
-	$enough_currency = check_values( $req_currency, $cur_currency );
-	$enough_points = check_values( $req_points, $cur_points );
-	$enough_bonus_currency = check_values( $req_bonus_currency, $cur_bonus_currency );
-	$enough_penalty = check_values( $req_penalty, $cur_penalty );
-	$enough_minutes = check_values( $req_minutes, $cur_minutes );
+
+	$enough_currency = go_has_enough_curr( $req_currency, $cur_currency );
+	$enough_points = go_has_enough_curr( $req_points, $cur_points );
+	$enough_bonus_currency = go_has_enough_curr( $req_bonus_currency, $cur_bonus_currency );
+	$enough_penalty = go_has_enough_curr( $req_penalty, $cur_penalty );
+	$enough_minutes = go_has_enough_curr( $req_minutes, $cur_minutes );
 
 	$within_limit = true;
 	if ( ! empty( $limit ) && $is_limited === "true" ) {
@@ -100,7 +118,7 @@ function go_buy_item() {
 		}
 	}
 
-	if ( ( ( $enough_currency && $enough_bonus_currency && $enough_points && $enough_minutes ) || $penalty) && $within_limit ) {
+	if ( ( ( $enough_currency && $enough_points && $enough_bonus_currency && $enough_penalty && $enough_minutes ) || $debt_enabled ) && $within_limit ) {
 		if ( $is_focused && ! empty( $item_focus ) ) {
 			$user_focuses = get_user_meta( $user_id, 'go_focus', true );
 			if ( array_search( 'No '.go_return_options( 'go_focus_name' ), $user_focuses ) ) {
@@ -163,22 +181,42 @@ function go_buy_item() {
 		$currency_name = go_return_options( 'go_currency_name' );
 		$points_name = go_return_options( 'go_points_name' );
 		$bonus_currency_name = go_return_options( 'go_bonus_currency_name' );
+		$penalty_name = go_return_options( 'go_penalty_name' );
 		$minutes_name = go_return_options( 'go_minutes_name' );
-		$enough_array = array( 
-			$currency_name => $enough_currency, 
-			$points_name => $enough_points, 
-			$bonus_currency_name => $enough_bonus_currency, 
-			$minutes_name => $enough_minutes
+		$enough_array = array(
+			$currency_name => $enough_currency,
+			$points_name => $enough_points,
+			$bonus_currency_name => $enough_bonus_currency,
+			$penalty_name => $enough_penalty,
+			$minutes_name => $enough_minutes,
 		);
+
+		// pulls out the names of the currencies that the user doesn't have enough of, so they can be
+		// handled as errors
 		$errors = array();
-		foreach ( $enough_array as $key => $enough ) {
-			if ( ! $enough ) {
-				$errors[] = $key;
+		$err_str = '';
+		$err_glue = ', ';
+
+		foreach ( $enough_array as $currency_name => $has_enough ) {
+			if ( ! $has_enough ) {
+				$errors[] = $currency_name;
 			}
 		}
-		if ( ! empty( $errors ) ) {
-			$errors = implode( ', ', $errors );
-			echo 'Need more '.substr( $errors, 0, strlen( $errors ) );
+
+		// combines all the erring currencies into one string
+		for ( $ind = 0; $ind < count( $errors ); $ind++ ) {
+			$currency_name = $errors[ $ind ];
+			if ( 0 === $ind ) {
+				$err_str .= $currency_name;
+			} elseif ( $ind > 0 && count( $errors ) === $ind + 1 ) {
+				$err_str .= "{$err_glue}and {$currency_name}";
+			} else {
+				$err_str .= $err_glue . $currency_name;
+			}
+		}
+
+		if ( ! empty( $err_str ) ) {
+			echo "Need more {$err_str}.";
 		}
 		if ( $is_limited === "true" && ! $within_limit ) {
 			$qty_diff *= -1;

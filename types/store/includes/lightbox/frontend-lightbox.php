@@ -20,7 +20,7 @@ function go_the_lb_ajax() {
 	$item_content = get_post_field( 'post_content', $the_id );
 	$the_content = wpautop( $item_content );
 	$custom_fields = get_post_custom( $the_id );
-	$penalty = ( ! empty( $custom_fields['go_mta_penalty_switch'][0] ) ? true : false );
+	$penalty = ( ! empty( $custom_fields['go_mta_debt_switch'][0] ) ? true : false );
 	
 	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {

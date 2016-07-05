@@ -249,14 +249,6 @@ function go_register_tax_and_cpt() {
 	flush_rewrite_rules();
 }
 
-function check_values( $req = null, $cur = null ) {
-	if ( $cur >= $req || $req <= 0 ) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
 function go_user_redirect( $redirect_to, $request, $user ) {
 	$redirect_on = get_option( 'go_admin_bar_user_redirect', true );
 	if ( $redirect_on && isset( $user ) && ( $user instanceof WP_User ) ) {
