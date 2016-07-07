@@ -1483,7 +1483,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			
 			// if the button#go_back_button has the attribute of repeat...
 			var repeat_attr = false;
-			if ( 'on' === jQuery( '#go_back_button' ).attr( 'repeat' ) ) {
+			if ( 'on' === jQuery( '#go_button' ).attr( 'repeat' ) ) {
 				// set repeat_attr equal to the value of the attribute of button#go_button.
 				repeat_attr = true;
 			} else if ( 'on' === jQuery( '#go_back_button' ).attr( 'repeat' ) ) {
