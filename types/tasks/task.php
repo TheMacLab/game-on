@@ -1,7 +1,7 @@
 <?php
 
 include( 'task_shortcode.php' ); 
-include( 'task_admin.php' );
+include( 'task-admin.php' );
 
 function go_register_task_tax_and_cpt() {
 	

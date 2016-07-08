@@ -588,7 +588,7 @@ if ( stage_three ) {
 	jQuery( 'tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message' ).toggle( 'slow' );
 	stage_accordion_rows[4].toggle( 'slow' );
 	if ( stage_accordions[4].hasClass( 'opened' ) ) {
-		go_toggle_settings_rows(stage_settings_rows[4] );
+		go_toggle_settings_rows( stage_settings_rows[4], true, 4 );
 	}
 }
 
@@ -596,7 +596,7 @@ if ( stage_three ) {
  * Five Stage Toggle
  */
 
-go_toggle_settings_rows( stage_settings_rows[5], true );
+go_toggle_settings_rows( stage_settings_rows[5] );
 stage_accordions[5].click( function () {
 	jQuery( this ).toggleClass( 'opened' );
 	go_toggle_settings_rows( stage_settings_rows[5], true, 5 );
@@ -610,7 +610,7 @@ jQuery( '#go_mta_five_stage_switch, #go_mta_task_repeat' ).click( function () {
 		jQuery( 'tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message' ).toggle( 'slow' );
 		stage_accordion_rows[5].toggle( 'slow' );
 		if ( stage_accordions[5].hasClass( 'opened' ) ) {
-			go_toggle_settings_rows( stage_settings_rows[5] );
+			go_toggle_settings_rows( stage_settings_rows[5], true, 5 );
 		}
 		jQuery( 'tr.cmb-type-wysiwyg.cmb_id_go_mta_mastery_message' ).show( 'slow' );
 		stage_accordion_rows[4].show( 'slow' );
@@ -628,7 +628,7 @@ jQuery( '#go_mta_five_stage_switch, #go_mta_task_repeat' ).click( function () {
 		jQuery( 'tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message' ).toggle( 'slow' );
 		stage_accordion_rows[5].toggle( 'slow' );
 		if (stage_accordions[5].hasClass( 'opened' ) ) {
-			go_toggle_settings_rows( stage_settings_rows[5] );
+			go_toggle_settings_rows( stage_settings_rows[5], true, 5 );
 		}
 		if ( jQuery( stage_accordions[3] ).hasClass( 'opened' ) ) {
 			jQuery( 'tr.cmb-type-checkbox.cmb_id_go_mta_completion_url_key' ).show();
@@ -639,7 +639,7 @@ jQuery( '#go_mta_five_stage_switch, #go_mta_task_repeat' ).click( function () {
 	}
 });
 
-var stage_five = GO_TASK_DATA.stages.is_stage_four_active;
+var stage_five = GO_TASK_DATA.stages.is_stage_five_active;
 
 if ( stage_five ) {
 	jQuery( 'tr.cmb-type-wysiwyg.cmb_id_go_mta_repeat_message' ).show( 'slow' );
