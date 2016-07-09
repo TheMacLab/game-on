@@ -374,7 +374,7 @@ input.go_test_field_rm {
 	margin: auto;
 }
 
-.down {
+.go_task_settings_accordion.opened .go_task_accordion_triangle {
 	border-top: none;
 	border-bottom: 5px solid #AAA;
 }

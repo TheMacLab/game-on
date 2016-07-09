@@ -35,8 +35,8 @@ function go_task_shortcode( $atts, $content = null ) {
 		$task_name = strtolower( go_return_options( 'go_tasks_name' ) );
 		$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
 		$rewards = ( ! empty( $custom_fields['go_presets'][0] ) ? unserialize( $custom_fields['go_presets'][0] ) : null );
-		$mastery_active = ( ! empty( $custom_fields['go_mta_task_mastery'][0] ) ? ! $custom_fields['go_mta_task_mastery'][0] : true ); // whether or not the mastery stage is active
-		$repeat = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : '' ); // Whether or not you can repeat the task
+		$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true ); // whether or not the mastery stage is active
+		$repeat = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : '' ); // Whether or not you can repeat the task
 		$unix_now = current_time( 'timestamp' ); // Current unix timestamp
 		$go_table_name = "{$wpdb->prefix}go";
 		$task_count = $wpdb->get_var(
@@ -523,7 +523,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 				
 				$post_custom_in_chain = get_post_custom( $post_id_in_chain );
-				$post_mastery_active_in_chain = ( ! empty( $post_custom_in_chain['go_mta_task_mastery'][0] ) ? ! $post_custom_in_chain['go_mta_task_mastery'][0] : true );
+				$post_mastery_active_in_chain = ( ! empty( $post_custom_in_chain['go_mta_three_stage_switch'][0] ) ? ! $post_custom_in_chain['go_mta_three_stage_switch'][0] : true );
 				// $post_number_of_stages_in_chain will later be designated by an admin option that will be toggleable per task chain.
 				if ( $post_mastery_active_in_chain ) {
 					$post_number_of_stages_in_chain = 4;
@@ -1555,12 +1555,12 @@ function go_task_shortcode( $atts, $content = null ) {
 		$encounter_message = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
 		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
 		$complete_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
-		$mastery_active = ( ! empty( $custom_fields['go_mta_task_mastery'][0] ) ? ! $custom_fields['go_mta_task_mastery'][0] : true );
+		$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true );
 		if ( $mastery_active ) {
 			$mastery_privacy = ( ! empty( $custom_fields['go_mta_mastery_privacy'][0] ) ? ! $custom_fields['go_mta_mastery_privacy'][0] : true );
 			if ( $mastery_privacy ) {
 				$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
-				$repeat_active = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : false );
+				$repeat_active = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : false );
 				if ( $repeat_active && $mastery_privacy ) {
 					$repeat_privacy = ( ! empty( $custom_fields['go_mta_repeat_privacy'][0] ) ? ! $custom_fields['go_mta_repeat_privacy'][0] : true );
 					if ( $repeat_privacy ) {
@@ -1957,8 +1957,8 @@ function go_task_change_stage() {
 	);
 
 	$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
-	$mastery_active = ( ! empty( $custom_fields['go_mta_task_mastery'][0] ) ? ! $custom_fields['go_mta_task_mastery'][0] : true ); // whether or not the mastery stage is active
-	$repeat = ( ! empty( $custom_fields['go_mta_task_repeat'][0] ) ? $custom_fields['go_mta_task_repeat'][0] : '' ); // Whether or not you can repeat the task
+	$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true ); // whether or not the mastery stage is active
+	$repeat = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : '' ); // Whether or not you can repeat the task
 
 	$e_admin_lock = ( ! empty( $custom_fields['go_mta_encounter_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] ) : null );
 	if ( ! empty( $e_admin_lock ) ) {

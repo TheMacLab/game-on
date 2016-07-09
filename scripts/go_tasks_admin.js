@@ -69,38 +69,38 @@
 // };
 
 /**
- * Setting Row Toggle Handlers
+ * Setting Row Open Handlers
  *
- * Function name format: "[cmb_id]_toggle_handler"
+ * Function name format: "[cmb_id]_accordion_opened"
  */
 
-// a handler specifically for when the date picker setting row is toggled
-function go_date_picker_toggle_handler( row_class, is_accordion_open ) {
-	var hidden = jQuery( row_class ).is( ':visible' );
+// a handler specifically for when the date picker setting row is opened
+function go_date_picker_accordion_opened( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
 	var date_checked = false;
 	if ( jQuery( '#go_calendar_checkbox' ).length > 0 && jQuery( '#go_calendar_checkbox' ).is( ':checked' ) ) {
 		date_checked = true;
 	}
 
-	if ( date_checked && hidden ) {
+	if ( date_checked && ! visible ) {
 		jQuery( row_class ).show();
-	} else if ( ! hidden ) {
+	} else if ( visible ) {
 		jQuery( row_class ).hide();
 	}
 }
 
-// a handler specifically for when the time modifier setting row is toggled
-function go_time_modifier_toggle_handler( row_class, is_accordion_open ) {
+// a handler specifically for when the time modifier setting row is opened
+function go_time_modifier_accordion_opened( row_class ) {
 	jQuery( row_class ).hide();
 }
 
-// a handler specifically for when the chain order setting setting row is toggled
-function go_chain_order_toggle_handler( row_class, is_accordion_open ) {
+// a handler specifically for when the chain order setting setting row is opened
+function go_chain_order_accordion_opened( row_class ) {
 	jQuery( row_class ).hide();
 }
 
-// a handler specifically for when the final chain message setting row is toggled
-function go_final_chain_message_toggle_handler( row_class, is_accordion_open ) {
+// a handler specifically for when the final chain message setting row is opened
+function go_final_chain_message_accordion_opened( row_class ) {
 	jQuery( row_class ).hide();
 }
 
@@ -239,15 +239,15 @@ function go_generate_accordion_array() {
 				{ cmb_type: 'go_rank_list'           , cmb_id: 'req_rank'              },
 				{ cmb_type: 'go_start_filter'        , cmb_id: 'start_filter'          },
 				{ cmb_type: 'go_future_filters'      , cmb_id: 'time_filters'          },
-				{ cmb_type: 'go_decay_table'         , cmb_id: 'date_picker'          , callback: go_date_picker_toggle_handler },
-				{ cmb_type: 'go_time_modifier_inputs', cmb_id: 'time_modifier'        , callback: go_time_modifier_toggle_handler },
+				{ cmb_type: 'go_decay_table'         , cmb_id: 'date_picker'          , callback: go_date_picker_accordion_opened },
+				{ cmb_type: 'go_time_modifier_inputs', cmb_id: 'time_modifier'        , callback: go_time_modifier_accordion_opened },
 				{ cmb_type: 'text'                   , cmb_id: 'bonus_currency_filter' },
 				{ cmb_type: 'text'                   , cmb_id: 'penalty_filter'        },
 				{ cmb_type: 'checkbox'               , cmb_id: 'focus_category_lock'   },
 				{ cmb_type: 'checkbox'               , cmb_id: 'three_stage_switch'    },
 				{ cmb_type: 'checkbox'               , cmb_id: 'five_stage_switch'     },
-				{ cmb_type: 'go_pick_order_of_chain' , cmb_id: 'chain_order'          , callback: go_chain_order_toggle_handler },
-				{ cmb_type: 'text'                   , cmb_id: 'final_chain_message'  , callback: go_final_chain_message_toggle_handler },
+				{ cmb_type: 'go_pick_order_of_chain' , cmb_id: 'chain_order'          , callback: go_chain_order_accordion_opened },
+				{ cmb_type: 'text'                   , cmb_id: 'final_chain_message'  , callback: go_final_chain_message_accordion_opened },
 			],
 		},
 		stage_one: {
@@ -292,7 +292,6 @@ function go_generate_accordion_array() {
 				{ cmb_type: 'checkbox'        , cmb_id: 'test_completion_lock_loot'     },
 				{ cmb_type: 'go_test_modifier', cmb_id: 'test_completion_lock_loot_mod' },
 				{ cmb_type: 'go_test_field'   , cmb_id: 'test_lock_completion'          },
-				{ cmb_type: 'checkbox'        , cmb_id: 'task_mastery'                  },
 				{ cmb_type: 'go_badge_input'  , cmb_id: 'stage_three_badge'             },
 			],
 		},
@@ -308,7 +307,6 @@ function go_generate_accordion_array() {
 				{ cmb_type: 'checkbox'        , cmb_id: 'test_mastery_lock_loot'     },
 				{ cmb_type: 'go_test_modifier', cmb_id: 'test_mastery_lock_loot_mod' },
 				{ cmb_type: 'go_test_field'   , cmb_id: 'test_lock_mastery'          },
-				{ cmb_type: 'checkbox'        , cmb_id: 'task_repeat'                },
 				{ cmb_type: 'checkbox'        , cmb_id: 'mastery_privacy'            },
 				{ cmb_type: 'go_badge_input'  , cmb_id: 'stage_four_badge'           },
 				{ cmb_type: 'go_bonus_loot'   , cmb_id: 'mastery_bonus_loot'         },
