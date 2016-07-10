@@ -90,41 +90,6 @@ function go_accordion_handle_click( event ) {
 }
 
 /**
- * Creates a string to identify setting rows by.
- *
- * String format: 'tr.cmb-type-[CMB type].cmb_id_go_mta_[CMB ID]'
- *
- * The GO CMB prefix 'go_mta_' is static. If the prefix used to create the CMBs in `types.php` is
- * modified, the prefix will have to be manually updated here. In the future, the prefix will be
- * localized for easy access.
- *
- * @since 2.6.1
- * 
- * @param object setting_info Contains the type and ID of the corresponding CMB, created in the 
- *                            `types.php` file. Must be of the following structure:
- *     
- *     Object {
- *         'cmb_id'   => 'meta_box_id_without_prefix',
- *         'cmb_type' => 'text',
- *     }
- *
- * @return string Returns a concatenated string that can be used to identify the table row for the 
- *                setting. Returns an empty string when the `setting_info` parameter is empty.
- */
-function go_setting_row_get_class( setting_info ) {
-	if ( 'undefined' === typeof setting_info ||
-			'undefined' === typeof setting_info.cmb_id ||
-			'undefined' === typeof setting_info.cmb_type ||
-			'' === setting_info.cmb_id ||
-			'' === setting_info.cmb_type ) {
-
-		return '';
-	}
-
-	return 'tr.cmb-type-' + setting_info.cmb_type + '.cmb_id_go_mta_' + setting_info.cmb_id;
-}
-
-/**
  * Applies CSS classes, adds event listeners for accordions, and runs initial callbacks. Called only
  * once, when the page has loaded.
  *
@@ -181,8 +146,6 @@ function go_accordion_array_onload( accordion_array, accordion_names ) {
  * and their settings.
  *
  * @since 2.6.1
- *
- * @see go_setting_row_get_class()
  *
  * @return object Contains the accordion ID, accordion row classes, setting row classes, and setting
  *                row callbacks for each accordion.
@@ -545,7 +508,7 @@ function go_generate_accordion_array() {
 				}
 				
 				var setting_row_obj = {
-					class          : go_setting_row_get_class( setting_obj ),
+					class          : 'tr.cmb-type-' + setting_obj.cmb_type + '.cmb_id_go_mta_' + setting_obj.cmb_id,
 					init_callback  : init_callback,
 					toggle_callback: toggle_callback
 				};
