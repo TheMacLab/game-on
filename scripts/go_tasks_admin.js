@@ -52,7 +52,18 @@ function go_stage_five_accordion_onload( row_class ) {
 	}
 }
 
-// toggles accordions and the settings that they encapsulate
+/**
+ * Toggles an accordion and its underlying settings.
+ *
+ * Calls toggling callbacks——stored in the `toggle_callback` property——on setting rows, if they exist.
+ *
+ * @since 2.6.1
+ *
+ * @see go_accordion_handle_click()
+ *
+ * @param object accordion_data Event specific accordion data from the `go_accordion_handle_click()`
+ *                              function.
+ */
 function go_toggle_accordion( accordion_data ) {
 	if ( 'undefined' === typeof accordion_data ) {
 		return;
@@ -78,7 +89,15 @@ function go_toggle_accordion( accordion_data ) {
 	}
 }
 
-// called when accordions are clicked
+/**
+ * Handles clicks on accordion rows.
+ *
+ * Passes custom event data, containing accordion data, on to the `go_toggle_accordion()` function.
+ * 
+ * @since 2.6.1
+ * 
+ * @param object event The click event object.
+ */
 function go_accordion_handle_click( event ) {
 	var args = {};
 	if ( 'undefined' === typeof event.handleObj.data ) {
