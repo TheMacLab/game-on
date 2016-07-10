@@ -4,70 +4,6 @@
  * Where all the functionality for the task edit page goes.
  */
 
-// jQuery( '.go_reward_points, .go_reward_currency, .go_reward_bonus_currency' ).on( 'keyup', function () {
-// 	var reward_stage = jQuery( this ).attr( 'stage' );
-// 	var reward_type = jQuery( this ).attr( 'reward' );
-// 	jQuery( 'input[stage=' + reward_stage + '][reward = ' + reward_type + ']' ).val( jQuery( this ).val() );
-// });
-
-// jQuery( '.go_task_settings_accordion' ).click( function () {
-// 	jQuery( this ).children( '.go_triangle_container' ).children( '.go_task_accordion_triangle' ).toggleClass( 'down' );
-// });
-
-// function go_toggle_settings_rows( stage_settings, condensed, number ) {
-// 	condensed = ( 'undefined' !== typeof condensed ? condensed : false );
-// 	for ( var setting in stage_settings ) {
-// 		if ( condensed === true ) {
-// 			stage_settings[ setting ].addClass( 'condensed' ).children().addClass( 'condensed' );
-// 		}
-// 		stage_settings[ setting ].toggle( 'slow' );
-// 	}
-// 	if ( number ) {
-// 		for ( var i = 1; i < 6; i++ ) {
-// 			if ( i === number ) {	
-// 				continue;
-// 			}
-// 			stage_accordions[ i ].removeClass( "opened" );
-// 			if ( stage_settings !== task_settings ) {
-// 				jQuery( "#go_advanced_task_settings_accordion" ).removeClass( "opened" );
-// 				for ( var settings in task_settings ) {
-// 					task_settings[ settings ].hide( 'slow' );
-// 				}
-// 			} else {
-// 				for ( var setting_rows in stage_settings_rows[ i ] ) {
-// 					if ( null !== stage_settings_rows[ i ][ setting_rows ] ) {
-// 						stage_settings_rows[ i ][ setting_rows ].hide( 'slow' );
-// 					}
-// 				}
-// 			}
-// 			if ( jQuery( '#go_calendar_checkbox' ).prop( 'checked' ) &&
-// 					jQuery( "#go_advanced_task_settings_accordion" ).hasClass( 'opened' ) ) {
-// 				calendar_row.show( 'slow' );
-// 				future_row.hide();
-// 			} else {
-// 				calendar_row.hide( 'slow' );
-// 				future_row.hide();
-// 			}
-// 			if ( jQuery( '#go_future_checkbox' ).prop( 'checked' ) &&
-// 					jQuery( "#go_advanced_task_settings_accordion" ).hasClass( 'opened' ) ) {
-// 				future_row.show( 'slow' );
-// 				calendar_row.hide();
-// 			} else {
-// 				future_row.hide( 'slow' );
-// 				calendar_row.hide();
-// 			}
-// 		}
-// 	}
-// }
-
-// var stage_accordion_rows = {
-// 	1: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_one_settings' ),
-// 	2: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_two_settings' ),
-// 	3: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_three_settings' ),
-// 	4: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_four_settings' ),
-// 	5: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_five_settings' )
-// };
-
 /**
  * Setting Row Open Handlers
  *
@@ -131,8 +67,8 @@ function go_toggle_accordion( accordion_data ) {
 		var row = setting_rows[ x ];
 		var row_class = row.class;
 		if ( is_open ) {			
-			if ( 'undefined' !== typeof row.callback && null !== row.callback ) {
-				row.callback( row_class, is_open );
+			if ( 'undefined' !== typeof row.toggle_callback && null !== row.toggle_callback ) {
+				row.toggle_callback( row_class, is_open );
 			} else {
 				jQuery( row_class ).show();
 			}
@@ -149,9 +85,7 @@ function go_accordion_handle_click( event ) {
 		return;
 	}
 	args = event.handleObj.data;
-	
-	console.log( 'clicked!', event.target );
-	
+		
 	go_toggle_accordion( args.accordion_data );
 }
 
@@ -177,7 +111,7 @@ function go_accordion_handle_click( event ) {
  * @return string Returns a concatenated string that can be used to identify the table row for the 
  *                setting. Returns an empty string when the `setting_info` parameter is empty.
  */
-function go_setting_row_class( setting_info ) {
+function go_setting_row_get_class( setting_info ) {
 	if ( 'undefined' === typeof setting_info ||
 			'undefined' === typeof setting_info.cmb_id ||
 			'undefined' === typeof setting_info.cmb_type ||
@@ -190,22 +124,42 @@ function go_setting_row_class( setting_info ) {
 	return 'tr.cmb-type-' + setting_info.cmb_type + '.cmb_id_go_mta_' + setting_info.cmb_id;
 }
 
-// runs once on page load, primarily for hiding setting rows
+/**
+ * Applies CSS classes, adds event listeners for accordions, and runs initial callbacks. Called only
+ * once, when the page has loaded.
+ *
+ * Calls any callbacks attached to the accordions or setting rows compiled by
+ * `go_generate_accordion_array()`. If a setting row doesn't have a callback to call, the row is
+ * hidden.
+ *
+ * @since 2.6.1
+ *
+ * @param object accordion_array Accordion and setting data, see `go_generate_accordion_array()`
+ *                               for structure.
+ * @param array  accordion_names An array of keys (names) for the accordion array parameter.
+ */
 function go_accordion_array_onload( accordion_array, accordion_names ) {
-	if ( 'undefined' === typeof accordion_array || 'undefined' === typeof accordion_names || 0 === accordion_names.length ) {
+	if ( 'undefined' === typeof accordion_array || 'undefined' === typeof accordion_names||
+			0 === accordion_names.length ) {
 		return;
 	}
 
 	for ( var i = 0; i < accordion_names.length; i++ ) {
 		var name = accordion_names[ i ];
-		var accordion_row_class = accordion_array[ name ].row_class;
-		if ( 'undefined' !== typeof accordion_array[ name ].callback && null !== accordion_array[ name ].callback ) {
-			accordion_array[ name ].callback( accordion_row_class );
+		var accordion_data = accordion_array[ name ];
+		var accordion_row_class = accordion_data.row_class;
+		if ( 'undefined' !== typeof accordion_data.init_callback && null !== accordion_data.init_callback ) {
+			accordion_data.init_callback( accordion_row_class );
 		}
-		var rows = accordion_array[ name ].setting_rows;
+
+		// add click event listener for the accordion
+		jQuery( accordion_data.id ).click( { accordion_data: accordion_data }, go_accordion_handle_click );
+
+		var rows = accordion_data.setting_rows;
 		for ( var x = 0; x < rows.length; x++ ) {
-			var row_class = rows[ x ].class;
-			var row_el = jQuery( row_class );
+			var row = rows[ x ];
+			var row_callback = null;
+			var row_el = jQuery( row.class );
 			
 			// applies the GO "condensed" CSS class, to style the row
 			if ( ! row_el.hasClass( 'condensed' ) ) {
@@ -213,8 +167,9 @@ function go_accordion_array_onload( accordion_array, accordion_names ) {
 				row_el.children().addClass( 'condensed' );
 			}
 			
-			// hides the row
-			if ( row_el.is( ':visible' ) ) {
+			if ( 'undefined' !== typeof row.init_callback && null !== row.init_callback ) {
+				row.init_callback( row );
+			} else if ( row_el.is( ':visible' ) ) {
 				row_el.hide();
 			}
 		}
@@ -227,102 +182,332 @@ function go_accordion_array_onload( accordion_array, accordion_names ) {
  *
  * @since 2.6.1
  *
- * @see go_setting_row_class()
+ * @see go_setting_row_get_class()
  *
  * @return object Contains the accordion ID, accordion row classes, setting row classes, and setting
  *                row callbacks for each accordion.
+ *
+ *     e.g.
+ *     Object {
+ *         advanced_task: {
+ *             id           : '#go_advanced_task_settings_accordion',
+ *             row_class    : 'tr.cmb-type-go_settings_accordion.cmb_id_advanced_task_settings',
+ *             init_callback: function() {...},
+ *             setting_rows : [
+ *                 {
+ *                     class          : 'tr.cmb-type-go_rank_list.cmb_id_go_mta_req_rank',
+ *                     init_callback  : function() {...},
+ *                     toggle_callback: function() {...}
+ *                 },
+ *                 {
+ *                     class          : 'tr.cmb-type-go_start_filter.cmb_id_go_mta_start_filter',
+ *                     init_callback  : function() {...},
+ *                     toggle_callback: function() {...}
+ *                 },
+ *                 ...
+ *             ],
+ *         },
+ *         stage_one: {
+ *             id       : '#go_stage_one_settings_accordion',
+ *             row_class: 'tr.cmb-type-go_settings_accordion.cmb_id_stage_one_settings',
+ *             ...
+ *         },
+ *         ...
+ *     }
  */
 function go_generate_accordion_array() {
 	var accordion_map = {
 		advanced_task: {
 			settings: [
-				{ cmb_type: 'go_rank_list'           , cmb_id: 'req_rank'              },
-				{ cmb_type: 'go_start_filter'        , cmb_id: 'start_filter'          },
-				{ cmb_type: 'go_future_filters'      , cmb_id: 'time_filters'          },
-				{ cmb_type: 'go_decay_table'         , cmb_id: 'date_picker'          , callback: go_date_picker_accordion_opened },
-				{ cmb_type: 'go_time_modifier_inputs', cmb_id: 'time_modifier'        , callback: go_time_modifier_accordion_opened },
-				{ cmb_type: 'text'                   , cmb_id: 'bonus_currency_filter' },
-				{ cmb_type: 'text'                   , cmb_id: 'penalty_filter'        },
-				{ cmb_type: 'checkbox'               , cmb_id: 'focus_category_lock'   },
-				{ cmb_type: 'checkbox'               , cmb_id: 'three_stage_switch'    },
-				{ cmb_type: 'checkbox'               , cmb_id: 'five_stage_switch'     },
-				{ cmb_type: 'go_pick_order_of_chain' , cmb_id: 'chain_order'          , callback: go_chain_order_accordion_opened },
-				{ cmb_type: 'text'                   , cmb_id: 'final_chain_message'  , callback: go_final_chain_message_accordion_opened },
+				{
+					cmb_type: 'go_rank_list',
+					cmb_id: 'req_rank'
+				},
+				{
+					cmb_type: 'go_start_filter',
+					cmb_id: 'start_filter'
+				},
+				{
+					cmb_type: 'go_future_filters',
+					cmb_id: 'time_filters'
+				},
+				{
+					cmb_type: 'go_decay_table',
+					cmb_id: 'date_picker',
+					toggle_callback: go_date_picker_accordion_opened
+				},
+				{
+					cmb_type: 'go_time_modifier_inputs',
+					cmb_id: 'time_modifier',
+					toggle_callback: go_time_modifier_accordion_opened
+				},
+				{
+					cmb_type: 'text',
+					cmb_id: 'bonus_currency_filter'
+				},
+				{
+					cmb_type: 'text',
+					cmb_id: 'penalty_filter'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'focus_category_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'three_stage_switch'  
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'five_stage_switch'   
+				},
+				{
+					cmb_type: 'go_pick_order_of_chain',
+					cmb_id: 'chain_order',
+					toggle_callback: go_chain_order_accordion_opened
+				},
+				{
+					cmb_type: 'text',
+					cmb_id: 'final_chain_message',
+					toggle_callback: go_final_chain_message_accordion_opened
+				},
 			],
 		},
 		stage_one: {
 			settings: [
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_one_points'             },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_one_currency'           },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_one_bonus_currency'     },
-				{ cmb_type: 'go_admin_lock'   , cmb_id: 'encounter_admin_lock'         },
-				{ cmb_type: 'checkbox'        , cmb_id: 'encounter_url_key'            },
-				{ cmb_type: 'checkbox'        , cmb_id: 'encounter_upload'             },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_encounter_lock'          },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_encounter_lock_loot'     },
-				{ cmb_type: 'go_test_modifier', cmb_id: 'test_encounter_lock_loot_mod' },
-				{ cmb_type: 'go_test_field'   , cmb_id: 'test_lock_encounter'          },
-				{ cmb_type: 'go_badge_input'  , cmb_id: 'stage_one_badge'              },
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_one_points'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_one_currency'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_one_bonus_currency'
+				},
+				{
+					cmb_type: 'go_admin_lock',
+					cmb_id: 'encounter_admin_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'encounter_url_key'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'encounter_upload'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_encounter_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_encounter_lock_loot'
+				},
+				{
+					cmb_type: 'go_test_modifier',
+					cmb_id: 'test_encounter_lock_loot_mod'
+				},
+				{
+					cmb_type: 'go_test_field',
+					cmb_id: 'test_lock_encounter'
+				},
+				{
+					cmb_type: 'go_badge_input',
+					cmb_id: 'stage_one_badge'
+				},
 			],
 		},
 		stage_two: {
 			settings: [
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_two_points'          },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_two_currency'        },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_two_bonus_currency'  },
-				{ cmb_type: 'go_admin_lock'   , cmb_id: 'accept_admin_lock'         },
-				{ cmb_type: 'checkbox'        , cmb_id: 'accept_url_key'            },
-				{ cmb_type: 'checkbox'        , cmb_id: 'accept_upload'             },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_accept_lock'          },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_accept_lock_loot'     },
-				{ cmb_type: 'go_test_modifier', cmb_id: 'test_accept_lock_loot_mod' },
-				{ cmb_type: 'go_test_field'   , cmb_id: 'test_lock_accept'          },
-				{ cmb_type: 'go_badge_input'  , cmb_id: 'stage_two_badge'           },
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_two_points'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_two_currency'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_two_bonus_currency'
+				},
+				{
+					cmb_type: 'go_admin_lock',
+					cmb_id: 'accept_admin_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'accept_url_key'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'accept_upload'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_accept_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_accept_lock_loot'
+				},
+				{
+					cmb_type: 'go_test_modifier',
+					cmb_id: 'test_accept_lock_loot_mod'
+				},
+				{
+					cmb_type: 'go_test_field',
+					cmb_id: 'test_lock_accept'
+				},
+				{
+					cmb_type: 'go_badge_input',
+					cmb_id: 'stage_two_badge'
+				},
 			],
 		},
 		stage_three: {
 			settings: [
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_three_points'            },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_three_currency'          },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_three_bonus_currency'    },
-				{ cmb_type: 'go_admin_lock'   , cmb_id: 'completion_admin_lock'         },
-				{ cmb_type: 'checkbox'        , cmb_id: 'completion_url_key'            },
-				{ cmb_type: 'checkbox'        , cmb_id: 'completion_upload'             },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_completion_lock'          },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_completion_lock_loot'     },
-				{ cmb_type: 'go_test_modifier', cmb_id: 'test_completion_lock_loot_mod' },
-				{ cmb_type: 'go_test_field'   , cmb_id: 'test_lock_completion'          },
-				{ cmb_type: 'go_badge_input'  , cmb_id: 'stage_three_badge'             },
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_three_points'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_three_currency'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_three_bonus_currency'
+				},
+				{
+					cmb_type: 'go_admin_lock',
+					cmb_id: 'completion_admin_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'completion_url_key'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'completion_upload'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_completion_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_completion_lock_loot'
+				},
+				{
+					cmb_type: 'go_test_modifier',
+					cmb_id: 'test_completion_lock_loot_mod'
+				},
+				{
+					cmb_type: 'go_test_field',
+					cmb_id: 'test_lock_completion'
+				},
+				{
+					cmb_type: 'go_badge_input',
+					cmb_id: 'stage_three_badge'
+				},
 			],
 		},
 		stage_four: {
 			settings: [
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_four_points'          },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_four_currency'        },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_four_bonus_currency'  },
-				{ cmb_type: 'go_admin_lock'   , cmb_id: 'mastery_admin_lock'         },
-				{ cmb_type: 'checkbox'        , cmb_id: 'mastery_url_key'            },
-				{ cmb_type: 'checkbox'        , cmb_id: 'mastery_upload'             },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_mastery_lock'          },
-				{ cmb_type: 'checkbox'        , cmb_id: 'test_mastery_lock_loot'     },
-				{ cmb_type: 'go_test_modifier', cmb_id: 'test_mastery_lock_loot_mod' },
-				{ cmb_type: 'go_test_field'   , cmb_id: 'test_lock_mastery'          },
-				{ cmb_type: 'checkbox'        , cmb_id: 'mastery_privacy'            },
-				{ cmb_type: 'go_badge_input'  , cmb_id: 'stage_four_badge'           },
-				{ cmb_type: 'go_bonus_loot'   , cmb_id: 'mastery_bonus_loot'         },
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_four_points'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_four_currency'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_four_bonus_currency'
+				},
+				{
+					cmb_type: 'go_admin_lock',
+					cmb_id: 'mastery_admin_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'mastery_url_key'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'mastery_upload'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_mastery_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'test_mastery_lock_loot'
+				},
+				{
+					cmb_type: 'go_test_modifier',
+					cmb_id: 'test_mastery_lock_loot_mod'
+				},
+				{
+					cmb_type: 'go_test_field',
+					cmb_id: 'test_lock_mastery'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'mastery_privacy'
+				},
+				{
+					cmb_type: 'go_badge_input',
+					cmb_id: 'stage_four_badge'
+				},
+				{
+					cmb_type: 'go_bonus_loot',
+					cmb_id: 'mastery_bonus_loot'
+				},
 			],
 		},
 		stage_five: {
-			callback: go_stage_five_accordion_onload,
+			init_callback: go_stage_five_accordion_onload,
 			settings: [
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_five_points'         },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_five_currency'       },
-				{ cmb_type: 'go_stage_reward' , cmb_id: 'stage_five_bonus_currency' },
-				{ cmb_type: 'go_repeat_amount', cmb_id: 'repeat_amount'             },
-				{ cmb_type: 'go_admin_lock'   , cmb_id: 'repeat_admin_lock'         },
-				{ cmb_type: 'checkbox'        , cmb_id: 'repeat_upload'             },
-				{ cmb_type: 'checkbox'        , cmb_id: 'repeat_privacy'            },
-				{ cmb_type: 'go_badge_input'  , cmb_id: 'stage_five_badge'          },
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_five_points'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_five_currency'
+				},
+				{
+					cmb_type: 'go_stage_reward',
+					cmb_id: 'stage_five_bonus_currency'
+				},
+				{
+					cmb_type: 'go_repeat_amount',
+					cmb_id: 'repeat_amount'
+				},
+				{
+					cmb_type: 'go_admin_lock',
+					cmb_id: 'repeat_admin_lock'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'repeat_upload'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'repeat_privacy'
+				},
+				{
+					cmb_type: 'go_badge_input',
+					cmb_id: 'stage_five_badge'
+				},
 			],
 		},
 	};
@@ -332,15 +517,15 @@ function go_generate_accordion_array() {
 	if ( Object.keys( accordion_map ).length > 0 ) {
 		for ( var accordion_name in accordion_map ) {
 			var accordion_callback = null;
-			if ( 'undefined' !== typeof accordion_map[ accordion_name ].callback && null !== accordion_map[ accordion_name ].callback ) {
-				accordion_callback = accordion_map[ accordion_name ].callback;
+			if ( 'undefined' !== typeof accordion_map[ accordion_name ].init_callback ) {
+				accordion_callback = accordion_map[ accordion_name ].init_callback;
 			}
 
 			accordion_data[ accordion_name ] = {
-				id          : '#go_' + accordion_name + '_settings_accordion',
-				row_class   : 'tr.cmb-type-go_settings_accordion.cmb_id_' + accordion_name + '_settings',
-				callback    : accordion_callback,
-				setting_rows: [],
+				id           : '#go_' + accordion_name + '_settings_accordion',
+				row_class    : 'tr.cmb-type-go_settings_accordion.cmb_id_' + accordion_name + '_settings',
+				init_callback: accordion_callback,
+				setting_rows : [],
 			};
 
 			// the array of custom meta box types and IDs for each setting under the current accordion
@@ -349,14 +534,20 @@ function go_generate_accordion_array() {
 			for ( var i = 0; i < settings_array.length; i++ ) {
 				var setting_obj = settings_array[ i ];
 				
-				var callback = null;
-				if ( 'undefined' !== typeof setting_obj.callback ) {
-					callback = setting_obj.callback;
+				var init_callback = null;
+				if ( 'undefined' !== typeof setting_obj.init_callback ) {
+					init_callback = setting_obj.init_callback;
+				}
+
+				var toggle_callback = null;
+				if ( 'undefined' !== typeof setting_obj.toggle_callback ) {
+					toggle_callback = setting_obj.toggle_callback;
 				}
 				
 				var setting_row_obj = {
-					class:    go_setting_row_class( setting_obj ),
-					callback: callback
+					class          : go_setting_row_get_class( setting_obj ),
+					init_callback  : init_callback,
+					toggle_callback: toggle_callback
 				};
 				accordion_data[ accordion_name ].setting_rows.push( setting_row_obj );
 			}
@@ -366,17 +557,76 @@ function go_generate_accordion_array() {
 	return accordion_data;
 }
 
-var go_accordion_array       = go_generate_accordion_array();
-var go_accordion_array_names = Object.keys( go_accordion_array );
+jQuery( document ).ready( function() {
+	var go_accordion_array       = go_generate_accordion_array();
+	var go_accordion_array_names = Object.keys( go_accordion_array );
 
-go_accordion_array_onload( go_accordion_array, go_accordion_array_names );
+	go_accordion_array_onload( go_accordion_array, go_accordion_array_names );
+});
 
-for ( var index in go_accordion_array_names ) {
-	var accordion_name = go_accordion_array_names[ index ];
-	var accordion_data = go_accordion_array[ accordion_name ];
+// jQuery( '.go_reward_points, .go_reward_currency, .go_reward_bonus_currency' ).on( 'keyup', function () {
+// 	var reward_stage = jQuery( this ).attr( 'stage' );
+// 	var reward_type = jQuery( this ).attr( 'reward' );
+// 	jQuery( 'input[stage=' + reward_stage + '][reward = ' + reward_type + ']' ).val( jQuery( this ).val() );
+// });
 
-	jQuery( accordion_data.id ).click( { accordion_data: accordion_data }, go_accordion_handle_click );
-}
+// jQuery( '.go_task_settings_accordion' ).click( function () {
+// 	jQuery( this ).children( '.go_triangle_container' ).children( '.go_task_accordion_triangle' ).toggleClass( 'down' );
+// });
+
+// function go_toggle_settings_rows( stage_settings, condensed, number ) {
+// 	condensed = ( 'undefined' !== typeof condensed ? condensed : false );
+// 	for ( var setting in stage_settings ) {
+// 		if ( condensed === true ) {
+// 			stage_settings[ setting ].addClass( 'condensed' ).children().addClass( 'condensed' );
+// 		}
+// 		stage_settings[ setting ].toggle( 'slow' );
+// 	}
+// 	if ( number ) {
+// 		for ( var i = 1; i < 6; i++ ) {
+// 			if ( i === number ) {	
+// 				continue;
+// 			}
+// 			stage_accordions[ i ].removeClass( "opened" );
+// 			if ( stage_settings !== task_settings ) {
+// 				jQuery( "#go_advanced_task_settings_accordion" ).removeClass( "opened" );
+// 				for ( var settings in task_settings ) {
+// 					task_settings[ settings ].hide( 'slow' );
+// 				}
+// 			} else {
+// 				for ( var setting_rows in stage_settings_rows[ i ] ) {
+// 					if ( null !== stage_settings_rows[ i ][ setting_rows ] ) {
+// 						stage_settings_rows[ i ][ setting_rows ].hide( 'slow' );
+// 					}
+// 				}
+// 			}
+// 			if ( jQuery( '#go_calendar_checkbox' ).prop( 'checked' ) &&
+// 					jQuery( "#go_advanced_task_settings_accordion" ).hasClass( 'opened' ) ) {
+// 				calendar_row.show( 'slow' );
+// 				future_row.hide();
+// 			} else {
+// 				calendar_row.hide( 'slow' );
+// 				future_row.hide();
+// 			}
+// 			if ( jQuery( '#go_future_checkbox' ).prop( 'checked' ) &&
+// 					jQuery( "#go_advanced_task_settings_accordion" ).hasClass( 'opened' ) ) {
+// 				future_row.show( 'slow' );
+// 				calendar_row.hide();
+// 			} else {
+// 				future_row.hide( 'slow' );
+// 				calendar_row.hide();
+// 			}
+// 		}
+// 	}
+// }
+
+// var stage_accordion_rows = {
+// 	1: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_one_settings' ),
+// 	2: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_two_settings' ),
+// 	3: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_three_settings' ),
+// 	4: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_four_settings' ),
+// 	5: jQuery( 'tr.cmb-type-go_settings_accordion.cmb_id_stage_five_settings' )
+// };
 
 // var stage_accordions = {
 // 	1: jQuery( '#go_stage_one_settings_accordion' ),
