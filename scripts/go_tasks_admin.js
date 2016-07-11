@@ -13,6 +13,28 @@
  * Function name convention: "[cmb_id]_on_toggle"
  */
 
+// a handler specifically for when the start filter setting row is opened
+function go_start_filter_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+	var start_filter_enabled = false;
+	if ( jQuery( '#go_start_checkbox' ).length > 0 && jQuery( '#go_start_checkbox' ).is( ':checked' ) ) {
+		start_filter_enabled = true;
+	}
+
+	var filter_fields = jQuery( row_class + ' #go_start_info' );
+
+	if ( ! visible ) {
+		jQuery( row_class ).show();
+		if ( ! start_filter_enabled ) {
+			jQuery( filter_fields ).hide();
+		} else {
+			jQuery( filter_fields ).show();
+		}
+	} else if ( visible ) {
+		jQuery( row_class ).hide();
+	}
+}
+
 // a handler specifically for when the date picker setting row is opened
 function go_date_picker_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
@@ -52,6 +74,40 @@ function go_stage_five_accordion_on_load( row_class ) {
 	// displays the stage five accordion when either of the stage five options are checked
 	if ( jQuery( '#go_mta_five_stage_switch' ).is( ':checked' ) ) {
 
+	}
+}
+
+/**
+ * Setting Row On Load Handlers
+ *
+ * "on_load" callbacks are called when the page is first loaded. See `go_accordion_array_on_load()`
+ * for context. These callbacks are intended to add and respond to event handlers for individual
+ * setting rows.
+ *
+ * Function name convention: "[cmb_id]_on_load"
+ */
+
+// a custom event handler just for the start filter setting row
+function go_start_filter_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	if ( jQuery( '#go_start_checkbox' ).length > 0 ) {
+		jQuery( '#go_start_checkbox' ).change( go_start_filter_checkbox_on_change );
+	}
+}
+
+function go_start_filter_checkbox_on_change( event ) {
+	var is_checked = false;
+	if ( jQuery( '#go_start_checkbox' ).length > 0 && jQuery( '#go_start_checkbox' ).is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	var filter_fields = jQuery( event.target ).siblings( '#go_start_info' );
+
+	if ( is_checked ) {
+		filter_fields.show();
+	} else {
+		filter_fields.hide();
 	}
 }
 
@@ -210,7 +266,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_start_filter',
-					cmb_id: 'start_filter'
+					cmb_id: 'start_filter',
+					on_toggle: go_start_filter_on_toggle,
+					on_load: go_start_filter_on_load
 				},
 				{
 					cmb_type: 'go_future_filters',
