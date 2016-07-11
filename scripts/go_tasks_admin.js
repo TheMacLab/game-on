@@ -10,14 +10,14 @@
  * "go_toggle" callbacks are called when an accordion has been toggled. See `go_toggle_accordion()`
  * for context.
  *
- * Function name convention: "[cmb_id]_on_toggle"
+ * Function name convention: "go_[cmb_id]_on_toggle"
  */
 
 // a handler specifically for when the start filter setting row is opened
 function go_start_filter_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
 	var start_filter_enabled = false;
-	if ( jQuery( row_class + ' #go_start_checkbox' ).length > 0 &
+	if ( 1 === jQuery( row_class + ' #go_start_checkbox' ).length &&
 			jQuery( row_class + ' #go_start_checkbox' ).is( ':checked' ) ) {
 		start_filter_enabled = true;
 	}
@@ -40,7 +40,7 @@ function go_start_filter_on_toggle( row_class ) {
 function go_date_picker_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
 	var date_checked = false;
-	if ( jQuery( row_class + ' #go_calendar_checkbox' ).length > 0 &&
+	if ( 1 === jQuery( row_class + ' #go_calendar_checkbox' ).length &&
 			jQuery( row_class + ' #go_calendar_checkbox' ).is( ':checked' ) ) {
 		date_checked = true;
 	}
@@ -67,8 +67,8 @@ function go_final_chain_message_on_toggle( row_class ) {
 	jQuery( row_class ).hide();
 }
 
-// a handler specifically for when the stage accordion is first loaded
-function go_stage_five_accordion_on_load( row_class ) {
+// a handler specifically for when the fifth stage accordion is first loaded
+function go_stage_five_on_load( row_class ) {
 	if ( 1 !== jQuery( '#go_mta_five_stage_switch' ).length ) {
 		return;
 	}
@@ -86,21 +86,21 @@ function go_stage_five_accordion_on_load( row_class ) {
  * for context. These callbacks are intended to add and respond to event handlers for individual
  * setting rows.
  *
- * Function name convention: "[cmb_id]_on_load"
+ * Function name convention: "go_[cmb_id]_on_load"
  */
 
 // a custom event handler just for the start filter setting row
 function go_start_filter_on_load( row ) {
 	jQuery( row.class ).hide();
 
-	if ( jQuery( row.class + ' #go_start_checkbox' ).length > 0 ) {
+	if ( 1 === jQuery( row.class + ' #go_start_checkbox' ).length ) {
 		jQuery( row.class + ' #go_start_checkbox' ).change( go_start_filter_checkbox_on_change );
 	}
 }
 
 function go_start_filter_checkbox_on_change( event ) {
 	var is_checked = false;
-	if ( jQuery( event.target ).length > 0 && jQuery( event.target ).is( ':checked' ) ) {
+	if ( 1 === jQuery( event.target ).length && jQuery( event.target ).is( ':checked' ) ) {
 		is_checked = true;
 	}
 
@@ -519,7 +519,7 @@ function go_generate_accordion_array() {
 			],
 		},
 		stage_five: {
-			on_load: go_stage_five_accordion_on_load,
+			on_load: go_stage_five_on_load,
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
