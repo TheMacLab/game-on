@@ -5,13 +5,16 @@
  */
 
 /**
- * Setting Row Open Handlers
+ * Setting Row On Toggle Handlers
  *
- * Function name format: "[cmb_id]_accordion_opened"
+ * "go_toggle" callbacks are called when an accordion has been toggled. See `go_toggle_accordion()`
+ * for context.
+ *
+ * Function name convention: "[cmb_id]_on_toggle"
  */
 
 // a handler specifically for when the date picker setting row is opened
-function go_date_picker_accordion_opened( row_class ) {
+function go_date_picker_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
 	var date_checked = false;
 	if ( jQuery( '#go_calendar_checkbox' ).length > 0 && jQuery( '#go_calendar_checkbox' ).is( ':checked' ) ) {
@@ -26,22 +29,22 @@ function go_date_picker_accordion_opened( row_class ) {
 }
 
 // a handler specifically for when the time modifier setting row is opened
-function go_time_modifier_accordion_opened( row_class ) {
+function go_time_modifier_on_toggle( row_class ) {
 	jQuery( row_class ).hide();
 }
 
 // a handler specifically for when the chain order setting setting row is opened
-function go_chain_order_accordion_opened( row_class ) {
+function go_chain_order_on_toggle( row_class ) {
 	jQuery( row_class ).hide();
 }
 
 // a handler specifically for when the final chain message setting row is opened
-function go_final_chain_message_accordion_opened( row_class ) {
+function go_final_chain_message_on_toggle( row_class ) {
 	jQuery( row_class ).hide();
 }
 
 // a handler specifically for when the stage accordion is first loaded
-function go_stage_five_accordion_onload( row_class ) {
+function go_stage_five_accordion_on_load( row_class ) {
 	if ( 1 !== jQuery( '#go_mta_five_stage_switch' ).length ) {
 		return;
 	}
@@ -55,7 +58,7 @@ function go_stage_five_accordion_onload( row_class ) {
 /**
  * Toggles an accordion and its underlying settings.
  *
- * Calls toggling callbacks——stored in the `toggle_callback` property——on setting rows, if they exist.
+ * Calls toggling callbacks——stored in the `on_toggle` property——on setting rows, if they exist.
  *
  * @since 2.6.1
  *
@@ -78,8 +81,8 @@ function go_toggle_accordion( accordion_data ) {
 		var row = setting_rows[ x ];
 		var row_class = row.class;
 		if ( is_open ) {			
-			if ( 'undefined' !== typeof row.toggle_callback && null !== row.toggle_callback ) {
-				row.toggle_callback( row_class, is_open );
+			if ( 'undefined' !== typeof row.on_toggle && null !== row.on_toggle ) {
+				row.on_toggle( row_class, is_open );
 			} else {
 				jQuery( row_class ).show();
 			}
@@ -109,7 +112,7 @@ function go_accordion_handle_click( event ) {
 }
 
 /**
- * Applies CSS classes, adds event listeners for accordions, and runs initial callbacks. Called only
+ * Applies CSS classes, adds event listeners for accordions, and runs on_load callbacks. Called only
  * once, when the page has loaded.
  *
  * Calls any callbacks attached to the accordions or setting rows compiled by
@@ -122,7 +125,7 @@ function go_accordion_handle_click( event ) {
  *                               for structure.
  * @param array  accordion_names An array of keys (names) for the accordion array parameter.
  */
-function go_accordion_array_onload( accordion_array, accordion_names ) {
+function go_accordion_array_on_load( accordion_array, accordion_names ) {
 	if ( 'undefined' === typeof accordion_array || 'undefined' === typeof accordion_names||
 			0 === accordion_names.length ) {
 		return;
@@ -132,8 +135,8 @@ function go_accordion_array_onload( accordion_array, accordion_names ) {
 		var name = accordion_names[ i ];
 		var accordion_data = accordion_array[ name ];
 		var accordion_row_class = accordion_data.row_class;
-		if ( 'undefined' !== typeof accordion_data.init_callback && null !== accordion_data.init_callback ) {
-			accordion_data.init_callback( accordion_row_class );
+		if ( 'undefined' !== typeof accordion_data.on_load && null !== accordion_data.on_load ) {
+			accordion_data.on_load( accordion_row_class );
 		}
 
 		// add click event listener for the accordion
@@ -151,8 +154,8 @@ function go_accordion_array_onload( accordion_array, accordion_names ) {
 				row_el.children().addClass( 'condensed' );
 			}
 			
-			if ( 'undefined' !== typeof row.init_callback && null !== row.init_callback ) {
-				row.init_callback( row );
+			if ( 'undefined' !== typeof row.on_load && null !== row.on_load ) {
+				row.on_load( row );
 			} else if ( row_el.is( ':visible' ) ) {
 				row_el.hide();
 			}
@@ -174,17 +177,17 @@ function go_accordion_array_onload( accordion_array, accordion_names ) {
  *         advanced_task: {
  *             id           : '#go_advanced_task_settings_accordion',
  *             row_class    : 'tr.cmb-type-go_settings_accordion.cmb_id_advanced_task_settings',
- *             init_callback: function() {...},
+ *             on_load: function() {...},
  *             setting_rows : [
  *                 {
  *                     class          : 'tr.cmb-type-go_rank_list.cmb_id_go_mta_req_rank',
- *                     init_callback  : function() {...},
- *                     toggle_callback: function() {...}
+ *                     on_load  : function() {...},
+ *                     on_toggle: function() {...}
  *                 },
  *                 {
  *                     class          : 'tr.cmb-type-go_start_filter.cmb_id_go_mta_start_filter',
- *                     init_callback  : function() {...},
- *                     toggle_callback: function() {...}
+ *                     on_load  : function() {...},
+ *                     on_toggle: function() {...}
  *                 },
  *                 ...
  *             ],
@@ -216,12 +219,12 @@ function go_generate_accordion_array() {
 				{
 					cmb_type: 'go_decay_table',
 					cmb_id: 'date_picker',
-					toggle_callback: go_date_picker_accordion_opened
+					on_toggle: go_date_picker_on_toggle
 				},
 				{
 					cmb_type: 'go_time_modifier_inputs',
 					cmb_id: 'time_modifier',
-					toggle_callback: go_time_modifier_accordion_opened
+					on_toggle: go_time_modifier_on_toggle
 				},
 				{
 					cmb_type: 'text',
@@ -246,12 +249,12 @@ function go_generate_accordion_array() {
 				{
 					cmb_type: 'go_pick_order_of_chain',
 					cmb_id: 'chain_order',
-					toggle_callback: go_chain_order_accordion_opened
+					on_toggle: go_chain_order_on_toggle
 				},
 				{
 					cmb_type: 'text',
 					cmb_id: 'final_chain_message',
-					toggle_callback: go_final_chain_message_accordion_opened
+					on_toggle: go_final_chain_message_on_toggle
 				},
 			],
 		},
@@ -456,7 +459,7 @@ function go_generate_accordion_array() {
 			],
 		},
 		stage_five: {
-			init_callback: go_stage_five_accordion_onload,
+			on_load: go_stage_five_accordion_on_load,
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
@@ -499,14 +502,14 @@ function go_generate_accordion_array() {
 	if ( Object.keys( accordion_map ).length > 0 ) {
 		for ( var accordion_name in accordion_map ) {
 			var accordion_callback = null;
-			if ( 'undefined' !== typeof accordion_map[ accordion_name ].init_callback ) {
-				accordion_callback = accordion_map[ accordion_name ].init_callback;
+			if ( 'undefined' !== typeof accordion_map[ accordion_name ].on_load ) {
+				accordion_callback = accordion_map[ accordion_name ].on_load;
 			}
 
 			accordion_data[ accordion_name ] = {
 				id           : '#go_' + accordion_name + '_settings_accordion',
 				row_class    : 'tr.cmb-type-go_settings_accordion.cmb_id_' + accordion_name + '_settings',
-				init_callback: accordion_callback,
+				on_load: accordion_callback,
 				setting_rows : [],
 			};
 
@@ -516,20 +519,20 @@ function go_generate_accordion_array() {
 			for ( var i = 0; i < settings_array.length; i++ ) {
 				var setting_obj = settings_array[ i ];
 				
-				var init_callback = null;
-				if ( 'undefined' !== typeof setting_obj.init_callback ) {
-					init_callback = setting_obj.init_callback;
+				var on_load = null;
+				if ( 'undefined' !== typeof setting_obj.on_load ) {
+					on_load = setting_obj.on_load;
 				}
 
-				var toggle_callback = null;
-				if ( 'undefined' !== typeof setting_obj.toggle_callback ) {
-					toggle_callback = setting_obj.toggle_callback;
+				var on_toggle = null;
+				if ( 'undefined' !== typeof setting_obj.on_toggle ) {
+					on_toggle = setting_obj.on_toggle;
 				}
 				
 				var setting_row_obj = {
 					class          : 'tr.cmb-type-' + setting_obj.cmb_type + '.cmb_id_go_mta_' + setting_obj.cmb_id,
-					init_callback  : init_callback,
-					toggle_callback: toggle_callback
+					on_load  : on_load,
+					on_toggle: on_toggle
 				};
 				accordion_data[ accordion_name ].setting_rows.push( setting_row_obj );
 			}
@@ -543,7 +546,7 @@ jQuery( document ).ready( function() {
 	var go_accordion_array       = go_generate_accordion_array();
 	var go_accordion_array_names = Object.keys( go_accordion_array );
 
-	go_accordion_array_onload( go_accordion_array, go_accordion_array_names );
+	go_accordion_array_on_load( go_accordion_array, go_accordion_array_names );
 });
 
 // jQuery( '.go_reward_points, .go_reward_currency, .go_reward_bonus_currency' ).on( 'keyup', function () {
