@@ -770,8 +770,8 @@ function go_decay_table() {
 			?>
 			</tbody>
 		</table>
-		<input type="button" id="go_mta_add_task_decay" onclick="go_add_decay_table_row()" value="+"/>
-		<input type="button" id="go_mta_remove_task_decay" onclick="go_remove_decay_table_row()" value="-"/>
+		<input type="button" id="go_mta_add_task_decay" value="+"/>
+		<input type="button" id="go_mta_remove_task_decay" value="-"/>
 	<?php
 }
 

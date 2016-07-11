@@ -40,8 +40,8 @@ function go_start_filter_on_toggle( row_class ) {
 function go_date_picker_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
 	var date_checked = false;
-	if ( 1 === jQuery( row_class + ' #go_calendar_checkbox' ).length &&
-			jQuery( row_class + ' #go_calendar_checkbox' ).is( ':checked' ) ) {
+	if ( 1 === jQuery( '#go_calendar_checkbox' ).length &&
+			jQuery( '#go_calendar_checkbox' ).is( ':checked' ) ) {
 		date_checked = true;
 	}
 
@@ -147,9 +147,73 @@ function go_time_filter_checkboxes_on_change( event ) {
 		is_sibling_checked = true;
 	}
 
+	// creates the illusion that the date and time checkboxes are connected
 	if ( is_checked && is_sibling_checked ) {
 		sibling_checkbox.prop( 'checked', '' );
+		sibling_checkbox.trigger( 'change' );
 	}
+}
+
+function go_date_picker_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var time_filter_date_checkbox = jQuery( '#go_calendar_checkbox' );
+	var add_field_button = jQuery( row.class + ' #go_mta_add_task_decay' );
+	var del_field_button = jQuery( row.class + ' #go_mta_remove_task_decay' );
+
+	if ( 1 === time_filter_date_checkbox.length ) {
+
+		// go_date_picker_on_toggle is wrapped in a closure, otherwise the jQuery.Event sent to the
+		// "change" listener will be confused for the class of the row
+		time_filter_date_checkbox.change( function() {
+			go_date_picker_on_toggle( row.class );
+		});
+	}
+
+	if ( 1 === add_field_button.length ) {
+		add_field_button.click( go_date_picker_add_field );
+	}
+	
+	if ( 1 === del_field_button.length ) {
+		del_field_button.click( go_date_picker_del_field );
+	}
+}
+
+function go_date_picker_add_field() {
+	jQuery( '#go_list_of_decay_dates tbody' ).last().append(
+		'<tr>' +
+			'<td>' +
+				'<input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" ' +
+				'type="date" placeholder="Click for Date"/>' +
+					' @ (hh:mm AM/PM)' +
+				'<input type="time" name="go_mta_task_decay_calendar_time[]" class="custom_time" ' +
+					'placeholder="Click for Time" value="00:00" />' +
+			'</td>' +
+			'<td>' +
+				'<input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/>' +
+			'</td>' +
+		'</tr>'
+	);
+
+	// This can be faked by the browser, so it is not reliable. e.g. Internet Explorer can say that
+	// its user agent is "chrome".
+	var is_chrome = navigator.userAgent.toLowerCase().indexOf( 'chrome' ) > -1;
+	if ( ! is_chrome ) {
+		if ( jQuery( 'input.go_datepicker' ).length > 0 ) {
+			
+			jQuery( 'input.go_datepicker' ).each( function() {
+				jQuery( this ).datepicker( { dateFormat: "yy-mm-dd" } );
+			});
+
+			jQuery( 'input.custom_time' ).each( function () {
+				jQuery( this ).ptTimeSelect();
+			});
+		}
+	}
+}
+
+function go_date_picker_del_field() {
+	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
 }
 
 /**
@@ -308,8 +372,8 @@ function go_generate_accordion_array() {
 				{
 					cmb_type: 'go_start_filter',
 					cmb_id: 'start_filter',
-					on_toggle: go_start_filter_on_toggle,
-					on_load: go_start_filter_on_load
+					on_load: go_start_filter_on_load,
+					on_toggle: go_start_filter_on_toggle
 				},
 				{
 					cmb_type: 'go_future_filters',
@@ -319,6 +383,7 @@ function go_generate_accordion_array() {
 				{
 					cmb_type: 'go_decay_table',
 					cmb_id: 'date_picker',
+					on_load: go_date_picker_on_load,
 					on_toggle: go_date_picker_on_toggle
 				},
 				{
@@ -919,23 +984,6 @@ jQuery( document ).ready( function() {
 // 	// prepare the task chain sortable list
 // 	go_prepare_sortable_list();
 // });
-
-// function go_add_decay_table_row () {
-// 	jQuery( '#go_list_of_decay_dates tbody' ).last().append( '<tr><td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input type="time" name="go_mta_task_decay_calendar_time[]" class="custom_time" placeholder="Click for Time" value="00:00" /></td><td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td></tr>' );	
-// 	if ( ! is_chrome ) {
-// 		if ( jQuery( 'input.go_datepicker' ).length) {
-// 			jQuery( 'input.go_datepicker' ).each( function () {
-// 				jQuery( this ).datepicker({dateFormat: "yy-mm-dd"});
-// 			});
-// 			jQuery( 'input.custom_time' ).each( function () {
-// 				jQuery( this ).ptTimeSelect();
-// 			});
-// 		}
-// 	}
-// }
-// function go_remove_decay_table_row () {
-// 	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
-// }
 
 // /*
 //  * Admin Lock
