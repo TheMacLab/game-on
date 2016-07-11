@@ -17,7 +17,8 @@
 function go_start_filter_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
 	var start_filter_enabled = false;
-	if ( jQuery( '#go_start_checkbox' ).length > 0 && jQuery( '#go_start_checkbox' ).is( ':checked' ) ) {
+	if ( jQuery( row_class + ' #go_start_checkbox' ).length > 0 &
+			jQuery( row_class + ' #go_start_checkbox' ).is( ':checked' ) ) {
 		start_filter_enabled = true;
 	}
 
@@ -39,7 +40,8 @@ function go_start_filter_on_toggle( row_class ) {
 function go_date_picker_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
 	var date_checked = false;
-	if ( jQuery( '#go_calendar_checkbox' ).length > 0 && jQuery( '#go_calendar_checkbox' ).is( ':checked' ) ) {
+	if ( jQuery( row_class + ' #go_calendar_checkbox' ).length > 0 &&
+			jQuery( row_class + ' #go_calendar_checkbox' ).is( ':checked' ) ) {
 		date_checked = true;
 	}
 
@@ -91,14 +93,14 @@ function go_stage_five_accordion_on_load( row_class ) {
 function go_start_filter_on_load( row ) {
 	jQuery( row.class ).hide();
 
-	if ( jQuery( '#go_start_checkbox' ).length > 0 ) {
-		jQuery( '#go_start_checkbox' ).change( go_start_filter_checkbox_on_change );
+	if ( jQuery( row.class + ' #go_start_checkbox' ).length > 0 ) {
+		jQuery( row.class + ' #go_start_checkbox' ).change( go_start_filter_checkbox_on_change );
 	}
 }
 
 function go_start_filter_checkbox_on_change( event ) {
 	var is_checked = false;
-	if ( jQuery( '#go_start_checkbox' ).length > 0 && jQuery( '#go_start_checkbox' ).is( ':checked' ) ) {
+	if ( jQuery( event.target ).length > 0 && jQuery( event.target ).is( ':checked' ) ) {
 		is_checked = true;
 	}
 
