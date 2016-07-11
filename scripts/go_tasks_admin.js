@@ -183,14 +183,17 @@ function go_date_picker_add_field() {
 	jQuery( '#go_list_of_decay_dates tbody' ).last().append(
 		'<tr>' +
 			'<td>' +
-				'<input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" ' +
-				'type="date" placeholder="Click for Date"/>' +
-					' @ (hh:mm AM/PM)' +
-				'<input type="time" name="go_mta_task_decay_calendar_time[]" class="custom_time" ' +
+				'<input class="go_date_picker_input go_date_picker_calendar_input" ' +
+					'name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" ' +
+					'type="date" placeholder="Click for Date"/>' +
+				' @ (hh:mm AM/PM)' +
+				'<input class="go_date_picker_input go_date_picker_time_input" type="time" ' +
+					'name="go_mta_task_decay_calendar_time[]" class="custom_time" ' +
 					'placeholder="Click for Time" value="00:00" />' +
 			'</td>' +
 			'<td>' +
-				'<input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/>' +
+				'<input class="go_date_picker_input go_date_picker_modifier_input" ' +
+					'name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/>%' +
 			'</td>' +
 		'</tr>'
 	);

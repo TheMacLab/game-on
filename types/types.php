@@ -754,16 +754,16 @@ function go_decay_table() {
 				foreach ( $dates as $key => $date ) {
 					?>
 					<tr>
-						<td><input name="go_mta_task_decay_calendar[<?php echo $key; ?>]" class="go_datepicker custom_date" value="<?php echo $date; ?>" type="date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[<?php echo $key; ?>]' class='custom_time' value='<?php echo $times[ $key ]; ?>' /></td>
-						<td><input name="go_mta_task_decay_percent[<?php echo $key; ?>]" value="<?php echo $percentages[ $key ] ?>" type="text" style = "height: 30px; width: 60px;"/>%</td>
+						<td><input class='go_date_picker_input go_date_picker_calendar_input' name="go_mta_task_decay_calendar[<?php echo $key; ?>]" class="go_datepicker custom_date" value="<?php echo $date; ?>" type="date"/> @ (hh:mm AM/PM)<input class='go_date_picker_input go_date_picker_time_input' type='time' name='go_mta_task_decay_calendar_time[<?php echo $key; ?>]' class='custom_time' value='<?php echo $times[ $key ]; ?>' /></td>
+						<td><input class='go_date_picker_input go_date_picker_modifier_input' name="go_mta_task_decay_percent[<?php echo $key; ?>]" value="<?php echo $percentages[ $key ]; ?>" type="text"/>%</td>
 					</tr>
 					<?php
 				}
 			} else {
 			?>
 			<tr>
-				<td><input name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00' /></td>
-				<td><input name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/></td>
+				<td><input class='go_date_picker_input go_date_picker_calendar_input' name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" type="date" placeholder="Click for Date"/> @ (hh:mm AM/PM)<input class='go_date_picker_input go_date_picker_time_input' type='time' name='go_mta_task_decay_calendar_time[]' class='custom_time' placeholder='Click for Time' value='00:00' /></td>
+				<td><input class='go_date_picker_input go_date_picker_modifier_input' name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/>%</td>
 			</tr>
 			<?php 
 			}

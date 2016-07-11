@@ -58,6 +58,7 @@ function go_register_admin_scripts_and_styles () {
 
 	// Tasks
 	wp_register_style( 'ptTimeSelectCSS', plugin_dir_url( __FILE__ ).'styles/jquery.ptTimeSelect.css' );
+	wp_register_style( 'go_tasks_admin', plugin_dir_url( __FILE__ ).'styles/tasks-admin.css' );
 
 	// Store
 
@@ -161,6 +162,7 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 			 */
 
 			wp_enqueue_style( 'ptTimeSelectCSS' );
+			wp_enqueue_style( 'go_tasks_admin' );
 
 		} else if ( 'go_store' === $post->post_type ) {
 
