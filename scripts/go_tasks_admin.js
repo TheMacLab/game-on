@@ -113,6 +113,45 @@ function go_start_filter_checkbox_on_change( event ) {
 	}
 }
 
+function go_time_filters_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var time_filter_checkboxes = jQuery( row.class + ' #go_calendar_checkbox, ' + row.class + ' #go_future_checkbox' );
+
+	if ( 2 === time_filter_checkboxes.length ) {
+		time_filter_checkboxes.change( go_time_filter_checkboxes_on_change );
+	}
+}
+
+/**
+ * NOTE: The following functionality exists because the time filter uses checkboxes, when it should
+ *       use radio buttons. When the time filter is updated to make proper use of radio buttons,
+ *       this function will no longer be needed.
+ */
+function go_time_filter_checkboxes_on_change( event ) {
+	var target_checkbox = event.target;
+	var sibling_checkbox = null;
+	var is_checked, is_sibling_checked = false;
+	
+	if ( 1 === jQuery( event.target ).length && jQuery( event.target ).is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	if ( 'go_calendar_checkbox' === target_checkbox.id ) {
+		sibling_checkbox = jQuery( '#go_future_checkbox' );
+	} else {
+		sibling_checkbox = jQuery( '#go_calendar_checkbox' );
+	}
+
+	if ( sibling_checkbox.is( ':checked' ) ) {
+		is_sibling_checked = true;
+	}
+
+	if ( is_checked && is_sibling_checked ) {
+		sibling_checkbox.prop( 'checked', '' );
+	}
+}
+
 /**
  * Toggles an accordion and its underlying settings.
  *
@@ -274,7 +313,8 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_future_filters',
-					cmb_id: 'time_filters'
+					cmb_id: 'time_filters',
+					on_load: go_time_filters_on_load
 				},
 				{
 					cmb_type: 'go_decay_table',
