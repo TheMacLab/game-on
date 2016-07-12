@@ -78,6 +78,16 @@ function go_final_chain_message_on_toggle( row_class ) {
 	jQuery( row_class ).hide();
 }
 
+/**
+ * Accordion On Load Handlers
+ *
+ * "on_load" callbacks are called when the page is first loaded. See `go_accordion_array_on_load()`
+ * for context. These callbacks are intended to add and respond to event handlers for individual
+ * accordion rows.
+ *
+ * Function name convention: "go_[cmb_id]_on_load"
+ */
+
 // a handler specifically for when the fifth stage accordion is first loaded
 function go_stage_five_on_load( row_class ) {
 	if ( 1 !== jQuery( '#go_mta_five_stage_switch' ).length ) {
@@ -168,15 +178,15 @@ function go_time_filter_checkboxes_on_change( event ) {
 function go_date_picker_on_load( row ) {
 	jQuery( row.class ).hide();
 
-	var time_filter_date_checkbox = jQuery( '#go_calendar_checkbox' );
+	var date_checkbox = jQuery( '#go_calendar_checkbox' );
 	var add_field_button = jQuery( row.class + ' #go_mta_add_task_decay' );
 	var del_field_button = jQuery( row.class + ' #go_mta_remove_task_decay' );
 
-	if ( 1 === time_filter_date_checkbox.length ) {
+	if ( 1 === date_checkbox.length ) {
 
 		// go_date_picker_on_toggle is wrapped in a closure, otherwise the jQuery.Event sent to the
 		// "change" listener will be confused for the class of the row
-		time_filter_date_checkbox.change( function() {
+		date_checkbox.change( function() {
 			go_date_picker_on_toggle( row.class );
 		});
 	}
@@ -194,13 +204,13 @@ function go_date_picker_add_field() {
 	jQuery( '#go_list_of_decay_dates tbody' ).last().append(
 		'<tr>' +
 			'<td>' +
-				'<input class="go_date_picker_input go_date_picker_calendar_input" ' +
-					'name="go_mta_task_decay_calendar[]" class="go_datepicker custom_date" ' +
+				'<input class="go_date_picker_input go_date_picker_calendar_input go_datepicker custom_date" ' +
+					'name="go_mta_task_decay_calendar[]" ' +
 					'type="date" placeholder="Click for Date"/>' +
 				' @ (hh:mm AM/PM)' +
-				'<input class="go_date_picker_input go_date_picker_time_input" type="time" ' +
-					'name="go_mta_task_decay_calendar_time[]" class="custom_time" ' +
-					'placeholder="Click for Time" value="00:00" />' +
+				'<input class="go_date_picker_input go_date_picker_time_input custom_time" ' +
+					'name="go_mta_task_decay_calendar_time[]" ' +
+					'type="time" placeholder="Click for Time" value="00:00" />' +
 			'</td>' +
 			'<td>' +
 				'<input class="go_date_picker_input go_date_picker_modifier_input" ' +
@@ -208,22 +218,6 @@ function go_date_picker_add_field() {
 			'</td>' +
 		'</tr>'
 	);
-
-	// This can be faked by the browser, so it is not reliable. e.g. Internet Explorer can say that
-	// its user agent is "chrome".
-	var is_chrome = navigator.userAgent.toLowerCase().indexOf( 'chrome' ) > -1;
-	if ( ! is_chrome ) {
-		if ( jQuery( 'input.go_datepicker' ).length > 0 ) {
-			
-			jQuery( 'input.go_datepicker' ).each( function() {
-				jQuery( this ).datepicker( { dateFormat: "yy-mm-dd" } );
-			});
-
-			jQuery( 'input.custom_time' ).each( function () {
-				jQuery( this ).ptTimeSelect();
-			});
-		}
-	}
 }
 
 function go_date_picker_del_field() {
@@ -243,6 +237,91 @@ function go_time_modifier_on_load( row ) {
 			go_time_modifier_on_toggle( row.class );
 		});
 	}
+}
+
+/**
+ * Miscellaneous On Load Handlers
+ *
+ * "on_load" handlers are called when the page is first loaded. See `go_accordion_array_on_load()`
+ * for context. These handlers generally apply to a large number of elements, accordions, and
+ * setting rows. Misfit handlers belong here.
+ *
+ * Function name convention: "go_[subject]_on_load"
+ */
+
+// a custom function specifically for dealing with custom date and time picker inputs
+function go_data_and_time_inputs_on_load() {
+
+	// This can be faked by the browser, so it is not reliable. e.g. Internet Explorer can say that
+	// its user agent is "chrome"
+	var is_chrome = ( -1 !== navigator.userAgent.toLowerCase().indexOf( 'chrome' ) ? true : false );
+	
+	// the browser is supposedly not Chrome
+	if ( ! is_chrome ) {
+		if ( jQuery( 'input.go_datepicker' ).length > 0 ) {
+			jQuery( 'input.go_datepicker' ).each( function( index, elem ) {
+				jQuery( elem ).datepicker( { dateFormat: "yy-mm-dd" } );
+			});
+		}
+
+		if ( jQuery( 'input.custom_time' ).length > 0 ) {
+			jQuery( 'input.custom_time' ).each( function( index, elem ) {
+				
+				// initializes the custom time field as jQuery time selector field
+				jQuery( elem ).ptTimeSelect();
+
+				// retrieves time in <hour>:<minute> format
+				var timer = jQuery( elem ).val();
+				var hour, minutes = 0;
+				var hour_str, minute_str, time_output = '';
+				var divider_index = -1;
+
+				divider_index = timer.search( ':' );
+				hour          = parseInt( timer.substring( 0, divider_index ) );
+				minutes       = parseInt( timer.substring( divider_index + 1, divider_index + 3 ) );
+				var period    = ( hour < 12 ? 'AM' : 'PM' );
+
+				if ( 'PM' === period && 12 !== hour ) {
+					var hour_diff = hour - 12;
+					if ( hour_diff >= 10 ) {
+						hour_str = hour_diff;
+					} else {
+						hour_str = '0' + ( hour - 12 );
+					}
+				} else if ( 'AM' === period && 0 === hour ) {
+					hour_str = '12';
+				} else {
+					hour_str = hour;
+				}
+
+				if ( 0 === minutes || minutes < 10 ) {
+					minute_str = '0' + minutes;
+				} else {
+					minute_str = minutes;
+				}
+				
+				// reformats time into <hour>:<minute> AM/PM
+				time_output = hour_str + ':' + minute_str + ' ' + period;
+				jQuery( elem ).val( time_output );
+			});
+		}
+	}
+
+	// adds a special keypress event handler for time inputs
+	jQuery( 'input.custom_time' ).keypress( function( event ) {
+		var regex = new RegExp( "^[0-9:APM]$" );
+		var key = String.fromCharCode( ! event.charCode ? event.which : event.charCode );
+		var input = jQuery( event.target );
+		var value = input.val();
+		
+		if ( ! regex.test( key ) || value.length > 7 ) {
+			event.preventDefault();
+		}
+
+		if ( value.length > 7 ) {
+			input.val( value.substr( 0, 8 ) );
+		}
+	});
 }
 
 /**
@@ -351,6 +430,9 @@ function go_accordion_array_on_load( accordion_array, accordion_names ) {
 			}
 		}
 	}
+
+	// run miscellaneous on-load functions
+	go_data_and_time_inputs_on_load();
 }
 
 /**
@@ -984,7 +1066,7 @@ jQuery( document ).ready( function() {
 // 		jQuery( this ).keypress( function( e ) {
 // 			var regex = new RegExp( "^[0-9+:+A+P+M]$" );
 // 			var key = String.fromCharCode( ! e.charCode ? e.which : e.charCode );
-// 			if ( ! regex.test( key ) || jQuery( this).val().length > 7 ) {
+// 			if ( ! regex.test( key ) || jQuery( this ).val().length > 7 ) {
 // 				e.preventDefault();
 // 			}
 // 			if ( jQuery( this ).val().length > 7 ) {
@@ -1011,8 +1093,8 @@ jQuery( document ).ready( function() {
 // 		}
 // 	}
 
-// 	// prepare the task chain sortable list
-// 	go_prepare_sortable_list();
+// // 	// prepare the task chain sortable list
+// // 	go_prepare_sortable_list();
 // });
 
 // /*
