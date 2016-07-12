@@ -54,7 +54,18 @@ function go_date_picker_on_toggle( row_class ) {
 
 // a handler specifically for when the time modifier setting row is opened
 function go_time_modifier_on_toggle( row_class ) {
-	jQuery( row_class ).hide();
+	var visible = jQuery( row_class ).is( ':visible' );
+	var time_checked = false;
+	if ( 1 === jQuery( '#go_future_checkbox' ).length &&
+			jQuery( '#go_future_checkbox' ).is( ':checked' ) ) {
+		time_checked = true;
+	}
+
+	if ( time_checked && ! visible ) {
+		jQuery( row_class ).show();
+	} else if ( visible ) {
+		jQuery( row_class ).hide();
+	}
 }
 
 // a handler specifically for when the chain order setting setting row is opened
@@ -217,6 +228,21 @@ function go_date_picker_add_field() {
 
 function go_date_picker_del_field() {
 	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
+}
+
+function go_time_modifier_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var time_checkbox = jQuery( '#go_future_checkbox' );
+
+	if ( 1 === time_checkbox.length ) {
+
+		// go_date_picker_on_toggle is wrapped in a closure, otherwise the jQuery.Event sent to the
+		// "change" listener will be confused for the class of the row
+		time_checkbox.change( function() {
+			go_time_modifier_on_toggle( row.class );
+		});
+	}
 }
 
 /**
@@ -392,6 +418,7 @@ function go_generate_accordion_array() {
 				{
 					cmb_type: 'go_time_modifier_inputs',
 					cmb_id: 'time_modifier',
+					on_load: go_time_modifier_on_load,
 					on_toggle: go_time_modifier_on_toggle
 				},
 				{
