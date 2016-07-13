@@ -11,7 +11,7 @@
  * @return int|null Returns the `taxonomy_term_id` property of the chain term object, if it exists;
  *					otherwise, null is returned.
  */
-function get_chain_id_by_task_id ( $task_id ) {
+function go_task_chain_get_id_by_task( $task_id ) {
 	if ( ! isset( $task_id ) || empty( $task_id ) ) {
 		$task_id = get_the_id();
 	}
@@ -34,7 +34,7 @@ function get_chain_id_by_task_id ( $task_id ) {
  *
  * If no chain ID is passed, or the chain ID is invalid (null, negative, etc.), the function will
  * use the current task as a reference for determining the chain's name. Omitting the chain ID 
- * should be avoided, if possible. For example, if `get_chain_id_by_task_id()` is being used to
+ * should be avoided, if possible. For example, if `go_task_chain_get_id_by_task()` is being used to
  * retrieve the chain ID, and the chain name is also needed, pass in that value. This will prevent
  * unnecessary queries to the database.
  *
@@ -44,7 +44,7 @@ function get_chain_id_by_task_id ( $task_id ) {
  * @return string|null Returns the `name` property of the chain term object, if it exists;
  *					otherwise, null is returned.
  */
-function get_chain_name_by_id ( $chain_id = null ) {
+function go_task_chain_get_name_by_id( $chain_id = null ) {
 	global $post;
 	if ( ! isset( $chain_id ) || empty( $chain_id ) ) {
 		$task_id = $post->id;
@@ -81,7 +81,7 @@ function get_chain_name_by_id ( $chain_id = null ) {
  *
  * @since 2.6.1
  *
- * @see get_chain_id_by_task_id()
+ * @see go_task_chain_get_id_by_task()
  *
  * @param  int	   $task_id					The post ID of the task in question.
  * @param  int	   $chain_id Optional.		The `taxonomy_term_id` property of the chain in question.
@@ -89,13 +89,15 @@ function get_chain_name_by_id ( $chain_id = null ) {
  * 					task is not at the end of a chain, or if there is a mismatch, or if the chain
  *					doesn't exist (see description).
  */
-function is_last_task_in_chain ( $task_id, $chain_id = null ) {
+function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 	if ( ! isset( $task_id ) ) {
 		$task_id = get_the_id();
+	} else {
+		$task_id = (int) $task_id;
 	}
 
 	if ( ! isset( $chain_id ) || null === $chain_id ) {
-		$chain_id = get_chain_id_by_task_id( $task_id );
+		$chain_id = go_task_chain_get_id_by_task( $task_id );
 	}
 
 	if ( null === $chain_id ) {
@@ -110,12 +112,12 @@ function is_last_task_in_chain ( $task_id, $chain_id = null ) {
 				'tax_query' => array(
 					'taxonomy' => 'task_chains',
 					'field' => 'term_id',
-					'terms' => $chain_id
+					'terms' => $chain_id,
 				),
 				'order' => 'ASC',
 				'orderby' => 'meta_value_num',
 				'meta_key' => 'chain_position',
-				'posts_per_page' => '-1'
+				'posts_per_page' => '-1',
 			)
 		);
 		if ( is_array( $tasks_in_chain ) && ! empty( $tasks_in_chain ) ) {

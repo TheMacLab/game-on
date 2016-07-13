@@ -10,7 +10,7 @@
  *
  * @since 2.6.1
  *
- * @see get_chain_id_by_task_id(), is_last_task_in_chain()
+ * @see go_task_chain_get_id_by_task(), go_task_chain_is_final_task()
  * @global WP_Post $post The WP_Post object of the current post.
  *
  * @return array Array of task data to be localized. Contains the following:
@@ -33,13 +33,13 @@ function go_localize_task_data() {
 
 	$task_id = $post->ID;
 	$custom_data = get_post_custom( $task_id );
-	$chain_id = get_chain_id_by_task_id( $task_id );
-	$chain_name = get_chain_name_by_id( $chain_id );
+	$chain_id = go_task_chain_get_id_by_task( $task_id );
+	$chain_name = go_task_chain_get_name_by_id( $chain_id );
 
 	$is_stage_three_active = false;
 	$is_stage_five_active = false;
 	$in_chain = false;
-	$is_last_in_chain = is_last_task_in_chain( $task_id );
+	$is_last_in_chain = go_task_chain_is_final_task( $task_id );
 
 	if ( empty( $task_id ) || $task_id < 0 ) {
 		$task_id = null;
