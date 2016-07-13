@@ -70,12 +70,29 @@ function go_time_modifier_on_toggle( row_class ) {
 
 // a handler specifically for when the chain order setting setting row is opened
 function go_chain_order_on_toggle( row_class ) {
-	jQuery( row_class ).hide();
+	var visible = jQuery( row_class ).is( ':visible' );
+	var in_chain = GO_TASK_DATA.task_chains.in_chain;
+
+	if ( in_chain && ! visible ) {
+		jQuery( row_class ).show();
+	} else if ( visible ) {
+		jQuery( row_class ).hide();
+	}
 }
 
 // a handler specifically for when the final chain message setting row is opened
 function go_final_chain_message_on_toggle( row_class ) {
-	jQuery( row_class ).hide();
+	var visible = jQuery( row_class ).is( ':visible' );
+	var in_chain = GO_TASK_DATA.task_chains.in_chain;
+	var is_final_task = GO_TASK_DATA.task_chains.is_last_in_chain;
+
+	console.log( ( is_final_task ? 'true' : 'false' ) );
+
+	if ( in_chain && is_final_task && ! visible ) {
+		jQuery( row_class ).show();
+	} else if ( visible ) {
+		jQuery( row_class ).hide();
+	}
 }
 
 /**
@@ -236,6 +253,16 @@ function go_time_modifier_on_load( row ) {
 		time_checkbox.change( function() {
 			go_time_modifier_on_toggle( row.class );
 		});
+	}
+}
+
+function go_chain_order_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var in_chain = GO_TASK_DATA.task_chains.in_chain;
+
+	if ( in_chain ) {
+		go_prepare_sortable_list();
 	}
 }
 
@@ -481,6 +508,14 @@ function go_generate_accordion_array() {
 					cmb_id: 'req_rank'
 				},
 				{
+					cmb_type: 'text',
+					cmb_id: 'bonus_currency_filter'
+				},
+				{
+					cmb_type: 'text',
+					cmb_id: 'penalty_filter'
+				},
+				{
 					cmb_type: 'go_start_filter',
 					cmb_id: 'start_filter',
 					on_load: go_start_filter_on_load,
@@ -504,14 +539,6 @@ function go_generate_accordion_array() {
 					on_toggle: go_time_modifier_on_toggle
 				},
 				{
-					cmb_type: 'text',
-					cmb_id: 'bonus_currency_filter'
-				},
-				{
-					cmb_type: 'text',
-					cmb_id: 'penalty_filter'
-				},
-				{
 					cmb_type: 'checkbox',
 					cmb_id: 'focus_category_lock'
 				},
@@ -521,11 +548,12 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'five_stage_switch'   
+					cmb_id: 'five_stage_switch'
 				},
 				{
 					cmb_type: 'go_pick_order_of_chain',
 					cmb_id: 'chain_order',
+					on_load: go_chain_order_on_load,
 					on_toggle: go_chain_order_on_toggle
 				},
 				{
@@ -985,9 +1013,6 @@ jQuery( document ).ready( function() {
 // ];
 
 // go_toggle_settings_rows( task_settings );
-
-// var in_chain = GO_TASK_DATA.task_chains.in_chain;
-// var is_final_task = GO_TASK_DATA.task_chains.is_last_in_chain;
 
 // // jQuery( '#go_advanced_task_settings_accordion' ).click( function () {
 // // 	jQuery( this ).toggleClass( 'opened' );
