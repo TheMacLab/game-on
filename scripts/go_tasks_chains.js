@@ -25,6 +25,8 @@ function go_prepare_sortable_list () {
 	
 		if ( null !== task_id && in_chain ) {
 			var order = [];
+			var task_id_array = [];
+			var order_str = '';
 	
 			jQuery( '#go_task_order_in_chain' ).sortable({
 				axis: "y",
@@ -33,19 +35,20 @@ function go_prepare_sortable_list () {
 				},
 				stop: function( event, ui ) {
 					jQuery( ui.item ).removeClass( 'go_sortable_item' );
-					order = go_chain_get_task_ids();
+					task_id_array = go_chain_get_task_ids();
 
-					jQuery.ajax({
-						url: MyAjax.ajaxurl,
-						type: 'POST',
-						data: {
-							_ajax_nonce: nonce,
-							action: 'go_update_task_order',
-							order: order,
-							chain_name: chain_name,
-							post_id: task_id
+					for ( var i = 0; i < task_id_array.length; i++ ) {
+						if ( 'undefined' !== typeof task_id_array[ i ] && '' !== task_id_array[ i ] ) {
+							order.push( task_id_array[ i ] );
 						}
-					});
+					}
+
+					order_str = '[' + order.join( ',' ) + ']';
+
+					console.log( order );
+					console.log( order_str );
+
+					jQuery( '#go_task_order_in_chain_hidden' ).val( order_str );
 				}
 			});
 		}
@@ -92,7 +95,11 @@ function go_update_task_order_before_publish () {
 function go_chain_get_task_ids () {
 	var order = [];
 	jQuery( '.go_task_in_chain' ).each( function( i, el ) {
-		order[ i + 1 ] = jQuery( this ).attr( 'post_id' );
+		var val = jQuery( this ).attr( 'post_id' );
+		if ( 'string' === typeof val ) {
+			val = parseInt( val );
+		}
+		order[ i + 1 ] = val;
 	});
 
 	return order;

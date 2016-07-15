@@ -1415,27 +1415,71 @@ function go_pick_order_of_chain() {
 	if( get_the_terms( $task_id, 'task_chains' ) ) {
 		$chain_terms_array = array_values( get_the_terms( $task_id, 'task_chains' ) );
 		$chain = array_shift( $chain_terms_array );
-		$posts_in_chain = get_posts(array(
-			'post_type' => 'tasks',
-			'post_status' => 'publish',
-			'taxonomy' => 'task_chains',
-			'term' => $chain->name,
-			'order' => 'ASC',
-			'meta_key' => 'chain_position',
-			'orderby' => 'meta_value_num',
-			'posts_per_page' => '-1'
-		) );
-		
+		$tasks_in_chain = get_posts(
+			array(
+				'post_type' => 'tasks',
+				'post_status' => 'publish',
+				'taxonomy' => 'task_chains',
+				'term' => $chain->name,
+				'order' => 'ASC',
+				'meta_key' => 'chain_position',
+				'orderby' => 'meta_value_num',
+				'posts_per_page' => '-1',
+			)
+		);
+
+		$chain_order = array();
+		$chain_order_json = null;
+		$chain_list_elems = '';
+		foreach ( $tasks_in_chain as $index => $post_obj ) {
+			$chain_order[] = $post_obj->ID;
+			$chain_list_elems .= "<li class='go_task_in_chain' post_id='{$post_obj->ID}'>{$post_obj->post_title}</li>";
+		}
+		$chain_order_json = json_encode( $chain_order );
+
 		?>
 		<ul id="go_task_order_in_chain" class="go_sortable">
-			<?php
-			foreach( $posts_in_chain as $post => $obj ) {
-				echo "<li class='go_task_in_chain' post_id='{$obj->ID}'>{$obj->post_title}</li>";
-			}
-			?>
+			<?php echo $chain_list_elems; ?>
 		</ul>
+		<input id='go_task_order_in_chain_hidden' name='go_mta_chain_order' type='hidden' value='<?php echo $chain_order_json; ?>'/>
 		<?php
 	}
+}
+
+add_action( 'cmb_validate_go_pick_order_of_chain', 'go_validate_pick_order_of_chain' );
+function go_validate_pick_order_of_chain() {
+	global $post;
+
+	if ( ! empty( $_POST['go_mta_chain_order'] ) ) {
+		error_log( sprintf( '$_POST[\'go_mta_chain_order\'] = %s', print_r( $_POST['go_mta_chain_order'], true ) ) );
+	}
+
+	$chain_order_array = ( ! empty( $_POST['go_mta_chain_order'] ) ? json_decode( $_POST['go_mta_chain_order'] ) : array() );
+
+	error_log( sprintf( '$chain_order_array = %s', print_r( $chain_order_array, true ) ) );
+
+	if ( empty( $chain_order_array ) ) {
+		return null;
+	}
+
+	$new_chain_pos = array_search( $post->ID, $chain_order_array ) + 1;
+	$custom = get_post_custom( $post->ID );
+	$stored_chain_pos = null;
+	if ( isset( $custom['go_mta_chain_order'][0] ) && ! is_null( $custom['go_mta_chain_order'][0] ) ) {
+		$stored_chain_pos = (int) $custom['go_mta_chain_order'][0];
+	}
+
+	error_log( sprintf( '$new_chain_pos = %d, $stored_chain_pos = %d', $new_chain_pos, $stored_chain_pos ) );
+
+	if ( $new_chain_pos !== $stored_chain_pos ) {
+
+		// the current task's position in the chain changed, so the positions of the other tasks
+		// need to be adjusted
+		update_post_meta( $post->ID, 'chain_position', $new_chain_pos );
+		go_update_task_chain_meta( $post->ID );
+	}
+
+	return $new_chain_pos;
 }
 
 add_action( 'cmb_render_go_settings_accordion', 'go_settings_accordion', 10, 1);
@@ -1481,20 +1525,20 @@ function go_stage_reward( $field_args ) {
 	echo "</div>";
 }
 
-function go_update_task_order() {
-	if ( ! current_user_can( 'edit_posts' ) ) {
-		die( -1 );
-	}
-	check_ajax_referer( 'go_update_task_order_' . get_the_ID() );
+// function go_update_task_order() {
+// 	if ( ! current_user_can( 'edit_posts' ) ) {
+// 		die( -1 );
+// 	}
+// 	check_ajax_referer( 'go_update_task_order_' . get_the_ID() );
 
-	$order = ( ! empty( $_POST['order'] ) ? (array) $_POST['order'] : array() );
-	$chain_name = ( ! empty( $_POST['chain_name'] ) ? sanitize_text_field( $_POST['chain_name'] ) : '' );
+// 	$order = ( ! empty( $_POST['order'] ) ? (array) $_POST['order'] : array() );
+// 	$chain_name = ( ! empty( $_POST['chain_name'] ) ? sanitize_text_field( $_POST['chain_name'] ) : '' );
 
-	foreach ( $order as $pos => $task_id ) {
-		add_post_meta( $task_id, 'chain', $chain_name, true );
-		update_post_meta( $task_id, 'chain_position', $pos );
-	}
-}
+// 	foreach ( $order as $pos => $task_id ) {
+// 		update_post_meta( $task_id, 'chain', $chain_name, true );
+// 		update_post_meta( $task_id, 'chain_position', $pos );
+// 	}
+// }
 
 add_action( 'transition_post_status', 'go_add_new_task_in_chain', 10, 3);
 function go_add_new_task_in_chain( $new_status, $old_status, $post ) {
@@ -1516,13 +1560,11 @@ function go_add_new_task_in_chain( $new_status, $old_status, $post ) {
 			// If the chain is not empty, set $pos to the number of tasks plus one 
 			// and then update the 'chain' and 'chain_position' meta values of the current post.
 			if ( ! empty( $chain ) ) {
-				if ( ! update_post_meta( $task_id, 'chain', $chain->name ) ) {
-					add_post_meta( $task_id, 'chain', $chain->name, true );
-				}
+				update_post_meta( $task_id, 'chain', $chain->name );
 				if ( ! empty( $count ) ) {
-					if ( ! update_post_meta( $task_id, 'chain_position', $count ) ) {
-						add_post_meta( $task_id, 'chain_position', $count, true );
-					}
+					update_post_meta( $task_id, 'chain_position', $count );
+				} else {
+					update_post_meta( $task_id, 'chain_position', 1 );
 				}
 			}
 		} elseif ( $new_status == 'publish' && $old_status == 'publish' ) {
@@ -1550,20 +1592,20 @@ function go_add_new_task_in_chain( $new_status, $old_status, $post ) {
 				if ( $id != $task_id ) {
 					update_post_meta( $id, 'chain_position', ( $pos + 1 ) );
 				} else {
-					if ( ! empty( $c_position ) ) {
+					if ( isset( $c_position ) && ! is_null( $c_position ) ) {
 						update_post_meta( $task_id, 'chain_position', ( $pos + 1 ) );
 					} else {
 						$end_pos = $chain->count + 1;
-						add_post_meta( $task_id, 'chain_position', $end_pos );
+						update_post_meta( $task_id, 'chain_position', $end_pos );
 					}
 				}
 			}
 			if ( empty( $chain_meta ) ) {
 				add_post_meta( $task_id, 'chain', $chain->name );
 			}
-			if ( empty( $c_position ) ) {
+			if ( ! isset( $c_position ) || is_null( $c_position ) ) {
 				$end_pos = $chain->count;
-				add_post_meta( $task_id, 'chain_position', $end_pos );
+				update_post_meta( $task_id, 'chain_position', $end_pos );
 			}
 		} elseif ( $new_status == 'trash' && $old_status != 'trash' ) {
 			// Get a list of all the tasks in this chain and order them by chain position.
@@ -1587,37 +1629,123 @@ function go_add_new_task_in_chain( $new_status, $old_status, $post ) {
 	}
 }
 
-add_action( 'save_post', 'go_update_task_chain_meta' );
 function go_update_task_chain_meta( $post_id ) {
 	$post_type = get_post_type( $post_id );
-	if ( $post_type == 'tasks' ) {
-		$terms = get_the_terms( $post_id, 'task_chains' );
-		$post_meta_chain_array = get_post_meta( $post_id, 'chain' );
-		if ( is_array( $post_meta_chain_array ) ) {
-			$post_meta_chain = array_shift( $post_meta_chain_array );
-		} else {
-			$post_meta_chain = $post_meta_chain_array;
-		}
-		if ( ! empty( $terms ) ) {
-			$chain = array_shift( $terms );
-			$custom = get_post_custom( $post_id );
-			$posts_in_chain = get_posts(array(
-				'post_type' => 'tasks',
-				'taxonomy' => 'task_chains',
-				'term' => $chain->name,
-				'meta_key' => 'chain_position',
-				'orderby' => 'meta_value_num',
-				'posts_per_page' => '-1'
-			) );
-			$message = ( ! empty( $custom['go_mta_final_chain_message'][0] ) ? $custom['go_mta_final_chain_message'][0] : null );
-			foreach ( $posts_in_chain as $post ) {
-				if ( $post->ID == $post_id && $post_meta_chain != $chain->name ) {
-					update_post_meta( $post->ID, 'chain', $chain->name );
-					update_post_meta( $post->ID, 'chain_position', $chain->count );
+
+	if ( 'tasks' === $post_type ) {
+		$task = null;
+		$custom = get_post_custom( $post_id );
+		$curr_task_chain_name = get_post_meta( $post_id, 'chain', true );
+		$curr_task_chain_pos = ( (int) get_post_meta( $post_id, 'chain_position', true ) );
+		$curr_task_chain_terms = get_the_terms( $post_id, 'task_chains' );
+		$curr_task_final_chain_message = ( ! empty( $custom['go_mta_final_chain_message'][0] ) ?
+			$custom['go_mta_final_chain_message'][0] :
+			null
+		);
+
+		$curr_task_chain = null;
+		if ( ! empty( $curr_task_chain_terms ) ) {
+			foreach ( $curr_task_chain_terms as $ind => $chain_term ) {
+				if ( $chain_term->name === $curr_task_chain_name ) {
+					$curr_task_chain = $chain_term;
+					break;
 				}
-				update_post_meta( $post->ID, 'go_mta_final_chain_message', $message );
 			}
-		} elseif ( ! empty( $post_meta_chain ) || ! empty( $post_meta_chain_pos ) ) {
+		}
+
+		// the current task is not excluded from this query, however it is left out of the ordered
+		// array in case it contains a conflicting chain position
+		if ( ! empty( $curr_task_chain ) ) {
+			$tasks_in_chain = get_posts(
+				array(
+					'post_type' => 'tasks',
+					'meta_query' => array(
+						array(
+							'key' => 'chain',
+							'value' => $curr_task_chain->name,
+						),
+					),
+					'posts_per_page' => '-1',
+				)
+			);
+
+			// the ordered array does not contain the WP_Post object of the current task
+			$ordered_tasks_in_chain = array();
+			foreach ( $tasks_in_chain as $task_obj ) {
+				if ( $task_obj->ID === $post_id ) {
+					$task = $task_obj;
+					continue;
+				}
+				$task_chain_pos = (int) get_post_meta( $task_obj->ID, 'chain_position', true );
+				$ordered_tasks_in_chain[ $task_chain_pos - 1 ] = $task_obj;
+			}
+
+			error_log( sprintf( 'pos = %d, current post = %s', $curr_task_chain_pos, print_r( $task, true ) ) );
+			error_log( sprintf( 'isset( chain[%d] )? => %s', $curr_task_chain_pos, ( isset( $ordered_tasks_in_chain[ $curr_task_chain_pos ] ) ? 'true' : 'false' ) ) );
+
+			if ( ! isset( $ordered_tasks_in_chain[ $curr_task_chain_pos ] ) ) {
+
+				// if there is an empty spot in the chain for the current task, simply insert it
+				$ordered_tasks_in_chain[ $curr_task_chain_pos ] = $task;
+			} elseif ( $curr_task_chain_pos < count( $ordered_tasks_in_chain ) ) {
+
+				// if the current task is being inserted before the end of the chain, start moving
+				// each element after the current task's position down one index until the end of
+				// the array is reached
+
+				// Q
+				// |
+				// V
+				// 0 1 2 3 4
+				// A B C D E
+				$temp = null;
+				$temp2 = $ordered_tasks_in_chain[ $curr_task_chain_pos ];
+				for ( $i = $curr_task_chain_pos; $i < count( $ordered_tasks_in_chain ); $i++ ) {
+					error_log( sprintf( '$i = %d, $temp = %s, $temp2 = %s', $i, print_r( $temp, true ), print_r( $temp2, true ) ) );
+					$temp = $temp2;
+					$temp2 = $ordered_tasks_in_chain[ $i ];
+					if ( $i === $curr_task_chain_pos ) {
+						$ordered_tasks_in_chain[ $i ] = $task;
+					}
+					$ordered_tasks_in_chain[ $i + 1 ] = $temp;
+				}
+			} else {
+
+				// if the current task is being inserted just before the end of the chain, element
+				// n + 1, where n is the position of the current task, needs to be created
+				$temp = $ordered_tasks_in_chain[ $curr_task_chain_pos ];
+				$ordered_tasks_in_chain[ $curr_task_chain_pos ] = $task;
+				$ordered_tasks_in_chain[ $curr_task_chain_pos + 1 ] = $temp;
+			}
+
+			//! error_log( sprintf( '### before ksort ### $ordered_tasks_in_chain (%d) = %s', count( $ordered_tasks_in_chain ), print_r( $ordered_tasks_in_chain, true ) ) );
+
+			ksort( $ordered_tasks_in_chain );
+			$ordered_tasks_in_chain = array_values( $ordered_tasks_in_chain );
+
+			// if ( ! empty( $curr_task_chain_pos ) &&
+			// 		isset( $ordered_tasks_in_chain[ $curr_task_chain_pos ] ) ) {
+			// 	for ( $id_counter = count( $ordered_tasks_in_chain ) - 1; $id_counter >= $curr_task_chain_pos; $id_counter-- ) {
+			// 		error_log( sprintf( '%d/%d', $id_counter, $curr_task_chain_pos ) );
+			// 		$ordered_tasks_in_chain[ $id_counter + 1 ] = $ordered_tasks_in_chain[ $id_counter ];
+			// 	}
+			// }
+
+			// error_log( sprintf( '### after array_values ### $ordered_tasks_in_chain (%d) = %s', count( $ordered_tasks_in_chain ), print_r( $ordered_tasks_in_chain, true ) ) );
+
+			// foreach ( $tasks_in_chain as $task_obj ) {
+			// 	if ( $task_obj->ID === $task_obj_id && $curr_task_chain_name !== $curr_task_chain->name ) {
+			// 		update_post_meta( $task_obj->ID, 'chain', $curr_task_chain->name );
+			// 		update_post_meta( $task_obj->ID, 'chain_position', $curr_task_chain->count );
+			// 	}
+			// 	update_post_meta( $task_obj->ID, 'go_mta_final_chain_message', $curr_task_final_chain_message );
+			// }
+		} elseif ( ! empty( $curr_task_chain_name ) || ! empty( $curr_task_chain_pos ) ) {
+
+			/**
+			 * If the task doesn't have a matching chain in their stored terms, but has a chain
+			 * name or chain position stored in it's meta data, delete the meta data.
+			 */
 			delete_post_meta( $post_id, 'chain' );
 			delete_post_meta( $post_id, 'chain_position' );
 		}
@@ -1644,8 +1772,8 @@ function go_remove_task_chain_from_posts( $term_id ) {
 				if ( ! empty( $post_tax ) ) {
 					$chain = array_shift( $post_tax );
 					$chain_length = $chain->count;
-					add_post_meta( $post->ID, 'chain', $chain->name );
-					add_post_meta( $post->ID, 'chain_position', $chain_length );
+					update_post_meta( $post->ID, 'chain', $chain->name );
+					update_post_meta( $post->ID, 'chain_position', $chain_length );
 				}
 			}
 		}
@@ -1796,7 +1924,7 @@ function go_clone_post() {
 					if ( ! empty( $terms_array ) ) {
 						$chain = array_shift( $terms_array );
 						$end_pos = $chain->count + 1;
-						add_post_meta( $clone_id, $key, $end_pos, true );
+						update_post_meta( $clone_id, $key, $end_pos, true );
 					}
 				} else {
 					add_post_meta( $clone_id, $key, $uns, true );

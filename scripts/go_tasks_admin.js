@@ -86,8 +86,6 @@ function go_final_chain_message_on_toggle( row_class ) {
 	var in_chain = GO_TASK_DATA.task_chains.in_chain;
 	var is_final_task = GO_TASK_DATA.task_chains.is_last_in_chain;
 
-	console.log( ( is_final_task ? 'true' : 'false' ) );
-
 	if ( in_chain && is_final_task && ! visible ) {
 		jQuery( row_class ).show();
 	} else if ( visible ) {
@@ -136,21 +134,6 @@ function go_start_filter_on_load( row ) {
 	}
 }
 
-function go_start_filter_checkbox_on_change( event ) {
-	var is_checked = false;
-	if ( 1 === jQuery( event.target ).length && jQuery( event.target ).is( ':checked' ) ) {
-		is_checked = true;
-	}
-
-	var filter_fields = jQuery( event.target ).siblings( '#go_start_info' );
-
-	if ( is_checked ) {
-		filter_fields.show();
-	} else {
-		filter_fields.hide();
-	}
-}
-
 function go_time_filters_on_load( row ) {
 	jQuery( row.class ).hide();
 
@@ -158,37 +141,6 @@ function go_time_filters_on_load( row ) {
 
 	if ( 2 === time_filter_checkboxes.length ) {
 		time_filter_checkboxes.change( go_time_filter_checkboxes_on_change );
-	}
-}
-
-/**
- * NOTE: The following functionality exists because the time filter uses checkboxes, when it should
- *       use radio buttons. When the time filter is updated to make proper use of radio buttons,
- *       this function will no longer be needed.
- */
-function go_time_filter_checkboxes_on_change( event ) {
-	var target_checkbox = event.target;
-	var sibling_checkbox = null;
-	var is_checked, is_sibling_checked = false;
-	
-	if ( 1 === jQuery( event.target ).length && jQuery( event.target ).is( ':checked' ) ) {
-		is_checked = true;
-	}
-
-	if ( 'go_calendar_checkbox' === target_checkbox.id ) {
-		sibling_checkbox = jQuery( '#go_future_checkbox' );
-	} else {
-		sibling_checkbox = jQuery( '#go_calendar_checkbox' );
-	}
-
-	if ( sibling_checkbox.is( ':checked' ) ) {
-		is_sibling_checked = true;
-	}
-
-	// creates the illusion that the date and time checkboxes are connected
-	if ( is_checked && is_sibling_checked ) {
-		sibling_checkbox.prop( 'checked', '' );
-		sibling_checkbox.trigger( 'change' );
 	}
 }
 
@@ -215,30 +167,6 @@ function go_date_picker_on_load( row ) {
 	if ( 1 === del_field_button.length ) {
 		del_field_button.click( go_date_picker_del_field );
 	}
-}
-
-function go_date_picker_add_field() {
-	jQuery( '#go_list_of_decay_dates tbody' ).last().append(
-		'<tr>' +
-			'<td>' +
-				'<input class="go_date_picker_input go_date_picker_calendar_input go_datepicker custom_date" ' +
-					'name="go_mta_task_decay_calendar[]" ' +
-					'type="date" placeholder="Click for Date"/>' +
-				' @ (hh:mm AM/PM)' +
-				'<input class="go_date_picker_input go_date_picker_time_input custom_time" ' +
-					'name="go_mta_task_decay_calendar_time[]" ' +
-					'type="time" placeholder="Click for Time" value="00:00" />' +
-			'</td>' +
-			'<td>' +
-				'<input class="go_date_picker_input go_date_picker_modifier_input" ' +
-					'name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/>%' +
-			'</td>' +
-		'</tr>'
-	);
-}
-
-function go_date_picker_del_field() {
-	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
 }
 
 function go_time_modifier_on_load( row ) {
@@ -351,6 +279,184 @@ function go_data_and_time_inputs_on_load() {
 	});
 }
 
+function go_before_publish_on_load() {
+	jQuery( 'input#publish' ).on( 'click submit', go_before_task_publish_handler );
+
+	/* 
+	 * This is meant to prevent the page from being submitted via 
+	 * the enter button, which would bypass the validation functions 
+	 * that are run when the publish button is triggered.
+	 */
+	jQuery( 'form#post' ).keydown( function( e ) {
+
+		// if the enter key is hit, trigger the "submit" event on the publish button
+		if ( 13 === e.keyCode ) {
+			e.preventDefault();
+			jQuery( 'input#publish' ).trigger( 'submit' );
+		}
+	});
+}
+
+/**
+ * End Miscellaneous On Load Handlers
+ */
+
+function go_start_filter_checkbox_on_change( event ) {
+	var is_checked = false;
+	if ( 1 === jQuery( event.target ).length && jQuery( event.target ).is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	var filter_fields = jQuery( event.target ).siblings( '#go_start_info' );
+
+	if ( is_checked ) {
+		filter_fields.show();
+	} else {
+		filter_fields.hide();
+	}
+}
+
+/**
+ * NOTE: The following functionality exists because the time filter uses checkboxes, when it should
+ *       use radio buttons. When the time filter is updated to make proper use of radio buttons,
+ *       this function will no longer be needed.
+ */
+function go_time_filter_checkboxes_on_change( event ) {
+	var target_checkbox = event.target;
+	var sibling_checkbox = null;
+	var is_checked, is_sibling_checked = false;
+	
+	if ( 1 === jQuery( event.target ).length && jQuery( event.target ).is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	if ( 'go_calendar_checkbox' === target_checkbox.id ) {
+		sibling_checkbox = jQuery( '#go_future_checkbox' );
+	} else {
+		sibling_checkbox = jQuery( '#go_calendar_checkbox' );
+	}
+
+	if ( sibling_checkbox.is( ':checked' ) ) {
+		is_sibling_checked = true;
+	}
+
+	// creates the illusion that the date and time checkboxes are connected
+	if ( is_checked && is_sibling_checked ) {
+		sibling_checkbox.prop( 'checked', '' );
+		sibling_checkbox.trigger( 'change' );
+	}
+}
+
+function go_date_picker_add_field() {
+	jQuery( '#go_list_of_decay_dates tbody' ).last().append(
+		'<tr>' +
+			'<td>' +
+				'<input class="go_date_picker_input go_date_picker_calendar_input go_datepicker custom_date" ' +
+					'name="go_mta_task_decay_calendar[]" ' +
+					'type="date" placeholder="Click for Date"/>' +
+				' @ (hh:mm AM/PM)' +
+				'<input class="go_date_picker_input go_date_picker_time_input custom_time" ' +
+					'name="go_mta_task_decay_calendar_time[]" ' +
+					'type="time" placeholder="Click for Time" value="00:00" />' +
+			'</td>' +
+			'<td>' +
+				'<input class="go_date_picker_input go_date_picker_modifier_input" ' +
+					'name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/>%' +
+			'</td>' +
+		'</tr>'
+	);
+}
+
+function go_date_picker_del_field() {
+	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
+}
+
+function go_before_task_publish_handler( e, skip_default ) {
+
+	// the skip_default argument allows input validation to occur
+	// before the task is published
+	if ( "undefined" === typeof( skip_default ) ) {
+		skip_default = true;
+	}
+
+	var error_marked_elems = [];
+
+	if ( true === skip_default ) {
+		e.preventDefault();
+
+		window.location.hash = '';
+		jQuery( '.go_error_red' ).each( function ( index, element ) {
+			error_marked_elems.push( element.id );
+		});
+		if ( error_marked_elems.length > 0 ) {
+			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
+		}
+		
+		var task_error = false;
+		try {
+
+			// // bonus loot rarity field validation
+			// var go_bonus_loot_on = go_bonus_loot_check_box[0].checked;
+			// var go_bonus_loot_items_checked = jQuery( go_bonus_loot_items ).children( '.go_bonus_loot_checkbox:checked' );
+			// var go_bonus_loot_active_item_rarities = jQuery( go_bonus_loot_items_checked ).next( '.go_bonus_loot_rarity' );
+
+			// if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
+			// 	go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
+			// }
+
+			// update the order of the task's chain, if the task is in a chain
+			// go_update_task_order_before_publish();
+		} catch ( err ) {
+
+			// if an input is causing an issue (e.g. failed validation),
+			// stop the task from being updated
+			if ( 'Game On Error' === err.name && 'undefined' !== typeof( err.el_ids ) ) {
+				
+				// open the accordion that the problematic element is under
+				if ( ! jQuery( err.accord_id ).hasClass( 'opened' ) ) {
+					jQuery( err.accord_id ).trigger( 'click' );
+				}
+
+				// direct the user to the problematic element
+				window.location.hash = err.el_ids[0];
+
+				go_add_errors( err.el_ids, 'go_bonus_loot_error_msg', err.message );
+
+				task_error = true;
+			}
+		}
+
+		if ( false === task_error ) {
+			jQuery( 'input#publish' ).trigger( 'click', [false] );
+		}
+	} else {
+		jQuery( '.go_error_red' ).each( function ( index, element ) {
+			error_marked_elems.push( element.id );
+		});
+		if ( error_marked_elems.length > 0 ) {
+			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
+		}
+	}
+}
+
+function go_add_errors( id_array, error_msg ) {
+	jQuery.each( id_array, function ( index, input_id ) {
+		jQuery( '#' + input_id ).addClass( 'go_error_red' );
+	});
+
+	jQuery( '.go_error' ).show();
+	jQuery( '.go_error' ).html( error_msg );
+}
+
+function go_remove_errors( id_array ) {
+	jQuery.each( id_array, function ( index, input_id ) {
+		jQuery( '#' + input_id ).removeClass( 'go_error_red' );
+	});
+
+	jQuery( '.go_error' ).hide();
+	jQuery( '.go_error' ).html();
+}
+
 /**
  * Toggles an accordion and its underlying settings.
  *
@@ -358,9 +464,9 @@ function go_data_and_time_inputs_on_load() {
  *
  * @since 2.6.1
  *
- * @see go_accordion_handle_click()
+ * @see go_accordion_click_handler()
  *
- * @param object accordion_data Event specific accordion data from the `go_accordion_handle_click()`
+ * @param object accordion_data Event specific accordion data from the `go_accordion_click_handler()`
  *                              function.
  */
 function go_toggle_accordion( accordion_data ) {
@@ -397,7 +503,7 @@ function go_toggle_accordion( accordion_data ) {
  * 
  * @param object event The click event object.
  */
-function go_accordion_handle_click( event ) {
+function go_accordion_click_handler( event ) {
 	var args = {};
 	if ( 'undefined' === typeof event.handleObj.data ) {
 		return;
@@ -436,7 +542,7 @@ function go_accordion_array_on_load( accordion_array, accordion_names ) {
 		}
 
 		// add click event listener for the accordion
-		jQuery( accordion_data.id ).click( { accordion_data: accordion_data }, go_accordion_handle_click );
+		jQuery( accordion_data.id ).click( { accordion_data: accordion_data }, go_accordion_click_handler );
 
 		var rows = accordion_data.setting_rows;
 		for ( var x = 0; x < rows.length; x++ ) {
@@ -458,8 +564,12 @@ function go_accordion_array_on_load( accordion_array, accordion_names ) {
 		}
 	}
 
-	// run miscellaneous on-load functions
+	/** 
+	 * Run miscellaneous on-load functions below.
+	 */
 	go_data_and_time_inputs_on_load();
+
+	go_before_publish_on_load();
 }
 
 /**
@@ -1559,104 +1669,3 @@ jQuery( document ).ready( function() {
 // 		throw error;
 // 	}
 // }
-
-// function go_add_errors ( id_array, error_msg ) {
-// 	jQuery.each( id_array, function ( index, input_id ) {
-// 		jQuery( '#' + input_id ).addClass( 'go_error_red' );
-// 	});
-
-// 	jQuery( '.go_error' ).show();
-// 	jQuery( '.go_error' ).html( error_msg );
-// }
-
-// function go_remove_errors ( id_array ) {
-// 	jQuery.each( id_array, function ( index, input_id ) {
-// 		jQuery( '#' + input_id ).removeClass( 'go_error_red' );
-// 	});
-
-// 	jQuery( '.go_error' ).hide();
-// 	jQuery( '.go_error' ).html();
-// }
-
-// function go_before_task_publish ( e, skip_default ) {
-
-// 	// the skip_default argument allows input validation to occur
-// 	// before the task is published
-// 	if ( "undefined" === typeof( skip_default ) ) {
-// 		skip_default = true;
-// 	}
-
-// 	var error_marked_elems = [];
-
-// 	if ( true === skip_default ) {
-// 		e.preventDefault();
-
-// 		window.location.hash = '';
-// 		jQuery( '.go_error_red' ).each( function ( index, element ) {
-// 			error_marked_elems.push( element.id );
-// 		});
-// 		if ( error_marked_elems.length > 0 ) {
-// 			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
-// 		}
-		
-// 		var task_error = false;
-// 		try {
-
-// 			// bonus loot rarity field validation
-// 			var go_bonus_loot_on = go_bonus_loot_check_box[0].checked;
-// 			var go_bonus_loot_items_checked = jQuery( go_bonus_loot_items ).children( '.go_bonus_loot_checkbox:checked' );
-// 			var go_bonus_loot_active_item_rarities = jQuery( go_bonus_loot_items_checked ).next( '.go_bonus_loot_rarity' );
-
-// 			if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
-// 				go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
-// 			}
-
-// 			// update the order of the task's chain, if the task is in a chain
-// 			go_update_task_order_before_publish();
-// 		} catch ( err ) {
-
-// 			// if an input is causing an issue (e.g. failed validation),
-// 			// stop the task from being updated
-// 			if ( 'Game On Error' === err.name && 'undefined' !== typeof( err.el_ids ) ) {
-				
-// 				// open the accordion that the problematic element is under
-// 				if ( ! jQuery( err.accord_id ).hasClass( 'opened' ) ) {
-// 					jQuery( err.accord_id ).trigger( 'click' );
-// 				}
-
-// 				// direct the user to the problematic element
-// 				window.location.hash = err.el_ids[0];
-
-// 				go_add_errors( err.el_ids, 'go_bonus_loot_error_msg', err.message );
-
-// 				task_error = true;
-// 			}
-// 		}
-
-// 		if ( false === task_error ) {
-// 			jQuery( 'input#publish' ).trigger( 'click', [false] );
-// 		}
-// 	} else {
-// 		jQuery( '.go_error_red' ).each( function ( index, element ) {
-// 			error_marked_elems.push( element.id );
-// 		});
-// 		if ( error_marked_elems.length > 0 ) {
-// 			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
-// 		}
-// 	}
-// }
-// jQuery( 'input#publish' ).on( 'click submit', go_before_task_publish );
-
-// /* 
-//  * This is meant to prevent the page from being submitted via 
-//  * the enter button, which would bypass the validation functions 
-//  * that are run when the publish button is triggered.
-//  */
-// jQuery( 'form#post' ).keydown( function( e ) {
-
-// 	// if the enter key is hit, trigger the "submit" event on the publish button
-// 	if ( 13 === e.keyCode ) {
-// 		e.preventDefault();
-// 		jQuery( 'input#publish' ).trigger( 'submit' );
-// 	}
-// });
