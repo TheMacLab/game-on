@@ -1614,9 +1614,56 @@ function go_task_status_transition( $new_status, $old_status, $post ) {
 			 */
 
 			// adds the target's task ID to the meta data of each task in the chain
-			
+			if ( ! empty( $task_chains ) ) {
+				$chain_terms_array = array_values( $task_chains );
+				$new_chain_order = array();
+				foreach ( $chain_terms_array as $chain_term ) {
+					$tasks_in_chain = go_task_chain_get_tasks( $chain_term->term_id );
+					
+					if ( ! empty( $tasks_in_chain ) ) {
+						foreach ( $tasks_in_chain as $task_obj ) {
+							$task_chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
+							$updated = false;
+
+							if ( ! empty( $task_chain_order ) && is_array( $task_chain_order ) ) {
+								foreach ( $task_chain_order as $chain_term_id => $chain_order_array ) {
+									
+									if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
+										
+										// finds the target's task ID in the task's chain order
+										$target_index = array_search( $post->ID, $chain_order_array );
+
+										// removes the target's task ID from the task's chain order,
+										// if it exists (it should not)
+										if ( -1 !== $target_index )	{
+											unset( $chain_order_array[ $target_index ] );
+										}
+
+										// appends the target's task ID to the task's chain order
+										$chain_order_array[] = $post->ID;
+										$task_chain_order[ $chain_term_id ] = $chain_order_array;
+										$updated = true;
+									}
+								}
+
+								if ( $updated ) {
+									if ( empty( $new_chain_order ) ) {
+										$new_chain_order = $task_chain_order;
+									}
+
+									update_post_meta( $task_obj->ID, 'go_mta_chain_order', $task_chain_order );
+								}
+							}
+						}
+					}
+				}
+			}
 
 			// updates the target's meta data using any existing chain meta data
+			if ( ! empty( $new_chain_order ) ) {
+				update_post_meta( $post->ID, 'go_mta_chain_order', $new_chain_order );
+			}
+
 		} elseif ( 'trash' === $new_status && 'publish' === $old_status ) {
 
 			/**
@@ -1626,27 +1673,32 @@ function go_task_status_transition( $new_status, $old_status, $post ) {
 			// removes target's task ID from the meta data of each task in the chain
 			if ( ! empty( $task_chains ) ) {
 				$chain_terms_array = array_values( $task_chains );
-
 				foreach ( $chain_terms_array as $chain_term ) {
 					$tasks_in_chain = go_task_chain_get_tasks( $chain_term->term_id );
-
+					
 					if ( ! empty( $tasks_in_chain ) ) {
 						foreach ( $tasks_in_chain as $task_obj ) {
-
 							$task_chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
 							$updated = false;
-
+					
 							if ( ! empty( $task_chain_order ) && is_array( $task_chain_order ) ) {
 								foreach ( $task_chain_order as $chain_term_id => $chain_order_array ) {
+									
 									if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
+										
+										// finds the target's task ID in the task's chain order
 										$target_index = array_search( $post->ID, $chain_order_array );
+
+										// unsets the element with the target's task ID
 										if ( -1 !== $target_index ) {
 											unset( $chain_order_array[ $target_index ] );
+											$task_chain_order[ $chain_term_id ] = $chain_order_array;
 											$updated = true;
 											break;
 										}
 									}
 								}
+
 								if ( $updated ) {
 									update_post_meta( $task_obj->ID, 'go_mta_chain_order', $task_chain_order );
 								}
