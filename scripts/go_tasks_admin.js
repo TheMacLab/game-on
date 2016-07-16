@@ -403,9 +403,6 @@ function go_before_task_publish_handler( e, skip_default ) {
 			// if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
 			// 	go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
 			// }
-
-			// update the order of the task's chain, if the task is in a chain
-			// go_update_task_order_before_publish();
 		} catch ( err ) {
 
 			// if an input is causing an issue (e.g. failed validation),
@@ -661,7 +658,7 @@ function go_generate_accordion_array() {
 					cmb_id: 'five_stage_switch'
 				},
 				{
-					cmb_type: 'go_pick_order_of_chain',
+					cmb_type: 'go_task_chain_order',
 					cmb_id: 'chain_order',
 					on_load: go_chain_order_on_load,
 					on_toggle: go_chain_order_on_toggle

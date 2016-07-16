@@ -8,9 +8,6 @@
  * Prepares the task chain list in the task edit page for use by an admin. Enables the sorting 
  * functionality of the list.
  *
- * Listens for user reordering sortable list. Then it handles requesting the 
- * `wp_ajax_go_update_task_order` hook to update the task chain's order in the task's meta data.
- *
  * @see go_chain_get_task_ids()
  * @global array GO_TASK_DATA Contains data pertaining to the current task and the chain it's in.
  * 
@@ -21,21 +18,20 @@ function go_prepare_sortable_list () {
 		var task_id = GO_TASK_DATA.task_id;
 		var in_chain = GO_TASK_DATA.task_chains.in_chain;
 		var chain_name = GO_TASK_DATA.task_chains.chain_name;
-		var nonce = GO_TASK_DATA.nonces.go_update_task_order;
 	
 		if ( null !== task_id && in_chain ) {
-			var order = [];
-			var task_id_array = [];
-			var order_str = '';
-	
-			jQuery( '#go_task_order_in_chain' ).sortable({
+			jQuery( '.go_task_chain_order_list' ).sortable({
 				axis: "y",
 				start: function( event, ui ) {
 					jQuery( ui.item ).addClass( 'go_sortable_item' );
 				},
 				stop: function( event, ui ) {
 					jQuery( ui.item ).removeClass( 'go_sortable_item' );
-					task_id_array = go_chain_get_task_ids();
+
+					var chain_list = jQuery( ui.item ).parent()[0];
+					var order = [];
+					var task_id_array = go_chain_get_task_ids( chain_list );
+					var order_str = '';
 
 					for ( var i = 0; i < task_id_array.length; i++ ) {
 						if ( 'undefined' !== typeof task_id_array[ i ] && '' !== task_id_array[ i ] ) {
@@ -43,44 +39,11 @@ function go_prepare_sortable_list () {
 						}
 					}
 
-					order_str = '[' + order.join( ',' ) + ']';
+					order_str = order.join( ',' );
 
-					console.log( order );
-					console.log( order_str );
-
-					jQuery( '#go_task_order_in_chain_hidden' ).val( order_str );
+					jQuery( chain_list ).siblings( '.go_task_order_hidden' ).val( order_str );
 				}
 			});
-		}
-	}
-}
-
-/**
- * Updates the task chain list order before the task is published/updated.
- *
- * Updates the task chain list order in the task's meta data just before the task is
- * published/updated. This function doesn't send a request to the `wp_ajax_go_update_task_order` 
- * hook, instead it directly manipulates the value stored in the chain_position meta data field
- * "Custom Fields" accordion in the task edit page DOM.
- *
- * @see go_chain_get_task_ids()
- * @global array GO_TASK_DATA Contains data pertaining to the current task and the chain it's in.
- * 
- * @since 2.6.1
- */
-function go_update_task_order_before_publish () {
-
-	// Get the order of the task chain from the "Chain Order" meta box.
-	var order = go_chain_get_task_ids();
-
-	if ( order.length > 0 ) {
-
-		// Get the position of this task in the chain and get the current value of the meta value "chain_position".
-		// Compare them and update the meta value if they are not equal and the task id does exist in the chain.
-		var n_position = order.indexOf( GO_TASK_DATA.task_id );
-		var c_position = jQuery( "#the-list .left" ).children( "input[value='chain_position']" ).first().parent( 'td.left' ).siblings( "td" ).children( "textarea" ).text();
-		if ( n_position !== c_position && -1 !== n_position ) {
-			jQuery( "#the-list .left" ).children( "input[value='chain_position']" ).first().parent( 'td.left' ).siblings( "td" ).children( "textarea" ).text( n_position );
 		}
 	}
 }
@@ -92,15 +55,17 @@ function go_update_task_order_before_publish () {
  *
  * @return array A list of task IDs from the sortable chain list on the task edit page.
  */
-function go_chain_get_task_ids () {
+function go_chain_get_task_ids( chain_list_el ) {
 	var order = [];
-	jQuery( '.go_task_in_chain' ).each( function( i, el ) {
-		var val = jQuery( this ).attr( 'post_id' );
-		if ( 'string' === typeof val ) {
-			val = parseInt( val );
-		}
-		order[ i + 1 ] = val;
-	});
+	if ( 'undefined' !== typeof chain_list_el ) {
+		jQuery( chain_list_el ).children( '.go_task_in_chain' ).each( function( i, el ) {
+			var val = jQuery( this ).attr( 'post_id' );
+			if ( 'string' === typeof val ) {
+				val = parseInt( val );
+			}
+			order[ i ] = val;
+		});
+	}
 
 	return order;
 }
