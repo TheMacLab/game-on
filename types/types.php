@@ -1432,22 +1432,7 @@ function go_task_chain_order() {
 					}
 				}
 			} else {
-				$tasks_in_chain = get_posts(
-					array(
-						'post_type' => 'tasks',
-						'post_status' => 'publish',
-						'tax_query' => array(
-							array(
-								'taxonomy' => 'task_chains',
-								'field' => 'id',
-								'terms' => $chain_term->term_id,
-								'include_children' => false,
-							),
-						),
-						'order' => 'ASC',
-						'posts_per_page' => '-1',
-					)
-				);
+				$tasks_in_chain = go_task_chain_get_tasks( $chain_term->term_id );
 			}
 
 			$task_id_array = array();
@@ -1643,22 +1628,7 @@ function go_task_status_transition( $new_status, $old_status, $post ) {
 				$chain_terms_array = array_values( $task_chains );
 
 				foreach ( $chain_terms_array as $chain_term ) {
-					$tasks_in_chain = get_posts(
-						array(
-							'post_type' => 'tasks',
-							'post_status' => 'publish',
-							'tax_query' => array(
-								array(
-									'taxonomy' => 'task_chains',
-									'field' => 'id',
-									'terms' => $chain_term->term_id,
-									'include_children' => false,
-								),
-							),
-							'order' => 'ASC',
-							'posts_per_page' => '-1',
-						)
-					);
+					$tasks_in_chain = go_task_chain_get_tasks( $chain_term->term_id );
 
 					if ( ! empty( $tasks_in_chain ) ) {
 						foreach ( $tasks_in_chain as $task_obj ) {

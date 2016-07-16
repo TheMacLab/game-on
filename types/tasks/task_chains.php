@@ -71,6 +71,46 @@ function go_task_chain_get_name_by_id( $chain_id = null ) {
 }
 
 /**
+ * Retrieves all the published tasks in a chain, using a chain ID.
+ *
+ * @since 2.6.1
+ *
+ * @param int   $chain_id Contains the term ID of the task chain to search.
+ * @param array $exclude  Optional. An array of task IDs to exclude from the returned results.
+ * @return array Returns the objects of all the tasks in the specified chain. Returns an empty
+ *               array if the chain ID is invalid, or if no matching tasks are found.
+ */
+function go_task_chain_get_tasks( $chain_id = 0, $exclude = array() ) {
+	if ( ! is_int( $chain_id ) ) {
+		$chain_id = (int) $chain_id;
+	}
+
+	if ( empty( $chain_id ) ) {
+		return array();
+	}
+
+	$tasks = get_posts(
+		array(
+			'post_type' => 'tasks',
+			'post_status' => 'publish',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'task_chains',
+					'field' => 'id',
+					'terms' => $chain_id,
+					'include_children' => false,
+				),
+			),
+			'order' => 'ASC',
+			'posts_per_page' => '-1',
+			'post__not_in' => $exclude,
+		)
+	);
+
+	return $tasks;
+}
+
+/**
  * Determines if the task in question is in the final position of the task chain.
  *
  * Takes the task ID (the post ID) and determines if that task is the last one in the chain
@@ -105,22 +145,8 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 	} else {
 
 		// gets all published tasks associated with the specified chain (using the `taxonomy_term_id`)
-		$tasks_in_chain = get_posts(
-			array(
-				'post_type' => 'tasks',
-				'post_status' => 'publish',
-				'tax_query' => array(
-					array(
-						'taxonomy' => 'task_chains',
-						'field' => 'id',
-						'terms' => $chain_id,
-						'include_children' => false,
-					),
-				),
-				'order' => 'ASC',
-				'posts_per_page' => '-1',
-			)
-		);
+		$tasks_in_chain = go_task_chain_get_tasks( $chain_id );
+		
 		if ( is_array( $tasks_in_chain ) && ! empty( $tasks_in_chain ) ) {
 			$last_task = $tasks_in_chain[ count( $tasks_in_chain ) - 1 ];
 			$last_task_id = $last_task->ID;

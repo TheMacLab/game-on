@@ -466,23 +466,16 @@ function go_task_shortcode( $atts, $content = null ) {
 			//Grab chain object for this post
 			$chain_tax_array = array_values( $chain_tax );
 			$chain = array_shift( $chain_tax_array );
-			//Grab all posts in the current chain in order
-			$posts_in_chain = get_posts( array(
-				'post_type' => 'tasks',
-				'taxonomy' => 'task_chains',
-				'term' => $chain->name,
-				'order' => 'ASC',
-				'meta_key' => 'chain_position',
-				'orderby' => 'meta_value_num',
-				'posts_per_page' => '-1'
-			) );
+			
+			// grabs all tasks in the current chain
+			$tasks_in_chain = go_task_chain_get_tasks( $chain->term_id );
 
 			$list_query_args = array( $user_id );
 
 			// Loop through each one and make array of their ids
-			foreach ( $posts_in_chain as $post_in_chain ) {
-				$post_ids_in_chain[] = $post_in_chain->ID;
-				$list_query_args[] = $post_in_chain->ID;
+			foreach ( $tasks_in_chain as $task_obj ) {
+				$post_ids_in_chain[] = $task_obj->ID;
+				$list_query_args[] = $task_obj->ID;
 			}
 			
 			// Setup next task in chain 
