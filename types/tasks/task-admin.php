@@ -60,9 +60,6 @@ function go_localize_task_data() {
 	}
 
 	return array(
-		'nonces' => array(
-			'go_update_task_order' => wp_create_nonce( 'go_update_task_order_' . $task_id ),
-		),
 		'stages' => array(
 			'is_stage_three_active' => $is_stage_three_active,
 			'is_stage_five_active'  => $is_stage_five_active,
