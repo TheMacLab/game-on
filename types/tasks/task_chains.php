@@ -85,7 +85,7 @@ function go_task_chain_get_name_by_id( $chain_id = null ) {
  *
  * @param  int	   $task_id					The post ID of the task in question.
  * @param  int	   $chain_id Optional.		The `taxonomy_term_id` property of the chain in question.
- * @return boolean 	true when the task is at the end of a chain (see description). false when the 
+ * @return boolean 	true when the task is at the end of a chain (see description). false when the
  * 					task is not at the end of a chain, or if there is a mismatch, or if the chain
  *					doesn't exist (see description).
  */
@@ -110,13 +110,14 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 				'post_type' => 'tasks',
 				'post_status' => 'publish',
 				'tax_query' => array(
-					'taxonomy' => 'task_chains',
-					'field' => 'term_id',
-					'terms' => $chain_id,
+					array(
+						'taxonomy' => 'task_chains',
+						'field' => 'id',
+						'terms' => $chain_id,
+						'include_children' => false,
+					),
 				),
 				'order' => 'ASC',
-				'orderby' => 'meta_value_num',
-				'meta_key' => 'chain_position',
 				'posts_per_page' => '-1',
 			)
 		);

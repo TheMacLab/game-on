@@ -1511,7 +1511,9 @@ function go_validate_task_chain_order( $new_values ) {
 		$chain_order_dupe = $chain_order;
 
 		if ( ! empty( $chain_order ) ) {
-			if ( empty( $stored_chain_order ) || $stored_chain_order[ $chain_term_id ] !== $chain_order ) {
+			if ( empty( $stored_chain_order ) ||
+					( ! empty( $stored_chain_order[ $chain_term_id ] ) &&
+					$stored_chain_order[ $chain_term_id ] !== $chain_order ) ) {
 				foreach ( $chain_order_dupe as $index => $task_id ) {
 
 					// typecasts the task IDs to ensure that they are actually integers; the benefit
@@ -1613,149 +1615,81 @@ function go_stage_reward( $field_args ) {
 	echo "</div>";
 }
 
-add_action( 'before_delete_post', 'go_before_delete_task', 10, 1 );
-function go_before_delete_task( $post_id ) {
-	if ( 'tasks' === get_post_type( $post_id ) ) {
-		$task_chains = get_the_terms( $post_id, 'task_chains' );
+add_action( 'transition_post_status', 'go_task_status_transition', 10, 3 );
+function go_task_status_transition( $new_status, $old_status, $post ) {
+	if ( 'tasks' === get_post_type( $post->ID ) ) {
 
-		if ( ! empty( $task_chains ) ) {
-			$chain_terms_array = array_values( $task_chains );
+		// checks for chains that the task is in
+		$task_chains = get_the_terms( $post->ID, 'task_chains' );
 
-			foreach ( $chain_terms_array as $chain_term ) {
-				$tasks_in_chain = get_posts(
-					array(
-						'post_type' => 'tasks',
-						'post_status' => 'publish',
-						'tax_query' => array(
-							array(
-								'taxonomy' => 'task_chains',
-								'field' => 'id',
-								'terms' => $chain_term->term_id,
-								'include_children' => false,
+		if ( 'publish' === $new_status && 'publish' !== $old_status ) {
+
+			/**
+			 * Task Chain Behavior - Newly Published
+			 */
+
+			// adds the target's task ID to the meta data of each task in the chain
+			
+
+			// updates the target's meta data using any existing chain meta data
+		} elseif ( 'trash' === $new_status && 'publish' === $old_status ) {
+
+			/**
+			 * Task Chain Behavior - Published to Trash
+			 */
+
+			// removes target's task ID from the meta data of each task in the chain
+			if ( ! empty( $task_chains ) ) {
+				$chain_terms_array = array_values( $task_chains );
+
+				foreach ( $chain_terms_array as $chain_term ) {
+					$tasks_in_chain = get_posts(
+						array(
+							'post_type' => 'tasks',
+							'post_status' => 'publish',
+							'tax_query' => array(
+								array(
+									'taxonomy' => 'task_chains',
+									'field' => 'id',
+									'terms' => $chain_term->term_id,
+									'include_children' => false,
+								),
 							),
-						),
-						'order' => 'ASC',
-						'posts_per_page' => '-1',
-					)
-				);
+							'order' => 'ASC',
+							'posts_per_page' => '-1',
+						)
+					);
 
-				if ( ! empty( $tasks_in_chain ) ) {
-					foreach ( $tasks_in_chain as $task_obj ) {
-						$task_chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
-						foreach ( $task_chain_order as $chain_order_array ) {
-							foreach ( $chain_order_array as $index => $task_id ) {
-								if ( $post_id === $task_id ) {
+					if ( ! empty( $tasks_in_chain ) ) {
+						foreach ( $tasks_in_chain as $task_obj ) {
 
-									// removes the task that is about to be deleted from the chain
-									// order meta data of every task in the chain
-									unset( $chain_order_array[ $index ] );
-									update_post_meta( $task_obj->ID, 'go_mta_chain_order', $chain_order_array );
-									break;
+							$task_chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
+							$updated = false;
+
+							if ( ! empty( $task_chain_order ) && is_array( $task_chain_order ) ) {
+								foreach ( $task_chain_order as $chain_term_id => $chain_order_array ) {
+									if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
+										$target_index = array_search( $post->ID, $chain_order_array );
+										if ( -1 !== $target_index ) {
+											unset( $chain_order_array[ $target_index ] );
+											$updated = true;
+											break;
+										}
+									}
+								}
+								if ( $updated ) {
+									update_post_meta( $task_obj->ID, 'go_mta_chain_order', $task_chain_order );
 								}
 							}
 						}
 					}
 				}
 			}
+
+			// deletes the target's meta data
+			delete_post_meta( $post->ID, 'go_mta_chain_order' );
 		}
 	}
-}
-
-add_action( 'transition_post_status', 'go_task_status_transition', 10, 3 );
-function go_task_status_transition( $new_status, $old_status, $post ) {
-	if ( 'tasks' === get_post_type( $post->ID ) ) {
-		if ( 'publish' === $new_status && 'publish' !== $old_status ) {
-			
-			/**
-			 * Task Chain Behavior - Newly Published
-			 */
-
-			// add the new task's ID to each task's meta data in the chain
-			
-
-			// updates the new task's meta data using any existing chain meta data, with the
-			// addition of the new task's ID at the end of the chain
-		}
-	}
-
-	// if ( 'tasks' === get_post_type( $task_id ) ) {
-
-	// 	// // checks that the task has been newly published, simply updated, or sent to the trash
-	// 	// if ( 'publish' === $new_status && 'publish' !== $old_status ) {
-
-	// 	// 	// Get the current number of tasks in the given chain.
-	// 	// 	$count = $chain->count;
-		
-	// 	// 	// If the chain is not empty, set $pos to the number of tasks plus one 
-	// 	// 	// and then update the 'chain' and 'chain_position' meta values of the current post.
-	// 	// 	if ( ! empty( $chain ) ) {
-	// 	// 		update_post_meta( $task_id, 'chain', $chain->name );
-	// 	// 		if ( ! empty( $count ) ) {
-	// 	// 			update_post_meta( $task_id, 'chain_position', $count );
-	// 	// 		} else {
-	// 	// 			update_post_meta( $task_id, 'chain_position', 1 );
-	// 	// 		}
-	// 	// 	}
-	// 	// } elseif ( $new_status == 'publish' && $old_status == 'publish' ) {
-
-	// 	// 	// Get the current meta position in the database for this task as a string.
-	// 	// 	$c_position = get_post_meta( $task_id, 'chain_position', true );
-	// 	// 	$chain_meta = get_post_meta( $task_id, 'chain', true );
-			
-	// 	// 	// Get a list of all the tasks in this chain and order them by chain position.
-	// 	// 	$other_posts = get_posts(array(
-	// 	// 		'post_type' => 'tasks',
-	// 	// 		'post_status' => 'publish',
-	// 	// 		'taxonomy' => 'task_chains',
-	// 	// 		'term' => $chain->name,
-	// 	// 		'order' => 'ASC',
-	// 	// 		'meta_key' => 'chain_position',
-	// 	// 		'orderby' => 'meta_value_num',
-	// 	// 		'posts_per_page' => '-1'
-	// 	// 	) );
-			
-	// 	// 	// Pull out the ids for the tasks, for each task, update the order so that
-	// 	// 	// the first task always has an index of 1.
-	// 	// 	foreach ( $other_posts as $pos => $post ) {
-	// 	// 		$id = $post->ID;
-	// 	// 		if ( $id != $task_id ) {
-	// 	// 			update_post_meta( $id, 'chain_position', ( $pos + 1 ) );
-	// 	// 		} else {
-	// 	// 			if ( isset( $c_position ) && ! is_null( $c_position ) ) {
-	// 	// 				update_post_meta( $task_id, 'chain_position', ( $pos + 1 ) );
-	// 	// 			} else {
-	// 	// 				$end_pos = $chain->count + 1;
-	// 	// 				update_post_meta( $task_id, 'chain_position', $end_pos );
-	// 	// 			}
-	// 	// 		}
-	// 	// 	}
-	// 	// 	if ( empty( $chain_meta ) ) {
-	// 	// 		add_post_meta( $task_id, 'chain', $chain->name );
-	// 	// 	}
-	// 	// 	if ( ! isset( $c_position ) || is_null( $c_position ) ) {
-	// 	// 		$end_pos = $chain->count;
-	// 	// 		update_post_meta( $task_id, 'chain_position', $end_pos );
-	// 	// 	}
-	// 	// } elseif ( $new_status == 'trash' && $old_status != 'trash' ) {
-	// 	// 	// Get a list of all the tasks in this chain and order them by chain position.
-	// 	// 	$other_posts = get_posts(array(
-	// 	// 		'post_type' => 'tasks',
-	// 	// 		'post_status' => 'publish',
-	// 	// 		'taxonomy' => 'task_chains',
-	// 	// 		'term' => $chain->name,
-	// 	// 		'order' => 'ASC',
-	// 	// 		'meta_key' => 'chain_position',
-	// 	// 		'orderby' => 'meta_value_num',
-	// 	// 		'posts_per_page' => '-1'
-	// 	// 	) );
-			
-	// 	// 	// Pull out the ids for the tasks, for each task, update the order so that the first task always has an index of 1.
-	// 	// 	foreach ( $other_posts as $pos => $post ) {
-	// 	// 		$id = $post->ID;
-	// 	// 		update_post_meta( $id, 'chain_position', ( $pos + 1 ) );
-	// 	// 	}
-	// 	// }
-	// }
 }
 
 add_action( 'delete_term_taxonomy', 'go_remove_task_chain_from_posts', 10, 1);
