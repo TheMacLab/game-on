@@ -7,9 +7,9 @@
  *
  * @since 2.6.1
  *
- * @param  int	   $task_id			The post ID of the task in question.
+ * @param int $task_id The post ID of the task in question.
  * @return int|null Returns the `taxonomy_term_id` property of the chain term object, if it exists;
- *					otherwise, null is returned.
+ *                  otherwise, null is returned.
  */
 function go_task_chain_get_id_by_task( $task_id ) {
 	if ( ! isset( $task_id ) || empty( $task_id ) ) {
@@ -18,7 +18,7 @@ function go_task_chain_get_id_by_task( $task_id ) {
 	$task_chains = get_the_terms( $task_id, 'task_chains' );
 	if ( ! empty( $task_chains ) ) {
 		$task_chains_array = array_values( $task_chains );
-		
+
 		// this uses only the first chain in the list, if the task is included in more than one
 		$task_chains_first = array_shift( $task_chains_array );
 		$chain_id = $task_chains_first->term_taxonomy_id;
@@ -33,16 +33,16 @@ function go_task_chain_get_id_by_task( $task_id ) {
  * Returns the term name of a chain based on the passed chain term ID.
  *
  * If no chain ID is passed, or the chain ID is invalid (null, negative, etc.), the function will
- * use the current task as a reference for determining the chain's name. Omitting the chain ID 
+ * use the current task as a reference for determining the chain's name. Omitting the chain ID
  * should be avoided, if possible. For example, if `go_task_chain_get_id_by_task()` is being used to
  * retrieve the chain ID, and the chain name is also needed, pass in that value. This will prevent
  * unnecessary queries to the database.
  *
  * @since 2.6.1
  *
- * @param  int	   $chain_id Optional.		The term ID of the chain in question.
+ * @param int $chain_id Optional. The term ID of the chain in question.
  * @return string|null Returns the `name` property of the chain term object, if it exists;
- *					otherwise, null is returned.
+ *                     otherwise, null is returned.
  */
 function go_task_chain_get_name_by_id( $chain_id = null ) {
 	global $post;
@@ -123,11 +123,11 @@ function go_task_chain_get_tasks( $chain_id = 0, $exclude = array() ) {
  *
  * @see go_task_chain_get_id_by_task()
  *
- * @param  int	   $task_id					The post ID of the task in question.
- * @param  int	   $chain_id Optional.		The `taxonomy_term_id` property of the chain in question.
+ * @param int $task_id  The post ID of the task in question.
+ * @param int $chain_id Optional. The `taxonomy_term_id` property of the chain in question.
  * @return boolean 	true when the task is at the end of a chain (see description). false when the
- * 					task is not at the end of a chain, or if there is a mismatch, or if the chain
- *					doesn't exist (see description).
+ *                  task is not at the end of a chain, or if there is a mismatch, or if the chain
+ *                  doesn't exist (see description).
  */
 function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 	if ( ! isset( $task_id ) ) {
@@ -146,7 +146,7 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 
 		// gets all published tasks associated with the specified chain (using the `taxonomy_term_id`)
 		$tasks_in_chain = go_task_chain_get_tasks( $chain_id );
-		
+
 		if ( is_array( $tasks_in_chain ) && ! empty( $tasks_in_chain ) ) {
 			$last_task = $tasks_in_chain[ count( $tasks_in_chain ) - 1 ];
 			$last_task_id = $last_task->ID;
@@ -162,10 +162,10 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 /**
  * Takes care of deleting a task chain term from its tasks' meta data.
  *
- * Hooks into the "pre_delete_term" action, which gets fired before any object-term relationships
+ * Hooks into the `pre_delete_term` action, which gets fired before any object-term relationships
  * are deleted.
  *
- * The term ID of the task chain then gets removed from the "go_mta_chain_order" meta data array of
+ * The term ID of the task chain then gets removed from the `go_mta_chain_order` meta data array of
  * each task in the chain.
  *
  * @since 2.6.1

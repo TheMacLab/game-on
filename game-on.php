@@ -26,7 +26,7 @@ include( 'go_mail.php' );
 include( 'go_messages.php' );
 include( 'go_task_search.php' );
 include( 'go_pods.php' );
-include( 'types/tasks/task_chains.php' );
+include( 'types/tasks/task-chains.php' );
 include( 'types/types.php' );
 
 /*
