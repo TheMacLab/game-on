@@ -1714,33 +1714,6 @@ function go_task_status_transition( $new_status, $old_status, $post ) {
 	}
 }
 
-add_action( 'pre_delete_term', 'go_task_chain_delete_term', 10, 2 );
-function go_task_chain_delete_term( $term_id, $tax_name ) {
-	if ( 'task_chains' === $tax_name ) {
-		$tasks_in_chain = go_task_chain_get_tasks( $term_id );
-
-		if ( ! empty( $tasks_in_chain ) ) {
-			foreach ( $tasks_in_chain as $task_obj ) {
-				$chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
-				$updated = false;
-
-				if ( ! empty( $chain_order ) && is_array( $chain_order ) ) {
-					foreach ( $chain_order as $chain_term_id => $chain_order_array ) {
-						if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
-							unset( $chain_order[ $chain_term_id ] );
-							$updated = true;
-						}
-					}
-
-					if ( $updated ) {
-						update_post_meta( $task_obj->ID, 'go_mta_chain_order', $chain_order );
-					}
-				}
-			}
-		}
-	}
-}
-
 add_action( 'post_submitbox_misc_actions', 'go_clone_post_ajax' );
 function go_clone_post_ajax() {
 	global $post;

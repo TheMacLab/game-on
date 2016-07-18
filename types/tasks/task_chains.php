@@ -158,3 +158,44 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 		return false;
 	}
 }
+
+/**
+ * Takes care of deleting a task chain term from its tasks' meta data.
+ *
+ * Hooks into the "pre_delete_term" action, which gets fired before any object-term relationships
+ * are deleted.
+ *
+ * The term ID of the task chain then gets removed from the "go_mta_chain_order" meta data array of
+ * each task in the chain.
+ *
+ * @since 2.6.1
+ *
+ * @param int    $term_id  The term ID.
+ * @param string $tax_name The taxonomy name.
+ */
+function go_task_chain_delete_term( $term_id, $tax_name ) {
+	if ( 'task_chains' === $tax_name ) {
+		$tasks_in_chain = go_task_chain_get_tasks( $term_id );
+
+		if ( ! empty( $tasks_in_chain ) ) {
+			foreach ( $tasks_in_chain as $task_obj ) {
+				$chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
+				$updated = false;
+
+				if ( ! empty( $chain_order ) && is_array( $chain_order ) ) {
+					foreach ( $chain_order as $chain_term_id => $chain_order_array ) {
+						if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
+							unset( $chain_order[ $chain_term_id ] );
+							$updated = true;
+						}
+					}
+
+					if ( $updated ) {
+						update_post_meta( $task_obj->ID, 'go_mta_chain_order', $chain_order );
+					}
+				}
+			}
+		}
+	}
+}
+add_action( 'pre_delete_term', 'go_task_chain_delete_term', 10, 2 );
