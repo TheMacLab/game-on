@@ -1714,28 +1714,27 @@ function go_task_status_transition( $new_status, $old_status, $post ) {
 	}
 }
 
-add_action( 'delete_term_taxonomy', 'go_remove_task_chain_from_posts', 10, 1);
-function go_remove_task_chain_from_posts( $term_id ) {
-	$term = get_term_by( 'id', $term_id, 'task_chains' );
-	$posts_in_chain = get_posts(array(
-		'post_type' => 'tasks',
-		'taxonomy' => 'task_chains',
-		'meta_key' => 'chain',
-		'posts_per_page' => '-1'
-	) );
-	if ( ! empty( $posts_in_chain ) ) {
-		foreach ( $posts_in_chain as $key => $post ) {
-			$post_chain_name = get_post_meta( $post->ID, 'chain', true );
-			if ( ! empty( $term->name ) && $post_chain_name === $term->name ) {
-				delete_post_meta( $post->ID, 'chain' );
-				delete_post_meta( $post->ID, 'chain_position' );
-				
-				$post_tax = get_the_terms( $post->ID, 'task_chains' );
-				if ( ! empty( $post_tax ) ) {
-					$chain = array_shift( $post_tax );
-					$chain_length = $chain->count;
-					update_post_meta( $post->ID, 'chain', $chain->name );
-					update_post_meta( $post->ID, 'chain_position', $chain_length );
+add_action( 'pre_delete_term', 'go_task_chain_delete_term', 10, 2 );
+function go_task_chain_delete_term( $term_id, $tax_name ) {
+	if ( 'task_chains' === $tax_name ) {
+		$tasks_in_chain = go_task_chain_get_tasks( $term_id );
+
+		if ( ! empty( $tasks_in_chain ) ) {
+			foreach ( $tasks_in_chain as $task_obj ) {
+				$chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
+				$updated = false;
+
+				if ( ! empty( $chain_order ) && is_array( $chain_order ) ) {
+					foreach ( $chain_order as $chain_term_id => $chain_order_array ) {
+						if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
+							unset( $chain_order[ $chain_term_id ] );
+							$updated = true;
+						}
+					}
+
+					if ( $updated ) {
+						update_post_meta( $task_obj->ID, 'go_mta_chain_order', $chain_order );
+					}
 				}
 			}
 		}
