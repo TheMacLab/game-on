@@ -1459,15 +1459,34 @@ function go_task_chain_order() {
 }
 
 add_action( 'cmb_validate_go_task_chain_order', 'go_validate_task_chain_order' );
+
+/**
+ * Updates the task chain order meta data of each task in a chain, as needed.
+ *
+ * Only updates the task's chain order if the stored chain order and the new chain order values are
+ * different. Terms that the task doesn't have an object-term relationship with will be removed from
+ * the chain order. If the task's chain order does need updating, all other tasks within the chain
+ * will be updated with the new chain order meta data. This ensures that all tasks display the
+ * correct order.
+ *
+ * This function is not meant to be called in any way other than through its `cmb_validate_*` hook.
+ *
+ * @since 2.6.1
+ *
+ * @global $post
+ *
+ * @param array $new_values The new chain order array.
+ * @return array If changes occurred, the updated chain order array; otherwise, an empty array.
+ */
 function go_validate_task_chain_order( $new_values ) {
 	global $post;
 
 	/**
-	 * The chain order should be sent via the POST method and be of the form below. The task IDs
-	 * are lumped into a string due to the way that form inputs pass data (it's the best way to do it).
+	 * The chain order should be of the form below. The task IDs are lumped into a string due to the
+	 * way that form inputs pass data via POST.
 	 *
 	 *     array(
-	 *         term_id #1] => '[post_id #1],[post_id #2],[post_id #3]',
+	 *         [term_id #1] => '[post_id #1],[post_id #2],[post_id #3]',
 	 *         ...
 	 *     )
 	 *
