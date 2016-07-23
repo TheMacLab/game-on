@@ -160,42 +160,135 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 }
 
 /**
- * Takes care of deleting a task chain term from its tasks' meta data.
- *
- * Hooks into the `pre_delete_term` action, which gets fired before any object-term relationships
- * are deleted.
- *
- * The term ID of the task chain then gets removed from the `go_mta_chain_order` meta data array of
- * each task in the chain.
+ * Handles updating chain order meta data when a chain is added to a task.
  *
  * @since 2.6.1
  *
- * @param int    $term_id  The term ID.
- * @param string $tax_name The taxonomy name.
+ * @param int $object_id The ID of the object.
+ * @param int $tt_id     The term taxonomy ID.
  */
-function go_task_chain_delete_term( $term_id, $tax_name ) {
-	if ( 'task_chains' === $tax_name ) {
-		$tasks_in_chain = go_task_chain_get_tasks( $term_id );
+function go_task_chain_add_term_rel( $object_id, $tt_id ) {
+
+	// the task that is having a term assigned to it is referred to as the "target", below
+	$the_object = get_post( $object_id );
+	$the_term = get_term_by( 'term_taxonomy_id', $tt_id );
+
+	if ( ! empty( $the_object ) &&
+			'tasks' === $the_object->post_type &&
+			'task_chains' === $the_term->taxonomy ) {
+
+		$stored_chain_order   = get_post_meta( $object_id, 'go_mta_chain_order', true );
+		$new_chain_order      = $stored_chain_order;
+		$target_chain_updated = false;
+		$tasks_in_chain       = go_task_chain_get_tasks( $the_term->term_id );
 
 		if ( ! empty( $tasks_in_chain ) ) {
-			foreach ( $tasks_in_chain as $task_obj ) {
-				$chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
-				$updated = false;
 
-				if ( ! empty( $chain_order ) && is_array( $chain_order ) ) {
-					foreach ( $chain_order as $chain_term_id => $chain_order_array ) {
-						if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
-							unset( $chain_order[ $chain_term_id ] );
-							$updated = true;
+			/**
+			 * There are tasks in the chain.
+			 */
+
+			// loops through all tasks in the chain and append the target's ID to their meta
+			// data arrays
+			foreach ( $tasks_in_chain as $task_obj ) {
+				$order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
+				$order[ $the_term->term_id ][] = $object_id;
+
+				update_post_meta( $task_obj->ID, 'go_mta_chain_order', $order );
+
+				if ( ! $target_chain_updated ) {
+					$new_chain_order = $order;
+					$target_chain_updated = true;
+				}
+			}
+		} else {
+
+			/**
+			 * There are not any tasks associated with the chain.
+			 */
+
+			$new_chain_order[ $the_term->term_id ] = array( $object_id );
+		}
+
+		update_post_meta( $object_id, 'go_mta_chain_order', $new_chain_order );
+	}
+}
+add_action( 'add_term_relationship', 'go_task_chain_add_term_rel', 10, 2 );
+
+/**
+ * Summary.
+ *
+ * @since 2.6.1
+ *
+ * @param int   $object_id The ID of the object.
+ * @param array $tt_ids    The term taxonomy IDs.
+ */
+function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
+
+	// the task that is having a term assigned to it is referred to as the "target", below
+	$the_object = get_post( $object_id );
+	$terms_array = array_map( function ( $tt_id ) {
+		$term = get_term_by( 'term_taxonomy_id', $tt_id );
+		return $term;
+	}, $tt_ids );
+
+	if ( ! empty( $the_object ) && 'tasks' === $the_object->post_type && ! empty( $terms_array ) ) {
+		foreach ( $terms_array as $the_term ) {
+
+			if ( 'task_chains' === $the_term->taxonomy ) {
+
+				$all_object_terms   = get_the_terms( $object_id, 'task_chains' );
+				$stored_chain_order = get_post_meta( $object_id, 'go_mta_chain_order', true );
+				$new_chain_order    = $stored_chain_order;
+				$tasks_in_chain     = go_task_chain_get_tasks( $the_term->term_id );
+
+				if ( count( $tasks_in_chain ) > 1 ) {
+
+					/**
+					 * There are other tasks in the chain.
+					 */
+
+					// loops through all tasks in the chain and remove the target's ID from their
+					// meta data arrays
+					foreach ( $tasks_in_chain as $task_obj ) {
+						$order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
+
+						if ( ! empty( $order[ $the_term->term_id ] ) ) {
+
+							$id_index = array_search( $object_id, $order[ $the_term->term_id ] );
+							if ( false !== $id_index ) {
+
+								unset( $order[ $the_term->term_id ][ $id_index ] );
+								$order[ $the_term->term_id ] = array_values( $order[ $the_term->term_id ] );
+
+								update_post_meta( $task_obj->ID, 'go_mta_chain_order', $order );
+							}
 						}
 					}
+				}
 
-					if ( $updated ) {
-						update_post_meta( $task_obj->ID, 'go_mta_chain_order', $chain_order );
+				if ( count( $all_object_terms ) > 1 ) {
+
+					/**
+					 * The target is in other chains.
+					 */
+
+					if ( isset( $stored_chain_order[ $the_term->term_id ] ) ) {
+						unset( $stored_chain_order[ $the_term->term_id ] );
+
+						update_post_meta( $object_id, 'go_mta_chain_order', $stored_chain_order );
 					}
+				} else {
+
+					/**
+					 * The target is not in any other chains.
+					 */
+
+					// deletes the target's meta data array
+					delete_post_meta( $object_id, 'go_mta_chain_order' );
 				}
 			}
 		}
 	}
 }
-add_action( 'pre_delete_term', 'go_task_chain_delete_term', 10, 2 );
+add_action( 'delete_term_relationships', 'go_task_chain_delete_term_rel', 10, 2 );

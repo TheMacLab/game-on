@@ -1458,8 +1458,6 @@ function go_task_chain_order() {
 	}
 }
 
-add_action( 'cmb_validate_go_task_chain_order', 'go_validate_task_chain_order' );
-
 /**
  * Updates the task chain order meta data of each task in a chain, as needed.
  *
@@ -1476,7 +1474,8 @@ add_action( 'cmb_validate_go_task_chain_order', 'go_validate_task_chain_order' )
  * @global $post
  *
  * @param array $new_values The new chain order array.
- * @return array If changes occurred, the updated chain order array; otherwise, an empty array.
+ * @return array If changes occurred, the updated chain order array is returned (saved); otherwise,
+ *               the current meta value is used.
  */
 function go_validate_task_chain_order( $new_values ) {
 	global $post;
@@ -1496,16 +1495,25 @@ function go_validate_task_chain_order( $new_values ) {
 	 *         ...
 	 *     )
 	 */
-	$new_order_input = ( ! empty( $new_values ) ? $new_values : array() );
+	$new_order_input    = ( ! empty( $new_values ) ? $new_values : array() );
+	$task_chains        = get_the_terms( $post->ID, 'task_chains' );
+	$stored_chain_order = get_post_meta( $post->ID, 'go_mta_chain_order', true );
+	$new_chain_order    = $stored_chain_order;
 
-	if ( empty( $new_order_input ) ) {
-		return array();
+	if ( empty( $new_order_input ) || empty( $task_chains ) ) {
+		return $stored_chain_order;
 	}
 
-	$stored_chain_order = get_post_meta( $post->ID, 'go_mta_chain_order', true );
-	$new_chain_order = array();
-
 	foreach ( $new_order_input as $chain_term_id => $chain_order_str ) {
+
+		$in_chain = false;
+
+		foreach ( $task_chains as $chain_obj ) {
+			if ( $chain_obj->term_id === $chain_term_id ) {
+				$in_chain = true;
+				break;
+			}
+		}
 
 		// splits the list of task IDs into an array
 		$chain_order = explode( ',', $chain_order_str );
@@ -1514,10 +1522,11 @@ function go_validate_task_chain_order( $new_values ) {
 		// removing task IDs that do not belong possible without skipping elements
 		$chain_order_dupe = $chain_order;
 
-		if ( ! empty( $chain_order ) ) {
+		if ( ! empty( $chain_order ) && $in_chain ) {
 			if ( empty( $stored_chain_order ) ||
 					( ! empty( $stored_chain_order[ $chain_term_id ] ) &&
 					$stored_chain_order[ $chain_term_id ] !== $chain_order ) ) {
+
 				foreach ( $chain_order_dupe as $index => $task_id ) {
 
 					// typecasts the task IDs to ensure that they are actually integers; the benefit
@@ -1560,7 +1569,7 @@ function go_validate_task_chain_order( $new_values ) {
 							$task_pos = array_search( $task_id, $chain_order );
 
 							// removes the ID of the task (that is no longer in the chain) from the
-							// chain order array of the task from which the update originated
+							// chain order array of the target
 							unset( $chain_order[ $task_pos ] );
 						}
 
@@ -1575,6 +1584,7 @@ function go_validate_task_chain_order( $new_values ) {
 
 	return $new_chain_order;
 }
+add_action( 'cmb_validate_go_task_chain_order', 'go_validate_task_chain_order', 10, 1 );
 
 add_action( 'cmb_render_go_settings_accordion', 'go_settings_accordion', 10, 1);
 function go_settings_accordion( $field_args ) {
