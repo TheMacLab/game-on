@@ -164,6 +164,8 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
  *
  * @since 2.6.1
  *
+ * @see go_task_chain_get_tasks()
+ *
  * @param int $object_id The ID of the object.
  * @param int $tt_id     The term taxonomy ID.
  */
@@ -188,7 +190,7 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 			 * There are tasks in the chain.
 			 */
 
-			// loops through all tasks in the chain and append the target's ID to their meta
+			// loops through all tasks in the chain and appends the target's ID to their meta
 			// data arrays
 			foreach ( $tasks_in_chain as $task_obj ) {
 				$order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
@@ -216,9 +218,11 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 add_action( 'add_term_relationship', 'go_task_chain_add_term_rel', 10, 2 );
 
 /**
- * Summary.
+ * Handles updating chain order meta data when one or more chains are removed from a task.
  *
  * @since 2.6.1
+ *
+ * @see go_task_chain_get_tasks()
  *
  * @param int   $object_id The ID of the object.
  * @param array $tt_ids    The term taxonomy IDs.
@@ -248,7 +252,7 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 					 * There are other tasks in the chain.
 					 */
 
-					// loops through all tasks in the chain and remove the target's ID from their
+					// loops through all tasks in the chain and removes the target's ID from their
 					// meta data arrays
 					foreach ( $tasks_in_chain as $task_obj ) {
 						$order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
@@ -292,3 +296,96 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 	}
 }
 add_action( 'delete_term_relationships', 'go_task_chain_delete_term_rel', 10, 2 );
+
+/**
+ * Handles removing the appropriate meta data when a published task is unpublished.
+ *
+ * @since 2.6.1
+ *
+ * @param string  $new_status The new post status.
+ * @param string  $old_status The old post status.
+ * @param WP_Post $post       The post object.
+ */
+function go_task_chain_task_unpublished( $new_status, $old_status, $post ) {
+
+	$unpublished = false;
+	if ( 'publish' === $old_status && $new_status !== $old_status ) {
+		$unpublished = true;
+	}
+
+	// checks for chains that the task is in
+	$task_chains = get_the_terms( $post->ID, 'task_chains' );
+
+	if ( $unpublished && 'tasks' === $post->post_type && ! empty( $task_chains ) ) {
+		/**
+		 * The post is a task and is in at least one task chain.
+		 */
+
+		// removes target's task ID from the meta data of each task in the chain
+		$chain_terms_array = array_values( $task_chains );
+		foreach ( $chain_terms_array as $chain_term ) {
+			$tasks_in_chain = go_task_chain_get_tasks( $chain_term->term_id );
+
+			if ( ! empty( $tasks_in_chain ) ) {
+				foreach ( $tasks_in_chain as $task_obj ) {
+					$task_chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
+					$updated = false;
+
+					if ( ! empty( $task_chain_order ) && is_array( $task_chain_order ) ) {
+						foreach ( $task_chain_order as $chain_term_id => $chain_order_array ) {
+
+							if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
+
+								// finds the target's task ID in the task's chain order
+								$target_index = array_search( $post->ID, $chain_order_array );
+
+								// unsets the element with the target's task ID
+								if ( -1 !== $target_index ) {
+									unset( $chain_order_array[ $target_index ] );
+									$task_chain_order[ $chain_term_id ] = $chain_order_array;
+									$updated = true;
+									break;
+								}
+							}
+						}
+
+						if ( $updated ) {
+							update_post_meta( $task_obj->ID, 'go_mta_chain_order', $task_chain_order );
+						}
+					}
+				}
+			}
+		}
+
+		// deletes the target's meta data
+		delete_post_meta( $post->ID, 'go_mta_chain_order' );
+	}
+}
+add_action( 'transition_post_status', 'go_task_chain_task_unpublished', 10, 3 );
+
+/**
+ * Handles adding the appropriate meta data when an unpublished task is published.
+ *
+ * @since 2.6.1
+ *
+ * @param string  $new_status The new post status.
+ * @param string  $old_status The old post status.
+ * @param WP_Post $post       The post object.
+ */
+function go_task_chain_task_published( $new_status, $old_status, $post ) {
+
+	$published = false;
+	if ( 'publish' === $new_status && $new_status !== $old_status ) {
+		$published = true;
+	}
+
+	// checks for chains that the task is in
+	$task_chains = get_the_terms( $post->ID, 'task_chains' );
+
+	if ( $published && 'tasks' === $post->post_type && ! empty( $task_chains ) ) {
+		/**
+		 * The post is a task and is in at least one task chain.
+		 */
+	}
+}
+add_action( 'transition_post_status', 'go_task_chain_task_published', 10, 3 );
