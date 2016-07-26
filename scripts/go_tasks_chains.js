@@ -7,11 +7,11 @@
 /**
  * Prepares the task chain list in the task edit page for use by an admin. Enables the sorting 
  * functionality of the list.
+ * 
+ * @since 2.6.1
  *
  * @see go_chain_get_task_ids()
  * @global array GO_TASK_DATA Contains data pertaining to the current task and the chain it's in.
- * 
- * @since 2.6.1
  */
 function go_prepare_sortable_list () {
 	if ( 'undefined' !== typeof GO_TASK_DATA ) {

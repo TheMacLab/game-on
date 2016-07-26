@@ -379,26 +379,6 @@ input.go_test_field_rm {
 	border-bottom: 5px solid #AAA;
 }
 
-.go_task_chain_order_container {
-	margin-bottom: 20px;
-}
-
-.go_task_chain_order_container:last-of-type {
-	margin-bottom: 0px;
-}
-
-.go_task_chain_order_title {
-	margin-bottom: 10px;
-}
-
-.go_task_chain_order_list {
-	margin: 0;
-}
-
-#go_mta_final_chain_message {
-	width: 100%;
-}
-
 .go_reward_input {
 	color: #BBB !important;
 	text-align: center;

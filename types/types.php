@@ -1409,8 +1409,8 @@ function go_task_opt_help( $field, $title, $video_url = null ) {
 	return "<a id='go_help_{$field}' class='go_task_opt_help' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );' tooltip='{$title}'>?</a>";
 }
 
-add_action( 'cmb_render_go_task_chain_order', 'go_task_chain_order' );
-function go_task_chain_order() {
+add_action( 'cmb_render_go_task_chain_order', 'go_render_task_chain_order' );
+function go_render_task_chain_order() {
 	global $post;
 	$task_chains = get_the_terms( $post->ID, 'task_chains' );
 
@@ -1440,20 +1440,35 @@ function go_task_chain_order() {
 			$chain_list_elems = '';
 			foreach ( $tasks_in_chain as $index => $post_obj ) {
 				$task_id_array[] = $post_obj->ID;
-				$chain_list_elems .= "<li class='go_task_in_chain' post_id='{$post_obj->ID}'>{$post_obj->post_title}</li>";
+				$post_status = $post_obj->post_status;
+
+				$elem_val = $post_obj->post_title . (
+					'publish' !== $post_status ?
+					' (' . ucwords( $post_status ) . ')' :
+					''
+				);
+
+				$chain_list_elems .= sprintf(
+					'<li class="go_task_in_chain" post_id=%d>%s</li>',
+					$post_obj->ID,
+					$elem_val
+				);
 			}
 
 			$task_id_str = join( ',', $task_id_array );
 
-			?>
-			<div class='go_task_chain_order_container'>
-				<div class='go_task_chain_order_title'><strong><?php echo ucwords( $chain_term->name ); ?></strong></div>
-				<ul class="go_sortable go_task_chain_order_list">
-					<?php echo $chain_list_elems; ?>
-				</ul>
-				<input class='go_task_order_hidden' name='go_mta_chain_order[<?php echo $chain_term->term_id; ?>]' type='hidden' value='<?php echo $task_id_str; ?>'/>
-			</div>
-			<?php
+			printf(
+				'<div class="go_task_chain_order_container">'.
+					'<div class="go_task_chain_order_title"><strong>%s</strong></div>'.
+					'<ul class="go_sortable go_task_chain_order_list">%s</ul>'.
+					'<input class="go_task_order_hidden" name="go_mta_chain_order[%d]" '.
+						'type="hidden" value="%s"/>'.
+				'</div>',
+				ucwords( $chain_term->name ),
+				$chain_list_elems,
+				$chain_term->term_id,
+				$task_id_str
+			);
 		}
 	}
 }
@@ -1479,10 +1494,6 @@ function go_task_chain_order() {
  */
 function go_validate_task_chain_order( $new_values ) {
 	global $post;
-
-	if ( 'published' !== $post->post_status ) {
-		return;
-	}
 
 	/**
 	 * The chain order should be of the form below. The task IDs are lumped into a string due to the
