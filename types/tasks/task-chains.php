@@ -163,6 +163,7 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
  * Handles updating chain order meta data when a chain is added to a task.
  *
  * @since 2.6.1
+ * @see go_task_chain_get_tasks()
  *
  * @param int $object_id The ID of the object.
  * @param int $tt_id     The term taxonomy ID.
@@ -216,9 +217,10 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 add_action( 'add_term_relationship', 'go_task_chain_add_term_rel', 10, 2 );
 
 /**
- * Summary.
+ * Handles updating chain order meta data when one or more chains are removed from a task.
  *
  * @since 2.6.1
+ * @see go_task_chain_get_tasks()
  *
  * @param int   $object_id The ID of the object.
  * @param array $tt_ids    The term taxonomy IDs.
@@ -248,7 +250,7 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 					 * There are other tasks in the chain.
 					 */
 
-					// loops through all tasks in the chain and remove the target's ID from their
+					// loops through all tasks in the chain and removes the target's ID from their
 					// meta data arrays
 					foreach ( $tasks_in_chain as $task_obj ) {
 						$order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
