@@ -1480,6 +1480,10 @@ function go_task_chain_order() {
 function go_validate_task_chain_order( $new_values ) {
 	global $post;
 
+	if ( 'published' !== $post->post_status ) {
+		return;
+	}
+
 	/**
 	 * The chain order should be of the form below. The task IDs are lumped into a string due to the
 	 * way that form inputs pass data via POST.
@@ -1571,6 +1575,11 @@ function go_validate_task_chain_order( $new_values ) {
 							// removes the ID of the task (that is no longer in the chain) from the
 							// chain order array of the target
 							unset( $chain_order[ $task_pos ] );
+						}
+
+						// converts all values in the task's chain order (for a specific chain) to ints
+						foreach ( $other_chain_order[ $chain_term_id ] as $other_order_index => $other_task_id ) {
+							$other_chain_order[ $chain_term_id ][ $other_order_index ] = (int) $other_task_id;
 						}
 
 						// updates the task's chain order

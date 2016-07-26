@@ -8,7 +8,7 @@
  * @since 2.6.1
  *
  * @param int $task_id The post ID of the task in question.
- * @return int|null Returns the `taxonomy_term_id` property of the chain term object, if it exists;
+ * @return int|null Returns the `term_taxonomy_id` property of the chain term object, if it exists;
  *                  otherwise, null is returned.
  */
 function go_task_chain_get_id_by_task( $task_id ) {
@@ -124,7 +124,7 @@ function go_task_chain_get_tasks( $chain_id = 0, $exclude = array() ) {
  * @see go_task_chain_get_id_by_task()
  *
  * @param int $task_id  The post ID of the task in question.
- * @param int $chain_id Optional. The `taxonomy_term_id` property of the chain in question.
+ * @param int $chain_id Optional. The `term_taxonomy_id` property of the chain in question.
  * @return boolean 	true when the task is at the end of a chain (see description). false when the
  *                  task is not at the end of a chain, or if there is a mismatch, or if the chain
  *                  doesn't exist (see description).
@@ -144,7 +144,7 @@ function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
 		return false;
 	} else {
 
-		// gets all published tasks associated with the specified chain (using the `taxonomy_term_id`)
+		// gets all published tasks associated with the specified chain (using the `term_taxonomy_id`)
 		$tasks_in_chain = go_task_chain_get_tasks( $chain_id );
 
 		if ( is_array( $tasks_in_chain ) && ! empty( $tasks_in_chain ) ) {
@@ -321,44 +321,13 @@ function go_task_chain_task_unpublished( $new_status, $old_status, $post ) {
 		 * The post is a task and is in at least one task chain.
 		 */
 
-		// removes target's task ID from the meta data of each task in the chain
-		$chain_terms_array = array_values( $task_chains );
-		foreach ( $chain_terms_array as $chain_term ) {
-			$tasks_in_chain = go_task_chain_get_tasks( $chain_term->term_id );
-
-			if ( ! empty( $tasks_in_chain ) ) {
-				foreach ( $tasks_in_chain as $task_obj ) {
-					$task_chain_order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
-					$updated = false;
-
-					if ( ! empty( $task_chain_order ) && is_array( $task_chain_order ) ) {
-						foreach ( $task_chain_order as $chain_term_id => $chain_order_array ) {
-
-							if ( ! empty( $chain_order_array ) && is_array( $chain_order_array ) ) {
-
-								// finds the target's task ID in the task's chain order
-								$target_index = array_search( $post->ID, $chain_order_array );
-
-								// unsets the element with the target's task ID
-								if ( -1 !== $target_index ) {
-									unset( $chain_order_array[ $target_index ] );
-									$task_chain_order[ $chain_term_id ] = $chain_order_array;
-									$updated = true;
-									break;
-								}
-							}
-						}
-
-						if ( $updated ) {
-							update_post_meta( $task_obj->ID, 'go_mta_chain_order', $task_chain_order );
-						}
-					}
-				}
+		$chain_tt_ids = array_map( function ( $chain ) {
+			if ( ! empty( $chain->term_taxonomy_id ) ) {
+				return $chain->term_taxonomy_id;
 			}
-		}
+		}, $task_chains );
 
-		// deletes the target's meta data
-		delete_post_meta( $post->ID, 'go_mta_chain_order' );
+		go_task_chain_delete_term_rel( $post->ID, $chain_tt_ids );
 	}
 }
 add_action( 'transition_post_status', 'go_task_chain_task_unpublished', 10, 3 );
@@ -386,6 +355,10 @@ function go_task_chain_task_published( $new_status, $old_status, $post ) {
 		/**
 		 * The post is a task and is in at least one task chain.
 		 */
+
+		foreach ( $task_chains as $chain ) {
+			go_task_chain_add_term_rel( $post->ID, $chain->term_taxonomy_id );
+		}
 	}
 }
 add_action( 'transition_post_status', 'go_task_chain_task_published', 10, 3 );
