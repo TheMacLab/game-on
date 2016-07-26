@@ -75,7 +75,7 @@ function go_task_chain_get_name_by_id( $tt_id = null ) {
  *
  * @since 2.6.1
  *
- * @param int     $tt_id     Contains the term taxonomy ID of the task chain to search.
+ * @param int     $tt_id        Contains the term taxonomy ID of the task chain to search.
  * @param boolean $publish_only Optional. Whether or not to retrieve only published tasks.
  * @param array   $exclude      Optional. An array of task IDs to exclude from the returned results.
  * @return array Returns the objects of all the tasks in the specified chain. Returns an empty
@@ -119,55 +119,46 @@ function go_task_chain_get_tasks( $tt_id = 0, $publish_only = false, $exclude = 
 }
 
 /**
- * Determines if the task in question is in the final position of the task chain.
+ * Determines whether or not a task is at the end of a chain.
  *
- * Takes the task ID (the post ID) and determines if that task is the last one in the chain
- * that it is associated with. If a chain ID parameter is supplied and the task ID doesn't belong
- * to that chain, the function will return false. Likewise, if the chain ID parameter is NOT
- * supplied and the task ID is not associated with any existing chains, the function will return
- * false.
+ * If the term taxonomy ID is provided, the provided task ID will be compared with that chain in the
+ * task's meta data. Otherwise, the provided task ID will be compared with all the chains in the
+ * task's meta data.
  *
  * @since 2.6.1
  *
- * @see go_task_chain_get_id_by_task()
- *
- * @param int $task_id The post ID of the task in question.
+ * @param int $task_id The task ID.
  * @param int $tt_id   Optional. The term taxonomy ID of the chain.
- * @return boolean 	true when the task is at the end of a chain (see description). false when the
- *                  task is not at the end of a chain, or if there is a mismatch, or if the chain
- *                  doesn't exist (see description).
+ * @return boolean True when the task is at the end of a chain (see description). False otherwise.
  */
 function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
-	if ( ! isset( $task_id ) ) {
+	if ( empty( $task_id ) ) {
 		$task_id = get_the_id();
 	} else {
 		$task_id = (int) $task_id;
 	}
 
-	if ( ! isset( $tt_id ) || null === $tt_id ) {
-		$tt_id = go_task_chain_get_id_by_task( $task_id );
-	}
+	// retrieves the chain order of the task
+	$chain_order = get_post_meta( $task_id, 'go_mta_chain_order', true );
 
-	if ( null === $tt_id ) {
-		return false;
-	} else {
+	if ( null !== $tt_id && ! empty( $chain_order[ $tt_id ] ) ) {
 
-		//! rather than grabbing all the tasks in the chain via go_task_chain_get_tasks(), which
-		//! calls get_posts(), you should look at the task's meta data.
-
-		// gets all published tasks associated with the specified chain (using the `term_taxonomy_id`)
-		$tasks_in_chain = go_task_chain_get_tasks( $tt_id, true );
-
-		if ( is_array( $tasks_in_chain ) && ! empty( $tasks_in_chain ) ) {
-			$last_task = $tasks_in_chain[ count( $tasks_in_chain ) - 1 ];
-			$last_task_id = $last_task->ID;
-			if ( $task_id === $last_task_id ) {
+		// the term taxonomy ID and task ID must be integers
+		$tt_id = (int) $tt_id;
+		$id_pos = array_search( $task_id, $chain_order[ $tt_id ] );
+		if ( count( $chain_order[ $tt_id ] ) - 1 === $id_pos ) {
+			return true;
+		}
+	} elseif ( ! empty( $chain_order ) ) {
+		foreach ( $chain_order as $tt_id => $order ) {
+			$id_pos = array_search( $task_id, $order );
+			if ( count( $order ) - 1 === $id_pos ) {
 				return true;
 			}
 		}
-
-		return false;
 	}
+
+	return false;
 }
 
 /**

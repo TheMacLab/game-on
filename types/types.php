@@ -1437,8 +1437,6 @@ function go_render_task_chain_order() {
 				$tasks_in_chain = go_task_chain_get_tasks( $tt_id );
 			}
 
-			error_log( sprintf( 'tasks in chain: %s', print_r( $tasks_in_chain, true ) ) );
-
 			$task_id_array = array();
 			$task_id_str = null;
 			$chain_list_elems = '';
