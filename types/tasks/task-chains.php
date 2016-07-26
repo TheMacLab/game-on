@@ -21,16 +21,16 @@ function go_task_chain_get_id_by_task( $task_id ) {
 
 		// this uses only the first chain in the list, if the task is included in more than one
 		$task_chains_first = array_shift( $task_chains_array );
-		$chain_id = $task_chains_first->term_taxonomy_id;
+		$tt_id = $task_chains_first->term_taxonomy_id;
 
-		return $chain_id;
+		return $tt_id;
 	}
 
 	return null;
 }
 
 /**
- * Returns the term name of a chain based on the passed chain term ID.
+ * Returns the term name of a chain based on the passed chain term taxonomy ID.
  *
  * If no chain ID is passed, or the chain ID is invalid (null, negative, etc.), the function will
  * use the current task as a reference for determining the chain's name. Omitting the chain ID
@@ -40,13 +40,13 @@ function go_task_chain_get_id_by_task( $task_id ) {
  *
  * @since 2.6.1
  *
- * @param int $chain_id Optional. The term ID of the chain in question.
+ * @param int $tt_id Optional. The term taxonomy ID of the chain in question.
  * @return string|null Returns the `name` property of the chain term object, if it exists;
  *                     otherwise, null is returned.
  */
-function go_task_chain_get_name_by_id( $chain_id = null ) {
+function go_task_chain_get_name_by_id( $tt_id = null ) {
 	global $post;
-	if ( ! isset( $chain_id ) || empty( $chain_id ) ) {
+	if ( ! isset( $tt_id ) || empty( $tt_id ) ) {
 		$task_id = $post->id;
 
 		$task_chains = get_the_terms( $task_id, 'task_chains' );
@@ -61,7 +61,7 @@ function go_task_chain_get_name_by_id( $chain_id = null ) {
 			return $chain_name;
 		}
 	} else {
-		$the_chain = get_term_by( 'term_taxonomy_id', $chain_id, 'task_chains' );
+		$the_chain = get_term_by( 'term_taxonomy_id', $tt_id, 'task_chains' );
 		$chain_name = $the_chain->name;
 
 		return $chain_name;
@@ -75,18 +75,18 @@ function go_task_chain_get_name_by_id( $chain_id = null ) {
  *
  * @since 2.6.1
  *
- * @param int     $chain_id     Contains the term ID of the task chain to search.
+ * @param int     $tt_id     Contains the term taxonomy ID of the task chain to search.
  * @param boolean $publish_only Optional. Whether or not to retrieve only published tasks.
  * @param array   $exclude      Optional. An array of task IDs to exclude from the returned results.
  * @return array Returns the objects of all the tasks in the specified chain. Returns an empty
  *               array if the chain ID is invalid, or if no matching tasks are found.
  */
-function go_task_chain_get_tasks( $chain_id = 0, $publish_only = false, $exclude = array() ) {
-	if ( ! is_int( $chain_id ) ) {
-		$chain_id = (int) $chain_id;
+function go_task_chain_get_tasks( $tt_id = 0, $publish_only = false, $exclude = array() ) {
+	if ( ! is_int( $tt_id ) ) {
+		$tt_id = (int) $tt_id;
 	}
 
-	if ( empty( $chain_id ) ) {
+	if ( empty( $tt_id ) ) {
 		return array();
 	}
 
@@ -99,8 +99,8 @@ function go_task_chain_get_tasks( $chain_id = 0, $publish_only = false, $exclude
 		'tax_query' => array(
 			array(
 				'taxonomy' => 'task_chains',
-				'field' => 'id',
-				'terms' => $chain_id,
+				'field' => 'term_taxonomy_id',
+				'terms' => $tt_id,
 				'include_children' => false,
 			),
 		),
@@ -131,29 +131,32 @@ function go_task_chain_get_tasks( $chain_id = 0, $publish_only = false, $exclude
  *
  * @see go_task_chain_get_id_by_task()
  *
- * @param int $task_id  The post ID of the task in question.
- * @param int $chain_id Optional. The `term_taxonomy_id` property of the chain in question.
+ * @param int $task_id The post ID of the task in question.
+ * @param int $tt_id   Optional. The term taxonomy ID of the chain.
  * @return boolean 	true when the task is at the end of a chain (see description). false when the
  *                  task is not at the end of a chain, or if there is a mismatch, or if the chain
  *                  doesn't exist (see description).
  */
-function go_task_chain_is_final_task( $task_id, $chain_id = null ) {
+function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 	if ( ! isset( $task_id ) ) {
 		$task_id = get_the_id();
 	} else {
 		$task_id = (int) $task_id;
 	}
 
-	if ( ! isset( $chain_id ) || null === $chain_id ) {
-		$chain_id = go_task_chain_get_id_by_task( $task_id );
+	if ( ! isset( $tt_id ) || null === $tt_id ) {
+		$tt_id = go_task_chain_get_id_by_task( $task_id );
 	}
 
-	if ( null === $chain_id ) {
+	if ( null === $tt_id ) {
 		return false;
 	} else {
 
+		//! rather than grabbing all the tasks in the chain via go_task_chain_get_tasks(), which
+		//! calls get_posts(), you should look at the task's meta data.
+
 		// gets all published tasks associated with the specified chain (using the `term_taxonomy_id`)
-		$tasks_in_chain = go_task_chain_get_tasks( $chain_id, true );
+		$tasks_in_chain = go_task_chain_get_tasks( $tt_id, true );
 
 		if ( is_array( $tasks_in_chain ) && ! empty( $tasks_in_chain ) ) {
 			$last_task = $tasks_in_chain[ count( $tasks_in_chain ) - 1 ];
@@ -189,7 +192,7 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 		$stored_chain_order   = get_post_meta( $object_id, 'go_mta_chain_order', true );
 		$new_chain_order      = $stored_chain_order;
 		$target_chain_updated = false;
-		$tasks_in_chain       = go_task_chain_get_tasks( $the_term->term_id );
+		$tasks_in_chain       = go_task_chain_get_tasks( $tt_id );
 
 		if ( ! empty( $tasks_in_chain ) ) {
 
@@ -201,7 +204,7 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 			// data arrays
 			foreach ( $tasks_in_chain as $task_obj ) {
 				$order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
-				$order[ $the_term->term_id ][] = $object_id;
+				$order[ $tt_id ][] = $object_id;
 
 				update_post_meta( $task_obj->ID, 'go_mta_chain_order', $order );
 
@@ -216,7 +219,7 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 			 * There are not any tasks associated with the chain.
 			 */
 
-			$new_chain_order[ $the_term->term_id ] = array( $object_id );
+			$new_chain_order[ $tt_id ] = array( $object_id );
 		}
 
 		update_post_meta( $object_id, 'go_mta_chain_order', $new_chain_order );
@@ -247,10 +250,11 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 
 			if ( 'task_chains' === $the_term->taxonomy ) {
 
+				$tt_id              = $the_term->term_taxonomy_id;
 				$all_object_terms   = get_the_terms( $object_id, 'task_chains' );
 				$stored_chain_order = get_post_meta( $object_id, 'go_mta_chain_order', true );
 				$new_chain_order    = $stored_chain_order;
-				$tasks_in_chain     = go_task_chain_get_tasks( $the_term->term_id );
+				$tasks_in_chain     = go_task_chain_get_tasks( $tt_id );
 
 				if ( count( $tasks_in_chain ) > 1 ) {
 
@@ -263,13 +267,13 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 					foreach ( $tasks_in_chain as $task_obj ) {
 						$order = get_post_meta( $task_obj->ID, 'go_mta_chain_order', true );
 
-						if ( ! empty( $order[ $the_term->term_id ] ) ) {
+						if ( ! empty( $order[ $tt_id ] ) ) {
 
-							$id_index = array_search( $object_id, $order[ $the_term->term_id ] );
+							$id_index = array_search( $object_id, $order[ $tt_id ] );
 							if ( false !== $id_index ) {
 
-								unset( $order[ $the_term->term_id ][ $id_index ] );
-								$order[ $the_term->term_id ] = array_values( $order[ $the_term->term_id ] );
+								unset( $order[ $tt_id ][ $id_index ] );
+								$order[ $tt_id ] = array_values( $order[ $tt_id ] );
 
 								update_post_meta( $task_obj->ID, 'go_mta_chain_order', $order );
 							}
@@ -283,8 +287,8 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 					 * The target is in other chains.
 					 */
 
-					if ( isset( $stored_chain_order[ $the_term->term_id ] ) ) {
-						unset( $stored_chain_order[ $the_term->term_id ] );
+					if ( isset( $stored_chain_order[ $tt_id ] ) ) {
+						unset( $stored_chain_order[ $tt_id ] );
 
 						update_post_meta( $object_id, 'go_mta_chain_order', $stored_chain_order );
 					}

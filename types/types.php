@@ -1420,11 +1420,13 @@ function go_render_task_chain_order() {
 
 		foreach ( $chain_terms_array as $chain_term ) {
 			$tasks_in_chain = array();
-			if ( ! empty( $stored_chain_order[ $chain_term->term_id ] ) ) {
-				if ( ! is_array( $stored_chain_order[ $chain_term->term_id ] ) ) {
-					$chain_order = explode( ',', $stored_chain_order[ $chain_term->term_id ] );
+			$tt_id = $chain_term->term_taxonomy_id;
+
+			if ( ! empty( $stored_chain_order[ $tt_id ] ) ) {
+				if ( ! is_array( $stored_chain_order[ $tt_id ] ) ) {
+					$chain_order = explode( ',', $stored_chain_order[ $tt_id ] );
 				} else {
-					$chain_order = $stored_chain_order[ $chain_term->term_id ];
+					$chain_order = $stored_chain_order[ $tt_id ];
 				}
 				foreach ( $chain_order as $post->ID ) {
 					if ( ! empty( $post->ID ) ) {
@@ -1432,8 +1434,10 @@ function go_render_task_chain_order() {
 					}
 				}
 			} else {
-				$tasks_in_chain = go_task_chain_get_tasks( $chain_term->term_id );
+				$tasks_in_chain = go_task_chain_get_tasks( $tt_id );
 			}
+
+			error_log( sprintf( 'tasks in chain: %s', print_r( $tasks_in_chain, true ) ) );
 
 			$task_id_array = array();
 			$task_id_str = null;
@@ -1466,7 +1470,7 @@ function go_render_task_chain_order() {
 				'</div>',
 				ucwords( $chain_term->name ),
 				$chain_list_elems,
-				$chain_term->term_id,
+				$tt_id,
 				$task_id_str
 			);
 		}
@@ -1500,7 +1504,7 @@ function go_validate_task_chain_order( $new_values ) {
 	 * way that form inputs pass data via POST.
 	 *
 	 *     array(
-	 *         [term_id #1] => '[post_id #1],[post_id #2],[post_id #3]',
+	 *         [tt_id #1] => '[post_id #1],[post_id #2],[post_id #3]',
 	 *         ...
 	 *     )
 	 *
@@ -1519,12 +1523,12 @@ function go_validate_task_chain_order( $new_values ) {
 		return $stored_chain_order;
 	}
 
-	foreach ( $new_order_input as $chain_term_id => $chain_order_str ) {
+	foreach ( $new_order_input as $tt_id => $chain_order_str ) {
 
 		$in_chain = false;
 
 		foreach ( $task_chains as $chain_obj ) {
-			if ( $chain_obj->term_id === $chain_term_id ) {
+			if ( $chain_obj->term_taxonomy_id === $tt_id ) {
 				$in_chain = true;
 				break;
 			}
@@ -1539,8 +1543,8 @@ function go_validate_task_chain_order( $new_values ) {
 
 		if ( ! empty( $chain_order ) && $in_chain ) {
 			if ( empty( $stored_chain_order ) ||
-					( ! empty( $stored_chain_order[ $chain_term_id ] ) &&
-					$stored_chain_order[ $chain_term_id ] !== $chain_order ) ) {
+					( ! empty( $stored_chain_order[ $tt_id ] ) &&
+					$stored_chain_order[ $tt_id ] !== $chain_order ) ) {
 
 				foreach ( $chain_order_dupe as $index => $task_id ) {
 
@@ -1555,7 +1559,7 @@ function go_validate_task_chain_order( $new_values ) {
 
 						if ( ! empty( $other_task_chains ) ) {
 							foreach ( $other_task_chains as $chain ) {
-								if ( $chain->term_id === $chain_term_id ) {
+								if ( $chain->term_taxonomy_id === $tt_id ) {
 									$is_in_target_chain = true;
 									break;
 								}
@@ -1565,22 +1569,22 @@ function go_validate_task_chain_order( $new_values ) {
 						$other_chain_order = get_post_meta( $task_id, 'go_mta_chain_order', true );
 
 						if ( $is_in_target_chain &&
-								( empty( $other_chain_order[ $chain_term_id ] ) ||
-								$other_chain_order[ $chain_term_id ] !== $chain_order ) ) {
+								( empty( $other_chain_order[ $tt_id ] ) ||
+								$other_chain_order[ $tt_id ] !== $chain_order ) ) {
 
 							// updates/adds the chain ID and order pair to the chain order array,
 							// if the task is actually in the chain and the order hasn't been updated
-							$other_chain_order[ $chain_term_id ] = $chain_order;
-						} elseif ( ! $is_in_target_chain && ! empty( $other_chain_order[ $chain_term_id ] ) ) {
+							$other_chain_order[ $tt_id ] = $chain_order;
+						} elseif ( ! $is_in_target_chain && ! empty( $other_chain_order[ $tt_id ] ) ) {
 
 							// removes the chain ID and order pair from the task's chain order array,
 							// if the task isn't in the chain and still has the chain's order in
 							// its meta data
-							unset( $other_chain_order[ $chain_term_id ] );
+							unset( $other_chain_order[ $tt_id ] );
 						}
 
 						// ensures that tasks get removed from the chain order array when necessary
-						if ( empty( $other_chain_order[ $chain_term_id ] ) ) {
+						if ( empty( $other_chain_order[ $tt_id ] ) ) {
 							$task_pos = array_search( $task_id, $chain_order );
 
 							// removes the ID of the task (that is no longer in the chain) from the
@@ -1589,8 +1593,8 @@ function go_validate_task_chain_order( $new_values ) {
 						}
 
 						// converts all values in the task's chain order (for a specific chain) to ints
-						foreach ( $other_chain_order[ $chain_term_id ] as $other_order_index => $other_task_id ) {
-							$other_chain_order[ $chain_term_id ][ $other_order_index ] = (int) $other_task_id;
+						foreach ( $other_chain_order[ $tt_id ] as $other_order_index => $other_task_id ) {
+							$other_chain_order[ $tt_id ][ $other_order_index ] = (int) $other_task_id;
 						}
 
 						// updates the task's chain order
@@ -1598,7 +1602,7 @@ function go_validate_task_chain_order( $new_values ) {
 					}
 				}
 			}
-			$new_chain_order[ $chain_term_id ] = $chain_order;
+			$new_chain_order[ $tt_id ] = $chain_order;
 		}
 	}
 
@@ -1706,7 +1710,7 @@ function go_clone_post() {
 	$post_type = ( ! empty( $_POST['post_type'] ) ? sanitize_key( $_POST['post_type'] ) : '' );
 	$post_data = get_post( $post_id, ARRAY_A );
 	$post_custom = get_post_custom( $post_id );
-	
+
 	// Grab the original post's taxonomies.
 	if ( 'tasks' == $post_type ) {
 		$terms = get_the_terms( $post_id, 'task_chains' );
@@ -1751,7 +1755,7 @@ function go_clone_post() {
 			}
 		}
 	}
-	
+
 	// Change the post status to "draft", leave the guid up to Wordpress,
 	// and remove all other post data.
 	$post_data['post_status'] = 'draft';
@@ -1764,7 +1768,7 @@ function go_clone_post() {
 	unset( $post_data['post_date'] );
 	unset( $post_data['post_date_gmt'] );
 
-	// Clone the original post with the modified data from above, and retreive the new post's id.
+	// Clone the original post with the modified data from above, and retrieve the new post's id.
 	$clone_id = wp_insert_post( $post_data );
 
 	// Set the cloned post's taxonomies using the ids from above.
@@ -1786,21 +1790,7 @@ function go_clone_post() {
 		foreach ( $post_custom as $key => $value ) {
 			$uns = maybe_unserialize( $value[0] );
 
-			// Handles chain_position meta data for tasks only
-			if ( 'tasks' == $post_type ) {
-				if ( 'chain_position' === $key ) {
-					$terms_array = get_the_terms( $post_id, 'task_chains' );
-					if ( ! empty( $terms_array ) ) {
-						$chain = array_shift( $terms_array );
-						$end_pos = $chain->count + 1;
-						update_post_meta( $clone_id, $key, $end_pos, true );
-					}
-				} else {
-					add_post_meta( $clone_id, $key, $uns, true );
-				}
-			} else {
-				add_post_meta( $clone_id, $key, $uns, true );
-			}
+			add_post_meta( $clone_id, $key, $uns, true );
 		}
 		echo $url;
 	} else {

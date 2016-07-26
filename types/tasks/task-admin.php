@@ -33,19 +33,19 @@ function go_localize_task_data() {
 
 	$task_id = $post->ID;
 	$custom_data = get_post_custom( $task_id );
-	$chain_id = go_task_chain_get_id_by_task( $task_id );
-	$chain_name = go_task_chain_get_name_by_id( $chain_id );
+	$tt_id = go_task_chain_get_id_by_task( $task_id );
+	$chain_name = go_task_chain_get_name_by_id( $tt_id );
 
 	$is_stage_three_active = false;
 	$is_stage_five_active = false;
 	$in_chain = false;
-	$is_last_in_chain = go_task_chain_is_final_task( $task_id );
+	$is_last_in_chain = go_task_chain_is_final_task( $task_id, $tt_id );
 
 	if ( empty( $task_id ) || $task_id < 0 ) {
 		$task_id = null;
 	}
 
-	if ( null !== $chain_id ) {
+	if ( null !== $tt_id ) {
 		$in_chain = true;
 	}
 
