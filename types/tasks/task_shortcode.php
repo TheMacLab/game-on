@@ -3032,8 +3032,10 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 	$last_in_chain = go_task_chain_is_final_task( $task_id );
 	$final_chain_msg = get_post_meta( $task_id, 'go_mta_final_chain_message', true );
 
-	foreach ( $chain_order as $chain => $order ) {
+	foreach ( $chain_order as $chain_tt_id => $order ) {
 		$pos = array_search( $task_id, $order );
+		$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
+		$chain_title = ucwords( $the_chain->name );
 
 		$prev_finished = false;
 		if ( $pos > 0 ) {
@@ -3073,7 +3075,12 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 			$next_permalink = get_permalink( $next_id );
 			$next_title = get_the_title( $next_id );
 
-			$msg = '<div class="go_chain_message"><div class="go_chain_links">';
+			$msg = sprintf(
+				'<div class="go_chain_message">'.
+					'<div class="go_chain_title go_align_center">%s</div>'.
+					'<div class="go_chain_links">',
+				$chain_title
+			);
 
 			// displays pagination links for the previous task
 			if ( 0 !== $pos ) {
@@ -3088,7 +3095,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 
 			// displays pagination links for the next task
 			$msg .= sprintf(
-				'<div class="go_align_right go_chain_link_next">'.
+				'<div class="go_chain_link_next go_align_right">'.
 					'<a href="%s">Next: %s <span class="go_next_symbol"></span></a>'.
 				'</div></div></div>',
 				$next_permalink,

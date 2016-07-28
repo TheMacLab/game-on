@@ -2,6 +2,10 @@
 	text-align: right;
 }
 
+.go_align_center {
+	text-align: center;
+}
+
 .go_notification {
 	text-align: center;
 	line-height: 60px;
@@ -599,7 +603,11 @@ a.pod_link {
 }
 
 .go_chain_message {
-	margin-top: 10px;
+	margin-top: 20px;
+}
+
+.go_chain_title {
+	font-weight: 900;
 }
 
 .go_chain_links {
