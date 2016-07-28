@@ -209,17 +209,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		} else {
 			$admin_name = 'an administrator';
 		}
-		$is_admin = false;
-		$user_obj = get_user_by( 'id', $user_id );
-		$user_roles = $user_obj->roles;
-		if ( ! empty( $user_roles ) ) {
-			foreach ( $user_roles as $role ) {
-				if ( $role === "administrator" ) {
-					$is_admin = true;
-					break;
-				}
-			}
-		}
+		$is_admin = go_user_is_admin( $user_id );
 		
 		$content_post = get_post( $id ); // Grabs content of a task from the post table in your wordpress database where post_id = id in the shortcode. 
 		$task_content = $content_post->post_content; // Grabs what the task actually says in the body of it
@@ -456,92 +446,55 @@ function go_task_shortcode( $atts, $content = null ) {
 		if ( ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) && $status < 2 ) {
 			$update_percent = 1;    
 		}       
-		// If current post in a chain and user logged in
-		if ( ! empty( $custom_fields['chain'][0] ) ) {
-			
-			$final_chain_message = ( ! empty( $custom_fields['go_mta_final_chain_message'][0] ) ? $custom_fields['go_mta_final_chain_message'][0] : null );
-			$current_position_in_chain = get_post_meta( $id, 'chain_position', true );
-			$chain_tax = get_the_terms( $id, 'task_chains' );
-			
-			//Grab chain object for this post
-			$chain_tax_array = array_values( $chain_tax );
-			$chain = array_shift( $chain_tax_array );
-			
-			// grabs all tasks in the current chain
-			$tasks_in_chain = go_task_chain_get_tasks( $chain->term_id );
 
-			$list_query_args = array( $user_id );
+		$chain_order = get_post_meta( $id, 'go_mta_chain_order', true );
 
-			// Loop through each one and make array of their ids
-			foreach ( $tasks_in_chain as $task_obj ) {
-				$post_ids_in_chain[] = $task_obj->ID;
-				$list_query_args[] = $task_obj->ID;
-			}
-			
-			// Setup next task in chain 
-			if ( $id != end( $post_ids_in_chain ) && false !== array_search( $id, $post_ids_in_chain ) ) {
-				$next_post_id_in_chain = $post_ids_in_chain[ array_search( $id, $post_ids_in_chain ) + 1 ];
-				$next_post_in_chain = '<a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a>';
-			}
-			
-			$list_query_ids_format = '';
+		// determines whether or not the user can proceed, if the task is in a chain
+		if ( ! empty( $chain_order ) ) {
+			foreach ( $chain_order as $chain => $order ) {
+				$pos = array_search( $id, $order );
 
-			for ( $q = 0; $q < count( $post_ids_in_chain ); $q++ ) {
-				if ( 0 !== $q ) {
-					$list_query_ids_format .= ',';
-				}
-				$list_query_ids_format .= '%d';
-			}
-			
-			// Grab all posts in chain statuses
-			$list = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT post_id, status 
-					FROM {$go_table_name} 
-					WHERE uid = %d AND post_id IN ({$list_query_ids_format})",
-					$list_query_args
-				)
-			);
-			
-			// Make array of statuses in chain indexed by post id
-			foreach ( $list as $post_obj ) {
-				$post_status_in_chain[ $post_obj->post_id ] = $post_obj->status;
-			}
-			
-			foreach ( $post_ids_in_chain as $post_id_in_chain ) {
+				if ( $pos > 0 && ! $is_admin ) {
 
-				// loop will stop when the current post's id is found
-				if ( (int) $post_id_in_chain === (int) $id ) {
-					break;
-				}
-				
-				$post_custom_in_chain = get_post_custom( $post_id_in_chain );
-				$post_mastery_active_in_chain = ( ! empty( $post_custom_in_chain['go_mta_three_stage_switch'][0] ) ? ! $post_custom_in_chain['go_mta_three_stage_switch'][0] : true );
-				// $post_number_of_stages_in_chain will later be designated by an admin option that will be toggleable per task chain.
-				if ( $post_mastery_active_in_chain ) {
-					$post_number_of_stages_in_chain = 4;
-				} else {
-					$post_number_of_stages_in_chain = 3;
-				}
+					/**
+					 * The current task is not first and the user is not an administrator.
+					 */
 
-				$is_task_data_available = ( isset( $post_status_in_chain[ $post_id_in_chain ] )                        ? true : false );
-				$task_status            = ( $is_task_data_available                                                    ? $post_status_in_chain[ $post_id_in_chain ] : 0 );
-				$is_task_finished       = ( $is_task_data_available && $task_status >= $post_number_of_stages_in_chain ? true : false );
-				
-				// Check if current post in loop has been completed/mastered, depending on the number of stages in the task that needs to be completed
-				if ( ! $is_task_finished && ! current_user_can( 'manage_options' ) ) {
-					$previous_task = '<a href="'.get_permalink( $post_id_in_chain ).'">'.get_the_title( $post_id_in_chain ).'</a>';
-					echo "You must finish {$previous_task} to do this {$task_name}";
-					return false;   
+					$prev_finished = false;
+					$prev_id = $order[ $pos - 1 ];
+					$prev_permalink = get_permalink( $prev_id );
+					$prev_title = get_the_title( $prev_id );
+
+					$prev_status = go_task_get_status( $prev_id );
+					$prev_status_required = 4;
+					$prev_three_stage_active = (boolean) get_post_meta( $prev_id, 'go_mta_three_stage_switch', true );
+					if ( $prev_three_stage_active ) {
+						$prev_status_required = 3;
+					}
+					if ( $prev_status === $prev_status_required ) {
+						$prev_finished = true;
+					}
+
+					if ( ! $prev_finished ) {
+
+						/**
+						 * The previous task isn't finished.
+						 */
+
+						// displays a link to the previous task
+						printf(
+							'<div class="go_chain_message">'.
+								'You must finish <a href="%s">%s</a> to continue this %s.'.
+							'</div>',
+							$prev_permalink,
+							$prev_title,
+							ucwords( $task_name )
+						);
+
+						return false;
+					}
 				}
 			}
-			
-			if ( $current_position_in_chain == $chain->count ) {
-				$last_in_chain = true;
-			} else {
-				$last_in_chain = false;
-			}
-		
 		}
 		
 		if ( $is_admin === true || ! empty( $go_ahead ) || ! isset( $focus_category_lock ) || empty( $category_names ) ) {
@@ -734,11 +687,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							}
 
 							echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-							if ( $next_post_in_chain && ! $last_in_chain ) {
-								echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
-							} else {
-								echo '<div class="go_chain_message">'.$final_chain_message.'</div>';
-							}
+							go_task_render_chain_pagination( $id, $user_id );
 							echo "</div>" . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 						}
 					break;
@@ -749,7 +698,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						if ( $repeat == 'on' ) {
 							if ( $task_count < $repeat_amount || $repeat_amount == 0) { // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
 								if ( $task_count == 0 ) {
-									if ( $test_m_active ) {
+									if ( ! empty( $test_m_active ) ) {
 										echo "<p id='go_test_error_msg' style='color: red;'></p>";
 										if ( $test_m_num > 1 ) {
 											for ( $i = 0; $i < $test_m_num; $i++ ) {
@@ -827,7 +776,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 							}
 						} else {
-							if ( $test_m_active ) {
+							if ( ! empty( $test_m_active ) ) {
 								echo "<p id='go_test_error_msg' style='color: red;'></p>";
 								if ( $test_m_num > 1 ) {
 									for ( $i = 0; $i < $test_m_num; $i++ ) {
@@ -847,11 +796,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							}
 							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
 						}
-						if ( ! empty( $next_post_in_chain ) && ! $last_in_chain ) {
-							echo "<div class='go_chain_message'>Next {$task_name} in {$chain->name}: {$next_post_in_chain}</div>";
-						} else if ( ! empty( $final_chain_message ) ) {
-							echo '<div class="go_chain_message">'.$final_chain_message.'</div>';
-						}
+						go_task_render_chain_pagination( $id, $user_id );
 						echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 				}
 				if ( get_post_type() == 'tasks' ) {
@@ -951,7 +896,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			$_SESSION['test_completion_passed'] = $db_test_completion_passed;
 		}
 
-		if ( $test_m_active && $test_m_returns ) {
+		if ( ! empty( $test_m_active ) && $test_m_returns ) {
 			$db_test_mastery_fail_count = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT m_fail_count 
@@ -1507,10 +1452,8 @@ function go_task_shortcode( $atts, $content = null ) {
 					currency: <?php echo json_encode( $currency_array ); ?>,
 					bonus_currency: <?php echo json_encode( $bonus_currency_array ); ?>,
 					date_update_percent: <?php echo $date_update_percent; ?>,
-					chain_name: '<?php echo ( ! empty( $chain ) ? $chain->name : ''); ?>',
 					next_post_id_in_chain: <?php echo ( ! empty( $next_post_id_in_chain ) ? $next_post_id_in_chain : 0 ); ?>,
 					last_in_chain: <?php echo ( ! empty( $last_in_chain ) ? 'true' : 'false' ); ?>,
-					final_chain_message: '<?php echo ( ! empty( $final_chain_message ) ? $final_chain_message :  ''); ?>',
 					number_of_stages: <?php echo $number_of_stages; ?>
 				},
 				success: function( res ) {
@@ -1931,10 +1874,8 @@ function go_task_change_stage() {
 	$currency_array        = ( ! empty( $_POST['currency'] )              ? (array) $_POST['currency'] : array() ); // Serialized array of currency rewarded for each stage
 	$bonus_currency_array  = ( ! empty( $_POST['bonus_currency'] )        ? (array) $_POST['bonus_currency'] : array() ); // Serialized array of bonus currency awarded for each stage
 	$date_update_percent   = ( ! empty( $_POST['date_update_percent'] )   ? (double) $_POST['date_update_percent'] : 0.0 ); // Float which is used to modify values saved to database
-	$chain_name            = ( ! empty( $_POST['chain_name'] )            ? (string) $_POST['chain_name'] : '' ); // String which is used to display next task in a quest chain
 	$next_post_id_in_chain = ( ! empty( $_POST['next_post_id_in_chain'] ) ? (int) $_POST['next_post_id_in_chain'] : 0 ); // Integer which is used to display next task in a quest chain
 	$last_in_chain         = ( ! empty( $_POST['last_in_chain'] )         ? go_is_true_str( $_POST['last_in_chain'] ) : false ); // Boolean which determines if the current quest is last in chain
-	$final_chain_message   = ( ! empty( $_POST['final_chain_message'] )   ? (string) $_POST['final_chain_message'] : '' );
 	$number_of_stages      = ( ! empty( $_POST['number_of_stages'] )      ? (int) $_POST['number_of_stages'] : 0 ); // Integer with number of stages in the task
 
 	$unix_now = current_time( 'timestamp' ); // Current unix timestamp
@@ -2637,11 +2578,7 @@ function go_task_change_stage() {
 					echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
 				}
 				echo '<span id="go_button" status="4" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-				if ( $next_post_id_in_chain != 0 && $last_in_chain !== 'true' ) {
-					echo '<div class="go_chain_message">Next '.strtolower( go_return_options( 'go_tasks_name' ) ).' in '.$chain_name.': <a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a></div>';
-				} else {
-					echo '<div class="go_chain_message">'.$final_chain_message.'</div>';    
-				}
+				go_task_render_chain_pagination( $post_id, $user_id );
 				echo "</div>" . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 			}
 			break;
@@ -2796,11 +2733,7 @@ function go_task_change_stage() {
 				add_user_meta( $user_id, 'ever_mastered', $post_id, true );
 				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span><button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
 			}
-			if ( $next_post_id_in_chain != 0 && $last_in_chain !== 'true' ) {
-				echo '<div class="go_chain_message"><p>Next '.strtolower( go_return_options( 'go_tasks_name' ) ).' in '.$chain_name.': <a href="'.get_permalink( $next_post_id_in_chain ).'">'.get_the_title( $next_post_id_in_chain ).'</a></div>';
-			} else {
-				echo '<div class="go_chain_message">'.$final_chain_message.'</div>';
-			}
+			go_task_render_chain_pagination( $post_id, $user_id );
 			echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 	}
 	die();
@@ -3063,5 +2996,118 @@ function go_record_stage_time($post_id = null, $status = null) {
 		$timestamps[ $post_id ][ $status ][1] = $time;
 	}
 	update_user_meta( $user_id, 'go_task_timestamps', $timestamps );
- }
+}
+
+/**
+ * Outputs the task chain navigation links for the specified task and user.
+ *
+ * Outputs a link to the next and previous tasks, if they exist. That is, the first task in the
+ * chain will not have a "previous" link, and the last task will not have a "next" link. If the
+ * task is the last in the chain, the final chain message (stored in the `go_mta_final_chain_message`
+ * meta data) will be displayed.
+ *
+ * @since 2.6.1
+ *
+ * @param int $task_id The task ID.
+ * @param int $user_id Optional. The user ID.
+ */
+function go_task_render_chain_pagination( $task_id, $user_id = null ) {
+	if ( empty( $task_id ) ) {
+		$task_id = get_the_id();
+	} else {
+		$task_id = (int) $task_id;
+	}
+
+	if ( empty( $user_id ) ) {
+		$user_id = get_current_user_id();
+	} else {
+		$user_id = (int) $user_id;
+	}
+
+	if ( go_user_is_admin( $user_id ) ) {
+		return;
+	}
+
+	$chain_order = get_post_meta( $task_id, 'go_mta_chain_order', true );
+	$last_in_chain = go_task_chain_is_final_task( $task_id );
+	$final_chain_msg = get_post_meta( $task_id, 'go_mta_final_chain_message', true );
+
+	foreach ( $chain_order as $chain => $order ) {
+		$pos = array_search( $task_id, $order );
+
+		$prev_finished = false;
+		if ( $pos > 0 ) {
+			$prev_id = $order[ $pos - 1 ];
+			$prev_permalink = get_permalink( $prev_id );
+			$prev_title = get_the_title( $prev_id );
+
+			$prev_status = go_task_get_status( $prev_id );
+			$prev_status_required = 4;
+			$prev_three_stage_active = (boolean) get_post_meta( $prev_id, 'go_mta_three_stage_switch', true );
+			if ( $prev_three_stage_active ) {
+				$prev_status_required = 3;
+			}
+			if ( $prev_status === $prev_status_required ) {
+				$prev_finished = true;
+			}
+		}
+
+		$curr_finished = false;
+		$curr_status = go_task_get_status( $task_id );
+		$curr_status_required = 4;
+		$curr_three_stage_active = (boolean) get_post_meta( $task_id, 'go_mta_three_stage_switch', true );
+		if ( $curr_three_stage_active ) {
+			$curr_status_required = 3;
+		}
+		if ( $curr_status === $curr_status_required ) {
+			$curr_finished = true;
+		}
+
+		if ( ! $last_in_chain && ( ( $pos > 0 && $prev_finished ) || 0 === $pos ) && $curr_finished ) {
+
+			/**
+			 * There are more tasks in this chain other than the current one and the task is finished.
+			 */
+
+			$next_id = $order[ $pos + 1 ];
+			$next_permalink = get_permalink( $next_id );
+			$next_title = get_the_title( $next_id );
+
+			$msg = '<div class="go_chain_message"><div class="go_chain_links">';
+
+			// displays pagination links for the previous task
+			if ( 0 !== $pos ) {
+				$msg .= sprintf(
+					'<div class="go_chain_link_prev">'.
+						'<a href="%s"><span class="go_prev_symbol"></span> Previous: %s</a>'.
+					'</div>',
+					$prev_permalink,
+					$prev_title
+				);
+			}
+
+			// displays pagination links for the next task
+			$msg .= sprintf(
+				'<div class="go_align_right go_chain_link_next">'.
+					'<a href="%s">Next: %s <span class="go_next_symbol"></span></a>'.
+				'</div></div></div>',
+				$next_permalink,
+				$next_title
+			);
+
+			echo $msg;
+		} else {
+
+			/**
+			 * The current task is at the end of this chain and the task is finished.
+			 */
+
+			// displays the final chain message for this chain
+			printf(
+				'<div class="go_chain_message">%s</div>',
+				$final_chain_msg
+			);
+		}
+	}
+}
 ?>

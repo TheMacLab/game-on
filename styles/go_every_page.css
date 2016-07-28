@@ -1,3 +1,7 @@
+.go_align_right {
+	text-align: right;
+}
+
 .go_notification {
 	text-align: center;
 	line-height: 60px;
@@ -596,6 +600,22 @@ a.pod_link {
 
 .go_chain_message {
 	margin-top: 10px;
+}
+
+.go_chain_links {
+	display: flex;
+}
+
+.go_chain_link_prev, .go_chain_link_next {
+	flex: 1 50%;
+}
+
+.go_chain_link_prev::before {
+	content: "\2190\a0";
+}
+
+.go_chain_link_next::after {
+	content: "\a0\2192";
 }
 
 div.go_pod_message {

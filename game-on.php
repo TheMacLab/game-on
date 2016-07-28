@@ -350,4 +350,34 @@ function go_is_true_str( $str ) {
 		return false;
 	}
 }
+
+/**
+ * Determines whether or not a user is an administrator with management capabilities.
+ *
+ * @since 2.6.1
+ *
+ * @param int $user_id Optional. The user ID.
+ * @return boolean True if the user has the 'administrator' role and has the 'manage_options'
+ *                 capability. False otherwise.
+ */
+function go_user_is_admin( $user_id = null ) {
+	if ( empty( $user_id ) ) {
+		$user_id = get_current_user_id();
+	} else {
+		$user_id = (int) $user_id;
+	}
+
+	$the_user = get_user_by( 'id', $user_id );
+	$roles = $the_user->roles;
+	if ( ! empty( $roles ) ) {
+		$can_manage = user_can( $the_user, 'manage_options' );
+		foreach ( $roles as $role ) {
+			if ( 'administrator' === $role && $can_manage ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
 ?>
