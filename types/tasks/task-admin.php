@@ -22,7 +22,6 @@
  *         ),
  *         'task_chains' => array(                 // an array of `task_chains` taxonomy data
  *             'in_chain'         => boolean,      // whether or not the task is in a chain (false)
- *             'chain_name'       => string,       // the term name of the associated chain ('')
  *             'is_last_in_chain' => boolean,      // whether or not the task is in the final position
  *         ),                                      // of a chain (false)
  *         'task_id' => int|null,                  // the post id of the task (null)
@@ -34,29 +33,19 @@ function go_localize_task_data() {
 	$task_id = $post->ID;
 	$custom_data = get_post_custom( $task_id );
 	$tt_id = go_task_chain_get_id_by_task( $task_id );
-	$chain_name = go_task_chain_get_name_by_id( $tt_id );
+	$task_chains = get_the_terms( $task_id, 'task_chains' );
 
-	$is_stage_three_active = false;
-	$is_stage_five_active = false;
+	$is_stage_three_active = ( 'on' === strtolower( get_post_meta( $task_id, 'go_mta_three_stage_switch', true ) ) ? true : false );
+	$is_stage_five_active  = ( 'on' === strtolower( get_post_meta( $task_id, 'go_mta_five_stage_switch', true ) )  ? true : false );
 	$in_chain = false;
-	$is_last_in_chain = go_task_chain_is_final_task( $task_id, $tt_id );
+	$is_last_in_chain = go_task_chain_is_final_task( $task_id );
 
 	if ( empty( $task_id ) || $task_id < 0 ) {
 		$task_id = null;
 	}
 
-	if ( null !== $tt_id ) {
+	if ( ! empty( $task_chains ) ) {
 		$in_chain = true;
-	}
-
-	if ( ! empty( $custom_data['go_mta_three_stage_switch'][0] ) &&
-			'on' === $custom_data['go_mta_three_stage_switch'][0] ) {
-		$is_stage_three_active = true;
-	}
-
-	if ( ! empty( $custom_data['go_mta_five_stage_switch'][0] ) &&
-			'on' === $custom_data['go_mta_five_stage_switch'][0] ) {
-		$is_stage_five_active = true;
 	}
 
 	return array(
@@ -66,7 +55,6 @@ function go_localize_task_data() {
 		),
 		'task_chains' => array(
 			'in_chain'         => $in_chain,
-			'chain_name'       => $chain_name,
 			'is_last_in_chain' => $is_last_in_chain,
 		),
 		'task_id' => $task_id,

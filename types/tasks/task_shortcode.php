@@ -3106,7 +3106,6 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 	}
 
 	$chain_order = get_post_meta( $task_id, 'go_mta_chain_order', true );
-	$last_in_chain = go_task_chain_is_final_task( $task_id );
 	$final_chain_msg = get_post_meta( $task_id, 'go_mta_final_chain_message', true );
 	$is_final_msg_displayed = false;
 
@@ -3114,6 +3113,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 		$pos = array_search( $task_id, $order );
 		$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
 		$chain_title = ucwords( $the_chain->name );
+		$last_in_chain = go_task_chain_is_final_task( $task_id, $chain_tt_id );
 
 		$prev_finished = false;
 		if ( $pos > 0 ) {
@@ -3201,12 +3201,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 				);
 			}
 
-			// displays the final chain message for this chain
-			if ( $last_in_chain && $curr_finished ) {
-				if ( ! $is_final_msg_displayed ) {
-					$is_final_msg_displayed = true;
-				}
-			} elseif ( ! empty( $next_id ) && $curr_finished ) {
+			if ( ! $last_in_chain && $curr_finished ) {
 
 				// displays pagination links for the next task
 				$msg .= sprintf(
@@ -3224,12 +3219,14 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 					'<div class="go_chain_title go_align_center">%s</div>',
 					$chain_title
 				);
-
-				if ( $is_final_msg_displayed ) {
+			
+				// displays the final chain message for this chain
+				if ( ! $is_final_msg_displayed ) {
 					printf(
 						'<div class="go_chain_final_msg">%s</div>',
 						$final_chain_msg
 					);
+					$is_final_msg_displayed = true;
 				}
 
 				printf(

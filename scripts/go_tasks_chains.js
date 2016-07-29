@@ -17,7 +17,6 @@ function go_prepare_sortable_list () {
 	if ( 'undefined' !== typeof GO_TASK_DATA ) {
 		var task_id = GO_TASK_DATA.task_id;
 		var in_chain = GO_TASK_DATA.task_chains.in_chain;
-		var chain_name = GO_TASK_DATA.task_chains.chain_name;
 	
 		if ( null !== task_id && in_chain ) {
 			jQuery( '.go_task_chain_order_list' ).sortable({
