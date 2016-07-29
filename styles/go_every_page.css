@@ -606,6 +606,10 @@ a.pod_link {
 	margin-top: 20px;
 }
 
+.go_chain_final_msg {
+	margin: 10px 0;
+}
+
 .go_chain_title {
 	font-weight: 900;
 }
