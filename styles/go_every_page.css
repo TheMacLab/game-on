@@ -602,11 +602,11 @@ a.pod_link {
 	padding: 0px !important;
 }
 
-.go_chain_message {
+.go_chain_msg_container {
 	margin-top: 20px;
 }
 
-.go_chain_final_msg {
+.go_chain_final_msg, .go_chain_msg_content {
 	margin: 10px 0;
 }
 

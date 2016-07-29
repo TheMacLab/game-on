@@ -453,8 +453,10 @@ function go_task_shortcode( $atts, $content = null ) {
 		if ( ! empty( $chain_order ) ) {
 			$chain_links = array();
 
-			foreach ( $chain_order as $order ) {
+			foreach ( $chain_order as $chain_tt_id => $order ) {
 				$pos = array_search( $id, $order );
+				$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
+				$chain_title = ucwords( $the_chain->name );
 
 				if ( $pos > 0 && ! $is_admin ) {
 
@@ -496,9 +498,10 @@ function go_task_shortcode( $atts, $content = null ) {
 							 */
 
 							$link_tag = sprintf(
-								'<a href="%s">%s</a>',
+								'<a href="%s">%s (%s)</a>',
 								$prev_permalink,
-								$prev_title
+								$prev_title,
+								$chain_title
 							);
 							if ( false === array_search( $link_tag, $chain_links ) ) {
 
@@ -523,8 +526,8 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 
 				printf(
-					'<div class="go_chain_message">'.
-						'You must finish %s to continue this %s.'.
+					'<div class="go_chain_msg_container">'.
+						'<div class="go_chain_msg_content">You must finish %s to continue this %s.</div>'.
 					'</div>',
 					$link_str,
 					ucwords( $task_name )
@@ -784,13 +787,13 @@ function go_task_shortcode( $atts, $content = null ) {
 									echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
 												'</button>
 												<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-											'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
-											'<div id="go_repeat_unclicked">' .
-												'<button id="go_button" status="4" onclick="go_repeat_replace();">' .
-													'See ' . get_option( 'go_fifth_stage_name' ) .
-												'</button> ' .
-												'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>' .
-											'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
+											'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
+											'<div id="go_repeat_unclicked">'.
+												'<button id="go_button" status="4" onclick="go_repeat_replace();">'.
+													'See ' . get_option( 'go_fifth_stage_name' ).
+												'</button> '.
+												'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
+											'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
 										'</div>';
 								} else {
 									if ( $repeat_upload ) {
@@ -811,14 +814,14 @@ function go_task_shortcode( $atts, $content = null ) {
 									echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
 												'</button>
 												<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-											'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
-											'<div id="go_repeat_unclicked">' .
-												'<button id="go_button" status="4" onclick="go_repeat_replace();">' .
-													'See ' . get_option( 'go_fifth_stage_name' ) .
-												'</button> ' .
-												'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>' .
-											'</div>' .
-											( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
+											'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
+											'<div id="go_repeat_unclicked">'.
+												'<button id="go_button" status="4" onclick="go_repeat_replace();">'.
+													'See ' . get_option( 'go_fifth_stage_name' ).
+												'</button> '.
+												'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
+											'</div>'.
+											( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
 										'</div>';
 								}
 							} else {
@@ -2694,14 +2697,14 @@ function go_task_change_stage() {
 						echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
 									'</button>
 									<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-								'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
-								'<div id="go_repeat_unclicked">' .
-									'<button id="go_button" status="4" onclick="go_repeat_replace();">' .
-										'See ' . get_option( 'go_fifth_stage_name' ) .
-									'</button> ' .
-									'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>' .
-								'</div>' .
-								( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
+								'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
+								'<div id="go_repeat_unclicked">'.
+									'<button id="go_button" status="4" onclick="go_repeat_replace();">'.
+										'See ' . get_option( 'go_fifth_stage_name' ).
+									'</button> '.
+									'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
+								'</div>'.
+								( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
 							'</div>';
 					} else {
 						if ( $repeat_upload ) {
@@ -2723,14 +2726,14 @@ function go_task_change_stage() {
 									'</button>
 									<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
 
-						echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
-								'<div id="go_repeat_unclicked">' .
-									'<button id="go_button" status="4" onclick="go_repeat_replace();">' .
-										'See ' . get_option( 'go_fifth_stage_name' ) .
-									'</button> ' .
-									'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>' .
-								'</div>' .
-								( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ) .
+						echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
+								'<div id="go_repeat_unclicked">'.
+									'<button id="go_button" status="4" onclick="go_repeat_replace();">'.
+										'See ' . get_option( 'go_fifth_stage_name' ).
+									'</button> '.
+									'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
+								'</div>'.
+								( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
 							'</div>';
 					}
 				} else {
@@ -2787,8 +2790,8 @@ function go_task_change_stage() {
 											$e_passed, $a_passed, $c_passed, $m_passed, null, false,
 											$loot_reason, true, false
 										);
-										echo "Congrats, " . do_shortcode( '[go_get_displayname]' ) .
-											"!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>" .
+										echo "Congrats, " . do_shortcode( '[go_get_displayname]' ).
+											"!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".
 											get_the_title( $store_item ) . "</a></br>";
 									}
 								}
@@ -2897,10 +2900,10 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 					$bc_output = "";
 				}
 				$output = 
-					"{$stage_name} - " .
-					"<span id='go_task_stage_{$stage}_rewards'>" .
-						"{$point_output} {$currency_output} {$bc_output}" .
-					"</span>" .
+					"{$stage_name} - ".
+					"<span id='go_task_stage_{$stage}_rewards'>".
+						"{$point_output} {$currency_output} {$bc_output}".
+					"</span>".
 					"<br/>";
 			}
 			echo $output;
@@ -3142,7 +3145,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 				}
 				if ( $prev_status === $prev_status_required &&
 						( ! $prev_five_stage_active || ! empty( $prev_five_stage_counter ) ) ) {
-					
+
 					$prev_finished = true;
 				}
 			}
@@ -3217,7 +3220,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 
 			if ( ! empty( $msg ) ) {
 				printf(
-					'<div class="go_chain_message">'.
+					'<div class="go_chain_msg_container">'.
 					'<div class="go_chain_title go_align_center">%s</div>',
 					$chain_title
 				);
