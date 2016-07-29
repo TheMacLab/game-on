@@ -462,36 +462,44 @@ function go_task_shortcode( $atts, $content = null ) {
 					 * The current task is not first and the user is not an administrator.
 					 */
 
-					$prev_finished = false;
-					$prev_id = $order[ $pos - 1 ];
-					$prev_permalink = get_permalink( $prev_id );
-					$prev_title = get_the_title( $prev_id );
+					$prev_id = 0;
 
-					$prev_status = go_task_get_status( $prev_id );
-					$prev_status_required = 4;
-					$prev_three_stage_active = (boolean) get_post_meta( $prev_id, 'go_mta_three_stage_switch', true );
-					if ( $prev_three_stage_active ) {
-						$prev_status_required = 3;
-					}
-					if ( $prev_status === $prev_status_required ) {
-						$prev_finished = true;
+					// finds the first ID among the tasks before the current one that is published
+					for ( $prev_id_counter = $pos; $prev_id_counter > 0; $prev_id_counter-- ) {
+						$temp_id = $order[ $prev_id_counter - 1 ];
+						$temp_task = get_post( $temp_id );
+						if ( 'publish' === $temp_task->post_status ) {
+							$prev_id = $temp_id;
+							break;
+						}
 					}
 
-					if ( ! $prev_finished ) {
+					if ( 0 !== $prev_id ) {
+						$prev_permalink = get_permalink( $prev_id );
+						$prev_title = get_the_title( $prev_id );
 
-						/**
-						 * The previous task isn't finished.
-						 */
+						$prev_status = go_task_get_status( $prev_id );
+						$prev_status_required = 4;
+						$prev_three_stage_active = (boolean) get_post_meta( $prev_id, 'go_mta_three_stage_switch', true );
+						if ( $prev_three_stage_active ) {
+							$prev_status_required = 3;
+						}
+						if ( $prev_status !== $prev_status_required ) {
 
-						$link_tag = sprintf(
-							'<a href="%s">%s</a>',
-							$prev_permalink,
-							$prev_title
-						);
-						if ( false === array_search( $link_tag, $chain_links ) ) {
+							/**
+							 * The previous task isn't finished.
+							 */
 
-							// appends the anchor tag for previous task
-							$chain_links[] = $link_tag;
+							$link_tag = sprintf(
+								'<a href="%s">%s</a>',
+								$prev_permalink,
+								$prev_title
+							);
+							if ( false === array_search( $link_tag, $chain_links ) ) {
+
+								// appends the anchor tag for previous task
+								$chain_links[] = $link_tag;
+							}
 						}
 					}
 				}
@@ -499,14 +507,14 @@ function go_task_shortcode( $atts, $content = null ) {
 
 			if ( ! empty( $chain_links ) ) {
 				$link_str = '';
-				for ( $i = 0; $i < count( $chain_links ); $i++ ) {
-					if ( $i > 0 ) {
+				for ( $link_counter = 0; $link_counter < count( $chain_links ); $link_counter++ ) {
+					if ( $link_counter > 0 ) {
 						$link_str .= ', ';
-						if ( count( $chain_links ) > 2 && count( $chain_links ) === $i + 1 ) {
+						if ( count( $chain_links ) > 2 && count( $chain_links ) === $link_counter + 1 ) {
 							$link_str .= 'and ';
 						}
 					}
-					$link_str .= $chain_links[ $i ];
+					$link_str .= $chain_links[ $link_counter ];
 				}
 
 				printf(
