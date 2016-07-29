@@ -28,10 +28,20 @@ function go_add_post(
 	if ( $status === -1 ) {
 		$qty = ( false === $bonus_loot ) ? $_POST['qty'] : 1;
 		$old_points = $wpdb->get_row( "SELECT * FROM {$table_name_go} WHERE uid = {$user_id} and post_id = {$post_id} LIMIT 1" );
+
+		if ( 'on' === strtolower( get_post_meta( $post_id, 'go_mta_store_super_modifier', true ) ) ) {
+			$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties );
+
+			// bandaid fix for enabling the super modifier on store items
+			$points = $modded_array[0];
+			$currency = $modded_array[1];
+		}
+
 		$points *= $qty;
 		$currency *= $qty;
 		$bonus_currency *= $qty;
 		$minutes *= $qty;
+
 		$gifted = false;
 		if ( get_current_user_id() != $user_id ) {
 			$reason = 'Gifted';

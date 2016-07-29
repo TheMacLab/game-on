@@ -20,12 +20,22 @@ function go_the_lb_ajax() {
 	$item_content = get_post_field( 'post_content', $the_id );
 	$the_content = wpautop( $item_content );
 	$custom_fields = get_post_custom( $the_id );
+
+	$user_id = get_current_user_id();
+	$user_points = go_return_points( $user_id );
+	$user_currency = go_return_currency( $user_id );
+	$user_bonus_currency = go_return_bonus_currency( $user_id );
+	$user_penalties = go_return_penalty( $user_id );
+	$user_minutes = go_return_minutes( $user_id );
+
 	$penalty = ( ! empty( $custom_fields['go_mta_penalty_switch'][0] ) ? true : false );
 	
 	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {
-		$req_currency = $store_cost[0];
-		$req_points = $store_cost[1];
+		$temp_cost = go_return_multiplier( $user_id, $store_cost[0], $store_cost[1], $user_bonus_currency, $user_penalties );
+
+		$req_currency = $temp_cost[0];
+		$req_points = $temp_cost[1];
 		$req_bonus_currency = $store_cost[2];
 		$req_penalty =  $store_cost[3];
 		$req_minutes = $store_cost[4];
@@ -49,12 +59,6 @@ function go_the_lb_ajax() {
 		}
 	}
 	
-	$user_id = get_current_user_id();
-	$user_points = go_return_points( $user_id );
-	$user_bonus_currency = go_return_bonus_currency( $user_id );
-	$user_currency = go_return_currency( $user_id );
-	$user_penalties = go_return_penalty( $user_id );
-	$user_minutes = go_return_minutes( $user_id );
 	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
 	$is_giftable = ( ! empty( $custom_fields['go_mta_store_giftable'][0] ) ? true : false );
 	$is_unpurchasable = ( ! empty( $custom_fields['go_mta_store_unpurchasable'][0] ) ? $custom_fields['go_mta_store_unpurchasable'][0] : '' );

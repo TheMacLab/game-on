@@ -522,6 +522,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_store_item_post_id'
 			),
 			array(
+				'name' => 'Apply Super Modifier' . go_task_opt_help( 'store_super_modifier', 'Applies the super modifier to the rewards below', '' ),
+				'id' => "{$prefix}store_super_modifier",
+				'type' => 'checkbox',
+			),
+			array(
 				'name' => 'Cost'.go_task_opt_help( 'cost', 'The Cost of the store item', 'http://maclab.guhsd.net/go/video/store/cost.mp4' ),
 				'id' => "{$prefix}store_cost",
 				'type' => 'go_store_cost',
