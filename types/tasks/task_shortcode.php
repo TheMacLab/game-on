@@ -451,7 +451,9 @@ function go_task_shortcode( $atts, $content = null ) {
 
 		// determines whether or not the user can proceed, if the task is in a chain
 		if ( ! empty( $chain_order ) ) {
-			foreach ( $chain_order as $chain => $order ) {
+			$chain_links = array();
+
+			foreach ( $chain_order as $order ) {
 				$pos = array_search( $id, $order );
 
 				if ( $pos > 0 && ! $is_admin ) {
@@ -481,22 +483,44 @@ function go_task_shortcode( $atts, $content = null ) {
 						 * The previous task isn't finished.
 						 */
 
-						// displays a link to the previous task
-						printf(
-							'<div class="go_chain_message">'.
-								'You must finish <a href="%s">%s</a> to continue this %s.'.
-							'</div>',
+						$link_tag = sprintf(
+							'<a href="%s">%s</a>',
 							$prev_permalink,
-							$prev_title,
-							ucwords( $task_name )
+							$prev_title
 						);
+						if ( false === array_search( $link_tag, $chain_links ) ) {
 
-						return false;
+							// appends the anchor tag for previous task
+							$chain_links[] = $link_tag;
+						}
 					}
 				}
 			}
+
+			if ( ! empty( $chain_links ) ) {
+				$link_str = '';
+				for ( $i = 0; $i < count( $chain_links ); $i++ ) {
+					if ( $i > 0 ) {
+						$link_str .= ', ';
+						if ( count( $chain_links ) > 2 && count( $chain_links ) === $i + 1 ) {
+							$link_str .= 'and ';
+						}
+					}
+					$link_str .= $chain_links[ $i ];
+				}
+
+				printf(
+					'<div class="go_chain_message">'.
+						'You must finish %s to continue this %s.'.
+					'</div>',
+					$link_str,
+					ucwords( $task_name )
+				);
+
+				return false;
+			}
 		}
-		
+
 		if ( $is_admin === true || ! empty( $go_ahead ) || ! isset( $focus_category_lock ) || empty( $category_names ) ) {
 			if ( ( empty( $bonus_currency_required ) || 
 						( ! empty( $bonus_currency_required ) && $current_bonus_currency >= $bonus_currency_required ) ) &&
