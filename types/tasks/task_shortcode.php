@@ -470,7 +470,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					for ( $prev_id_counter = $pos; $prev_id_counter > 0; $prev_id_counter-- ) {
 						$temp_id = $order[ $prev_id_counter - 1 ];
 						$temp_task = get_post( $temp_id );
-						if ( 'publish' === $temp_task->post_status ) {
+						if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
 							$prev_id = $temp_id;
 							break;
 						}
@@ -3107,6 +3107,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 
 	$chain_order = get_post_meta( $task_id, 'go_mta_chain_order', true );
 	$final_chain_msg = get_post_meta( $task_id, 'go_mta_final_chain_message', true );
+	$can_display_final_msg = false;
 	$is_final_msg_displayed = false;
 
 	foreach ( $chain_order as $chain_tt_id => $order ) {
@@ -3123,7 +3124,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 			for ( $prev_id_counter = $pos; $prev_id_counter > 0; $prev_id_counter-- ) {
 				$temp_id = $order[ $prev_id_counter - 1 ];
 				$temp_task = get_post( $temp_id );
-				if ( 'publish' === $temp_task->post_status ) {
+				if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
 					$prev_id = $temp_id;
 					break;
 				}
@@ -3179,7 +3180,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 			for ( $next_id_counter = $pos; $next_id_counter < count( $order ) - 1; $next_id_counter++ ) {
 				$temp_id = $order[ $next_id_counter + 1 ];
 				$temp_task = get_post( $temp_id );
-				if ( 'publish' === $temp_task->post_status ) {
+				if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
 					$next_id = $temp_id;
 					break;
 				}
@@ -3201,7 +3202,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 				);
 			}
 
-			if ( ! $last_in_chain && $curr_finished ) {
+			if ( ! $last_in_chain && ! empty( $next_id ) && $curr_finished ) {
 
 				// displays pagination links for the next task
 				$msg .= sprintf(
@@ -3213,7 +3214,12 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 				);
 			}
 
-			if ( ! empty( $msg ) ) {
+			if ( ! $is_final_msg_displayed && ! empty( $final_chain_msg ) && $last_in_chain &&
+					$curr_finished ) {
+				$can_display_final_msg = true;
+			}
+
+			if ( ! empty( $msg ) || $can_display_final_msg ) {
 				printf(
 					'<div class="go_chain_msg_container">'.
 					'<div class="go_chain_title go_align_center">%s</div>',
@@ -3221,7 +3227,7 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 				);
 			
 				// displays the final chain message for this chain
-				if ( ! $is_final_msg_displayed ) {
+				if ( $can_display_final_msg ) {
 					printf(
 						'<div class="go_chain_final_msg">%s</div>',
 						$final_chain_msg
@@ -3229,11 +3235,14 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 					$is_final_msg_displayed = true;
 				}
 
-				printf(
-					'<div class="go_chain_links">%s</div>'.
-					'</div>',
-					$msg
-				);
+				if ( ! empty( $msg ) ) {
+					printf(
+						'<div class="go_chain_links">%s</div>',
+						$msg
+					);
+				}
+
+				echo '</div>';
 			}
 		}
 	}

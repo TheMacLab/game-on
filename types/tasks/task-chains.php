@@ -149,7 +149,7 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 		for ( $i = $end_pos; $i > 0; $i-- ) {
 			$temp_id = $chain_order[ $tt_id ][ $i ];
 			$temp_task = get_post( $temp_id );
-			if ( 'publish' === $temp_task->post_status ) {
+			if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
 				$valid_pos = $i;
 				break;
 			}
@@ -158,11 +158,12 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 		// the term taxonomy ID and task ID must be integers
 		$tt_id = (int) $tt_id;
 		$id_pos = array_search( $task_id, $chain_order[ $tt_id ] );
-		if ( $valid_pos === $id_pos ) {
+		if ( -1 === $valid_pos || $valid_pos === $id_pos ) {
 			return true;
 		}
 	} elseif ( ! empty( $chain_order ) ) {
-		foreach ( $chain_order as $tt_id_key => $order ) {
+
+		foreach ( $chain_order as $order ) {
 
 			// determines the position of the final published task in the order array
 			$valid_pos = -1;
@@ -170,14 +171,14 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 			for ( $i = $end_pos; $i > 0; $i-- ) {
 				$temp_id = $order[ $i ];
 				$temp_task = get_post( $temp_id );
-				if ( 'publish' === $temp_task->post_status ) {
+				if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
 					$valid_pos = $i;
 					break;
 				}
 			}
 
 			$id_pos = array_search( $task_id, $order );
-			if ( $valid_pos === $id_pos ) {
+			if ( -1 === $valid_pos || $valid_pos === $id_pos ) {
 				return true;
 			}
 		}

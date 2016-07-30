@@ -1591,8 +1591,10 @@ function go_validate_task_chain_order( $new_values ) {
 						}
 
 						// converts all values in the task's chain order (for a specific chain) to ints
-						foreach ( $other_chain_order[ $tt_id ] as $other_order_index => $other_task_id ) {
-							$other_chain_order[ $tt_id ][ $other_order_index ] = (int) $other_task_id;
+						if ( ! empty( $other_chain_order[ $tt_id ] ) && is_array( $other_chain_order[ $tt_id ] ) ) {
+							foreach ( $other_chain_order[ $tt_id ] as $other_order_index => $other_task_id ) {
+								$other_chain_order[ $tt_id ][ $other_order_index ] = (int) $other_task_id;
+							}
 						}
 
 						// updates the task's chain order
@@ -1792,7 +1794,7 @@ function go_clone_post() {
 		}
 		echo $url;
 	} else {
-		echo 0;
+		echo -1;
 	}
 	die();
 }
