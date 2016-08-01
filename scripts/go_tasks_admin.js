@@ -93,6 +93,29 @@ function go_final_chain_message_on_toggle( row_class ) {
 	}
 }
 
+// a handler specifically for when the admin lock setting row is opened in any of the stage accordions
+function go_admin_lock_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+	var is_checked = false;
+	if ( 1 === jQuery( row_class + ' .go_admin_lock_checkbox' ).length &&
+			jQuery( row_class + ' .go_admin_lock_checkbox' ).is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	var password_input = jQuery( row_class + ' .go_admin_lock_text' );
+
+	if ( ! visible ) {
+		jQuery( row_class ).show();
+		if ( ! is_checked ) {
+			jQuery( password_input ).hide();
+		} else {
+			jQuery( password_input ).show();
+		}
+	} else if ( visible ) {
+		jQuery( row_class ).hide();
+	}
+}
+
 /**
  * Accordion On Load Handlers
  *
@@ -191,6 +214,16 @@ function go_chain_order_on_load( row ) {
 
 	if ( in_chain ) {
 		go_prepare_sortable_list();
+	}
+}
+
+function go_admin_lock_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var lock_checkbox = jQuery( row.class + ' .go_admin_lock_checkbox' );
+
+	if ( 1 === lock_checkbox.length ) {
+		lock_checkbox.change( go_admin_lock_checkbox_on_change );
 	}
 }
 
@@ -369,6 +402,22 @@ function go_date_picker_add_field() {
 
 function go_date_picker_del_field() {
 	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
+}
+
+function go_admin_lock_checkbox_on_change( event ) {
+	var target_checkbox = event.target;
+	var is_checked = jQuery( target_checkbox ).is( ':checked' );
+	var password_field = jQuery( target_checkbox ).siblings( '.go_admin_lock_text' )[0];
+
+	if ( is_checked ) {
+		if ( ! jQuery( password_field ).is( ':visible' ) ) {
+			jQuery( password_field ).show();
+		}
+	} else {
+		if ( jQuery( password_field ).is( ':visible' ) ) {
+			jQuery( password_field ).hide();
+		}
+	}
 }
 
 function go_before_task_publish_handler( e, skip_default ) {
@@ -686,7 +735,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_admin_lock',
-					cmb_id: 'encounter_admin_lock'
+					cmb_id: 'encounter_admin_lock',
+					on_load: go_admin_lock_on_load,
+					on_toggle: go_admin_lock_on_toggle,
 				},
 				{
 					cmb_type: 'checkbox',
@@ -734,7 +785,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_admin_lock',
-					cmb_id: 'accept_admin_lock'
+					cmb_id: 'accept_admin_lock',
+					on_load: go_admin_lock_on_load,
+					on_toggle: go_admin_lock_on_toggle,
 				},
 				{
 					cmb_type: 'checkbox',
@@ -782,7 +835,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_admin_lock',
-					cmb_id: 'completion_admin_lock'
+					cmb_id: 'completion_admin_lock',
+					on_load: go_admin_lock_on_load,
+					on_toggle: go_admin_lock_on_toggle,
 				},
 				{
 					cmb_type: 'checkbox',
@@ -830,7 +885,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_admin_lock',
-					cmb_id: 'mastery_admin_lock'
+					cmb_id: 'mastery_admin_lock',
+					on_load: go_admin_lock_on_load,
+					on_toggle: go_admin_lock_on_toggle,
 				},
 				{
 					cmb_type: 'checkbox',
@@ -891,7 +948,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_admin_lock',
-					cmb_id: 'repeat_admin_lock'
+					cmb_id: 'repeat_admin_lock',
+					on_load: go_admin_lock_on_load,
+					on_toggle: go_admin_lock_on_toggle,
 				},
 				{
 					cmb_type: 'checkbox',
