@@ -58,39 +58,43 @@ function go_task_shortcode( $atts, $content = null ) {
 			)
 		);
 		
-		$e_admin_lock = ( ! empty( $custom_fields['go_mta_encounter_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] ) : null );
+		$e_admin_lock = get_post_meta( $id, 'go_mta_encounter_admin_lock', true );
 		if ( ! empty( $e_admin_lock ) ) {
-			$e_is_locked = $e_admin_lock[0];
-			if ( $e_is_locked === 'true' ) {
-				$e_pass_lock = $e_admin_lock[1];
+			$e_is_locked = ( ! empty( $e_admin_lock[0] ) ? true : false );
+			if ( $e_is_locked ) {
+				$e_pass_lock = ( ! empty( $e_admin_lock[1] ) ? $e_admin_lock[1] : '' );
 			}
 		}
-		$a_admin_lock = ( ! empty( $custom_fields['go_mta_accept_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_accept_admin_lock'][0] ) : null );
+
+		$a_admin_lock = get_post_meta( $id, 'go_mta_accept_admin_lock', true );
 		if ( ! empty( $a_admin_lock ) ) {
-			$a_is_locked = $a_admin_lock[0];
-			if ( $a_is_locked === 'true' ) {
-				$a_pass_lock = $a_admin_lock[1];
+			$a_is_locked = ( ! empty( $a_admin_lock[0] ) ? true : false );
+			if ( $a_is_locked ) {
+				$a_pass_lock = ( ! empty( $a_admin_lock[1] ) ? $a_admin_lock[1] : '' );
 			}
 		}
-		$c_admin_lock = ( ! empty( $custom_fields['go_mta_completion_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_completion_admin_lock'][0] ) : null );
+
+		$c_admin_lock = get_post_meta( $id, 'go_mta_completion_admin_lock', true );
 		if ( ! empty( $c_admin_lock ) ) {
-			$c_is_locked = $c_admin_lock[0];
-			if ( $c_is_locked === 'true' ) {
-				$c_pass_lock = $c_admin_lock[1];
+			$c_is_locked = ( ! empty( $c_admin_lock[0] ) ? true : false );
+			if ( $c_is_locked ) {
+				$c_pass_lock = ( ! empty( $c_admin_lock[1] ) ? $c_admin_lock[1] : '' );
 			}
 		}
-		$m_admin_lock = ( ! empty( $custom_fields['go_mta_mastery_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_mastery_admin_lock'][0] ) : null );
+
+		$m_admin_lock = get_post_meta( $id, 'go_mta_mastery_admin_lock', true );
 		if ( ! empty( $m_admin_lock ) ) {
-			$m_is_locked = $m_admin_lock[0];
-			if ( $m_is_locked === 'true' ) {
-				$m_pass_lock = $m_admin_lock[1];
+			$m_is_locked = ( ! empty( $m_admin_lock[0] ) ? true : false );
+			if ( $m_is_locked ) {
+				$m_pass_lock = ( ! empty( $m_admin_lock[1] ) ? $m_admin_lock[1] : '' );
 			}
 		}
-		$r_admin_lock = ( ! empty( $custom_fields['go_mta_repeat_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_repeat_admin_lock'][0] ) : null );
+		
+		$r_admin_lock = get_post_meta( $id, 'go_mta_repeat_admin_lock', true );
 		if ( ! empty( $r_admin_lock ) ) {
-			$r_is_locked = $r_admin_lock[0];
-			if ( $r_is_locked === 'true' ) {
-				$r_pass_lock = $r_admin_lock[1];
+			$r_is_locked = ( ! empty( $r_admin_lock[0] ) ? true : false );
+			if ( $r_is_locked ) {
+				$r_pass_lock = ( ! empty( $r_admin_lock[1] ) ? $r_admin_lock[1] : '' );
 			}
 		}
 
@@ -589,13 +593,13 @@ function go_task_shortcode( $atts, $content = null ) {
 					?>
 					<p id='go_stage_error_msg' style='display: none; color: red;'></p>
 					<?php 
-					if ( $e_is_locked === 'true' && ! empty( $e_pass_lock ) ) {
+					if ( $e_is_locked && ! empty( $e_pass_lock ) ) {
 						echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 					} elseif ( $e_url_is_locked === true ) {
 						echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 					}
 					?>
-					<button id="go_button" status= "2" onclick="task_stage_change( this );" <?php if ( $e_is_locked === 'true' && empty( $e_pass_lock ) ) {echo "admin_lock='true'"; } ?>><?php echo go_return_options( 'go_second_stage_button' ) ?></button>
+					<button id="go_button" status= "2" onclick="task_stage_change( this );" <?php if ( $e_is_locked && empty( $e_pass_lock ) ) {echo "admin_lock='true'"; } ?>><?php echo go_return_options( 'go_second_stage_button' ) ?></button>
 					<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option( 'go_abandon_stage_button', 'Abandon' ); ?></button>
 					<?php
 
@@ -626,13 +630,13 @@ function go_task_shortcode( $atts, $content = null ) {
 					?>
 					<p id='go_stage_error_msg' style='display: none; color: red;'></p>
 					<?php 
-					if ( $e_is_locked === 'true' && ! empty( $e_pass_lock ) ) {
+					if ( $e_is_locked && ! empty( $e_pass_lock ) ) {
 						echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 					} elseif ( $e_url_is_locked === true ) {
 						echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 					}
 					?>
-					<button id="go_button" status= "2" onclick="task_stage_change( this );" <?php if ( $e_is_locked === 'true' && empty( $e_pass_lock ) ) {echo "admin_lock='true'"; } ?>><?php echo go_return_options( 'go_second_stage_button' ) ?></button>
+					<button id="go_button" status= "2" onclick="task_stage_change( this );" <?php if ( $e_is_locked && empty( $e_pass_lock ) ) {echo "admin_lock='true'"; } ?>><?php echo go_return_options( 'go_second_stage_button' ) ?></button>
 					<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option( 'go_abandon_stage_button', 'Abandon' ); ?></button>
 					<?php
 
@@ -663,13 +667,13 @@ function go_task_shortcode( $atts, $content = null ) {
 							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 						}
 						echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-						if ( $a_is_locked === 'true' && ! empty( $a_pass_lock ) ) {
+						if ( $a_is_locked && ! empty( $a_pass_lock ) ) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 						} elseif ( $a_url_is_locked === true ) {
 							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 						}
 						echo "<button id='go_button' status='3' onclick='task_stage_change( this );'";
-						if ( $a_is_locked === 'true' && empty( $a_pass_lock ) ) {
+						if ( $a_is_locked && empty( $a_pass_lock ) ) {
 							echo "admin_lock='true'";
 						}
 						echo '>'.go_return_options( 'go_third_stage_button' ).'</button> '.
@@ -704,13 +708,13 @@ function go_task_shortcode( $atts, $content = null ) {
 								echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
 							}
 							echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-							if ( $c_is_locked === 'true' && ! empty( $c_pass_lock ) ) {
+							if ( $c_is_locked && ! empty( $c_pass_lock ) ) {
 								echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 							} elseif ( $c_url_is_locked === true ) {
 								echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 							}
 							echo "<button id='go_button' status='4' onclick='task_stage_change( this );'";
-							if ( $c_is_locked === 'true' && empty( $c_pass_lock ) ) {
+							if ( $c_is_locked && empty( $c_pass_lock ) ) {
 								echo "admin_lock='true'";
 							}
 							echo '>'.go_return_options( 'go_fourth_stage_button' ).'</button> '.
@@ -775,13 +779,13 @@ function go_task_shortcode( $atts, $content = null ) {
 											<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
 												.do_shortcode(wpautop( $repeat_message ) ).
 												"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-									if ( $m_is_locked === 'true' && ! empty( $m_pass_lock ) ) {
+									if ( $m_is_locked && ! empty( $m_pass_lock ) ) {
 										echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 									} elseif ( $m_url_is_locked === true ) {
 										echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 									}
 									echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
-									if ( $m_is_locked === 'true' && empty( $m_pass_lock ) ) {
+									if ( $m_is_locked && empty( $m_pass_lock ) ) {
 										echo "admin_lock='true'";
 									}
 									echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
@@ -804,11 +808,11 @@ function go_task_shortcode( $atts, $content = null ) {
 											<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
 												.do_shortcode(wpautop( $repeat_message ) ).
 												"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-									if ( $r_is_locked === 'true' && ! empty( $r_pass_lock ) ) {
+									if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
 										echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 									}
 									echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
-									if ( $r_is_locked === 'true' && empty( $r_pass_lock ) ) {
+									if ( $r_is_locked && empty( $r_pass_lock ) ) {
 										echo "admin_lock='true'";
 									}
 									echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
@@ -1937,53 +1941,49 @@ function go_task_change_stage() {
 
 	$unix_now = current_time( 'timestamp' ); // Current unix timestamp
 	$go_table_name = "{$wpdb->prefix}go";
-	$task_count = $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT count 
-			FROM {$go_table_name} 
-			WHERE post_id = %d AND uid = %d",
-			$post_id,
-			$user_id
-		)
-	);
+	$task_count = go_task_get_repeat_count( $post_id, $user_id );
 
 	$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
 	$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true ); // whether or not the mastery stage is active
 	$repeat = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : '' ); // Whether or not you can repeat the task
 
-	$e_admin_lock = ( ! empty( $custom_fields['go_mta_encounter_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_encounter_admin_lock'][0] ) : null );
+	$e_admin_lock = get_post_meta( $post_id, 'go_mta_encounter_admin_lock', true );
 	if ( ! empty( $e_admin_lock ) ) {
-		$e_is_locked = $e_admin_lock[0];
-		if ( $e_is_locked === 'true' ) {
-			$e_pass_lock = $e_admin_lock[1];
+		$e_is_locked = ( ! empty( $e_admin_lock[0] ) ? true : false );
+		if ( $e_is_locked ) {
+			$e_pass_lock = ( ! empty( $e_admin_lock[1] ) ? $e_admin_lock[1] : '' );
 		}
 	}
-	$a_admin_lock = ( ! empty( $custom_fields['go_mta_accept_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_accept_admin_lock'][0] ) : null );
+
+	$a_admin_lock = get_post_meta( $post_id, 'go_mta_accept_admin_lock', true );
 	if ( ! empty( $a_admin_lock ) ) {
-		$a_is_locked = $a_admin_lock[0];
-		if ( $a_is_locked === 'true' ) {
-			$a_pass_lock = $a_admin_lock[1];
+		$a_is_locked = ( ! empty( $a_admin_lock[0] ) ? true : false );
+		if ( $a_is_locked ) {
+			$a_pass_lock = ( ! empty( $a_admin_lock[1] ) ? $a_admin_lock[1] : '' );
 		}
 	}
-	$c_admin_lock = ( ! empty( $custom_fields['go_mta_completion_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_completion_admin_lock'][0] ) : null );
+
+	$c_admin_lock = get_post_meta( $post_id, 'go_mta_completion_admin_lock', true );
 	if ( ! empty( $c_admin_lock ) ) {
-		$c_is_locked = $c_admin_lock[0];
-		if ( $c_is_locked === 'true' ) {
-			$c_pass_lock = $c_admin_lock[1];
+		$c_is_locked = ( ! empty( $c_admin_lock[0] ) ? true : false );
+		if ( $c_is_locked ) {
+			$c_pass_lock = ( ! empty( $c_admin_lock[1] ) ? $c_admin_lock[1] : '' );
 		}
 	}
-	$m_admin_lock = ( ! empty( $custom_fields['go_mta_mastery_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_mastery_admin_lock'][0] ) : null );
+
+	$m_admin_lock = get_post_meta( $post_id, 'go_mta_mastery_admin_lock', true );
 	if ( ! empty( $m_admin_lock ) ) {
-		$m_is_locked = $m_admin_lock[0];
-		if ( $m_is_locked === 'true' ) {
-			$m_pass_lock = $m_admin_lock[1];
+		$m_is_locked = ( ! empty( $m_admin_lock[0] ) ? true : false );
+		if ( $m_is_locked ) {
+			$m_pass_lock = ( ! empty( $m_admin_lock[1] ) ? $m_admin_lock[1] : '' );
 		}
 	}
-	$r_admin_lock = ( ! empty( $custom_fields['go_mta_repeat_admin_lock'][0] ) ? unserialize( $custom_fields['go_mta_repeat_admin_lock'][0] ) : null );
+
+	$r_admin_lock = get_post_meta( $post_id, 'go_mta_repeat_admin_lock', true );
 	if ( ! empty( $r_admin_lock ) ) {
-		$r_is_locked = $r_admin_lock[0];
-		if ( $r_is_locked === 'true' ) {
-			$r_pass_lock = $r_admin_lock[1];
+		$r_is_locked = ( ! empty( $r_admin_lock[0] ) ? true : false );
+		if ( $r_is_locked ) {
+			$r_pass_lock = ( ! empty( $r_admin_lock[1] ) ? $r_admin_lock[1] : '' );
 		}
 	}
 
@@ -1992,30 +1992,23 @@ function go_task_change_stage() {
 	$c_url_is_locked = ( ! empty( $custom_fields['go_mta_completion_url_key'][0] ) ? true : false );
 	$m_url_is_locked = ( ! empty( $custom_fields['go_mta_mastery_url_key'][0] ) ? true : false );
 
-	if ( ! empty( $pass ) || "0" === $pass ) {
-		if ( $status == 4 ) {
-			$temp_status = $status;
-		} else {
-			$temp_status = $status - 1;
+	if ( ! empty( $pass ) || '0' === $pass ) {
+
+		$pass_lock = '';
+		if ( 4 === $status && $repeat_button && 'on' === $repeat ) {
+			if ( $task_count > 0 && ! empty( $r_pass_lock ) ) {
+				$pass_lock = $r_pass_lock;
+			} elseif ( 0 === $task_count && ! empty( $m_pass_lock ) ) {
+				$pass_lock = $m_pass_lock;
+			}
+		} elseif ( 1 === $status - 1 && ! empty( $e_pass_lock ) ) {
+			$pass_lock = $e_pass_lock;
+		} elseif ( 2 === $status - 1 && ! empty( $a_pass_lock ) ) {
+			$pass_lock = $a_pass_lock;
+		} elseif ( 3 === $status - 1 && ! empty( $c_pass_lock ) ) {
+			$pass_lock = $c_pass_lock;
 		}
-		switch ( $temp_status ) {
-			case ( 1 ):
-				$pass_lock = $e_pass_lock;
-				break;
-			case ( 2 ):
-				$pass_lock = $a_pass_lock;
-				break;
-			case ( 3 ):
-				$pass_lock = $c_pass_lock;
-				break;
-			case ( 4 ):
-				if ( $repeat === 'on' ) {
-					$pass_lock = $r_pass_lock;
-				} else {
-					$pass_lock = $m_pass_lock;
-				}
-				break;
-		}
+
 		if ( ! empty( $pass_lock ) && $pass !== $pass_lock ) {
 			echo 0;
 			die();
@@ -2537,13 +2530,13 @@ function go_task_change_stage() {
 				echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
 			}
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-			if ( $e_is_locked === 'true' && ! empty( $e_pass_lock ) ) {
+			if ( $e_is_locked && ! empty( $e_pass_lock ) ) {
 				echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 			} elseif ( $e_url_is_locked === true ) {
 				echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 			}
 			echo "<button id='go_button' status='2' onclick='task_stage_change( this );'";
-			if ( $e_is_locked === 'true' && empty( $e_pass_lock ) ) {
+			if ( $e_is_locked && empty( $e_pass_lock ) ) {
 				echo "admin_lock='true'";
 			}
 			echo ">".go_return_options( 'go_second_stage_button' )."</button>
@@ -2574,13 +2567,13 @@ function go_task_change_stage() {
 				echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
 			}
 			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-			if ( $a_is_locked === 'true' && ! empty( $a_pass_lock ) ) {
+			if ( $a_is_locked && ! empty( $a_pass_lock ) ) {
 				echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 			} elseif ( $a_url_is_locked === true ) {
 				echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 			}
 			echo "<button id='go_button' status='3' onclick='task_stage_change( this );'";
-			if ( $a_is_locked === 'true' && empty( $a_pass_lock ) ) {
+			if ( $a_is_locked && empty( $a_pass_lock ) ) {
 				echo "admin_lock='true'";
 			}
 			echo '>'.go_return_options( 'go_third_stage_button' ).'</button> '.
@@ -2613,13 +2606,13 @@ function go_task_change_stage() {
 					echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
 				}
 				echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-				if ( $c_is_locked === 'true' && ! empty( $c_pass_lock ) ) {
+				if ( $c_is_locked && ! empty( $c_pass_lock ) ) {
 					echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 				} elseif ( $c_url_is_locked === true ) {
 					echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 				}
 				echo "<button id='go_button' status='4' onclick='task_stage_change( this );'";
-				if ( $c_is_locked === 'true' && empty( $c_pass_lock ) ) {
+				if ( $c_is_locked && empty( $c_pass_lock ) ) {
 					echo "admin_lock='true'";
 				}
 				echo '>'.go_return_options( 'go_fourth_stage_button' ).'</button> '.
@@ -2685,13 +2678,13 @@ function go_task_change_stage() {
 								<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
 									.do_shortcode(wpautop( $repeat_message ) ).
 									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-						if ( $m_is_locked === 'true' && ! empty( $m_pass_lock ) ) {
+						if ( $m_is_locked && ! empty( $m_pass_lock ) ) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 						} elseif ( $m_url_is_locked === true ) {
 							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 						}
 						echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
-						if ( $m_is_locked === 'true' && empty( $m_pass_lock ) ) {
+						if ( $m_is_locked && empty( $m_pass_lock ) ) {
 							echo "admin_lock='true'";
 						}
 						echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
@@ -2715,11 +2708,11 @@ function go_task_change_stage() {
 								<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
 									.do_shortcode(wpautop( $repeat_message ) ).
 									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-						if ( $r_is_locked === 'true' && ! empty( $r_pass_lock ) ) {
+						if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 						}
 						echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
-						if ( $r_is_locked === 'true' && empty( $r_pass_lock ) ) {
+						if ( $r_is_locked && empty( $r_pass_lock ) ) {
 							echo "admin_lock='true'";
 						}
 						echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
