@@ -217,6 +217,16 @@ function go_chain_order_on_load( row ) {
 	}
 }
 
+function go_stage_reward_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var reward_fields = jQuery( row.class + ' .go_reward_input' );
+
+	if ( reward_fields.length > 0 ) {
+		jQuery( reward_fields ).keyup( go_stage_reward_on_keyup );
+	}
+}
+
 function go_admin_lock_on_load( row ) {
 	jQuery( row.class ).hide();
 
@@ -402,6 +412,17 @@ function go_date_picker_add_field() {
 
 function go_date_picker_del_field() {
 	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
+}
+
+function go_stage_reward_on_keyup( event ) {
+	var target_field = event.target;
+	var reward_stage = jQuery( target_field ).attr( 'stage' );
+	var reward_type = jQuery( target_field ).attr( 'reward' );
+	var target_val = target_field.value;
+
+	var similar_fields = 'input[stage=' + reward_stage + '][reward=' + reward_type + ']';
+
+	jQuery( similar_fields ).not( target_field ).val( target_val );
 }
 
 function go_admin_lock_checkbox_on_change( event ) {
@@ -723,15 +744,18 @@ function go_generate_accordion_array() {
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_one_points'
+					cmb_id: 'stage_one_points',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_one_currency'
+					cmb_id: 'stage_one_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_one_bonus_currency'
+					cmb_id: 'stage_one_bonus_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_admin_lock',
@@ -773,15 +797,18 @@ function go_generate_accordion_array() {
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_two_points'
+					cmb_id: 'stage_two_points',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_two_currency'
+					cmb_id: 'stage_two_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_two_bonus_currency'
+					cmb_id: 'stage_two_bonus_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_admin_lock',
@@ -823,15 +850,18 @@ function go_generate_accordion_array() {
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_three_points'
+					cmb_id: 'stage_three_points',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_three_currency'
+					cmb_id: 'stage_three_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_three_bonus_currency'
+					cmb_id: 'stage_three_bonus_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_admin_lock',
@@ -873,15 +903,18 @@ function go_generate_accordion_array() {
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_four_points'
+					cmb_id: 'stage_four_points',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_four_currency'
+					cmb_id: 'stage_four_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_four_bonus_currency'
+					cmb_id: 'stage_four_bonus_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_admin_lock',
@@ -932,15 +965,18 @@ function go_generate_accordion_array() {
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_five_points'
+					cmb_id: 'stage_five_points',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_five_currency'
+					cmb_id: 'stage_five_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_stage_reward',
-					cmb_id: 'stage_five_bonus_currency'
+					cmb_id: 'stage_five_bonus_currency',
+					on_load: go_stage_reward_on_load
 				},
 				{
 					cmb_type: 'go_repeat_amount',
@@ -1019,12 +1055,6 @@ jQuery( document ).ready( function() {
 
 	go_accordion_array_on_load( go_accordion_array, go_accordion_array_names );
 });
-
-// jQuery( '.go_reward_points, .go_reward_currency, .go_reward_bonus_currency' ).on( 'keyup', function () {
-// 	var reward_stage = jQuery( this ).attr( 'stage' );
-// 	var reward_type = jQuery( this ).attr( 'reward' );
-// 	jQuery( 'input[stage=' + reward_stage + '][reward = ' + reward_type + ']' ).val( jQuery( this ).val() );
-// });
 
 // jQuery( '.go_task_settings_accordion' ).click( function () {
 // 	jQuery( this ).children( '.go_triangle_container' ).children( '.go_task_accordion_triangle' ).toggleClass( 'down' );

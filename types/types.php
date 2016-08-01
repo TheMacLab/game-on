@@ -1637,20 +1637,40 @@ function go_stage_reward( $field_args ) {
 	} else {
 		$rewards = unserialize( $custom['go_presets'][0] );
 	}
-	echo "<div id='stage_{$field_args['stage']}'>";
+
+	$stage_num   = $field_args['stage'];
+	$reward_type = $field_args['reward'];
+
+	echo "<div id='stage_{$stage_num}'>";
 	if ( $rewards ) {
 		for ( $i = 1; $i <= 5; $i++ ) {
-			echo "
-				<input stage='{$i}' reward='{$field_args['reward']}' type='text' name='stage_{$field_args['stage']}_{$field_args['reward']}[".( $i - 1)."]' 
-					class='go_reward_input go_reward_{$field_args['reward']} go_reward_{$field_args['reward']}_{$i} ".( $field_args['stage'] == $i ? "go_current" : "" )."' value='".
-					( ( $field_args['reward'] == 'points' ) && ( ! empty( $rewards['points'] ) ) ? $rewards['points'][ $i-1 ] : 
-					( ( $field_args['reward'] == 'currency' ) && ( ! empty( $rewards['currency'] ) ) ? $rewards['currency'][ $i-1 ] :
-					( ( $field_args['reward'] == 'bonus_currency' ) && ( ! empty( $rewards['bonus_currency'] ) ) ? $rewards['bonus_currency'][ $i-1 ] : 0) ) )."'
-				/>
-			";
+
+			$input_name = "stage_{$stage_num}_{$reward_type}[" . ( $i - 1 ) . ']';
+			$input_classes = "go_reward_input go_reward_{$reward_type} go_reward_{$reward_type}_{$i}";
+			if ( $stage_num === $i ) {
+				$input_classes .= ' go_current';
+			}
+
+			$input_val = 0;
+			if ( 'points' === $reward_type && ! empty( $rewards['points'][ $i - 1 ] ) ) {
+				$input_val = (int) $rewards['points'][ $i - 1 ];
+			} elseif ( 'currency' === $reward_type && ! empty( $rewards['currency'][ $i - 1 ] ) ) {
+				$input_val = (int) $rewards['currency'][ $i - 1 ];
+			} elseif ( 'bonus_currency' === $reward_type && ! empty( $rewards['bonus_currency'][ $i - 1 ] ) ) {
+				$input_val = (int) $rewards['bonus_currency'][ $i - 1 ];
+			}
+
+			printf(
+				'<input type="text" name="%s" class="%s" value=%d stage=%d reward="%s"/>',
+				$input_name,
+				$input_classes,
+				$input_val,
+				$i,
+				$reward_type
+			);
 		}
 	}
-	echo "</div>";
+	echo '</div>';
 }
 
 add_action( 'post_submitbox_misc_actions', 'go_clone_post_ajax' );
