@@ -169,7 +169,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Format'.go_task_opt_help( 'encounter_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
-				'id' => "{$prefix}test_lock_encounter",
+				'id' => "{$prefix}test_encounter_lock_fields",
 				'type' => 'go_test_field',
 				'test_type' => 'e'
 			),
@@ -250,7 +250,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Format'.go_task_opt_help( 'accept_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
-				'id' => "{$prefix}test_lock_accept",
+				'id' => "{$prefix}test_accept_lock_fields",
 				'type' => 'go_test_field',
 				'test_type' => 'a'
 			),
@@ -331,7 +331,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Format'.go_task_opt_help( 'complete_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
-				'id' => "{$prefix}test_lock_completion",
+				'id' => "{$prefix}test_completion_lock_fields",
 				'type' => 'go_test_field',
 				'test_type' => 'c'
 			),
@@ -412,7 +412,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 			),
 			array(
 				'name' => 'Format'.go_task_opt_help( 'mastery_understand_test_fields', '', 'http://maclab.guhsd.net/go/video/quests/testFields.mp4' ),
-				'id' => "{$prefix}test_lock_mastery",
+				'id' => "{$prefix}test_mastery_lock_fields",
 				'type' => 'go_test_field',
 				'test_type' => 'm'
 			),

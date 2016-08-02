@@ -116,6 +116,67 @@ function go_admin_lock_on_toggle( row_class ) {
 	}
 }
 
+function go_test_loot_checkbox_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+
+	// determines whether or not the primary test checkbox is checked
+	var test_checkbox = jQuery( row_class ).prev( 'tr' ).find( 'input[type="checkbox"]' );
+
+	var is_checked = false;
+	if ( 1 === test_checkbox.length && test_checkbox.is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	if ( ! visible && is_checked ) {
+		jQuery( row_class ).show();
+	} else if ( visible && ! is_checked ) {
+		jQuery( row_class ).hide();
+	}
+}
+
+function go_test_loot_mod_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+
+	var loot_checkbox_row = jQuery( row_class ).prev( 'tr' );
+	var loot_checkbox = loot_checkbox_row.find( 'input[type="checkbox"]' );
+
+	var test_checkbox = loot_checkbox_row.prev( 'tr' ).find( 'input[type="checkbox"]' );
+
+	var is_loot_checked = false;
+	if ( 1 === loot_checkbox.length && loot_checkbox.is( ':checked' ) ) {
+		is_loot_checked = true;
+	}
+
+	var is_primary_checked = false;
+	if ( 1 === test_checkbox.length && test_checkbox.is( ':checked' ) ) {
+		is_primary_checked = true;
+	}
+
+	if ( ! visible && is_loot_checked && is_primary_checked ) {
+		jQuery( row_class ).show();
+	} else if ( visible && ( ! is_loot_checked || is_primary_checked ) ) {
+		jQuery( row_class ).hide();
+	}
+}
+
+function go_test_field_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+
+	// determines whether or not the primary test checkbox is checked
+	var test_checkbox = jQuery( row_class ).go_prev_n( 3, 'tr' ).find( 'input[type="checkbox"]' );
+
+	var is_checked = false;
+	if ( 1 === test_checkbox.length && test_checkbox.is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	if ( ! visible && is_checked ) {
+		jQuery( row_class ).show();
+	} else if ( visible && ! is_checked ) {
+		jQuery( row_class ).hide();
+	}
+}
+
 /**
  * Accordion On Load Handlers
  *
@@ -234,6 +295,26 @@ function go_admin_lock_on_load( row ) {
 
 	if ( 1 === lock_checkbox.length ) {
 		lock_checkbox.change( go_admin_lock_checkbox_on_change );
+	}
+}
+
+function go_test_checkbox_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var test_checkbox = jQuery( row.class + ' input[type="checkbox"]' );
+
+	if ( 1 === test_checkbox.length ) {
+		test_checkbox.change( { row_class: row.class }, go_test_checkbox_on_change );
+	}
+}
+
+function go_test_loot_checkbox_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var loot_checkbox = jQuery( row.class + ' input[type="checkbox"]' );
+
+	if ( 1 === loot_checkbox.length ) {
+		loot_checkbox.change( { row_class: row.class }, go_test_loot_checkbox_on_change );
 	}
 }
 
@@ -438,6 +519,62 @@ function go_admin_lock_checkbox_on_change( event ) {
 		if ( jQuery( password_field ).is( ':visible' ) ) {
 			jQuery( password_field ).hide();
 		}
+	}
+}
+
+function go_test_checkbox_on_change( event ) {
+	var target_checkbox = event.target;
+	var checkbox_row_class = event.handleObj.data.row_class;
+	var row_stage = target_checkbox.id.getMid( 'go_mta_test_', '_lock' );
+	var is_checked = jQuery( target_checkbox ).is( ':checked' );
+
+	var test_loot_checkbox_row = jQuery( checkbox_row_class + ' ~ tr.cmb_id_go_mta_test_' + row_stage + '_lock_loot' ).first();
+	var test_loot_row = jQuery( checkbox_row_class + ' ~ tr.cmb_id_go_mta_test_' + row_stage + '_lock_loot_mod' ).first();
+	var test_field_row = jQuery( checkbox_row_class + ' ~ tr.cmb-type-go_test_field' ).first();
+
+	var test_loot_checkbox = test_loot_checkbox_row.find( 'input[type="checkbox"]' );
+	var is_loot_checked = test_loot_checkbox.is( ':checked' );
+
+	if ( is_checked ) {
+		if ( ! test_loot_checkbox_row.is( ':visible' ) ) {
+			test_loot_checkbox_row.show();
+		}
+
+		if ( ! test_loot_row.is( ':visible' ) && is_loot_checked ) {
+			test_loot_row.show();
+		}
+
+		if ( ! test_field_row.is( ':visible' ) ) {
+			test_field_row.show();
+		}
+	} else {
+		if ( test_loot_checkbox_row.is( ':visible' ) ) {
+			test_loot_checkbox_row.hide();
+		}
+
+		if ( test_loot_row.is( ':visible' ) ) {
+			test_loot_row.hide();
+		}
+
+		if ( test_field_row.is( ':visible' ) ) {
+			test_field_row.hide();
+		}
+	}
+}
+
+function go_test_loot_checkbox_on_change( event ) {
+	var target_checkbox = event.target;
+	var checkbox_row_class = event.handleObj.data.row_class;
+	var row_stage = target_checkbox.id.getMid( 'go_mta_test_', '_lock_loot' );
+	var is_checked = jQuery( target_checkbox ).is( ':checked' );
+
+	var test_loot_row = jQuery( checkbox_row_class + ' ~ tr.cmb_id_go_mta_test_' + row_stage + '_lock_loot_mod' ).first();
+	var is_visible = test_loot_row.is( ':visible' );
+
+	if ( is_checked && ! is_visible ) {
+		test_loot_row.show();
+	} else if ( ! is_checked && is_visible ) {
+		test_loot_row.hide();
 	}
 }
 
@@ -773,19 +910,24 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_encounter_lock'
+					cmb_id: 'test_encounter_lock',
+					on_load: go_test_checkbox_on_load
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_encounter_lock_loot'
+					cmb_id: 'test_encounter_lock_loot',
+					on_load: go_test_loot_checkbox_on_load,
+					on_toggle: go_test_loot_checkbox_on_toggle
 				},
 				{
 					cmb_type: 'go_test_modifier',
-					cmb_id: 'test_encounter_lock_loot_mod'
+					cmb_id: 'test_encounter_lock_loot_mod',
+					on_toggle: go_test_loot_mod_on_toggle
 				},
 				{
 					cmb_type: 'go_test_field',
-					cmb_id: 'test_lock_encounter'
+					cmb_id: 'test_encounter_lock_fields',
+					on_toggle: go_test_field_on_toggle
 				},
 				{
 					cmb_type: 'go_badge_input',
@@ -826,19 +968,24 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_accept_lock'
+					cmb_id: 'test_accept_lock',
+					on_load: go_test_checkbox_on_load
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_accept_lock_loot'
+					cmb_id: 'test_accept_lock_loot',
+					on_load: go_test_loot_checkbox_on_load,
+					on_toggle: go_test_loot_checkbox_on_toggle
 				},
 				{
 					cmb_type: 'go_test_modifier',
-					cmb_id: 'test_accept_lock_loot_mod'
+					cmb_id: 'test_accept_lock_loot_mod',
+					on_toggle: go_test_loot_mod_on_toggle
 				},
 				{
 					cmb_type: 'go_test_field',
-					cmb_id: 'test_lock_accept'
+					cmb_id: 'test_accept_lock_fields',
+					on_toggle: go_test_field_on_toggle
 				},
 				{
 					cmb_type: 'go_badge_input',
@@ -879,19 +1026,24 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_completion_lock'
+					cmb_id: 'test_completion_lock',
+					on_load: go_test_checkbox_on_load
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_completion_lock_loot'
+					cmb_id: 'test_completion_lock_loot',
+					on_load: go_test_loot_checkbox_on_load,
+					on_toggle: go_test_loot_checkbox_on_toggle
 				},
 				{
 					cmb_type: 'go_test_modifier',
-					cmb_id: 'test_completion_lock_loot_mod'
+					cmb_id: 'test_completion_lock_loot_mod',
+					on_toggle: go_test_loot_mod_on_toggle
 				},
 				{
 					cmb_type: 'go_test_field',
-					cmb_id: 'test_lock_completion'
+					cmb_id: 'test_completion_lock_fields',
+					on_toggle: go_test_field_on_toggle
 				},
 				{
 					cmb_type: 'go_badge_input',
@@ -932,19 +1084,24 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_mastery_lock'
+					cmb_id: 'test_mastery_lock',
+					on_load: go_test_checkbox_on_load
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'test_mastery_lock_loot'
+					cmb_id: 'test_mastery_lock_loot',
+					on_load: go_test_loot_checkbox_on_load,
+					on_toggle: go_test_loot_checkbox_on_toggle
 				},
 				{
 					cmb_type: 'go_test_modifier',
-					cmb_id: 'test_mastery_lock_loot_mod'
+					cmb_id: 'test_mastery_lock_loot_mod',
+					on_toggle: go_test_loot_mod_on_toggle
 				},
 				{
 					cmb_type: 'go_test_field',
-					cmb_id: 'test_lock_mastery'
+					cmb_id: 'test_mastery_lock_fields',
+					on_toggle: go_test_field_on_toggle
 				},
 				{
 					cmb_type: 'checkbox',

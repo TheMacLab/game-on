@@ -620,7 +620,11 @@ function go_task_shortcode( $atts, $content = null ) {
 									echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
 								}
 								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							} else {
+							} elseif ( ! empty( $test_e_all_types[0] ) &&
+									! empty( $test_e_all_questions[0] ) &&
+									! empty( $test_e_all_answers[0] ) &&
+									! empty( $test_e_all_keys[0] ) ) {
+								
 								echo do_shortcode( "[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 							}
 						}
@@ -1791,22 +1795,22 @@ function go_unlock_stage() {
 
 	switch ( $status ) {
 		case ( 0 ):
-			$test_stage = 'go_mta_test_lock_encounter';
+			$test_stage = 'go_mta_test_encounter_lock_fields';
 			$custom_mod = $custom_fields['go_mta_test_encounter_lock_loot_mod'][0];
 			$test_fail_name = 'test_encounter_fail_count';
 			break;
 		case ( 1 ):
-			$test_stage = 'go_mta_test_lock_accept';
+			$test_stage = 'go_mta_test_accept_lock_fields';
 			$custom_mod = $custom_fields['go_mta_test_accept_lock_loot_mod'][0];
 			$test_fail_name = 'test_accept_fail_count';
 			break;
 		case ( 2 ):
-			$test_stage = 'go_mta_test_lock_completion';
+			$test_stage = 'go_mta_test_completion_lock_fields';
 			$custom_mod = $custom_fields['go_mta_test_completion_lock_loot_mod'][0];
 			$test_fail_name = 'test_completion_fail_count';
 			break;
 		case ( 3 ):
-			$test_stage = 'go_mta_test_lock_mastery';
+			$test_stage = 'go_mta_test_mastery_lock_fields';
 			$custom_mod = $custom_fields['go_mta_test_mastery_lock_loot_mod'][0];
 			$test_fail_name = 'test_mastery_fail_count';
 			break;

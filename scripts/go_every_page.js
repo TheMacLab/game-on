@@ -698,3 +698,45 @@ if ( ! Math.ceil10 ) {
 		return decimalAdjust( 'ceil', value, exp );
 	};
 }
+
+/**
+ * Retrieves the jQuery object of the nth previous element.
+ *
+ * @since 2.6.1
+ *
+ * @see jQuery.prototype.prev()
+ *
+ * @param int    n        The number of times to call `jQuery.prev()`.
+ * @param string selector Optional. The selector to be passed to each query.
+ * @return jQuery|null The nth previous sibling, or null if none are found in the nth previous
+ *                     position.
+ */
+jQuery.prototype.go_prev_n = function ( n, selector ) {
+	if ( 'undefined' === typeof n ) {
+		console.error( 'Game On Error: go_prev_n() requires at least one argument.' );
+		return null;
+	} else if ( 'int' !== typeof n ) {
+		n = Number.parseInt( n );
+	}
+
+	var obj = null;
+	for ( var x = 0; x < n; x++ ) {
+		if ( 0 === x ) {
+			if ( 'undefined' !== typeof selector ) {
+				obj = jQuery( this ).prev( selector );
+			} else {
+				obj = jQuery( this ).prev();
+			}
+		} else if ( null !== obj ) {
+			if ( 'undefined' !== typeof selector ) {
+				obj = jQuery( obj ).prev( selector );
+			} else {
+				obj = jQuery( obj ).prev();
+			}
+		} else {
+			break;
+		}
+	}
+
+	return obj;
+};
