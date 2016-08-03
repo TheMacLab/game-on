@@ -110,7 +110,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		$number_of_stages = 4;
 		
 		if ( $test_e_active ) {
-			$test_e_array = go_get_test_meta_content( $custom_fields, 'encounter' );
+			$test_e_array = go_task_get_test_meta( 'encounter', $id );
 			$test_e_returns = $test_e_array[0];
 			$test_e_num = $test_e_array[1];
 			$test_e_all_questions = $test_e_array[2][0];
@@ -121,7 +121,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		$encounter_upload = ( ! empty( $custom_fields['go_mta_encounter_upload'][0] ) ? $custom_fields['go_mta_encounter_upload'][0] : false );
 
 		if ( $test_a_active ) {
-			$test_a_array = go_get_test_meta_content( $custom_fields, 'accept' );
+			$test_a_array = go_task_get_test_meta( 'accept', $id );
 			$test_a_returns = $test_a_array[0];
 			$test_a_num = $test_a_array[1];
 			$test_a_all_questions = $test_a_array[2][0];
@@ -132,7 +132,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		$accept_upload = ( ! empty( $custom_fields['go_mta_accept_upload'][0] ) ? $custom_fields['go_mta_accept_upload'][0] : false );
 
 		if ( $test_c_active ) {
-			$test_c_array = go_get_test_meta_content( $custom_fields, 'completion' );
+			$test_c_array = go_task_get_test_meta( 'completion', $id );
 			$test_c_returns = $test_c_array[0];
 			$test_c_num = $test_c_array[1];
 			$test_c_all_questions = $test_c_array[2][0];
@@ -147,7 +147,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
 
 			if ( $test_m_active ) {
-				$test_m_array = go_get_test_meta_content( $custom_fields, 'mastery' );
+				$test_m_array = go_task_get_test_meta( 'mastery', $id );
 				$test_m_returns = $test_m_array[0];
 				$test_m_num = $test_m_array[1];
 				$test_m_all_questions = $test_m_array[2][0];
@@ -624,7 +624,7 @@ function go_task_shortcode( $atts, $content = null ) {
 									! empty( $test_e_all_questions[0] ) &&
 									! empty( $test_e_all_answers[0] ) &&
 									! empty( $test_e_all_keys[0] ) ) {
-								
+
 								echo do_shortcode( "[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 							}
 						}
@@ -1595,15 +1595,54 @@ function go_task_shortcode( $atts, $content = null ) {
 
 add_shortcode( 'go_task','go_task_shortcode' );
 
-function go_get_test_meta_content( $custom_fields, $stage ) {
-	$test_returns = ( ! empty( $custom_fields["go_mta_test_{$stage}_lock_loot"][0] ) ? $custom_fields["go_mta_test_{$stage}_lock_loot"][0] : null );
-	$test_array = ( ! empty( $custom_fields["go_mta_test_lock_{$stage}"][0] ) ? $custom_fields["go_mta_test_lock_{$stage}"][0] : null );
-	$test_uns = ( ! empty( $test_array ) ? unserialize( $test_array ) : null );
+/**
+ * Retrieves and formulates test meta data from a specific task and stage.
+ *
+ * Note that this function does not check that a stage has the test option enabled. It is expected
+ * that such checks will be made prior to calling the function. However, empty test meta data will
+ * return null.
+ *
+ * The test meta data arrays are separately ordered so that index 0 of the question array corresponds
+ * to index 0 of all the other arrays, index 1 to all the other index 1 elements, and so on.
+ *
+ * @since 2.6.1
+ *
+ * @param string $stage   The stage. e.g. "encounter", "accept", "completion", "mastery" ("repeat"
+ *                        would return null, since there is no test option in the fifth stage).
+ * @param int    $task_id Optional. The task ID.
+ * @return array|null An array of data pertaining to the stage's test(s). Null when the stage's meta
+ *                    data is empty.
+ *
+ * e.g. array(
+ *           $test_returns,            // loot meta data
+ *           $test_num,                // the number of questions
+ *           array(
+ *                $test_all_questions, // an array of questions
+ *                $test_all_types,     // an array of question types (Multiple Choice or
+ *                                     // Multiple Select)
+ *                $test_all_answers,   // an array of potential answers
+ *                $test_all_keys,      // an array of answer keys
+ *           ),
+ *      )
+ */
+function go_task_get_test_meta( $stage, $task_id ) {
+	if ( empty( $stage ) ) {
+		return null;
+	}
 
-	if ( ! empty( $test_uns ) ) {
-		$test_num = $test_uns[3];
+	if ( empty( $task_id ) ) {
+		$task_id = get_the_id();
+	} elseif ( 'int' !== gettype( $task_id ) ) {
+		$task_id = (int) $task_id;
+	}
+
+	$test_returns = get_post_meta( $task_id, "go_mta_test_{$stage}_lock_loot", true );
+	$test_array = get_post_meta( $task_id, "go_mta_test_{$stage}_lock_fields", true );
+
+	if ( ! empty( $test_array ) ) {
+		$test_num = $test_array[3];
 		$test_all_questions = array();
-		foreach ( $test_uns[0] as $question ) {
+		foreach ( $test_array[0] as $question ) {
 			$esc_question = htmlspecialchars( $question, ENT_QUOTES );
 			if ( preg_match( "/[\\\[\]]/", $question ) ) {
 				$str = preg_replace( array( "/\[/", "/\]/", "/\\\/" ), array( '&#91;', '&#93;', '\\\\\\\\\\\\' ), $esc_question );
@@ -1612,9 +1651,9 @@ function go_get_test_meta_content( $custom_fields, $stage ) {
 				$test_all_questions[] = $esc_question;
 			}
 		}
-		$test_all_types = $test_uns[2];
-		$test_all_inputs = $test_uns[1];
-		$test_all_input_num = $test_uns[4];
+		$test_all_types = $test_array[2];
+		$test_all_inputs = $test_array[1];
+		$test_all_input_num = $test_array[4];
 		$test_all_answers = array();
 		$test_all_keys = array();
 		for ( $i = 0; $i < count( $test_all_inputs ); $i++ ) {
@@ -1640,7 +1679,7 @@ function go_get_test_meta_content( $custom_fields, $stage ) {
 			}
 		}
 
-		return ( array( $test_returns, $test_num, array( $test_all_questions, $test_all_types, $test_all_answers, $test_all_keys ) ) );
+		return array( $test_returns, $test_num, array( $test_all_questions, $test_all_types, $test_all_answers, $test_all_keys ) );
 	} else {
 		return null;
 	}
@@ -2024,7 +2063,7 @@ function go_task_change_stage() {
 	$test_c_active = ( ! empty( $custom_fields['go_mta_test_completion_lock'][0] ) ? $custom_fields['go_mta_test_completion_lock'][0] : false );
 
 	if ( $test_e_active ) {
-		$test_e_array = go_get_test_meta_content( $custom_fields, 'encounter' );
+		$test_e_array = go_task_get_test_meta( 'encounter', $post_id );
 		$test_e_returns = $test_e_array[0];
 		$test_e_num = $test_e_array[1];
 		$test_e_all_questions = $test_e_array[2][0];
@@ -2035,7 +2074,7 @@ function go_task_change_stage() {
 	$encounter_upload = ( ! empty( $custom_fields['go_mta_encounter_upload'][0] ) ? $custom_fields['go_mta_encounter_upload'][0] : false );
 
 	if ( $test_a_active ) {
-		$test_a_array = go_get_test_meta_content( $custom_fields, 'accept' );
+		$test_a_array = go_task_get_test_meta( 'accept', $post_id );
 		$test_a_returns = $test_a_array[0];
 		$test_a_num = $test_a_array[1];
 		$test_a_all_questions = $test_a_array[2][0];
@@ -2046,7 +2085,7 @@ function go_task_change_stage() {
 	$accept_upload = ( ! empty( $custom_fields['go_mta_accept_upload'][0] ) ? $custom_fields['go_mta_accept_upload'][0] : false );
 
 	if ( $test_c_active ) {
-		$test_c_array = go_get_test_meta_content( $custom_fields, 'completion' );
+		$test_c_array = go_task_get_test_meta( 'completion', $post_id );
 		$test_c_returns = $test_c_array[0];
 		$test_c_num = $test_c_array[1];
 		$test_c_all_questions = $test_c_array[2][0];
@@ -2061,7 +2100,7 @@ function go_task_change_stage() {
 		$bonus_loot = ( ! empty( $custom_fields['go_mta_mastery_bonus_loot'][0] ) ? unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] ) : null );
 
 		if ( $test_m_active ) {
-			$test_m_array = go_get_test_meta_content( $custom_fields, 'mastery' );
+			$test_m_array = go_task_get_test_meta( 'mastery', $post_id );
 			$test_m_returns = $test_m_array[0];
 			$test_m_num = $test_m_array[1];
 			$test_m_all_questions = $test_m_array[2][0];
