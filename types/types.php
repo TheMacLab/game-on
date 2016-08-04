@@ -823,8 +823,8 @@ function go_validate_decay_table() {
 }
 
 
-add_action( 'cmb_render_go_bonus_loot', 'go_bonus_loot' );
-function go_bonus_loot( $field_args ) {
+add_action( 'cmb_render_go_bonus_loot', 'go_render_bonus_loot' );
+function go_render_bonus_loot( $field_args ) {
 	$custom = get_post_custom();
 	$check_array = ( ! empty( $custom['go_mta_mastery_bonus_loot'][0] ) ? unserialize( $custom['go_mta_mastery_bonus_loot'][0] ) : null );
 	$meta_id = $field_args['id'];

@@ -200,6 +200,29 @@ function go_badge_input_on_toggle( row_class ) {
 	}
 }
 
+function go_bonus_loot_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+
+	var bonus_loot_checkbox = jQuery( row_class + ' #go_bonus_loot_checkbox' );
+	var bonus_loot_wrap     = jQuery( row_class + ' #go_bonus_loot_wrap' );
+
+	var is_checked = false;
+	if ( 1 === bonus_loot_checkbox.length && bonus_loot_checkbox.is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	if ( ! visible ) {
+		jQuery( row_class ).show();
+		if ( ! is_checked ) {
+			jQuery( bonus_loot_wrap ).hide();
+		} else {
+			jQuery( bonus_loot_wrap ).show();
+		}
+	} else {
+		jQuery( row_class ).hide();
+	}
+}
+
 /**
  * Accordion On Load Handlers
  *
@@ -358,6 +381,16 @@ function go_badge_input_on_load( row ) {
 
 	if ( del_buttons.length >= 1 ) {
 		del_buttons.click( go_badge_input_del_field );
+	}
+}
+
+function go_bonus_loot_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var bonus_loot_checkbox = jQuery( row.class + ' #go_bonus_loot_checkbox' );
+
+	if ( 1 === bonus_loot_checkbox.length ) {
+		bonus_loot_checkbox.change( go_bonus_loot_checkbox_on_change );
 	}
 }
 
@@ -737,6 +770,24 @@ function go_badge_input_clear_empty_fields() {
 				}
 			}
 		}
+	}
+}
+
+function go_bonus_loot_checkbox_on_change( event ) {
+	var target_checkbox = event.target;
+	var is_checked = jQuery( target_checkbox ).is( ':checked' );
+
+	var bonus_loot_wrap = jQuery( target_checkbox ).siblings( '#go_bonus_loot_wrap' );
+
+	var is_visible = false;
+	if ( bonus_loot_wrap.is( ':visible' ) ) {
+		is_visible = true;
+	}
+
+	if ( is_checked && ! is_visible ) {
+		bonus_loot_wrap.show();
+	} else if ( ! is_checked && is_visible ) {
+		bonus_loot_wrap.hide();
 	}
 }
 
@@ -1205,7 +1256,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_bonus_loot',
-					cmb_id: 'mastery_bonus_loot'
+					cmb_id: 'mastery_bonus_loot',
+					on_load: go_bonus_loot_on_load,
+					on_toggle: go_bonus_loot_on_toggle
 				},
 			],
 		},
