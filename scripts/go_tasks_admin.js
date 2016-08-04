@@ -345,9 +345,19 @@ function go_badge_input_on_load( row ) {
 	jQuery( row.class ).hide();
 
 	var badge_checkbox = jQuery( row.class + ' .go_badge_input_toggle' );
+	var add_buttons    = jQuery( row.class + ' .go_badge_input_add' );
+	var del_buttons    = jQuery( row.class + ' .go_badge_input_del' );
 
 	if ( 1 === badge_checkbox.length ) {
 		badge_checkbox.change( go_badge_input_checkbox_on_change );
+	}
+
+	if ( add_buttons.length >= 1 ) {
+		add_buttons.click( go_badge_input_add_field );
+	}
+
+	if ( del_buttons.length >= 1 ) {
+		del_buttons.click( go_badge_input_del_field );
 	}
 }
 
@@ -627,6 +637,64 @@ function go_badge_input_checkbox_on_change( event ) {
 	} else if ( ! is_checked && is_visible ) {
 		badge_input_list.hide();
 	}
+}
+
+function go_badge_input_add_field( event ) {
+	var add_button       = event.target;
+	var del_button       = jQuery( add_button ).siblings( '.go_badge_input_button' ).eq( 0 );
+	var badge_input      = jQuery( add_button ).siblings( '.go_badge_input' )[0];
+	var badge_list       = jQuery( add_button ).parents().eq( 1 );
+	var badge_item       = jQuery( add_button ).parents().eq( 0 );
+	var new_input_attrs  = [ 'type', 'name', 'class', 'stage' ];
+	var new_button_attrs = [ 'type', 'class', 'value' ];
+
+	// creates a new list item for the badge list
+	var new_item = document.createElement( 'li' );
+	jQuery( badge_item ).after( new_item );
+
+	// create a new input element
+	var new_input = document.createElement( 'input' );
+	jQuery( new_item ).append( new_input );
+
+	// creates add new button for adding list items
+	var new_add_button = document.createElement( 'input' );
+	jQuery( new_item ).append( new_add_button );
+
+	// creates add new button for deleting list items
+	var new_del_button = document.createElement( 'input' );
+	jQuery( new_item ).append( new_del_button );
+
+	var old_val = '';
+
+	// gives the new input element all the old element's attributes (excluding value)
+	for ( var x = 0; x < new_input_attrs.length; x++ ) {
+		old_val = jQuery( badge_input ).attr( new_input_attrs[ x ] );
+		jQuery( new_input ).attr( new_input_attrs[ x ], old_val );
+	}
+
+	// gives the new add button all the old add button's attributes
+	for ( var i = 0; i < new_button_attrs.length; i++ ) {
+		old_val = jQuery( add_button ).attr( new_button_attrs[ i ] );
+		jQuery( new_add_button ).attr( new_button_attrs[ i ], old_val );
+	}
+
+	// attaches a click event listener to the add button
+	jQuery( new_add_button ).click( go_badge_input_add_field );
+
+	// gives the new delete button all the old delete button's attributes
+	if ( del_button.length > 0 ) {
+		for ( var y = 0; y < new_button_attrs.length; y++ ) {
+			old_val = jQuery( del_button ).attr( new_button_attrs[ y ] );
+			jQuery( new_del_button ).attr( new_button_attrs[ y ], old_val );
+		}
+
+		// attaches a click event listener to the delete button
+		jQuery( new_del_button ).click( go_badge_input_del_field );
+	}
+}
+
+function go_badge_input_del_field( event ) {
+
 }
 
 function go_before_task_publish_handler( e, skip_default ) {

@@ -2069,6 +2069,8 @@ function go_render_badge_input( $field_args ) {
 				'<li>'.
 					'<input type="text" name="go_badge_input_stage_%1$s[]" class="go_badge_input" '.
 						'stage="%1$s" value="%2$s"/>'.
+					'<input type="button" class="go_badge_input_add go_badge_input_button" value="+" />'.
+					'<input type="button" class="go_badge_input_del go_badge_input_button" value="-" />'.
 				'</li>',
 				$row_stage,
 				$badge
@@ -2079,6 +2081,7 @@ function go_render_badge_input( $field_args ) {
 			'<li>'.
 				'<input type="text" name="go_badge_input_stage_%1$s[]" class="go_badge_input" '.
 					'stage="%1$s" placeholder="Badge ID"/>'.
+				'<input type="button" class="go_badge_input_add go_badge_input_button" value="+" />'.
 			'</li>',
 			$row_stage
 		);
