@@ -641,7 +641,7 @@ function go_badge_input_checkbox_on_change( event ) {
 
 function go_badge_input_add_field( event ) {
 	var add_button       = event.target;
-	var del_button       = jQuery( add_button ).siblings( '.go_badge_input_button' ).eq( 0 );
+	var del_button       = jQuery( add_button ).siblings( '.go_badge_input_del' ).eq( 0 );
 	var badge_input      = jQuery( add_button ).siblings( '.go_badge_input' )[0];
 	var badge_list       = jQuery( add_button ).parents().eq( 1 );
 	var badge_item       = jQuery( add_button ).parents().eq( 0 );
@@ -678,7 +678,7 @@ function go_badge_input_add_field( event ) {
 		jQuery( new_add_button ).attr( new_button_attrs[ i ], old_val );
 	}
 
-	// attaches a click event listener to the add button
+	// attaches a click event listener to the new add button
 	jQuery( new_add_button ).click( go_badge_input_add_field );
 
 	// gives the new delete button all the old delete button's attributes
@@ -688,13 +688,37 @@ function go_badge_input_add_field( event ) {
 			jQuery( new_del_button ).attr( new_button_attrs[ y ], old_val );
 		}
 
-		// attaches a click event listener to the delete button
+		// attaches a click event listener to the new delete button
 		jQuery( new_del_button ).click( go_badge_input_del_field );
+	}
+
+	var badge_list_items = badge_list.children( 'li' );
+
+	if ( badge_list_items.length > 0 ) {
+
+		// shows the delete button of the first element in the list, if it was hidden
+		var first_item_del_button = jQuery( badge_list_items[ 0 ] ).
+			children( '.go_badge_input_del' ).eq( 0 );
+		if ( ! first_item_del_button.is( ':visible' ) ) {
+			first_item_del_button.show();
+		}
 	}
 }
 
 function go_badge_input_del_field( event ) {
+	var del_button = event.target;
+	var badge_list = jQuery( del_button ).parents().eq( 1 );
+	var badge_item = jQuery( del_button ).parents().eq( 0 );
 
+	// deletes the current list item
+	jQuery( badge_item ).remove();
+
+	var badge_list_items = badge_list.children( 'li' );
+
+	// hides the delete button of the first element in the list, if there is only one left
+	if ( 1 === badge_list_items.length ) {
+		jQuery( badge_list_items[ 0 ] ).children( '.go_badge_input_del' ).hide();
+	}
 }
 
 function go_before_task_publish_handler( e, skip_default ) {
