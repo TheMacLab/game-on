@@ -2044,45 +2044,72 @@ function go_validate_store_gift() {
 	);
 }
 
-add_action( 'cmb_render_go_badge_input', 'go_badge_input', 10, 1);
-function go_badge_input( $field_args ) {
-	$custom = get_post_custom();
-	$content = ( ! empty( $custom[ $field_args['id'] ][0] ) ? unserialize( $custom[ $field_args['id'] ][0] ) : null );
-	
-	$checked = ( ! empty( $content[0] ) ? 'checked' : '' );
-	$badges  = ( ! empty( $content[1] ) ? (array) $content[1] : array() );
-	
-	?>
-	<input type='checkbox' name='<?php echo $field_args['id']; ?>' class='go_badge_input_toggle' stage='<?php echo $field_args['stage']; ?>' <?php echo $checked; ?>/>
-	<div id='go_stage_<?php echo $field_args['stage']; ?>_badges' class='go_stage_badge_container'>
-	<?php
+add_action( 'cmb_render_go_badge_input', 'go_render_badge_input', 10, 1 );
+function go_render_badge_input( $field_args ) {
+	global $post;
+
+	// doesn't display anything if no stage or ID is provided
+	if ( empty( $field_args['id'] ) || empty( $field_args['stage'] ) ) {
+		return;
+	}
+
+	$row_id = $field_args['id'];
+	$row_stage = $field_args['stage'];
+
+	$badge_meta = get_post_meta( $post->ID, $row_id, true );
+
+	$checked = ( ! empty( $badge_meta[0] ) ? 'checked' : '' );
+	$badges  = ( ! empty( $badge_meta[1] ) ? (array) $badge_meta[1] : array() );
+
+	$badge_elems = '';
+
 	if ( ! empty( $badges ) ) {
 		foreach ( $badges as $badge ) {
-	?>
-			<input type='text' name='go_badge_input_stage_<?php echo $field_args['stage']; ?>[]' class='go_badge_input' stage='<?php echo $field_args['stage']; ?>' value='<?php echo $badge; ?>'/>
-	<?php
+			$badge_elems .= sprintf(
+				'<li>'.
+					'<input type="text" name="go_badge_input_stage_%1$s[]" class="go_badge_input" '.
+						'stage="%1$s" value="%2$s"/>'.
+				'</li>',
+				$row_stage,
+				$badge
+			);
 		}
 	} else {
-	?>
-			<input type='text' name='go_badge_input_stage_<?php echo $field_args['stage']; ?>[]' class='go_badge_input' stage='<?php echo $field_args['stage']; ?>'/>
-	<?php 
+		$badge_elems = sprintf(
+			'<li>'.
+				'<input type="text" name="go_badge_input_stage_%1$s[]" class="go_badge_input" '.
+					'stage="%1$s" placeholder="Badge ID"/>'.
+			'</li>',
+			$row_stage
+		);
 	}
-	?>
-	</div>
-	<?php
+
+	printf(
+		'<input type="checkbox" name="%1$s" class="go_badge_input_toggle" stage="%2$s" %3$s/>'.
+		'<ul id="go_stage_%2$s_badges" class="go_stage_badge_container">%4$s</ul>',
+		$row_id,
+		$row_stage,
+		$checked,
+		$badge_elems
+	);
 }
 
 add_action( 'cmb_validate_go_badge_input', 'go_validate_badge_input', 10, 3 );
 function go_validate_badge_input( $override_value, $value, $field_args ) {
-	$checkbox_id = $field_args['id'];
+	$row_id = $field_args['id'];
 
-	$checked = ( ! empty( $_POST[ $checkbox_id ] ) ? true : false );
-	$badges = array();
+	$is_checked = ( ! empty( $_POST[ $row_id ] ) ? true : false );
+	$badge_ids = array();
 	if ( ! empty( $_POST[ "go_badge_input_stage_{$field_args['stage']}" ] ) ) {
-		$badges = (array) $_POST[ "go_badge_input_stage_{$field_args['stage']}" ];
+		$badge_ids = (array) $_POST[ "go_badge_input_stage_{$field_args['stage']}" ];
+
+		// casts each ID to an int
+		foreach ( $badge_ids as $key => $id ) {
+			$badge_ids[ $key ] = (int) $id;
+		}
 	}
 
-	return array( $checked, $badges );
+	return array( $is_checked, $badge_ids );
 }
 
 add_action( 'cmb_render_go_store_bonus', 'go_store_bonus' );
