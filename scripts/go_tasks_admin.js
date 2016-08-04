@@ -721,88 +721,29 @@ function go_badge_input_del_field( event ) {
 	}
 }
 
-function go_before_task_publish_handler( e, skip_default ) {
+function go_badge_input_clear_empty_fields() {
+	var stage_lists = jQuery( '.go_stage_badge_container' );
 
-	// the skip_default argument allows input validation to occur
-	// before the task is published
-	if ( "undefined" === typeof( skip_default ) ) {
-		skip_default = true;
-	}
+	if ( stage_lists.length > 0 ) {
+		for ( var i = 0; i < stage_lists.length; i++ ) {
+			var list_items = jQuery( stage_lists[ i ] ).children( 'li' );
 
-	var error_marked_elems = [];
+			for ( var x = 0; x < list_items.length; x++ ) {
+				var item = list_items[ x ];
+				var val = jQuery( list_items[ x ] ).children( '.go_badge_input' )[0].value;
 
-	if ( true === skip_default ) {
-		e.preventDefault();
-
-		window.location.hash = '';
-		jQuery( '.go_error_red' ).each( function ( index, element ) {
-			error_marked_elems.push( element.id );
-		});
-		if ( error_marked_elems.length > 0 ) {
-			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
-		}
-		
-		var task_error = false;
-		try {
-
-			// // bonus loot rarity field validation
-			// var go_bonus_loot_on = go_bonus_loot_check_box[0].checked;
-			// var go_bonus_loot_items_checked = jQuery( go_bonus_loot_items ).children( '.go_bonus_loot_checkbox:checked' );
-			// var go_bonus_loot_active_item_rarities = jQuery( go_bonus_loot_items_checked ).next( '.go_bonus_loot_rarity' );
-
-			// if ( go_bonus_loot_on && go_bonus_loot_items_checked.length > 0 ) {
-			// 	go_bonus_loot_rarity_validate( go_bonus_loot_active_item_rarities );
-			// }
-		} catch ( err ) {
-
-			// if an input is causing an issue (e.g. failed validation),
-			// stop the task from being updated
-			if ( 'Game On Error' === err.name && 'undefined' !== typeof( err.el_ids ) ) {
-				
-				// open the accordion that the problematic element is under
-				if ( ! jQuery( err.accord_id ).hasClass( 'opened' ) ) {
-					jQuery( err.accord_id ).trigger( 'click' );
+				if ( '' === val || 0 === Number.parseInt( val ) ) {
+					jQuery( item ).remove();
 				}
-
-				// direct the user to the problematic element
-				window.location.hash = err.el_ids[0];
-
-				go_add_errors( err.el_ids, 'go_bonus_loot_error_msg', err.message );
-
-				task_error = true;
 			}
 		}
-
-		if ( false === task_error ) {
-			jQuery( 'input#publish' ).trigger( 'click', [false] );
-		}
-	} else {
-		jQuery( '.go_error_red' ).each( function ( index, element ) {
-			error_marked_elems.push( element.id );
-		});
-		if ( error_marked_elems.length > 0 ) {
-			go_remove_errors( error_marked_elems, 'go_bonus_loot_error_msg' );
-		}
 	}
 }
 
-function go_add_errors( id_array, error_msg ) {
-	jQuery.each( id_array, function ( index, input_id ) {
-		jQuery( '#' + input_id ).addClass( 'go_error_red' );
-	});
-
-	jQuery( '.go_error' ).show();
-	jQuery( '.go_error' ).html( error_msg );
+function go_before_task_publish_handler() {
+	go_badge_input_clear_empty_fields();
 }
 
-function go_remove_errors( id_array ) {
-	jQuery.each( id_array, function ( index, input_id ) {
-		jQuery( '#' + input_id ).removeClass( 'go_error_red' );
-	});
-
-	jQuery( '.go_error' ).hide();
-	jQuery( '.go_error' ).html();
-}
 
 /**
  * Toggles an accordion and its underlying settings.
