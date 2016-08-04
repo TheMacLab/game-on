@@ -111,7 +111,7 @@ function go_admin_lock_on_toggle( row_class ) {
 		} else {
 			jQuery( password_input ).show();
 		}
-	} else if ( visible ) {
+	} else {
 		jQuery( row_class ).hide();
 	}
 }
@@ -173,6 +173,29 @@ function go_test_field_on_toggle( row_class ) {
 	if ( ! visible && is_checked ) {
 		jQuery( row_class ).show();
 	} else if ( visible && ! is_checked ) {
+		jQuery( row_class ).hide();
+	}
+}
+
+function go_badge_input_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+
+	var badge_checkbox = jQuery( row_class + ' .go_badge_input_toggle' );
+	var badge_list     = jQuery( row_class + ' .go_stage_badge_container' );
+
+	var is_checked = false;
+	if ( 1 === badge_checkbox.length && badge_checkbox.is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	if ( ! visible ) {
+		jQuery( row_class ).show();
+		if ( ! is_checked ) {
+			jQuery( badge_list ).hide();
+		} else {
+			jQuery( badge_list ).show();
+		}
+	} else {
 		jQuery( row_class ).hide();
 	}
 }
@@ -315,6 +338,16 @@ function go_test_loot_checkbox_on_load( row ) {
 
 	if ( 1 === loot_checkbox.length ) {
 		loot_checkbox.change( { row_class: row.class }, go_test_loot_checkbox_on_change );
+	}
+}
+
+function go_badge_input_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var badge_checkbox = jQuery( row.class + ' .go_badge_input_toggle' );
+
+	if ( 1 === badge_checkbox.length ) {
+		badge_checkbox.change( go_badge_input_checkbox_on_change );
 	}
 }
 
@@ -575,6 +608,24 @@ function go_test_loot_checkbox_on_change( event ) {
 		test_loot_row.show();
 	} else if ( ! is_checked && is_visible ) {
 		test_loot_row.hide();
+	}
+}
+
+function go_badge_input_checkbox_on_change( event ) {
+	var target_checkbox = event.target;
+	var is_checked = jQuery( target_checkbox ).is( ':checked' );
+
+	var badge_input_list = jQuery( target_checkbox ).siblings( 'ul.go_stage_badge_container' );
+
+	var is_visible = false;
+	if ( badge_input_list.is( ':visible' ) ) {
+		is_visible = true;
+	}
+
+	if ( is_checked && ! is_visible ) {
+		badge_input_list.show();
+	} else if ( ! is_checked && is_visible ) {
+		badge_input_list.hide();
 	}
 }
 
@@ -931,7 +982,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_badge_input',
-					cmb_id: 'stage_one_badge'
+					cmb_id: 'stage_one_badge',
+					on_load: go_badge_input_on_load,
+					on_toggle: go_badge_input_on_toggle
 				},
 			],
 		},
@@ -989,7 +1042,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_badge_input',
-					cmb_id: 'stage_two_badge'
+					cmb_id: 'stage_two_badge',
+					on_load: go_badge_input_on_load,
+					on_toggle: go_badge_input_on_toggle
 				},
 			],
 		},
@@ -1047,7 +1102,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_badge_input',
-					cmb_id: 'stage_three_badge'
+					cmb_id: 'stage_three_badge',
+					on_load: go_badge_input_on_load,
+					on_toggle: go_badge_input_on_toggle
 				},
 			],
 		},
@@ -1109,7 +1166,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_badge_input',
-					cmb_id: 'stage_four_badge'
+					cmb_id: 'stage_four_badge',
+					on_load: go_badge_input_on_load,
+					on_toggle: go_badge_input_on_toggle
 				},
 				{
 					cmb_type: 'go_bonus_loot',
@@ -1155,7 +1214,9 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'go_badge_input',
-					cmb_id: 'stage_five_badge'
+					cmb_id: 'stage_five_badge',
+					on_load: go_badge_input_on_load,
+					on_toggle: go_badge_input_on_toggle
 				},
 			],
 		},
