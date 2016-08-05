@@ -814,11 +814,16 @@ function go_bonus_loot_validate_fields() {
 	var range_array = [];
 	var min, max = null;
 	var errs = [];
+	var doDefault = true;
 
 	// exits the function, if the option is disabled or if the input range is unreadable
 	if ( ! bonus_loot_checkbox.is( ':checked' ) ||
 			'' === rarity_range_str ||
 			null === rarity_range_str.match( rarity_range_regex ) ) {
+
+		// makes the task publish normally
+		jQuery( 'input#publish' ).trigger( 'click', doDefault );
+
 		return;
 	}
 
@@ -865,9 +870,8 @@ function go_bonus_loot_validate_fields() {
 		window.location.hash = '';
 		window.location.hash = 'go_bonus_loot_checkbox';
 	} else {
-		var doDefault = true;
 
-		// makes the page publish normally
+		// makes the task publish normally
 		jQuery( 'input#publish' ).trigger( 'click', doDefault );
 	}
 }
