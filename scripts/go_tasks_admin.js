@@ -233,15 +233,36 @@ function go_bonus_loot_on_toggle( row_class ) {
  * Function name convention: "go_[cmb_id]_on_load"
  */
 
+// a handler specifically for when the fourth stage accordion is first loaded
+function go_stage_four_on_load( row_class ) {
+	var three_stage_checkbox = jQuery( '#go_mta_three_stage_switch' );
+	var fourth_stage_wysiwyg = jQuery( row_class ).siblings( '.cmb_id_go_mta_mastery_message' );
+
+	if ( three_stage_checkbox.length > 0 ) {
+
+		// hides the fourth stage if the fourth stage checkbox is not already checked
+		if ( three_stage_checkbox.is( ':checked' ) ) {
+			if ( fourth_stage_wysiwyg.is( ':visible' ) ) {
+				fourth_stage_wysiwyg.hide();
+			}
+
+			if ( jQuery( row_class ).is( ':visible' ) ) {
+				jQuery( row_class ).hide();
+			}
+		}
+	}
+}
+
 // a handler specifically for when the fifth stage accordion is first loaded
 function go_stage_five_on_load( row_class ) {
+	var three_stage_checkbox = jQuery( '#go_mta_three_stage_switch' );
 	var fifth_stage_checkbox = jQuery( '#go_mta_five_stage_switch' );
 	var fifth_stage_wysiwyg = jQuery( row_class ).siblings( '.cmb_id_go_mta_repeat_message' );
 
 	if ( fifth_stage_checkbox.length > 0 ) {
 
 		// hides the fifth stage if the fifth stage checkbox is not already checked
-		if ( ! fifth_stage_checkbox.is( ':checked' ) ) {
+		if ( three_stage_checkbox.is( ':checked' ) || ! fifth_stage_checkbox.is( ':checked' ) ) {
 			if ( fifth_stage_wysiwyg.is( ':visible' ) ) {
 				fifth_stage_wysiwyg.hide();
 			}
@@ -1427,6 +1448,7 @@ function go_generate_accordion_array() {
 			],
 		},
 		stage_four: {
+			on_load: go_stage_four_on_load,
 			settings: [
 				{
 					cmb_type: 'go_stage_reward',
