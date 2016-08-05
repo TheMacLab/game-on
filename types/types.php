@@ -831,11 +831,7 @@ function go_render_bonus_loot( $field_args ) {
 	$bonus_loot_opt_checked = ( ! empty( $check_array[0] ) ? 'checked' : '' );
 	$min = 0.01;
 	$max = 99.99;
-	echo "
-		<input id='go_bonus_loot_checkbox' class='go_bonus_loot_checkbox' 
-			name='{$meta_id}' type='checkbox' {$bonus_loot_opt_checked}/>
-		<br/>
-	";
+	$range_str = "{$min}, {$max}";
 	$store_list = get_posts(
 		array(
 			'post_type' => 'go_store',
@@ -844,32 +840,42 @@ function go_render_bonus_loot( $field_args ) {
 			'meta_query' => array(
 				array(
 					'key' => 'go_mta_store_bonus',
-					'value' => 'on'
-				)
-			)
+					'value' => 'on',
+				),
+			),
 		)
 	);
-	echo "
-		<div id='go_bonus_loot_wrap'>
-			<div id='go_bonus_loot_error_msg' class='go_error' style='display: none;'></div>
-			<input type='hidden' name='go_bonus_loot_rarity_range' value='{$min}, {$max}'/>
-	";
+
+	$list_elems = '';
+
 	foreach ( $store_list as $store_item ) {
 		$rarity = ( ! empty( $check_array[2][ $store_item->ID ] ) ? $check_array[2][ $store_item->ID ] : 50 );
 		$item_checked = ( ! empty( $check_array[1][ $store_item->ID ] ) ? 'checked' : '' );
-		echo "
-			<input type='checkbox' class='go_bonus_loot_checkbox go_bonus_loot_item_checkbox'
-					name='go_task_bonus_loot_select[{$store_item->ID}]' 
-					{$item_checked}/>
-				{$store_item->post_title}
-			<input type='text' id='go_bonus_loot_rarity_{$store_item->ID}' class='go_bonus_loot_rarity' 
-					name='go_bonus_loot_rarity[{$store_item->ID}]' 
-					value='{$rarity}' min='{$min}' max='{$max}'/>
-				%
-			</br></br>
-		";
+		$list_elems .= sprintf(
+			'<li>'.
+				'<input type="checkbox" class="go_bonus_loot_checkbox go_bonus_loot_item_checkbox" '.
+					'name="go_task_bonus_loot_select[%1$d]" %2$s /> %3$s'.
+				'<input type="text" id="go_bonus_loot_rarity_%1$d" class="go_bonus_loot_rarity" '.
+					'name="go_bonus_loot_rarity[%1$d]" value="%4$0.2f" min="%5$0.2f" max="%6$0.2f" /> %%'.
+			'</li>',
+			$store_item->ID,
+			$item_checked,
+			$store_item->post_title,
+			$rarity,
+			$min,
+			$max
+		);
 	}
-	echo "</div>";
+
+	printf(
+		'<input id="go_bonus_loot_checkbox" class="go_bonus_loot_checkbox" name="%s" type="checkbox" %s/>'.
+		'<input type="hidden" class="go_bonus_loot_rarity_range" name="go_bonus_loot_rarity_range" value="%s"/>'.
+		'<ul id="go_bonus_loot_wrap">%s</ul>',
+		$meta_id,
+		$bonus_loot_opt_checked,
+		$range_str,
+		$list_elems
+	);
 }
 
 add_action( 'cmb_validate_go_bonus_loot', 'go_validate_bonus_loot' );

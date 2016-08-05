@@ -791,8 +791,113 @@ function go_bonus_loot_checkbox_on_change( event ) {
 	}
 }
 
-function go_before_task_publish_handler() {
-	go_badge_input_clear_empty_fields();
+function go_bonus_loot_validate_fields() {
+	var bonus_loot_checkbox = jQuery( '#go_bonus_loot_checkbox' );
+	var bonus_loot_wrap     = jQuery( '#go_bonus_loot_wrap' );
+	var bonus_loot_inputs   = bonus_loot_wrap.children( 'li' ).children( '.go_bonus_loot_rarity' );
+	var rarity_range_str    = bonus_loot_wrap.siblings( '.go_bonus_loot_rarity_range' ).eq( 0 ).val();
+	var rarity_range_regex  = /^([0-9]+\.[0-9]+|[0-9]+), ([0-9]+\.[0-9]+|[0-9]+)$/;
+	var range_array = [];
+	var min, max = null;
+	var errs = [];
+
+	// exits the function, if the option is disabled or if the input range is unreadable
+	if ( ! bonus_loot_checkbox.is( ':checked' ) ||
+			'' === rarity_range_str ||
+			null === rarity_range_str.match( rarity_range_regex ) ) {
+		return;
+	}
+
+	// removes existing error messages
+	bonus_loot_wrap.children( '.go_error' ).remove();
+
+	// retrieves the input minimum and maximum values
+	range_array = rarity_range_str.split( ', ' );
+	min = Number.parseFloat( range_array[0] );
+	max = Number.parseFloat( range_array[1] );
+
+	// validates that the input values are numerical and within the provided range
+	for ( var x = 0; x < bonus_loot_inputs.length; x++ ) {
+		try {
+			go_bonus_loot_validate_input_val( bonus_loot_inputs[ x ], min, max );
+		} catch ( err ) {
+			errs.push( { index: x, error: err } );
+		}
+	}
+
+	// displays any errors that were caught
+	for ( var i = 0; i < errs.length; i++ ) {
+
+		var erring_index = errs[ i ].index;
+		var erring_msg   = errs[ i ].error.message;
+
+		// create the new error message list item
+		var new_li = document.createElement( 'li' );
+		jQuery( bonus_loot_inputs ).eq( erring_index ).parent().before( new_li );
+		jQuery( new_li ).addClass( 'go_error' );
+
+		// create the span for the error message inside the error list item
+		var new_span = document.createElement( 'span' );
+		jQuery( new_li ).append( new_span );
+		jQuery( new_span ).addClass( 'go_error_red' );
+
+		// puts the error message into the span that was just created
+		jQuery( new_span ).html( erring_msg );
+	}
+
+	if ( errs.length > 0 ) {
+
+		// directs the user to any errors
+		window.location.hash = '';
+		window.location.hash = 'go_bonus_loot_checkbox';
+	} else {
+		var doDefault = true;
+
+		// makes the page publish normally
+		jQuery( 'input#publish' ).trigger( 'click', doDefault );
+	}
+}
+
+function go_bonus_loot_validate_input_val( input_el, min, max ) {
+	if ( 'undefined' === typeof input_el || 'undefined' === typeof min || 'undefined' === typeof max ) {
+		throw new Error(
+			'Something went wrong! Three arguments are required ' +
+			'for go_bonus_loot_validate_input_val().'
+		);
+	}
+
+	var val = input_el.value;
+	var is_nan = val.match( /([^0-9\.\-]+|(\..*\.)+)/ );
+
+	if ( null !== is_nan ) {
+
+		// throws an error indicating that the field is non-numeric
+		throw new Error( 'The input is not a number.' );
+	}
+
+	var in_range = false;
+	var val_float = Number.parseFloat( val );
+	var range_str = min + ', ' + max;
+
+	if ( val_float < min || val_float > max ) {
+
+		// throws an error indicating that the field is outside the allowed range
+		throw new Error( 'The input is outside the allowed range (' + range_str + ').' );
+	}
+}
+
+function go_before_task_publish_handler( event, doDefault ) {
+
+	if ( 'undefined' !== typeof doDefault && true === doDefault ) {
+
+		// for the go_badge_input cmb-type
+		go_badge_input_clear_empty_fields();
+	} else {
+		event.preventDefault();
+
+		// for the go_bonus_loot cmb-type
+		go_bonus_loot_validate_fields();
+	}
 }
 
 

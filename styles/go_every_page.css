@@ -539,13 +539,26 @@ a.pod_link {
 	background-color: #eee;
 }
 
-.go_bonus_loot_item_checkbox,
-#go_bonus_loot_wrap .go_error {
-	margin-left: 50px !important;
+#go_bonus_loot_checkbox {
+	display: block;
+}
+
+ul#go_bonus_loot_wrap {
+	list-style: none;
+	margin-top: 15px;
+	margin-bottom: 0;
+}
+
+ul#go_bonus_loot_wrap li {
+	margin-bottom: 10px;
+}
+
+ul#go_bonus_loot_wrap li.go_error {
+	padding: 0;
+	margin-top: 15px;
 }
 
 .go_bonus_loot_rarity {
-	margin-left: 10px !important;
 	width: 50px;
 }
 
