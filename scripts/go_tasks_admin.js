@@ -678,7 +678,7 @@ function go_badge_input_add_field( event ) {
 	var badge_input      = jQuery( add_button ).siblings( '.go_badge_input' )[0];
 	var badge_list       = jQuery( add_button ).parents().eq( 1 );
 	var badge_item       = jQuery( add_button ).parents().eq( 0 );
-	var new_input_attrs  = [ 'type', 'name', 'class', 'stage' ];
+	var new_input_attrs  = [ 'type', 'name', 'class', 'stage', 'placeholder' ];
 	var new_button_attrs = [ 'type', 'class', 'value' ];
 
 	// creates a new list item for the badge list
