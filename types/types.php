@@ -251,11 +251,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'stage' => 2
 			),
 			array(
-				'name' => '3 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'three_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4' ),
-				'id' => "{$prefix}three_stage_switch",
-				'type' => 'checkbox'
-			),
-			array(
 				'name' => 'Stage 3'.go_task_opt_help( 'complete', '', 'http://maclab.guhsd.net/go/video/quests/completionMessage.mp4' ),
 				'id' => "{$prefix}complete_message",
 				'type' => 'wysiwyg',
@@ -335,6 +330,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'id' => "{$prefix}stage_three_badge",
 				'type' => 'go_badge_input',
 				'stage' => 3
+			),
+			array(
+				'name' => '3 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'three_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4' ),
+				'id' => "{$prefix}three_stage_switch",
+				'type' => 'checkbox'
 			),
 			array(
 				'name' => 'Stage 4'.go_task_opt_help( 'mastery', '', 'http://maclab.guhsd.net/go/video/quests/stageFour.mp4' ),

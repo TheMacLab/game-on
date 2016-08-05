@@ -1288,10 +1288,6 @@ function go_generate_accordion_array() {
 					on_load: go_badge_input_on_load,
 					on_toggle: go_badge_input_on_toggle
 				},
-				{
-					cmb_type: 'checkbox',
-					cmb_id: 'three_stage_switch'
-				},
 			],
 		},
 		stage_three: {
@@ -1351,6 +1347,10 @@ function go_generate_accordion_array() {
 					cmb_id: 'stage_three_badge',
 					on_load: go_badge_input_on_load,
 					on_toggle: go_badge_input_on_toggle
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'three_stage_switch'
 				},
 			],
 		},
