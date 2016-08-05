@@ -402,6 +402,16 @@ function go_bonus_loot_on_load( row ) {
 	}
 }
 
+function go_three_stage_checkbox_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var three_stage_checkbox = jQuery( row.class + ' #go_mta_three_stage_switch' );
+
+	if ( 1 === three_stage_checkbox.length ) {
+		three_stage_checkbox.change( go_three_stage_checkbox_on_change );
+	}
+}
+
 function go_five_stage_checkbox_on_load( row ) {
 	jQuery( row.class ).hide();
 
@@ -908,6 +918,70 @@ function go_bonus_loot_validate_input_val( input_el, min, max ) {
 	}
 }
 
+function go_three_stage_checkbox_on_change( event ) {
+	var target_checkbox = event.target;
+	var is_checked = jQuery( target_checkbox ).is( ':checked' );
+
+	var fourth_stage_row_class = '.cmb_id_stage_four_settings';
+	var fourth_stage_accordion = jQuery( fourth_stage_row_class ).find( '.go_task_settings_accordion' );
+	var fourth_stage_wysiwyg = jQuery( fourth_stage_row_class ).siblings( '.cmb_id_go_mta_mastery_message' );
+	var fourth_is_visible = jQuery( fourth_stage_row_class ).is( ':visible' );
+	var fourth_is_open = jQuery( fourth_stage_accordion ).hasClass( 'opened' );
+	var five_stage_checkbox = jQuery( '#go_mta_five_stage_switch' );
+
+	var fifth_stage_row_class = '.cmb_id_stage_five_settings';
+	var fifth_stage_accordion = jQuery( fifth_stage_row_class ).find( '.go_task_settings_accordion' );
+	var fifth_stage_wysiwyg = jQuery( fifth_stage_row_class ).siblings( '.cmb_id_go_mta_repeat_message' );
+	var fifth_is_visible = jQuery( fifth_stage_row_class ).is( ':visible' );
+	var fifth_is_open = jQuery( fifth_stage_accordion ).hasClass( 'opened' );
+
+	if ( is_checked && fourth_is_visible ) {
+
+		// hides the stage's content editor
+		if ( fourth_stage_wysiwyg.is( ':visible' ) ) {
+			fourth_stage_wysiwyg.hide();
+		}
+
+		// closes the accordion if it is open, this allows all the setting row "on_toggle" functions
+		// to be run first
+		if ( fourth_is_open ) {
+			fourth_stage_accordion.trigger( 'click' );
+		}
+
+		// hides the accordion row
+		jQuery( fourth_stage_row_class ).hide();
+
+		// hides the fifth stage accordion and it's content editor, if they happen to be visible
+		if ( fifth_is_visible ) {
+			if ( fifth_stage_wysiwyg.is( ':visible' ) ) {
+				fifth_stage_wysiwyg.hide();
+			}
+
+			if ( fifth_is_open ) {
+				fifth_stage_accordion.trigger( 'click' );
+			}
+
+			jQuery( fifth_stage_row_class ).hide();
+		}
+	} else if ( ! is_checked && ! fourth_is_visible ) {
+
+		// shows the stage's content editor
+		if ( ! fourth_stage_wysiwyg.is( ':visible' ) ) {
+			fourth_stage_wysiwyg.show();
+		}
+
+		jQuery( fourth_stage_row_class ).show();
+
+		if ( five_stage_checkbox.is( ':checked' ) ) {
+			if ( ! fifth_stage_wysiwyg.is( ':visible' ) ) {
+				fifth_stage_wysiwyg.show();
+			}
+
+			jQuery( fifth_stage_row_class ).show();
+		}
+	}
+}
+
 function go_five_stage_checkbox_on_change( event ) {
 	var target_checkbox = event.target;
 	var is_checked = jQuery( target_checkbox ).is( ':checked' );
@@ -1347,7 +1421,8 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'three_stage_switch'
+					cmb_id: 'three_stage_switch',
+					on_load: go_three_stage_checkbox_on_load
 				},
 			],
 		},
