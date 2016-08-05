@@ -235,13 +235,27 @@ function go_bonus_loot_on_toggle( row_class ) {
 
 // a handler specifically for when the fifth stage accordion is first loaded
 function go_stage_five_on_load( row_class ) {
-	if ( 1 !== jQuery( '#go_mta_five_stage_switch' ).length ) {
-		return;
-	}
+	var fifth_stage_checkbox = jQuery( '#go_mta_five_stage_switch' );
+	var fifth_stage_wysiwyg = jQuery( row_class ).siblings( '.cmb_id_go_mta_repeat_message' );
 
-	// displays the stage five accordion when either of the stage five options are checked
-	if ( jQuery( '#go_mta_five_stage_switch' ).is( ':checked' ) ) {
+	if ( fifth_stage_checkbox.length > 0 ) {
 
+		// hides the fifth stage if the fifth stage checkbox is not already checked
+		if ( ! fifth_stage_checkbox.is( ':checked' ) ) {
+			if ( fifth_stage_wysiwyg.is( ':visible' ) ) {
+				fifth_stage_wysiwyg.hide();
+			}
+
+			if ( jQuery( row_class ).is( ':visible' ) ) {
+				jQuery( row_class ).hide();
+			}
+		}
+
+		// displays the stage five accordion when the fifth stage checkbox is changed
+		jQuery( fifth_stage_checkbox ).change(
+			{ row_class: row_class },
+			go_fifth_stage_checkbox_on_change
+		);
 	}
 }
 
@@ -886,6 +900,49 @@ function go_bonus_loot_validate_input_val( input_el, min, max ) {
 	}
 }
 
+function go_fifth_stage_checkbox_on_change( event ) {
+	var target_checkbox = event.target;
+	var is_checked = jQuery( target_checkbox ).is( ':checked' );
+
+	var fifth_stage_row_class = '';
+	var fifth_stage_accordion, fifth_stage_wysiwyg = null;
+	var is_visible, is_open = false;
+	if ( 'undefined' !== typeof event.data && 'undefined' !== typeof event.data.row_class ) {
+		fifth_stage_row_class = event.data.row_class;
+		fifth_stage_accordion = jQuery( fifth_stage_row_class ).find( '.go_task_settings_accordion' );
+		fifth_stage_wysiwyg = jQuery( fifth_stage_row_class ).siblings( '.cmb_id_go_mta_repeat_message' );
+		is_visible = jQuery( fifth_stage_row_class ).is( ':visible' );
+		is_open = jQuery( fifth_stage_accordion ).hasClass( 'opened' );
+	} else {
+		return;
+	}
+
+	if ( is_checked && ! is_visible ) {
+
+		// shows the stage's content editor
+		if ( ! fifth_stage_wysiwyg.is( ':visible' ) ) {
+			fifth_stage_wysiwyg.show();
+		}
+
+		jQuery( fifth_stage_row_class ).show();
+	} else if ( ! is_checked && is_visible ) {
+		
+		// hides the stage's content editor
+		if ( fifth_stage_wysiwyg.is( ':visible' ) ) {
+			fifth_stage_wysiwyg.hide();
+		}
+
+		// closes the accordion if it is open, this allows all the setting row "on_toggle" functions
+		// to be run first
+		if ( is_open ) {
+			fifth_stage_accordion.trigger( 'click' );
+		}
+
+		// hides the accordion row
+		jQuery( fifth_stage_row_class ).hide();
+	}
+}
+
 function go_before_task_publish_handler( event, doDefault ) {
 
 	if ( 'undefined' !== typeof doDefault && true === doDefault ) {
@@ -1097,14 +1154,6 @@ function go_generate_accordion_array() {
 					cmb_id: 'focus_category_lock'
 				},
 				{
-					cmb_type: 'checkbox',
-					cmb_id: 'three_stage_switch'  
-				},
-				{
-					cmb_type: 'checkbox',
-					cmb_id: 'five_stage_switch'
-				},
-				{
 					cmb_type: 'go_task_chain_order',
 					cmb_id: 'chain_order',
 					on_load: go_chain_order_on_load,
@@ -1235,6 +1284,10 @@ function go_generate_accordion_array() {
 					on_load: go_badge_input_on_load,
 					on_toggle: go_badge_input_on_toggle
 				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'three_stage_switch'
+				},
 			],
 		},
 		stage_three: {
@@ -1360,6 +1413,10 @@ function go_generate_accordion_array() {
 					on_toggle: go_badge_input_on_toggle
 				},
 				{
+					cmb_type: 'checkbox',
+					cmb_id: 'five_stage_switch'
+				},
+				{
 					cmb_type: 'go_bonus_loot',
 					cmb_id: 'mastery_bonus_loot',
 					on_load: go_bonus_loot_on_load,
@@ -1425,7 +1482,7 @@ function go_generate_accordion_array() {
 			accordion_data[ accordion_name ] = {
 				id           : '#go_' + accordion_name + '_settings_accordion',
 				row_class    : 'tr.cmb-type-go_settings_accordion.cmb_id_' + accordion_name + '_settings',
-				on_load: accordion_callback,
+				on_load      : accordion_callback,
 				setting_rows : [],
 			};
 
@@ -1446,7 +1503,7 @@ function go_generate_accordion_array() {
 				}
 				
 				var setting_row_obj = {
-					class          : 'tr.cmb-type-' + setting_obj.cmb_type + '.cmb_id_go_mta_' + setting_obj.cmb_id,
+					class    : 'tr.cmb-type-' + setting_obj.cmb_type + '.cmb_id_go_mta_' + setting_obj.cmb_id,
 					on_load  : on_load,
 					on_toggle: on_toggle
 				};

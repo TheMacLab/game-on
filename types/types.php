@@ -79,16 +79,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => '3 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'three_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4' ),
-				'id' => "{$prefix}three_stage_switch",
-				'type' => 'checkbox'
-			),
-			array(
-				'name' => '5 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'five_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/fiveStageQuest.mp4' ),
-				'id'   => "{$prefix}five_stage_switch",
-				'type' => 'checkbox'
-			),
-			array(
 				'name' => 'Chain Order'.go_task_opt_help( 'task_chain_order', '', 'http://maclab.guhsd.net/go/video/quests/tasksInChain.mp4' ),
 				'id' => "{$prefix}chain_order",
 				'type' => 'go_task_chain_order'
@@ -261,6 +251,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'stage' => 2
 			),
 			array(
+				'name' => '3 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'three_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/threeStageQuest.mp4' ),
+				'id' => "{$prefix}three_stage_switch",
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Stage 3'.go_task_opt_help( 'complete', '', 'http://maclab.guhsd.net/go/video/quests/completionMessage.mp4' ),
 				'id' => "{$prefix}complete_message",
 				'type' => 'wysiwyg',
@@ -428,6 +423,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'stage' => 4
 			),
 			array(
+				'name' => '5 Stage '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'five_stage_switch', '', 'http://maclab.guhsd.net/go/video/quests/fiveStageQuest.mp4' ),
+				'id'   => "{$prefix}five_stage_switch",
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Bonus Loot'.go_task_opt_help( 'mastery_bonus', '', 'http://maclab.guhsd.net/go/video/quests/bonus.mp4' ),
 				'id' => "{$prefix}mastery_bonus_loot",
 				'type' => 'go_bonus_loot'
@@ -439,7 +439,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'options' => array(
 					'wpautop' => true,
 					'textarea_rows' => '5',
-				),		
+				),
 			),
 			array(
 				'name' => go_task_opt_help( 'stage_five_settings', '', 'http://maclab.guhsd.net/go/video/quests/stageFiveSettings.mp4' ),
