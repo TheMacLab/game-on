@@ -250,12 +250,6 @@ function go_stage_five_on_load( row_class ) {
 				jQuery( row_class ).hide();
 			}
 		}
-
-		// displays the stage five accordion when the fifth stage checkbox is changed
-		jQuery( fifth_stage_checkbox ).change(
-			{ row_class: row_class },
-			go_fifth_stage_checkbox_on_change
-		);
 	}
 }
 
@@ -405,6 +399,16 @@ function go_bonus_loot_on_load( row ) {
 
 	if ( 1 === bonus_loot_checkbox.length ) {
 		bonus_loot_checkbox.change( go_bonus_loot_checkbox_on_change );
+	}
+}
+
+function go_five_stage_checkbox_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var five_stage_checkbox = jQuery( row.class + ' #go_mta_five_stage_switch' );
+
+	if ( 1 === five_stage_checkbox.length ) {
+		five_stage_checkbox.change( go_five_stage_checkbox_on_change );
 	}
 }
 
@@ -904,22 +908,15 @@ function go_bonus_loot_validate_input_val( input_el, min, max ) {
 	}
 }
 
-function go_fifth_stage_checkbox_on_change( event ) {
+function go_five_stage_checkbox_on_change( event ) {
 	var target_checkbox = event.target;
 	var is_checked = jQuery( target_checkbox ).is( ':checked' );
 
-	var fifth_stage_row_class = '';
-	var fifth_stage_accordion, fifth_stage_wysiwyg = null;
-	var is_visible, is_open = false;
-	if ( 'undefined' !== typeof event.data && 'undefined' !== typeof event.data.row_class ) {
-		fifth_stage_row_class = event.data.row_class;
-		fifth_stage_accordion = jQuery( fifth_stage_row_class ).find( '.go_task_settings_accordion' );
-		fifth_stage_wysiwyg = jQuery( fifth_stage_row_class ).siblings( '.cmb_id_go_mta_repeat_message' );
-		is_visible = jQuery( fifth_stage_row_class ).is( ':visible' );
-		is_open = jQuery( fifth_stage_accordion ).hasClass( 'opened' );
-	} else {
-		return;
-	}
+	var fifth_stage_row_class = '.cmb_id_stage_five_settings';
+	var fifth_stage_accordion = jQuery( fifth_stage_row_class ).find( '.go_task_settings_accordion' );
+	var fifth_stage_wysiwyg = jQuery( fifth_stage_row_class ).siblings( '.cmb_id_go_mta_repeat_message' );
+	var is_visible = jQuery( fifth_stage_row_class ).is( ':visible' );
+	var is_open = jQuery( fifth_stage_accordion ).hasClass( 'opened' );
 
 	if ( is_checked && ! is_visible ) {
 
@@ -1418,7 +1415,8 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'five_stage_switch'
+					cmb_id: 'five_stage_switch',
+					on_load: go_five_stage_checkbox_on_load
 				},
 				{
 					cmb_type: 'go_bonus_loot',
