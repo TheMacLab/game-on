@@ -2079,7 +2079,7 @@ function go_render_badge_input( $field_args ) {
 			$badge_elems .= sprintf(
 				'<li>'.
 					'<input type="text" name="go_badge_input_stage_%1$s[]" class="go_badge_input" '.
-						'stage="%1$s" value="%2$s"/>'.
+						'stage="%1$s" placeholder="Badge ID" value="%2$s"/>'.
 					'<input type="button" class="go_button_add_field go_badge_input_add go_badge_input_button" value="+" />'.
 					'<input type="button" class="go_button_del_field go_badge_input_del go_badge_input_button" value="x" />'.
 				'</li>',
