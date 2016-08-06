@@ -308,14 +308,6 @@ input#go-button-clone {
 	margin-bottom: 7px !important;
 }
 
-input.go_test_field_add {
-	color: green;
-}
-
-input.go_test_field_rm {
-	color: red;
-}
-
 .go_sortable {
 	cursor: move;
 	cursor: -webkit-grab;
@@ -457,12 +449,12 @@ input.go_test_field_rm {
 	margin: 0 0 4px -2px !important;
 }
 
-.go_test_field_add {
+.go_button_add_field, .go_test_field_add {
 	color: green;
 	font-size: 250%;
 }
 
-.go_test_field_rm {
+.go_button_del_field, .go_test_field_rm {
 	color: red;
 	font-size: 250%;
 	margin-left: 5px;
