@@ -823,9 +823,9 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 		$e_points = ( ! empty( $_POST['encounter_points'] ) ? (int) $_POST['encounter_points'] : 0 );
 		$e_currency = ( ! empty( $_POST['encounter_currency'] ) ? (int) $_POST['encounter_currency'] : 0 );
 		$e_bonus_currency = ( ! empty( $_POST['encounter_bonus'] ) ? (int) $_POST['encounter_bonus'] : 0 );
-	}
 
-	check_ajax_referer( 'go_task_abandon_' . $post_id . '_' . $user_id );
+		check_ajax_referer( 'go_task_abandon_' . $post_id . '_' . $user_id );
+	}
 
 	$table_name_go = "{$wpdb->prefix}go";
 	$raw_timestamp = $wpdb->get_var(
