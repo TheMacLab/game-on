@@ -5,12 +5,14 @@
  *
  * @since <2.0.0
  *
- * @param  int $req The currency required by the store item.
- * @param  int $cr  The currency that the user currently has.
+ * @param int $req The base cost of the store item.
+ * @param int $qty The number of items being purchased.
+ * @param int $cur The currency that the user currently has.
  * @return boolean True if the user can purchase the item, and false if they can't.
  */
-function go_has_enough_curr( $req = 0, $cur = 0 ) {
-	if ( $req > 0 && $cur < $req ) {
+function go_user_has_enough_currency( $base = 0, $qty = 1, $cur = 0 ) {
+	$cost = $base * $qty;
+	if ( $cost > 0 && $cur < $cost ) {
 		return false;
 	}
 
@@ -27,7 +29,7 @@ function go_buy_item() {
 
 	$go_table_name = $wpdb->prefix."go";
 	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
-	$qty = ( ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 0 );
+	$qty = ( ! empty( $_POST['qty'] ) && (int) $_POST['qty'] > 0 ? (int) $_POST['qty'] : 1 );
 	$current_purchase_count = ( ! empty( $_POST['purchase_count'] ) ? (int) $_POST['purchase_count'] : 0 );
 
 	if ( ! empty( $_POST['recipient'] ) ) {
@@ -104,11 +106,11 @@ function go_buy_item() {
 	$cur_penalty = go_return_penalty( $user_id );
 	$cur_minutes = go_return_minutes( $user_id );
 
-	$enough_currency = go_has_enough_curr( $req_currency, $cur_currency );
-	$enough_points = go_has_enough_curr( $req_points, $cur_points );
-	$enough_bonus_currency = go_has_enough_curr( $req_bonus_currency, $cur_bonus_currency );
-	$enough_penalty = go_has_enough_curr( $req_penalty, $cur_penalty );
-	$enough_minutes = go_has_enough_curr( $req_minutes, $cur_minutes );
+	$enough_currency = go_user_has_enough_currency( $req_currency, $qty, $cur_currency );
+	$enough_points = go_user_has_enough_currency( $req_points, $qty, $cur_points );
+	$enough_bonus_currency = go_user_has_enough_currency( $req_bonus_currency, $qty, $cur_bonus_currency );
+	$enough_penalty = go_user_has_enough_currency( $req_penalty, $qty, $cur_penalty );
+	$enough_minutes = go_user_has_enough_currency( $req_minutes, $qty, $cur_minutes );
 
 	$within_limit = true;
 	if ( ! empty( $limit ) && $is_limited === "true" ) {
