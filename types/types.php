@@ -1068,8 +1068,8 @@ function go_render_test_field( $field_args ) {
 		<?php echo $field_args['desc']; ?>
 	</span>
 	<table id='go_test_field_table_<?php echo $ttc; ?>' class='go_test_field_table'>
-		<?php 
-		if ( ! empty( $test_field_block_count ) ) {
+		<?php
+		if ( ! empty( $test_field_block_count ) && ! empty( $test_field_input_array ) ) {
 			for ( $i = 0; $i < $test_field_block_count; $i++ ) {
 				if ( ! empty( $test_field_input_array[ $i ][0] ) ) {
 					echo "
@@ -1340,9 +1340,8 @@ function go_validate_test_field( $unused_override_value, $unused_value, $field_a
 	$test = array();
 	if ( ! empty( $test_temp ) ) {
 		for ( $f = 0; $f < count( $test_temp ); $f++ ) {
-			$temp_input = $test_temp[ $f ][0];
-			$temp_checked = $test_temp[ $f ][1];
-			if ( ! empty( $temp_input ) && is_array( $temp_input ) ) {
+			if ( ! empty( $test_temp[ $f ][0] ) && is_array( $test_temp[ $f ][0] ) ) {
+				$temp_input = $test_temp[ $f ][0];
 				foreach ( $temp_input as $value ) {
 					if ( ! is_null( $value ) && preg_match( "/\S+/", $value ) ) {
 						$test[ $f ][0][] = $value;
@@ -1354,7 +1353,8 @@ function go_validate_test_field( $unused_override_value, $unused_value, $field_a
 				}
 			}
 
-			if ( ! empty( $temp_checked ) && is_array( $temp_checked ) ) {
+			if ( ! empty( $test_temp[ $f ][1] ) && is_array( $test_temp[ $f ][1] ) ) {
+				$temp_checked = $test_temp[ $f ][1];
 				foreach ( $temp_checked as $value ) {
 					if ( ! is_null( $value ) && preg_match( "/\S+/", $value ) ) {
 						$test[ $f ][1][] = $value;
