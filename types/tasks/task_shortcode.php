@@ -3167,9 +3167,6 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 			}
 
 			if ( 0 !== $prev_id ) {
-				$prev_permalink = get_permalink( $prev_id );
-				$prev_title = get_the_title( $prev_id );
-
 				$prev_status             = go_task_get_status( $prev_id );
 				$prev_five_stage_counter = null;
 				$prev_status_required    = 4;
@@ -3222,31 +3219,29 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 				}
 			}
 
-			$next_permalink = get_permalink( $next_id );
-			$next_title = get_the_title( $next_id );
-
 			$msg = '';
 
-			// displays pagination links for the previous task
-			if ( ! empty( $prev_id ) ) {
-				$msg .= sprintf(
-					'<div class="go_chain_link_prev">'.
-						'<a href="%s"><span class="go_prev_symbol"></span> Previous: %s</a>'.
-					'</div>',
-					$prev_permalink,
-					$prev_title
-				);
-			}
+			foreach ( $order as $_id ) {
+				$task_title = get_the_title( $_id );
+				$task_perma = get_permalink( $_id );
+				$block_classes = 'go_chain_link';
+				$block_content = '';
 
-			if ( ! $last_in_chain && ! empty( $next_id ) && $curr_finished ) {
+				if ( $_id === $task_id ) {
+					$block_content .= "<span>{$task_title}</span>";
+					$block_classes .= ' go_chain_link_current';
+				} else {
+					$block_content .= sprintf(
+						'<a href="%s">%s</a>',
+						$task_perma,
+						$task_title
+					);
+				}
 
-				// displays pagination links for the next task
 				$msg .= sprintf(
-					'<div class="go_chain_link_next go_align_right">'.
-						'<a href="%s">Next: %s <span class="go_next_symbol"></span></a>'.
-					'</div>',
-					$next_permalink,
-					$next_title
+					'<div class="%s">%s</div>',
+					$block_classes,
+					$block_content
 				);
 			}
 

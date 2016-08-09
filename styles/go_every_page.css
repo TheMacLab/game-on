@@ -611,6 +611,7 @@ ul#go_bonus_loot_wrap li.go_error {
 
 .go_chain_final_msg, .go_chain_msg_content {
 	margin: 10px 0;
+	text-align: center;
 }
 
 .go_chain_title {
@@ -618,19 +619,7 @@ ul#go_bonus_loot_wrap li.go_error {
 }
 
 .go_chain_links {
-	display: flex;
-}
-
-.go_chain_link_prev, .go_chain_link_next {
-	flex: 1 50%;
-}
-
-.go_chain_link_prev::before {
-	content: "\2190\a0";
-}
-
-.go_chain_link_next::after {
-	content: "\a0\2192";
+	text-align: center;
 }
 
 div.go_pod_message {
