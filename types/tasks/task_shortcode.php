@@ -576,7 +576,13 @@ function go_task_shortcode( $atts, $content = null ) {
 							echo "<p id='go_test_error_msg' style='color: red;'></p>";
 							if ( $test_e_num > 1 ) {
 								for ( $i = 0; $i < $test_e_num; $i++ ) {
-									echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
+									if ( ! empty( $test_e_all_types[ $i ] ) &&
+											! empty( $test_e_all_questions[ $i ] ) &&
+											! empty( $test_e_all_answers[ $i ] ) &&
+											! empty( $test_e_all_keys[ $i ] ) ) {
+
+										echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
+									}
 								}
 								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 							} elseif ( ! empty( $test_e_all_types[0] ) &&
@@ -617,7 +623,13 @@ function go_task_shortcode( $atts, $content = null ) {
 							echo "<p id='go_test_error_msg' style='color: red;'></p>";
 							if ( $test_e_num > 1) {
 								for ( $i = 0; $i < $test_e_num; $i++ ) {
-									echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
+									if ( ! empty( $test_e_all_types[ $i ] ) &&
+											! empty( $test_e_all_questions[ $i ] ) &&
+											! empty( $test_e_all_answers[ $i ] ) &&
+											! empty( $test_e_all_keys[ $i ] ) ) {
+
+										echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
+									}
 								}
 								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 							} elseif ( ! empty( $test_e_all_types[0] ) &&
@@ -656,7 +668,13 @@ function go_task_shortcode( $atts, $content = null ) {
 							echo "<p id='go_test_error_msg' style='color: red;'></p>";
 							if ( $test_a_num > 1 ) {
 								for ( $i = 0; $i < $test_a_num; $i++ ) {
-									echo do_shortcode( "[go_test type='".$test_a_all_types[ $i ]."' question='".$test_a_all_questions[ $i ]."' possible_answers='".$test_a_all_answers[ $i ]."' key='".$test_a_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_a_num."']" );
+									if ( ! empty( $test_a_all_types[ $i ] ) &&
+											! empty( $test_a_all_questions[ $i ] ) &&
+											! empty( $test_a_all_answers[ $i ] ) &&
+											! empty( $test_a_all_keys[ $i ] ) ) {
+
+										echo do_shortcode( "[go_test type='".$test_a_all_types[ $i ]."' question='".$test_a_all_questions[ $i ]."' possible_answers='".$test_a_all_answers[ $i ]."' key='".$test_a_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_a_num."']" );
+									}
 								}
 								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 							} elseif ( ! empty( $test_a_all_types[0] ) &&
@@ -697,7 +715,13 @@ function go_task_shortcode( $atts, $content = null ) {
 								echo "<p id='go_test_error_msg' style='color: red;'></p>";
 								if ( $test_c_num > 1 ) {
 									for ( $i = 0; $i < $test_c_num; $i++ ) {
-										echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+										if ( ! empty( $test_c_all_types[ $i ] ) &&
+												! empty( $test_c_all_questions[ $i ] ) &&
+												! empty( $test_c_all_answers[ $i ] ) &&
+												! empty( $test_c_all_keys[ $i ] ) ) {
+
+											echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+										}
 									}
 									echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 								} elseif ( ! empty( $test_c_all_types[0] ) &&
@@ -730,7 +754,13 @@ function go_task_shortcode( $atts, $content = null ) {
 								echo "<p id='go_test_error_msg' style='color: red;'></p>";
 								if ( $test_c_num > 1 ) {
 									for ( $i = 0; $i < $test_c_num; $i++ ) {
-										echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+										if ( ! empty( $test_c_all_types[ $i ] ) &&
+												! empty( $test_c_all_questions[ $i ] ) &&
+												! empty( $test_c_all_answers[ $i ] ) &&
+												! empty( $test_c_all_keys[ $i ] ) ) {
+
+											echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+										}
 									}
 									echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 								} elseif ( ! empty( $test_c_all_types[0] ) &&
@@ -764,7 +794,13 @@ function go_task_shortcode( $atts, $content = null ) {
 										echo "<p id='go_test_error_msg' style='color: red;'></p>";
 										if ( $test_m_num > 1 ) {
 											for ( $i = 0; $i < $test_m_num; $i++ ) {
-												echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+												if ( ! empty( $test_m_all_types[ $i ] ) &&
+														! empty( $test_m_all_questions[ $i ] ) &&
+														! empty( $test_m_all_answers[ $i ] ) &&
+														! empty( $test_m_all_keys[ $i ] ) ) {
+
+													echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+												}
 											}
 											echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 										} elseif ( ! empty( $test_m_all_types[0] ) &&
@@ -842,7 +878,13 @@ function go_task_shortcode( $atts, $content = null ) {
 								echo "<p id='go_test_error_msg' style='color: red;'></p>";
 								if ( $test_m_num > 1 ) {
 									for ( $i = 0; $i < $test_m_num; $i++ ) {
-										echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+										if ( ! empty( $test_m_all_types[ $i ] ) &&
+												! empty( $test_m_all_questions[ $i ] ) &&
+												! empty( $test_m_all_answers[ $i ] ) &&
+												! empty( $test_m_all_keys[ $i ] ) ) {
+
+											echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+										}
 									}
 									echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 								} elseif ( ! empty( $test_m_all_types[0] ) &&
@@ -2558,7 +2600,13 @@ function go_task_change_stage() {
 				echo "<p id='go_test_error_msg' style='color: red;'></p>";
 				if ( $test_e_num > 1 ) {
 					for ( $i = 0; $i < $test_e_num; $i++ ) {
-						echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
+						if ( ! empty( $test_e_all_types[ $i ] ) &&
+								! empty( $test_e_all_questions[ $i ] ) &&
+								! empty( $test_e_all_answers[ $i ] ) &&
+								! empty( $test_e_all_keys[ $i ] ) ) {
+
+							echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
+						}
 					}
 					echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 				} elseif ( ! empty( $test_e_all_types[0] ) &&
@@ -2595,7 +2643,13 @@ function go_task_change_stage() {
 				echo "<p id='go_test_error_msg' style='color: red;'></p>";
 				if ( $test_a_num > 1 ) {
 					for ( $i = 0; $i < $test_a_num; $i++ ) {
-						echo do_shortcode( "[go_test type='".$test_a_all_types[ $i ]."' question='".$test_a_all_questions[ $i ]."' possible_answers='".$test_a_all_answers[ $i ]."' key='".$test_a_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_a_num."']" );
+						if ( ! empty( $test_a_all_types[ $i ] ) &&
+								! empty( $test_a_all_questions[ $i ] ) &&
+								! empty( $test_a_all_answers[ $i ] ) &&
+								! empty( $test_a_all_keys[ $i ] ) ) {
+
+							echo do_shortcode( "[go_test type='".$test_a_all_types[ $i ]."' question='".$test_a_all_questions[ $i ]."' possible_answers='".$test_a_all_answers[ $i ]."' key='".$test_a_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_a_num."']" );
+						}
 					}
 					echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 				} elseif ( ! empty( $test_a_all_types[0] ) &&
@@ -2634,7 +2688,13 @@ function go_task_change_stage() {
 					echo "<p id='go_test_error_msg' style='color: red;'></p>";
 					if ( $test_c_num > 1 ) {
 						for ( $i = 0; $i < $test_c_num; $i++ ) {
-							echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+							if ( ! empty( $test_c_all_types[ $i ] ) &&
+									! empty( $test_c_all_questions[ $i ] ) &&
+									! empty( $test_c_all_answers[ $i ] ) &&
+									! empty( $test_c_all_keys[ $i ] ) ) {
+
+								echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+							}
 						}
 						echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 					} elseif ( ! empty( $test_c_all_types[0] ) &&
@@ -2667,7 +2727,13 @@ function go_task_change_stage() {
 					echo "<p id='go_test_error_msg' style='color: red;'></p>";
 					if ( $test_c_num > 1 ) {
 						for ( $i = 0; $i < $test_c_num; $i++ ) {
-							echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+							if ( ! empty( $test_c_all_types[ $i ] ) &&
+									! empty( $test_c_all_questions[ $i ] ) &&
+									! empty( $test_c_all_answers[ $i ] ) &&
+									! empty( $test_c_all_keys[ $i ] ) ) {
+
+								echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
+							}
 						}
 						echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 					} elseif ( ! empty( $test_c_all_types[0] ) &&
@@ -2702,7 +2768,13 @@ function go_task_change_stage() {
 							echo "<p id='go_test_error_msg' style='color: red;'></p>";
 							if ( $test_m_num > 1 ) {
 								for ( $i = 0; $i < $test_m_num; $i++ ) {
-									echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+									if ( ! empty( $test_m_all_types[ $i ] ) &&
+											! empty( $test_m_all_questions[ $i ] ) &&
+											! empty( $test_m_all_answers[ $i ] ) &&
+											! empty( $test_m_all_keys[ $i ] ) ) {
+
+										echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+									}
 								}
 								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 							} elseif ( ! empty( $test_m_all_types[0] ) &&
@@ -2784,7 +2856,13 @@ function go_task_change_stage() {
 					echo "<p id='go_test_error_msg' style='color: red;'></p>";
 					if ( $test_m_num > 1 ) {
 						for ( $i = 0; $i < $test_m_num; $i++ ) {
-							echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+							if ( ! empty( $test_m_all_types[ $i ] ) &&
+									! empty( $test_m_all_questions[ $i ] ) &&
+									! empty( $test_m_all_answers[ $i ] ) &&
+									! empty( $test_m_all_keys[ $i ] ) ) {
+
+								echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
+							}
 						}
 						echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
 					} elseif ( ! empty( $test_m_all_types[0] ) &&
