@@ -1003,6 +1003,7 @@ function go_reset_data() {
 
 function go_extra_profile_fields( $user ) {
 	$nonce = wp_create_nonce( 'go_user_option_add_class_' . $user->ID );
+	error_log( $nonce );
 ?>
 
 	<h3><?php echo go_return_options( 'go_class_a_name' ).' and '.go_return_options( 'go_class_b_name' ); ?></h3>
@@ -1088,57 +1089,55 @@ function go_extra_profile_fields( $user ) {
 }
 
 function go_user_option_add() {
+
 	if ( empty( $_POST['user_id'] ) ) {
 		die( -1 );
 	}
 
-	if ( ! current_user_can( 'manage_options' ) ) {
-		die( -1 );
-	}
 	$user_id = (int) $_POST['user_id'];
 	check_ajax_referer( 'go_user_option_add_class_' . $user_id );
 
-	?> 
+	?>
 	<tr>
 		<td>
-			<?php 
+			<?php
 			$class_a = get_option( 'go_class_a', false );
 			if ( $class_a ) {
 				?>
 				<select name="class_a_user[]">
 					<option value="go_remove">Remove</option>
 					<?php
-					foreach( $class_a as $key => $value ) {
+					foreach ( $class_a as $key => $value ) {
 						echo "<option name='{$value}' value='{$value}'>{$value}</option>";
 					}
 					?>
 				</select>
-			<?php 
-			} 
-			?>	
+			<?php
+			}
+			?>
 		</td>
 		<td>
-			<?php 
+			<?php
 			$class_b = get_option( 'go_class_b', false );
 			if ( $class_b ) {
 				?>
 				<select name="class_b_user[]">
 					<option value="go_remove">Remove</option>
 					<?php
-					foreach( $class_b as $key => $value ) {
+					foreach ( $class_b as $key => $value ) {
 						echo "<option name='{$value}' value='{$value}'>{$value}</option>";
 					}
 					?>
 				</select>
 			<?php
-			} 
-			?>	
-		</td> 
-	</tr>  
+			}
+			?>
+		</td>
+	</tr>
 	<?php
 	die();
 }
-	
+
 function go_save_extra_profile_fields( $user_id ) {
 	$class = array();
 	if ( isset( $_POST['class_a_user'] ) ) {
