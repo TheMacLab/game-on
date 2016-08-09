@@ -451,12 +451,10 @@ input#go-button-clone {
 
 .go_button_add_field, .go_test_field_add {
 	color: green;
-	font-size: 250%;
 }
 
 .go_button_del_field, .go_test_field_rm {
 	color: red;
-	font-size: 250%;
 	margin-left: 5px;
 }
 

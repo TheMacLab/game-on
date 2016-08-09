@@ -770,8 +770,8 @@ function go_decay_table() {
 			?>
 			</tbody>
 		</table>
-		<input type="button" id="go_mta_add_task_decay" value="+"/>
-		<input type="button" id="go_mta_remove_task_decay" value="-"/>
+		<input type="button" id="go_mta_add_task_decay" class='go_button_add_field' value="+"/>
+		<input type="button" id="go_mta_remove_task_decay" class='go_button_del_field' value="x"/>
 	<?php
 }
 
@@ -1092,7 +1092,7 @@ function go_render_test_field( $field_args ) {
 								<input class='go_test_field_input_checkbox_hidden_{$ttc}' name='go_test_field_values_{$ttc}[{$i}][1][]' type='hidden' />
 								<input class='go_test_field_input_{$ttc} go_test_field_input' name='go_test_field_values_{$ttc}[{$i}][0][]' placeholder='Enter an answer!' type='text' value=\"".htmlspecialchars( $test_field_input_array[ $i ][0][ $x ], ENT_QUOTES )."\" oninput='update_checkbox_value_{$ttc}(this);' oncut='update_checkbox_value_{$ttc}(this);' onpaste='update_checkbox_value_{$ttc}(this);' />";
 							if ( $x > 1 ) {
-								echo "<input class='go_button_del_field go_test_field_rm go_test_field_rm_input_button_{$ttc}' type='button' value='X' onclick='remove_field_{$ttc}(this);'>";
+								echo "<input class='go_button_del_field go_test_field_rm go_test_field_rm_input_button_{$ttc}' type='button' value='x' onclick='remove_field_{$ttc}(this);'>";
 							}
 							echo "</li>";
 							if ( ( $x + 1 ) == $test_field_input_count[ $i ] ) {
@@ -1298,7 +1298,7 @@ function go_render_test_field( $field_args ) {
 			block_num_<?php echo $ttc; ?> = block_id.split( 'go_test_field_input_row_<?php echo $ttc; ?>_' ).pop();
 			block_type_<?php echo $ttc; ?> = jQuery( obj ).parent( 'ul' ).siblings( 'select' ).children( 'option:selected' ).val();
 			jQuery( obj ).parent( 'ul' ).siblings( 'ul' ).children( 'li' ).children( '.go_test_field_input_count_<?php echo $ttc; ?>' ).attr( 'value', input_num_<?php echo $ttc; ?> );
-			jQuery( obj ).siblings( 'li' ).last().after( "<li><input class='go_test_field_input_checkbox_<?php echo $ttc; ?> go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_<?php echo $ttc; ?>_" + block_num_<?php echo $ttc; ?> + "' type='" + block_type_<?php echo $ttc; ?> + "' onchange='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>' name='go_test_field_values_<?php echo $ttc; ?>[" + block_num_<?php echo $ttc; ?>+"][1][]' type='hidden' /><input class='go_test_field_input_<?php echo $ttc; ?> go_test_field_input' name='go_test_field_values_<?php echo $ttc; ?>[" + block_num_<?php echo $ttc; ?>+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_<?php echo $ttc; ?>(this);' oncut='update_checkbox_value_<?php echo $ttc; ?>(this);' onpaste='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_button_del_field go_test_field_rm go_test_field_rm_input_button_<?php echo $ttc; ?>' type='button' value='X' onclick='remove_field_<?php echo $ttc; ?>(this);'></li>" );
+			jQuery( obj ).siblings( 'li' ).last().after( "<li><input class='go_test_field_input_checkbox_<?php echo $ttc; ?> go_test_field_input_checkbox' name='unused_go_test_field_input_checkbox_<?php echo $ttc; ?>_" + block_num_<?php echo $ttc; ?> + "' type='" + block_type_<?php echo $ttc; ?> + "' onchange='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_test_field_input_checkbox_hidden_<?php echo $ttc; ?>' name='go_test_field_values_<?php echo $ttc; ?>[" + block_num_<?php echo $ttc; ?>+"][1][]' type='hidden' /><input class='go_test_field_input_<?php echo $ttc; ?> go_test_field_input' name='go_test_field_values_<?php echo $ttc; ?>[" + block_num_<?php echo $ttc; ?>+"][0][]' placeholder='Enter an answer!' type='text' style='margin: 0 5px 0 9px !important;' oninput='update_checkbox_value_<?php echo $ttc; ?>(this);' oncut='update_checkbox_value_<?php echo $ttc; ?>(this);' onpaste='update_checkbox_value_<?php echo $ttc; ?>(this);' /><input class='go_button_del_field go_test_field_rm go_test_field_rm_input_button_<?php echo $ttc; ?>' type='button' value='x' onclick='remove_field_<?php echo $ttc; ?>(this);'></li>" );
 		}
 		function remove_field_<?php echo $ttc; ?> ( obj ) {
 			jQuery( obj ).parents( 'tr.go_test_field_input_row_<?php echo $ttc; ?>' ).find( 'input.go_test_field_input_count_<?php echo $ttc; ?>' )[0].value--;
