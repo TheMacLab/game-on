@@ -1001,91 +1001,113 @@ function go_reset_data() {
 	die();
 }
 
-function go_extra_profile_fields( $user ) {
-	$nonce = wp_create_nonce( 'go_user_option_add_class_' . $user->ID );
-	error_log( $nonce );
-?>
-
-	<h3><?php echo go_return_options( 'go_class_a_name' ).' and '.go_return_options( 'go_class_b_name' ); ?></h3>
-
-	<table id="go_user_form_table">
-		<th><?php echo go_return_options( 'go_class_a_name' ); ?></th><th><?php echo go_return_options( 'go_class_b_name' ); ?></th>
-		<tbody id="go_user_form_table_body">
-			<?php
-			if ( get_user_meta( $user->ID, 'go_classifications', true ) ) {
-				foreach ( get_user_meta( $user->ID, 'go_classifications', true ) as $keyu => $valueu ) {
-			?>
-					<tr>
-						<td>
-							<?php
-							$class_a = get_option( 'go_class_a', false );
-							if ( $class_a ) {
-							?>
-								<select name="class_a_user[]"><option name="<?php echo $keyu; ?>" value="<?php echo $keyu; ?>"><?php echo $keyu; ?></option>
-								<option value="go_remove">Remove</option>
-								<?php
-								foreach ( $class_a as $key => $value ) {
-									echo "<option name='{$value}' value='{$value}'>{$value}</option>";
-								}
-								?>
-								</select>
-							<?php
-							}
-							?>
-						</td>
-						<td>
-							<?php 
-							$class_b = get_option( 'go_class_b', false );
-							if ( $class_b ) {
-								?>
-								<select name="class_b_user[]"><option name="<?php echo $valueu; ?>" value="<?php echo $valueu; ?>"><?php echo $valueu; ?></option>
-								<option value="go_remove">Remove</option>
-								<?php
-								foreach ( $class_b as $key => $value ) {
-									echo "<option name='{$value}' value='{$value}'>{$value}</option>";
-								}
-								?>
-								</select>
-								<?php
-							}
-							?>
-						</td>
-					</tr>
-			<?php
-				}
-			}
-			?>
-		</tbody>
-		<tr> 
-			<td><button onclick="go_add_class();" type="button">+</button></td>
-		</tr>
-	</table>
-	<?php 
-		if ( get_option( 'go_focus_switch', true ) == 'On' ) {
-			echo "<h3>User ".go_return_options( 'go_focus_name' )."</h3>".go_display_user_focuses( $user->ID )."";
+function go_user_classif_opt_elems( $arr, $target_val = '' ) {
+	$str = '<option value="go_remove">Remove</option>';
+	for ( $i = 0; $i < count( $arr ); $i++ ) {
+		$value = $arr[ $i ];
+		$selected = '';
+		if ( ! empty( $target_val ) && $value === $target_val ) {
+			$selected = 'selected';
 		}
-	?>
-	<script type="text/javascript" language="javascript">
-		function go_add_class() {
-			jQuery.ajax({
-				type: 'post',
-				url: MyAjax.ajaxurl,
-				data: {
-					_ajax_nonce: '<?php echo $nonce; ?>',
-					action: 'go_user_option_add',
-					user_id: <?php echo $user->ID; ?>,
-					go_clipboard_class_a_choice: jQuery( '#go_clipboard_class_a_choice' ).val()
-				},
-				success: function( res ) {
-					if ( -1 !== res ) {
-						jQuery( '#go_user_form_table_body' ).append( res );
-					}
-				}
+
+		$str .= "<option value='{$value}' {$selected}>{$value}</option>";
+	}
+
+	return $str;
+}
+
+function go_user_render_classif_options( $user_id ) {
+	$nonce            = wp_create_nonce( 'go_user_option_add_class_' . $user_id );
+	$avail_periods    = get_option( 'go_class_a'     , false );
+	$avail_computers  = get_option( 'go_class_b'     , false );
+	$go_period_name   = get_option( 'go_class_a_name', 'Period' );
+	$go_computer_name = get_option( 'go_class_b_name', 'Computer' );
+	$user_classif     = get_user_meta( $user_id, 'go_classifications', true );
+
+	$rows         = '';
+	$script_block = '';
+	$option_title = "{$go_period_name} and {$go_computer_name}";
+
+	// a script needs to be enqueued with the following, this should only be temporary
+	$script_block = sprintf(
+		'<script type="text/javascript" language="javascript">
+			jQuery( document ).ready( function() {
+				jQuery( "#go_button_add_classif_row" ).click( go_add_class );
 			});
-		}
-	</script>
-<?php
+			function go_add_class() {
+				jQuery.ajax({
+					type: "post",
+					url: MyAjax.ajaxurl,
+					data: {
+						_ajax_nonce: "%s",
+						action: "go_user_option_add",
+						user_id: %d,
+						go_clipboard_class_a_choice: jQuery( "#go_clipboard_class_a_choice" ).val()
+					},
+					success: function( res ) {
+						if ( -1 !== res ) {
+							jQuery( "#go_user_classif_form_body" ).append( res );
+						}
+					}
+				});
+			}
+		</script>',
+		$nonce,
+		$user_id
+	);
 
+	if ( ! empty( $user_classif ) ) {
+		foreach ( $user_classif as $period => $computer ) {
+			$period_opt_elems = go_user_classif_opt_elems( $avail_periods, $period );
+			$computer_opt_elems = go_user_classif_opt_elems( $avail_computers, $computer );
+
+			$rows .= sprintf(
+				'<tr>'.
+					'<td>'.
+						'<select name="class_a_user[]">%s</select>'.
+					'</td>'.
+					'<td>'.
+						'<select name="class_b_user[]">%s</select>'.
+					'</td>'.
+				'</tr>',
+				$period_opt_elems,
+				$computer_opt_elems
+			);
+		}
+	}
+
+	printf(
+		'<h3>%1$s and %2$s</h3>'.
+		'<table class="go_user_form_table">'.
+			'<th>%1$s</th><th>%2$s</th>'.
+			'<tbody id="go_user_classif_form_body">%3$s</tbody>'.
+			'<tr>'.
+				'<td>'.
+					'<input id="go_button_add_classif_row" class="go_button_add_field" '.
+						'type="button" value="+"/>'.
+				'</td>'.
+			'</tr>'.
+		'</table>'.
+		'%4$s',
+		$go_period_name,
+		$go_computer_name,
+		$rows,
+		$script_block
+	);
+}
+add_action( 'go_user_render_extra_fields', 'go_user_render_classif_options', 10, 1 );
+
+function go_user_render_focus_name( $user_id ) {
+	if ( get_option( 'go_focus_switch', true ) == 'On' ) {
+		$focus_name = get_option( 'go_focus_name', 'Profession' );
+
+		echo "<h3>User {$focus_name}</h3>".go_display_user_focuses( $user_id );
+	}
+}
+add_action( 'go_user_render_extra_fields', 'go_user_render_focus_name', 10, 1 );
+
+function go_extra_profile_fields( $user ) {
+	do_action( 'go_user_render_extra_fields', $user->ID );
 }
 
 function go_user_option_add() {
