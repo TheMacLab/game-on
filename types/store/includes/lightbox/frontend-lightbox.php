@@ -306,6 +306,7 @@ function go_frontend_lightbox_html() {
 					window.go_req_currency = jQuery( '#golb-fr-price' ).attr( 'req' );
 					window.go_req_points = jQuery( '#golb-fr-points' ).attr( 'req' );
 					window.go_req_bonus_currency = jQuery( '#golb-fr-bonus_currency' ).attr( 'req' );
+					window.go_req_penalty = jQuery( '#golb-fr-penalty' ).attr( 'req' );
 					window.go_req_minutes = jQuery( '#golb-fr-minutes' ).attr( 'req' );
 					window.go_cur_currency = jQuery( '#golb-fr-price' ).attr( 'cur' );
 					window.go_cur_points = jQuery( '#golb-fr-points' ).attr( 'cur' );
@@ -323,29 +324,42 @@ function go_frontend_lightbox_html() {
 						}
 					});
 					jQuery( '#go_qty' ).change( function() {
+
+						// updates gold value
 						var price_raw = jQuery( '#golb-fr-price' ).html();
-						var price_sub = price_raw.substr(price_raw.indexOf( ":" )+2);
-						if (price_sub.length > 0 ) {
-							var price = price_raw.replace(price_sub, go_req_currency * jQuery( this ).val() );
-							jQuery( '#golb-fr-price' ).html(price);
+						var price_sub = price_raw.substr( price_raw.indexOf( ":" ) + 2 );
+						if ( price_sub.length > 0 ) {
+							var price = price_raw.replace( price_sub, go_req_currency * jQuery( this ).val() );
+							jQuery( '#golb-fr-price' ).html( price );
 						}
-					
+
+						// updates XP value
 						var points_raw = jQuery( '#golb-fr-points' ).html();
-						var points_sub = points_raw.substr(points_raw.indexOf( ":" )+2);
+						var points_sub = points_raw.substr( points_raw.indexOf( ":" ) + 2 );
 						if ( points_sub.length > 0 ) {
 							var points = points_raw.replace( points_sub, go_req_points * jQuery( this ).val() );
-							jQuery( '#golb-fr-points' ).html(points);
+							jQuery( '#golb-fr-points' ).html( points );
 						}
-					
+
+						// updates honor value
 						var bonus_currency_raw = jQuery( '#golb-fr-bonus_currency' ).html();
-						var bonus_currency_sub = bonus_currency_raw.substr( bonus_currency_raw.indexOf( ":" ) + 2);
-						if (bonus_currency_sub.length > 0) {
+						var bonus_currency_sub = bonus_currency_raw.substr( bonus_currency_raw.indexOf( ":" ) + 2 );
+						if ( bonus_currency_sub.length > 0 ) {
 							var bonus_currency = bonus_currency_raw.replace( bonus_currency_sub, go_req_bonus_currency * jQuery( this ).val() );
 							jQuery( '#golb-fr-bonus_currency' ).html( bonus_currency );
 						}
-					
+
+						// updates penalty value
+						var penalty_raw = jQuery( '#golb-fr-penalty' ).html();
+						var penalty_sub = penalty_raw.substr( penalty_raw.indexOf( ":" ) + 2 );
+						if ( penalty_sub.length > 0 ) {
+							var penalty = penalty_raw.replace( penalty_sub, go_req_penalty * jQuery( this ).val() );
+							jQuery( '#golb-fr-penalty' ).html( penalty );
+						}
+
+						// updates minute value
 						var minutes_raw = jQuery( '#golb-fr-minutes' ).html();
-						var minutes_sub = minutes_raw.substr(minutes_raw.indexOf( ":" ) + 2);
+						var minutes_sub = minutes_raw.substr( minutes_raw.indexOf( ":" ) + 2 );
 						if ( minutes_sub.length > 0 ) {
 							var minutes = minutes_raw.replace( minutes_sub, go_req_minutes * jQuery( this ).val() );
 							jQuery( '#golb-fr-minutes' ).html( minutes );
