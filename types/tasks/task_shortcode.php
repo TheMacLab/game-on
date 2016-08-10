@@ -471,10 +471,49 @@ function go_task_shortcode( $atts, $content = null ) {
 					$prev_id = 0;
 
 					// finds the first ID among the tasks before the current one that is published
-					for ( $prev_id_counter = $pos; $prev_id_counter > 0; $prev_id_counter-- ) {
-						$temp_id = $order[ $prev_id_counter - 1 ];
+					for ( $prev_id_counter = 0; $prev_id_counter < $pos; $prev_id_counter++ ) {
+						$temp_id = $order[ $prev_id_counter ];
 						$temp_task = get_post( $temp_id );
-						if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
+
+						$temp_finished           = true;
+						$temp_status             = go_task_get_status( $temp_id );
+						$temp_five_stage_counter = null;
+						$temp_status_required    = 4;
+						$temp_three_stage_active = (boolean) get_post_meta(
+							$temp_id,
+							'go_mta_three_stage_switch',
+							true
+						);
+						$temp_five_stage_active  = (boolean) get_post_meta(
+							$temp_id,
+							'go_mta_five_stage_switch',
+							true
+						);
+
+						// determines to what stage the user has to progress to finish the task
+						if ( $temp_three_stage_active ) {
+							$temp_status_required = 3;
+						} elseif ( $temp_five_stage_active ) {
+							$temp_five_stage_counter = go_task_get_repeat_count( $temp_id );
+						}
+
+						// determines whether or not the task is finished
+						if ( $temp_status !== $temp_status_required &&
+								( ! $temp_five_stage_active ||
+								( $temp_five_stage_active && empty( $temp_five_stage_counter ) ) ) ) {
+
+							$temp_finished = false;
+						}
+
+						if ( ! empty( $temp_task ) &&
+								'publish' === $temp_task->post_status &&
+								! $temp_finished ) {
+
+							/**
+							 * The task is published, but is not finished. This task must be finished
+							 * before the current task can be accepted.
+							 */
+
 							$prev_id = $temp_id;
 							break;
 						}
@@ -484,34 +523,16 @@ function go_task_shortcode( $atts, $content = null ) {
 						$prev_permalink = get_permalink( $prev_id );
 						$prev_title = get_the_title( $prev_id );
 
-						$prev_status             = go_task_get_status( $prev_id );
-						$prev_five_stage_counter = null;
-						$prev_status_required    = 4;
-						$prev_three_stage_active = (boolean) get_post_meta( $prev_id, 'go_mta_three_stage_switch', true );
-						$prev_five_stage_active  = (boolean) get_post_meta( $prev_id, 'go_mta_five_stage_switch', true );
-						if ( $prev_three_stage_active ) {
-							$prev_status_required = 3;
-						} elseif ( $prev_five_stage_active ) {
-							$prev_five_stage_counter = go_task_get_repeat_count( $prev_id );
-						}
-						if ( $prev_status !== $prev_status_required ||
-								( $prev_five_stage_active && empty( $prev_five_stage_counter ) ) ) {
+						$link_tag = sprintf(
+							'<a href="%s">%s (%s)</a>',
+							$prev_permalink,
+							$prev_title,
+							$chain_title
+						);
+						if ( false === array_search( $link_tag, $chain_links ) ) {
 
-							/**
-							 * The previous task isn't finished.
-							 */
-
-							$link_tag = sprintf(
-								'<a href="%s">%s (%s)</a>',
-								$prev_permalink,
-								$prev_title,
-								$chain_title
-							);
-							if ( false === array_search( $link_tag, $chain_links ) ) {
-
-								// appends the anchor tag for previous task
-								$chain_links[] = $link_tag;
-							}
+							// appends the anchor tag for previous task
+							$chain_links[] = $link_tag;
 						}
 					}
 				}
