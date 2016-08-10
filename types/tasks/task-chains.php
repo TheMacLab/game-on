@@ -5,7 +5,7 @@
  *
  * Takes in a task ID (the post ID) and tries to find a chain associated with that task.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param int $task_id The post ID of the task in question.
  * @return int|null Returns the `term_taxonomy_id` property of the chain term object, if it exists;
@@ -38,7 +38,7 @@ function go_task_chain_get_id_by_task( $task_id ) {
  * retrieve the chain ID, and the chain name is also needed, pass in that value. This will prevent
  * unnecessary queries to the database.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param int $tt_id Optional. The term taxonomy ID of the chain in question.
  * @return string|null Returns the `name` property of the chain term object, if it exists;
@@ -73,7 +73,7 @@ function go_task_chain_get_name_by_id( $tt_id = null ) {
 /**
  * Retrieves all the published tasks in a chain, using a chain ID.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param int     $tt_id        Contains the term taxonomy ID of the task chain to search.
  * @param boolean $publish_only Optional. Whether or not to retrieve only published tasks.
@@ -125,7 +125,7 @@ function go_task_chain_get_tasks( $tt_id = 0, $publish_only = false, $exclude = 
  * task's meta data. Otherwise, the provided task ID will be compared with all the chains in the
  * task's meta data.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param int $task_id The task ID.
  * @param int $tt_id   Optional. The term taxonomy ID of the chain.
@@ -190,7 +190,7 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 /**
  * Handles updating chain order meta data when a chain is added to a task.
  *
- * @since 2.6.1
+ * @since 3.0.0
  * @see go_task_chain_get_tasks()
  *
  * @param int $object_id The ID of the object.
@@ -247,7 +247,7 @@ add_action( 'add_term_relationship', 'go_task_chain_add_term_rel', 10, 2 );
 /**
  * Handles updating chain order meta data when one or more chains are removed from a task.
  *
- * @since 2.6.1
+ * @since 3.0.0
  * @see go_task_chain_get_tasks()
  *
  * @param int   $object_id The ID of the object.

@@ -182,7 +182,7 @@ function go_register_task_tax_and_cpt() {
  * Task "status" values are stored in the `go`.`status` column. Statuses outside the range of [0,5]
  * are not used for tasks, so this function is for tasks ONLY.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @global wpdb $wpdb The WordPress database class.
  *
@@ -227,7 +227,7 @@ function go_task_get_status( $task_id, $user_id = null ) {
  * Task "count" values are stored in the `go`.`count` column. The `count` column is used by other GO
  * custom post types (which it should not be), so this function is for tasks ONLY.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @global wpdb $wpdb The WordPress database class.
  *

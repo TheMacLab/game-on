@@ -8,7 +8,7 @@
  * the task edit page for admins. See the `wp_localize_script()` call that this function is used in
  * to find the slug of the script that will be provided with the data below.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @see go_task_chain_get_id_by_task(), go_task_chain_is_final_task()
  * @global WP_Post $post The WP_Post object of the current post.

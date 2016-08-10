@@ -169,7 +169,7 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
  *
  * Use this function to easily output Game On errors.
  *
- * @since 2.6.2
+ * @since 3.0.0
  *
  * @param  string  $error The error message.
  * @param  string  $func  The name of the function which is calling go_error_log().
@@ -338,7 +338,7 @@ function go_task_timer_headers() {
  * either. That achieves the same undesired effect. This function isn't insanely helpful, but it
  * does save a few lines.
  *
- * @since 2.6.2
+ * @since 3.0.0
  *
  * @param  string $str The string to check for a boolean value of true.
  * @return boolean Returns true if the string is equal to 'true', otherwise it returns false.
@@ -354,7 +354,7 @@ function go_is_true_str( $str ) {
 /**
  * Determines whether or not a user is an administrator with management capabilities.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param int $user_id Optional. The user ID.
  * @return boolean True if the user has the 'administrator' role and has the 'manage_options'

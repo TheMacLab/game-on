@@ -1502,7 +1502,7 @@ function go_render_task_chain_order() {
  *
  * This function is not meant to be called in any way other than through its `cmb_validate_*` hook.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @global $post
  *

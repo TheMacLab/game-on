@@ -1062,7 +1062,7 @@ function go_before_task_publish_handler( event, doDefault ) {
  *
  * Calls toggling callbacks——stored in the `on_toggle` property——on setting rows, if they exist.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @see go_accordion_click_handler()
  *
@@ -1099,7 +1099,7 @@ function go_toggle_accordion( accordion_data ) {
  *
  * Passes custom event data, containing accordion data, on to the `go_toggle_accordion()` function.
  * 
- * @since 2.6.1
+ * @since 3.0.0
  * 
  * @param object event The click event object.
  */
@@ -1121,7 +1121,7 @@ function go_accordion_click_handler( event ) {
  * `go_generate_accordion_array()`. If a setting row doesn't have a callback to call, the row is
  * hidden.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param object accordion_array Accordion and setting data, see `go_generate_accordion_array()`
  *                               for structure.
@@ -1176,7 +1176,7 @@ function go_accordion_array_on_load( accordion_array, accordion_names ) {
  * Generates an object containing nearly all the IDs and class identifiers for setting accordions
  * and their settings.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @return object Contains the accordion ID, accordion row classes, setting row classes, and setting
  *                row callbacks for each accordion.

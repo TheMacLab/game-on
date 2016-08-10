@@ -1668,7 +1668,7 @@ add_shortcode( 'go_task','go_task_shortcode' );
  * The test meta data arrays are separately ordered so that index 0 of the question array corresponds
  * to index 0 of all the other arrays, index 1 to all the other index 1 elements, and so on.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param string $stage   The stage. e.g. "encounter", "accept", "completion", "mastery" ("repeat"
  *                        would return null, since there is no test option in the fifth stage).
@@ -3218,7 +3218,7 @@ function go_record_stage_time($post_id = null, $status = null) {
  * task is the last in the chain, the final chain message (stored in the `go_mta_final_chain_message`
  * meta data) will be displayed.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @param int $task_id The task ID.
  * @param int $user_id Optional. The user ID.

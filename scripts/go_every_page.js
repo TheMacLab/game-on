@@ -702,7 +702,7 @@ if ( ! Math.ceil10 ) {
 /**
  * Retrieves the jQuery object of the nth previous element.
  *
- * @since 2.6.1
+ * @since 3.0.0
  *
  * @see jQuery.prototype.prev()
  *
