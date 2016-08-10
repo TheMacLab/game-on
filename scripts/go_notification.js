@@ -1,10 +1,9 @@
 /*
 	This is the file that handles the displaying of points, level ups, and experience gained when task portions are completed.
 */
-
-function go_notification( timer, el ) {	
+function go_notification( timer, el ) {
 	if ( typeof timer === 'undefined' ) {
-		timer = 3000;	
+		timer = 3000;
 	}
 	if ( typeof el === 'undefined' ) {
 		el = false;

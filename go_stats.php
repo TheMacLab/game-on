@@ -4,25 +4,26 @@ function go_stats_overlay() {
 	echo '<div id="go_stats_page_black_bg" style="display:none !important;"></div><div id="go_stats_white_overlay" style="display:none;"></div>';
 }
 
-function go_admin_bar_stats() { 
- 	global $wpdb;
-	$table_name_go = $wpdb->prefix . "go";
+function go_admin_bar_stats() {
+	$user_id = 0;
 	if ( ! empty( $_POST['uid'] ) ) {
-		$current_user = get_userdata( $_POST['uid'] );
+		$user_id = (int) $_POST['uid'];
+		$current_user = get_userdata( $user_id );
 	} else {
 		$current_user = wp_get_current_user();
+		$user_id = $current_user->ID;
 	}
+	check_ajax_referer( 'go_admin_bar_stats_' );
+	
 	?>
-	<input type="hidden" id="go_stats_hidden_input" value="<?php echo ( ! empty( $_POST['uid'] ) ? $_POST['uid'] : null ); ?>"/>
+	<input type="hidden" id="go_stats_hidden_input" value="<?php echo $user_id; ?>"/>
 	<?php
 	$user_fullname = $current_user->first_name.' '.$current_user->last_name;
 	$user_login =  $current_user->user_login;
 	$user_display_name = $current_user->display_name;
-	$user_id = $current_user->ID ;
 	$user_website = $current_user->user_url;
- 	$current_user_id = $current_user->ID;
-	$user_avatar = get_avatar( $current_user_id, 161 );
-	$user_focuses = go_display_user_focuses( $current_user_id );
+	$user_avatar = get_avatar( $user_id, 161 );
+	$user_focuses = go_display_user_focuses( $user_id );
 	
 	// option names 
 	$points_name = go_return_options( 'go_points_name' );
@@ -31,20 +32,48 @@ function go_admin_bar_stats() {
 	$penalty_name = go_return_options( 'go_penalty_name' );
 	$minutes_name = go_return_options( 'go_minutes_name' );
 
+	$current_points = go_return_points( $user_id );
+	$current_currency = go_return_currency( $user_id );
+	$current_bonus_currency = go_return_bonus_currency( $user_id );
+	$current_penalty = go_return_penalty( $user_id );
+	$current_minutes = go_return_minutes( $user_id );
+
+	$go_option_ranks = get_option( 'go_ranks' );
+	$points_array = $go_option_ranks['points'];
+
+	$max_rank_index = count( $points_array ) - 1;
+	$max_rank_points = (int) $points_array[ $max_rank_index ];
+
+	$percentage_of_level = 1;
+
 	// user pnc 
-	go_get_rank( $current_user_id );
-	$current_points = go_return_points( $current_user_id );
-	$current_currency = go_return_currency( $current_user_id );
-	$current_bonus_currency = go_return_bonus_currency( $current_user_id );
-	$current_penalty = go_return_penalty( $current_user_id );
-	$current_minutes = go_return_minutes( $current_user_id );
-	global $current_rank;
-	global $current_rank_points;
-	global $next_rank;
-	global $next_rank_points;
-	$display_current_rank_points = $current_points - $current_rank_points;
-	$display_next_rank_points = $next_rank_points - $current_rank_points;
-	$percentage_of_level = ( $display_current_rank_points / $display_next_rank_points ) * 100;
+	$rank = go_get_rank( $user_id );
+	$current_rank = $rank['current_rank'];
+	$current_rank_points = $rank['current_rank_points'];
+	$next_rank = $rank['next_rank'];
+	$next_rank_points = $rank['next_rank_points'];
+	
+	if ( null !== $next_rank_points ) {
+		$rank_threshold_diff = ( $next_rank_points - $current_rank_points );
+	} else {
+		$rank_threshold_diff = 1;
+	}
+	$pts_to_rank_threshold = ( $current_points - $current_rank_points );
+
+	if ( $max_rank_points === $current_rank_points ) {
+		$prestige_name = go_return_options( 'go_prestige_name' );
+		$pts_to_rank_up_str = $prestige_name;
+	} else {
+		$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
+	}
+
+	$percentage_of_level = ( $pts_to_rank_threshold / $rank_threshold_diff ) * 100;
+	if ( $percentage_of_level <= 0 ) { 
+		$percentage_of_level = 0;
+	} else if ( $percentage_of_level >= 100 ) {
+		$percentage_of_level = 100;
+	}
+	
 	?>
 	<div id='go_stats_lay'>
 		<div id='go_stats_gravatar'><?php echo $user_avatar; ?></div>
@@ -55,9 +84,9 @@ function go_admin_bar_stats() {
 			<div id='go_stats_user_rank'><?php echo $current_rank; ?></div>
 			<div id='go_stats_user_progress'>
 				<div id="go_stats_progress_text_wrap">
-					<div id='go_stats_progress_text'><?php echo "<span id='go_stats_user_progress_top_value'>{$display_current_rank_points}</span>/<span id='go_stats_user_progress_bottom_value'>{$display_next_rank_points}</span>"; ?></div>
+					<div id='go_stats_progress_text'><?php echo $pts_to_rank_up_str; ?></div>
 				</div>
-				<div id='go_stats_progress_fill' style='width: <?php echo $percentage_of_level; ?>%;<?php $color = barColor( $current_bonus_currency, $current_penalty ); echo "background-color: {$color}";if ( $percentage_of_level >= 98 ) { echo "border-radius: 15px"; } ?>'></div>
+				<div id='go_stats_progress_fill' style='width: <?php echo $percentage_of_level; ?>%;<?php $color = barColor( $current_bonus_currency, $current_penalty ); echo "background-color: {$color}; ";?>'></div>
 			</div>
             <?php if ( go_return_options( 'go_focus_switch' ) == 'On' ) {?>
             <div id='go_stats_user_focuses'><?php echo ( ( ! empty( $user_focuses) ) ? $user_focuses : '' ); ?></div>
@@ -100,19 +129,28 @@ function go_admin_bar_stats() {
 	</div>
 	<?php 
 	die();
-
 }
 
 function go_stats_task_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = $_POST['user_id'];
+		$user_id = (int) $_POST['user_id'];
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_task_list_' );
+
 	$is_admin = current_user_can( 'manage_options' );
-	$task_list = $wpdb->get_results( $wpdb->prepare( "SELECT status, post_id, count, url FROM {$go_table_name} WHERE uid=%d AND (status = %d OR status = 2 OR status = 3 OR status = 4) ORDER BY id DESC", $user_id, 1 ) );
+	$task_list = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT status, post_id, count, url 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND (status = 1 OR status = 2 OR status = 3 OR status = 4) 
+			ORDER BY id DESC",
+			$user_id
+		)
+	);
 	$counter = 1;
 	?>
 	<ul id='go_stats_tasks_list' <?php if ( $is_admin ) { echo "class='go_stats_tasks_list_admin'"; } ?>>
@@ -285,172 +323,262 @@ function go_stats_task_list() {
 
 function go_stats_move_stage() {
 	global $wpdb;
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
+
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = $_POST['user_id'];
+		$user_id = (int) $_POST['user_id'];
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_move_stage_' );
+
 	$current_rank = get_user_meta( $user_id, 'go_rank', true );
-	$task_id = $_POST['task_id'];
-	$status  = $_POST['status'];
-	$count   = $_POST['count'];
-	$message = $_POST['message'];
+	$task_id = ( ! empty( $_POST['task_id'] ) ? (int) $_POST['task_id'] : 0 );
+	$status  = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 1 );
+	$count   = ( ! empty( $_POST['count'] ) ? (int) $_POST['count'] : 0 );
+	$message = ( ! empty( $_POST['message'] ) ? sanitize_text_field( $_POST['message'] ) : 'See me' );
 	$custom_fields = get_post_custom( $task_id );
-	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? 
-		array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : null );
-	$rewards = unserialize( $custom_fields['go_presets'][0] );
-	$current_status = $wpdb->get_var( $wpdb->prepare( "SELECT status FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
-	$page_id = $wpdb->get_var( $wpdb->prepare( "SELECT page_id FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
-	
-	$changed = array( 
-		'type' => 'json', 
-		'points' => 0, 
-		'currency' => 0, 
-		'bonus_currency' => 0
+	$date_picker = (
+		! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ?
+		array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) :
+		null
 	);
-	
+	$rewards = unserialize( $custom_fields['go_presets'][0] );
+	$current_status = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$task_id
+		)
+	);
+	$page_id = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT page_id 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$task_id
+		)
+	);
+
+	$go_option_ranks = get_option( 'go_ranks' );
+	$points_array = $go_option_ranks['points'];
+
+	$max_rank_index = count( $points_array ) - 1;
+	$max_rank_points = (int) $points_array[ $max_rank_index ];
+	$prestige_name = go_return_options( 'go_prestige_name' );
+
+	$changed = array(
+		'type'            => 'json',
+		'points'          => 0,
+		'currency'        => 0,
+		'bonus_currency'  => 0,
+		'max_rank_points' => $max_rank_points,
+		'prestige_name'   => $prestige_name,
+	);
+
 	if ( ! empty( $date_picker ) ) {
 		$dates = $date_picker['date'];
 		$percentages = $date_picker['percent'];
 		$unix_today = strtotime( date( 'Y-m-d' ) );
 
 		$past_dates = array();
-		
+
 		foreach ( $dates as $key => $date ) {
 			if ( $unix_today >= strtotime( $date ) ) {
 				$past_dates[ $key ] = abs( $unix_today - strtotime( $date ) );
 			}
 		}
-		
+
 		if ( ! empty( $past_dates ) ) {
 			asort( $past_dates );
 			$update_percent = (float) ( ( $percentages[ key( $past_dates ) ] ) / 100);
 		} else {
-			$update_percent = 1;	
+			$update_percent = 1;
 		}
 	} else {
 		$update_percent = 1;
 	}
-	
-	if ( $status == 1) {
-		$current_rewards = $wpdb->get_results( $wpdb->prepare( "SELECT points, currency, bonus_currency FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
-		go_task_abandon( $user_id, $task_id, 
-		$current_rewards[0]->points, 
-		$current_rewards[0]->currency, 
-		$current_rewards[0]->bonus_currency * $update_percent);
-		
+
+	if ( 1 === $status ) {
+		$current_rewards = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT points, currency, bonus_currency 
+				FROM {$go_table_name} 
+				WHERE uid = %d AND post_id = %d",
+				$user_id,
+				$task_id
+			)
+		);
+
+		go_task_abandon(
+			$user_id,
+			$task_id,
+			$current_rewards[0]->points,
+			$current_rewards[0]->currency,
+			$current_rewards[0]->bonus_currency * $update_percent
+		);
+
 		$changed['points'] = -$current_rewards[0]->points;
 		$changed['currency'] = -$current_rewards[0]->currency;
 		$changed['bonus_currency'] = -$current_rewards[0]->bonus_currency;
-		
+
 		$current_points = go_return_points( $user_id );
 		$updated_rank = get_user_meta( $user_id, 'go_rank', true );
-		if ( $current_rank[0][0] != $updated_rank[0][0] ) {
-			$changed['current_points'] = $current_points;
+		if ( $current_rank[0][1] != $updated_rank[0][1] ) {
 			$changed['rank'] = $updated_rank[0][0];
-			$changed['rank_points'] = $updated_rank[0][1];
-			$changed['next_rank_points'] = $updated_rank[1][1];
 		}
+		$changed['current_points'] = $current_points;
+		$changed['current_rank_points'] = $updated_rank[0][1];
+		$changed['next_rank_points'] = $updated_rank[1][1];
 		$changed['abandon'] = 'true';
-		
-		if ( $message === 'See me' ) {
+
+		if ( 'See me' === $message ) {
 			go_message_user( $user_id, $message.' about, <a href="'.get_permalink( $task_id ).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title( $task_id ).'</a>, please.' );
 		} else {
 			go_message_user( $user_id, 'RE: <a href="' . get_permalink( $task_id ) . '">' . get_the_title( $task_id ) . '</a> ' . $message );
 		}
 	} else {
-		 
+
 		for ( $count; $count > 0; $count-- ) {
 			go_add_post(
-				$user_id, $task_id, $current_status, 
-				floor( -$rewards['points'][ $current_status] * $update_percent ), 
-				floor( -$rewards['currency'][ $current_status] * $update_percent ), 
-				floor( -$rewards['bonus_currency'][ $current_status] * $update_percent ), 
-				null, $page_id, 'on', -1
+				$user_id, $task_id, $current_status,
+				floor( -$rewards['points'][ $current_status ] * $update_percent ),
+				floor( -$rewards['currency'][ $current_status ] * $update_percent ),
+				floor( -$rewards['bonus_currency'][ $current_status ] * $update_percent ),
+				null, $page_id, true, -1
 			);
-			
-			$changed['points'] += floor( -$rewards['points'][ $current_status] * $update_percent );
-			$changed['currency'] += floor( -$rewards['currency'][ $current_status] * $update_percent );
-			$changed['bonus_currency'] += floor( -$rewards['bonus_currency'][ $current_status] * $update_percent );
+
+			$changed['points'] += floor(
+				-$rewards['points'][ $current_status ] * $update_percent
+			);
+			$changed['currency'] += floor(
+				-$rewards['currency'][ $current_status ] * $update_percent
+			);
+			$changed['bonus_currency'] += floor(
+				-$rewards['bonus_currency'][ $current_status ] * $update_percent
+			);
 		}
-		
+
 		while ( $current_status != $status ) {
 			if ( $current_status > $status ) {
 				$current_status--;
-				
+
 				go_add_post(
-					$user_id, $task_id, $current_status, 
-					floor( -$rewards['points'][ $current_status] * $update_percent ), 
-					floor( -$rewards['currency'][ $current_status] * $update_percent ), 
-					floor( -$rewards['bonus_currency'][ $current_status] * $update_percent ), 
-					null, $page_id, null, null
+					$user_id, $task_id, $current_status,
+					floor( -$rewards['points'][ $current_status ] * $update_percent ),
+					floor( -$rewards['currency'][ $current_status ] * $update_percent ),
+					floor( -$rewards['bonus_currency'][ $current_status ] * $update_percent ),
+					null, $page_id, false, null
 				);
-				
-				$changed['points'] += floor( -$rewards['points'][ $current_status] * $update_percent );
-				$changed['currency'] += floor( -$rewards['currency'][ $current_status] * $update_percent );
-				$changed['bonus_currency'] += floor( -$rewards['bonus_currency'][ $current_status] * $update_percent );
-				
+
+				$changed['points'] += floor(
+					-$rewards['points'][ $current_status ] * $update_percent
+				);
+				$changed['currency'] += floor(
+					-$rewards['currency'][ $current_status ] * $update_percent
+				);
+				$changed['bonus_currency'] += floor(
+					-$rewards['bonus_currency'][ $current_status ] * $update_percent
+				);
+
 			} elseif ( $current_status < $status ) {
 				$current_status++;
-				$current_count = $wpdb->get_var( $wpdb->prepare( "SELECT count FROM {$go_table_name} WHERE uid=%d AND post_id=%d", $user_id, $task_id ) );
-				if ( $current_status == 5 && $current_count == 0 ) {
+				$current_count = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT count 
+						FROM {$go_table_name} 
+						WHERE uid = %d AND post_id = %d",
+						$user_id,
+						$task_id
+					)
+				);
+				if ( 5 === $current_status && 0 === $current_count ) {
 					go_add_post(
-						$user_id, $task_id, $current_status - 1, 
-						floor( $rewards['points'][ $current_status - 1 ] * $update_percent ), 
-						floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ), 
-						floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ), 
-						null, $page_id, 'on', 1
+						$user_id, $task_id, $current_status - 1,
+						floor( $rewards['points'][ $current_status - 1 ] * $update_percent ),
+						floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ),
+						floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ),
+						null, $page_id, true, 1
 					);
-					
+
 					$changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );
 					$changed['currency'] += floor( $rewards['currency'][ $current_status - 1 ] * $update_percent );
 					$changed['bonus_currency'] += floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent );
-					
+
 				} elseif ( $current_status < 5 ) {
 					go_add_post(
-						$user_id, $task_id, $current_status, 
-						floor( $rewards['points'][ $current_status - 1 ] * $update_percent ), 
-						floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ), 
-						floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ), 
-						null, $page_id, null, null
+						$user_id, $task_id, $current_status,
+						floor( $rewards['points'][ $current_status - 1 ] * $update_percent ),
+						floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ),
+						floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ),
+						null, $page_id, false, null
 					);
-					
+
 					$changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );
 					$changed['currency'] += floor( $rewards['currency'][ $current_status - 1 ] * $update_percent );
 					$changed['bonus_currency'] += floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent );
 				}
 			}
 		}
-		if ( $message === 'See me' ) {
+
+		if ( 'See me' === $message ) {
 			go_message_user( $user_id, $message.' about, <a href="'.get_permalink( $task_id ).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title( $task_id ).'</a>, please.' );
 		} else {
 			go_message_user( $user_id, 'RE: <a href="'.get_permalink( $task_id ).'">'.get_the_title( $task_id ).'</a> '.$message );
 		}
 		$current_points = go_return_points( $user_id );
 		$updated_rank = get_user_meta( $user_id, 'go_rank', true );
-		if ( $current_rank[0][0] != $updated_rank[0][0] ) {
-			$changed['current_points'] = $current_points;
+		if ( $current_rank[0][1] != $updated_rank[0][1] ) {
 			$changed['rank'] = $updated_rank[0][0];
-			$changed['rank_points'] = $updated_rank[0][1];
-			$changed['next_rank_points'] = $updated_rank[1][1];
 		}
+		$changed['current_points'] = $current_points;
+		$changed['current_rank_points'] = $updated_rank[0][1];
+		$changed['next_rank_points'] = $updated_rank[1][1];
 	}
-	
+
 	echo json_encode( $changed );
 	die();
 }
-	
+
 function go_stats_item_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = $_POST['user_id'];
+		$user_id = (int) $_POST['user_id'];
 	} else {
 		$user_id = get_current_user_id();
 	}
-	$items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, id DESC, reason DESC", $user_id, -1, 0 ) );
-	$gifted_items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND status = %d AND gifted = %d ORDER BY timestamp DESC, reason DESC, id DESC", $user_id, -1, 1 ) );
+	check_ajax_referer( 'go_stats_item_list_' );
+
+	$items = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND status = %d AND gifted = %d 
+			ORDER BY timestamp DESC, id DESC, reason DESC",
+			$user_id,
+			-1,
+			0
+		)
+	);
+	$gifted_items = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND status = %d AND gifted = %d 
+			ORDER BY timestamp DESC, reason DESC, id DESC",
+			$user_id,
+			-1,
+			1
+		)
+	);
 	?>
 	<div style="width: 99%;">
 	 <div style="float: left; width: 33%;"><strong>PURCHASES</strong></div>
@@ -464,8 +592,27 @@ function go_stats_item_list() {
 		
 		foreach ( $items as $item ) {
 			$item_id = $item->post_id;
-			$item_count_total = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d ", $user_id, -1, $item_id ) );
-			$count_before = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d AND id<=%d", $user_id, -1, $item_id, $item->id ) );
+			$item_count_total = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT SUM( count ) 
+					FROM {$go_table_name} 
+					WHERE uid = %d AND status = %d AND post_id = %d",
+					$user_id,
+					-1,
+					$item_id
+				)
+			);
+			$count_before = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT SUM( count ) 
+					FROM {$go_table_name} 
+					WHERE uid = %d AND status = %d AND post_id = %d AND id <= %d",
+					$user_id,
+					-1,
+					$item_id,
+					$item->id
+				)
+			);
 			$purchase_date = $item->timestamp;
 			$purchase_reason = $item->reason;
 			?>
@@ -484,8 +631,27 @@ function go_stats_item_list() {
 		if ( ! empty( $gifted_items ) ) {		
 			foreach ( $gifted_items as $item ) {
 				$item_id = $item->post_id;
-				$item_count_total = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d ", $user_id, -1, $item_id ) );
-				$count_before = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(count) FROM {$go_table_name} WHERE uid=%d AND status=%d AND post_id=%d AND id<=%d", $user_id, -1, $item_id, $item->id ) );
+				$item_count_total = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT SUM( count ) 
+						FROM {$go_table_name} 
+						WHERE uid = %d AND status = %d AND post_id = %d",
+						$user_id,
+						-1,
+						$item_id
+					)
+				);
+				$count_before = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT SUM( count ) 
+						FROM {$go_table_name} 
+						WHERE uid = %d AND status = %d AND post_id = %d AND id <= %d",
+						$user_id,
+						-1,
+						$item_id,
+						$item->id
+					)
+				);
 				$purchase_date = $item->timestamp;
 				$purchase_reason = $item->reason;
 				?>
@@ -509,12 +675,23 @@ function go_stats_rewards_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = $_POST['user_id'];
+		$user_id = (int) $_POST['user_id'];
 	} else {
 		$user_id = get_current_user_id();
 	}
+	check_ajax_referer( 'go_stats_rewards_list_' );
+
 	$new_tab = ( $user_id != get_current_user_id() ) ? "target='_blank'" : '';
-	$rewards = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND (points != %d OR currency != 0 OR bonus_currency != 0) ORDER BY id DESC", $user_id, 0 ) );
+	$rewards = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND ( points != %d OR currency != 0 OR bonus_currency != 0 ) 
+			ORDER BY id DESC",
+			$user_id,
+			0
+		)
+	);
 	?>
 	<div style="width: 99%;">
 	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper( go_return_options( 'go_points_name' ) ); ?></strong></div>
@@ -569,11 +746,22 @@ function go_stats_minutes_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = $_POST['user_id'];
+		$user_id = (int) $_POST['user_id'];
 	} else {
 		$user_id = get_current_user_id();
 	}
-	$minutes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND (minutes != %d) ORDER BY id DESC", $user_id, 0 ) ); 
+	check_ajax_referer( 'go_stats_minutes_list_' );
+
+	$minutes = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND ( minutes != %d ) 
+			ORDER BY id DESC",
+			$user_id,
+			0
+		)
+	);
 	?>
 	<ul id='go_stats_minutes_list' class='go_stats_body_list'>
 		<?php 
@@ -595,11 +783,22 @@ function go_stats_penalties_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = $_POST['user_id'];
+		$user_id = (int) $_POST['user_id'];
 	} else {
 		$user_id = get_current_user_id();
 	}
-	$penalties = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$go_table_name} WHERE uid = %d AND (penalty != %d) ORDER BY id DESC", $user_id, 0 ) ); 
+	check_ajax_referer( 'go_stats_penalties_list_' );
+
+	$penalties = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND ( penalty != %d ) 
+			ORDER BY id DESC",
+			$user_id,
+			0
+		)
+	);
 	?>
 	<ul id='go_stats_penalties_list' class='go_stats_body_list'>
 		<?php 
@@ -621,21 +820,35 @@ function go_stats_badges_list() {
 	global $wpdb;
 	$go_table_name = "{$wpdb->prefix}go";
 	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = $_POST['user_id'];
+		$user_id = (int) $_POST['user_id'];
 	} else {
 		$user_id = get_current_user_id();
 	}
-	$badges = get_user_meta( $user_id, 'go_badges', true );
-	if ( $badges) {
-		foreach ( $badges as $id => $badge ) {
-			$img = wp_get_attachment_image( $badge, array( 100, 100 ) );
-			echo "<div class='go_badge_wrap'><div class='go_badge_container'><div class='go_badge'>{$img}</div></div></div>";
+	check_ajax_referer( 'go_stats_badges_list_' );
+
+	$badges_array = get_user_meta( $user_id, 'go_badges', true );
+	if ( is_array( $badges_array ) && ! empty( $badges_array ) ) {
+		foreach ( $badges_array as $key => $badge_id ) {
+			$img = wp_get_attachment_image( $badge_id, array( 100, 100 ) );
+			$img_post = get_post( $badge_id );
+			$img_caption = ( ! empty( $img_post->post_excerpt ) ? $img_post->post_excerpt : "No caption available." );
+			if ( ! empty( $img ) ) {
+				echo "
+					<div class='go_badge_wrap'>
+						<div class='go_badge_container'>
+							<div class='go_badge' title='{$img_caption}'>{$img}</div>
+						</div>
+					</div>
+				";
+			}
 		}
 	}
 	die();
 }
 
 function go_stats_leaderboard_choices() {
+	check_ajax_referer( 'go_stats_leaderboard_choices_' );
+
 	?>
 	<div id='go_stats_leaderboard_filters'>
 		<div id='go_stats_leaderboard_filters_head'>FILTER</div>
@@ -750,16 +963,23 @@ function go_return_user_leaderboard( $users, $class_a_choice, $focuses, $type, $
 
 function go_stats_leaderboard() {
 	global $wpdb;
+	check_ajax_referer( 'go_stats_leaderboard_' );
+
 	$go_totals_table_name = "{$wpdb->prefix}go_totals";
-	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? $_POST['class_a_choice'] : null );
-	$focuses = ( ! empty( $_POST['focuses'] ) ? $_POST['focuses'] : array() );
-	$date = $_POST['date'];
+	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? sanitize_text_field( $_POST['class_a_choice'] ) : '' );
+	$focuses = ( ! empty( $_POST['focuses'] ) ? (array) $_POST['focuses'] : array() );
+	$date = 'all';
+	if ( ! empty( $_POST['date'] ) ) {
+		if ( 'all' !== $_POST['date'] ) {
+			$date = (int) $_POST['date'];
+		}
+	}
 	?>
 	<ul id='go_stats_leaderboard_list_points' class='go_stats_body_list go_stats_leaderboard_list'>
 		<li class='go_stats_body_list_head'><?php echo strtoupper( go_return_options( 'go_points_name' ) ); ?></li>
 		<?php 
 		$counter = 1;
-		$users_points = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST(points as signed) DESC" );
+		$users_points = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( points as signed ) DESC" );
 		go_return_user_leaderboard( $users_points, $class_a_choice, $focuses, 'points', $counter )
 		?>
 	</ul>
@@ -767,7 +987,7 @@ function go_stats_leaderboard() {
 		<li class='go_stats_body_list_head'><?php echo strtoupper( go_return_options( 'go_currency_name' ) ); ?></li>
 		<?php 
 		$counter = 1;
-		$users_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST(currency as signed) DESC" );
+		$users_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( currency as signed ) DESC" );
 		go_return_user_leaderboard( $users_currency, $class_a_choice, $focuses, 'currency', $counter )
 		?>
 	</ul>
@@ -775,7 +995,7 @@ function go_stats_leaderboard() {
 		<li class='go_stats_body_list_head'><?php echo strtoupper( go_return_options( 'go_bonus_currency_name' ) ); ?></li>
 		<?php 
 		$counter = 1;
-		$users_bonus_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST(bonus_currency as signed) DESC" );
+		$users_bonus_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( bonus_currency as signed ) DESC" );
 		go_return_user_leaderboard( $users_bonus_currency, $class_a_choice, $focuses, 'bonus_currency', $counter )
 		?>
 	</ul>
@@ -783,7 +1003,7 @@ function go_stats_leaderboard() {
 		<li class='go_stats_body_list_head'>BADGES</li>
 		<?php 
 		$counter = 1;
-		$users_badge_count = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST(badge_count as signed) DESC" );
+		$users_badge_count = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( badge_count as signed ) DESC" );
 		go_return_user_leaderboard( $users_badge_count, $class_a_choice, $focuses, 'badges', $counter )
 		?>
 	</ul>
