@@ -3241,6 +3241,11 @@ function go_task_render_chain_pagination( $task_id, $user_id = null ) {
 	}
 
 	$chain_order = get_post_meta( $task_id, 'go_mta_chain_order', true );
+
+	if ( empty( $chain_order ) || ! is_array( $chain_order ) ) {
+		return;
+	}
+
 	$final_chain_msg = get_post_meta( $task_id, 'go_mta_final_chain_message', true );
 	$can_display_final_msg = false;
 	$is_final_msg_displayed = false;
