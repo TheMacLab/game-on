@@ -913,52 +913,59 @@ function go_return_user_data( $id, $counter, $sort ) {
 	}
 }
 
-function go_return_user_leaderboard( $users, $class_a_choice, $focuses, $type, $counter ) {
-	foreach ( $users as $user_ids ) {
-		foreach ( $user_ids as $user_id ) {
-			if ( ! user_can( $user_id, 'manage_options' ) ) {
-				$class_a = get_user_meta( $user_id, 'go_classifications', true );
-				$focus = get_user_meta( $user_id, 'go_focus', true );
-				if ( $class_a ) {
-					$class_keys = array_keys( $class_a );
+function go_return_user_leaderboard( $user_id_objs, $class_a_choice, $all_foci, $type, $counter ) {
+
+	// stops if there are no users
+	if ( empty( $user_id_objs ) || ! is_array( $user_id_objs ) ) {
+		return;
+	}
+
+	foreach ( $user_id_objs as $obj ) {
+		$user_id = (int) $obj->uid;
+		if ( ! go_user_is_admin( $user_id ) ) {
+			$class_a = get_user_meta( $user_id, 'go_classifications', true );
+			$user_focus = get_user_meta( $user_id, 'go_focus', true );
+			if ( ! empty( $class_a ) ) {
+				$class_keys = array_keys( $class_a );
+			}
+			if ( ! empty( $class_a_choice ) && is_array( $class_a_choice ) &&
+					! empty( $all_foci ) && is_array( $all_foci ) ) {
+
+				if ( ! empty( $class_keys ) && ! empty( $user_focus ) ) {
+					$class_intersect = array_intersect( $class_keys, $class_a_choice );
+					if ( is_array( $user_focus ) ) {
+						$user_focus_intersect = array_intersect( $user_focus, $all_foci );
+					} else {
+						$user_focus_intersect = in_array( $user_focus, $all_foci );
+					}
+					if ( ! empty( $class_intersect ) && ! empty( $user_focus_intersect ) ) {
+						go_return_user_data( $user_id, $counter, $type );
+						$counter++;
+					}
 				}
-				if ( ! empty( $class_a_choice ) && ! empty( $focuses ) ) {
-					if ( ! empty( $class_keys ) && ! empty( $focus ) ) {
-						$class_intersect = array_intersect( $class_keys, $class_a_choice );
-						if (is_array( $focus) ) {
-							$focus_intersect = array_intersect( $focus, $focuses );
-						} else {
-							$focus_intersect = in_array( $focus, $focuses );
-						}
-						if ( ! empty( $class_intersect ) && ! empty( $focus_intersect ) ) {
-							go_return_user_data( $user_id, $counter, $type );
-							$counter++;
-						}
+			} elseif ( ! empty( $class_a_choice ) && is_array( $class_a_choice ) ) {
+				if ( ! empty( $class_keys ) ) {
+					$class_intersect = array_intersect( $class_keys, $class_a_choice );
+					if ( ! empty( $class_intersect ) ) {
+						go_return_user_data( $user_id, $counter, $type );
+						$counter++;
 					}
-				} elseif ( ! empty( $class_a_choice ) ) {
-					if ( ! empty( $class_keys ) ) {
-						$class_intersect = array_intersect( $class_keys, $class_a_choice );
-						if ( ! empty( $class_intersect ) ) {
-							go_return_user_data( $user_id, $counter, $type );
-							$counter++;
-						}
+				}
+			} elseif ( ! empty( $all_foci ) && is_array( $all_foci ) ) {
+				if ( ! empty( $user_focus ) ) {
+					if ( is_array( $user_focus ) ) {
+						$user_focus_intersect = array_intersect( $user_focus, $all_foci );
+					} else {
+						$user_focus_intersect = in_array( $user_focus, $all_foci );
 					}
-				} elseif ( ! empty( $focuses ) ) {
-					if ( ! empty( $focus ) ) {
-						if (is_array( $focus ) ) {
-							$focus_intersect = array_intersect( $focus, $focuses );
-						} else {
-							$focus_intersect = in_array( $focus, $focuses );
-						}
-						if ( ! empty( $focus_intersect ) ) {
-							go_return_user_data( $user_id, $counter, $type );
-							$counter++;
-						}
+					if ( ! empty( $user_focus_intersect ) ) {
+						go_return_user_data( $user_id, $counter, $type );
+						$counter++;
 					}
 				}
 			}
 		}
-	}	
+	}
 }
 
 function go_stats_leaderboard() {
@@ -966,7 +973,7 @@ function go_stats_leaderboard() {
 	check_ajax_referer( 'go_stats_leaderboard_' );
 
 	$go_totals_table_name = "{$wpdb->prefix}go_totals";
-	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? sanitize_text_field( $_POST['class_a_choice'] ) : '' );
+	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? (array) $_POST['class_a_choice'] : array() );
 	$focuses = ( ! empty( $_POST['focuses'] ) ? (array) $_POST['focuses'] : array() );
 	$date = 'all';
 	if ( ! empty( $_POST['date'] ) ) {
