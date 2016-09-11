@@ -835,6 +835,16 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 		check_ajax_referer( 'go_task_abandon_' . $post_id . '_' . $user_id );
 	}
 
+	$curr_user_id = get_current_user_id();
+	$is_admin = go_user_is_admin( $curr_user_id );
+
+	/**
+	 * Only administrator accounts can manipulate the data for another user account.
+	 */
+	if ( $curr_user_id !== $user_id && ! $is_admin ) {
+		die( -1 );
+	}
+
 	$table_name_go = "{$wpdb->prefix}go";
 	$raw_timestamp = $wpdb->get_var(
 		$wpdb->prepare(
