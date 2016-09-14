@@ -1946,14 +1946,22 @@ function go_validate_store_focus() {
 
 add_action( 'cmb_render_go_store_receipt', 'go_store_receipt' );
 function go_store_receipt() {
-	$custom = get_post_custom();
-	$store_receipt_option = get_option( 'go_store_receipt_switch' );
+	global $post;
 
-	// turn the option on by default
-	if ( ! isset( $custom['go_mta_store_receipt'][0] ) ) {
-		$custom['go_mta_store_receipt'][0] = true;
+	$global_receipt_option = get_option( 'go_store_receipt_switch', false );
+	if ( 'on' === strtolower( $global_receipt_option ) ) {
+		$global_receipt_option = true;
 	}
-	$is_checked = ( ! empty( $custom['go_mta_store_receipt'][0] ) ? 'checked' : '' );
+
+	// makes empty options inherit the store receipt option in the GO settings page
+	$stored_option = get_post_meta( $post->ID, 'go_mta_store_receipt', true );
+	if ( '' === $stored_option ) {
+		$stored_option = $global_receipt_option;
+	} else {
+		$stored_option = (bool) $stored_option;
+	}
+
+	$is_checked = ( $stored_option ? 'checked' : '' );
 
 	echo "<input id='go_store_receipt_checkbox' name='go_store_receipt' type='checkbox' {$is_checked}/>";
 }
