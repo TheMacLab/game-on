@@ -31,6 +31,7 @@ function go_buy_item() {
 	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
 	$qty = ( ! empty( $_POST['qty'] ) && (int) $_POST['qty'] > 0 ? (int) $_POST['qty'] : 1 );
 	$current_purchase_count = ( ! empty( $_POST['purchase_count'] ) ? (int) $_POST['purchase_count'] : 0 );
+	$recipient_id = 0;
 
 	if ( ! empty( $_POST['recipient'] ) ) {
 		$recipient = sanitize_text_field( $_POST['recipient'] );
@@ -55,7 +56,7 @@ function go_buy_item() {
 	}
 	
 	$custom_fields = get_post_custom( $post_id );
-	$sending_receipt = ( ! empty( $custom_fields['go_mta_store_receipt'][0] ) ? $custom_fields['go_mta_store_receipt'][0] : false );
+	$sending_receipt = get_post_meta( $post_id, 'go_mta_store_receipt', false );
 
 	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {
@@ -173,7 +174,7 @@ function go_buy_item() {
 		} else {
 			echo "Purchased";
 		}
-		if ( $sending_receipt === 'true' ) {
+		if ( $sending_receipt ) {
 			$receipt = go_mail_item_reciept( $user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_minutes, $qty, $recipient_id );
 			if ( ! empty( $receipt ) ) {
 				echo $receipt;
@@ -228,7 +229,7 @@ function go_buy_item() {
 	die();
 }
 
-function go_mail_item_reciept( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = null ) {
+function go_mail_item_reciept( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = 0 ) {
 	global $go_plugin_dir;
 	$currency = ucwords( go_return_options( 'go_currency_name' ) );
 	$points = ucwords( go_return_options( 'go_points_name' ) );
