@@ -1368,8 +1368,15 @@ function go_validate_test_field( $unused_override_value, $unused_value, $field_a
 			}
 		}
 	}
-	
-	return( array( $question, $test, $select, $block_count, $input_count ) );
+
+	$validated_data = array();
+	if ( ! empty( $question ) && ! empty( $test ) && ! empty( $select ) &&
+			! empty( $block_count ) && ! empty( $input_count ) ) {
+
+		$validated_data = array( $question, $test, $select, $block_count, $input_count );
+	}
+
+	return $validated_data;
 }
 
 add_action( 'cmb_render_go_repeat_amount', 'go_repeat_amount' );
