@@ -9,8 +9,6 @@ function goBuytheItem( id, buyColor, count ) {
 			purchase_count: count
 		};
 
-		// Whenever you figure out a better way to do this, implement it. 
-		var color = jQuery( '#go_admin_bar_progress_bar' ).css( 'background-color' );
 		jQuery.ajax({
 			url: buy_item.ajaxurl,
 			type: 'POST',
@@ -47,8 +45,6 @@ function goBuytheItem( id, buyColor, count ) {
 						buy.html( response );
 					}
 
-					// Whenever you figure out a better way to do this, implement it. 
-					jQuery( '#go_admin_bar_progress_bar' ).css( "background-color", color );
 				}
 				go_count_item( id );
 				// console.log(response);
