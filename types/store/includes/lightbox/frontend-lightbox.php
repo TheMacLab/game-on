@@ -21,6 +21,18 @@ function go_the_lb_ajax() {
 	$the_content = wpautop( $item_content );
 	$custom_fields = get_post_custom( $the_id );
 
+	$super_mod_enabled = false;
+	if ( ! empty( $custom_fields['go_mta_store_super_modifier'][0] ) &&
+			'on' == strtolower( $custom_fields['go_mta_store_super_modifier'][0] ) ) {
+		$super_mod_enabled = true;
+	}
+
+	$currency_name       = go_return_options( 'go_currency_name' );
+	$points_name         = go_return_options( 'go_points_name' );
+	$bonus_currency_name = go_return_options( 'go_bonus_currency_name' );
+	$penalty_name        = go_return_options( 'go_penalty_name' );
+	$minutes_name        = go_return_options( 'go_minutes_name' );
+
 	$user_id = get_current_user_id();
 	$user_points = go_return_points( $user_id );
 	$user_currency = go_return_currency( $user_id );
@@ -32,13 +44,19 @@ function go_the_lb_ajax() {
 	
 	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {
-		$temp_cost = go_return_multiplier( $user_id, $store_cost[0], $store_cost[1], $user_bonus_currency, $user_penalties );
 
-		$req_currency = $temp_cost[0];
-		$req_points = $temp_cost[1];
+		$temp_cost = array( $store_cost[0], $store_cost[1] );
+		if ( $super_mod_enabled ) {
+			$modded_cost = go_return_multiplier( $user_id, $temp_cost[0], $temp_cost[1], $user_bonus_currency, $user_penalties );
+			$temp_cost[0] = $modded_cost[0];
+			$temp_cost[1] = $modded_cost[1];
+		}
+
+		$req_currency       = $temp_cost[0];
+		$req_points         = $temp_cost[1];
 		$req_bonus_currency = $store_cost[2];
-		$req_penalty =  $store_cost[3];
-		$req_minutes = $store_cost[4];
+		$req_penalty        = $store_cost[3];
+		$req_minutes        = $store_cost[4];
 	}
 
 	$store_filter = ( ! empty( $custom_fields['go_mta_store_filter'][0] ) ? unserialize( $custom_fields['go_mta_store_filter'][0] ) : null );
@@ -72,51 +90,56 @@ function go_the_lb_ajax() {
 		$lvl_color = "r";
 	}
 
-	if ( $req_currency == 0 ) { 
-		$gold_color = "n"; 
+	$output_currency = $req_currency;
+	if ( 0 == $req_currency ) {
+		$gold_color = 'n';
 	} elseif ( $req_currency < 0 ) {
-		$gold_color = "g"; 
-		$output_currency = $req_currency *= -1;
-	} else { 
-		$gold_color = "r";
-	}
-	
-	if ( $req_points == 0 ) {
-		$points_color = "n"; 
-	} elseif ( $req_points < 0 ) {
-		$points_color = "g";
-		$output_points = $req_points *= -1;
-	} else { 
-		$points_color = "r"; 
-	}
-	
-	if ( $req_bonus_currency == 0 ) {
-		$bonus_currency_color = "n";
-	} elseif ( $req_bonus_currency < 0 ) {
-		$bonus_currency_color = "g";
-		$output_bonus_currency = $req_bonus_currency *= -1;
+		$gold_color = 'g';
+		$output_currency *= -1;
 	} else {
-		$bonus_currency_color = "r";
-	} 
-	
-	if ( $req_penalty == 0 ) {
-		$penalty_color = "n";
-	} elseif ( $req_penalty < 0 ) {
-		$penalty_color = "r";
-		$output_penalty = $req_penalty *= -1;
-	} else {
-		$penalty_color = "g";
+		$gold_color = 'r';
 	}
 
-	if ( $req_minutes == 0 ) {
-		$minutes_color = "n";
-	} elseif ( $req_minutes < 0 ) {
-		$minutes_color = "g";
-		$output_minutes = $req_minutes *= -1;
+	$output_points = $req_points;
+	if ( 0 == $req_points ) {
+		$points_color = 'n';
+	} elseif ( $req_points < 0 ) {
+		$points_color = 'g';
+		$output_points *= -1;
 	} else {
-		$minutes_color = "r";
-	} 
-	
+		$points_color = 'r';
+	}
+
+	$output_bonus_currency = $req_bonus_currency;
+	if ( 0 == $req_bonus_currency ) {
+		$bonus_currency_color = 'n';
+	} elseif ( $req_bonus_currency < 0 ) {
+		$bonus_currency_color = 'g';
+		$output_bonus_currency *= -1;
+	} else {
+		$bonus_currency_color = 'r';
+	}
+
+	$output_penalty = $req_penalty;
+	if ( 0 == $req_penalty ) {
+		$penalty_color = 'n';
+	} elseif ( $req_penalty < 0 ) {
+		$penalty_color = 'r';
+		$output_penalty *= -1;
+	} else {
+		$penalty_color = 'g';
+	}
+
+	$output_minutes = $req_minutes;
+	if ( 0 == $req_minutes ) {
+		$minutes_color = 'n';
+	} elseif ( $req_minutes < 0 ) {
+		$minutes_color = 'g';
+		$output_minutes *= -1;
+	} else {
+		$minutes_color = 'r';
+	}
+
 	if ( $lvl_color == "g" && $gold_color == "g" && $points_color == "g" ) { 
 		$buy_color = "gold"; 
 	} else { 
@@ -183,13 +206,20 @@ function go_the_lb_ajax() {
 	if ( $user_points < $req_rank ) {
 		die( "You need to reach {$req_rank_key} to purchase this item." );
 	}
-	
+
+	printf(
+		'<div id="golb-fr-price" class="golb-fr-boxes-%s" req="%d" cur="%d">%s: %d</div>
+		<div id="golb-fr-points" class="golb-fr-boxes-%s" req="%d" cur="%d">%s: %d</div>
+		<div id="golb-fr-bonus_currency" class="golb-fr-boxes-%s" req="%d" cur="%d">%s: %d</div>
+		<div id="golb-fr-penalty" class="golb-fr-boxes-%s" req="%d" cur="%d">%s: %d</div>
+		<div id="golb-fr-minutes" class="golb-fr-boxes-%s" req="%d" cur="%d">%s: %d</div>',
+		$gold_color, $req_currency, $user_currency, $currency_name, $output_currency,
+		$points_color, $req_points, $user_points, $points_name, $output_points,
+		$bonus_currency_color, $req_bonus_currency, $user_bonus_currency, $bonus_currency_name, $output_bonus_currency,
+		$penalty_color, $req_penalty, $user_penalties, $penalty_name, $output_penalty,
+		$minutes_color, $req_minutes, $user_minutes, $minutes_name, $output_minutes
+	);
 	?>
-	<div id="golb-fr-price" class="golb-fr-boxes-<?php echo $gold_color; ?>" req="<?php echo $req_currency; ?>" cur="<?php echo $user_currency; ?>"><?php echo go_return_options( 'go_currency_name' ).': '.( empty( $req_currency ) ? 0 : ( $req_currency < 0 ? $output_currency : $req_currency ) ); ?></div>
-	<div id="golb-fr-points" class="golb-fr-boxes-<?php echo $points_color; ?>" req="<?php echo $req_points; ?>" cur="<?php echo $user_points; ?>"><?php echo go_return_options( 'go_points_name' ).': '.( empty( $req_points) ? 0 : ( $req_points < 0 ? $output_points : $req_points ) ); ?></div>
-	<div id="golb-fr-bonus_currency" class="golb-fr-boxes-<?php echo $bonus_currency_color; ?>" req="<?php echo $req_bonus_currency; ?>" cur="<?php echo $user_bonus_currency; ?>"><?php echo go_return_options( 'go_bonus_currency_name' ).': '.( empty( $req_bonus_currency ) ? 0 : ( $req_bonus_currency < 0 ? $output_bonus_currency : $req_bonus_currency ) ); ?></div>
-    <div id='golb-fr-penalty' class='golb-fr-boxes-<?php echo $penalty_color; ?>' req='<?php echo $req_penalty; ?>' cur='<?php echo $user_penalties; ?>'><?php echo go_return_options( 'go_penalty_name' ).': '.( empty( $req_penalty ) ? 0 : ( $req_penalty < 0 ? $output_penalty : $req_penalty ) ); ?></div>
-    <div id="golb-fr-minutes" class="golb-fr-boxes-<?php echo $minutes_color; ?>" req="<?php echo $req_minutes; ?>" cur="<?php echo $user_minutes; ?>"><?php echo go_return_options( 'go_minutes_name' ).': '.( empty( $req_minutes ) ? 0 : ( $req_minutes < 0 ? $output_minutes : $req_minutes ) ); ?></div>
 	<?php
 	if ( $is_unpurchasable != 'on' ) {
 		?>
