@@ -47,9 +47,24 @@ function go_the_lb_ajax() {
 
 		$temp_cost = array( $store_cost[0], $store_cost[1] );
 		if ( $super_mod_enabled ) {
-			$modded_cost = go_return_multiplier( $user_id, $temp_cost[0], $temp_cost[1], $user_bonus_currency, $user_penalties );
-			$temp_cost[0] = $modded_cost[0];
-			$temp_cost[1] = $modded_cost[1];
+
+			/*
+			 * Indicates to the super modifier that values are meant to inc/dec in different directions
+			 * rather than together.
+			 *
+			 *    (e.g.) A user with a -10% super modifier should have to pay 110 gold instead of
+			 *    the normal 100 gold for a store item.
+			 *
+			 */
+			$inverted = true;
+
+			// the store cost values have to have their signs switched, due to the context of store
+			// items.
+			$modded_cost = go_return_multiplier( $user_id, -$temp_cost[0], -$temp_cost[1], $user_bonus_currency, $user_penalties, $inverted );
+
+			// the returned modded values have to have their signs switched back
+			$temp_cost[0] = -$modded_cost[0];
+			$temp_cost[1] = -$modded_cost[1];
 		}
 
 		$req_currency       = $temp_cost[0];

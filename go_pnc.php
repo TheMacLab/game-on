@@ -499,11 +499,12 @@ function barColor( $current_bonus_currency, $current_penalty ) {
 	return $color;
 }
 
-function go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties, $return_mod = false ) {
+function go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties, $inverted = false, $return_mod = false ) {
 	$points = (int) $points;
 	$currency = (int) $currency;
 	$bonus_active = get_option( 'go_multiplier_switch', false );
 	$penalty_active = get_option( 'go_penalty_switch', false );
+	$inverted = (boolean) $inverted;
 	if ( $bonus_active === 'On' && $penalty_active === 'On' ) {
 		$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
 		$penalty_threshold = (int) get_option( 'go_penalty_threshold', 5 );
@@ -519,27 +520,36 @@ function go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $use
 			}
 		} else {
 			$mod = $multiplier * $diff;
-			if ( $mod > 0)  {
-				if ( $points < 0 ) {
-					$modded_points = floor( $points + ( $points * $mod) );
+
+			if ( $mod > 0 ) {
+				if ( $points < 0 && $inverted ) {
+					$modded_points = floor( $points - ( $points * $mod ) );
+				} else if ( $points < 0 ) {
+					$modded_points = floor( $points + ( $points * $mod ) );
 				} else {
 					$modded_points = ceil( $points + ( $points * $mod) );
 				}
-				if ( $currency < 0 ) {
-					$modded_currency = floor( $currency + ( $currency * $mod) );
+				if ( $currency < 0 && $inverted ) {
+					$modded_currency = floor( $currency - ( $currency * $mod ) );
+				} else if ( $currency < 0 ) {
+					$modded_currency = floor( $currency + ( $currency * $mod ) );
 				} else {
-					$modded_currency = ceil( $currency + ( $currency * $mod) );
+					$modded_currency = ceil( $currency + ( $currency * $mod ) );
 				}
 			} elseif ( $mod < 0 ) {
-				if ( $points < 0 ) {
-					$modded_points = ceil( $points + ( $points * $mod) );
+				if ( $points < 0 && $inverted ) {
+					$modded_points = ceil( $points - ( $points * $mod ) );
+				} else if ( $points < 0 ) {
+					$modded_points = ceil( $points + ( $points * $mod ) );
 				} else {
-					$modded_points = floor( $points + ( $points * $mod) );
+					$modded_points = floor( $points + ( $points * $mod ) );
 				}
-				if ( $currency < 0 ) {
-					$modded_currency = ceil( $currency + ( $currency * $mod) );
+				if ( $currency < 0 && $inverted ) {
+					$modded_currency = ceil( $currency - ( $currency * $mod ) );
+				} else if ( $currency < 0 ) {
+					$modded_currency = ceil( $currency + ( $currency * $mod ) );
 				} else {
-					$modded_currency = floor( $currency + ( $currency * $mod) );
+					$modded_currency = floor( $currency + ( $currency * $mod ) );
 				}
 			}
 			if ( $return_mod === false ) {
@@ -560,12 +570,16 @@ function go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $use
 			}
 		} else {
 			$mod = $multiplier * $bonus_frac;
-			if ( $points < 0 ) {
+			if ( $points < 0 && $inverted ) {
+				$modded_points = floor( $points - ( $points * $mod ) );
+			} else if ( $points < 0 ) {
 				$modded_points = floor( $points + ( $points * $mod ) );
 			} else {
 				$modded_points = ceil( $points + ( $points * $mod ) );
 			}
-			if ( $currency < 0 ) {
+			if ( $currency < 0 && $inverted ) {
+				$modded_currency = floor( $currency - ( $currency * $mod ) );
+			} else if ( $currency < 0 ) {
 				$modded_currency = floor( $currency + ( $currency * $mod ) );
 			} else {
 				$modded_currency = ceil( $currency + ( $currency * $mod ) );
@@ -588,12 +602,16 @@ function go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $use
 			}
 		} else {
 			$mod = $multiplier * ( - $penalty_frac );
-			if ( $points < 0 ) {
+			if ( $points < 0 && $inverted ) {
+				$modded_points = ceil( $points - ( $points * $mod ) );
+			} else if ( $points < 0 ) {
 				$modded_points = ceil( $points + ( $points * $mod ) );
 			} else {
 				$modded_points = floor( $points + ( $points * $mod ) );
 			}
-			if ( $currency < 0 ) {
+			if ( $currency < 0 && $inverted ) {
+				$modded_currency = ceil( $currency - ( $currency * $mod ) );
+			} else if ( $currency < 0 ) {
 				$modded_currency = ceil( $currency + ( $currency * $mod ) );
 			} else {
 				$modded_currency = floor( $currency + ( $currency * $mod ) );
