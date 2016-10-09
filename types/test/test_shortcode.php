@@ -48,13 +48,13 @@ function go_test_shortcode( $atts, $content ) {
 		$output_array = array();
 		if ( $type == 'radio' ) {
 			for ( $i = 0; $i < count( $answer_array ); $i++ ) {
-				$upper_name = ucfirst( $answer_array[ $i ] );
-				array_push( $output_array, "<li class='go_test go_test_element'><input type='radio' name='go_test_answer_{$test_id}' value='{$upper_name}'/> {$upper_name}</li>" );
+				$name = $answer_array[ $i ];
+				array_push( $output_array, "<li class='go_test go_test_element'><input type='radio' name='go_test_answer_{$test_id}' value='{$name}'/> {$name}</li>" );
 			}
 		} elseif ( $type == 'checkbox' ) {
 			for ( $i = 0; $i < count( $answer_array ); $i++ ) {
-				$upper_name = ucfirst( $answer_array[ $i ] );
-				array_push( $output_array, "<li class='go_test go_test_element'><input type='checkbox' name='go_test_answer_{$test_id}_{$answer_array[ $i ]}' value='{$upper_name}'/>{$upper_name}</li>" );
+				$name = $answer_array[ $i ];
+				array_push( $output_array, "<li class='go_test go_test_element'><input type='checkbox' name='go_test_answer_{$test_id}_{$answer_array[ $i ]}' value='{$name}'/>{$name}</li>" );
 			}
 		}
 		$output_array_str = implode( ' ', $output_array );

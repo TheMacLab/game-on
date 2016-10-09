@@ -1,20 +1,62 @@
 <?php
-function go_buy_item() { 
+
+/**
+ * Determines if the user has enough of XP, Gold, Honor, Damage, and/or Minutes to purchase the item.
+ *
+ * @since <2.0.0
+ *
+ * @param int $req The base cost of the store item.
+ * @param int $qty The number of items being purchased.
+ * @param int $cur The currency that the user currently has.
+ * @return boolean True if the user can purchase the item, and false if they can't.
+ */
+function go_user_has_enough_currency( $base = 0, $qty = 1, $cur = 0 ) {
+	$cost = $base * $qty;
+	if ( $cost > 0 && $cur < $cost ) {
+		return false;
+	}
+
+	return true;
+}
+
+function go_buy_item() {
 	global $wpdb;
+
+	$user_id = get_current_user_id();
+	if ( ! check_ajax_referer( 'go_buy_item_' . $user_id, false ) ) {
+		die( 'WordPress hiccuped, try logging in again.' );
+	}
+
 	$go_table_name = $wpdb->prefix."go";
-	$post_id = $_POST["the_id"];
-	$qty = $_POST['qty'];
-	$current_purchase_count = $_POST['purchase_count'];
-	
-	if ( isset( $_POST['recipient'] ) && ! empty( $_POST['recipient'] ) && $_POST['recipient'] != '' ) {
-		$recipient = $_POST['recipient'];
-		$recipient_id = $wpdb->get_var( "SELECT id FROM {$wpdb->users} WHERE display_name='{$recipient}'" ); 
-		$recipient_purchase_count = $wpdb->get_var( "SELECT count FROM {$go_table_name} WHERE post_id={$post_id} AND uid={$recipient_id} LIMIT 1" );
+	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
+	$qty = ( ! empty( $_POST['qty'] ) && (int) $_POST['qty'] > 0 ? (int) $_POST['qty'] : 1 );
+	$current_purchase_count = ( ! empty( $_POST['purchase_count'] ) ? (int) $_POST['purchase_count'] : 0 );
+	$recipient_id = 0;
+
+	if ( ! empty( $_POST['recipient'] ) ) {
+		$recipient = sanitize_text_field( $_POST['recipient'] );
+		$recipient_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id 
+				FROM {$wpdb->users} 
+				WHERE display_name = %s",
+				$recipient
+			)
+		);
+		$recipient_purchase_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT count 
+				FROM {$go_table_name} 
+				WHERE post_id = %d AND uid = %d 
+				LIMIT 1",
+				$post_id,
+				$recipient_id
+			)
+		);
 	}
 	
-	$user_id = get_current_user_id(); 
 	$custom_fields = get_post_custom( $post_id );
-	$sending_receipt = ( ! empty( $custom_fields['go_mta_store_receipt'][0] ) ? $custom_fields['go_mta_store_receipt'][0] : false );
+	$sending_receipt = get_post_meta( $post_id, 'go_mta_store_receipt', false );
 
 	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {
@@ -24,7 +66,7 @@ function go_buy_item() {
 		$req_penalty = $store_cost[3];
 		$req_minutes = $store_cost[4];
 	}
-	$penalty = ( ! empty( $custom_fields['go_mta_penalty_switch'] ) ? $custom_fields['go_mta_penalty_switch'] : false );
+	$debt_enabled = ( ! empty( $custom_fields['go_mta_debt_switch'] ) ? true : false );
 
 	$store_limit = ( ! empty( $custom_fields['go_mta_store_limit'][0] ) ? unserialize( $custom_fields['go_mta_store_limit'][0] ) : null );
 	if ( ! empty( $store_limit ) ) {
@@ -33,24 +75,16 @@ function go_buy_item() {
 			$limit = (int) $store_limit[1];
 		}
 	}
-
-	$store_filter = ( ! empty( $custom_fields['go_mta_store_filter'][0] ) ? unserialize( $custom_fields['go_mta_store_filter'][0] ) : null );
-	if ( ! empty( $store_filter ) ) {
-		$is_filtered = (bool) $store_filter[0];
-		if ( $is_filtered ) {
-			$req_rank = $store_filter[1];
-			$bonus_filter = $store_filter[2];
-		}
-	}
 	
-	$store_exchange = ( ! empty( $custom_fields['go_mta_store_exchange'][0] ) ? unserialize( $custom_fields['go_mta_store_exchange'][0] ) : null );
-	if ( ! empty( $store_exchange ) ) {
-		$is_exchangeable = (bool) $store_exchange[0];
-		if ( $is_exchangeable ) {
-			$exchange_currency = $store_exchange[1];
-			$exchange_points = $store_exchange[2];
-			$exchange_bonus_currency = $store_exchange[3];
-			$exchange_minutes = $store_exchange[4];
+	$store_gift = ( ! empty( $custom_fields['go_mta_store_gift'][0] ) ? unserialize( $custom_fields['go_mta_store_gift'][0] ) : null );
+	$is_giftable = false;
+	if ( ! empty( $store_gift ) ) {
+		$is_giftable = (bool) $store_gift[0];
+		if ( $is_giftable ) {
+			$gift_currency = $store_gift[1];
+			$gift_points = $store_gift[2];
+			$gift_bonus_currency = $store_gift[3];
+			$gift_minutes = $store_gift[4];
 		}
 	}
 	$item_url = ( ! empty( $custom_fields['go_mta_store_item_url'][0] ) ? $custom_fields['go_mta_store_item_url'][0] : null );
@@ -65,19 +99,19 @@ function go_buy_item() {
 		}
 	}
 
-	$repeat = 'off';
+	$repeat = false;
 	
 	$cur_currency = go_return_currency( $user_id );
 	$cur_points = go_return_points( $user_id );
 	$cur_bonus_currency = go_return_bonus_currency( $user_id );
 	$cur_penalty = go_return_penalty( $user_id );
 	$cur_minutes = go_return_minutes( $user_id );
-	
-	$enough_currency = check_values( $req_currency, $cur_currency );
-	$enough_points = check_values( $req_points, $cur_points );
-	$enough_bonus_currency = check_values( $req_bonus_currency, $cur_bonus_currency );
-	$enough_penalty = check_values( $req_penalty, $cur_penalty );
-	$enough_minutes = check_values( $req_minutes, $cur_minutes );
+
+	$enough_currency = go_user_has_enough_currency( $req_currency, $qty, $cur_currency );
+	$enough_points = go_user_has_enough_currency( $req_points, $qty, $cur_points );
+	$enough_bonus_currency = go_user_has_enough_currency( $req_bonus_currency, $qty, $cur_bonus_currency );
+	$enough_penalty = go_user_has_enough_currency( $req_penalty, $qty, $cur_penalty );
+	$enough_minutes = go_user_has_enough_currency( $req_minutes, $qty, $cur_minutes );
 
 	$within_limit = true;
 	if ( ! empty( $limit ) && $is_limited === "true" ) {
@@ -87,7 +121,7 @@ function go_buy_item() {
 		}
 	}
 
-	if ( ( ( $enough_currency && $enough_bonus_currency && $enough_points && $enough_minutes ) || $penalty) && $within_limit ) {
+	if ( ( ( $enough_currency && $enough_points && $enough_bonus_currency && $enough_penalty && $enough_minutes ) || $debt_enabled ) && $within_limit ) {
 		if ( $is_focused && ! empty( $item_focus ) ) {
 			$user_focuses = get_user_meta( $user_id, 'go_focus', true );
 			if ( array_search( 'No '.go_return_options( 'go_focus_name' ), $user_focuses ) ) {
@@ -99,14 +133,26 @@ function go_buy_item() {
 		if ( ! empty( $recipient_id ) ) {
 			$curr_user_obj = get_userdata( $user_id );
 			go_message_user( $recipient_id, $curr_user_obj->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title( $post_id )."</a> for you." );
-			if ( $exchange_currency || $exchange_points || $exchange_bonus_currency || $exchange_minutes ) {
-				go_add_post( $recipient_id, $post_id, -1, $exchange_points, $exchange_currency, $exchange_bonus_currency, $exchange_minutes, null, $repeat );
-				go_add_bonus_currency( $recipient_id, $exchange_bonus_currency, $curr_user_obj->display_name." purchase of {$qty} ".get_the_title( $post_id )."." );
+			if ( $gift_currency || $gift_points || $gift_bonus_currency || $gift_minutes ) {
+				go_add_post( $recipient_id, $post_id, -1, $gift_points, $gift_currency, $gift_bonus_currency, $gift_minutes, null, $repeat );
+				go_add_bonus_currency( $recipient_id, $gift_bonus_currency, $curr_user_obj->display_name." purchase of {$qty} ".get_the_title( $post_id )."." );
 			} else {
 				go_add_post( $recipient_id, $post_id, -1,  0,  0, 0, null, $repeat );
 			}
 			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
-			$wpdb->query( $wpdb->prepare( "UPDATE {$go_table_name} SET reason = 'Gifted' WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d ORDER BY timestamp DESC, reason DESC, id DESC LIMIT 1", $user_id, -1, 0, $post_id ) );
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$go_table_name} 
+					SET reason = 'Gifted' 
+					WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d 
+					ORDER BY timestamp DESC, reason DESC, id DESC 
+					LIMIT 1",
+					$user_id,
+					-1,
+					0,
+					$post_id
+				)
+			);
 		} else {
 			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
 			if ( ! empty( $req_penalty ) ) {
@@ -114,11 +160,13 @@ function go_buy_item() {
 			}
 		}
 		if ( ! empty( $badge_id ) ) {
-			if ( $recipient_id ) {
-				do_shortcode( '[go_award_badge id="'.$badge_id.'" repeat = "off" uid="'.$recipient_id.'"]' );
-			} else {
-				do_shortcode( '[go_award_badge id="'.$badge_id.'" repeat = "off" uid="'.$user_id.'"]' );
-			}
+			go_award_badge(
+				array(
+					'id' 		=> $badge_id,
+					'repeat' 	=> false,
+					'uid' 		=> ( ! empty( $recipient_id ) ? $recipient_id : $user_id )
+				)
+			);
 		}
 		if ( ! empty( $item_url ) && isset( $item_url ) ) {
 			$item_hyperlink = "<a target='_blank' href='{$item_url}'>Link</a>";
@@ -126,7 +174,7 @@ function go_buy_item() {
 		} else {
 			echo "Purchased";
 		}
-		if ( $sending_receipt === 'true' ) {
+		if ( $sending_receipt ) {
 			$receipt = go_mail_item_reciept( $user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_minutes, $qty, $recipient_id );
 			if ( ! empty( $receipt ) ) {
 				echo $receipt;
@@ -136,22 +184,42 @@ function go_buy_item() {
 		$currency_name = go_return_options( 'go_currency_name' );
 		$points_name = go_return_options( 'go_points_name' );
 		$bonus_currency_name = go_return_options( 'go_bonus_currency_name' );
+		$penalty_name = go_return_options( 'go_penalty_name' );
 		$minutes_name = go_return_options( 'go_minutes_name' );
-		$enough_array = array( 
-			$currency_name => $enough_currency, 
-			$points_name => $enough_points, 
-			$bonus_currency_name => $enough_bonus_currency, 
-			$minutes_name => $enough_minutes
+		$enough_array = array(
+			$currency_name => $enough_currency,
+			$points_name => $enough_points,
+			$bonus_currency_name => $enough_bonus_currency,
+			$penalty_name => $enough_penalty,
+			$minutes_name => $enough_minutes,
 		);
+
+		// pulls out the names of the currencies that the user doesn't have enough of, so they can be
+		// handled as errors
 		$errors = array();
-		foreach ( $enough_array as $key => $enough ) {
-			if ( ! $enough ) {
-				$errors[] = $key;
+		$err_str = '';
+		$err_glue = ', ';
+
+		foreach ( $enough_array as $currency_name => $has_enough ) {
+			if ( ! $has_enough ) {
+				$errors[] = $currency_name;
 			}
 		}
-		if ( ! empty( $errors ) ) {
-			$errors = implode( ', ', $errors );
-			echo 'Need more '.substr( $errors, 0, strlen( $errors ) );
+
+		// combines all the erring currencies into one string
+		for ( $ind = 0; $ind < count( $errors ); $ind++ ) {
+			$currency_name = $errors[ $ind ];
+			if ( 0 === $ind ) {
+				$err_str .= $currency_name;
+			} elseif ( $ind > 0 && count( $errors ) === $ind + 1 ) {
+				$err_str .= "{$err_glue}and {$currency_name}";
+			} else {
+				$err_str .= $err_glue . $currency_name;
+			}
+		}
+
+		if ( ! empty( $err_str ) ) {
+			echo "Need more {$err_str}.";
 		}
 		if ( $is_limited === "true" && ! $within_limit ) {
 			$qty_diff *= -1;
@@ -161,7 +229,7 @@ function go_buy_item() {
 	die();
 }
 
-function go_mail_item_reciept( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = null ) {
+function go_mail_item_reciept( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = 0 ) {
 	global $go_plugin_dir;
 	$currency = ucwords( go_return_options( 'go_currency_name' ) );
 	$points = ucwords( go_return_options( 'go_points_name' ) );

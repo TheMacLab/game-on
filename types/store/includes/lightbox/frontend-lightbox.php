@@ -14,7 +14,7 @@ function go_the_lb_ajax() {
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
 	global $wpdb;
 	$table_name_go = "{$wpdb->prefix}go";
-	$the_id = $_POST['the_item_id'];
+	$the_id = (int) $_POST['the_item_id'];
 	$the_post = get_post( $the_id );
 	$the_title = $the_post->post_title;
 	$item_content = get_post_field( 'post_content', $the_id );
@@ -39,9 +39,8 @@ function go_the_lb_ajax() {
 	$user_bonus_currency = go_return_bonus_currency( $user_id );
 	$user_penalties = go_return_penalty( $user_id );
 	$user_minutes = go_return_minutes( $user_id );
+	$penalty = ( ! empty( $custom_fields['go_mta_debt_switch'][0] ) ? true : false );
 
-	$penalty = ( ! empty( $custom_fields['go_mta_penalty_switch'][0] ) ? true : false );
-	
 	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
 	if ( ! empty( $store_cost ) ) {
 
@@ -66,11 +65,11 @@ function go_the_lb_ajax() {
 
 	$store_filter = ( ! empty( $custom_fields['go_mta_store_filter'][0] ) ? unserialize( $custom_fields['go_mta_store_filter'][0] ) : null );
 	if ( ! empty( $store_filter ) ) {
-		$is_filtered = $store_filter[0];
+		$is_filtered = ( ! empty( $store_filter[0] ) ? true : false );
 		if ( $is_filtered ) {
-			$req_rank = $store_filter[1];
-			$bonus_filter = ( count( $store_filter[2] ) > 0 ? (int) $store_filter[2] : null );
-			$penalty_filter = ( count( $store_filter[3] ) > 0 ? (int) $store_filter[3] : null );
+			$req_rank       = ( ! empty( $store_filter[1] ) ? (string) $store_filter[1] : '' );
+			$bonus_filter   = ( ! empty( $store_filter[2] ) ? (int) $store_filter[2] : 0 );
+			$penalty_filter = ( ! empty( $store_filter[3] ) ? (int) $store_filter[3] : 0 );
 		}
 	}
 
@@ -81,14 +80,27 @@ function go_the_lb_ajax() {
 			$purchase_limit = $store_limit[1];
 		}
 	}
-	
-	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
-	$is_giftable = ( ! empty( $custom_fields['go_mta_store_giftable'][0] ) ? true : false );
+
+	$purchase_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT SUM( count ) 
+			FROM {$table_name_go} 
+			WHERE post_id = %d AND uid = %d 
+			LIMIT 1",
+			$the_id,
+			$user_id
+		)
+	);
+	$store_gift = ( ! empty( $custom_fields['go_mta_store_gift'][0] ) ? unserialize( $custom_fields['go_mta_store_gift'][0] ) : null );
+	$is_giftable = false;
+	if ( ! empty( $store_gift ) ) {
+		$is_giftable = (bool) $store_gift[0];
+	}
 	$is_unpurchasable = ( ! empty( $custom_fields['go_mta_store_unpurchasable'][0] ) ? $custom_fields['go_mta_store_unpurchasable'][0] : '' );
 
 	echo "<h2>{$the_title}</h2>";
 	echo '<div id="go-lb-the-content">'.do_shortcode( $the_content ).'</div>';
-	if ( $user_points >= $req_rank || $req_rank <= 0 || $penalty ) {
+	if ( ! empty( $req_rank ) && ( $user_points >= $req_rank || $req_rank <= 0 || $penalty ) ) {
 		$lvl_color = "g"; 
 		$output_level = $req_rank *= -1;
 	} else { 
@@ -150,17 +162,19 @@ function go_the_lb_ajax() {
 	} else { 
 		$buy_color = "gold"; 
 	}
+
+	$passed_bonus_filter = true;
+	$passed_penalty_filter = true;
+	
+	if ( $is_filtered && ! empty( $bonus_filter ) && $user_bonus_currency < $bonus_filter ) {
+		$passed_bonus_filter = false;
+	}
+
+	if ( $is_filtered && ! empty( $penalty_filter ) && $user_penalties >= $penalty_filter ) {
+		$passed_penalty_filter = false;
+	}
 		
 	$user_focuses = array();
-
-	if ( $is_filtered === 'true' && ! is_null( $penalty_filter ) && $user_penalties >= $penalty_filter ) {
-		$penalty_diff = $user_penalties - $penalty_filter;
-		if ( $penalty_diff > 0 ) {
-			die( "You have {$penalty_diff} too many ".go_return_options( 'go_penalty_name' )."." );	
-		} elseif ( $penalty_diff == 0 ) {
-			die( "You need less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to buy this item." );
-		}
-	}
 	
 	// Get focus options associated with item
 	$item_focus_array = ( ! empty( $custom_fields['go_mta_store_focus'][0] ) ? unserialize( $custom_fields['go_mta_store_focus'][0] ) : null );
@@ -202,13 +216,29 @@ function go_the_lb_ajax() {
 	if ( empty( $go_ahead ) && ! empty( $focus_category_lock ) ) {
 		die( 'Item only available to those in '.implode( ', ', $category_names ).' '.strtolower( go_return_options( 'go_focus_name' ) ) );
 	}
-	if ( $is_filtered === 'true' && ! is_null( $bonus_filter ) && $user_bonus_currency < $bonus_filter) {
-		die( 'You require more '.go_return_options( 'go_bonus_currency_name' ).' to view this item.' );
+	if ( ! $passed_bonus_filter || ! $passed_penalty_filter ) {
+		$filter_error_str = '';
+
+		if ( ! $passed_bonus_filter ) {
+			$bonus_diff = $bonus_filter - $user_bonus_currency;
+			$filter_error_str .= "You need {$bonus_diff} more ".go_return_options( 'go_bonus_currency_name' ).' to view this item.';
+		}
+
+		if ( ! $passed_penalty_filter ) {
+			$penalty_diff = $user_penalties - $penalty_filter;
+			if ( $penalty_diff > 0 ) {
+				$filter_error_str .= "\nYou have {$penalty_diff} too many ".go_return_options( 'go_penalty_name' ).'.';
+			} elseif ( 0 === $penalty_diff ) {
+				$filter_error_str .= "\nYou need less than {$penalty_filter} ".go_return_options( 'go_penalty_name' ).' to view this item.';
+			}
+		}
+
+		die( $filter_error_str );
 	}
 	if ( ! empty( $purchase_limit) && $purchase_count >= $purchase_limit ) {
 		die( "You've reached the maximum purchase limit." );
 	}
-	if ( $user_points < $req_rank ) {
+	if ( ( ! empty( $req_rank ) ) && $user_points < $req_rank ) {
 		die( "You need to reach {$req_rank_key} to purchase this item." );
 	}
 
@@ -314,6 +344,7 @@ function go_frontend_lightbox_html() {
 					window.go_req_currency = jQuery( '#golb-fr-price' ).attr( 'req' );
 					window.go_req_points = jQuery( '#golb-fr-points' ).attr( 'req' );
 					window.go_req_bonus_currency = jQuery( '#golb-fr-bonus_currency' ).attr( 'req' );
+					window.go_req_penalty = jQuery( '#golb-fr-penalty' ).attr( 'req' );
 					window.go_req_minutes = jQuery( '#golb-fr-minutes' ).attr( 'req' );
 					window.go_cur_currency = jQuery( '#golb-fr-price' ).attr( 'cur' );
 					window.go_cur_points = jQuery( '#golb-fr-points' ).attr( 'cur' );
@@ -331,29 +362,42 @@ function go_frontend_lightbox_html() {
 						}
 					});
 					jQuery( '#go_qty' ).change( function() {
+
+						// updates gold value
 						var price_raw = jQuery( '#golb-fr-price' ).html();
-						var price_sub = price_raw.substr(price_raw.indexOf( ":" )+2);
-						if (price_sub.length > 0 ) {
-							var price = price_raw.replace(price_sub, go_req_currency * jQuery( this ).val() );
-							jQuery( '#golb-fr-price' ).html(price);
+						var price_sub = price_raw.substr( price_raw.indexOf( ":" ) + 2 );
+						if ( price_sub.length > 0 ) {
+							var price = price_raw.replace( price_sub, go_req_currency * jQuery( this ).val() );
+							jQuery( '#golb-fr-price' ).html( price );
 						}
-					
+
+						// updates XP value
 						var points_raw = jQuery( '#golb-fr-points' ).html();
-						var points_sub = points_raw.substr(points_raw.indexOf( ":" )+2);
+						var points_sub = points_raw.substr( points_raw.indexOf( ":" ) + 2 );
 						if ( points_sub.length > 0 ) {
 							var points = points_raw.replace( points_sub, go_req_points * jQuery( this ).val() );
-							jQuery( '#golb-fr-points' ).html(points);
+							jQuery( '#golb-fr-points' ).html( points );
 						}
-					
+
+						// updates honor value
 						var bonus_currency_raw = jQuery( '#golb-fr-bonus_currency' ).html();
-						var bonus_currency_sub = bonus_currency_raw.substr( bonus_currency_raw.indexOf( ":" ) + 2);
-						if (bonus_currency_sub.length > 0) {
+						var bonus_currency_sub = bonus_currency_raw.substr( bonus_currency_raw.indexOf( ":" ) + 2 );
+						if ( bonus_currency_sub.length > 0 ) {
 							var bonus_currency = bonus_currency_raw.replace( bonus_currency_sub, go_req_bonus_currency * jQuery( this ).val() );
 							jQuery( '#golb-fr-bonus_currency' ).html( bonus_currency );
 						}
-					
+
+						// updates penalty value
+						var penalty_raw = jQuery( '#golb-fr-penalty' ).html();
+						var penalty_sub = penalty_raw.substr( penalty_raw.indexOf( ":" ) + 2 );
+						if ( penalty_sub.length > 0 ) {
+							var penalty = penalty_raw.replace( penalty_sub, go_req_penalty * jQuery( this ).val() );
+							jQuery( '#golb-fr-penalty' ).html( penalty );
+						}
+
+						// updates minute value
 						var minutes_raw = jQuery( '#golb-fr-minutes' ).html();
-						var minutes_sub = minutes_raw.substr(minutes_raw.indexOf( ":" ) + 2);
+						var minutes_sub = minutes_raw.substr( minutes_raw.indexOf( ":" ) + 2 );
 						if ( minutes_sub.length > 0 ) {
 							var minutes = minutes_raw.replace( minutes_sub, go_req_minutes * jQuery( this ).val() );
 							jQuery( '#golb-fr-minutes' ).html( minutes );
@@ -412,6 +456,7 @@ function go_frontend_lightbox_html() {
 			url: url_action,
 			type: "POST",
 			data: {
+				_ajax_nonce: '<?php echo wp_create_nonce( 'go_search_for_user' ); ?>',
 				action: 'go_search_for_user',
 				user: user
 			},
@@ -440,11 +485,22 @@ function go_frontend_lightbox_html() {
 
 function go_search_for_user() {
 	global $wpdb;
-	$user = $_POST['user'];
-	$users = $wpdb->get_results( "SELECT display_name FROM {$wpdb->users} WHERE display_name LIKE '%{$user}%' LIMIT 0, 4" );
-	if ( $users ) {
-		foreach ( $users as $user_name ) {
-			echo '<a href="javascript:;" class="go_search_res_user" onclick="go_fill_recipient( this )">'.$user_name->display_name."</a><br/>";
+	if ( empty( $_POST['user'] ) ) {
+		die();
+	}
+	$display_name = sanitize_text_field( $_POST['user'] );
+	$display_name_array = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT display_name 
+			FROM {$wpdb->users} 
+			WHERE display_name LIKE %s 
+			LIMIT 0, 4",
+			"%{$display_name}%"
+		)
+	);
+	if ( ! empty( $display_name_array ) ) {
+		foreach ( $display_name_array as $name ) {
+			echo '<a href="javascript:;" class="go_search_res_user" onclick="go_fill_recipient( this )">'.$name->display_name."</a><br/>";
 		}
 	} else {
 		echo '<a href="javascript:;" class="go_search_res_user" onclick="go_close_this( this )">No users found</a>';	
@@ -455,12 +511,29 @@ function go_search_for_user() {
 function go_get_purchase_count() {
 	global $wpdb;
 	$table_name_go = $wpdb->prefix."go";
-	$the_id = $_POST["the_item_id"];
+	$the_id = ( ! empty( $_POST['item_id'] ) ? (int) $_POST['item_id'] : 0 );
+
+	if ( empty( $the_id ) ) {
+		die( '0' );
+	}
+
 	$user_id = get_current_user_id();
-	$purchase_count = $wpdb->get_var( "SELECT SUM(count) FROM {$table_name_go} WHERE post_id={$the_id} AND uid={$user_id} LIMIT 1" );
-	if ( $purchase_count == NULL ) { 
+	check_ajax_referer( 'go_get_purchase_count_' . $user_id );
+
+	$purchase_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT SUM( count ) 
+			FROM {$table_name_go} 
+			WHERE post_id = %d AND uid = %d 
+			LIMIT 1",
+			$the_id,
+			$user_id
+		)
+	);
+
+	if ( empty( $purchase_count ) ) {
 		echo '0';
-	} else{
+	} else {
 		echo $purchase_count;
 	}
 	die();

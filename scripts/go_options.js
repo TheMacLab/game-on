@@ -175,31 +175,34 @@ jQuery( document ).ready( function() {
 	});
 	
 	jQuery( '#go_reset_presets' ).click( function() {
+		var nonce = GO_OPTION_DATA.nonces.go_presets_reset;
 		jQuery.ajax({
 			type: 'post', 
 			url: MyAjax.ajaxurl,
 			data: {
+				_ajax_nonce: nonce,
 				action: 'go_presets_reset'
 			},
-			success: function( html ) {
-				presets = JSON.parse( html );
-				jQuery( '#go_options_preset_name' ).empty();
-				jQuery( '#go_options_preset_points' ).empty();
-				jQuery( '#go_options_preset_currency' ).empty();
-				for ( name in presets['name'] ) {
-					jQuery( '#go_options_preset_name' ).append( "<input type='text' class='go_options_preset_name_input go_options_preset_input' name='go_presets[name][" + name + "]' key='" + name + "' value='" + presets['name'][ name ] + "'/>" );
-				}
-				for ( points in presets['points'] ) {
-					for(point in presets['points'] ) {
-						jQuery( '#go_options_preset_points' ).append( "<input type='text' class='go_options_preset_points_input go_options_preset_input' name='go_presets[points][" + points + "][]' key='" + points + "' value='" + presets['points'][ points ][ point ] + "'/>" )
+			success: function( res ) {
+				if ( -1 !== res ) {
+					presets = JSON.parse( res );
+					jQuery( '#go_options_preset_name' ).empty();
+					jQuery( '#go_options_preset_points' ).empty();
+					jQuery( '#go_options_preset_currency' ).empty();
+					for ( name in presets['name'] ) {
+						jQuery( '#go_options_preset_name' ).append( "<input type='text' class='go_options_preset_name_input go_options_preset_input' name='go_presets[name][" + name + "]' key='" + name + "' value='" + presets['name'][ name ] + "'/>" );
+					}
+					for ( points in presets['points'] ) {
+						for(point in presets['points'] ) {
+							jQuery( '#go_options_preset_points' ).append( "<input type='text' class='go_options_preset_points_input go_options_preset_input' name='go_presets[points][" + points + "][]' key='" + points + "' value='" + presets['points'][ points ][ point ] + "'/>" )
+						}
+					}
+					for ( currency in presets['currency'] ) {
+						for(cur in presets['currency'] ) {
+							jQuery( '#go_options_preset_currency' ).append( "<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + currency + "][]' key='" + currency + "' value='" + presets['currency'][ currency ][ cur ] + "'/>" )
+						}
 					}
 				}
-				for ( currency in presets['currency'] ) {
-					for(cur in presets['currency'] ) {
-						jQuery( '#go_options_preset_currency' ).append( "<input type='text' class='go_options_preset_currency_input go_options_preset_input' name='go_presets[currency][" + currency + "][]' key='" + currency + "' value='" + presets['currency'][ currency ][ cur ] + "'/>" )
-					}
-				}
-
 			}
 		});
 	});
@@ -222,10 +225,12 @@ jQuery( document ).ready( function() {
 		jQuery( '.go_options_preset_currency_input' ).each( function() {
 			go_preset_currency[ jQuery( this ).attr( 'key' ) ].push( jQuery( this ).val() );
 		});
+		var nonce = GO_OPTION_DATA.nonces.go_presets_save;
 		jQuery.ajax({
 			type: 'post',
 			url: MyAjax.ajaxurl,
 			data: {
+				_ajax_nonce: nonce,
 				action: 'go_presets_save',
 				go_preset_name: go_preset_name,
 				go_preset_points: go_preset_points,
@@ -334,28 +339,31 @@ jQuery( document ).ready( function() {
 	});
 	
 	jQuery( '#go_reset_levels' ).click( function() {
+		var nonce = GO_OPTION_DATA.nonces.go_reset_levels;
 		jQuery.ajax({
 			type: 'post',
 			url: MyAjax.ajaxurl,
 			data: {
+				_ajax_nonce: nonce,
 				action: 'go_reset_levels'
 			}, 
-			success: function( html ) {
-				var levels = JSON.parse( html );
-				jQuery( '#go_options_level_names' ).empty();
-				jQuery( '#go_options_level_points' ).empty();
-				jQuery( '#go_options_level_badges' ).empty();
-				
-				for( name in levels['name'] ) {
-					jQuery( '#go_options_level_names' ).append( "<input type='text' class='go_options_level_names_input' name='go_ranks[name][" + name + "]' value='" + levels['name'][ name ] + "'/>" );
+			success: function( res ) {
+				if ( -1 !== res ) {
+					var levels = JSON.parse( res );
+					jQuery( '#go_options_level_names' ).empty();
+					jQuery( '#go_options_level_points' ).empty();
+					jQuery( '#go_options_level_badges' ).empty();
+					
+					for( name in levels['name'] ) {
+						jQuery( '#go_options_level_names' ).append( "<input type='text' class='go_options_level_names_input' name='go_ranks[name][" + name + "]' value='" + levels['name'][ name ] + "'/>" );
+					}
+					for( point in levels['points'] ) {
+						jQuery( '#go_options_level_points' ).append( "<input type='text' class='go_options_level_points_input' name='go_ranks[points][" + point + "]' value='" + levels['points'][ point ] + "'/>" );
+					}
+					for( badge in levels['badges'] ) {
+						jQuery( '#go_options_level_badges' ).append( "<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][" + badge + "]' value='" + levels['badges'][ badge ] + "'/>" );
+					}
 				}
-				for( point in levels['points'] ) {
-					jQuery( '#go_options_level_points' ).append( "<input type='text' class='go_options_level_points_input' name='go_ranks[points][" + point + "]' value='" + levels['points'][ point ] + "'/>" );
-				}
-				for( badge in levels['badges'] ) {
-					jQuery( '#go_options_level_badges' ).append( "<input type='text' class='go_options_level_badges_input' name='go_ranks[badges][" + badge + "]' value='" + levels['badges'][ badge ] + "'/>" );
-				}
-
 			}
 		});
 	});
@@ -374,10 +382,12 @@ jQuery( document ).ready( function() {
 		jQuery( '.go_options_level_badges_input' ).each( function() {
 			go_level_badges.push( jQuery( this ).val() );
 		});
+		var nonce = GO_OPTION_DATA.nonces.go_save_levels;
 		jQuery.ajax({
 			type: 'post',
 			url: MyAjax.ajaxurl,
 			data: {
+				_ajax_nonce: nonce,
 				action: 'go_save_levels',
 				go_level_names: go_level_names,
 				go_level_points: go_level_points,
@@ -387,14 +397,18 @@ jQuery( document ).ready( function() {
 	});
 	
 	jQuery( '#go_fix_levels' ).click( function() {
+		var nonce = GO_OPTION_DATA.nonces.go_fix_levels;
 		jQuery.ajax({
 			type: 'post',
 			url: MyAjax.ajaxurl,
 			data: {
+				_ajax_nonce: nonce,
 				action: 'go_fix_levels',
 			},
-			success: function() {
-				location.reload();
+			success: function( res ) {
+				if ( -1 !== res ) {
+					location.reload();
+				}
 			}
 		});
 	});
@@ -505,16 +519,20 @@ jQuery( document ).ready( function() {
 			if ( reset_data.length >= 1 ) {
 				var reset_all = jQuery( "input[name='go_data_reset_all']" ).is( ':checked' );
 				if ( confirm( "WARNING: What you are about to do will reset the chosen types of data from EVERY user on your database. Do you wish to continue?" ) ) {
+					var nonce = GO_OPTION_DATA.nonces.go_reset_data;
 					jQuery.ajax({
 						type: 'post',
 						url: MyAjax.ajaxurl,
 						data: {
+							_ajax_nonce: nonce,
 							action: 'go_reset_data',
 							reset_data: reset_data,
 							reset_all: reset_all
 						},
-						success: function( html ) {
-							location.reload();
+						success: function( res ) {
+							if ( -1 !== res ) {
+								location.reload();
+							}
 						}
 					});
 				}
@@ -572,10 +590,12 @@ jQuery( document ).ready( function() {
 				new_class_b.push( jQuery( el ).val() );
 			});
 			
+			var nonce_update_user_sc_data = GO_OPTION_DATA.nonces.go_update_user_sc_data;
 			jQuery.ajax({
 				type: 'post',
 				url: MyAjax.ajaxurl,
 				data: {
+					_ajax_nonce: nonce_update_user_sc_data,
 					action: 'go_update_user_sc_data',
 					old_class_a: old_class_a,
 					old_class_b: old_class_b,
@@ -597,15 +617,20 @@ jQuery( document ).ready( function() {
 				var values = jQuery( '.go_options_profession_input' ).map( function() {
 					return jQuery( this ).val();
 				}).get();
+
+				var nonce_focus_save = GO_OPTION_DATA.nonces.go_focus_save;
 				jQuery.ajax({
 					type: "post",
 					url: MyAjax.ajaxurl,
-					data: { 
+					data: {
+						_ajax_nonce: nonce_focus_save,
 						action: 'go_focus_save',
 						focus_array: values
 					}, 
-					success: function() {
-						jQuery( '#go_options_form' ).trigger({ type: 'submit', levels_saved: true });
+					success: function( res ) {
+						if ( -1 !== res ) {
+							jQuery( '#go_options_form' ).trigger({ type: 'submit', levels_saved: true });
+						}
 					}
 				});
 			} else {
