@@ -1,0 +1,36 @@
+/**
+ * Date Picker Setting Row
+ */
+
+.go_date_picker_modifier_input {
+	height: 30px;
+	width: 70px;
+}
+
+/**
+ * Task Chain Setting Row
+ */
+
+.go_task_chain_order_container {
+	margin-bottom: 20px;
+}
+
+.go_task_chain_order_container:last-of-type {
+	margin-bottom: 0px;
+}
+
+.go_task_chain_order_title {
+	margin-bottom: 10px;
+}
+
+.go_task_chain_order_list {
+	margin: 0;
+}
+
+/**
+ * Task Chain Final Message Setting Row
+ */
+
+#go_mta_final_chain_message {
+	width: 100%;
+}

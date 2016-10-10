@@ -1,7 +1,7 @@
 <?php
 
 include( 'task_shortcode.php' ); 
-include( 'tsk-admin-footer.php' );
+include( 'task-admin.php' );
 
 function go_register_task_tax_and_cpt() {
 	
@@ -174,5 +174,96 @@ function go_register_task_tax_and_cpt() {
 		'capability_type' => 'post'
 	);
 	register_post_type( 'tasks', $args_cpt );
+}
+
+/**
+ * Retrieves the status of a task for a specific user.
+ *
+ * Task "status" values are stored in the `go`.`status` column. Statuses outside the range of [0,5]
+ * are not used for tasks, so this function is for tasks ONLY.
+ *
+ * @since 3.0.0
+ *
+ * @global wpdb $wpdb The WordPress database class.
+ *
+ * @param int $task_id The task ID.
+ * @param int $user_id Optional. The user ID.
+ * @return int|null The status (0,1,2,3,4,5) of a task. Null if the query finds nothing.
+ */
+function go_task_get_status( $task_id, $user_id = null ) {
+	global $wpdb;
+	$go_table_name = $wpdb->prefix . 'go';
+
+	if ( empty( $task_id ) ) {
+		return null;
+	}
+
+	if ( empty( $user_id ) ) {
+		$user_id = get_current_user_id();
+	} else {
+		$user_id = (int) $user_id;
+	}
+
+	$task_status = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$task_id
+		)
+	);
+
+	if ( null !== $task_status && ! is_int( $task_status ) ) {
+		$task_status = (int) $task_status;
+	}
+
+	return $task_status;
+}
+
+/**
+ * Retrieves repeat loop count of a task for a specific user.
+ *
+ * Task "count" values are stored in the `go`.`count` column. The `count` column is used by other GO
+ * custom post types (which it should not be), so this function is for tasks ONLY.
+ *
+ * @since 3.0.0
+ *
+ * @global wpdb $wpdb The WordPress database class.
+ *
+ * @param int $task_id The task ID.
+ * @param int $user_id Optional. The user ID.
+ * @return int|null The number of fifth stage (repeat) iterations the user has finished. Null if
+ *                  the query finds nothing.
+ */
+function go_task_get_repeat_count( $task_id, $user_id = null ) {
+	global $wpdb;
+	$go_table_name = $wpdb->prefix . 'go';
+
+	if ( empty( $task_id ) ) {
+		return null;
+	}
+
+	if ( empty( $user_id ) ) {
+		$user_id = get_current_user_id();
+	} else {
+		$user_id = (int) $user_id;
+	}
+
+	$task_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT count 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$task_id
+		)
+	);
+
+	if ( null !== $task_count && ! is_int( $task_count ) ) {
+		$task_count = (int) $task_count;
+	}
+
+	return $task_count;
 }
 ?>

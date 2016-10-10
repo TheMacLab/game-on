@@ -3,6 +3,8 @@
 //Shortcode for Email input
 add_shortcode( 'go_upload','go_file_input' );
 function go_file_input( $atts, $content = null ) {
+	global $wpdb;
+	global $post;
 	$atts = shortcode_atts(
 		array(
 			'is_uploaded' => '0',
@@ -16,8 +18,11 @@ function go_file_input( $atts, $content = null ) {
 	$status = (int) $atts['status'];
 	$user_id = (int) $atts['user_id'];
 	$post_id = (int) $atts['post_id'];
-	global $wpdb;
-	global $post;
+
+	if ( get_current_user_id() !== $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
 	$table_go = "{$wpdb->prefix}go";
 	switch ( $status ) {
 		case ( 0 ):
@@ -36,16 +41,14 @@ function go_file_input( $atts, $content = null ) {
 			$db_task_stage_upload_var = 'r_uploaded';
 			break;
 	}
-	if ( empty( $user_id ) || is_null( $user_id ) ) {
-		$user_id = get_current_user_id();
-	}
+
 	if ( empty( $post_id ) || is_null( $post_id ) ) {
 		$post_id = $post->ID;
 	}
+
 	$allow_full_name = get_option( 'go_full_student_name_switch' );
 	
 	if ( isset( $_FILES['go_attachment'] ) ) {
-		$user_id = get_current_user_id();
 		$user_info = get_userdata( $user_id );
 		$user_login = $user_info->user_login;
 		$first_name = trim( $user_info->first_name );

@@ -29,16 +29,16 @@ function store_edit_jquery() {
 				}
 			});
 		
-			if ( jQuery( '#go_store_exchange_checkbox' ).prop( 'checked' ) ) {
-				jQuery( '.go_store_exchange_input' ).show( 'slow' );
+			if ( jQuery( '#go_store_gift_checkbox' ).prop( 'checked' ) ) {
+				jQuery( '.go_store_gift_input' ).show( 'slow' );
 			} else {
-				jQuery( '.go_store_exchange_input' ).hide( 'slow' );
+				jQuery( '.go_store_gift_input' ).hide( 'slow' );
 			}
-			jQuery( '#go_store_exchange_checkbox' ).click( function() {
-				if ( jQuery( '#go_store_exchange_checkbox' ).prop( 'checked' ) ) {
-					jQuery( '.go_store_exchange_input' ).show( 'slow' );
+			jQuery( '#go_store_gift_checkbox' ).click( function() {
+				if ( jQuery( '#go_store_gift_checkbox' ).prop( 'checked' ) ) {
+					jQuery( '.go_store_gift_input' ).show( 'slow' );
 				} else {
-					jQuery( '.go_store_exchange_input' ).hide( 'slow' );
+					jQuery( '.go_store_gift_input' ).hide( 'slow' );
 				}
 			});
 		
