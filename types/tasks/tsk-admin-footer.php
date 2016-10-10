@@ -777,6 +777,7 @@ function task_edit_jquery() {
 			jQuery( '.go_error' ).html();
 		}
 
+		/*
 		function go_before_task_publish ( e, skip_default ) {
 
 			// the skip_default argument allows input validation to occur
@@ -841,6 +842,7 @@ function task_edit_jquery() {
 			}
 		}
 		jQuery( 'input#publish' ).on( 'click submit', go_before_task_publish );
+		*/
 
 		/* 
 		 * This is meant to prevent the page from being submitted via 
