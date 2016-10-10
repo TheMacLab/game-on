@@ -229,6 +229,7 @@ function go_the_lb_ajax() {
 	if ( $is_unpurchasable != 'on' ) {
 		?>
 		<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
+		<input type='hidden' class='golb-fr-boxes-debt' value='<?php echo ( $penalty ? 'true' : 'false' ); ?>' />
 		<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem( '<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>' ); this.removeAttribute( 'onclick' );">Buy</div>
 		<div id="golb-fr-purchase-limit" val="<?php echo ( ! empty( $purchase_limit ) ? $purchase_limit : 0 ); ?>"><?php echo ( ! empty( $purchase_limit ) ? "Limit {$purchase_limit}" : 'No limit' ); ?></div>
 		<div id="golb-purchased">
@@ -314,48 +315,86 @@ function go_frontend_lightbox_html() {
 					window.go_req_currency = jQuery( '#golb-fr-price' ).attr( 'req' );
 					window.go_req_points = jQuery( '#golb-fr-points' ).attr( 'req' );
 					window.go_req_bonus_currency = jQuery( '#golb-fr-bonus_currency' ).attr( 'req' );
+					window.go_req_penalty = jQuery( '#golb-fr-penalty' ).attr( 'req' );
 					window.go_req_minutes = jQuery( '#golb-fr-minutes' ).attr( 'req' );
 					window.go_cur_currency = jQuery( '#golb-fr-price' ).attr( 'cur' );
 					window.go_cur_points = jQuery( '#golb-fr-points' ).attr( 'cur' );
 					window.go_cur_bonus_currency = jQuery( '#golb-fr-bonus_currency' ).attr( 'cur' );
 					window.go_cur_minutes = jQuery( '#golb-fr-minutes' ).attr( 'cur' );
 					window.go_purchase_limit = jQuery( '#golb-fr-purchase-limit' ).attr( 'val' );
+
+					// `window.go_store_debt_enabled` was implemented as a temporary hotfix for
+					// bugs in v2.6.1
+					window.go_store_debt_enabled = (
+						'true' === jQuery( '.golb-fr-boxes-debt' ).val() ?
+						true : false
+					);
+
 					if ( go_purchase_limit == 0 ) {
-						go_purchase_limit = Number.MAX_VALUE;
-					} 
+						go_purchase_limit = <?php echo ( defined( PHP_INT_MAX ) ? PHP_INT_MAX : 9001 ); ?>;
+					}
+
+					// determines the upper limit of the purchase quantity spinner, which is limited
+					// by the amount of currency that the user has and the cost of the Store Item
+					var spinner_max_size = go_purchase_limit;
+
+					if ( ! go_store_debt_enabled ) {
+						var point_cost_ratio = go_purchase_limit;
+						var currency_cost_ratio = go_purchase_limit;
+						if ( go_req_points > 0 ) {
+							point_cost_ratio = Math.floor( go_cur_points / go_req_points );
+						}
+						if ( go_req_currency > 0 ) {
+							currency_cost_ratio = Math.floor( go_cur_currency / go_req_currency );
+						}
+
+						if ( point_cost_ratio < 1 || currency_cost_ratio < 1 ) {
+							spinner_max_size = 1;
+						} else {
+							spinner_max_size = Math.min( point_cost_ratio, currency_cost_ratio, spinner_max_size );
+						}
+					}
+
 					jQuery( '#go_qty' ).spinner({
-						max: Math.min( Math.floor( go_cur_currency / go_req_currency ), Math.floor( go_cur_points / go_req_points ), go_purchase_limit ),
+						max: spinner_max_size,
 						min: 1,
-						stop: function( event, ui ) {
+						stop: function() {
 							jQuery( this ).change();
 						}
 					});
 					jQuery( '#go_qty' ).change( function() {
 						var price_raw = jQuery( '#golb-fr-price' ).html();
-						var price_sub = price_raw.substr(price_raw.indexOf( ":" )+2);
+						var price_sub = price_raw.substr( price_raw.indexOf( ":" ) + 2 );
 						if (price_sub.length > 0 ) {
-							var price = price_raw.replace(price_sub, go_req_currency * jQuery( this ).val() );
+							var price = price_raw.replace( price_sub, Math.abs( go_req_currency ) * jQuery( this ).val() );
 							jQuery( '#golb-fr-price' ).html(price);
 						}
 					
 						var points_raw = jQuery( '#golb-fr-points' ).html();
-						var points_sub = points_raw.substr(points_raw.indexOf( ":" )+2);
+						var points_sub = points_raw.substr( points_raw.indexOf( ":" ) + 2 );
 						if ( points_sub.length > 0 ) {
-							var points = points_raw.replace( points_sub, go_req_points * jQuery( this ).val() );
-							jQuery( '#golb-fr-points' ).html(points);
+							var points = points_raw.replace( points_sub, Math.abs( go_req_points ) * jQuery( this ).val() );
+							jQuery( '#golb-fr-points' ).html( points );
 						}
 					
 						var bonus_currency_raw = jQuery( '#golb-fr-bonus_currency' ).html();
-						var bonus_currency_sub = bonus_currency_raw.substr( bonus_currency_raw.indexOf( ":" ) + 2);
+						var bonus_currency_sub = bonus_currency_raw.substr( bonus_currency_raw.indexOf( ":" ) + 2 );
 						if (bonus_currency_sub.length > 0) {
-							var bonus_currency = bonus_currency_raw.replace( bonus_currency_sub, go_req_bonus_currency * jQuery( this ).val() );
+							var bonus_currency = bonus_currency_raw.replace( bonus_currency_sub, Math.abs( go_req_bonus_currency ) * jQuery( this ).val() );
 							jQuery( '#golb-fr-bonus_currency' ).html( bonus_currency );
 						}
 					
+						var penalty_raw = jQuery( '#golb-fr-penalty' ).html();
+						var penalty_sub = penalty_raw.substr( penalty_raw.indexOf( ":" ) + 2 );
+						if ( penalty_sub.length > 0 ) {
+							var penalty = penalty_raw.replace( penalty_sub, Math.abs( go_req_penalty ) * jQuery( this ).val() );
+							jQuery( '#golb-fr-penalty' ).html( penalty );
+						}
+
 						var minutes_raw = jQuery( '#golb-fr-minutes' ).html();
 						var minutes_sub = minutes_raw.substr(minutes_raw.indexOf( ":" ) + 2);
 						if ( minutes_sub.length > 0 ) {
-							var minutes = minutes_raw.replace( minutes_sub, go_req_minutes * jQuery( this ).val() );
+							var minutes = minutes_raw.replace( minutes_sub, Math.abs( go_req_minutes ) * jQuery( this ).val() );
 							jQuery( '#golb-fr-minutes' ).html( minutes );
 						}
 					});
