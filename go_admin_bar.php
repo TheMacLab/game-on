@@ -79,17 +79,7 @@ function go_admin_bar() {
 		
 		$wp_admin_bar->remove_menu( 'wp-logo' );
 
-		$is_admin = false;
-		$user_obj = get_user_by( 'id', $user_id );
-		$user_roles = $user_obj->roles;
-		if ( ! empty( $user_roles ) ) {
-			foreach ( $user_roles as $role ) {
-				if ( $role === "administrator" ) {
-					$is_admin = true;
-					break;
-				}
-			}
-		}
+		$is_admin = go_user_is_admin( $user_id );
 	
 		$wp_admin_bar->add_node( 
 			array(
@@ -207,7 +197,7 @@ function go_admin_bar() {
 				) 
 			);
 			$title = '';
-			if ($role !== 'administrator') {
+			if ( ! $is_admin ) {
 				if ( go_return_options( 'go_bar_add_points_switch' ) == 'On' ) {
 					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_points_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_points_reason"/></div>';
@@ -319,6 +309,11 @@ function go_admin_bar() {
 				) 
 			);
 
+			/*
+			 * Game On Links
+			 */
+
+			// displays Clipboard link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_clipboard',
@@ -329,6 +324,7 @@ function go_admin_bar() {
 				) 
 			);
 
+			// displays Task edit page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_tasks',
@@ -339,6 +335,7 @@ function go_admin_bar() {
 				) 
 			);
 
+			// displays Store Item edit page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_store',
@@ -349,6 +346,7 @@ function go_admin_bar() {
 				) 
 			);
 
+			// displays GO options page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_options',
@@ -359,6 +357,22 @@ function go_admin_bar() {
 				) 
 			);
 
+			// displays Pods page link
+			$wp_admin_bar->add_node(
+				array(
+					'id' => 'go_nav_pods',
+					'title' => get_option('go_tasks_name').' Pods',
+					'href' => esc_url( get_admin_url() ).'admin.php?page=go_pods',
+					'parent' => 'go_site_name_menu',
+					'meta' => array( 'class' => 'go_site_name_menu_item' )
+				)
+			);
+
+			/*
+			 * Default WP Links
+			 */
+
+			// displays Post edit page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_posts',
@@ -368,6 +382,7 @@ function go_admin_bar() {
 				) 
 			);
 
+			// displays Page edit page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_pages',
@@ -377,6 +392,7 @@ function go_admin_bar() {
 				) 
 			);
 
+			// displays Media Library page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_media',
@@ -386,6 +402,7 @@ function go_admin_bar() {
 				) 
 			);
 
+			// displays Plugins page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_plugins',
@@ -394,14 +411,14 @@ function go_admin_bar() {
 					'parent' => 'appearance'
 				) 
 			);
-			
+
+			// displays Users page link
 			$wp_admin_bar->add_node(
 				array(
-					'id' => 'go_nav_pods',
-					'title' => get_option('go_tasks_name').' Pods',
-					'href' => esc_url( get_admin_url() ).'admin.php?page=go_pods',
-					'parent' => 'go_site_name_menu',
-					'meta' => array( 'class' => 'go_site_name_menu_item' )
+					'id' => 'go_nav_users',
+					'title' => 'Users',
+					'href' => esc_url( get_admin_url() ).'users.php',
+					'parent' => 'appearance',
 				)
 			);
 		}
