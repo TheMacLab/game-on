@@ -1,8 +1,9 @@
 function goBuytheItem( id, buyColor, count ) {
+	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item;
 	jQuery( document ).ready( function( jQuery ) {
 		var gotoBuy = {
-			action: 'buy_item',
-			nonce: '',
+			_ajax_nonce: nonce,
+			action: 'go_buy_item',
 			the_id: id,
 			qty: jQuery( '#go_qty' ).val(),
 			recipient: jQuery( '#go_recipient' ).val(),
@@ -10,7 +11,7 @@ function goBuytheItem( id, buyColor, count ) {
 		};
 
 		jQuery.ajax({
-			url: buy_item.ajaxurl,
+			url: MyAjax.ajaxurl,
 			type: 'POST',
 			data: gotoBuy,
 			beforeSend: function() {
@@ -21,7 +22,10 @@ function goBuytheItem( id, buyColor, count ) {
 			dataType: 'html',
 			success: function( response ) {
 				var buy = jQuery( '#golb-fr-buy' );
-				if ( response.indexOf( 'Need more' ) != -1 || response.indexOf( 'You\'ve attempted to purchase' ) != -1 ) {
+				if ( -1 !== response.indexOf( 'WordPress hiccuped,' ) ||
+						response.indexOf( 'Need more' ) != -1 ||
+						response.indexOf( 'You\'ve attempted to purchase' ) != -1 ) {
+
 					alert( response );
 					buy.html( 'Error' );
 				} else {
@@ -47,23 +51,26 @@ function goBuytheItem( id, buyColor, count ) {
 
 				}
 				go_count_item( id );
-				// console.log(response);
 			}
 		});
 	});
 }
 
-function go_count_item( id ) {
+function go_count_item( item_id ) {
+	var nonce = GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;
 	jQuery.ajax({
 		url: MyAjax.ajaxurl,
 		type: 'POST',
 		data: {
+			_ajax_nonce: nonce,
 			action: 'go_get_purchase_count',
-			the_item_id: id
+			item_id: item_id
 		},
-		success: function( data ) {
-			var count = data.toString();
-			jQuery( '#golb-purchased' ).html( 'Quantity purchased: ' + count );
+		success: function( res ) {
+			if ( -1 !== res ) {
+				var count = res.toString();
+				jQuery( '#golb-purchased' ).html( 'Quantity purchased: ' + count );
+			}
 		}
 	});
 }
