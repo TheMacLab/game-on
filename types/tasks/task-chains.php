@@ -245,6 +245,17 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 add_action( 'add_term_relationship', 'go_task_chain_add_term_rel', 10, 2 );
 
 /**
+ * Gets a task chain's term object from its term taxonomy ID.
+ *
+ * @param  int $tt_id The term taxonomy ID.
+ * @return false|WP_Term The taxonomy term. False is returned when the term doesn't exist.
+ */
+function go_task_chain_term_from_id( $tt_id ) {
+	$term = get_term_by( 'term_taxonomy_id', $tt_id );
+	return $term;
+}
+
+/**
  * Handles updating chain order meta data when one or more chains are removed from a task.
  *
  * @since 3.0.0
@@ -257,10 +268,9 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 
 	// the task that is having a term assigned to it is referred to as the "target", below
 	$the_object = get_post( $object_id );
-	$terms_array = array_map( function ( $tt_id ) {
-		$term = get_term_by( 'term_taxonomy_id', $tt_id );
-		return $term;
-	}, $tt_ids );
+
+	// maps the term objects using the term IDs, using string for pre-5.3 PHP compatibility
+	$terms_array = array_map( 'go_task_chain_term_from_id', $tt_ids );
 
 	if ( ! empty( $the_object ) && 'tasks' === $the_object->post_type && ! empty( $terms_array ) ) {
 		foreach ( $terms_array as $the_term ) {
