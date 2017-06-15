@@ -39,9 +39,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'settings_id' => 'go_advanced_task_settings_accordion'
 			),
 			array(
-				'name' => 'Required Rank '.go_task_opt_help( 'req_rank', '', 'http://maclab.guhsd.net/go/video/quests/requiredRank.mp4' ),
-				'id'   => "{$prefix}req_rank",
-				'type' => 'go_rank_list'
+				'name' => 'Badge Filter'.go_task_opt_help( 'badge_filter', '', 'http://maclab.guhsd.net/go/video/quests/badge_filter.mp4' ),
+				'id' => "{$prefix}badge_filter",
+				'type' => 'go_badge_input',
+				'stage' => 'none',
 			),
 			array(
 				'name' => go_return_options( 'go_bonus_currency_name' ).' Filter'.go_task_opt_help( 'bonus_currency_filter', '', 'http://maclab.guhsd.net/go/video/quests/bonusCurrencyFilter.mp4' ),
@@ -623,23 +624,6 @@ function go_validate_stage_reward() {
 		'currency' => $currency,
 		'bonus_currency' => $bonus_currency,
 	);
-}
-
-add_action( 'cmb_render_go_rank_list', 'go_rank_list' );
-function go_rank_list() {
-	$custom = get_post_custom();
-	$current_rank = ( ! empty( $custom['go_mta_req_rank'][0] ) ? $custom['go_mta_req_rank'][0] : null );
-	$ranks_array = get_option( 'go_ranks' );
-	$ranks = $ranks_array['name'];
-	if ( ! empty( $ranks ) ) {
-		echo "<select id='go_req_rank_select' name='go_mta_req_rank'>";
-		foreach ( $ranks as $rank ) {
-			echo "<option class='go_req_rank_option' ".( strtolower( $rank ) == strtolower( $current_rank ) ? 'selected' : '' ).">{$rank}</option>";
-		}
-		echo "</select>";
-	} else {
-		echo "No <a href='".admin_url()."/?page=game-on-options.php' target='_blank'>".get_option( 'go_level_plural_names' )."</a> were provided.";
-	}
 }
 
 add_action( 'cmb_render_go_start_filter', 'go_render_start_filter' );

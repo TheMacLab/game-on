@@ -97,6 +97,9 @@ function go_award_badge ( $atts ) {
 		
 		$display = wp_get_attachment_image( $badge_id, array( 200, 200 ), false );
 		$existing_badges = get_user_meta( $user_id, 'go_badges', true );
+		if ( empty( $existing_badges ) ) {
+			$existing_badges = array();
+		}
 		if ( false === $repeat ) {
 			if ( empty( $existing_badges ) || ! in_array( $badge_id, $existing_badges ) ) {
 				$existing_badges[] = $badge_id;
@@ -109,7 +112,7 @@ function go_award_badge ( $atts ) {
 					</script>';
 				}
 			}
-		} else if ( true === $repeat ) {
+		} else {
 			$existing_badges[] = $badge_id;
 			update_user_meta( $user_id, 'go_badges', $existing_badges );
 			if ( $user_id == get_current_user_id() ) {
