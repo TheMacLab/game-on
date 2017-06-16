@@ -1,5 +1,52 @@
 <?php
 /**
+ * Prints a block of badges based on an array of badge IDs. A return argument is provided, if the
+ * block list needs to be returned instead of printed.
+ *
+ * @param array $ids    The badge IDs.
+ * @param bool  $return Optional. Return the badge list instead of printing it.
+ * @return null|string The badge list, if the '$return' argument was passed a value of true.
+ *                     Null otherwise.
+ */
+function go_badge_output_list( $ids, $return = false ) {
+	$badge_blocks = '';
+	if ( empty( $ids ) || ! is_array( $ids ) ) {
+		go_error_log(
+			'go_badge_output_list() expects a valid array of badge IDs.',
+			__FUNCTION__,
+			__FILE__
+		);
+		return null;
+	}
+	foreach ( $ids as $badge_id ) {
+		$badge_attachment = wp_get_attachment_image( $badge_id, array( 100, 100 ) );
+		$img_post = get_post( $badge_id );
+		if ( ! empty( $badge_attachment ) ) {
+			$badge_blocks .= sprintf(
+				'<div class="go_badge_wrap"> ' .
+					'<div class="go_badge_container">' .
+						'<figure class="go_badge" title="%1$s">' .
+							'%3$s' .
+							'<figcaption>%2$s</figcaption>' .
+						'</figure>' .
+					'</div>' .
+				'</div>',
+				$img_post->post_title,
+				$img_post->post_excerpt ? $img_post->post_excerpt : $img_post->post_title,
+				$badge_attachment
+			);
+		}
+	}
+
+	if ( $return ) {
+		return $badge_blocks;
+	}
+
+	print( $badge_blocks );
+	return null;
+}
+
+/**
  * Add a badge shortcode to every media file.
  *
  * Adds a field on every media file's edit page, so that an admin can easily copy and paste

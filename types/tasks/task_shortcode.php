@@ -192,7 +192,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		// an array of badge IDs
 		$badge_filter_ids = array();
 
-		// if the user has the correct badges
+		// determines if the user has the correct badges
 		$badge_filtered = false;
 		$badge_diff = array();
 		if ( ! empty( $badge_filter_meta ) && isset( $badge_filter_meta[0] ) && $badge_filter_meta[0] ) {
@@ -410,29 +410,14 @@ function go_task_shortcode( $atts, $content = null ) {
 
 		// checks that non-admin users are allowed to access this task
 		if ( $is_admin === false && $badge_filtered ) {
-			$badge_blocks = '';
-			foreach ( $badge_diff as $badge_id ) {
-				$badge_attachment = wp_get_attachment_image( $badge_id, array( 100, 100 ) );
-				$img_post = get_post( $badge_id );
-				if ( ! empty( $badge_attachment ) ) {
-					$badge_blocks .= sprintf(
-						'<div class="go_badge_wrap"> ' .
-							'<div class="go_badge_container">' .
-								'<figure class="go_badge" title="%1$s">' .
-									'%3$s' .
-									'<figcaption>%2$s</figcaption>' .
-								'</figure>' .
-							'</div>' .
-						'</div>',
-						$img_post->post_title,
-						$img_post->post_excerpt ? $img_post->post_excerpt : $img_post->post_title,
-						$badge_attachment
-					);
-				}
-			}
+			$return_badge_list = true;
 
 			// outputs all the badges that the user must obtain before beginning this task
-			printf( "<p>You need the following badges to begin this %s:</p>%s", $task_name, $badge_blocks );
+			printf(
+				'You need the following badges to begin this %s:<br/>%s',
+				$task_name,
+				go_badge_output_list( $badge_diff, $return_badge_list )
+			);
 		} else {
 			
 			switch ( $status ) {
