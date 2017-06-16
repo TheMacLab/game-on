@@ -364,6 +364,50 @@ function go_task_shortcode( $atts, $content = null ) {
 			$update_percent = 1;
 		}
 
+		// displays rewards before task contents
+		go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
+		?>
+		<script type="text/javascript">
+			<?php if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
+				var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
+				for ( i = 1; i <= num_of_stages; i++ ) {
+					var stage_points = jQuery( '#go_stage_' + i + '_points' );
+					var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
+					var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
+					if ( stage_points.length && ! stage_points.hasClass( 'go_updated' ) ) {
+						stage_points.addClass( 'go_updated' );
+					}
+					if ( stage_currency.length && ! stage_currency.hasClass( 'go_updated' ) ) {
+						stage_currency.addClass( 'go_updated' );
+					}
+					if ( stage_bonus_currency.length && ! stage_bonus_currency.hasClass( 'go_updated' ) ) {
+						stage_bonus_currency.addClass( 'go_updated' );
+					}
+				}
+			<?php } ?>
+			var timers = [];
+
+			jQuery( '.entry-title' ).after( jQuery( '.go_task_rewards' ) );
+			<?php
+				if ( $update_percent != 1 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
+				?>
+					jQuery( '#go_stage_3_points' ).addClass( 'go_updated' );
+					jQuery( '#go_stage_3_currency' ).addClass( 'go_updated' );
+				<?php
+				}
+				if ( $status >= 3 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
+					?>
+						jQuery( '#go_future_notification' ).hide();
+					<?php
+				}
+			?>
+
+			if ( jQuery( '#go_task_timer' ).length ) {
+				jQuery( '.go_task_rewards' ).after( jQuery( '#go_task_timer' ) );
+			}
+		</script>
+		<?php
+
 		// checks that non-admin users are allowed to access this task
 		if ( $is_admin === false && $badge_filtered ) {
 			$badge_blocks = '';
@@ -437,48 +481,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			if ( ! empty( $category_names ) && $user_focus ) {
 				$go_ahead = array_intersect( $user_focus, $category_names );
 			}
-			go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
-			
 		?>
-			<script type="text/javascript">
-				<?php if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
-					var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
-					for ( i = 1; i <= num_of_stages; i++ ) {
-						var stage_points = jQuery( '#go_stage_' + i + '_points' );
-						var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
-						var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
-						if ( stage_points.length && ! stage_points.hasClass( 'go_updated' ) ) {
-							stage_points.addClass( 'go_updated' );
-						}
-						if ( stage_currency.length && ! stage_currency.hasClass( 'go_updated' ) ) {
-							stage_currency.addClass( 'go_updated' );
-						}
-						if ( stage_bonus_currency.length && ! stage_bonus_currency.hasClass( 'go_updated' ) ) {
-							stage_bonus_currency.addClass( 'go_updated' );
-						}
-					}
-				<?php } ?>
-				var timers = [];
-
-				jQuery( '.entry-title' ).after( jQuery( '.go_task_rewards' ) );
-				<?php 
-					if ( $update_percent != 1 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
-					?>
-						jQuery( '#go_stage_3_points' ).addClass( 'go_updated' );
-						jQuery( '#go_stage_3_currency' ).addClass( 'go_updated' );
-					<?php 
-					} 
-					if ( $status >= 3 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
-						?>
-							jQuery( '#go_future_notification' ).hide();
-						<?php   
-					}   
-				?>
-				
-				if ( jQuery( '#go_task_timer' ).length ) {
-					jQuery( '.go_task_rewards' ).after( jQuery( '#go_task_timer' ) );
-				}
-			</script>
 			<div id="go_description"><div class="go_stage_message"><?php echo  do_shortcode( wpautop( $description ) ); ?></div></div>
 		<?php   
 		
@@ -2480,7 +2483,7 @@ function go_task_change_stage() {
 						}
 					}
 				}
-				if ( $stage_badges[ $status ][0] == 'true' ) {
+				if ( $stage_badges[ $status ][0] ) {
 					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 						go_remove_badge( $user_id, $badge_id );
 					}
@@ -2497,7 +2500,7 @@ function go_task_change_stage() {
 				$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 				$e_passed, $a_passed, $c_passed, $m_passed, $url
 			);
-			if ( $stage_badges[ $status ][0] == 'true' ) {
+			if ( $stage_badges[ $status ][0] ) {
 				foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 					go_award_badge(
 						array(
@@ -2542,8 +2545,8 @@ function go_task_change_stage() {
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
-					if ( $stage_badges[ $status - 2 ][0] == 'true' ) {
-						foreach ( $stage_badges[ $status - 2 ][1] as $badge_id ) {
+					if ( $stage_badges[ $db_status - 2 ][0] ) {
+						foreach ( $stage_badges[ $db_status - 2 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
 						}
 					}
@@ -2557,7 +2560,7 @@ function go_task_change_stage() {
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
-					if ( $stage_badges[ $status - 1 ][0] == 'true' ) {
+					if ( $stage_badges[ $status - 1 ][0] ) {
 						foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
 						}
