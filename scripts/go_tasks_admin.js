@@ -1214,8 +1214,10 @@ function go_generate_accordion_array() {
 		advanced_task: {
 			settings: [
 				{
-					cmb_type: 'go_rank_list',
-					cmb_id: 'req_rank'
+					cmb_type: 'go_badge_input',
+					cmb_id: 'badge_filter',
+					on_load: go_badge_input_on_load,
+					on_toggle: go_badge_input_on_toggle
 				},
 				{
 					cmb_type: 'text',

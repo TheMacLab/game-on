@@ -39,9 +39,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'settings_id' => 'go_advanced_task_settings_accordion'
 			),
 			array(
-				'name' => 'Required Rank '.go_task_opt_help( 'req_rank', '', 'http://maclab.guhsd.net/go/video/quests/requiredRank.mp4' ),
-				'id'   => "{$prefix}req_rank",
-				'type' => 'go_rank_list'
+				'name' => 'Badge Filter'.go_task_opt_help( 'badge_filter', '', 'http://maclab.guhsd.net/go/video/quests/badge_filter.mp4' ),
+				'id' => "{$prefix}badge_filter",
+				'type' => 'go_badge_input',
+				'stage' => 'none',
 			),
 			array(
 				'name' => go_return_options( 'go_bonus_currency_name' ).' Filter'.go_task_opt_help( 'bonus_currency_filter', '', 'http://maclab.guhsd.net/go/video/quests/bonusCurrencyFilter.mp4' ),
@@ -547,6 +548,12 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_store_filter'
 			),
 			array(
+				'name' => 'Badge Filter'.go_task_opt_help( 'badge_filter', '', 'http://maclab.guhsd.net/go/video/store/badge_filter.mp4' ),
+				'id' => "{$prefix}badge_filter",
+				'type' => 'go_badge_input',
+				'stage' => 'none',
+			),
+			array(
 				'name' => 'Gift'.go_task_opt_help( 'item_gift', 'Allow an item to be bought for another student', 'http://maclab.guhsd.net/go/video/store/exchange.mp4' ),
 				'id' => "{$prefix}store_gift",
 				'type' => 'go_store_gift'
@@ -623,23 +630,6 @@ function go_validate_stage_reward() {
 		'currency' => $currency,
 		'bonus_currency' => $bonus_currency,
 	);
-}
-
-add_action( 'cmb_render_go_rank_list', 'go_rank_list' );
-function go_rank_list() {
-	$custom = get_post_custom();
-	$current_rank = ( ! empty( $custom['go_mta_req_rank'][0] ) ? $custom['go_mta_req_rank'][0] : null );
-	$ranks_array = get_option( 'go_ranks' );
-	$ranks = $ranks_array['name'];
-	if ( ! empty( $ranks ) ) {
-		echo "<select id='go_req_rank_select' name='go_mta_req_rank'>";
-		foreach ( $ranks as $rank ) {
-			echo "<option class='go_req_rank_option' ".( strtolower( $rank ) == strtolower( $current_rank ) ? 'selected' : '' ).">{$rank}</option>";
-		}
-		echo "</select>";
-	} else {
-		echo "No <a href='".admin_url()."/?page=game-on-options.php' target='_blank'>".get_option( 'go_level_plural_names' )."</a> were provided.";
-	}
 }
 
 add_action( 'cmb_render_go_start_filter', 'go_render_start_filter' );
@@ -1985,25 +1975,12 @@ function go_store_filter() {
 	$custom = get_post_custom();
 	$content_array = ( ! empty( $custom['go_mta_store_filter'][0] ) ? unserialize( $custom['go_mta_store_filter'][0] ) : null );
 	$is_checked = ( ! empty( $content_array[0] ) ? 'checked' : '' );
-	$chosen_rank = $content_array[1];
-	$bonus_currency_filter = $content_array[2];
-	$penalty_filter = $content_array[3];
+	$bonus_currency_filter = $content_array[1];
+	$penalty_filter = $content_array[2];
 	$ranks_array = get_option( 'go_ranks' );
 	$ranks = $ranks_array['name'];
-	echo "<input id='go_store_filter_checkbox' name='go_mta_store_filter' type='checkbox' {$is_checked}/>";
-
-	if ( ! empty( $ranks ) && is_array( $ranks ) ) {
-		echo "<select id='go_store_filter_select' class='go_store_filter_input' name='go_store_filter_select' style='display: none;'>";
-		foreach ( $ranks as $rank ) {
-			echo "<option class='go_store_filter_option'";
-			if ( strtolower( $rank ) == strtolower( $chosen_rank ) ) {
-				echo 'selected';
-			}
-			echo ">{$rank}</option>";
-		}
-		echo "</select>";
-	}
 	echo "
+		<input id='go_store_filter_checkbox' name='go_mta_store_filter' type='checkbox' {$is_checked}/>
 		<input id='go_store_filter_bonus_currency' class='go_store_filter_input' name='go_store_filter_bonus_currency' type='text' style='display: none;' placeholder='".go_return_options( 'go_bonus_currency_name' )."' ".( ( ! empty( $bonus_currency_filter ) ) ? "value='{$bonus_currency_filter}'" : '' )."/>
 		<input id='go_store_filter_penalty' class='go_store_filter_input' name='go_store_filter_penalty' type='text' style='display: none;' placeholder='".go_return_options( 'go_penalty_name' )."' ".( ( ! empty( $penalty_filter ) ) ? "value='{$penalty_filter}'" : '' )."/>
 	";
@@ -2012,13 +1989,11 @@ function go_store_filter() {
 add_action( 'cmb_validate_go_store_filter', 'go_validate_store_filter' );
 function go_validate_store_filter() {
 	$is_checked     = ( ! empty( $_POST['go_mta_store_filter'] )            ? true : false );
-	$chosen_rank    = ( ! empty( $_POST['go_store_filter_select'] )         ? sanitize_text_field( $_POST['go_store_filter_select'] ) : '' );
 	$b_filter       = ( ! empty( $_POST['go_store_filter_bonus_currency'] ) ? (int) $_POST['go_store_filter_bonus_currency'] : 0 );
 	$d_filter       = ( ! empty( $_POST['go_store_filter_penalty'] )        ? (int) $_POST['go_store_filter_penalty'] : 0 );
 
 	return array(
 		$is_checked,
-		$chosen_rank,
 		$b_filter,
 		$d_filter,
 	);

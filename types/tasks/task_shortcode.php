@@ -179,19 +179,35 @@ function go_task_shortcode( $atts, $content = null ) {
 		$focus_category_lock = ( ! empty( $locked_by_category ) ? true : false );
 
 		$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' ); // Description
-		$req_rank = ( ! empty( $custom_fields['go_mta_req_rank'][0] ) ? $custom_fields['go_mta_req_rank'][0] : null ); // Required Rank to accept task
-		if ( ! empty( $req_rank ) ) {
-			$ranks = get_option( 'go_ranks' );
-			if ( ! empty( $ranks['name'] ) && ! empty( $ranks['points'] ) ) {
-				$index = array_search( $req_rank, $ranks['name'] );
-				$req_points = $ranks['points'][ $index ];
-			} else {
-				$req_points = null;
-			}
-		} else {
-			$req_points = null;
+
+		// gets the user's current badges
+		$user_badges = get_user_meta( $user_id, 'go_badges', true );
+		if ( ! $user_badges ) {
+			$user_badges = array();
 		}
-		
+
+		// gets an array of badge IDs to prevent users who don't have the badges from viewing the task
+		$badge_filter_meta = get_post_meta( $id, 'go_mta_badge_filter', true );
+
+		// an array of badge IDs
+		$badge_filter_ids = array();
+
+		// determines if the user has the correct badges
+		$badge_filtered = false;
+		$badge_diff = array();
+		if ( ! empty( $badge_filter_meta ) && isset( $badge_filter_meta[0] ) && $badge_filter_meta[0] ) {
+			$badge_filter_ids = (array) $badge_filter_meta[1];
+
+			// checks to see if the filter array are in the the user's badge array
+			$intersection = array_values( array_intersect( $user_badges, $badge_filter_ids ) );
+			if ( $intersection !== $badge_filter_ids ) {
+				$badge_filtered = true;
+
+				// stores an array of the badges that were not found in the user's badge array
+				$badge_diff = array_values( array_diff( $badge_filter_ids, $intersection ) );
+			}
+		}
+
 		$points_array = ( ! empty( $rewards['points'] ) ? $rewards['points'] : array() );
 		$points_str = implode( ' ', $points_array );
 		$currency_array = ( ! empty( $rewards['currency'] ) ? $rewards['currency'] : array() );
@@ -347,12 +363,61 @@ function go_task_shortcode( $atts, $content = null ) {
 		} else {
 			$update_percent = 1;
 		}
-		
-		$go_current_points = go_return_points( $user_id );
-		if ( $is_admin === false && ! empty( $req_points) && $go_current_points < $req_points ) {
-			$points = $req_points - $go_current_points;
-			$points_name = strtolower( go_return_options( 'go_points_name' ) );
-			echo "You need {$points} more {$points_name} to begin this {$task_name}.";
+
+		// displays rewards before task contents
+		go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
+		?>
+		<script type="text/javascript">
+			<?php if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
+				var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
+				for ( i = 1; i <= num_of_stages; i++ ) {
+					var stage_points = jQuery( '#go_stage_' + i + '_points' );
+					var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
+					var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
+					if ( stage_points.length && ! stage_points.hasClass( 'go_updated' ) ) {
+						stage_points.addClass( 'go_updated' );
+					}
+					if ( stage_currency.length && ! stage_currency.hasClass( 'go_updated' ) ) {
+						stage_currency.addClass( 'go_updated' );
+					}
+					if ( stage_bonus_currency.length && ! stage_bonus_currency.hasClass( 'go_updated' ) ) {
+						stage_bonus_currency.addClass( 'go_updated' );
+					}
+				}
+			<?php } ?>
+			var timers = [];
+
+			jQuery( '.entry-title' ).after( jQuery( '.go_task_rewards' ) );
+			<?php
+				if ( $update_percent != 1 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
+				?>
+					jQuery( '#go_stage_3_points' ).addClass( 'go_updated' );
+					jQuery( '#go_stage_3_currency' ).addClass( 'go_updated' );
+				<?php
+				}
+				if ( $status >= 3 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
+					?>
+						jQuery( '#go_future_notification' ).hide();
+					<?php
+				}
+			?>
+
+			if ( jQuery( '#go_task_timer' ).length ) {
+				jQuery( '.go_task_rewards' ).after( jQuery( '#go_task_timer' ) );
+			}
+		</script>
+		<?php
+
+		// checks that non-admin users are allowed to access this task
+		if ( $is_admin === false && $badge_filtered ) {
+			$return_badge_list = true;
+
+			// outputs all the badges that the user must obtain before beginning this task
+			printf(
+				'You need the following badges to begin this %s:<br/>%s',
+				$task_name,
+				go_badge_output_list( $badge_diff, $return_badge_list )
+			);
 		} else {
 			
 			switch ( $status ) {
@@ -401,48 +466,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			if ( ! empty( $category_names ) && $user_focus ) {
 				$go_ahead = array_intersect( $user_focus, $category_names );
 			}
-			go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
-			
 		?>
-			<script type="text/javascript">
-				<?php if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
-					var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
-					for ( i = 1; i <= num_of_stages; i++ ) {
-						var stage_points = jQuery( '#go_stage_' + i + '_points' );
-						var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
-						var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
-						if ( stage_points.length && ! stage_points.hasClass( 'go_updated' ) ) {
-							stage_points.addClass( 'go_updated' );
-						}
-						if ( stage_currency.length && ! stage_currency.hasClass( 'go_updated' ) ) {
-							stage_currency.addClass( 'go_updated' );
-						}
-						if ( stage_bonus_currency.length && ! stage_bonus_currency.hasClass( 'go_updated' ) ) {
-							stage_bonus_currency.addClass( 'go_updated' );
-						}
-					}
-				<?php } ?>
-				var timers = [];
-
-				jQuery( '.entry-title' ).after( jQuery( '.go_task_rewards' ) );
-				<?php 
-					if ( $update_percent != 1 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
-					?>
-						jQuery( '#go_stage_3_points' ).addClass( 'go_updated' );
-						jQuery( '#go_stage_3_currency' ).addClass( 'go_updated' );
-					<?php 
-					} 
-					if ( $status >= 3 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
-						?>
-							jQuery( '#go_future_notification' ).hide();
-						<?php   
-					}   
-				?>
-				
-				if ( jQuery( '#go_task_timer' ).length ) {
-					jQuery( '.go_task_rewards' ).after( jQuery( '#go_task_timer' ) );
-				}
-			</script>
 			<div id="go_description"><div class="go_stage_message"><?php echo  do_shortcode( wpautop( $description ) ); ?></div></div>
 		<?php   
 		
@@ -2181,7 +2205,7 @@ function go_task_change_stage() {
 	}
 
 	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
-	
+
 	// Array of badge switch and badges associated with a stage
 	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
 	$stage_badges = array(
@@ -2444,7 +2468,7 @@ function go_task_change_stage() {
 						}
 					}
 				}
-				if ( $stage_badges[ $status ][0] == 'true' ) {
+				if ( $stage_badges[ $status ][0] ) {
 					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 						go_remove_badge( $user_id, $badge_id );
 					}
@@ -2461,7 +2485,7 @@ function go_task_change_stage() {
 				$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 				$e_passed, $a_passed, $c_passed, $m_passed, $url
 			);
-			if ( $stage_badges[ $status ][0] == 'true' ) {
+			if ( $stage_badges[ $status ][0] ) {
 				foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 					go_award_badge(
 						array(
@@ -2506,8 +2530,8 @@ function go_task_change_stage() {
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
-					if ( $stage_badges[ $status - 2 ][0] == 'true' ) {
-						foreach ( $stage_badges[ $status - 2 ][1] as $badge_id ) {
+					if ( $stage_badges[ $db_status - 2 ][0] ) {
+						foreach ( $stage_badges[ $db_status - 2 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
 						}
 					}
@@ -2521,7 +2545,7 @@ function go_task_change_stage() {
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
-					if ( $stage_badges[ $status - 1 ][0] == 'true' ) {
+					if ( $stage_badges[ $status - 1 ][0] ) {
 						foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
 						}
@@ -2538,8 +2562,8 @@ function go_task_change_stage() {
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 					$e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time
 				);
-				if ( $stage_badges[ $status - 1 ][0] == 'true' ) {
-					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
+				if ( $stage_badges[ $status - 2 ][0] ) {
+					foreach ( $stage_badges[ $status - 2 ][1] as $badge_id ) {
 						go_award_badge(
 							array(
 								'id'        => $badge_id,
@@ -3191,20 +3215,20 @@ function go_record_stage_time($post_id = null, $status = null) {
 	}
 	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
 	$timestamps = get_user_meta( $user_id, 'go_task_timestamps', true );
-	if ( ! empty( $timestamps ) ) {
-		foreach ($timestamps as $key => $value) {
-			foreach ( $timestamps[ $key ] as $newkey => $oldtime ) {
-					$timestamps[ $key ][ $newkey ] = $oldtime;
-			}       
+
+	if ( is_array( $timestamps ) ) {
+		if ( empty( $timestamps[ $post_id ][ $status ] ) ) {
+			$timestamps[ $post_id ] = array(
+				$status => array(
+					0 => $time,
+					1 => $time,
+				),
+			);
+		} elseif ( 5 == $status ) {
+			$timestamps[ $post_id ][ $status ][0] = $time;
+		} else {
+			$timestamps[ $post_id ][ $status ][1] = $time;
 		}
-	}
-	if ( empty( $timestamps[ $post_id ][ $status ] ) ) {
-		$timestamps[ $post_id ][ $status ][0] = $time;
-		$timestamps[ $post_id ][ $status ][1] = $time;
-	} else if ( $status == 5 ) {
-		$timestamps[ $post_id ][ $status ][0] = $time;
-	} else {
-		$timestamps[ $post_id ][ $status ][1] = $time;
 	}
 	update_user_meta( $user_id, 'go_task_timestamps', $timestamps );
 }

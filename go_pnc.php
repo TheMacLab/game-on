@@ -936,6 +936,28 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 		$user_timers[ $post_id ] = $accept_timestamp;
 		update_user_meta( $user_id, 'go_timers', $user_timers );
 	}
+
+	// removes any badges that were awarded to the user from the abandoned task
+	$user_badges = get_user_meta( $user_id, 'go_badges', true );
+	if ( ! empty( $user_badges ) ) {
+		$badge_meta_array = array(
+			get_post_meta( $post_id, 'go_mta_stage_one_badge', true ),
+			get_post_meta( $post_id, 'go_mta_stage_two_badge', true ),
+			get_post_meta( $post_id, 'go_mta_stage_three_badge', true ),
+			get_post_meta( $post_id, 'go_mta_stage_four_badge', true ),
+			get_post_meta( $post_id, 'go_mta_stage_five_badge', true ),
+		);
+		foreach ( $badge_meta_array as $meta_data ) {
+			if ( empty( $meta_data ) || ! is_array( $meta_data ) ) {
+				continue;
+			}
+
+			foreach ( $meta_data as $badge_id ) {
+				in_array( $badge_id, $user_badges );
+				go_remove_badge( $user_id, $badge_id );
+			}
+		}
+	}
 }
 
 ?>

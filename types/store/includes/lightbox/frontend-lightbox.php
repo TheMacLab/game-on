@@ -67,9 +67,8 @@ function go_the_lb_ajax() {
 	if ( ! empty( $store_filter ) ) {
 		$is_filtered = ( ! empty( $store_filter[0] ) ? true : false );
 		if ( $is_filtered ) {
-			$req_rank       = ( ! empty( $store_filter[1] ) ? (string) $store_filter[1] : '' );
-			$bonus_filter   = ( ! empty( $store_filter[2] ) ? (int) $store_filter[2] : 0 );
-			$penalty_filter = ( ! empty( $store_filter[3] ) ? (int) $store_filter[3] : 0 );
+			$bonus_filter   = ( ! empty( $store_filter[1] ) ? (int) $store_filter[1] : 0 );
+			$penalty_filter = ( ! empty( $store_filter[2] ) ? (int) $store_filter[2] : 0 );
 		}
 	}
 
@@ -100,12 +99,6 @@ function go_the_lb_ajax() {
 
 	echo "<h2>{$the_title}</h2>";
 	echo '<div id="go-lb-the-content">'.do_shortcode( $the_content ).'</div>';
-	if ( ! empty( $req_rank ) && ( $user_points >= $req_rank || $req_rank <= 0 || $penalty ) ) {
-		$lvl_color = "g"; 
-		$output_level = $req_rank *= -1;
-	} else { 
-		$lvl_color = "r";
-	}
 
 	$output_currency = $req_currency;
 	if ( 0 == $req_currency ) {
@@ -157,8 +150,8 @@ function go_the_lb_ajax() {
 		$minutes_color = 'r';
 	}
 
-	if ( $lvl_color == "g" && $gold_color == "g" && $points_color == "g" ) { 
-		$buy_color = "gold"; 
+	if ( $gold_color == "g" && $points_color == "g" ) {
+		$buy_color = "gold";
 	} else { 
 		$buy_color = "gold"; 
 	}
@@ -238,8 +231,44 @@ function go_the_lb_ajax() {
 	if ( ! empty( $purchase_limit) && $purchase_count >= $purchase_limit ) {
 		die( "You've reached the maximum purchase limit." );
 	}
-	if ( ( ! empty( $req_rank ) ) && $user_points < $req_rank ) {
-		die( "You need to reach {$req_rank_key} to purchase this item." );
+
+	// gets the user's current badges
+	$user_badges = get_user_meta( $user_id, 'go_badges', true );
+	if ( ! $user_badges ) {
+		$user_badges = array();
+	}
+
+	// gets an array of badge IDs to prevent users who don't have the badges from viewing the item
+	$badge_filter_meta = get_post_meta( $the_id, 'go_mta_badge_filter', true );
+
+	// an array of badge IDs
+	$badge_filter_ids = array();
+
+	// determines if the user has the correct badges
+	$badge_filtered = false;
+	$badge_diff = array();
+	if ( ! empty( $badge_filter_meta ) && isset( $badge_filter_meta[0] ) && $badge_filter_meta[0] ) {
+		$badge_filter_ids = (array) $badge_filter_meta[1];
+
+		// checks to see if the filter array are in the the user's badge array
+		$intersection = array_values( array_intersect( $user_badges, $badge_filter_ids ) );
+		if ( $intersection !== $badge_filter_ids ) {
+			$badge_filtered = true;
+
+			// stores an array of the badges that were not found in the user's badge array
+			$badge_diff = array_values( array_diff( $badge_filter_ids, $intersection ) );
+		}
+	}
+
+	if ( $badge_filtered ) {
+		$return_badge_list = true;
+
+		// outputs all the badges that the user must obtain before viewing the store item
+		printf(
+			'You need the following badges to view this item:<br/>%s',
+			go_badge_output_list( $badge_diff, $return_badge_list )
+		);
+		wp_die();
 	}
 
 	printf(
