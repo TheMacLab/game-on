@@ -2079,7 +2079,7 @@ function go_render_badge_input( $field_args ) {
 					'<input type="button" class="go_button_del_field go_badge_input_del go_badge_input_button" value="x" />'.
 				'</li>',
 				$row_stage,
-				$badge
+				$badge ? $badge : ''
 			);
 		}
 	} else {
@@ -2096,7 +2096,7 @@ function go_render_badge_input( $field_args ) {
 	}
 
 	printf(
-		'<input type="checkbox" name="%1$s" class="go_badge_input_toggle" stage="%2$s" %3$s/>'.
+		'<input type="checkbox" name="%1$s" class="go_badge_input_toggle" stage="%2$s" %3$s />'.
 		'<ul id="go_stage_%2$s_badges" class="go_stage_badge_container">%4$s</ul>',
 		$row_id,
 		$row_stage,

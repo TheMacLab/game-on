@@ -412,6 +412,9 @@ function go_badge_input_on_load( row ) {
 	}
 
 	if ( del_buttons.length >= 1 ) {
+		if ( 1 == del_buttons.length ) {
+			del_buttons.hide();
+		}
 		del_buttons.click( go_badge_input_del_field );
 	}
 }

@@ -1,3 +1,53 @@
+/**
+ * Determines the next set of loot preset values based on the previous preset, if there is one.
+ * The function is not applied to the first two stages.
+ *
+ * @see 3.0.5
+ *
+ * @param array prev   Optional. An array of values for the previous preset. Defaults to two
+ *                     separate arrays, depending on the type of currency.
+ *     e.g.
+ *     [
+ *         0 => 5,
+ *         1 => 5,
+ *         2 => 10,
+ *         3 => 30,
+ *         4 => 30,
+ *     ]
+ * @param int currency Optional. The type of currency being calculated. A 0 or 1 represent XP or
+ *                     Gold respectively. Defaults to 0 for XP.
+ * @return array Integer values for each of the stages of the new preset.
+ */
+function go_calc_loot_preset( prev, currency ) {
+	if ( 'undefined' === typeof prev || !( prev instanceof Array ) || 5 !== prev.length ) {
+
+		// falls back to default array
+		if ( 0 === currency ) {
+			prev = [ 5, 5, 10, 30, 30 ];
+		} else if ( 1 === currency ) {
+			prev = [ 0, 0, 3, 9, 9 ];
+		}
+	}
+
+	if ( 0 !== currency && 1 !== currency ) {
+		currency = 0;
+	}
+
+	var preset_values = [];
+	for ( var i = 0; i < 5; i++ ) {
+		var val = 0;
+		var x = Number.parseInt( prev[ i ] );
+
+		if ( i > 1 ) {
+			val = 2 * x;
+		} else {
+			val = x;
+		}
+		preset_values.push( val );
+	}
+	return preset_values;
+}
+
 jQuery( document ).ready( function() {
 	jQuery( '.go_options_no_help' ).click( false );
 	
@@ -130,7 +180,7 @@ jQuery( document ).ready( function() {
 	jQuery( document ).on( 'click', '.go_remove_preset', function() {
 		if ( jQuery( '.go_options_preset_name_input' ).length > 1 ) {	
 			key = jQuery( '.go_options_preset_name_input' ).last().attr( 'key' );
-			jQuery( 'input[key="' + key + '"' ).remove();
+			jQuery( 'input[key="' + key + '"]' ).remove();
 		} 
 		if ( jQuery( '.go_options_preset_name_input' ).length == 1 ) {
 			jQuery( '.go_remove_preset' ).remove();
@@ -156,13 +206,15 @@ jQuery( document ).ready( function() {
 
 		var preset_key = jQuery( '.go_options_preset_name_input' ).last().attr( 'key' );
 		var points_array = [];
-		jQuery( '.go_options_preset_points_input[key="' + preset_key + '"' ).each( function( index ) {
+		jQuery( '.go_options_preset_points_input[key="' + preset_key + '"]' ).each( function( index ) {
 			points_array[ index ] = this.value;
 		});
 		var currency_array = [];
-		jQuery( '.go_options_preset_currency_input[key="' + preset_key + '"' ).each( function( index ) {
+		jQuery( '.go_options_preset_currency_input[key="' + preset_key + '"]' ).each( function( index ) {
 			currency_array[ index ] = this.value;
 		});
+		points_array = go_calc_loot_preset( points_array, 0 );
+		currency_array = go_calc_loot_preset( currency_array, 0 );
 
 		var presets = jQuery( '.go_options_preset_name_input' ).length;
 		jQuery( '.go_remove_preset' ).remove();
