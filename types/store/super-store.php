@@ -9,7 +9,6 @@ Creation Date: 05/09/13
 // Includes
 include( 'store-shortcode.php' );
 include( 'includes/lightbox/backend-lightbox.php' );
-include( 'store-admin-footer.php' );
 
 function go_register_store_tax_and_cpt() {
 	

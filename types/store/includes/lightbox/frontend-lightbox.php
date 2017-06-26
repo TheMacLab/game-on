@@ -34,6 +34,7 @@ function go_the_lb_ajax() {
 	$minutes_name        = go_return_options( 'go_minutes_name' );
 
 	$user_id = get_current_user_id();
+	$is_admin = go_user_is_admin( $user_id );
 	$user_points = go_return_points( $user_id );
 	$user_currency = go_return_currency( $user_id );
 	$user_bonus_currency = go_return_bonus_currency( $user_id );
@@ -248,19 +249,23 @@ function go_the_lb_ajax() {
 	$badge_filtered = false;
 	$badge_diff = array();
 	if ( ! empty( $badge_filter_meta ) && isset( $badge_filter_meta[0] ) && $badge_filter_meta[0] ) {
-		$badge_filter_ids = (array) $badge_filter_meta[1];
+		$badge_filter_ids = array_filter( (array) $badge_filter_meta[1], function( $id ) {
+
+			// filters out ids that correspond to non-existent badges
+			return wp_get_attachment_image_url( $id ) ? true : false;
+		});
 
 		// checks to see if the filter array are in the the user's badge array
 		$intersection = array_values( array_intersect( $user_badges, $badge_filter_ids ) );
-		if ( $intersection !== $badge_filter_ids ) {
-			$badge_filtered = true;
 
-			// stores an array of the badges that were not found in the user's badge array
-			$badge_diff = array_values( array_diff( $badge_filter_ids, $intersection ) );
+		// stores an array of the badges that were not found in the user's badge array
+		$badge_diff = array_values( array_diff( $badge_filter_ids, $intersection ) );
+		if ( ! empty( $badge_filter_ids ) && ! empty( $badge_diff ) ) {
+			$badge_filtered = true;
 		}
 	}
 
-	if ( $badge_filtered ) {
+	if ( ! $is_admin && $badge_filtered ) {
 		$return_badge_list = true;
 
 		// outputs all the badges that the user must obtain before viewing the store item

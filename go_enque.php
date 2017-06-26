@@ -40,6 +40,7 @@ function go_register_admin_scripts_and_styles () {
 	wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/jquery.ptTimeSelect.js', array( 'jquery' ) );
 
 	// Store
+	wp_register_script( 'go_store', plugin_dir_url( __FILE__ ).'scripts/go_store_admin.js', array( 'jquery' ), false, true );
 
 	// Options
 	wp_register_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/go_options.js' );
@@ -164,12 +165,14 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 			wp_enqueue_style( 'ptTimeSelectCSS' );
 			wp_enqueue_style( 'go_tasks_admin' );
 
-		} else if ( 'go_store' === $post->post_type ) {
+		} elseif ( 'go_store' === $post->post_type ) {
 
 			/*
 			 * Store Scripts
 			 */
-			
+
+			wp_enqueue_script( 'go_store' );
+
 			// Localization
 
 			/*
