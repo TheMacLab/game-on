@@ -249,11 +249,7 @@ function go_the_lb_ajax() {
 	$badge_filtered = false;
 	$badge_diff = array();
 	if ( ! empty( $badge_filter_meta ) && isset( $badge_filter_meta[0] ) && $badge_filter_meta[0] ) {
-		$badge_filter_ids = array_filter( (array) $badge_filter_meta[1], function( $id ) {
-
-			// filters out ids that correspond to non-existent badges
-			return wp_get_attachment_image_url( $id ) ? true : false;
-		});
+		$badge_filter_ids = array_filter( (array) $badge_filter_meta[1], 'go_badge_exists' );
 
 		// checks to see if the filter array are in the the user's badge array
 		$intersection = array_values( array_intersect( $user_badges, $badge_filter_ids ) );

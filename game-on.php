@@ -163,6 +163,21 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
  */
 
 /**
+ * Determines if a badge exists.
+ *
+ * @param int $id The attachment ID.
+ * @return boolean True if the attachment exists, false otherwise.
+ */
+function go_badge_exists( $id ) {
+	if ( ! is_int( $id ) || $id < 0 ) {
+		return false;
+	}
+
+	// checks to see that the corresponding attachment exists
+	return wp_get_attachment_image_url( $id ) ? true : false;
+}
+
+/**
  * Appends errors to the configured PHP error log.
  *
  * Use this function to easily output Game On errors.
