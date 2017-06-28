@@ -414,7 +414,7 @@ function go_task_shortcode( $atts, $content = null ) {
 
 			// outputs all the badges that the user must obtain before beginning this task
 			printf(
-				'You need the following badges to begin this %s:<br/>%s',
+				'You need the following badge(s) to begin this %s:<br/>%s',
 				$task_name,
 				go_badge_output_list( $badge_diff, $return_badge_list )
 			);

@@ -266,7 +266,7 @@ function go_the_lb_ajax() {
 
 		// outputs all the badges that the user must obtain before viewing the store item
 		printf(
-			'You need the following badges to view this item:<br/>%s',
+			'You need the following badge(s) to view this item:<br/>%s',
 			go_badge_output_list( $badge_diff, $return_badge_list )
 		);
 		wp_die();
