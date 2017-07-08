@@ -1441,9 +1441,9 @@ function go_render_task_chain_order() {
 				} else {
 					$chain_order = $stored_chain_order[ $tt_id ];
 				}
-				foreach ( $chain_order as $post->ID ) {
-					if ( ! empty( $post->ID ) ) {
-						$tasks_in_chain[] = get_post( $post->ID );
+				foreach ( $chain_order as $id ) {
+					if ( ! empty( $id ) ) {
+						$tasks_in_chain[] = get_post( $id );
 					}
 				}
 			} else {
