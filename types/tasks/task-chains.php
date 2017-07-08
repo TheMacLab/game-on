@@ -161,7 +161,7 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 		if ( -1 === $valid_pos || $valid_pos === $id_pos ) {
 			return true;
 		}
-	} elseif ( ! empty( $chain_order ) ) {
+	} elseif ( ! empty( $chain_order ) && is_array( $chain_order ) ) {
 
 		foreach ( $chain_order as $order ) {
 
@@ -197,6 +197,9 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
  * @param int $tt_id     The term taxonomy ID.
  */
 function go_task_chain_add_term_rel( $object_id, $tt_id ) {
+	if ( (int) $object_id <= 0 ) {
+		return;
+	}
 
 	// the task that is having a term assigned to it is referred to as the "target", below
 	$the_object = get_post( $object_id );
@@ -207,7 +210,7 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 			'task_chains' === $the_term->taxonomy ) {
 
 		$stored_chain_order   = get_post_meta( $object_id, 'go_mta_chain_order', true );
-		$new_chain_order      = $stored_chain_order;
+		$new_chain_order      = is_array( $stored_chain_order ) ? $stored_chain_order : array();
 		$target_chain_updated = false;
 		$tasks_in_chain       = go_task_chain_get_tasks( $tt_id );
 

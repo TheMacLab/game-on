@@ -1441,9 +1441,9 @@ function go_render_task_chain_order() {
 				} else {
 					$chain_order = $stored_chain_order[ $tt_id ];
 				}
-				foreach ( $chain_order as $post->ID ) {
-					if ( ! empty( $post->ID ) ) {
-						$tasks_in_chain[] = get_post( $post->ID );
+				foreach ( $chain_order as $id ) {
+					if ( ! empty( $id ) ) {
+						$tasks_in_chain[] = get_post( $id );
 					}
 				}
 			} else {
@@ -1454,6 +1454,9 @@ function go_render_task_chain_order() {
 			$task_id_str = null;
 			$chain_list_elems = '';
 			foreach ( $tasks_in_chain as $index => $post_obj ) {
+				if ( ! is_object( $post_obj ) || empty( (int) $post_obj->ID ) ) {
+					continue;
+				}
 				$task_id_array[] = $post_obj->ID;
 				$post_status = $post_obj->post_status;
 
@@ -1525,13 +1528,13 @@ function go_validate_task_chain_order( $new_values ) {
 	 *         ...
 	 *     )
 	 */
-	$new_order_input    = ( ! empty( $new_values ) ? $new_values : array() );
+	$new_order_input    = ! empty( $new_values ) ? $new_values : array();
 	$task_chains        = get_the_terms( $post->ID, 'task_chains' );
 	$stored_chain_order = get_post_meta( $post->ID, 'go_mta_chain_order', true );
-	$new_chain_order    = $stored_chain_order;
+	$new_chain_order    = is_array( $stored_chain_order ) ? $stored_chain_order : array();
 
 	if ( empty( $new_order_input ) || empty( $task_chains ) ) {
-		return $stored_chain_order;
+		return $new_chain_order;
 	}
 
 	foreach ( $new_order_input as $tt_id => $chain_order_str ) {
