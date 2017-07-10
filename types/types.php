@@ -1454,7 +1454,7 @@ function go_render_task_chain_order() {
 			$task_id_str = null;
 			$chain_list_elems = '';
 			foreach ( $tasks_in_chain as $index => $post_obj ) {
-				if ( ! is_object( $post_obj ) || empty( (int) $post_obj->ID ) ) {
+				if ( ! is_object( $post_obj ) || empty( $post_obj->ID ) ) {
 					continue;
 				}
 				$task_id_array[] = $post_obj->ID;
