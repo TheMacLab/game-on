@@ -262,42 +262,52 @@ function go_task_shortcode( $atts, $content = null ) {
 		$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
 		$sounded_array = (array) get_user_meta( $user_id, 'go_sounded_tasks', true );
 		
-		// If there are dates in the date picker
+		// if there are dates in the date picker
 		if ( ! empty( $date_picker) && ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) ) {
 			
 			$dates = $date_picker['date'];
 			$times = $date_picker['time'];
 			$percentages = $date_picker['percent'];
 			
-			// Setup empty array to house which dates are closest, in unix timestamp
-			
+			// setup empty array to house which dates are closest, in unix timestamp
 			$past_dates = array();
 			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/>";
+
 			foreach ( $dates as $key => $date ) {
 				
 				// If current date in loop is in the past, add its key to the array of date modifiers
 				$english_date = date( "D, F j, Y", strtotime( $date ) );
 				$correct_time = date( "g:i A", strtotime( $times[ $key ] ) );
-				echo "After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[ $key]}%.<br/>";
-				if ( $unix_now >= ( strtotime( $date ) + strtotime( $times[ $key ], 0 ) ) ) {
-					$past_dates[ $key ] = abs( $unix_now - strtotime( $date ) );
+
+				// gets the UNIX timestamp for the date at the specified time of day
+				$timestamp = strtotime( "{$date} {$times[ $key ]}" );
+
+				echo "After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[ $key ]}%.<br/>";
+				if ( $unix_now >= $timestamp ) {
+					$past_dates[] = abs( $unix_now - $timestamp );
 				}
 			}
 			echo "</span>";
-			
+
 			if ( ! empty( $past_dates ) ) {
 				
-				// Sorts array from least to greatest
-				// Should pust most recent PAST date as first key in array, making grabbing the percentage associated with that day easy
+				// sorts dates from most recent to oldest
 				asort( $past_dates );
 				$update_percent = (float) ( ( 100 - $percentages[ key( $past_dates ) ] ) / 100);
-				$sounded_date = $sounded_array['date'][ $id ];
-				if ( ! $sounded_date ) {
+				if ( ( ! empty( $sounded_array['date'] ) && ! $sounded_array['date'][ $id ] ) || empty( $sounded_array['date'] ) ) {
 					?>
 					<script type='text/javascript'>
 						go_sounds( 'timer' );
 					</script>
 					<?php
+
+					// creates the structure for the sounded tasks array, and clears any unwanted data
+					// already in the array
+					if ( empty( $sounded_array['date'] ) ) {
+						$sounded_array = array( 'date' => array() );
+					}
+
+					// updates the status of this specified task, so the alarm doesn't sound again
 					$sounded_array['date'][ $id ] = true;
 					update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array );
 				}
@@ -2250,54 +2260,44 @@ function go_task_change_stage() {
 	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); //determine which future date modifier is on, if any
 	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
 
-	// If there are dates in the date picker
-	if ( ! empty( $date_picker ) && ( ! empty( $future_switches['calendar'] ) && 'on' === $future_switches['calendar'] ) ) {
-	
+	if ( ! empty( $date_picker) && ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) ) {
 		$dates = $date_picker['date'];
 		$times = $date_picker['time'];
 		$percentages = $date_picker['percent'];
-	
-		$past_dates = array();
 
+		// Setup empty array to house which dates are closest, in unix timestamp
+		$past_dates = array();
 		foreach ( $dates as $key => $date ) {
-			if ( $unix_now >= ( strtotime( $date ) + strtotime( $times[ $key ], 0 ) ) ) {
-				$past_dates[ $key ] = abs( $unix_now - strtotime( $date ) );
+
+			// gets the UNIX timestamp for the date at the specified time of day
+			$timestamp = strtotime( "{$date} {$times[ $key ]}" );
+			if ( $unix_now >= $timestamp ) {
+				$past_dates[] = abs( $unix_now - $timestamp );
 			}
 		}
+
 		if ( ! empty( $past_dates ) ) {
+
+			// sorts dates from most recent to oldest
 			asort( $past_dates );
 			$date_update_percent = (float) ( ( 100 - $percentages[ key( $past_dates ) ] ) / 100);
 		} else {
-			$date_update_percent = 1;   
+			$date_update_percent = 1;
 		}
-		?>
-		<script type='text/javascript'>
-			var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
-			var date_modifier = parseFloat( <?php echo $date_update_percent; ?> );
-			for ( i = 1; i <= num_of_stages; i++ ) {
-				var stage_points = jQuery( '#go_stage_' + i + '_points' );
-				var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
-				var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
-				if ( stage_points.length && ! stage_points.hasClass( 'go_updated' ) ) {
-					stage_points.html( Math.floor( parseInt( stage_points.html() ) * date_modifier ) ).addClass( 'go_updated' );
-				}
-				if ( stage_currency.length && ! stage_currency.hasClass( 'go_updated' ) ) {
-					stage_currency.html( Math.floor( parseInt( stage_currency.html() ) * date_modifier ) ).addClass( 'go_updated' );
-				}
-				if ( stage_bonus_currency.length && ! stage_bonus_currency.hasClass( 'go_updated' ) ) {
-					stage_bonus_currency.html( Math.floor( parseInt( stage_bonus_currency.html() ) * date_modifier ) ).addClass( 'go_updated' );
-				}
-			}
-		</script>
-		<?php
 	} else {
-		$date_update_percent = 1;   
+		$date_update_percent = 1;
 	}
-	
-	$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : null );
-	if ( ! empty( $future_modifier ) && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' )  && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
+
+	$future_modifier = get_post_meta( $post_id, 'go_mta_time_modifier' );
+	$future_timer = false;
+	if ( ! empty( $future_modifier ) &&
+		( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) &&
+		! (
+			$future_modifier['days'] == 0 && $future_modifier['hours'] == 0 &&
+			$future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0
+		)
+	) {
 		$user_timers = get_user_meta( $user_id, 'go_timers' );
-		
 		$accept_timestamp = 0;
 		if ( ! empty( $user_timers[0][ $post_id ] ) ) {
 			$accept_timestamp = $user_timers[0][ $post_id ];
@@ -2311,51 +2311,44 @@ function go_task_change_stage() {
 					$post_id
 				)
 			);
-			if ( ! empty( $accept_timestamp_raw ) ) {
-				$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
-			} elseif ( 2 === $status ) {
-				$accept_timestamp = $unix_now;
-			}
+			$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
 		}
-
-		$days = (int) $future_modifier['days'] ;
-		$hours = (int) $future_modifier['hours'];
+		$days    = (int) $future_modifier['days'];
+		$hours   = (int) $future_modifier['hours'];
 		$minutes = (int) $future_modifier['minutes'];
 		$seconds = (int) $future_modifier['seconds'];
 		$future_time = strtotime( "{$days} days", 0) + strtotime( "{$hours} hours", 0) + strtotime( "{$minutes} minutes", 0) + strtotime( "{$seconds} seconds", 0) + $accept_timestamp;
-		
-		if ( 2 === $status || ( $undo && $status >= 2 && $db_status < 4 ) ) {
+		if ( $status == 2 || ( ! empty( $accept_timestamp) && $status < 3 ) ) {
 			go_task_timer( $post_id, $user_id, $future_modifier );
-		} elseif ( $status > 2 ) {
-			?>
-			<script type='text/javascript'>
-				jQuery( '#go_future_notification' ).hide();
-				jQuery( '#go_task_timer' ).remove();
-			</script>
-			<?php
 		}
 		
-		if ( $unix_now >= $future_time ) {
-			$future_update_percent = (float) ( ( 100 - $future_modifier['percentage'] ) / 100 );
+		if ( $future_time != $accept_timestamp && ( ( $unix_now >= $future_time && $status >= 2 ) || ( $unix_now >= $future_time && ! empty( $accept_timestamp ) ) ) ) {
+			$future_update_percent = (float) ( (100 - $future_modifier['percentage'] )/100);
+			$future_timer = true;
 		} else {
-			$future_update_percent = 1; 
+			$future_update_percent = 1;
+		}
+		if ( $status < 3 ) {
+			$time_string = ( ( ! empty( $days) ) ? "{$days} day".( ( $days > 1) ? 's' : '' ).( ( ! empty( $hours ) || ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ) .
+						   ( ( ! empty( $hours) ) ? "{$hours} hour".( ( $hours > 1) ? 's' : '' ).( ( ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
+						   ( ( ! empty( $minutes) ) ? "{$minutes} minute".( ( $minutes > 1) ? 's' : '' ).( ( ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
+						   ( ( ! empty( $seconds) ) ? "{$seconds} second".( ( $seconds > 1) ? 's' : '' ) : '' );
+			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to reach ".go_return_options( 'go_third_stage_name' )." of this {$task_name} before the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
 		}
 	} else {
-		$future_update_percent = 1; 
+		$future_update_percent = 1;
 	}
 
-	$complete_stage = ( $undo ? $status - 1 : $status );
-	if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) {
+	if ( ! empty( $future_switches['calendar'] ) ) {
 		$update_percent = $date_update_percent;
-	} elseif ( ! empty( $future_switches['future'] )
-		&& $future_switches['future'] == 'on'
-		&& $complete_stage == 3 && $db_status < 4 )
-	{
+	} elseif ( ! empty( $future_switches['future'] ) ) {
 		$update_percent = $future_update_percent;
 	} else {
 		$update_percent = 1;
 	}
-	
+
+	$complete_stage = ( $undo ? $status - 1 : $status );
+
 	// if the button pressed IS the repeat button...
 	if ( $repeat_button ) {
 		if ( $undo ) {
@@ -2553,6 +2546,7 @@ function go_task_change_stage() {
 				}
 			} else {
 				$update_time = ( $status == 2 ) ? true : false;
+
 				go_add_post(
 					$user_id, $post_id, $status,
 					floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
@@ -2971,6 +2965,7 @@ function go_task_change_stage() {
 
 			echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 	}
+
 	die();
 }
 
@@ -3034,9 +3029,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 					break;
 			}
 			$stage = $i + 1;
-			if ( $update_percent == 0 && $stage == 3 ) {
-				$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>Expired: No Rewards</span><br/>";
-			} else if ( 0 === $modded_points && 0 === $modded_currency && 0 === $bc ) {
+			if ( 0 === $modded_points && 0 === $modded_currency && 0 === $bc ) {
 				$output = "{$stage_name} - <span id='go_task_stage_{$stage}_rewards'>No Rewards</span><br/>";
 			} else {
 				$point_output = '';

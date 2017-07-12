@@ -459,79 +459,120 @@ function go_five_stage_checkbox_on_load( row ) {
  * Function name convention: "go_[subject]_on_load"
  */
 
-// a custom function specifically for dealing with custom date and time picker inputs
-function go_data_and_time_inputs_on_load() {
+/**
+ * Determines whether or not the current browser supports "date" or "time" type inputs.
+ *
+ * @return boolean True, if the browser supports the inputs. False otherwise.
+ */
+function go_date_input_supported() {
 
-	// This can be faked by the browser, so it is not reliable. e.g. Internet Explorer can say that
-	// its user agent is "chrome"
-	var is_chrome = ( -1 !== navigator.userAgent.toLowerCase().indexOf( 'chrome' ) ? true : false );
+	// browser-detects the support for the "date" input type, non-supporting browsers degrade the
+	// input to a type of "text"
+	var test_input = document.createElement( 'input' );
+	test_input.type = 'date';
+	var supports_date_inputs = false;
+	if ( 'date' === test_input.type ) {
+		supports_date_inputs = true;
+	}
+
+	return supports_date_inputs;
+}
+
+/**
+ * Handles keypress events for time inputs. Prevents strings longer than 7 characters being input.
+ *
+ * @param Event event The event.
+ */
+function go_time_input_keypress_handler( event ) {
+	var regex = new RegExp( "^[0-9:APM]$" );
+	var key = String.fromCharCode( ! event.charCode ? event.which : event.charCode );
+	var input = jQuery( event.target );
+	var value = input.val();
+
+	if ( ! regex.test( key ) || value.length > 7 ) {
+		event.preventDefault();
+	}
+
+	if ( value.length > 7 ) {
+		input.val( value.substr( 0, 8 ) );
+	}
+}
+
+/**
+ * Initializes a "date" type input as a jQuery Datepicker.
+ *
+ * @param HTMLElement elem The date input.
+ */
+function go_date_input_make_datepicker( elem ) {
+	var date_format = "yy-mm-dd";
+	jQuery( elem ).datepicker( { dateFormat: date_format } );
+}
+
+/**
+ * Initializes a "time" type input as a jQuery Timepicker.
+ *
+ * @param HTMLElement elem The time input.
+ */
+function go_time_input_make_timepicker( elem ) {
+
+	// initializes the custom time field as jQuery time selector field
+	jQuery( elem ).ptTimeSelect();
+
+	// retrieves time in <hour>:<minute> format
+	var timer = jQuery( elem ).val();
+	var hour, minutes = 0;
+	var hour_str, minute_str, time_output = '';
+	var divider_index = -1;
+
+	divider_index = timer.search( ':' );
+	hour          = parseInt( timer.substring( 0, divider_index ) );
+	minutes       = parseInt( timer.substring( divider_index + 1, divider_index + 3 ) );
+	var period    = ( hour < 12 ? 'AM' : 'PM' );
+
+	if ( 'PM' === period && 12 !== hour ) {
+		var hour_diff = hour - 12;
+		if ( hour_diff >= 10 ) {
+			hour_str = hour_diff;
+		} else {
+			hour_str = '0' + ( hour - 12 );
+		}
+	} else if ( 'AM' === period && 0 === hour ) {
+		hour_str = '12';
+	} else {
+		hour_str = hour;
+	}
+
+	if ( 0 === minutes || minutes < 10 ) {
+		minute_str = '0' + minutes;
+	} else {
+		minute_str = minutes;
+	}
+
+	// reformats time into <hour>:<minute> AM/PM
+	time_output = hour_str + ':' + minute_str + ' ' + period;
+	jQuery( elem ).val( time_output );
+
+	// adds the keypress listener to the new timepicker
+	jQuery( elem ).keypress( go_time_input_keypress_handler );
+}
+
+// a custom function specifically for dealing with custom date and time picker inputs
+function go_date_and_time_inputs_on_load() {
 	
-	// the browser is supposedly not Chrome
-	if ( ! is_chrome ) {
+	// uses the jQuery date picker, since the current browser does not support date inputs
+	if ( ! go_date_input_supported() ) {
 		if ( jQuery( 'input.go_datepicker' ).length > 0 ) {
 			jQuery( 'input.go_datepicker' ).each( function( index, elem ) {
-				jQuery( elem ).datepicker( { dateFormat: "yy-mm-dd" } );
+				go_date_input_make_datepicker( elem );
 			});
 		}
 
 		if ( jQuery( 'input.custom_time' ).length > 0 ) {
 			jQuery( 'input.custom_time' ).each( function( index, elem ) {
-				
-				// initializes the custom time field as jQuery time selector field
-				jQuery( elem ).ptTimeSelect();
-
-				// retrieves time in <hour>:<minute> format
-				var timer = jQuery( elem ).val();
-				var hour, minutes = 0;
-				var hour_str, minute_str, time_output = '';
-				var divider_index = -1;
-
-				divider_index = timer.search( ':' );
-				hour          = parseInt( timer.substring( 0, divider_index ) );
-				minutes       = parseInt( timer.substring( divider_index + 1, divider_index + 3 ) );
-				var period    = ( hour < 12 ? 'AM' : 'PM' );
-
-				if ( 'PM' === period && 12 !== hour ) {
-					var hour_diff = hour - 12;
-					if ( hour_diff >= 10 ) {
-						hour_str = hour_diff;
-					} else {
-						hour_str = '0' + ( hour - 12 );
-					}
-				} else if ( 'AM' === period && 0 === hour ) {
-					hour_str = '12';
-				} else {
-					hour_str = hour;
-				}
-
-				if ( 0 === minutes || minutes < 10 ) {
-					minute_str = '0' + minutes;
-				} else {
-					minute_str = minutes;
-				}
-				
-				// reformats time into <hour>:<minute> AM/PM
-				time_output = hour_str + ':' + minute_str + ' ' + period;
-				jQuery( elem ).val( time_output );
+				go_time_input_make_timepicker( elem );
 			});
 		}
 	}
-
-	// adds a special keypress event handler for time inputs
-	jQuery( 'input.custom_time' ).keypress( function( event ) {
-		var regex = new RegExp( "^[0-9:APM]$" );
-		var key = String.fromCharCode( ! event.charCode ? event.which : event.charCode );
-		var input = jQuery( event.target );
-		var value = input.val();
-		
-		if ( ! regex.test( key ) || value.length > 7 ) {
-			event.preventDefault();
-		}
-
-		if ( value.length > 7 ) {
-			input.val( value.substr( 0, 8 ) );
-		}
-	});
 }
 
 function go_before_publish_on_load() {
@@ -603,23 +644,65 @@ function go_time_filter_checkboxes_on_change( event ) {
 }
 
 function go_date_picker_add_field() {
-	jQuery( '#go_list_of_decay_dates tbody' ).last().append(
-		'<tr>' +
-			'<td>' +
-				'<input class="go_date_picker_input go_date_picker_calendar_input go_datepicker custom_date" ' +
-					'name="go_mta_task_decay_calendar[]" ' +
-					'type="date" placeholder="Click for Date"/>' +
-				' @ (hh:mm AM/PM)' +
-				'<input class="go_date_picker_input go_date_picker_time_input custom_time" ' +
-					'name="go_mta_task_decay_calendar_time[]" ' +
-					'type="time" placeholder="Click for Time" value="00:00" />' +
-			'</td>' +
-			'<td>' +
-				'<input class="go_date_picker_input go_date_picker_modifier_input" ' +
-					'name="go_mta_task_decay_percent[]" type="text" placeholder="Modifier"/>%' +
-			'</td>' +
-		'</tr>'
+	var tr = document.createElement( 'tr' );
+
+	// sets up table data for the date and time inputs
+	var date_and_time_input_td = document.createElement( 'td' );
+	var date_input             = document.createElement( 'input' );
+	var time_input_span        = document.createElement( 'span' );
+	var time_input             = document.createElement( 'input' );
+
+	date_input.classList.add(
+		'go_date_picker_input',
+		'go_date_picker_calendar_input',
+		'go_datepicker',
+		'custom_date'
 	);
+	date_input.name = 'go_mta_task_decay_calendar[]';
+	date_input.type = 'date';
+	date_input.placeholder = 'Click for Date';
+
+	time_input_span.innerText = ' @ (hh:mm AM/PM)';
+	time_input.classList.add(
+		'go_date_picker_input',
+		'go_date_picker_time_input',
+		'custom_time'
+	);
+	time_input.name = 'go_mta_task_decay_calendar_time[]';
+	time_input.type = 'time';
+	time_input.placeholder = 'Click for Time';
+	time_input.value = '00:00';
+
+	date_and_time_input_td.appendChild( date_input );
+	date_and_time_input_td.appendChild( time_input_span );
+	date_and_time_input_td.appendChild( time_input );
+
+	// sets up table data for the modifier input
+	var mod_input_td   = document.createElement( 'td' );
+	var mod_input      = document.createElement( 'input' );
+	var mod_input_span = document.createElement( 'span' );
+
+	mod_input.classList.add( 'go_date_picker_input', 'go_date_picker_modifier_input' );
+	mod_input.name = 'go_mta_task_decay_percent[]';
+	mod_input.type = 'text';
+	mod_input.placeholder = 'Modifier';
+	mod_input_span.innerText = '%';
+
+	mod_input_td.appendChild( mod_input );
+	mod_input_td.appendChild( mod_input_span );
+
+	// puts the row elements together
+	tr.appendChild( date_and_time_input_td );
+	tr.appendChild( mod_input_td );
+
+	// adds the new table row to the list of date and time filters
+	jQuery( '#go_list_of_decay_dates tbody' ).last().append( tr );
+
+	// initializes the date and time inputs as jQuery a Datepicker and Timepicker, if necessary
+	if ( ! go_date_input_supported() ) {
+		go_date_input_make_datepicker( date_input );
+		go_time_input_make_timepicker( time_input );
+	}
 }
 
 function go_date_picker_del_field() {
@@ -1170,7 +1253,7 @@ function go_accordion_array_on_load( accordion_array, accordion_names ) {
 	/** 
 	 * Run miscellaneous on-load functions below.
 	 */
-	go_data_and_time_inputs_on_load();
+	go_date_and_time_inputs_on_load();
 
 	go_before_publish_on_load();
 }
