@@ -272,18 +272,23 @@ function go_task_shortcode( $atts, $content = null ) {
 			// setup empty array to house which dates are closest, in unix timestamp
 			$past_dates = array();
 			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/>";
+
 			foreach ( $dates as $key => $date ) {
 				
 				// If current date in loop is in the past, add its key to the array of date modifiers
 				$english_date = date( "D, F j, Y", strtotime( $date ) );
 				$correct_time = date( "g:i A", strtotime( $times[ $key ] ) );
-				echo "After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[ $key]}%.<br/>";
-				if ( $unix_now >= ( strtotime( $date ) + strtotime( $times[ $key ], 0 ) ) ) {
-					$past_dates[ $key ] = abs( $unix_now - strtotime( $date ) );
+
+				// gets the UNIX timestamp for the date at the specified time of day
+				$timestamp = strtotime( "{$date} {$times[ $key ]}" );
+
+				echo "After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[ $key ]}%.<br/>";
+				if ( $unix_now >= $timestamp ) {
+					$past_dates[] = abs( $unix_now - $timestamp );
 				}
 			}
 			echo "</span>";
-			
+
 			if ( ! empty( $past_dates ) ) {
 				
 				// sorts dates from most recent to oldest
@@ -2263,8 +2268,11 @@ function go_task_change_stage() {
 		// Setup empty array to house which dates are closest, in unix timestamp
 		$past_dates = array();
 		foreach ( $dates as $key => $date ) {
-			if ( $unix_now >= ( strtotime( $date ) + strtotime( $times[ $key ], 0 ) ) ) {
-				$past_dates[ $key ] = abs( $unix_now - strtotime( $date ) );
+
+			// gets the UNIX timestamp for the date at the specified time of day
+			$timestamp = strtotime( "{$date} {$times[ $key ]}" );
+			if ( $unix_now >= $timestamp ) {
+				$past_dates[] = abs( $unix_now - $timestamp );
 			}
 		}
 
