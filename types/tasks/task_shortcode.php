@@ -239,24 +239,25 @@ function go_task_shortcode( $atts, $content = null ) {
 		} else { // If the task has content in the post table, and has a meta field, run this code
 			$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' ); // Set value of accept message equal to the task's accept message meta field value
 		}
-		
-		$start_filter_info = ( ! empty( $custom_fields['go_mta_start_filter'][0] ) ? unserialize( $custom_fields['go_mta_start_filter'][0] ) : null );
-		$time_string = '';
-		if ( ! empty( $start_filter_info ) ) {
-			$start_filter = ( ! empty( $start_filter_info[0] ) ? $start_filter_info[0] : array() );
-			if ( ! empty ( $start_filter ) ) { 
-				$start_date = $start_filter_info[1];
-				$start_time = $start_filter_info[2];
 
-				// storing the unix timestamp by concatenating start date and time strings
-				$start_unix = strtotime( $start_date . $start_time );
-				if ( $unix_now < $start_unix ) {
-					$time_string = date( 'g:i A', $start_unix ) . " on " . date( 'D, F j, Y', $start_unix );
-					return "<span id='go_future_notification'>Will be available at {$time_string}.</span>"; 
-				}
+		// retrieves the date and time, if specified, after which non-admins can accept this task
+		$start_filter = get_post_meta( $id, 'go_mta_start_filter', true );
+
+		// holds the output to be displayed when a non-admin has been stopped by the start filter
+		$time_string = '';
+		if ( ! empty( $start_filter ) && ! empty( $start_filter['checked'] ) && ! $is_admin ) {
+			$start_date = $start_filter['date'];
+			$start_time = $start_filter['time'];
+			$start_unix = strtotime( $start_date . $start_time );
+
+			// stops execution if the user is a non-admin and the start date and time has not
+			// passed yet
+			if ( $unix_now < $start_unix ) {
+				$time_string = date( 'g:i A', $start_unix ) . ' on ' . date( 'D, F j, Y', $start_unix );
+				return "<span id='go_future_notification'>Will be available at {$time_string}.</span>";
 			}
 		}
-		
+
 		$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
 		
 		$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
