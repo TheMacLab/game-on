@@ -197,7 +197,6 @@
 .go_stats_task_status_wrap {
 	float: right;
 	position: relative;
-	width: 30%;
 	display: inline-block;
 	margin-top: 1.5px;
 }
@@ -207,7 +206,7 @@
 	color: #FFF;
 	display: inline-block;
 	float: right;
-	width: 18%;
+	width: 43px;
 	background-color: #DDD;
 	height: 14px;
 	margin: 4px 0px 2px 4px;
@@ -238,7 +237,6 @@
 }
 
 .go_stats_task_status p {
-	margin-top: -4px;
 	margin-bottom: 0;
 }
 

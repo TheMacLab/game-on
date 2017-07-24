@@ -3212,17 +3212,24 @@ function go_record_stage_time($post_id = null, $status = null) {
 
 	if ( is_array( $timestamps ) ) {
 		if ( empty( $timestamps[ $post_id ][ $status ] ) ) {
-			$timestamps[ $post_id ] = array(
-				$status => array(
-					0 => $time,
-					1 => $time,
-				),
+			$timestamps[ $post_id ][ $status ] = array(
+				0 => $time,
+				1 => $time,
 			);
 		} elseif ( 5 == $status ) {
 			$timestamps[ $post_id ][ $status ][0] = $time;
 		} else {
 			$timestamps[ $post_id ][ $status ][1] = $time;
 		}
+	} else {
+		$timestamps = array(
+			$post_id => array(
+				array(
+					$time,
+					$time,
+				)
+			),
+		);
 	}
 	update_user_meta( $user_id, 'go_task_timestamps', $timestamps );
 }
