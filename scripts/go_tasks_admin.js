@@ -346,6 +346,16 @@ function go_time_modifier_on_load( row ) {
 	}
 }
 
+function go_inverted_checkbox_on_load( row ) {
+	jQuery( row.class ).hide();
+
+	var checkbox = jQuery( row.class + ' .go_inverted_checkbox' );
+
+	if ( 1 === checkbox.length ) {
+		checkbox.change( go_inverted_checkbox_on_change );
+	}
+}
+
 function go_chain_order_on_load( row ) {
 	jQuery( row.class ).hide();
 
@@ -707,6 +717,20 @@ function go_date_picker_add_field() {
 
 function go_date_picker_del_field() {
 	jQuery( '#go_list_of_decay_dates tbody tr' ).last( '.go_datepicker' ).remove();
+}
+
+function go_inverted_checkbox_on_change( event ) {
+	var checkbox = jQuery( event.target );
+	var hidden_input = checkbox.siblings( '.go_inverted_checkbox_hidden' );
+
+	var is_checked = false;
+	if ( checkbox.is( ':checked' ) ) {
+		is_checked = true;
+	}
+
+	if ( checkbox.parent().is( ':visible' ) ) {
+		hidden_input.val( is_checked ? 'true' : 'false' );
+	}
 }
 
 function go_stage_reward_on_keyup( event ) {
@@ -1339,6 +1363,15 @@ function go_generate_accordion_array() {
 				{
 					cmb_type: 'checkbox',
 					cmb_id: 'focus_category_lock'
+				},
+				{
+					cmb_type: 'go_inverted_checkbox',
+					cmb_id: 'hide_filtered_content',
+					on_load: go_inverted_checkbox_on_load,
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'user_only_content',
 				},
 				{
 					cmb_type: 'go_task_chain_order',

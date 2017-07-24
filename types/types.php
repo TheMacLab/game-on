@@ -27,7 +27,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 		'show_names' => true, // Show field names on the left
 		'fields'     => array(
 			array(
-				'name' => 'Presets'.go_task_opt_help( 'presets', 'SAMPLE TEXT HELLO WORLD HOW ARE YOU DOING TODAY THIS IS GREAT', 'http://maclab.guhsd.net/go/video/quests/presets.mp4' ),
+				'name' => 'Presets'.go_task_opt_help( 'presets', '', 'http://maclab.guhsd.net/go/video/quests/presets.mp4' ),
 				'id'   => 'go_presets',
 				'type' => 'go_presets',
 			),
@@ -78,6 +78,34 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => go_return_options( 'go_focus_name' ).' Filter'.go_task_opt_help( 'lock_by_cat', '', ' http://maclab.guhsd.net/go/video/quests/lockByProfessionCategory.mp4' ),
 				'id' => "{$prefix}focus_category_lock",
 				'type' => 'checkbox'
+			),
+			array(
+				'name' => 'Hide Filtered Content' .
+					go_task_opt_help(
+						'hide_filtered_content',
+						__(
+							'Hides the Task\'s content from users that are not logged in, when ' .
+								'a restrictive filter is active.',
+							'game-on'
+						),
+						' http://maclab.guhsd.net/go/video/quests/hideFilteredContent.mp4'
+					),
+				'id' => "{$prefix}hide_filtered_content",
+				'type' => 'go_inverted_checkbox',
+			),
+			array(
+				'name' => 'User Only Content' .
+					go_task_opt_help(
+						'user_only_content',
+						__(
+							'Hides the Task\'s content from users that are not logged in, ' .
+								'regardless of any filters.',
+							'game-on'
+						),
+						' http://maclab.guhsd.net/go/video/quests/userOnlyContent.mp4'
+					),
+				'id' => "{$prefix}user_only_content",
+				'type' => 'checkbox',
 			),
 			array(
 				'name' => 'Chain Order'.go_task_opt_help( 'task_chain_order', '', 'http://maclab.guhsd.net/go/video/quests/tasksInChain.mp4' ),
@@ -1419,8 +1447,46 @@ add_action( 'admin_head', 'go_create_help_video_lb' );
 add_action( 'wp_head', 'go_create_help_video_lb' );
 
 function go_task_opt_help( $field, $title, $video_url = null ) {
-	return "<a id='go_help_{$field}' class='go_task_opt_help' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );' tooltip='{$title}'>?</a>";
+	return "<a id='go_help_{$field}' class='go_task_opt_help' " .
+		"onclick='go_display_help_video( \"" . esc_attr( $video_url ) . "\" );' " .
+		"tooltip=\"" . esc_attr( $title ) . "\">?</a>";
 }
+
+/**
+ * Renders a checkbox that is checked by default.
+ *
+ * @param array $field_args Metabox field data.
+ *     array(
+ *         'name' => 'Inverted Checkbox Example',
+ *         'id' => 'special_mta_id',
+ *         'type' => 'go_inverted_checkbox',
+ *     )
+ */
+function go_render_inverted_checkbox( $field_args ) {
+	global $post;
+
+	// gets the stored meta data value for the checkbox, if the meta data doesn't exist, an empty
+	// string will be retrieved
+	$meta_value = get_post_meta( $post->ID, $field_args['id'], true );
+	$value = 'false';
+	$checked_str = '';
+
+	// if the meta data is an empty string, the checkbox should be checked by default. Otherwise,
+	// the stored value persists.
+	if ( '' === $meta_value || 'true' === $meta_value ) {
+		$value = 'true';
+		$checked_str = 'checked';
+	}
+
+	printf(
+		'<input class="go_inverted_checkbox" type="checkbox" %s />' .
+			'<input class="go_inverted_checkbox_hidden" name="%s" type="hidden" value="%s"/>',
+		$checked_str,
+		$field_args['id'],
+		$value
+	);
+}
+add_action( 'cmb_render_go_inverted_checkbox', 'go_render_inverted_checkbox' );
 
 add_action( 'cmb_render_go_task_chain_order', 'go_render_task_chain_order' );
 function go_render_task_chain_order() {

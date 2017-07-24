@@ -381,6 +381,9 @@ function go_user_is_admin( $user_id = null ) {
 	}
 
 	$the_user = get_user_by( 'id', $user_id );
+	if ( empty( $the_user ) ) {
+		return false;
+	}
 	$roles = $the_user->roles;
 	if ( ! empty( $roles ) ) {
 		$can_manage = user_can( $the_user, 'manage_options' );
