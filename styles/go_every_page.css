@@ -609,7 +609,7 @@ ul#go_bonus_loot_wrap li.go_error {
 	margin-top: 20px;
 }
 
-.go_chain_final_msg, .go_chain_msg_content {
+.go_chain_final_msg {
 	margin: 10px 0;
 	text-align: center;
 }
