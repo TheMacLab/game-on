@@ -124,9 +124,17 @@ function go_buy_item() {
 	if ( ( ( $enough_currency && $enough_points && $enough_bonus_currency && $enough_penalty && $enough_minutes ) || $debt_enabled ) && $within_limit ) {
 		if ( $is_focused && ! empty( $item_focus ) ) {
 			$user_focuses = get_user_meta( $user_id, 'go_focus', true );
-			if ( array_search( 'No '.go_return_options( 'go_focus_name' ), $user_focuses ) ) {
-				unset( $user_focuses[ array_search( 'No '.go_return_options( 'go_focus_name' ), $user_focuses ) ] );
+			if ( ! is_array( $user_focuses ) ) {
+				$user_focuses = array();
 			}
+
+			// finds and removes the default profession (focus) from the user
+			$default_focus_index = array_search( 'No '.go_return_options( 'go_focus_name' ), $user_focuses );
+			if ( $default_focus_index ) {
+				unset( $user_focuses[ $default_focus_index ] );
+			}
+
+			// adds the new profession (focus) to the user
 			$user_focuses[] = $item_focus;
 			update_user_meta( $user_id, 'go_focus', $user_focuses );
 		}
