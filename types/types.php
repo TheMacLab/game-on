@@ -85,7 +85,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 						'hide_filtered_content',
 						__(
 							'Hides the Task\'s content from users that are not logged in, when ' .
-								'a restrictive filter is active.',
+								'the Start, Badge, and/or Chain Filters are active.',
 							'game-on'
 						),
 						' http://maclab.guhsd.net/go/video/quests/hideFilteredContent.mp4'
