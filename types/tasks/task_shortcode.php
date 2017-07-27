@@ -1158,6 +1158,14 @@ function go_task_shortcode( $atts, $content = null ) {
 				url: '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php'
 			});
 			check_locks();
+
+			// checks to see that the task has just been encountered, and fires off the Gold
+			// ("store") sound, if the task has Gold rewards for the first stage
+			var status = <?php echo $status; ?>;
+			var stage_1_gold = <?php echo $currency_array[0]; ?>;
+			if ( 0 === status && stage_1_gold > 0 ) {
+				go_sounds( 'store' );
+			}
 		}); 
 		
 		function go_task_abandon() {
@@ -1688,8 +1696,22 @@ function go_task_shortcode( $atts, $content = null ) {
 					last_in_chain: <?php echo ( ! empty( $last_in_chain ) ? 'true' : 'false' ); ?>,
 					number_of_stages: <?php echo $number_of_stages; ?>
 				},
-				success: function( res ) {
-					if ( '0' === res || -1 === res ) {
+				success: function( raw ) {
+
+					// parse the raw response to get the desired JSON
+					var res = {};
+					try {
+						var res = JSON.parse( raw );
+					} catch (e) {
+						res = {
+							status: -1,
+							html: '',
+							rewards: {
+								gold: 0,
+							},
+						};
+					}
+					if ( -1 === Number.parseInt( res.status ) ) {
 						jQuery( '#go_stage_error_msg' ).show();
 						var error = "Retrieve the password from <?php echo $admin_name; ?>.";
 						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
@@ -1698,7 +1720,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
 					} else {
-						jQuery( '#go_content' ).html( res );
+						jQuery( '#go_content' ).html( res.html );
 						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
 						jQuery( "#new_content" ).css( "display', 'none" );
 						jQuery( "#new_content" ).show( 'slow' );
@@ -1708,6 +1730,11 @@ function go_task_shortcode( $atts, $content = null ) {
 						jQuery( '#go_button' ).ready( function() {
 							check_locks();
 						});
+
+						// fires off the Gold ("store") sound if the stage awarded or revoked Gold
+						if ( 0 !== res.rewards.gold ) {
+							go_sounds( 'store' );
+						}
 					}
 				}
 			});
@@ -2221,10 +2248,22 @@ function go_task_change_stage() {
 		}
 
 		if ( ! empty( $pass_lock ) && $pass !== $pass_lock ) {
-			echo 0;
+			echo json_encode(
+				array(
+					'status' => -1,
+					'html' => '',
+					'rewards' => array(
+						'gold' => 0,
+					),
+				)
+			);
 			die();
 		}
 	}
+
+	// catch everything output here as is, and stuff it in a buffer to be dumped into a JSON response
+	// at the end of the function
+	ob_start();
 
 	$test_e_active = ( ! empty( $custom_fields['go_mta_test_encounter_lock'][0] ) ? $custom_fields['go_mta_test_encounter_lock'][0] : false );
 	$test_a_active = ( ! empty( $custom_fields['go_mta_test_accept_lock'][0] ) ? $custom_fields['go_mta_test_accept_lock'][0] : false );
@@ -2420,15 +2459,17 @@ function go_task_change_stage() {
 	}
 
 	$complete_stage = ( $undo ? $status - 1 : $status );
+	$gold_reward = 0;
 
 	// if the button pressed IS the repeat button...
 	if ( $repeat_button ) {
 		if ( $undo ) {
 			if ( $task_count > 0 ) {
+				$gold_reward = -floor( ( $update_percent * $currency_array[ $status ] ) );
 				go_add_post(
 					$user_id, $post_id, $status,
 					-floor( ( $update_percent * $points_array[ $status ] ) ),
-					-floor( ( $update_percent * $currency_array[ $status ] ) ),
+					$gold_reward,
 					-floor( ( $update_percent * $bonus_currency_array[ $status ] ) ),
 					null, $page_id, $repeat_button, -1,
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
@@ -2479,10 +2520,11 @@ function go_task_change_stage() {
 					}
 				}
 			} else {
+				$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
 				go_add_post(
 					$user_id, $post_id, ( $status - 1 ),
 					-floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
-					-floor( ( $update_percent * $currency_array[ $status - 1 ] ) ),
+					$gold_reward,
 					-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
 					null, $page_id, $repeat_button, 0,
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
@@ -2540,11 +2582,12 @@ function go_task_change_stage() {
 				}
 			}
 		} else {
+			$gold_reward = floor( ( $update_percent * $currency_array[ $status ] ) );
 			// if repeat is on and undo is not hit...
 			go_add_post(
 				$user_id, $post_id, $status,
 				floor( ( $update_percent * $points_array[ $status ] ) ),
-				floor( ( $update_percent * $currency_array[ $status ] ) ),
+				$gold_reward,
 				floor( ( $update_percent * $bonus_currency_array[ $status ] ) ),
 				null, $page_id, $repeat_button, 1,
 				$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
@@ -2576,20 +2619,22 @@ function go_task_change_stage() {
 		if ( $db_status == 0 || ( $db_status <= $status ) ) {
 			if ( $undo ) {
 				if ( $task_count > 0 ) {
+					$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
 					go_add_post(
 						$user_id, $post_id, $status,
 						-floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
-						-floor( ( $update_percent * $currency_array[ $status - 1 ] ) ),
+						$gold_reward,
 						-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
 						null, $page_id, $repeat_button, -1,
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
 				} elseif ( $db_status <= 3 ) {
+					$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 2 ] ) );
 					go_add_post(
 						$user_id, $post_id, ( $status - 2 ),
 						-floor( ( $update_percent * $points_array[ $status - 2 ] ) ),
-						-floor( ( $update_percent * $currency_array[ $status - 2 ] ) ),
+						$gold_reward,
 						-floor( ( $update_percent * $bonus_currency_array[ $status - 2 ] ) ),
 						null, $page_id, $repeat_button, 0,
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
@@ -2601,10 +2646,11 @@ function go_task_change_stage() {
 						}
 					}
 				} else {
+					$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
 					go_add_post(
 						$user_id, $post_id, ( $status - 1 ),
 						-floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
-						-floor( ( $update_percent * $currency_array[ $status - 1 ] ) ),
+						$gold_reward,
 						-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
 						null, $page_id, $repeat_button, 0,
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
@@ -2618,11 +2664,11 @@ function go_task_change_stage() {
 				}
 			} else {
 				$update_time = ( $status == 2 ) ? true : false;
-
+				$gold_reward = floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
 				go_add_post(
 					$user_id, $post_id, $status,
 					floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
-					floor( ( $update_percent * $currency_array[ $status - 1 ] ) ),
+					$gold_reward,
 					floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
 					null, $page_id, $repeat_button, 0,
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
@@ -2998,7 +3044,7 @@ function go_task_change_stage() {
 								$drop_chance = floatval( $bonus_loot[2][ $store_item ] ) * 10;
 								$store_custom_fields = get_post_custom( $store_item );
 								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
-								$currency = ( $store_cost[0] < 0 ) ? -$store_cost[0] : 0;
+								$gold_reward = ( $store_cost[0] < 0 ) ? -$store_cost[0] : 0;
 								$points = ( $store_cost[1] < 0 ) ? -$store_cost[1] : 0;
 								$bonus_currency = ( $store_cost[2] < 0 ) ? -$store_cost[2] : 0;
 								$penalty = ( $store_cost[3] > 0 ) ? -$store_cost[3] : 0;
@@ -3008,7 +3054,7 @@ function go_task_change_stage() {
 									if ( ! in_array( $post_id, $mastered ) ) {
 										go_add_post(
 											$user_id, $store_item, -1,
-											$points, $currency, $bonus_currency, $minutes,
+											$points, $gold_reward, $bonus_currency, $minutes,
 											null, false, 0,
 											$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 											$e_passed, $a_passed, $c_passed, $m_passed, null, false,
@@ -3038,6 +3084,20 @@ function go_task_change_stage() {
 			echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
 	}
 
+	// stores the contents of the buffer and then clears it
+	$buffer = ob_get_contents();
+	ob_end_clean();
+
+	// constructs the JSON response
+	echo json_encode(
+		array(
+			'status' => 1,
+			'html' => $buffer,
+			'rewards' => array(
+				'gold' => $gold_reward,
+			),
+		)
+	);
 	die();
 }
 
