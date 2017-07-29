@@ -18,6 +18,7 @@
 				{ text: '[go_admin_only_content]', onclick: function() { go_tinymce_insert_content( editor, '[go_admin_only_content][/go_admin_only_content]' ); } },
 				{ text: '[go_store cats]', onclick: function() { go_tinymce_insert_content( editor, '[go_store cats=""]' ); } },
 				{ text: '[go_store id]', onclick: function() { go_tinymce_insert_content( editor, '[go_store id=""]' ); } },
+				{ text: '[go_store_wrap id]', onclick: function() { go_tinymce_insert_content( editor, '[go_store_wrap id=""][/go_store_wrap]' ); } },
 				{ text: '[go_get_category]', onclick: function() { go_tinymce_insert_content( editor, '[go_get_category]' ); } },
 				{ text: '[go_task_pod]', onclick: function() { go_tinymce_insert_content( editor, '[go_task_pod pod_name=""]' ); } }
 			],
