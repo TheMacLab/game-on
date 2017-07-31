@@ -19,6 +19,7 @@ function go_task_shortcode( $atts, $content = null ) {
 
 	global $wpdb;
 	$task_name = strtolower( go_return_options( 'go_tasks_name' ) );
+	$badge_name = go_return_options( 'go_badges_name' );
 
 	// the current user's id
 	$user_id = get_current_user_id();
@@ -255,8 +256,9 @@ function go_task_shortcode( $atts, $content = null ) {
 				// outputs all the badges that the user must obtain before beginning this task
 				return sprintf(
 					'<span class="go_error_red">' .
-						'You need the following badge(s) to begin this %s%s:' .
+						'You need the following %s(s) to begin this %s%s:' .
 					'</span><br/>%s',
+					strtolower( $badge_name ),
 					ucwords( $task_name ),
 					$visitor_str,
 					go_badge_output_list( $badge_diff, $return_badge_list )

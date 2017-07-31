@@ -15,8 +15,11 @@ function go_init_mtbxs() {
 		require_once 'init.php';
 }
 function go_mta_con_meta( array $meta_boxes ) {
+	$badge_name = go_return_options( 'go_badges_name' );
+
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = 'go_mta_';
+
 	// Tasks Meta Boxes
 	$meta_boxes[] = array(
 		'id'         => 'go_mta_metabox',
@@ -39,7 +42,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'settings_id' => 'go_advanced_task_settings_accordion'
 			),
 			array(
-				'name' => 'Badge Filter'.go_task_opt_help( 'badge_filter', '', 'http://maclab.guhsd.net/go/video/quests/badge_filter.mp4' ),
+				'name' => ucwords( $badge_name ) . ' Filter' . go_task_opt_help( 'badge_filter', '', 'http://maclab.guhsd.net/go/video/quests/badge_filter.mp4' ),
 				'id' => "{$prefix}badge_filter",
 				'type' => 'go_badge_input',
 				'stage' => 'none',
@@ -83,10 +86,10 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Hide Filtered Content' .
 					go_task_opt_help(
 						'hide_filtered_content',
-						__(
+						sprintf(
 							'Hides the Task\'s content from users that are not logged in, when ' .
-								'the Start, Badge, and/or Chain Filters are active.',
-							'game-on'
+								'the Start, %s, and/or Chain Filters are active.',
+							ucwords( $badge_name )
 						),
 						' http://maclab.guhsd.net/go/video/quests/hideFilteredContent.mp4'
 					),
@@ -97,11 +100,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'User Only Content' .
 					go_task_opt_help(
 						'user_only_content',
-						__(
-							'Hides the Task\'s content from users that are not logged in, ' .
-								'regardless of any filters.',
-							'game-on'
-						),
+						'Hides the Task\'s content from users that are not logged in, ' .
+							'regardless of any filters.',
 						' http://maclab.guhsd.net/go/video/quests/userOnlyContent.mp4'
 					),
 				'id' => "{$prefix}user_only_content",
@@ -193,7 +193,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'test_type' => 'e'
 			),
 			array(
-				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
+				'name' => ucwords( $badge_name ) . go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_one_badge",
 				'type' => 'go_badge_input',
 				'stage' => 1
@@ -274,7 +274,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'test_type' => 'a'
 			),
 			array(
-				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
+				'name' => ucwords( $badge_name ) . go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_two_badge",
 				'type' => 'go_badge_input',
 				'stage' => 2
@@ -355,7 +355,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'test_type' => 'c'
 			),
 			array(
-				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
+				'name' => ucwords( $badge_name ) . go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_three_badge",
 				'type' => 'go_badge_input',
 				'stage' => 3
@@ -446,7 +446,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
+				'name' => ucwords( $badge_name ) . go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_four_badge",
 				'type' => 'go_badge_input',
 				'stage' => 4
@@ -519,7 +519,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'Badge'.go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
+				'name' => ucwords( $badge_name ) . go_task_opt_help( 'badge', '', 'http://maclab.guhsd.net/go/video/quests/badge.mp4' ),
 				'id' => "{$prefix}stage_five_badge",
 				'type' => 'go_badge_input',
 				'stage' => 5
@@ -576,7 +576,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_store_filter'
 			),
 			array(
-				'name' => 'Badge Filter'.go_task_opt_help( 'badge_filter', '', 'http://maclab.guhsd.net/go/video/store/badge_filter.mp4' ),
+				'name' => ucwords( $badge_name ) . ' Filter'.go_task_opt_help( 'badge_filter', '', 'http://maclab.guhsd.net/go/video/store/badge_filter.mp4' ),
 				'id' => "{$prefix}badge_filter",
 				'type' => 'go_badge_input',
 				'stage' => 'none',
@@ -592,7 +592,7 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_item_url'	
 			),
 			array(
-				'name' => 'Badge'.go_task_opt_help( 'badge_id', 'Award a badge upon purchase', 'http://maclab.guhsd.net/go/video/store/badgeID.mp4' ),
+				'name' => ucwords( $badge_name ) . go_task_opt_help( 'badge_id', 'Award a ' . strtolower( $badge_name ) . ' upon purchase', 'http://maclab.guhsd.net/go/video/store/badgeID.mp4' ),
 				'id' => "{$prefix}badge_id",
 				'type' => 'go_badge_id'
 			),
@@ -2077,9 +2077,10 @@ function go_item_url() {
 
 add_action( 'cmb_render_go_badge_id', 'go_badge_id' );
 function go_badge_id() {
+	$badge_name = go_return_options( 'go_badges_name' );
 	$custom = get_post_custom();
 	$id = ( ! empty( $custom['go_mta_badge_id'][0] ) ? $custom['go_mta_badge_id'][0] : null );
-	echo "<input id='go_store_badge_id_input' name='go_mta_badge_id' type='text' placeholder='Badge ID' ".( ( ! empty( $id ) ) ? "value='{$id}'" : '' )."/>";
+	echo "<input id='go_store_badge_id_input' name='go_mta_badge_id' type='text' placeholder='". ucwords( $badge_name ) ." ID' ".( ( ! empty( $id ) ) ? "value='{$id}'" : '' )."/>";
 }
 
 add_action( 'cmb_render_go_store_gift', 'go_store_gift' );
@@ -2131,6 +2132,7 @@ function go_render_badge_input( $field_args ) {
 	$row_id = $field_args['id'];
 	$row_stage = $field_args['stage'];
 
+	$badge_name = go_return_options( 'go_badges_name' );
 	$badge_meta = get_post_meta( $post->ID, $row_id, true );
 
 	$checked = ( ! empty( $badge_meta[0] ) ? 'checked' : '' );
@@ -2143,24 +2145,26 @@ function go_render_badge_input( $field_args ) {
 			$badge_elems .= sprintf(
 				'<li>'.
 					'<input type="text" name="go_badge_input_stage_%1$s[]" class="go_badge_input" '.
-						'stage="%1$s" placeholder="Badge ID" value="%2$s"/>'.
+						'stage="%1$s" placeholder="%3$s ID" value="%2$s"/>'.
 					'<input type="button" class="go_button_add_field go_badge_input_add go_badge_input_button" value="+" />'.
 					'<input type="button" class="go_button_del_field go_badge_input_del go_badge_input_button" value="x" />'.
 				'</li>',
 				$row_stage,
-				$badge ? $badge : ''
+				$badge ? $badge : '',
+				ucwords( $badge_name )
 			);
 		}
 	} else {
 		$badge_elems = sprintf(
 			'<li>'.
 				'<input type="text" name="go_badge_input_stage_%1$s[]" class="go_badge_input" '.
-					'stage="%1$s" placeholder="Badge ID"/>'.
+					'stage="%1$s" placeholder="%2$s ID"/>'.
 				'<input type="button" class="go_button_add_field go_badge_input_add go_badge_input_button" value="+" />'.
 				'<input type="button" class="go_button_del_field go_badge_input_del go_badge_input_button" value="x" '.
 					'style="display: none;"/>'.
 			'</li>',
-			$row_stage
+			$row_stage,
+			ucwords( $badge_name )
 		);
 	}
 
