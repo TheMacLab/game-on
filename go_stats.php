@@ -959,6 +959,12 @@ function go_stats_leaderboard() {
 	global $wpdb;
 	check_ajax_referer( 'go_stats_leaderboard_' );
 
+	// prepares tab titles
+	$xp_name = strtoupper( go_return_options( 'go_points_name' ) );
+	$gold_name = strtoupper( go_return_options( 'go_currency_name' ) );
+	$honor_name = strtoupper( go_return_options( 'go_bonus_currency_name' ) );
+	$badge_name = strtoupper( go_return_options( 'go_badges_name' ) );
+
 	$go_totals_table_name = "{$wpdb->prefix}go_totals";
 	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? (array) $_POST['class_a_choice'] : array() );
 	$focuses = ( ! empty( $_POST['focuses'] ) ? (array) $_POST['focuses'] : array() );
@@ -970,7 +976,7 @@ function go_stats_leaderboard() {
 	}
 	?>
 	<ul id='go_stats_leaderboard_list_points' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'><?php echo strtoupper( go_return_options( 'go_points_name' ) ); ?></li>
+		<li class='go_stats_body_list_head'><?php echo $xp_name; ?></li>
 		<?php 
 		$counter = 1;
 		$users_points = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( points as signed ) DESC" );
@@ -978,7 +984,7 @@ function go_stats_leaderboard() {
 		?>
 	</ul>
 	<ul id='go_stats_leaderboard_list_currency' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'><?php echo strtoupper( go_return_options( 'go_currency_name' ) ); ?></li>
+		<li class='go_stats_body_list_head'><?php echo $gold_name; ?></li>
 		<?php 
 		$counter = 1;
 		$users_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( currency as signed ) DESC" );
@@ -986,7 +992,7 @@ function go_stats_leaderboard() {
 		?>
 	</ul>
 	<ul id='go_stats_leaderboard_list_bonus_currency' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'><?php echo strtoupper( go_return_options( 'go_bonus_currency_name' ) ); ?></li>
+		<li class='go_stats_body_list_head'><?php echo $honor_name; ?></li>
 		<?php 
 		$counter = 1;
 		$users_bonus_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( bonus_currency as signed ) DESC" );
@@ -994,7 +1000,7 @@ function go_stats_leaderboard() {
 		?>
 	</ul>
 	<ul id='go_stats_leaderboard_list_badge_count' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'>BADGES</li>
+		<li class='go_stats_body_list_head'><?php echo $badge_name; ?></li>
 		<?php 
 		$counter = 1;
 		$users_badge_count = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( badge_count as signed ) DESC" );

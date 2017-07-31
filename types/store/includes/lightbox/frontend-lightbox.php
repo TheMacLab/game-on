@@ -13,6 +13,7 @@ include ( 'buy-ajax.php' ); // Ajax run when buying something
 function go_the_lb_ajax() {
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
 	global $wpdb;
+	$badge_name = go_return_options( 'go_badges_name' );
 	$table_name_go = "{$wpdb->prefix}go";
 	$the_id = (int) $_POST['the_item_id'];
 	$the_post = get_post( $the_id );
@@ -266,7 +267,10 @@ function go_the_lb_ajax() {
 
 		// outputs all the badges that the user must obtain before viewing the store item
 		printf(
-			'You need the following badge(s) to view this item:<br/>%s',
+			'<span class="go_error_red">' .
+				'You need the following %s(s) to view this item:' .
+			'</span><br/>%s',
+			strtolower( $badge_name ),
 			go_badge_output_list( $badge_diff, $return_badge_list )
 		);
 		wp_die();
