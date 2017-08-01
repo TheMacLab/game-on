@@ -141,11 +141,14 @@ add_action( 'wp_ajax_go_update_task_order', 'go_update_task_order' );
 add_action( 'wp_ajax_go_search_for_user', 'go_search_for_user' );
 add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' );
 add_action( 'wp_ajax_go_get_purchase_count', 'go_get_purchase_count' );
+add_action( 'wp_ajax_nopriv_go_get_purchase_count', 'go_get_purchase_count' );
 add_action( 'wp_ajax_go_buy_item', 'go_buy_item' );
+add_action( 'wp_ajax_nopriv_go_buy_item', 'go_buy_item' );
 add_action( 'wp_ajax_go_clipboard_add', 'go_clipboard_add' );
 add_action( 'wp_ajax_go_fix_messages', 'go_fix_messages' );
 add_action( 'wp_ajax_go_mark_read', 'go_mark_read' );
 add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
+add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
 
 /*
  * Miscellaneous Filters

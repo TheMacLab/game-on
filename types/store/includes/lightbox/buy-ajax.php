@@ -23,6 +23,7 @@ function go_buy_item() {
 	global $wpdb;
 
 	$user_id = get_current_user_id();
+	$is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
 	if ( ! check_ajax_referer( 'go_buy_item_' . $user_id, false ) ) {
 		die( 'WordPress hiccuped, try logging in again.' );
 	}
@@ -112,6 +113,16 @@ function go_buy_item() {
 	$enough_bonus_currency = go_user_has_enough_currency( $req_bonus_currency, $qty, $cur_bonus_currency );
 	$enough_penalty = go_user_has_enough_currency( $req_penalty, $qty, $cur_penalty );
 	$enough_minutes = go_user_has_enough_currency( $req_minutes, $qty, $cur_minutes );
+	$enough_to_purchase = false;
+	if (
+		$enough_currency &&
+		$enough_points &&
+		$enough_bonus_currency &&
+		$enough_penalty &&
+		$enough_minutes
+	) {
+		$enough_to_purchase = true;
+	}
 
 	$within_limit = true;
 	if ( ! empty( $limit ) && $is_limited === "true" ) {
@@ -121,7 +132,7 @@ function go_buy_item() {
 		}
 	}
 
-	if ( ( ( $enough_currency && $enough_points && $enough_bonus_currency && $enough_penalty && $enough_minutes ) || $debt_enabled ) && $within_limit ) {
+	if ( ! $is_logged_in || ( ( $enough_to_purchase || $debt_enabled ) && $within_limit ) ) {
 		if ( $is_focused && ! empty( $item_focus ) ) {
 			$user_focuses = get_user_meta( $user_id, 'go_focus', true );
 			if ( ! is_array( $user_focuses ) ) {
