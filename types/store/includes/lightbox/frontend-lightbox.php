@@ -35,6 +35,8 @@ function go_the_lb_ajax() {
 	$minutes_name        = go_return_options( 'go_minutes_name' );
 
 	$user_id = get_current_user_id();
+	$is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
+	$login_url = home_url( '/wp-login.php' );
 	$is_admin = go_user_is_admin( $user_id );
 	$user_points = go_return_points( $user_id );
 	$user_currency = go_return_currency( $user_id );
@@ -264,13 +266,21 @@ function go_the_lb_ajax() {
 
 	if ( ! $is_admin && $badge_filtered ) {
 		$return_badge_list = true;
+		$visitor_str = '';
+
+		// sets up a disclaimer string for visitors only
+		if ( ! $is_logged_in ) {
+			$visitor_str = ', and you must be ' .
+				'<a href="' . esc_url( $login_url ) . '">logged in</a> to obtain them';
+		}
 
 		// outputs all the badges that the user must obtain before viewing the store item
 		printf(
 			'<span class="go_error_red">' .
-				'You need the following %s(s) to view this item:' .
+				'You need the following %s(s) to view this item%s:' .
 			'</span><br/>%s',
 			strtolower( $badge_name ),
+			$visitor_str,
 			go_badge_output_list( $badge_diff, $return_badge_list )
 		);
 		wp_die();
@@ -288,8 +298,6 @@ function go_the_lb_ajax() {
 		$penalty_color, $req_penalty, $user_penalties, $penalty_name, $output_penalty,
 		$minutes_color, $req_minutes, $user_minutes, $minutes_name, $output_minutes
 	);
-	?>
-	<?php
 	if ( $is_unpurchasable != 'on' ) {
 		?>
 		<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>

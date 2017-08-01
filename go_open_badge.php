@@ -243,6 +243,9 @@ function go_remove_badge ( $user_id, $badge_id = -1 ) {
  * Loops through the badges that the user has and removes any that do not have an existing media
  * file attached to their id. This prevents the badges from taking up space in the stats page.
  *
+ * There's no reason to throw an error for a non-existent user, since the Store utilizes this
+ * function to simulate a real user's experience for visitors.
+ *
  * @since 2.6.0
  *
  * @param  int	$user_id The user's id.
@@ -250,10 +253,6 @@ function go_remove_badge ( $user_id, $badge_id = -1 ) {
  */
 function go_clean_badges ( $user_id ) {
 	if ( empty( $user_id ) || $user_id <= 0 ) {
-		error_log(
-			"Game On Error: invalid call to go_clean_badges() in go_open_badge.php, ".
-			"args( user_id(" . gettype( $user_id ) . ")={$user_id} )"
-		);
 		return;
 	}
 
