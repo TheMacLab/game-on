@@ -319,6 +319,8 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 .go_stats_body_list_head {
 	font-weight: bold;
 	border-top: 0px !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .go_stats_body_list li {
@@ -329,7 +331,7 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 
 /** Reward Styles **/
 .go_stats_reward {
-	white-space: pre-wrap;	
+	white-space: pre-wrap;
 }
 
 /** Minutes  List **/
@@ -378,7 +380,7 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 }
 
 #go_stats_leaderboard_classes {
-	margin-bottom: 40px;
+	margin-bottom: 10px;
 }
 
 #go_stats_leaderboard_filters_head {
@@ -386,21 +388,31 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 	margin-top: 5px;
 }
 
-.go_stats_leaderboard_class_wrap {
-	margin-top: 10px;
+.go_stats_leaderboard_class_wrap span {
+	vertical-align: text-bottom;
+}
+
+.go_stats_leaderboard_focus_wrap span {
+	vertical-align: text-bottom;
 }
 
 #go_stats_leaderboard_focuses {
-	margin-bottom: 40px;
+	margin-bottom: 10px;
 }
 
 .go_stats_leaderboard_list {
 	display: inline-block;
 	width: 23%;
-	margin: 0px 15px 0px 0px !important;
 	float: none !important;
 }
 
+.go_stats_item_wrapper {
+	float: left;
+	max-width: 75%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .go_stats_amount {
-	float: right;
+	text-align: right;
 }

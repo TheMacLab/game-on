@@ -700,43 +700,95 @@ function go_stats_rewards_list() {
  	 <br style="clear: left;" />
 	</div>
 	<ul id='go_stats_rewards_list_points' class='go_stats_body_list'>
-		<?php
-			foreach ( $rewards as $reward ) {
-				$reward_id = $reward->post_id;
-				$reward_points = $reward->points;
-				if ( $reward_points != 0 ) {
-					?>
-						<li class='go_stats_reward go_stats_reward_points'><?php echo ( ! empty( $reward->status ) ? ( ( $reward->status == -1 ) ? "<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title( $reward_id )."</a>" : ( ( $reward->status < 6 ) ? "<a href='".get_permalink( $reward_id )."' {$new_tab}>".get_the_title( $reward_id )."</a>" : "{$reward->reason}" ) ) : '' )."<div class='go_stats_amount'>({$reward_points})</div>"; ?>
-						</li>
-					<?php
+	<?php
+	foreach ( $rewards as $reward ) {
+		$reward_id = $reward->post_id;
+		$reward_points = $reward->points;
+		if ( $reward_points != 0 ) {
+			$reward_html = '';
+			if ( ! empty( $reward->status ) ) {
+				if ( $reward->status == -1 ) {
+					$reward_html = sprintf(
+						'<div class="go_stats_item_wrapper"><a href="#" onclick="go_lb_opener(%s)">%s</a></div>',
+						$reward_id,
+						get_the_title( $reward_id )
+					);
+				} elseif ( $reward->status < 6 ) {
+					$reward_html = sprintf(
+						'<div class="go_stats_item_wrapper"><a href="%s" %s>%s</a></div>',
+						get_permalink( $reward_idF ),
+						$new_tab,
+						get_the_title( $reward_id )
+					);
+				} else {
+					$reward_html = sprintf( '<div class="go_stats_item_wrapper">%s</div>', $reward->reason );
 				}
+				$reward_html .= "<div class='go_stats_amount'>({$reward_points})</div>";
 			}
-		?>
+			printf( '<li class="go_stats_reward go_stats_reward_points">%s</li>', $reward_html );
+		}
+	}
+	?>
 	</ul>
 	<ul id='go_stats_rewards_list_currency' class='go_stats_body_list'>
-		<?php
-			foreach ( $rewards as $reward ) {
-				$reward_id = $reward->post_id;
-				$reward_currency = $reward->currency;
-				if ( $reward_currency != 0 ) {
-					?>
-						<li class='go_stats_reward go_stats_reward_currency'><?php echo ( ! empty( $reward->status) ? ( ( $reward->status == -1 ) ? "<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title( $reward_id )."</a>" : ( ( $reward->status < 6 ) ? "<a href='".get_permalink( $reward_id )."' {$new_tab}>".get_the_title( $reward_id )."</a>" : "{$reward->reason}" ) ) : '' )."<div class='go_stats_amount'>({$reward_currency})</div>"; ?>
-						</li>
-					<?php
+	<?php
+	foreach ( $rewards as $reward ) {
+		$reward_id = $reward->post_id;
+		$reward_currency = $reward->currency;
+		if ( $reward_currency != 0 ) {
+			$reward_html = '';
+			if ( ! empty( $reward->status ) ) {
+				if ( $reward->status == -1 ) {
+					$reward_html = sprintf(
+						'<div class="go_stats_item_wrapper"><a href="#" onclick="go_lb_opener(%s)">%s</a></div>',
+						$reward_id,
+						get_the_title( $reward_id )
+					);
+				} elseif ( $reward->status < 6 ) {
+					$reward_html = sprintf(
+						'<div class="go_stats_item_wrapper"><a href="%s" %s>%s</a></div>',
+						get_permalink( $reward_idF ),
+						$new_tab,
+						get_the_title( $reward_id )
+					);
+				} else {
+					$reward_html = sprintf( '<div class="go_stats_item_wrapper">%s</div>', $reward->reason );
 				}
+				$reward_html .= "<div class='go_stats_amount'>({$reward_currency})</div>";
 			}
-		?>
+			printf( '<li class="go_stats_reward go_stats_reward_currency">%s</li>', $reward_html );
+		}
+	}
+	?>
 	</ul>
 	<ul id='go_stats_rewards_list_bonus_currency' class='go_stats_body_list'>
-		<?php
-			foreach ( $rewards as $reward ) {
-				$reward_id = $reward->post_id;
-				$reward_bonus_currency = $reward->bonus_currency;
-				if ( $reward_bonus_currency != 0 && ! empty( $reward->status ) && $reward->status !== 6 ) {
-					echo "<li class='go_stats_reward go_stats_reward_bonus_currency'>".( ( $reward->status == -1 ) ? "<a href='#' onclick='go_lb_opener({$reward_id})'>".get_the_title( $reward_id )."</a>" : ( ( $reward->status < 6 ) ? "<a href='".get_permalink( $reward_id )."' {$new_tab}>".get_the_title( $reward_id )."</a>" : "{$reward->reason}" ) )."<div class='go_stats_amount'>({$reward_bonus_currency})</div></li>";
+	<?php
+		foreach ( $rewards as $reward ) {
+			$reward_id = $reward->post_id;
+			$reward_bonus_currency = $reward->bonus_currency;
+			if ( $reward_bonus_currency != 0 && ! empty( $reward->status ) && $reward->status !== 6 ) {
+				$reward_html = '';
+				if ( $reward->status == -1 ) {
+					$reward_html = sprintf(
+						'<div class="go_stats_item_wrapper"><a href="#" onclick="go_lb_opener(%s)">%s</a></div>',
+						$reward_id,
+						get_the_title( $reward_id )
+					);
+				} elseif ( $reward->status < 6 ) {
+					$reward_html = sprintf(
+						'<div class="go_stats_item_wrapper"><a href="%s" %s>%s</a></div>',
+						get_permalink( $reward_idF ),
+						$new_tab,
+						get_the_title( $reward_id )
+					);
+				} else {
+					$reward_html = sprintf( '<div class="go_stats_item_wrapper">%s</div>', $reward->reason );
 				}
+				$reward_html .= "<div class='go_stats_amount'>({$reward_bonus_currency})</div>";
+				printf( '<li class="go_stats_reward go_stats_reward_bonus_currency">%s</li>', $reward_html );
 			}
-		?>
+		}
+	?>
 	</ul>
 	<?php
 	die();
@@ -805,7 +857,7 @@ function go_stats_penalties_list() {
 			foreach ( $penalties as $penalty ) {
 				?>
 					<li class='go_stats_penalties'>
-						<span><?php echo $penalty->reason.' '.$penalty->timestamp; ?> </span>
+						<div class='go_stats_item_wrapper'><span><?php echo $penalty->reason.' '.$penalty->timestamp; ?></span></div>
 						<div class='go_stats_amount'>(<?php echo $penalty->penalty; ?>)</div>
 					</li>
 				<?php
@@ -838,7 +890,8 @@ function go_stats_leaderboard_choices() {
 
 	?>
 	<div id='go_stats_leaderboard_filters'>
-		<div id='go_stats_leaderboard_filters_head'>FILTER</div>
+		<div id='go_stats_leaderboard_filters_head'>FILTERS</div>
+		<label for='go_stats_leaderboard_focuses'><b><?php echo get_option( 'go_class_a_name' ); ?></b></label>
 		<div id='go_stats_leaderboard_classes'>
 			<?php
 			$classes = get_option( 'go_class_a' );
@@ -846,31 +899,32 @@ function go_stats_leaderboard_choices() {
 			if ( $classes) {
 				foreach ( $classes as $class_a ) {
 					?>
-						<div class='go_stats_leaderboard_class_wrap'><input type='checkbox' class='go_stats_leaderboard_class_choice' value='<?php echo $class_a; ?>'><?php echo $class_a; ?></div>
+						<div class='go_stats_leaderboard_class_wrap'><input type='checkbox' class='go_stats_leaderboard_class_choice' value='<?php echo $class_a; ?>'><span><?php echo $class_a; ?></span></div>
 					<?php
 					$first++;
 				}
 			}
 			?>
 		</div>
+		<label for='go_stats_leaderboard_focuses'><b><?php echo get_option( 'go_focus_name' ); ?></b></label>
 		<div id='go_stats_leaderboard_focuses'>
 			<?php
 			$focuses = get_option( 'go_focus' );
 			if ( $focuses ) {
 				foreach ( $focuses as $focus ) {
 					?>
-						<div class='go_stats_leaderboard_focus_wrap'><input type='checkbox' class='go_stats_leaderboard_focus_choice' value='<?php echo $focus; ?>'><?php echo $focus; ?></div>
+						<div class='go_stats_leaderboard_focus_wrap'><input type='checkbox' class='go_stats_leaderboard_focus_choice' value='<?php echo $focus; ?>'><span><?php echo $focus; ?></span></div>
 					<?php
 				}
 			}
 			?>
 		</div>
-		<div id='go_stats_leaderboard_dates'>
+		<!-- <div id='go_stats_leaderboard_dates'>
        		(coming soon)
 			<div class='go_stats_leaderboard_date_wrap'><input type='radio' class='go_stats_leaderboard_date_choice' value='all' checked>All Time</div>
 			<div class='go_stats_leaderboard_date_wrap'><input type='radio' class='go_stats_leaderboard_date_choice' value='30'>Last 30 Days</div>
 			<div class='go_stats_leaderboard_date_wrap'><input type='radio' class='go_stats_leaderboard_date_choice' value='10'>Last 10 Days</div>
-		</div>
+		</div> -->
 	</div>
 	<div id='go_stats_leaderboard'></div>
 	<?php
@@ -884,20 +938,32 @@ function go_return_user_data( $id, $counter, $sort ) {
 	$badge_count = go_return_badge_count( $id );
 	$user_data_key = get_userdata( $id );
 	$user_display = "<a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$id}&quot;);'>{$user_data_key->display_name}</a>";
+
+	$amount = 0;
 	switch ( $sort) {
 		case 'points' :
-			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$points}</div></li>";
+			$amount = $points;
 			break;
 		case 'currency' :
-			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$currency}</div></li>";
+			$amount = $currency;
 			break;
 		case 'bonus_currency' :
-			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$bonus_currency}</div></li>";
+			$amount = $bonus_currency;
 			break;
 		case 'badges' :
-			echo "<li>{$counter} {$user_display} <div class='go_stats_amount'>{$badge_count}</div></li>";
+			$amount = $badge_count;
 			break;
+		default:
+
+			// returns without output, since there's nothing to display
+			return;
 	}
+	printf(
+		'<li><div class="go_stats_item_wrapper">%d %s</div><div class="go_stats_amount">%s</li>',
+		$counter,
+		$user_display,
+		$amount
+	);
 }
 
 function go_return_user_leaderboard( $user_id_objs, $class_a_choice, $all_foci, $type, $counter ) {
@@ -974,40 +1040,37 @@ function go_stats_leaderboard() {
 			$date = (int) $_POST['date'];
 		}
 	}
-	?>
-	<ul id='go_stats_leaderboard_list_points' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'><?php echo $xp_name; ?></li>
-		<?php 
-		$counter = 1;
-		$users_points = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( points as signed ) DESC" );
-		go_return_user_leaderboard( $users_points, $class_a_choice, $focuses, 'points', $counter )
-		?>
-	</ul>
-	<ul id='go_stats_leaderboard_list_currency' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'><?php echo $gold_name; ?></li>
-		<?php 
-		$counter = 1;
-		$users_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( currency as signed ) DESC" );
-		go_return_user_leaderboard( $users_currency, $class_a_choice, $focuses, 'currency', $counter )
-		?>
-	</ul>
-	<ul id='go_stats_leaderboard_list_bonus_currency' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'><?php echo $honor_name; ?></li>
-		<?php 
-		$counter = 1;
-		$users_bonus_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( bonus_currency as signed ) DESC" );
-		go_return_user_leaderboard( $users_bonus_currency, $class_a_choice, $focuses, 'bonus_currency', $counter )
-		?>
-	</ul>
-	<ul id='go_stats_leaderboard_list_badge_count' class='go_stats_body_list go_stats_leaderboard_list'>
-		<li class='go_stats_body_list_head'><?php echo $badge_name; ?></li>
-		<?php 
-		$counter = 1;
-		$users_badge_count = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( badge_count as signed ) DESC" );
-		go_return_user_leaderboard( $users_badge_count, $class_a_choice, $focuses, 'badges', $counter )
-		?>
-	</ul>
+?>
+<ul id='go_stats_leaderboard_list_points' class='go_stats_body_list go_stats_leaderboard_list'>
+	<li class='go_stats_body_list_head'><?php echo $xp_name; ?></li>
 	<?php 
+	$counter = 1;
+	$users_points = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( points as signed ) DESC" );
+	go_return_user_leaderboard( $users_points, $class_a_choice, $focuses, 'points', $counter )
+	?>
+</ul><ul id='go_stats_leaderboard_list_currency' class='go_stats_body_list go_stats_leaderboard_list'>
+	<li class='go_stats_body_list_head'><?php echo $gold_name; ?></li>
+	<?php
+	$counter = 1;
+	$users_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( currency as signed ) DESC" );
+	go_return_user_leaderboard( $users_currency, $class_a_choice, $focuses, 'currency', $counter )
+	?>
+</ul><ul id='go_stats_leaderboard_list_bonus_currency' class='go_stats_body_list go_stats_leaderboard_list'>
+	<li class='go_stats_body_list_head'><?php echo $honor_name; ?></li>
+	<?php 
+	$counter = 1;
+	$users_bonus_currency = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( bonus_currency as signed ) DESC" );
+	go_return_user_leaderboard( $users_bonus_currency, $class_a_choice, $focuses, 'bonus_currency', $counter )
+	?>
+</ul><ul id='go_stats_leaderboard_list_badge_count' class='go_stats_body_list go_stats_leaderboard_list'>
+	<li class='go_stats_body_list_head'><?php echo $badge_name; ?></li>
+	<?php
+	$counter = 1;
+	$users_badge_count = $wpdb->get_results( "SELECT uid FROM {$go_totals_table_name} ORDER BY CAST( badge_count as signed ) DESC" );
+	go_return_user_leaderboard( $users_badge_count, $class_a_choice, $focuses, 'badges', $counter )
+	?>
+</ul>
+<?php
 	die();
 }
 
