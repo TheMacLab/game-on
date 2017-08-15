@@ -407,7 +407,6 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 .go_stats_leaderboard_list {
 	display: inline-block;
 	width: 23%;
-	float: none !important;
 }
 
 .go_stats_item_wrapper {
