@@ -952,12 +952,14 @@ function go_return_user_data( $id, $counter, $sort ) {
 			// returns without output, since there's nothing to display
 			return;
 	}
-	printf(
-		'<li><div class="go_stats_item_wrapper">%d %s</div><div class="go_stats_amount">%s</li>',
-		$counter,
-		$user_display,
-		$amount
-	);
+	if ( 0 !== $amount ) {
+		printf(
+			'<li><div class="go_stats_item_wrapper">%d %s</div><div class="go_stats_amount">%s</li>',
+			$counter,
+			$user_display,
+			$amount
+		);
+	}
 }
 
 function go_return_user_leaderboard( $user_id_objs, $class_a_choice, $all_foci, $type, $counter ) {
