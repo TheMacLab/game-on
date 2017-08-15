@@ -388,12 +388,16 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 	margin-top: 5px;
 }
 
-.go_stats_leaderboard_class_wrap span {
-	vertical-align: text-bottom;
+.go_stats_leaderboard_class_wrap span,
+.go_stats_leaderboard_class_choice,
+.go_stats_leaderboard_focus_wrap span,
+.go_stats_leaderboard_focus_choice {
+	vertical-align: middle;
 }
 
-.go_stats_leaderboard_focus_wrap span {
-	vertical-align: text-bottom;
+.go_stats_leaderboard_class_choice,
+.go_stats_leaderboard_focus_choice {
+	margin-right: 5px;
 }
 
 #go_stats_leaderboard_focuses {
