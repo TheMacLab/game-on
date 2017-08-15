@@ -919,12 +919,6 @@ function go_stats_leaderboard_choices() {
 			}
 			?>
 		</div>
-		<!-- <div id='go_stats_leaderboard_dates'>
-       		(coming soon)
-			<div class='go_stats_leaderboard_date_wrap'><input type='radio' class='go_stats_leaderboard_date_choice' value='all' checked>All Time</div>
-			<div class='go_stats_leaderboard_date_wrap'><input type='radio' class='go_stats_leaderboard_date_choice' value='30'>Last 30 Days</div>
-			<div class='go_stats_leaderboard_date_wrap'><input type='radio' class='go_stats_leaderboard_date_choice' value='10'>Last 10 Days</div>
-		</div> -->
 	</div>
 	<div id='go_stats_leaderboard'></div>
 	<?php
