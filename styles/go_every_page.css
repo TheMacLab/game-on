@@ -32,6 +32,15 @@
 	color: red;
 }
 
+span.go_loading {
+	background-image: url("images/ajax-loader.gif");
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
 input[type='text'].go_error_red {
 	border: 2px solid red;
 	outline: none;

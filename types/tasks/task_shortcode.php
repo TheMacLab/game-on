@@ -1214,6 +1214,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 						if ( checked_ans >= test_list.length && is_uploaded == 1 ) {
@@ -1233,6 +1234,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					} else {
@@ -1253,6 +1255,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					}
@@ -1273,6 +1276,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 						if ( checked_ans >= test_list.length && is_uploaded == 1 ) {
@@ -1292,6 +1296,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					} else {
@@ -1312,6 +1317,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					}
@@ -1339,6 +1345,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							} else {
 								flash_error_msg( '#go_test_error_msg' );
 							}
+							go_disable_loading();
 						}
 					} else {
 						if ( jQuery( ".go_test_list input:checked" ).length >= 1 ) {
@@ -1349,6 +1356,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							} else {
 								flash_error_msg( '#go_test_error_msg' );
 							}
+							go_disable_loading();
 						}
 					}
 				});
@@ -1364,6 +1372,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
+						go_disable_loading();
 					} else {
 						task_unlock();
 					}
@@ -1377,6 +1386,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					} else {
 						flash_error_msg( '#go_stage_error_msg' );
 					}
+					go_disable_loading();
 				}
 			}
 		}
@@ -1525,6 +1535,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_test_error_msg' );
 						}
+						go_disable_loading();
 					}
 				}
 			});
@@ -1579,7 +1590,26 @@ function go_task_shortcode( $atts, $content = null ) {
 			jQuery( '#go_repeat_clicked' ).show( 'slow' );   
 		}
 		
+		// disables the target stage button, and adds a loading gif to it
+		function go_enable_loading( target ) {
+
+			// prevent further events with this button
+			target.disabled = true;
+
+			// prepend the loading gif to the button's content, to show that the request is being
+			// processed
+			target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
+		}
+
+		// re-enables the stage button, and removes the loading gif
+		function go_disable_loading() {
+			jQuery('#go_button .go_loading').remove();
+			jQuery('#go_button').prop( 'disabled', '' );
+		}
+
 		function task_stage_change( target ) {
+			go_enable_loading( target );
+
 			var undoing = false;
 			if ( 'undefined' !== typeof jQuery( target ).attr( 'undo' ) && 'true' === jQuery( target ).attr( 'undo' ).toLowerCase() ) {
 				undoing = true;
@@ -1603,6 +1633,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					} else {
 						flash_error_msg( '#go_stage_error_msg' );
 					}
+					go_disable_loading();
 					return;
 				}
 			} else if ( ! undoing && jQuery( '#go_url_key' ).length > 0 ) {
@@ -1618,6 +1649,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
+						go_disable_loading();
 						return;
 					}
 				} else {
@@ -1628,6 +1660,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					} else {
 						flash_error_msg( '#go_stage_error_msg' );
 					}
+					go_disable_loading();
 					return;
 				}
 			}
@@ -1721,6 +1754,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
+						go_disable_loading();
 					} else {
 						jQuery( '#go_content' ).html( res.html );
 						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
