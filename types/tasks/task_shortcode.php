@@ -1755,6 +1755,8 @@ function go_task_shortcode( $atts, $content = null ) {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
 						go_disable_loading();
+					} else if ( 302 === Number.parseInt( res.status ) ) {
+						window.location = res.location;
 					} else {
 						jQuery( '#go_content' ).html( res.html );
 						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
@@ -2193,18 +2195,123 @@ function go_unlock_stage() {
 function go_task_change_stage() {
 	global $wpdb;
 
-	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 ); // Post id posted from ajax function
 	$user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
+	$is_admin = go_user_is_admin( $user_id );
 
+	// post id posted from ajax function (untrusted)
+	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 );
+
+	// gets the task's post object to validate that it exists, user requests for non-existent tasks
+	// should be stopped and the user redirected to the home page
+	$post_obj = get_post( $post_id );
+	if ( null === $post_obj ||
+		(
+			'publish' !== $post_obj->post_status &&
+			! $is_admin
+		) ||
+		(
+			'trash' === $post_obj->post_status &&
+			$is_admin
+		)
+	) {
+		echo json_encode(
+			array(
+				'status' => 302,
+				'html' => '',
+				'rewards' => array(),
+				'location' => home_url(),
+			)
+		);
+		die();
+	}
 	check_ajax_referer( 'go_task_change_stage_' . $post_id . '_' . $user_id );
 
-	$status                = ( ! empty( $_POST['status'] )                ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
+	// checks the user's current progress on this task
+	$go_table_name = "{$wpdb->prefix}go";
+	$db_status = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$post_id
+		)
+	);
+
+	$status        = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
+	$repeat_button = ( ! empty( $_POST['repeat'] ) ? go_is_true_str( $_POST['repeat'] ) : false ); // Boolean which determines if the task is repeatable or not (True or False)
+	$repeat        = get_post_meta( $post_id, 'go_mta_five_stage_switch', true ); // Whether or not you can repeat the task
+	$undo          = ( ! empty( $_POST['undo'] )   ? go_is_true_str( $_POST['undo'] ) : false ); // Boolean which determines if the button clicked is an undo button or not (True or False)
+
+	$is_progressing = false;
+	$is_degressing = false;
+	if ( ! $undo &&
+	(
+		(
+			$db_status < $status && ! $repeat_button
+		) ||
+		(
+			$db_status === $status && $repeat_button && 'on' === $repeat
+		)
+	)
+	) {
+		$is_progressing = true;
+	} else if ( $undo &&
+		(
+			$db_status + 1 === $status && ! $repeat_button
+		) ||
+		(
+			$db_status === $status && $repeat_button && 'on' === $repeat
+		)
+	) {
+		$is_degressing = true;
+	}
+
+	$encountered = true;
+	if ( 0 === $db_status ) {
+		$encountered = false;
+	}
+
+	// checks if the current post has a permalink
+	$task_permalink = get_permalink( $post_id );
+
+	// users should be redirected to the current task when:
+	// a. The task exists (has a permalink)
+	//
+	// AND one of the following is true:
+	// b. The user is neither progressing or degressing (pressing the undo button)
+	// OR
+	// c. The user has not encountered this task yet
+	if ( $task_permalink && ( ( ! $is_progressing && ! $is_degressing ) || ! $encountered ) ) {
+		echo json_encode(
+			array(
+				'status' => 302,
+				'html' => '',
+				'rewards' => array(),
+				'location' => $task_permalink,
+			)
+		);
+		die();
+	}
+
+	// users should be redirected to the home page when:
+	// a. The task doesn't exist (has no permalink)
+	if ( ! $task_permalink ) {
+		echo json_encode(
+			array(
+				'status' => 302,
+				'html' => '',
+				'rewards' => array(),
+				'location' => home_url(),
+			)
+		);
+		die();
+	}
+
 	$page_id               = ( ! empty( $_POST['page_id'] )               ? (int) $_POST['page_id'] : 0 ); // Page id posted from ajax function
 	$admin_name            = ( ! empty( $_POST['admin_name'] )            ? (string) $_POST['admin_name'] : '' );
-	$undo                  = ( ! empty( $_POST['undo'] )                  ? go_is_true_str( $_POST['undo'] ) : false ); // Boolean which determines if the button clicked is an undo button or not (True or False)
 	$pass                  = ( ! empty( $_POST['pass'] )                  ? (string) $_POST['pass'] : '' ); // Contains the user-entered admin password
 	$url                   = ( ! empty( $_POST['url'] )                   ? (string) $_POST['url'] : '' ); // Contains user-entered url
-	$repeat_button         = ( ! empty( $_POST['repeat'] )                ? go_is_true_str( $_POST['repeat'] ) : false ); // Boolean which determines if the task is repeatable or not (True or False)
 	$points_array          = ( ! empty( $_POST['points'] )                ? (array) $_POST['points'] : array() ); // Serialized array of points rewarded for each stage
 	$currency_array        = ( ! empty( $_POST['currency'] )              ? (array) $_POST['currency'] : array() ); // Serialized array of currency rewarded for each stage
 	$bonus_currency_array  = ( ! empty( $_POST['bonus_currency'] )        ? (array) $_POST['bonus_currency'] : array() ); // Serialized array of bonus currency awarded for each stage
@@ -2214,12 +2321,10 @@ function go_task_change_stage() {
 	$number_of_stages      = ( ! empty( $_POST['number_of_stages'] )      ? (int) $_POST['number_of_stages'] : 0 ); // Integer with number of stages in the task
 
 	$unix_now = current_time( 'timestamp' ); // Current unix timestamp
-	$go_table_name = "{$wpdb->prefix}go";
 	$task_count = go_task_get_repeat_count( $post_id, $user_id );
 
 	$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
 	$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true ); // whether or not the mastery stage is active
-	$repeat = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : '' ); // Whether or not you can repeat the task
 
 	$e_admin_lock = get_post_meta( $post_id, 'go_mta_encounter_admin_lock', true );
 	if ( ! empty( $e_admin_lock ) ) {
@@ -2291,6 +2396,7 @@ function go_task_change_stage() {
 					'rewards' => array(
 						'gold' => 0,
 					),
+					'location' => '',
 				)
 			);
 			die();
@@ -2393,16 +2499,6 @@ function go_task_change_stage() {
 	$a_passed = ( ! empty( $_SESSION['test_accept_passed'] )     ? (int) $_SESSION['test_accept_passed'] : 0 );
 	$c_passed = ( ! empty( $_SESSION['test_completion_passed'] ) ? (int) $_SESSION['test_completion_passed'] : 0 );
 	$m_passed = ( ! empty( $_SESSION['test_mastery_passed'] )    ? (int) $_SESSION['test_mastery_passed'] : 0 );
-
-	$db_status = (int) $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT status 
-			FROM {$go_table_name} 
-			WHERE uid = %d AND post_id = %d",
-			$user_id,
-			$post_id
-		)
-	);
 
 	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); //determine which future date modifier is on, if any
 	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
@@ -3132,6 +3228,7 @@ function go_task_change_stage() {
 			'rewards' => array(
 				'gold' => $gold_reward,
 			),
+			'location' => '',
 		)
 	);
 	die();
