@@ -1607,7 +1607,17 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 			} else if ( ! undoing && jQuery( '#go_url_key' ).length > 0 ) {
 				var the_url = jQuery( '#go_url_key' ).attr( 'value' ).replace(/\s+/, '' );
-				if ( the_url.length > 0 ) {
+				if ( the_url.length > 200 ) {
+						jQuery( '#go_stage_error_msg' ).show();
+						var error = "URL too long. Use http://goo.gl to shorten your link.";
+						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
+							jQuery( '#go_stage_error_msg' ).text( error );
+						} else {
+							flash_error_msg( '#go_stage_error_msg' );
+						}
+						return;	
+				}
+				else if ( the_url.length > 0 ) {
 					if ( the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && ! ( the_url.lastIndexOf( 'http://' ) > 0 ) && ! ( the_url.lastIndexOf( 'https://' ) > 0 ) ) {
 						var url_entered = true;
 					} else {
