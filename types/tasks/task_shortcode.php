@@ -2243,6 +2243,99 @@ function go_task_change_stage() {
 	$repeat        = get_post_meta( $post_id, 'go_mta_five_stage_switch', true ); // Whether or not you can repeat the task
 	$undo          = ( ! empty( $_POST['undo'] )   ? go_is_true_str( $_POST['undo'] ) : false ); // Boolean which determines if the button clicked is an undo button or not (True or False)
 
+	/**
+	 * Task Chain Filter
+	 */
+
+	// obtains the chain order list for this task, if there is one
+	$chain_order = get_post_meta( $post_id, 'go_mta_chain_order', true );
+	$chain_links = array();
+
+	// determines whether or not the user can proceed, if the task is in a chain
+	if ( ! empty( $chain_order ) ) {
+		foreach ( $chain_order as $chain_tt_id => $order ) {
+			$pos = array_search( $post_id, $order );
+			$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
+			$chain_title = ucwords( $the_chain->name );
+
+			if ( $pos > 0 && ! $is_admin ) {
+
+				/**
+				 * The current task is not first and the user is not an administrator.
+				 */
+
+				$prev_id = 0;
+
+				// finds the first ID among the tasks before the current one that is published
+				for ( $prev_id_counter = 0; $prev_id_counter < $pos; $prev_id_counter++ ) {
+					$temp_id = $order[ $prev_id_counter ];
+					$temp_task = get_post( $temp_id );
+
+					$temp_finished           = true;
+					$temp_status             = go_task_get_status( $temp_id );
+					$temp_five_stage_counter = null;
+					$temp_status_required    = 4;
+					$temp_three_stage_active = (boolean) get_post_meta(
+						$temp_id,
+						'go_mta_three_stage_switch',
+						true
+					);
+					$temp_five_stage_active  = (boolean) get_post_meta(
+						$temp_id,
+						'go_mta_five_stage_switch',
+						true
+					);
+
+					// determines to what stage the user has to progress to finish the task
+					if ( $temp_three_stage_active ) {
+						$temp_status_required = 3;
+					} elseif ( $temp_five_stage_active ) {
+						$temp_five_stage_counter = go_task_get_repeat_count( $temp_id );
+					}
+
+					// determines whether or not the task is finished
+					if ( $temp_status !== $temp_status_required &&
+							( ! $temp_five_stage_active ||
+							( $temp_five_stage_active && empty( $temp_five_stage_counter ) ) ) ) {
+
+						$temp_finished = false;
+					}
+
+					if ( ! empty( $temp_task ) &&
+							'publish' === $temp_task->post_status &&
+							! $temp_finished ) {
+
+						/**
+						 * The task is published, but is not finished. This task must be finished
+						 * before the current task can be accepted.
+						 */
+
+						$prev_id = $temp_id;
+						break;
+					}
+				} // End for().
+
+				if ( 0 !== $prev_id ) {
+					$prev_permalink = get_permalink( $prev_id );
+					$prev_title = get_the_title( $prev_id );
+
+					$link_tag = sprintf(
+						'<a href="%s">%s (%s)</a>',
+						$prev_permalink,
+						$prev_title,
+						$chain_title
+					);
+					if ( false === array_search( $link_tag, $chain_links ) ) {
+
+						// appends the anchor tag for previous task
+						$chain_links[] = $link_tag;
+						break;
+					}
+				}
+			} // End if().
+		} // End foreach().
+	} // End if().
+
 	$is_progressing = false;
 	$is_degressing = false;
 	if ( ! $undo &&
@@ -2282,7 +2375,13 @@ function go_task_change_stage() {
 	// b. The user is neither progressing or degressing (pressing the undo button)
 	// OR
 	// c. The user has not encountered this task yet
-	if ( $task_permalink && ( ( ! $is_progressing && ! $is_degressing ) || ! $encountered ) ) {
+	if ( $task_permalink &&
+	(
+		( ! $is_progressing && ! $is_degressing ) ||
+		! $encountered ||
+		! empty( $chain_links )
+	)
+	) {
 		echo json_encode(
 			array(
 				'status' => 302,
