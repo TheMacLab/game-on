@@ -951,7 +951,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} elseif ( $m_url_is_locked === true ) {
 									echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 								}
-								echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+								echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 								if ( $m_is_locked && empty( $m_pass_lock ) ) {
 									echo "admin_lock='true'";
 								}
@@ -978,7 +978,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
 									echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 								}
-								echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+								echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 								if ( $r_is_locked && empty( $r_pass_lock ) ) {
 									echo "admin_lock='true'";
 								}
@@ -1572,17 +1572,6 @@ function go_task_shortcode( $atts, $content = null ) {
 					}
 				}
 			});
-		}
-		
-		function go_repeat_hide( target ) {
-			// hides the div#repeat_quest to create the repeat cycle.
-			// jQuery( "#repeat_quest" ).hide( 'slow' );
-			
-			setTimeout( function() {
-				// passes the jQuery object received in the parameter of the go_repeat_hide function
-				// as an argument for the task_stage_change function, after 500 milliseconds (1.5 seconds).
-				task_stage_change( target );
-			}, 500 );
 		}
 		
 		function go_repeat_replace() {
@@ -3185,7 +3174,7 @@ function go_task_change_stage() {
 						} elseif ( $m_url_is_locked === true ) {
 							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 						}
-						echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+						echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 						if ( $m_is_locked && empty( $m_pass_lock ) ) {
 							echo "admin_lock='true'";
 						}
@@ -3213,7 +3202,7 @@ function go_task_change_stage() {
 						if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 						}
-						echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+						echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 						if ( $r_is_locked && empty( $r_pass_lock ) ) {
 							echo "admin_lock='true'";
 						}
