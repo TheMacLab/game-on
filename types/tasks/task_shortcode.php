@@ -2261,7 +2261,7 @@ function go_task_change_stage() {
 			$db_status + 1 === $status && ! $repeat_button
 		) ||
 		(
-			$db_status === $status && $repeat_button && 'on' === $repeat
+			$db_status === $status && $repeat_button
 		)
 	) {
 		$is_degressing = true;
