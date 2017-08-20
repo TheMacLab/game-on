@@ -2248,7 +2248,7 @@ function go_task_change_stage() {
 	if ( ! $undo &&
 	(
 		(
-			$db_status < $status && ! $repeat_button
+			$db_status + 1 === $status && ! $repeat_button
 		) ||
 		(
 			$db_status === $status && $repeat_button && 'on' === $repeat
