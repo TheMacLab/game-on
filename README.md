@@ -34,10 +34,11 @@ We highly recommend keeping your WordPress installation up to date. This not onl
 
 Current Authors:
 
-* <a href='http://foresthoffman.com' target='_blank'>Forest Hoffman</a>
+* Zach Hofmeister
 
 Previous Authors/Contributors:
 
+* <a href='http://foresthoffman.com' target='_blank'>Forest Hoffman</a>
 * Ezio Ballarin
 * Charles Leon
 * Austin Vuong
