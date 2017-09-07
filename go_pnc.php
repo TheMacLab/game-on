@@ -947,14 +947,27 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 			get_post_meta( $post_id, 'go_mta_stage_four_badge', true ),
 			get_post_meta( $post_id, 'go_mta_stage_five_badge', true ),
 		);
+
+		// iterates of the task's badge reward data, ordered by stage, starting with stage 1
 		foreach ( $badge_meta_array as $meta_data ) {
 			if ( empty( $meta_data ) || ! is_array( $meta_data ) ) {
 				continue;
 			}
 
-			foreach ( $meta_data as $badge_id ) {
-				in_array( $badge_id, $user_badges );
-				go_remove_badge( $user_id, $badge_id );
+			// grabs the badge ID list from the second element of the meta array
+			$meta_badge_array = $meta_data[1];
+			$meta_badge_count = count( $meta_badge_array );
+			for ( $i = 0; $i < $meta_badge_count; $i++ ) {
+
+				// Removes badges that:
+				// a) The user has in their badge metadata.
+				// b) Are part of a stage with badge rewards enabled.
+				//    The first element of the meta data array indicates the status of the badge
+				//    reward checkbox in the task stage.
+				$badge_id = (int) $meta_badge_array[ $i ];
+				if ( $meta_data[0] && in_array( $badge_id, $user_badges ) ) {
+					go_remove_badge( $user_id, (int) $badge_id );
+				}
 			}
 		}
 	}
