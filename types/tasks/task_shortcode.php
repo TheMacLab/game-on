@@ -668,6 +668,16 @@ function go_task_shortcode( $atts, $content = null ) {
 		$update_percent = 1;    
 	}
 
+	// Array of badge switch and badges associated with a stage
+	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
+	$stage_badges = array(
+		get_post_meta( $id, 'go_mta_stage_one_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_two_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_three_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_four_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_five_badge', true ),
+	);
+
 	if ( $is_admin === true || ! empty( $go_ahead ) || ! isset( $focus_category_lock ) || empty( $category_names ) ) {
 		if ( ( empty( $bonus_currency_required ) || 
 					( ! empty( $bonus_currency_required ) && $current_bonus_currency >= $bonus_currency_required ) ) &&
@@ -695,6 +705,18 @@ function go_task_shortcode( $atts, $content = null ) {
 					0,
 					0
 				);
+
+				if ( $stage_badges[0][0] ) {
+					foreach ( $stage_badges[0][1] as $badge_id ) {
+						go_award_badge(
+							array(
+								'id'        => $badge_id,
+								'repeat'    => false,
+								'uid'       => $user_id
+							)
+						);
+					}
+				}
 				go_record_stage_time( $page_id, 1 );
 	?>
 				<div id="go_content">
@@ -2739,6 +2761,12 @@ function go_task_change_stage() {
 						}
 					}
 				}
+
+				if ( $stage_badges[ $status ][0] ) {
+					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
+						go_remove_badge( $user_id, $badge_id );
+					}
+				}
 			} else {
 				$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
 				go_add_post(
@@ -2795,8 +2823,9 @@ function go_task_change_stage() {
 						}
 					}
 				}
-				if ( $stage_badges[ $status ][0] ) {
-					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
+
+				if ( $stage_badges[ $status - 1 ][0] ) {
+					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
 						go_remove_badge( $user_id, $badge_id );
 					}
 				}
@@ -2860,8 +2889,9 @@ function go_task_change_stage() {
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
-					if ( $stage_badges[ $db_status - 2 ][0] ) {
-						foreach ( $stage_badges[ $db_status - 2 ][1] as $badge_id ) {
+
+					if ( $stage_badges[ $db_status - 1 ][0] ) {
+						foreach ( $stage_badges[ $db_status - 1 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
 						}
 					}
@@ -2894,8 +2924,9 @@ function go_task_change_stage() {
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 					$e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time
 				);
-				if ( $stage_badges[ $status - 2 ][0] ) {
-					foreach ( $stage_badges[ $status - 2 ][1] as $badge_id ) {
+
+				if ( $stage_badges[ $status - 1 ][0] ) {
+					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
 						go_award_badge(
 							array(
 								'id'        => $badge_id,
