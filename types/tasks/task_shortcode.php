@@ -2761,12 +2761,6 @@ function go_task_change_stage() {
 						}
 					}
 				}
-
-				if ( $stage_badges[ $status ][0] ) {
-					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
-						go_remove_badge( $user_id, $badge_id );
-					}
-				}
 			} else {
 				$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
 				go_add_post(
