@@ -951,7 +951,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} elseif ( $m_url_is_locked === true ) {
 									echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 								}
-								echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+								echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 								if ( $m_is_locked && empty( $m_pass_lock ) ) {
 									echo "admin_lock='true'";
 								}
@@ -978,7 +978,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
 									echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 								}
-								echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+								echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 								if ( $r_is_locked && empty( $r_pass_lock ) ) {
 									echo "admin_lock='true'";
 								}
@@ -1214,6 +1214,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 						if ( checked_ans >= test_list.length && is_uploaded == 1 ) {
@@ -1233,6 +1234,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					} else {
@@ -1253,6 +1255,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					}
@@ -1273,6 +1276,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 						if ( checked_ans >= test_list.length && is_uploaded == 1 ) {
@@ -1292,6 +1296,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					} else {
@@ -1312,6 +1317,7 @@ function go_task_shortcode( $atts, $content = null ) {
 								} else {
 									flash_error_msg( '#go_test_error_msg' );
 								}
+								go_disable_loading();
 							}
 						}
 					}
@@ -1339,6 +1345,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							} else {
 								flash_error_msg( '#go_test_error_msg' );
 							}
+							go_disable_loading();
 						}
 					} else {
 						if ( jQuery( ".go_test_list input:checked" ).length >= 1 ) {
@@ -1349,6 +1356,7 @@ function go_task_shortcode( $atts, $content = null ) {
 							} else {
 								flash_error_msg( '#go_test_error_msg' );
 							}
+							go_disable_loading();
 						}
 					}
 				});
@@ -1364,6 +1372,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
+						go_disable_loading();
 					} else {
 						task_unlock();
 					}
@@ -1377,6 +1386,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					} else {
 						flash_error_msg( '#go_stage_error_msg' );
 					}
+					go_disable_loading();
 				}
 			}
 		}
@@ -1525,6 +1535,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_test_error_msg' );
 						}
+						go_disable_loading();
 					}
 				}
 			});
@@ -1563,23 +1574,31 @@ function go_task_shortcode( $atts, $content = null ) {
 			});
 		}
 		
-		function go_repeat_hide( target ) {
-			// hides the div#repeat_quest to create the repeat cycle.
-			// jQuery( "#repeat_quest" ).hide( 'slow' );
-			
-			setTimeout( function() {
-				// passes the jQuery object received in the parameter of the go_repeat_hide function
-				// as an argument for the task_stage_change function, after 500 milliseconds (1.5 seconds).
-				task_stage_change( target );
-			}, 500 );
-		}
-		
 		function go_repeat_replace() {
 			jQuery( '#go_repeat_unclicked' ).remove();
 			jQuery( '#go_repeat_clicked' ).show( 'slow' );   
 		}
 		
+		// disables the target stage button, and adds a loading gif to it
+		function go_enable_loading( target ) {
+
+			// prevent further events with this button
+			target.disabled = true;
+
+			// prepend the loading gif to the button's content, to show that the request is being
+			// processed
+			target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
+		}
+
+		// re-enables the stage button, and removes the loading gif
+		function go_disable_loading() {
+			jQuery('#go_button .go_loading').remove();
+			jQuery('#go_button').prop( 'disabled', '' );
+		}
+
 		function task_stage_change( target ) {
+			go_enable_loading( target );
+
 			var undoing = false;
 			if ( 'undefined' !== typeof jQuery( target ).attr( 'undo' ) && 'true' === jQuery( target ).attr( 'undo' ).toLowerCase() ) {
 				undoing = true;
@@ -1603,6 +1622,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					} else {
 						flash_error_msg( '#go_stage_error_msg' );
 					}
+					go_disable_loading();
 					return;
 				}
 			} else if ( ! undoing && jQuery( '#go_url_key' ).length > 0 ) {
@@ -1628,6 +1648,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
+						go_disable_loading();
 						return;
 					}
 				} else {
@@ -1638,6 +1659,7 @@ function go_task_shortcode( $atts, $content = null ) {
 					} else {
 						flash_error_msg( '#go_stage_error_msg' );
 					}
+					go_disable_loading();
 					return;
 				}
 			}
@@ -1731,6 +1753,9 @@ function go_task_shortcode( $atts, $content = null ) {
 						} else {
 							flash_error_msg( '#go_stage_error_msg' );
 						}
+						go_disable_loading();
+					} else if ( 302 === Number.parseInt( res.status ) ) {
+						window.location = res.location;
 					} else {
 						jQuery( '#go_content' ).html( res.html );
 						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
@@ -2169,18 +2194,222 @@ function go_unlock_stage() {
 function go_task_change_stage() {
 	global $wpdb;
 
-	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 ); // Post id posted from ajax function
 	$user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
+	$is_admin = go_user_is_admin( $user_id );
 
+	// post id posted from ajax function (untrusted)
+	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 );
+
+	// gets the task's post object to validate that it exists, user requests for non-existent tasks
+	// should be stopped and the user redirected to the home page
+	$post_obj = get_post( $post_id );
+	if ( null === $post_obj ||
+		(
+			'publish' !== $post_obj->post_status &&
+			! $is_admin
+		) ||
+		(
+			'trash' === $post_obj->post_status &&
+			$is_admin
+		)
+	) {
+		echo json_encode(
+			array(
+				'status' => 302,
+				'html' => '',
+				'rewards' => array(),
+				'location' => home_url(),
+			)
+		);
+		die();
+	}
 	check_ajax_referer( 'go_task_change_stage_' . $post_id . '_' . $user_id );
 
-	$status                = ( ! empty( $_POST['status'] )                ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
+	// checks the user's current progress on this task
+	$go_table_name = "{$wpdb->prefix}go";
+	$db_status = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT status 
+			FROM {$go_table_name} 
+			WHERE uid = %d AND post_id = %d",
+			$user_id,
+			$post_id
+		)
+	);
+
+	$status        = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
+	$repeat_button = ( ! empty( $_POST['repeat'] ) ? go_is_true_str( $_POST['repeat'] ) : false ); // Boolean which determines if the task is repeatable or not (True or False)
+	$repeat        = get_post_meta( $post_id, 'go_mta_five_stage_switch', true ); // Whether or not you can repeat the task
+	$undo          = ( ! empty( $_POST['undo'] )   ? go_is_true_str( $_POST['undo'] ) : false ); // Boolean which determines if the button clicked is an undo button or not (True or False)
+
+	/**
+	 * Task Chain Filter
+	 */
+
+	// obtains the chain order list for this task, if there is one
+	$chain_order = get_post_meta( $post_id, 'go_mta_chain_order', true );
+	$chain_links = array();
+
+	// determines whether or not the user can proceed, if the task is in a chain
+	if ( ! empty( $chain_order ) ) {
+		foreach ( $chain_order as $chain_tt_id => $order ) {
+			$pos = array_search( $post_id, $order );
+			$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
+			$chain_title = ucwords( $the_chain->name );
+
+			if ( $pos > 0 && ! $is_admin ) {
+
+				/**
+				 * The current task is not first and the user is not an administrator.
+				 */
+
+				$prev_id = 0;
+
+				// finds the first ID among the tasks before the current one that is published
+				for ( $prev_id_counter = 0; $prev_id_counter < $pos; $prev_id_counter++ ) {
+					$temp_id = $order[ $prev_id_counter ];
+					$temp_task = get_post( $temp_id );
+
+					$temp_finished           = true;
+					$temp_status             = go_task_get_status( $temp_id );
+					$temp_five_stage_counter = null;
+					$temp_status_required    = 4;
+					$temp_three_stage_active = (boolean) get_post_meta(
+						$temp_id,
+						'go_mta_three_stage_switch',
+						true
+					);
+					$temp_five_stage_active  = (boolean) get_post_meta(
+						$temp_id,
+						'go_mta_five_stage_switch',
+						true
+					);
+
+					// determines to what stage the user has to progress to finish the task
+					if ( $temp_three_stage_active ) {
+						$temp_status_required = 3;
+					} elseif ( $temp_five_stage_active ) {
+						$temp_five_stage_counter = go_task_get_repeat_count( $temp_id );
+					}
+
+					// determines whether or not the task is finished
+					if ( $temp_status !== $temp_status_required &&
+							( ! $temp_five_stage_active ||
+							( $temp_five_stage_active && empty( $temp_five_stage_counter ) ) ) ) {
+
+						$temp_finished = false;
+					}
+
+					if ( ! empty( $temp_task ) &&
+							'publish' === $temp_task->post_status &&
+							! $temp_finished ) {
+
+						/**
+						 * The task is published, but is not finished. This task must be finished
+						 * before the current task can be accepted.
+						 */
+
+						$prev_id = $temp_id;
+						break;
+					}
+				} // End for().
+
+				if ( 0 !== $prev_id ) {
+					$prev_permalink = get_permalink( $prev_id );
+					$prev_title = get_the_title( $prev_id );
+
+					$link_tag = sprintf(
+						'<a href="%s">%s (%s)</a>',
+						$prev_permalink,
+						$prev_title,
+						$chain_title
+					);
+					if ( false === array_search( $link_tag, $chain_links ) ) {
+
+						// appends the anchor tag for previous task
+						$chain_links[] = $link_tag;
+						break;
+					}
+				}
+			} // End if().
+		} // End foreach().
+	} // End if().
+
+	$is_progressing = false;
+	$is_degressing = false;
+	if ( ! $undo &&
+	(
+		(
+			$db_status + 1 === $status && ! $repeat_button
+		) ||
+		(
+			$db_status === $status && $repeat_button && 'on' === $repeat
+		)
+	)
+	) {
+		$is_progressing = true;
+	} else if ( $undo &&
+		(
+			$db_status + 1 === $status && ! $repeat_button
+		) ||
+		(
+			$db_status === $status && $repeat_button
+		)
+	) {
+		$is_degressing = true;
+	}
+
+	$encountered = true;
+	if ( 0 === $db_status ) {
+		$encountered = false;
+	}
+
+	// checks if the current post has a permalink
+	$task_permalink = get_permalink( $post_id );
+
+	// users should be redirected to the current task when:
+	// a. The task exists (has a permalink)
+	//
+	// AND one of the following is true:
+	// b. The user is neither progressing or degressing (pressing the undo button)
+	// OR
+	// c. The user has not encountered this task yet
+	if ( $task_permalink &&
+	(
+		( ! $is_progressing && ! $is_degressing ) ||
+		! $encountered ||
+		! empty( $chain_links )
+	)
+	) {
+		echo json_encode(
+			array(
+				'status' => 302,
+				'html' => '',
+				'rewards' => array(),
+				'location' => $task_permalink,
+			)
+		);
+		die();
+	}
+
+	// users should be redirected to the home page when:
+	// a. The task doesn't exist (has no permalink)
+	if ( ! $task_permalink ) {
+		echo json_encode(
+			array(
+				'status' => 302,
+				'html' => '',
+				'rewards' => array(),
+				'location' => home_url(),
+			)
+		);
+		die();
+	}
+
 	$page_id               = ( ! empty( $_POST['page_id'] )               ? (int) $_POST['page_id'] : 0 ); // Page id posted from ajax function
 	$admin_name            = ( ! empty( $_POST['admin_name'] )            ? (string) $_POST['admin_name'] : '' );
-	$undo                  = ( ! empty( $_POST['undo'] )                  ? go_is_true_str( $_POST['undo'] ) : false ); // Boolean which determines if the button clicked is an undo button or not (True or False)
 	$pass                  = ( ! empty( $_POST['pass'] )                  ? (string) $_POST['pass'] : '' ); // Contains the user-entered admin password
 	$url                   = ( ! empty( $_POST['url'] )                   ? (string) $_POST['url'] : '' ); // Contains user-entered url
-	$repeat_button         = ( ! empty( $_POST['repeat'] )                ? go_is_true_str( $_POST['repeat'] ) : false ); // Boolean which determines if the task is repeatable or not (True or False)
 	$points_array          = ( ! empty( $_POST['points'] )                ? (array) $_POST['points'] : array() ); // Serialized array of points rewarded for each stage
 	$currency_array        = ( ! empty( $_POST['currency'] )              ? (array) $_POST['currency'] : array() ); // Serialized array of currency rewarded for each stage
 	$bonus_currency_array  = ( ! empty( $_POST['bonus_currency'] )        ? (array) $_POST['bonus_currency'] : array() ); // Serialized array of bonus currency awarded for each stage
@@ -2190,12 +2419,10 @@ function go_task_change_stage() {
 	$number_of_stages      = ( ! empty( $_POST['number_of_stages'] )      ? (int) $_POST['number_of_stages'] : 0 ); // Integer with number of stages in the task
 
 	$unix_now = current_time( 'timestamp' ); // Current unix timestamp
-	$go_table_name = "{$wpdb->prefix}go";
 	$task_count = go_task_get_repeat_count( $post_id, $user_id );
 
 	$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
 	$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true ); // whether or not the mastery stage is active
-	$repeat = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : '' ); // Whether or not you can repeat the task
 
 	$e_admin_lock = get_post_meta( $post_id, 'go_mta_encounter_admin_lock', true );
 	if ( ! empty( $e_admin_lock ) ) {
@@ -2267,6 +2494,7 @@ function go_task_change_stage() {
 					'rewards' => array(
 						'gold' => 0,
 					),
+					'location' => '',
 				)
 			);
 			die();
@@ -2369,16 +2597,6 @@ function go_task_change_stage() {
 	$a_passed = ( ! empty( $_SESSION['test_accept_passed'] )     ? (int) $_SESSION['test_accept_passed'] : 0 );
 	$c_passed = ( ! empty( $_SESSION['test_completion_passed'] ) ? (int) $_SESSION['test_completion_passed'] : 0 );
 	$m_passed = ( ! empty( $_SESSION['test_mastery_passed'] )    ? (int) $_SESSION['test_mastery_passed'] : 0 );
-
-	$db_status = (int) $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT status 
-			FROM {$go_table_name} 
-			WHERE uid = %d AND post_id = %d",
-			$user_id,
-			$post_id
-		)
-	);
 
 	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); //determine which future date modifier is on, if any
 	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
@@ -2966,7 +3184,7 @@ function go_task_change_stage() {
 						} elseif ( $m_url_is_locked === true ) {
 							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
 						}
-						echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+						echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 						if ( $m_is_locked && empty( $m_pass_lock ) ) {
 							echo "admin_lock='true'";
 						}
@@ -2994,7 +3212,7 @@ function go_task_change_stage() {
 						if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
 							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
 						}
-						echo "<button id='go_button' status='4' onclick='go_repeat_hide( this );' repeat='on'";
+						echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
 						if ( $r_is_locked && empty( $r_pass_lock ) ) {
 							echo "admin_lock='true'";
 						}
@@ -3108,6 +3326,7 @@ function go_task_change_stage() {
 			'rewards' => array(
 				'gold' => $gold_reward,
 			),
+			'location' => '',
 		)
 	);
 	die();
