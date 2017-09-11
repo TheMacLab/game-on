@@ -284,8 +284,14 @@ background-color: #cccccc;
 	border-color: #000;
 	color: #555;
 	}
+#utilityNav .done a{
+    background-color: #cee3ac;
+    border-color: #b8da83;
+}
 #utilityNav li a:hover {
 	background-color: #fffce5;
 	border-color: #d1b62c;
 	cursor: pointer;
 }
+
+
