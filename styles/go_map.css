@@ -277,6 +277,13 @@ background-color: #cccccc;
 	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; /* FF 3.5+ */	
 	cursor: pointer;
 }
+
+#utilityNav .filtered a
+ {
+background-color: #cccccc;
+	border-color: #000;
+	color: #555;
+	}
 #utilityNav li a:hover {
 	background-color: #fffce5;
 	border-color: #d1b62c;
