@@ -59,7 +59,6 @@ wp_enqueue_style( 'go_map_style' );
 
 	echo"
 	<div class='sitemap'>
-	<h2>Maps</h2>
 	<ul id='utilityNav'>
 	";
 		
