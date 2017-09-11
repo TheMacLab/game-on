@@ -123,7 +123,7 @@ ol, ul {
 	
 }
 
-.primaryNav li {float: left;background: url('images/L1-center.png') center top no-repeat;padding: 30px 0;margin-top: -30px;}
+.primaryNav li {float: left;background: url('images/map/L1-center.png') center top no-repeat;padding: 30px 0;margin-top: -30px;}
 .primaryNav .ParentNav {
 	display: block;
 	float: none;
@@ -141,7 +141,7 @@ ol, ul {
 	font-weight: bold;
 	text-align: center;
 	color: black;
-	background: #c3eafb url('images/white-highlight.png') top left repeat-x;
+	background: #c3eafb url('images/map/white-highlight.png') top left repeat-x;
 	border: 2px solid #b5d9ea;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -155,10 +155,10 @@ ol, ul {
 }
 */
 .primaryNav li:last-child {
-	background: url('images/L1-right.png') center top no-repeat;
+	background: url('images/map/L1-right.png') center top no-repeat;
 }
 .primaryNav > li:nth-child(2) {
-	background: url('images/L1-left.png') center top no-repeat;
+	background: url('images/map/L1-left.png') center top no-repeat;
 }
 
 .primaryNav > li:first-child {
@@ -174,7 +174,7 @@ ol, ul {
 	clear: left;
 	margin-top: 0;
 	padding: 10px 0 0 0;
-	background: url('images/vertical-line.png') center bottom repeat-y;
+	background: url('images/map/vertical-line.png') center bottom repeat-y;
 }
 .primaryNav li li a {
 	background-color: #cee3ac;
@@ -209,7 +209,7 @@ background-color: #cccccc;
 	padding-top: 30px;
 }
 .primaryNav li li:last-child {
-	background: url('images/vertical-line.png') center bottom repeat-y;
+	background: url('images/map/vertical-line.png') center bottom repeat-y;
 }
 
 
@@ -220,10 +220,10 @@ background-color: #cccccc;
 	width: 100%;
 	float: right;
 	padding: 9px 0 10px 0;
-	background: #ffffff url('images/L3-ul-top.png') center top no-repeat;
+	background: #ffffff url('images/map/L3-ul-top.png') center top no-repeat;
 }
 .primaryNav li li li {
-	background: url('images/L3-center.png') left center no-repeat;
+	background: url('images/map/L3-center.png') left center no-repeat;
 	padding: 5px 0;
 }
 .primaryNav li li li a {
@@ -240,10 +240,10 @@ background-color: #cccccc;
 }
 .primaryNav li li li:first-child {
 	padding: 15px 0 5px 0;
-	background: url('images/L3-li-top.png') left center no-repeat;
+	background: url('images/map/L3-li-top.png') left center no-repeat;
 }
 .primaryNav li li li:last-child {
-	background: url('images/L3-bottom.png') left center no-repeat;
+	background: url('images/map/L3-bottom.png') left center no-repeat;
 }
 
 
@@ -270,7 +270,7 @@ background-color: #cccccc;
 	font-weight: bold;
 	text-align: center;
 	color: black;
-	background: #fff7aa url('images/white-highlight.png') top left repeat-x;
+	background: #fff7aa url('images/map/white-highlight.png') top left repeat-x;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
