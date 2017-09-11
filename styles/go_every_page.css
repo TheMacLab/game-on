@@ -1,3 +1,7 @@
+#wpadminbar {
+    z-index: 1000010 !important;
+}
+
 .go_align_right {
 	text-align: right;
 }
