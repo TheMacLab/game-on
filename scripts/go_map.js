@@ -26,19 +26,29 @@ window.addEventListener('load',
     var mapNum = 0;
     for (var i = 0; i < idArray.length; i++){
         var mapNum = mapNum + 1;
+        var mapNumID = "#mapLink_" + mapNum;
+        var mapNumClass = "#mapLink_" + mapNum + ' .mapLink';
+        var countAvail = "#" + idArray[i] + " .available_color";
+        var countDone = "#" + idArray[i] + " .checkmark";
+        var numAvail = jQuery(countAvail).length;
+        var numDone = jQuery(countDone).length;
         
-        var mapNumID = "mapLink_" + mapNum;
         
-        var countThis = "#" + idArray[i] + " .available_color";
         
-        var numItems = jQuery(countThis).length;
         
-        if (numItems == 0){
-            document.getElementById(mapNumID).className += " filtered";
+        if (numAvail == 0){
+            if (numDone == 0){
+                
+                jQuery(mapNumID).addClass("filtered"); 
+            }
+            else {
+                
+                jQuery(mapNumID).addClass("done");
+                jQuery(mapNumClass).addClass("checkmark");
+            }
              
         }
 
-        console.log(numItems);
     }
     
 
