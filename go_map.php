@@ -67,7 +67,7 @@ wp_enqueue_style( 'go_map_style' );
 		$false = " false";
 		foreach ( $tax_terms0 as $tax_term0 ) {
 			$chainParentNum = ($chainParentNum + 1);
-   			echo "<li id='mapLink_$chainParentNum' ><a  onclick=go_show_map($chainParentNum); id='close_popup'>$tax_term0->name</a></li>";
+   			echo "<li id='mapLink_$chainParentNum' ><a  onclick=go_show_map($chainParentNum); >$tax_term0->name</a></li>";
 
 		}
 	
