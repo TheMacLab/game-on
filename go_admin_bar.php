@@ -283,12 +283,21 @@ function go_admin_bar() {
 				}
 			}
 		}
-
+        
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_stats',
 				'title' => '<div onclick="go_admin_bar_stats_page_button();">Stats</div><div id="go_stats_page"></div>',
 				'href' => '#',
+			) 
+		);
+        
+        $go_map_link = get_permalink( get_page_by_path('map') );
+        $wp_admin_bar->add_node( 
+			array(
+				'id' => 'go_map',
+				'title' => '<div id="go_map_page">Map</div>',
+				'href' => $go_map_link,
 			) 
 		);
         
