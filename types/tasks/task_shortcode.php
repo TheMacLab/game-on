@@ -5,6 +5,10 @@ session_start();
 	This file interprets and executes the shortcode in a post's body.
 */
 // Task Shortcode
+function testFunct (){
+    $message = "wrong answer";
+echo "<script type='text/javascript'>alert('$message');</script>";
+}
 function go_task_shortcode( $atts, $content = null ) {
 	$atts = shortcode_atts( array(
 		'id' => '', // ID defined in Shortcode
@@ -393,9 +397,15 @@ function go_task_shortcode( $atts, $content = null ) {
 		$test_c_all_answers = $test_c_array[2][2];
 		$test_c_all_keys = $test_c_array[2][3];
 	}
-	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' ); // Completion Message
+	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+    if(isset($GLOBALS['wp_embed']))
+    $completion_message = $GLOBALS['wp_embed']->autoembed($completion_message);
+    // Completion Message
 	$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
-	
+	if(isset($GLOBALS['wp_embed']))
+    $completion_message = $GLOBALS['wp_embed']->autoembed($completion_message);
+    
+    
 	if ( $mastery_active ) {
 		$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
 
@@ -409,11 +419,15 @@ function go_task_shortcode( $atts, $content = null ) {
 			$test_m_all_keys = $test_m_array[2][3];
 		}
 		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' ); // Mastery Message
+        if(isset($GLOBALS['wp_embed']))
+        $mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
 		$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
 
 		if ( $repeat == 'on' ) {    // Checks if the task is repeatable and if it has a repeat limit
 			$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
 			$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+            if(isset($GLOBALS['wp_embed']))
+            $repeat_message = $GLOBALS['wp_embed']->autoembed($repeat_message);
 			$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
 			$number_of_stages = 5;
 		}
@@ -432,6 +446,8 @@ function go_task_shortcode( $atts, $content = null ) {
 	$focus_category_lock = ( ! empty( $locked_by_category ) ? true : false );
 
 	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' ); // Description
+        if(isset($GLOBALS['wp_embed']))
+    $description = $GLOBALS['wp_embed']->autoembed($description);
 
 	$points_array = ( ! empty( $rewards['points'] ) ? $rewards['points'] : array() );
 	$points_str = implode( ' ', $points_array );
@@ -451,6 +467,10 @@ function go_task_shortcode( $atts, $content = null ) {
 	} else { // If the task has content in the post table, and has a meta field, run this code
 		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' ); // Set value of accept message equal to the task's accept message meta field value
 	}
+    if(isset($GLOBALS['wp_embed']))
+    $accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
+    if(isset($GLOBALS['wp_embed']))
+    $task_content = $GLOBALS['wp_embed']->autoembed($task_content);
 
 	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
 	
@@ -668,16 +688,6 @@ function go_task_shortcode( $atts, $content = null ) {
 		$update_percent = 1;    
 	}
 
-	// Array of badge switch and badges associated with a stage
-	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
-	$stage_badges = array(
-		get_post_meta( $id, 'go_mta_stage_one_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_two_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_three_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_four_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_five_badge', true ),
-	);
-
 	if ( $is_admin === true || ! empty( $go_ahead ) || ! isset( $focus_category_lock ) || empty( $category_names ) ) {
 		if ( ( empty( $bonus_currency_required ) || 
 					( ! empty( $bonus_currency_required ) && $current_bonus_currency >= $bonus_currency_required ) ) &&
@@ -705,18 +715,6 @@ function go_task_shortcode( $atts, $content = null ) {
 					0,
 					0
 				);
-
-				if ( $stage_badges[0][0] ) {
-					foreach ( $stage_badges[0][1] as $badge_id ) {
-						go_award_badge(
-							array(
-								'id'        => $badge_id,
-								'repeat'    => false,
-								'uid'       => $user_id
-							)
-						);
-					}
-				}
 				go_record_stage_time( $page_id, 1 );
 	?>
 				<div id="go_content">
@@ -1780,6 +1778,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						window.location = res.location;
 					} else {
 						jQuery( '#go_content' ).html( res.html );
+                        jQuery('#go_content').load(location.href + ' #go_content');
 						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
 						jQuery( "#new_content" ).css( "display', 'none" );
 						jQuery( "#new_content" ).show( 'slow' );
@@ -1798,6 +1797,7 @@ function go_task_shortcode( $atts, $content = null ) {
 				}
 			});
 		}
+        
 	</script>
 <?php   
 	// this is an edit link.
@@ -1808,13 +1808,21 @@ add_shortcode( 'go_task','go_task_shortcode' );
 function go_display_visitor_content( $id ) {
 	$custom_fields = get_post_custom( $id );
 	$encounter_message = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
+    if(isset($GLOBALS['wp_embed']))
+    $encounter_message = $GLOBALS['wp_embed']->autoembed($encounter_message);
 	$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
+    if(isset($GLOBALS['wp_embed']))
+    $accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
 	$complete_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+    if(isset($GLOBALS['wp_embed']))
+    $complete_message = $GLOBALS['wp_embed']->autoembed($complete_message);
 	$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true );
 	if ( $mastery_active ) {
 		$mastery_privacy = ( ! empty( $custom_fields['go_mta_mastery_privacy'][0] ) ? ! $custom_fields['go_mta_mastery_privacy'][0] : true );
 		if ( $mastery_privacy ) {
 			$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
+            if(isset($GLOBALS['wp_embed']))
+            $mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
 			$repeat_active = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : false );
 			if ( $repeat_active && $mastery_privacy ) {
 				$repeat_privacy = ( ! empty( $custom_fields['go_mta_repeat_privacy'][0] ) ? ! $custom_fields['go_mta_repeat_privacy'][0] : true );
@@ -1827,6 +1835,7 @@ function go_display_visitor_content( $id ) {
 		} else {
 			$mastery_message = "This stage has been hidden by the administrator.";
 		}
+        
 	}
 	echo "<div id='go_content'>";
 	if ( ! empty( $encounter_message ) ) {
@@ -2563,6 +2572,8 @@ function go_task_change_stage() {
 		$test_c_all_keys = $test_c_array[2][3];
 	}
 	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+    if(isset($GLOBALS['wp_embed']))
+    $completion_message = $GLOBALS['wp_embed']->autoembed($completion_message);
 	$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
 	if ( $mastery_active ) {
 		$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
@@ -2578,16 +2589,22 @@ function go_task_change_stage() {
 			$test_m_all_keys = $test_m_array[2][3];
 		}
 		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
+        if(isset($GLOBALS['wp_embed']))
+        $mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
 		$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
 
 		if ( $repeat == 'on' ) {
 			$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
 			$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+            if(isset($GLOBALS['wp_embed']))
+            $repeat_message = $GLOBALS['wp_embed']->autoembed($repeat_message);
 			$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
 		}
 	}
 
 	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
+        if(isset($GLOBALS['wp_embed']))
+    $description = $GLOBALS['wp_embed']->autoembed($description);
 
 	// Array of badge switch and badges associated with a stage
 	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
@@ -2607,6 +2624,10 @@ function go_task_change_stage() {
 	} else {
 		$accept_message = $content_post->post_content;
 	}
+    if(isset($GLOBALS['wp_embed']))
+    $accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
+    if(isset($GLOBALS['wp_embed']))
+    $task_content = $GLOBALS['wp_embed']->autoembed($task_content);
 
 	// Tests failed.
 	$e_fail_count = ( ! empty( $_SESSION['test_encounter_fail_count'] )  ? (int) $_SESSION['test_encounter_fail_count'] : 0 );
@@ -2827,9 +2848,8 @@ function go_task_change_stage() {
 						}
 					}
 				}
-
-				if ( $stage_badges[ $status - 1 ][0] ) {
-					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
+				if ( $stage_badges[ $status ][0] ) {
+					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 						go_remove_badge( $user_id, $badge_id );
 					}
 				}
@@ -2893,9 +2913,8 @@ function go_task_change_stage() {
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
-
-					if ( $stage_badges[ $db_status - 1 ][0] ) {
-						foreach ( $stage_badges[ $db_status - 1 ][1] as $badge_id ) {
+					if ( $stage_badges[ $db_status - 2 ][0] ) {
+						foreach ( $stage_badges[ $db_status - 2 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
 						}
 					}
@@ -2928,9 +2947,8 @@ function go_task_change_stage() {
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 					$e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time
 				);
-
-				if ( $stage_badges[ $status - 1 ][0] ) {
-					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
+				if ( $stage_badges[ $status - 2 ][0] ) {
+					foreach ( $stage_badges[ $status - 2 ][1] as $badge_id ) {
 						go_award_badge(
 							array(
 								'id'        => $badge_id,
