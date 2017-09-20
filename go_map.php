@@ -59,11 +59,31 @@ wp_enqueue_style( 'go_map_style' );
 	$tax_terms0 = get_terms($taxonomy,$term_args0);
 
 	echo"
-	<div class='sitemap'>
-	<ul id='utilityNav'>
-	";
+
+	<div id='sitemap' style='display:none;'>
+    
+    <div class='dropdown'>
+      <button onclick='dropDown()' class='dropbtn'>Choose a Map</button>
+      <div id='myDropdown' class='dropdown-content'>";
+            /* For each task chain with no parent, add to top level nav  */
+            $chainParentNum = 0;
+            $false = " false";
+            foreach ( $tax_terms0 as $tax_term0 ) {
+                $chainParentNum = ($chainParentNum + 1);
+                echo "
+                <div id='mapLink_$chainParentNum' >
+                <a onclick=go_show_map($chainParentNum)><div class='mapLink'></div>$tax_term0->name</a></div>";
+            }
+        echo"
+            </div>
+    </div>
+    ";    
+   
+    /* 
+    echo"<ul id='utilityNav'>"
+	;
 		
-		/* For each task chain with no parent, add to top level nav  */
+		// For each task chain with no parent, add to top level nav  
 		$chainParentNum = 0;
 		$false = " false";
 		foreach ( $tax_terms0 as $tax_term0 ) {
@@ -73,7 +93,8 @@ wp_enqueue_style( 'go_map_style' );
 		}
 
 	echo"</ul>";
-
+   
+   */
 
 
 	/* For each task chain with no parent, get all the children.  These are the actual task chains.  */
