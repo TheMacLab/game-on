@@ -51,23 +51,15 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 ------------------------------------------------------------ */
 
 .primaryNav li {
-	width:25%;
+    width: 90%;
 }
 
-.primaryNav li ul li {
-	width:100% !important;
+.primaryNav li ul{
+    padding: 0px !important;
 }
 
-.primaryNav.col1 li { width:99.9%; }
-.primaryNav.col2 li { width:50.0%; }
-.primaryNav.col3 li { width:33.3%; }
-.primaryNav.col4 li { width:25.0%; }
-.primaryNav.col5 li { width:20.0%; }
-.primaryNav.col6 li { width:16.6%; }
-.primaryNav.col7 li { width:14.2%; }
-.primaryNav.col8 li { width:12.5%; }
-.primaryNav.col9 li { width:11.1%; }
-.primaryNav.col10 li { width:10.0%; }
+
+
 
 /* ------------------------------------------------------------
 	General Styles
@@ -127,7 +119,7 @@ ol, ul {
 .primaryNav .ParentNav {
 	display: block;
 	float: none;
-	background:none;
+	background:none !important;
 	position: relative;
 	z-index: 2;
 	width: 100% !important;
@@ -250,7 +242,7 @@ background-color: #cccccc;
 
 /* ------------------------------------------------------------
 	Utility Navigation
------------------------------------------------------------- */
+
 
 #utilityNav {
 	float: left;
@@ -274,7 +266,7 @@ background-color: #cccccc;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
-	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; /* FF 3.5+ */	
+	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
 	cursor: pointer;
 }
 
@@ -296,4 +288,104 @@ background-color: #cccccc;
 	cursor: pointer;
 }
 
+
+------------------------------------------------------------ */
+
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:100;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+
+
+/* ------------------------------------------------------------
+	Utility Navigation
+------------------------------------------------------------ */
+
+#myDropdown {
+	float: left;
+	max-width: 100%;
+	margin-right: 10px;
+}
+#utilityNav li {
+	float: left;
+	margin-bottom: 10px;
+}
+#myDropdown a {
+	margin: 10px 10px 0 0;
+	padding: 5px 10px;
+	display: block;	
+	border: 2px solid #e3ca4b;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	color: black;
+	background: #fff7aa url('images/map/white-highlight.png') top left repeat-x;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; /* FF 3.5+ */	
+	cursor: pointer;
+}
+
+#myDropdown .filtered a,
+#myDropdown .filtered a:hover{
+    background-color: #cccccc;
+	border-color: #000;
+	color: #555;
+}
+#myDropdown .done a,
+#myDropdown .done a:hover{
+    background-color: #cee3ac;
+    border-color: #b8da83;
+}
+
+#utilityNav li a:hover {
+	background-color: #fffce5;
+	border-color: #d1b62c;
+	cursor: pointer;
+}
 
