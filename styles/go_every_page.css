@@ -682,3 +682,12 @@ input#go_pass_lock::-moz-placeholder {
 .comment {
     list-style: none;
 }
+
+.max-width-video-wrapper {
+    max-width: 400px;
+}
+
+.featherlight-content {
+    width: 100%;
+    height: 100%;
+}
