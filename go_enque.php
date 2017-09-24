@@ -288,7 +288,7 @@ function go_register_scripts_and_styles () {
 	wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/js/buy_the_item.js', array( 'jquery' ), 1.0, true );
     
     //FitVids can be downloaded and installed in GO by the line below and the enqueue line, or just install the plugin
-    //wp_register_script('go_fitvids_jquery', plugin_dir_url( __FILE__).'scripts/includes/FitVids/jquery.fitvids.js' );
+    //wp_register_script('go_fitvids_jquery', plugin_dir_url( __FILE__).'scripts/FitVids/jquery.fitvids.js' );
     wp_register_script('go_fitvids', plugin_dir_url( __FILE__).'scripts/go_videos_fit_and_box.js' );
    
 	/*
