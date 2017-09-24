@@ -1791,11 +1791,7 @@ function go_task_shortcode( $atts, $content = null ) {
 						window.location = res.location;
 					} else {
 						jQuery( '#go_content' ).html( res.html );
-                        //fit embeded videos
-                        jQuery( window ).ready( function(){
-                            jQuery( "#go_content" ).fitVids();
-                            jQuery( "#new_content" ).fitVids();
-                        });
+
 						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
 						jQuery( "#new_content" ).css( "display', 'none" );
 						jQuery( "#new_content" ).show( 'slow' );
