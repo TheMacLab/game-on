@@ -72,6 +72,7 @@ function go_register_admin_scripts_and_styles () {
 
 	// Clipboard
 	wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/go_clipboard.css' );
+    
 
 }
 
@@ -102,6 +103,8 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	// Custom Scripts
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );
+
+    
 
 	// Localization
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
@@ -139,6 +142,7 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	// Custom Styles
 	wp_enqueue_style( 'go_every_page_css' );
 	wp_enqueue_style( 'go_style_stats' );
+
 
 	/*
 	 * Page-Specific Scripts and Styles
