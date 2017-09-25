@@ -1210,7 +1210,8 @@ function go_task_shortcode( $atts, $content = null ) {
 			var stage_1_gold = <?php echo $currency_array[0]; ?>;
 			if ( 0 === status && stage_1_gold > 0 ) {
 				go_sounds( 'store' );
-			}
+			};
+            make_clickable();
 		}); 
 		
 		function go_task_abandon() {
@@ -1791,25 +1792,50 @@ function go_task_shortcode( $atts, $content = null ) {
 						window.location = res.location;
 					} else {
 						jQuery( '#go_content' ).html( res.html );
-
-						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
-						jQuery( "#new_content" ).css( "display', 'none" );
-						jQuery( "#new_content" ).show( 'slow' );
+                        Vids_Fit_and_Box_Submit();
+                        jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
+                        jQuery( "#new_content" ).css( 'display', 'block' );
+                        jQuery( "#new_content" ).show( 'slow' ); 
+                                                
+                        
 						if ( jQuery( '#go_button' ).attr( 'status' ) == 2 ) {
-							jQuery( '#new_content' ).children().first().remove();
+				        jQuery( '#new_content' ).children().first().remove();
 						}
 						jQuery( '#go_button' ).ready( function() {
 							check_locks();
 						});
-
+                        //Make URL button clickable by clicking enter when field is in focus
+                        make_clickable();
+                        /*
+                        jQuery("#go_url_key").keyup(function(ev) {
+                        // 13 is ENTER
+                        if (ev.which === 13) {
+                            // do something
+                            jQuery("#go_button").click();
+                        }
+                        }); 
+                        */
+                        
 						// fires off the Gold ("store") sound if the stage awarded or revoked Gold
 						if ( 0 !== res.rewards.gold ) {
+                    
 							go_sounds( 'store' );
 						}
 					}
+                    Vids_Fit_and_Box_Submit();
 				}
 			});
-		}
+        }
+        function make_clickable() {
+            //Make URL button clickable by clicking enter when field is in focus
+                        jQuery("#go_url_key").keyup(function(ev) {
+                        // 13 is ENTER
+                        if (ev.which === 13) {
+                            // do something
+                            jQuery("#go_button").click();
+                        }
+                        });  
+        };
 	</script>
 <?php   
 	// this is an edit link.
