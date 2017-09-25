@@ -73,7 +73,7 @@ function Vids_Fit_and_Box_Submit(){
         LightboxNow();
     });
 };
- 
+////Saving this snippet just in case
 /*function Vids_Fit_and_Box(){
     promise = FitVidsAllFirst().then(LightBoxSecond);      
 }
