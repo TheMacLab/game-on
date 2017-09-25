@@ -581,6 +581,22 @@ ul#go_bonus_loot_wrap li.go_error {
 	border-bottom-color: inherit;
 }
 
+.go_stage_message {
+    background-color:#ddd;
+}
+#go_description .go_stage_message {
+    background-color:transparent;
+}
+
+#new_content .go_stage_message {
+    background-color:#fffcf2;
+}
+
+.go_stage_message {
+    padding:20px;
+}
+
+
 .go_test_container {
 	margin-bottom: 10px;
 }
