@@ -21,18 +21,6 @@ wp_insert_post( $my_post );
 
 function makeGOMap() {
 
-$my_post = array(
-  'post_title'    => 'Map',
-  'post_content'  => '[makeGOMap]',
-  'post_status'   => 'publish',
-  'post_author'   => 1,
-  'post_type'   => 'page',
-);
-
- 
-// Insert the post into the database
-wp_insert_post( $my_post );
-
 
 wp_register_script('go_map_js', plugins_url('scripts/go_map.js', __FILE__), array('jquery'),'1.1', false);
 wp_enqueue_script('go_map_js');
@@ -41,10 +29,6 @@ wp_enqueue_script('go_map_js');
 wp_register_style( 'go_map_style', plugin_dir_url( __FILE__ ).'styles/go_map.css' );
 wp_enqueue_style( 'go_map_style' );
     
-
-
-
-
 
 	/* Get all task chains with no parents--these are the top level on the map.  They are chains of chains (realms). */
 	$taxonomy = 'task_chains';
