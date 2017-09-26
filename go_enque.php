@@ -294,6 +294,9 @@ function go_register_scripts_and_styles () {
     //FitVids can be downloaded and installed in GO by the line below and the enqueue line, or just install the plugin
     //wp_register_script('go_fitvids_jquery', plugin_dir_url( __FILE__).'scripts/FitVids/jquery.fitvids.js' );
     wp_register_script('go_fitvids', plugin_dir_url( __FILE__).'scripts/go_videos_fit_and_box.js' );
+    
+    //Map
+	wp_register_script('go_map_js',  plugin_dir_url( __FILE__).'scripts/go_map.js' );
    
 	/*
 	 * Common Styles
@@ -307,6 +310,9 @@ function go_register_scripts_and_styles () {
 	// Custom Styles
 	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
 	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
+	
+	
+
 }
 
 /*
@@ -333,6 +339,7 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_script( 'video-js' );
     wp_enqueue_script('go_fitvids');
     //wp_enqueue_script('go_fitvids_jquery');
+    wp_enqueue_script( 'go_map_js' );
   
     
 	// Custom Scripts
