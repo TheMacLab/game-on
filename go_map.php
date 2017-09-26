@@ -22,8 +22,8 @@ wp_insert_post( $my_post );
 function makeGOMap() {
 
 
-wp_register_script('go_map_js', plugins_url('scripts/go_map.js', __FILE__), array('jquery'),'1.1', false);
-wp_enqueue_script('go_map_js');
+//wp_register_script('go_map_js', plugins_url('scripts/go_map.js', __FILE__), array('jquery'),'1.1', false);
+//wp_enqueue_script('go_map_js');
 
 
 wp_register_style( 'go_map_style', plugin_dir_url( __FILE__ ).'styles/go_map.css' );
