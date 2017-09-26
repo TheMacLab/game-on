@@ -39,7 +39,7 @@ function LightboxNow(){
             var _src = jQuery(this).parent().find('iframe').attr('src');
             jQuery(this).attr("href", _src);
             var _href = jQuery(this).attr("href");
-            jQuery(this).attr("href", _href + '&autoplay=1');
+            jQuery(this).attr("href", _href + '?&autoplay=1');
             //activates the lightbox
             jQuery.featherlight.defaults.closeOnClick = false;
             jQuery.featherlight.defaults.iframeWidth = '100%';
