@@ -689,16 +689,6 @@ function go_task_shortcode( $atts, $content = null ) {
 		$update_percent = 1;    
 	}
 
-	// Array of badge switch and badges associated with a stage
-	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
-	$stage_badges = array(
-		get_post_meta( $id, 'go_mta_stage_one_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_two_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_three_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_four_badge', true ),
-		get_post_meta( $id, 'go_mta_stage_five_badge', true ),
-	);
-
 	if ( $is_admin === true || ! empty( $go_ahead ) || ! isset( $focus_category_lock ) || empty( $category_names ) ) {
 		if ( ( empty( $bonus_currency_required ) || 
 					( ! empty( $bonus_currency_required ) && $current_bonus_currency >= $bonus_currency_required ) ) &&
@@ -726,18 +716,6 @@ function go_task_shortcode( $atts, $content = null ) {
 					0,
 					0
 				);
-
-				if ( $stage_badges[0][0] ) {
-					foreach ( $stage_badges[0][1] as $badge_id ) {
-						go_award_badge(
-							array(
-								'id'        => $badge_id,
-								'repeat'    => false,
-								'uid'       => $user_id
-							)
-						);
-					}
-				}
 				go_record_stage_time( $page_id, 1 );
 	?>
 				<div id="go_content">
@@ -1210,7 +1188,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			var stage_1_gold = <?php echo $currency_array[0]; ?>;
 			if ( 0 === status && stage_1_gold > 0 ) {
 				go_sounds( 'store' );
-			};
+			}
             make_clickable();
 		}); 
 		
@@ -1794,31 +1772,21 @@ function go_task_shortcode( $atts, $content = null ) {
 						jQuery( '#go_content' ).html( res.html );
                         Vids_Fit_and_Box_Submit();
                         jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
-                        jQuery( "#new_content" ).css( 'display', 'block' );
+                        jQuery( "#new_content" ).css( 'display', 'none' );
                         jQuery( "#new_content" ).show( 'slow' ); 
                                                 
                         
 						if ( jQuery( '#go_button' ).attr( 'status' ) == 2 ) {
-				        jQuery( '#new_content' ).children().first().remove();
+							jQuery( '#new_content' ).children().first().remove();
 						}
 						jQuery( '#go_button' ).ready( function() {
 							check_locks();
 						});
                         //Make URL button clickable by clicking enter when field is in focus
                         make_clickable();
-                        /*
-                        jQuery("#go_url_key").keyup(function(ev) {
-                        // 13 is ENTER
-                        if (ev.which === 13) {
-                            // do something
-                            jQuery("#go_button").click();
-                        }
-                        }); 
-                        */
                         
 						// fires off the Gold ("store") sound if the stage awarded or revoked Gold
 						if ( 0 !== res.rewards.gold ) {
-                    
 							go_sounds( 'store' );
 						}
 					}
@@ -2274,14 +2242,13 @@ function go_unlock_stage() {
 
 function go_task_change_stage() {
 	global $wpdb;
-    
 
 	$user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
 	$is_admin = go_user_is_admin( $user_id );
 
 	// post id posted from ajax function (untrusted)
 	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 );
-   
+   //These globals are needed for the oembed to function--I think.
     global $post;
     $post = get_post($post_id);
     setup_postdata( $post );
@@ -2688,7 +2655,6 @@ function go_task_change_stage() {
     $accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
 	} else {
 		$accept_message = $content_post->post_content;
-
 	}
 
 	// Tests failed.
@@ -2910,9 +2876,8 @@ function go_task_change_stage() {
 						}
 					}
 				}
-
-				if ( $stage_badges[ $status - 1 ][0] ) {
-					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
+				if ( $stage_badges[ $status ][0] ) {
+					foreach ( $stage_badges[ $status ][1] as $badge_id ) {
 						go_remove_badge( $user_id, $badge_id );
 					}
 				}
@@ -2976,9 +2941,8 @@ function go_task_change_stage() {
 						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 						$e_passed, $a_passed, $c_passed, $m_passed
 					);
-
-					if ( $stage_badges[ $db_status - 1 ][0] ) {
-						foreach ( $stage_badges[ $db_status - 1 ][1] as $badge_id ) {
+					if ( $stage_badges[ $db_status - 2 ][0] ) {
+						foreach ( $stage_badges[ $db_status - 2 ][1] as $badge_id ) {
 							go_remove_badge( $user_id, $badge_id );
 						}
 					}
@@ -3011,9 +2975,8 @@ function go_task_change_stage() {
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
 					$e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time
 				);
-
-				if ( $stage_badges[ $status - 1 ][0] ) {
-					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
+				if ( $stage_badges[ $status - 2 ][0] ) {
+					foreach ( $stage_badges[ $status - 2 ][1] as $badge_id ) {
 						go_award_badge(
 							array(
 								'id'        => $badge_id,
