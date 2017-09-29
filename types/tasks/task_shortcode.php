@@ -394,6 +394,11 @@ function go_task_shortcode( $atts, $content = null ) {
 		$test_c_all_keys = $test_c_array[2][3];
 	}
 	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' ); // Completion Message
+    //adds oembed content
+    if(isset($GLOBALS['wp_embed']))
+    $completion_message = $GLOBALS['wp_embed']->autoembed($completion_message);
+    
+    
 	$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
 	
 	if ( $mastery_active ) {
@@ -408,12 +413,21 @@ function go_task_shortcode( $atts, $content = null ) {
 			$test_m_all_answers = $test_m_array[2][2];
 			$test_m_all_keys = $test_m_array[2][3];
 		}
-		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' ); // Mastery Message
+		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );// Mastery Message
+        //adds oembed content
+        if(isset($GLOBALS['wp_embed']))
+        $mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
+        
+        
 		$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
 
 		if ( $repeat == 'on' ) {    // Checks if the task is repeatable and if it has a repeat limit
 			$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
 			$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+            //adds oembed content
+            if(isset($GLOBALS['wp_embed']))
+            $repeat_message = $GLOBALS['wp_embed']->autoembed($repeat_message);
+            
 			$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
 			$number_of_stages = 5;
 		}
@@ -432,6 +446,9 @@ function go_task_shortcode( $atts, $content = null ) {
 	$focus_category_lock = ( ! empty( $locked_by_category ) ? true : false );
 
 	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' ); // Description
+    //adds oembed content
+    if(isset($GLOBALS['wp_embed']))
+    $description = $GLOBALS['wp_embed']->autoembed($description);
 
 	$points_array = ( ! empty( $rewards['points'] ) ? $rewards['points'] : array() );
 	$points_str = implode( ' ', $points_array );
@@ -449,7 +466,11 @@ function go_task_shortcode( $atts, $content = null ) {
 	if ( $task_content != '' && empty( $custom_fields['go_mta_accept_message'] ) ) { // If content is returned from the post table, and the post doesn't have an accept message meta field, run this code
 		add_post_meta( $id, 'go_mta_accept_message', $task_content ); // Add accept message meta field with value of the post's content from post table
 	} else { // If the task has content in the post table, and has a meta field, run this code
-		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' ); // Set value of accept message equal to the task's accept message meta field value
+		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
+        //adds oembed content 
+         if(isset($GLOBALS['wp_embed']))
+        $accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
+        // Set value of accept message equal to the task's accept message meta field value
 	}
 
 	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
@@ -1190,6 +1211,7 @@ function go_task_shortcode( $atts, $content = null ) {
 			if ( 0 === status && stage_1_gold > 0 ) {
 				go_sounds( 'store' );
 			}
+            make_clickable();
 		}); 
 		
 		function go_task_abandon() {
@@ -1770,24 +1792,40 @@ function go_task_shortcode( $atts, $content = null ) {
 						window.location = res.location;
 					} else {
 						jQuery( '#go_content' ).html( res.html );
-						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
-						jQuery( "#new_content" ).css( "display', 'none" );
-						jQuery( "#new_content" ).show( 'slow' );
+                        Vids_Fit_and_Box_Submit();
+                        jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
+                        jQuery( "#new_content" ).css( 'display', 'none' );
+                        jQuery( "#new_content" ).show( 'slow' ); 
+                                                
+                        
 						if ( jQuery( '#go_button' ).attr( 'status' ) == 2 ) {
 							jQuery( '#new_content' ).children().first().remove();
 						}
 						jQuery( '#go_button' ).ready( function() {
 							check_locks();
 						});
-
+                        //Make URL button clickable by clicking enter when field is in focus
+                        make_clickable();
+                        
 						// fires off the Gold ("store") sound if the stage awarded or revoked Gold
 						if ( 0 !== res.rewards.gold ) {
 							go_sounds( 'store' );
 						}
 					}
+                    Vids_Fit_and_Box_Submit();
 				}
 			});
-		}
+        }
+        function make_clickable() {
+            //Make URL button clickable by clicking enter when field is in focus
+                        jQuery("#go_url_key").keyup(function(ev) {
+                        // 13 is ENTER
+                        if (ev.which === 13) {
+                            // do something
+                            jQuery("#go_button").click();
+                        }
+                        });  
+        };
 	</script>
 <?php   
 	// this is an edit link.
@@ -1797,19 +1835,40 @@ add_shortcode( 'go_task','go_task_shortcode' );
 
 function go_display_visitor_content( $id ) {
 	$custom_fields = get_post_custom( $id );
-	$encounter_message = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
-	$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
-	$complete_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+	
+    $encounter_message = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
+    //add oembed content
+	if(isset($GLOBALS['wp_embed']))
+    $encounter_message = $GLOBALS['wp_embed']->autoembed($encounter_message);
+    
+    $accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
+    //add oembed content
+    if(isset($GLOBALS['wp_embed']))
+    $accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
+	
+    $complete_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+    //add oembed content
+    if(isset($GLOBALS['wp_embed']))
+    $complete_message = $GLOBALS['wp_embed']->autoembed($complete_message);
+    
 	$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true );
 	if ( $mastery_active ) {
 		$mastery_privacy = ( ! empty( $custom_fields['go_mta_mastery_privacy'][0] ) ? ! $custom_fields['go_mta_mastery_privacy'][0] : true );
 		if ( $mastery_privacy ) {
 			$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
-			$repeat_active = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : false );
+            //add oembed content
+			if(isset($GLOBALS['wp_embed']))
+            $mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
+            
+            $repeat_active = ( ! empty( $custom_fields['go_mta_five_stage_switch'][0] ) ? $custom_fields['go_mta_five_stage_switch'][0] : false );
 			if ( $repeat_active && $mastery_privacy ) {
 				$repeat_privacy = ( ! empty( $custom_fields['go_mta_repeat_privacy'][0] ) ? ! $custom_fields['go_mta_repeat_privacy'][0] : true );
 				if ( $repeat_privacy ) {
-					$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+					
+                    $repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+                    //add oembed content
+                    if(isset($GLOBALS['wp_embed']))
+                    $repeat_message = $GLOBALS['wp_embed']->autoembed($repeat_message);
 				} else {
 					$repeat_message = "This stage has been hidden by the administrator.";
 				}
@@ -2211,7 +2270,11 @@ function go_task_change_stage() {
 
 	// post id posted from ajax function (untrusted)
 	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 );
-
+   //These globals are needed for the oembed to function--I think.
+    global $post;
+    $post = get_post($post_id);
+    setup_postdata( $post );
+    
 	// gets the task's post object to validate that it exists, user requests for non-existent tasks
 	// should be stopped and the user redirected to the home page
 	$post_obj = get_post( $post_id );
@@ -2553,6 +2616,10 @@ function go_task_change_stage() {
 		$test_c_all_keys = $test_c_array[2][3];
 	}
 	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
+    //adds oembed content
+    if(isset($GLOBALS['wp_embed']))
+    $completion_message = $GLOBALS['wp_embed']->autoembed($completion_message);
+    
 	$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
 	if ( $mastery_active ) {
 		$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
@@ -2568,16 +2635,27 @@ function go_task_change_stage() {
 			$test_m_all_keys = $test_m_array[2][3];
 		}
 		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
+        //adds oembed content
+        if(isset($GLOBALS['wp_embed']))
+        $mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
+        
 		$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
 
 		if ( $repeat == 'on' ) {
 			$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
 			$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
+            //adds oembed content
+            if(isset($GLOBALS['wp_embed']))
+            $repeat_message = $GLOBALS['wp_embed']->autoembed($repeat_message);
+            
 			$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
 		}
 	}
 
 	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
+    //adds oembed content
+    if(isset($GLOBALS['wp_embed']))
+    $description = $GLOBALS['wp_embed']->autoembed($description);
 
 	// Array of badge switch and badges associated with a stage
 	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
@@ -2594,6 +2672,9 @@ function go_task_change_stage() {
 	$task_content = $content_post->post_content;
 	if ( $task_content == '' ) {
 		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
+    //adds the oembed content to the accept_message
+    if(isset($GLOBALS['wp_embed']))
+    $accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
 	} else {
 		$accept_message = $content_post->post_content;
 	}

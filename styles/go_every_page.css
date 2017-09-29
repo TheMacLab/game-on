@@ -1,3 +1,7 @@
+#wpadminbar {
+    z-index: 1000010 !important;
+}
+
 .go_align_right {
 	text-align: right;
 }
@@ -577,6 +581,22 @@ ul#go_bonus_loot_wrap li.go_error {
 	border-bottom-color: inherit;
 }
 
+.go_stage_message {
+    background-color:#ddd;
+}
+#go_description .go_stage_message {
+    background-color:transparent;
+}
+
+#new_content .go_stage_message {
+    background-color:#fffcf2;
+}
+
+.go_stage_message {
+    padding:20px;
+}
+
+
 .go_test_container {
 	margin-bottom: 10px;
 }
@@ -677,4 +697,13 @@ input#go_pass_lock::-moz-placeholder {
 
 .comment {
     list-style: none;
+}
+
+.max-width-video-wrapper {
+    max-width: 400px;
+}
+
+.featherlight-content {
+    width: 100%;
+    height: 100%;
 }

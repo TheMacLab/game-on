@@ -1,0 +1,391 @@
+/* ------------------------------------------------------------
+	Reset Styles (from meyerweb.com)
+------------------------------------------------------------ */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+
+.checkmark {
+  display: inline-block;
+  float: left;
+  margin: 0 10px 0 10px;
+}
+.checkmark:after {
+  /*Add another block-level blank space*/
+  content: '';
+  display: block;
+  /*Make it a small rectangle so the border will create an L-shape*/
+  width: 6px;
+  height: 12px;
+  /*Add a white border on the bottom and left, creating that 'L' */
+  border: solid green;
+  border-width: 0 4px 4px 0;
+  /*Rotate the L 45 degrees to turn it into a checkmark*/
+  transform: rotate(45deg);
+}
+
+
+
+/* ------------------------------------------------------------
+	NUMBER OF COLUMNS: Adjust .primaryNav li to set the number
+	of columns required in your site map. The default is 
+	4 columns (25%). 5 columns would be 20%, 6 columns would 
+	be 16.6%, etc. 
+------------------------------------------------------------ */
+
+.primaryNav li {
+    width: 90%;
+}
+
+.primaryNav li ul{
+    padding: 0px !important;
+}
+
+
+
+
+/* ------------------------------------------------------------
+	General Styles
+------------------------------------------------------------ */
+
+body {
+	background: white;
+	color: black;
+	padding: 40px;
+	font-family: Gotham, Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	line-height: 1;
+}
+.sitemap {
+	margin: 0 0 40px 0;
+	float: left;
+	width: 100%;
+}
+h1 {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 20px;
+	margin: 0 0 5px 0;
+}
+h2 {
+	font-family: "Lucida Grande", Verdana, sans-serif;
+	font-size: 10px;
+	color: #777777;
+	margin: 0 0 20px 0;
+}
+a {
+	text-decoration: none;
+}
+ol, ul {
+	list-style: none !important;
+}
+.map {padding-top:20px;
+	display:none;}
+
+
+/* ------------------------------------------------------------
+	Site Map Styles
+------------------------------------------------------------ */
+
+/* --------	Top Level --------- */
+
+.primaryNav {
+	margin: 40px 0 0 0;
+	float: left;
+	width: 100%;
+	padding: 30px 40px 0 40px !important;
+	background-color:#f5eade;
+	
+}
+
+.primaryNav li {float: left;background: url('images/map/L1-center.png') center top no-repeat;padding: 30px 0;margin-top: -30px;}
+.primaryNav .ParentNav {
+	display: block;
+	float: none;
+	background:none !important;
+	position: relative;
+	z-index: 2;
+	width: 100% !important;
+}
+.primaryNav li p,
+.primaryNav li a {
+	margin: 0 20px 0 0;
+	padding: 10px 0;
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	color: black;
+	background: #c3eafb url('images/map/white-highlight.png') top left repeat-x;
+	border: 2px solid #b5d9ea;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; /* FF 3.5+ */
+}
+/*
+.primaryNav li p:hover {
+	background-color: #e2f4fd;
+	border-color: #97bdcf;
+}
+*/
+.primaryNav li:last-child {
+	background: url('images/map/L1-right.png') center top no-repeat;
+}
+.primaryNav > li:nth-child(2) {
+	background: url('images/map/L1-left.png') center top no-repeat;
+}
+
+.primaryNav > li:first-child {
+	background: none;
+}
+
+
+
+/* --------	Second Level --------- */
+
+.primaryNav li li {
+	width: 100%;
+	clear: left;
+	margin-top: 0;
+	padding: 10px 0 0 0;
+	background: url('images/map/vertical-line.png') center bottom repeat-y;
+}
+.primaryNav li li a {
+	background-color: #cee3ac;
+	border-color: #b8da83;
+}
+.primaryNav li li a:hover {
+	border-color: #94b75f;
+	background-color: #e7f1d7;
+}
+/* --------	grey out colors --------- */
+.primaryNav li .filtered a,
+.primaryNav li .filtered a:hover {
+background-color: #cccccc;
+	border-color: #000;
+	color: #555;
+	}
+	
+/* --------	available tasks colors --------- */
+.primaryNav li .available_color a {
+	background-color: #fff7aa;
+	border-color: #e3ca4b;
+	
+	}
+
+.primaryNav li .available_color a:hover {
+	background-color: #fffce5;
+	border-color: #d1b62c;
+	
+	}
+
+.primaryNav li li:first-child {
+	padding-top: 30px;
+}
+.primaryNav li li:last-child {
+	background: url('images/map/vertical-line.png') center bottom repeat-y;
+}
+
+
+/* --------	Third Level --------- */
+
+.primaryNav li li ul {
+	margin: 10px 0 0 0;
+	width: 100%;
+	float: right;
+	padding: 9px 0 10px 0;
+	background: #ffffff url('images/map/L3-ul-top.png') center top no-repeat;
+}
+.primaryNav li li li {
+	background: url('images/map/L3-center.png') left center no-repeat;
+	padding: 5px 0;
+}
+.primaryNav li li li a {
+	background-color: #fff7aa;
+	border-color: #e3ca4b;
+	font-size: 12px;
+	padding: 5px 0;
+	width: 80%;
+	float: right;
+}
+.primaryNav li li li a:hover {
+	background-color: #fffce5;
+	border-color: #d1b62c;
+}
+.primaryNav li li li:first-child {
+	padding: 15px 0 5px 0;
+	background: url('images/map/L3-li-top.png') left center no-repeat;
+}
+.primaryNav li li li:last-child {
+	background: url('images/map/L3-bottom.png') left center no-repeat;
+}
+
+
+
+/* ------------------------------------------------------------
+	Utility Navigation
+
+
+#utilityNav {
+	float: left;
+	max-width: 100%;
+	margin-right: 10px;
+}
+#utilityNav li {
+	float: left;
+	margin-bottom: 10px;
+}
+#utilityNav li a {
+	margin: 0 10px 0 0;
+	padding: 5px 10px;
+	display: block;	
+	border: 2px solid #e3ca4b;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	color: black;
+	background: #fff7aa url('images/map/white-highlight.png') top left repeat-x;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+	cursor: pointer;
+}
+
+#utilityNav .filtered a,
+#utilityNav .filtered a:hover{
+    background-color: #cccccc;
+	border-color: #000;
+	color: #555;
+}
+#utilityNav .done a,
+#utilityNav .done a:hover{
+    background-color: #cee3ac;
+    border-color: #b8da83;
+}
+
+#utilityNav li a:hover {
+	background-color: #fffce5;
+	border-color: #d1b62c;
+	cursor: pointer;
+}
+
+
+------------------------------------------------------------ */
+
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:100;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+
+
+/* ------------------------------------------------------------
+	Utility Navigation
+------------------------------------------------------------ */
+
+#myDropdown {
+	float: left;
+	max-width: 100%;
+	margin-right: 10px;
+}
+#utilityNav li {
+	float: left;
+	margin-bottom: 10px;
+}
+#myDropdown a {
+	margin: 10px 10px 0 0;
+	padding: 5px 10px;
+	display: block;	
+	border: 2px solid #e3ca4b;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	color: black;
+	background: #fff7aa url('images/map/white-highlight.png') top left repeat-x;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; /* FF 3.5+ */	
+	cursor: pointer;
+}
+
+#myDropdown .filtered a,
+#myDropdown .filtered a:hover{
+    background-color: #cccccc;
+	border-color: #000;
+	color: #555;
+}
+#myDropdown .done a,
+#myDropdown .done a:hover{
+    background-color: #cee3ac;
+    border-color: #b8da83;
+}
+
+#utilityNav li a:hover {
+	background-color: #fffce5;
+	border-color: #d1b62c;
+	cursor: pointer;
+}
+

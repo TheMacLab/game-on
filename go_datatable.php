@@ -5,7 +5,7 @@ function go_table_individual() {
 	global $wpdb;
 	$table_name = "{$wpdb->prefix}go";
 	$sql = "
-		CREATE TABLE IF NOT EXISTS $table_name (
+		CREATE TABLE $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			uid INT,
 			status INT,
@@ -32,7 +32,7 @@ function go_table_individual() {
 			gifted BOOLEAN DEFAULT 0,
 			minutes INT,
 			reason VARCHAR (200),
-			url VARCHAR (200),
+			url VARCHAR (1000),
 			timestamp VARCHAR (200), 
 			UNIQUE KEY  id (id)
 		);
@@ -46,7 +46,7 @@ function go_table_totals() {
 	global $wpdb;
 	$table_name = "{$wpdb->prefix}go_totals";
 	$sql = "
-		CREATE TABLE IF NOT EXISTS $table_name (
+		CREATE TABLE $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			uid  INT,
 			currency  INT,

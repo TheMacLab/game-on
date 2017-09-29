@@ -1,5 +1,11 @@
 <?php
 
+add_action( 'admin_bar_menu', 'remove_wp_logo', 999 );
+
+function remove_wp_logo( $wp_admin_bar ) {
+	$wp_admin_bar->remove_node( 'wp-logo' );
+}
+
 function go_display_admin_bar() {
 	if ( go_return_options( 'go_admin_bar_display_switch' ) == 'On' ) {
 		return true;
@@ -277,7 +283,7 @@ function go_admin_bar() {
 				}
 			}
 		}
-
+        
 		$wp_admin_bar->add_node( 
 			array(
 				'id' => 'go_stats',
@@ -285,6 +291,17 @@ function go_admin_bar() {
 				'href' => '#',
 			) 
 		);
+        
+        $go_map_link = get_permalink( get_page_by_path('map') );
+        $wp_admin_bar->add_node( 
+			array(
+				'id' => 'go_map',
+				'title' => '<div id="go_map_page">Map</div>',
+				'href' => $go_map_link,
+			) 
+		);
+        
+        /*
 		
 		$wp_admin_bar->add_node( 
 			array(
@@ -299,6 +316,8 @@ function go_admin_bar() {
 					</form>',
 			) 
 		);
+        */
+        
 		
 		if ( $is_admin ) {
 			$wp_admin_bar->add_group(

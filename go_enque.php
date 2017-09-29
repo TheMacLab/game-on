@@ -52,6 +52,8 @@ function go_register_admin_scripts_and_styles () {
 	wp_register_script( 'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ).'scripts/jquery.dataTables.min.js' );
 	wp_register_script( 'go_jquery_clipboard', plugin_dir_url( __FILE__ ).'scripts/go_clipboard.js' );
 	wp_register_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url( __FILE__ ).'scripts/sorttable.js' );
+     
+ 
 
 	/*
 	 * Page-Specific Styles
@@ -70,6 +72,7 @@ function go_register_admin_scripts_and_styles () {
 
 	// Clipboard
 	wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/go_clipboard.css' );
+    
 
 }
 
@@ -97,10 +100,11 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	wp_enqueue_script( 'jquery-ui-progressbar' );
 	wp_enqueue_script( 'jquery-effects-core' );
 	wp_enqueue_script( 'video-js' );
-
 	// Custom Scripts
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );
+
+    
 
 	// Localization
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
@@ -138,6 +142,7 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	// Custom Styles
 	wp_enqueue_style( 'go_every_page_css' );
 	wp_enqueue_style( 'go_style_stats' );
+
 
 	/*
 	 * Page-Specific Scripts and Styles
@@ -285,7 +290,14 @@ function go_register_scripts_and_styles () {
 	wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/go_every_page.js' );
 
 	wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/js/buy_the_item.js', array( 'jquery' ), 1.0, true );
-
+    
+    //FitVids can be downloaded and installed in GO by the line below and the enqueue line, or just install the plugin
+    //wp_register_script('go_fitvids_jquery', plugin_dir_url( __FILE__).'scripts/FitVids/jquery.fitvids.js' );
+    wp_register_script('go_fitvids', plugin_dir_url( __FILE__).'scripts/go_videos_fit_and_box.js' );
+    
+    //Map
+	wp_register_script('go_map_js',  plugin_dir_url( __FILE__).'scripts/go_map.js' );
+   
 	/*
 	 * Common Styles
 	 */
@@ -298,6 +310,9 @@ function go_register_scripts_and_styles () {
 	// Custom Styles
 	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
 	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
+	
+	
+
 }
 
 /*
@@ -322,7 +337,11 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_script( 'jquery-ui-progressbar' );
 	wp_enqueue_script( 'jquery-effects-core' );
 	wp_enqueue_script( 'video-js' );
-
+    wp_enqueue_script('go_fitvids');
+    //wp_enqueue_script('go_fitvids_jquery');
+    wp_enqueue_script( 'go_map_js' );
+  
+    
 	// Custom Scripts
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );

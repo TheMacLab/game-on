@@ -3,9 +3,9 @@
 Plugin Name: Game-On
 Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
-Author: Valhalla Mac Lab
+Author: Valhalla Mac Lab - Mick McMurray
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 3.3.6
+Version: 3.3.7
 */
 
 include( 'go_datatable.php' );
@@ -28,6 +28,7 @@ include( 'go_task_search.php' );
 include( 'go_pods.php' );
 include( 'types/tasks/task-chains.php' );
 include( 'types/types.php' );
+include( 'go_map.php' );
 
 /*
  * Plugin Activation Hooks
@@ -40,6 +41,7 @@ register_activation_hook( __FILE__, 'go_presets_registration' );
 register_activation_hook( __FILE__, 'go_install_data' );
 register_activation_hook( __FILE__, 'go_open_comments' );
 register_activation_hook( __FILE__, 'go_tsk_actv_activate' );
+register_activation_hook( __FILE__, 'go_map_activate' );
 
 /*
  * Init
