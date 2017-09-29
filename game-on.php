@@ -3,9 +3,9 @@
 Plugin Name: Game-On
 Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
-Author: Valhalla Mac Lab
+Author: Valhalla Mac Lab - Mick McMurray
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 3.3.5
+Version: 3.3.7
 */
 
 include( 'go_datatable.php' );
