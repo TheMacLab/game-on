@@ -1,5 +1,3 @@
-Note: This fork contains the changes that Mick McMurray (mcmick619@guhsd.net) is making to the files to make them work for his classes the way he wants them to.  Changes will be submitted as pull reuests to the main fork as needed.
-
 # Game-On
 
 Game-On (GO) is an educational framework that provides teachers with a vast amount of tools to create their own <a href="http://en.wikipedia.org/wiki/Gamification" target="_blank">gamified</a> learning system.
@@ -52,3 +50,7 @@ Previous Authors/Contributors:
 ### For Contributors
 
 Everything you need should be in the [wiki](https://github.com/TheMacLab/game-on/wiki/).
+
+### License
+License:           GPLv2 or later
+License URI:       http://www.gnu.org/licenses/gpl-2.0.html

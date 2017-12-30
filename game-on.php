@@ -3,9 +3,9 @@
 Plugin Name: Game-On
 Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
-Author: Valhalla Mac Lab - Mick McMurray
+Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 3.3.7
+Version: 3.5
 */
 
 include( 'go_datatable.php' );
@@ -27,8 +27,32 @@ include( 'go_messages.php' );
 include( 'go_task_search.php' );
 include( 'go_pods.php' );
 include( 'types/tasks/task-chains.php' );
+include( 'types/store/store-chains.php' );
 include( 'types/types.php' );
 include( 'go_map.php' );
+include( 'go_store.php' );
+
+
+
+if( ! class_exists( 'wp-featherlight' ) ) {
+	include( 'includes/wp-featherlight/wp-featherlight.php' );
+}
+
+if( ! class_exists( 'FitVidsWP' ) ) {
+	// FitVids Plugin is not active
+	include( 'includes/fitvids-for-wordpress/fitvids-for-wordpress.php' );
+}
+
+if( ! class_exists( 'WP_Term_Order' ) ) {
+	// WP Term Order Plugin is not active
+	include( 'includes/wp-term-order/wp-term-order.php' );
+}
+
+if( ! class_exists( 'CMB2_Bootstrap_2253' ) ) {
+	// CMB2 Plugin is not active
+	//include( 'includes/cmb2/init.php' );
+}
+
 
 /*
  * Plugin Activation Hooks
@@ -42,6 +66,7 @@ register_activation_hook( __FILE__, 'go_install_data' );
 register_activation_hook( __FILE__, 'go_open_comments' );
 register_activation_hook( __FILE__, 'go_tsk_actv_activate' );
 register_activation_hook( __FILE__, 'go_map_activate' );
+register_activation_hook( __FILE__, 'go_store_activate' );
 
 /*
  * Init
@@ -61,9 +86,6 @@ add_action( 'admin_menu', 'go_clipboard' );
 add_action( 'admin_menu', 'go_pod_submenu' );
 add_action( 'admin_bar_init', 'go_messages_bar' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
-
-// filters
-add_filter( 'show_admin_bar', 'go_display_admin_bar' );
 
 /*
  * Admin & Login Page
@@ -151,6 +173,9 @@ add_action( 'wp_ajax_go_fix_messages', 'go_fix_messages' );
 add_action( 'wp_ajax_go_mark_read', 'go_mark_read' );
 add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
 add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
+add_action( 'wp_ajax_go_update_last_map', 'go_update_last_map' );
+add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
+
 
 /*
  * Miscellaneous Filters
@@ -162,6 +187,9 @@ add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 // mitigating compatibility issues with Jetpack plugin by Automatic
 // (https://wordpress.org/plugins/jetpack/).
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
+
+
+
 
 /*
  * Important Functions
@@ -269,6 +297,7 @@ function go_register_tax_and_cpt() {
 
 function go_user_redirect( $redirect_to, $request, $user ) {
 	$redirect_on = get_option( 'go_admin_bar_user_redirect', true );
+	$redirect_url = get_option( 'go_user_redirect_location', true );
 	if ( $redirect_on && isset( $user ) && ( $user instanceof WP_User ) ) {
 		if ( isset( $user->roles ) && is_array( $user->roles ) ) {
 			$roles = $user->roles;
@@ -276,13 +305,23 @@ function go_user_redirect( $redirect_to, $request, $user ) {
 				if ( in_array( 'administrator', $roles ) ) {
 					return admin_url();
 				} else {
-					return site_url();
+					if (! empty ($redirect_url)){
+						return (site_url().'/'.$redirect_url);
+					}
+					else{
+						return site_url();
+					}
 				}
 			} else {
 				if ( $roles == 'administrator' ) {
 					return admin_url();
 				} else {
-					return site_url();
+					if (! empty ($redirect_url)){
+						return (site_url().'/'.$redirect_url);
+					}
+					else{
+						return site_url();
+					}
 				}
 			}
 		}
@@ -297,7 +336,18 @@ function go_admin_head_notification() {
 		$plugin_version = $plugin_data['Version'];
 		$nonce = wp_create_nonce( 'go_admin_remove_notification_' . get_current_user_id() );
 
-		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/><a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
+		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/>
+		<div style='position: relative; left: 20px;'>
+		</br>
+		SEE WHAT'S NEW IN THIS VERSION: 
+		<ul style='list-style:disc;'>
+			<li>OVERVIEW</li>
+			<li>MAPS</li>
+			<li>STORE CATEGORIES</li>
+			<li>VIDEO DISPLAY OPTIONS</li>
+			<li>ADMIN BAR OPTIONS</li> 
+		</ul></div>
+		<a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
 		echo "<script>
 			function go_remove_admin_notification() {
 				jQuery.ajax( {
@@ -400,5 +450,11 @@ function go_user_is_admin( $user_id = null ) {
 	}
 
 	return false;
+}
+
+if( function_exists('acf_add_options_page') ) {
+	
+	acf_add_options_page();
+	
 }
 ?>

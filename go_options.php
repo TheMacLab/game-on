@@ -109,6 +109,8 @@ if ( is_admin() ) {
 					go_options_field( 'Inventory', 1, array( 1 => 'go_inventory_name' ), 'http://maclab.guhsd.net/go/video/options/inventory.mp4', 'Name your purchased items category' );
 					go_options_field( 'Badges', 1, array( 1 => 'go_badges_name' ), 'http://maclab.guhsd.net/go/video/options/badges.mp4', 'Name your badging system' );
 					go_options_field( 'Leaderboard', 1, array( 1 => 'go_leaderboard_name' ), 'http://maclab.guhsd.net/go/video/options/leaderboard.mp4', 'Name your leaderboard' );
+					go_options_field( 'Bonus Task', 1, array( 1 => 'go_bonus_task' ), 'http://maclab.guhsd.net/go/video/options/leaderboard.mp4', 'Bonus tasks label on map' );
+					go_options_field( 'Bonus Stage', 1, array( 1 => 'go_bonus_stage' ), 'http://maclab.guhsd.net/go/video/options/leaderboard.mp4', 'Bounus stage label on map' );
 				?>
 			</div>
 			<div class='go_options_accordion_wrap' opt='1'>
@@ -235,8 +237,14 @@ if ( is_admin() ) {
 			</div>
 			<div id='go_options_admin_bar_wrap' class='go_options_wrap'>
 				<?php 
-				go_options_input( 'Display', 'checkbox', 'go_admin_bar_display_switch', 'http://maclab.guhsd.net/go/video/options/adminBarDisplay.mp4', 'Show login option in admin bar (recommended)' );
+				//if (! is_plugin_active( 'wp-term-order/wp-term-order.php' ) ) {echo "<div class=opt_accordian_message_red> The map feature requires <a href=https://wordpress.org/plugins/wp-term-order/ target=_blank>WP Term Order</a> to be installed and activated.</div>";};
+				go_options_input( 'Add Map', 'checkbox', 'go_map_switch', '#', 'Add the Map Feature. ' );
+				go_options_input( 'Add Store', 'checkbox', 'go_store_switch', '#', 'Add the Store Feature. ' );
+				go_options_input( 'Show Searchbox', 'checkbox', 'go_search_switch', '#', 'Toggles the search box in the top bar on and off.' );
+				go_options_input( 'Show Dashboard', 'checkbox', 'go_dashboard_switch', '#', 'Toggles the dashboard icon in the top bar on and off for non admin.' );
+				go_options_input( 'Always Display Bar', 'checkbox', 'go_admin_bar_display_switch', 'http://maclab.guhsd.net/go/video/options/adminBarDisplay.mp4', 'Show login option in admin bar (recommended)' );
 				go_options_input( 'User Redirect', 'checkbox', 'go_admin_bar_user_redirect', 'http://maclab.guhsd.net/go/video/options/userRedirect.mp4', 'Send users to home page after login (recommended)' );
+				go_options_input( 'Redirect Location','text', 'go_user_redirect_location', '#location_redirect', 'Leave blank to send users to homepage.' );
 				go_options_input( 'Add Switch', 'checkbox', 'go_admin_bar_add_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddSwitch.mp4', 'Activate the manual scoring system (not recommended)' );
 				?>
 				<div id ="admin_bar_catagories"><strong>Admin</strong>
@@ -538,6 +546,51 @@ if ( is_admin() ) {
 			<div class='go_options_accordion_wrap' opt='6'>
 				<?php
 				go_options_accordion_help(
+					'need video video',
+					'Video Options'
+				);
+				?>
+				<div class='go_options_accordion'>
+					Video Settings
+					<div class='go_triangle_container'>
+						<div class='go_options_triangle'></div>
+					</div>
+				</div>
+			</div>
+			<div id='go_options_video_wrap' class='go_options_wrap'>
+			<?php 
+				echo "<p class=accordian_sub_heading>Video Options</p>";
+				echo "<div class=opt_accordian_message><a href=https://codex.wordpress.org/Embeds target=_blank>See a list of sites that wordpress supports embedding content from.</a></div>";
+				go_options_input( 'Use Oembed', 'checkbox', 'go_oembed_switch', '', 'Use Wordpress default embed (recommended)' );
+				go_options_input( 'Use FitVids', 'checkbox', 'go_fitvids_switch', '#need_video', 'Make iFrame Videos Responsive (recommended)' );
+				go_options_input( 'Max Width','text', 'go_fitvids_maxwidth', '#need_video', 'Set a max width for the fitvids' );
+				//if ( ! is_plugin_active( 'wp-featherlight/wp-featherlight.php' ) ) {echo "<div class=opt_accordian_message_red> Please install and activate the plugin <a href=https://wordpress.org/plugins/wp-featherlight/ target=_blank>WP FeatherLight</a>.  This will give you the option to open your videos in a lightbox.</div>";}
+				go_options_input( 'Use Lightbox', 'checkbox', 'go_lightbox_switch', '#need_video', 'Add Lightbox to Videos (recommended)' );
+				/*
+				if ( is_plugin_active( 'fitvids-for-wordpress/fitvids-for-wordpress.php' ) ) {
+  					//plugin is activated
+  					go_options_input( 'Max Width','text', 'go_fitvids_maxwidth', '#need_video', 'Set a max width for the fitvids' );
+  					if ( is_plugin_active( 'wp-featherlight/wp-featherlight.php' ) ) {
+  						go_options_input( 'Use Lightbox', 'checkbox', 'go_lightbox_switch', '#need_video', 'Add Lightbox to Videos (recommended)' );
+					}
+					else {
+					echo "<div class=opt_accordian_message_red> Please install and activate the plugin <a href=https://wordpress.org/plugins/wp-featherlight/ target=_blank>WP FeatherLight</a>.  This will give you the option to open your videos in a lightbox.</div>";
+					};
+				}
+				else {
+				echo "<div class=opt_accordian_message_red>Please install and activate the plugins <a href=https://wordpress.org/plugins/fitvids-for-wordpress/ target=_blank>FitVids for Wordpress</a> and <a href=https://wordpress.org/plugins/wp-featherlight/ target=_blank>WP FeatherLight</a>.  This will give you the options to set a max width and open your videos in a lightbox.</div>";
+				};
+				*/
+				echo "<p class=accordian_sub_heading>Legacy Lightbox </p>";
+				echo "<div class=opt_accordian_message>Only use if you were using this feature in an old version of Game On</div>";
+				go_options_field( 'Video Default', 2, array( 1 => 'go_video_width', 2 => 'go_video_height' ), 'http://maclab.guhsd.net/go/video/options/videoDefault.mp4', 'Set your default video size' );
+				
+			?>
+				
+			</div>
+			<div class='go_options_accordion_wrap' opt='7'>
+				<?php
+				go_options_accordion_help(
 					'http://maclab.guhsd.net/go/video/options/additionalSettings.mp4',
 					'Extra custom settings and tools'
 				);
@@ -551,7 +604,6 @@ if ( is_admin() ) {
 			</div>
 			<div id='go_options_additional_settings_wrap' class='go_options_wrap'>
 				<?php 
-				go_options_field( 'Video Default', 2, array( 1 => 'go_video_width', 2 => 'go_video_height' ), 'http://maclab.guhsd.net/go/video/options/videoDefault.mp4', 'Set your default video size' );
 				go_options_input( 'From Email Address', 'text', 'go_email_from', 'http://maclab.guhsd.net/go/video/options/emailFrom.mp4', 'Set the "from" address of the store and file-uploader emails (default: "no-reply@go.net" )' );
 				go_options_input( 'Store Receipts', 'checkbox', 'go_store_receipt_switch', 'http://maclab.guhsd.net/go/video/options/storeReceipt.mp4', 'Receive email notification for each store purchase (off by default)' );
 				go_options_input( 'Full Student Name', 'checkbox', 'go_full_student_name_switch', 'http://maclab.guhsd.net/go/video/options/fullStudentName.mp4', 'Display only first name and last initial (default)' );
@@ -597,7 +649,7 @@ if ( is_admin() ) {
 				go_penalty_suffix, go_minutes_name, go_minutes_prefix, go_minutes_suffix, go_level_names, 
 				go_prestige_name, go_level_plural_names, go_organization_name, go_class_a_name, 
 				go_class_b_name, go_focus_name, go_stats_name, go_inventory_name, go_badges_name, 
-				go_leaderboard_name, go_presets, go_admin_bar_display_switch, go_admin_bar_user_redirect, 
+				go_leaderboard_name, go_bonus_task, go_bonus_stage, go_presets, go_dashboard_switch, go_admin_bar_display_switch, go_admin_bar_user_redirect, go_user_redirect_location, 
 				go_admin_bar_add_switch, go_admin_bar_add_minutes_switch, go_admin_bar_add_points_switch, 
 				go_admin_bar_add_currency_switch, go_admin_bar_add_bonus_currency_switch, 
 				go_admin_bar_add_penalty_switch, go_bar_add_minutes_switch, go_bar_add_points_switch, 
@@ -605,7 +657,8 @@ if ( is_admin() ) {
 				go_ranks, go_class_a, go_class_b, go_focus_switch, go_focus, go_admin_email, 
 				go_video_width, go_video_height, go_email_from, go_store_receipt_switch, 
 				go_full_student_name_switch, go_multiplier_switch, go_multiplier_threshold, 
-				go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch"/>
+				go_penalty_switch, go_penalty_threshold, go_multiplier_percentage, go_data_reset_switch, 
+				go_oembed_switch, go_fitvids_switch, go_lightbox_switch, go_fitvids_maxwidth, go_store_switch, go_map_switch, go_search_switch,"/>
 		</form>
 		</div>
 		<?php

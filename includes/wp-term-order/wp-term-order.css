@@ -1,0 +1,22 @@
+
+li {
+  display: -webkit-flex;
+  display: flex;
+}
+.name {
+  -webkit-flex: none;
+          flex: none;
+  width: 300px;
+}
+.posts {
+  -webkit-flex: 1;
+          flex: 1;
+}
+.pod_toggle {
+  -webkit-flex: 1;
+          flex: 1;
+}
+.pod_achievement {
+  -webkit-flex: 1;
+          flex: 1;
+}

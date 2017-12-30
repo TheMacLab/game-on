@@ -25,6 +25,7 @@ function go_register_task_tax_and_cpt() {
 		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' categories', 'task_categories' ),
 		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
 	);
+
 	$task_cat_args = array( 
 		'labels' => $task_cat_labels,
 		'public' => true,
@@ -80,8 +81,8 @@ function go_register_task_tax_and_cpt() {
 		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
 		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
 		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
-		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Chain Parent', 'task_chains' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Chain:', 'task_chains' ),
+		'parent_item' => _x('Map (Set as none to make this chain a map)', 'task_chains' ),
+		'parent_item_colon' => _x( 'Map (Set as none to make this chain a map):', 'task_chains' ),
 		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
 		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
 		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
@@ -97,12 +98,15 @@ function go_register_task_tax_and_cpt() {
 		'show_in_nav_menus' => true,
 		'show_ui' => true,
 		'show_tagcloud' => true,
-		'show_admin_column' => false,
+		'show_admin_column' => true,
 		'hierarchical' => true,
-		'rewrite' => true,
+		'rewrite' => false,
 		'query_var' => true
 	);
 	register_taxonomy( 'task_chains', array( 'tasks' ), $task_chains_args );
+	
+	
+	
 	
 	/*
 	 * Task Pods Taxonomy
@@ -128,7 +132,7 @@ function go_register_task_tax_and_cpt() {
 		'labels' => $task_pods_labels,
 		'public' => true,
 		'show_in_nav_menus' => true,
-		'show_ui' => true,
+		'show_ui' => false,
 		'show_tagcloud' => true,
 		'show_admin_column' => false,
 		'hierarchical' => true,
@@ -136,6 +140,10 @@ function go_register_task_tax_and_cpt() {
 		'query_var' => true
 	);
 	register_taxonomy( 'task_pods', array( 'tasks' ), $task_pods_args );
+	
+	
+	
+	
 
 	/*
 	 * Task Custom Post Type
@@ -164,7 +172,7 @@ function go_register_task_tax_and_cpt() {
 		'show_ui' => true,
 		'show_in_menu' => true,
 		'menu_position' => 20,
-		'menu_icon' => plugins_url( 'images/ico.png' , __FILE__ ),
+		'menu_icon' => 'dashicons-welcome-widgets-menus',
 		'show_in_nav_menus' => true,
 		'exclude_from_search' => false,
 		'has_archive' => true,
@@ -175,6 +183,7 @@ function go_register_task_tax_and_cpt() {
 	);
 	register_post_type( 'tasks', $args_cpt );
 }
+
 
 /**
  * Retrieves the status of a task for a specific user.
@@ -266,4 +275,76 @@ function go_task_get_repeat_count( $task_id, $user_id = null ) {
 
 	return $task_count;
 }
+
+/**
+ * Display a custom taxonomy dropdown in admin
+ * @author Mike Hemberger
+ * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
+ */
+add_action('restrict_manage_posts', 'go_filter_tasks_by_taxonomy');
+function go_filter_tasks_by_taxonomy() {
+	global $typenow;
+	$post_type = 'tasks'; // change to your post type
+	$taxonomy  = 'task_chains'; // change to your taxonomy
+	if ($typenow == $post_type) {
+		$selected      = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
+		$info_taxonomy = get_taxonomy($taxonomy);
+		wp_dropdown_categories(array(
+			'show_option_all' => __("Show All {$info_taxonomy->label}"),
+			'taxonomy'        => $taxonomy,
+			'name'            => $taxonomy,
+			'orderby'         => 'name',
+			'selected'        => $selected,
+			'show_count'      => true,
+			'hide_empty'      => true,
+		));
+	};
+}
+/**
+ * Filter posts by taxonomy in admin
+ * @author  Mike Hemberger
+ * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
+ */
+add_filter('parse_query', 'go_convert_task_id_to_term_in_query');
+function go_convert_task_id_to_term_in_query($query) {
+	global $pagenow;
+	$post_type = 'tasks'; // change to your post type
+	$taxonomy  = 'task_chains'; // change to your taxonomy
+	$q_vars    = &$query->query_vars;
+	if ( $pagenow == 'edit.php' && isset($q_vars['post_type']) && $q_vars['post_type'] == $post_type && isset($q_vars[$taxonomy]) && is_numeric($q_vars[$taxonomy]) && $q_vars[$taxonomy] != 0 ) {
+		$term = get_term_by('id', $q_vars[$taxonomy], $taxonomy);
+		$q_vars[$taxonomy] = $term->slug;
+	}
+}
+
+/**
+ * Auto update slugs
+ * @author  Mick McMurray
+ * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
+ */
+
+/**
+**turn this on in future release
+function go_update_slug( $data, $postarr ) {
+
+        $data['post_name'] = wp_unique_post_slug( sanitize_title( $data['post_title'] ), $postarr['ID'], $data['post_status'], $data['post_type'], $data['post_parent'] );
+
+
+    return $data;
+}
+add_filter( 'wp_insert_post_data', 'go_update_slug', 99, 2 );
+
+
+
+// define the wp_update_term_data callback 
+function go_update_term_slug( $data, $term_id, $taxonomy, $args ) { 
+	//echo '<script type="text/javascript">alert("'.print_r($args).'");</script>';
+	$no_space_slug = sanitize_title($data['name']);
+     $data['slug'] = wp_unique_term_slug( $no_space_slug , (object) $args );
+    return $data; 
+ 
+}; 
+         
+add_filter( 'wp_update_term_data', 'go_update_term_slug', 10, 4 );
+*/
 ?>

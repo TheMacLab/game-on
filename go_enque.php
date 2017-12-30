@@ -16,6 +16,8 @@ function go_register_admin_scripts_and_styles () {
 	// Custom Scripts
 	wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/go_notification.js' );
 	wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/go_every_page.js' );
+	wp_register_script( 'go_types', plugin_dir_url( __FILE__ ).'types/types.js' );
+	
 
 	/*
 	 * Common Styles
@@ -52,8 +54,6 @@ function go_register_admin_scripts_and_styles () {
 	wp_register_script( 'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ).'scripts/jquery.dataTables.min.js' );
 	wp_register_script( 'go_jquery_clipboard', plugin_dir_url( __FILE__ ).'scripts/go_clipboard.js' );
 	wp_register_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url( __FILE__ ).'scripts/sorttable.js' );
-     
- 
 
 	/*
 	 * Page-Specific Styles
@@ -72,7 +72,6 @@ function go_register_admin_scripts_and_styles () {
 
 	// Clipboard
 	wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/go_clipboard.css' );
-    
 
 }
 
@@ -100,11 +99,12 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	wp_enqueue_script( 'jquery-ui-progressbar' );
 	wp_enqueue_script( 'jquery-effects-core' );
 	wp_enqueue_script( 'video-js' );
+	
+
 	// Custom Scripts
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );
-
-    
+	wp_enqueue_script( 'go_types' );
 
 	// Localization
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
@@ -142,6 +142,14 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	// Custom Styles
 	wp_enqueue_style( 'go_every_page_css' );
 	wp_enqueue_style( 'go_style_stats' );
+	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'); 
+	//wp_enqueue_style('fontawesome', 'http:////netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css', '', '4.5.0', 'all');
+
+
+	//function fontawesome_dashboard() {
+  // wp_enqueue_style('fontawesome', 'http:////netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css', '', '4.5.0', 'all');}
+//add_action('admin_init', 'fontawesome_dashboard');
+
 
 
 	/*
@@ -292,11 +300,12 @@ function go_register_scripts_and_styles () {
 	wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/js/buy_the_item.js', array( 'jquery' ), 1.0, true );
     
     //FitVids can be downloaded and installed in GO by the line below and the enqueue line, or just install the plugin
-    //wp_register_script('go_fitvids_jquery', plugin_dir_url( __FILE__).'scripts/FitVids/jquery.fitvids.js' );
-    wp_register_script('go_fitvids', plugin_dir_url( __FILE__).'scripts/go_videos_fit_and_box.js' );
-    
+    //wp_register_script('go_fitvids_jquery', plugin_dir_url( __FILE__).'scripts/fitvids/jquery.fitvids.js' );
+    //wp_register_script('go_featherlight', plugin_dir_url( __FILE__).'scripts/featherlight/release/featherlight.min.js' );
+  	wp_register_script('go_videos_fit_and_box', plugin_dir_url( __FILE__).'scripts/go_videos_fit_and_box.js' );
+
     //Map
-	wp_register_script('go_map_js',  plugin_dir_url( __FILE__).'scripts/go_map.js' );
+	//wp_register_script('go_map_js',  plugin_dir_url( __FILE__).'scripts/go_map.js' );
    
 	/*
 	 * Common Styles
@@ -310,9 +319,6 @@ function go_register_scripts_and_styles () {
 	// Custom Styles
 	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
 	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
-	
-	
-
 }
 
 /*
@@ -337,15 +343,18 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_script( 'jquery-ui-progressbar' );
 	wp_enqueue_script( 'jquery-effects-core' );
 	wp_enqueue_script( 'video-js' );
-    wp_enqueue_script('go_fitvids');
-    //wp_enqueue_script('go_fitvids_jquery');
-    wp_enqueue_script( 'go_map_js' );
+	//wp_enqueue_script('go_fitvids_jquery');
+	//wp_enqueue_script('go_featherlight');
+    wp_enqueue_script('go_videos_fit_and_box');
+    //wp_enqueue_script( 'go_map_js' );
+    
   
     
 	// Custom Scripts
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );
 	wp_enqueue_script( 'buy_the_item' );
+	
 
 	// Localization
 	$user_id = get_current_user_id();
@@ -392,6 +401,9 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_style( 'jquery-ui-css' );
 	wp_enqueue_style( 'video-js-css' );
 	wp_enqueue_style( 'go_lightbox' );
+	//wp_enqueue_style( 'go_featherlight_css' );
+	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'); 
+
 
 	// Custom Styles
 	wp_enqueue_style( 'go_every_page_css' );

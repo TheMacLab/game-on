@@ -96,6 +96,18 @@ function go_final_chain_message_on_toggle( row_class ) {
 	}
 }
 
+// a handler specifically for when the optional task in chain row opened
+function go_optional_task_on_toggle( row_class ) {
+	var visible = jQuery( row_class ).is( ':visible' );
+	var in_chain = GO_TASK_DATA.task_chains.in_chain;
+
+	if ( in_chain && ! visible ) {
+		jQuery( row_class ).show();
+	} else if ( visible ) {
+		jQuery( row_class ).hide();
+	}
+}
+
 // a handler specifically for when the admin lock setting row is opened in any of the stage accordions
 function go_admin_lock_on_toggle( row_class ) {
 	var visible = jQuery( row_class ).is( ':visible' );
@@ -1384,6 +1396,11 @@ function go_generate_accordion_array() {
 					cmb_id: 'final_chain_message',
 					on_toggle: go_final_chain_message_on_toggle
 				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'optional_task',
+					on_toggle: go_optional_task_on_toggle
+				},
 			],
 		},
 		stage_one: {
@@ -1597,10 +1614,6 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'mastery_url_key'
-				},
-				{
-					cmb_type: 'checkbox',
 					cmb_id: 'mastery_upload'
 				},
 				{
@@ -1678,6 +1691,10 @@ function go_generate_accordion_array() {
 				{
 					cmb_type: 'checkbox',
 					cmb_id: 'repeat_upload'
+				},
+				{
+					cmb_type: 'checkbox',
+					cmb_id: 'mastery_url_key'
 				},
 				{
 					cmb_type: 'checkbox',

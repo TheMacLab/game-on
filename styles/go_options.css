@@ -163,7 +163,7 @@ input[type="submit"] {
 /** General Options Styles **/
 
 .go_options_wrap {
-	margin: 4px 0px 4px 125px;
+	margin: 4px 0px 4px 200px;
 	display: inline-block;
 	overflow: none;
 }
@@ -315,6 +315,39 @@ input[type="submit"] {
 	width: 50%;
 }
 
+
+/****************************/
+
+/** Video Settings Styles **/
+
+#go_options_video_wrap {
+	margin-left: 200px;
+	width: 100%;
+}
+
+.accordian_sub_heading {
+    font-size: 1.5em;
+    font-weight: bold;
+    right: 150px;
+    position: relative;
+    margin-bottom: 3px;
+}
+
+.opt_accordian_message_red {
+    right: 150px;
+    position: relative;
+    margin-bottom: 3px;
+    color: red;
+    
+}
+
+.opt_accordian_message {
+    right: 150px;
+    position: relative;
+    margin-bottom: 3px;
+    
+}
+
 /****************************/
 
 /** Additional Settings Styles **/
@@ -326,7 +359,7 @@ input[type="submit"] {
 
 .go_options_additional_settings_input[type="text"] {
 	width: 5%;
-	min-width: 30px;
+	min-width: 100px;
 }
 
 .go_options_additional_settings_input[name="go_admin_email"] {
