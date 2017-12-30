@@ -1,5 +1,68 @@
 <?php
+global $wpdb;
+$go_db_version = '1.1';
 
+function go_update_db_check() {
+    global $go_db_version;
+    if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
+        go_table_individual();  	
+    } 
+    
+}
+add_action( 'plugins_loaded', 'go_update_db_check' );
+
+
+
+	
+/*Add these to the database when making the switch to 
+			url_1 VARCHAR (1000),
+			url_2 VARCHAR (1000),
+			url_3 VARCHAR (1000),
+			url_4 VARCHAR (1000),
+			url_5 VARCHAR (1000),
+*/
+/*And add the code below to update the URLs
+//it needs code added to remove the current URL column
+
+	$go_table_name = "{$wpdb->prefix}go";
+
+	$task_list = $wpdb->get_results( "SELECT * FROM $go_table_name");
+	//echo "$rows";
+	foreach ( $task_list as $task ) {
+		$task_url = unserialize( $task->url );
+		$uid = $task->uid;
+		$task_id = $task->post_id;
+		//repeat until a url is found
+		for ($i = 1; $i <= 6; $i++) {
+			$stage = "url_" . ($i-1);
+			$url_stage = $task_url[$i];
+			if (! empty($url_stage)){
+				break;
+			}
+		}
+			var_dump($uid);
+			var_dump($task_id);
+			var_dump($url_stage);
+			var_dump($stage);
+		if(! empty ($url_stage)){
+						$wpdb->update(
+				$go_table_name,
+				array(
+					$stage => $url_stage
+				),
+				array(
+					'uid' => $uid,
+					'post_id' => $task_id
+				),
+				array( '%s' )
+			);
+		}
+		
+	};
+	
+*/
+
+add_option( 'go_db_version', $go_db_version );
 // Creates table for indivual logs.
 function go_table_individual() {
 	global $wpdb;
@@ -39,6 +102,8 @@ function go_table_individual() {
 	";
 	require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
+	
+	update_option( 'go_db_version', $go_db_version );
 }
 
 // Creates a table for totals.
@@ -292,9 +357,12 @@ function go_install_data () {
 		'go_inventory_name' => 'Inventory',
 		'go_badges_name' => 'Badges',
 		'go_leaderboard_name' => 'Leaderboard',
+		'go_bonus_task' => 'Bonus',
+		'go_bonus_stage' => 'Bonus',
 		'go_presets' => $tier_presets,
 		'go_admin_bar_display_switch' => 'On',
 		'go_admin_bar_user_redirect' => 'On',
+		'go_user_redirect_location' => '',
 		'go_admin_bar_add_switch' => '',
 		'go_ranks' => $ranks,
 		'go_class_a' => $period_defaults,
@@ -313,6 +381,14 @@ function go_install_data () {
 		'go_penalty_threshold' => 5,
 		'go_multiplier_percentage' => 10,
 		'go_data_reset_switch' => '',
+		'go_search_switch' => 'On',
+		'go_map_switch' => 'On',
+		'go_dashboard_switch' => 'On',
+		'go_store_switch' => 'On',
+		'go_fitvids_switch' => 'On',
+		'go_oembed_switch' => 'On',
+		'go_lightbox_switch' => 'On',
+		'go_fitvids_maxwidth' => '500px',
 	);
 	foreach ( $options_array as $key => $value ) {
 		add_option( $key, $value );

@@ -153,23 +153,15 @@ function go_stats_task_list() {
 	);
 	$counter = 1;
 	?>
-	<ul id='go_stats_tasks_list' <?php if ( $is_admin ) { echo "class='go_stats_tasks_list_admin'"; } ?>>
+	<div id='go_stats_tasks_list' <?php if ( $is_admin ) { echo "class='go_stats_tasks_list_admin'"; } ?>>
 		<?php
 		foreach ( $task_list as $task ) {
 			$task_urls = unserialize( $task->url );
 			$custom = get_post_meta( $task->post_id );
 			?>
-			<li class='go_stats_task <?php if ( $counter % 2 == 0) { echo 'go_stats_right_task'; } ?>'>
+			<div class='go_stats_task <?php if ( $counter % 2 == 0) { echo 'go_stats_right_task'; } ?>'>
 				<a href='<?php echo get_permalink( $task->post_id ); ?>' <?php echo ( ( $user_id != get_current_user_id() ) ? "target='_blank'" : '' ); ?>class='go_stats_task_list_name'><?php echo get_the_title( $task->post_id); ?></a>
-				<?php
-				if ( $is_admin ) {
-				?>
-				<button class='go_stats_task_admin_submit' task='<?php echo $task->post_id; ?>'>SEND</button>
-					<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me'/>
-                    
-				<?php 
-				}
-				?>
+
 				<div class='go_stats_task_status_wrap'>
 				<?php
 								
@@ -231,14 +223,29 @@ function go_stats_task_list() {
 					 * (for all except the repeat stage box).
 					 */
 					$div_timestamp_date_str = '';
-
-					if ( ! empty( $task_urls[ $i ] ) ) {
-						$link_stage_url = $task_urls[ $i ];
+			
+					unset($url_array);
+		
+					if ( 5 > $i ) {
+						//$link_stage_url = $task_urls[ $i - 1 ];
+						
+						foreach ($task_urls as $key => $taskurl){
+									if ($key === $i){
+										$link_stage_url = $taskurl;
+									}		
+							}
+									
 					} else if ( 5 == $i &&
-							! empty( $task_urls[4] ) &&
 							4 == $task->status &&
 							$task->count >= 1 ) {
-						$link_stage_url = $task_urls[4];
+							
+							foreach ($task_urls as $key => $taskurl){
+									if ($key > 4){
+										$url_array[] = $taskurl;
+										$div_class_list_str .= ' popup';
+										$div_class_list_str .= ' stage_url';
+									}	
+							}
 					}
 
 					if ( $is_admin ) {
@@ -261,9 +268,7 @@ function go_stats_task_list() {
 						$div_class_list_str .= ' go_stage_does_not_exist';
 					}
 
-					if ( ! empty( $link_stage_url ) &&
-							( ( $i <= 4 && $task->count < 1 ) ||
-							( $i == 5 && $task->count >= 1 ) ) ) {
+					if ( ! empty( $link_stage_url )) {
 						$div_class_list_str .= ' stage_url';
 					}
 
@@ -274,7 +279,7 @@ function go_stats_task_list() {
 						$div_class_list_str .= ' future_url';
 					}
 
-					if ( $i == 5 && $task->count > 1 ) {
+					if ( $i == 5 && $task->count > 0 ) {
 						$div_count_str = $task->count;
 					}
 
@@ -297,26 +302,54 @@ function go_stats_task_list() {
 					 * empty because it will simply output an empty string on the repeat
 					 * stage's box.
 					 */
-					echo "
-						<a class='{$link_class_list_str}' href='".( ! empty( $link_stage_url ) ? $link_stage_url : '#' )."' ".
-								( ! empty( $link_stage_url ) ? 'target="_blank"' : '' ).">
-							<div class='{$div_class_list_str}' title='{$div_title_str}' task='{$task->post_id}' stage='{$i}' ".
-									( ! empty( $div_count_str ) ? "count='{$div_count_str}'>{$div_count_str}" : '>' ).
-								"<p>{$div_timestamp_date_str}</p>
-							</div>
-						</a>
-					";
+					 if ( $i < 5 ) {
+						echo "
+							<a class='{$link_class_list_str}' href='".( ! empty( $link_stage_url ) ? $link_stage_url : '#' )."' ".
+									( ! empty( $link_stage_url ) ? 'target="_blank"' : '' ).">
+								<div class='{$div_class_list_str}' title='{$div_title_str}' task='{$task->post_id}' stage='{$i}' ".
+										( ! empty( $div_count_str ) ? "count='{$div_count_str}'>{$div_count_str}" : '>' ).
+									"<p>{$div_timestamp_date_str}</p>
+								</div>
+							</a>
+						";
+					}
+					else if( 5 == $i ) {
+						
+
+						echo "
+							
+								<div class='{$div_class_list_str}'  title='{$div_title_str}'  task='{$task->post_id}' stage='{$i}' ".
+										( ! empty( $div_count_str ) ? "count='{$div_count_str}'>" : '>' ).
+									"<p>{$div_count_str}</p>
+									  <div class='popuptext' id='myPopup_$div_count_str' >";
+						$repeat_count = 1;
+							foreach ($url_array as $url){
+								//echo '<script type="text/javascript">alert("'.$url.'");</script>';
+								echo "<p><a href='$url'>$repeat_count</a></p>";
+								$repeat_count++;
+							}
+
+						echo"</div></div>";
+							
+					}
 				}
 				?>
 				</div>
 			<?php
 			$counter++;
-			?>
-			</li>
+			
+			if ( $is_admin ) {
+				?>
+				<input type='text' class='go_stats_task_admin_message' id='go_stats_task_<?php echo $task->post_id ?>_message' name='go_stats_task_admin_message' placeholder='See me'/>
+				<div class='go_stats_task_admin_submit_div'><button class='go_stats_task_admin_submit' task='<?php echo $task->post_id; ?>'>SEND</button></div>
+				<?php 
+				}
+				?>
+			</div>
 			<?php
 		}
 	?>
-	</ul>
+	</div>
 	<?php
 	die();
 }
