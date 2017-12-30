@@ -20,8 +20,8 @@ function go_register_store_tax_and_cpt() {
 		'singular_name' => _x( get_option( 'go_store_name' ).' Item Category', 'taxonomy singular name' ),
 		'search_items' =>  __( 'Search '.get_option( 'go_store_name' ).' Categories' ),
 		'all_items' => __( 'All '.get_option( 'go_store_name' ).' Categories' ),
-		'parent_item' => __( 'Parent '.get_option( 'go_store_name' ).' Categories' ),
-		'parent_item_colon' => __( 'Parent '.get_option( 'go_store_name' ).' Category:' ),
+		'parent_item' => __( get_option( 'go_store_name' ).' Section (Set as none to make this a new store section)' ),
+		'parent_item_colon' => __( get_option( 'go_store_name' ).' Section (Set as none to make this a new store section):' ),
 		'edit_item' => __( 'Edit '.get_option( 'go_store_name' ).' Category' ), 
 		'update_item' => __( 'Update '.get_option( 'go_store_name' ).' Category' ),
 		'add_new_item' => __( 'Add New '.get_option( 'go_store_name' ).' Category' ),
@@ -97,8 +97,8 @@ function go_register_store_tax_and_cpt() {
 			'taxonomies' => array( 'store_types' ),
 			'public' => true,
 			'has_archive' => true,
-			'rewrite' => array( 'slug' => 'store' ),
-			'menu_icon' => plugins_url( '/images/little-ico.png' , __FILE__ ),
+			'rewrite' => array( 'slug' => 'storeitems' ),
+			'menu_icon' => 'dashicons-cart',
 			'hierachical' => true,
 			'menu_position' => 21,
 			'supports' => array( 
@@ -122,4 +122,48 @@ function go_new_item_permalink( $return, $post_id, $new_title, $new_slug ) {
 	}
 }
 add_filter( 'get_sample_permalink_html', 'go_new_item_permalink', 5, 4 );
+
+/**
+ * Display a custom taxonomy dropdown in admin
+ * @author Mike Hemberger
+ * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
+ */
+add_action('restrict_manage_posts', 'go_filter_store_by_taxonomy');
+function go_filter_store_by_taxonomy() {
+	global $typenow;
+	$post_type = 'go_store'; // change to your post type
+	$taxonomy  = 'store_types'; // change to your taxonomy
+	if ($typenow == $post_type) {
+		$selected      = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
+		$info_taxonomy = get_taxonomy($taxonomy);
+		wp_dropdown_categories(array(
+			'show_option_all' => __("Show All {$info_taxonomy->label}"),
+			'taxonomy'        => $taxonomy,
+			'name'            => $taxonomy,
+			'orderby'         => 'name',
+			'selected'        => $selected,
+			'show_count'      => true,
+			'hide_empty'      => true,
+		));
+	};
+}
+/**
+ * Filter posts by taxonomy in admin
+ * @author  Mike Hemberger
+ * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
+ */
+add_filter('parse_query', 'go_convert_store_id_to_term_in_query');
+function go_convert_store_id_to_term_in_query($query) {
+	global $pagenow;
+	$post_type = 'go_store'; // change to your post type
+	$taxonomy  = 'store_types'; // change to your taxonomy
+	$q_vars    = &$query->query_vars;
+	if ( $pagenow == 'edit.php' && isset($q_vars['post_type']) && $q_vars['post_type'] == $post_type && isset($q_vars[$taxonomy]) && is_numeric($q_vars[$taxonomy]) && $q_vars[$taxonomy] != 0 ) {
+		$term = get_term_by('id', $q_vars[$taxonomy], $taxonomy);
+		$q_vars[$taxonomy] = $term->slug;
+	}
+}
+
+
+
 ?>

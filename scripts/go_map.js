@@ -1,21 +1,39 @@
 //Hide and show map on click
 function go_show_map(mapid) {
-    //hide all when clicked
-    var divsToHide = document.getElementsByClassName("map"); //divsToHide is an array
-    for (var i = 0; i < divsToHide.length; i++){
-    	
-        divsToHide[i].style.display = "none"; // depending on what you're doing
-    }
-    //show the one clicked
-    var mapid = "map_" + String(mapid);
-    document.getElementById(mapid).style.display='block';
+//https://stackoverflow.com/questions/28180584/wordpress-update-user-meta-onclick-with-ajax
+//https://wordpress.stackexchange.com/questions/216140/update-user-meta-using-with-ajax
+//
+	document.getElementById("maps").style.display = "none";
+	document.getElementById("loader").style.display = "block";
+	var map_nonce = jQuery( '#_wpnonce' ).val();
+	
 
-    
+	jQuery.ajax({	
+		type: "POST",
+		url : ajax_url,
+		//url: '/wordpress//wp-admin/admin-ajax.php',
+			data: {
+				'action':'go_update_last_map',
+				'goLastMap' : mapid,
+				'security': map_nonce,
+			},
+			success:function(data) {			
+          		jQuery('#mapwrapper').html(data);				
+				console.log("success!");
+				go_resizeMap();
+				document.getElementById("loader").style.display = "none";
+ 				document.getElementById("maps").style.display = "block";
+				
+			},
+			error: function(errorThrown){
+				console.log(errorThrown);
+				console.log("fail");
+			}
+			
+	});
 }
 
-//Set the filtered and done content in the dropdown
-window.addEventListener('load', 
-  function() { 
+function go_map_check_if_done() { 
     //declare idArray
     var idArray = [];
     //make array of all the maps ids
@@ -26,7 +44,7 @@ window.addEventListener('load',
 
     var mapNum = 0;
     for (var i = 0; i < idArray.length; i++){
-        var mapNum = mapNum + 1;
+        var mapNum = mapNum++;
         var mapNumID = "#mapLink_" + mapNum;
         var mapNumClass = "#mapLink_" + mapNum + ' .mapLink';
         var mapID = "#map_" + mapNum;
@@ -45,39 +63,28 @@ window.addEventListener('load',
                 
                 jQuery(mapNumID).addClass("done");
                 jQuery(mapNumClass).addClass("checkmark");
-            }
-             
+            }    
         }
-
     }
-    
+     
+    go_resizeMap();
+  }
 
-    jQuery('#sitemap').css("display","block");
-    jQuery('#map_1').css("display","block");    
- 
-
-    resizeMap();
-  }, false);
+//Set the filtered and done content in the dropdown
+window.addEventListener('load', go_map_check_if_done(), false);
 
 //Resize listener
 jQuery( window ).resize(function() {
-    resizeMap();
+    go_resizeMap();
     })
 
 //Resize map function, also runs on window load 
-function resizeMap() {
-    //declare idArray
-    var idArray = [];
-    //make array of all the maps ids
-    jQuery('.map').each(function () {
-        idArray.push(this.id);
-    });
-    //for each map do something
+function go_resizeMap() {
+	//get mapid from data
+	var mapNum = jQuery("#maps").data('mapid');
 
-    var mapNum = 0;
-    for (var i = 0; i < idArray.length; i++){
-        var mapNum = mapNum + 1;
-        var mapID = "#map_" + mapNum;
+    var mapID = "#map_" + mapNum;
+        
         var taskCount = ((jQuery(mapID + " .primaryNav > li").length)-1);
         if (taskCount == 0){
             taskCount = 1;
@@ -95,7 +102,8 @@ function resizeMap() {
             jQuery(mapID + ' .primaryNav > li').css("width","90%");  
             jQuery(mapID + ' .primaryNav li').css("float","right"); 
             jQuery(mapID + ' .tasks > li').css("width","80%"); 
-            jQuery(mapID + " .primaryNav li").css("background", "url('../wp-content/plugins/game-on-master/styles/images/map/vertical-line.png') center top no-repeat");
+            jQuery(mapID + " .primaryNav li").addClass("singleCol");
+            //jQuery(mapID + " .primaryNav li").css("background", "url('../wp-content/plugins/game-on-master/styles/images/map/vertical-line.png') center top no-repeat");
  
         }
         else if (minWidth >= 130){
@@ -107,21 +115,22 @@ function resizeMap() {
  
         }
         else {
-
-            jQuery(mapID + ' .primaryNav > li').css("width","90%");  
+            jQuery(mapID + ' .primaryNav > li').css("width","100%");  
             jQuery(mapID + ' .primaryNav li').css("float","right"); 
-            jQuery(mapID + ' .tasks > li').css("width","80%"); 
-            jQuery(mapID + " .primaryNav li").css("background", "url('../wp-content/plugins/game-on-master/styles/images/map/vertical-line.png') center top no-repeat");
- 
+            jQuery(mapID + ' .tasks > li').css("width","95%"); 
+            //jQuery(mapID + " .primaryNav li").css("background", "url('../wp-content/plugins/game-on-master/styles/images/map/vertical-line.png') center top no-repeat");
+ 			jQuery(mapID + " .primaryNav li").addClass("singleCol");
         }
-   
-  }
+        
+        jQuery('#sitemap').css("visibility","visible");  
+        jQuery('#maps').css("visibility","visible");  
+        
 }
 
 
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
-function dropDown() {
+function go_map_dropDown() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 

@@ -32,6 +32,76 @@
 	overflow: hidden;
 }
 
+
+/** Popup Styles **/
+/* Popup container - can be anything you want */
+/* Tooltip text */
+
+
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.popup:hover .popuptext {
+    visibility: visible;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 50px;
+    background-color: black !important;
+    color: #fff !important;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0px 0;
+    position: absolute;
+    z-index: 1;
+    padding: 5px;
+}
+
+.popup .popuptext a {
+	padding: 5px;
+    color: #fff !important;
+
+}
+
+/* Popup arrow 
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: -8%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+}
+*/
+/* Toggle this class - hide and show the popup */
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}
+/** END Popup Styles **/
 /** Header Styles **/
 
 #go_stats_gravatar {
@@ -159,7 +229,7 @@
 	list-style-type: none;
 	height: 100%;
 	position: relative;
-	margin: 0px;
+	margin-bottom: 50px;
 	float: left;
 	display: inline-block;
 	width: 100%;
@@ -181,7 +251,19 @@
 .go_stats_task {
 	margin: 4px 0px 4px 0px;
 	border-top: 1px solid #BBB;
-	overflow: hidden;
+	/*overflow: hidden;*/
+	/** Flexbox **/
+	display: flex;           
+	display: -webkit-flex;
+  	flex-direction: row;     
+  	-webkit-flex-direction: row;
+  	flex-grow: 0;
+  	-webkit-flex-grow: 0;
+  	flex-wrap: wrap;
+  	-webkit-flex-wrap: wrap;
+  	width: 100%;
+  	padding-left: 15px;
+  	padding-right: 15px;
 }
 
 .go_stats_task_list_name {
@@ -191,7 +273,7 @@
 	white-space: pre-line;
 	margin-top: 1.5px;
 	font-size: 14px;
-	height: 20px;
+	height: auto;
 }
 
 .go_stats_task_status_wrap {
@@ -199,6 +281,12 @@
 	position: relative;
 	display: inline-block;
 	margin-top: 1.5px;
+	/** Flexbox **/
+	flex-grow: 1;            
+	-webkit-flex-grow: 1;
+  	white-space: nowrap;
+  	text-overflow: ellipsis;
+  	padding-right: 10px;
 }
 
 .go_stats_task_status {
@@ -215,7 +303,6 @@
 
 .go_stats_task_admin_submit {
 	cursor: pointer !important;
-	float: right !important; 
 	margin: 5.5px 0px 3px 4px !important;
 	height: 15px !important; 
 	width: 50px !important;
@@ -225,15 +312,31 @@
 	font-size: 10px !important;
 }
 
+.go_stats_task_admin_submit_div {	
+	/** Flexbox **/
+	flex-grow: 1;     
+	float: right !important;        
+	-webkit-flex-grow: 1;
+  	white-space: nowrap;
+  	text-overflow: ellipsis;
+  	padding-right: 10px;
+}
+
 .go_stats_task_admin_message {
 	float: right !important;
 	height: 16px !important;
 	display: inline-block;
 	margin: 5.5px 0px 2px 4px !important;
 	padding: 0px !important;
-	overflow: hidden;
 	width: 200px !important;
 	font-size: 12px !important;
+	
+	flex-grow: 1;            
+	-webkit-flex-grow: 1;
+  	overflow: hidden;
+  	white-space: nowrap;
+  	text-overflow: ellipsis;
+  	padding-right: 10px;
 }
 
 .go_stats_task_status p {
@@ -419,3 +522,5 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 .go_stats_amount {
 	text-align: right;
 }
+
+.stage_url {background-color:black !important;}

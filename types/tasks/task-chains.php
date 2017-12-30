@@ -1,6 +1,195 @@
 <?php
 
 /**
+ * Add Term Metadata
+ *
+ *
+ * @since 3.5
+ */
+
+//https://section214.com/2016/01/adding-custom-meta-fields-to-taxonomies/
+//https://developer.wordpress.org/reference/hooks/taxonomy_add_form_fields/
+//https://stackoverflow.com/questions/7526374/how-to-save-a-checkbox-meta-box-in-wordpress
+
+function task_chains_add_meta_fields( $taxonomy ) {
+    echo '<div class="form-field term-group>
+			<label for="pod_toggle">';
+	 _e( 'Pod', 'my-plugin' ); 
+	echo '</label>
+			<label><input type="checkbox" id="pod_toggle" name="pod_toggle" onclick="toggleBoxVisibility()" >This chain can be completed in any order.</label>
+		</div>
+		<!--This section is for the # to complete pod.  This will require locking task chains by order. Add the onclick script back to the checkbox. onclick="toggleBoxVisibility()"--!>
+		<div id="pod_number_complete" class="form-field term-group">
+			<label for="pod_done_num">';
+	_e( 'Number Done to Complete Pod', 'my-plugin' );
+	echo '</label>
+			<input type="number" id="pod_done_num" class="number" min="1" max="" step="any" name="pod_done_num" value="1" placeholder="number">
+			<script type="text/javascript">
+				function toggleBoxVisibility() {
+					if (document.getElementById("pod_toggle").checked == true) {
+						document.getElementById("pod_number_complete").style.display = "block";
+					} 
+   					else {
+        				document.getElementById("pod_number_complete").style.display = "none";
+        			}
+				};	
+				jQuery(document).ready(toggleBoxVisibility());	
+			</script>
+			<p class="description">Number that must be complete to finish pod</p>
+		</div>
+	
+		<div id="pod_achievement" class="form-field term-group">
+			<label for="pod_achievement">';
+	_e( go_return_options( 'go_badges_name' ).' #', 'my-plugin' );
+	echo '</label>
+			<input type="number" id="pod_achievement" class="number" min="1" max="" step="any" name="pod_achievement"  placeholder="optional: ID # of '.go_return_options( 'go_badges_name' ).'">
+		<p class="description">Number of media file for achievement.</p></div>';
+}
+add_action( 'task_chains_add_form_fields', 'task_chains_add_meta_fields', 10, 2 );
+
+
+function task_chains_edit_meta_fields( $term, $taxonomy ) {
+    $my_field = get_term_meta( $term->term_id, 'my_field', true );
+    $pod_toggle = get_term_meta( $term->term_id, 'pod_toggle', true );
+    $pod_done_num = get_term_meta( $term->term_id, 'pod_done_num', true );
+    $pod_achievement = get_term_meta( $term->term_id, 'pod_achievement', true );
+
+	echo '<tr class="form-field term-group-wrap">
+			<th scope="row">
+			<label for="pod_toggle">';
+	_e( 'Pod', 'my-plugin' );
+	echo' </label>
+			</th>
+			<td>
+				<input type="checkbox" id="pod_toggle"  onclick="toggleBoxVisibility()" name="pod_toggle" ';
+	if ( $pod_toggle == true ) {
+		echo 'checked="checked"'; 
+	}
+	echo '/>	 
+		</td>
+		</tr>
+		<tr id="pod_number_complete" class="form-field term-group-wrap">
+			<th scope="row">
+			<label for="pod_done_num">';
+	_e( 'Number Done to Complete Pod', 'my-plugin' ); 
+	echo '</label>
+			</th>
+			<td>
+				<input type="number" id="pod_done_num" class="number" min="1" max="" step="any" name="pod_done_num" value="';
+	echo $pod_done_num; 
+	echo '" placeholder="number">
+ 		</td>
+					<script type="text/javascript">
+				function toggleBoxVisibility() {
+					if (document.getElementById("pod_toggle").checked == true) {
+						document.getElementById("pod_number_complete").style.display = "table-row";
+					} 
+   					else {
+        				document.getElementById("pod_number_complete").style.display = "none";
+        			}
+				};	
+				jQuery(document).ready(toggleBoxVisibility());	
+			</script>	
+		</tr>
+		<tr class="form-field term-group-wrap">
+		<th scope="row">
+			<label for="pod_achievement">';
+	_e( 'Achievement #', 'my-plugin' ); 
+	echo '</label>
+		</th>
+		<td>
+			<input type="number" id="pod_achievement" class="number" min="1" max="" step="any" name="pod_achievement" value="';
+	echo $pod_achievement;
+	echo '" placeholder="number">
+			</td>	
+		</tr>';
+}
+add_action( 'task_chains_edit_form_fields', 'task_chains_edit_meta_fields', 10, 2 );
+
+function task_chains_save_taxonomy_meta( $term_id, $tag_id ) {
+    if( isset( $_POST['pod_done_num'] ) ) {
+        update_term_meta( $term_id, 'pod_done_num', esc_attr( $_POST['pod_done_num'] ) );
+    }
+     if( isset( $_POST['pod_achievement'] ) ) {
+        update_term_meta( $term_id, 'pod_achievement', esc_attr( $_POST['pod_achievement'] ) );
+    }
+    update_term_meta( $term_id, 'pod_toggle', esc_attr( $_POST['pod_toggle'] ) );
+    
+}
+add_action( 'created_task_chains', 'task_chains_save_taxonomy_meta', 10, 2 );
+add_action( 'edited_task_chains', 'task_chains_save_taxonomy_meta', 10, 2 );
+
+function task_chains_add_field_columns( $columns ) {;
+    $columns['pod_toggle'] = __( 'Pod', 'my-plugin' );
+    $columns['pod_achievement'] = __( 'Achievement #', 'my-plugin' );
+    
+
+    return $columns;
+}
+
+add_filter( 'manage_edit-task_chains_columns', 'task_chains_add_field_columns' );
+
+function task_chains_add_field_column_contents( $content, $column_name, $term_id ) {
+    switch( $column_name ) {
+        case 'pod_toggle' :
+            $content = get_term_meta( $term_id, 'pod_toggle', true );
+            break;
+        case 'pod_achievement' :
+            $content = get_term_meta( $term_id, 'pod_achievement', true );
+            break;
+    }
+
+    return $content;
+}
+add_filter( 'manage_task_chains_custom_column', 'task_chains_add_field_column_contents', 10, 3 );
+
+
+//////Limits the dropdown to maps.  Removes items that have a parent from the list.
+add_filter( 'taxonomy_parent_dropdown_args', 'limit_parents_wpse_106164', 10, 2 );
+
+function limit_parents_wpse_106164( $args, $taxonomy ) {
+
+    if ( 'task_chains' != $taxonomy ) return $args; // no change
+
+    $args['depth'] = '1';
+    return $args;
+}
+
+//remove description metabox
+add_action( 'admin_footer-edit-tags.php', 'wpse_56569_remove_cat_tag_description' );
+
+function wpse_56569_remove_cat_tag_description(){
+    global $current_screen;
+    
+    ?>
+    <script type="text/javascript">
+    jQuery(document).ready( function($) {
+        $('#tag-description').parent().remove();
+    });
+    </script>
+    <?php
+}
+
+
+/**
+ * Remove default description column from category
+ *
+ */
+add_filter('manage_edit-task_chains_columns', function ( $columns ) {
+    if( isset( $columns['description'] ) )
+        unset( $columns['description'] );  
+    return $columns;
+});
+
+add_filter('manage_edit-task_chains_columns', function ( $columns ) {
+    if( isset( $columns['slug'] ) )
+        unset( $columns['slug'] );  
+    return $columns;
+});
+
+//////////////END TERM META
+
+/**
  * Retrieves the taxonomy ID (see returns) of the first chain associated with a task.
  *
  * Takes in a task ID (the post ID) and tries to find a chain associated with that task.
@@ -11,6 +200,13 @@
  * @return int|null Returns the `term_taxonomy_id` property of the chain term object, if it exists;
  *                  otherwise, null is returned.
  */
+ 
+/*
+echo '<script language="javascript">';
+echo 'alert("chains")';
+echo '</script>';
+*/
+
 function go_task_chain_get_id_by_task( $task_id ) {
 	if ( ! isset( $task_id ) || empty( $task_id ) ) {
 		$task_id = get_the_id();
@@ -28,6 +224,8 @@ function go_task_chain_get_id_by_task( $task_id ) {
 
 	return null;
 }
+
+
 
 /**
  * Returns the term name of a chain based on the passed chain term taxonomy ID.
@@ -140,16 +338,19 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 
 	// retrieves the chain order of the task
 	$chain_order = get_post_meta( $task_id, 'go_mta_chain_order', true );
-
+	
+	//if post is only in one chain
 	if ( null !== $tt_id && ! empty( $chain_order[ $tt_id ] ) ) {
-
+	
 		// determines the position of the final published task in the order array
 		$valid_pos = -1;
 		$end_pos = count( $chain_order[ $tt_id ] ) - 1;
 		for ( $i = $end_pos; $i > 0; $i-- ) {
 			$temp_id = $chain_order[ $tt_id ][ $i ];
 			$temp_task = get_post( $temp_id );
-			if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
+			$optional_post = get_post_meta ($temp_id, 'go_mta_optional_task', true);
+			
+			if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status && $optional_post != 'on' ) {
 				$valid_pos = $i;
 				break;
 			}
@@ -161,6 +362,7 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 		if ( -1 === $valid_pos || $valid_pos === $id_pos ) {
 			return true;
 		}
+	//if post is more than 1 chain
 	} elseif ( ! empty( $chain_order ) && is_array( $chain_order ) ) {
 
 		foreach ( $chain_order as $order ) {
@@ -171,7 +373,8 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 			for ( $i = $end_pos; $i > 0; $i-- ) {
 				$temp_id = $order[ $i ];
 				$temp_task = get_post( $temp_id );
-				if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status ) {
+				$optional_post = get_post_meta ($temp_id, 'go_mta_optional_task', true);
+				if ( ! empty( $temp_task ) && 'publish' === $temp_task->post_status && $optional_post != 'on') {
 					$valid_pos = $i;
 					break;
 				}
@@ -336,3 +539,6 @@ function go_task_chain_delete_term_rel( $object_id, $tt_ids ) {
 	}
 }
 add_action( 'delete_term_relationships', 'go_task_chain_delete_term_rel', 10, 2 );
+
+
+
