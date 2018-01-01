@@ -337,18 +337,19 @@ function go_admin_head_notification() {
 		$nonce = wp_create_nonce( 'go_admin_remove_notification_' . get_current_user_id() );
 
 		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/>
-		<div style='position: relative; left: 20px;'>
-		</br>
-		SEE WHAT'S NEW IN THIS VERSION: 
-		<ul style='list-style:disc;'>
-			<li>OVERVIEW</li>
-			<li>MAPS</li>
-			<li>STORE CATEGORIES</li>
-			<li>VIDEO DISPLAY OPTIONS</li>
-			<li>ADMIN BAR OPTIONS</li> 
-		</ul></div>
-		<a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a></div>";
-		echo "<script>
+			<div style='position: relative; left: 20px;'>
+				</br>
+				SEE WHAT'S NEW IN THIS VERSION: 
+				<ul style='list-style:disc;'>
+					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/g_xP8BflPAs?autoplay=1&rel=0 \" ) '>Overview of What's New</a></li>
+					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/rPQiirHBjt4?autoplay=1&rel=0 \" ) ' tooltip='hi'>Maps</a></li>
+					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/m2IAYdNZoM4?autoplay=1&rel=0 \" ) ' tooltip='hi'>Auto Store Page</a></li>
+					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/6iZsyDUt98w?autoplay=1&rel=0 \" ) ' tooltip='hi'>Videos: Auto Embed, Fit, and Lightbox</a></li>
+				</ul>
+			</div>
+			<a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a>
+		</div>
+		<script>
 			function go_remove_admin_notification() {
 				jQuery.ajax( {
 					type: 'post',
