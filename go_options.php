@@ -256,7 +256,7 @@ if ( is_admin() ) {
 				go_options_input( 'Add Map', 'checkbox', 'go_map_switch', 'https://www.youtube.com/embed/rPQiirHBjt4?autoplay=1&rel=0', 'Add the Map Feature. ' );
 				go_options_input( 'Add Store', 'checkbox', 'go_store_switch', 'https://www.youtube.com/embed/m2IAYdNZoM4?autoplay=1&rel=0', 'Add the Store Feature. ' );
 				go_options_input( 'Show Searchbox', 'checkbox', 'go_search_switch', 'https://www.youtube.com/embed/rPgaDoFn1qs?autoplay=1&rel=0', 'Toggles the search box in the top bar on and off.' );
-				go_options_input( 'Show Dashboard', 'checkbox', 'go_dashboard_switch', 'https://www.youtube.com/embed/?autoplay=1&rel=0', 'Toggles the dashboard icon in the top bar on and off for non admin.' );
+				go_options_input( 'Show Dashboard', 'checkbox', 'go_dashboard_switch', 'https://www.youtube.com/embed/wgill7wm45Q?autoplay=1&rel=0', 'Toggles the dashboard icon in the top bar on and off for non admin.' );
 				go_options_input( 'Always Display Bar', 'checkbox', 'go_admin_bar_display_switch', 'http://maclab.guhsd.net/go/video/options/adminBarDisplay.mp4', 'Show login option in admin bar (recommended)' );
 				go_options_input( 'User Redirect', 'checkbox', 'go_admin_bar_user_redirect', 'http://maclab.guhsd.net/go/video/options/userRedirect.mp4', 'Send users to home page after login (recommended)' );
 				go_options_input( 'Redirect Location','text', 'go_user_redirect_location', 'https://www.youtube.com/embed/-8fK8PAgkD8?autoplay=1&rel=0', 'Leave blank to send users to homepage.' );
