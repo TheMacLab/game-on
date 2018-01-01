@@ -48,8 +48,23 @@ if ( is_admin() ) {
 	function go_options_input( $title, $type, $name, $video_url, $explanation, $help = true, $reset = null ) {
 		?>
 		<div class='go_options'>
-			<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo $title; go_options_help( $video_url, $explanation, $help ); ?></span></div>
-			<input type='<?php echo $type; ?>' name='<?php echo $name; ?>' <?php if ( $type == 'checkbox' ) { echo 'value="On"'; if ( get_option( $name ) == 'On' ) { echo 'checked="checked"'; } } else { echo 'value="'.get_option( $name ).'"'; } ?> class='go_options_additional_settings_input' <?php if ( $reset ) { echo "reset='{$reset}'"; } ?>/>
+			<div class='go_options_field_title_wrap'><span class='go_options_field_title'>
+			<?php 
+				echo $title; 
+				go_options_help( $video_url, $explanation, $help ); 
+			?>
+			</span></div><input type='<?php echo $type; ?>' name='<?php echo $name; ?>' 
+			<?php 
+			if ( $type == 'checkbox' ) { 
+				echo 'value="On"'; 
+				if ( get_option( $name ) == 'On' ) { 
+					echo 'checked="checked"';
+				 }
+			} 
+			else { 
+				echo 'value="'.get_option( $name ).'"'; 
+			} ?> 
+			class='go_options_additional_settings_input' <?php if ( $reset ) { echo "reset='{$reset}'"; } ?>/>
 		</div>
 		<?php
 	}
@@ -238,13 +253,13 @@ if ( is_admin() ) {
 			<div id='go_options_admin_bar_wrap' class='go_options_wrap'>
 				<?php 
 				//if (! is_plugin_active( 'wp-term-order/wp-term-order.php' ) ) {echo "<div class=opt_accordian_message_red> The map feature requires <a href=https://wordpress.org/plugins/wp-term-order/ target=_blank>WP Term Order</a> to be installed and activated.</div>";};
-				go_options_input( 'Add Map', 'checkbox', 'go_map_switch', '#', 'Add the Map Feature. ' );
-				go_options_input( 'Add Store', 'checkbox', 'go_store_switch', '#', 'Add the Store Feature. ' );
-				go_options_input( 'Show Searchbox', 'checkbox', 'go_search_switch', '#', 'Toggles the search box in the top bar on and off.' );
-				go_options_input( 'Show Dashboard', 'checkbox', 'go_dashboard_switch', '#', 'Toggles the dashboard icon in the top bar on and off for non admin.' );
+				go_options_input( 'Add Map', 'checkbox', 'go_map_switch', 'https://www.youtube.com/embed/rPQiirHBjt4?autoplay=1&rel=0', 'Add the Map Feature. ' );
+				go_options_input( 'Add Store', 'checkbox', 'go_store_switch', 'https://www.youtube.com/embed/m2IAYdNZoM4?autoplay=1&rel=0', 'Add the Store Feature. ' );
+				go_options_input( 'Show Searchbox', 'checkbox', 'go_search_switch', 'https://www.youtube.com/embed/rPgaDoFn1qs?autoplay=1&rel=0', 'Toggles the search box in the top bar on and off.' );
+				go_options_input( 'Show Dashboard', 'checkbox', 'go_dashboard_switch', 'https://www.youtube.com/embed/?autoplay=1&rel=0', 'Toggles the dashboard icon in the top bar on and off for non admin.' );
 				go_options_input( 'Always Display Bar', 'checkbox', 'go_admin_bar_display_switch', 'http://maclab.guhsd.net/go/video/options/adminBarDisplay.mp4', 'Show login option in admin bar (recommended)' );
 				go_options_input( 'User Redirect', 'checkbox', 'go_admin_bar_user_redirect', 'http://maclab.guhsd.net/go/video/options/userRedirect.mp4', 'Send users to home page after login (recommended)' );
-				go_options_input( 'Redirect Location','text', 'go_user_redirect_location', '#location_redirect', 'Leave blank to send users to homepage.' );
+				go_options_input( 'Redirect Location','text', 'go_user_redirect_location', 'https://www.youtube.com/embed/-8fK8PAgkD8?autoplay=1&rel=0', 'Leave blank to send users to homepage.' );
 				go_options_input( 'Add Switch', 'checkbox', 'go_admin_bar_add_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddSwitch.mp4', 'Activate the manual scoring system (not recommended)' );
 				?>
 				<div id ="admin_bar_catagories"><strong>Admin</strong>
@@ -546,7 +561,7 @@ if ( is_admin() ) {
 			<div class='go_options_accordion_wrap' opt='6'>
 				<?php
 				go_options_accordion_help(
-					'need video video',
+					'https://www.youtube.com/embed/6iZsyDUt98w?autoplay=1&rel=0',
 					'Video Options'
 				);
 				?>
@@ -561,11 +576,11 @@ if ( is_admin() ) {
 			<?php 
 				echo "<p class=accordian_sub_heading>Video Options</p>";
 				echo "<div class=opt_accordian_message><a href=https://codex.wordpress.org/Embeds target=_blank>See a list of sites that wordpress supports embedding content from.</a></div>";
-				go_options_input( 'Use Oembed', 'checkbox', 'go_oembed_switch', '', 'Use Wordpress default embed (recommended)' );
-				go_options_input( 'Use FitVids', 'checkbox', 'go_fitvids_switch', '#need_video', 'Make iFrame Videos Responsive (recommended)' );
-				go_options_input( 'Max Width','text', 'go_fitvids_maxwidth', '#need_video', 'Set a max width for the fitvids' );
+				go_options_input( 'Use Oembed', 'checkbox', 'go_oembed_switch', 'https://www.youtube.com/embed/4i52U_vK17s?autoplay=1&rel=0', 'Use Wordpress default embed (recommended)' );
+				go_options_input( 'Use FitVids', 'checkbox', 'go_fitvids_switch', 'https://www.youtube.com/embed/70jBMWxvhZ8?autoplay=1&rel=0', 'Make iFrame Videos Responsive (recommended)' );
+				go_options_input( 'Max Width','text', 'go_fitvids_maxwidth', 'https://www.youtube.com/embed/Y6IDoxj_sLo?autoplay=1&rel=0', 'Set a max width for the fitvids' );
 				//if ( ! is_plugin_active( 'wp-featherlight/wp-featherlight.php' ) ) {echo "<div class=opt_accordian_message_red> Please install and activate the plugin <a href=https://wordpress.org/plugins/wp-featherlight/ target=_blank>WP FeatherLight</a>.  This will give you the option to open your videos in a lightbox.</div>";}
-				go_options_input( 'Use Lightbox', 'checkbox', 'go_lightbox_switch', '#need_video', 'Add Lightbox to Videos (recommended)' );
+				go_options_input( 'Use Lightbox', 'checkbox', 'go_lightbox_switch', 'https://www.youtube.com/embed/Y6IDoxj_sLo?autoplay=1&rel=0', 'Add Lightbox to Videos (recommended)' );
 				/*
 				if ( is_plugin_active( 'fitvids-for-wordpress/fitvids-for-wordpress.php' ) ) {
   					//plugin is activated
