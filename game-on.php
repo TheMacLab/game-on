@@ -12,7 +12,8 @@ include( 'go_datatable.php' );
 include( 'go_pnc.php' );
 include( 'go_returns.php' );
 include( 'go_ranks.php' );
-include( 'go_enque.php' );
+//include( 'go_enque.php' );
+include( 'go_enque_combined_min.php' );
 include( 'go_globals.php' );
 include( 'go_admin_bar.php' );
 include( 'go_message.php' );
@@ -31,8 +32,6 @@ include( 'types/store/store-chains.php' );
 include( 'types/types.php' );
 include( 'go_map.php' );
 include( 'go_store.php' );
-
-
 
 if( ! class_exists( 'wp-featherlight' ) ) {
 	include( 'includes/wp-featherlight/wp-featherlight.php' );

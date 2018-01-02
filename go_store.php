@@ -21,12 +21,8 @@ function go_store_activate() {
 }
 
 function go_make_store() {
-	//wp_register_script('go_map_js', plugins_url('scripts/go_map.js', __FILE__), array('jquery'),'1.1', false);
-	//wp_enqueue_script('go_map_js');
-	wp_register_style( 'go_store_style', plugin_dir_url( __FILE__ ).'styles/go_store.css' );
-	wp_enqueue_style( 'go_store_style' );
     
-	/* Get all task chains with no parents--these are the top level on the map.  They are chains of chains (realms). */
+	/* Get all task chains with no parents--these are the sections of the store.  */
 	$taxonomy = 'store_types';
 	$term_args0=array(
   		'hide_empty' => false,
@@ -39,8 +35,7 @@ function go_make_store() {
 	<div id="storemap" style="display:block;">';
     
 
-	/* For each Store Category with no parent, get all the children.  These are the store categories  
-	This will output the various maps for all the top level chains.*/
+	/* For each Store Category with no parent, get all the children.  These are the store categories.*/
 	$chainParentNum = 0;
 	echo '<div id="store">';
 			foreach ( $tax_terms0 as $tax_term0 ) {
@@ -96,10 +91,7 @@ function go_make_store() {
 									$page_id = $row;
 									$id = $row;
 									$blocked = "";
-								echo "<li><a class='go_str_item' onclick='go_lb_opener($row);'>$store_item_name</a></li>";
-							
-    						
-    		
+								echo "<li><a class='go_str_item' onclick='go_lb_opener($row);'>$store_item_name</a></li>";    		
     				}}}
     		echo "</ul></div> ";				
 		}

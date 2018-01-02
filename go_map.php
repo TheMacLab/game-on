@@ -32,6 +32,7 @@ function go_make_single_map($last_map_id, $reload = false){
 	$map_name = $last_map->name;
 	wp_nonce_field( 'go_update_last_map');
 	$taxonomy = 'task_chains';
+
 	////
 	if ($reload == false) {echo "<div id='mapwrapper'>";}
 	echo "<div id='loader-wrapper style='width: 100%'><div id='loader' style='display:none;'></div></div><div id='maps' data-mapid='$last_map_id'>";
@@ -41,7 +42,7 @@ function go_make_single_map($last_map_id, $reload = false){
 				echo 	"<div id='map_$last_map_id' class='map'>
 						<ul class='primaryNav'>
 						<li class='ParentNav'><p>$tax_term0->name</p></li>";
-	
+				
 				$term_id0 = $tax_term0->term_id;
 	
 				$term_args1=array(
@@ -50,11 +51,13 @@ function go_make_single_map($last_map_id, $reload = false){
   					'order' => 'ASC',
   					'parent' => $term_id0,       
 				);
+				
 		
 				$tax_terms1 = get_terms($taxonomy,$term_args1);
+				 
 				/*Loop for each chain.  Prints the chain name then looks up children (tasks). */
    				foreach ( $tax_terms1 as $tax_term1 ) {
-   					
+
    					/*Gets a list of quests that are assigned to each chain as array. Ordered by post ID */
    					$term_id1 = $tax_term1->term_id;
 					$taxonomies = 'task_chains';
@@ -469,7 +472,7 @@ function go_make_map_dropdown(){
   		'parent' => '0'
 	);
 	$tax_terms_maps = get_terms($taxonomy,$term_args0);
-	//debug_to_console( "go_make_map" );
+	
 	echo"
 	<div id='sitemap' style='visibility:hidden;'>
     
@@ -494,19 +497,12 @@ function go_make_map_dropdown(){
 
 function go_make_map() {
 	$user_id = get_current_user_id();
-	//debug_to_console( "go_make_map" );
-	$ajax_url   = admin_url( 'admin-ajax.php' );        // Localized AJAX URL
 
-	wp_register_script('go_map_js', plugins_url('scripts/go_map.js', __FILE__), array('jquery'),'1.1', false);
-	wp_localize_script('go_map_js','ajax_url',$ajax_url);
-	wp_enqueue_script('go_map_js');
-
-	wp_register_style( 'go_map_style', plugin_dir_url( __FILE__ ).'styles/go_map.css' );
-	wp_enqueue_style( 'go_map_style' );
 	$last_map_id = get_user_meta($user_id, 'go_last_map', true);
 	go_make_map_dropdown();
+
 	go_make_single_map($last_map_id, false);
-    
+   
 }
 add_shortcode('go_make_map', 'go_make_map');
 
