@@ -10,8 +10,7 @@ function go_show_map(mapid) {
 
 	jQuery.ajax({	
 		type: "POST",
-		url : ajax_url,
-		//url: '/wordpress//wp-admin/admin-ajax.php',
+		url : map_ajax_admin_url,
 			data: {
 				'action':'go_update_last_map',
 				'goLastMap' : mapid,
@@ -34,6 +33,7 @@ function go_show_map(mapid) {
 }
 
 function go_map_check_if_done() { 
+	
     //declare idArray
     var idArray = [];
     //make array of all the maps ids
@@ -66,12 +66,16 @@ function go_map_check_if_done() {
             }    
         }
     }
-     
+
     go_resizeMap();
   }
 
 //Set the filtered and done content in the dropdown
-window.addEventListener('load', go_map_check_if_done(), false);
+//window.addEventListener('load', go_map_check_if_done(), false);
+
+jQuery( document ).ready(function() {
+    go_map_check_if_done();
+});
 
 //Resize listener
 jQuery( window ).resize(function() {
@@ -80,6 +84,7 @@ jQuery( window ).resize(function() {
 
 //Resize map function, also runs on window load 
 function go_resizeMap() {
+ 	
 	//get mapid from data
 	var mapNum = jQuery("#maps").data('mapid');
 
@@ -111,7 +116,7 @@ function go_resizeMap() {
            
             jQuery(mapID + " .primaryNav li").css("width", taskWidth + "%");
             jQuery(mapID + ' .tasks > li').css("width","100%");
-             jQuery(mapID + " .primaryNav li").css("background", "");
+            jQuery(mapID + " .primaryNav li").css("background", "");
  
         }
         else {
@@ -122,8 +127,8 @@ function go_resizeMap() {
  			jQuery(mapID + " .primaryNav li").addClass("singleCol");
         }
         
-        jQuery('#sitemap').css("visibility","visible");  
-        jQuery('#maps').css("visibility","visible");  
+			jQuery('#sitemap').css("visibility","visible");  
+   			jQuery('#maps').css("visibility","visible"); 
         
 }
 

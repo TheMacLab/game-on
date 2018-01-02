@@ -315,7 +315,7 @@ a.paginate_button_disabled {
 	padding-top: 3px;
 }
 
-.highlight_box: hover {
+.highlight_box:hover {
 	height: 10px;
 	width: 50px;
 	font-size: 8px;
@@ -341,7 +341,7 @@ tr.even td {
 	background-color: #E2E2E2 !important; 	
 }
 
-tr: hover td {
+tr:hover td {
 	background-color: #CFCFCF !important;
 }
 
