@@ -1,8 +1,11 @@
 jQuery( document ).ready( function() {
 	jQuery( '#records_tabs' ).tabs();
-  	jQuery( '#go_clipboard_table' ).dataTable({
-		"bPaginate": false
-	});
+  	if ( jQuery( "#go_clipboard_table" ).length ) {
+    	jQuery( '#go_clipboard_table' ).dataTable({
+			"bPaginate": false
+		});
+ 	}
+
 });
 
 function go_toggle( source ) {

@@ -1,10 +1,66 @@
 #records_tabs {
+<<<<<<< HEAD
   font: .9em Arial, Verdana, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
   color: #111;
   background-color: #fff;
   /*
+=======
+		font: .9em Arial, Verdana, Helvetica, sans-serif;
+		margin: 0;
+		padding: 0;
+		color: #111;
+		background-color: #fff;
+		}
+	#go_clipboard_table_wrapper {
+		overflow: auto;
+	}
+
+	.widefat th {
+		border-right: grey dashed thin;
+		font-size: 9px;
+	}
+
+	.widefat td {
+		border-right: grey dashed thin;
+		font-size: 9px;
+	}
+
+	.sortable tbody {
+		counter-reset: sortabletablescope;
+	}
+
+	.sortable thead tr::before {
+		content: "";
+		display: table-cell;
+	}
+
+	.sortable tbody tr::before {
+		content: counter(sortabletablescope);
+		counter-increment: sortabletablescope;
+		display: table-cell;
+	}
+
+	.go_clipboard_add {
+		width: 100px;
+		height: 20px;	
+	}
+
+	#go_clipboard_add {
+		border: thin solid #999;
+		background-color: #FFF;
+		width: 865 px;
+		padding: 3px;
+	}
+
+	#go_clipboard_table_filter {
+		display: inline-block;
+		float: right;
+	}
+	
+	/*
+>>>>>>> 937225c779c8307f71dfe3c448ec0fdb44d27790
 	 * Colour dictionary: 
 	 *
 	 * Table control elements:   #719ba7
@@ -15,6 +71,7 @@
 	 * Footer header:            #b0cc7f
 	 * Footer content:           #d7e1c5
 	 */
+<<<<<<< HEAD
   /*
 	 * Page setup styles
 	 */
@@ -237,3 +294,292 @@
     margin: 0px;
     height: 22px !important;
     font-size: 12px !important; }
+=======
+
+
+	/*
+	 * Page setup styles
+	 */
+
+	#container {
+		margin: 0 auto;
+		width: 960px
+	}
+
+	h1 {
+		text-align: center;
+		font-size: 1.2em;
+		font-weight: bold;
+		margin: 1em 0;
+	}
+
+
+	/*
+	 * DataTables framework
+	 */
+ 
+	.dataTables_wrapper {
+		background-color: #FFF;
+	}
+
+	.dataTables_length {
+		float: left;
+	}
+
+	.dataTables_filter {
+		float: right;
+	}
+
+	.dataTables_info {
+		padding: 9px 6px 6px 6px;
+		float: left;
+	}
+
+	.dataTables_paginate {
+		float: right;
+	}
+
+	.dataTables_length,
+	.dataTables_filter,
+	.dataTables_paginate {
+		padding: 6px;
+	}
+
+	/* Self clearing - http: //www.webtoolkit.info/css-clearfix.html */
+
+	.dataTables_wrapper:after {
+		content: ".";
+		display: block;
+		clear: both;
+		visibility: hidden;
+		line-height: 0;
+		height: 0;
+	}
+ 
+	html[xmlns] .dataTables_wrapper {
+		display: block;
+	}
+ 
+	* html .dataTables_wrapper {
+		height: 1%;
+	}
+
+
+	/*
+	* Table styles
+	*/
+ 
+	.pretty {
+		width: 100% !important;
+		clear: both;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-o-user-select: none;
+	}
+
+	.pretty td,
+	.pretty th {
+		padding: 5px;
+		border: 1px solid #fff;
+		font-size: 12px;
+	}
+
+	/* Header cells */
+	.pretty thead th {
+		text-align: center;
+		background: #F4F4F4;
+		font-size: 14px;
+	}
+
+	.pretty th > input[type='checkbox'] {
+		width: 1em !important;
+	}
+
+	/* Body cells */
+	.pretty tbody th {
+		text-align: left;
+		background: #F4F4F4;
+	}
+	
+	.pretty tbody td {
+		text-align: center;
+		background: #F4F4F4;
+	}
+
+	.pretty tbody td.message {
+		text-align: left;
+		background: #F4F4F4;
+	}
+
+	.pretty tbody tr.odd td { 
+		background: #F4F4F4;
+	}
+
+	/* Footer cells */	
+	.pretty tfoot th {
+		background: #F4F4F4;
+		text-align: left;
+	}
+	
+	.pretty tfoot td {
+		background: #F4F4F4;
+		text-align: center;
+		font-weight: bold;
+	}
+
+	/*
+	 * Pagination
+	 */
+ 
+	a.paginate_button,
+	a.paginate_active {
+		display: inline-block;
+		background-color: #608995;
+		padding: 2px 6px;
+		margin-left: 2px;
+		cursor: pointer;
+		*cursor: hand;
+	}
+
+	a.paginate_active {
+		background-color: transparent;
+		border: 1px solid black;
+	}
+
+	a.paginate_button_disabled {
+		color: #3d6672;
+	}
+
+	.paging_full_numbers a:active {
+		outline: none
+	}
+
+	.paging_full_numbers a:hover {
+		text-decoration: none;
+	}
+
+	.dataTables_paginate span>a {
+		width: 15px;
+		text-align: center;
+	}
+
+	/*
+	 * Sorting
+	 */
+ 
+	.pretty thead th.sorting_asc {
+		background: #E2E2E2 url("images/sort_asc.png") no-repeat right center;
+	}
+
+	.pretty thead th.sorting_desc {
+		background: #F4F4F4 url("images/sort_desc.png") no-repeat right center;
+	}
+
+	.pretty thead th.sorting {
+		background: #E2E2E2 url("images/sort_both.png") no-repeat right center;
+	}
+
+	.container {
+		box-sizing: border-box;
+		width: 80%;
+		height: 450px;
+		padding: 20px 15px 15px 15px;
+		margin: 15px auto 30px auto;
+		border: 1px solid #ddd;
+		background: #fff;
+		background: linear-gradient(#f6f6f6 0, #fff 50px);
+		background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+		background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+		background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+		background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+		box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+		-webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+		-ms-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+		-o-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	#placeholder .button {
+		position: absolute;
+		cursor: pointer;
+	}
+
+	#placeholder .button {
+		font-size: smaller;
+		color: #999;
+		background-color: #eee;
+		padding: 2px;
+	}
+
+	#choices {
+		width: 10.416666666%;
+		height: 450px;
+		overflow: hidden; 
+		margin: 15px 10px 0px 0px; 
+		border: solid grey thin;
+		text-align: left;
+		font-size: 16px;
+		line-height: 1.5;
+		background-color: white;
+		z-index: 9999;
+		position: absolute;
+		overflow: auto;
+	}
+
+	.go_class_a_results {
+		font-size: 13px;
+		position: relative;
+		left: 10%;
+	}
+
+	.go_#F4F4F4_all {
+		display: none;	
+	}
+
+	.highlight_box {
+		height: 10px;
+		width: 50px;
+		font-size: 8px;
+		padding: 0.2px 0.2px 0.2px 0.2px;
+		border: thin grey solid;
+		color: grey;
+		padding-top: 3px;
+	}
+
+	.highlight_box:hover {
+		height: 10px;
+		width: 50px;
+		font-size: 8px;
+		padding: 0.2px 0.2px 0.2px 0.2px;
+		border: thin grey solid;
+		color: white;
+		padding-top: 3px;
+		background-color: grey;
+	}
+
+	.highlight_box_clicked {
+		height: 10px;
+		width: 50px;
+		font-size: 8px;
+		padding: 0.2px 0.2px 0.2px 0.2px;
+		border: thin grey solid;
+		color: white;
+		padding-top: 3px;
+		background-color: grey;
+	}
+
+	tr.even td {
+		background-color: #E2E2E2 !important; 	
+	}
+
+	tr:hover td {
+		background-color: #CFCFCF !important;
+	}
+
+	.go_focus {
+		margin: 0px;
+		height: 22px !important;
+		font-size: 12px !important;
+	}
+>>>>>>> 937225c779c8307f71dfe3c448ec0fdb44d27790

@@ -324,7 +324,7 @@ function go_convert_task_id_to_term_in_query($query) {
  */
 
 /**
-**turn this on in future release
+**turn this on in future release.  Perhaps only for terms and then fix so only some terms.
 function go_update_slug( $data, $postarr ) {
 
         $data['post_name'] = wp_unique_post_slug( sanitize_title( $data['post_title'] ), $postarr['ID'], $data['post_status'], $data['post_type'], $data['post_parent'] );
