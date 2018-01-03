@@ -2,7 +2,6 @@
 // @codekit-prepend 'combined/go_notification.js'
 // @codekit-prepend 'combined/go_every_page.js'
 
-
 // @codekit-prepend 'combined/go_tasks_admin.js'
 // @codekit-prepend 'combined/go_tasks_chains.js'
 // @codekit-prepend 'combined/go_presets.js'
