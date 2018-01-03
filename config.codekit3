@@ -673,6 +673,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/scripts\/combined\/go_clipboard-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/scripts\/combined\/go_clipboard-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/scripts\/combined\/go_clipboard.js": {
 		"ft": 64,
 		"ma": 0,
@@ -993,14 +1003,27 @@
 		"oF": 0,
 		"oS": 3
 		},
+	"\/styles\/combined\/go_clipboard_sass.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "\/styles\/combined\/go_clipboard_sass.css",
+		"oF": 0,
+		"oS": 0,
+		"uL": 1
+		},
 	"\/styles\/combined\/go_every_page.css": {
 		"aP": 1,
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/go_every_page-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/combined\/go_map.css": {
@@ -1008,9 +1031,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/go_map-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/combined\/go_options.css": {
@@ -1018,9 +1041,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/go_options-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/combined\/go_periods.css": {
@@ -1028,9 +1051,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/go_periods-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/combined\/go_stats.css": {
@@ -1038,9 +1061,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/go_stats-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/combined\/go_store.css": {
@@ -1048,9 +1071,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/go_store-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/combined\/jquery.ptTimeSelect.css": {
@@ -1058,9 +1081,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/jquery.ptTimeSelect-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/combined\/tasks-admin.css": {
@@ -1068,9 +1091,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/styles\/combined\/tasks-admin-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"\/styles\/go_admin.css": {
@@ -1577,7 +1600,7 @@
 	},
 "projectAttributes": {
 	"creationDate": 536538687,
-	"displayValue": "game-on-mmhsart",
+	"displayValue": "game-on-mmhsart3.5",
 	"displayValueWasSetByUser": 0,
 	"iconImageName": "meme-angryPicard"
 	},
