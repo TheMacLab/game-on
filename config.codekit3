@@ -673,16 +673,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"\/scripts\/combined\/go_clipboard-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "\/scripts\/combined\/go_clipboard-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"\/scripts\/combined\/go_clipboard.js": {
 		"ft": 64,
 		"ma": 0,
@@ -1010,15 +1000,9 @@
 		"dS": 0,
 		"ft": 4,
 		"ma": 0,
-<<<<<<< HEAD
 		"oA": 0,
 		"oAP": "\/styles\/combined\/go_clipboard.css",
 		"oF": 3,
-=======
-		"oA": 1,
-		"oAP": "\/styles\/combined\/go_clipboard_sass.css",
-		"oF": 0,
->>>>>>> 937225c779c8307f71dfe3c448ec0fdb44d27790
 		"oS": 0,
 		"uL": 1
 		},
