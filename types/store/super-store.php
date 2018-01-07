@@ -39,7 +39,7 @@ function go_register_store_tax_and_cpt() {
 			'rewrite' => array( 'slug' => 'store-types', 'with_front' => false ),
 		)
 	);
-	
+
 	/*
 	 * Store Focus Category Taxonomy
 	 */
@@ -114,6 +114,7 @@ function go_register_store_tax_and_cpt() {
 		)
 	);
 }
+add_action( 'init', 'go_register_store_tax_and_cpt', 0 );	
 
 function go_new_item_permalink( $return, $post_id, $new_title, $new_slug ) {
 	if ( strpos( $return, 'edit-slug' ) !== false ) {

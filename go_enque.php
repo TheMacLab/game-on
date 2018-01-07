@@ -1,10 +1,12 @@
 <?php
 
+
+
+function go_admin_scripts_and_styles () {
+
 /*
  * Registering Scripts/Styles For Admin Pages
  */
-
-function go_register_admin_scripts_and_styles () {
 
 	/*
 	 * Common Scripts
@@ -73,13 +75,13 @@ function go_register_admin_scripts_and_styles () {
 	// Clipboard
 	wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/combined/go_clipboard.css' );
 
-}
+
 
 /*
  * Enqueueing Scripts/Styles For Admin Pages
  */
 
-function go_enqueue_admin_scripts_and_styles ( $hook ) {
+
 	global $post;
 	$user_id = get_current_user_id();
 
@@ -273,11 +275,12 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	}
 }
 
+
+function go_scripts_and_styles () {
+
 /*
  * Registering Scripts/Styles For The Front-end
  */
-
-function go_register_scripts_and_styles () {
 
 	/*
 	 * Common Scripts
@@ -313,13 +316,11 @@ function go_register_scripts_and_styles () {
 	wp_register_style( 'go_store_style', plugin_dir_url( __FILE__ ).'styles/combined/go_store.css' );
 
 
-}
+
 
 /*
  * Enqueueing Scripts/Styles For The Front-end
  */
-
-function go_enqueue_scripts_and_styles () {
 
 	/*
 	 * Common Scripts

@@ -32,6 +32,7 @@ include( 'types/store/store-chains.php' );
 include( 'types/types.php' );
 include( 'go_map.php' );
 include( 'go_store.php' );
+//include( 'go_menus.php' );
 
 if( ! class_exists( 'wp-featherlight' ) ) {
 	include( 'includes/wp-featherlight/wp-featherlight.php' );
@@ -47,10 +48,10 @@ if( ! class_exists( 'WP_Term_Order' ) ) {
 	include( 'includes/wp-term-order/wp-term-order.php' );
 }
 
-if( ! class_exists( 'CMB2_Bootstrap_2253' ) ) {
+//if( ! class_exists( 'CMB2_Bootstrap_2253' ) ) {
 	// CMB2 Plugin is not active
 	//include( 'includes/cmb2/init.php' );
-}
+//}
 
 
 /*
@@ -71,9 +72,36 @@ register_activation_hook( __FILE__, 'go_store_activate' );
  * Init
  */
 
-add_action( 'init', 'go_register_tax_and_cpt' );
-add_action( 'init', 'go_register_admin_scripts_and_styles' );
-add_action( 'init', 'go_register_scripts_and_styles' );
+
+/* 
+ * Registers Game On custom post types and taxonomies, then
+ * updates the site's rewrite rules to mitigate cpt and 
+ * permalink conflicts. flush_rewrite_rules() must always
+ * be called AFTER custom post types and taxonomies are
+ * registered.
+ */
+ //https://developer.wordpress.org/reference/functions/flush_rewrite_rules/
+ 
+register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
+register_activation_hook( __FILE__, 'go_flush_rewrites' );
+ 
+ 
+/**
+ * Flush rewrite rules on activation
+ */
+function go_flush_rewrites() {
+    // call your CPT registration function here (it should also be hooked into 'init')
+    go_register_task_tax_and_cpt();
+    go_register_store_tax_and_cpt();
+    flush_rewrite_rules();
+}
+
+
+//function go_register_tax_and_cpt() {
+//	go_register_task_tax_and_cpt();
+//	go_register_store_tax_and_cpt();
+//	flush_rewrite_rules();
+//}
 
 /*
  * Admin Menu & Admin Bar
@@ -95,7 +123,7 @@ add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'admin_head', 'go_stats_overlay' );
 add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
-add_action( 'admin_enqueue_scripts', 'go_enqueue_admin_scripts_and_styles' );
+add_action( 'admin_enqueue_scripts', 'go_admin_scripts_and_styles' );
 add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 /*
@@ -105,7 +133,7 @@ add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 // actions
 add_action( 'wp_head', 'go_stats_overlay' );
 add_action( 'wp_head', 'go_frontend_lightbox_html' );
-add_action( 'wp_enqueue_scripts', 'go_enqueue_scripts_and_styles' );
+add_action( 'wp_enqueue_scripts', 'go_scripts_and_styles' );
 
 // filters
 add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
@@ -281,18 +309,7 @@ function go_delete_cpt_data( $cpt_id ) {
 	return true;
 }
 
-/* 
- * Registers Game On custom post types and taxonomies, then
- * updates the site's rewrite rules to mitigate cpt and 
- * permalink conflicts. flush_rewrite_rules() must always
- * be called AFTER custom post types and taxonomies are
- * registered.
- */
-function go_register_tax_and_cpt() {
-	go_register_task_tax_and_cpt();
-	go_register_store_tax_and_cpt();
-	flush_rewrite_rules();
-}
+
 
 function go_user_redirect( $redirect_to, $request, $user ) {
 	$redirect_on = get_option( 'go_admin_bar_user_redirect', true );

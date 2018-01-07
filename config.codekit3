@@ -101,6 +101,13 @@
 		"oAP": "\/go_map.php",
 		"oF": 0
 		},
+	"\/go_menus.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/go_menus.php",
+		"oF": 0
+		},
 	"\/go_message.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -669,6 +676,16 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/scripts\/combined\/buy_the_item-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/scripts\/combined\/go_clipboard-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/scripts\/combined\/go_clipboard-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -1530,6 +1547,26 @@
 		"oAP": "\/types\/store\/super-store.php",
 		"oF": 0
 		},
+	"\/types\/tasks\/go_tasks-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/types\/tasks\/go_tasks-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/types\/tasks\/go_tasks.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/types\/tasks\/go_tasks-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/types\/tasks\/images\/ico.png": {
 		"ft": 32768,
 		"iS": 3068,
@@ -1540,6 +1577,13 @@
 		"opt": 0,
 		"oT": 1,
 		"q": 100
+		},
+	"\/types\/tasks\/task copy.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/types\/tasks\/task copy.php",
+		"oF": 0
 		},
 	"\/types\/tasks\/task-admin.php": {
 		"cB": 0,
@@ -1567,6 +1611,13 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/types\/tasks\/task_shortcode.php",
+		"oF": 0
+		},
+	"\/types\/tasks\/task_shortcode_new.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/types\/tasks\/task_shortcode_new.php",
 		"oF": 0
 		},
 	"\/types\/test\/test_shortcode.php": {
