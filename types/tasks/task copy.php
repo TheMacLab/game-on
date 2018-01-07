@@ -4,10 +4,42 @@ include( 'task_shortcode.php' );
 include( 'task-admin.php' );
 
 function go_register_task_tax_and_cpt() {
-	
-	/*
-	 * Task Category Taxonomy
-	 */
+	// Register Badges
+	$labels = array(
+		'name'                       => _x( go_return_options( 'go_badges_name' ), 'badges' ),
+		'singular_name'              => _x( go_return_options( 'go_badges_name' ), 'badges' ),
+		'menu_name'                  => _x( go_return_options( 'go_badges_name' ), 'badges' ),
+		'all_items'                  => 'All Items',
+		'parent_item'                => 'Parent Item',
+		'parent_item_colon'          => 'Parent Item:',
+		'new_item_name'              => 'New Item Name',
+		'add_new_item'               => 'Add New Item',
+		'edit_item'                  => 'Edit Item',
+		'update_item'                => 'Update Item',
+		'view_item'                  => 'View Item',
+		'separate_items_with_commas' => 'Separate items with commas',
+		'add_or_remove_items'        => 'Add or remove items',
+		'choose_from_most_used'      => 'Choose from the most used',
+		'popular_items'              => 'Popular Items',
+		'search_items'               => 'Search Items',
+		'not_found'                  => 'Not Found',
+		'no_terms'                   => 'No items',
+		'items_list'                 => 'Items list',
+		'items_list_navigation'      => 'Items list navigation',
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => false,
+		'public'                     => true,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => false,
+		'show_in_menu' => true,
+		'show_tagcloud'              => false,
+	);
+	register_taxonomy( 'go_badges', array( '' ), $args );
+
+	// Register Task Category Taxonomy
 	$task_cat_labels = array( 
 		'name' => _x( go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
 		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Category', 'task_categories' ),
@@ -25,11 +57,11 @@ function go_register_task_tax_and_cpt() {
 		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' categories', 'task_categories' ),
 		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Categories', 'task_categories' ),
 	);
-
 	$task_cat_args = array( 
 		'labels' => $task_cat_labels,
 		'public' => true,
-		'show_in_nav_menus' => true,
+		'show_in_nav_menus' => false,
+		'show_in_menu' => false,
 		'show_ui' => true,
 		'show_tagcloud' => true,
 		'show_admin_column' => false,
@@ -38,10 +70,8 @@ function go_register_task_tax_and_cpt() {
 		'query_var' => true
 	);
 	register_taxonomy( 'task_categories', array( 'tasks' ), $task_cat_args );
-	
-	/*
-	 * Task Focus Categories Taxonomy
-	 */
+
+	// Register Task Focus-specailist
 	$focus_labels = array( 
 		'name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
 		'singular_name' => _x( go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
@@ -62,19 +92,50 @@ function go_register_task_tax_and_cpt() {
 	$focus_args = array(
 		'labels' => $focus_labels,
 		'public' => true,
-		'show_in_nav_menus' => true,
+		'show_in_nav_menus' => false,
+		'show_in_menu' => true,
 		'show_ui' => true,
-		'show_tagcloud' => true,
+		'show_tagcloud' => false,
+		'show_admin_column' => false,
+		'hierarchical' => false,
+		'rewrite' => true,
+		'query_var' => true
+	);
+	register_taxonomy( 'task_focus_categories', array( 'tasks' ), $focus_args );
+
+	// Register Task sidemenu Taxonomy
+	$task_menu_labels = array( 
+		'name' => _x( go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Menu Parent', 'task_menu' ),
+		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Menu:', 'task_menu' ),
+		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Menu', 'task_menu' ),
+		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' menus with commas', 'task_menu' ),
+		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' menus', 'task_menu' ),
+		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' menus', 'task_menu' ),
+		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Menu Items', 'task_menu' ),
+	);
+	$task_menu_args = array( 
+		'labels' => $task_menu_labels,
+		'public' => true,
+		'show_in_nav_menus' => false,
+		'show_in_menu' => false,
+		'show_ui' => true,
+		'show_tagcloud' => false,
 		'show_admin_column' => false,
 		'hierarchical' => true,
 		'rewrite' => true,
 		'query_var' => true
 	);
-	register_taxonomy( 'task_focus_categories', array( 'tasks' ), $focus_args );
-	
-	/*
-	 * Task Chains Taxonomy
-	 */
+	register_taxonomy( 'task_menus', array( 'tasks' ), $task_menu_args );
+
+	// Register Task chains Taxonomy
 	$task_chains_labels = array(
 		'name' => _x( go_return_options( 'go_tasks_name' ).' Chains', 'task_chains' ),
 		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Chain', 'task_chains' ),
@@ -95,7 +156,8 @@ function go_register_task_tax_and_cpt() {
 	$task_chains_args = array(
 		'labels' => $task_chains_labels,
 		'public' => true,
-		'show_in_nav_menus' => true,
+		'show_in_nav_menus' => false,
+		'show_in_menu' => false,
 		'show_ui' => true,
 		'show_tagcloud' => true,
 		'show_admin_column' => true,
@@ -104,46 +166,8 @@ function go_register_task_tax_and_cpt() {
 		'query_var' => true
 	);
 	register_taxonomy( 'task_chains', array( 'tasks' ), $task_chains_args );
-	
-	
-	
-	
-	/*
-	 * Task Pods Taxonomy
-	 */
-	$task_pods_labels = array(
-		'name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Pod Parent', 'task_pods' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Pod:', 'task_pods' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' pods with commas', 'task_pods' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
-		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-	);
-	$task_pods_args = array(
-		'labels' => $task_pods_labels,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_ui' => false,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => true,
-		'query_var' => true
-	);
-	register_taxonomy( 'task_pods', array( 'tasks' ), $task_pods_args );
-	
-	
-	
-	
+
+
 
 	/*
 	 * Task Custom Post Type
@@ -167,7 +191,7 @@ function go_register_task_tax_and_cpt() {
 		'hierarchical' => false,
 		'description' => go_return_options( 'go_tasks_plural_name' ),
 		'supports' => array( 'title', 'publicize', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes', 'comments' ),
-		'taxonomies' => array( 'task_categories', 'post_tag', 'task_focus_categories' ),
+		'taxonomies' => array( 'task_categories', 'task_focus_categories', 'task_chains', 'task_menus', 'go_badges' ),
 		'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => true,
@@ -182,8 +206,10 @@ function go_register_task_tax_and_cpt() {
 		'capability_type' => 'post'
 	);
 	register_post_type( 'tasks', $args_cpt );
+	
 }
 add_action( 'init', 'go_register_task_tax_and_cpt', 0 );
+
 
 /**
  * Retrieves the status of a task for a specific user.
@@ -347,4 +373,7 @@ function go_update_term_slug( $data, $term_id, $taxonomy, $args ) {
          
 add_filter( 'wp_update_term_data', 'go_update_term_slug', 10, 4 );
 */
+
+
+
 ?>

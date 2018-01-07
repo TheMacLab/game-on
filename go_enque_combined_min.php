@@ -4,7 +4,7 @@
  * Registering Scripts/Styles For Admin Pages
  */
 
-function go_register_admin_scripts_and_styles () {
+function go_admin_scripts_and_styles () {
 
 //Scripts
 	 // Merged Scripts	 
@@ -19,13 +19,13 @@ function go_register_admin_scripts_and_styles () {
 	// Custom Styles
 	wp_register_style( 'go_admin_css', plugin_dir_url( __FILE__ ).'styles/go_admin.css' );	
 
-}
+
 
 /*
  * Enqueueing Scripts/Styles For Admin Pages & adding localization & nonces
  */
 
-function go_enqueue_admin_scripts_and_styles ( $hook ) {
+
 	global $post;
 	$user_id = get_current_user_id();
 
@@ -124,17 +124,18 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 
 }
 
+
+function go_scripts_and_styles () {
 /*
  * Registering Scripts/Styles For The Front-end
  */
 
-function go_register_scripts_and_styles () {
 
 	//Scripts 
 
 	// Merged Scripts
 	wp_register_script( 'go-frontend-min', plugin_dir_url( __FILE__ ).'scripts/go-frontend-min.js' );
-	
+
 	//Styles
 	 
 	// Dependencies
@@ -144,13 +145,11 @@ function go_register_scripts_and_styles () {
 
 	// Custom Styles
 	wp_register_style( 'go_frontend_css', plugin_dir_url( __FILE__ ).'styles/go_frontend.css' );
-}
+
 
 /*
  * Enqueueing Scripts/Styles For The Front-end
  */
-
-function go_enqueue_scripts_and_styles () {
 
 	//Scripts	 
 	wp_enqueue_script( 'go-frontend-min' );
@@ -165,6 +164,10 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_script( 'jquery-ui-spinner' );
 	wp_enqueue_script( 'jquery-ui-progressbar' );
 	wp_enqueue_script( 'jquery-effects-core' );
+	
+
+
+	
 	
 	// Localization
 	$user_id = get_current_user_id();

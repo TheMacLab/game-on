@@ -2,7 +2,7 @@
 session_start();
 
 function go_task_scripts (){
-	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'go_tasks-min.js' );	
+	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'go_tasks.js' );	
 	wp_enqueue_script( 'go_tasks','','','', true );
 }
 add_action( 'init', 'go_task_scripts', 0 );
@@ -796,7 +796,7 @@ function go_task_shortcode( $atts, $content = null ) {
 	<div id="go_content">
 		<?php
 			if ( $test_e_active ) {
-				echo "<p id='go_test_error_msg' style='color: red;'></p>";
+				echo "<p id='	' style='color: red;'></p>";
 				if ( $test_e_num > 1 ) {
 					for ( $i = 0; $i < $test_e_num; $i++ ) {
 						if ( ! empty( $test_e_all_types[ $i ] ) &&
@@ -1293,9 +1293,9 @@ function go_task_shortcode( $atts, $content = null ) {
 			'date_update_percent'	=>  $date_update_percent,
 			'go_task_change_stage'	=>  $task_shortcode_nonces['go_task_change_stage'],
 			'task_count'	=>  ( ! empty( $task_count ) ? $task_count : 0 ),
-			'points_array'	=>  $points_array ,
-			'currency_array'	=>  $currency_array,
-			'bonus_currency_array'	=>  $bonus_currency_array ,
+			'points_array'	=>  json_encode( $points_array ),
+			'currency_array'	=>  json_encode( $currency_array ),
+			'bonus_currency_array'	=>  json_encode( $bonus_currency_array ),
 			'date_update_percent'	=>  $date_update_percent,
 			'next_post_id_in_chain'	=>  ( ! empty( $next_post_id_in_chain ) ? $next_post_id_in_chain : 0 ),
 			'last_in_chain'	=>  ( ! empty( $last_in_chain ) ? 'true' : 'false' ),
@@ -1303,8 +1303,6 @@ function go_task_shortcode( $atts, $content = null ) {
 
 		)
 	);
-	
-
 	
 	// redeclare (also called "overloading" ) the variable $task_count to the value of the 'count' var on the database.
 	$task_count = $wpdb->get_var(
@@ -3152,6 +3150,7 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 		echo '</div>';
 	} 
 }
+
 
 function go_task_timer( $task_id, $user_id, $future_modifier ) {
 	global $wpdb;
