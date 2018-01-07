@@ -1,10 +1,12 @@
 <?php
 
+
+
+function go_admin_scripts_and_styles () {
+
 /*
  * Registering Scripts/Styles For Admin Pages
  */
-
-function go_register_admin_scripts_and_styles () {
 
 	/*
 	 * Common Scripts
@@ -14,8 +16,10 @@ function go_register_admin_scripts_and_styles () {
 	wp_register_script( 'video-js', plugin_dir_url( __FILE__ ).'scripts/video-js/video.js' );
 
 	// Custom Scripts
-	wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/go_notification.js' );
-	wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/go_every_page.js' );
+	wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/combined/go_notification.js' );
+	wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/combined/go_every_page.js' );
+	wp_register_script( 'go_types', plugin_dir_url( __FILE__ ).'scripts/combined/types.js' );
+	
 
 	/*
 	 * Common Styles
@@ -26,58 +30,58 @@ function go_register_admin_scripts_and_styles () {
 	wp_register_style( 'video-js-css', plugin_dir_url( __FILE__ ).'scripts/video-js/video-js.css' );
 
 	// Custom Styles
-	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
-	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
+	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/combined/go_every_page.css' );
+	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'stylescombined//go_stats.css' );
 
 	/*
 	 * Page-Specific Scripts
 	 */
 
 	// Tasks
-	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/go_tasks_admin.js', array( 'jquery' ), false, true );
-	wp_register_script( 'go_tasks_chains', plugin_dir_url( __FILE__ ).'scripts/go_tasks_chains.js', array( 'jquery', 'go_tasks' ), false, true );
-	wp_register_script( 'go_presets', plugin_dir_url( __FILE__ ).'scripts/go_presets.js', array( 'jquery' ), false, true );
-	wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/jquery.ptTimeSelect.js', array( 'jquery' ) );
+	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/combined/go_tasks_admin.js', array( 'jquery' ), false, true );
+	wp_register_script( 'go_tasks_chains', plugin_dir_url( __FILE__ ).'scripts/combined/go_tasks_chains.js', array( 'jquery', 'go_tasks' ), false, true );
+	wp_register_script( 'go_presets', plugin_dir_url( __FILE__ ).'scripts/combined/go_presets.js', array( 'jquery' ), false, true );
+	wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/combined/jquery.ptTimeSelect.js', array( 'jquery' ) );
 
 	// Store
-	wp_register_script( 'go_store', plugin_dir_url( __FILE__ ).'scripts/go_store_admin.js', array( 'jquery' ), false, true );
+	wp_register_script( 'go_store', plugin_dir_url( __FILE__ ).'scripts/combined/go_store_admin.js', array( 'jquery' ), false, true );
 
 	// Options
-	wp_register_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/go_options.js' );
+	wp_register_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/combined/go_options.js' );
 
 	// Pods
-	wp_register_script( 'go_pod_options_js', plugin_dir_url( __FILE__ ).'scripts/go_pod_options.js', array( 'jquery' ), false, true );
+	wp_register_script( 'go_pod_options_js', plugin_dir_url( __FILE__ ).'scripts/combined/go_pod_options.js', array( 'jquery' ), false, true );
 
 	// Clipboard
-	wp_register_script( 'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ).'scripts/jquery.dataTables.min.js' );
-	wp_register_script( 'go_jquery_clipboard', plugin_dir_url( __FILE__ ).'scripts/go_clipboard.js' );
-	wp_register_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url( __FILE__ ).'scripts/sorttable.js' );
+	wp_register_script( 'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ).'scripts/combined/jquery.dataTables.min.js' );
+	wp_register_script( 'go_jquery_clipboard', plugin_dir_url( __FILE__ ).'scripts/combined/go_clipboard.js' );
+	wp_register_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url( __FILE__ ).'scripts/combined/sorttable.js' );
 
 	/*
 	 * Page-Specific Styles
 	 */
 
 	// Tasks
-	wp_register_style( 'ptTimeSelectCSS', plugin_dir_url( __FILE__ ).'styles/jquery.ptTimeSelect.css' );
-	wp_register_style( 'go_tasks_admin', plugin_dir_url( __FILE__ ).'styles/tasks-admin.css' );
+	wp_register_style( 'ptTimeSelectCSS', plugin_dir_url( __FILE__ ).'styles/combined/jquery.ptTimeSelect.css' );
+	wp_register_style( 'go_tasks_admin', plugin_dir_url( __FILE__ ).'styles/combined/tasks-admin.css' );
 
 	// Store
 
 	// Options
-	wp_register_style( 'go_opt_css', plugin_dir_url( __FILE__ ).'styles/go_options.css' );
+	wp_register_style( 'go_opt_css', plugin_dir_url( __FILE__ ).'styles/combined/go_options.css' );
 
 	// Pods
 
 	// Clipboard
-	wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/go_clipboard.css' );
+	wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/combined/go_clipboard.css' );
 
-}
+
 
 /*
  * Enqueueing Scripts/Styles For Admin Pages
  */
 
-function go_enqueue_admin_scripts_and_styles ( $hook ) {
+
 	global $post;
 	$user_id = get_current_user_id();
 
@@ -97,10 +101,12 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	wp_enqueue_script( 'jquery-ui-progressbar' );
 	wp_enqueue_script( 'jquery-effects-core' );
 	wp_enqueue_script( 'video-js' );
+	
 
 	// Custom Scripts
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );
+	wp_enqueue_script( 'go_types' );
 
 	// Localization
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
@@ -138,6 +144,8 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	// Custom Styles
 	wp_enqueue_style( 'go_every_page_css' );
 	wp_enqueue_style( 'go_style_stats' );
+	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'); 
+
 
 	/*
 	 * Page-Specific Scripts and Styles
@@ -267,11 +275,12 @@ function go_enqueue_admin_scripts_and_styles ( $hook ) {
 	}
 }
 
+
+function go_scripts_and_styles () {
+
 /*
  * Registering Scripts/Styles For The Front-end
  */
-
-function go_register_scripts_and_styles () {
 
 	/*
 	 * Common Scripts
@@ -281,10 +290,14 @@ function go_register_scripts_and_styles () {
 	wp_register_script( 'video-js', plugin_dir_url( __FILE__ ).'scripts/video-js/video.js' );
 
 	// Custom Scripts
-	wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/go_notification.js' );
-	wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/go_every_page.js' );
+	wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/combined/go_notification.js' );
+	wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/combined/go_every_page.js' );
 
-	wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/js/buy_the_item.js', array( 'jquery' ), 1.0, true );
+	wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'scripts/combined/buy_the_item.js', array( 'jquery' ), 1.0, true );
+    
+	wp_register_script('go_videos_fit_and_box', plugin_dir_url( __FILE__).'scripts/combined/go_videos_fit_and_box.js' );
+
+	wp_register_script('go_map_js', plugins_url('scripts/combined/go_map.js', __FILE__), array('jquery'),'1.1', true);
 
 	/*
 	 * Common Styles
@@ -296,19 +309,23 @@ function go_register_scripts_and_styles () {
 	wp_register_style( 'go_lightbox', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/css/go-lightbox.css' );
 
 	// Custom Styles
-	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
-	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
-}
+	wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/combined/go_every_page.css' );
+	wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/combined/go_stats.css' );
+	
+	wp_register_style( 'go_map_style', plugin_dir_url( __FILE__ ).'styles/combined/go_map.css' );
+	wp_register_style( 'go_store_style', plugin_dir_url( __FILE__ ).'styles/combined/go_store.css' );
+
+
+
 
 /*
  * Enqueueing Scripts/Styles For The Front-end
  */
 
-function go_enqueue_scripts_and_styles () {
-
 	/*
 	 * Common Scripts
 	 */
+
 
 	// Dependencies
 	wp_enqueue_script( 'jquery' );
@@ -323,13 +340,19 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_script( 'jquery-effects-core' );
 	wp_enqueue_script( 'video-js' );
 
+    
 	// Custom Scripts
 	wp_enqueue_script( 'go_notification' );
 	wp_enqueue_script( 'go_every_page' );
 	wp_enqueue_script( 'buy_the_item' );
+	wp_enqueue_script('go_videos_fit_and_box');
+	wp_enqueue_script('go_map_js');
+
 
 	// Localization
 	$user_id = get_current_user_id();
+	$ajax_url   = admin_url( 'admin-ajax.php' );        // Localized AJAX URL
+
 
 	wp_localize_script( 'go_every_page', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	wp_localize_script( 'go_every_page', 'PluginDir', array( 'url' => plugin_dir_url( __FILE__ ) ) );
@@ -364,7 +387,8 @@ function go_enqueue_scripts_and_styles () {
 			)
 		)
 	);
-
+	wp_localize_script('go_map_js','map_ajax_admin_url',$ajax_url);
+		
 	/*
 	 * Common Styles
 	 */
@@ -373,10 +397,17 @@ function go_enqueue_scripts_and_styles () {
 	wp_enqueue_style( 'jquery-ui-css' );
 	wp_enqueue_style( 'video-js-css' );
 	wp_enqueue_style( 'go_lightbox' );
+	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'); 
+	wp_enqueue_style( 'go_store_style' );
+  
 
 	// Custom Styles
 	wp_enqueue_style( 'go_every_page_css' );
 	wp_enqueue_style( 'go_style_stats' );
+	wp_enqueue_style( 'go_map_style' );
+	
+
+    
 
 }
 ?>

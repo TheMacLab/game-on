@@ -1,0 +1,388 @@
+.go_wrap {
+	background-color: white;	
+	padding: 10px;
+}
+
+.go_wrap form {
+	height: 100%;
+}
+
+.go_wrap input[type="text"] {
+   height: 20px;
+   font-size: 14px;
+}
+
+input.go_options_additional_settings_input { 
+   width: 15px;
+   height: 15px;
+   margin-bottom: 10px;
+}
+
+.go_wrap form button {
+	background-color: #DDD;
+	border-radius: 3px;
+	color: black;
+	font-size: 14px;
+	font-weight: bold;
+	min-width: 35px;
+	border: 0;
+	cursor: pointer;
+}
+
+.go_triangle_up {
+	border-top: 0px solid transparent !important;
+	border-bottom: 5px solid #777;
+}
+
+input[type="submit"] {
+	height: auto !important;
+}
+
+#go_options_admin_email_wrap {
+	width: 100%;
+}
+
+/** Help Button Styles **/
+
+.go_options_help_link {
+	color: black;
+	text-decoration: none;
+	font-weight: normal !important;
+	font-size: 14px !important;
+	position: relative;
+}
+
+.go_options_help_link:hover:after {
+	position: absolute;
+	content: attr(tooltip);
+	width: 200px;
+	padding: 0 5px 0 5px;
+	background-color: #CCC;
+	font-size: 14px;
+	left: 20px; 
+	bottom: 0px;
+	border-radius: 5px;
+	z-index: 99;
+	color: black;
+	white-space: initial;
+}
+
+.go_options_help_wrap {
+	display: inline-block;
+	background-color: #DDD;
+	border-radius: 50%;
+	height: 18px;
+	width: 18px;
+	position: relative;
+	top: 2.5px;
+}
+
+.go_options_help_text_wrap {
+	position: relative;
+	left: 50%;
+	float: left;
+}
+
+.go_options_help {
+	position: relative;
+	left: -50%;
+	float: left;
+}
+
+.go_options_no_help {
+	background-color: white;
+	color: white;
+	cursor: default;
+}
+
+/****************************/
+
+/** Accordion Styles **/
+
+.go_options_accordion_help_wrap {
+	display: inline-block;
+	float: left;
+	background-color: #DDD;
+	border-radius: 50%;
+	height: 18px;
+	width: 18px;
+	position: relative;
+	margin: 6px;
+}
+
+.go_options_accordion_help_text_wrap {
+	position: relative;
+	left: 50%;
+	float: left;
+}
+
+.go_options_accordion_help {
+	position: relative;
+	left: -50%;
+	float: left;
+}
+
+.go_options_accordion {
+	font-size: 20px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ddd;
+	padding: 5px;
+	cursor: pointer;
+	margin: 5px 0px 5px 0px;
+	overflow: hidden;
+	font-weight: bold;
+}
+
+.go_triangle_container {
+	float: right;
+	cursor: pointer;
+	display: block;
+	width: 27px;
+	height: 20px;
+	text-align: center;
+}
+
+.go_triangle_container:hover .go_options_triangle {
+	border-top: 5px solid #777;
+}
+
+.go_options_triangle {
+	width: 0; 
+	height: 0; 
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid #AAA;
+	display: inline-block;
+	vertical-align: middle;
+	margin: auto;
+}
+
+/****************************/
+
+/** General Options Styles **/
+
+.go_options_wrap {
+	margin: 4px 0px 4px 200px;
+	display: inline-block;
+	overflow: none;
+}
+
+.go_options {
+	margin: 10px 0px 10px 0px;
+}
+
+.go_options_field_title_wrap {
+	display: inline-block;
+	position: relative;
+}
+
+.go_options_field_title {
+	font-size: 16px;
+	font-weight: bold;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	white-space: nowrap;
+	
+}
+
+.go_options_input {
+	width: 15%;	
+	margin: 0px 4px 0px 4px;
+}
+
+.go_options_button {
+	width: auto;
+}
+
+/****************************/
+
+/** Presets Styles **/
+
+#go_options_preset_name_wrap, 
+#go_options_preset_points_wrap, 
+#go_options_preset_currency_wrap {
+	display: inline-block;
+	width: 32%;
+}
+
+#go_options_preset_name {
+	position: relative;
+	display: inline-block;
+	float: right;
+	margin-left: 4px;
+	padding-right: 80%;
+	width: 15%;
+}
+
+#go_options_preset_points, 
+#go_options_preset_currency {
+	display: inline-block;
+	position: relative;
+	float: right;
+	padding-right: 15%;
+	width: 82%;
+}
+
+.go_options_preset_name_input {
+	width: 275%;
+}
+
+.go_options_preset_points_input, 
+.go_options_preset_currency_input {
+	width: 17%;
+}
+/****************************/
+
+/** Levels Styles**/
+#go_options_level_names_wrap, 
+#go_options_level_points_wrap, 
+#go_options_level_badges_wrap {
+	display: inline-block;
+	width: 30%;
+}
+
+#go_options_level_names, 
+#go_options_level_points, 
+#go_options_level_badges {
+	position: relative;
+	display: inline-block;
+	float: right;
+	margin-left: 4px;
+	padding-right: 80%;
+	width: 15%;
+}
+
+#go_options_level_points_wrap {
+	margin-left: 5%;
+}
+
+.go_options_level_names_input, 
+.go_options_level_badges_input {
+	width: 400%;
+}
+
+.go_options_level_points_input {
+	width: 75px !important;
+	
+}
+
+/****************************/
+
+/** Seating Chart Styles **/
+
+#go_options_periods_wrap, 
+#go_options_computers_wrap {
+	display: inline-block;
+	width: 50%;
+}
+
+#go_options_periods, 
+#go_options_computers {
+	position: relative;
+	display: inline-block;
+	float: right;
+	margin-left: 4px;
+	padding-right: 30%;
+	width: 65%;
+}
+
+.go_options_period_input, 
+.go_options_computer_input {
+	width: auto;
+}
+
+/****************************/
+
+/** Profession Styles **/
+
+#go_options_professions_names_wrap {
+	display: inline-block;
+	width: 100%;
+}
+
+#go_options_professions {
+	position: relative;
+	display: inline-block;
+	float: right;
+	margin-left: 4px;
+	padding-right: 15.6%;
+	width: 80%;
+}
+
+.go_options_profession_input {
+	width: 50%;
+}
+
+
+/****************************/
+
+/** Video Settings Styles **/
+
+#go_options_video_wrap {
+	margin-left: 200px;
+	width: 100%;
+}
+
+.accordian_sub_heading {
+    font-size: 1.5em;
+    font-weight: bold;
+    right: 150px;
+    position: relative;
+    margin-bottom: 3px;
+}
+
+.opt_accordian_message_red {
+    right: 150px;
+    position: relative;
+    margin-bottom: 3px;
+    color: red;
+    
+}
+
+.opt_accordian_message {
+    right: 150px;
+    position: relative;
+    margin-bottom: 3px;
+    
+}
+
+/****************************/
+
+/** Additional Settings Styles **/
+
+#go_options_additional_settings_wrap {
+	margin-left: 200px;
+	width: 100%;
+}
+
+.go_options_additional_settings_input[type="text"] {
+	width: 5%;
+	min-width: 100px;
+}
+
+.go_options_additional_settings_input[name="go_admin_email"] {
+	width: 20%;
+}
+
+.go_options_input[name="go_video_width"], 
+.go_options_input[name="go_video_height"] {
+	width: 5%;
+	margin: 0 4px 0 3px;
+}
+
+#go_options_video_dim:nth-of-type(2n) {
+	margin: 0;
+	margin-right: 10px;
+}
+
+.go_options_additional_settings_input[name="go_email_from"] {
+	width: 30%;
+}
+
+.go_data_reset_disclaimer {
+	vertical-align: super;
+}
+
+/****************************/

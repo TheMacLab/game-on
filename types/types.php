@@ -118,6 +118,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'text'
 			),
 			array(
+				'name' => 'Optional '.go_return_options( 'go_tasks_name' ).go_task_opt_help( 'optional_task', '', 'http://videolink.mp4' ),
+				'id' => "{$prefix}optional_task",
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Stage 1'.go_task_opt_help( 'encounter', '', 'http://maclab.guhsd.net/go/video/quests/stageOne.mp4' ),
 				'id' => "{$prefix}quick_desc",
 				'type' => 'wysiwyg',
@@ -408,11 +413,6 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'go_admin_lock'
 			),
 			array(
-				'name' => 'URL'.go_task_opt_help( 'mastery_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4' ),
-				'id' => "{$prefix}mastery_url_key",
-				'type' => 'checkbox'
-			),
-			array(
 				'name' => 'Upload'.go_task_opt_help( 'mastery_file_upload', '', 'http://maclab.guhsd.net/go/video/quests/fileUpload.mp4' ),
 				'id' => "{$prefix}mastery_upload",
 				'type' => 'checkbox'
@@ -514,6 +514,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'URL'.go_task_opt_help( 'mastery_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4' ),
+				'id' => "{$prefix}mastery_url_key",
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Private'.go_task_opt_help( 'repeat_privacy', '', 'http://maclab.guhsd.net/go/video/quests/repeatPrivacy.mp4' ),
 				'id' => "{$prefix}repeat_privacy",
 				'type' => 'checkbox'
@@ -610,6 +615,13 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'name' => 'Send Receipt'.go_task_opt_help( 'store_receipt', 'Send email to admin upon purchase', 'http://maclab.guhsd.net/go/video/store/receipt.mp4' ),
 				'id' => "{$prefix}store_receipt",
 				'type' => 'go_store_receipt'
+			),
+			array(
+				'name' => 'Store Item Order'.go_task_opt_help( 'store_order', '', 'http://maclab.guhsd.net/go/video/quests/tasksInChain.mp4' ),
+				'id' => "{$prefix}store_order",
+				'taxonomy' => 'store_types',
+				'post_type' => 'go_store',
+				'type' => 'go_store_order'
 			),
 		),
 	);
@@ -1691,6 +1703,218 @@ function go_validate_task_chain_order( $new_values ) {
 	return $new_chain_order;
 }
 add_action( 'cmb_validate_go_task_chain_order', 'go_validate_task_chain_order', 10, 1 );
+
+
+add_action( 'cmb_render_go_store_order', 'go_render_store_order' );
+function go_render_store_order() {
+	global $post;
+	$task_chains = get_the_terms( $post->ID, 'store_types' );
+	
+
+	if ( ! empty( $task_chains ) ) {
+		$chain_terms_array = array_values( $task_chains );
+		$stored_chain_order = get_post_meta( $post->ID, 'go_mta_store_order', true );
+
+		foreach ( $chain_terms_array as $chain_term ) {
+			$tasks_in_chain = array();
+			$tt_id = $chain_term->term_taxonomy_id;
+
+			if ( ! empty( $stored_chain_order[ $tt_id ] ) ) {
+				if ( ! is_array( $stored_chain_order[ $tt_id ] ) ) {
+					$chain_order = explode( ',', $stored_chain_order[ $tt_id ] );
+				} else {
+					$chain_order = $stored_chain_order[ $tt_id ];
+				}
+				foreach ( $chain_order as $id ) {
+					if ( ! empty( $id ) ) {
+						$tasks_in_chain[] = get_post( $id );
+					}
+				}
+				
+			} else {
+			
+				$tasks_in_chain = go_store_chain_get_tasks( $tt_id );
+			}
+
+			$task_id_array = array();
+			$task_id_str = null;
+			$chain_list_elems = '';
+			foreach ( $tasks_in_chain as $index => $post_obj ) {
+				if ( ! is_object( $post_obj ) || empty( $post_obj->ID ) ) {
+					continue;
+				}
+				$task_id_array[] = $post_obj->ID;
+				$post_status = $post_obj->post_status;
+
+				$elem_val = $post_obj->post_title . (
+					'publish' !== $post_status ?
+					' (' . ucwords( $post_status ) . ')' :
+					''
+				);
+
+				$chain_list_elems .= sprintf(
+					'<li class="go_task_in_chain" post_id=%d>%s</li>',
+					$post_obj->ID,
+					$elem_val
+				);
+			}
+
+			$task_id_str = join( ',', $task_id_array );
+
+			printf(
+				'<div class="go_task_chain_order_container">'.
+					'<div class="go_task_chain_order_title"><strong>%s</strong></div>'.
+					'<ul class="go_sortable go_task_chain_order_list">%s</ul>'.
+					'<input class="go_store_order_hidden" name="go_mta_store_order[%d]" '.
+						'type="hidden" value="%s"/>'.
+				'</div>',
+				ucwords( $chain_term->name ),
+				$chain_list_elems,
+				$tt_id,
+				$task_id_str
+			);
+		}
+	}
+}
+
+/**
+ * Updates the task chain order meta data of each task in a chain, as needed.
+ *
+ * Only updates the task's chain order if the stored chain order and the new chain order values are
+ * different. Terms that the task doesn't have an object-term relationship with will be removed from
+ * the chain order. If the task's chain order does need updating, all other tasks within the chain
+ * will be updated with the new chain order meta data. This ensures that all tasks display the
+ * correct order.
+ *
+ * This function is not meant to be called in any way other than through its `cmb_validate_*` hook.
+ *
+ * @since 3.0.0
+ *
+ * @global $post
+ *
+ * @param array $new_values The new chain order array.
+ * @return array If changes occurred, the updated chain order array is returned (saved); otherwise,
+ *               the current meta value is used.
+ */
+function go_validate_store_order( $new_values ) {
+	global $post;
+//echo '<script type="text/javascript">alert("'.$new_values.'");</script>';
+	/**
+	 * The chain order should be of the form below. The task IDs are lumped into a string due to the
+	 * way that form inputs pass data via POST.
+	 *
+	 *     array(
+	 *         [tt_id #1] => '[post_id #1],[post_id #2],[post_id #3]',
+	 *         ...
+	 *     )
+	 *
+	 *     e.g.
+	 *     array(
+	 *         892 => '123,204,347',
+	 *         ...
+	 *     )
+	 */
+	$new_order_input    = ! empty( $new_values ) ? $new_values : array();
+	$task_chains        = get_the_terms( $post->ID, 'store_types' );
+	$stored_chain_order = get_post_meta( $post->ID, 'go_mta_store_order', true );
+	$new_chain_order    = is_array( $stored_chain_order ) ? $stored_chain_order : array();
+
+	if ( empty( $new_order_input ) || empty( $task_chains ) ) {
+		return $new_chain_order;
+	}
+
+	foreach ( $new_order_input as $tt_id => $chain_order_str ) {
+
+		$in_chain = false;
+
+		foreach ( $task_chains as $chain_obj ) {
+			if ( $chain_obj->term_taxonomy_id === $tt_id ) {
+				$in_chain = true;
+				break;
+			}
+		}
+
+		// splits the list of task IDs into an array
+		$chain_order = explode( ',', $chain_order_str );
+
+		// duplicates the chain order array; this makes looping through the chain order array and
+		// removing task IDs that do not belong possible without skipping elements
+		$chain_order_dupe = $chain_order;
+
+		if ( ! empty( $chain_order ) && $in_chain ) {
+			if ( empty( $stored_chain_order ) ||
+					( ! empty( $stored_chain_order[ $tt_id ] ) &&
+					$stored_chain_order[ $tt_id ] !== $chain_order ) ) {
+
+				foreach ( $chain_order_dupe as $index => $task_id ) {
+
+					// typecasts the task IDs to ensure that they are actually integers; the benefit
+					// being that an entire loop isn't being created just for typecasting the IDs
+					$task_id = (int) $task_id;
+					$chain_order[ $index ] = $task_id;
+
+					if ( $task_id !== $post->ID ) {
+						$is_in_target_chain = false;
+						$other_task_chains = get_the_terms( $task_id, 'store_types' );
+
+						if ( ! empty( $other_task_chains ) ) {
+							foreach ( $other_task_chains as $chain ) {
+								if ( $chain->term_taxonomy_id === $tt_id ) {
+									$is_in_target_chain = true;
+									break;
+								}
+							}
+						}
+
+						$other_chain_order = get_post_meta( $task_id, 'go_mta_store_order', true );
+
+						if ( $is_in_target_chain &&
+								( empty( $other_chain_order[ $tt_id ] ) ||
+								$other_chain_order[ $tt_id ] !== $chain_order ) ) {
+
+							// updates/adds the chain ID and order pair to the chain order array,
+							// if the task is actually in the chain and the order hasn't been updated
+							$other_chain_order[ $tt_id ] = $chain_order;
+						} elseif ( ! $is_in_target_chain && ! empty( $other_chain_order[ $tt_id ] ) ) {
+
+							// removes the chain ID and order pair from the task's chain order array,
+							// if the task isn't in the chain and still has the chain's order in
+							// its meta data
+							unset( $other_chain_order[ $tt_id ] );
+						}
+
+						// ensures that tasks get removed from the chain order array when necessary
+						if ( empty( $other_chain_order[ $tt_id ] ) ) {
+							$task_pos = array_search( $task_id, $chain_order );
+
+							// removes the ID of the task (that is no longer in the chain) from the
+							// chain order array of the target
+							unset( $chain_order[ $task_pos ] );
+						}
+
+						// converts all values in the task's chain order (for a specific chain) to ints
+						if ( ! empty( $other_chain_order[ $tt_id ] ) && is_array( $other_chain_order[ $tt_id ] ) ) {
+							foreach ( $other_chain_order[ $tt_id ] as $other_order_index => $other_task_id ) {
+								$other_chain_order[ $tt_id ][ $other_order_index ] = (int) $other_task_id;
+							}
+						}
+
+						// updates the task's chain order
+						update_post_meta( $task_id, 'go_mta_store_order', $other_chain_order );
+					}
+				}
+			}
+			$new_chain_order[ $tt_id ] = $chain_order;
+		}
+	}
+
+	return $new_chain_order;
+}
+add_action( 'cmb_validate_go_store_order', 'go_validate_store_order', 10, 1 );
+
+
+
+
 
 add_action( 'cmb_render_go_settings_accordion', 'go_settings_accordion', 10, 1);
 function go_settings_accordion( $field_args ) {

@@ -61,6 +61,19 @@ function go_add_post(
 	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
 	$user_bonuses = go_return_bonus_currency( $user_id );
 	$user_penalties = go_return_penalty( $user_id );
+	if ($repeat){
+		$current_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT count 
+				FROM {$table_name_go} 
+				WHERE uid = %d and post_id = %d",
+				$user_id,
+				$post_id
+			)
+		);
+	}
+
+	$current_status = ($status + $count + $current_count);
 
 	if ( $status === -1 ) {
 		$qty = ( false === $bonus_loot && ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1 );
@@ -141,16 +154,16 @@ function go_add_post(
 		);
 		if ( ! empty( $old_points ) ) {
 			$old_url_array = unserialize( $old_points->url );
-			$url_array = array();
+			$url_array = $old_url_array;
 			foreach ( $url_array as $key => $val ) {
 				if ( ! empty( $val ) ) {
 					$url_array[ $key ] = $val;
 				}
 			}
-			$url_array[ $status ] = $url;
+			$url_array[ $current_status ] = $url;
 			$url_array = serialize( $url_array);
 		} else {
-			$url_array = serialize( array( $status => $url ) );
+			$url_array = serialize( array( $current_status => $url ) );
 		}
 		if ( $repeat ) {
 			$wpdb->update(
