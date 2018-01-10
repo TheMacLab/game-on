@@ -496,6 +496,7 @@ function go_make_map_dropdown(){
 }
 
 function go_make_map() {
+
 	$user_id = get_current_user_id();
 
 	$last_map_id = get_user_meta($user_id, 'go_last_map', true);

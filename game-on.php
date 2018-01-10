@@ -13,7 +13,7 @@ include( 'go_pnc.php' );
 include( 'go_returns.php' );
 include( 'go_ranks.php' );
 //include( 'go_enque.php' );
-include( 'go_enque_combined_min.php' );
+include( 'go_enque_combined.php' );
 include( 'go_globals.php' );
 include( 'go_admin_bar.php' );
 include( 'go_message.php' );

@@ -1,0 +1,6 @@
+// @codekit-prepend 'video-js/video.js'
+// @codekit-prepend 'combined/go_notification.js'
+// @codekit-prepend 'combined/go_every_page.js'
+// @codekit-prepend 'combined/types.js'
+// @codekit-prepend 'combined/go_store_admin.js'
+// @codekit-prepend 'combined/go_pod_options.js'
