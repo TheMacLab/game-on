@@ -1,13 +1,7 @@
 <?php
 session_start();
+//https://www.thewpcrowd.com/wordpress/enqueuing-scripts-only-when-widget-or-shortcode/
 
-function go_task_scripts (){
-	wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'go_tasks-min.js' );	
-	wp_enqueue_script( 'go_tasks','','','', true );
-}
-add_action( 'init', 'go_task_scripts', 0 );
-	
-	
 /*
 	This is the file that displays content in a post/page with a task.
 	This file interprets and executes the shortcode in a post's body.
@@ -18,6 +12,10 @@ echo "<script>alert('alert here');</script>";
 */
 // Task Shortcode
 function go_task_shortcode( $atts, $content = null ) {
+
+	wp_enqueue_script( 'go_tasks','','','', true );
+	
+	
 	$atts = shortcode_atts( array(
 		'id' => '', // ID defined in Shortcode
 		'cats' => '', // Cats defined in Shortcode     
@@ -1259,12 +1257,6 @@ function go_task_shortcode( $atts, $content = null ) {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 	wp_localize_script(
 		'go_tasks',
 		'go_task_data',
@@ -1303,8 +1295,6 @@ function go_task_shortcode( $atts, $content = null ) {
 
 		)
 	);
-	
-
 	
 	// redeclare (also called "overloading" ) the variable $task_count to the value of the 'count' var on the database.
 	$task_count = $wpdb->get_var(
