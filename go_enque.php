@@ -202,7 +202,7 @@ function go_admin_scripts_and_styles ($hook) {
 	 */
 
 		// Dependencies
-		wp_register_style( 'jquery-ui-css', 'http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' );
+		wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' );
 		wp_register_style( 'video-js-css', plugin_dir_url( __FILE__ ).'scripts/video-js/video-js.css' );
 
 		/*
@@ -362,7 +362,7 @@ function go_scripts_and_styles () {
 	 */
 
 		// Dependencies
-		wp_register_style( 'jquery-ui-css', 'http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' );
+		wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' );
 		wp_register_style( 'video-js-css', plugin_dir_url( __FILE__ ).'scripts/video-js/video-js.css' );
 		wp_register_style( 'go_lightbox', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/css/go-lightbox.css' );
 
