@@ -49,7 +49,7 @@ function go_admin_scripts_and_styles ($hook) {
 			//wp_register_script( 'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ).'scripts/combined/jquery.dataTables.min.js' );
 			//wp_register_script( 'go_jquery_clipboard', plugin_dir_url( __FILE__ ).'scripts/combined/go_clipboard.js' );
 			//wp_register_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url( __FILE__ ).'scripts/combined/sorttable.js' );
-			wp_register_script( 'go_clipboard_combined', plugin_dir_url( __FILE__ ).'scripts/go_cliboard_combined-min.js' );
+			wp_register_script( 'go_clipboard_combined', plugin_dir_url( __FILE__ ).'scripts/go_clipboard_combined-min.js' );
 				
 
 	/*
