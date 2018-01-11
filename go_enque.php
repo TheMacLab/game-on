@@ -24,7 +24,7 @@ function go_admin_scripts_and_styles ($hook) {
 			// Pods--Page specific, but not localized.  Include to reduce the number of server calls.
 			wp_register_script( 'go_pod_options_js', plugin_dir_url( __FILE__ ).'scripts/combined/go_pod_options.js', array( 'jquery' ), false, true );
 			//Combined script:
-			//wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'scripts/go-admin-min.js', v1 );
+			//wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'scripts/go_admin-min.js', v1 );
 		/*
 		 * END Combined scripts for every admin page. 
 		 */
@@ -80,7 +80,7 @@ function go_admin_scripts_and_styles ($hook) {
 		wp_enqueue_script( 'go_store' ); 
 		wp_enqueue_script( 'go_pod_options_js' );
 		//Combined script below 
-		//wp_enqueue_script( 'go-admin-min' ); 
+		//wp_enqueue_script( 'go_admin-min' ); 
 		//END Combined Scripts
 
 		// Localization for every admin page
