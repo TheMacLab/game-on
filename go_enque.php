@@ -16,15 +16,15 @@ function go_admin_scripts_and_styles ($hook) {
 			// Dependencies
 			wp_register_script( 'video-js', plugin_dir_url( __FILE__ ).'scripts/video-js/video.js' );
 			// Custom Scripts
-			wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/combined/go_notification.js' );
-			wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/combined/go_every_page.js' );	
-			wp_register_script( 'go_types', plugin_dir_url( __FILE__ ).'scripts/combined/types.js' );
+			wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/go_notification.js' );
+			wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/go_every_page.js' );	
+			wp_register_script( 'go_types', plugin_dir_url( __FILE__ ).'scripts/types.js' );
 			// Store --Page specific, but not localized.  Include to reduce the number of server calls.
-			wp_register_script( 'go_store', plugin_dir_url( __FILE__ ).'scripts/combined/go_store_admin.js', array( 'jquery' ), false, true );
+			wp_register_script( 'go_store', plugin_dir_url( __FILE__ ).'scripts/go_store_admin.js', array( 'jquery' ), false, true );
 			// Pods--Page specific, but not localized.  Include to reduce the number of server calls.
-			wp_register_script( 'go_pod_options_js', plugin_dir_url( __FILE__ ).'scripts/combined/go_pod_options.js', array( 'jquery' ), false, true );
+			wp_register_script( 'go_pod_options_js', plugin_dir_url( __FILE__ ).'scripts/go_pod_options.js', array( 'jquery' ), false, true );
 			//Combined script:
-			//wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'scripts/go_admin-min.js', v1 );
+			//wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'scripts-min/go_admin-min.js', v1 );
 		/*
 		 * END Combined scripts for every admin page. 
 		 */
@@ -34,22 +34,22 @@ function go_admin_scripts_and_styles ($hook) {
 		 */
 			// Options 
 			//enqueued and localized on options.php
-			wp_register_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/page_specific/go_options.js' );
-			//wp_register_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/page_specific/go_options-min.js' );
+			wp_register_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts/go_options.js' );
+			//wp_register_script( 'go_options', plugin_dir_url( __FILE__ ).'scripts-min/go_options-min.js' );
 		
 			// Tasks
-			wp_register_script( 'go_tasks_admin', plugin_dir_url( __FILE__ ).'scripts/combined/go_tasks_admin.js', array( 'jquery' ), false, true );
-			wp_register_script( 'go_tasks_chains', plugin_dir_url( __FILE__ ).'scripts/combined/go_tasks_chains.js', array( 'jquery', 'go_tasks_admin' ), false, true );
-			wp_register_script( 'go_presets', plugin_dir_url( __FILE__ ).'scripts/combined/go_presets.js', array( 'jquery' ), false, true );
-			wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/combined/jquery.ptTimeSelect.js', array( 'jquery' ) );
-			//wp_register_script( 'go_tasks_combined-min', plugin_dir_url( __FILE__ ).'scripts/go_tasks_combined-min.js', array( 'jquery' ), false, true );
+			wp_register_script( 'go_tasks_admin', plugin_dir_url( __FILE__ ).'scripts/go_tasks_admin.js', array( 'jquery' ), false, true );
+			wp_register_script( 'go_tasks_chains', plugin_dir_url( __FILE__ ).'scripts/go_tasks_chains.js', array( 'jquery', 'go_tasks_admin' ), false, true );
+			wp_register_script( 'go_presets', plugin_dir_url( __FILE__ ).'scripts/go_presets.js', array( 'jquery' ), false, true );
+			wp_register_script( 'ptTimeSelectJS', plugin_dir_url( __FILE__ ).'scripts/jquery.ptTimeSelect.js', array( 'jquery' ) );
+			//wp_register_script( 'go_tasks_combined-min', plugin_dir_url( __FILE__ ).'scripts-min/go_tasks_combined-min.js', array( 'jquery' ), false, true );
 
 
 			// Clipboard
-			wp_register_script( 'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ).'scripts/combined/jquery.dataTables.min.js' );
-			wp_register_script( 'go_jquery_clipboard', plugin_dir_url( __FILE__ ).'scripts/combined/go_clipboard.js' );
-			wp_register_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url( __FILE__ ).'scripts/combined/sorttable.js' );
-			//wp_register_script( 'go_clipboard_combined', plugin_dir_url( __FILE__ ).'scripts/go_cliboard_combined-min.js' );
+			wp_register_script( 'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ).'scripts/jquery.dataTables.min.js' );
+			wp_register_script( 'go_jquery_clipboard', plugin_dir_url( __FILE__ ).'scripts/go_clipboard.js' );
+			wp_register_script( 'go_jquery_clipboard_tablesorter', plugin_dir_url( __FILE__ ).'scripts/sorttable.js' );
+			//wp_register_script( 'go_clipboard_combined', plugin_dir_url( __FILE__ ).'scripts-min/go_cliboard_combined-min.js' );
 				
 
 	/*
@@ -209,18 +209,18 @@ function go_admin_scripts_and_styles ($hook) {
 		 * Combined styles for every admin page. Even if only needed on some pages, include in one file if possible.
 		 */	
 			// Custom Styles
-			wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/combined/go_every_page.css' );
-			wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/combined/go_stats.css' );
+			wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
+			wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
 			//Page-Specific Styles
 			// Tasks
-			wp_register_style( 'ptTimeSelectCSS', plugin_dir_url( __FILE__ ).'styles/combined/jquery.ptTimeSelect.css' );
-			wp_register_style( 'go_tasks_admin', plugin_dir_url( __FILE__ ).'styles/combined/tasks-admin.css' );
+			wp_register_style( 'ptTimeSelectCSS', plugin_dir_url( __FILE__ ).'styles/jquery.ptTimeSelect.css' );
+			wp_register_style( 'go_tasks_admin', plugin_dir_url( __FILE__ ).'styles/tasks-admin.css' );
 			// Options
-			wp_register_style( 'go_opt_css', plugin_dir_url( __FILE__ ).'styles/combined/go_options.css' );
+			wp_register_style( 'go_opt_css', plugin_dir_url( __FILE__ ).'styles/go_options.css' );
 			// Clipboard
-			wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/combined/go_clipboard.css' );
+			wp_register_style( 'go_style_clipboard', plugin_dir_url( __FILE__ ).'styles/go_clipboard.css' );
 			//Combined Styles File
-			//wp_register_style( 'go_admin', plugin_dir_url( __FILE__ ).'styles/go_admin.css' );
+			//wp_register_style( 'go_admin', plugin_dir_url( __FILE__ ).'styles-min/go_admin.css' );
 		//END COMBINED STYLES
 	
 
@@ -262,24 +262,24 @@ function go_scripts_and_styles () {
 	 */
 
 		//task shortcode script is registered here, but enqueued and localized in the shortcode. 
-		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/page_specific/go_tasks-min.js' );	
+		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts/go_tasks.js' );	
 	
 	
 		//COMBINED
 		//Dependencies
 		wp_register_script( 'video-js', plugin_dir_url( __FILE__ ).'scripts/video-js/video.js' );
 		// Custom Scripts
-		wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/combined/go_notification.js' );
-		wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/combined/go_every_page.js' );
-		wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'scripts/combined/buy_the_item.js', array( 'jquery' ), 1.0, true );  
-		wp_register_script('go_videos_fit_and_box', plugin_dir_url( __FILE__).'scripts/combined/go_videos_fit_and_box.js' );
+		wp_register_script( 'go_notification', plugin_dir_url( __FILE__ ).'scripts/go_notification.js' );
+		wp_register_script( 'go_every_page', plugin_dir_url( __FILE__ ).'scripts/go_every_page.js' );
+		wp_register_script( 'buy_the_item', plugin_dir_url( __FILE__ ).'scripts/buy_the_item.js', array( 'jquery' ), 1.0, true );  
+		wp_register_script('go_videos_fit_and_box', plugin_dir_url( __FILE__).'scripts/go_videos_fit_and_box.js' );
 		//Combined File
-		//wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'scripts/go_frontend-min.js' );
+		//wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'scripts-min/go_frontend-min.js' );
 		//END COMBINED
 	
 		//PAGE SPECIFIC
-		wp_register_script('go_map_js', plugins_url('scripts/page_specific/go_map.js', __FILE__), array('jquery'),'1.1', true);
-		//wp_register_script('go_map_js', plugins_url('scripts/page_specific/go_map-min.js', __FILE__), array('jquery'),'1.1', true);
+		wp_register_script('go_map_js', plugins_url('scripts/go_map.js', __FILE__), array('jquery'),'1.1', true);
+		//wp_register_script('go_map_js', plugins_url('scripts-min/go_map-min.js', __FILE__), array('jquery'),'1.1', true);
 		
 
 	/*
@@ -367,12 +367,12 @@ function go_scripts_and_styles () {
 		wp_register_style( 'go_lightbox', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/css/go-lightbox.css' );
 
 		// COMBINED STYLES
-		wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/combined/go_every_page.css' );
-		wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/combined/go_stats.css' );
-		wp_register_style( 'go_map_style', plugin_dir_url( __FILE__ ).'styles/combined/go_map.css' );
-		wp_register_style( 'go_store_style', plugin_dir_url( __FILE__ ).'styles/combined/go_store.css' );
+		wp_register_style( 'go_every_page_css', plugin_dir_url( __FILE__ ).'styles/go_every_page.css' );
+		wp_register_style( 'go_style_stats', plugin_dir_url( __FILE__ ).'styles/go_stats.css' );
+		wp_register_style( 'go_map_style', plugin_dir_url( __FILE__ ).'styles/go_map.css' );
+		wp_register_style( 'go_store_style', plugin_dir_url( __FILE__ ).'styles/go_store.css' );
 		//COMBINED FILE:
-		//wp_register_style( 'go_frontend', plugin_dir_url( __FILE__ ).'styles/go_frontend.css' );
+		//wp_register_style( 'go_frontend', plugin_dir_url( __FILE__ ).'styles-min/go_frontend.css' );
 		//END COMBINED STYLES
 		
 	/*

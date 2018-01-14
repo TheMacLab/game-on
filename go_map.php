@@ -70,6 +70,7 @@ function go_make_single_map($last_map_id, $reload = false){
    					if ($chain_pod){
    						//get number of tasks needed to complete pod
    						$go_pod_count = get_term_meta($term_id1, 'pod_done_num', true);
+   						if ($go_pod_count == null){$go_pod_count = 0;}
    						//count number of total tasks in the pod
 						$count_pod = count($go_task_ids);
 						//get the number of tasks done
