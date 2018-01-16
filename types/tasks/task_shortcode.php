@@ -88,6 +88,7 @@ function go_task_shortcode( $atts, $content = null ) {
 	if ( '' === $hfc_meta || 'true' === $hfc_meta ) {
 		$filtered_content_hidden = true;
 	}
+	
 //Locks Start
 	// prevents users (both logged-in and logged-out) from accessing the task content, if they
 	// do not meet the requirements

@@ -66,6 +66,20 @@
 		"oAP": "\/go_datatable.php",
 		"oF": 0
 		},
+	"\/go_enque.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/go_enque.php",
+		"oF": 0
+		},
+	"\/go_enque_combined.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/go_enque_combined.php",
+		"oF": 0
+		},
 	"\/go_globals.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -2094,6 +2108,13 @@
 		"oAP": "\/types\/store\/super-store.php",
 		"oF": 0
 		},
+	"\/types\/tasks\/go_locks.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/types\/tasks\/go_locks.php",
+		"oF": 0
+		},
 	"\/types\/tasks\/go_tasks-min.js": {
 		"ft": 64,
 		"ma": 0,
@@ -2125,13 +2146,6 @@
 		"oT": 1,
 		"q": 100
 		},
-	"\/types\/tasks\/task copy.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/types\/tasks\/task copy.php",
-		"oF": 0
-		},
 	"\/types\/tasks\/task-admin.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -2158,13 +2172,6 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/types\/tasks\/task_shortcode.php",
-		"oF": 0
-		},
-	"\/types\/tasks\/task_shortcode_new.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/types\/tasks\/task_shortcode_new.php",
 		"oF": 0
 		},
 	"\/types\/test\/test_shortcode.php": {
