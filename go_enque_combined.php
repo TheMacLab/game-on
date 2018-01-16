@@ -196,7 +196,7 @@ function go_scripts_and_styles () {
 	 */
 
 		//task shortcode script is registered here, but enqueued and localized in the shortcode. 
-		wp_register_script( 'go_tasks-min', plugin_dir_url( __FILE__ ).'scripts-min/go_tasks-min.js' );	
+		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'scripts-min/go_tasks-min.js' );	
 	
 		//COMBINED FILE
 		wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'scripts-min/go_frontend-min.js' );
