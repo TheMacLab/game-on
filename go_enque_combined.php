@@ -26,7 +26,7 @@ function go_admin_scripts_and_styles ($hook) {
 			wp_register_script( 'go_options-min', plugin_dir_url( __FILE__ ).'scripts-min/go_options-min.js' );
 		
 			// Tasks
-			wp_register_script( 'go_tasks_combined-min', plugin_dir_url( __FILE__ ).'scripts-min/go_tasks_admin_combined-min.js', array( 'jquery' ), false, true );
+			wp_register_script( 'go_tasks_admin_combined-min', plugin_dir_url( __FILE__ ).'scripts-min/go_tasks_admin_combined-min.js', array( 'jquery' ), false, true );
 
 			// Clipboard
 			wp_register_script( 'go_clipboard_combined-min', plugin_dir_url( __FILE__ ).'scripts-min/go_clipboard_combined-min.js' );
