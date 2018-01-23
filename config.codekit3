@@ -1710,15 +1710,15 @@
 		"oF": 0
 		},
 	"\/styles_dev\/go_admin.scss": {
-		"aP": 0,
-		"bl": 0,
+		"aP": 1,
+		"bl": 1,
 		"dP": 10,
 		"dS": 0,
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "\/styles_dev\/go_admin.css",
-		"oF": 0,
+		"oAP": "\/styles-min\/go_admin.css",
+		"oF": 3,
 		"oS": 0,
 		"uL": 1
 		},
@@ -1750,8 +1750,8 @@
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "\/styles_dev\/go_frontend.css",
-		"oF": 0,
+		"oAP": "\/styles-min\/go_frontend.css",
+		"oF": 2,
 		"oS": 0,
 		"uL": 1
 		},

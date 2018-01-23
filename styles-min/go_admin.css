@@ -159,7 +159,8 @@
   #records_tabs .pretty thead th.sorting {
     background: #E2E2E2 url("images/sort_both.png") no-repeat right center; }
   #records_tabs .container {
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     width: 80%;
     height: 450px;
     padding: 20px 15px 15px 15px;
@@ -167,9 +168,6 @@
     border: 1px solid #ddd;
     background: #fff;
     background: linear-gradient(#f6f6f6 0, #fff 50px);
-    background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
-    background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
-    background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
     background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
     -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -394,7 +392,8 @@ ul#wp-admin-bar-go_add-default.ab-submenu {
 #go_messages_bar {
   background-color: red;
   border: 1px solid white;
-  box-shadow: 1px 1px 1px black;
+  -webkit-box-shadow: 1px 1px 1px black;
+          box-shadow: 1px 1px 1px black;
   color: white;
   height: 16px;
   text-align: center;
@@ -1402,13 +1401,20 @@ input[type="submit"] {
   border-top: 1px solid #BBB;
   /*overflow: hidden;*/
   /** Flexbox **/
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   display: -webkit-flex;
-  flex-direction: row;
-  -webkit-flex-direction: row;
-  flex-grow: 0;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
   -webkit-flex-grow: 0;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   width: 100%;
   padding-left: 15px;
@@ -1429,7 +1435,9 @@ input[type="submit"] {
   display: inline-block;
   margin-top: 1.5px;
   /** Flexbox **/
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   -webkit-flex-grow: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1458,7 +1466,9 @@ input[type="submit"] {
 
 .go_stats_task_admin_submit_div {
   /** Flexbox **/
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   float: right !important;
   -webkit-flex-grow: 1;
   white-space: nowrap;
@@ -1473,7 +1483,9 @@ input[type="submit"] {
   padding: 0px !important;
   width: 200px !important;
   font-size: 12px !important;
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   -webkit-flex-grow: 1;
   overflow: hidden;
   white-space: nowrap;
@@ -1512,7 +1524,6 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 
 .future_url {
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   border: 1px solid;
   background-color: #FFF;
