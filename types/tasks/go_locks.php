@@ -23,7 +23,7 @@ LOCKS START
 	if ( !$is_admin && ($is_logged_in || ( ! $is_logged_in && $is_filtered && $filtered_content_hidden ) )) {
 
 		/**
-		 * Start Filter
+		 * Start Lock
 		 */
 
 		// holds the output to be displayed when a non-admin has been stopped by the start filter
@@ -44,7 +44,7 @@ LOCKS START
 		}
 
 		/**
-		 * Task Chain Filter
+		 * Task Chain Lock
 		 */
 
 		// determines whether or not the user can proceed, if the task is in a chain
@@ -179,7 +179,7 @@ LOCKS START
 
 
 		/**
-		 * Honor and Damage Filter
+		 * Honor and Damage Lock
 		 */		
 		
 		// Checks if the task has a bonus currency filter
@@ -217,7 +217,7 @@ LOCKS START
 		
 		
 		/**
-		 * Specialty/Focus Category filter
+		 * Specialty/Focus Category Lock
 		 */
 		$user_focus = get_user_meta( $user_id, 'go_focus', true );  	
 		$locked_by_category = ( ! empty( $custom_fields['go_mta_focus_category_lock'][0] ) ? $custom_fields['go_mta_focus_category_lock'][0] : null );
@@ -249,7 +249,7 @@ LOCKS START
 	
 	
 		/**
-		 * Badge Filter
+		 * Badge Lock
 		 */
 
 		// gets the user's current badges
@@ -304,7 +304,7 @@ LOCKS START
 		}
 		
 		/**
-		 * Filtered Content Message
+		 * Lock Content Message
 		 */
 		
 		if ($task_is_locked == true && ! $is_logged_in ){

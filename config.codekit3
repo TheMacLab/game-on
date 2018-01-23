@@ -66,11 +66,11 @@
 		"oAP": "\/go_datatable.php",
 		"oF": 0
 		},
-	"\/go_enque.php": {
+	"\/go_enque_combined.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/go_enque.php",
+		"oAP": "\/go_enque_combined.php",
 		"oF": 0
 		},
 	"\/go_globals.php": {
@@ -645,11 +645,11 @@
 		"oAP": "\/media\/gold.mp3",
 		"oF": 0
 		},
-	"\/not loaded\/go_enque_combined.php": {
+	"\/not loaded\/go_enque.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/not loaded\/go_enque_combined.php",
+		"oAP": "\/not loaded\/go_enque.php",
 		"oF": 0
 		},
 	"\/README.md": {
