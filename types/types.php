@@ -1,14 +1,5 @@
 <?php
 
-// task includes
-include( 'tasks/task.php' );
-
-// store includes
-include( 'store/super-store.php' );
-
-// test includes
-include( 'test/test_shortcode.php' );
-
 // Meta Boxes
 function go_init_mtbxs() {
 	if ( ! class_exists( 'cmb_Meta_Box' ) )

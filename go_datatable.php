@@ -1,10 +1,13 @@
 <?php
+//https://codex.wordpress.org/Creating_Tables_with_Plugins
+
 global $wpdb;
-$go_db_version = '1.1';
+
 
 function go_update_db_check() {
-    global $go_db_version;
+    $go_db_version = '1.1';
     if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
+    	update_option( 'go_db_version', $go_db_version );
         go_table_individual();  	
     } 
     
@@ -103,7 +106,7 @@ function go_table_individual() {
 	require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 	
-	update_option( 'go_db_version', $go_db_version );
+
 }
 
 // Creates a table for totals.

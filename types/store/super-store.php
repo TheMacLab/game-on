@@ -7,7 +7,7 @@ Contributing Author: Semar Yousif
 Creation Date: 05/09/13
 */
 // Includes
-include( 'store-shortcode.php' );
+
 include( 'includes/lightbox/backend-lightbox.php' );
 
 function go_register_store_tax_and_cpt() {
@@ -39,81 +39,66 @@ function go_register_store_tax_and_cpt() {
 			'rewrite' => array( 'slug' => 'store-types', 'with_front' => false ),
 		)
 	);
-	
-	/*
-	 * Store Focus Category Taxonomy
-	 */
-	$labels_focus = array( 
-		'name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'store_focus_categories' ),
-		'singular_name' => _x( go_return_options( 'go_focus_name' ).' Category', 'store_focus_categories' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_focus_name' ).' Categories', 'store_focus_categories' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_focus_name' ).' Categories', 'store_focus_categories' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_focus_name' ).' Categories', 'store_focus_categories' ),
-		'parent_item' => _x( go_return_options( 'go_focus_name' ).' Category Parent', 'store_focus_categories' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_focus_name' ).' Category:', 'store_focus_categories' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_focus_name' ).' Category', 'store_focus_categories' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_focus_name' ).' Category', 'store_focus_categories' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_focus_name' ).' Category', 'store_focus_categories' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_focus_name' ).' Category', 'store_focus_categories' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_focus_name' ).' categories with commas', 'store_focus_categories' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_focus_name' ).' categories', 'store_focus_categories' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_focus_name' ).' categories', 'store_focus_categories' ),
-		'menu_name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'store_focus_categories' ),
-	);
-	$args_focus = array( 
-		'labels' => $labels_focus,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => true,
-		'query_var' => true
-	);
-	register_taxonomy( 'store_focus_categories', array( 'go_store' ), $args_focus );
 
 	/*
 	 * Store Custom Post Type
 	 */
-	register_post_type( 'go_store',
-		array(
-			'labels' => array(
-				'name' => __( get_option( 'go_store_name' ) ),
-				'menu_name' => __( get_option( 'go_store_name' ) ),
-				'singular_name' => __( get_option( 'go_store_name' ).' Item' ),
-				'add_new' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
-				'add_new_item' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
-				'edit' => __( 'Edit '.get_option( 'go_store_name' ).' Items' ),
-				'edit_item' => __( 'Edit '.get_option( 'go_store_name' ).' Items' ),
-				'new_item' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
-				'view' => __( 'View Items' ),
-				'view_item' => __( 'View '.get_option( 'go_store_name' ).' Items' ),
-				'search_items' => __( 'Search '.get_option( 'go_store_name' ).' Items' ),
-				'not_found' => __( 'No '.get_option( 'go_store_name' ).' Items found' ),
-				'not_found_in_trash' => __( 'No '.get_option( 'go_store_name' ).' Items found in Trash' ),
-				'parent' => 'Parent Store Item'
-			),
-			'taxonomies' => array( 'store_types' ),
-			'public' => true,
-			'has_archive' => true,
-			'rewrite' => array( 'slug' => 'storeitems' ),
-			'menu_icon' => 'dashicons-cart',
-			'hierachical' => true,
-			'menu_position' => 21,
-			'supports' => array( 
-				'title',
-				'thumbnail',
-				'excerpt',
-				'page-attributes',
-				'editor',
-				'custom-fields',
-				'revisions',
-				'comments'
-			)
-		)
+	 
+	$labels = array(
+		'name' => __( get_option( 'go_store_name' ) ),
+		'menu_name' => __( get_option( 'go_store_name' ) ),
+		'singular_name' => __( get_option( 'go_store_name' ).' Item' ),
+		'add_new' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
+		'add_new_item' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
+		'edit' => __( 'Edit '.get_option( 'go_store_name' ).' Items' ),
+		'edit_item' => __( 'Edit '.get_option( 'go_store_name' ).' Items' ),
+		'new_item' => __( 'New '.get_option( 'go_store_name' ).' Item' ),
+		'view' => __( 'View Items' ),
+		'view_item' => __( 'View '.get_option( 'go_store_name' ).' Items' ),
+		'search_items' => __( 'Search '.get_option( 'go_store_name' ).' Items' ),
+		'not_found' => __( 'No '.get_option( 'go_store_name' ).' Items found' ),
+		'not_found_in_trash' => __( 'No '.get_option( 'go_store_name' ).' Items found in Trash' ),
+		'parent' => 'Parent Store Item',
+		'name_admin_bar'        => __( get_option( 'go_store_name' ) ),
+		'archives'              => 'Item Archives',
+		'attributes'            => 'Item Attributes',
+		'parent_item_colon'     => 'Parent Item:',
+		'all_items'             => 'All Items',
+		'update_item'           => 'Update Item',
+		'featured_image'        => 'Featured Image',
+		'set_featured_image'    => 'Set featured image',
+		'remove_featured_image' => 'Remove featured image',
+		'use_featured_image'    => 'Use as featured image',
+		'insert_into_item'      => 'Insert into item',
+		'uploaded_to_this_item' => 'Uploaded to this item',
+		'items_list'            => 'Items list',
+		'items_list_navigation' => 'Items list navigation',
+		'filter_items_list'     => 'Filter items list',
 	);
+	$args = array(
+		'label'                 => __( get_option( 'go_store_name' ) ),
+		'description'           => __( get_option( 'go_store_name' ) ),
+		'labels'                => $labels,
+		'supports' => array( 'title'),
+		'taxonomies' => array( 'store_types' ),
+		'public' => true,
+		'show_ui' => true,
+		'show_in_menu' => true,
+		'menu_position' => 20,
+		'menu_icon' => 'dashicons-cart',
+		'show_in_nav_menus' => true,
+		'exclude_from_search' => false,
+		'has_archive' => true,
+		'query_var' => true,
+		'can_export' => true,
+		'rewrite' => array( 'slug' => 'storeitems' ),
+		'capability_type' => 'post'
+
+	);
+	register_post_type( 'go_store', $args );
 }
+add_action( 'init', 'go_register_store_tax_and_cpt', 0 );	 
+	 
 
 function go_new_item_permalink( $return, $post_id, $new_title, $new_slug ) {
 	if ( strpos( $return, 'edit-slug' ) !== false ) {

@@ -1,5 +1,12 @@
 <?php
 
+function debug_pnc( $data ) {
+    $output = $data;
+    if ( is_array( $output ) )
+        $output = implode( ',', $output);
+
+    echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
+}
 //adds currency and points for reasons that are not post tied.
 function go_add_currency( $user_id, $reason, $status, $raw_points, $raw_currency, $update, $bonus_loot = false ) {
 	global $wpdb;
@@ -61,6 +68,56 @@ function go_add_post(
 	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
 	$user_bonuses = go_return_bonus_currency( $user_id );
 	$user_penalties = go_return_penalty( $user_id );
+	
+	
+/*add totals row if user isn't in totals row (this shouldn't happen unless database row is manually deleted)
+
+*/	
+	$table_name_go_totals = "{$wpdb->prefix}go_totals";
+	$row_exists = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * 
+				FROM {$table_name_go_totals} 
+				WHERE uid = %d LIMIT 1",
+				$user_id
+			)
+		);
+	if ($row_exists == null){
+		go_user_registration ( $user_id );
+	}
+	
+//add post/user row in go table if none exists
+	$row_exists2 = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * 
+				FROM {$table_name_go} 
+				WHERE uid = %d and post_id = %d LIMIT 1",
+				$user_id,
+				$post_id
+			)
+		);
+	
+		//debug_pnc( $row_exists2 );
+	if ( empty( $row_exists2 ) ) {
+			$wpdb->insert(
+				$table_name_go, 
+				array(
+					'uid' => $user_id, 
+					'post_id' => $post_id, 
+					'status' => 1
+				)
+			);
+	}
+	
+
+
+//what this should do:
+//get the multiplier
+//calculate the rewards
+//update status, repeat count and rewards
+	
+	
+//if this is a bonus stage	
 	if ($repeat){
 		$current_count = $wpdb->get_var(
 			$wpdb->prepare(
@@ -75,7 +132,10 @@ function go_add_post(
 
 	$current_status = ($status + $count + $current_count);
 
-	if ( $status === -1 ) {
+//DELETE: status can never equal -1--a -1 is set in below but for some strage reason that can probably also be deleted.
+//Maybe this has to do with checking if user is trying to cheat/mine currency
+if ( $status === -1 ) {
+
 		$qty = ( false === $bonus_loot && ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1 );
 		$old_points = $wpdb->get_row(
 			$wpdb->prepare(
@@ -139,7 +199,9 @@ function go_add_post(
 				)
 			);
 		}
-	} else {
+	} 
+	else {
+	
 		$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties );
 		$modded_points = $modded_array[0];
 		$modded_currency = $modded_array[1];
@@ -152,6 +214,7 @@ function go_add_post(
 				$post_id
 			)
 		);
+		
 		if ( ! empty( $old_points ) ) {
 			$old_url_array = unserialize( $old_points->url );
 			$url_array = $old_url_array;
@@ -165,6 +228,7 @@ function go_add_post(
 		} else {
 			$url_array = serialize( array( $current_status => $url ) );
 		}
+		
 		if ( $repeat ) {
 			$wpdb->update(
 				$table_name_go,
@@ -183,19 +247,9 @@ function go_add_post(
 				)
 			);
 		} else {
+		
 			if ( $status === 0 ) {
-				$wpdb->insert( 
-					$table_name_go, 
-					array( 
-						'uid' => $user_id, 
-						'post_id' => $post_id, 
-						'status' => 1, 
-						'points' => $modded_points, 
-						'currency' => $modded_currency, 
-						'bonus_currency' => $bonus_currency, 
-						'page_id' => $page_id
-					)
-				);
+				
 			} else {
 				$columns = array(
 					'points' => $modded_points + ( $old_points->points ), 
@@ -221,6 +275,7 @@ function go_add_post(
 				}
 				$wpdb->update( $table_name_go, $columns, array( 'uid' => $user_id, 'post_id' => $post_id) );
 			}
+			
 		}
 		if ( $e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null ) {
 			$wpdb->update( 
@@ -247,7 +302,9 @@ function go_add_post(
 				)
 			);
 		}
+		
 	} // end if status isn't equal to -1
+	
 	go_update_totals( intval( $user_id ), $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
 }
 	

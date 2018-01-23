@@ -1,15 +1,29 @@
 <?php
-session_start();
+//session_start();
+
+//https://www.thewpcrowd.com/wordpress/enqueuing-scripts-only-when-widget-or-shortcode/
+
 /*
 	This is the file that displays content in a post/page with a task.
 	This file interprets and executes the shortcode in a post's body.
 */
 
-/* Debug code
-echo "<script>alert('alert here');</script>";
-*/
+// Debug code
+function debug_task( $data ) {
+    $output = $data;
+    if ( is_array( $output ) )
+        $output = implode( ',', $output);
+
+    echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
+}
+
 // Task Shortcode
 function go_task_shortcode( $atts, $content = null ) {
+
+//enqueues go_tasks.js that is only needed on task pages
+	wp_enqueue_script( 'go_tasks','','','', true );
+
+//sets a whole bunch of variables that are needed to print the task	and task functions
 	$atts = shortcode_atts( array(
 		'id' => '', // ID defined in Shortcode
 		'cats' => '', // Cats defined in Shortcode     
@@ -52,6 +66,8 @@ function go_task_shortcode( $atts, $content = null ) {
 	$is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
 	$login_url = home_url( '/wp-login.php' );
 
+
+//variables for locks
 	// determines if the task is for users (logged-in users) eyes only
 	$is_user_only = get_post_meta( $id, 'go_mta_user_only_content', true ) ? true : false;
 
@@ -59,246 +75,26 @@ function go_task_shortcode( $atts, $content = null ) {
 		return '<span class="go_error_red">Sorry, you must be ' .
 			'<a href="' . esc_url( $login_url ) . '">logged in</a> to view this.</span>';
 	}
-
 	// determines whether or not the task is filtered at all
 	$is_filtered = false;
-
 	// retrieves the date and time, if specified, after which non-admins can accept this task
 	$start_filter = get_post_meta( $id, 'go_mta_start_filter', true );
-
 	// gets an array of badge IDs to prevent users who don't have the badges from viewing the task
 	$badge_filter_meta = get_post_meta( $id, 'go_mta_badge_filter', true );
-
 	// obtains the chain order list for this task, if there is one
 	$chain_order = get_post_meta( $id, 'go_mta_chain_order', true );
 
 	if ( ! empty( $start_filter['checked'] ) || ! empty( $badge_filter_meta[0] ) || ! empty( $chain_order ) ) {
 		$is_filtered = true;
 	}
-
 	// determines whether or not filters will affect visitors (users that aren't logged in)
 	$filtered_content_hidden = false;
 	$hfc_meta = get_post_meta( $id, 'go_mta_hide_filtered_content', true );
 	if ( '' === $hfc_meta || 'true' === $hfc_meta ) {
 		$filtered_content_hidden = true;
 	}
-
-	// prevents users (both logged-in and logged-out) from accessing the task content, if they
-	// do not meet the requirements
-	if ( $is_logged_in || ( ! $is_logged_in && $is_filtered && $filtered_content_hidden ) ) {
-
-		/**
-		 * Start Filter
-		 */
-
-		// holds the output to be displayed when a non-admin has been stopped by the start filter
-		$time_string = '';
-		$unix_now = current_time( 'timestamp' );
-		if ( ! empty( $start_filter ) && ! empty( $start_filter['checked'] ) && ! $is_admin ) {
-			$start_date = $start_filter['date'];
-			$start_time = $start_filter['time'];
-			$start_unix = strtotime( $start_date . $start_time );
-
-			// stops execution if the user is a non-admin and the start date and time has not
-			// passed yet
-			if ( $unix_now < $start_unix ) {
-				$time_string = date( 'g:i A', $start_unix ) . ' on ' . date( 'D, F j, Y', $start_unix );
-				return "<span class='go_error_red'>Will be available at {$time_string}.</span>";
-			}
-		}
-
-		/**
-		 * Task Chain Filter
-		 */
-
-		// determines whether or not the user can proceed, if the task is in a chain
-		$temp_optional_task  = (boolean) get_post_meta(
-			$temp_id,
-			'go_mta_optional_task',
-			true
-		);
-		if ( ! empty( $chain_order ) ) {
-			$chain_links = array();
-
-			foreach ( $chain_order as $chain_tt_id => $order ) {
-				$pos = array_search( $id, $order );
-				$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
-				$chain_title = ucwords( $the_chain->name );
-				$chain_pod = get_term_meta($chain_tt_id, 'pod_toggle', true);
-				if ( $pos > 0 && ! $is_admin ) {
-					if ( empty ( $temp_optional_task )){
-					if (empty( $chain_pod )){
-					/**
-					 * The current task is not first and the user is not an administrator.
-					 */
-
-					$prev_id = 0;
-
-					// finds the first ID among the tasks before the current one that is published
-					for ( $prev_id_counter = 0; $prev_id_counter < $pos; $prev_id_counter++ ) {
-						$temp_id = $order[ $prev_id_counter ];
-						$temp_optional_prev_task  = (boolean) get_post_meta(
-							$temp_id,
-							'go_mta_optional_task',
-							true
-						);
-						if ( empty ( $temp_optional_prev_task )){
-						$temp_task = get_post( $temp_id );
-
-						$temp_finished           = true;
-						$temp_status             = go_task_get_status( $temp_id );
-						$temp_five_stage_counter = null;
-						$temp_status_required    = 4;
-						$temp_three_stage_active = (boolean) get_post_meta(
-							$temp_id,
-							'go_mta_three_stage_switch',
-							true
-						);
-						$temp_five_stage_active  = (boolean) get_post_meta(
-							$temp_id,
-							'go_mta_five_stage_switch',
-							true
-						);
-						
-
-						// determines to what stage the user has to progress to finish the task
-						if ( $temp_three_stage_active ) {
-							$temp_status_required = 3;
-						} elseif ( $temp_five_stage_active ) {
-							$temp_five_stage_counter = go_task_get_repeat_count( $temp_id );
-						}
-
-						// determines whether or not the task is finished
-						if ( $temp_status !== $temp_status_required &&
-								( ! $temp_five_stage_active ||
-								( $temp_five_stage_active && empty( $temp_five_stage_counter ) ) ) ) {
-
-							$temp_finished = false;
-						}
-
-						if ( ! empty( $temp_task ) &&
-								'publish' === $temp_task->post_status &&
-								! $temp_finished ) {
-
-							/**
-							 * The task is published, but is not finished. This task must be finished
-							 * before the current task can be accepted.
-							 */
-
-							$prev_id = $temp_id;
-							break;
-						}
-					}} // End for().
-
-					if ( 0 !== $prev_id ) {
-						$prev_permalink = get_permalink( $prev_id );
-						$prev_title = get_the_title( $prev_id );
-
-						$link_tag = sprintf(
-							'<a href="%s">%s (%s)</a>',
-							$prev_permalink,
-							$prev_title,
-							$chain_title
-						);
-						if ( false === array_search( $link_tag, $chain_links ) ) {
-
-							// appends the anchor tag for previous task
-							$chain_links[] = $link_tag;
-						}
-					}
-				} // End if().
-			}}
-			} // End foreach().
-
-			if ( ! empty( $chain_links ) ) {
-				$link_str = '';
-				for ( $link_counter = 0; $link_counter < count( $chain_links ); $link_counter++ ) {
-					if ( $link_counter > 0 ) {
-						$link_str .= ', ';
-						if ( count( $chain_links ) > 2 && count( $chain_links ) === $link_counter + 1 ) {
-							$link_str .= 'and ';
-						}
-					}
-					$link_str .= $chain_links[ $link_counter ];
-				}
-
-				$visitor_str = '';
-				if ( ! $is_logged_in ) {
-					$visitor_str = ' First, you must be ' .
-						'<a href="' . esc_url( $login_url ) . '">logged in</a> to do so.';
-				}
-
-				printf(
-					'<span class="go_error_red">You must finish</span>' .
-					' %s ' .
-					'<span class="go_error_red">to continue this %s.%s</span>',
-					$link_str,
-					ucwords( $task_name ),
-					$visitor_str
-				);
-
-				return;
-			}
-		} // End if().
-
-		/**
-		 * Badge Filter
-		 */
-
-		// gets the user's current badges
-		$user_badges = get_user_meta( $user_id, 'go_badges', true );
-		if ( ! $user_badges ) {
-			$user_badges = array();
-		}
-
-		// an array of badge IDs
-		$badge_filter_ids = array();
-
-		// determines if the user has the correct badges
-		$badge_diff = array();
-		if ( ! empty( $badge_filter_meta ) &&
-			isset( $badge_filter_meta[0] ) &&
-			$badge_filter_meta[0] &&
-			! $is_admin
-		) {
-			$badge_filter_ids = array_filter( (array) $badge_filter_meta[1], 'go_badge_exists' );
-
-			// checks to see if the filter array are in the the user's badge array
-			$intersection = array_values( array_intersect( $user_badges, $badge_filter_ids ) );
-
-			// stores an array of the badges that were not found in the user's badge array
-			$badge_diff = array_values( array_diff( $badge_filter_ids, $intersection ) );
-			if ( ! empty( $badge_filter_ids ) && ! empty( $badge_diff ) ) {
-				$return_badge_list = true;
-
-				$visitor_str = '';
-				if ( ! $is_logged_in ) {
-					$visitor_str = ', and you must be ' .
-						'<a href="' . esc_url( $login_url ) . '">logged in</a> to obtain them';
-				}
-
-				// outputs all the badges that the user must obtain before beginning this task
-				return sprintf(
-					'<span class="go_error_red">' .
-						'You need the following %s(s) to begin this %s%s:' .
-					'</span><br/>%s',
-					strtolower( $badge_name ),
-					ucwords( $task_name ),
-					$visitor_str,
-					go_badge_output_list( $badge_diff, $return_badge_list )
-				);
-			}
-		}
-	} // End if().
-
-	// visitors (logged-out users) are presented with the full task content, if the task doesn't
-	// have any active restrictions on it
-	if ( ! $is_logged_in ) {
-		go_display_visitor_content( $id );
-		return;
-	}
-
-	// prepares nonces for AJAX requests sent from this post
+	
+// prepares nonces for AJAX requests sent from this post
 	$task_shortcode_nonces = array(
 		'go_task_abandon' => wp_create_nonce( 'go_task_abandon_' . $id . '_' . $user_id ),
 		'go_unlock_stage' => wp_create_nonce( 'go_unlock_stage_' . $id . '_' . $user_id ),
@@ -334,153 +130,61 @@ function go_task_shortcode( $atts, $content = null ) {
 			$user_id
 		)
 	);
-	
-	$e_admin_lock = get_post_meta( $id, 'go_mta_encounter_admin_lock', true );
-	if ( ! empty( $e_admin_lock ) ) {
-		$e_is_locked = ( ! empty( $e_admin_lock[0] ) ? true : false );
-		if ( $e_is_locked ) {
-			$e_pass_lock = ( ! empty( $e_admin_lock[1] ) ? $e_admin_lock[1] : '' );
-		}
-	}
 
-	$a_admin_lock = get_post_meta( $id, 'go_mta_accept_admin_lock', true );
-	if ( ! empty( $a_admin_lock ) ) {
-		$a_is_locked = ( ! empty( $a_admin_lock[0] ) ? true : false );
-		if ( $a_is_locked ) {
-			$a_pass_lock = ( ! empty( $a_admin_lock[1] ) ? $a_admin_lock[1] : '' );
-		}
-	}
-
-	$c_admin_lock = get_post_meta( $id, 'go_mta_completion_admin_lock', true );
-	if ( ! empty( $c_admin_lock ) ) {
-		$c_is_locked = ( ! empty( $c_admin_lock[0] ) ? true : false );
-		if ( $c_is_locked ) {
-			$c_pass_lock = ( ! empty( $c_admin_lock[1] ) ? $c_admin_lock[1] : '' );
-		}
-	}
-
-	$m_admin_lock = get_post_meta( $id, 'go_mta_mastery_admin_lock', true );
-	if ( ! empty( $m_admin_lock ) ) {
-		$m_is_locked = ( ! empty( $m_admin_lock[0] ) ? true : false );
-		if ( $m_is_locked ) {
-			$m_pass_lock = ( ! empty( $m_admin_lock[1] ) ? $m_admin_lock[1] : '' );
-		}
-	}
-	
-	$r_admin_lock = get_post_meta( $id, 'go_mta_repeat_admin_lock', true );
-	if ( ! empty( $r_admin_lock ) ) {
-		$r_is_locked = ( ! empty( $r_admin_lock[0] ) ? true : false );
-		if ( $r_is_locked ) {
-			$r_pass_lock = ( ! empty( $r_admin_lock[1] ) ? $r_admin_lock[1] : '' );
-		}
-	}
-
-	$e_url_is_locked = ( ! empty( $custom_fields['go_mta_encounter_url_key'][0] ) ? true : false );
-	$a_url_is_locked = ( ! empty( $custom_fields['go_mta_accept_url_key'][0] ) ? true : false );
-	$c_url_is_locked = ( ! empty( $custom_fields['go_mta_completion_url_key'][0] ) ? true : false );
-	$m_url_is_locked = ( ! empty( $custom_fields['go_mta_mastery_url_key'][0] ) ? true : false );
-
-	$test_e_active = ( ! empty( $custom_fields['go_mta_test_encounter_lock'][0] ) ? $custom_fields['go_mta_test_encounter_lock'][0] : false );
-	$test_a_active = ( ! empty( $custom_fields['go_mta_test_accept_lock'][0] ) ? $custom_fields['go_mta_test_accept_lock'][0] : false );
-	$test_c_active = ( ! empty( $custom_fields['go_mta_test_completion_lock'][0] ) ? $custom_fields['go_mta_test_completion_lock'][0] : false );
-	
-	$number_of_stages = 4;
-	
-	if ( $test_e_active ) {
-		$test_e_array = go_task_get_test_meta( 'encounter', $id );
-		$test_e_returns = $test_e_array[0];
-		$test_e_num = $test_e_array[1];
-		$test_e_all_questions = $test_e_array[2][0];
-		$test_e_all_types = $test_e_array[2][1];
-		$test_e_all_answers = $test_e_array[2][2];
-		$test_e_all_keys = $test_e_array[2][3];
-	}
-	$encounter_upload = ( ! empty( $custom_fields['go_mta_encounter_upload'][0] ) ? $custom_fields['go_mta_encounter_upload'][0] : false );
-
-	if ( $test_a_active ) {
-		$test_a_array = go_task_get_test_meta( 'accept', $id );
-		$test_a_returns = $test_a_array[0];
-		$test_a_num = $test_a_array[1];
-		$test_a_all_questions = $test_a_array[2][0];
-		$test_a_all_types = $test_a_array[2][1];
-		$test_a_all_answers = $test_a_array[2][2];
-		$test_a_all_keys = $test_a_array[2][3];
-	}
-	$accept_upload = ( ! empty( $custom_fields['go_mta_accept_upload'][0] ) ? $custom_fields['go_mta_accept_upload'][0] : false );
-
-	if ( $test_c_active ) {
-		$test_c_array = go_task_get_test_meta( 'completion', $id );
-		$test_c_returns = $test_c_array[0];
-		$test_c_num = $test_c_array[1];
-		$test_c_all_questions = $test_c_array[2][0];
-		$test_c_all_types = $test_c_array[2][1];
-		$test_c_all_answers = $test_c_array[2][2];
-		$test_c_all_keys = $test_c_array[2][3];
-	}
-	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' ); // Completion Message
-    //adds oembed content
-    if ($go_oembed_switch === 'On'){
-    	if(isset($GLOBALS['wp_embed']))
-    	$completion_message = $GLOBALS['wp_embed']->autoembed($completion_message);
-    };
-    
-    
-	$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
-	
+	//set number of stages and repeat limit
 	if ( $mastery_active ) {
-		$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
-
-		if ( $test_m_active ) {
-			$test_m_array = go_task_get_test_meta( 'mastery', $id );
-			$test_m_returns = $test_m_array[0];
-			$test_m_num = $test_m_array[1];
-			$test_m_all_questions = $test_m_array[2][0];
-			$test_m_all_types = $test_m_array[2][1];
-			$test_m_all_answers = $test_m_array[2][2];
-			$test_m_all_keys = $test_m_array[2][3];
-		}
-		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );// Mastery Message
-        //adds oembed content
-    	if ($go_oembed_switch === 'On'){
-       	 	if(isset($GLOBALS['wp_embed']))
-       	 	$mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
-        };
-        
-        
-		$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
-
-		if ( $repeat == 'on' ) {    // Checks if the task is repeatable and if it has a repeat limit
+        $number_of_stages = 4;	
+		if ( $repeat == 'on' ) {    // Checks if the task is repeatable and gets the repeat limit
 			$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
-			$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
-            //adds oembed content
-   			if ($go_oembed_switch === 'On'){
-           		 if(isset($GLOBALS['wp_embed']))
-            		$repeat_message = $GLOBALS['wp_embed']->autoembed($repeat_message);
-            };
-            
-			$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
 			$number_of_stages = 5;
 		}
 	} else {
 		$number_of_stages = 3;  
 	}
-	
-	// Checks if the task has a bonus currency filter
-	// Sets the filter equal to the meta field value declared in the task creation page, if none exists defaults to 0
-	$bonus_currency_required = ( ! empty( $custom_fields['go_mta_bonus_currency_filter'][0] ) ? $custom_fields['go_mta_bonus_currency_filter'][0] : 0 );
-	
-	// Checks if the task has a penalty filter
-	$penalty_filter = ( ! empty( $custom_fields['go_mta_penalty_filter'][0] ) ? $custom_fields['go_mta_penalty_filter'][0] : null );
-	
-	$locked_by_category = ( ! empty( $custom_fields['go_mta_focus_category_lock'][0] ) ? $custom_fields['go_mta_focus_category_lock'][0] : null );
-	$focus_category_lock = ( ! empty( $locked_by_category ) ? true : false );
 
-	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' ); // Description
-    //adds oembed content
-    if ($go_oembed_switch === 'On'){
-    	if(isset($GLOBALS['wp_embed']))
-    	$description = $GLOBALS['wp_embed']->autoembed($description);
-    };
+//All the variables are set.
+//Next, output the task
+
+//LOCKS
+/*
+	// prevents users (both logged-in and logged-out) from accessing the task content, if they
+	// do not meet the requirements
+	// the task_locks function will set the output for the locks and set the task_is_locked variable to true if it is locked.
+*/	
+	$task_is_locked = task_locks ($is_logged_in, $is_filtered, $filtered_content_hidden, $is_admin, $start_filter, $temp_id, $chain_order, $id, $login_url, $badge_filter_meta, $task_name, $badge_name, $custom_fields, $user_id  );
+	//if it is locked, stop printing of the task.
+	if ($task_is_locked == true){
+		return null;
+	}
+
+//Visitor Content 	
+/*	
+	// visitors (logged-out users) are presented with the full task content, if the task doesn't
+	// have any active restrictions on it
+*/
+	if ( ! $is_logged_in ) {
+		go_display_visitor_content( $id );
+		return;
+	}
+
+//Timer
+/*
+	Timer
+*/
+	$future_timer = false;
+	//$future_timer = go_is_timer_expired ($custom_fields, $userid, $id, $wpdb);
+
+	$update_percent = 1;
+	//$update_percent = go_timer_percent($custom_fields, $userid, $id, $wpdb);
+
+	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
+
+//Display Rewards before task content 
+/*
+This is the list of rewards at the top of the task.	
+*/	
+	//$future_timer = false;
+	//$update_percent = 3;
 
 	$points_array = ( ! empty( $rewards['points'] ) ? $rewards['points'] : array() );
 	$points_str = implode( ' ', $points_array );
@@ -491,1393 +195,307 @@ function go_task_shortcode( $atts, $content = null ) {
 	
 	$current_bonus_currency = go_return_bonus_currency( $user_id ); 
 	$current_penalty = go_return_penalty( $user_id );
-	
-	$content_post = get_post( $id ); // Grabs content of a task from the post table in your wordpress database where post_id = id in the shortcode. 
-	$task_content = $content_post->post_content; // Grabs what the task actually says in the body of it
-	
-	if ( $task_content != '' && empty( $custom_fields['go_mta_accept_message'] ) ) { // If content is returned from the post table, and the post doesn't have an accept message meta field, run this code
-		add_post_meta( $id, 'go_mta_accept_message', $task_content ); // Add accept message meta field with value of the post's content from post table
-	} else { // If the task has content in the post table, and has a meta field, run this code
-		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
-        //adds oembed content
-    	if ($go_oembed_switch === 'On'){ 
-         	if(isset($GLOBALS['wp_embed']))
-        	$accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
-        };
-        // Set value of accept message equal to the task's accept message meta field value
-	}
-
-	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); // Array of future modifier switches, determines whether the calendar option or time after stage one option is chosen
-	
-	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
-	$sounded_array = (array) get_user_meta( $user_id, 'go_sounded_tasks', true );
-	
-	// if there are dates in the date picker
-	if ( ! empty( $date_picker) && ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) ) {
-		
-		$dates = $date_picker['date'];
-		$times = $date_picker['time'];
-		$percentages = $date_picker['percent'];
-		
-		// setup empty array to house which dates are closest, in unix timestamp
-		$past_dates = array();
-		echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/>";
-
-		foreach ( $dates as $key => $date ) {
-			
-			// If current date in loop is in the past, add its key to the array of date modifiers
-			$english_date = date( "D, F j, Y", strtotime( $date ) );
-			$correct_time = date( "g:i A", strtotime( $times[ $key ] ) );
-
-			// gets the UNIX timestamp for the date at the specified time of day
-			$timestamp = strtotime( "{$date} {$times[ $key ]}" );
-
-			echo "After {$correct_time} on {$english_date} the rewards will be irrevocably reduced by {$percentages[ $key ]}%.<br/>";
-			if ( $unix_now >= $timestamp ) {
-				$past_dates[] = abs( $unix_now - $timestamp );
-			}
-		}
-		echo "</span>";
-
-		if ( ! empty( $past_dates ) ) {
-			
-			// sorts dates from most recent to oldest
-			asort( $past_dates );
-			$update_percent = (float) ( ( 100 - $percentages[ key( $past_dates ) ] ) / 100);
-			if ( ( ! empty( $sounded_array['date'] ) && ! $sounded_array['date'][ $id ] ) || empty( $sounded_array['date'] ) ) {
-				?>
-				<script type='text/javascript'>
-					go_sounds( 'timer' );
-				</script>
-				<?php
-
-				// creates the structure for the sounded tasks array, and clears any unwanted data
-				// already in the array
-				if ( empty( $sounded_array['date'] ) ) {
-					$sounded_array = array( 'date' => array() );
-				}
-
-				// updates the status of this specified task, so the alarm doesn't sound again
-				$sounded_array['date'][ $id ] = true;
-				update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array );
-			}
-		} else {
-			$update_percent = 1;    
-		}
-		
-	} else {
-		$update_percent = 1;    
-	}
-	
-	$date_update_percent = $update_percent;
-	
-	$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : null );
-	$future_timer = false;
-	if ( ! empty( $future_modifier ) && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) && ! ( $future_modifier['days'] == 0 && $future_modifier['hours'] == 0 && $future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0 ) ) {
-		$user_timers = get_user_meta( $user_id, 'go_timers' );
-		$accept_timestamp = 0;
-		if ( ! empty( $user_timers[0][ $id ] ) ) {
-			$accept_timestamp = $user_timers[0][ $id ];
-		} else {
-			$accept_timestamp_raw = $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT timestamp 
-					FROM {$wpdb->prefix}go 
-					WHERE uid = %d AND post_id = %d",
-					$user_id,
-					$id
-				)
-			);
-			$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
-		}
-		$days = (int) $future_modifier['days'];
-		$hours = (int) $future_modifier['hours'];
-		$minutes =  (int) $future_modifier['minutes'];
-		$seconds = (int) $future_modifier['seconds'];
-		$future_time = strtotime( "{$days} days", 0) + strtotime( "{$hours} hours", 0) + strtotime( "{$minutes} minutes", 0) + strtotime( "{$seconds} seconds", 0) + $accept_timestamp;
-		if ( $status == 2 || ( ! empty( $accept_timestamp) && $status < 3 ) ) {
-			go_task_timer( $id, $user_id, $future_modifier );
-		}
-		
-		if ( $future_time != $accept_timestamp && ( ( $unix_now >= $future_time && $status >= 2 ) || ( $unix_now >= $future_time && ! empty( $accept_timestamp ) ) ) ) {
-			$future_update_percent = (float) ( (100 - $future_modifier['percentage'] )/100);
-			$future_timer = true;
-		} else {
-			$future_update_percent = 1;
-		}
-		if ( $status < 3 ) {
-			$time_string = ( ( ! empty( $days) ) ? "{$days} day".( ( $days > 1) ? 's' : '' ).( ( ! empty( $hours ) || ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ). 
-						   ( ( ! empty( $hours) ) ? "{$hours} hour".( ( $hours > 1) ? 's' : '' ).( ( ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
-						   ( ( ! empty( $minutes) ) ? "{$minutes} minute".( ( $minutes > 1) ? 's' : '' ).( ( ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
-						   ( ( ! empty( $seconds) ) ? "{$seconds} second".( ( $seconds > 1) ? 's' : '' ) : '' );
-			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to reach ".go_return_options( 'go_third_stage_name' )." of this {$task_name} before the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
-		}
-	} else {
-		$future_update_percent = 1;
-	}
-
-	if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) {
-		$update_percent = $date_update_percent;
-	} elseif ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) {
-		$update_percent = $future_update_percent;
-	} else {
-		$update_percent = 1;
-	}
-
-	// displays rewards before task contents
 	go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
-	?>
-	<script type="text/javascript">
-		<?php if ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' && $update_percent != 1 ) { ?>
-			var num_of_stages = parseInt( <?php echo $number_of_stages; ?> );
-			for ( i = 1; i <= num_of_stages; i++ ) {
-				var stage_points = jQuery( '#go_stage_' + i + '_points' );
-				var stage_currency = jQuery( '#go_stage_' + i + '_currency' );
-				var stage_bonus_currency = jQuery( '#go_stage_' + i + '_bonus_currency' );
-				if ( stage_points.length && ! stage_points.hasClass( 'go_updated' ) ) {
-					stage_points.addClass( 'go_updated' );
-				}
-				if ( stage_currency.length && ! stage_currency.hasClass( 'go_updated' ) ) {
-					stage_currency.addClass( 'go_updated' );
-				}
-				if ( stage_bonus_currency.length && ! stage_bonus_currency.hasClass( 'go_updated' ) ) {
-					stage_bonus_currency.addClass( 'go_updated' );
-				}
-			}
-		<?php } ?>
-		var timers = [];
 
-		jQuery( '.entry-title' ).after( jQuery( '.go_task_rewards' ) );
-		<?php
-			if ( $update_percent != 1 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
-			?>
-				jQuery( '#go_stage_3_points' ).addClass( 'go_updated' );
-				jQuery( '#go_stage_3_currency' ).addClass( 'go_updated' );
-			<?php
-			}
-			if ( $status >= 3 && ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) ) {
-				?>
-					jQuery( '#go_future_notification' ).hide();
-				<?php
-			}
-		?>
+//Create the stage if it doesn't already exist
+	//this can be moved (or removed?) somewhere . . . but where . . . what does this do in the next if statement.  
+	//Are there badges awarded on entering a stage?
+	// Array of badge switch and badges associated with a stage
+	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
+	$stage_badges = array(
+		get_post_meta( $id, 'go_mta_stage_one_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_two_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_three_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_four_badge', true ),
+		get_post_meta( $id, 'go_mta_stage_five_badge', true ),
+	);
+	
+	//Create the task in GO table if it is the first time encountered)
+	if ($status == 0){
+		//this is the first time encountered
+		// sending go_add_post the $repeat var was the problem, that is why it is now sending a null value.
+		go_add_post(
+			$user_id,
+			$id,
+			0,
+			floor( ( $update_percent * $points_array[0] ) ),
+			floor( ( $update_percent * $currency_array[0] ) ),
+			floor( ( $update_percent * $bonus_currency_array[0] ) ),
+			null,
+			$page_id,
+			false,
+			0,
+			0,
+			0,
+			0,
+			0
+		);
+		$status = 1;	
 
-		if ( jQuery( '#go_task_timer' ).length ) {
-			jQuery( '.go_task_rewards' ).after( jQuery( '#go_task_timer' ) );
+//What are these . . . award badges on encounter?
+		if ( $stage_badges[0][0] ) {
+			foreach ( $stage_badges[0][1] as $badge_id ) {
+				go_award_badge(
+					array(
+						'id'        => $badge_id,
+						'repeat'    => false,
+						'uid'       => $user_id
+					)
+				);
+			}
 		}
-	</script>
-	<?php
-
-	// checks that non-admin users are allowed to access this task		
-	switch ( $status ) {
-		case ( 0 ):
-			$db_task_stage_upload_var = 'e_uploaded';
-			break;
-		case ( 1 ):
-			$db_task_stage_upload_var = 'a_uploaded';
-			break;
-		case ( 2 ):
-			$db_task_stage_upload_var = 'c_uploaded';
-			break;
-		case ( 3 ):
-			$db_task_stage_upload_var = 'm_uploaded';
-			break;
-		case ( 4 ):
-			$db_task_stage_upload_var = 'r_uploaded';
-			break;
+		
+		//This is for the timer
+		//go_record_stage_time( $page_id, 1 );
 	}
-	if ( ! empty( $db_task_stage_upload_var ) ) {
-		$is_uploaded = $wpdb->get_var(
+
+//Stage Content
+/*
+ *This includes 
+ *messages
+ *checks for understanding
+ *localizing scripts 
+*/	
+	
+	echo "<div id='go_wrapper' data-fitvids='" . $go_fitvids_switch ."'  data-lightbox='" . $go_lightbox_switch . "' data-oembed='" .  $go_oembed_switch . "' data-maxwidth='" . $go_fitvids_maxwidth . "' >";
+
+	//Print stage content	
+	go_print_messages ( $status, $custom_fields, $go_oembed_switch );
+
+	//Print Checks for Understanding for the last stage message printed
+	//and buttons
+	
+	go_checks_for_understanding ( $wpdb, $status, $custom_fields, $go_table_name, $user_id, $id );
+	
+	//Print the bottom of the page
+	
+	go_task_render_chain_pagination( $id, $user_id );
+	echo '</div></div> <div id="notification"></div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+				
+	
+	if ( get_post_type() == 'tasks' ) {
+		comments_template();
+		wp_list_comments();
+	}
+	
+	wp_localize_script(
+		'go_tasks',
+		'go_task_data',
+		array(
+			'go_taskabandon_nonce'	=>  $task_shortcode_nonces['go_task_abandon'],
+			'url'	=> get_site_url(),
+			'status'	=>  $status,
+			'currency'	=>  $currency_array[0],
+			'userID'	=>  $user_id,
+			'ID'	=>  $id,
+			'pointsFloor'	=>  floor( $points_array[0] * $update_percent ),
+			'currencyFloor'	=>  floor( $currency_array[0] * $update_percent ),
+			'bonusFloor'	=>  floor( $bonus_currency_array[0] * $update_percent ),
+			'homeURL'	=>  home_url(),
+			'admin_name'	=>  $admin_name,
+			'go_unlock_stage'	=>  $task_shortcode_nonces['go_unlock_stage'],
+			'points_str'	=>  $points_str,
+			'test_e'	=>  ( ! empty( $test_e_returns ) ? $test_e_returns : ''),
+			'test_a'	=>  ( ! empty( $test_a_returns ) ? $test_a_returns : ''),
+			'test_c'	=>  ( ! empty( $test_c_returns ) ? $test_c_returns : ''),
+			'test_m'	=>  ( ! empty( $test_m_returns ) ? $test_m_returns : ''),
+			'go_test_point_update'	=>  $task_shortcode_nonces['go_test_point_update'],
+			'currency_str'	=>  $currency_str,
+			'bonus_currency_str'	=>  $bonus_currency_str,
+			'page_id'	=>  $page_id,
+			'date_update_percent'	=>  $date_update_percent,
+			'go_task_change_stage'	=>  $task_shortcode_nonces['go_task_change_stage'],
+			'task_count'	=>  ( ! empty( $task_count ) ? $task_count : 0 ),
+			'points_array'	=>  $points_array ,
+			'currency_array'	=>  $currency_array,
+			'bonus_currency_array'	=>  $bonus_currency_array ,
+			'date_update_percent'	=>  $date_update_percent,
+			'next_post_id_in_chain'	=>  ( ! empty( $next_post_id_in_chain ) ? $next_post_id_in_chain : 0 ),
+			'last_in_chain'	=>  ( ! empty( $last_in_chain ) ? 'true' : 'false' ),
+			'number_of_stages'	=>  $number_of_stages,
+
+		)
+	);
+	
+	// redeclare (also called "overloading" ) the variable $task_count to the value of the 'count' var on the database.
+	$task_count = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT count 
+			FROM {$go_table_name} 
+			WHERE post_id = %d AND uid = %d",
+			$id,
+			$user_id
+		)
+	);	
+		   
+	// this is an edit link at the bottom. NOT NEEDED. Its in the admin bar.
+	//edit_post_link( 'Edit ' . go_return_options( 'go_tasks_name' ), '<br/><p>', '</p>', $id );
+}
+
+add_shortcode( 'go_task','go_task_shortcode' );
+
+function go_print_messages ( $status, $custom_fields, $go_oembed_switch ){
+	//Print messages 	
+	$i = 1;
+	while ( $i <= $status) {
+		go_print_1_message ( $custom_fields, $go_oembed_switch, $i );	
+		$i++;
+	}
+}
+
+function go_short_name ( $stage_num ){
+		if ($stage_num == 1){
+			$stage_short_name = 'encounter';
+		}else if ($stage_num == 2){
+			$stage_short_name = 'accept';
+		} else if ($stage_num == 3){
+			$stage_short_name = 'completion';
+		} else if ($stage_num == 4){
+			$stage_short_name = 'mastery';
+		} else if ($stage_num == 5){
+			$stage_short_name = 'repeat';
+		}
+	return $stage_short_name;
+}
+
+function go_stage_letter ( $stage_num ){
+		if ($stage_num == 1){
+			$stage_letter = 'encounter';
+		}else if ($stage_num == 2){
+			$stage_letter = 'accept';
+		} else if ($stage_num == 3){
+			$stage_letter = 'completion';
+		} else if ($stage_num == 4){
+			$stage_letter = 'mastery';
+		} else if ($stage_num == 5){
+			$stage_letter = 'repeat';
+		}
+	return $stage_letter;
+}
+
+function go_print_1_message ( $custom_fields, $go_oembed_switch, $i ){	
+	if ($i > 0){
+	//for ($counter = 1; $counter <= 5; $counter++){
+		if ($i == 1){
+			$stage_short_name = 'quick_desc';
+		}else if ($i == 2){
+			$stage_short_name = 'accept_message';
+		} else if ($i == 3){
+			$stage_short_name = 'complete_message';
+		} else if ($i == 4){
+			$stage_short_name = 'mastery_message';
+		} else if ($i == 5){
+			$stage_short_name = 'repeat_message';
+		}
+	}
+	$message = ( ! empty( $custom_fields['go_mta_'.$stage_short_name][0] ) ? $custom_fields['go_mta_'.$stage_short_name][0] : '' ); // Completion Message
+	//adds oembed content
+	if ($go_oembed_switch === 'On'){
+		if(isset($GLOBALS['wp_embed']))
+		$message  = $GLOBALS['wp_embed']->autoembed($message );
+	}
+	echo "<div id='message_" . $i . "' class='go_stage_message'  style='display: none;'>".do_shortcode(wpautop( $message  ) )."</div>"; 	
+}
+
+function go_checks_for_understanding ( $wpdb, $status, $custom_fields, $go_table_name, $user_id, $id ){
+	echo "<div id='go_checks_and_buttons'><div id='checks'>";
+		$stage_short_name = go_short_name ( $status );
+		$stage_letter = go_stage_letter ( $status );
+	
+//Upload Check for Understanding
+		$stage_upload = ( ! empty( $custom_fields['go_mta_'.$stage_short_name.'_upload'][0] ) ? $custom_fields['go_mta_'.$stage_short_name.'_upload'][0] : false );
+		//get if item is uploaded variable (null or 1)
+		$db_task_stage_upload_var = $stage_letter . '_uploaded';
+		if ( ! empty( $db_task_stage_upload_var ) ) {
+			$is_uploaded = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT {$db_task_stage_upload_var} 
 				FROM {$go_table_name} 
 				WHERE uid = %d AND post_id = %d",
 				$user_id,
 				$id
-			)
-		);
-	} else {
-		$is_uploaded = 0;
-	}
-	
-	if ( get_the_terms( $id, 'task_focus_categories' ) && $focus_category_lock ) {
-		$categories = get_the_terms( $id, 'task_focus_categories' );
-		$category_names = array();
-		foreach( $categories as $category ) {
-			array_push( $category_names, $category->name ); 
-		}
-	}
-	
-	if ( get_user_meta( $user_id, 'go_focus', true ) != '' ) {
-		$user_focus = get_user_meta( $user_id, 'go_focus', true );  
-	}
-	
-	if ( ! empty( $category_names ) && $user_focus ) {
-		$go_ahead = array_intersect( $user_focus, $category_names );
-	}
-	?>
-	
-<div id="go_wrapper" data-fitvids="<?php echo $go_fitvids_switch ?>"  data-lightbox="<?php echo $go_lightbox_switch ?>" data-oembed="<?php echo $go_oembed_switch ?>" data-maxwidth="<?php echo $go_fitvids_maxwidth ?>" >
-	<div id="go_description"><div class="go_stage_message"><?php echo  do_shortcode( wpautop( $description ) ); ?></div></div>
-		<?php   
-	
-		if ( ( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) && $status < 2 ) {
-			$update_percent = 1;    
-		}
-
-		// Array of badge switch and badges associated with a stage
-		// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
-		$stage_badges = array(
-			get_post_meta( $id, 'go_mta_stage_one_badge', true ),
-			get_post_meta( $id, 'go_mta_stage_two_badge', true ),
-			get_post_meta( $id, 'go_mta_stage_three_badge', true ),
-			get_post_meta( $id, 'go_mta_stage_four_badge', true ),
-			get_post_meta( $id, 'go_mta_stage_five_badge', true ),
-		);
-
-		if ( $is_admin === true || ! empty( $go_ahead ) || ! isset( $focus_category_lock ) || empty( $category_names ) ) {
-			if ( ( empty( $bonus_currency_required ) || 
-						( ! empty( $bonus_currency_required ) && $current_bonus_currency >= $bonus_currency_required ) ) &&
-					( empty( $penalty_filter ) ||
-						( ! empty( $penalty_filter ) && $current_penalty < $penalty_filter ) ) ) {
-				switch ( $status ) {
-				
-					// First time a user encounters a task
-					case 0:
-
-					// sending go_add_post the $repeat var was the problem, that is why it is now sending a null value.
-					go_add_post(
-						$user_id,
-						$id,
-						0,
-						floor( ( $update_percent * $points_array[0] ) ),
-						floor( ( $update_percent * $currency_array[0] ) ),
-						floor( ( $update_percent * $bonus_currency_array[0] ) ),
-						null,
-						$page_id,
-						false,
-						0,
-						0,
-						0,
-						0,
-						0
-					);
-
-					if ( $stage_badges[0][0] ) {
-						foreach ( $stage_badges[0][1] as $badge_id ) {
-							go_award_badge(
-								array(
-									'id'        => $badge_id,
-									'repeat'    => false,
-									'uid'       => $user_id
-								)
-							);
-						}
-					}
-					go_record_stage_time( $page_id, 1 );
-		?>
-	<div id="go_content">
-		<?php
-			if ( $test_e_active ) {
-				echo "<p id='go_test_error_msg' style='color: red;'></p>";
-				if ( $test_e_num > 1 ) {
-					for ( $i = 0; $i < $test_e_num; $i++ ) {
-						if ( ! empty( $test_e_all_types[ $i ] ) &&
-								! empty( $test_e_all_questions[ $i ] ) &&
-								! empty( $test_e_all_answers[ $i ] ) &&
-								! empty( $test_e_all_keys[ $i ] ) ) {
-
-							echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
-						}
-					}
-					echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-				} elseif ( ! empty( $test_e_all_types[0] ) &&
-						! empty( $test_e_all_questions[0] ) &&
-						! empty( $test_e_all_answers[0] ) &&
-						! empty( $test_e_all_keys[0] ) ) {
-
-					echo do_shortcode( "[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-				}
-			}
-			if ( $encounter_upload ) {
-				echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-			}
-		?>
-		<p id='go_stage_error_msg' style='display: none; color: red;'></p>
-			<?php 
-			if ( $e_is_locked && ! empty( $e_pass_lock ) ) {
-				echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-			} elseif ( $e_url_is_locked === true ) {
-				echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-			}
-			?>
-				<button id="go_button" status= "2" onclick="task_stage_change( this );" <?php if ( $e_is_locked && empty( $e_pass_lock ) ) {echo "admin_lock='true'"; } ?>><?php echo go_return_options( 'go_second_stage_button' ) ?></button>
-				<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option( 'go_abandon_stage_button', 'Abandon' ); ?></button>
-				<?php
-
-				go_task_render_chain_pagination( $id, $user_id );
-
-				echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-				break;
-				
-				// Encountered
-				case 1: 
-	?>
-				<div id="go_content">
-				<?php
-					if ( $test_e_active ) {
-						echo "<p id='go_test_error_msg' style='color: red;'></p>";
-						if ( $test_e_num > 1) {
-							for ( $i = 0; $i < $test_e_num; $i++ ) {
-								if ( ! empty( $test_e_all_types[ $i ] ) &&
-										! empty( $test_e_all_questions[ $i ] ) &&
-										! empty( $test_e_all_answers[ $i ] ) &&
-										! empty( $test_e_all_keys[ $i ] ) ) {
-
-									echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
-								}
-							}
-							echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-						} elseif ( ! empty( $test_e_all_types[0] ) &&
-								! empty( $test_e_all_questions[0] ) &&
-								! empty( $test_e_all_answers[0] ) &&
-								! empty( $test_e_all_keys[0] ) ) {
-
-							echo do_shortcode( "[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-						}
-					}
-					if ( $encounter_upload ) {
-						echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-					}
-				?>
-				<p id='go_stage_error_msg' style='display: none; color: red;'></p>
-				<?php 
-				if ( $e_is_locked && ! empty( $e_pass_lock ) ) {
-					echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-				} elseif ( $e_url_is_locked === true ) {
-					echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-				}
-				?>
-				<button id="go_button" status= "2" onclick="task_stage_change( this );" <?php if ( $e_is_locked && empty( $e_pass_lock ) ) {echo "admin_lock='true'"; } ?>><?php echo go_return_options( 'go_second_stage_button' ) ?></button>
-				<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;"><?php echo get_option( 'go_abandon_stage_button', 'Abandon' ); ?></button>
-				<?php
-
-				go_task_render_chain_pagination( $id, $user_id );
-
-				echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-				break;
-				
-				// Accepted
-				case 2: 
-					echo '<div id="go_content"><div class="go_stage_message">'.do_shortcode(wpautop( $accept_message ) ).'</div>';
-					if ( $test_a_active ) {
-						echo "<p id='go_test_error_msg' style='color: red;'></p>";
-						if ( $test_a_num > 1 ) {
-							for ( $i = 0; $i < $test_a_num; $i++ ) {
-								if ( ! empty( $test_a_all_types[ $i ] ) &&
-										! empty( $test_a_all_questions[ $i ] ) &&
-										! empty( $test_a_all_answers[ $i ] ) &&
-										! empty( $test_a_all_keys[ $i ] ) ) {
-
-									echo do_shortcode( "[go_test type='".$test_a_all_types[ $i ]."' question='".$test_a_all_questions[ $i ]."' possible_answers='".$test_a_all_answers[ $i ]."' key='".$test_a_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_a_num."']" );
-								}
-							}
-							echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-						} elseif ( ! empty( $test_a_all_types[0] ) &&
-								! empty( $test_a_all_questions[0] ) &&
-								! empty( $test_a_all_answers[0] ) &&
-								! empty( $test_a_all_keys[0] ) ) {
-
-							echo do_shortcode( "[go_test type='".$test_a_all_types[0]."' question='".$test_a_all_questions[0]."' possible_answers='".$test_a_all_answers[0]."' key='".$test_a_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-						}
-					}
-					if ( $accept_upload ) {
-						echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-					}
-					echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-					if ( $a_is_locked && ! empty( $a_pass_lock ) ) {
-						echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-					} elseif ( $a_url_is_locked === true ) {
-						echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-					}
-					echo "<button id='go_button' status='3' onclick='task_stage_change( this );'";
-					if ( $a_is_locked && empty( $a_pass_lock ) ) {
-						echo "admin_lock='true'";
-					}
-					echo '>'.go_return_options( 'go_third_stage_button' ).'</button> '.
-						'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-					
-					go_task_render_chain_pagination( $id, $user_id );
-					
-					echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-					break;
-				
-				// Completed
-				case 3: 
-					echo '<div id="go_content"><div class="go_stage_message">'. do_shortcode( wpautop( $accept_message ) ).'</div><div class="go_stage_message">
-					'.do_shortcode( wpautop( $completion_message ) ).'</div>';
-					if ( $mastery_active ) {
-						if ( $test_c_active ) {
-							echo "<p id='go_test_error_msg' style='color: red;'></p>";
-							if ( $test_c_num > 1 ) {
-								for ( $i = 0; $i < $test_c_num; $i++ ) {
-									if ( ! empty( $test_c_all_types[ $i ] ) &&
-											! empty( $test_c_all_questions[ $i ] ) &&
-											! empty( $test_c_all_answers[ $i ] ) &&
-											! empty( $test_c_all_keys[ $i ] ) ) {
-
-										echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
-									}
-								}
-								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							} elseif ( ! empty( $test_c_all_types[0] ) &&
-									! empty( $test_c_all_questions[0] ) &&
-									! empty( $test_c_all_answers[0] ) &&
-									! empty( $test_c_all_keys[0] ) ) {
-
-								echo do_shortcode( "[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							}
-						}
-						if ( $completion_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-						}
-						echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-						if ( $c_is_locked && ! empty( $c_pass_lock ) ) {
-							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-						} elseif ( $c_url_is_locked === true ) {
-							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-						}
-						echo "<button id='go_button' status='4' onclick='task_stage_change( this );'";
-						if ( $c_is_locked && empty( $c_pass_lock ) ) {
-							echo "admin_lock='true'";
-						}
-						echo '>'.go_return_options( 'go_fourth_stage_button' ).'</button> '.
-							'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-
-						go_task_render_chain_pagination( $id, $user_id );
-					} else {
-						if ( $test_c_active ) {
-							echo "<p id='go_test_error_msg' style='color: red;'></p>";
-							if ( $test_c_num > 1 ) {
-								for ( $i = 0; $i < $test_c_num; $i++ ) {
-									if ( ! empty( $test_c_all_types[ $i ] ) &&
-											! empty( $test_c_all_questions[ $i ] ) &&
-											! empty( $test_c_all_answers[ $i ] ) &&
-											! empty( $test_c_all_keys[ $i ] ) ) {
-
-										echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
-									}
-								}
-								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							} elseif ( ! empty( $test_c_all_types[0] ) &&
-									! empty( $test_c_all_questions[0] ) &&
-									! empty( $test_c_all_answers[0] ) &&
-									! empty( $test_c_all_keys[0] ) ) {
-
-								echo do_shortcode( "[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							}
-						}
-						if ( $completion_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-						}
-
-						echo '<span id="go_button" status="4" style="display:none;"></span>'.
-							'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-						
-						go_task_render_chain_pagination( $id, $user_id );
-						
-						echo "</div>" . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-					}
-				break;
-				
-				// Mastered
-				case 4:  
-					echo'<div id="go_content"><div class="go_stage_message">'. do_shortcode(wpautop( $accept_message ) ).'</div>'.'<div class="go_stage_message">'.do_shortcode(wpautop( $completion_message ) ).'</div><div class="go_stage_message">'.do_shortcode(wpautop( $mastery_message ) ).'</div>';
-					if ( $repeat == 'on' ) {
-						if ( $task_count < $repeat_amount || $repeat_amount == 0) { // Checks if the amount of times a user has completed a task is less than the amount of times they are allowed to complete a task. If so, outputs the repeat button to allow the user to repeat the task again. 
-							//if ( $task_count == 0 ) {
-								if ( ! empty( $test_m_active ) ) {
-									echo "<p id='go_test_error_msg' style='color: red;'></p>";
-									if ( $test_m_num > 1 ) {
-										for ( $i = 0; $i < $test_m_num; $i++ ) {
-											if ( ! empty( $test_m_all_types[ $i ] ) &&
-													! empty( $test_m_all_questions[ $i ] ) &&
-													! empty( $test_m_all_answers[ $i ] ) &&
-													! empty( $test_m_all_keys[ $i ] ) ) {
-
-												echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
-											}
-										}
-										echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-									} elseif ( ! empty( $test_m_all_types[0] ) &&
-											! empty( $test_m_all_questions[0] ) &&
-											! empty( $test_m_all_answers[0] ) &&
-											! empty( $test_m_all_keys[0] ) ) {
-
-										echo do_shortcode( "[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-									}
-								}
-								if ( $mastery_upload ) {
-									echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-								}
-								echo '
-									<div id="repeat_quest">
-										<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
-											.do_shortcode(wpautop( $repeat_message ) ).
-											"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-								if ( $m_is_locked && ! empty( $m_pass_lock ) ) {
-									echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-								} elseif ( $m_url_is_locked === true ) {
-									echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-								}
-								echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
-								if ( $m_is_locked && empty( $m_pass_lock ) ) {
-									echo "admin_lock='true'";
-								}
-								echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
-											'</button>
-											<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-										'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-										'<div id="go_repeat_unclicked">'.
-											'<button id="go_button" status="5" onclick="go_repeat_replace();">'.
-												'See ' . get_option( 'go_fifth_stage_name' ).
-											'</button> '.
-											'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-										'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-									'</div>';
-							
-							/*
-							} 
-							else {
-								if ( $repeat_upload ) {
-									echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-								}
-								echo '
-									<div id="repeat_quest">
-										<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
-											.do_shortcode(wpautop( $repeat_message ) ).
-											"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-								if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
-									echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-								}
-								echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
-								if ( $r_is_locked && empty( $r_pass_lock ) ) {
-									echo "admin_lock='true'";
-								}
-								echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
-											'</button>
-											<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-										'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-										'<div id="go_repeat_unclicked">'.
-											'<button id="go_button" status="5" onclick="go_repeat_replace();">'.
-												'See ' . get_option( 'go_fifth_stage_name' ).
-											'</button> '.
-											'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-										'</div>'.
-										( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-									'</div>';
-							}
-							
-							*/
-							
-						} else {
-							echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span>'.
-								'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-								( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-						}
-					} else {
-						if ( ! empty( $test_m_active ) ) {
-							echo "<p id='go_test_error_msg' style='color: red;'></p>";
-							if ( $test_m_num > 1 ) {
-								for ( $i = 0; $i < $test_m_num; $i++ ) {
-									if ( ! empty( $test_m_all_types[ $i ] ) &&
-											! empty( $test_m_all_questions[ $i ] ) &&
-											! empty( $test_m_all_answers[ $i ] ) &&
-											! empty( $test_m_all_keys[ $i ] ) ) {
-
-										echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
-									}
-								}
-								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							} elseif ( ! empty( $test_m_all_types[0] ) &&
-									! empty( $test_m_all_questions[0] ) &&
-									! empty( $test_m_all_answers[0] ) &&
-									! empty( $test_m_all_keys[0] ) ) {
-
-								echo do_shortcode( "[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							}
-						}
-						if ( $mastery_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
-						}
-						echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span>'.
-							'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-					}
-
-					go_task_render_chain_pagination( $id, $user_id );
-					
-					echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-			}
-			if ( get_post_type() == 'tasks' ) {
-				comments_template();
-				wp_list_comments();
-			}
-		} else {
-			if ( ( ! empty( $bonus_currency_required ) &&
-						$current_bonus_currency < $bonus_currency_required ) &&
-					( ! empty( $penalty_filter ) && 
-						$current_penalty >= $penalty_filter ) ) {
-				echo "<span class='go_error_red'>You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." and less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
-			} else if ( ( ! empty( $bonus_currency_required ) &&
-					$current_bonus_currency < $bonus_currency_required ) ) {
-				echo "<span class='go_error_red'>You require more than {$bonus_currency_required} ".go_return_options( 'go_bonus_currency_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
-			} else if ( ( ! empty( $penalty_filter ) &&
-					$current_penalty >= $penalty_filter ) ) {
-				echo "<span class='go_error_red'>You require less than {$penalty_filter} ".go_return_options( 'go_penalty_name' )." to view this ".go_return_options( 'go_tasks_name' ).".</span>";
-			}
-		}
-	} else { // If user can't access quest because they aren't part of the specialty, echo this
-		$category_name = implode( ',',$category_names );
-		$focus_name = get_option( 'go_focus_name', 'Profession' );
-		$task_name = strtolower( get_option( 'go_tasks_name', 'Quest' ) );
-		echo "<span class='go_error_red'>This {$task_name} is only available to the \"{$category_name}\" {$focus_name}.</span>";
-	}
-
-	if ( $test_e_active && $test_e_returns ) {
-		$db_test_encounter_fail_count = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT e_fail_count 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_encounter_fail_count'] = $db_test_encounter_fail_count;
-		
-		$db_test_encounter_passed = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT e_passed 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_encounter_passed'] = $db_test_encounter_passed;
-	}
-
-	if ( $test_a_active && $test_a_returns ) {
-		$db_test_accept_fail_count = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT a_fail_count 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_accept_fail_count'] = $db_test_accept_fail_count;
-		
-		$db_test_accept_passed = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT a_passed 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_accept_passed'] = $db_test_accept_passed;
-	}
-
-	if ( $test_c_active && $test_c_returns ) {
-		$db_test_completion_fail_count = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT c_fail_count 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_completion_fail_count'] = $db_test_completion_fail_count;
-		
-		$db_test_completion_passed = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT c_passed 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_completion_passed'] = $db_test_completion_passed;
-	}
-
-	if ( ! empty( $test_m_active ) && $test_m_returns ) {
-		$db_test_mastery_fail_count = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT m_fail_count 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_mastery_fail_count'] = $db_test_mastery_fail_count;
-		
-		$test_mastery_passed = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT m_passed 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d",
-				$id,
-				$user_id
-			)
-		);
-		$_SESSION['test_mastery_passed'] = $test_mastery_passed;
-	}
-?>
-	<script language="javascript">
-		jQuery( document ).ready( function() {
-			jQuery.ajaxSetup({ 
-				url: '<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php'
-			});
-			check_locks();
-
-			// checks to see that the task has just been encountered, and fires off the Gold
-			// ("store") sound, if the task has Gold rewards for the first stage
-			var status = <?php echo $status; ?>;
-			var stage_1_gold = <?php echo $currency_array[0]; ?>;
-			if ( 0 === status && stage_1_gold > 0 ) {
-				go_sounds( 'store' );
-			}
-            make_clickable();
-		}); 
-		
-		function go_task_abandon() {
-			jQuery.ajax({
-				type: "POST",
-				data: {
-					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_task_abandon']; ?>',
-					action: "go_task_abandon",
-					user_id: <?php echo $user_id; ?>,
-					post_id: <?php echo $id; ?>,
-					encounter_points: <?php echo floor( $points_array[0] * $update_percent ); ?>,
-					encounter_currency: <?php echo floor( $currency_array[0] * $update_percent ); ?>,
-					encounter_bonus: <?php echo floor( $bonus_currency_array[0] * $update_percent ); ?>
-				}, success: function( res ) {
-					if ( -1 !== res ) {
-						window.location = "<?php echo home_url(); ?>";
-					}
-				}
-			});
-		}
-
-		function check_locks() {
-			if ( jQuery( ".go_test_list" ).length != 0 ) {
-				jQuery( '.go_test_submit_div' ).show();
-			}
-			var is_uploaded = jQuery( '#go_upload_form' ).attr( 'uploaded' );
-			if ( jQuery( ".go_test_list" ).length != 0 && jQuery( '#go_upload_form' ).length != 0 ) {
-				if ( jQuery( '#go_pass_lock' ).length == 0 && jQuery( '#go_button' ).attr( 'admin_lock' ) !== 'true' ) {
-					jQuery( '#go_button' ).attr( 'disabled', 'true' );
-				}
-				jQuery( '.go_test_submit' ).click( function() {
-					var test_list = jQuery( '.go_test_list' );
-					var current_error_msg = jQuery( '#go_test_error_msg' ).text();
-					if ( test_list.length > 1 ) {
-						var checked_ans = 0;
-						for (var i = 0; i < test_list.length; i++ ) {
-							var obj_str = "#" + test_list[ i ].id + " input:checked";
-							var chosen_answers = jQuery( obj_str );
-							if ( chosen_answers.length >= 1 ) {
-								checked_ans++;
-							} else {
-								if ( current_error_msg != "Please answer all questions!" ) {
-									jQuery( '#go_test_error_msg' ).text( "Please answer all questions!" );
-								} else {
-									flash_error_msg( '#go_test_error_msg' );
-								}
-								go_disable_loading();
-							}
-						}
-						if ( checked_ans >= test_list.length && is_uploaded == 1 ) {
-							task_unlock();
-						} else {
-							if ( checked_ans < test_list.length && is_uploaded != 1 ) {
-								var error = "Please answer all questions and upload a file!";
-							} else if ( checked_ans < test_list.length ) {
-								var error = "Please answer all questions!";
-							} else if ( is_uploaded != 1 ) {
-								var error = "Please upload a file!";
-							}
-
-							if ( typeof error != null ) {
-								if ( current_error_msg != error ) {
-									jQuery( '#go_test_error_msg' ).text( error );
-								} else {
-									flash_error_msg( '#go_test_error_msg' );
-								}
-								go_disable_loading();
-							}
-						}
-					} else {
-						if ( jQuery( ".go_test_list input:checked" ).length >= 1 && is_uploaded == 1 ) {
-							task_unlock();
-						} else {
-							if ( jQuery( ".go_test_list input:checked" ).length == 0 && is_uploaded != 1 ) {
-								var error = "Please answer the question and upload a file!";
-							} else if ( jQuery( ".go_test_list input:checked" ).length == 0 ) {
-								var error = "Please answer the question!";
-							} else if ( is_uploaded != 1 ) {
-								var error = "Please upload a file!";
-							}
-
-							if ( typeof error != null ) {
-								if ( current_error_msg != error ) {
-									jQuery( '#go_test_error_msg' ).text( error );
-								} else {
-									flash_error_msg( '#go_test_error_msg' );
-								}
-								go_disable_loading();
-							}
-						}
-					}
-				});
-				jQuery( '#go_upload_submit' ).click( function() {
-					var test_list = jQuery( ".go_test_list" );
-					var current_error_msg = jQuery( '#go_test_error_msg' ).text();
-					if ( test_list.length > 1 ) {
-						var checked_ans = 0;
-						for (var i = 0; i < test_list.length; i++ ) {
-							var obj_str = "#" + test_list[ i ].id + " input:checked";
-							var chosen_answers = jQuery( obj_str );
-							if ( chosen_answers.length >= 1 ) {
-								checked_ans++;
-							} else {
-								if ( current_error_msg != "Please answer all questions!" ) {
-									jQuery( '#go_test_error_msg' ).text( "Please answer all questions!" );
-								} else {
-									flash_error_msg( '#go_test_error_msg' );
-								}
-								go_disable_loading();
-							}
-						}
-						if ( checked_ans >= test_list.length && is_uploaded == 1 ) {
-							task_unlock();
-						} else {
-							if ( checked_ans < test_list.length && is_uploaded != 1 ) {
-								var error = "Please answer all questions and upload a file!";
-							} else if ( checked_ans < test_list.length ) {
-								var error = "Please answer all questions!";
-							} else if ( is_uploaded != 1 ) {
-								var error = "Please upload a file!";
-							}
-
-							if ( typeof error != null ) {
-								if ( current_error_msg != error ) {
-									jQuery( '#go_test_error_msg' ).text( error );
-								} else {
-									flash_error_msg( '#go_test_error_msg' );
-								}
-								go_disable_loading();
-							}
-						}
-					} else {
-						if ( jQuery( ".go_test_list input:checked" ).length >= 1 && is_uploaded == 1 ) {
-							task_unlock();
-						} else {
-							if ( jQuery( ".go_test_list input:checked" ).length == 0 && is_uploaded != 1 ) {
-								var error = "Please answer the question and upload a file!";
-							} else if ( jQuery( ".go_test_list input:checked" ).length == 0 ) {
-								var error = "Please answer the question!";
-							} else if (is_uploaded != 1) {
-								var error = "Please upload a file!";
-							}
-
-							if ( typeof error != null ) {
-								if ( current_error_msg != error ) {
-									jQuery( '#go_test_error_msg' ).text( error );
-								} else {
-									flash_error_msg( '#go_test_error_msg' );
-								}
-								go_disable_loading();
-							}
-						}
-					}
-				});
-			} else if ( jQuery( ".go_test_list" ).length != 0 ) {
-				if ( jQuery( '#go_pass_lock' ).length == 0 && jQuery( '#go_button' ).attr( 'admin_lock' ) !== 'true' ) {
-					jQuery( '#go_button' ).attr( 'disabled', 'true' );
-				}
-				jQuery( '.go_test_submit' ).click( function() {
-					var test_list = jQuery( ".go_test_list" );
-					if ( test_list.length > 1 ) {
-						var checked_ans = 0;
-						for ( var i = 0; i < test_list.length; i++ ) {
-							var obj_str = "#" + test_list[ i ].id + " input:checked";
-							var chosen_answers = jQuery( obj_str );
-							if ( chosen_answers.length >= 1 ) {
-								checked_ans++;
-							}
-						}
-						if ( checked_ans >= test_list.length ) {
-							task_unlock();
-						} else {
-							if ( jQuery( '#go_test_error_msg' ).text() != "Please answer all questions!" ) {
-								jQuery( '#go_test_error_msg' ).text( "Please answer all questions!" );
-							} else {
-								flash_error_msg( '#go_test_error_msg' );
-							}
-							go_disable_loading();
-						}
-					} else {
-						if ( jQuery( ".go_test_list input:checked" ).length >= 1 ) {
-							task_unlock();
-						} else {
-							if ( jQuery( '#go_test_error_msg' ).text() != "Please answer the question!" ) {
-								jQuery( '#go_test_error_msg' ).text( "Please answer the question!" );
-							} else {
-								flash_error_msg( '#go_test_error_msg' );
-							}
-							go_disable_loading();
-						}
-					}
-				});
-			} else if ( jQuery( '#go_upload_form' ).length != 0 && is_uploaded == 0 ) {
-				if ( jQuery( '#go_pass_lock' ).length == 0 && jQuery( '#go_button' ).attr( 'admin_lock' ) !== 'true' ) {
-					jQuery( '#go_button' ).attr( 'disabled', 'true' );
-				}
-				jQuery( '#go_upload_submit' ).click( function() {
-					if ( jQuery( '#go_pass_lock' ).length > 0 && jQuery( '#go_pass_lock' ).attr( 'value' ).length == 0 ) {
-						var error = "Retrieve the password from <?php echo $admin_name; ?>.";
-						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
-							jQuery( '#go_stage_error_msg' ).text( error );
-						} else {
-							flash_error_msg( '#go_stage_error_msg' );
-						}
-						go_disable_loading();
-					} else {
-						task_unlock();
-					}
-				});
-			}
-			if ( ( jQuery( '#go_pass_lock' ).length > 0 && jQuery( '#go_pass_lock' ).attr( 'value' ).length == 0 ) && ( jQuery( '#go_upload_form' ).length != 0 && is_uploaded == 0 ) || jQuery( ".go_test_list" ).length != 0 ) {
-				if ( jQuery( '#go_stage_error_msg' ).is( ":visible" ) ) {
-					var error = "Retrieve the password from <?php echo $admin_name; ?>.";
-					if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
-						jQuery( '#go_stage_error_msg' ).text( error );
-					} else {
-						flash_error_msg( '#go_stage_error_msg' );
-					}
-					go_disable_loading();
-				}
-			}
-		}
-
-		function flash_error_msg( elem ) {
-			var bg_color = jQuery( elem ).css( 'background-color' );
-			if ( typeof bg_color === undefined ) {
-				bg_color = "white";
-			}
-			jQuery( elem ).animate({
-				color: bg_color
-			}, 200, function() {
-				jQuery( elem ).animate({
-					color: "red"
-				}, 200 );
-			});
-		}
-
-		function task_unlock() {
-			if ( jQuery( ".go_test_list" ).length != 0) {
-				var test_list = jQuery( ".go_test_list" );
-				var list_size = test_list.length;
-				if ( jQuery( '.go_test_list :checked' ).length >= list_size ) {
-					
-					var test_list = jQuery( ".go_test_list" );
-					var list_size = test_list.length;
-					var type_array = [];
-					
-					if ( jQuery( ".go_test_list" ).length > 1) {
-					
-						var choice_array = [];
-
-						for ( var x = 0; x < list_size; x++ ) {
-							
-							// figure out the type of each test
-							var test_type = test_list[ x ].children[1].children[0].type;
-							type_array.push( test_type );
-
-							// get the checked inputs of each test
-							var obj_str = "#" + test_list[ x ].id + " :checked";
-							var chosen_answers = jQuery( obj_str );
-
-							if ( test_type == 'radio' ) {
-								// push indiviudal answers to the choice_array
-								if ( chosen_answers[0] != undefined ) {
-									choice_array.push( chosen_answers[0].value );
-								}
-							} else if ( test_type == 'checkbox' ) {
-								var t_array = [];
-								for ( var i = 0; i < chosen_answers.length; i++ ) {
-									t_array.push( chosen_answers[ i ].value );
-								}
-								var choice_str = t_array.join( "### " );
-								choice_array.push( choice_str );
-							}   
-						}
-						var choice = choice_array.join( "#### " );
-						var type = type_array.join( "### " );
-					} else {
-						var chosen_answer = jQuery( '.go_test_list li input:checked' );
-						var type = jQuery( '.go_test_list li input' ).first().attr( "type" );
-						if ( type == 'radio' ) {
-							var choice = chosen_answer[0].value;
-						} else if ( type == 'checkbox' ) {
-							var choice = [];
-							for (var i = 0; i < chosen_answer.length; i++ ) {
-								choice.push( chosen_answer[ i ].value );    
-							}
-							choice = choice.join( "### " );
-						}
-					}
-				} else {
-					jQuery( '#go_test_error_msg' ).text( "Answer all questions!" );
-				}
-			}
-
-			var is_repeating = jQuery( '#go_button' ).attr( 'repeat' );
-			if ( is_repeating !== 'on' ) {
-				var status = jQuery( '#go_button' ).attr( 'status' ) - 2;
-			} else {
-				var status = jQuery( '#go_button' ).attr( 'status' ) - 1;
-			}
-			jQuery.ajax({
-				type: "POST",
-				data:{
-					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_unlock_stage']; ?>',
-					action: 'go_unlock_stage',
-					task_id: <?php echo $id; ?>,
-					user_id: <?php echo $user_id; ?>,
-					list_size: list_size,
-					chosen_answer: choice,
-					type: type,
-					status: status,
-					points: "<?php echo $points_str; ?>",
-				},
-				success: function( response ) {
-					if ( response === 1 || response === '1' ) {
-						jQuery( '.go_test_container' ).hide( 'slow' );
-						jQuery( '#test_failure_msg' ).hide( 'slow' );
-						jQuery( '.go_test_submit_div' ).hide( 'slow' );
-						jQuery( '.go_wrong_answer_marker' ).hide();
-						if ( ! jQuery( '#go_button' ).attr( 'admin_lock' ) ) {
-							jQuery( '#go_button' ).removeAttr( 'disabled' );
-							jQuery( '#go_test_error_msg' ).attr( 'style', 'color:green' );
-							jQuery( '#go_test_error_msg' ).text( "Well done, continue!" );
-						} else {
-							jQuery( '#go_test_error_msg' ).text( "This stage can only be unlocked by <?php echo $admin_name; ?>." );
-						}
-						
-						var test_e_returns = "<?php echo ( ! empty( $test_e_returns ) ? $test_e_returns : ''); ?>";
-						var test_a_returns = "<?php echo ( ! empty( $test_a_returns ) ? $test_a_returns : ''); ?>";
-						var test_c_returns = "<?php echo ( ! empty( $test_c_returns ) ? $test_c_returns : ''); ?>";
-						var test_m_returns = "<?php echo ( ! empty( $test_m_returns ) ? $test_m_returns : ''); ?>";
-						if ( ( status == 0 && test_e_returns == 'on' ) ||
-								( status == 1 && test_a_returns == 'on' ) ||
-								( status == 2 && test_c_returns == 'on' ) || 
-								( status == 3 && test_m_returns == 'on' ) ) {
-								
-							go_test_point_update();
-						}
-					} else {
-						if ( typeof response === 'string' && list_size > 1 ) {
-							var failed_questions = response.split( ', ' );
-							for ( var x = 0; x < test_list.length; x++ ) {
-								var test_id = "#" + test_list[ x ].id;
-								if ( jQuery.inArray( test_id, failed_questions ) === -1) {
-									if ( jQuery(test_id + " .go_wrong_answer_marker" ).is( ":visible" ) ) {
-										jQuery(test_id + " .go_wrong_answer_marker" ).hide();
-									}
-									if ( ! jQuery(test_id + " .go_correct_answer_marker" ).is( ":visible" ) ) {
-										jQuery(test_id + " .go_correct_answer_marker" ).show();
-									}
-								} else {
-									if ( jQuery(test_id + " .go_correct_answer_marker" ).is( ":visible" ) ) {
-										jQuery(test_id + " .go_correct_answer_marker" ).hide();
-									}
-									if ( ! jQuery(test_id + " .go_wrong_answer_marker" ).is( ":visible" ) ) {
-										jQuery(test_id + " .go_wrong_answer_marker" ).show();
-									}
-								}
-							}
-						}
-						var error_msg_val = jQuery( '#go_test_error_msg' ).text();
-						if ( error_msg_val != "Wrong answer, try again!" ) {
-							jQuery( '#go_test_error_msg' ).text( "Wrong answer, try again!" );
-						} else {
-							flash_error_msg( '#go_test_error_msg' );
-						}
-						go_disable_loading();
-					}
-				}
-			});
-		}
-		
-		function go_test_point_update() {
-			var is_repeating = jQuery( '#go_button' ).attr( 'repeat' );
-			if (is_repeating !== 'on' ) {
-				var status = jQuery( '#go_button' ).attr( 'status' ) - 2;
-			} else {
-				var status = jQuery( '#go_button' ).attr( 'status' ) - 1;
-			}
-			jQuery.ajax({
-				type: "POST",
-				data: {
-					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_test_point_update']; ?>',
-					action: "go_test_point_update",
-					points: "<?php echo $points_str; ?>",
-					currency: "<?php echo $currency_str; ?>",
-					bonus_currency: "<?php echo $bonus_currency_str; ?>",
-					status: status,
-					page_id: <?php echo $page_id; ?>,
-					user_id: <?php echo $user_id; ?>,
-					post_id: <?php echo $id; ?>,
-					update_percent: <?php echo $date_update_percent; ?>
-				},
-				success: function( response ) {
-					if ( -1 !== response ) {
-
-						// the three following lines are required for the go_notification to work
-						var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
-						jQuery( '#go_content' ).append( response );
-						jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
-					}
-				}
-			});
-		}
-		
-		function go_repeat_replace() {
-			jQuery( '#go_repeat_unclicked' ).remove();
-			jQuery( '#go_repeat_clicked' ).show( 'slow' );   
-		}
-		
-		// disables the target stage button, and adds a loading gif to it
-		function go_enable_loading( target ) {
-
-			// prevent further events with this button
-			target.disabled = true;
-
-			// prepend the loading gif to the button's content, to show that the request is being
-			// processed
-			target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
-		}
-
-		// re-enables the stage button, and removes the loading gif
-		function go_disable_loading() {
-			jQuery('#go_button .go_loading').remove();
-			jQuery('#go_button').prop( 'disabled', '' );
-		}
-
-		function task_stage_change( target ) {
-			go_enable_loading( target );
-
-			var undoing = false;
-			if ( 'undefined' !== typeof jQuery( target ).attr( 'undo' ) && 'true' === jQuery( target ).attr( 'undo' ).toLowerCase() ) {
-				undoing = true;
-			}
-			if ( ! undoing && jQuery( '#go_button' ).length > 0 ) {
-				var perma_locked = jQuery( '#go_button' ).attr( 'admin_lock' );
-				if ( perma_locked === 'true' ) {
-					jQuery( '#go_stage_error_msg' ).show();
-					jQuery( '#go_button' ).removeAttr( 'disabled' );
-					jQuery( '#go_stage_error_msg' ).text( "This stage can only be unlocked by <?php echo $admin_name; ?>." );
-					return;
-				}
-			}
-			if ( ! undoing && jQuery( '#go_pass_lock' ).length > 0 ) {
-				var pass_entered = jQuery( '#go_pass_lock' ).attr( 'value' ).length > 0 ? true : false;
-				if ( ! pass_entered ) {
-					jQuery( '#go_stage_error_msg' ).show();
-					var error = "Retrieve the password from <?php echo $admin_name; ?>.";
-					if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
-						jQuery( '#go_stage_error_msg' ).text( error );
-					} else {
-						flash_error_msg( '#go_stage_error_msg' );
-					}
-					go_disable_loading();
-					return;
-				}
-			} else if ( ! undoing && jQuery( '#go_url_key' ).length > 0 ) {
-				var the_url = jQuery( '#go_url_key' ).attr( 'value' ).replace(/\s+/, '' );
-				if ( the_url.length > 0 ) {
-					if ( the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && ! ( the_url.lastIndexOf( 'http://' ) > 0 ) && ! ( the_url.lastIndexOf( 'https://' ) > 0 ) ) {
-						var url_entered = true;
-					} else {
-						jQuery( '#go_stage_error_msg' ).show();
-						var error = "Enter a valid URL.";
-						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
-							jQuery( '#go_stage_error_msg' ).text( error );
-						} else {
-							flash_error_msg( '#go_stage_error_msg' );
-						}
-						go_disable_loading();
-						return;
-					}
-				} else {
-					jQuery( '#go_stage_error_msg' ).show();
-					var error = "Enter a valid URL.";
-					if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
-						jQuery( '#go_stage_error_msg' ).text( error );
-					} else {
-						flash_error_msg( '#go_stage_error_msg' );
-					}
-					go_disable_loading();
-					return;
-				}
-			}
-			
-			var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
-
-			// redeclare (also called "overloading" ) the variable $task_count to the value of the 'count' var on the database.
-			<?php
-			$task_count = $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT count 
-					FROM {$go_table_name} 
-					WHERE post_id = %d AND uid = %d",
-					$id,
-					$user_id
 				)
 			);
-			?>
-			
-			// if the button#go_button exists, set var 'task_status' to the value of the 'status' attribute on the current button#go_button.
-			if ( jQuery( '#go_button' ).length != 0 ) {
-				var task_status = jQuery( '#go_button' ).attr( 'status' );
-			} else {
-				var task_status = 5;
-			}
-			
-			// if 'target' (if an argument is sent to task_stage_change, it is stored as a parameter in the 'target' variable)
-			// is assigned the value of jQuery( '#go_back_button' ), AND the div#new_content exists...
-			if ( jQuery( target ).is( '#go_back_button' ) && jQuery( '#new_content' ).length != 0 ) {
-				jQuery( '#new_content p' ).hide( 'slow' );
-				jQuery( target ).remove();
-			}
-			
-			// if the button#go_back_button has the attribute of repeat...
-			var repeat_attr = false;
-			if ( 'on' === jQuery( '#go_button' ).attr( 'repeat' ) ) {
-				// set repeat_attr equal to the value of the attribute of button#go_button.
-				repeat_attr = true;
-			} else if ( 'on' === jQuery( '#go_back_button' ).attr( 'repeat' ) ) {
-				// set repeat_attr equal to the value of the attribute of button#go_back_button.
-				repeat_attr = true;
-			}
+		} else {
+			$is_uploaded = 0;
+		}
+		if ( $stage_upload ) {
+			echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
+		}
 
-			// send the following data to the 'wp_ajax_go_task_change_stage' action and use the POST method to do so...
-			// when it succeeds update the content of the page: update the admin bar; set the css display attribute to none for
-			// div#new_content; then slowly display div#new_content; if the button#go_button 'status' attribute is equal to 2
-			// and remove the first child element of div#new_content.
-			jQuery.ajax({
-				type: "POST",
-				data: {
-					_ajax_nonce: '<?php echo $task_shortcode_nonces['go_task_change_stage']; ?>',
-					action: 'go_task_change_stage',
-					post_id: <?php echo $id; ?>, 
-					user_id: <?php echo $user_id; ?>,
-					admin_name: '<?php echo $admin_name; ?>',
-					task_count: <?php echo ( ! empty( $task_count ) ? $task_count : 0 ); ?>,
-					status: task_status,
-					repeat: repeat_attr,
-					undo: undoing,
-					pass: ( pass_entered ? jQuery( '#go_pass_lock' ).attr( 'value' ) : '' ),
-					url: ( url_entered ? jQuery( '#go_url_key' ).attr( 'value' ) : '' ),
-					page_id: <?php echo $page_id; ?>,
-					points: <?php echo json_encode( $points_array ); ?>,
-					currency: <?php echo json_encode( $currency_array ); ?>,
-					bonus_currency: <?php echo json_encode( $bonus_currency_array ); ?>,
-					date_update_percent: <?php echo $date_update_percent; ?>,
-					next_post_id_in_chain: <?php echo ( ! empty( $next_post_id_in_chain ) ? $next_post_id_in_chain : 0 ); ?>,
-					last_in_chain: <?php echo ( ! empty( $last_in_chain ) ? 'true' : 'false' ); ?>,
-					number_of_stages: <?php echo $number_of_stages; ?>,
-				},
-				success: function( raw ) {
-					
+//Quiz Check for Understanding
+		$test_stage_active = ( ! empty( $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] ) ? $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] : false );
 
-					// parse the raw response to get the desired JSON
-					var res = {};
-					try {
-						var res = JSON.parse( raw );
-					} catch (e) {
-						res = {
-							status: -1,
-							html: '',
-							rewards: {
-								gold: 0,
-							},
-						};
+		if ( $test_stage_active ) {
+			$test_stage_array = go_task_get_test_meta( $stage_short_name, $id );
+			$test_stage_returns = $test_stage_array[0];
+			$test_stage_num = $test_stage_array[1];
+			$test_stage_all_questions = $test_stage_array[2][0];
+			$test_stage_all_types = $test_stage_array[2][1];
+			$test_stage_all_answers = $test_stage_array[2][2];
+			$test_stage_all_keys = $test_stage_array[2][3];
+		}
+
+		if ( $test_stage_active ) {
+			
+			if ( $test_stage_num > 1 ) {
+				for ( $i = 0; $i < $test_stage_num; $i++ ) {
+					if ( ! empty( $test_stage_all_types[ $i ] ) &&
+						! empty( $test_stage_all_questions[ $i ] ) &&
+						! empty( $test_stage_all_answers[ $i ] ) &&
+						! empty( $test_stage_all_keys[ $i ] ) ) {
+						echo do_shortcode( "[go_test type='".$test_stage_all_types[ $i ]."' question='".$test_stage_all_questions[ $i ]."' possible_answers='".$test_stage_all_answers[ $i ]."' key='".$test_stage_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_stage_num."']" );
 					}
-					if ( -1 === Number.parseInt( res.status ) ) {
-						jQuery( '#go_stage_error_msg' ).show();
-						var error = "Retrieve the password from <?php echo $admin_name; ?>.";
-						if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
-							jQuery( '#go_stage_error_msg' ).text( error );
-						} else {
-							flash_error_msg( '#go_stage_error_msg' );
-						}
-						go_disable_loading();
-					} else if ( 302 === Number.parseInt( res.status ) ) {
-						window.location = res.location;
-					} else {
-						jQuery( '#go_content' ).html( res.html );
-                        Vids_Fit_and_Box();
-                        jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
-                        jQuery( "#new_content" ).css( 'display', 'none' );
-                        jQuery( "#new_content" ).show( 'slow' ); 
-                                                
-                        
-						if ( jQuery( '#go_button' ).attr( 'status' ) == 2 ) {
-							jQuery( '#new_content' ).children().first().remove();
-						}
-						jQuery( '#go_button' ).ready( function() {
-							check_locks();
-						});
-						
-                        //Make URL button clickable by clicking enter when field is in focus
-                        make_clickable('#go_url_key');
-                        make_clickable('#go_pass_lock');
-                        
-						// fires off the Gold ("store") sound if the stage awarded or revoked Gold
-						if ( 0 !== res.rewards.gold ) {
-							go_sounds( 'store' );
-						}
-					}
-                    Vids_Fit_and_Box();
 				}
-			});
-        }
-        function make_clickable($go_text_box) {
-            //Make URL button clickable by clicking enter when field is in focus
-                        jQuery($go_text_box).keyup(function(ev) {
-                        // 13 is ENTER
-                        if (ev.which === 13) {
-                            // do something
-                            jQuery("#go_button").click();
-                        }
-                        });  
-        };
-	</script>
-<?php   
-	// this is an edit link.
-	edit_post_link( 'Edit ' . go_return_options( 'go_tasks_name' ), '<br/><p>', '</p>', $id );
+				echo "<p id='go_test_error_msg' style='color: red;'></p>";
+				echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
+			} elseif ( ! empty( $test_stage_all_types[0] ) &&
+				! empty( $test_stage_all_questions[0] ) &&
+				! empty( $test_stage_all_answers[0] ) &&
+				! empty( $test_stage_all_keys[0] ) ) {
+					echo do_shortcode( "[go_test type='".$test_stage_all_types[0]."' question='".$test_stage_all_questions[0]."' possible_answers='".$test_stage_all_answers[0]."' key='".$test_stage_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
+			}
+			
+		}
+		
+//Password Check for Understanding		
+		$stage_admin_lock = get_post_meta( $id, 'go_mta_'.$stage_short_name.'_admin_lock', true );
+		if ( ! empty( $stage_admin_lock ) ) {
+			$stage_is_locked = ( ! empty( $stage_admin_lock[0] ) ? true : false );
+			if ( $stage_is_locked ) {
+				$stage_pass_lock = ( ! empty( $stage_admin_lock[1] ) ? $stage_admin_lock[1] : '' );
+			}
+		}
+		if ( $stage_is_locked && ! empty( $stage_pass_lock ) ) {
+			echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
+		} 
+		
+//URL Check for Understanding
+		$stage_url_is_locked = ( ! empty( $custom_fields['go_mta_'.$stage_short_name.'_url_key'][0] ) ? true : false );
+		if ( $stage_url_is_locked === true ) {
+			echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
+		}
+		
+//error placeholder
+		echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
+	
+	
+//Buttons
+	echo "<div id='go_buttons'>";
+	//$status = $status + 1;
+	echo "<button id='go_button' status='{$status}' onclick='task_stage_change( this );'";	
+	if ( $stage_is_locked && empty( $stage_pass_lock ) ) {
+		echo "admin_lock='true'";
+	}
+	echo '>Continue</button> ';
+	if ($status == 1){
+		echo '<button id="go_abandon_task" onclick="go_task_abandon();this.disabled = true;">Abandon</button>';
+	}
+	else{
+		echo '<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
+	}
+	echo '</div></div>';
 }
-
-add_shortcode( 'go_task','go_task_shortcode' );
 
 function go_display_visitor_content( $id ) {
 	$custom_fields = get_post_custom( $id );
@@ -2360,16 +978,11 @@ function go_task_done_check( $post_id , $is_current_task = false, $undo = false)
 	return $result;
 }
 
+/**
+********Award an achievement if this is the last stage in a pod or chain.********
+*/
+//if User is not admin and the button clicked was not Undo and it has a chain order -->
 function go_badges_task_chains ($post_id, $user_id, $is_admin = false, $undo = false ) {
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	********Award an achievement if this is the last stage in a pod or chain.********
-	*/
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////
-	//if is not admin and the button clicked was not Undo and it has a chain order -->
-	//////////////////////////////////
 	$chain_order = get_post_meta( $post_id, 'go_mta_chain_order', true );
 	///set variables for each chain the task is in
 	foreach ( $chain_order as $chain_tt_id => $order ) {
@@ -2379,9 +992,8 @@ function go_badges_task_chains ($post_id, $user_id, $is_admin = false, $undo = f
 		$chain_id = ( $the_chain->term_id );
 		$chain_pod = get_term_meta($chain_tt_id, 'pod_toggle', true);
 		$chain_badge = get_term_meta($chain_tt_id, 'pod_achievement', true);
-
 		///////////////////////////////////////////////
-		//REMOVE CHAIN BADGE IF BUTTON CLICKED IS NOT! UNDO
+		//Award badge if button is continue and is last in chain
 		if ( ($undo != true ) && (! empty( $chain_order ))) {
 			//////////////////////////////////
 			///check if this is the last stage in the current task -->
@@ -2429,8 +1041,7 @@ function go_badges_task_chains ($post_id, $user_id, $is_admin = false, $undo = f
 					}
 				}
 			}
-		}
-	
+		}	
 	///////////////////////////////////////////////
 	//REMOVE CHAIN BADGE IF BUTTON CLICKED IS UNDO
 	if ( ($undo == true ) && (! empty( $chain_order ))) {
@@ -2474,9 +1085,7 @@ function go_badges_task_chains ($post_id, $user_id, $is_admin = false, $undo = f
 	}
 }
 
-
 function go_task_change_stage() {
-
 	global $wpdb;
 	$go_oembed_switch = get_option( 'go_oembed_switch' );
 	$user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
@@ -2484,29 +1093,19 @@ function go_task_change_stage() {
 
 	// post id posted from ajax function (untrusted)
 	$post_id = ( ! empty( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0 );
-   //These globals are needed for the oembed to function--I think.
+	
+   //These globals are needed for the oembed to function--I think . . .
     global $post;
     $post = get_post($post_id);
     setup_postdata( $post );
 
-    
-    
 	// gets the task's post object to validate that it exists, user requests for non-existent tasks
 	// should be stopped and the user redirected to the home page
 	$post_obj = get_post( $post_id );
-	if ( null === $post_obj ||
-		(
-			'publish' !== $post_obj->post_status &&
-			! $is_admin
-		) ||
-		(
-			'trash' === $post_obj->post_status &&
-			$is_admin
-		)
-	) {
+	if ( null === $post_obj || ( 'publish' !== $post_obj->post_status && ! $is_admin ) || ( 'trash' === $post_obj->post_status && $is_admin )) {
 		echo json_encode(
 			array(
-				'status' => 302,
+				'json_status' => 302,
 				'html' => '',
 				'rewards' => array(),
 				'location' => home_url(),
@@ -2516,7 +1115,7 @@ function go_task_change_stage() {
 	}
 	check_ajax_referer( 'go_task_change_stage_' . $post_id . '_' . $user_id );
 
-	// checks the user's current progress on this task
+	// set the user's current progress on this task as db_status
 	$go_table_name = "{$wpdb->prefix}go";
 	$db_status = (int) $wpdb->get_var(
 		$wpdb->prepare(
@@ -2529,33 +1128,16 @@ function go_task_change_stage() {
 	);
 
 	$status        = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
+//are both of these needed?
 	$repeat_button = ( ! empty( $_POST['repeat'] ) ? go_is_true_str( $_POST['repeat'] ) : false ); // Boolean which determines if the task is repeatable or not (True or False)
 	$repeat        = get_post_meta( $post_id, 'go_mta_five_stage_switch', true ); // Whether or not you can repeat the task
 	$undo          = ( ! empty( $_POST['undo'] )   ? go_is_true_str( $_POST['undo'] ) : false ); // Boolean which determines if the button clicked is an undo button or not (True or False)
 
-	
-
 	$is_progressing = false;
 	$is_degressing = false;
-	if ( ! $undo &&
-	(
-		(
-			$db_status + 1 === $status && ! $repeat_button
-		) ||
-		(
-			$db_status === $status && $repeat_button && 'on' === $repeat
-		)
-	)
-	) {
+	if ( ! $undo && (($db_status === $status && ! $repeat_button) || ( $db_status === $status && $repeat_button && 'on' === $repeat ))) {
 		$is_progressing = true;
-	} else if ( $undo &&
-		(
-			$db_status + 1 === $status && ! $repeat_button
-		) ||
-		(
-			$db_status === $status && $repeat_button
-		)
-	) {
+	} else if ( $undo && ( $db_status  === $status && ! $repeat_button ) || ( $db_status === $status && $repeat_button )) {
 		$is_degressing = true;
 	}
 
@@ -2574,16 +1156,10 @@ function go_task_change_stage() {
 	// b. The user is neither progressing or degressing (pressing the undo button)
 	// OR
 	// c. The user has not encountered this task yet
-	if ( $task_permalink &&
-	(
-		( ! $is_progressing && ! $is_degressing ) ||
-		! $encountered ||
-		! empty( $chain_links )
-	)
-	) {
+	if ( $task_permalink && (( ! $is_progressing && ! $is_degressing ) || ! $encountered || ! empty( $chain_links ))) {
 		echo json_encode(
 			array(
-				'status' => 302,
+				'json_status' => 302,
 				'html' => '',
 				'rewards' => array(),
 				'location' => $task_permalink,
@@ -2597,7 +1173,7 @@ function go_task_change_stage() {
 	if ( ! $task_permalink ) {
 		echo json_encode(
 			array(
-				'status' => 302,
+				'json_status' => 302,
 				'html' => '',
 				'rewards' => array(),
 				'location' => home_url(),
@@ -2625,72 +1201,40 @@ function go_task_change_stage() {
 	$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
 	$mastery_active = ( ! empty( $custom_fields['go_mta_three_stage_switch'][0] ) ? ! $custom_fields['go_mta_three_stage_switch'][0] : true ); // whether or not the mastery stage is active
 
-	$e_admin_lock = get_post_meta( $post_id, 'go_mta_encounter_admin_lock', true );
-	if ( ! empty( $e_admin_lock ) ) {
-		$e_is_locked = ( ! empty( $e_admin_lock[0] ) ? true : false );
-		if ( $e_is_locked ) {
-			$e_pass_lock = ( ! empty( $e_admin_lock[1] ) ? $e_admin_lock[1] : '' );
+//If password field is on, Check if password is correct 
+	$stage_short_name = go_short_name ( $status );
+	$stage_letter = go_stage_letter ( $status );
+	//Get password
+	
+	$stage_admin_lock = get_post_meta( $post_id, 'go_mta_'.$stage_short_name.'_admin_lock', true );
+	if ( ! empty( $stage_admin_lock ) ) {
+		$stage_is_locked = ( ! empty( $stage_admin_lock[0] ) ? true : false );
+		if ( $stage_is_locked ) {
+			$stage_pass_lock = ( ! empty( $stage_admin_lock[1] ) ? $stage_admin_lock[1] : '' );
 		}
 	}
 
-	$a_admin_lock = get_post_meta( $post_id, 'go_mta_accept_admin_lock', true );
-	if ( ! empty( $a_admin_lock ) ) {
-		$a_is_locked = ( ! empty( $a_admin_lock[0] ) ? true : false );
-		if ( $a_is_locked ) {
-			$a_pass_lock = ( ! empty( $a_admin_lock[1] ) ? $a_admin_lock[1] : '' );
-		}
-	}
-
-	$c_admin_lock = get_post_meta( $post_id, 'go_mta_completion_admin_lock', true );
-	if ( ! empty( $c_admin_lock ) ) {
-		$c_is_locked = ( ! empty( $c_admin_lock[0] ) ? true : false );
-		if ( $c_is_locked ) {
-			$c_pass_lock = ( ! empty( $c_admin_lock[1] ) ? $c_admin_lock[1] : '' );
-		}
-	}
-
-	$m_admin_lock = get_post_meta( $post_id, 'go_mta_mastery_admin_lock', true );
-	if ( ! empty( $m_admin_lock ) ) {
-		$m_is_locked = ( ! empty( $m_admin_lock[0] ) ? true : false );
-		if ( $m_is_locked ) {
-			$m_pass_lock = ( ! empty( $m_admin_lock[1] ) ? $m_admin_lock[1] : '' );
-		}
-	}
-
-	$r_admin_lock = get_post_meta( $post_id, 'go_mta_repeat_admin_lock', true );
-	if ( ! empty( $r_admin_lock ) ) {
-		$r_is_locked = ( ! empty( $r_admin_lock[0] ) ? true : false );
-		if ( $r_is_locked ) {
-			$r_pass_lock = ( ! empty( $r_admin_lock[1] ) ? $r_admin_lock[1] : '' );
-		}
-	}
-
-	$e_url_is_locked = ( ! empty( $custom_fields['go_mta_encounter_url_key'][0] ) ? true : false );
-	$a_url_is_locked = ( ! empty( $custom_fields['go_mta_accept_url_key'][0] ) ? true : false );
-	$c_url_is_locked = ( ! empty( $custom_fields['go_mta_completion_url_key'][0] ) ? true : false );
-	$m_url_is_locked = ( ! empty( $custom_fields['go_mta_mastery_url_key'][0] ) ? true : false );
-
+/* this is for BONUS	
+	//if a password was entered, make sure this isn't a bonus task, and if it is set the repeat password lock
 	if ( ! empty( $pass ) || '0' === $pass ) {
-
-		$pass_lock = '';
+		
+		$db_pass_lock = '';
 		if ( 4 === $status && $repeat_button && 'on' === $repeat ) {
 			if ( $task_count > 0 && ! empty( $r_pass_lock ) ) {
-				$pass_lock = $r_pass_lock;
-			} elseif ( 0 === $task_count && ! empty( $m_pass_lock ) ) {
-				$pass_lock = $m_pass_lock;
-			}
-		} elseif ( 1 === $status - 1 && ! empty( $e_pass_lock ) ) {
-			$pass_lock = $e_pass_lock;
-		} elseif ( 2 === $status - 1 && ! empty( $a_pass_lock ) ) {
-			$pass_lock = $a_pass_lock;
-		} elseif ( 3 === $status - 1 && ! empty( $c_pass_lock ) ) {
-			$pass_lock = $c_pass_lock;
-		}
-
-		if ( ! empty( $pass_lock ) && $pass !== $pass_lock ) {
+				$db_pass_lock = $r_pass_lock;
+			} 
+		} 
+		else  {
+			$db_pass_lock = $stage_pass_lock;
+		} 
+	}
+*/
+			
+	//If password is set and the wrong password was entered then die, else continue
+		if ( ! empty( $stage_pass_lock ) && $pass !== $stage_pass_lock ) {
 			echo json_encode(
 				array(
-					'status' => -1,
+					'json_status' => 'fail',
 					'html' => '',
 					'rewards' => array(
 						'gold' => 0,
@@ -2700,103 +1244,12 @@ function go_task_change_stage() {
 			);
 			die();
 		}
-	}
 	
-
-
 	// catch everything output here as is, and stuff it in a buffer to be dumped into a JSON response
 	// at the end of the function
 	ob_start();
 	
 	go_badges_task_chains ($post_id, $user_id, $is_admin, $undo);
-
-
-	$test_e_active = ( ! empty( $custom_fields['go_mta_test_encounter_lock'][0] ) ? $custom_fields['go_mta_test_encounter_lock'][0] : false );
-	$test_a_active = ( ! empty( $custom_fields['go_mta_test_accept_lock'][0] ) ? $custom_fields['go_mta_test_accept_lock'][0] : false );
-	$test_c_active = ( ! empty( $custom_fields['go_mta_test_completion_lock'][0] ) ? $custom_fields['go_mta_test_completion_lock'][0] : false );
-
-	if ( $test_e_active ) {
-		$test_e_array = go_task_get_test_meta( 'encounter', $post_id );
-		$test_e_returns = $test_e_array[0];
-		$test_e_num = $test_e_array[1];
-		$test_e_all_questions = $test_e_array[2][0];
-		$test_e_all_types = $test_e_array[2][1];
-		$test_e_all_answers = $test_e_array[2][2];
-		$test_e_all_keys = $test_e_array[2][3];
-	}
-	$encounter_upload = ( ! empty( $custom_fields['go_mta_encounter_upload'][0] ) ? $custom_fields['go_mta_encounter_upload'][0] : false );
-
-	if ( $test_a_active ) {
-		$test_a_array = go_task_get_test_meta( 'accept', $post_id );
-		$test_a_returns = $test_a_array[0];
-		$test_a_num = $test_a_array[1];
-		$test_a_all_questions = $test_a_array[2][0];
-		$test_a_all_types = $test_a_array[2][1];
-		$test_a_all_answers = $test_a_array[2][2];
-		$test_a_all_keys = $test_a_array[2][3];
-	}
-	$accept_upload = ( ! empty( $custom_fields['go_mta_accept_upload'][0] ) ? $custom_fields['go_mta_accept_upload'][0] : false );
-
-	if ( $test_c_active ) {
-		$test_c_array = go_task_get_test_meta( 'completion', $post_id );
-		$test_c_returns = $test_c_array[0];
-		$test_c_num = $test_c_array[1];
-		$test_c_all_questions = $test_c_array[2][0];
-		$test_c_all_types = $test_c_array[2][1];
-		$test_c_all_answers = $test_c_array[2][2];
-		$test_c_all_keys = $test_c_array[2][3];
-	}
-	$completion_message = ( ! empty( $custom_fields['go_mta_complete_message'][0] ) ? $custom_fields['go_mta_complete_message'][0] : '' );
-	
-    //adds oembed content
-    if ($go_oembed_switch === 'On'){
-    	if(isset($GLOBALS['wp_embed']))
-    	$completion_message = $GLOBALS['wp_embed']->autoembed($completion_message);
-    	
-    };
-    
-	$completion_upload = ( ! empty( $custom_fields['go_mta_completion_upload'][0] ) ? $custom_fields['go_mta_completion_upload'][0] : false );
-	if ( $mastery_active ) {
-		$test_m_active = ( ! empty( $custom_fields['go_mta_test_mastery_lock'][0] ) ? $custom_fields['go_mta_test_mastery_lock'][0] : false );
-		$bonus_loot = ( ! empty( $custom_fields['go_mta_mastery_bonus_loot'][0] ) ? unserialize( $custom_fields['go_mta_mastery_bonus_loot'][0] ) : null );
-
-		if ( $test_m_active ) {
-			$test_m_array = go_task_get_test_meta( 'mastery', $post_id );
-			$test_m_returns = $test_m_array[0];
-			$test_m_num = $test_m_array[1];
-			$test_m_all_questions = $test_m_array[2][0];
-			$test_m_all_types = $test_m_array[2][1];
-			$test_m_all_answers = $test_m_array[2][2];
-			$test_m_all_keys = $test_m_array[2][3];
-		}
-		$mastery_message = ( ! empty( $custom_fields['go_mta_mastery_message'][0] ) ? $custom_fields['go_mta_mastery_message'][0] : '' );
-        //adds oembed content
-    	if ($go_oembed_switch === 'On'){
-       		if(isset($GLOBALS['wp_embed']))
-        	$mastery_message = $GLOBALS['wp_embed']->autoembed($mastery_message);
-        };
-        
-		$mastery_upload = ( ! empty( $custom_fields['go_mta_mastery_upload'][0] ) ? $custom_fields['go_mta_mastery_upload'][0] : false );
-
-		if ( $repeat == 'on' ) {
-			$repeat_amount = ( ! empty( $custom_fields['go_mta_repeat_amount'][0] ) ? $custom_fields['go_mta_repeat_amount'][0] : 0 );
-			$repeat_message = ( ! empty( $custom_fields['go_mta_repeat_message'][0] ) ? $custom_fields['go_mta_repeat_message'][0] : '' );
-            //adds oembed content
-    		if ($go_oembed_switch === 'On'){
-           		if(isset($GLOBALS['wp_embed']))
-            	$repeat_message = $GLOBALS['wp_embed']->autoembed($repeat_message);
-            };
-            
-			$repeat_upload = ( ! empty( $custom_fields['go_mta_repeat_upload'][0] ) ? $custom_fields['go_mta_repeat_upload'][0] : false );
-		}
-	}
-
-	$description = ( ! empty( $custom_fields['go_mta_quick_desc'][0] ) ? $custom_fields['go_mta_quick_desc'][0] : '' );
-    //adds oembed content
-    if ($go_oembed_switch === 'On'){
-    	if(isset($GLOBALS['wp_embed']))
-    	$description = $GLOBALS['wp_embed']->autoembed($description);
-    };
 
 	// Array of badge switch and badges associated with a stage
 	// E.g. array( true, array( 263, 276 ) ) means that stage has badges (true) and the badge IDs are 263 and 276
@@ -2808,123 +1261,13 @@ function go_task_change_stage() {
 		( ! empty( $custom_fields['go_mta_stage_five_badge'][0] )  ? unserialize( $custom_fields['go_mta_stage_five_badge'][0] ) : null ),
 	);
 
-	// Stage Stuff
-	$content_post = get_post( $post_id );
-	$task_content = $content_post->post_content;
-	if ( $task_content == '' ) {
-		$accept_message = ( ! empty( $custom_fields['go_mta_accept_message'][0] ) ? $custom_fields['go_mta_accept_message'][0] : '' );
-    	//adds oembed content
-    	if ($go_oembed_switch === 'On'){
-    		if(isset($GLOBALS['wp_embed']))
-    		$accept_message = $GLOBALS['wp_embed']->autoembed($accept_message);
-    	};
-	} else {
-		$accept_message = $content_post->post_content;
-	}
-
-	// Tests failed.
-	$e_fail_count = ( ! empty( $_SESSION['test_encounter_fail_count'] )  ? (int) $_SESSION['test_encounter_fail_count'] : 0 );
-	$a_fail_count = ( ! empty( $_SESSION['test_accept_fail_count'] )     ? (int) $_SESSION['test_accept_fail_count'] : 0 );
-	$c_fail_count = ( ! empty( $_SESSION['test_completion_fail_count'] ) ? (int) $_SESSION['test_completion_fail_count'] : 0 );
-	$m_fail_count = ( ! empty( $_SESSION['test_mastery_fail_count'] )    ? (int) $_SESSION['test_mastery_fail_count'] : 0 );
-
-	// Tests passed.
-	$e_passed = ( ! empty( $_SESSION['test_encounter_passed'] )  ? (int) $_SESSION['test_encounter_passed'] : 0 );
-	$a_passed = ( ! empty( $_SESSION['test_accept_passed'] )     ? (int) $_SESSION['test_accept_passed'] : 0 );
-	$c_passed = ( ! empty( $_SESSION['test_completion_passed'] ) ? (int) $_SESSION['test_completion_passed'] : 0 );
-	$m_passed = ( ! empty( $_SESSION['test_mastery_passed'] )    ? (int) $_SESSION['test_mastery_passed'] : 0 );
-
-	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); //determine which future date modifier is on, if any
-	$date_picker = ( ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ? array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) : false );
-
-	if ( ! empty( $date_picker) && ( ! empty( $future_switches['calendar'] ) && $future_switches['calendar'] == 'on' ) ) {
-		$dates = $date_picker['date'];
-		$times = $date_picker['time'];
-		$percentages = $date_picker['percent'];
-
-		// Setup empty array to house which dates are closest, in unix timestamp
-		$past_dates = array();
-		foreach ( $dates as $key => $date ) {
-
-			// gets the UNIX timestamp for the date at the specified time of day
-			$timestamp = strtotime( "{$date} {$times[ $key ]}" );
-			if ( $unix_now >= $timestamp ) {
-				$past_dates[] = abs( $unix_now - $timestamp );
-			}
-		}
-
-		if ( ! empty( $past_dates ) ) {
-
-			// sorts dates from most recent to oldest
-			asort( $past_dates );
-			$date_update_percent = (float) ( ( 100 - $percentages[ key( $past_dates ) ] ) / 100);
-		} else {
-			$date_update_percent = 1;
-		}
-	} else {
-		$date_update_percent = 1;
-	}
-
-	$future_modifier = get_post_meta( $post_id, 'go_mta_time_modifier' );
+	//TIMER: stuff added until timer and test mods gets fixed	
+	$update_percent = 1;
 	$future_timer = false;
-	if ( ! empty( $future_modifier ) &&
-		( ! empty( $future_switches['future'] ) && $future_switches['future'] == 'on' ) &&
-		! (
-			$future_modifier['days'] == 0 && $future_modifier['hours'] == 0 &&
-			$future_modifier['minutes'] == 0 && $future_modifier['seconds'] == 0
-		)
-	) {
-		$user_timers = get_user_meta( $user_id, 'go_timers' );
-		$accept_timestamp = 0;
-		if ( ! empty( $user_timers[0][ $post_id ] ) ) {
-			$accept_timestamp = $user_timers[0][ $post_id ];
-		} else {
-			$accept_timestamp_raw = $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT timestamp 
-					FROM {$wpdb->prefix}go 
-					WHERE uid = %d AND post_id = %d",
-					$user_id,
-					$post_id
-				)
-			);
-			$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
-		}
-		$days    = (int) $future_modifier['days'];
-		$hours   = (int) $future_modifier['hours'];
-		$minutes = (int) $future_modifier['minutes'];
-		$seconds = (int) $future_modifier['seconds'];
-		$future_time = strtotime( "{$days} days", 0) + strtotime( "{$hours} hours", 0) + strtotime( "{$minutes} minutes", 0) + strtotime( "{$seconds} seconds", 0) + $accept_timestamp;
-		if ( $status == 2 || ( ! empty( $accept_timestamp) && $status < 3 ) ) {
-			go_task_timer( $post_id, $user_id, $future_modifier );
-		}
-		
-		if ( $future_time != $accept_timestamp && ( ( $unix_now >= $future_time && $status >= 2 ) || ( $unix_now >= $future_time && ! empty( $accept_timestamp ) ) ) ) {
-			$future_update_percent = (float) ( (100 - $future_modifier['percentage'] )/100);
-			$future_timer = true;
-		} else {
-			$future_update_percent = 1;
-		}
-		if ( $status < 3 ) {
-			$time_string = ( ( ! empty( $days) ) ? "{$days} day".( ( $days > 1) ? 's' : '' ).( ( ! empty( $hours ) || ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ) .
-						   ( ( ! empty( $hours) ) ? "{$hours} hour".( ( $hours > 1) ? 's' : '' ).( ( ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
-						   ( ( ! empty( $minutes) ) ? "{$minutes} minute".( ( $minutes > 1) ? 's' : '' ).( ( ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
-						   ( ( ! empty( $seconds) ) ? "{$seconds} second".( ( $seconds > 1) ? 's' : '' ) : '' );
-			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to reach ".go_return_options( 'go_third_stage_name' )." of this {$task_name} before the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
-		}
-	} else {
-		$future_update_percent = 1;
-	}
+	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : null ); //determine which future date modifier is on, if any
+	//END stuff added until timer and test mods gets fixed	
 
-	if ( ! empty( $future_switches['calendar'] ) ) {
-		$update_percent = $date_update_percent;
-	} elseif ( ! empty( $future_switches['future'] ) ) {
-		$update_percent = $future_update_percent;
-	} else {
-		$update_percent = 1;
-	}
-
-	$complete_stage = ( $undo ? $status - 1 : $status );
+	//$complete_stage = ( $undo ? $status - 1 : $status );
 	$gold_reward = 0;
 
 	// if the button pressed IS the repeat button...
@@ -3072,8 +1415,10 @@ function go_task_change_stage() {
 				}
 			}
 		}   
+	
+	} 
 	// if the button pressed is NOT the repeat button...
-	} else {
+	else {
 		$db_status = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT status 
@@ -3083,82 +1428,62 @@ function go_task_change_stage() {
 				$post_id
 			)
 		);
-		if ( $db_status == 0 || ( $db_status <= $status ) ) {
-			if ( $undo ) {
-				if ( $task_count > 0 ) {
-					$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
-					go_add_post(
-						$user_id, $post_id, $status,
-						-floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
-						$gold_reward,
-						-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
-						null, $page_id, $repeat_button, -1,
-						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
-						$e_passed, $a_passed, $c_passed, $m_passed
-					);
-				} elseif ( $db_status <= 3 ) {
-					$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 2 ] ) );
-					go_add_post(
-						$user_id, $post_id, ( $status - 2 ),
-						-floor( ( $update_percent * $points_array[ $status - 2 ] ) ),
-						$gold_reward,
-						-floor( ( $update_percent * $bonus_currency_array[ $status - 2 ] ) ),
-						null, $page_id, $repeat_button, 0,
-						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
-						$e_passed, $a_passed, $c_passed, $m_passed
-					);
-
-					if ( $stage_badges[ $db_status - 1 ][0] ) {
-						foreach ( $stage_badges[ $db_status - 1 ][1] as $badge_id ) {
-							go_remove_badge( $user_id, $badge_id );
-						}
-					}
-				} else {
-					$gold_reward = -floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
-					go_add_post(
-						$user_id, $post_id, ( $status - 1 ),
-						-floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
-						$gold_reward,
-						-floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
-						null, $page_id, $repeat_button, 0,
-						$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
-						$e_passed, $a_passed, $c_passed, $m_passed
-					);
-					if ( $stage_badges[ $status - 1 ][0] ) {
-						foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
-							go_remove_badge( $user_id, $badge_id );
-						}
-					}
+		if ( $undo ) {	
+			//if this is the undo button on stage 5
+			if ( $task_count > 0 ) {
+				$task_count_decrease = -1;
 				}
-			} else {
-				$update_time = ( $status == 2 ) ? true : false;
-				$gold_reward = floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
+			else {
+				$task_count_decrease = 0;
+			}			
+				$gold_reward = -floor( ( $update_percent * $currency_array[ $status  ] ) );
 				go_add_post(
-					$user_id, $post_id, $status,
-					floor( ( $update_percent * $points_array[ $status - 1 ] ) ),
+					$user_id, $post_id, ($status - 1 ),
+					-floor( ( $update_percent * $points_array[ $status ] ) ),
 					$gold_reward,
-					floor( ( $update_percent * $bonus_currency_array[ $status - 1 ] ) ),
-					null, $page_id, $repeat_button, 0,
+					-floor( ( $update_percent * $bonus_currency_array[ $status ] ) ),
+					null, $page_id, $repeat_button, $task_count_decrease,
 					$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
-					$e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time
+					$e_passed, $a_passed, $c_passed, $m_passed
 				);
 
-				if ( $stage_badges[ $status - 1 ][0] ) {
-					foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
-						go_award_badge(
-							array(
-								'id'        => $badge_id,
-								'repeat'    => false,
-								'uid'       => $user_id
-							)
-						);
+				if ( $stage_badges[ $db_status ][0] ) {
+					foreach ( $stage_badges[ $db_status - 1 ][1] as $badge_id ) {
+						go_remove_badge( $user_id, $badge_id );
 					}
 				}
 			}
+		//else this is the continue button
+		else {	
+			$update_time = ( $status == 1 ) ? true : false;		
+			$gold_reward = floor( ( $update_percent * $currency_array[ $status - 1 ] ) );
+			go_add_post(
+				$user_id, $post_id, ($status + 1 ),
+				floor( ( $update_percent * $points_array[ $status ] ) ),
+				$gold_reward,
+				floor( ( $update_percent * $bonus_currency_array[ $status ] ) ),
+				null, $page_id, $repeat_button, 0,
+				$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
+				$e_passed, $a_passed, $c_passed, $m_passed, $url, $update_time
+			);
+
+			if ( $stage_badges[ $status - 1 ][0] ) {
+				foreach ( $stage_badges[ $status - 1 ][1] as $badge_id ) {
+					go_award_badge(
+						array(
+							'id'        => $badge_id,
+							'repeat'    => false,
+							'uid'       => $user_id
+						)
+					);
+				}
+			}
 		}
+		
 	}
 	
 	// redefine the status and task_count because they have been updated as soon as the above go_add_post() calls are made.
+
 	$status = $wpdb->get_var(
 		$wpdb->prepare(
 			"SELECT status 
@@ -3178,6 +1503,8 @@ function go_task_change_stage() {
 		)
 	);
 
+/*
+THIS STUFF HAS SOMETHING TO DO WITH THE TIMER	
 	if ( ! $undo ) {
 		if ( $task_count == 1 ) {
 			go_record_stage_time( $post_id, 5 );    
@@ -3185,7 +1512,9 @@ function go_task_change_stage() {
 			go_record_stage_time( $post_id, $status );
 		}   
 	}
-	
+*/
+
+//Upload check stuff
 	switch ( $status ) {
 		case ( 0 ):
 			$db_task_stage_upload_var = 'e_uploaded';
@@ -3216,342 +1545,18 @@ function go_task_change_stage() {
 	} else {
 		$is_uploaded = 0;
 	}
+//Upload
 
-	// Controls output of the page, after the #go_button has been pressed for the first time while viewing the page.
-	switch ( $status ) {
-		case 1:
-			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode( wpautop( $accept_message, false ) ).'</div>';
-			if ( $test_e_active ) {
-				echo "<p id='go_test_error_msg' style='color: red;'></p>";
-				if ( $test_e_num > 1 ) {
-					for ( $i = 0; $i < $test_e_num; $i++ ) {
-						if ( ! empty( $test_e_all_types[ $i ] ) &&
-								! empty( $test_e_all_questions[ $i ] ) &&
-								! empty( $test_e_all_answers[ $i ] ) &&
-								! empty( $test_e_all_keys[ $i ] ) ) {
-
-							echo do_shortcode( "[go_test type='".$test_e_all_types[ $i ]."' question='".$test_e_all_questions[ $i ]."' possible_answers='".$test_e_all_answers[ $i ]."' key='".$test_e_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_e_num."']" );
-						}
-					}
-					echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-				} elseif ( ! empty( $test_e_all_types[0] ) &&
-						! empty( $test_e_all_questions[0] ) &&
-						! empty( $test_e_all_answers[0] ) &&
-						! empty( $test_e_all_keys[0] ) ) {
-
-					echo do_shortcode( "[go_test type='".$test_e_all_types[0]."' question='".$test_e_all_questions[0]."' possible_answers='".$test_e_all_answers[0]."' key='".$test_e_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-				}
-			}
-			if ( $encounter_upload ) {
-				echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
-			}
-			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-			if ( $e_is_locked && ! empty( $e_pass_lock ) ) {
-				echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-			} elseif ( $e_url_is_locked === true ) {
-				echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-			}
-			echo "<button id='go_button' status='2' onclick='task_stage_change( this );'";
-			if ( $e_is_locked && empty( $e_pass_lock ) ) {
-				echo "admin_lock='true'";
-			}
-			echo ">".go_return_options( 'go_second_stage_button' )."</button>
-			<button id='go_abandon_task' onclick='go_task_abandon();this.disabled = true;'>".get_option( 'go_abandon_stage_button', 'Abandon' )."</button></div>";
-
-			go_task_render_chain_pagination( $post_id, $user_id );
-
-			echo ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-			break;
-		case 2:
-			echo '<div id="new_content">'.'<div class="go_stage_message">'.do_shortcode( wpautop( $accept_message, false ) ).'</div>';
-			if ( $test_a_active ) {
-				echo "<p id='go_test_error_msg' style='color: red;'></p>";
-				if ( $test_a_num > 1 ) {
-					for ( $i = 0; $i < $test_a_num; $i++ ) {
-						if ( ! empty( $test_a_all_types[ $i ] ) &&
-								! empty( $test_a_all_questions[ $i ] ) &&
-								! empty( $test_a_all_answers[ $i ] ) &&
-								! empty( $test_a_all_keys[ $i ] ) ) {
-
-							echo do_shortcode( "[go_test type='".$test_a_all_types[ $i ]."' question='".$test_a_all_questions[ $i ]."' possible_answers='".$test_a_all_answers[ $i ]."' key='".$test_a_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_a_num."']" );
-						}
-					}
-					echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-				} elseif ( ! empty( $test_a_all_types[0] ) &&
-						! empty( $test_a_all_questions[0] ) &&
-						! empty( $test_a_all_answers[0] ) &&
-						! empty( $test_a_all_keys[0] ) ) {
-
-					echo do_shortcode( "[go_test type='".$test_a_all_types[0]."' question='".$test_a_all_questions[0]."' possible_answers='".$test_a_all_answers[0]."' key='".$test_a_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-				}
-			}
-			if ( $accept_upload ) {
-				echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
-			}
-			echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-			if ( $a_is_locked && ! empty( $a_pass_lock ) ) {
-				echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-			} elseif ( $a_url_is_locked === true ) {
-				echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-			}
-			echo "<button id='go_button' status='3' onclick='task_stage_change( this );'";
-			if ( $a_is_locked && empty( $a_pass_lock ) ) {
-				echo "admin_lock='true'";
-			}
-			echo '>'.go_return_options( 'go_third_stage_button' ).'</button> '.
-				'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button></div>';
-
-			go_task_render_chain_pagination( $post_id, $user_id );
-
-			echo ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-			break;
-		case 3:
-			echo '<div class="go_stage_message">'.do_shortcode( wpautop( $accept_message, false ) ).'</div>'.'<div id="new_content"><div class="go_stage_message">'
-			.do_shortcode(wpautop( $completion_message ) ).'</div>';
-			if ( $mastery_active ) {
-				if ( $test_c_active ) {
-					echo "<p id='go_test_error_msg' style='color: red;'></p>";
-					if ( $test_c_num > 1 ) {
-						for ( $i = 0; $i < $test_c_num; $i++ ) {
-							if ( ! empty( $test_c_all_types[ $i ] ) &&
-									! empty( $test_c_all_questions[ $i ] ) &&
-									! empty( $test_c_all_answers[ $i ] ) &&
-									! empty( $test_c_all_keys[ $i ] ) ) {
-
-								echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
-							}
-						}
-						echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-					} elseif ( ! empty( $test_c_all_types[0] ) &&
-							! empty( $test_c_all_questions[0] ) &&
-							! empty( $test_c_all_answers[0] ) &&
-							! empty( $test_c_all_keys[0] ) ) {
-
-						echo do_shortcode( "[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-					}
-				}
-				if ( $completion_upload ) {
-					echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
-				}
-				echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-				if ( $c_is_locked && ! empty( $c_pass_lock ) ) {
-					echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-				} elseif ( $c_url_is_locked === true ) {
-					echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-				}
-				echo "<button id='go_button' status='4' onclick='task_stage_change( this );'";
-				if ( $c_is_locked && empty( $c_pass_lock ) ) {
-					echo "admin_lock='true'";
-				}
-				echo '>'.go_return_options( 'go_fourth_stage_button' ).'</button> '.
-					'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-
-				go_task_render_chain_pagination( $post_id, $user_id );
-			} else {
-				if ( $test_c_active ) {
-					echo "<p id='go_test_error_msg' style='color: red;'></p>";
-					if ( $test_c_num > 1 ) {
-						for ( $i = 0; $i < $test_c_num; $i++ ) {
-							if ( ! empty( $test_c_all_types[ $i ] ) &&
-									! empty( $test_c_all_questions[ $i ] ) &&
-									! empty( $test_c_all_answers[ $i ] ) &&
-									! empty( $test_c_all_keys[ $i ] ) ) {
-
-								echo do_shortcode( "[go_test type='".$test_c_all_types[ $i ]."' question='".$test_c_all_questions[ $i ]."' possible_answers='".$test_c_all_answers[ $i ]."' key='".$test_c_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_c_num."']" );
-							}
-						}
-						echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-					} elseif ( ! empty( $test_c_all_types[0] ) &&
-							! empty( $test_c_all_questions[0] ) &&
-							! empty( $test_c_all_answers[0] ) &&
-							! empty( $test_c_all_keys[0] ) ) {
-
-						echo do_shortcode( "[go_test type='".$test_c_all_types[0]."' question='".$test_c_all_questions[0]."' possible_answers='".$test_c_all_answers[0]."' key='".$test_c_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-					}
-				}
-				if ( $completion_upload ) {
-					echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
-				}
-				echo '<span id="go_button" status="4" style="display:none;"></span>'.
-					'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-				
-				go_task_render_chain_pagination( $post_id, $user_id );
-				
-				echo "</div>" . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-			}
-			break;
-		case 4:
-			echo '<div class="go_stage_message">'.do_shortcode( wpautop( $accept_message, false ) ).'</div><div class="go_stage_message">'.do_shortcode( wpautop( $completion_message ) ).
-			'</div><div id="new_content"><div class="go_stage_message">'.do_shortcode( wpautop( $mastery_message ) ).'</div>';
-			// if the task can be repeated...
-			if ( $repeat == 'on' ) {
-				// if the number of times that the page has been repeated is less than the total amount of repeats allowed OR if the 
-				// total repeats allowed is equal to zero (infinte amount allowed)...
-				if ( $task_count < $repeat_amount || $repeat_amount == 0 ) {
-					//if ( $task_count == 0 ) {
-						if ( $test_m_active ) {
-							echo "<p id='go_test_error_msg' style='color: red;'></p>";
-							if ( $test_m_num > 1 ) {
-								for ( $i = 0; $i < $test_m_num; $i++ ) {
-									if ( ! empty( $test_m_all_types[ $i ] ) &&
-											! empty( $test_m_all_questions[ $i ] ) &&
-											! empty( $test_m_all_answers[ $i ] ) &&
-											! empty( $test_m_all_keys[ $i ] ) ) {
-
-										echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
-									}
-								}
-								echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							} elseif ( ! empty( $test_m_all_types[0] ) &&
-									! empty( $test_m_all_questions[0] ) &&
-									! empty( $test_m_all_answers[0] ) &&
-									! empty( $test_m_all_keys[0] ) ) {
-
-								echo do_shortcode( "[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-							}
-						}
-						if ( $mastery_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
-						}
-						echo '
-							<div id="repeat_quest">
-								<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
-									.do_shortcode(wpautop( $repeat_message ) ).
-									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-						if ( $m_is_locked && ! empty( $m_pass_lock ) ) {
-							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-						} elseif ( $m_url_is_locked === true ) {
-							echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-						}
-						echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
-						if ( $m_is_locked && empty( $m_pass_lock ) ) {
-							echo "admin_lock='true'";
-						}
-						echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
-									'</button>
-									<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-								'</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-								'<div id="go_repeat_unclicked">'.
-									'<button id="go_button" status="5" onclick="go_repeat_replace();">'.
-										'See ' . get_option( 'go_fifth_stage_name' ).
-									'</button> '.
-									'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-								'</div>'.
-								( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-							'</div>';
-					/*} else {
-						if ( $repeat_upload ) {
-							echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
-						}
-						echo '
-							<div id="repeat_quest">
-								<div id="go_repeat_clicked" style="display:none;"><div class="go_stage_message">'
-									.do_shortcode(wpautop( $repeat_message ) ).
-									"</div><p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-						if ( $r_is_locked && ! empty( $r_pass_lock ) ) {
-							echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-						}
-						echo "<button id='go_button' status='4' onclick='task_stage_change( this );' repeat='on'";
-						if ( $r_is_locked && empty( $r_pass_lock ) ) {
-							echo "admin_lock='true'";
-						}
-						echo '>'.go_return_options( 'go_fourth_stage_button' )." Again". 
-									'</button>
-									<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-
-						echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-								'<div id="go_repeat_unclicked">'.
-									'<button id="go_button" status="5" onclick="go_repeat_replace();">'.
-										'See ' . get_option( 'go_fifth_stage_name' ).
-									'</button> '.
-									'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-								'</div>'.
-								( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : '' ).
-							'</div>';
-					}
-					*/
-				} else {
-					echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span>'.
-						'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>'.
-						( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-				}
-			} else {
-
-				// if repeat is off...
-				if ( $test_m_active ) {
-					echo "<p id='go_test_error_msg' style='color: red;'></p>";
-					if ( $test_m_num > 1 ) {
-						for ( $i = 0; $i < $test_m_num; $i++ ) {
-							if ( ! empty( $test_m_all_types[ $i ] ) &&
-									! empty( $test_m_all_questions[ $i ] ) &&
-									! empty( $test_m_all_answers[ $i ] ) &&
-									! empty( $test_m_all_keys[ $i ] ) ) {
-
-								echo do_shortcode( "[go_test type='".$test_m_all_types[ $i ]."' question='".$test_m_all_questions[ $i ]."' possible_answers='".$test_m_all_answers[ $i ]."' key='".$test_m_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_m_num."']" );
-							}
-						}
-						echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-					} elseif ( ! empty( $test_m_all_types[0] ) &&
-							! empty( $test_m_all_questions[0] ) &&
-							! empty( $test_m_all_answers[0] ) &&
-							! empty( $test_m_all_keys[0] ) ) {
-
-						echo do_shortcode( "[go_test type='".$test_m_all_types[0]."' question='".$test_m_all_questions[0]."' possible_answers='".$test_m_all_answers[0]."' key='".$test_m_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit'>Submit</button></div>";
-					}
-				}
-				if ( $mastery_upload ) {
-					echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$post_id}]" )."<br/>";
-				}
-				$mastered = (array) get_user_meta( $user_id, 'mastered_tasks', true );
-				$user_id = get_current_user_id();
-
-				echo ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
-				if ( ! empty( $bonus_loot[0] ) ) {
-					if ( ! empty( $bonus_loot[1] ) ) {
-						foreach ( $bonus_loot[1] as $store_item => $on ) {
-							if ( $on === 'on' && ! empty( $bonus_loot[2][ $store_item ] ) ) {
-								$random_number = rand( 1, 999 );
-								$drop_chance = floatval( $bonus_loot[2][ $store_item ] ) * 10;
-								$store_custom_fields = get_post_custom( $store_item );
-								$store_cost = ( ! empty( $store_custom_fields['go_mta_store_cost'][0] ) ? unserialize( $store_custom_fields['go_mta_store_cost'][0] ) : array() );
-								$gold_reward = ( $store_cost[0] < 0 ) ? -$store_cost[0] : 0;
-								$points = ( $store_cost[1] < 0 ) ? -$store_cost[1] : 0;
-								$bonus_currency = ( $store_cost[2] < 0 ) ? -$store_cost[2] : 0;
-								$penalty = ( $store_cost[3] > 0 ) ? -$store_cost[3] : 0;
-								$minutes = ( $store_cost[4] < 0 ) ? -$store_cost[4] : 0;
-								$loot_reason = 'Bonus';
-								if ( $random_number < $drop_chance ) {
-									if ( ! in_array( $post_id, $mastered ) ) {
-										go_add_post(
-											$user_id, $store_item, -1,
-											$points, $gold_reward, $bonus_currency, $minutes,
-											null, false, 0,
-											$e_fail_count, $a_fail_count, $c_fail_count, $m_fail_count,
-											$e_passed, $a_passed, $c_passed, $m_passed, null, false,
-											$loot_reason, true, false
-										);
-										echo "Congrats, " . do_shortcode( '[go_get_displayname]' ).
-											"!  You received an item: <a href='#' onclick='go_lb_opener({$store_item})'>".
-											get_the_title( $store_item ) . "</a></br>";
-									}
-								}
-							}
-						}
-					}
-					if ( ! in_array( $post_id, $mastered ) ) {
-						$mastered[] = $post_id;
-						update_user_meta( $user_id, 'mastered_tasks', $mastered );
-					}
-					echo "</br>";
-				}
-				add_user_meta( $user_id, 'ever_mastered', $post_id, true );
-				echo '<span id="go_button" status="4" repeat="on" style="display:none;"></span>'.
-					'<button id="go_back_button" onclick="task_stage_change( this );" undo="true">Undo</button>';
-			}
-
-			go_task_render_chain_pagination( $post_id, $user_id );
-
-			echo '</div>' . ( ( ! empty( $task_pods ) && ! empty( $pods_array ) ) ? "<br/><a href='{$pod_link}'>Return to Pod Page</a>" : "" );
+	$go_notification = ob_get_contents();
+	ob_end_clean();
+	
+	ob_start();
+	
+	if ( ! $undo ) {
+	go_print_1_message ( $custom_fields, $go_oembed_switch, $status );	
+	go_checks_for_understanding ( $wpdb, $status , $custom_fields, $go_table_name, $user_id, $post_id );
+	} else{
+	go_checks_for_understanding ( $wpdb, $status , $custom_fields, $go_table_name, $user_id, $post_id );
 	}
 
 	// stores the contents of the buffer and then clears it
@@ -3561,8 +1566,10 @@ function go_task_change_stage() {
 	// constructs the JSON response
 	echo json_encode(
 		array(
-			'status' => 1,
+			'json_status' => 'success',
 			'html' => $buffer,
+			'notification' => $go_notification,
+			'undo' => $undo,
 			'rewards' => array(
 				'gold' => $gold_reward,
 			),
@@ -3571,6 +1578,7 @@ function go_task_change_stage() {
 	);
 	die();
 }
+
 
 function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $update_percent = 1, $number_of_stages = 4, $future = false ) {
 	if ( ! is_null( $number_of_stages ) && ( ! is_null( $points ) || ! is_null( $currency ) || ! is_null( $bonus_currency ) ) ) {
@@ -3693,147 +1701,6 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 		}
 		echo '</div>';
 	} 
-}
-
-function go_task_timer( $task_id, $user_id, $future_modifier ) {
-	global $wpdb;
-	$unix_now = current_time( 'timestamp' );
-	$user_timers = get_user_meta( $user_id, 'go_timers' );
-	$accept_timestamp = 0;
-
-	if ( ! empty( $user_timers[0][ $task_id ] ) ) {
-		$accept_timestamp = $user_timers[0][ $task_id ];
-	} else {
-		$accept_timestamp_raw = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT timestamp 
-				FROM {$wpdb->prefix}go 
-				WHERE uid = %d AND post_id = %d",
-				$user_id,
-				$task_id
-			)
-		);
-		$accept_timestamp = strtotime( str_replace( '@', ' ', $accept_timestamp_raw ) );
-	}
-
-	$days = (int) $future_modifier['days'] ;
-	$hours = (int) $future_modifier['hours'];
-	$minutes = (int) $future_modifier['minutes'];
-	$seconds = (int) $future_modifier['seconds'];
-	$percentage = $future_modifier['percentage'];
-	$future_time = ( ! empty( $accept_timestamp ) ) ? strtotime( "{$days} days", 0) + strtotime( "{$hours} hours", 0) + strtotime( "{$minutes} minutes", 0) + strtotime( "{$seconds} seconds", 0) + $accept_timestamp : strtotime( "{$days} days", 0) + strtotime( "{$hours} hours", 0) + strtotime( "{$minutes} minutes", 0) + strtotime( "{$seconds} seconds", 0) + $unix_now;
-	$countdown = $future_time - $unix_now;
-	$sounded_array = ( array) get_user_meta( $user_id, 'go_sounded_tasks', true );
-	?>  
-	<div id='go_task_timer'></div>
-	<script type='text/javascript'>
-		jQuery( document ).ready( function() {
-			var timer = setInterval( go_task_timer, 1000 );
-			timers.push( timer );
-			var countdown = <?php echo $countdown; ?>;
-			var before = <?php echo $future_time?>;
-			var percentage = <?php echo 100 - $percentage; ?> / 100;
-			jQuery( window ).focus( function() {
-				clearInterval( timer );
-				timer = setInterval( go_task_timer, 1000 );
-				timers.push( timer );
-				var now = new Date();
-				countdown = Math.floor( before - ( now.getTime() / 1000 ) + ( now.getTimezoneOffset() * 60 ) );
-			});
-			for ( i = 0; i < timers.length - 1; i++ ) {
-				clearInterval( timers[ i ] );
-			}
-			function go_task_timer() {
-				var sounded = <?php echo ( ( ! empty( $sounded_array['future'][ $task_id ] ) && $sounded_array['future'][ $task_id ] ) ? 'true' : 'false' ); ?>;
-				countdown = countdown - 1;
-				jQuery( '#go_task_timer' ).empty();
-				jQuery( '.go_stage_message' ).last().parent().before( jQuery( '#go_task_timer' ) );
-				if (countdown > 0) {
-					var days = Math.floor( countdown / 86400) < 10 ? ( "0" + Math.floor( countdown / 86400 ) ) : Math.floor( countdown / 86400 );
-					var hours = Math.floor( ( countdown - ( days * 86400 ) ) / 3600 ) < 10 ? ( "0" + Math.floor( ( countdown - ( days * 86400 ) ) / 3600 ) ) : Math.floor( ( countdown - ( days * 86400 ) ) / 3600 );
-					var minutes = Math.floor( ( countdown - ( ( days * 86400 ) + ( hours * 3600 ) ) ) / 60 ) < 10 ? ( "0" + Math.floor( ( countdown - ( days * 86400 ) - ( hours * 3600 ) ) / 60) ) : Math.floor( ( countdown - ( days * 86400 ) - ( hours * 3600 ) ) / 60);
-					var seconds = ( countdown - ( ( days * 86400 ) + ( hours * 3600 ) + ( minutes * 60 ) ) ) < 10 ? ( "0" + ( countdown - ( ( days * 86400 ) + ( hours * 3600 ) + ( minutes * 60 ) ) ) ) : ( countdown - ( ( days * 86400 ) + ( hours * 3600 ) + ( minutes * 60 ) ) );
-					jQuery( '#go_task_timer' ).html( days + ':' +hours + ':' + minutes + ':' + seconds );
-				} else {
-				
-					clearInterval(timer);
-					
-					if ( sounded === false && ! jQuery( '#go_task_timer' ).hasClass( 'sounded' ) ) {
-						go_sounds( 'timer' );
-						jQuery( '#go_task_timer' ).addClass( 'sounded' );
-						<?php
-							$sounded_array['future'][ $task_id ] = true;
-							update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array );
-						?>
-					} 
-					jQuery( '#go_task_timer' ).html( "You've run out of time to <?php echo strtolower( go_return_options( 'go_third_stage_button' ) ); ?> this <?php echo strtolower( go_return_options( 'go_tasks_name' ) ); ?> for full rewards." ).css( 'color', 'red' );
-					if ( percentage != 0 ) {
-						if ( ! jQuery( '#go_stage_3_points' ).hasClass( 'go_updated' ) ) {
-							jQuery( '#go_stage_3_points' ).html( Math.floor( parseFloat( jQuery( '#go_stage_3_points' ).html() ) * percentage ) ).addClass( 'go_updated' );
-						}
-						if ( ! jQuery( '#go_stage_3_currency' ).hasClass( 'go_updated' ) ) {
-							jQuery( '#go_stage_3_currency' ).html( Math.floor( parseFloat( jQuery( '#go_stage_3_currency' ).html() ) * percentage ) ).addClass( 'go_updated' );
-						}
-					} else {
-						jQuery( '#go_task_stage_3_rewards' ).html( 'Expired: No Rewards' );
-					}
-				}
-			}
-			
-			// Safari caching fix
-			jQuery( window ).bind( "pageshow", function( event ) {
-				if ( event.originalEvent.persisted ) {
-					window.location.reload();
-				}
-			});
-			
-			if ( ! jQuery( '#go_future_notification' ).is( ':visible' ) ) {
-				jQuery( '#go_future_notification' ).show();
-			}
-			
-			go_task_timer( <?php echo $countdown; ?>);
-		});
-	</script>
-	<?php
-}
-
-function go_record_stage_time($post_id = null, $status = null) {
-	if ( ! empty( $_POST['user_id'] ) ) {
-		$user_id = (int) $_POST['user_id'];
-	} else {
-		$user_id = get_current_user_id();
-	}
-	if ( ! empty( $_POST['page_id'] ) ) {
-		$post_id = (int) $_POST['page_id']; // Post id posted from ajax function
-	}
-	if ( is_null( $status ) ) {
-		$status = (int) $_POST['status']; // Task's status posted from ajax function
-	}
-	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
-	$timestamps = get_user_meta( $user_id, 'go_task_timestamps', true );
-
-	if ( is_array( $timestamps ) ) {
-		if ( empty( $timestamps[ $post_id ][ $status ] ) ) {
-			$timestamps[ $post_id ][ $status ] = array(
-				0 => $time,
-				1 => $time,
-			);
-		} elseif ( 5 == $status ) {
-			$timestamps[ $post_id ][ $status ][0] = $time;
-		} else {
-			$timestamps[ $post_id ][ $status ][1] = $time;
-		}
-	} else {
-		$timestamps = array(
-			$post_id => array(
-				array(
-					$time,
-					$time,
-				)
-			),
-		);
-	}
-	update_user_meta( $user_id, 'go_task_timestamps', $timestamps );
 }
 
 /**
