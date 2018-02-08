@@ -17,7 +17,7 @@ function Max_width_and_LightboxNow(){
 
 	        jQuery(this).wrap('<div class="max-width-video-wrapper" style="position:relative;"><div>');
 	        jQuery(this).addClass('fit');
-	        jQuery(this ".max-width-video-wrapper").css("max-width", _maxwidth);
+	        jQuery( ".max-width-video-wrapper").css("max-width", _maxwidth);
         }); 
     	
     	//Toggle lightbox on and off based on option

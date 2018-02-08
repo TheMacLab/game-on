@@ -505,7 +505,7 @@ function go_admin_bar() {
 			);
 			
 		}
-
+		//displays Timer in admin bar
 		$atts = shortcode_atts( array(
 			'id' => '', // ID defined in Shortcode
 			'cats' => '', // Cats defined in Shortcode     

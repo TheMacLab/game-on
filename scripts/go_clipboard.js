@@ -117,7 +117,6 @@ function check_null( val ) {
 }
 
 function go_clipboard_add() {
-
 	var id_array = [];
 	jQuery( '#go_send_message' ).prop( 'disabled', 'disabled' );
 	jQuery( "input:checkbox[name=go_selected]:checked" ).each( function() {
@@ -125,7 +124,6 @@ function go_clipboard_add() {
 	});
 
 	if ( id_array.length > 0 ) {
-		
 		var add_points = parseFloat( check_null( jQuery( '#go_clipboard_points' ).val() ) );
 		var add_currency = parseFloat( check_null( jQuery( '#go_clipboard_currency' ).val() ) );
 		var add_bonus_currency = parseFloat( check_null( jQuery( '#go_clipboard_bonus_currency' ).val() ) );
@@ -154,7 +152,6 @@ function go_clipboard_add() {
 				badge_ID: badge_id
 			},
 			success: function( res ) {
-				
 				var json_index = res.indexOf( '{"update_status":' );
 				var json_data = res.substr( json_index );
 				var res_obj = JSON.parse( json_data );
@@ -181,11 +178,8 @@ function go_clipboard_add() {
 				go_clipboard_clear_fields();
 				jQuery( '#go_send_message' ).prop( 'disabled', false );
 				jQuery( '#go_clipboard_table input[type="checkbox"]' ).removeAttr( 'checked' );
-				
 			}
-			
 		});
-		
 	} else {
 		go_clipboard_clear_fields();
 		jQuery( '#go_send_message' ).prop( 'disabled', false );
