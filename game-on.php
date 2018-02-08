@@ -8,10 +8,9 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4b
 */
 
-
-if( ! class_exists( 'wp-featherlight' ) ) {
-	include( 'includes/wp-featherlight/wp-featherlight.php' );
-}
+//if( ! class_exists( 'wp-featherlight' ) ) {
+//	include( 'includes/wp-featherlight/wp-featherlight.php' );
+//}
 
 if( ! class_exists( 'FitVidsWP' ) ) {
 	// FitVids Plugin is not active
@@ -39,9 +38,6 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "types/tasks/*.php" ) as $file ) {
 }
 
 include( plugin_dir_path( __FILE__ ) . 'types/test/test_shortcode.php');
-
-
-
 
 //if( ! class_exists( 'CMB2_Bootstrap_2253' ) ) {
 	// CMB2 Plugin is not active
@@ -153,6 +149,7 @@ add_action( 'wp_ajax_go_deactivate_plugin', 'go_deactivate_plugin' );
 add_action( 'wp_ajax_go_clone_post', 'go_clone_post' );
 add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' );
 add_action( 'wp_ajax_go_clipboard_intable_messages', 'go_clipboard_intable_messages' );
+add_action( 'wp_ajax_go_clipboard_intable_activity', 'go_clipboard_intable_activity' );
 add_action( 'wp_ajax_go_user_option_add', 'go_user_option_add' );
 add_action( 'wp_ajax_go_test_point_update', 'go_test_point_update' );
 add_action( 'wp_ajax_go_unlock_stage', 'go_unlock_stage' );

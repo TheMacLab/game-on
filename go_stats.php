@@ -146,7 +146,7 @@ function go_stats_task_list() {
 		$wpdb->prepare(
 			"SELECT status, post_id, count, url 
 			FROM {$go_table_name} 
-			WHERE uid = %d AND (status = 1 OR status = 2 OR status = 3 OR status = 4) 
+			WHERE uid = %d  
 			ORDER BY id DESC",
 			$user_id
 		)
@@ -177,7 +177,8 @@ function go_stats_task_list() {
 					1 => ! empty( $custom['go_mta_encounter_url_key'][0] ),
 					2 => ! empty( $custom['go_mta_accept_url_key'][0] ),
 					3 => ! empty( $custom['go_mta_completion_url_key'][0] ),
-					4 => ! empty( $custom['go_mta_mastery_url_key'][0] )
+					4 => ! empty( $custom['go_mta_mastery_url_key'][0] ),
+					5 => ! empty( $custom['go_mta_repeat_url_key'][0] )
 				);
 				
 				for ( $i = 5; $i > 0; $i--) {
@@ -230,17 +231,15 @@ function go_stats_task_list() {
 						//$link_stage_url = $task_urls[ $i - 1 ];
 						
 						foreach ($task_urls as $key => $taskurl){
-									if ($key === $i){
+									if ($key === $i + 1){
 										$link_stage_url = $taskurl;
 									}		
 							}
 									
-					} else if ( 5 == $i &&
-							4 == $task->status &&
-							$task->count >= 1 ) {
+					} else if ( 5 == $i  ) {
 							
 							foreach ($task_urls as $key => $taskurl){
-									if ($key > 4){
+									if ($key > 5){
 										$url_array[] = $taskurl;
 										$div_class_list_str .= ' popup';
 										$div_class_list_str .= ' stage_url';
@@ -256,11 +255,13 @@ function go_stats_task_list() {
 						$link_class_list_str .= ' go_stats_task_stage_url';
 					}
 
+					if ($i == 1){$i = 0; }
 					if ( is_array( $timestamps ) && ! empty( $timestamps[ $task->post_id ] ) &&
 							! empty( $timestamps[ $task->post_id ][ $i ] ) ) {
 						$div_title_str = "First attempt: {$timestamps[ $task->post_id ][ $i ][0]}\n".
 							"Most recent: {$timestamps[ $task->post_id ][ $i ][1]}";
 					}
+					if ($i == 0){$i = 1; }
 
 					if ( $task->status >= $i || $task->count >= 1 ) {
 						$div_class_list_str .= ' completed';
@@ -283,17 +284,20 @@ function go_stats_task_list() {
 						$div_count_str = $task->count;
 					}
 
-					if ( 5 != $i &&
+					if ($i == 1){$i = 0; }
+					if ( 
 							is_array( $timestamps ) &&
 							! empty( $timestamps[ $task->post_id ] ) &&
 							! empty( $timestamps[ $task->post_id ][ $i ][0] ) ) {
+						
 						$div_timestamp_date_str = substr(
 							$timestamps[ $task->post_id ][ $i ][0],
 							0,
 							5
 						);
+						
 					}
-
+					if ($i == 0){$i = 1; }
 					/*
 					 * This echo statement displays the stage boxes in the stats panel.
 					 * We simply check for the task count string being empty, as the count
@@ -313,23 +317,29 @@ function go_stats_task_list() {
 							</a>
 						";
 					}
-					else if( 5 == $i ) {
+					else if( $i == 5 ) {
 						
 
 						echo "
-							
 								<div class='{$div_class_list_str}'  title='{$div_title_str}'  task='{$task->post_id}' stage='{$i}' ".
 										( ! empty( $div_count_str ) ? "count='{$div_count_str}'>" : '>' ).
 									"<p>{$div_count_str}</p>
 									  <div class='popuptext' id='myPopup_$div_count_str' >";
-						$repeat_count = 1;
+						
+						
+						//repeat status - 4 times
+							$repeat_counter = $task->status - 5;
+							$repeat_num = 1;
 							foreach ($url_array as $url){
 								//echo '<script type="text/javascript">alert("'.$url.'");</script>';
-								echo "<p><a href='$url'>$repeat_count</a></p>";
-								$repeat_count++;
+
+								echo "<p><a href='$url'>$repeat_num</a></p>";
+								if ($repeat_num == $repeat_counter){break;}
+								$repeat_num++;
+
 							}
 
-						echo"</div></div>";
+						echo"</div>" . $repeat_counter . "</div>";
 							
 					}
 				}

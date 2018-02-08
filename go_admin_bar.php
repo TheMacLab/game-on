@@ -328,6 +328,7 @@ function go_admin_bar() {
 				'href' => '#',
 			) 
 		);
+		
         
         if ($go_map_switch === 'On'){
 			$go_map_link = get_permalink( get_page_by_path('map') );
@@ -502,6 +503,24 @@ function go_admin_bar() {
 					'parent' => 'appearance',
 				)
 			);
+			
+		}
+
+		$atts = shortcode_atts( array(
+			'id' => '', // ID defined in Shortcode
+			'cats' => '', // Cats defined in Shortcode     
+		), $atts);
+		$id = $atts['id'];
+		$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
+		$timer_type = go_timer_type ($custom_fields);
+
+		if ($timer_type == 'future'){
+		$wp_admin_bar->add_node( 
+			array(
+				'id' => 'go_timer',
+				'title' => '<div id="go_timer"><i class="fa fa-clock-o ab-icon" aria-hidden="true"></i><div><span class="days"></span>d : </div><div><span class="hours"></span>h : </div><div><span class="minutes"></span>m : </div><div><span class="seconds"></span>s</div></div>',
+			) 
+		);
 		}
 
 	// end-if the admin bar is turned on and the user is logged in

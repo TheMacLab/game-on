@@ -1,5 +1,4 @@
 
-
 jQuery( document ).ready( function() {
 	jQuery.ajaxSetup({ 
 		url: go_task_data.url += '/wp-admin/admin-ajax.php'
@@ -16,6 +15,114 @@ jQuery( document ).ready( function() {
 	make_clickable();
 	jQuery( ".go_stage_message" ).show( 'slow' ); 
 }); 
+
+/* timer
+*/
+	/*
+	function getTimeRemaining(endtime) {
+		var t = Date.parse(endtime);
+		
+		var seconds = Math.floor((t / 1000) % 60);
+		console.log seconds;
+		
+		
+		var minutes = Math.floor((t / 1000 / 60) % 60);
+		var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+		var days = Math.floor(t / (1000 * 60 * 60 * 24));
+		return {
+			'total': t,
+			'days': days,
+			'hours': hours,
+			'minutes': minutes,
+			'seconds': seconds
+		};
+	}
+
+	function initializeClock(id, endtime, running) {
+		var clock = document.getElementById(id);
+		var daysSpan = clock.querySelector('.days');
+		var hoursSpan = clock.querySelector('.hours');
+		var minutesSpan = clock.querySelector('.minutes');
+		var secondsSpan = clock.querySelector('.seconds');
+		function updateClock() {
+			var t = getTimeRemaining(endtime);
+			daysSpan.innerHTML = t.days;
+			hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+			minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+			secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+			if (t.total <= 0) {
+			  clearInterval(timeinterval);
+			}
+		
+		}
+
+		updateClock();
+		if (running) {
+			var timeinterval = setInterval(updateClock, 1000);
+		}
+	}
+	*/
+	function getTimeRemaining(endtime) {
+	  var t = Date.parse(endtime) - Date.parse(new Date());
+	  var seconds = Math.floor((t / 1000) % 60);
+	  var minutes = Math.floor((t / 1000 / 60) % 60);
+	  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+	  var days = Math.floor(t / (1000 * 60 * 60 * 24));
+	  return {
+	    'total': t,
+	    'days': days,
+	    'hours': hours,
+	    'minutes': minutes,
+	    'seconds': seconds
+	  };
+	  
+	}
+
+function initializeClock(id, endtime) {
+	var clock = document.getElementById(id);
+	var daysSpan = clock.querySelector('.days');
+	var hoursSpan = clock.querySelector('.hours');
+	var minutesSpan = clock.querySelector('.minutes');
+	var secondsSpan = clock.querySelector('.seconds');
+
+	function updateClock() {
+		
+	    var t = getTimeRemaining(endtime);
+	    t.days = Math.max(0, t.days);
+	    daysSpan.innerHTML = t.days;
+	    t.hours = Math.max(0, t.hours);
+	    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+	    t.minutes = Math.max(0, t.minutes);
+	    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+	    t.seconds = Math.max(0, t.seconds);
+	    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+	    if (t.total = 0) {
+	      clearInterval(timeinterval);
+	      var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
+			audio.play();
+
+	    }
+  	}
+  	
+  	updateClock();
+  	var t = getTimeRemaining(endtime);
+  	var time_ms = t.total;
+	console.log (t.total);
+  	if (time_ms > 0 ){
+  		var timeinterval = setInterval(updateClock, 1000);	
+  	}else {
+
+  	}
+	
+}
+
+//var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+//initializeClock('clockdiv', deadline);
+
+	
+
+
 
 function go_task_abandon() {
 	jQuery.ajax({
@@ -34,6 +141,11 @@ function go_task_abandon() {
 			}
 		}
 	});
+}
+
+function go_timer_abandon() {
+	$homeURL = go_task_data.homeURL
+ window.location = $homeURL; 
 }
 
 function check_locks() {
@@ -428,10 +540,10 @@ function go_repeat_replace() {
 
 // disables the target stage button, and adds a loading gif to it
 function go_enable_loading( target ) {
-
 	// prevent further events with this button
 	target.disabled = true;
-
+	jQuery('#go_button').prop('disabled',true);
+	jQuery('#go_back_button').prop('disabled',true);
 	// prepend the loading gif to the button's content, to show that the request is being
 	// processed
 	target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
@@ -444,14 +556,45 @@ function go_disable_loading() {
 }
 
 function task_stage_change( target ) {
+	//alert("Hello! I am an alert box!!");
 
+	//disable button to prevent double clicks
 	go_enable_loading( target );
+
+
+	//Abandon
+	//Start Timer
+	//Continue
+	//Undo
+	//Repeat
+	//Undo Repeat --is this defferent than just undo
+
+
+	//Figure out which button was clicked
+
+	//do what needs to happen for each
+
+	//send to PHP if needed
+	//do what that needs to do based on variables sent
+
+	//do some more stuff here
+
+
+
+
 
 	var undoing = false;
 	if ( 'undefined' !== typeof jQuery( target ).attr( 'undo' ) && 'true' === jQuery( target ).attr( 'undo' ).toLowerCase() ) {
 		undoing = true;
 	}
+
+	var button_type = "";
+	if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
+		button_type = jQuery( target ).attr( 'button_type' )
+	}
 	
+	//if button was continue
+	//but stage is locked with a password, print a message
 	if ( ! undoing && jQuery( '#go_button' ).length > 0 ) {
 		var perma_locked = jQuery( '#go_button' ).attr( 'admin_lock' );
 		if ( perma_locked === 'true' ) {
@@ -503,6 +646,11 @@ function task_stage_change( target ) {
 			return;
 		}
 	}
+
+	var starting_timer = false;
+	if ( 'undefined' !== typeof jQuery( target ).attr( 'timer' ) && 'true' === jQuery( target ).attr( 'timer' ).toLowerCase() ) {
+		starting_timer = true;
+	}
 	
 	var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
 
@@ -546,6 +694,8 @@ function task_stage_change( target ) {
 			status: task_status,
 			repeat: repeat_attr,
 			undo: undoing,
+			button_type: button_type,
+			timer_start: starting_timer,
 			pass: ( pass_entered ? jQuery( '#go_pass_lock' ).attr( 'value' ) : '' ),
 			url: ( url_entered ? jQuery( '#go_url_key' ).attr( 'value' ) : '' ),
 			page_id: go_task_data.page_id,
@@ -556,28 +706,40 @@ function task_stage_change( target ) {
 			next_post_id_in_chain: go_task_data.next_post_id_in_chain,
 			last_in_chain: go_task_data.last_in_chain,
 			number_of_stages: go_task_data.number_of_stages,
+			repeat_amount: go_task_data.repeat_amount,
 		},
 		success: function( raw ) {
-			
-
 			// parse the raw response to get the desired JSON
 			var res = {};
 			try {
 				var res = JSON.parse( raw );
 			} catch (e) {
 				res = {
-					json_status: 'fail',
+					json_status: '101',
 					notification: '',
+					status: '',
 					undo: '',
+					timer_start: '',
+					button_type: '',
+					time_left: '',
 					html: '',
 					rewards: {
 						gold: 0,
 					},
 				};
 			}
-			console.log (res.html);
-			if ( 'fail' === Number.parseInt( res.status ) ) {
-			console.log (1);
+			if ( '101' === Number.parseInt( res.json_status ) ) {
+				console.log (101);
+				jQuery( '#go_stage_error_msg' ).show();
+				var error = "Server Error.";
+				if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
+					jQuery( '#go_stage_error_msg' ).text( error );
+				} else {
+					flash_error_msg( '#go_stage_error_msg' );
+				}
+				go_disable_loading();
+			} else if ( 2 === Number.parseInt( res.json_status ) ) {
+				console.log (2);
 				jQuery( '#go_stage_error_msg' ).show();
 				var error = "Retrieve the password from " + go_task_data.admin_name + ".";
 				if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
@@ -586,35 +748,69 @@ function task_stage_change( target ) {
 					flash_error_msg( '#go_stage_error_msg' );
 				}
 				go_disable_loading();
-			} else if ( 302 === Number.parseInt( res.status ) ) {
+			}else if ( 302 === Number.parseInt( res.json_status ) ) {
 			console.log (2);
 				window.location = res.location;
 			} else {
 			console.log (3);
-				if ( res.undo == true ){
-				jQuery( '#go_wrapper div' ).last().hide();
-				
-				jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
-				jQuery( '#go_wrapper' ).append( res.html );
+				if ( res.button_type == 'undo' && res.status < 5 ){
+					jQuery( '#go_wrapper div' ).last().hide();
 					
-					//jQuery( '#go_wrapper > div' ).slice(-2).remove();
+					jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
+					jQuery( '#go_wrapper' ).append( res.html );
+						
+						//jQuery( '#go_wrapper > div' ).slice(-2).remove();
 					
-				} else{
-				jQuery( '#go_wrapper > div' ).slice(-1).remove();
+				} else if ( res.button_type == 'undo' ){
+					jQuery( '#go_wrapper div' ).last().hide();
+					
+					jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+					jQuery( '#go_wrapper' ).append( res.html );
+						
+						//jQuery( '#go_wrapper > div' ).slice(-2).remove();
+					
+				} else if ( res.button_type == 'continue' ){
+					jQuery( '#go_wrapper > div' ).slice(-1).remove();
+					status = Number(task_status) + 1;
+					//alert (status);
+					jQuery( '#go_wrapper' ).append( res.html );
+					jQuery( ".go_stage_message" ).show( 'slow' );
+					var fitID = '#message_' + res.status; 
+					Vids_Fit_and_Box();
+				}
+				else if ( res.button_type == 'timer' ){
+
+					jQuery('#clockdiv').show('slow');
+					jQuery('#clock_message').hide();
+					var deadline = new Date(Date.parse(new Date()) + res.time_left);
+					
+					initializeClock('clockdiv', deadline);
+					initializeClock('go_timer', deadline);
+          			
+					var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
+					audio.play();
+
+
+          			//var sound = document.getElementById("audio");
+         			// sound.play();
+
+
+
+					jQuery( '#go_buttons' ).remove();
 					jQuery( '#go_wrapper' ).append( res.html );
 					jQuery( ".go_stage_message" ).show( 'slow' ); 
+					Vids_Fit_and_Box();
 				}
-				
+
+				//Pop up currency awards
 				jQuery( '#notification' ).html( res.notification );
 				jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
 				//jQuery( "#new_content" ).css( 'display', 'none' );
 				//jQuery( "#new_content" ).show( 'slow' ); 
 										
-				
 				//if ( jQuery( '#go_button' ).attr( 'status' ) == 2 ) {
 				//	jQuery( '#new_content' ).children().first().remove();
 				//}
-				
 				jQuery( '#go_button' ).ready( function() {
 					check_locks();
 				});

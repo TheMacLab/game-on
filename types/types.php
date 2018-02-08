@@ -409,6 +409,11 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
+				'name' => 'URL'.go_task_opt_help( 'repeat_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4' ),
+				'id' => "{$prefix}mastery_url_key",
+				'type' => 'checkbox'
+			),
+			array(
 				'name' => 'Test'.go_task_opt_help( 'mastery_understand', '', 'http://maclab.guhsd.net/go/video/quests/masteryCheckForUnderstanding.mp4' ),
 				'id' => "{$prefix}test_mastery_lock",
 				'type' => 'checkbox'
@@ -505,8 +510,8 @@ function go_mta_con_meta( array $meta_boxes ) {
 				'type' => 'checkbox'
 			),
 			array(
-				'name' => 'URL'.go_task_opt_help( 'mastery_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4' ),
-				'id' => "{$prefix}mastery_url_key",
+				'name' => 'URL'.go_task_opt_help( 'repeat_url_key', '', 'http://maclab.guhsd.net/go/video/quests/urlKey.mp4' ),
+				'id' => "{$prefix}repeat_url_key",
 				'type' => 'checkbox'
 			),
 			array(
@@ -2425,5 +2430,30 @@ function go_validate_store_bonus() {
 
 	return $is_checked;
 }
+
+
+function acf_load_course_sections( $field ) {
+    
+    // reset choices
+    $field['choices'] = array();
+    
+    // get the class periods from options page without any formatting
+    $choices = go_return_options( 'go_class_a' );
+    
+    // loop through array and add to field 'choices'
+    if( is_array($choices) ) {
+        
+        foreach( $choices as $choice ) {
+            
+            $field['choices'][ $choice ] = $choice;  
+        }
+    }
+    
+    // return the field
+    return $field; 
+}
+
+add_filter('acf/load_field/name=course_section', 'acf_load_course_sections');
+
 
 ?>

@@ -13,21 +13,22 @@ function Max_width_and_LightboxNow(){
 		//add a max width video wrapper to the fitVid
 		var _maxwidth = jQuery("#go_wrapper").data('maxwidth');
         var fluid_width_video_wrapper = {};
-        jQuery('[class^="fluid-width-video-wrapper"]').each(function(){
-        jQuery(this).wrap('<div class="max-width-video-wrapper" style="position:relative;"><div>');
-        
-        jQuery(".max-width-video-wrapper").css("max-width", _maxwidth);
+        jQuery(".fluid-width-video-wrapper:not(.fit)").each(function(){
+
+	        jQuery(this).wrap('<div class="max-width-video-wrapper" style="position:relative;"><div>');
+	        jQuery(this).addClass('fit');
+	        jQuery(this ".max-width-video-wrapper").css("max-width", _maxwidth);
         }); 
     	
     	//Toggle lightbox on and off based on option
     	var lightbox_switch = jQuery("#go_wrapper").data('lightbox');
 		//alert (lightbox_switch);
     	if (lightbox_switch === 'On'){
-    	
 			//add a featherlight lightroom wrapper to the fitvids
 			var max_width_video_wrapper = {};
-			jQuery('[class^="max-width-video-wrapper"]').each(function(){
+			jQuery(".max-width-video-wrapper:not(.wrapped)").each(function(){
 				jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper" href="#" data-featherlight-iframe-width="100%" data-featherlight-iframe-height="100%" data-featherlight="iframe" ><span style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;"></span></a>');
+				jQuery(this).addClass('wrapped');
 			});
 	
 			//adds a html link to the wrapper for featherlight lightbox

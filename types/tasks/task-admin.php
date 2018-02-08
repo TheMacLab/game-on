@@ -60,3 +60,5 @@ function go_localize_task_data() {
 		'task_id' => $task_id,
 	);
 }
+
+

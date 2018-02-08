@@ -9,6 +9,7 @@
 /////////////////////////////////////////////
 //Includes
 include ( 'buy-ajax.php' ); // Ajax run when buying something
+date_default_timezone_set('America/Los_Angeles');
 // Main Lightbox Ajax Function
 function go_the_lb_ajax() {
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
@@ -159,6 +160,153 @@ function go_the_lb_ajax() {
 	} else { 
 		$buy_color = "gold"; 
 	}
+
+
+
+
+
+
+
+
+
+		/**
+		 * schedule Lock
+		 */
+		$task_is_locked = false;
+		date_default_timezone_set('America/Los_Angeles');
+		for( $i = 0; $i<5; $i++ ) {
+			$avail_toggle = "scheduled_availability_" . $i . "_dow_toggle";
+			if ( ! empty ($custom_fields[$avail_toggle][0])){
+				$toggle_status = $custom_fields[$avail_toggle][0];
+				if ($toggle_status == true){				
+					$dow_days = "scheduled_availability_" . $i . "_dow_available";
+					$dow_days = unserialize( $custom_fields[$dow_days][0]);
+					$dow_time = "scheduled_availability_" . $i . "_dow_time";
+					$dow_time = $custom_fields[$dow_time][0];
+					$dow_minutes = "scheduled_availability_" . $i . "_dow_minutes";
+					$dow_minutes = $custom_fields[$dow_minutes][0];
+					$dow_time = strtotime($dow_time);			
+
+					//it is unlocked at somepoint today, continue to check time to see if it is unlocked
+					if (in_array(date("l"), $dow_days)){						
+						//if the current time is between the start time and the start time and the minutes unlocked
+						if ((time() >= strtotime($dow_time)) && ( time() < ($dow_time + ($dow_minutes * 60)))) {
+							//it is unlocked, so exit loop and continue
+							$is_locked = false;
+						  	break;
+
+						}
+					}		
+				}
+			}
+			else{
+				break;
+			}
+		}
+
+		if ($is_locked != false){
+			//echo $dow_days[1];
+			$task_is_locked = true;
+			
+			
+			echo "<p> <span class='go_error_red'>This is locked except at the following times:";
+		
+
+			for( $i = 0; $i<5; $i++ ) {
+				$avail_toggle = "scheduled_availability_" . $i . "_dow_toggle";
+				if ( ! empty ($custom_fields[$avail_toggle][0])){
+					$toggle_status = $custom_fields[$avail_toggle][0];
+					if ($toggle_status == true){				
+						$dow_days = "scheduled_availability_" . $i . "_dow_available";
+						$dow_days = unserialize( $custom_fields[$dow_days][0]);
+						$dow_time = "scheduled_availability_" . $i . "_dow_time";
+						$dow_time = $custom_fields[$dow_time][0];
+						$dow_minutes = "scheduled_availability_" . $i . "_dow_minutes";
+						$dow_minutes = $custom_fields[$dow_minutes][0];
+						$dow_time = strtotime($dow_time);			
+						echo "<br>";
+						print_r( implode (", ", $dow_days));
+						echo " @";
+						echo date( 'g:iA', $dow_time);
+						echo " for " . $dow_minutes . " minutes.";
+							
+					}
+				}
+				else{
+					break;
+				}
+			}
+			echo "</span></p>";	
+		}
+		$go_table_name = "{$wpdb->prefix}go";
+		$task_list = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT timestamp
+				FROM {$go_table_name} 
+				WHERE uid = %d  AND post_id = %d
+				ORDER BY id DESC",
+				$user_id,
+				$the_id
+			)
+		);
+
+		foreach ( $task_list as $task ) {
+			$dayofweek = date('w', strtotime($task->timestamp));
+			$today = date('w');
+
+			
+
+			if ($dayofweek == $today ){
+				echo "<p> <span class='go_error_red'>Only one item can be purchased/claimed each day.</span></p>";
+				$task_is_locked = true;
+				break;
+			}
+
+		}
+
+		/**
+		 * Seating Chart/ Period Lock
+		 */
+		if ( ! empty ($custom_fields['course_section_go_period_toggle'][0])){
+			$toggle_status = $custom_fields['course_section_go_period_toggle'][0];
+			//if lock is on
+			if ($toggle_status == true){
+
+				//get the period that is the key
+				$period_key = $custom_fields['course_section_course_section'][0];
+
+
+				$user_class = get_user_meta( $user_id, 'go_classifications', true );
+				if ( ! empty( $user_class ) ) {
+					$user_period = array_keys( $user_class );
+				}
+
+				//settype($user_period, "string");
+				$user_period = implode(", ",$user_period);
+				//$user_period = trim($user_period);
+
+				debug_locks ($user_period);
+				$period_key = trim($period_key);
+				debug_locks ($period_key);
+
+				if ($period_key != $user_period) {
+					echo "<p><span class='go_error_red'> You must be in " . $period_key . " to continue. </span></p>";
+					$task_is_locked = true;
+				}
+			}
+		}
+
+		if ($task_is_locked == true){die;}
+
+
+
+
+
+
+
+
+
+
 
 	$passed_bonus_filter = true;
 	$passed_penalty_filter = true;

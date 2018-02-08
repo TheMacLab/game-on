@@ -99,7 +99,8 @@ function go_table_individual() {
 			minutes INT,
 			reason VARCHAR (200),
 			url VARCHAR (1000),
-			timestamp VARCHAR (200), 
+			starttime VARCHAR (200),
+			timestamp VARCHAR (200),
 			UNIQUE KEY  id (id)
 		);
 	";

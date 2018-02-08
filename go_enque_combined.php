@@ -28,11 +28,15 @@ function go_admin_scripts_and_styles ($hook) {
 			// Tasks
 			wp_register_script( 'go_tasks_admin_combined-min', plugin_dir_url( __FILE__ ).'scripts-min/go_tasks_admin_combined-min.js', array( 'jquery' ), false, true );
 
+
 			// Clipboard
 			wp_register_script( 'go_clipboard_combined-min', plugin_dir_url( __FILE__ ).'scripts-min/go_clipboard_combined-min.js' );
 			
-						// Clipboard
+			// store
 			wp_register_script( 'go_store_admin-min', plugin_dir_url( __FILE__ ).'scripts-min/go_store_admin-min.js' );
+
+			//featherlight
+			wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );
 				
 	/*
 	 * Enqueue Scripts For Admin Pages (Exept for page specific ones below)
@@ -49,6 +53,8 @@ function go_admin_scripts_and_styles ($hook) {
 		wp_enqueue_script( 'jquery-ui-spinner' );
 		wp_enqueue_script( 'jquery-ui-progressbar' );
 		wp_enqueue_script( 'jquery-effects-core' );
+		wp_enqueue_script( 'go_featherlight_min' );
+		
 	
 	
 		//Combined Scripts
@@ -99,9 +105,9 @@ function go_admin_scripts_and_styles ($hook) {
 			wp_localize_script( 'go_tasks_admin_combined-min', 'GO_TASK_DATA', go_localize_task_data() );
 
 		} 
-	} 
-	else if ( 'post-new.php' === $hook || 'post.php' === $hook ) {
-			if ( 'go_store' === $post->post_type ) {
+	
+	
+		else if ( 'go_store' === $post->post_type ) {
 
 			/*
 			 * Task Scripts
@@ -109,9 +115,8 @@ function go_admin_scripts_and_styles ($hook) {
 			//Combine 
 			wp_enqueue_script( 'go_store_admin-min' );
 
-	
 		} 
-	} else if ( 'toplevel_page_game-on-options' === $hook ) {
+	}else if ( 'toplevel_page_game-on-options' === $hook ) {
 
 			/*
 			 * Options Page Scripts
@@ -158,6 +163,7 @@ function go_admin_scripts_and_styles ($hook) {
 					'nonces' => array(
 						'go_clipboard_intable'          => wp_create_nonce( 'go_clipboard_intable_' . $user_id ),
 						'go_clipboard_intable_messages' => wp_create_nonce( 'go_clipboard_intable_messages_' . $user_id ),
+						'go_clipboard_intable_activity' => wp_create_nonce( 'go_clipboard_intable_activity_' . $user_id ),
 						'go_update_user_focuses'        => wp_create_nonce( 'go_update_user_focuses_' . $user_id ),
 						'go_clipboard_add'              => wp_create_nonce( 'go_clipboard_add_' . $user_id ),
 						'go_fix_messages'               => wp_create_nonce( 'go_fix_messages_' . $user_id ),
@@ -219,6 +225,10 @@ function go_scripts_and_styles () {
 		//PAGE SPECIFIC
 		wp_register_script('go_map-min', plugins_url('scripts-min/go_map-min.js', __FILE__), array('jquery'),'1.1', true);
 
+		//featherlight
+		//wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );
+		//wp_enqueue_script( 'go_featherlight_min' );
+
 	/*
 	 * Enqueueing Scripts For The Front-end
 	 */
@@ -230,6 +240,7 @@ function go_scripts_and_styles () {
 		//wp_enqueue_script( 'video-js' );
 		//Combined File
 		wp_enqueue_script( 'go_frontend-min' );
+		
 		//END COMBINED
 
 		// Dependencies
@@ -300,6 +311,14 @@ function go_scripts_and_styles () {
 		wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' );
 		wp_register_style( 'video-js-css', plugin_dir_url( __FILE__ ).'scripts/video-js/video-js.css' );
 		wp_register_style( 'go_lightbox', plugin_dir_url( __FILE__ ).'types/store/includes/lightbox/css/go-lightbox.css' );
+
+		//featherlight
+		//wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.css' );
+		//wp_enqueue_style( 'go_featherlight_css' );
+
+
+	
+
 
 		// COMBINED STYLES
 		wp_register_style( 'go_frontend', plugin_dir_url( __FILE__ ).'styles-min/go_frontend.css' );

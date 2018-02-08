@@ -202,6 +202,7 @@ function go_admin_scripts_and_styles ($hook) {
 					'nonces' => array(
 						'go_clipboard_intable'          => wp_create_nonce( 'go_clipboard_intable_' . $user_id ),
 						'go_clipboard_intable_messages' => wp_create_nonce( 'go_clipboard_intable_messages_' . $user_id ),
+						'go_clipboard_intable_activity' => wp_create_nonce( 'go_clipboard_intable_activity_' . $user_id ),
 						'go_update_user_focuses'        => wp_create_nonce( 'go_update_user_focuses_' . $user_id ),
 						'go_clipboard_add'              => wp_create_nonce( 'go_clipboard_add_' . $user_id ),
 						'go_fix_messages'               => wp_create_nonce( 'go_fix_messages_' . $user_id ),

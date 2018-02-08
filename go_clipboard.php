@@ -11,8 +11,9 @@ function go_clipboard_menu() {
 	?>
 		<div id="records_tabs">
 			<ul>
-				<li><a href="#clipboard_wrap">Clipboard</a></li>
+				<li><a href="#clipboard_wrap">Stats</a></li>
 				<li><a href="#clipboard_messages_wrap">Messages</a></li>
+				<li><a href="#clipboard_activity_wrap">Activity</a></li>
 			</ul>
 			<div id="clipboard_wrap">
 				<select class="menuitem" id="go_clipboard_class_a_choice" onchange="go_clipboard_class_a_choice();">
@@ -89,6 +90,33 @@ function go_clipboard_menu() {
 						</tr>
 					</thead>
 					<tbody id="go_clipboard_messages_body"></tbody>
+				</table>
+			</div>
+			<div id="clipboard_activity_wrap">
+				<select class="menuitem" id="go_clipboard_class_a_choice_activity" onchange="go_clipboard_class_a_choice_activity();">
+					<option>...</option>
+					<?php
+					$class_a_activity = get_option( 'go_class_a' );
+					if ( $class_a_activity ) {
+						foreach ( $class_a_activity as $key => $value ) {
+							echo "<option class='ui-corner-all'>{$value}</option>";
+						}
+					}
+					?>
+					<option>All</option>
+				</select>
+				<table id="go_clipboard_activity" class="pretty">
+					<thead>
+						<tr>
+							
+							<th class="header" id="activity_computer"><a href="#"><?php echo go_return_options( 'go_class_b_name' ); ?></a></th>
+							<th class="header" id="activity_student"><a href="#">Student Name</a></th>
+							<th class="header" id="activity_display"><a href="#">Display Name</a></th>
+							<th class="header" id="activity_stats"><a href="#">Links</a></th>
+							<th class="header" id="activity_date"><a href="#">Activity</a></th>
+						</tr>
+					</thead>
+					<tbody id="go_clipboard_activity_body"></tbody>
 				</table>
 			</div>
 		</div>
@@ -229,6 +257,99 @@ function go_clipboard_intable_messages() {
 	}
 	die();
 }
+
+
+function go_clipboard_intable_activity() {
+	global $wpdb;
+	$go_table_name = "{$wpdb->prefix}go";
+
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		die( -1 );
+	}
+
+	check_ajax_referer( 'go_clipboard_intable_activity_' . get_current_user_id() );
+
+	// do not continue if a class hasn't been selected
+	$class_slug = ( ! empty( $_POST['go_clipboard_class_a_choice_activity'] ) ? sanitize_text_field( $_POST['go_clipboard_class_a_choice_activity'] ) : '' );
+	if ( empty( $class_slug ) ) {
+		die();
+	}
+	//update_user_meta( 1, 'go_admin_activity', 'hi3' );
+	// do not continue if no admin messages are registered on the current admin account
+	//$admin_messages = get_user_meta( get_current_user_id(), 'go_admin_message_history', true );
+	//if ( empty( $admin_messages ) ) {
+	//	die();
+	//}
+
+	// grabs all user ids for non-admin users
+	$table_name_user_meta = $wpdb->prefix.'usermeta';
+	$uid = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id 
+			FROM {$table_name_user_meta} 
+			WHERE meta_key = %s AND meta_value NOT LIKE %s",
+			"{$wpdb->prefix}capabilities",
+			'%administrator%'
+		)
+	);
+	
+	foreach ( $uid as $id ) {
+		$class_array = get_user_meta( $id->user_id, 'go_classifications', true );
+
+		// continue if the user has the selected class in their class list
+		if ( ! empty( $class_array[ $class_slug ] ) ) {
+			$user_data_key = get_userdata( $id->user_id );
+			$user_login = $user_data_key->user_login;
+			$user_display_name = $user_data_key->display_name;
+			$user_firstname = $user_data_key->user_firstname;
+			$user_lastname = $user_data_key->user_lastname;
+			$user_website = $user_data_key->user_url;
+			$user_edit_link = get_edit_user_link( $id->user_id  );
+
+			if (! empty ($user_website)) {
+				$user_website = "<a href='{$user_website}' target='_blank'>Web</a>";
+			}
+
+
+
+			$task_list = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT post_id, timestamp
+					FROM {$go_table_name} 
+					WHERE uid = %d
+					ORDER BY id DESC",
+					$id->user_id
+				)
+			);
+
+			
+		
+			
+			echo "<tr id='user_{$id->user_id}'>
+					<td>{$class_array[ $class_slug ]}</td>
+					<td>{$user_lastname}, {$user_firstname}</td>
+					<td>{$user_display_name}</td>
+					<td><span style='float:right;'>{$user_website} <a href='{$user_edit_link}' target='_blank'>Profile</a> <a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$id->user_id}&quot;);'>Stats</a></span></td>
+					<td>";
+
+			foreach ( $task_list as $task ) {
+				$activityDate = date('Y-m-d', strtotime($task->timestamp));
+				$today = date('Y-m-d');
+				if ($activityDate == $today ){
+					$task_name = get_the_title($task->post_id);
+
+					echo $task_name . "<br>";
+
+
+				}
+			}
+			echo "</td>	  </tr>";
+		}
+	}
+	die();
+}
+
  
 function go_clipboard_add() {
 

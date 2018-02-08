@@ -1618,6 +1618,10 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
+					cmb_id: 'mastery_url_key'
+				},
+				{
+					cmb_type: 'checkbox',
 					cmb_id: 'test_mastery_lock',
 					on_load: go_test_checkbox_on_load
 				},
@@ -1694,7 +1698,7 @@ function go_generate_accordion_array() {
 				},
 				{
 					cmb_type: 'checkbox',
-					cmb_id: 'mastery_url_key'
+					cmb_id: 'repeat_url_key'
 				},
 				{
 					cmb_type: 'checkbox',

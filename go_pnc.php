@@ -57,151 +57,120 @@ function go_add_currency( $user_id, $reason, $status, $raw_points, $raw_currency
 }
 
 // Adds currency and points for reasons that are post tied.
-function go_add_post(
-		$user_id, $post_id, $status, $points, $currency, $bonus_currency = null,
-		$minutes = null, $page_id, $repeat = false, $count = null, $e_fail_count = null, $a_fail_count = null,
-		$c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null,
-		$url = null, $update_time = false, $reason = null, $bonus_loot = false, $notify = true
-	) {
+function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_currency = null, $minutes = null, $page_id, $repeat = false, $count = null, $e_fail_count = null, $a_fail_count = null, $c_fail_count = null, $m_fail_count = null, $e_passed = null, $a_passed = null, $c_passed = null, $m_passed = null, $url = null, $update_time = false, $reason = null, $bonus_loot = false, $notify = true) {
 	global $wpdb;
 	$table_name_go = "{$wpdb->prefix}go";
-	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
+	$time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
 	$user_bonuses = go_return_bonus_currency( $user_id );
 	$user_penalties = go_return_penalty( $user_id );
 	
 	
-/*add totals row if user isn't in totals row (this shouldn't happen unless database row is manually deleted)
-
-*/	
-	$table_name_go_totals = "{$wpdb->prefix}go_totals";
-	$row_exists = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * 
-				FROM {$table_name_go_totals} 
-				WHERE uid = %d LIMIT 1",
-				$user_id
-			)
-		);
-	if ($row_exists == null){
-		go_user_registration ( $user_id );
-	}
-	
-//add post/user row in go table if none exists
-	$row_exists2 = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * 
-				FROM {$table_name_go} 
-				WHERE uid = %d and post_id = %d LIMIT 1",
-				$user_id,
-				$post_id
-			)
-		);
-	
-		//debug_pnc( $row_exists2 );
-	if ( empty( $row_exists2 ) ) {
-			$wpdb->insert(
-				$table_name_go, 
-				array(
-					'uid' => $user_id, 
-					'post_id' => $post_id, 
-					'status' => 1
+	/*add totals row if user isn't in totals row (this shouldn't happen unless user totals adatabase row is manually deleted)
+	*/	
+		$table_name_go_totals = "{$wpdb->prefix}go_totals";
+		$row_exists = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT * 
+					FROM {$table_name_go_totals} 
+					WHERE uid = %d LIMIT 1",
+					$user_id
 				)
 			);
-	}
-	
-
-
-//what this should do:
-//get the multiplier
-//calculate the rewards
-//update status, repeat count and rewards
-	
-	
-//if this is a bonus stage	
-	if ($repeat){
-		$current_count = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT count 
-				FROM {$table_name_go} 
-				WHERE uid = %d and post_id = %d",
-				$user_id,
-				$post_id
-			)
-		);
-	}
-
-	$current_status = ($status + $count + $current_count);
-
-//DELETE: status can never equal -1--a -1 is set in below but for some strage reason that can probably also be deleted.
-//Maybe this has to do with checking if user is trying to cheat/mine currency
-if ( $status === -1 ) {
-
-		$qty = ( false === $bonus_loot && ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1 );
-		$old_points = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * 
-				FROM {$table_name_go} 
-				WHERE uid = %d and post_id = %d LIMIT 1",
-				$user_id,
-				$post_id
-			)
-		);
-		if ( 'on' === strtolower( get_post_meta( $post_id, 'go_mta_store_super_modifier', true ) ) ) {
-			$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties, true );
-
-			// bandaid fix for enabling the super modifier on store items
-			$points = $modded_array[0];
-			$currency = $modded_array[1];
+		if ($row_exists == null){
+			go_user_registration ( $user_id );
 		}
-		$points *= $qty;
-		$currency *= $qty;
-		$bonus_currency *= $qty;
-		$minutes *= $qty;
 
-		$gifted = false;
-		if ( get_current_user_id() != $user_id ) {
-			$reason = 'Gifted';
-			$gifted = true;
-		}
-	   	if ( ! $repeat || empty( $old_points ) ) {
-			$wpdb->insert(
-				$table_name_go, 
-				array(
-					'uid' => $user_id, 
-					'post_id' => $post_id, 
-					'status' => -1, 
-					'points' => $points,
-					'currency' => $currency,
-					'bonus_currency' => $bonus_currency,
-					'page_id' => $page_id, 
-					'count' => $qty + $count,
-					'reason' => esc_html( $reason ),
-					'timestamp' => $time,
-					'gifted' => $gifted,
-					'minutes' => $minutes
-				)
-			);
-		} else {
-			$wpdb->update(
-				$table_name_go,
-				array(
-					'points' => $points + ( $old_points->points ),
-					'currency' => $currency + ( $old_points->currency ),
-					'bonus_currency' => $bonus_currency + ( $old_points->bonus_currency ),
-					'minutes' => $minutes + ( $old_points->minutes ),
-					'page_id' => $page_id,
-					'count' => ( ( $old_points->count ) + $qty ),
-					'reason' => esc_html( $reason )
-				), 
-				array(
-					'uid' => $user_id, 
-					'post_id' => $post_id
+	//what this function should do:
+	//get the multiplier
+	//calculate the rewards
+	//update status, repeat count and rewards
+		
+		
+	//if this is a bonus stage	
+		if ($repeat){
+			$current_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT count 
+					FROM {$table_name_go} 
+					WHERE uid = %d and post_id = %d",
+					$user_id,
+					$post_id
 				)
 			);
 		}
+
+		$current_status = ($status + $count + $current_count);
+
+	//DELETE: status can never equal -1--a -1 is set in below but for some strage reason that can probably also be deleted.
+	//Maybe this has to do with checking if user is trying to cheat/mine currency
+	if ( $status === -1 ) {
+
+			$qty = ( false === $bonus_loot && ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1 );
+			$old_points = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT * 
+					FROM {$table_name_go} 
+					WHERE uid = %d and post_id = %d LIMIT 1",
+					$user_id,
+					$post_id
+				)
+			);
+			if ( 'on' === strtolower( get_post_meta( $post_id, 'go_mta_store_super_modifier', true ) ) ) {
+				$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties, true );
+
+				// bandaid fix for enabling the super modifier on store items
+				$points = $modded_array[0];
+				$currency = $modded_array[1];
+			}
+			$points *= $qty;
+			$currency *= $qty;
+			$bonus_currency *= $qty;
+			$minutes *= $qty;
+
+			$gifted = false;
+			if ( get_current_user_id() != $user_id ) {
+				$reason = 'Gifted';
+				$gifted = true;
+			}
+		   	if ( ! $repeat || empty( $old_points ) ) {
+				$wpdb->insert(
+					$table_name_go, 
+					array(
+						'uid' => $user_id, 
+						'post_id' => $post_id, 
+						'status' => -1, 
+						'points' => $points,
+						'currency' => $currency,
+						'bonus_currency' => $bonus_currency,
+						'page_id' => $page_id, 
+						'count' => $qty + $count,
+						'reason' => esc_html( $reason ),
+						'timestamp' => $time,
+						'gifted' => $gifted,
+						'minutes' => $minutes
+					)
+				);
+			} else {
+				$wpdb->update(
+					$table_name_go,
+					array(
+						'points' => $points + ( $old_points->points ),
+						'currency' => $currency + ( $old_points->currency ),
+						'bonus_currency' => $bonus_currency + ( $old_points->bonus_currency ),
+						'minutes' => $minutes + ( $old_points->minutes ),
+						'page_id' => $page_id,
+						'count' => ( ( $old_points->count ) + $qty ),
+						'reason' => esc_html( $reason )
+					), 
+					array(
+						'uid' => $user_id, 
+						'post_id' => $post_id
+					)
+				);
+			}
 	} 
 	else {
-	
+		
 		$modded_array = go_return_multiplier( $user_id, $points, $currency, $user_bonuses, $user_penalties );
 		$modded_points = $modded_array[0];
 		$modded_currency = $modded_array[1];
@@ -302,10 +271,10 @@ if ( $status === -1 ) {
 				)
 			);
 		}
-		
+			
 	} // end if status isn't equal to -1
-	
-	go_update_totals( intval( $user_id ), $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
+		
+		go_update_totals( intval( $user_id ), $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
 }
 	
 // Adds bonus currency.
@@ -315,7 +284,7 @@ function go_add_bonus_currency( $user_id, $bonus_currency, $reason, $status = 6 
 	if ( ! empty( $_POST['qty'] ) ) {
 		$bonus_currency = $bonus_currency * (int) $_POST['qty'];
 	}
-	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
+	$time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
 	$wpdb->insert(
 		$table_name_go, 
 		array(
@@ -336,7 +305,7 @@ function go_add_penalty( $user_id, $penalty, $reason, $status = 6, $bonus_loot =
 	if ( ! empty( $_POST['qty'] ) ) {
 		$penalty = $penalty * (int) $_POST['qty'];
 	}
-	$time = date( 'm/d@H:i', current_time( 'timestamp', 0 ) );
+	$time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
 	$wpdb->insert( 
 		$table_name_go, 
 		array(
@@ -357,7 +326,7 @@ function go_add_minutes( $user_id, $minutes, $reason, $status = 6 ) {
 	if ( ! empty( $_POST['qty'] ) ) {
 		$minutes = $minutes * (int) $_POST['qty'];
 	}
-	$time = date( 'm/d@H:i', current_time( 'timestamp',0 ) );
+	$time = date( 'Y-m-d G:i:s', current_time( 'timestamp',0 ) );
 	$wpdb->insert(
 		$table_name_go, 
 		array(
@@ -991,6 +960,7 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 	$accept_timestamp = strtotime( str_replace( '@', ' ', $raw_timestamp ) );
 
 	go_update_totals( $user_id, -$e_points, -$e_currency, -$e_bonus_currency, 0, 0 );
+	/*
 	$wpdb->query(
 		$wpdb->prepare(
 			"DELETE FROM {$table_name_go} 
@@ -999,13 +969,28 @@ function go_task_abandon( $user_id = null, $post_id = null, $e_points = null, $e
 			$post_id
 		)
 	);
+	*/
+	$wpdb->update(
+		$table_name_go,
+		array(
+			'status' => 0
+		), 
+		array(
+			'uid' => $user_id, 
+			'post_id' => $post_id
+		)
+	);
 	$custom_fields = get_post_custom( $post_id );
 	$future_modifier = ( ! empty( $custom_fields['go_mta_time_modifier'][0] ) ? unserialize( $custom_fields['go_mta_time_modifier'][0] ) : '' );
+	
+
+	/*Old timer stuf
 	$user_timers = get_user_meta( $user_id, 'go_timers', true );
 	if ( ! empty( $future_modifier ) && empty( $user_timers[ $post_id ] ) ) {
 		$user_timers[ $post_id ] = $accept_timestamp;
 		update_user_meta( $user_id, 'go_timers', $user_timers );
 	}
+	*/
 
 	// removes any badges that were awarded to the user from the abandoned task
 	$user_badges = get_user_meta( $user_id, 'go_badges', true );

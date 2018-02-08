@@ -1,0 +1,35 @@
+
+
+  #clockdiv{
+      font-family: sans-serif;
+      color: #fff;
+      display: inline-block;
+      font-weight: 100;
+      text-align: center;
+      font-size: 30px;
+      background-color: #438c98;
+      border-radius: 2ex;
+      padding: 5px;
+      margin-bottom: 20px;
+  }
+
+  #clockdiv > div{
+      padding: 5px;
+      border-radius: 3px;
+      
+      display: inline-block;
+  }
+
+  #clockdiv div > span{
+
+      border-radius: 3px;
+      
+      display: inline-block;
+  }
+
+  #clockdiv .smalltext{
+      
+      font-size: .45em;
+  }
+
+#go_timer > div {float: left;}
