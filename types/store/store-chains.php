@@ -18,6 +18,7 @@ function limit_parents_wpse_106165( $args, $taxonomy ) {
 }
 
 //remove description metabox
+/*
 add_action( 'admin_footer-edit-tags.php', 'wpse_56570_remove_cat_tag_description' );
 
 function wpse_56570_remove_cat_tag_description(){
@@ -31,7 +32,7 @@ function wpse_56570_remove_cat_tag_description(){
     </script>
     <?php
 }
-
+*/
 
 /**
  * Remove default description column from category

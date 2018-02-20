@@ -176,8 +176,10 @@ function go_the_lb_ajax() {
 		date_default_timezone_set('America/Los_Angeles');
 		for( $i = 0; $i<5; $i++ ) {
 			$avail_toggle = "scheduled_availability_" . $i . "_dow_toggle";
+
 			if ( ! empty ($custom_fields[$avail_toggle][0])){
 				$toggle_status = $custom_fields[$avail_toggle][0];
+
 				if ($toggle_status == true){				
 					$dow_days = "scheduled_availability_" . $i . "_dow_available";
 					$dow_days = unserialize( $custom_fields[$dow_days][0]);
@@ -187,14 +189,17 @@ function go_the_lb_ajax() {
 					$dow_minutes = $custom_fields[$dow_minutes][0];
 					$dow_time = strtotime($dow_time);			
 
+		
 					//it is unlocked at somepoint today, continue to check time to see if it is unlocked
-					if (in_array(date("l"), $dow_days)){						
+					if (in_array(date("l"), $dow_days)){	
 						//if the current time is between the start time and the start time and the minutes unlocked
-						if ((time() >= strtotime($dow_time)) && ( time() < ($dow_time + ($dow_minutes * 60)))) {
+						if ((time() >= $dow_time) && ( time() < ($dow_time + ($dow_minutes * 60)))) {
 							//it is unlocked, so exit loop and continue
-							$is_locked = false;
+							$is_locked = false;		
 						  	break;
-
+						}
+						else{
+							$is_locked = true;
 						}
 					}		
 				}
@@ -205,13 +210,8 @@ function go_the_lb_ajax() {
 		}
 
 		if ($is_locked != false){
-			//echo $dow_days[1];
-			$task_is_locked = true;
-			
-			
+			$task_is_locked = true;			
 			echo "<p> <span class='go_error_red'>This is locked except at the following times:";
-		
-
 			for( $i = 0; $i<5; $i++ ) {
 				$avail_toggle = "scheduled_availability_" . $i . "_dow_toggle";
 				if ( ! empty ($custom_fields[$avail_toggle][0])){
@@ -238,6 +238,10 @@ function go_the_lb_ajax() {
 			}
 			echo "</span></p>";	
 		}
+
+		/**
+		 * One per day
+		 */
 		$go_table_name = "{$wpdb->prefix}go";
 		$task_list = $wpdb->get_results(
 			$wpdb->prepare(
@@ -251,10 +255,8 @@ function go_the_lb_ajax() {
 		);
 
 		foreach ( $task_list as $task ) {
-			$dayofweek = date('w', strtotime($task->timestamp));
-			$today = date('w');
-
-			
+			$dayofweek = date('Y m d', strtotime($task->timestamp));
+			$today = date('Y m d');		
 
 			if ($dayofweek == $today ){
 				echo "<p> <span class='go_error_red'>Only one item can be purchased/claimed each day.</span></p>";
@@ -285,9 +287,9 @@ function go_the_lb_ajax() {
 				$user_period = implode(", ",$user_period);
 				//$user_period = trim($user_period);
 
-				debug_locks ($user_period);
+				
 				$period_key = trim($period_key);
-				debug_locks ($period_key);
+				
 
 				if ($period_key != $user_period) {
 					echo "<p><span class='go_error_red'> You must be in " . $period_key . " to continue. </span></p>";
@@ -295,6 +297,7 @@ function go_the_lb_ajax() {
 				}
 			}
 		}
+
 
 		if ($task_is_locked == true){die;}
 
@@ -448,7 +451,9 @@ function go_the_lb_ajax() {
 	);
 	if ( $is_unpurchasable != 'on' ) {
 		?>
+		<!--remove quantity
 		<div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;" value="1" disabled="disabled" /></div>
+		-->
 		<input type='hidden' class='golb-fr-boxes-debt' value='<?php echo ( $penalty ? 'true' : 'false' ); ?>' />
 		<div id="golb-fr-buy" class="golb-fr-boxes-<?php echo $buy_color; ?>" onclick="goBuytheItem( '<?php echo $the_id; ?>', '<?php echo $buy_color; ?>', '<?php echo $purchase_count?>' ); this.removeAttribute( 'onclick' );">Buy</div>
 		<div id="golb-fr-purchase-limit" val="<?php echo ( ! empty( $purchase_limit ) ? $purchase_limit : 0 ); ?>"><?php echo ( ! empty( $purchase_limit ) ? "Limit {$purchase_limit}" : 'No limit' ); ?></div>

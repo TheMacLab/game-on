@@ -183,7 +183,6 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 				$post_id
 			)
 		);
-		
 		if ( ! empty( $old_points ) ) {
 			$old_url_array = unserialize( $old_points->url );
 			$url_array = $old_url_array;
@@ -197,7 +196,6 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 		} else {
 			$url_array = serialize( array( $current_status => $url ) );
 		}
-		
 		if ( $repeat ) {
 			$wpdb->update(
 				$table_name_go,
@@ -216,9 +214,19 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 				)
 			);
 		} else {
-		
 			if ( $status === 0 ) {
-				
+				$wpdb->insert( 
+					$table_name_go, 
+					array( 
+						'uid' => $user_id, 
+						'post_id' => $post_id, 
+						'status' => 1, 
+						'points' => $modded_points, 
+						'currency' => $modded_currency, 
+						'bonus_currency' => $bonus_currency, 
+						'page_id' => $page_id
+					)
+				);
 			} else {
 				$columns = array(
 					'points' => $modded_points + ( $old_points->points ), 
@@ -244,7 +252,6 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 				}
 				$wpdb->update( $table_name_go, $columns, array( 'uid' => $user_id, 'post_id' => $post_id) );
 			}
-			
 		}
 		if ( $e_fail_count != null || $a_fail_count != null || $c_fail_count != null || $m_fail_count != null ) {
 			$wpdb->update( 
@@ -271,10 +278,8 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 				)
 			);
 		}
-			
 	} // end if status isn't equal to -1
-		
-		go_update_totals( intval( $user_id ), $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
+	go_update_totals( intval( $user_id ), $points, $currency, $bonus_currency, 0, $minutes, $status, $bonus_loot, null, $notify );
 }
 	
 // Adds bonus currency.

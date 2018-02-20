@@ -1,0 +1,10 @@
+.go-acf-locks .acf-fields.-left > .acf-field:before {display: none;}
+
+.go-acf-keys .acf-row-handle.ui-sortable-handle:before {
+        content: " and";}
+
+
+.go-acf-keys .acf-actions {position: relative;
+    top: -8px;}
+
+ .select2_child .select2 {width: 100% !important;}

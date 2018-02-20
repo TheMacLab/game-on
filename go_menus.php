@@ -57,8 +57,8 @@ function go_add_chains_as_submenu() {
 	/* add the sub menu under content for posts */
 	add_submenu_page(
 		'maps_menus', // parent slug
-		'Maps', // page_title,
-		'Maps', // menu_title,
+		'Quest Maps', // page_title,
+		'Quest Maps', // menu_title,
 		'edit_posts', // capability,
 		'edit-tags.php?taxonomy=task_chains' // menu_slug,
 	);
@@ -100,13 +100,23 @@ function go_menu_hierarchy_correction( $parent_file ) {
 	
 	global $current_screen;
 	
+
 	/* get the base of the current screen */
 	$screenbase = $current_screen->base;
-	/* if this is the edit.php base */
-	if( $screenbase == 'edit-tags' ) {
-		/* set the parent file slug to the custom content page */
-		$parent_file = 'maps_menus';
-		
+	$taxonomy = $current_screen->taxonomy;
+
+	if ($taxonomy == 'task_chains' || $taxonomy == 'task_menus'   || $taxonomy == 'task_categories'  ){
+		/* if this is the edit.php base */
+		if( $screenbase == 'term' ) {
+			/* set the parent file slug to the custom content page */
+			$parent_file = 'maps_menus';
+			
+		}
+
+		if( $screenbase == 'edit-tags' ) {
+			/* set the parent file slug to the custom content page */
+			$parent_file = 'maps_menus';	
+		}
 	}
 	
 	/* return the new parent file */	

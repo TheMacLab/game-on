@@ -12,6 +12,13 @@ Version: 4b
 //	include( 'includes/wp-featherlight/wp-featherlight.php' );
 //}
 
+// include custom ACF fields
+
+
+
+
+include( 'includes/acf-FIELD-NAME/acf-FIELD-NAME.php' );
+
 if( ! class_exists( 'FitVidsWP' ) ) {
 	// FitVids Plugin is not active
 	include( 'includes/fitvids-for-wordpress/fitvids-for-wordpress.php' );
@@ -466,4 +473,70 @@ if( function_exists('acf_add_options_page') ) {
 	acf_add_options_page();
 	
 }
+
+
+/*
+function acf_load_color_field_choices( $field ) {
+    
+    // reset choices
+    $field['choices'] = array();
+    
+    
+    // get the textarea value from options page without any formatting
+    $choices = get_field('my_select_values', 'option', false);
+
+    
+    // explode the value so that each line is a new array piece
+    $choices = explode("\n", $choices);
+
+    
+    // remove any unwanted white space
+    $choices = array_map('trim', $choices);
+
+    
+    // loop through array and add to field 'choices'
+    if( is_array($choices) ) {
+        
+        foreach( $choices as $choice ) {
+            
+            $field['choices'][ $choice ] = $choice;
+            
+        }
+        
+    }
+    
+
+    // return the field
+    return $field;
+    
+}
+add_filter('acf/load_field/name=top_menu_location', 'acf_load_color_field_choices');
+*/
+/*
+add_filter( 'plupload_init', 'my_plupload_init', 0, 1 ); 
+
+function my_plupload_init( $plupload_init ) { 
+        $plupload_init['resize'] = array('enabled' => true, 'width' =>  1024, 'height' =>  1024); 
+         return $plupload_init; 
+} 
+*/
+//Resize All Images on Client Side
+function client_side_resize_load() {
+    wp_enqueue_script( 'client-resize' , plugins_url( '/scripts/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
+    wp_localize_script( 'client-resize' , 'client_resize' , array( 
+        'plupload' => array(
+                'resize' => array(
+                'enabled' => true,
+                'width' => 1920, // enter your width here
+                'height' => 1200, // enter your width here
+                'quality' => 90,
+            ),
+        )
+    ) );
+}
+add_action( 'wp_enqueue_media' , 'client_side_resize_load' );
+
+
+
+
 ?>

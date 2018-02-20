@@ -80,7 +80,6 @@ LOCKS START
 		}
 
 		if ($is_locked != false){
-			//echo $dow_days[1];
 			$task_is_locked = true;
 			
 			echo "<p> <span class='go_error_red'>This is locked except at the following times:";
@@ -134,9 +133,9 @@ LOCKS START
 				$user_period = implode(", ",$user_period);
 				//$user_period = trim($user_period);
 
-				debug_locks ($user_period);
+				//debug_locks ($user_period);
 				$period_key = trim($period_key);
-				debug_locks ($period_key);
+				//debug_locks ($period_key);
 
 				if ($period_key != $user_period) {
 					echo "<p><span class='go_error_red'> You must be in " . $period_key . " to continue. </span></p>";

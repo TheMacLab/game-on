@@ -36,6 +36,8 @@ function go_admin_scripts_and_styles ($hook) {
 
 			//featherlight
 			wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );
+
+			
 				
 	/*
 	 * Enqueue Scripts For Admin Pages (Exept for page specific ones below)
@@ -53,6 +55,7 @@ function go_admin_scripts_and_styles ($hook) {
 		wp_enqueue_script( 'jquery-ui-progressbar' );
 		wp_enqueue_script( 'jquery-effects-core' );
 		wp_enqueue_script( 'go_featherlight_min' );
+	
 		
 	
 	
@@ -184,8 +187,12 @@ function go_admin_scripts_and_styles ($hook) {
 		/*
 		 * Combined styles for every admin page. Even if only needed on some pages, include in one file if possible.
 		 */	
-			wp_register_style( 'go_admin', plugin_dir_url( __FILE__ ).'styles-min/go_admin.css' );
+		wp_register_style( 'go_admin', plugin_dir_url( __FILE__ ).'styles-min/go_admin.css' );
 		//END COMBINED STYLES
+
+		//TEMPORARY
+		wp_register_style( 'go_admin_task_afc', plugin_dir_url( __FILE__ ).'styles/tasks-admin-acf.css' );
+		wp_enqueue_style( 'go_admin_task_afc' );
 
 	/*
 	 * Enqueueing Styles For Admin Pages

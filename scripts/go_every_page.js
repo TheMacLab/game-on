@@ -740,3 +740,31 @@ jQuery.prototype.go_prev_n = function ( n, selector ) {
 
 	return obj;
 };
+
+
+
+/////For NEw ACF map stuff
+
+////////////NEW STUFF
+jQuery(document).ready(function(){
+
+	
+	if(jQuery('#parent').val() == -1){ 
+		jQuery('.acf-field').hide();
+	}
+	else{ 
+		jQuery('.acf-field').show();
+		jQuery('h2').show();
+	}
+
+	jQuery('#parent').change(function(){
+	 	if(jQuery(this).val() == -1){ 
+			jQuery('.acf-field').hide();
+	 	}
+	 	else{ 
+			jQuery('.acf-field').show();
+			jQuery('h2').show();
+			
+	  	}
+	});
+});

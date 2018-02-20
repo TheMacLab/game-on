@@ -43,7 +43,7 @@ function go_make_single_map($last_map_id, $reload = false){
   					'hide_empty' => false,
   					'orderby' => 'order',
   					'order' => 'ASC',
-  					'parent' => $term_id0,       
+  					'parent' => '',       
 				);
 				
 		

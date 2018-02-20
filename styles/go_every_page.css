@@ -1,20 +1,5 @@
 #wp-featherlight-enable-wrap {display: none;}
 
-/********************
-*	Edit term tables
-hides table on term page until reorder.js is complete
-********************/
-#col-right {display:none;}
-
-ul .row-actions {display:none;}
-
-.taxonomy-task_chains  .term-description-wrap,
-.taxonomy-store_types .term-description-wrap,
-{display:none;}
-
-/********************
-*
-********************/
 
 
 .go_align_right {
@@ -702,7 +687,7 @@ input#go_pass_lock::-moz-placeholder {
 	padding-left: 4px;
 }
 
-.dark {
+.go_dark {
 	display: none;
 	position: fixed;
 	top: 0%;
@@ -716,7 +701,7 @@ input#go_pass_lock::-moz-placeholder {
 	filter: alpha(opacity=80);
 }
 
-.light {
+.go_light {
 	display: none;
 	position: fixed;
 	top: 50%;

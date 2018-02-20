@@ -239,23 +239,6 @@
 #wp-featherlight-enable-wrap {
   display: none; }
 
-/********************
-*	Edit term tables
-hides table on term page until reorder.js is complete
-********************/
-#col-right {
-  display: none; }
-
-ul .row-actions {
-  display: none; }
-
-.taxonomy-task_chains .term-description-wrap,
-.taxonomy-store_types .term-description-wrap {
-  display: none; }
-
-/********************
-*
-********************/
 .go_align_right {
   text-align: right; }
 
@@ -815,7 +798,7 @@ div.go_pod_message {
 input#go_pass_lock::-moz-placeholder {
   padding-left: 4px; }
 
-.dark {
+.go_dark {
   display: none;
   position: fixed;
   top: 0%;
@@ -828,7 +811,7 @@ input#go_pass_lock::-moz-placeholder {
   opacity: .80;
   filter: alpha(opacity=80); }
 
-.light {
+.go_light {
   display: none;
   position: fixed;
   top: 50%;
@@ -1754,3 +1737,80 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
  */
 #go_mta_final_chain_message {
   width: 100%; }
+
+.name.column-name,
+.manage-column.column-name {
+  -webkit-box-flex: 1 !important;
+      -ms-flex: 1 !important;
+          flex: 1 !important; }
+
+.posts.column-posts,
+.manage-column.column-posts,
+.pod_toggle.column-pod_toggle,
+.manage-column.column-pod_toggle {
+  text-align: center;
+  -webkit-box-flex: 0 !important;
+      -ms-flex: none !important;
+          flex: none !important;
+  display: block;
+  width: 40px; }
+
+.pod_achievement.column-pod_achievement,
+.manage-column.column-pod_achievement,
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num {
+  text-align: center;
+  -webkit-box-flex: 0 !important;
+      -ms-flex: none !important;
+          flex: none !important;
+  display: block;
+  width: 100px; }
+
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num {
+  text-align: center;
+  -webkit-box-flex: 0 !important;
+      -ms-flex: none !important;
+          flex: none !important;
+  display: block;
+  width: 75px; }
+
+.taxonomy-task_chains .acf-field {
+  display: none; }
+
+.taxonomy-task_chains #edittag h2 {
+  display: none; }
+
+.taxonomy-task_chains .pod_achievement.column-pod_achievement,
+.taxonomy-task_chains .pod_toggle.column-pod_toggle,
+.taxonomy-task_chains .pod_done_num.column-pod_done_num {
+  visibility: hidden; }
+
+.child .pod_achievement.column-pod_achievement,
+.child .pod_toggle.column-pod_toggle,
+.child .pod_done_num.column-pod_done_num {
+  visibility: visible; }
+
+/********************
+*	Edit term tables
+hides table on term page until reorder.js is complete
+********************/
+#col-right {
+  display: none; }
+
+ul .row-actions {
+  display: none; }
+
+.taxonomy-task_chains .term-description-wrap,
+.taxonomy-task_focus_categories .term-description-wrap,
+.taxonomy-task_categories .term-description-wrap,
+.taxonomy-task_menus .term-description-wrap,
+.taxonomy-stask_badges .term-description-wrap,
+.taxonomy-store_types .term-description-wrap {
+  display: none; }
+
+/********************
+*
+********************/
+.wp-has-submenu.toplevel_page_maps_menus .wp-first-item {
+  display: none; }
