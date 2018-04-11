@@ -1,8 +1,10 @@
 <?php
 
+/*
 function go_clipboard() {
 	add_submenu_page( 'game-on-options.php', 'Clipboard', 'Clipboard', 'manage_options', 'go_clipboard', 'go_clipboard_menu' );
 }
+*/
 
 function go_clipboard_menu() {
 	if ( ! current_user_can( 'manage_options' ) ) {

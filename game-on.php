@@ -8,25 +8,31 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4b
 */
 
+foreach ( glob( plugin_dir_path( __FILE__ ) . "admin/*.php" ) as $file ) {
+    include_once $file;
+}
+
+// include custom ACF fields
+foreach ( glob( plugin_dir_path( __FILE__ ) . "admin/custom-acf-fields/*.php" ) as $file ) {
+    include_once $file;
+}
+
+if( ! class_exists( 'WP_Term_Order' ) ) {
+    // WP Term Order Plugin is not active
+    include( 'admin/wp-term-order/wp-term-order.php' );
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "frontend/*.php" ) as $file ) {
+    include_once $file;
+}
+
 //if( ! class_exists( 'wp-featherlight' ) ) {
 //	include( 'includes/wp-featherlight/wp-featherlight.php' );
 //}
 
-// include custom ACF fields
-
-
-
-
-include( 'includes/acf-FIELD-NAME/acf-FIELD-NAME.php' );
-
 if( ! class_exists( 'FitVidsWP' ) ) {
 	// FitVids Plugin is not active
 	include( 'includes/fitvids-for-wordpress/fitvids-for-wordpress.php' );
-}
-
-if( ! class_exists( 'WP_Term_Order' ) ) {
-	// WP Term Order Plugin is not active
-	include( 'includes/wp-term-order/wp-term-order.php' );
 }
 
 foreach ( glob( plugin_dir_path( __FILE__ ) . "*.php" ) as $file ) {
@@ -45,11 +51,6 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "types/tasks/*.php" ) as $file ) {
 }
 
 include( plugin_dir_path( __FILE__ ) . 'types/test/test_shortcode.php');
-
-//if( ! class_exists( 'CMB2_Bootstrap_2253' ) ) {
-	// CMB2 Plugin is not active
-	//include( 'includes/cmb2/init.php' );
-//}
 
 
 /*
@@ -71,7 +72,7 @@ register_activation_hook( __FILE__, 'go_store_activate' );
  */
 
 
-/* 
+/**
  * Registers Game On custom post types and taxonomies, then
  * updates the site's rewrite rules to mitigate cpt and 
  * permalink conflicts. flush_rewrite_rules() must always
@@ -95,20 +96,14 @@ function go_flush_rewrites() {
 }
 
 
-//function go_register_tax_and_cpt() {
-//	go_register_task_tax_and_cpt();
-//	go_register_store_tax_and_cpt();
-//	flush_rewrite_rules();
-//}
-
 /*
  * Admin Menu & Admin Bar
  */
 
 // actions
-add_action( 'admin_menu', 'add_game_on_options' );
-add_action( 'admin_menu', 'go_clipboard' );
-add_action( 'admin_menu', 'go_pod_submenu' );
+//add_action( 'admin_menu', 'add_game_on_options' );
+//add_action( 'admin_menu', 'go_clipboard' );
+//add_action( 'admin_menu', 'go_pod_submenu' );
 add_action( 'admin_bar_init', 'go_messages_bar' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
 
@@ -203,7 +198,7 @@ add_action( 'wp_ajax_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
 
 
-/*
+/**
  * Miscellaneous Filters
  */
 
@@ -217,11 +212,11 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
 
 
 
-/*
+/**
  * Important Functions
  */
 
-/**
+/*
  * Determines if a badge exists.
  *
  * @param int $id The attachment ID.
@@ -236,7 +231,7 @@ function go_badge_exists( $id ) {
 	return wp_get_attachment_image_url( $id ) ? true : false;
 }
 
-/**
+/*
  * Appends errors to the configured PHP error log.
  *
  * Use this function to easily output Game On errors.
@@ -307,8 +302,6 @@ function go_delete_cpt_data( $cpt_id ) {
 	}
 	return true;
 }
-
-
 
 function go_user_redirect( $redirect_to, $request, $user ) {
 	$redirect_on = get_option( 'go_admin_bar_user_redirect', true );
@@ -468,58 +461,19 @@ function go_user_is_admin( $user_id = null ) {
 	return false;
 }
 
+//Add GO Options Page using ACF
 if( function_exists('acf_add_options_page') ) {
-	
-	acf_add_options_page();
-	
+    $args = array(
+        'page_title' => 'Options',
+        'menu_slug' => 'go_options',
+        'capability' => 'edit_posts',
+    );
+
+	acf_add_options_page($args);
+
 }
 
 
-/*
-function acf_load_color_field_choices( $field ) {
-    
-    // reset choices
-    $field['choices'] = array();
-    
-    
-    // get the textarea value from options page without any formatting
-    $choices = get_field('my_select_values', 'option', false);
-
-    
-    // explode the value so that each line is a new array piece
-    $choices = explode("\n", $choices);
-
-    
-    // remove any unwanted white space
-    $choices = array_map('trim', $choices);
-
-    
-    // loop through array and add to field 'choices'
-    if( is_array($choices) ) {
-        
-        foreach( $choices as $choice ) {
-            
-            $field['choices'][ $choice ] = $choice;
-            
-        }
-        
-    }
-    
-
-    // return the field
-    return $field;
-    
-}
-add_filter('acf/load_field/name=top_menu_location', 'acf_load_color_field_choices');
-*/
-/*
-add_filter( 'plupload_init', 'my_plupload_init', 0, 1 ); 
-
-function my_plupload_init( $plupload_init ) { 
-        $plupload_init['resize'] = array('enabled' => true, 'width' =>  1024, 'height' =>  1024); 
-         return $plupload_init; 
-} 
-*/
 //Resize All Images on Client Side
 function client_side_resize_load() {
     wp_enqueue_script( 'client-resize' , plugins_url( '/scripts/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
@@ -535,6 +489,212 @@ function client_side_resize_load() {
     ) );
 }
 add_action( 'wp_enqueue_media' , 'client_side_resize_load' );
+
+
+
+
+
+/**
+ * @param $items
+ * @return string
+ * Modified from:
+ * https://wordpress.stackexchange.com/questions/121309/how-do-i-programatically-insert-a-new-menu-item
+ *
+ */
+
+// Check if the menu exists
+$menu_name = 'go_top_menu';
+$menu_exists = wp_get_nav_menu_object( $menu_name );
+
+// If it doesn't exist, let's create it.
+if( !$menu_exists) {
+    $menu_id = wp_create_nav_menu($menu_name);
+}
+
+
+// Filter wp_nav_menu() to add additional links and other output
+function go_new_nav_menu_items($items) {
+	$homelink = '<li class="home go_top_menu_1"><a href="' . home_url( '/' ) . '">' . __('Home') . '</a></li>';
+
+    $menu_link = $homelink . $items;
+
+	$terms = get_terms( array(
+        'taxonomy' 		=> 'task_menus',
+        'hide_empty'	=> false,
+        'parent'		=> 0,
+    ) );
+
+    foreach ($terms as $term) {
+        $term_id = $term->term_id;
+        $child_terms = get_terms(array(
+            'taxonomy' => 'task_menus',
+            'hide_empty' => false,
+            'parent' => $term_id,
+        ));
+        if (!empty($child_terms)) {
+            $term_name = $term->name;
+            $term_link = get_term_link($term->term_id);
+            //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
+            $menu_link = $menu_link . '<li class="go_top_menu_1"><a href="#">' . __($term_name) . '</a><ul>';
+            foreach ($child_terms as $child_term) {
+                $term_name = $child_term->name;
+                $term_link = get_term_link($child_term->term_id);
+                $menu_link = $menu_link . '<li class="go_top_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a></li>';
+            }
+            $menu_link = $menu_link . '</ul></li>';
+        }
+    }
+
+    return $menu_link;
+}
+add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
+
+
+/**
+ * Task Categories Widget
+ * Modified from: http://www.wpbeginner.com/wp-tutorials/how-to-create-a-custom-wordpress-widget/
+ */
+// Register and load the widget
+function wpb_load_widget() {
+    register_widget( 'wpb_widget' );
+
+}
+add_action( 'widgets_init', 'wpb_load_widget' );
+
+// Creating the widget
+class wpb_widget extends WP_Widget {
+
+    function __construct() {
+        parent::__construct(
+
+// Base ID of your widget
+            'wpb_widget',
+
+// Widget name will appear in UI
+            __(get_option('options_go_locations_widget'), 'go_widget_domain'),
+
+// Widget description
+            array( 'description' => __( 'Widget of Categories of Game On', 'go_widget_domain' ), )
+        );
+    }
+
+// Creating widget front-end
+
+    public function widget( $args, $instance ) {
+        $title = apply_filters( 'widget_title', $instance['title'] );
+
+// before and after widget arguments are defined by themes
+        echo $args['before_widget'];
+        if ( ! empty( $title ) )
+            echo $args['before_title'] . $title . $args['after_title'];
+
+// This is where you run the code and display the output
+        //echo __( 'Hello, World!', 'wpb_widget_domain' );
+
+        $terms = get_terms( array(
+            'taxonomy' 		=> 'task_categories',
+            'hide_empty'	=> false,
+            'parent'		=> 0,
+        ) );
+		$menu_link = '<ul>';
+        foreach ($terms as $term) {
+            $term_id = $term->term_id;
+            $child_terms = get_terms(array(
+                'taxonomy' => 'task_categories',
+                'hide_empty' => false,
+                'parent' => $term_id,
+            ));
+            if (!empty($child_terms)) {
+                $term_name = $term->name;
+                $term_link = get_term_link($term->term_id);
+                //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
+                $menu_link = $menu_link . '<li class="go_top_menu_1"><a href="#">' . __($term_name) . '</a><ul>';
+                foreach ($child_terms as $child_term) {
+                    $term_name = $child_term->name;
+                    $term_link = get_term_link($child_term->term_id);
+                    $menu_link = $menu_link . '<li class="go_top_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a></li>';
+                }
+                $menu_link = $menu_link . '</ul></li>';
+            }
+        }
+        $menu_link = $menu_link . '<ul>';
+        echo $menu_link;
+
+
+
+
+        echo $args['after_widget'];
+    }
+
+// Widget Backend
+    public function form( $instance ) {
+        if ( isset( $instance[ 'title' ] ) ) {
+            $title = $instance[ 'title' ];
+        }
+        else {
+            $title = __( get_option('options_go_locations_widget'), 'go_widget_domain' );
+        }
+// Widget admin form
+        ?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+        <?php
+    }
+
+// Updating widget replacing old instances with new
+    public function update( $new_instance, $old_instance ) {
+        $instance = array();
+        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        return $instance;
+    }
+} // Class go_widget ends here
+
+
+/**
+ * Sort items that show on menu pages
+ *Modified from: https://wordpress.stackexchange.com/questions/39817/sort-results-by-name-asc-order-on-archive-php
+ * https://www.advancedcustomfields.com/resources/orde-posts-by-custom-fields/
+ */
+
+add_action( 'pre_get_posts', 'go_change_sort_order');
+function go_change_sort_order($query){
+
+    // do not modify queries in the admin
+    if( is_admin() ) {
+
+        return $query;
+
+    }
+
+	if ($query->is_tax('task_menus')){
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', 'go-location_top_order_item');
+        $query->set('order', 'ASC');
+	}
+
+	if ($query->is_tax('task_categories')){
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', 'go-location_side_order_item');
+        $query->set('order', 'ASC');
+	}
+
+    if ($query->is_tax('task_chains')){
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', 'go-location_map_order_item');
+        $query->set('order', 'ASC');
+    }
+
+
+
+
+    // return
+    //return $query;
+
+
+};
+
 
 
 

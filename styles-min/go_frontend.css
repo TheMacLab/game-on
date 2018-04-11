@@ -2,23 +2,6 @@
 #wp-featherlight-enable-wrap {
   display: none; }
 
-/********************
-*	Edit term tables
-hides table on term page until reorder.js is complete
-********************/
-#col-right {
-  display: none; }
-
-ul .row-actions {
-  display: none; }
-
-.taxonomy-task_chains .term-description-wrap,
-.taxonomy-store_types .term-description-wrap {
-  display: none; }
-
-/********************
-*
-********************/
 .go_align_right {
   text-align: right; }
 
@@ -577,7 +560,7 @@ div.go_pod_message {
 input#go_pass_lock::-moz-placeholder {
   padding-left: 4px; }
 
-.dark {
+.go_dark {
   display: none;
   position: fixed;
   top: 0%;
@@ -590,7 +573,7 @@ input#go_pass_lock::-moz-placeholder {
   opacity: .80;
   filter: alpha(opacity=80); }
 
-.light {
+.go_light {
   display: none;
   position: fixed;
   top: 50%;
@@ -605,6 +588,26 @@ input#go_pass_lock::-moz-placeholder {
 .featherlight-content {
   width: 100%;
   height: 100%; }
+
+#adminmenu #toplevel_page_game-on-options .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f085'; }
+
+#adminmenu #toplevel_page_badges .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f0a3'; }
+
+#adminmenu #toplevel_page_groups .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f0c0'; }
+
+#adminmenu #menu-posts-tasks .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f041'; }
+
+.wp-menu-separator {
+  border-bottom: solid 1px;
+  color: lightgray; }
 
 /********************
 *	Term Meta Field Styles

@@ -79,7 +79,7 @@ function go_register_store_tax_and_cpt() {
 		'label'                 => __( get_option( 'go_store_name' ) ),
 		'description'           => __( get_option( 'go_store_name' ) ),
 		'labels'                => $labels,
-		'supports' => array( 'title'),
+		'supports' => array( 'title', 'custom-fields'),
 		'taxonomies' => array( 'store_types' ),
 		'public' => true,
 		'show_ui' => true,

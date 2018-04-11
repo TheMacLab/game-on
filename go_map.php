@@ -20,50 +20,79 @@ function go_map_activate() {
 }
 
 function go_make_single_map($last_map_id, $reload = false){
-	$user_id = get_current_user_id();
-	///here
-	$last_map = get_term_by( 'id' , $last_map_id, 'task_chains');
-	$map_name = $last_map->name;
+
+	$last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');
 	wp_nonce_field( 'go_update_last_map');
 	$taxonomy = 'task_chains';
 
-	////
 	if ($reload == false) {echo "<div id='mapwrapper'>";}
 	echo "<div id='loader-wrapper style='width: 100%'><div id='loader' style='display:none;'></div></div><div id='maps' data-mapid='$last_map_id'>";
 	if(!empty($last_map_id)){
-	
-				$tax_term0 = $last_map;
+
 				echo 	"<div id='map_$last_map_id' class='map'>
 						<ul class='primaryNav'>
-						<li class='ParentNav'><p>$tax_term0->name</p></li>";
+						<li class='ParentNav'><p>$last_map_object->name</p></li>";
 				
-				$term_id0 = $tax_term0->term_id;
+				$Parent_ID = $last_map_object->term_id;
 	
-				$term_args1=array(
+				$args=array(
   					'hide_empty' => false,
   					'orderby' => 'order',
   					'order' => 'ASC',
-  					'parent' => '',       
+  					'parent' => $Parent_ID,
 				);
 				
-		
-				$tax_terms1 = get_terms($taxonomy,$term_args1);
-				 
-				/*Loop for each chain.  Prints the chain name then looks up children (tasks). */
-   				foreach ( $tax_terms1 as $tax_term1 ) {
+				//parent chain
+				$Children_term_objects = get_terms($taxonomy,$args);
 
-   					/*Gets a list of quests that are assigned to each chain as array. Ordered by post ID */
-   					$term_id1 = $tax_term1->term_id;
-					$taxonomies = 'task_chains';
-					$go_task_ids = get_objects_in_term( $term_id1, $taxonomies, $args );
-					
-					echo "<li><p>$tax_term1->name";
-					
-					$chain_pod = get_term_meta($term_id1, 'pod_toggle', true);   
+				/*For each chain.  Prints the chain name then find and prints the tasks. */
+   				foreach ( $Children_term_objects as $term_object ) {
+
+					echo "<li><p>$term_object->name";
+
+
+                    //get the term id of this chain
+                    $term_id = $term_object->term_id;
+                    $taxonomy = 'task_chains';
+                    $args=array(
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => $taxonomy,
+                                'field' => 'term_id',
+                                'terms' => $term_id,
+                            )
+                        ),
+                        'orderby'          => 'meta_value',
+                        'order'            => 'ASC',
+
+                        'meta_key'         => 'go-location_map_order_item',
+                        'meta_value'       => '',
+                        'post_type'        => 'tasks',
+                        'post_mime_type'   => '',
+                        'post_parent'      => '',
+                        'author'	   => '',
+                        'author_name'	   => '',
+                        'post_status'      => 'publish',
+                        'suppress_filters' => true
+
+                    );
+
+					$go_task_ids = get_posts($args);
+                    //$go_task_ids = get_objects_in_term( $term_id1, $taxonomies );
+                    //get post_ids in order
+                    //$go_task_ids = get_term_meta($term_id, 'go_order', true);
+
+
+
+					///////POD STUFF
+					$chain_pod = get_term_meta($term_id, 'pod_toggle', true);
+
+					//THIS IS A REALLY BAD WAY TO FIND OUT IF A TASK IS DONE
+					//FIX ME
 					//if it is a pod, 
    					if ($chain_pod){
    						//get number of tasks needed to complete pod
-   						$go_pod_count = get_term_meta($term_id1, 'pod_done_num', true);
+   						$go_pod_count = get_term_meta($term_id, 'pod_done_num', true);
    						if ($go_pod_count == null){$go_pod_count = 0;}
    						//count number of total tasks in the pod
 						$count_pod = count($go_task_ids);
@@ -92,22 +121,19 @@ function go_make_single_map($last_map_id, $reload = false){
 						}					
    						echo "<br><br><span style='padding-top: 10px; font-size: .8em;'>Choose at least $go_pod_count. <br> $tasks_done done.</span>";
    					}
+   					//end pod stuff
+
+
+
+
+
+
    					echo "</p><ul class='tasks'>";
-					/*Only loop through for first item in array.  This will get the correct order 
-					of quests from the post metadata */
-					$first = true;
+
+
 					if (!empty($go_task_ids)){	
-						
-						foreach ( $go_task_ids as $go_task_id ) {
-							if ( $first ){  
-    							$task1 = $go_task_ids[0];
-    							$go_task_chains_array = get_post_meta( $task1 , 'go_mta_chain_order',  true );
-    							$first = false;
-        						$go_task_chain_post_id_array = $go_task_chains_array[$term_id1];
-							}
-    					}
-    				//End set correct order
-						foreach($go_task_chain_post_id_array as $row) {
+
+						foreach($go_task_ids as $row) {
 							$status = get_post_status( $row );
 							if ($status !== 'publish'){continue; }
 							$task_name = get_the_title($row);

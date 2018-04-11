@@ -721,6 +721,33 @@ input#go_pass_lock::-moz-placeholder {
     height: 100%;
 }
 
+#adminmenu #toplevel_page_game-on-options .wp-menu-image:before {
+	font-family: Fontawesome !important;
+	content: '\f085';
+}
+
+#adminmenu #toplevel_page_badges .wp-menu-image:before {
+	font-family: Fontawesome !important;
+	content: '\f0a3';
+}
+     
+#adminmenu #toplevel_page_groups .wp-menu-image:before {
+	font-family: Fontawesome !important;
+	content: '\f0c0';
+}
+
+#adminmenu #menu-posts-tasks .wp-menu-image:before {
+	font-family: Fontawesome !important;
+	content: '\f041';
+}
+
+.wp-menu-separator{
+    border-bottom: solid 1px;
+    color: lightgray;
+}
+
+
+
 /********************
 *	Term Meta Field Styles
 

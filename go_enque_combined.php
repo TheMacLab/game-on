@@ -9,12 +9,25 @@ function go_admin_scripts_and_styles ($hook) {
 	 * Registering Scripts For Admin Pages
 	 */
 
+
+
 		/*
 		 * Combined scripts for every admin page. Combine all scripts unless the page needs localization.
 		 *
 		 */
 			
-			wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'scripts-min/go_admin-min.js', v1 );
+			wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'scripts-min/go_admin-min.js', array( 'jquery' ),v1, true);
+
+			//wp_register_script( 'go_acf_tax2', plugin_dir_url( __FILE__ ).'includes/acf-fields/acf-tax2-input-min.js', array( 'jquery' ), false, true );
+			//wp_register_script( 'go_acf_tax3', plugin_dir_url( __FILE__ ).'dynamic-fields-on-relationship/dynamic-fields-on-relationship.js', array( 'jquery' ), false, true );
+			//wp_register_script( 'go_acf_tax4', plugin_dir_url( __FILE__ ).'dynamic-select-example/my-acf-extension.js', array( 'jquery' ), false, true );
+			
+			
+			//wp_register_script('GO_acf_tax2', "{$url}assets/js/input.js", array('acf-input'), $version);
+			//wp_enqueue_script('go_acf_tax2');
+			//wp_enqueue_script('go_acf_tax3');
+			//wp_enqueue_script('go_acf_tax4');
+			
 		/*
 		 * END Combined scripts for every admin page. 
 		 */
@@ -32,7 +45,7 @@ function go_admin_scripts_and_styles ($hook) {
 			wp_register_script( 'go_clipboard_combined-min', plugin_dir_url( __FILE__ ).'scripts-min/go_clipboard_combined-min.js' );
 			
 			// store
-			wp_register_script( 'go_store_admin-min', plugin_dir_url( __FILE__ ).'scripts-min/go_store_admin-min.js' );
+			wp_register_script( 'go_store_admin-min', plugin_dir_url( __FILE__ ).'scripts-min/go_store_admin-min.js', array( 'jquery' ), false, true  );
 
 			//featherlight
 			wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );
@@ -112,7 +125,7 @@ function go_admin_scripts_and_styles ($hook) {
 		else if ( 'go_store' === $post->post_type ) {
 
 			/*
-			 * Task Scripts
+			 * Store Scripts
 			 */
 			//Combine 
 			wp_enqueue_script( 'go_store_admin-min' );
@@ -146,7 +159,7 @@ function go_admin_scripts_and_styles ($hook) {
 				)
 			);
 
-		} else if ( 'game-on_page_go_clipboard' === $hook ) {
+		} else if ( 'toplevel_page_go_clipboard' === $hook ) {
 
 			/*
 			 * Clipboard Scripts

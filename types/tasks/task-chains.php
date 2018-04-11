@@ -150,9 +150,12 @@ function task_chains_add_field_column_contents( $content, $column_name, $term_id
         case 'pod_done_num' :
         	$content = get_term_meta( $term_id, 'pod_toggle', true );
             if ($content == true){
-            	$content = get_term_meta( $term_id, 'pod_done_num', true );
-            	break;
+            	$content = get_term_meta( $term_id, 'pod_done_num', true );	
             }
+            else{
+            	$content = '';
+            }
+            break;
         case 'pod_achievement' :
         	$term_id = get_term_meta( $term_id, 'pod_achievement', true );
         	$term = get_term( $term_id, 'go_badges' );

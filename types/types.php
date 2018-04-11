@@ -1080,9 +1080,18 @@ function go_validate_test_modifier( $override_value, $post_id, $field_args ) {
 add_action( 'cmb_render_go_test_field', 'go_render_test_field', 10, 1 );
 function go_render_test_field( $field_args ) {
 	$custom = get_post_custom();
-
+	$test_string = 'stages_1_quiz';
+	$test_string = trim($test_string,"stages__quiz");
+	$test_string = $test_string + 1 ;
+	
+	//Get field name (complete string from DB)
 	$meta_id = $field_args['id'];
+
+
+	//Get one letter code of "test type" from args--can this be changed to stage number?  what is it even for?
 	$ttc = $field_args['test_type'];
+
+	//type always is "go_test_field"
 
 	$temp_array = ( ! empty( $custom[ $meta_id ][0] ) ? $custom[ $meta_id ][0] : null );
 	if ( ! empty( $temp_array ) ) {
@@ -1337,11 +1346,15 @@ function go_render_test_field( $field_args ) {
 		}
 	</script>
 	<?php
+
 }
 
 add_action( 'cmb_validate_go_test_field', 'go_validate_test_field', 10, 3);
 function go_validate_test_field( $unused_override_value, $unused_value, $field_args ) {
 	$ttc = $field_args['test_type'];
+
+
+
 
 	$question_temp 		= ( ! empty( $_POST["go_test_field_input_question_{$ttc}"] )	? $_POST["go_test_field_input_question_{$ttc}"] : null );
 	$test_temp 			= ( ! empty( $_POST["go_test_field_values_{$ttc}"] ) 			? $_POST["go_test_field_values_{$ttc}"] : null );
@@ -2432,28 +2445,6 @@ function go_validate_store_bonus() {
 }
 
 
-function acf_load_course_sections( $field ) {
-    
-    // reset choices
-    $field['choices'] = array();
-    
-    // get the class periods from options page without any formatting
-    $choices = go_return_options( 'go_class_a' );
-    
-    // loop through array and add to field 'choices'
-    if( is_array($choices) ) {
-        
-        foreach( $choices as $choice ) {
-            
-            $field['choices'][ $choice ] = $choice;  
-        }
-    }
-    
-    // return the field
-    return $field; 
-}
-
-add_filter('acf/load_field/name=course_section', 'acf_load_course_sections');
 
 
 ?>

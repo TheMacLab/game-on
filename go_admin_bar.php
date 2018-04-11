@@ -506,22 +506,24 @@ function go_admin_bar() {
 			
 		}
 		//displays Timer in admin bar
-		$atts = shortcode_atts( array(
-			'id' => '', // ID defined in Shortcode
-			'cats' => '', // Cats defined in Shortcode     
-		), $atts);
-		$id = $atts['id'];
-		$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
-		$timer_type = go_timer_type ($custom_fields);
+        $post_id = get_the_ID();
+        $timer_on = get_post_meta($post_id,'go_timer_toggle', true);
+        if ($timer_on) {
 
-		if ($timer_type == 'future'){
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_timer',
-				'title' => '<div id="go_timer"><i class="fa fa-clock-o ab-icon" aria-hidden="true"></i><div><span class="days"></span>d : </div><div><span class="hours"></span>h : </div><div><span class="minutes"></span>m : </div><div><span class="seconds"></span>s</div></div>',
-			) 
-		);
-		}
+            $atts = shortcode_atts(array(
+                'id' => '', // ID defined in Shortcode
+                'cats' => '', // Cats defined in Shortcode
+            ), $atts);
+            $id = $atts['id'];
+            $custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
+
+            $wp_admin_bar->add_node(
+                array(
+                    'id' => 'go_timer',
+                    'title' => '<div id="go_timer"><i class="fa fa-clock-o ab-icon" aria-hidden="true"></i><div><span class="days"></span>d : </div><div><span class="hours"></span>h : </div><div><span class="minutes"></span>m : </div><div><span class="seconds"></span>s</div></div>',
+                )
+            );
+        }
 
 	// end-if the admin bar is turned on and the user is logged in
 	}

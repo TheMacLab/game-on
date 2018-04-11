@@ -1,1 +1,0 @@
-!function(o){var p=o.view.UploaderWindow.prototype.ready;o.view.UploaderWindow.prototype.ready=function(){this.options.uploader.plupload||(this.options.uploader.plupload=client_resize.plupload),p.apply(this,arguments)}}(wp.media);

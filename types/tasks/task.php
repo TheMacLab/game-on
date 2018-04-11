@@ -29,49 +29,12 @@ function go_register_task_tax_and_cpt() {
 		'hierarchical'               => false,
 		'public'                     => true,
 		'show_ui'                    => true,
-		'show_admin_column'          => true,
+		'show_admin_column'          => false,
 		'show_in_nav_menus'          => true,
 		'show_in_menu' 				 => true,
 		'show_tagcloud'              => false,
 	);
-	register_taxonomy( 'go_badges', array( 'tasks' ), $args_badge );
-	
-	
-//DELETE PODS TAXONOMY ONCE REFACTOR IS DONE ON TASK SHORT CODE	
-	/*
-	 * Task Pods Taxonomy
-	
-	$task_pods_labels = array(
-		'name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-		'parent_item' => _x( go_return_options( 'go_tasks_name' ).' Pod Parent', 'task_pods' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).' Pod:', 'task_pods' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Pod', 'task_pods' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' pods with commas', 'task_pods' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' pods', 'task_pods' ),
-		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Pods', 'task_pods' ),
-	);
-	$task_pods_args = array(
-		'labels' => $task_pods_labels,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_ui' => false,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => true,
-		'query_var' => true
-	);
-	register_taxonomy( 'task_pods', array( 'tasks' ), $task_pods_args );
-/////////END DELETE HERE	
- */
+	register_taxonomy( 'go_badges', array( '' ), $args_badge );
 
 	// Register Task Side Menu Taxonomy
 	$task_cat_labels = array( 
@@ -100,44 +63,45 @@ function go_register_task_tax_and_cpt() {
 		'show_tagcloud' => true,
 		'show_admin_column' => true,
 		'hierarchical' => true,
-		'rewrite' => true,
+		'rewrite' => array(
+            'slug' => get_option('options_go_locations_widget')
+        ),
 		'query_var' => true
 	);
 	register_taxonomy( 'task_categories', array( 'maps_menus' ), $task_cat_args );
 
 
-
-	// Register Task Focus-specailist
-	$focus_labels = array( 
-		'name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'singular_name' => _x( go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-		'parent_item' => _x( go_return_options( 'go_focus_name' ).' Category Parent', 'task_focus_categories' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_focus_name' ).' Category:', 'task_focus_categories' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_focus_name' ).' Category', 'task_focus_categories' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_focus_name' ).' categories with commas', 'task_focus_categories' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_focus_name' ).' categories', 'task_focus_categories' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_focus_name' ).' categories', 'task_focus_categories' ),
-		'menu_name' => _x( go_return_options( 'go_focus_name' ).' Categories', 'task_focus_categories' ),
-	);
-	$focus_args = array(
-		'labels' => $focus_labels,
-		'public' => true,
-		'show_in_nav_menus' => false,
-		'show_in_menu' => true,
-		'show_ui' => true,
-		'show_tagcloud' => false,
-		'show_admin_column' => false,
-		'hierarchical' => false,
-		'rewrite' => true,
-		'query_var' => true
-	);
-	register_taxonomy( 'task_focus_categories', array( 'tasks' ), $focus_args );
+// Register Task Focus-specailist
+    $focus_labels = array(
+        'name' => _x( 'User Groups', 'user_go_groups' ),
+        'singular_name' => _x( 'User Group', 'user_go_groups' ),
+        'search_items' => _x( 'Search User Groups', 'user_go_groups' ),
+        'popular_items' => _x( 'Popular User Groups', 'user_go_groups' ),
+        'all_items' => _x( 'All User Groups', 'user_go_groups' ),
+        'parent_item' => _x('User Group Parent', 'user_go_groups' ),
+        'parent_item_colon' => _x( 'User Group Parent: ', 'user_go_groups' ),
+        'edit_item' => _x( 'Edit User Groups', 'user_go_groups' ),
+        'update_item' => _x( 'Update User Groups', 'user_go_groups' ),
+        'add_new_item' => _x( 'Add New User Group', 'user_go_groups' ),
+        'new_item_name' => _x( 'New User Group', 'user_go_groups' ),
+        'separate_items_with_commas' => _x( 'Separate User Groups with commas', 'user_go_groups' ),
+        'add_or_remove_items' => _x( 'Add or remove User Group ', 'user_go_groups' ),
+        'choose_from_most_used' => _x( 'Choose from the most used User Groups', 'user_go_groups' ),
+        'menu_name' => _x( 'User Groups', 'user_go_groups' ),
+    );
+    $focus_args = array(
+        'labels' => $focus_labels,
+        'public' => true,
+        'show_in_nav_menus' => false,
+        'show_in_menu' => true,
+        'show_ui' => true,
+        'show_tagcloud' => true,
+        'show_admin_column' => false,
+        'hierarchical' => true,
+        'rewrite' => true,
+        'query_var' => true
+    );
+    register_taxonomy( 'user_go_groups', array( '' ), $focus_args );
 
 	// Register Task TOP MENU Taxonomy
 	$task_menu_labels = array( 
@@ -164,9 +128,11 @@ function go_register_task_tax_and_cpt() {
 		'show_in_menu' => true,
 		'show_ui' => true,
 		'show_tagcloud' => true,
-		'show_admin_column' => true,
+		'show_admin_column' => false,
 		'hierarchical' => true,
-		'rewrite' => false,
+        'rewrite' => array(
+            'slug' => get_option('options_go_locations_top_menu')
+        ),
 		'query_var' => true
 	);
 	register_taxonomy( 'task_menus', array( 'maps_menus' ), $task_menu_args );
@@ -196,7 +162,7 @@ function go_register_task_tax_and_cpt() {
 		'show_in_menu' => true,
 		'show_ui' => true,
 		'show_tagcloud' => true,
-		'show_admin_column' => true,
+		'show_admin_column' => false,
 		'hierarchical' => true,
 		'rewrite' => array(
                 'slug' => 'task_chains'
@@ -204,39 +170,6 @@ function go_register_task_tax_and_cpt() {
 		'query_var' => true
 	);
 	register_taxonomy( 'task_chains', array( 'maps_menus' ), $task_chains_args );
-/*
-// Register Task chains Taxonomy
-	$task_chains_labels = array(
-		'name' => _x( go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'singular_name' => _x( go_return_options( 'go_tasks_name' ).' Map Section', 'task_chains' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'popular_items' => _x( 'Popular '.go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'all_items' => _x( 'All '.go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'parent_item' => _x('Map (Set as none to create a new map)', 'task_chains' ),
-		'parent_item_colon' => _x( 'Map (Set as none to create a new map):', 'task_chains' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'update_item' => _x( 'Update '.go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'new_item_name' => _x( 'New '.go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-		'separate_items_with_commas' => _x( 'Separate '.go_return_options( 'go_tasks_name' ).' maps with commas', 'task_chains' ),
-		'add_or_remove_items' => _x( 'Add or remove '.go_return_options( 'go_tasks_name' ).' maps', 'task_chains' ),
-		'choose_from_most_used' => _x( 'Choose from the most used '.go_return_options( 'go_tasks_name' ).' maps', 'task_chains' ),
-		'menu_name' => _x( go_return_options( 'go_tasks_name' ).' Maps', 'task_chains' ),
-	);
-	$task_chains_args = array(
-		'labels' => $task_chains_labels,
-		'public' => true,
-		'show_in_nav_menus' => false,
-		'show_in_menu' => false,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => true,
-		'hierarchical' => true,
-		'rewrite' => false,
-		'query_var' => true
-	);
-	register_taxonomy( 'task_chains', array( 'tasks' ), $task_chains_args );
-*/
 
 
 	/*
@@ -260,8 +193,8 @@ function go_register_task_tax_and_cpt() {
 		'labels' => $labels_cpt,
 		'hierarchical' => false,
 		'description' => go_return_options( 'go_tasks_plural_name' ),
-		'supports' => array( 'title', 'custom-fields', 'page-attributes', 'comments' ),
-		'taxonomies' => array( 'task_focus_categories', 'go_badges' ),
+        'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields', 'page-attributes', 'post-formats' ),
+		'taxonomies' => array( 'task_chains','task_menus','task_categories' ),
 		'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => true,
@@ -279,82 +212,6 @@ function go_register_task_tax_and_cpt() {
 	
 }
 add_action( 'init', 'go_register_task_tax_and_cpt', 0 );
-
-
-/*
-// Register Custom Post Type
-function go_maps_menus() {
-
-	$labels = array(
-		'name'                  => _x( 'Maps and Menus', 'Post Type General Name', 'text_domain' ),
-		'singular_name'         => _x( 'Maps and Menus', 'Post Type Singular Name', 'text_domain' ),
-		'menu_name'             => __( 'Maps and Menus2', 'text_domain' ),
-		'name_admin_bar'        => __( 'Maps and Menus2', 'text_domain' ),
-		'archives'              => __( 'Maps and Menus Archives', 'text_domain' ),
-		'attributes'            => __( 'Maps and Menus Attributes', 'text_domain' ),
-		'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
-		'all_items'             => __( 'All Items', 'text_domain' ),
-		'add_new_item'          => __( 'Add New Item', 'text_domain' ),
-		'add_new'               => __( 'Add New', 'text_domain' ),
-		'new_item'              => __( 'New Item', 'text_domain' ),
-		'edit_item'             => __( 'Edit Item', 'text_domain' ),
-		'update_item'           => __( 'Update Item', 'text_domain' ),
-		'view_item'             => __( 'View Item', 'text_domain' ),
-		'view_items'            => __( 'View Items', 'text_domain' ),
-		'search_items'          => __( 'Search Item', 'text_domain' ),
-		'not_found'             => __( 'Not found', 'text_domain' ),
-		'not_found_in_trash'    => __( 'Not found in Trash', 'text_domain' ),
-		'featured_image'        => __( 'Featured Image', 'text_domain' ),
-		'set_featured_image'    => __( 'Set featured image', 'text_domain' ),
-		'remove_featured_image' => __( 'Remove featured image', 'text_domain' ),
-		'use_featured_image'    => __( 'Use as featured image', 'text_domain' ),
-		'insert_into_item'      => __( 'Insert into item', 'text_domain' ),
-		'uploaded_to_this_item' => __( 'Uploaded to this item', 'text_domain' ),
-		'items_list'            => __( 'Items list', 'text_domain' ),
-		'items_list_navigation' => __( 'Items list navigation', 'text_domain' ),
-		'filter_items_list'     => __( 'Filter items list', 'text_domain' ),
-	);
-	$capabilities = array(
-		'edit_post'             => 'edit_post',
-		'read_post'             => 'read_post',
-		'delete_post'           => 'delete_post',
-		'edit_posts'            => 'edit_posts',
-		'edit_others_posts'     => 'edit_others_posts',
-		'publish_posts'         => 'publish_posts',
-		'read_private_posts'    => 'read_private_posts',
-		'create_posts' 			=> 'do_not_allow',
-	);
-	$args = array(
-		'label'                 => __( 'Maps and Menus', 'text_domain' ),
-		'description'           => __( 'Maps and Menus for GO', 'text_domain' ),
-		'labels'                => $labels,
-		'supports'              => false,
-		'taxonomies'            => array( 'task_categories', ' task_chains', ' task_menus' ),
-		'hierarchical'          => false,
-		'public'                => true,
-		'show_ui'               => true,
-		'show_in_menu'          => true,
-		'menu_icon' 			=> 'dashicons-location-alt',
-		'menu_position'         => 5,
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => false,
-		'can_export'            => false,
-		'has_archive'           => false,
-		'exclude_from_search'   => true,
-		'publicly_queryable'    => false,
-		'capabilities'          => $capabilities,
-		'map_meta_cap' 			=> false,
-		'capability_type' 		=> 'post',
-	);
-	register_post_type( 'maps_menus', $args );
-	
-
-}
-add_action( 'init', 'go_maps_menus', 0 );
-
-*/
-
-
 
 
 /**
@@ -492,15 +349,12 @@ function go_convert_task_id_to_term_in_query($query) {
 /**
  * Auto update slugs
  * @author  Mick McMurray
+ * Based on info from:
  * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
  */
 
-/**
-**turn this on in future release.  Perhaps only for terms and then fix so only some terms.
-*/
 function go_update_slug( $data, $postarr ) {
 	$post_type = $data['post_type'];
-	//echo '<script type="text/javascript">alert("'.print_r($post_type).'");</script>';
 	if ($post_type == 'tasks' || $post_type =='go_store' ){
     	$data['post_name'] = wp_unique_post_slug( sanitize_title( $data['post_title'] ), $postarr['ID'], $data['post_status'], $data['post_type'], $data['post_parent'] );
 	}
@@ -511,15 +365,11 @@ add_filter( 'wp_insert_post_data', 'go_update_slug', 99, 2 );
 
 
 // define the wp_update_term_data callback 
-function go_update_term_slug( $data, $term_id, $taxonomy, $args ) { 
-	//echo '<script type="text/javascript">alert("'.print_r($taxonomy).'");</script>';
-	if ($taxonomy == 'go_badges' || $taxonomy == 'task_focus_categories' || $taxonomy == 'task_categories' || $taxonomy == 'task_menus' || $taxonomy == 'task_chains' || $taxonomy == 'store_types' ){
-		$no_space_slug = sanitize_title($data['name']);
-	     $data['slug'] = wp_unique_term_slug( $no_space_slug , (object) $args );
-	    return $data; 
-	}
-}; 
-         
+function go_update_term_slug( $data, $term_id, $taxonomy, $args ) {
+	$no_space_slug = sanitize_title($data['name']);
+	$data['slug'] = wp_unique_term_slug( $no_space_slug , (object) $args );
+	return $data;
+};
 add_filter( 'wp_update_term_data', 'go_update_term_slug', 10, 4 );
 
 
@@ -680,5 +530,7 @@ function limit_parents_wpse_106164( $args, $taxonomy ) {
     $args['depth'] = '1';
     return $args;
 }
+
+
 
 ?>
