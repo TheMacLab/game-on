@@ -1,0 +1,118 @@
+/**
+ * Date Picker Setting Row
+ */
+
+.go_date_picker_modifier_input {
+	height: 30px;
+	width: 70px;
+}
+
+/**
+ * Task Chain Setting Row
+ */
+
+.go_task_chain_order_container {
+	margin-bottom: 20px;
+}
+
+.go_task_chain_order_container:last-of-type {
+	margin-bottom: 0px;
+}
+
+.go_task_chain_order_title {
+	margin-bottom: 10px;
+}
+
+.go_task_chain_order_list {
+	margin: 0;
+}
+
+/**
+ * Task Chain Final Message Setting Row
+ */
+
+#go_mta_final_chain_message {
+	width: 100%;
+}
+
+
+/**
+*set column widths on manage term pages
+ */
+.column-primary {
+	flex: 1 !important; }
+
+.posts.column-posts,
+.manage-column.column-posts,
+.pod_toggle.column-pod_toggle,
+.manage-column.column-pod_toggle{
+	text-align: center;
+	flex: none !important;
+	display: block;
+	width: 40px;
+}
+
+.pod_achievement.column-pod_achievement,
+.manage-column.column-pod_achievement,
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num,
+.description.column-description,
+.manage-column.column-description,
+.slug.column-slug,
+.manage-column.column-slug{
+	text-align: center;
+	flex: none !important;
+	display: block;
+	width: 100px;
+}
+
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num{
+	text-align: center;
+	flex: none !important;
+	display: block;
+	width: 75px;
+}
+
+/*MAPS*/
+.taxonomy-task_chains .acf-field {display: none;}
+.taxonomy-task_chains #edittag h2 {display: none;}
+
+.taxonomy-task_chains .pod_achievement.column-pod_achievement,
+.taxonomy-task_chains .pod_toggle.column-pod_toggle,
+.taxonomy-task_chains .pod_done_num.column-pod_done_num {
+	visibility: hidden;
+}
+
+
+
+.child .pod_achievement.column-pod_achievement,
+.child .pod_toggle.column-pod_toggle,
+.child .pod_done_num.column-pod_done_num {
+  visibility: visible; }
+
+
+/********************
+*	Edit term tables
+hides table on term page until reorder.js is complete
+********************/
+#col-right {display:none;}
+
+ul .row-actions {display:none;}
+
+//hides description field
+.taxonomy-task_chains .term-description-wrap,
+.taxonomy-task_focus_categories .term-description-wrap,
+.taxonomy-task_categories .term-description-wrap,
+.taxonomy-task_menus .term-description-wrap,
+.taxonomy-stask_badges .term-description-wrap,
+.taxonomy-store_types .term-description-wrap,
+{display:none;}
+
+/********************
+*
+********************/
+
+
+.wp-has-submenu.toplevel_page_maps_menus .wp-first-item {
+  display: none; }

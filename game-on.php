@@ -8,38 +8,16 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4b
 */
 
-foreach ( glob( plugin_dir_path( __FILE__ ) . "admin/*.php" ) as $file ) {
-    include_once $file;
-}
-
-// include custom ACF fields
-foreach ( glob( plugin_dir_path( __FILE__ ) . "admin/custom-acf-fields/*.php" ) as $file ) {
-    include_once $file;
-}
-
-if( ! class_exists( 'WP_Term_Order' ) ) {
-    // WP Term Order Plugin is not active
-    include( 'admin/wp-term-order/wp-term-order.php' );
-}
-
-foreach ( glob( plugin_dir_path( __FILE__ ) . "frontend/*.php" ) as $file ) {
-    include_once $file;
-}
-
-//if( ! class_exists( 'wp-featherlight' ) ) {
-//	include( 'includes/wp-featherlight/wp-featherlight.php' );
-//}
-
-if( ! class_exists( 'FitVidsWP' ) ) {
-	// FitVids Plugin is not active
-	include( 'includes/fitvids-for-wordpress/fitvids-for-wordpress.php' );
-}
-
 foreach ( glob( plugin_dir_path( __FILE__ ) . "*.php" ) as $file ) {
     include_once $file;
 }
 
-include_once ( 'types/types.php' );
+foreach ( glob( plugin_dir_path( __FILE__ ) . "src/*.php" ) as $file ) {
+    include_once $file;
+}
+
+
+include_once "types/types.php";
 
 
 foreach ( glob( plugin_dir_path( __FILE__ ) . "types/store/*.php" ) as $file ) {
@@ -50,7 +28,41 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "types/tasks/*.php" ) as $file ) {
     include_once $file;
 }
 
-include( plugin_dir_path( __FILE__ ) . 'types/test/test_shortcode.php');
+foreach ( glob( plugin_dir_path( __FILE__ ) . "js/admin/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "js/front/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/admin/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/front/*.php" ) as $file ) {
+    include_once $file;
+}
+
+
+
+//if( ! class_exists( 'wp-featherlight' ) ) {
+//	include( 'includes/wp-featherlight/wp-featherlight.php' );
+//}
+
+// include custom ACF fields
+foreach ( glob( plugin_dir_path( __FILE__ ) . "custom-acf-fields/*.php" ) as $file ) {
+    include_once $file;
+}
+
+
+// includes
+foreach ( glob( plugin_dir_path( __FILE__ ) . "includes/*.php" ) as $file ) {
+    include_once $file;
+}
+
+
+
 
 
 /*
@@ -116,7 +128,10 @@ add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'admin_head', 'go_stats_overlay' );
 add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
-add_action( 'admin_enqueue_scripts', 'go_admin_scripts_and_styles' );
+add_action( 'admin_enqueue_scripts', 'go_admin_scripts' );
+add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
+add_action( 'admin_enqueue_scripts', 'go_admin_styles' );
+add_action( 'admin_enqueue_scripts', 'go_acf_scripts' );
 add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 /*
@@ -125,8 +140,10 @@ add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 // actions
 add_action( 'wp_head', 'go_stats_overlay' );
-add_action( 'wp_head', 'go_frontend_lightbox_html' );
-add_action( 'wp_enqueue_scripts', 'go_scripts_and_styles' );
+add_action( 'wp_enqueue_scripts', 'go_scripts' );
+add_action( 'wp_enqueue_scripts', 'go_styles' );
+add_action( 'wp_enqueue_scripts', 'go_includes' );
+//add_action( 'wp_enqueue_scripts', 'go_scripts' );
 
 // filters
 add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
@@ -196,6 +213,7 @@ add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
 add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
 add_action( 'wp_ajax_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
+add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' );
 
 
 /**
@@ -461,17 +479,7 @@ function go_user_is_admin( $user_id = null ) {
 	return false;
 }
 
-//Add GO Options Page using ACF
-if( function_exists('acf_add_options_page') ) {
-    $args = array(
-        'page_title' => 'Options',
-        'menu_slug' => 'go_options',
-        'capability' => 'edit_posts',
-    );
 
-	acf_add_options_page($args);
-
-}
 
 
 //Resize All Images on Client Side
@@ -512,42 +520,134 @@ if( !$menu_exists) {
 }
 
 
-// Filter wp_nav_menu() to add additional links and other output
-function go_new_nav_menu_items($items) {
-	$homelink = '<li class="home go_top_menu_1"><a href="' . home_url( '/' ) . '">' . __('Home') . '</a></li>';
 
-    $menu_link = $homelink . $items;
 
-	$terms = get_terms( array(
-        'taxonomy' 		=> 'task_menus',
-        'hide_empty'	=> false,
-        'parent'		=> 0,
-    ) );
+    function go_new_nav_menu_items($items) {
 
-    foreach ($terms as $term) {
-        $term_id = $term->term_id;
-        $child_terms = get_terms(array(
-            'taxonomy' => 'task_menus',
-            'hide_empty' => false,
-            'parent' => $term_id,
-        ));
-        if (!empty($child_terms)) {
-            $term_name = $term->name;
-            $term_link = get_term_link($term->term_id);
-            //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
-            $menu_link = $menu_link . '<li class="go_top_menu_1"><a href="#">' . __($term_name) . '</a><ul>';
-            foreach ($child_terms as $child_term) {
-                $term_name = $child_term->name;
-                $term_link = get_term_link($child_term->term_id);
-                $menu_link = $menu_link . '<li class="go_top_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a></li>';
+        $homelink = '<li class="home go_top_menu_1"><a href="' . home_url( '/' ) . '">' . __('Home') . '</a></li>';
+
+        $menu_link = $homelink . $items;
+
+
+        $terms = get_terms( array(
+            'taxonomy' 		=> 'task_menus',
+            'hide_empty'	=> false,
+            'parent'		=> 0,
+        ) );
+		//$menu_link = '<ul class="collapsibleList">';
+        foreach ($terms as $term) {
+            $term_id = $term->term_id;
+            $child_terms = get_terms(array(
+                'taxonomy' => 'task_menus',
+                'hide_empty' => false,
+                'parent' => $term_id,
+            ));
+            $args=array(
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'task_menus',
+                        'field' => 'term_id',
+                        'terms' => $term_id,
+                    )
+                ),
+                'posts_per_page'   => -1,
+                'orderby'          => 'meta_value_num',
+                'order'            => 'ASC',
+
+                'meta_key'         => 'go-location_menu_order_item',
+                'meta_value'       => '',
+                'post_type'        => 'tasks',
+                'post_mime_type'   => '',
+                'post_parent'      => '',
+                'author'	   => '',
+                'author_name'	   => '',
+                'post_status'      => 'publish',
+                'suppress_filters' => true
+
+            );
+
+            $go_tasks_objs = get_posts($args);
+
+            if (!empty($go_tasks_objs)) {
+
+                $term_name = $term->name;
+                $term_link = get_term_link($term->term_id);
+                //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
+                $menu_link = $menu_link . '<li class="go_top_menu_1"><a href="#">' . __($term_name) . '</a><ul>';
+
+                foreach ($child_terms as $child_term) {
+                    $term_id = $child_term->term_id;
+                    $args=array(
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => 'task_menus',
+                                'field' => 'term_id',
+                                'terms' => $term_id,
+                            )
+                        ),
+                        'posts_per_page'   => -1,
+                        'orderby'          => 'meta_value_num',
+                        'order'            => 'ASC',
+
+                        'meta_key'         => 'go-location_menu_order_item',
+                        'meta_value'       => '',
+                        'post_type'        => 'tasks',
+                        'post_mime_type'   => '',
+                        'post_parent'      => '',
+                        'author'	   => '',
+                        'author_name'	   => '',
+                        'post_status'      => 'publish',
+                        'suppress_filters' => true
+
+                    );
+
+                    $go_tasks_objs = get_posts($args);
+
+                     if (!empty($go_tasks_objs)) {
+
+                         $term_name = $child_term->name;
+                         $term_link = get_term_link($child_term->term_id);
+                         //$menu_link = $menu_link . '<li class="go_top_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>' ;
+                         $menu_link = $menu_link . '<li class="go_top_menu_2"><a href="#">>> ' . __($term_name) . '</a>' ;
+
+                         //get the term id of this chain
+                         $term_id = $child_term->term_id;
+                         $args = array('tax_query' => array(array('taxonomy' => 'task_menus', 'field' => 'term_id', 'terms' => $term_id,)),'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
+
+                             'meta_key' => 'go-location_menu_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
+
+                         );
+
+                         $go_tasks_objs = get_posts($args);
+                         if (!empty($go_tasks_objs)) {
+                             $menu_link = $menu_link . '<ul>';
+                             foreach ($go_tasks_objs as $go_tasks_obj) {
+                                 $task_link = $go_tasks_obj->guid;
+                                 $task_title = $go_tasks_obj->post_title;
+
+                                 $menu_link = $menu_link . '<li class="go_menu_task"><a href="' . $task_link . '">• ' . __($task_title) . '</a></li>';
+
+                             }
+                             $menu_link = $menu_link . '</ul>';
+                         }
+                         $menu_link = $menu_link . '</li>';
+                     }
+                }
+                $menu_link = $menu_link . '</ul></li>';
             }
-            $menu_link = $menu_link . '</ul></li>';
         }
-    }
+        //$menu_link = $menu_link . '</ul>';
+        return $menu_link;
 
-    return $menu_link;
-}
-add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
+    }
+    add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
+
+
+
+
+
+
+
 
 
 /**
@@ -581,22 +681,22 @@ class wpb_widget extends WP_Widget {
 // Creating widget front-end
 
     public function widget( $args, $instance ) {
-        $title = apply_filters( 'widget_title', $instance['title'] );
+        //$title = apply_filters( 'widget_title', $instance['title'] );
+        $title = get_option('options_go_locations_widget_title');
 
-// before and after widget arguments are defined by themes
+        // before and after widget arguments are defined by themes
         echo $args['before_widget'];
-        if ( ! empty( $title ) )
+
             echo $args['before_title'] . $title . $args['after_title'];
 
-// This is where you run the code and display the output
+        // This is where you run the code and display the output
         //echo __( 'Hello, World!', 'wpb_widget_domain' );
-
         $terms = get_terms( array(
             'taxonomy' 		=> 'task_categories',
             'hide_empty'	=> false,
             'parent'		=> 0,
         ) );
-		$menu_link = '<ul>';
+		$menu_link = '<ul class="collapsibleList">';
         foreach ($terms as $term) {
             $term_id = $term->term_id;
             $child_terms = get_terms(array(
@@ -604,20 +704,103 @@ class wpb_widget extends WP_Widget {
                 'hide_empty' => false,
                 'parent' => $term_id,
             ));
-            if (!empty($child_terms)) {
+            $args=array(
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'task_categories',
+                        'field' => 'term_id',
+                        'terms' => $term_id,
+                    )
+                ),
+                'posts_per_page'   => -1,
+                'orderby'          => 'meta_value_num',
+                'order'            => 'ASC',
+
+                'meta_key'         => 'go-location_widget_order_item',
+                'meta_value'       => '',
+                'post_type'        => 'tasks',
+                'post_mime_type'   => '',
+                'post_parent'      => '',
+                'author'	   => '',
+                'author_name'	   => '',
+                'post_status'      => 'publish',
+                'suppress_filters' => true
+
+            );
+
+            $go_tasks_objs = get_posts($args);
+
+            if (!empty($go_tasks_objs)) {
+
                 $term_name = $term->name;
                 $term_link = get_term_link($term->term_id);
                 //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
-                $menu_link = $menu_link . '<li class="go_top_menu_1"><a href="#">' . __($term_name) . '</a><ul>';
+                $menu_link = $menu_link . '<li class="go_side_menu_1">' . __($term_name) . '<ul>';
+
                 foreach ($child_terms as $child_term) {
-                    $term_name = $child_term->name;
-                    $term_link = get_term_link($child_term->term_id);
-                    $menu_link = $menu_link . '<li class="go_top_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a></li>';
+                    $term_id = $child_term->term_id;
+                    $args=array(
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => 'task_categories',
+                                'field' => 'term_id',
+                                'terms' => $term_id,
+                            )
+                        ),
+                        'posts_per_page'   => -1,
+                        'orderby'          => 'meta_value_num',
+                        'order'            => 'ASC',
+
+                        'meta_key'         => 'go-location_widget_order_item',
+                        'meta_value'       => '',
+                        'post_type'        => 'tasks',
+                        'post_mime_type'   => '',
+                        'post_parent'      => '',
+                        'author'	   => '',
+                        'author_name'	   => '',
+                        'post_status'      => 'publish',
+                        'suppress_filters' => true
+
+                    );
+
+                    $go_tasks_objs = get_posts($args);
+
+                     if (!empty($go_tasks_objs)) {
+
+                         $term_name = $child_term->name;
+
+                         //switch the comments on these next 3 lines if you want links on the terms
+                         //$term_link = get_term_link($child_term->term_id);
+                         //$menu_link = $menu_link . '<li class="go_side_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>';
+                         $menu_link = $menu_link . '<li class="go_side_menu_2">' . __($term_name) ;
+
+                         //get the term id of this chain
+                         $term_id = $child_term->term_id;
+                         $args = array('tax_query' => array(array('taxonomy' => 'task_categories', 'field' => 'term_id', 'terms' => $term_id,)), 'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
+
+                             'meta_key' => 'go-location_widget_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
+
+                         );
+
+                         $go_tasks_objs = get_posts($args);
+                         if (!empty($go_tasks_objs)) {
+                             $menu_link = $menu_link . '<ul>';
+                             foreach ($go_tasks_objs as $go_tasks_obj) {
+                                 $task_link = $go_tasks_obj->guid;
+                                 $task_title = $go_tasks_obj->post_title;
+
+                                 $menu_link = $menu_link . '<li class="go_side_menu_task"><a href="' . $task_link . '">' . __($task_title) . '</a></li>';
+
+                             }
+                             $menu_link = $menu_link . '</ul>';
+                         }
+                         $menu_link = $menu_link . '</li>';
+                     }
                 }
                 $menu_link = $menu_link . '</ul></li>';
             }
         }
-        $menu_link = $menu_link . '<ul>';
+        $menu_link = $menu_link . '</ul>';
         echo $menu_link;
 
 
@@ -632,7 +815,7 @@ class wpb_widget extends WP_Widget {
             $title = $instance[ 'title' ];
         }
         else {
-            $title = __( get_option('options_go_locations_widget'), 'go_widget_domain' );
+            $title = __( get_option('options_go_locations_widget_title'), 'go_widget_domain' );
         }
 // Widget admin form
         ?>
@@ -669,19 +852,22 @@ function go_change_sort_order($query){
     }
 
 	if ($query->is_tax('task_menus')){
-        $query->set('orderby', 'meta_value');
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
         $query->set('meta_key', 'go-location_top_order_item');
         $query->set('order', 'ASC');
 	}
 
 	if ($query->is_tax('task_categories')){
-        $query->set('orderby', 'meta_value');
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
         $query->set('meta_key', 'go-location_side_order_item');
         $query->set('order', 'ASC');
 	}
 
     if ($query->is_tax('task_chains')){
-        $query->set('orderby', 'meta_value');
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
         $query->set('meta_key', 'go-location_map_order_item');
         $query->set('order', 'ASC');
     }
@@ -696,6 +882,12 @@ function go_change_sort_order($query){
 };
 
 
+
+add_action( 'pre_get_posts', 'enfold_customization_author_archives' );
+function enfold_customization_author_archives( $query ) {
+    if ( $query -> is_author ) { $query -> set( 'post_type', 'any' ); }
+    remove_action( 'pre_get_posts', 'enfold_customization_author_archives' );
+}
 
 
 

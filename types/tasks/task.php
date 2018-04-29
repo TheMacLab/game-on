@@ -1,17 +1,121 @@
 <?php
 
 function go_register_task_tax_and_cpt() {
+
+    // Register Task chains Taxonomy
+    $task_chains_labels = array(
+        'name' => 'Quest Maps',
+        'singular_name' => 'Quest Map',
+        'search_items' => 'Search Quests',
+        'popular_items' => 'Popular Quests',
+        'all_items' => 'All Quests',
+        'parent_item' => 'Map (Set as none to create a new map)',
+        'parent_item_colon' => 'Map (Set as none to create a new map):',
+        'edit_item' => 'Edit Quests',
+        'update_item' => 'Update Quests',
+        'add_new_item' => 'Add New Quest',
+        'new_item_name' => 'New Quest',
+        'separate_items_with_commas' => 'Separate Quests with commas',
+        'add_or_remove_items' => 'Add or remove Quests',
+        'choose_from_most_used' => 'Choose from the most used Quests',
+        'menu_name' => 'Quest Maps',
+    );
+    $task_chains_args = array(
+        'labels' => $task_chains_labels,
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_in_menu' => false,
+        'show_ui' => true,
+        'show_tagcloud' => true,
+        'show_admin_column' => true,
+        'hierarchical' => true,
+        'rewrite' => array(
+            'slug' => 'task_chains'
+        ),
+        'query_var' => true
+    );
+    register_taxonomy( 'task_chains', array( 'maps_menus' ), $task_chains_args );
+
+    // Register Task TOP MENU Taxonomy
+    $task_menu_labels = array(
+        'name' => _x('Top Menu', 'task_menu' ),
+        'singular_name' => _x('Top Menu', 'task_menu' ),
+        'search_items' => _x( 'Search Top Menus', 'task_menu' ),
+        'popular_items' => _x( 'Popular Top Menus', 'task_menu' ),
+        'all_items' => _x( 'All Top Menus', 'task_menu' ),
+        'parent_item' => _x('Parent Menu', 'task_menu' ),
+        'parent_item_colon' => _x( 'Parent Menu:', 'task_menu' ),
+        'edit_item' => _x( 'Edit Top Menu', 'task_menu' ),
+        'update_item' => _x( 'Update Top Menu', 'task_menu' ),
+        'add_new_item' => _x( 'Add New Top Menu', 'task_menu' ),
+        'new_item_name' => _x( 'New Top Menu', 'task_menu' ),
+        'separate_items_with_commas' => _x( 'Separate top menus with commas', 'task_menu' ),
+        'add_or_remove_items' => _x( 'Add or remove top menus', 'task_menu' ),
+        'choose_from_most_used' => _x( 'Choose from the most used top menus', 'task_menu' ),
+        'menu_name' => _x(' Top Menu', 'task_menu' ),
+    );
+    $task_menu_args = array(
+        'labels' => $task_menu_labels,
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_in_menu' => false,
+        'show_ui' => true,
+        'show_tagcloud' => true,
+        'show_admin_column' => true,
+        'hierarchical' => true,
+        'rewrite' => array(
+            'slug' => get_option('options_go_locations_top_menu')
+        ),
+        'query_var' => true
+    );
+    register_taxonomy( 'task_menus', array( 'maps_menus' ), $task_menu_args );
+
+    // Register Task Side Menu Taxonomy
+    $task_cat_labels = array(
+        'name' => 'Side Menu',
+        'singular_name' => 'Side Menu',
+        'search_items' => 'Search Side Menus',
+        'popular_items' => 'Popular Side Menus',
+        'all_items' => 'All Side Menu Items',
+        'parent_item' => ' Side Menu Parent',
+        'parent_item_colon' => 'Side Menu:',
+        'edit_item' => 'Edit Side Menu Section',
+        'update_item' => 'Update Side Menu',
+        'add_new_item' => 'Add New Side Menu',
+        'new_item_name' => 'New Side Menu',
+        'separate_items_with_commas' => 'Separate Side Menus with commas',
+        'add_or_remove_items' => 'Add or remove Side Menu',
+        'choose_from_most_used' => 'Choose from the most used Side Menus',
+        'menu_name' => 'Side Menu',
+    );
+    $task_cat_args = array(
+        'labels' => $task_cat_labels,
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_in_menu' => false,
+        'show_ui' => true,
+        'show_tagcloud' => true,
+        'show_admin_column' => true,
+        'hierarchical' => true,
+        'rewrite' => array(
+            'slug' => get_option('options_go_locations_widget')
+        ),
+        'query_var' => true
+    );
+    register_taxonomy( 'task_categories', array( 'maps_menus' ), $task_cat_args );
+
+
 	// Register Badges
 	$labels_badge = array(
-		'name'                       => _x( go_return_options( 'go_badges_name' ), 'badges' ),
-		'singular_name'              => _x( go_return_options( 'go_badges_name' ), 'badges' ),
-		'menu_name'                  => _x( go_return_options( 'go_badges_name' ), 'badges' ),
-		'all_items'                  => 'All ' . _x( go_return_options( 'go_badges_name' ), 'badges' ),
-		'parent_item'                => 'Parent ' . _x( go_return_options( 'go_badges_name' ), 'badges' ),
+		'name'                       => _x( get_option('options_go_badges_name'), 'badges' ),
+		'singular_name'              => _x( get_option('options_go_badges_name'), 'badges' ),
+		'menu_name'                  => _x( get_option('options_go_badges_name'), 'badges' ),
+		'all_items'                  => 'All ' . _x( get_option('options_go_badges_name'), 'badges' ),
+		'parent_item'                => 'Parent ' . _x( get_option('options_go_badges_name'), 'badges' ),
 		'parent_item_colon'          => 'Parent Item:',
-		'new_item_name'              => 'New ' . _x( go_return_options( 'go_badges_name' ), 'badges' ) . ' Name',
-		'add_new_item'               => 'Add New ' . _x( go_return_options( 'go_badges_name' ), 'badges' ),
-		'edit_item'                  => 'Edit ' . _x( go_return_options( 'go_badges_name' ), 'badges' ),
+		'new_item_name'              => 'New ' . _x( get_option('options_go_badges_name'), 'badges' ) . ' Name',
+		'add_new_item'               => 'Add New ' . _x( get_option('options_go_badges_name'), 'badges' ),
+		'edit_item'                  => 'Edit ' . _x( get_option('options_go_badges_name'), 'badges' ),
 		'update_item'                => 'Update Item',
 		'view_item'                  => 'View Item',
 		'separate_items_with_commas' => 'Separate items with commas',
@@ -26,7 +130,7 @@ function go_register_task_tax_and_cpt() {
 	);
 	$args_badge = array(
 		'labels'                     => $labels_badge,
-		'hierarchical'               => false,
+		'hierarchical'               => true,
 		'public'                     => true,
 		'show_ui'                    => true,
 		'show_admin_column'          => false,
@@ -36,42 +140,8 @@ function go_register_task_tax_and_cpt() {
 	);
 	register_taxonomy( 'go_badges', array( '' ), $args_badge );
 
-	// Register Task Side Menu Taxonomy
-	$task_cat_labels = array( 
-		'name' => 'Side Menu',
-		'singular_name' => 'Side Menu',
-		'search_items' => 'Search Side Menus',
-		'popular_items' => 'Popular Side Menus',
-		'all_items' => 'All Side Menu Items',
-		'parent_item' => ' Side Menu Parent',
-		'parent_item_colon' => 'Side Menu:',
-		'edit_item' => 'Edit Side Menu Section',
-		'update_item' => 'Update Side Menu',
-		'add_new_item' => 'Add New Side Menu',
-		'new_item_name' => 'New Side Menu',
-		'separate_items_with_commas' => 'Separate Side Menus with commas',
-		'add_or_remove_items' => 'Add or remove Side Menu',
-		'choose_from_most_used' => 'Choose from the most used Side Menus',
-		'menu_name' => 'Side Menu',
-	);
-	$task_cat_args = array( 
-		'labels' => $task_cat_labels,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_in_menu' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => true,
-		'hierarchical' => true,
-		'rewrite' => array(
-            'slug' => get_option('options_go_locations_widget')
-        ),
-		'query_var' => true
-	);
-	register_taxonomy( 'task_categories', array( 'maps_menus' ), $task_cat_args );
 
-
-// Register Task Focus-specailist
+// Register User Groups
     $focus_labels = array(
         'name' => _x( 'User Groups', 'user_go_groups' ),
         'singular_name' => _x( 'User Group', 'user_go_groups' ),
@@ -103,73 +173,9 @@ function go_register_task_tax_and_cpt() {
     );
     register_taxonomy( 'user_go_groups', array( '' ), $focus_args );
 
-	// Register Task TOP MENU Taxonomy
-	$task_menu_labels = array( 
-		'name' => _x('Top Menu', 'task_menu' ),
-		'singular_name' => _x('Top Menu', 'task_menu' ),
-		'search_items' => _x( 'Search Top Menus', 'task_menu' ),
-		'popular_items' => _x( 'Popular Top Menus', 'task_menu' ),
-		'all_items' => _x( 'All Top Menus', 'task_menu' ),
-		'parent_item' => _x('Parent Menu', 'task_menu' ),
-		'parent_item_colon' => _x( 'Parent Menu:', 'task_menu' ),
-		'edit_item' => _x( 'Edit Top Menu', 'task_menu' ),
-		'update_item' => _x( 'Update Top Menu', 'task_menu' ),
-		'add_new_item' => _x( 'Add New Top Menu', 'task_menu' ),
-		'new_item_name' => _x( 'New Top Menu', 'task_menu' ),
-		'separate_items_with_commas' => _x( 'Separate top menus with commas', 'task_menu' ),
-		'add_or_remove_items' => _x( 'Add or remove top menus', 'task_menu' ),
-		'choose_from_most_used' => _x( 'Choose from the most used top menus', 'task_menu' ),
-		'menu_name' => _x(' Top Menu', 'task_menu' ),
-	);
-	$task_menu_args = array( 
-		'labels' => $task_menu_labels,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_in_menu' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-        'rewrite' => array(
-            'slug' => get_option('options_go_locations_top_menu')
-        ),
-		'query_var' => true
-	);
-	register_taxonomy( 'task_menus', array( 'maps_menus' ), $task_menu_args );
 
-	// Register Task chains Taxonomy
-	$task_chains_labels = array(
-		'name' => 'Quest Maps',
-		'singular_name' => 'Quest Map',
-		'search_items' => 'Search Quests',
-		'popular_items' => 'Popular Quests',
-		'all_items' => 'All Quests',
-		'parent_item' => 'Map (Set as none to create a new map)',
-		'parent_item_colon' => 'Map (Set as none to create a new map):',
-		'edit_item' => 'Edit Quests',
-		'update_item' => 'Update Quests',
-		'add_new_item' => 'Add New Quest',
-		'new_item_name' => 'New Quest',
-		'separate_items_with_commas' => 'Separate Quests with commas',
-		'add_or_remove_items' => 'Add or remove Quests',
-		'choose_from_most_used' => 'Choose from the most used Quests',
-		'menu_name' => 'Quest Maps',
-	);
-	$task_chains_args = array(
-		'labels' => $task_chains_labels,
-		'public' => true,
-		'show_in_nav_menus' => true,
-		'show_in_menu' => true,
-		'show_ui' => true,
-		'show_tagcloud' => true,
-		'show_admin_column' => false,
-		'hierarchical' => true,
-		'rewrite' => array(
-                'slug' => 'task_chains'
-            ),
-		'query_var' => true
-	);
-	register_taxonomy( 'task_chains', array( 'maps_menus' ), $task_chains_args );
+
+
 
 
 	/*
@@ -193,8 +199,8 @@ function go_register_task_tax_and_cpt() {
 		'labels' => $labels_cpt,
 		'hierarchical' => false,
 		'description' => go_return_options( 'go_tasks_plural_name' ),
-        'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields', 'page-attributes', 'post-formats' ),
-		'taxonomies' => array( 'task_chains','task_menus','task_categories' ),
+        'supports'              => array( 'title', 'comments' ),
+		'taxonomies' => array(),
 		'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => true,
@@ -517,6 +523,20 @@ add_filter('manage_edit-task_menus_columns', function ( $columns ) {
     return $columns;
 });
 */
+
+/**
+ * USER GROUPS EDIT COLUMNS AND FIELDS
+ *
+ */
+
+
+//remove slug column
+add_filter('manage_edit-user_go_groups_columns', function ( $columns ) {
+    if( isset( $columns['slug'] ) )
+        unset( $columns['slug'] );
+    return $columns;
+});
+
 
 
 

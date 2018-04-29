@@ -7,18 +7,75 @@
  */
 
 //Prints Checks for understanding for the current stage
-function go_checks_for_understanding ( $wpdb, $status, $custom_fields, $go_table_name, $user_id, $id, $number_of_stages, $repeat_amount  ){
+function go_checks_for_understanding ($custom_fields, $i, $status){
+    // $i = stage
+
+    $stage_count = $custom_fields['go_stages'][0]; //total # of stages
+    //while ( ($i + 1) <= $status && $stage_count > $i) {}
+    //( $wpdb, $status, $custom_fields, $go_table_name, $user_id, $id, $number_of_stages, $repeat_amount  )
     echo "<div id='go_checks_and_buttons'><div id='checks'>";
-    //move the stage 4 checks for understanding to the bonus
-    if ($status >= 5){
-        $stage_lookup = 5;
+    $check_type = 'go_stages_' . $i . '_check'; //which type of check to print
+    $check_type = $custom_fields[$check_type][0];
+
+    if ($check_type =='upload'){
+        go_upload_check ($custom_fields, $i, $stage_count, $status);
+    }else if ($check_type== 'URL'){
+        go_url_check ($custom_fields, $i, $stage_count, $status);
+    }else if ($check_type== 'password') {
+        go_password_check($custom_fields, $i, $stage_count, $status);
+    }else if ($check_type== 'quiz') {
+        go_test_check($custom_fields, $i, $stage_count, $status);
+    }
+
+    //error placeholder
+    echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
+
+    //Buttons
+    go_buttons($custom_fields, $i, $stage_count, $status);
+
+    echo "</div>";
+}
+
+function go_buttons($custom_fields, $i, $stage_count, $status){
+    //Buttons
+    if ($i ==$status) {
+        echo "<div id='go_buttons' style='overflow: auto;'>";
+        if ($i == 0) {
+            echo "<a id='go_abandon_task' onclick='go_task_abandon();this.disabled = true;' button_type='continue' style='float: left;'>Abandon</a>";
+        } else {
+            echo "<a id='go_back_button' onclick='task_stage_change( this );' undo='true' button_type='undo' style='float: left;'>⬆ Undo</a>";
+        }
+
+        echo "<button id='go_button' status='{$stage}' onclick='task_stage_change( this );' button_type='continue' admin_lock='true' style='float: right;'>Continue</button> ";
+
+
+
+        echo "</div>";
+    }
+}
+
+function go_password_check ($custom_fields, $i, $stage_count, $status){
+    if ($i ==$status) {
+        echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
     }
     else {
-        $stage_lookup = $status;
+        echo "Password was entered.";
     }
-    $stage_short_name = go_short_name ( $stage_lookup );
-    $stage_letter = go_stage_letter ( $stage_lookup );
+}
 
+function go_url_check ($custom_fields, $i, $stage_count, $status){
+    if ($i ==$status) {
+        echo "<div id='go_url_div'>";
+        echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
+        echo "</div>";
+    }
+    else {
+        echo "URL Submitted : get url";
+    }
+}
+
+function go_upload_check ($custom_fields, $i, $stage_count, $status) {
+    if ($i ==$status) {
     //Upload Check for Understanding
     $stage_upload = ( ! empty( $custom_fields['go_mta_'.$stage_short_name.'_upload'][0] ) ? $custom_fields['go_mta_'.$stage_short_name.'_upload'][0] : false );
     //get if item is uploaded variable (null or 1)
@@ -37,8 +94,18 @@ function go_checks_for_understanding ( $wpdb, $status, $custom_fields, $go_table
         $is_uploaded = 0;
     }
     if ( $stage_upload ) {
-        echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$status} user_id={$user_id} post_id={$id}]" )."<br/>";
+        echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$stage} user_id={$user_id} post_id={$id}]" )."<br/>";
     }
+    }
+    else {
+        echo "This file was uploaded.";
+    }
+
+}
+
+function go_test_check ($custom_fields, $i, $stage_count, $status){
+    $quiz_data = 'go_stages_' . $i . '_quiz';
+    $quiz_data = $custom_fields[$check_type][0];
 
     //Quiz Check for Understanding
     $test_stage_active = ( ! empty( $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] ) ? $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] : false );
@@ -74,79 +141,7 @@ function go_checks_for_understanding ( $wpdb, $status, $custom_fields, $go_table
         }
 
     }
-
-    //Password Check for Understanding
-    $stage_admin_lock = get_post_meta( $id, 'go_mta_'.$stage_short_name.'_admin_lock', true );
-    if ( ! empty( $stage_admin_lock ) ) {
-        $stage_is_locked = ( ! empty( $stage_admin_lock[0] ) ? true : false );
-        if ( $stage_is_locked ) {
-            $stage_pass_lock = ( ! empty( $stage_admin_lock[1] ) ? $stage_admin_lock[1] : '' );
-        }
-    }
-    if ( $stage_is_locked && ! empty( $stage_pass_lock ) ) {
-        echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-    }
-
-    //URL Check for Understanding
-    $stage_url_is_locked = ( ! empty( $custom_fields['go_mta_'.$stage_short_name.'_url_key'][0] ) ? true : false );
-    if ( $stage_url_is_locked === true ) {
-        echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-    }
-
-    //error placeholder
-    echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-
-
-    //Buttons
-    echo "<div id='go_buttons'>";
-    //$status = $status + 1;
-    if (($number_of_stages > $status) && ($status < 4) ){
-        echo "<button id='go_button' status='{$status}' onclick='task_stage_change( this );' button_type='continue'";
-        if ( $stage_is_locked && empty( $stage_pass_lock ) ) {
-            echo "admin_lock='true'";
-        }
-        echo ">Continue</button> ";
-    }
-
-    if (($number_of_stages == 5) && ($status == 4) ){
-        echo "<button id='go_button' status='{$status}' onclick='task_stage_change( this );' button_type='continue'";
-        if ( $stage_is_locked && empty( $stage_pass_lock ) ) {
-            echo "admin_lock='true'";
-        }
-        echo ">See Bonus</button> ";
-    }
-
-    $number = $status - 4;
-    $ends = array('th','st','nd','rd','th','th','th','th','th','th');
-    if (($number %100) >= 11 && ($number%100) <= 13)
-        $abbreviation = $number. 'th';
-    else
-        $abbreviation = $number. $ends[$number % 10];
-    if (($number_of_stages == 5) && ($status >= 5) ){
-        if ($status >= 5 && $repeat_amount >= $number){
-            if ($repeat_amount > 1) {
-                echo "This bonus task can be repeated " . $repeat_amount . " times.<br>This is your " . $abbreviation . ".<br>";
-            }
-            echo "<button id='go_button' status='{$status}' onclick='task_stage_change( this );' button_type='continue'";
-            if ( $stage_is_locked && empty( $stage_pass_lock ) ) {
-                echo "admin_lock='true'";
-            }
-            echo ">Submit Bonus</button> ";
-        }
-
-    }
-
-
-    if ($status == 1){
-        echo "<button id='go_abandon_task' onclick='go_task_abandon();this.disabled = true;' button_type='continue'>Abandon</button>";
-    }
-    else{
-        echo "<button id='go_back_button' onclick='task_stage_change( this );' undo='true' button_type='undo'>Undo</button>";
-    }
-    echo "</div></div>";
 }
-
-
 
 //Quiz function
 /**

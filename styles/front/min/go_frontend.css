@@ -1,0 +1,1931 @@
+@charset "UTF-8";
+/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
+/* Document
+   ========================================================================== */
+/**
+ * 1. Correct the line height in all browsers.
+ * 2. Prevent adjustments of font size after orientation changes in iOS.
+ */
+html {
+  line-height: 1.15;
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */ }
+
+/* Sections
+   ========================================================================== */
+/**
+ * Remove the margin in all browsers.
+ */
+body {
+  margin: 0; }
+
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/* Grouping content
+   ========================================================================== */
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+hr {
+  box-sizing: content-box;
+  /* 1 */
+  height: 0;
+  /* 1 */
+  overflow: visible;
+  /* 2 */ }
+
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+pre {
+  font-family: monospace, monospace;
+  /* 1 */
+  font-size: 1em;
+  /* 2 */ }
+
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * Remove the gray background on active links in IE 10.
+ */
+a {
+  background-color: transparent; }
+
+/**
+ * 1. Remove the bottom border in Chrome 57-
+ * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+ */
+abbr[title] {
+  border-bottom: none;
+  /* 1 */
+  text-decoration: underline;
+  /* 2 */
+  text-decoration: underline dotted;
+  /* 2 */ }
+
+/**
+ * Add the correct font weight in Chrome, Edge, and Safari.
+ */
+b,
+strong {
+  font-weight: bolder; }
+
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  /* 1 */
+  font-size: 1em;
+  /* 2 */ }
+
+/**
+ * Add the correct font size in all browsers.
+ */
+small {
+  font-size: 80%; }
+
+/**
+ * Prevent `sub` and `sup` elements from affecting the line height in
+ * all browsers.
+ */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sub {
+  bottom: -0.25em; }
+
+sup {
+  top: -0.5em; }
+
+/* Embedded content
+   ========================================================================== */
+/**
+ * Remove the border on images inside links in IE 10.
+ */
+img {
+  border-style: none; }
+
+/* Forms
+   ========================================================================== */
+/**
+ * 1. Change the font styles in all browsers.
+ * 2. Remove the margin in Firefox and Safari.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  /* 1 */
+  font-size: 100%;
+  /* 1 */
+  line-height: 1.15;
+  /* 1 */
+  margin: 0;
+  /* 2 */ }
+
+/**
+ * Show the overflow in IE.
+ * 1. Show the overflow in Edge.
+ */
+button,
+input {
+  /* 1 */
+  overflow: visible; }
+
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of text transform in Firefox.
+ */
+button,
+select {
+  /* 1 */
+  text-transform: none; }
+
+/**
+ * Correct the inability to style clickable types in iOS and Safari.
+ */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button; }
+
+/**
+ * Remove the inner border and padding in Firefox.
+ */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0; }
+
+/**
+ * Restore the focus styles unset by the previous rule.
+ */
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText; }
+
+/**
+ * Correct the padding in Firefox.
+ */
+fieldset {
+  padding: 0.35em 0.75em 0.625em; }
+
+/**
+ * 1. Correct the text wrapping in Edge and IE.
+ * 2. Correct the color inheritance from `fieldset` elements in IE.
+ * 3. Remove the padding so developers are not caught out when they zero out
+ *    `fieldset` elements in all browsers.
+ */
+legend {
+  box-sizing: border-box;
+  /* 1 */
+  color: inherit;
+  /* 2 */
+  display: table;
+  /* 1 */
+  max-width: 100%;
+  /* 1 */
+  padding: 0;
+  /* 3 */
+  white-space: normal;
+  /* 1 */ }
+
+/**
+ * Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ */
+progress {
+  vertical-align: baseline; }
+
+/**
+ * Remove the default vertical scrollbar in IE 10+.
+ */
+textarea {
+  overflow: auto; }
+
+/**
+ * 1. Add the correct box sizing in IE 10.
+ * 2. Remove the padding in IE 10.
+ */
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Correct the cursor style of increment and decrement buttons in Chrome.
+ */
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto; }
+
+/**
+ * 1. Correct the odd appearance in Chrome and Safari.
+ * 2. Correct the outline style in Safari.
+ */
+[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  outline-offset: -2px;
+  /* 2 */ }
+
+/**
+ * Remove the inner padding in Chrome and Safari on macOS.
+ */
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+/**
+ * 1. Correct the inability to style clickable types in iOS and Safari.
+ * 2. Change font properties to `inherit` in Safari.
+ */
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  /* 1 */
+  font: inherit;
+  /* 2 */ }
+
+/* Interactive
+   ========================================================================== */
+/*
+ * Add the correct display in Edge, IE 10+, and Firefox.
+ */
+details {
+  display: block; }
+
+/*
+ * Add the correct display in all browsers.
+ */
+summary {
+  display: list-item; }
+
+/* Misc
+   ========================================================================== */
+/**
+ * Add the correct display in IE 10+.
+ */
+template {
+  display: none; }
+
+/**
+ * Add the correct display in IE 10.
+ */
+[hidden] {
+  display: none; }
+
+/********************
+*	locks
+********************/
+.go_locks {
+  border: 1px solid;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #ddd; }
+
+.go_lock, .go_late_mods, .go_sched_access_message, .go_timer_message {
+  border: solid;
+  border-radius: 25px;
+  padding: 10px;
+  margin: 10px;
+  background-color: cornsilk; }
+
+.go_lock ul ul {
+  list-style-type: disc !important;
+  list-style-position: inside !important; }
+
+/********************
+*	Top Menu
+********************/
+/*no dotted line*/
+.menu-go_top_menu-container a {
+  outline: 0 !important; }
+
+/********************
+*	Collapsible Lists Widget
+********************/
+.collapsibleList li {
+  cursor: auto; }
+
+.collapsibleList li::before {
+  content: "• ︎"; }
+
+li.collapsibleListOpen {
+  cursor: pointer; }
+
+li.collapsibleListOpen::before {
+  content: "▼"; }
+
+li.collapsibleListClosed {
+  cursor: pointer; }
+
+li.collapsibleListClosed::before {
+  content: "▶︎"; }
+
+/********************
+*	Featherlight
+********************/
+#wp-featherlight-enable-wrap {
+  display: none; }
+
+/********************
+*	???
+********************/
+.go_align_right {
+  text-align: right; }
+
+.go_align_center {
+  text-align: center; }
+
+.go_notification {
+  text-align: center;
+  line-height: 60px;
+  vertical-align: middle;
+  font-size: 36px;
+  position: fixed;
+  right: 30px;
+  height: 68px;
+  width: 250px;
+  color: white;
+  display: none;
+  padding: 4px 1px 1px 1px;
+  border-radius: 3px;
+  background: #111111;
+  opacity: 0.9;
+  z-index: 9999999; }
+
+.go_error {
+  padding: 5px 0 5px 0; }
+
+.go_error_red, .go_error {
+  color: red; }
+
+span.go_loading {
+  background-image: url("images/ajax-loader.gif");
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px; }
+
+input[type='text'].go_error_red {
+  border: 2px solid red;
+  outline: none; }
+
+.go_no_scroll {
+  overflow: hidden; }
+
+/********************
+*	Admin-Bar Styles
+********************/
+.fa.ab-icon:before {
+  font-family: Fontawesome !important; }
+
+@media screen and (max-width: 782px) {
+  #wp-admin-bar-go_map, #wp-admin-bar-go_stats, #wp-admin-bar-go_store {
+    display: block !important;
+    width: 52px;
+    height: 46px;
+    overflow: hidden; } }
+
+#wpadminbar {
+  z-index: 1000010 !important; }
+
+.go_message_container {
+  margin: 0 0 0 10px !important; }
+
+.go_message_container a {
+  display: inline-block !important;
+  text-decoration: underline !important;
+  padding: 0px !important;
+  margin: 0px !important; }
+
+#wp-admin-bar-go_info > a > div {
+  height: 16px;
+  width: 120px; }
+
+#go_admin_bar_progress_bar_border {
+  height: 100%;
+  width: 100%;
+  border: thin white solid;
+  margin-top: 2px;
+  position: relative; }
+
+#go_admin_bar_progress_bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100% !important; }
+
+#go_admin_bar_title {
+  text-align: left; }
+
+#go_admin_bar_input {
+  width: 250px; }
+
+#go_admin_bar_rank {
+  font-size: 1.2em;
+  color: #eee; }
+
+.go_admin_bar_add_input {
+  width: 50px !important; }
+
+.go_admin_bar_reason {
+  width: 175px !important; }
+
+ul#wp-admin-bar-go_add-default.ab-submenu {
+  height: 380px; }
+
+#points_needed_to_level_up {
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  line-height: initial !important;
+  overflow: hidden; }
+
+#points_needed_to_level_up:hover {
+  color: white; }
+
+.go_admin_bar_text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center !important;
+  color: white;
+  text-shadow: 0px 0px #ff6600;
+  word-break: break-all; }
+
+.progress_bar {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #39b54a; }
+
+#go_messages_bar {
+  background-color: red;
+  border: 1px solid white;
+  box-shadow: 1px 1px 1px black;
+  color: white;
+  height: 16px;
+  text-align: center;
+  min-width: 14px;
+  line-height: 17px;
+  margin-top: 2px; }
+
+.go_messages_anchor {
+  padding: 0 0 0 10px !important; }
+
+#go_admin_bar_task_search_input {
+  height: 24px;
+  font-size: 13px;
+  margin-top: 3px;
+  line-height: 2;
+  display: inline-block; }
+
+#go_admin_bar_task_search_submit {
+  height: 24px;
+  margin-bottom: 3px;
+  font-size: 10px;
+  line-height: 24px;
+  width: 50px;
+  display: inline-block; }
+
+input[name="go_admin_bar_submit"] {
+  height: 40px !important; }
+
+#wp-admin-bar-site-name .ab-submenu {
+  background-color: #4B4B4B !important; }
+
+#wp-admin-bar-site-name .go_site_name_menu {
+  background-color: #333 !important; }
+
+#go_admin_bar_deactivation {
+  height: 25px;
+  line-height: 10px;
+  width: 70px; }
+
+#wp-admin-bar-go_toolbar_login {
+  display: inline !important;
+  padding: 0 8px 0 7px !important; }
+
+#wp-admin-bar-go_toolbar_login a {
+  padding: 0 8px 0 7px !important; }
+
+/********************
+*	File Uploader Styles
+********************/
+#go_option_admin_email_desc p {
+  margin-right: 20px; }
+
+#go_mailer_error_msg {
+  color: red; }
+
+#go_mailer_confirm_msg {
+  color: green; }
+
+/********************
+*	Help Button Styles
+********************/
+.go_task_opt_help {
+  float: right;
+  color: black;
+  margin-right: 0px;
+  width: 15px;
+  height: 15px;
+  border-radius: 8px;
+  padding: 0px 0px 0px 0px;
+  text-align: center;
+  background: white;
+  cursor: pointer;
+  display: inline;
+  position: relative;
+  background-color: #DBDBDB !important; }
+
+.go_task_opt_help:hover::after {
+  position: absolute;
+  content: attr(tooltip);
+  width: 200px;
+  padding: 0 5px 0 5px;
+  background-color: #CCC;
+  font-size: 14px;
+  bottom: 15px;
+  left: 20px;
+  border-radius: 5px;
+  z-index: 99;
+  color: black;
+  white-space: initial; }
+
+/********************
+*	Store Styles
+********************/
+/* Store Item Style | Back-end */
+input#go_store_limit_input {
+  text-align: center;
+  width: 50px; }
+
+input#go_store_limit_input::-webkit-input-placeholder,
+input.go_store_cost_input::-webkit-input-placeholder,
+input.go_store_filter_input::-webkit-input-placeholder,
+input#go_store_item_url_input::-webkit-input-placeholder,
+input#go_store_badge_id_input::-webkit-input-placeholder,
+input.go_store_gift_input::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+input#go_store_limit_input,
+input.go_store_cost_input,
+input.go_store_filter_input,
+input#go_store_item_url_input,
+input#go_store_badge_id_input,
+input.go_store_gift_input {
+  margin-top: 0px;
+  margin-bottom: 0px; }
+
+input.go_store_cost_input {
+  width: 30%; }
+
+input.go_store_filter_input {
+  width: 15%; }
+
+input#go_store_item_url_input {
+  width: 50%; }
+
+input.go_store_gift_input[type="text"] {
+  display: none;
+  width: 21.7%; }
+
+input#go_store_badge_id_input {
+  text-align: center;
+  width: 75px; }
+
+/********************
+*	Task Styles
+********************/
+/* Tasks Style | Back-end */
+div.misc-pub-section-clone {
+  border-top: 1px solid #eee; }
+
+input#go-button-clone {
+  margin-bottom: 7px !important; }
+
+.go_sortable {
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: -moz-grab; }
+
+.go_sortable_item {
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing; }
+
+#go_start_info {
+  display: inline-block; }
+
+#go_list_of_decay_dates,
+#go_list_of_decay_dates tbody,
+#go_list_of_decay_dates th,
+#go_list_of_decay_dates tr,
+#go_list_of_decay_dates td {
+  margin: 0px;
+  padding: 0px; }
+
+.datepicker {
+  border-width: 1px;
+  border-color: #DDD; }
+
+.cmb_id_go_mta_time_modifier td input {
+  width: 30px; }
+
+.go_task_settings_accordion {
+  font-size: 16px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ddd;
+  padding: 5px;
+  cursor: pointer; }
+
+.go_triangle_container {
+  float: right;
+  cursor: pointer;
+  display: block;
+  width: 27px;
+  height: 20px;
+  text-align: center; }
+
+.go_triangle_container:hover .go_task_accordion_triangle {
+  border-top: 5px solid #777; }
+
+.go_task_accordion_triangle {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #AAA;
+  display: inline-block;
+  vertical-align: middle;
+  margin: auto; }
+
+.go_task_settings_accordion.opened .go_task_accordion_triangle {
+  border-top: none;
+  border-bottom: 5px solid #AAA; }
+
+.go_reward_input {
+  color: #BBB !important;
+  text-align: center;
+  width: 40px; }
+
+.go_admin_lock_text {
+  width: 50%; }
+
+.go_admin_lock_text::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+.go_admin_lock_text::-moz-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_table, .go_test_field_input_question {
+  width: 100%; }
+
+.go_test_field_table td {
+  padding: 0px !important;
+  margin-left: -2px; }
+
+.go_test_field_input_row select,
+.go_test_field_input_question,
+.go_test_field_add,
+.go_test_field_rm,
+.go_test_field_add_block_button {
+  margin-left: inherit; }
+
+.go_test_loot_mod {
+  text-align: center;
+  width: 40px; }
+
+.go_test_field_input_question {
+  width: 100%; }
+
+.go_test_field_input_question::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input_question::-moz-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input {
+  width: 75%;
+  margin: 0 5px 0 5px !important;
+  padding-top: 4px; }
+
+.go_test_field_input::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input::-moz-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input_checkbox {
+  margin: 0 0 4px -2px !important; }
+
+.go_button_add_field, .go_test_field_add {
+  color: green; }
+
+.go_button_del_field, .go_test_field_rm {
+  color: red;
+  margin-left: 5px; }
+
+.go_test_field_input_rm_row_button {
+  margin-left: -2px !important; }
+
+#go_repeat_amount_input {
+  width: 40px;
+  text-align: center; }
+
+.go_stage_badge_container {
+  list-style: none; }
+
+.go_badge_input {
+  width: 75px; }
+
+input.go_current {
+  color: #000 !important; }
+
+.condensed {
+  padding: 7px !important; }
+
+#go_future_notification {
+  color: red; }
+
+#go_future_notification_task_name {
+  font-weight: bold;
+  color: black !important; }
+
+#go_task_timer {
+  color: red;
+  font-weight: bold; }
+
+div.pod_unfinished,
+div.pod_finished {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 3px;
+  border-color: #ACACAC;
+  background-color: white; }
+
+div.pod_unfinished {
+  border-bottom-color: red; }
+
+div.pod_finished {
+  border-bottom-color: green; }
+
+a.pod_link {
+  font-size: 1.5em;
+  text-decoration: none !important;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 5px 0px 5px 5px;
+  z-index: 10; }
+
+.pod_finished:hover,
+.pod_unfinished:hover {
+  background-color: #eee; }
+
+#go_bonus_loot_checkbox {
+  display: block; }
+
+ul#go_bonus_loot_wrap {
+  list-style: none;
+  margin-top: 15px;
+  margin-bottom: 0; }
+
+ul#go_bonus_loot_wrap li {
+  margin-bottom: 10px; }
+
+ul#go_bonus_loot_wrap li.go_error {
+  padding: 0;
+  margin-top: 15px; }
+
+.go_bonus_loot_rarity {
+  width: 50px; }
+
+/* Tasks Style | Front-end */
+#go_description p,
+#go_content p,
+#new_content p {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+.go_stage_message p:last-of-type {
+  border-bottom: 1px solid;
+  border-bottom-color: inherit; }
+
+.go_stage_message {
+  background-color: #ddd; }
+
+#go_description .go_stage_message {
+  background-color: transparent; }
+
+#new_content .go_stage_message {
+  background-color: #fffcf2; }
+
+.go_stage_message {
+  padding: 20px; }
+
+.go_test_container {
+  margin-bottom: 10px; }
+
+.go_test_container:last-of-type {
+  margin-bottom: 0px; }
+
+.go_test li {
+  list-style: none; }
+
+.go_test li:first-of-type {
+  display: inline; }
+
+.go_test li p {
+  margin: 0px !important;
+  padding: 0px !important; }
+
+#go_test_error_msg {
+  margin: 0 !important; }
+
+.go_wrong_answer_marker {
+  color: red;
+  margin: 0 0 0 10px !important;
+  padding: 0px !important; }
+
+.go_correct_answer_marker {
+  color: green;
+  margin: 0 0 0 10px !important;
+  padding: 0px !important; }
+
+.go_chain_msg_container {
+  margin-top: 20px; }
+
+.go_chain_final_msg {
+  margin: 10px 0;
+  text-align: center; }
+
+.go_chain_title {
+  font-weight: 900; }
+
+.go_chain_links {
+  text-align: center; }
+
+div.go_pod_message {
+  margin-top: 10px; }
+
+.go_test_submit {
+  margin: 10px 0 10px 2px !important; }
+
+#go_pass_lock {
+  margin: 0 0 10px 0; }
+
+#go_pass_lock::-webkit-input-placeholder {
+  padding-left: 4px; }
+
+input#go_pass_lock::-moz-placeholder {
+  padding-left: 4px; }
+
+.go_dark {
+  display: none;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 1001;
+  -moz-opacity: 0.8;
+  opacity: .80;
+  filter: alpha(opacity=80); }
+
+.go_light {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background-color: white;
+  z-index: 999999;
+  padding: 10px 10px 10px 10px; }
+
+.comment {
+  list-style: none; }
+
+.featherlight-content {
+  width: 100%;
+  height: 100%; }
+
+#adminmenu #toplevel_page_game-on-options .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f085'; }
+
+#adminmenu #toplevel_page_badges .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f0a3'; }
+
+#adminmenu #toplevel_page_groups .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f0c0'; }
+
+#adminmenu #menu-posts-tasks .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f041'; }
+
+.wp-menu-separator {
+  border-bottom: solid 1px;
+  color: lightgray; }
+
+/********************
+*	Term Meta Field Styles
+
+.metafield-conditional_logic-show {
+    display: block;
+}
+
+.metafield_conditional_logic-hide {
+    display: none;
+}
+tr.metafield-conditional_logic-show {
+    display: table-row;
+    }
+   
+   tr.metafield-conditional_logic-hide {
+    display: none;
+    } 
+    
+    ********************/
+/* ------------------------------------------------------------
+	Reset Styles (from meyerweb.com)
+------------------------------------------------------------ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline; }
+
+/* ------------------------------------------------------------
+	Loader (from https://www.w3schools.com/howto/howto_css_loader.asp)
+------------------------------------------------------------ */
+#maps {
+  visibility: hidden; }
+
+/* Center the loader */
+#loader {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: 40px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite; }
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s; }
+
+@-webkit-keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0; }
+  to {
+    bottom: 0px;
+    opacity: 1; } }
+
+@keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0; }
+  to {
+    bottom: 0;
+    opacity: 1; } }
+
+#myDiv {
+  display: none;
+  text-align: center; }
+
+/* ------------------------------------------------------------
+	Checkmarks
+------------------------------------------------------------ */
+.checkmark {
+  display: inline-block;
+  float: left;
+  margin: 0 10px 0 10px; }
+
+.checkmark:after {
+  /*Add another block-level blank space*/
+  content: '';
+  display: block;
+  /*Make it a small rectangle so the border will create an L-shape*/
+  width: 6px;
+  height: 12px;
+  /*Add a white border on the bottom and left, creating that 'L' */
+  border: solid green;
+  border-width: 0 4px 4px 0;
+  /*Rotate the L 45 degrees to turn it into a checkmark*/
+  transform: rotate(45deg); }
+
+/* ------------------------------------------------------------
+	NUMBER OF COLUMNS: Adjust .primaryNav li to set the number
+	of columns required in your site map. The default is 
+	4 columns (25%). 5 columns would be 20%, 6 columns would 
+	be 16.6%, etc. 
+------------------------------------------------------------ */
+.primaryNav li {
+  width: 90%; }
+
+.primaryNav li ul {
+  padding: 0px !important; }
+
+/* ------------------------------------------------------------
+	General Styles
+------------------------------------------------------------ */
+body {
+  background: white;
+  color: black;
+  padding: 40px;
+  font-family: Gotham, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1; }
+
+.sitemap {
+  margin: 0 0 40px 0;
+  float: left;
+  width: 100%; }
+
+h1 {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 20px;
+  margin: 0 0 5px 0; }
+
+h2 {
+  font-family: "Lucida Grande", Verdana, sans-serif;
+  font-size: 10px;
+  color: #777777;
+  margin: 0 0 20px 0; }
+
+a {
+  text-decoration: none; }
+
+ol, ul {
+  list-style: none !important; }
+
+.map {
+  padding-top: 20px;
+  display: block; }
+
+/* ------------------------------------------------------------
+	Site Map Styles
+------------------------------------------------------------ */
+/* --------	Top Level --------- */
+.primaryNav {
+  margin: 0px 0 0 0;
+  float: left;
+  width: 100%;
+  padding: 30px 40px 0 40px !important;
+  background-color: #f5eade; }
+
+.primaryNav li {
+  float: left;
+  background: url("images/map/L1-center.png") center top no-repeat;
+  padding: 30px 0;
+  margin-top: -30px; }
+
+.primaryNav .ParentNav {
+  display: block;
+  float: none;
+  background: none !important;
+  position: relative;
+  z-index: 2;
+  width: 100% !important; }
+
+.primaryNav li p,
+.primaryNav li a {
+  margin: 0 20px 0 0;
+  padding: 10px 0;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: black;
+  background: #c3eafb url("images/map/white-highlight.png") top left repeat-x;
+  border: 2px solid #b5d9ea;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+  /* FF 3.5+ */ }
+
+/*
+.primaryNav li p:hover {
+	background-color: #e2f4fd;
+	border-color: #97bdcf;
+}
+*/
+.primaryNav li:last-child {
+  background: url("images/map/L1-right.png") center top no-repeat; }
+
+.primaryNav > li:nth-child(2) {
+  background: url("images/map/L1-left.png") center top no-repeat; }
+
+.primaryNav > li:first-child {
+  background: none; }
+
+/* --------	Second Level --------- */
+.primaryNav ul {
+  margin: 0; }
+
+.primaryNav li li {
+  width: 100%;
+  clear: left;
+  margin-top: 0;
+  padding: 10px 0 0 0;
+  background: url("images/map/vertical-line.png") center bottom repeat-y; }
+
+.singleCol {
+  background: url("images/map/vertical-line.png") center top no-repeat !important; }
+
+.primaryNav li li a {
+  background-color: #cee3ac;
+  border-color: #b8da83; }
+
+.primaryNav li li a:hover {
+  border-color: #94b75f;
+  background-color: #e7f1d7; }
+
+.optional_task {
+  width: 80% !important;
+  margin-left: 20% !important; }
+
+.optional_task a {
+  font-size: 1em !important;
+  font-style: italic; }
+
+/* --------	grey out colors --------- */
+.primaryNav li .filtered a,
+.primaryNav li .filtered a:hover {
+  background-color: #cccccc;
+  border-color: #000;
+  color: #555; }
+
+/* --------	available tasks colors --------- */
+.primaryNav li .available_color a {
+  background-color: #fff7aa;
+  border-color: #e3ca4b; }
+
+.primaryNav li .available_color a:hover {
+  background-color: #fffce5;
+  border-color: #d1b62c; }
+
+.primaryNav li li:first-child {
+  padding-top: 30px; }
+
+.primaryNav li li:last-child {
+  background: url("images/map/vertical-line.png") center bottom repeat-y; }
+
+/* --------	Third Level --------- */
+.primaryNav li li ul {
+  margin: 10px 0 0 0;
+  width: 100%;
+  float: right;
+  padding: 9px 0 10px 0;
+  background: #ffffff url("images/map/L3-ul-top.png") center top no-repeat; }
+
+.primaryNav li li li {
+  background: url("images/map/L3-center.png") left center no-repeat;
+  padding: 5px 0; }
+
+.primaryNav li li li a {
+  background-color: #fff7aa;
+  border-color: #e3ca4b;
+  font-size: 12px;
+  padding: 5px 0;
+  width: 80%;
+  float: right; }
+
+.primaryNav li li li a:hover {
+  background-color: #fffce5;
+  border-color: #d1b62c; }
+
+.primaryNav li li li:first-child {
+  padding: 15px 0 5px 0;
+  background: url("images/map/L3-li-top.png") left center no-repeat; }
+
+.primaryNav li li li:last-child {
+  background: url("images/map/L3-bottom.png") left center no-repeat; }
+
+/* ------------------------------------------------------------
+	Utility Navigation
+
+
+#utilityNav {
+	float: left;
+	max-width: 100%;
+	margin-right: 10px;
+}
+#utilityNav li {
+	float: left;
+	margin-bottom: 10px;
+}
+#utilityNav li a {
+	margin: 0 10px 0 0;
+	padding: 5px 10px;
+	display: block;	
+	border: 2px solid #e3ca4b;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	color: black;
+	background: #fff7aa url('images/map/white-highlight.png') top left repeat-x;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+	cursor: pointer;
+}
+
+#utilityNav .filtered a,
+#utilityNav .filtered a:hover{
+    background-color: #cccccc;
+	border-color: #000;
+	color: #555;
+}
+#utilityNav .done a,
+#utilityNav .done a:hover{
+    background-color: #cee3ac;
+    border-color: #b8da83;
+}
+
+#utilityNav li a:hover {
+	background-color: #fffce5;
+	border-color: #d1b62c;
+	cursor: pointer;
+}
+
+
+------------------------------------------------------------ */
+/* Dropdown Button */
+.dropbtn, .dropbtn:hover, .dropbtn:focus {
+  cursor: pointer;
+  margin: 0;
+  display: block;
+  text-align: center;
+  color: black;
+  background: #c3eafb url("images/map/white-highlight.png") top left repeat-x;
+  border: 2px solid #b5d9ea;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+  /* FF 3.5+ */
+  /* styling */
+  border-radius: 4px;
+  font: inherit;
+  line-height: 1.5em;
+  padding: 0.5em 3.5em 0.5em 1em;
+  /* reset */
+  background-image: linear-gradient(45deg, transparent 50%, blue 50%), linear-gradient(135deg, blue 50%, transparent 50%), linear-gradient(to right, skyblue, skyblue);
+  background-position: calc(100% - 16px) calc(1em + 2px), calc(100% - 11px) calc(1em + 2px), 100% 0;
+  background-size: 5px 5px, 5px 5px, 2.5em 2.5em;
+  background-repeat: no-repeat; }
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 3; }
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1; }
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 8px 10px;
+  text-decoration: none;
+  display: block; }
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1; }
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+  display: block; }
+
+/* ------------------------------------------------------------
+	Utility Navigation
+------------------------------------------------------------ */
+#myDropdown {
+  float: left;
+  max-width: 100%;
+  margin-right: 10px; }
+
+#utilityNav li {
+  float: left;
+  margin-bottom: 10px; }
+
+#myDropdown a {
+  display: block;
+  font-size: 12px;
+  min-width: 150px;
+  color: black;
+  background: #bae9ff url("images/map/white-highlight.png") top left repeat-x;
+  cursor: pointer; }
+
+#myDropdown a:hover {
+  background: #aee1ff url("images/map/white-highlight.png") top left repeat-x;
+  box-shadow: inset 0 -1px 0 #928c8c; }
+
+#myDropdown .filtered a,
+#myDropdown .filtered a:hover {
+  background-color: #cccccc;
+  border-color: #000;
+  color: #555; }
+
+#myDropdown .done a,
+#myDropdown .done a:hover {
+  background-color: #cee3ac;
+  border-color: #b8da83; }
+
+#utilityNav li a:hover {
+  background-color: #fffce5;
+  border-color: #d1b62c;
+  cursor: pointer; }
+
+/* ------------------------------------------------------------
+	Bonus Stars
+------------------------------------------------------------ */
+.star-empty .fa.fa-star {
+  color: white; }
+
+.star-full .fa.fa-star {
+  color: gold; }
+
+.star-half .fa.fa-star {
+  color: white; }
+
+.star-half .fa.fa-star-half-o {
+  color: gold; }
+
+#go_stats_page_black_bg {
+  display: block;
+  position: fixed !important;
+  top: 0% !important;
+  left: 0% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: black;
+  z-index: 999998;
+  -moz-opacity: 0.8;
+  opacity: 0.80;
+  filter: alpha(opacity=80) !important; }
+
+#go_stats_white_overlay {
+  display: none;
+  position: fixed;
+  top: 75px;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  padding: 16px;
+  background-color: white;
+  z-index: 999999;
+  overflow: auto;
+  border-radius: 3px; }
+
+#go_stats_lay {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+
+/** Popup Styles **/
+/* Popup container - can be anything you want */
+/* Tooltip text */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.popup:hover .popuptext {
+  visibility: visible; }
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 50px;
+  background-color: black !important;
+  color: #fff !important;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0px 0;
+  position: absolute;
+  z-index: 1;
+  padding: 5px; }
+
+.popup .popuptext a {
+  padding: 5px;
+  color: #fff !important; }
+
+/* Popup arrow 
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: -8%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+}
+*/
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s; }
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+/** END Popup Styles **/
+/** Header Styles **/
+#go_stats_gravatar {
+  display: inline-block;
+  width: 161px;
+  height: 161px;
+  border: 2px solid #BBB;
+  float: left;
+  position: relative;
+  margin: 0px 10px 0px 20px; }
+
+#go_stats_header {
+  position: relative;
+  overflow: hidden;
+  font-family: verdana;
+  border-bottom: 2px solid #BBB;
+  margin-right: 20px; }
+
+#go_stats_user_info {
+  display: inline-block;
+  float: left;
+  font-size: 16px;
+  line-height: 18px; }
+
+#go_stats_user_info div {
+  margin: 0px;
+  padding: 0px; }
+
+.go_stats_reward_name {
+  display: inline-block; }
+
+#go_stats_user_progress,
+#go_stats_user_rank,
+#go_stats_user_focuses {
+  display: inline-block;
+  float: right;
+  position: relative; }
+
+#go_stats_user_progress {
+  width: 25%;
+  height: 25px;
+  border: 2px solid #AAA;
+  top: 14px;
+  margin-right: 40px; }
+
+#go_stats_progress_text_wrap {
+  float: left;
+  position: relative;
+  left: 50%;
+  height: 25px; }
+
+#go_stats_progress_text {
+  position: relative;
+  height: 100%;
+  font-size: 18px;
+  z-index: 1;
+  left: -50%;
+  line-height: 25px;
+  overflow: hidden;
+  word-break: break-all; }
+
+#go_stats_progress_fill {
+  height: 100%;
+  position: absolute;
+  z-index: 0; }
+
+#go_stats_user_rank {
+  height: auto;
+  font-size: 36px;
+  font-weight: bold;
+  vertical-align: middle;
+  top: 18px; }
+
+#go_stats_user_focuses {
+  height: auto;
+  font-size: 24px;
+  clear: right;
+  top: 22px; }
+
+#go_stats_user_tabs {
+  display: inline-block;
+  float: right;
+  clear: both;
+  font-size: 14px; }
+
+#go_stats_user_tabs a {
+  text-decoration: none;
+  color: inherit; }
+
+#go_stats_admin_help {
+  color: #FF0000 !important; }
+
+#go_stats_body {
+  position: relative;
+  height: 70%;
+  margin: 25px 20px 0px 20px;
+  font-size: 13px;
+  font-family: verdana;
+  white-space: nowrap;
+  overflow: hidden; }
+
+#go_stats_body a {
+  text-decoration: none; }
+
+/** Task Styles **/
+#go_stats_tasks_list {
+  list-style-type: none;
+  height: 100%;
+  position: relative;
+  margin-bottom: 50px;
+  float: left;
+  display: inline-block;
+  width: 100%;
+  margin: 0px 3.6% 0px 0px;
+  overflow-y: auto; }
+
+.go_stats_tasks_list_admin {
+  float: none !important;
+  display: inherit !important;
+  margin: 0px !important;
+  width: 100% !important; }
+
+#go_stats_tasks_list:last-child {
+  border-bottom: 1px solid #BBB; }
+
+.go_stats_task {
+  margin: 4px 0px 4px 0px;
+  border-top: 1px solid #BBB;
+  /*overflow: hidden;*/
+  /** Flexbox **/
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-grow: 0;
+  -webkit-flex-grow: 0;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.go_stats_task_list_name {
+  display: inline-block;
+  float: left;
+  width: 25%;
+  white-space: pre-line;
+  margin-top: 1.5px;
+  font-size: 14px;
+  height: auto; }
+
+.go_stats_task_status_wrap {
+  float: right;
+  position: relative;
+  display: inline-block;
+  margin-top: 1.5px;
+  /** Flexbox **/
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px; }
+
+.go_stats_task_status {
+  text-align: center;
+  color: #FFF;
+  display: inline-block;
+  float: right;
+  width: 43px;
+  background-color: #DDD;
+  height: 14px;
+  margin: 4px 0px 2px 4px;
+  line-height: 14px; }
+
+.go_stats_task_admin_submit {
+  cursor: pointer !important;
+  margin: 5.5px 0px 3px 4px !important;
+  height: 15px !important;
+  width: 50px !important;
+  line-height: 10px !important;
+  background-color: silver !important;
+  padding: 2px 6px 3px 6px !important;
+  font-size: 10px !important; }
+
+.go_stats_task_admin_submit_div {
+  /** Flexbox **/
+  flex-grow: 1;
+  float: right !important;
+  -webkit-flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px; }
+
+.go_stats_task_admin_message {
+  float: right !important;
+  height: 16px !important;
+  display: inline-block;
+  margin: 5.5px 0px 2px 4px !important;
+  padding: 0px !important;
+  width: 200px !important;
+  font-size: 12px !important;
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px; }
+
+.go_stats_task_status p {
+  margin-bottom: 0; }
+
+/* 
+ * This makes up for the space that the border takes up on
+ * stage boxes with the future_url class.
+ */
+.go_stats_task_status.future_url p,
+.go_stats_task_status.future_url.completed p {
+  margin-top: -5px; }
+
+/* This only applies to the stats page viewed from the dashboard. */
+body.wp-admin .go_stats_task_status p {
+  margin-top: -2px; }
+
+/* 
+ * This makes up for the space that the border takes up on
+ * stage boxes with the future_url class. This only applies
+ * to the stats page viewed from the dashboard.
+ */
+body.wp-admin .go_stats_task_status.future_url p,
+body.wp-admin .go_stats_task_status.future_url.completed p {
+  margin-top: -3px; }
+
+.go_stats_task_stage_url {
+  cursor: pointer !important; }
+
+.go_user {
+  cursor: default; }
+
+.future_url {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid;
+  background-color: #FFF;
+  color: #AAA; }
+
+.completed {
+  background-color: #AAA; }
+
+.future_url.completed {
+  color: #FFF; }
+
+.chosen {
+  background-color: #000;
+  color: #FFF; }
+
+.go_stage_does_not_exist {
+  background-color: #FFF; }
+
+.go_stats_body_list {
+  display: inline-block;
+  width: 30%;
+  height: 100%;
+  float: left;
+  list-style-type: none;
+  margin: 0px 1.5% 0px 0px !important;
+  overflow-y: auto; }
+
+#go_stats_body .go_stats_body_list:last-of-type {
+  margin-right: 0px; }
+
+.go_stats_body_list li:last-of-type {
+  border-bottom: 1px solid #BBB; }
+
+.go_stats_body_list_head {
+  font-weight: bold;
+  border-top: 0px !important;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.go_stats_body_list li {
+  width: 100%;
+  margin: 0px 0px 0px 0px;
+  border-top: 1px solid #BBB; }
+
+/** Reward Styles **/
+.go_stats_reward {
+  white-space: pre-wrap; }
+
+/** Minutes  List **/
+#go_stats_minutes_list {
+  width: 100% !important; }
+
+/** Penalties  List **/
+#go_stats_penalties_list {
+  width: 100% !important; }
+
+/** Badge Styles **/
+.go_badge_wrap {
+  display: inline-block;
+  float: left;
+  margin-right: 25px;
+  height: 120px; }
+
+.go_badge_container {
+  float: left; }
+
+.go_badge {
+  text-align: center;
+  float: left; }
+
+/** Leaderboard Styles **/
+#go_stats_leaderboard {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap; }
+
+#go_stats_leaderboard_filters {
+  position: relative;
+  display: inline-block;
+  float: right;
+  height: 100%;
+  overflow-y: auto; }
+
+#go_stats_leaderboard_classes {
+  margin-bottom: 10px; }
+
+#go_stats_leaderboard_filters_head {
+  font-weight: bold;
+  margin-top: 5px; }
+
+.go_stats_leaderboard_class_wrap span,
+.go_stats_leaderboard_class_choice,
+.go_stats_leaderboard_focus_wrap span,
+.go_stats_leaderboard_focus_choice {
+  vertical-align: middle; }
+
+.go_stats_leaderboard_class_choice,
+.go_stats_leaderboard_focus_choice {
+  margin-right: 5px; }
+
+#go_stats_leaderboard_focuses {
+  margin-bottom: 10px; }
+
+.go_stats_leaderboard_list {
+  display: inline-block;
+  width: 23%; }
+
+.go_stats_item_wrapper {
+  float: left;
+  max-width: 75%;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.go_stats_amount {
+  text-align: right; }
+
+.stage_url {
+  background-color: black !important; }
+
+.store_row {
+  display: flex;
+  flex-wrap: wrap; }
+
+.store_cats {
+  width: 300px;
+  float: left;
+  padding: 10px 30px;
+  margin: 10px;
+  background-color: #f8f8f8; }
+
+#clockdiv {
+  font-family: sans-serif;
+  color: #fff;
+  display: inline-block;
+  font-weight: 100;
+  text-align: center;
+  font-size: 30px;
+  background-color: #438c98;
+  border-radius: 2ex;
+  padding: 5px;
+  margin-bottom: 20px; }
+
+#clockdiv > div {
+  padding: 5px;
+  border-radius: 3px;
+  display: inline-block; }
+
+#clockdiv div > span {
+  border-radius: 3px;
+  display: inline-block; }
+
+#clockdiv .smalltext {
+  font-size: .45em; }
+
+#go_timer > div {
+  float: left; }
