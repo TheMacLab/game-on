@@ -62,6 +62,8 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "includes/*.php" ) as $file ) {
 }
 
 
+include( 'includes/wp-frontend-media-master/frontend-media.php' );
+
 
 
 
@@ -888,6 +890,23 @@ function enfold_customization_author_archives( $query ) {
     if ( $query -> is_author ) { $query -> set( 'post_type', 'any' ); }
     remove_action( 'pre_get_posts', 'enfold_customization_author_archives' );
 }
+
+
+function media_add_author_dropdown()
+{
+    $scr = get_current_screen();
+    if ( $scr->base !== 'upload' ) return;
+
+    $author   = filter_input(INPUT_GET, 'author', FILTER_SANITIZE_STRING );
+    $selected = (int)$author > 0 ? $author : '-1';
+    $args = array(
+        'show_option_none'   => 'All Authors',
+        'name'               => 'author',
+        'selected'           => $selected
+    );
+    wp_dropdown_users( $args );
+}
+add_action('restrict_manage_posts', 'media_add_author_dropdown');
 
 
 

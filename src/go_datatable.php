@@ -3,7 +3,7 @@
 
 global $wpdb;
 global $go_db_version;
-$go_db_version = '1.4';
+$go_db_version = '1.0';
 
 function go_update_db_check() {
     global $go_db_version;
@@ -34,7 +34,6 @@ function go_table_tasks() {
 			c4 INT,
 			start_time datetime,
 			last_time datetime,
-			timer_start datetime,
 			PRIMARY KEY  (id),
             KEY uid (uid),
             KEY post_id (post_id),
@@ -87,6 +86,8 @@ function go_table_actions() {
 			type VARCHAR (200),
 			source_id bigint(20),
 			TIMESTAMP datetime,
+			stage TINYINT,
+			check_type VARCHAR (200),
 			result VARCHAR (200),
 			stage_mod TINYINT,
 			global_mod TINYINT,

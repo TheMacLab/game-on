@@ -377,7 +377,7 @@ add_action( 'admin_menu', 'go_tools_as_submenu', 10);
 
 ////////////////////
 /// // TEST CODE Add menu and pages to WordPress admin area
-add_action('admin_menu', 'myplugin_create_top_level_menu');
+//add_action('admin_menu', 'myplugin_create_top_level_menu');
 
 function myplugin_create_top_level_menu() {
 

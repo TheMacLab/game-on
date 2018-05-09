@@ -12,7 +12,6 @@ if( ! class_exists( 'WP_Term_Order' ) ) {
 function go_admin_includes () {
 	
 
-
     /**
      * Datatables
      */
@@ -37,6 +36,14 @@ function go_admin_includes () {
 }
 
 function go_includes () {
+
+    /**
+     * Frontend Media
+     */
+    wp_register_script( 'go_frontend_media', plugin_dir_url( __FILE__ ).'wp-frontend-media-master/js/frontend.js', array( 'jquery' ),
+        '2015-05-07', true);
+   wp_enqueue_script( 'go_frontend_media' );
+
 
 
     /**

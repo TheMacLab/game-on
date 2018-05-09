@@ -135,7 +135,6 @@ function go_after_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custo
 /**
  * Badge Lock
  */
-
 function go_badge_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $i, $k, $is_logged_in ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -182,11 +181,9 @@ function go_badge_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custo
 
 }
 
-
 /**
  * Seating Chart/ Period Lock
  */
-
 function go_period_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $i, $k, $is_logged_in ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -233,11 +230,9 @@ function go_period_lock($id, $user_id, $is_admin, $task_name, $badge_name, $cust
     return $this_lock;
 }
 
-
 /**
  * xp Lock --not finished
  */
-
 function go_xp_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $i, $k, $is_logged_in ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -287,7 +282,6 @@ function go_xp_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custom_f
 /**
  * User Group Lock
  */
-
 function go_user_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $i, $k, $is_logged_in ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -337,7 +331,6 @@ function go_user_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custom
 /**
  * Minimum Health Lock
  */
-
 function go_health_lock($id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $i, $k, $is_logged_in ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -353,7 +346,6 @@ function go_health_lock($id, $user_id, $is_admin, $task_name, $badge_name, $cust
     }
     return $this_lock;
 }
-
 
  /**
  * Task Chain Lock
@@ -493,7 +485,6 @@ function go_task_chain_lock(){
         }
     }// End if().
 }
-
 
 /**
  * schedule Lock

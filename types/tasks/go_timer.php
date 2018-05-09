@@ -12,7 +12,7 @@
 function go_timer( $custom_fields, $user_id, $id, $go_table_name, $task_name ) {
         global $wpdb;
 
-		go_print_timer();
+
 		$time_left = go_time_left ($custom_fields, $user_id, $id, $wpdb, $go_table_name );		
 		//get the start time from the go table
 		$start_time = go_timer_start_time ( $wpdb, $go_table_name, $id, $user_id );
@@ -23,13 +23,15 @@ function go_timer( $custom_fields, $user_id, $id, $go_table_name, $task_name ) {
 		if ( empty($start_time)){
 			$time_string = secondsToTime($time_left);
 			//display message "you will have . . ."
-			echo "<div class='go_timer_message'> <h3 class='go_error_red'>Timer</h3>This is a timed ".$task_name.".<br>You will have " . $time_string . " to complete this " . $task_name . " before your rewards are reduced by " . $mod . "%.</p></div>";
+			echo "<div class='go_timer_message'> <h3 class='go_error_red'>Timer</h3>This is a timed ".$task_name.".<br>You will have " . $time_string . " to complete this " . $task_name . " before your rewards are reduced by " . $mod . "%.";
 
 			// Display Buttons
-			echo "<div id='go_buttons'>";
-            echo "<button id='go_button' status='0' onclick='task_stage_change( this )' timer='true' button_type='timer'>Start</button> ";
-			echo "<button id='go_abandon_task' onclick='go_timer_abandon();this.disabled = true;'>Abandon</button>";					
+			echo "<div id='go_buttons' style='overflow: auto;'>";
+            echo "<a id='go_abandon_task' onclick='go_timer_abandon();this.disabled = true;' style='float: left;'>Abandon</a>";
+            echo "<button id='go_button' status='0' onclick='task_stage_change( this )' timer='true' button_type='timer' style='float: right;'>Start</button> ";
+
 			echo "</div>";
+            echo "</div>";
 			//returning true stops the printing of the rest of the task because the timer is set but not started
 			return true;
 		}
@@ -38,21 +40,29 @@ function go_timer( $custom_fields, $user_id, $id, $go_table_name, $task_name ) {
 		//else start time is set, display running timer or time's up message.
 			$current_date = time(); //current date and time
 			$timer_time = $time_left - $current_date;
-			//if the time is up, display message
+            echo "<div class='go_timer_message'> <h3 class='go_error_red'>Timer</h3>";
+
+            //if the time is up, display message
 			if ($timer_time <= 0) {
-				echo "<br><span class='go_error_red'>Time's up! Rewards have been reduced</span>";
+				echo "<span>Time's up! Rewards have been reduced by " . $mod . "%.</span>";
 				$time_left_ms = 0;
 			}
 			//else display running timer
 			else{
 					
 				$time_left_ms = $time_left * 1000;
-				echo "<br><span class='go_error_red'>You have a limited amount of time to complete this " . $task_name . " before rewards are reduced!</span>";
+				echo "<span>You have a limited amount of time to complete this " . $task_name . " before rewards are reduced by " . $mod . "%.</span>";
 				
 			}
+			echo "<div>";
+            go_print_timer();
+			echo "</div>";
+			echo "</div>";
+
 			echo "<script>jQuery(document).ready(function() {initializeClock('clockdiv', new Date( " . $time_left_ms . " ), true);});</script>";
 			echo "<script>jQuery(document).ready(function() {initializeClock('go_timer', new Date( " . $time_left_ms . " ), true);});</script>";
 			echo "<script>jQuery('#clockdiv').show();</script>";
+			return false;
 		}
 }
 

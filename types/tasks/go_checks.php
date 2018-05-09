@@ -7,140 +7,223 @@
  */
 
 //Prints Checks for understanding for the current stage
-function go_checks_for_understanding ($custom_fields, $i, $status){
-    // $i = stage
-
+function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, $bonus){
+    global $wpdb;
+    $go_actions_table_name = "{$wpdb->prefix}go_actions";
     $stage_count = $custom_fields['go_stages'][0]; //total # of stages
-    //while ( ($i + 1) <= $status && $stage_count > $i) {}
-    //( $wpdb, $status, $custom_fields, $go_table_name, $user_id, $id, $number_of_stages, $repeat_amount  )
-    echo "<div id='go_checks_and_buttons'><div id='checks'>";
     $check_type = 'go_stages_' . $i . '_check'; //which type of check to print
     $check_type = $custom_fields[$check_type][0];
 
-    if ($check_type =='upload'){
-        go_upload_check ($custom_fields, $i, $stage_count, $status);
-    }else if ($check_type== 'URL'){
-        go_url_check ($custom_fields, $i, $stage_count, $status);
-    }else if ($check_type== 'password') {
-        go_password_check($custom_fields, $i, $stage_count, $status);
-    }else if ($check_type== 'quiz') {
-        go_test_check($custom_fields, $i, $stage_count, $status);
+    echo "<div class='go_checks_and_buttons'>";
+
+    if ($bonus){
+        $check_type = $custom_fields['go_bonus_stage_0_check'][0];
     }
 
-    //error placeholder
-    echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
+    if ($check_type == 'upload') {
+        go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id);
+    } else if ($check_type == 'URL') {
+        go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id);
+    } else if ($check_type == 'password') {
+        go_password_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id);
+    } else if ($check_type == 'quiz') {
+        go_test_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id);
+    } else if ($check_type == 'none') {
+        go_no_check($custom_fields, $i, $status);
+    }
 
     //Buttons
-    go_buttons($custom_fields, $i, $stage_count, $status);
+    go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type);
 
     echo "</div>";
 }
 
-function go_buttons($custom_fields, $i, $stage_count, $status){
+function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type){
+
+    $is_admin = go_user_is_admin( $user_id );
+    $admin_view = null;
+    if ($is_admin) {
+        $admin_view = get_user_meta($user_id, 'go_admin_view',true);
+    }
+    if ($admin_view === 'all') {
+        $onclick = '';
+    }
+    else{
+        $onclick_abandon = "onclick='go_task_abandon();this.disabled = true;'";
+        $onclick = "onclick='task_stage_check_input( this );'";
+    }
+
     //Buttons
-    if ($i ==$status) {
-        echo "<div id='go_buttons' style='overflow: auto;'>";
-        if ($i == 0) {
-            echo "<a id='go_abandon_task' onclick='go_task_abandon();this.disabled = true;' button_type='continue' style='float: left;'>Abandon</a>";
-        } else {
-            echo "<a id='go_back_button' onclick='task_stage_change( this );' undo='true' button_type='undo' style='float: left;'>⬆ Undo</a>";
+    if ($i == $status) {
+            //error placeholder
+        echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
+        echo "<div id='go_buttons'>";
+            if ($i == 0) {
+                echo "<div id='go_abandon_task' " . $onclick_abandon . " button_type='abandon' status='{$status}' check_type='{$check_type}' >Abandon</div>";
+            } else {
+                echo "<div id='go_back_button' " . $onclick . " undo='true' button_type='undo' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
+            }
+            if (($i + 1) == $stage_count){
+                echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='complete' admin_lock='true' >Complete</button> ";
+
+            }else {
+                echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='continue'  admin_lock='true' >Continue</button> ";
+            }
+        echo "</div>";
+    }
+    else if ($i + 1 == $stage_count){
+        echo "</div>";
+        echo "<div class='go_checks_and_buttons'>";
+        go_print_outro ();
+        echo "</div>";
+        echo "<div class='go_checks_and_buttons'>";
+        echo "<div id='go_buttons'><div id='go_back_button' " . $onclick . " undo='true' button_type='undo_last' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
+        if($custom_fields['bonus_switch'][0]){
+            echo "There is a bonus stage.<br>";
+            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
         }
 
-        echo "<button id='go_button' status='{$stage}' onclick='task_stage_change( this );' button_type='continue' admin_lock='true' style='float: right;'>Continue</button> ";
-
-
-
         echo "</div>";
     }
 }
 
-function go_password_check ($custom_fields, $i, $stage_count, $status){
-    if ($i ==$status) {
-        echo "<input id='go_pass_lock' type='password' placeholder='Enter Password'/></br>";
-    }
-    else {
-        echo "Password was entered.";
+function go_no_check ($custom_fields, $i, $status, $go_actions_table_name){
+    if ($i !=$status) {
+        echo "Stage complete!";
     }
 }
 
-function go_url_check ($custom_fields, $i, $stage_count, $status){
-    if ($i ==$status) {
-        echo "<div id='go_url_div'>";
-        echo "<input id='go_url_key' type='url' placeholder='Enter Url'/></br>";
-        echo "</div>";
+function go_password_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id){
+    global $wpdb;
+    if ($i == $status) {
+        echo "<input id='go_result' type='password' placeholder='Enter Password'/>";
     }
     else {
-        echo "URL Submitted : get url";
-    }
-}
-
-function go_upload_check ($custom_fields, $i, $stage_count, $status) {
-    if ($i ==$status) {
-    //Upload Check for Understanding
-    $stage_upload = ( ! empty( $custom_fields['go_mta_'.$stage_short_name.'_upload'][0] ) ? $custom_fields['go_mta_'.$stage_short_name.'_upload'][0] : false );
-    //get if item is uploaded variable (null or 1)
-    $db_task_stage_upload_var = $stage_letter . '_uploaded';
-    if ( ! empty( $db_task_stage_upload_var ) ) {
-        $is_uploaded = $wpdb->get_var(
+        $i++;
+        $password_type = (string) $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT {$db_task_stage_upload_var} 
-					FROM {$go_table_name} 
-					WHERE uid = %d AND post_id = %d",
+                "SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND stage = %d
+				ORDER BY id DESC LIMIT 1",
                 $user_id,
-                $id
+                $post_id,
+                $i
             )
         );
-    } else {
-        $is_uploaded = 0;
+
+        echo "The " . $password_type . " was entered correctly.";
     }
-    if ( $stage_upload ) {
-        echo do_shortcode( "[go_upload is_uploaded={$is_uploaded} status={$stage} user_id={$user_id} post_id={$id}]" )."<br/>";
-    }
+}
+
+function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id){
+    global $wpdb;
+    if ($i == $status) {
+        echo "<div id='go_url_div'>";
+        echo "<input id='go_result' type='url' placeholder='Enter Url'>";
+        echo "</div>";
     }
     else {
-        echo "This file was uploaded.";
+        $i++;
+        $url = (string) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND stage = %d
+				ORDER BY id DESC LIMIT 1",
+                $user_id,
+                $post_id,
+                $i
+            )
+        );
+        echo "URL Submitted : <a href='" . $url . "' target='blank'>" . $url . "</a>";
+    }
+}
+
+function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id) {
+    global $wpdb;
+    if ($i == $status) {
+
+        echo do_shortcode('[frontend-button]');
+    }
+    else {
+        $i++;
+        $media_id = (int) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND stage = %d
+				ORDER BY id DESC LIMIT 1",
+                $user_id,
+                $post_id,
+                $i
+            )
+        );
+
+        $type = get_post_mime_type($media_id);
+
+        //return $icon;
+        switch ($type) {
+            case 'image/jpeg':
+            case 'image/png':
+            case 'image/gif':
+                $type_image = true;
+                break;
+            default:
+                $type_image = false;
+        }
+        if ($type_image == true){
+            $thumb = wp_get_attachment_image_src( $media_id, 'thumbnail' );
+            echo "<img src='" . $thumb[0] . "' >" ;
+
+        }
+        else{
+           // $img = wp_mime_type_icon($type);
+            //echo "<img src='" . $img . "' >";
+            $thumb = wp_get_attachment_image_src( $media_id, 'thumbnail',true );
+            echo "<img src='" . $thumb[0] . "' >" ;
+        }
+        echo "<div>" . get_the_title($media_id) . "</div>" ;
+
     }
 
 }
 
-function go_test_check ($custom_fields, $i, $stage_count, $status){
-    $quiz_data = 'go_stages_' . $i . '_quiz';
-    $quiz_data = $custom_fields[$check_type][0];
+function go_test_check ($custom_fields, $i, $status, $go_actions_table_name){
+    if ($i == $status) {
+        //$quiz_data = 'go_stages_' . $i . '_quiz';
+        //$quiz_data = $custom_fields[$check_type][0];
 
-    //Quiz Check for Understanding
-    $test_stage_active = ( ! empty( $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] ) ? $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] : false );
+        //Quiz Check for Understanding
+        //$test_stage_active = ( ! empty( $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] ) ? $custom_fields['go_mta_test_'.$stage_short_name.'_lock'][0] : false );
 
-    if ( $test_stage_active ) {
-        $test_stage_array = go_task_get_test_meta( $stage_short_name, $id );
-        $test_stage_returns = $test_stage_array[0];
-        $test_stage_num = $test_stage_array[1];
-        $test_stage_all_questions = $test_stage_array[2][0];
-        $test_stage_all_types = $test_stage_array[2][1];
-        $test_stage_all_answers = $test_stage_array[2][2];
-        $test_stage_all_keys = $test_stage_array[2][3];
-    }
 
-    if ( $test_stage_active ) {
+        $test_stage_array = go_task_get_test_meta($custom_fields, $i);
+        //$test_stage_returns = $test_stage_array[0];
+        $test_stage_num = $test_stage_array[0];
+        $test_stage_all_questions = $test_stage_array[1][0];
+        $test_stage_all_types = $test_stage_array[1][1];
+        $test_stage_all_answers = $test_stage_array[1][2];
+        $test_stage_all_keys = $test_stage_array[1][3];
 
-        if ( $test_stage_num > 1 ) {
-            for ( $i = 0; $i < $test_stage_num; $i++ ) {
-                if ( ! empty( $test_stage_all_types[ $i ] ) &&
-                    ! empty( $test_stage_all_questions[ $i ] ) &&
-                    ! empty( $test_stage_all_answers[ $i ] ) &&
-                    ! empty( $test_stage_all_keys[ $i ] ) ) {
-                    echo do_shortcode( "[go_test type='".$test_stage_all_types[ $i ]."' question='".$test_stage_all_questions[ $i ]."' possible_answers='".$test_stage_all_answers[ $i ]."' key='".$test_stage_all_keys[ $i ]."' test_id='".$i."' total_num='".$test_stage_num."']" );
+        if ($test_stage_num > 1) {
+            for ($i = 0; $i < $test_stage_num; $i++) {
+                if (!empty($test_stage_all_types[$i]) && !empty($test_stage_all_questions[$i]) && !empty($test_stage_all_answers[$i]) && !empty($test_stage_all_keys[$i])) {
+                    echo do_shortcode("[go_test type='" . $test_stage_all_types[$i] . "' question='" . $test_stage_all_questions[$i] . "' possible_answers='" . $test_stage_all_answers[$i] . "' key='" . $test_stage_all_keys[$i] . "' test_id='" . $i . "' total_num='" . $test_stage_num . "']");
                 }
             }
             echo "<p id='go_test_error_msg' style='color: red;'></p>";
-            echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit' button_type='quiz' >Submit</button></div>";
-        } elseif ( ! empty( $test_stage_all_types[0] ) &&
-            ! empty( $test_stage_all_questions[0] ) &&
-            ! empty( $test_stage_all_answers[0] ) &&
-            ! empty( $test_stage_all_keys[0] ) ) {
-            echo do_shortcode( "[go_test type='".$test_stage_all_types[0]."' question='".$test_stage_all_questions[0]."' possible_answers='".$test_stage_all_answers[0]."' key='".$test_stage_all_keys[0]."' test_id='0']" )."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit button_type='quiz''>Submit</button></div>";
+            //echo "<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit' button_type='quiz' >Submit</button></div>";
+        } elseif (!empty($test_stage_all_types[0]) && !empty($test_stage_all_questions[0]) && !empty($test_stage_all_answers[0]) && !empty($test_stage_all_keys[0])) {
+            echo do_shortcode("[go_test type='" . $test_stage_all_types[0] . "' question='" . $test_stage_all_questions[0] . "' possible_answers='" . $test_stage_all_answers[0] . "' key='" . $test_stage_all_keys[0] . "' test_id='0']");
+            //."<div class='go_test_submit_div' style='display: none;'><button class='go_test_submit button_type='quiz''>Submit</button></div>";
         }
-
     }
+    else {
+        echo "Questions answered correctly.";
+    }
+
+
 }
 
 //Quiz function
@@ -174,20 +257,12 @@ function go_test_check ($custom_fields, $i, $stage_count, $status){
  *           ),
  *      )
  */
-function go_task_get_test_meta( $stage, $task_id ) {
-    if ( empty( $stage ) ) {
-        return null;
-    }
+function go_task_get_test_meta($custom_fields, $stage ) {
 
-    if ( empty( $task_id ) ) {
-        $task_id = get_the_id();
-    } elseif ( 'int' !== gettype( $task_id ) ) {
-        $task_id = (int) $task_id;
-    }
 
-    $test_returns = get_post_meta( $task_id, "go_mta_test_{$stage}_lock_loot", true );
-    $test_array = get_post_meta( $task_id, "go_mta_test_{$stage}_lock_fields", true );
-
+    //$test_array = get_post_meta( $task_id, "go_mta_test_{$stage}_lock_fields", true );
+    $test_array = $custom_fields['go_stages_' . $stage . '_quiz'][0];
+    $test_array = unserialize($test_array);
     if ( ! empty( $test_array ) ) {
         $test_num = $test_array[3];
         $test_all_questions = array();
@@ -228,7 +303,7 @@ function go_task_get_test_meta( $stage, $task_id ) {
             }
         }
 
-        return array( $test_returns, $test_num, array( $test_all_questions, $test_all_types, $test_all_answers, $test_all_keys ) );
+        return array( $test_num, array( $test_all_questions, $test_all_types, $test_all_answers, $test_all_keys ) );
     } else {
         return null;
     }

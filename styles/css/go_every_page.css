@@ -1,4 +1,33 @@
 /********************
+*	Check for Understanding Buttons
+********************/
+#go_buttons {
+	overflow: auto;
+	position: relative;
+	padding: 10px;
+    min-height: 40px;
+}
+
+#go_back_button {
+	float:left;
+	position: absolute;
+	bottom: 10px;
+
+}
+
+#go_abandon_task {
+	float:left;
+	position: absolute;
+	bottom: 10px;
+
+}
+
+#go_button {
+	float: right;
+}
+
+
+/********************
 *	locks
 ********************/
 .go_locks {
@@ -8,7 +37,7 @@
 	margin: 10px;
 	background-color: #ddd;
 }
-.go_lock, .go_late_mods, .go_sched_access_message, .go_timer_message{
+.go_lock, .go_late_mods, .go_sched_access_message, .go_timer_message, .go_checks_and_buttons {
 	border: solid;
 	border-radius: 25px;
 	padding: 10px;
@@ -658,26 +687,21 @@ ul#go_bonus_loot_wrap li.go_error {
 	margin-bottom: 10px;
 }
 
-.go_stage_message p:last-of-type {
-	border-bottom: 1px solid;
-	border-bottom-color: inherit;
+.go_stage_message {
+	border-top: 1px solid;
+	border-top-color: inherit;
+	padding: 20px 0 20px 0;
 }
 
-.go_stage_message {
-    background-color:#ddd;
-}
+
 #go_description .go_stage_message {
     background-color:transparent;
 }
 
 #new_content .go_stage_message {
     background-color:#fffcf2;
-}
 
-.go_stage_message {
-    padding:20px;
 }
-
 
 .go_test_container {
 	margin-bottom: 10px;

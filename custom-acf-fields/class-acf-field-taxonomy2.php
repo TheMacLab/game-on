@@ -593,7 +593,7 @@ class acf_field_taxonomy2 extends acf_field {
 	*/
 	
 	function update_value( $value, $post_id, $field ) {
-		
+
 		// vars
 		if( is_array($value) ) {
 		
