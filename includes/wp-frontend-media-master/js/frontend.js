@@ -2,6 +2,7 @@
 
 //$(document).ready( function() {
 function go_upload_frontend() {
+
     var file_frame; // variable for the wp.media file_frame
 
     // attach a click event (or whatever you want) to some element on your page
@@ -28,6 +29,7 @@ function go_upload_frontend() {
         //console.log (attachment);
         // do something with the file here
         $('#frontend-button').attr('value', 'Change File');
+        $('#go_stage_error_msg').hide();
         if (attachment.type == 'image') {
             $('#go_result').attr('src', attachment.url);
         }

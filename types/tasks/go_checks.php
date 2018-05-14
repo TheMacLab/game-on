@@ -71,18 +71,12 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
             }
         echo "</div>";
     }
-    else if ($i + 1 == $stage_count){
-        echo "</div>";
-        echo "<div class='go_checks_and_buttons'>";
-        go_print_outro ();
-        echo "</div>";
-        echo "<div class='go_checks_and_buttons'>";
+    else if ($check_type == 'show_bonus'){
         echo "<div id='go_buttons'><div id='go_back_button' " . $onclick . " undo='true' button_type='undo_last' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
         if($custom_fields['bonus_switch'][0]){
-            echo "There is a bonus stage.<br>";
+            //echo "There is a bonus stage.";
             echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
         }
-
         echo "</div>";
     }
 }

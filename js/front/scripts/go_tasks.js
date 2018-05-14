@@ -853,7 +853,8 @@ function task_stage_change( target ) {
                 }
                 else if ( res.button_type == 'show_bonus' ){
                     console.log ("BONUS");
-                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                    //jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+					jQuery('#go_buttons').hide();
                     //status = Number(task_status) + 1;
                     //alert (status);
                     jQuery( '#go_wrapper' ).append( res.html );

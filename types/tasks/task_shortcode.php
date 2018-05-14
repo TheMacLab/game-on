@@ -162,22 +162,27 @@ function go_task_shortcode($atts, $content = null ) {
     /**
      * LOCKS
      */
-    if ($admin_flag == 'locks') {
+    if (!$is_admin || $admin_flag == 'locks') {
         $task_is_locked = go_display_locks($post_id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $is_logged_in);
-            echo "-or-<div class='go_lock'><input id='go_pass_lock' type='password' placeholder='Enter Password'>";
-        go_buttons($user_id, $custom_fields, null, null, null, 'password');
-        echo "</div>";
-        if ($task_is_locked == true) {
+
+        /**
+         * Check if password lock is on
+         */
+        if ($custom_fields['go_lock_toggle'][0] == true && $custom_fields['go_password_lock'][0] == true){
+            $password_locked = true;
+        }
+		if ($task_is_locked && $password_locked){
+            echo "-or-";
+		}
+		if ($task_is_locked || $password_locked) {
+            echo "<div class='go_lock'><input id='go_pass_lock' type='password' placeholder='Enter Password'>";
+            go_buttons($user_id, $custom_fields, null, null, null, 'password');
+            echo "</div>";
             return null;
         }
     }
     //The wrapper for the content
     echo "<div id='go_wrapper' data-fitvids='" . $go_fitvids_switch ."'  data-lightbox='" . $go_lightbox_switch . "' data-maxwidth='" . $go_fitvids_maxwidth . "' >";
-    /**
-     * Display Rewards before task content
-     * This is the list of rewards at the top of the task.
-     */
-    go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
 
     /**
      * Due date mods
@@ -274,6 +279,13 @@ function go_task_shortcode($atts, $content = null ) {
     if ($locks_status){
         return null;
     }
+
+    /**
+     * Display Rewards before task content
+     * This is the list of rewards at the top of the task.
+     */
+    go_display_rewards( $user_id, $points_array, $currency_array, $bonus_currency_array, $update_percent, $number_of_stages, $future_timer );
+
     /**
      * MAIN CONTENT
      */
@@ -284,8 +296,9 @@ function go_task_shortcode($atts, $content = null ) {
 		go_print_messages ( $status, $custom_fields, $go_actions_table_name, $user_id, $post_id, $task_name,  $is_admin, $admin_view );
 
 		//Prints bonus task
+		echo "</div>";
 
-	echo "</div></div>";
+	//echo "</div></div>";
 		//Print the bottom of the page
 		go_task_render_chain_pagination( $post_id, $user_id );
 
@@ -462,7 +475,7 @@ function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_nam
 function go_due_date_mods ($custom_fields, $is_logged_in, $task_name ){
 
     if ($custom_fields['go_due_dates_toggle'][0] == true && $is_logged_in) {
-        echo '<div class="go_late_mods"><h3 class="go_error_red">Due Date</h3>The rewards on this '. $task_name . ' will be reduced by<br>';
+        echo '<div class="go_late_mods"><h3 class="go_error_red">Due Date</h3>';
         echo "<ul>";
         $num_loops = $custom_fields['go_due_dates_mod_settings'][0];
         for ($i = 0; $i < $num_loops; $i++) {
@@ -470,9 +483,16 @@ function go_due_date_mods ($custom_fields, $is_logged_in, $task_name ){
             $mod_date = $custom_fields[$mod_date][0];
             $mod_date = strtotime($mod_date);
             $mod_date = date('F j, Y \a\t g:i a\.' ,$mod_date);
+            $current_time = current_time( 'F j, Y \a\t g:i a\.' );
             $mod_percent = 'go_due_dates_mod_settings_'.$i.'_mod';
             $mod_percent = $custom_fields[$mod_percent][0];
-            echo "<li>" . $mod_percent . "% on " . $mod_date . "</li>";
+            if ($current_time > $mod_date){
+                echo '<li>The rewards on this '. $task_name . ' were reduced by<br>';
+			}
+			else {
+                echo '<li>The rewards on this ' . $task_name . ' will be reduced by<br>';
+            }
+            echo "" . $mod_percent . "% on " . $mod_date . "</li>";
         }
         echo "</ul></div>";
     }
@@ -507,12 +527,31 @@ function go_print_messages ( $status, $custom_fields, $go_actions_table_name, $u
         go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id);
 		$i++;
 	}
-	if ($i == $status){
-
+    if ($i == $status){
+        //echo "doneadfa fas;fkldfj ads;lf ad;f";
         //go_print_outro($task_name,  $is_admin, $admin_view);
+        go_print_outro ($user_id, $custom_fields, $i, $stage_count, $status);
     }
 
+    /*
 
+
+
+else if ($i + 1 == $stage_count){
+    echo "</div>";
+    echo "<div class='go_checks_and_buttons'>";
+    go_print_outro ();
+    echo "</div>";
+    echo "<div class='go_checks_and_buttons'>";
+    echo "<div id='go_buttons'><div id='go_back_button' " . $onclick . " undo='true' button_type='undo_last' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
+    if($custom_fields['bonus_switch'][0]){
+        echo "There is a bonus stage.<br>";
+        echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
+    }
+
+    echo "</div>";
+}
+*/
 
 }
 
@@ -1162,7 +1201,7 @@ function go_lock_password_validate($pass, $custom_fields, $status){
     }
 }
 
-function go_print_outro (){
+function go_print_outro ($user_id, $custom_fields, $i, $stage_count, $status){
     $task_name = strtolower( go_return_options( 'options_go_tasks_name_singular' ) );
     $bonus_loot = strtolower( go_return_options( 'options_go_loot_bonus_loot_name' ) );
 
@@ -1184,18 +1223,26 @@ function go_print_outro (){
         $c4 = go_return_options( 'options_go_loot_c4_name' );
     }
 
-
-    echo "
-        
+    echo "<div class='go_checks_and_buttons'>";
+    echo "    
         <h3>" . ucwords($task_name) . " Complete!</h3>
         <p>You earned  : " . $xp . ",   " . $gold . ",   " . $health . ",  " . $c4 . "<p/>
         <p>There is " . $bonus_loot . ".  Click button </p>
         <p>Next Up: Link to next in chain.</p>
     ";
+    if($custom_fields['bonus_switch'][0]){
+        //echo "There is a bonus stage1.<br>";
+        //echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
+    	go_buttons($user_id, $custom_fields, 100, $stage_count, $status, 'show_bonus');
+    }
+
+    echo "</div>";
 
 }
 
-function go_print_bonus_stage ($user_id, $post_id, $custom_fields, $task_name){
+function go_print_bonus_stage ($user_id, $post_id, $custom_fields, $task_name, $bonus_count){
+    global $wpdb;
+    $go_table_name = "{$wpdb->prefix}go_tasks";
     $content = $custom_fields['go_bonus_stage_0_content'][0];
     $bonus_stage_name =  go_return_options( 'options_go_tasks_bonus_stage' ) ;
     echo "
@@ -1205,10 +1252,25 @@ function go_print_bonus_stage ($user_id, $post_id, $custom_fields, $task_name){
         </div>
     ";
 
-    $repeat_count = 2; //change this to get actual number of times this has been repeated
-    $repeat_max = 2; //change this to get actual number of times this can be repeated
-    if ($repeat_count == $repeat_max ) {
-        go_checks_for_understanding($custom_fields, null, bonus, $user_id, $post_id, true);
+    //$repeat_count = 1; //change this to get actual number of times this has been repeated
+    //$repeat_max = 2; //change this to get actual number of times this can be repeated
+    //$repeat_count = 1;
+
+
+    $i = 0;
+    $repeat_max = $custom_fields['go_bonus_limit'][0];
+    while ( $i <= $bonus_count && $repeat_max > $i) {
+       // go_print_1_message ( $custom_fields, $i );
+        //Print Checks for Understanding for the last stage message printed and buttons
+        //go_checks_for_understanding ($custom_fields, $i, $repeat_count, $user_id, $post_id);
+        //$custom_fields, $i, $status, $user_id, $post_id, $bonus)
+        go_checks_for_understanding($custom_fields, $i, $bonus_count, $user_id, $post_id, true);
+        $i++;
+    }
+
+    if ($bonus_count == $i ) {
+        //go_checks_for_understanding($custom_fields, $i, $bonus_count, $user_id, $post_id, true);
+        //go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, $bonus)
     }
     else{
         echo "DONE!";
@@ -1475,6 +1537,7 @@ function go_task_change_stage() {
             //complete
 
             //$complete = true;
+            go_print_outro ($user_id, $custom_fields, $i, $stage_count, $status);
             //print outro and bonus button
 		}
 
@@ -1532,13 +1595,39 @@ function go_task_change_stage() {
 
     }
     else if ($button_type == 'show_bonus'){
-        go_print_bonus_stage($user_id, $post_id, $custom_fields, $task_name);
+        $bonus_count = (int) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT bonus_count 
+				FROM {$go_table_name} 
+				WHERE uid = %d AND post_id = %d",
+                $user_id,
+                $post_id
+            )
+        );
+        go_print_bonus_stage($user_id, $post_id, $custom_fields, $task_name, $bonus_count);
+        //////////////////
+        /// UPDATE THE DATABASE
+        ///
+        //update stage
+
+
+        go_update_stage_bonus($go_table_name, $user_id, $post_id, $bonus_count, $xp, $gold, $health, $c4, $complete );
+        $status = $status + 1;
+        go_update_actions($go_actions_table_name, $user_id, 'task',  $post_id, $time, $status, $check_type, $result, $stage_mod, $global_mod,  $xp, $gold, $health, $c4, $xp_total, $gold_total, $health_total, $c4_total );
+        //$status = $status - 1;
+        go_update_totals_table($go_totals_table_name, $user_id, $xp, $gold, $health, $c4, $badge);
+        //update actions
     }
 
     // stores the contents of the buffer and then clears it
     $buffer = ob_get_contents();
 
     ob_end_clean();
+
+
+
+    //update totals
+
 
     // constructs the JSON response
     echo json_encode(

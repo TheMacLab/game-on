@@ -25,6 +25,25 @@ function go_update_stage_progress($go_table_name, $user_id, $post_id, $status, $
         ));
 }
 
+function go_update_stage_bonus($go_table_name, $user_id, $post_id, $bonus_count, $xp, $gold, $health, $c4, $complete ){
+    global $wpdb;
+
+    $time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
+    $bonus_count = $bonus_count + 1;
+
+    $wpdb->update(
+        $go_table_name,
+        array(
+            'last_time' => $time,
+            'bonus_count' => $bonus_count,
+            'complete' => $complete
+        ),
+        array(
+            'uid' => $user_id,
+            'post_id' => $post_id
+        ));
+}
+
 function go_update_stage_undo($go_table_name, $user_id, $post_id, $status, $xp, $gold, $health, $c4, $complete ){
     global $wpdb;
 

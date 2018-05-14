@@ -70,17 +70,9 @@ function go_task_locks ( $id, $user_id, $is_admin, $task_name, $badge_name, $cus
         }
     }
 
-
-
-    /**
-     * Check if password lock is on
-     */
-    if ($custom_fields['go_password_lock'][0] == true ){
-        $task_is_locked = true;
-    }
-
     //Locks End
     return $task_is_locked;
+
 }
 
 /**

@@ -8,6 +8,8 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4b
 */
 
+include_once( 'includes/acf/acf.php' );
+
 foreach ( glob( plugin_dir_path( __FILE__ ) . "*.php" ) as $file ) {
     include_once $file;
 }
@@ -486,7 +488,7 @@ function go_user_is_admin( $user_id = null ) {
 
 //Resize All Images on Client Side
 function client_side_resize_load() {
-    wp_enqueue_script( 'client-resize' , plugins_url( '/scripts/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
+    wp_enqueue_script( 'client-resize' , plugins_url( '/js/js/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
     wp_localize_script( 'client-resize' , 'client_resize' , array( 
         'plupload' => array(
                 'resize' => array(
