@@ -146,7 +146,10 @@ function go_on_activate_msdb( $network_wide ) {
         $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
         foreach ( $blog_ids as $blog_id ) {
             switch_to_blog( $blog_id );
-            go_update_db_check();
+            go_table_tasks();
+            go_table_store();
+            go_table_actions();
+            go_table_totals();
             restore_current_blog();
         }
     } else {
@@ -159,7 +162,10 @@ register_activation_hook( __FILE__, 'go_on_activate_msdb' );
 function go_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
     if ( is_plugin_active_for_network( 'plugin-name/plugin-name.php' ) ) {
         switch_to_blog( $blog_id );
-        go_update_db_check();
+        go_table_tasks();
+        go_table_store();
+        go_table_actions();
+        go_table_totals();
         restore_current_blog();
     }
 }
@@ -168,7 +174,11 @@ add_action( 'wpmu_new_blog', 'go_on_create_blog', 10, 6 );
 // Deleting the table whenever a blog is deleted
 function go_on_delete_blog( $tables ) {
     global $wpdb;
-    $tables[] = $wpdb->prefix . 'table_name';
+    $tables[] = $wpdb->prefix . 'go_tasks';
+    $tables[] = $wpdb->prefix . 'go_activity';
+    $tables[] = $wpdb->prefix . 'go_store';
+    $tables[] = $wpdb->prefix . 'go_totals';
+
     return $tables;
 }
 add_filter( 'wpmu_drop_tables', 'go_on_delete_blog' );

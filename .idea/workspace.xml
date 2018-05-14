@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" />
       <change beforePath="$PROJECT_DIR$/src/go_datatable.php" afterPath="$PROJECT_DIR$/src/go_datatable.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -144,21 +142,21 @@
       <file leaf-file-name="go_datatable.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-289">
-              <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+            <state relative-caret-position="291">
+              <caret line="179" column="44" lean-forward="true" selection-start-line="179" selection-start-column="44" selection-end-line="179" selection-end-column="44" />
               <folding>
-                <marker date="1526283457000" expanded="true" signature="585:1056" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526283457000" expanded="true" signature="1306:1646" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526283457000" expanded="true" signature="1900:2530" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526283457000" expanded="true" signature="2782:3003" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526283457000" expanded="true" signature="3368:3388" ph="SELECT blog_... wp_blogs" />
-                <marker date="1526283457000" expanded="true" signature="4442:5255" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526283457000" expanded="true" signature="5473:5694" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526283457000" expanded="true" signature="12218:12336" ph="SELECT user_... $" />
-                <marker date="1526283457000" expanded="true" signature="12743:12790" ph="SELECT uid F... $" />
-                <marker date="1526283457000" expanded="true" signature="12902:12959" ph="SELECT sum( $" />
-                <marker date="1526283457000" expanded="true" signature="13108:13167" ph="SELECT sum( $" />
-                <marker date="1526283457000" expanded="true" signature="13255:13309" ph="SELECT uid F... $" />
+                <marker date="1526313465000" expanded="true" signature="585:1056" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526313465000" expanded="true" signature="1306:1646" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526313465000" expanded="true" signature="1900:2530" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526313465000" expanded="true" signature="2782:3003" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526313465000" expanded="true" signature="3368:3388" ph="SELECT blog_... wp_blogs" />
+                <marker date="1526313465000" expanded="true" signature="4743:5556" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526313465000" expanded="true" signature="5774:5995" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526313465000" expanded="true" signature="12519:12637" ph="SELECT user_... $" />
+                <marker date="1526313465000" expanded="true" signature="13044:13091" ph="SELECT uid F... $" />
+                <marker date="1526313465000" expanded="true" signature="13203:13260" ph="SELECT sum( $" />
+                <marker date="1526313465000" expanded="true" signature="13409:13468" ph="SELECT sum( $" />
+                <marker date="1526313465000" expanded="true" signature="13556:13610" ph="SELECT uid F... $" />
               </folding>
             </state>
           </provider>
@@ -477,12 +475,12 @@
       <workItem from="1525033769315" duration="17402000" />
       <workItem from="1525063498726" duration="114597000" />
       <workItem from="1526182238988" duration="12102000" />
-      <workItem from="1526231243873" duration="10433000" />
+      <workItem from="1526231243873" duration="10834000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="504359000" />
+    <option name="totallyTimeSpent" value="504760000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="852" extended-state="6" />
@@ -1129,21 +1127,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-289">
-          <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+        <state relative-caret-position="291">
+          <caret line="179" column="44" lean-forward="true" selection-start-line="179" selection-start-column="44" selection-end-line="179" selection-end-column="44" />
           <folding>
-            <marker date="1526283457000" expanded="true" signature="585:1056" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526283457000" expanded="true" signature="1306:1646" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526283457000" expanded="true" signature="1900:2530" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526283457000" expanded="true" signature="2782:3003" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526283457000" expanded="true" signature="3368:3388" ph="SELECT blog_... wp_blogs" />
-            <marker date="1526283457000" expanded="true" signature="4442:5255" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526283457000" expanded="true" signature="5473:5694" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526283457000" expanded="true" signature="12218:12336" ph="SELECT user_... $" />
-            <marker date="1526283457000" expanded="true" signature="12743:12790" ph="SELECT uid F... $" />
-            <marker date="1526283457000" expanded="true" signature="12902:12959" ph="SELECT sum( $" />
-            <marker date="1526283457000" expanded="true" signature="13108:13167" ph="SELECT sum( $" />
-            <marker date="1526283457000" expanded="true" signature="13255:13309" ph="SELECT uid F... $" />
+            <marker date="1526313465000" expanded="true" signature="585:1056" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526313465000" expanded="true" signature="1306:1646" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526313465000" expanded="true" signature="1900:2530" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526313465000" expanded="true" signature="2782:3003" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526313465000" expanded="true" signature="3368:3388" ph="SELECT blog_... wp_blogs" />
+            <marker date="1526313465000" expanded="true" signature="4743:5556" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526313465000" expanded="true" signature="5774:5995" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526313465000" expanded="true" signature="12519:12637" ph="SELECT user_... $" />
+            <marker date="1526313465000" expanded="true" signature="13044:13091" ph="SELECT uid F... $" />
+            <marker date="1526313465000" expanded="true" signature="13203:13260" ph="SELECT sum( $" />
+            <marker date="1526313465000" expanded="true" signature="13409:13468" ph="SELECT sum( $" />
+            <marker date="1526313465000" expanded="true" signature="13556:13610" ph="SELECT uid F... $" />
           </folding>
         </state>
       </provider>
