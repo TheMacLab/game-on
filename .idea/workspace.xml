@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/includes/go_acf_groups.php" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/config.codekit3" afterPath="$PROJECT_DIR$/config.codekit3" />
-      <change beforePath="$PROJECT_DIR$/game-on.php" afterPath="$PROJECT_DIR$/game-on.php" />
       <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" afterPath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" afterPath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
-      <change beforePath="$PROJECT_DIR$/js/not loaded/client-side-image-resize.js" afterPath="$PROJECT_DIR$/js/js/client-side-image-resize.js" />
-      <change beforePath="$PROJECT_DIR$/src/go_updates.php" afterPath="$PROJECT_DIR$/src/go_updates.php" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_checks.php" afterPath="$PROJECT_DIR$/types/tasks/go_checks.php" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_locks.php" afterPath="$PROJECT_DIR$/types/tasks/go_locks.php" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/task_shortcode.php" afterPath="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -122,30 +114,40 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
+            <state relative-caret-position="-415">
               <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding>
-                <marker date="1526281196000" expanded="true" signature="10686:10736" ph="SELECT * FRO... $" />
-                <marker date="1526281196000" expanded="true" signature="10819:10867" ph="DELETE FROM $... " />
-                <marker date="1526281196000" expanded="true" signature="12166:12182" ph="..." />
-                <marker date="1526281196000" expanded="true" signature="12183:13548" ph="..." />
-                <marker date="1526281196000" expanded="true" signature="12483:12504" ph="..." />
-                <marker date="1526281196000" expanded="false" signature="12673:12704" ph="..." />
-                <marker date="1526281196000" expanded="true" signature="12705:13451" ph="..." />
-                <marker date="1526281196000" expanded="false" signature="12769:12785" ph="..." />
-                <marker date="1526281196000" expanded="true" signature="12786:13441" ph="..." />
-                <marker date="1526281196000" expanded="true" signature="13559:13897" ph="..." />
-                <marker date="1526281196000" expanded="true" signature="13604:13886" ph="{...}" />
-                <marker date="1526281196000" expanded="true" signature="13623:13878" ph="{&quot;type&quot;: 'post'...}" />
-                <marker date="1526281196000" expanded="true" signature="13681:13765" ph="{&quot;_ajax_nonce&quot;: 'EXTERNAL_FRAGMENT'...}" />
-                <marker date="1526281196000" expanded="true" signature="13797:13872" ph="{...}" />
-                <marker date="1526281196000" expanded="true" signature="13830:13865" ph="{...}" />
-                <marker date="1526281196000" expanded="true" signature="19274:19330" ph="..." />
-                <marker date="1526281196000" expanded="true" signature="20970:21170" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="10686:10736" ph="SELECT * FRO... $" />
+                <marker date="1526281573000" expanded="true" signature="10819:10867" ph="DELETE FROM $... " />
+                <marker date="1526281573000" expanded="true" signature="12166:12182" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="12183:13548" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="12483:12504" ph="..." />
+                <marker date="1526281573000" expanded="false" signature="12673:12704" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="12705:13451" ph="..." />
+                <marker date="1526281573000" expanded="false" signature="12769:12785" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="12786:13441" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="13559:13897" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="13604:13886" ph="{...}" />
+                <marker date="1526281573000" expanded="true" signature="13623:13878" ph="{&quot;type&quot;: 'post'...}" />
+                <marker date="1526281573000" expanded="true" signature="13681:13765" ph="{&quot;_ajax_nonce&quot;: 'EXTERNAL_FRAGMENT'...}" />
+                <marker date="1526281573000" expanded="true" signature="13797:13872" ph="{...}" />
+                <marker date="1526281573000" expanded="true" signature="13830:13865" ph="{...}" />
+                <marker date="1526281573000" expanded="true" signature="19274:19330" ph="..." />
+                <marker date="1526281573000" expanded="true" signature="20970:21170" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/includes/go_acf_groups.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="444">
+              <caret line="5752" column="6" lean-forward="false" selection-start-line="5752" selection-start-column="6" selection-end-line="5752" selection-end-column="6" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -237,7 +239,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/includes/custom-acf-fields/class-acf-field-order-posts.php" />
         <option value="$PROJECT_DIR$/go_menus.php" />
         <option value="$PROJECT_DIR$/scripts_dev/go_admin.js" />
         <option value="$PROJECT_DIR$/types/tasks/task-admin.php" />
@@ -288,6 +289,7 @@
         <option value="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/game-on.php" />
+        <option value="$PROJECT_DIR$/includes/go_acf_groups.php" />
       </list>
     </option>
   </component>
@@ -489,12 +491,12 @@
       <workItem from="1525033769315" duration="17402000" />
       <workItem from="1525063498726" duration="114597000" />
       <workItem from="1526182238988" duration="12102000" />
-      <workItem from="1526231243873" duration="8365000" />
+      <workItem from="1526231243873" duration="8606000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="502291000" />
+    <option name="totallyTimeSpent" value="502532000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="852" extended-state="6" />
@@ -597,13 +599,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/includes/wp-term-order/js/reorder.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="387" column="69" lean-forward="false" selection-start-line="387" selection-start-column="69" selection-end-line="387" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/includes/CollapsibleLists.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1134,27 +1129,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game-on.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
+        <state relative-caret-position="-415">
           <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding>
-            <marker date="1526281196000" expanded="true" signature="10686:10736" ph="SELECT * FRO... $" />
-            <marker date="1526281196000" expanded="true" signature="10819:10867" ph="DELETE FROM $... " />
-            <marker date="1526281196000" expanded="true" signature="12166:12182" ph="..." />
-            <marker date="1526281196000" expanded="true" signature="12183:13548" ph="..." />
-            <marker date="1526281196000" expanded="true" signature="12483:12504" ph="..." />
-            <marker date="1526281196000" expanded="false" signature="12673:12704" ph="..." />
-            <marker date="1526281196000" expanded="true" signature="12705:13451" ph="..." />
-            <marker date="1526281196000" expanded="false" signature="12769:12785" ph="..." />
-            <marker date="1526281196000" expanded="true" signature="12786:13441" ph="..." />
-            <marker date="1526281196000" expanded="true" signature="13559:13897" ph="..." />
-            <marker date="1526281196000" expanded="true" signature="13604:13886" ph="{...}" />
-            <marker date="1526281196000" expanded="true" signature="13623:13878" ph="{&quot;type&quot;: 'post'...}" />
-            <marker date="1526281196000" expanded="true" signature="13681:13765" ph="{&quot;_ajax_nonce&quot;: 'EXTERNAL_FRAGMENT'...}" />
-            <marker date="1526281196000" expanded="true" signature="13797:13872" ph="{...}" />
-            <marker date="1526281196000" expanded="true" signature="13830:13865" ph="{...}" />
-            <marker date="1526281196000" expanded="true" signature="19274:19330" ph="..." />
-            <marker date="1526281196000" expanded="true" signature="20970:21170" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="10686:10736" ph="SELECT * FRO... $" />
+            <marker date="1526281573000" expanded="true" signature="10819:10867" ph="DELETE FROM $... " />
+            <marker date="1526281573000" expanded="true" signature="12166:12182" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="12183:13548" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="12483:12504" ph="..." />
+            <marker date="1526281573000" expanded="false" signature="12673:12704" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="12705:13451" ph="..." />
+            <marker date="1526281573000" expanded="false" signature="12769:12785" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="12786:13441" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="13559:13897" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="13604:13886" ph="{...}" />
+            <marker date="1526281573000" expanded="true" signature="13623:13878" ph="{&quot;type&quot;: 'post'...}" />
+            <marker date="1526281573000" expanded="true" signature="13681:13765" ph="{&quot;_ajax_nonce&quot;: 'EXTERNAL_FRAGMENT'...}" />
+            <marker date="1526281573000" expanded="true" signature="13797:13872" ph="{...}" />
+            <marker date="1526281573000" expanded="true" signature="13830:13865" ph="{...}" />
+            <marker date="1526281573000" expanded="true" signature="19274:19330" ph="..." />
+            <marker date="1526281573000" expanded="true" signature="20970:21170" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/go_acf_groups.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="5752" column="6" lean-forward="false" selection-start-line="5752" selection-start-column="6" selection-end-line="5752" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>

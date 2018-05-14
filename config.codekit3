@@ -9983,6 +9983,13 @@
 		"oAP": "\/includes\/fitvids-for-wordpress\/uninstall.php",
 		"oF": 1
 		},
+	"\/includes\/go_acf_groups.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/includes\/go_acf_groups.php",
+		"oF": 0
+		},
 	"\/includes\/go_enque_includes.php": {
 		"cB": 0,
 		"ft": 8192,
