@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/includes/go_acf_groups.php" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" afterPath="$PROJECT_DIR$/config.codekit3" />
-      <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" />
+      <change beforePath="$PROJECT_DIR$/src/go_datatable.php" afterPath="$PROJECT_DIR$/src/go_datatable.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -117,7 +115,7 @@
       <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-415">
+            <state relative-caret-position="45">
               <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding>
                 <marker date="1526281573000" expanded="true" signature="10686:10736" ph="SELECT * FRO... $" />
@@ -142,7 +140,30 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_datatable.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="168" column="12" lean-forward="false" selection-start-line="168" selection-start-column="12" selection-end-line="168" selection-end-column="12" />
+              <folding>
+                <marker date="1526283135000" expanded="true" signature="585:1056" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526283135000" expanded="true" signature="1306:1646" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526283135000" expanded="true" signature="1900:2530" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526283135000" expanded="true" signature="2782:3003" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526283135000" expanded="true" signature="3368:3388" ph="SELECT blog_... wp_blogs" />
+                <marker date="1526283135000" expanded="true" signature="4442:5255" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526283135000" expanded="true" signature="5473:5694" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526283135000" expanded="true" signature="12218:12336" ph="SELECT user_... $" />
+                <marker date="1526283135000" expanded="true" signature="12743:12790" ph="SELECT uid F... $" />
+                <marker date="1526283135000" expanded="true" signature="12902:12959" ph="SELECT sum( $" />
+                <marker date="1526283135000" expanded="true" signature="13108:13167" ph="SELECT sum( $" />
+                <marker date="1526283135000" expanded="true" signature="13255:13309" ph="SELECT uid F... $" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="444">
@@ -201,7 +222,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>$is_admin</find>
       <find>admin_view</find>
       <find>$ad</find>
       <find>checks</find>
@@ -231,6 +251,7 @@
       <find>bonus</find>
       <find>go_update_stage_progress</find>
       <find>go_print_bonus_stage</find>
+      <find>go_on_activate</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -279,7 +300,6 @@
         <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php" />
         <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" />
         <option value="$PROJECT_DIR$/includes/go_enque_includes.php" />
-        <option value="$PROJECT_DIR$/src/go_datatable.php" />
         <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
         <option value="$PROJECT_DIR$/styles/css/go_every_page.css" />
         <option value="$PROJECT_DIR$/types/tasks/go_locks.php" />
@@ -290,6 +310,7 @@
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/includes/go_acf_groups.php" />
+        <option value="$PROJECT_DIR$/src/go_datatable.php" />
       </list>
     </option>
   </component>
@@ -340,43 +361,7 @@
             <path>
               <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="includes" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="admin" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="front" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="front" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="scripts" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="not loaded" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
           </expand>
           <select />
@@ -491,12 +476,12 @@
       <workItem from="1525033769315" duration="17402000" />
       <workItem from="1525063498726" duration="114597000" />
       <workItem from="1526182238988" duration="12102000" />
-      <workItem from="1526231243873" duration="8606000" />
+      <workItem from="1526231243873" duration="10046000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="502532000" />
+    <option name="totallyTimeSpent" value="503972000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="852" extended-state="6" />
@@ -890,26 +875,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1400">
-          <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-          <folding>
-            <marker date="1525488845000" expanded="true" signature="585:1056" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1525488845000" expanded="true" signature="1306:1646" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1525488845000" expanded="true" signature="1900:2530" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1525488845000" expanded="true" signature="2782:3003" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1525488845000" expanded="true" signature="3299:4112" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1525488845000" expanded="true" signature="4330:4551" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1525488845000" expanded="true" signature="11075:11193" ph="SELECT user_... $" />
-            <marker date="1525488845000" expanded="true" signature="11600:11647" ph="SELECT uid F... $" />
-            <marker date="1525488845000" expanded="true" signature="11759:11816" ph="SELECT sum( $" />
-            <marker date="1525488845000" expanded="true" signature="11965:12024" ph="SELECT sum( $" />
-            <marker date="1525488845000" expanded="true" signature="12112:12166" ph="SELECT uid F... $" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="258">
@@ -1127,9 +1092,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/includes/go_acf_groups.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="5752" column="6" lean-forward="false" selection-start-line="5752" selection-start-column="6" selection-end-line="5752" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/game-on.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-415">
+        <state relative-caret-position="45">
           <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding>
             <marker date="1526281573000" expanded="true" signature="10686:10736" ph="SELECT * FRO... $" />
@@ -1153,11 +1126,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/includes/go_acf_groups.php">
+    <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="5752" column="6" lean-forward="false" selection-start-line="5752" selection-start-column="6" selection-end-line="5752" selection-end-column="6" />
-          <folding />
+        <state relative-caret-position="342">
+          <caret line="168" column="12" lean-forward="false" selection-start-line="168" selection-start-column="12" selection-end-line="168" selection-end-column="12" />
+          <folding>
+            <marker date="1526283135000" expanded="true" signature="585:1056" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526283135000" expanded="true" signature="1306:1646" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526283135000" expanded="true" signature="1900:2530" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526283135000" expanded="true" signature="2782:3003" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526283135000" expanded="true" signature="3368:3388" ph="SELECT blog_... wp_blogs" />
+            <marker date="1526283135000" expanded="true" signature="4442:5255" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526283135000" expanded="true" signature="5473:5694" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526283135000" expanded="true" signature="12218:12336" ph="SELECT user_... $" />
+            <marker date="1526283135000" expanded="true" signature="12743:12790" ph="SELECT uid F... $" />
+            <marker date="1526283135000" expanded="true" signature="12902:12959" ph="SELECT sum( $" />
+            <marker date="1526283135000" expanded="true" signature="13108:13167" ph="SELECT sum( $" />
+            <marker date="1526283135000" expanded="true" signature="13255:13309" ph="SELECT uid F... $" />
+          </folding>
         </state>
       </provider>
     </entry>
