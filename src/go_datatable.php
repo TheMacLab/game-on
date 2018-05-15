@@ -138,7 +138,16 @@ function go_table_totals() {
 
 }
 
+/**
+ * MULTISITE FUNCTIONS
+ *
+ */
 
+
+/**
+ * Activate for existing sites on plugin activation
+ * @param $network_wide
+ */
 function go_on_activate_msdb( $network_wide ) {
     global $wpdb;
     if ( is_multisite() && $network_wide ) {
@@ -156,22 +165,34 @@ function go_on_activate_msdb( $network_wide ) {
         go_update_db_check();
     }
 }
-register_activation_hook( __FILE__, 'go_on_activate_msdb' );
 
-// Creating table whenever a new blog is created
+
+/**
+ * Creating table whenever a new blog is created
+ * @param $blog_id
+ * @param $user_id
+ * @param $domain
+ * @param $path
+ * @param $site_id
+ * @param $meta
+ */
 function go_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-    //if ( is_plugin_active_for_network( 'plugin-name/plugin-name.php' ) ) {
+    if ( is_plugin_active_for_network( ) ) {
     switch_to_blog( $blog_id );
     go_table_tasks();
     go_table_store();
     go_table_actions();
     go_table_totals();
     restore_current_blog();
-    //}
+    }
 }
 add_action( 'wpmu_new_blog', 'go_on_create_blog', 10, 6 );
 
-// Deleting the table whenever a blog is deleted
+/**
+ * // Deleting the table whenever a blog is deleted
+ * @param $tables
+ * @return array
+ */
 function go_on_delete_blog( $tables ) {
     global $wpdb;
     $tables[] = $wpdb->prefix . 'go_tasks';
