@@ -182,23 +182,23 @@ function go_register_task_tax_and_cpt() {
 	 * Task Custom Post Type
 	 */
 	$labels_cpt = array( 
-		'name' => _x( go_return_options( 'go_tasks_plural_name' ), 'task' ),
-		'singular_name' => _x( go_return_options( 'go_tasks_name' ), 'task' ),
-		'add_new' => _x( 'Add New '.go_return_options( 'go_tasks_name' ), 'task' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'go_tasks_name' ), 'task' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'go_tasks_name' ), 'task' ),
-		'new_item' => _x( 'New '.go_return_options( 'go_tasks_name' ), 'task' ),
-		'view_item' => _x( 'View '.go_return_options( 'go_tasks_name' ), 'task' ),
-		'search_items' => _x( 'Search '.go_return_options( 'go_tasks_plural_name' ), 'task' ),
-		'not_found' => _x( 'No '.go_return_options( 'go_tasks_plural_name' ).' found', 'task' ),
-		'not_found_in_trash' => _x( 'No '.go_return_options( 'go_tasks_plural_name' ).' found in Trash', 'task' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'go_tasks_name' ).':', 'task' ),
-		'menu_name' => _x( go_return_options( 'go_tasks_plural_name' ), 'task' )
+		'name' => _x( go_return_options( 'options_tasks_name_plural' ), 'task' ),
+		'singular_name' => _x( go_return_options( 'options_tasks_name_singular' ), 'task' ),
+		'add_new' => _x( 'Add New '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
+		'add_new_item' => _x( 'Add New '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
+		'edit_item' => _x( 'Edit '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
+		'new_item' => _x( 'New '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
+		'view_item' => _x( 'View '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
+		'search_items' => _x( 'Search '.go_return_options( 'options_tasks_name_plural' ), 'task' ),
+		'not_found' => _x( 'No '.go_return_options( 'options_tasks_name_plural' ).' found', 'task' ),
+		'not_found_in_trash' => _x( 'No '.go_return_options( 'options_tasks_name_singular' ).' found in Trash', 'task' ),
+		'parent_item_colon' => _x( 'Parent '.go_return_options( 'options_tasks_name_singular' ).':', 'task' ),
+		'menu_name' => _x( go_return_options( 'options_tasks_name_plural' ), 'task' )
 	);
 	$args_cpt = array(
 		'labels' => $labels_cpt,
 		'hierarchical' => false,
-		'description' => go_return_options( 'go_tasks_plural_name' ),
+		'description' => go_return_options( 'options_tasks_name_plural' ),
         'supports'              => array( 'title', 'comments' ),
 		'taxonomies' => array(),
 		'public' => true,

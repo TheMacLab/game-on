@@ -177,7 +177,7 @@ function go_on_activate_msdb( $network_wide ) {
  * @param $meta
  */
 function go_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-    if ( is_plugin_active_for_network( ) ) {
+    if ( is_plugin_active_for_network(__FILE__ ) ) {
     switch_to_blog( $blog_id );
     go_table_tasks();
     go_table_store();
