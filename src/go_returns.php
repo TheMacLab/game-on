@@ -71,32 +71,32 @@ function go_return_minutes( $user_id ) {
 }
 
 function go_display_points( $points ) {
-	$prefix = go_return_options( 'go_points_prefix' );
-	$suffix = go_return_options( 'go_points_suffix' );
+	$prefix = get_option( 'go_points_prefix' );
+	$suffix = get_option( 'go_points_suffix' );
 	return "{$prefix} {$points} {$suffix}";
 }
 	
 function go_display_currency( $currency ) {
-	$prefix = go_return_options( 'go_currency_prefix' );
-	$suffix = go_return_options( 'go_currency_suffix' );
+	$prefix = get_option( 'go_currency_prefix' );
+	$suffix = get_option( 'go_currency_suffix' );
 	return "{$prefix} {$currency} {$suffix}";
 }
 
 function go_display_bonus_currency( $bonus_currency ) {
-	$prefix = go_return_options( 'go_bonus_currency_prefix' );
-	$suffix = go_return_options( 'go_bonus_currency_suffix' );
+	$prefix = get_option( 'go_bonus_currency_prefix' );
+	$suffix = get_option( 'go_bonus_currency_suffix' );
 	return "{$prefix} {$bonus_currency} {$suffix}";
 }
 
 function go_display_penalty( $penalty ) {
-	$prefix = go_return_options( 'go_penalty_prefix' );
-	$suffix = go_return_options( 'go_penalty_suffix' );
+	$prefix = get_option( 'go_penalty_prefix' );
+	$suffix = get_option( 'go_penalty_suffix' );
 	return "{$prefix} {$penalty} {$suffix}";
 }
 
 function go_display_minutes( $minutes ) {
-	$prefix = go_return_options( 'go_minutes_prefix' );
-	$suffix = go_return_options( 'go_minutes_suffix' );
+	$prefix = get_option( 'go_minutes_prefix' );
+	$suffix = get_option( 'go_minutes_suffix' );
 	return "{$prefix} {$minutes} {$suffix}";
 }
 
@@ -120,8 +120,8 @@ function go_display_longhand_currency ( $currency_type, $amount, $output = false
 			"minutes" === $currency_type
 		) {
 
-		$currency_name = go_return_options( "go_{$currency_type}_name" );
-		$suffix = go_return_options( "go_{$currency_type}_suffix" );
+		$currency_name = get_option( "go_{$currency_type}_name" );
+		$suffix = get_option( "go_{$currency_type}_suffix" );
 		$str = "{$amount} {$currency_name} ({$suffix})";
 
 		if ( $output ) {
@@ -135,7 +135,7 @@ function go_display_longhand_currency ( $currency_type, $amount, $output = false
 }
 
 function go_filter_focuses( $elem ) {
-	if ( strpos( $elem, ':' ) === false && strpos( $elem, 'No '.go_return_options( 'go_focus_name' ) ) === false) {
+	if ( strpos( $elem, ':' ) === false && strpos( $elem, 'No '.get_option( 'go_focus_name' ) ) === false) {
 		return true;
 	} else { 
 		return false;
@@ -151,14 +151,14 @@ function go_display_user_focuses( $user_id ) {
 		} else {
 			$filtered_user_focuses = array_filter( $user_focuses );
 			if ( count( array_unique( $filtered_user_focuses ) ) === 1 && reset( $filtered_user_focuses ) === ':' ) {
-				$output = 'No '.go_return_options( 'go_focus_name' );
+				$output = 'No '.get_option( 'go_focus_name' );
 			} else {
 				$value = array_filter( $filtered_user_focuses, 'go_filter_focuses' );
 				$output = implode( ', ', $value );
 			}
 		}
 	} else {
-		$output = 'No '.go_return_options( 'go_focus_name' );
+		$output = 'No '.get_option( 'go_focus_name' );
 	}
 	
 	return $output;

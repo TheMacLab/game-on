@@ -40,9 +40,9 @@ function task_chains_add_meta_fields( $taxonomy ) {
 	
 		<div id="pod_achievement" class="form-field term-group">
 			<label for="pod_achievement">';
-	_e( go_return_options( 'go_badges_name' ).' #', 'my-plugin' );
+	_e( get_option( 'go_badges_name' ).' #', 'my-plugin' );
 	echo '</label>
-			<input type="number" id="pod_achievement" class="number" min="1" max="" step="any" name="pod_achievement"  placeholder="optional: ID # of '.go_return_options( 'go_badges_name' ).'">
+			<input type="number" id="pod_achievement" class="number" min="1" max="" step="any" name="pod_achievement"  placeholder="optional: ID # of '.get_option( 'go_badges_name' ).'">
 		<p class="description">Number of media file for achievement.</p></div>';
 }
 add_action( 'task_chains_add_form_fields', 'task_chains_add_meta_fields', 10, 2 );

@@ -330,7 +330,7 @@ function go_health_lock($id, $user_id, $is_admin, $task_name, $badge_name, $cust
         $health_needed = $custom_fields[$option][0];
         //get user health from totals table
         //$user_health = get from totals table
-        $health_name = go_return_options('options_go_loot_health_name');
+        $health_name = get_option('options_go_loot_health_name');
         //if ($user_health < $health_needed){
         // echo "<br><span class='go_error_red'>You must have {$option} {$health_name} to access this {$task_name}.</span></br>";
         //$this_lock = true;

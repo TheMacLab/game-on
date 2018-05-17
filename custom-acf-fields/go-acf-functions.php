@@ -52,7 +52,7 @@ function acf_load_course_sections( $field ) {
     $field['choices'] = array();
 
     // get the class periods from options page without any formatting
-    $choices = go_return_options( 'go_class_a' );
+    $choices = get_option( 'go_class_a' );
 
     // loop through array and add to field 'choices'
     if( is_array($choices) ) {

@@ -2,36 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="$PROJECT_DIR$/.idea/php.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" afterPath="$PROJECT_DIR$/config.codekit3" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf.css" afterPath="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf.css" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" afterPath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" afterPath="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/js/dev/go_acf.js" afterPath="$PROJECT_DIR$/custom-acf-fields/js/dev/go_acf.js" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/js/min/go_acf-min.js" afterPath="$PROJECT_DIR$/custom-acf-fields/js/min/go_acf-min.js" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/js/scripts/acf-order-posts.js" afterPath="$PROJECT_DIR$/custom-acf-fields/js/scripts/acf-order-posts.js" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/js/scripts/acf-tax2-input.js" afterPath="$PROJECT_DIR$/custom-acf-fields/js/scripts/acf-tax2-input.js" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/js/scripts/my-acf-extension.js" afterPath="$PROJECT_DIR$/custom-acf-fields/js/scripts/my-acf-extension.js" />
-      <change beforePath="$PROJECT_DIR$/includes/go_acf_groups.php" afterPath="$PROJECT_DIR$/disabled/go_acf_groups.php" />
-      <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" />
-      <change beforePath="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" afterPath="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" />
-      <change beforePath="$PROJECT_DIR$/js/front/go_enque_js.php" afterPath="$PROJECT_DIR$/js/front/go_enque_js.php" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" afterPath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" afterPath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
-      <change beforePath="$PROJECT_DIR$/src/go_admin_bar.php" afterPath="$PROJECT_DIR$/src/go_admin_bar.php" />
-      <change beforePath="$PROJECT_DIR$/src/go_admin_menus.php" afterPath="$PROJECT_DIR$/src/go_admin_menus.php" />
-      <change beforePath="$PROJECT_DIR$/src/go_datatable.php" afterPath="$PROJECT_DIR$/src/go_datatable.php" />
-      <change beforePath="$PROJECT_DIR$/src/go_updates.php" afterPath="$PROJECT_DIR$/src/go_updates.php" />
-      <change beforePath="$PROJECT_DIR$/styles/admin/min/go_admin.css" afterPath="$PROJECT_DIR$/styles/admin/min/go_admin.css" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_clipboard.css" afterPath="$PROJECT_DIR$/styles/css/go_clipboard.css" />
-      <change beforePath="$PROJECT_DIR$/styles/css/tasks-admin.css" afterPath="$PROJECT_DIR$/styles/css/tasks-admin.css" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_checks.php" afterPath="$PROJECT_DIR$/types/tasks/go_checks.php" />
       <change beforePath="$PROJECT_DIR$/types/tasks/task.php" afterPath="$PROJECT_DIR$/types/tasks/task.php" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/task_shortcode.php" afterPath="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -200,22 +172,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/disabled/go_acf_groups.php">
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="444">
+            <state relative-caret-position="572">
               <caret line="5700" column="6" lean-forward="false" selection-start-line="5700" selection-start-column="6" selection-end-line="5700" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_enque_js_admin.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/admin/go_enque_js_admin.php">
+      <file leaf-file-name="task.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="120" lean-forward="false" selection-start-line="18" selection-start-column="120" selection-end-line="18" selection-end-column="120" />
-              <folding />
+            <state relative-caret-position="3000">
+              <caret line="200" column="35" lean-forward="false" selection-start-line="200" selection-start-column="35" selection-end-line="200" selection-end-column="35" />
+              <folding>
+                <marker date="1526566205000" expanded="true" signature="11137:11212" ph="SELECT statu... $" />
+                <marker date="1526566205000" expanded="true" signature="12261:12335" ph="SELECT count... $" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -304,7 +279,6 @@
         <option value="$PROJECT_DIR$/includes/go_enque_includes.php" />
         <option value="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" />
         <option value="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
-        <option value="$PROJECT_DIR$/types/tasks/task.php" />
         <option value="$PROJECT_DIR$/styles/css/tasks-admin.css" />
         <option value="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf.css" />
         <option value="$PROJECT_DIR$/styles/css/go_clipboard.css" />
@@ -313,6 +287,7 @@
         <option value="$PROJECT_DIR$/src/go_datatable.php" />
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/disabled/go_acf_groups.php" />
+        <option value="$PROJECT_DIR$/types/tasks/task.php" />
       </list>
     </option>
   </component>
@@ -449,8 +424,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/disabled" />
       <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/disabled" />
       <recent name="$PROJECT_DIR$/js/js" />
       <recent name="$PROJECT_DIR$/types" />
       <recent name="$PROJECT_DIR$/front_end" />
@@ -511,7 +486,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="541072000" />
+    <option name="totallyTimeSpent" value="542088000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="42" width="1440" height="852" extended-state="0" />
@@ -974,17 +949,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="6" column="75" lean-forward="false" selection-start-line="6" selection-start-column="75" selection-end-line="6" selection-end-column="75" />
-          <folding>
-            <marker date="1526515678000" expanded="true" signature="11319:11394" ph="SELECT statu... $" />
-            <marker date="1526515678000" expanded="true" signature="12443:12517" ph="SELECT count... $" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/styles/css/go_clipboard.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="369">
@@ -1143,11 +1107,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/disabled/go_acf_groups.php">
+    <entry file="file://$PROJECT_DIR$/src/go_acf_groups.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
+        <state relative-caret-position="572">
           <caret line="5700" column="6" lean-forward="false" selection-start-line="5700" selection-start-column="6" selection-end-line="5700" selection-end-column="6" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3000">
+          <caret line="200" column="35" lean-forward="false" selection-start-line="200" selection-start-column="35" selection-end-line="200" selection-end-column="35" />
+          <folding>
+            <marker date="1526566205000" expanded="true" signature="11137:11212" ph="SELECT statu... $" />
+            <marker date="1526566205000" expanded="true" signature="12261:12335" ph="SELECT count... $" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -121,7 +121,7 @@ function go_task_timer( $task_id, $user_id, $future_modifier ) {
 							update_user_meta( $user_id, 'go_sounded_tasks', $sounded_array );
 						?>
 					} 
-					jQuery( '#go_task_timer' ).html( "You've run out of time to <?php echo strtolower( go_return_options( 'go_third_stage_button' ) ); ?> this <?php echo strtolower( go_return_options( 'go_tasks_name' ) ); ?> for full rewards." ).css( 'color', 'red' );
+					jQuery( '#go_task_timer' ).html( "You've run out of time to <?php echo strtolower( get_option( 'go_third_stage_button' ) ); ?> this <?php echo strtolower( get_option( 'go_tasks_name' ) ); ?> for full rewards." ).css( 'color', 'red' );
 					if ( percentage != 0 ) {
 						if ( ! jQuery( '#go_stage_3_points' ).hasClass( 'go_updated' ) ) {
 							jQuery( '#go_stage_3_points' ).html( Math.floor( parseFloat( jQuery( '#go_stage_3_points' ).html() ) * percentage ) ).addClass( 'go_updated' );
@@ -226,7 +226,7 @@ function go_is_timer_expired ($custom_fields, $userid, $id, $wpdb){
 						   ( ( ! empty( $hours) ) ? "{$hours} hour".( ( $hours > 1) ? 's' : '' ).( ( ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
 						   ( ( ! empty( $minutes) ) ? "{$minutes} minute".( ( $minutes > 1) ? 's' : '' ).( ( ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
 						   ( ( ! empty( $seconds) ) ? "{$seconds} second".( ( $seconds > 1) ? 's' : '' ) : '' );
-			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive 1".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to reach ".go_return_options( 'go_third_stage_name' )." of this {$task_name} before the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
+			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive 1".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to reach ".get_option( 'go_third_stage_name' )." of this {$task_name} before the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
 			$future_timer = true;
 		}
 	} else {
@@ -371,7 +371,7 @@ function go_timer_percent ($custom_fields, $userid, $id, $wpdb){
 						   ( ( ! empty( $hours) ) ? "{$hours} hour".( ( $hours > 1) ? 's' : '' ).( ( ! empty( $minutes ) || ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
 						   ( ( ! empty( $minutes) ) ? "{$minutes} minute".( ( $minutes > 1) ? 's' : '' ).( ( ! empty( $seconds ) ) ? ', ' : '' ) : '' ).
 						   ( ( ! empty( $seconds) ) ? "{$seconds} second".( ( $seconds > 1) ? 's' : '' ) : '' );
-			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to reach ".go_return_options( 'go_third_stage_name' )." of this {$task_name} before the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
+			echo "<span id='go_future_notification'><span id='go_future_notification_task_name'>Time Sensitive ".ucfirst( $task_name ).":</span><br/> After accepting you will have {$time_string} to reach ".get_option( 'go_third_stage_name' )." of this {$task_name} before the rewards will be irrevocably reduced by {$future_modifier['percentage']}%.</span>";
 		}
 	} else {
 		$future_update_percent = 1;

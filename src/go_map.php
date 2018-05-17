@@ -174,13 +174,13 @@ function go_make_single_map($last_map_id, $reload = false){
 						
 							if ( ! empty( $temp_optional_task ) && ! ($chain_pod) ) {
 								$optional = "optional_task";
-								$bonus_task = go_return_options( 'go_bonus_task' ).":";
+								$bonus_task = get_option( 'go_bonus_task' ).":";
 							}
 							else {
 								$optional = "";
 								$bonus_task ="";
 							}
-							$bonus_stage = go_return_options( 'go_bonus_stage' );
+							$bonus_stage = get_option( 'go_bonus_stage' );
 							
 							// determines to what stage the user has to progress to finish the task
 							if ( $temp_three_stage_active ) {
@@ -212,7 +212,7 @@ function go_make_single_map($last_map_id, $reload = false){
 											
 							 //START OF CODE TO GREY OUT ITEMS THAT ARE INACCESSIBLE		
 						
-							$badge_name = go_return_options( 'go_badges_name' );
+							$badge_name = get_option( 'go_badges_name' );
 
 							// the current user's id
 							$user_id = get_current_user_id();

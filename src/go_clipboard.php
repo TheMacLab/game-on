@@ -32,11 +32,11 @@ function go_clipboard_menu() {
 			
 				<div id="go_clipboard_add">
 					<?php //go_options_help( 'http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'Clipboard Help' ); ?>
-					<label for="go_clipboard_points"><?php echo go_return_options( 'go_points_name' ); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
-					<label for="go_clipboard_currency"><?php echo go_return_options( 'go_currency_name' ); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
-					<label for="go_clipboard_bonus_currency"><?php echo go_return_options( 'go_bonus_currency_name' ); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
-					<label for="go_clipboard_penalty"><?php echo go_return_options( 'go_penalty_name' ); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
-					<label for="go_clipboard_minutes"><?php echo go_return_options( 'go_minutes_name' ); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
+					<label for="go_clipboard_points"><?php echo get_option( 'go_points_name' ); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
+					<label for="go_clipboard_currency"><?php echo get_option( 'go_currency_name' ); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
+					<label for="go_clipboard_bonus_currency"><?php echo get_option( 'go_bonus_currency_name' ); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
+					<label for="go_clipboard_penalty"><?php echo get_option( 'go_penalty_name' ); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
+					<label for="go_clipboard_minutes"><?php echo get_option( 'go_minutes_name' ); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
 					<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br/>
 					<label name="go_clipboard_reason">Message: </label>
 					<div>
@@ -50,17 +50,17 @@ function go_clipboard_menu() {
 							<tr>
 								<th><input type="checkbox" onClick="go_toggle(this);" /></th>
 								<th class="header"><a href="#" >ID</a></th>
-								<th class="header"><a href="#" ><?php echo go_return_options( 'go_class_b_name' ); ?></a></th>
+								<th class="header"><a href="#" ><?php echo get_option( 'go_class_b_name' ); ?></a></th>
 								<th class="header"><a href="#" >Student Name</a></th>
 								<th class="header"><a href="#" >Display Name</a></th>
-								<th class="header"><a href="#" ><?php echo go_return_options( 'go_level_names' ); ?></a></th>
-								<?php if ( go_return_options( 'go_focus_switch' ) == 'On' ) { ?><th class="header"><a href="#" ><?php echo go_return_options( 'go_focus_name' ); ?></a></th><?php } ?>
-								<th class="header"><a href="#"><?php echo go_return_options( 'go_points_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo go_return_options( 'go_currency_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo go_return_options( 'go_bonus_currency_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo go_return_options( 'go_penalty_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo go_return_options( 'go_minutes_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo go_return_options( 'go_badges_name' ); ?></a></th>
+								<th class="header"><a href="#" ><?php echo get_option( 'go_level_names' ); ?></a></th>
+								<?php if ( get_option( 'go_focus_switch' ) == 'On' ) { ?><th class="header"><a href="#" ><?php echo get_option( 'go_focus_name' ); ?></a></th><?php } ?>
+								<th class="header"><a href="#"><?php echo get_option( 'go_points_name' ); ?></a></th>
+								<th class="header"><a href="#"><?php echo get_option( 'go_currency_name' ); ?></a></th>
+								<th class="header"><a href="#"><?php echo get_option( 'go_bonus_currency_name' ); ?></a></th>
+								<th class="header"><a href="#"><?php echo get_option( 'go_penalty_name' ); ?></a></th>
+								<th class="header"><a href="#"><?php echo get_option( 'go_minutes_name' ); ?></a></th>
+								<th class="header"><a href="#"><?php echo get_option( 'go_badges_name' ); ?></a></th>
 							</tr>
 						</thead>
 						<tbody id="go_clipboard_table_body"></tbody>
@@ -84,7 +84,7 @@ function go_clipboard_menu() {
 					<thead>
 						<tr>
 							<th class="header" width="5%" id="messages_id"><a href="#" >ID</a></th>
-							<th class="header" width="5%" id="messages_computer"><a href="#"><?php echo go_return_options( 'go_class_b_name' ); ?></a></th>
+							<th class="header" width="5%" id="messages_computer"><a href="#"><?php echo get_option( 'go_class_b_name' ); ?></a></th>
 							<th class="header" width="6.5%" id="messages_student"><a href="#">Student Name</a></th>
 							<th class="header" width="6.5%" id="messages_display"><a href="#">Display Name</a></th>
 							<th class="header" width="6%" id="messages_date"><a href="#">Date</a></th>
@@ -111,7 +111,7 @@ function go_clipboard_menu() {
 					<thead>
 						<tr>
 							
-							<th class="header" id="activity_computer"><a href="#"><?php echo go_return_options( 'go_class_b_name' ); ?></a></th>
+							<th class="header" id="activity_computer"><a href="#"><?php echo get_option( 'go_class_b_name' ); ?></a></th>
 							<th class="header" id="activity_student"><a href="#">Student Name</a></th>
 							<th class="header" id="activity_display"><a href="#">Display Name</a></th>
 							<th class="header" id="activity_stats"><a href="#">Links</a></th>
@@ -162,7 +162,7 @@ function go_clipboard_intable() {
 			$user_firstname = $user_data_key->user_firstname;
 			$user_lastname = $user_data_key->user_lastname;
 			$user_website = $user_data_key->user_url;
-			if ( go_return_options( 'go_focus_switch' ) == 'On' ) {
+			if ( get_option( 'go_focus_switch' ) == 'On' ) {
 				$user_focuses = go_display_user_focuses( $id->user_id );
 				$focus_name = get_option( 'go_focus_name' );
 				$focuses = get_option( 'go_focus' );
@@ -187,7 +187,7 @@ function go_clipboard_intable() {
 					<td><a href='{$user_website}' target='_blank'>{$user_lastname}, {$user_firstname}</a></td>
 					<td>{$user_display_name}</td>
 					<td>{$current_rank}</td>
-					".( (go_return_options( 'go_focus_switch' ) == 'On' ) ? "<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$id->user_id}&quot;, this);'>{$focuses_list}</select</td>" : '' )."
+					".( (get_option( 'go_focus_switch' ) == 'On' ) ? "<td><select class='go_focus' onchange='go_user_focus_change(&quot;{$id->user_id}&quot;, this);'>{$focuses_list}</select</td>" : '' )."
 					<td class='user_points'>{$points}</td>
 					<td class='user_currency'>{$currency}</td>
 					<td class='user_bonus_currency'>{$bonus_currency}</td>
@@ -447,7 +447,7 @@ function go_update_user_focuses() {
 
 	$new_user_focus = sanitize_text_field( stripslashes( $_POST['new_user_focus'] ) );
 	$user_id = (int) $_POST['user_id'];
-	if ( $new_user_focus != 'No '.go_return_options( 'go_focus_name' ) ) {
+	if ( $new_user_focus != 'No '.get_option( 'go_focus_name' ) ) {
 		update_user_meta( $user_id, 'go_focus', array( $new_user_focus ) );
 	} else {
 		update_user_meta( $user_id, 'go_focus', array() );

@@ -62,7 +62,7 @@ function go_file_input( $atts, $content = null ) {
 		$user_email = $user_info->user_email;
 		$user_role = $user_info->roles;
 		$task_title = $post->post_title;
-		$task_name = go_return_options( 'go_tasks_name' );
+		$task_name = get_option( 'go_tasks_name' );
 		$to = get_option( 'go_admin_email', '' );
 		require( 'mail/class.phpmailer.php' );
 		$mail = new PHPMailer();

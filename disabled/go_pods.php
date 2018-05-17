@@ -21,7 +21,7 @@ function go_task_pods() {
 	);
 	?>
 	<div class="wrap go_wrap">
-		<h2>Pods</h2><?php  go_options_help( 'http://maclab.guhsd.net/go/video/pods.mp4', 'Group ' . go_return_options( 'go_tasks_plural_name' ) . ' into pods where user must complete a designated amount of ' . go_return_options( 'go_tasks_plural_name' ) . ' to continue.', true ); ?>
+		<h2>Pods</h2><?php  go_options_help( 'http://maclab.guhsd.net/go/video/pods.mp4', 'Group ' . get_option( 'go_tasks_plural_name' ) . ' into pods where user must complete a designated amount of ' . get_option( 'go_tasks_plural_name' ) . ' to continue.', true ); ?>
 		<form method="post" action="options.php" id="go_pod_form">
 			<?php
 			wp_nonce_field( 'update-options' ); 
@@ -54,7 +54,7 @@ function go_task_pods() {
 				of 
 				<input type='number' id='go_pod_number[ <?php echo $slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_pod_number]' 
 					value='<?php echo ( isset( $pods_options[ $slug ]['go_pod_number'] )  ? $pods_options[ $slug ]['go_pod_number'] : 1 ); ?>' style='width : 45px;' 
-					min='0' max='<?php echo $total ?>'/> <?php echo go_return_options( 'go_tasks_plural_name' ); ?> 
+					min='0' max='<?php echo $total ?>'/> <?php echo get_option( 'go_tasks_plural_name' ); ?> 
 				to continue to 
 				<select class='go_next_pod_select' id='go_next_pod_select[ <?php echo $slug ?> ]' name='go_task_pod_globals[<?php echo $slug; ?>][go_next_pod_select]'>
 					<option>...</option>

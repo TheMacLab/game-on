@@ -26,11 +26,11 @@ function go_admin_bar_stats() {
 	$user_focuses = go_display_user_focuses( $user_id );
 	
 	// option names 
-	$points_name = go_return_options( 'go_points_name' );
-	$currency_name = go_return_options( 'go_currency_name' );
-	$bonus_currency_name = go_return_options( 'go_bonus_currency_name' );
-	$penalty_name = go_return_options( 'go_penalty_name' );
-	$minutes_name = go_return_options( 'go_minutes_name' );
+	$points_name = get_option( 'go_points_name' );
+	$currency_name = get_option( 'go_currency_name' );
+	$bonus_currency_name = get_option( 'go_bonus_currency_name' );
+	$penalty_name = get_option( 'go_penalty_name' );
+	$minutes_name = get_option( 'go_minutes_name' );
 
 	$current_points = go_return_points( $user_id );
 	$current_currency = go_return_currency( $user_id );
@@ -61,7 +61,7 @@ function go_admin_bar_stats() {
 	$pts_to_rank_threshold = ( $current_points - $current_rank_points );
 
 	if ( $max_rank_points === $current_rank_points ) {
-		$prestige_name = go_return_options( 'go_prestige_name' );
+		$prestige_name = get_option( 'go_prestige_name' );
 		$pts_to_rank_up_str = $prestige_name;
 	} else {
 		$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
@@ -88,7 +88,7 @@ function go_admin_bar_stats() {
 				</div>
 				<div id='go_stats_progress_fill' style='width: <?php echo $percentage_of_level; ?>%;<?php $color = barColor( $current_bonus_currency, $current_penalty ); echo "background-color: {$color}; ";?>'></div>
 			</div>
-            <?php if ( go_return_options( 'go_focus_switch' ) == 'On' ) {?>
+            <?php if ( get_option( 'go_focus_switch' ) == 'On' ) {?>
             <div id='go_stats_user_focuses'><?php echo ( ( ! empty( $user_focuses) ) ? $user_focuses : '' ); ?></div>
             <?php } ?>
 			<div id='go_stats_user_tabs'>
@@ -103,10 +103,10 @@ function go_admin_bar_stats() {
                     </a> |
                 <?php } ?>
 				<a href='javascript:;' id="go_stats_body_tasks" class='go_stats_body_selectors' tab='tasks'>
-					<?php echo strtoupper( go_return_options( 'go_tasks_plural_name' ) ); ?>
+					<?php echo strtoupper( get_option( 'go_tasks_plural_name' ) ); ?>
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_items" class='go_stats_body_selectors' tab='items'>
-					<?php echo strtoupper( go_return_options( 'go_inventory_name' ) ); ?>
+					<?php echo strtoupper( get_option( 'go_inventory_name' ) ); ?>
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_rewards" class='go_stats_body_selectors' tab='rewards'>
 					REWARDS
@@ -118,10 +118,10 @@ function go_admin_bar_stats() {
 					<?php echo strtoupper( $penalty_name ) ?>
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_badges" class='go_stats_body_selectors' tab='badges'>
-					<?php echo strtoupper( go_return_options( 'go_badges_name' ) ); ?>
+					<?php echo strtoupper( get_option( 'go_badges_name' ) ); ?>
 				</a> | 
 				<a href='javascript:;' id="go_stats_body_leaderboard" class='go_stats_body_selectors' tab='leaderboard'>
-					<?php echo strtoupper( go_return_options( 'go_leaderboard_name' ) ); ?>
+					<?php echo strtoupper( get_option( 'go_leaderboard_name' ) ); ?>
 				</a>
 			</div>
 		</div>
@@ -415,7 +415,7 @@ function go_stats_move_stage() {
 
 	$max_rank_index = count( $points_array ) - 1;
 	$max_rank_points = (int) $points_array[ $max_rank_index ];
-	$prestige_name = go_return_options( 'go_prestige_name' );
+	$prestige_name = get_option( 'go_prestige_name' );
 
 	$changed = array(
 		'type'            => 'json',
@@ -737,9 +737,9 @@ function go_stats_rewards_list() {
 	);
 	?>
 	<div style="width: 99%;">
-	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper( go_return_options( 'go_points_name' ) ); ?></strong></div>
-	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper( go_return_options( 'go_currency_name' ) ); ?></strong></div>
-	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper( go_return_options( 'go_bonus_currency_name' ) ); ?></strong></div>
+	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper( get_option( 'go_points_name' ) ); ?></strong></div>
+	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper( get_option( 'go_currency_name' ) ); ?></strong></div>
+	 <div style="float: left; width: 33%;"><strong><?php echo strtoupper( get_option( 'go_bonus_currency_name' ) ); ?></strong></div>
  	 <br style="clear: left;" />
 	</div>
 	<ul id='go_stats_rewards_list_points' class='go_stats_body_list'>
@@ -1065,10 +1065,10 @@ function go_stats_leaderboard() {
 	check_ajax_referer( 'go_stats_leaderboard_' );
 
 	// prepares tab titles
-	$xp_name = strtoupper( go_return_options( 'go_points_name' ) );
-	$gold_name = strtoupper( go_return_options( 'go_currency_name' ) );
-	$honor_name = strtoupper( go_return_options( 'go_bonus_currency_name' ) );
-	$badge_name = strtoupper( go_return_options( 'go_badges_name' ) );
+	$xp_name = strtoupper( get_option( 'go_points_name' ) );
+	$gold_name = strtoupper( get_option( 'go_currency_name' ) );
+	$honor_name = strtoupper( get_option( 'go_bonus_currency_name' ) );
+	$badge_name = strtoupper( get_option( 'go_badges_name' ) );
 
 	$go_totals_table_name = "{$wpdb->prefix}go_totals";
 	$class_a_choice = ( ! empty( $_POST['class_a_choice'] ) ? (array) $_POST['class_a_choice'] : array() );

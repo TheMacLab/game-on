@@ -633,11 +633,11 @@ function go_task_pod_tasks( $atts ) {
 	$tasks_required = $pods_options[ $slug ]['go_pod_number'];
 	$next_pod = $pods_options[ $slug ]['go_next_pod_select'];
 	$next_pod_slug = strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $next_pod ) ) );
-	$tasks_plural_name = go_return_options( 'go_tasks_plural_name' );
+	$tasks_plural_name = get_option( 'go_tasks_plural_name' );
 	if ( 'third_stage' === $stage_required ) {
-		$stage = go_return_options( 'go_third_stage_name' );
+		$stage = get_option( 'go_third_stage_name' );
 	} else {
-		$stage = go_return_options( 'go_fourth_stage_name' );
+		$stage = get_option( 'go_fourth_stage_name' );
 	}
 	if ( ! empty( $previous_pod_slug ) && $previous_pod_tasks_finished < $previous_pod_tasks_required ) {
 		$previous_pod_name = $pods_options[ $previous_pod_slug ]['go_pod_name'];

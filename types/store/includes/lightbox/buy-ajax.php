@@ -140,7 +140,7 @@ function go_buy_item() {
 			}
 
 			// finds and removes the default profession (focus) from the user
-			$default_focus_index = array_search( 'No '.go_return_options( 'go_focus_name' ), $user_focuses );
+			$default_focus_index = array_search( 'No '.get_option( 'go_focus_name' ), $user_focuses );
 			if ( $default_focus_index ) {
 				unset( $user_focuses[ $default_focus_index ] );
 			}
@@ -200,11 +200,11 @@ function go_buy_item() {
 			}
 		}
 	} else {
-		$currency_name = go_return_options( 'go_currency_name' );
-		$points_name = go_return_options( 'go_points_name' );
-		$bonus_currency_name = go_return_options( 'go_bonus_currency_name' );
-		$penalty_name = go_return_options( 'go_penalty_name' );
-		$minutes_name = go_return_options( 'go_minutes_name' );
+		$currency_name = get_option( 'go_currency_name' );
+		$points_name = get_option( 'go_points_name' );
+		$bonus_currency_name = get_option( 'go_bonus_currency_name' );
+		$penalty_name = get_option( 'go_penalty_name' );
+		$minutes_name = get_option( 'go_minutes_name' );
 		$enough_array = array(
 			$currency_name => $enough_currency,
 			$points_name => $enough_points,
@@ -250,11 +250,11 @@ function go_buy_item() {
 
 function go_mail_item_reciept( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = 0 ) {
 	global $go_plugin_dir;
-	$currency = ucwords( go_return_options( 'go_currency_name' ) );
-	$points = ucwords( go_return_options( 'go_points_name' ) );
-	$bonus_currency = ucwords( go_return_options( 'go_bonus_currency_name' ) );
-	$penalty = ucwords( go_return_options( 'go_penalty_name' ) );
-	$minutes = ucwords( go_return_options( 'go_minutes_name' ) );
+	$currency = ucwords( get_option( 'go_currency_name' ) );
+	$points = ucwords( get_option( 'go_points_name' ) );
+	$bonus_currency = ucwords( get_option( 'go_bonus_currency_name' ) );
+	$penalty = ucwords( get_option( 'go_penalty_name' ) );
+	$minutes = ucwords( get_option( 'go_minutes_name' ) );
 	$item_title = get_the_title( $item_id );
 	$allow_full_name = get_option( 'go_full_student_name_switch' );
 

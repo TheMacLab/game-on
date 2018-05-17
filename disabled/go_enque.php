@@ -194,7 +194,7 @@ function go_admin_scripts_and_styles ($hook) {
 			//END COMBINE 
 
 			// Localization
-			wp_localize_script( 'go_jquery_clipboard', 'Minutes_limit', array( 'limit' => go_return_options( 'go_minutes_color_limit' ) ) );
+			wp_localize_script( 'go_jquery_clipboard', 'Minutes_limit', array( 'limit' => get_option( 'go_minutes_color_limit' ) ) );
 			wp_localize_script(
 				'go_jquery_clipboard',
 				'GO_CLIPBOARD_DATA',

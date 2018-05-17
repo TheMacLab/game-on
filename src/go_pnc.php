@@ -422,7 +422,7 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 		$pts_to_rank_threshold = ( $value - $current_rank_points );
 
 		if ( $max_rank_points === $current_rank_points ) {
-			$prestige_name = go_return_options( 'go_prestige_name' );
+			$prestige_name = get_option( 'go_prestige_name' );
 			$pts_to_rank_up_str = $prestige_name;
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
@@ -475,7 +475,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		$total_string = (string) $new_point_total;
 		if ( true === $notify ) {
 			go_notify( 'points', $points, 0, 0, 0, 0, $user_id, null, $bonus_loot );
-			go_update_admin_bar( 'points', go_return_options( 'go_points_name' ), $total_string, $status );
+			go_update_admin_bar( 'points', get_option( 'go_points_name' ), $total_string, $status );
 		}
 	}
 	if ( $currency != 0 ) {
@@ -491,7 +491,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		);
 		if ( true === $notify ) {
 			go_notify( 'currency', 0, $currency, 0, 0, 0, $user_id, null, $bonus_loot );
-			go_update_admin_bar( 'currency', go_return_options( 'go_currency_name' ), ( $currency + $total_currency ) );
+			go_update_admin_bar( 'currency', get_option( 'go_currency_name' ), ( $currency + $total_currency ) );
 		}
 	}
 	if ( $bonus_currency != 0 ) {
@@ -507,7 +507,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		);
 		if ( true === $notify ) {
 			go_notify( 'bonus_currency', 0, 0, $bonus_currency, 0, 0, $user_id, null, $bonus_loot );
-			go_update_admin_bar( 'bonus_currency', go_return_options( 'go_bonus_currency_name' ), $total_bonus_currency + $bonus_currency );
+			go_update_admin_bar( 'bonus_currency', get_option( 'go_bonus_currency_name' ), $total_bonus_currency + $bonus_currency );
 		}
 	}
 	if ( $penalty != 0 ) {
@@ -523,7 +523,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		);
 		if ( true === $notify ) {
 			go_notify( 'penalty', 0, 0, 0, $penalty, 0, $user_id, null, $bonus_loot );
-			go_update_admin_bar( 'penalty', go_return_options( 'go_penalty_name' ), $total_penalty + $penalty );
+			go_update_admin_bar( 'penalty', get_option( 'go_penalty_name' ), $total_penalty + $penalty );
 		}
 	}
 	if ( $minutes != 0 ) {
@@ -538,7 +538,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		);
 		if ( true === $notify ) {
 			go_notify( 'minutes', 0, 0, 0, 0, $minutes, $user_id, null, $bonus_loot );
-			go_update_admin_bar( 'minutes', go_return_options( 'go_minutes_name' ), $total_minutes + $minutes );
+			go_update_admin_bar( 'minutes', get_option( 'go_minutes_name' ), $total_minutes + $minutes );
 		}
 	}
 	if ( true === $bonus_loot && true === $notify ) {
@@ -664,7 +664,7 @@ function go_get_level_percentage( $user_id ) {
 	return $percentage;
 }
 
-function go_return_options( $option ) {
+function get_option( $option ) {
 	if ( defined ( $option ) ) {
 		return constant( $option );
 	} else {

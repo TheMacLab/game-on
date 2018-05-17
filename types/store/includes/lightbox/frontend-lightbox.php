@@ -14,7 +14,7 @@ date_default_timezone_set('America/Los_Angeles');
 function go_the_lb_ajax() {
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
 	global $wpdb;
-	$badge_name = go_return_options( 'go_badges_name' );
+	$badge_name = get_option( 'go_badges_name' );
 	$table_name_go = "{$wpdb->prefix}go";
 	$the_id = (int) $_POST['the_item_id'];
 	$the_post = get_post( $the_id );
@@ -29,11 +29,11 @@ function go_the_lb_ajax() {
 		$super_mod_enabled = true;
 	}
 
-	$currency_name       = go_return_options( 'go_currency_name' );
-	$points_name         = go_return_options( 'go_points_name' );
-	$bonus_currency_name = go_return_options( 'go_bonus_currency_name' );
-	$penalty_name        = go_return_options( 'go_penalty_name' );
-	$minutes_name        = go_return_options( 'go_minutes_name' );
+	$currency_name       = get_option( 'go_currency_name' );
+	$points_name         = get_option( 'go_points_name' );
+	$bonus_currency_name = get_option( 'go_bonus_currency_name' );
+	$penalty_name        = get_option( 'go_penalty_name' );
+	$minutes_name        = get_option( 'go_minutes_name' );
 
 	$user_id = get_current_user_id();
 	$is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
@@ -359,25 +359,25 @@ function go_the_lb_ajax() {
 	}
 	
 	if ( $is_focused && ! empty( $item_focus ) && ! empty( $user_focuses ) && in_array( $item_focus, $user_focuses ) ) {
-		die( 'You already have this '.go_return_options( 'go_focus_name' ).'!' );	
+		die( 'You already have this '.get_option( 'go_focus_name' ).'!' );	
 	}
 	if ( empty( $go_ahead ) && ! empty( $focus_category_lock ) ) {
-		die( 'Item only available to those in '.implode( ', ', $category_names ).' '.strtolower( go_return_options( 'go_focus_name' ) ) );
+		die( 'Item only available to those in '.implode( ', ', $category_names ).' '.strtolower( get_option( 'go_focus_name' ) ) );
 	}
 	if ( ! $passed_bonus_filter || ! $passed_penalty_filter ) {
 		$filter_error_str = '';
 
 		if ( ! $passed_bonus_filter ) {
 			$bonus_diff = $bonus_filter - $user_bonus_currency;
-			$filter_error_str .= "You need {$bonus_diff} more ".go_return_options( 'go_bonus_currency_name' ).' to view this item.';
+			$filter_error_str .= "You need {$bonus_diff} more ".get_option( 'go_bonus_currency_name' ).' to view this item.';
 		}
 
 		if ( ! $passed_penalty_filter ) {
 			$penalty_diff = $user_penalties - $penalty_filter;
 			if ( $penalty_diff > 0 ) {
-				$filter_error_str .= "\nYou have {$penalty_diff} too many ".go_return_options( 'go_penalty_name' ).'.';
+				$filter_error_str .= "\nYou have {$penalty_diff} too many ".get_option( 'go_penalty_name' ).'.';
 			} elseif ( 0 === $penalty_diff ) {
-				$filter_error_str .= "\nYou need less than {$penalty_filter} ".go_return_options( 'go_penalty_name' ).' to view this item.';
+				$filter_error_str .= "\nYou need less than {$penalty_filter} ".get_option( 'go_penalty_name' ).' to view this item.';
 			}
 		}
 

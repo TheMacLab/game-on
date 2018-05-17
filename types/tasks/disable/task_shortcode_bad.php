@@ -39,8 +39,8 @@ function go_task_shortcode( $atts, $content = null ) {
 		}
 
 		global $wpdb;
-		$task_name = strtolower( go_return_options( 'go_tasks_name' ) );
-		$badge_name = go_return_options( 'go_badges_name' );
+		$task_name = strtolower( get_option( 'go_tasks_name' ) );
+		$badge_name = get_option( 'go_badges_name' );
 
 		// the current user's id
 		$user_id = get_current_user_id();
@@ -408,7 +408,7 @@ function go_task_shortcode( $atts, $content = null ) {
 		);	
 			   
 		// this is an edit link at the bottom. NOT NEEDED. Its in the admin bar.
-		//edit_post_link( 'Edit ' . go_return_options( 'go_tasks_name' ), '<br/><p>', '</p>', $id );
+		//edit_post_link( 'Edit ' . get_option( 'go_tasks_name' ), '<br/><p>', '</p>', $id );
 }
 add_shortcode( 'go_task','go_task_shortcode' );
 
@@ -1790,9 +1790,9 @@ function go_task_change_stage() {
 function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $update_percent = 1, $number_of_stages = 4, $future = false ) {
 	if ( ! is_null( $number_of_stages ) && ( ! is_null( $points ) || ! is_null( $currency ) || ! is_null( $bonus_currency ) ) ) {
 		echo "<div class='go_task_rewards' style='margin: 6px 0px 6px 0px;'><strong>Rewards</strong><br/>";
-		$p_name = go_return_options( 'go_points_name' );
-		$c_name = go_return_options( 'go_currency_name' );
-		$bc_name = go_return_options( 'go_bonus_currency_name' );
+		$p_name = get_option( 'go_points_name' );
+		$c_name = get_option( 'go_currency_name' );
+		$bc_name = get_option( 'go_bonus_currency_name' );
 		$u_bonuses = go_return_bonus_currency( $user_id );
 		$u_penalties = go_return_penalty( $user_id );
 		if ( $update_percent !== 1 && ! empty( $update_percent ) ) {
@@ -1831,19 +1831,19 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 			$stage_name = '';
 			switch ( $i ) {
 				case 0:
-					$stage_name = go_return_options( 'go_first_stage_name' );
+					$stage_name = get_option( 'go_first_stage_name' );
 					break;
 				case 1:
-					$stage_name = go_return_options( 'go_second_stage_name' );
+					$stage_name = get_option( 'go_second_stage_name' );
 					break;
 				case 2:
-					$stage_name = go_return_options( 'go_third_stage_name' );
+					$stage_name = get_option( 'go_third_stage_name' );
 					break;
 				case 3:
-					$stage_name = go_return_options( 'go_fourth_stage_name' );
+					$stage_name = get_option( 'go_fourth_stage_name' );
 					break;
 				case 4:
-					$stage_name = go_return_options( 'go_fifth_stage_name' );
+					$stage_name = get_option( 'go_fifth_stage_name' );
 					break;
 			}
 			$stage = $i + 1;
@@ -1892,8 +1892,8 @@ function go_display_rewards( $user_id, $points, $currency, $bonus_currency, $upd
 				}
 			}
 		}
-		$bonus_loot_name = go_return_options( 'go_bonus_loot_name' );
-		$task_loot_name = go_return_options( 'go_task_loot_name' );
+		$bonus_loot_name = get_option( 'go_bonus_loot_name' );
+		$task_loot_name = get_option( 'go_task_loot_name' );
 		if ( ! empty( $bonus_items_array ) ) {
 			$bonus_items_array_keys = array_keys( $bonus_items_array );
 		}

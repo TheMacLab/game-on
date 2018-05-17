@@ -170,7 +170,7 @@ function go_admin_scripts_and_styles ($hook) {
 			//END COMBINED
 
 			// Localization
-			wp_localize_script( 'go_clipboard_combined-min', 'Minutes_limit', array( 'limit' => go_return_options( 'go_minutes_color_limit' ) ) );
+			wp_localize_script( 'go_clipboard_combined-min', 'Minutes_limit', array( 'limit' => get_option( 'go_minutes_color_limit' ) ) );
 			wp_localize_script(
 				'go_clipboard_combined-min',
 				'GO_CLIPBOARD_DATA',

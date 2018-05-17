@@ -4,21 +4,21 @@ function go_register_task_tax_and_cpt() {
 
     // Register Task chains Taxonomy
     $task_chains_labels = array(
-        'name' => _x(go_return_options( 'options_tasks_name_singular' ). ' Maps', 'task_chains' ),
-        'singular_name' => _x(go_return_options( 'options_tasks_name_singular' ). ' Map', 'task_chains' ),
-        'search_items' => _x('Search '. go_return_options( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
-        'popular_items' => _x('Popular '. go_return_options( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
-        'all_items' => _x('All '. go_return_options( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
+        'name' => _x(get_option( 'options_tasks_name_singular' ). ' Maps', 'task_chains' ),
+        'singular_name' => _x(get_option( 'options_tasks_name_singular' ). ' Map', 'task_chains' ),
+        'search_items' => _x('Search '. get_option( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
+        'popular_items' => _x('Popular '. get_option( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
+        'all_items' => _x('All '. get_option( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
         'parent_item' => 'Map (Set as none to create a new map)',
         'parent_item_colon' => 'Map (Set as none to create a new map):',
-        'edit_item' => _x('Edit '. go_return_options( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
-        'update_item' => _x('Update '. go_return_options( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
-        'add_new_item' => _x('Add New '. go_return_options( 'options_tasks_name_singular' ) . ' Map', 'task_chains' ),
-        'new_item_name' => _x('Add New '. go_return_options( 'options_tasks_name_singular' ) . ' Map', 'task_chains' ),
-        'separate_items_with_commas' => _x('Separate '. go_return_options( 'options_tasks_name_singular' ) . ' Maps with commas', 'task_chains' ),
-        'add_or_remove_items' => _x('Add of Remove '. go_return_options( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
-        'choose_from_most_used' => _x('Choose from the most used '. go_return_options( 'options_tasks_name_singular' ) . ' Map', 'task_chains' ),
-        'menu_name' => _x(go_return_options( 'options_tasks_name_singular' ). 'Maps', 'task_chains' ),
+        'edit_item' => _x('Edit '. get_option( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
+        'update_item' => _x('Update '. get_option( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
+        'add_new_item' => _x('Add New '. get_option( 'options_tasks_name_singular' ) . ' Map', 'task_chains' ),
+        'new_item_name' => _x('Add New '. get_option( 'options_tasks_name_singular' ) . ' Map', 'task_chains' ),
+        'separate_items_with_commas' => _x('Separate '. get_option( 'options_tasks_name_singular' ) . ' Maps with commas', 'task_chains' ),
+        'add_or_remove_items' => _x('Add of Remove '. get_option( 'options_tasks_name_singular' ) . ' Maps', 'task_chains' ),
+        'choose_from_most_used' => _x('Choose from the most used '. get_option( 'options_tasks_name_singular' ) . ' Map', 'task_chains' ),
+        'menu_name' => _x(get_option( 'options_tasks_name_singular' ). 'Maps', 'task_chains' ),
     );
     $task_chains_args = array(
         'labels' => $task_chains_labels,
@@ -182,23 +182,23 @@ function go_register_task_tax_and_cpt() {
 	 * Task Custom Post Type
 	 */
 	$labels_cpt = array( 
-		'name' => _x( go_return_options( 'options_tasks_name_plural' ), 'task' ),
-		'singular_name' => _x( go_return_options( 'options_tasks_name_singular' ), 'task' ),
-		'add_new' => _x( 'Add New '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
-		'add_new_item' => _x( 'Add New '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
-		'edit_item' => _x( 'Edit '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
-		'new_item' => _x( 'New '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
-		'view_item' => _x( 'View '.go_return_options( 'options_tasks_name_singular' ), 'task' ),
-		'search_items' => _x( 'Search '.go_return_options( 'options_tasks_name_plural' ), 'task' ),
-		'not_found' => _x( 'No '.go_return_options( 'options_tasks_name_plural' ).' found', 'task' ),
-		'not_found_in_trash' => _x( 'No '.go_return_options( 'options_tasks_name_singular' ).' found in Trash', 'task' ),
-		'parent_item_colon' => _x( 'Parent '.go_return_options( 'options_tasks_name_singular' ).':', 'task' ),
-		'menu_name' => _x( go_return_options( 'options_tasks_name_plural' ), 'task' )
+		'name' => _x( get_option( 'options_tasks_name_plural' ), 'task' ),
+		'singular_name' => _x( get_option( 'options_tasks_name_singular' ), 'task' ),
+		'add_new' => _x( 'Add New '.get_option( 'options_tasks_name_singular' ), 'task' ),
+		'add_new_item' => _x( 'Add New '.get_option( 'options_tasks_name_singular' ), 'task' ),
+		'edit_item' => _x( 'Edit '.get_option( 'options_tasks_name_singular' ), 'task' ),
+		'new_item' => _x( 'New '.get_option( 'options_tasks_name_singular' ), 'task' ),
+		'view_item' => _x( 'View '.get_option( 'options_tasks_name_singular' ), 'task' ),
+		'search_items' => _x( 'Search '.get_option( 'options_tasks_name_plural' ), 'task' ),
+		'not_found' => _x( 'No '.get_option( 'options_tasks_name_plural' ).' found', 'task' ),
+		'not_found_in_trash' => _x( 'No '.get_option( 'options_tasks_name_singular' ).' found in Trash', 'task' ),
+		'parent_item_colon' => _x( 'Parent '.get_option( 'options_tasks_name_singular' ).':', 'task' ),
+		'menu_name' => _x( get_option( 'options_tasks_name_plural' ), 'task' )
 	);
 	$args_cpt = array(
 		'labels' => $labels_cpt,
 		'hierarchical' => false,
-		'description' => go_return_options( 'options_tasks_name_plural' ),
+		'description' => get_option( 'options_tasks_name_plural' ),
         'supports'              => array( 'title', 'comments' ),
 		'taxonomies' => array(),
 		'public' => true,

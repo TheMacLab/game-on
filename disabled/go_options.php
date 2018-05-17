@@ -264,19 +264,19 @@ if ( is_admin() ) {
 				?>
 				<div id ="admin_bar_catagories"><strong>Admin</strong>
 				<?php
-				go_options_input( go_return_options( 'go_points_name' ), 'checkbox', 'go_admin_bar_add_points_switch', '', 'Enable ' . go_return_options( 'go_points_name' ) . ' in the add bar' );
-				go_options_input( go_return_options( 'go_currency_name' ), 'checkbox', 'go_admin_bar_add_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_currency_name' ) . ' in the add bar' );
-				go_options_input( go_return_options( 'go_bonus_currency_name' ), 'checkbox', 'go_admin_bar_add_bonus_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_bonus_currency_name' ) . ' in the add bar'  );
-				go_options_input( go_return_options( 'go_penalty_name' ), 'checkbox', 'go_admin_bar_add_penalty_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_penalty_name' ) . ' in the add bar'  );
-				go_options_input( go_return_options( 'go_minutes_name' ), 'checkbox', 'go_admin_bar_add_minutes_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_minutes_name' ) . ' in the add bar'  );
+				go_options_input( get_option( 'go_points_name' ), 'checkbox', 'go_admin_bar_add_points_switch', '', 'Enable ' . get_option( 'go_points_name' ) . ' in the add bar' );
+				go_options_input( get_option( 'go_currency_name' ), 'checkbox', 'go_admin_bar_add_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_currency_name' ) . ' in the add bar' );
+				go_options_input( get_option( 'go_bonus_currency_name' ), 'checkbox', 'go_admin_bar_add_bonus_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_bonus_currency_name' ) . ' in the add bar'  );
+				go_options_input( get_option( 'go_penalty_name' ), 'checkbox', 'go_admin_bar_add_penalty_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_penalty_name' ) . ' in the add bar'  );
+				go_options_input( get_option( 'go_minutes_name' ), 'checkbox', 'go_admin_bar_add_minutes_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_minutes_name' ) . ' in the add bar'  );
 				?>
 				<strong>User</strong></div>
 				<?php
-				go_options_input( go_return_options( 'go_points_name' ), 'checkbox', 'go_bar_add_points_switch', '', 'Enable ' . go_return_options( 'go_points_name' ) . ' in the add bar' );
-				go_options_input( go_return_options( 'go_currency_name' ), 'checkbox', 'go_bar_add_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_currency_name' ) . ' in the add bar' );
-				go_options_input( go_return_options( 'go_bonus_currency_name' ), 'checkbox', 'go_bar_add_bonus_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_bonus_currency_name' ) . ' in the add bar'  );
-				go_options_input( go_return_options( 'go_penalty_name' ), 'checkbox', 'go_bar_add_penalty_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_penalty_name' ) . ' in the add bar'  );
-				go_options_input( go_return_options( 'go_minutes_name' ), 'checkbox', 'go_bar_add_minutes_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . go_return_options( 'go_minutes_name' ) . ' in the add bar'  );
+				go_options_input( get_option( 'go_points_name' ), 'checkbox', 'go_bar_add_points_switch', '', 'Enable ' . get_option( 'go_points_name' ) . ' in the add bar' );
+				go_options_input( get_option( 'go_currency_name' ), 'checkbox', 'go_bar_add_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_currency_name' ) . ' in the add bar' );
+				go_options_input( get_option( 'go_bonus_currency_name' ), 'checkbox', 'go_bar_add_bonus_currency_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_bonus_currency_name' ) . ' in the add bar'  );
+				go_options_input( get_option( 'go_penalty_name' ), 'checkbox', 'go_bar_add_penalty_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_penalty_name' ) . ' in the add bar'  );
+				go_options_input( get_option( 'go_minutes_name' ), 'checkbox', 'go_bar_add_minutes_switch', 'http://maclab.guhsd.net/go/video/options/adminBarAddMinutesOnly.mp4', 'Enable ' . get_option( 'go_minutes_name' ) . ' in the add bar'  );
 				?>
 			</div>
 			<div class='go_options_accordion_wrap' opt='3'>
@@ -287,7 +287,7 @@ if ( is_admin() ) {
 				);
 				?>
 				<div class='go_options_accordion'>
-					<?php echo go_return_options( 'go_level_plural_names' ); ?>
+					<?php echo get_option( 'go_level_plural_names' ); ?>
 					<div class='go_triangle_container'>
 						<div class='go_options_triangle'></div>
 					</div>
@@ -340,7 +340,7 @@ if ( is_admin() ) {
 							if ( $first == 1 ) {
 							?>
 							<div id='go_options_level_badges_wrap'>
-								<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo go_return_options( 'go_badges_name' ); go_options_help( 'http://maclab.guhsd.net/go/video/options/levelBadges.mp4','Award badges when players reach certain levels' ); ?></span></div>
+								<div class='go_options_field_title_wrap'><span class='go_options_field_title'><?php echo get_option( 'go_badges_name' ); go_options_help( 'http://maclab.guhsd.net/go/video/options/levelBadges.mp4','Award badges when players reach certain levels' ); ?></span></div>
 								<div id='go_options_level_badges'></div>
 							</div>
 							<?php 
@@ -411,7 +411,7 @@ if ( is_admin() ) {
 				);
 				?>
 				<div class='go_options_accordion'>
-					<?php echo go_return_options( 'go_organization_name' ); ?>
+					<?php echo get_option( 'go_organization_name' ); ?>
 					<div class='go_triangle_container'>
 						<div class='go_options_triangle'></div>
 					</div>
@@ -504,7 +504,7 @@ if ( is_admin() ) {
 				?>
 				<div class='go_options_accordion'>
 					<?php
-					echo go_return_options( 'go_focus_name' );
+					echo get_option( 'go_focus_name' );
 					?>
 					<div class='go_triangle_container'>
 						<div class='go_options_triangle'></div>
@@ -624,16 +624,16 @@ if ( is_admin() ) {
 				go_options_input( 'Full Student Name', 'checkbox', 'go_full_student_name_switch', 'http://maclab.guhsd.net/go/video/options/fullStudentName.mp4', 'Display only first name and last initial (default)' );
 				go_options_input(get_option( 'go_bonus_currency_name', 'Bonus' ), 'checkbox', 'go_multiplier_switch', 'http://maclab.guhsd.net/go/video/options/multiplier.mp4', 'Enable bonus mechanism to boost rewards' );
 				go_options_input(get_option( 'go_bonus_currency_name', 'Bonus' ).' Threshold', 'text', 'go_multiplier_threshold', 'http://maclab.guhsd.net/go/video/options/multiplierThreshold.mp4', 'Number of bonus points required to boost rewards' );
-				go_options_input(go_return_options( 'go_penalty_name' ), 'checkbox', 'go_penalty_switch', 'http://maclab.guhsd.net/go/video/options/penalty2.mp4', 'Enable penalty mechanism to reduce rewards' );
-				go_options_input(go_return_options( 'go_penalty_name' ).' Threshold', 'text', 'go_penalty_threshold', 'http://maclab.guhsd.net/go/video/options/penaltyThreshold.mp4', 'Number of penalty points required to reduce rewards' );
+				go_options_input(get_option( 'go_penalty_name' ), 'checkbox', 'go_penalty_switch', 'http://maclab.guhsd.net/go/video/options/penalty2.mp4', 'Enable penalty mechanism to reduce rewards' );
+				go_options_input(get_option( 'go_penalty_name' ).' Threshold', 'text', 'go_penalty_threshold', 'http://maclab.guhsd.net/go/video/options/penaltyThreshold.mp4', 'Number of penalty points required to reduce rewards' );
 				go_options_input( 'Multiplier %', 'text', 'go_multiplier_percentage', 'http://maclab.guhsd.net/go/video/options/multiplierPercentage.mp4', 'Percentage of rewards awarded or deducted at each threshold' );
 				go_options_input( '<span class="go_error_red">Data Reset</span>', 'checkbox', 'go_data_reset_switch', 'http://maclab.guhsd.net/go/video/options/dataReset.mp4', 'DANGER! Clears all user data for the specified categories. Includes ' . ucfirst( get_option( 'go_tasks_plural_name', 'Quests' ) ) . '.' );
-				go_options_input(go_return_options( 'go_points_name' ), 'checkbox', 'go_data_reset_points', '', null, false, 'points' );
-				go_options_input(go_return_options( 'go_currency_name' ), 'checkbox', 'go_data_reset_currency', '', null, false, 'currency' );
-				go_options_input(go_return_options( 'go_bonus_currency_name' ), 'checkbox', 'go_data_reset_bonus_currency', '', null, false, 'bonus_currency' );
-				go_options_input(go_return_options( 'go_penalty_name' ), 'checkbox', 'go_data_reset_penalty', '', null, false, 'penalty' );
-				go_options_input(go_return_options( 'go_minutes_name' ), 'checkbox', 'go_data_reset_minutes', '', null, false, 'minutes' );
-				go_options_input(go_return_options( 'go_badges_name' ), 'checkbox', 'go_data_reset_badges', '', null, false, 'badges' );
+				go_options_input(get_option( 'go_points_name' ), 'checkbox', 'go_data_reset_points', '', null, false, 'points' );
+				go_options_input(get_option( 'go_currency_name' ), 'checkbox', 'go_data_reset_currency', '', null, false, 'currency' );
+				go_options_input(get_option( 'go_bonus_currency_name' ), 'checkbox', 'go_data_reset_bonus_currency', '', null, false, 'bonus_currency' );
+				go_options_input(get_option( 'go_penalty_name' ), 'checkbox', 'go_data_reset_penalty', '', null, false, 'penalty' );
+				go_options_input(get_option( 'go_minutes_name' ), 'checkbox', 'go_data_reset_minutes', '', null, false, 'minutes' );
+				go_options_input(get_option( 'go_badges_name' ), 'checkbox', 'go_data_reset_badges', '', null, false, 'badges' );
 				go_options_input( 'All', 'checkbox', 'go_data_reset_all', 'http://maclab.guhsd.net/go/video/options/dataReset.mp4', 'Includes ' . ucfirst( get_option( 'go_tasks_plural_name', 'Quests' ) ) . ' AND Store Items.' );
 				?>
 				<div class='go_options'>

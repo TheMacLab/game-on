@@ -12,7 +12,7 @@ add_action( 'admin_bar_menu', 'remove_wp_admin_items', 999 );
 
 function remove_wp_admin_items( $wp_admin_bar ) {
 	$wp_admin_bar->remove_node( 'wp-logo' );	
-	if ( go_return_options('go_dashboard_switch')  != 'On'  && ! current_user_can('administrator') && ! is_admin()){
+	if ( get_option('go_dashboard_switch')  != 'On'  && ! current_user_can('administrator') && ! is_admin()){
 		$wp_admin_bar->remove_node( 'site-name' );
 		
 	}	
@@ -22,14 +22,14 @@ function remove_wp_admin_items( $wp_admin_bar ) {
 //remove dashboard
 add_action( 'admin_menu', 'Wps_remove_tools', 99 );
 function Wps_remove_tools(){
-	if ( go_return_options('go_dashboard_switch')  != 'On'  && ! current_user_can('administrator') ){
+	if ( get_option('go_dashboard_switch')  != 'On'  && ! current_user_can('administrator') ){
 		remove_menu_page( 'index.php' ); //dashboard
 		
 	}
 }
 
 function go_display_admin_bar() {
-	if ( go_return_options( 'go_admin_bar_display_switch' ) == 'On' ) {
+	if ( get_option( 'go_admin_bar_display_switch' ) == 'On' ) {
 		return true;	
 	}
 	else if ( is_user_logged_in() ) {
@@ -103,7 +103,7 @@ function go_admin_bar() {
 		$pts_to_rank_threshold = $go_current_points - $current_rank_points;
 
 		if ( $max_rank_points === $current_rank_points ) {
-			$prestige_name = go_return_options( 'go_prestige_name' );
+			$prestige_name = get_option( 'go_prestige_name' );
 			$pts_to_rank_up_str = $prestige_name;
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
@@ -273,7 +273,7 @@ function go_admin_bar() {
 			);
 		}
 		/*
-		if ( go_return_options( 'go_admin_bar_add_switch' ) == 'On' ) {		
+		if ( get_option( 'go_admin_bar_add_switch' ) == 'On' ) {		
 			$wp_admin_bar->add_node( 
 				array(
 					'id' => 'go_add',
@@ -283,27 +283,27 @@ function go_admin_bar() {
 			);
 			$title = '';
 			if ( ! $is_admin ) {
-				if ( go_return_options( 'go_bar_add_points_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_points_name' ).'</div>
+				if ( get_option( 'go_bar_add_points_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_points_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_points_reason"/></div>';
 				}
-				if ( go_return_options( 'go_bar_add_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_currency_name' ).'</div>
+				if ( get_option( 'go_bar_add_currency_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_currency_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_currency_reason"/></div>';
 				}
-				if ( go_return_options( 'go_bar_add_bonus_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_bonus_currency_name' ).'</div>
+				if ( get_option( 'go_bar_add_bonus_currency_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_bonus_currency_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_bonus_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_bonus_currency_reason"/></div>';
 				}
-				if ( go_return_options( 'go_bar_add_penalty_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_penalty_name' ).'</div>
+				if ( get_option( 'go_bar_add_penalty_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_penalty_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_penalty"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_penalty_reason"/></div>';
 				}
-				if ( go_return_options( 'go_bar_add_minutes_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_minutes_name' ).'</div>
+				if ( get_option( 'go_bar_add_minutes_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_minutes_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_minutes"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_minutes_reason"/></div>';
 				}
-				if ( go_return_options( 'go_bar_add_points_switch' ) == 'On' || go_return_options( 'go_bar_add_currency_switch' ) == 'On' || go_return_options( 'go_bar_add_bonus_currency_switch' ) == 'On' || go_return_options( 'go_bar_add_penalty_switch' ) == 'On' || go_return_options( 'go_bar_add_minutes_switch' ) == 'On') {
+				if ( get_option( 'go_bar_add_points_switch' ) == 'On' || get_option( 'go_bar_add_currency_switch' ) == 'On' || get_option( 'go_bar_add_bonus_currency_switch' ) == 'On' || get_option( 'go_bar_add_penalty_switch' ) == 'On' || get_option( 'go_bar_add_minutes_switch' ) == 'On') {
 					$wp_admin_bar->add_node( 
 						array(
 							'id' => 'go_add_bar',
@@ -322,27 +322,27 @@ function go_admin_bar() {
 					);
 				}
 			} else {
-				if ( go_return_options( 'go_admin_bar_add_points_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_points_name' ).'</div>
+				if ( get_option( 'go_admin_bar_add_points_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_points_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_points_reason"/></div>';
 				}
-				if ( go_return_options( 'go_admin_bar_add_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_currency_name' ).'</div>
+				if ( get_option( 'go_admin_bar_add_currency_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_currency_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_currency_reason"/></div>';
 				}
-				if ( go_return_options( 'go_admin_bar_add_bonus_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_bonus_currency_name' ).'</div>
+				if ( get_option( 'go_admin_bar_add_bonus_currency_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_bonus_currency_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_bonus_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_bonus_currency_reason"/></div>';
 				}
-				if ( go_return_options( 'go_admin_bar_add_penalty_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_penalty_name' ).'</div>
+				if ( get_option( 'go_admin_bar_add_penalty_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_penalty_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_penalty"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_penalty_reason"/></div>';
 				}
-				if ( go_return_options( 'go_admin_bar_add_minutes_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.go_return_options( 'go_minutes_name' ).'</div>
+				if ( get_option( 'go_admin_bar_add_minutes_switch' ) == 'On' ) {
+					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_minutes_name' ).'</div>
 								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_minutes"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_minutes_reason"/></div>';
 				}
-				if ( go_return_options( 'go_admin_bar_add_points_switch' ) == 'On' || go_return_options( 'go_admin_bar_add_currency_switch' ) == 'On' || go_return_options( 'go_admin_bar_add_bonus_currency_switch' ) == 'On' || go_return_options( 'go_admin_bar_add_penalty_switch' ) == 'On' || go_return_options( 'go_admin_bar_add_minutes_switch' ) == 'On') {
+				if ( get_option( 'go_admin_bar_add_points_switch' ) == 'On' || get_option( 'go_admin_bar_add_currency_switch' ) == 'On' || get_option( 'go_admin_bar_add_bonus_currency_switch' ) == 'On' || get_option( 'go_admin_bar_add_penalty_switch' ) == 'On' || get_option( 'go_admin_bar_add_minutes_switch' ) == 'On') {
 					$wp_admin_bar->add_node( 
 						array(
 							'id' => 'go_add_bar',
