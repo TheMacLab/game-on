@@ -5,6 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
+add_filter('acf/settings/show_admin', '__return_false');
 
 if( function_exists('acf_add_local_field_group') ):
 
@@ -61,6 +62,25 @@ if( function_exists('acf_add_local_field_group') ):
         'title' => 'Map Settings',
         'fields' => array(
             array(
+                'key' => 'field_5afcb6e0dad88',
+                'label' => 'Locked by Previous',
+                'name' => 'locked_by_previous',
+                'type' => 'true_false',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'message' => '',
+                'default_value' => 1,
+                'ui' => 1,
+                'ui_on_text' => 'Yes',
+                'ui_off_text' => 'No',
+            ),
+            array(
                 'key' => 'pod_toggle',
                 'label' => 'Any Sequence',
                 'name' => 'pod_toggle',
@@ -75,9 +95,9 @@ if( function_exists('acf_add_local_field_group') ):
                 ),
                 'message' => '',
                 'default_value' => 0,
-                'ui' => 0,
-                'ui_on_text' => '',
-                'ui_off_text' => '',
+                'ui' => 1,
+                'ui_on_text' => 'Yes',
+                'ui_off_text' => 'No',
             ),
             array(
                 'key' => 'pod_done_num',
@@ -136,7 +156,7 @@ if( function_exists('acf_add_local_field_group') ):
                 array(
                     'param' => 'taxonomy',
                     'operator' => '==',
-                    'value' => 'task_chains',
+                    'value' => 'all',
                 ),
             ),
         ),
@@ -5258,16 +5278,43 @@ if( function_exists('acf_add_local_field_group') ):
                         'return_format' => 'value',
                     ),
                     array(
-                        'key' => 'field_5a8b14a6f32fb',
-                        'label' => 'Quiz',
-                        'name' => 'quiz',
-                        'type' => 'repeater',
+                        'key' => 'field_5afa59e675cec',
+                        'label' => 'Submit DIrections',
+                        'name' => 'directions',
+                        'type' => 'textarea',
                         'instructions' => '',
                         'required' => 0,
                         'conditional_logic' => array(
                             array(
                                 array(
-                                    'field' => 'field_5a3a86e861b49',
+                                    'field' => 'field_5a8b14a6f32fa',
+                                    'operator' => '!=',
+                                    'value' => 'none',
+                                ),
+                            ),
+                        ),
+                        'wrapper' => array(
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ),
+                        'default_value' => '',
+                        'placeholder' => 'optional',
+                        'maxlength' => '',
+                        'rows' => 4,
+                        'new_lines' => '',
+                    ),
+                    array(
+                        'key' => 'field_5afa5a78d25dc',
+                        'label' => 'Quiz Modifier',
+                        'name' => 'quiz_modifier',
+                        'type' => 'number',
+                        'instructions' => '% of Stage Loot Lost for Each Wrong Answer',
+                        'required' => 0,
+                        'conditional_logic' => array(
+                            array(
+                                array(
+                                    'field' => 'field_5a8b14a6f32fa',
                                     'operator' => '==',
                                     'value' => 'quiz',
                                 ),
@@ -5278,133 +5325,34 @@ if( function_exists('acf_add_local_field_group') ):
                             'class' => '',
                             'id' => '',
                         ),
-                        'collapsed' => '',
+                        'default_value' => 0,
+                        'placeholder' => '',
+                        'prepend' => '',
+                        'append' => '%',
                         'min' => 0,
-                        'max' => 0,
-                        'layout' => 'block',
-                        'button_label' => 'Add Question',
-                        'sub_fields' => array(
+                        'max' => 100,
+                        'step' => '',
+                    ),
+                    array(
+                        'key' => 'field_5afa5a7ed25dd',
+                        'label' => 'Quiz',
+                        'name' => 'quiz',
+                        'type' => 'quiz',
+                        'instructions' => '',
+                        'required' => 0,
+                        'conditional_logic' => array(
                             array(
-                                'key' => 'field_5a8b14a6f32fc',
-                                'label' => 'Question Type',
-                                'name' => 'question_type',
-                                'type' => 'select',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => '',
-                                    'id' => '',
-                                ),
-                                'choices' => array(
-                                    'Multiple Choice' => 'Multiple Choice',
-                                    'Multiple Select' => 'Multiple Select',
-                                    'Short Answer' => 'Short Answer',
-                                    'Paragraph' => 'Paragraph',
-                                ),
-                                'default_value' => array(
-                                ),
-                                'allow_null' => 0,
-                                'multiple' => 0,
-                                'ui' => 0,
-                                'ajax' => 0,
-                                'return_format' => 'value',
-                                'placeholder' => '',
-                            ),
-                            array(
-                                'key' => 'field_5a8b14a6f32fd',
-                                'label' => 'Question',
-                                'name' => 'question',
-                                'type' => 'textarea',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => '',
-                                    'id' => '',
-                                ),
-                                'default_value' => '',
-                                'placeholder' => 'What is the ultimate answer to life, the universe, and everything?',
-                                'maxlength' => '',
-                                'rows' => 2,
-                                'new_lines' => 'wpautop',
-                            ),
-                            array(
-                                'key' => 'field_5a8b14a6f32fe',
-                                'label' => 'Answers',
-                                'name' => 'answers',
-                                'type' => 'repeater',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => array(
-                                    array(
-                                        array(
-                                            'field' => 'field_5a3b0659f81e6',
-                                            'operator' => '==',
-                                            'value' => 'Multiple Choice',
-                                        ),
-                                    ),
-                                    array(
-                                        array(
-                                            'field' => 'field_5a3b0659f81e6',
-                                            'operator' => '==',
-                                            'value' => 'Multiple Select',
-                                        ),
-                                    ),
-                                ),
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => '',
-                                    'id' => '',
-                                ),
-                                'collapsed' => '',
-                                'min' => 1,
-                                'max' => 6,
-                                'layout' => 'table',
-                                'button_label' => 'Add Answer',
-                                'sub_fields' => array(
-                                    array(
-                                        'key' => 'field_5a8b14a6f32ff',
-                                        'label' => 'Correct Answer',
-                                        'name' => 'correct_answer',
-                                        'type' => 'true_false',
-                                        'instructions' => '',
-                                        'required' => 0,
-                                        'conditional_logic' => 0,
-                                        'wrapper' => array(
-                                            'width' => '20',
-                                            'class' => '',
-                                            'id' => '',
-                                        ),
-                                        'message' => '',
-                                        'default_value' => 0,
-                                        'ui' => 0,
-                                        'ui_on_text' => '',
-                                        'ui_off_text' => '',
-                                    ),
-                                    array(
-                                        'key' => 'field_5a8b14a6f3300',
-                                        'label' => 'Answer',
-                                        'name' => 'answer',
-                                        'type' => 'textarea',
-                                        'instructions' => '',
-                                        'required' => 0,
-                                        'conditional_logic' => 0,
-                                        'wrapper' => array(
-                                            'width' => '',
-                                            'class' => '',
-                                            'id' => '',
-                                        ),
-                                        'default_value' => '',
-                                        'placeholder' => 42,
-                                        'maxlength' => '',
-                                        'rows' => 1,
-                                        'new_lines' => '',
-                                    ),
+                                array(
+                                    'field' => 'field_5a8b14a6f32fa',
+                                    'operator' => '==',
+                                    'value' => 'quiz',
                                 ),
                             ),
+                        ),
+                        'wrapper' => array(
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
                         ),
                     ),
                     array(
@@ -5417,7 +5365,7 @@ if( function_exists('acf_add_local_field_group') ):
                         'conditional_logic' => array(
                             array(
                                 array(
-                                    'field' => 'field_5a3a86e861b49',
+                                    'field' => 'field_5a8b14a6f32fa',
                                     'operator' => '==',
                                     'value' => 'password',
                                 ),

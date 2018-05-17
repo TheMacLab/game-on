@@ -240,6 +240,49 @@
     font-size: 12px !important; }
 
 /********************
+*	Check for Understanding Buttons
+********************/
+#go_buttons {
+  overflow: auto;
+  position: relative;
+  padding: 10px;
+  min-height: 40px; }
+
+#go_back_button {
+  float: left;
+  position: absolute;
+  bottom: 10px; }
+
+#go_abandon_task {
+  float: left;
+  position: absolute;
+  bottom: 10px; }
+
+#go_button {
+  float: right; }
+
+/********************
+*	locks
+********************/
+.go_locks {
+  border: 1px solid;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #ddd; }
+
+.go_lock, .go_late_mods, .go_sched_access_message, .go_timer_message, .go_checks_and_buttons {
+  border: solid;
+  border-radius: 25px;
+  padding: 10px;
+  margin: 10px;
+  background-color: cornsilk; }
+
+.go_lock ul ul {
+  list-style-type: disc !important;
+  list-style-position: inside !important; }
+
+/********************
 *	Top Menu
 ********************/
 /*no dotted line*/
@@ -761,21 +804,16 @@ ul#go_bonus_loot_wrap li.go_error {
   margin-top: 10px;
   margin-bottom: 10px; }
 
-.go_stage_message p:last-of-type {
-  border-bottom: 1px solid;
-  border-bottom-color: inherit; }
-
 .go_stage_message {
-  background-color: #ddd; }
+  border-top: 1px solid;
+  border-top-color: inherit;
+  padding: 20px 0 20px 0; }
 
 #go_description .go_stage_message {
   background-color: transparent; }
 
 #new_content .go_stage_message {
   background-color: #fffcf2; }
-
-.go_stage_message {
-  padding: 20px; }
 
 .go_test_container {
   margin-bottom: 10px; }
@@ -1391,7 +1429,6 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 .column-primary {
   flex: 1 !important; }
 
-/*maps admin*/
 .posts.column-posts,
 .manage-column.column-posts,
 .pod_toggle.column-pod_toggle,
@@ -1421,14 +1458,7 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
   display: block;
   width: 75px; }
 
-/*badges admin*/
 /*MAPS*/
-.taxonomy-task_chains .acf-field {
-  display: none; }
-
-.taxonomy-task_chains #edittag h2 {
-  display: none; }
-
 .taxonomy-task_chains .pod_achievement.column-pod_achievement,
 .taxonomy-task_chains .pod_toggle.column-pod_toggle,
 .taxonomy-task_chains .pod_done_num.column-pod_done_num {

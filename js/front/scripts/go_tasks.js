@@ -486,8 +486,10 @@ function go_repeat_replace() {
 
 // disables the target stage button, and adds a loading gif to it
 function go_enable_loading( target ) {
+    //console.log ('disable button' );
 	//prevent further events with this button
 	jQuery('#go_button').prop('disabled',true);
+    //jQuery('#go_button').hide();
     jQuery('#go_back_button').attr('onclick',null, null);
 	// prepend the loading gif to the button's content, to show that the request is being processed
 	target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
@@ -495,12 +497,13 @@ function go_enable_loading( target ) {
 
 // re-enables the stage button, and removes the loading gif
 function go_disable_loading() {
+    //console.log ('enable button' );
 	jQuery('#go_button .go_loading').remove();
 	jQuery('#go_button').prop( 'disabled', '' );
 }
 
 function task_stage_check_input( target ) {
-
+	console.log('button clicked');
     //disable button to prevent double clicks
     go_enable_loading( target );
 
@@ -544,7 +547,7 @@ function task_stage_check_input( target ) {
         check_type = jQuery( target ).attr( 'check_type' )
     }
     ///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
-    if (button_type == 'continue' || button_type == 'complete') {
+    if (button_type == 'continue' || button_type == 'complete' || button_type =='complete_bonus') {
         if (check_type == 'password') {
             var pass_entered = jQuery('#go_result').attr('value').length > 0 ? true : false;
             if (!pass_entered) {
@@ -854,7 +857,28 @@ function task_stage_change( target ) {
                 else if ( res.button_type == 'show_bonus' ){
                     console.log ("BONUS");
                     //jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-					jQuery('#go_buttons').hide();
+					jQuery('#go_buttons').remove();
+                    //status = Number(task_status) + 1;
+                    //alert (status);
+                    jQuery( '#go_wrapper' ).append( res.html );
+                    //jQuery( ".go_stage_message" ).show( 'slow' );
+                    //var fitID = '#message_' + res.status;
+                    Vids_Fit_and_Box();
+                }
+                else if ( res.button_type == 'complete_bonus' ){
+                    console.log ("complete BONUS");
+                    //jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                    //status = Number(task_status) + 1;
+                    //alert (status);
+                    jQuery( '#go_wrapper' ).append( res.html );
+                    //jQuery( ".go_stage_message" ).show( 'slow' );
+                    //var fitID = '#message_' + res.status;
+                    Vids_Fit_and_Box();
+                } else if ( res.button_type == 'undo_bonus' ){
+                    console.log ("BONUS");
+                    //jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                    jQuery('#go_buttons').hide();
                     //status = Number(task_status) + 1;
                     //alert (status);
                     jQuery( '#go_wrapper' ).append( res.html );

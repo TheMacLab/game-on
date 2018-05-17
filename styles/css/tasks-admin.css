@@ -75,8 +75,6 @@
 }
 
 /*MAPS*/
-.taxonomy-task_chains .acf-field {display: none;}
-.taxonomy-task_chains #edittag h2 {display: none;}
 
 .taxonomy-task_chains .pod_achievement.column-pod_achievement,
 .taxonomy-task_chains .pod_toggle.column-pod_toggle,
@@ -100,13 +98,13 @@ hides table on term page until reorder.js is complete
 
 ul .row-actions {display:none;}
 
-//hides description field
+/*hides description field*/
 .taxonomy-task_chains .term-description-wrap,
 .taxonomy-task_focus_categories .term-description-wrap,
 .taxonomy-task_categories .term-description-wrap,
 .taxonomy-task_menus .term-description-wrap,
 .taxonomy-stask_badges .term-description-wrap,
-.taxonomy-store_types .term-description-wrap,
+.taxonomy-store_types .term-description-wrap
 {display:none;}
 
 /********************

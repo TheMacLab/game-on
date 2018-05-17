@@ -2167,6 +2167,13 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/custom-acf-fields.zip": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/custom-acf-fields.zip",
+		"oF": 0
+		},
 	"\/custom-acf-fields\/class-acf-field-order-posts.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -2187,6 +2194,16 @@
 		"oA": 0,
 		"oAP": "\/custom-acf-fields\/class-acf-field-taxonomy2.php",
 		"oF": 0
+		},
+	"\/custom-acf-fields\/css\/go_tasks-admin-acf-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/custom-acf-fields\/css\/go_tasks-admin-acf-min-min.css",
+		"oF": 0,
+		"oS": 3
 		},
 	"\/custom-acf-fields\/css\/go_tasks-admin-acf.css": {
 		"aP": 1,
@@ -2217,8 +2234,8 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "\/custom-acf-fields\/js\/min\/go_acf-min.js",
-		"oF": 3,
+		"oAP": "\/custom-acf-fields\/js\/dev\/go_acf-min.js",
+		"oF": 0,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2238,7 +2255,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/custom-acf-fields\/js\/scripts\/acf-order-posts-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2248,7 +2265,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/custom-acf-fields\/js\/scripts\/acf-tax2-input-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2258,7 +2275,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/custom-acf-fields\/js\/scripts\/my-acf-extension-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 3,
 		"tS": 0
 		},
@@ -9983,13 +10000,6 @@
 		"oAP": "\/includes\/fitvids-for-wordpress\/uninstall.php",
 		"oF": 1
 		},
-	"\/includes\/go_acf_groups.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/go_acf_groups.php",
-		"oF": 0
-		},
 	"\/includes\/go_enque_includes.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -10911,6 +10921,13 @@
 		"pME": 1,
 		"rFN": 0,
 		"uCM": 0
+		},
+	"\/src\/go_acf_groups.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/src\/go_acf_groups.php",
+		"oF": 0
 		},
 	"\/src\/go_admin_bar.php": {
 		"cB": 0,

@@ -363,7 +363,7 @@ function go_admin_bar() {
 			}
 		}
 		*/
-        $stats_name = get_option(options_go_stats_name);
+        $stats_name = get_option('options_go_stats_name');
 		$wp_admin_bar->add_node(
 
 			array(
@@ -376,7 +376,7 @@ function go_admin_bar() {
         
         if ($go_map_switch === 'On'){
 			$go_map_link = get_permalink( get_page_by_path('map') );
-			$name = get_option(options_go_locations_map_title);
+			$name = get_option('options_go_locations_map_title');
 			$wp_admin_bar->add_node( 
 				array(
 					'id' => 'go_map',
@@ -388,7 +388,7 @@ function go_admin_bar() {
 		
 		if ($go_store_switch === 'On'){
 			$go_store_link = get_permalink( get_page_by_path('store') );
-            $name = get_option(options_go_store_name);
+            $name = get_option('options_go_store_name');
 			$wp_admin_bar->add_node( 
 				array(
 					'id' => 'go_store',

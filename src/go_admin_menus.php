@@ -86,7 +86,7 @@
         );
 
         /* add a new menu item */
-        $badges_name = get_option(options_go_badges_name);
+        $badges_name = get_option('options_go_badges_name');
         add_menu_page(
             $badges_name, // page title
             $badges_name, // menu title

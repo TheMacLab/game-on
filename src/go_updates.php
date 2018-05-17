@@ -63,7 +63,7 @@ function go_update_stage_undo($go_table_name, $user_id, $post_id, $status, $xp, 
         ));
 }
 
-function go_update_actions($go_actions_table_name, $user_id, $type,  $source_id, $time, $status, $check_type, $result, $stage_mod, $global_mod,  $xp, $gold, $health, $c4, $xp_total, $gold_total, $health_total, $c4_total ){
+function go_update_actions($go_actions_table_name, $user_id, $type,  $source_id, $time, $status, $bonus_count, $check_type, $result, $stage_mod, $global_mod,  $xp, $gold, $health, $c4, $xp_total, $gold_total, $health_total, $c4_total ){
     global $wpdb;
     $wpdb->insert(
         $go_actions_table_name,
@@ -73,6 +73,7 @@ function go_update_actions($go_actions_table_name, $user_id, $type,  $source_id,
             'source_id' => $source_id,
             'TIMESTAMP' => $time,
             'stage' => $status,
+            'bonus_count' => $bonus_count,
             'check_type' => $check_type,
             'result' => $result,
             'stage_mod' => $stage_mod,

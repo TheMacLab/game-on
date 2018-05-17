@@ -14,7 +14,7 @@ function go_acf_scripts ($hook) {
 		 *
 		 */
 			
-		wp_register_script( 'go_acf-min', plugin_dir_url( __FILE__ ).'js/min/go_acf-min.js', array( 'jquery' ),v1, true);
+		wp_register_script( 'go_acf-min', plugin_dir_url( __FILE__ ).'js/min/go_acf-min.js', array( 'jquery' ),'v1', true);
 
 		//Combined Scripts
 		wp_enqueue_script( 'go_acf-min' ); 
