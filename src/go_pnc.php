@@ -664,13 +664,15 @@ function go_get_level_percentage( $user_id ) {
 	return $percentage;
 }
 
-function get_option( $option ) {
+/*
+ function go_return_options( $option ) {
 	if ( defined ( $option ) ) {
 		return constant( $option );
 	} else {
 		return get_option( $option );
 	}
 }
+*/
 
 function barColor( $current_bonus_currency, $current_penalty ) {
 	$bonus_threshold = (int) get_option( 'go_multiplier_threshold', 10 );
