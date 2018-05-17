@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/go_pnc.php" afterPath="$PROJECT_DIR$/src/go_pnc.php" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/types/store/super-store.php" afterPath="$PROJECT_DIR$/types/store/super-store.php" />
+      <change beforePath="$PROJECT_DIR$/types/tasks/task.php" afterPath="$PROJECT_DIR$/types/tasks/task.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -78,26 +80,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_checks.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-              <folding>
-                <element signature="e#6#89#0#PHP" expanded="true" />
-                <element signature="n#go_no_check#0;n#!!top" expanded="false" />
-                <element signature="n#go_url_check#0;n#!!top" expanded="false" />
-                <element signature="n#go_upload_check#0;n#!!top" expanded="false" />
-                <element signature="n#go_test_check#0;n#!!top" expanded="false" />
-                <element signature="n#go_task_get_test_meta#0;n#!!top" expanded="false" />
-                <marker date="1526520469000" expanded="true" signature="3022:3048" ph="..." />
-                <marker date="1526520469000" expanded="true" signature="3791:3817" ph="..." />
-                <marker date="1526520469000" expanded="true" signature="5326:5457" ph="SELECT resul... $" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="tbl_structure.php" pinned="false" current-in-tab="false">
         <entry file="file:///Applications/MAMP/bin/phpMyAdmin/tbl_structure.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -128,20 +110,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="task.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="task.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3000">
-              <caret line="200" column="35" lean-forward="false" selection-start-line="200" selection-start-column="35" selection-end-line="200" selection-end-column="35" />
+            <state relative-caret-position="2996">
+              <caret line="200" column="66" lean-forward="false" selection-start-line="200" selection-start-column="66" selection-end-line="200" selection-end-column="66" />
               <folding>
-                <marker date="1526566205000" expanded="true" signature="11137:11212" ph="SELECT statu... $" />
-                <marker date="1526566205000" expanded="true" signature="12261:12335" ph="SELECT count... $" />
+                <marker date="1526567443000" expanded="true" signature="11215:11290" ph="SELECT statu... $" />
+                <marker date="1526567443000" expanded="true" signature="12339:12413" ph="SELECT count... $" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_pnc.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_pnc.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/go_pnc.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="222">
@@ -238,7 +220,6 @@
         <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" />
         <option value="$PROJECT_DIR$/includes/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/game-on.php" />
-        <option value="$PROJECT_DIR$/types/store/super-store.php" />
         <option value="/Applications/MAMP/bin/phpMyAdmin/index.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
         <option value="$PROJECT_DIR$/src/go_admin_menus.php" />
@@ -255,8 +236,9 @@
         <option value="$PROJECT_DIR$/src/go_datatable.php" />
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/disabled/go_acf_groups.php" />
-        <option value="$PROJECT_DIR$/types/tasks/task.php" />
         <option value="$PROJECT_DIR$/src/go_pnc.php" />
+        <option value="$PROJECT_DIR$/types/tasks/task.php" />
+        <option value="$PROJECT_DIR$/types/store/super-store.php" />
       </list>
     </option>
   </component>
@@ -314,6 +296,17 @@
               <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="types" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="types" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="store" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
           </expand>
           <select />
@@ -433,7 +426,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="542659000" />
+    <option name="totallyTimeSpent" value="543162000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="42" width="1440" height="852" extended-state="0" />
@@ -736,13 +729,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/types/store/super-store.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="18" column="32" lean-forward="false" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/types/types.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -931,7 +917,7 @@
         <state relative-caret-position="267">
           <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding>
-            <element signature="e#6#89#0#PHP" expanded="true" />
+            <element signature="e#6#89#0#PHP" expanded="false" />
             <element signature="n#go_no_check#0;n#!!top" expanded="false" />
             <element signature="n#go_url_check#0;n#!!top" expanded="false" />
             <element signature="n#go_upload_check#0;n#!!top" expanded="false" />
@@ -1025,17 +1011,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3000">
-          <caret line="200" column="35" lean-forward="false" selection-start-line="200" selection-start-column="35" selection-end-line="200" selection-end-column="35" />
-          <folding>
-            <marker date="1526566205000" expanded="true" signature="11137:11212" ph="SELECT statu... $" />
-            <marker date="1526566205000" expanded="true" signature="12261:12335" ph="SELECT count... $" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/go_pnc.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
@@ -1053,6 +1028,27 @@
             <marker date="1526567054000" expanded="true" signature="13038:13292" ph="..." />
             <marker date="1526567054000" expanded="true" signature="13076:13279" ph="{...}" />
             <marker date="1526567054000" expanded="true" signature="30518:30597" ph="SELECT times... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/store/super-store.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1095">
+          <caret line="79" column="73" lean-forward="false" selection-start-line="79" selection-start-column="73" selection-end-line="79" selection-end-column="73" />
+          <folding>
+            <marker date="1526567551000" expanded="true" signature="3221:3237" ph="Insert into item... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2996">
+          <caret line="200" column="66" lean-forward="false" selection-start-line="200" selection-start-column="66" selection-end-line="200" selection-end-column="66" />
+          <folding>
+            <marker date="1526567443000" expanded="true" signature="11215:11290" ph="SELECT statu... $" />
+            <marker date="1526567443000" expanded="true" signature="12339:12413" ph="SELECT count... $" />
           </folding>
         </state>
       </provider>
