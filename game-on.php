@@ -160,8 +160,8 @@ add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
 
 add_action( 'delete_user', 'go_user_delete' );
 add_action( 'user_register', 'go_user_registration' );
-add_action( 'show_user_profile', 'go_extra_profile_fields' );
-add_action( 'edit_user_profile', 'go_extra_profile_fields' );
+//add_action( 'show_user_profile', 'go_extra_profile_fields' );
+//add_action( 'edit_user_profile', 'go_extra_profile_fields' );
 add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
 add_action( 'wp_footer', 'go_update_totals_out_of_bounds', 21 );

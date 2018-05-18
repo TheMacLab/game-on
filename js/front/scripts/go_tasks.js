@@ -547,7 +547,7 @@ function task_stage_check_input( target ) {
         check_type = jQuery( target ).attr( 'check_type' )
     }
     ///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
-    if (button_type == 'continue' || button_type == 'complete' || button_type =='complete_bonus') {
+    if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
         if (check_type == 'password') {
             var pass_entered = jQuery('#go_result').attr('value').length > 0 ? true : false;
             if (!pass_entered) {
@@ -865,34 +865,34 @@ function task_stage_change( target ) {
                     //var fitID = '#message_' + res.status;
                     Vids_Fit_and_Box();
                 }
-                else if ( res.button_type == 'complete_bonus' ){
-                    console.log ("complete BONUS");
-                    //jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    //status = Number(task_status) + 1;
-                    //alert (status);
+                else if ( res.button_type == 'continue_bonus' ){
+					jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
                     jQuery( '#go_wrapper' ).append( res.html );
-                    //jQuery( ".go_stage_message" ).show( 'slow' );
-                    //var fitID = '#message_' + res.status;
+                    Vids_Fit_and_Box();
+                }else if ( res.button_type == 'complete_bonus' ){
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                    jQuery( '#go_wrapper' ).append( res.html );
                     Vids_Fit_and_Box();
                 } else if ( res.button_type == 'undo_bonus' ){
-                    console.log ("BONUS");
-                    //jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery('#go_buttons').hide();
-                    //status = Number(task_status) + 1;
-                    //alert (status);
+                    jQuery( '#go_wrapper div' ).last().hide();
+
+                    jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
                     jQuery( '#go_wrapper' ).append( res.html );
-                    //jQuery( ".go_stage_message" ).show( 'slow' );
-                    //var fitID = '#message_' + res.status;
+
+
+                    //jQuery('#go_buttons').hide();
+                    //jQuery( '#go_wrapper' ).append( res.html );
+                    Vids_Fit_and_Box();
+                }
+                else if ( res.button_type == 'abandon_bonus' ){
+				    jQuery('#go_buttons').hide();
+                    jQuery( '#go_wrapper' ).append( res.html );
                     Vids_Fit_and_Box();
                 }
                 else if ( res.button_type == 'timer' ){
+                    console.log ("timer");
                     jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    //status = Number(task_status) + 1;
-                    //alert (status);
                     jQuery( '#go_wrapper' ).append( res.html );
-                    //jQuery( ".go_stage_message" ).show( 'slow' );
-                    //var fitID = '#message_' + res.status;
                     Vids_Fit_and_Box();
 
 

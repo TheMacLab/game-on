@@ -12,9 +12,8 @@ add_action( 'admin_bar_menu', 'remove_wp_admin_items', 999 );
 
 function remove_wp_admin_items( $wp_admin_bar ) {
 	$wp_admin_bar->remove_node( 'wp-logo' );	
-	if ( get_option('go_dashboard_switch')  != 'On'  && ! current_user_can('administrator') && ! is_admin()){
+	if ( ! get_option('go_dashboard_toggle') && ! current_user_can('administrator') && ! is_admin()){
 		$wp_admin_bar->remove_node( 'site-name' );
-		
 	}	
 }
 
@@ -22,14 +21,14 @@ function remove_wp_admin_items( $wp_admin_bar ) {
 //remove dashboard
 add_action( 'admin_menu', 'Wps_remove_tools', 99 );
 function Wps_remove_tools(){
-	if ( get_option('go_dashboard_switch')  != 'On'  && ! current_user_can('administrator') ){
+	if ( ! get_option('go_dashboard_toggle') && ! current_user_can('administrator') ){
 		remove_menu_page( 'index.php' ); //dashboard
 		
 	}
 }
 
 function go_display_admin_bar() {
-	if ( get_option( 'go_admin_bar_display_switch' ) == 'On' ) {
+	if ( get_option( 'options_go_admin_bar_toggle' ) ) {
 		return true;	
 	}
 	else if ( is_user_logged_in() ) {
@@ -46,9 +45,9 @@ function go_admin_bar() {
 	global $wp_admin_bar;
 	
 	//get options for what to show
-	$go_search_switch = get_option( 'go_search_switch' );
-	$go_map_switch = get_option( 'go_map_switch' );
-	$go_store_switch = get_option( 'go_store_switch' );
+	$go_search_switch = get_option( 'options_go_search_toggle' );
+	$go_map_switch = get_option( 'options_go_locations_map_toggle' );
+	$go_store_switch = get_option( 'options_go_store_toggle' );
 
 	if ( ! is_user_logged_in() ) {
 		$wp_admin_bar->add_node(
@@ -84,15 +83,15 @@ function go_admin_bar() {
 		$next_rank = $rank['next_rank'];
 		$next_rank_points = $rank['next_rank_points'];
 
-		$go_option_ranks = get_option( 'go_ranks' );
-		$points_array = $go_option_ranks['points'];
+		$go_option_ranks = get_option( 'options_go_loot_xp_levels_name_singular' );
+		//$points_array = $go_option_ranks['points'];
 
 		/*
 		 * Here we are referring to last element manually,
 		 * since we don't want to modifiy
 		 * the arrays with the array_pop function.
 		 */
-		$max_rank_index = count( $points_array ) - 1;
+		//$max_rank_index = count( $points_array ) - 1;
 		$max_rank_points = (int) $points_array[ $max_rank_index ];
 
 		if ( null !== $next_rank_points ) {
@@ -103,7 +102,7 @@ function go_admin_bar() {
 		$pts_to_rank_threshold = $go_current_points - $current_rank_points;
 
 		if ( $max_rank_points === $current_rank_points ) {
-			$prestige_name = get_option( 'go_prestige_name' );
+			$prestige_name = get_option( 'options_go_levels_top_rank' );
 			$pts_to_rank_up_str = $prestige_name;
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
@@ -374,7 +373,7 @@ function go_admin_bar() {
 		);
 		
         
-        if ($go_map_switch === 'On'){
+        if ($go_map_switch){
 			$go_map_link = get_permalink( get_page_by_path('map') );
 			$name = get_option('options_go_locations_map_title');
 			$wp_admin_bar->add_node( 
@@ -386,7 +385,7 @@ function go_admin_bar() {
 			);
 		};
 		
-		if ($go_store_switch === 'On'){
+		if ($go_store_switch){
 			$go_store_link = get_permalink( get_page_by_path('store') );
             $name = get_option('options_go_store_name');
 			$wp_admin_bar->add_node( 
@@ -398,7 +397,7 @@ function go_admin_bar() {
 			);
 		};        
         
-		if ($go_search_switch === 'On'){
+		if ($go_search_switch){
 			$wp_admin_bar->add_node( 
 				array(
 					'id' => 'go_task_search',

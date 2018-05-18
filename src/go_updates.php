@@ -10,7 +10,6 @@ function go_update_stage_progress($go_table_name, $user_id, $post_id, $status, $
     global $wpdb;
 
     $time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
-    $status = $status + 1;
 
     $wpdb->update(
         $go_table_name,
@@ -29,7 +28,6 @@ function go_update_stage_bonus($go_table_name, $user_id, $post_id, $bonus_count,
     global $wpdb;
 
     $time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
-    $bonus_count = $bonus_count + 1;
 
     $wpdb->update(
         $go_table_name,

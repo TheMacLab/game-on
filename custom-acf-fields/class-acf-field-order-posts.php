@@ -328,7 +328,7 @@ class acf_field_order_posts extends acf_field {
     	//$value = get_term_meta( $taxonomy, 'go_order', true);
 
         //new taxonomy
-		$term_id = get_field($field[sort_term]) ;
+		$term_id = get_field($field['sort_term']) ;
         $post_slug = get_post_type( $value[0] );
         $term_obj = get_term( $term_id);
         $taxonomy =  $term_obj->taxonomy;

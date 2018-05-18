@@ -351,7 +351,7 @@ class acf_field_quiz extends acf_field {
     function update_value( $value, $post_id, $field ) {
         $val_uns = unserialize($value);
 
-        $stage_quiz_num = $field[name];
+        $stage_quiz_num = $field['name'];
         $ttc = trim($stage_quiz_num,"stages__quiz");
         $ttc =$ttc + 1;
 

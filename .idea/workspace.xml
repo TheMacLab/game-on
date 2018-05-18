@@ -3,8 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/types/store/super-store.php" afterPath="$PROJECT_DIR$/types/store/super-store.php" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/task.php" afterPath="$PROJECT_DIR$/types/tasks/task.php" />
+      <change beforePath="$PROJECT_DIR$/config.codekit3" afterPath="$PROJECT_DIR$/config.codekit3" />
+      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" />
+      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" />
+      <change beforePath="$PROJECT_DIR$/game-on.php" afterPath="$PROJECT_DIR$/game-on.php" />
+      <change beforePath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" afterPath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" />
+      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" afterPath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
+      <change beforePath="$PROJECT_DIR$/src/go_acf_groups.php" afterPath="$PROJECT_DIR$/go_acf_groups.php" />
+      <change beforePath="$PROJECT_DIR$/src/go_admin_bar.php" afterPath="$PROJECT_DIR$/src/go_admin_bar.php" />
+      <change beforePath="$PROJECT_DIR$/src/go_updates.php" afterPath="$PROJECT_DIR$/src/go_updates.php" />
+      <change beforePath="$PROJECT_DIR$/types/tasks/go_checks.php" afterPath="$PROJECT_DIR$/types/tasks/go_checks.php" />
+      <change beforePath="$PROJECT_DIR$/types/tasks/task_shortcode.php" afterPath="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,133 +24,148 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="task_shortcode.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
+      <file leaf-file-name="go_checks.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11900">
-              <caret line="1291" column="0" lean-forward="false" selection-start-line="1291" selection-start-column="0" selection-end-line="1291" selection-end-column="0" />
+            <state relative-caret-position="113">
+              <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
               <folding>
-                <element signature="e#24#228#0#PHP" expanded="false" />
-                <element signature="n#go_record_stage_time#0;n#!!top" expanded="false" />
-                <element signature="n#go_test_point_update#0;n#!!top" expanded="false" />
-                <element signature="n#go_inc_test_fail_count#0;n#!!top" expanded="false" />
-                <marker date="1526566610000" expanded="true" signature="47094:47208" ph="SELECT bonus... $" />
-                <marker date="1526566610000" expanded="true" signature="47337:47414" ph="SELECT statu... $" />
-                <marker date="1526566610000" expanded="true" signature="56941:57023" ph="SELECT bonus... $" />
+                <element signature="n#go_test_check#0;n#!!top" expanded="false" />
+                <element signature="n#go_task_get_test_meta#0;n#!!top" expanded="false" />
+                <marker date="1526622029000" expanded="true" signature="3160:3186" ph="..." />
+                <marker date="1526622029000" expanded="true" signature="3915:3941" ph="..." />
+                <marker date="1526622029000" expanded="true" signature="5433:5525" ph="SELECT resul... $" />
+                <marker date="1526622029000" expanded="true" signature="5433:5567" ph="SELECT resul... $" />
+                <marker date="1526622029000" expanded="true" signature="6316:6451" ph="SELECT resul... $" />
+                <marker date="1526622029000" expanded="true" signature="7140:7275" ph="SELECT resul... $" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tbl_row_action.php" pinned="false" current-in-tab="false">
-        <entry file="file:///Applications/MAMP/bin/phpMyAdmin/tbl_row_action.php">
+      <file leaf-file-name="wp-featherlight.min.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/includes/featherlight/css/wp-featherlight.min.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#1648#1982#2" expanded="true" />
+                <element signature="e#4182#4429#2" expanded="true" />
+                <element signature="e#4505#4752#2" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="featherlight.min.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/includes/featherlight/release/featherlight.min.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="1670" lean-forward="false" selection-start-line="7" selection-start-column="1670" selection-end-line="7" selection-end-column="1670" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="class-acf-field-order-posts.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="330" column="47" lean-forward="false" selection-start-line="330" selection-start-column="47" selection-end-line="330" selection-end-column="47" />
+              <folding>
+                <marker date="1526656267000" expanded="true" signature="11643:11655" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="class-acf-field-quiz.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="353" column="39" lean-forward="false" selection-start-line="353" selection-start-column="39" selection-end-line="353" selection-end-column="39" />
+              <folding>
+                <marker date="1526656322000" expanded="true" signature="2426:2977" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="2437:2977" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="2616:2977" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="3880:4615" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="5901:7349" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="8136:10377" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="8146:10367" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="8321:8532" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="8742:10183" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="8754:9378" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="9390:10013" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="10194:10356" ph="..." />
+                <marker date="1526656322000" expanded="true" signature="10206:10344" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="task_shortcode.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="16485">
+              <caret line="1294" column="0" lean-forward="false" selection-start-line="1294" selection-start-column="0" selection-end-line="1294" selection-end-column="0" />
+              <folding>
+                <element signature="e#24#228#0#PHP" expanded="false" />
+                <element signature="n#go_print_1_message#0;n#!!top" expanded="false" />
+                <element signature="n#go_unlock_stage#0;n#!!top" expanded="false" />
+                <element signature="n#go_task_done_check#0;n#!!top" expanded="false" />
+                <element signature="n#go_record_stage_time#0;n#!!top" expanded="false" />
+                <element signature="n#go_test_point_update#0;n#!!top" expanded="false" />
+                <element signature="n#go_inc_test_fail_count#0;n#!!top" expanded="false" />
+                <marker date="1526655871000" expanded="true" signature="2274:2351" ph="SELECT statu... $" />
+                <marker date="1526655871000" expanded="true" signature="7994:8077" ph="SELECT ID FR... $" />
+                <marker date="1526655871000" expanded="true" signature="28862:28886" ph="..." />
+                <marker date="1526655871000" expanded="true" signature="40936:41018" ph="SELECT bonus... $" />
+                <marker date="1526655871000" expanded="true" signature="41624:41706" ph="SELECT bonus... $" />
+                <marker date="1526655871000" expanded="true" signature="41943:42045" ph="..." />
+                <marker date="1526655871000" expanded="true" signature="47565:47679" ph="SELECT bonus... $" />
+                <marker date="1526655871000" expanded="true" signature="47808:47885" ph="SELECT statu... $" />
+                <marker date="1526655871000" expanded="true" signature="57457:57539" ph="SELECT bonus... $" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sql.php" pinned="false" current-in-tab="false">
+        <entry file="file:///Applications/MAMP/bin/phpMyAdmin/sql.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
               <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_updates.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_updates.php">
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/Library/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="75" column="42" lean-forward="false" selection-start-line="75" selection-start-column="42" selection-end-line="75" selection-end-column="42" />
-              <folding>
-                <element signature="n#go_update_stage_undo#0;n#!!top" expanded="false" />
-                <element signature="n#go_update_totals_table#0;n#!!top" expanded="false" />
-                <element signature="n#go_add_user_to_totals_table#0;n#!!top" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_tasks.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/front/scripts/go_tasks.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="507" column="21" lean-forward="false" selection-start-line="507" selection-start-column="4" selection-end-line="507" selection-end-column="21" />
-              <folding>
-                <element signature="e#38#505#0" expanded="false" />
-                <element signature="n#!!block;n#getTimeRemaining#0" expanded="false" />
-                <element signature="n#!!block;n#initializeClock#0" expanded="false" />
-                <element signature="n#!!block;n#go_task_abandon#0" expanded="false" />
-                <element signature="n#!!block;n#go_timer_abandon#0" expanded="false" />
-                <element signature="n#!!block;n#check_locks#0" expanded="false" />
-                <element signature="n#!!block;n#flash_error_msg#0" expanded="false" />
-                <element signature="n#!!block;n#task_unlock#0" expanded="false" />
-                <element signature="n#!!block;n#go_test_point_update#0" expanded="false" />
-                <element signature="n#!!block;n#go_repeat_replace#0" expanded="false" />
-                <element signature="n#!!block;n#make_clickable#0" expanded="false" />
-                <element signature="n#!!block;n#go_update_admin_view#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tbl_structure.php" pinned="false" current-in-tab="false">
-        <entry file="file:///Applications/MAMP/bin/phpMyAdmin/tbl_structure.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_enque_includes.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_acf_groups.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="5700" column="6" lean-forward="false" selection-start-line="5700" selection-start-column="6" selection-end-line="5700" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="task.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2996">
-              <caret line="200" column="66" lean-forward="false" selection-start-line="200" selection-start-column="66" selection-end-line="200" selection-end-column="66" />
-              <folding>
-                <marker date="1526567443000" expanded="true" signature="11215:11290" ph="SELECT statu... $" />
-                <marker date="1526567443000" expanded="true" signature="12339:12413" ph="SELECT count... $" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_pnc.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_pnc.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="667" column="1" lean-forward="false" selection-start-line="667" selection-start-column="1" selection-end-line="667" selection-end-column="1" />
-              <folding>
-                <marker date="1526567054000" expanded="true" signature="2304:2376" ph="SELECT * FRO... $" />
-                <marker date="1526567054000" expanded="true" signature="2712:2790" ph="SELECT count... $" />
-                <marker date="1526567054000" expanded="true" signature="3273:3355" ph="SELECT * FRO... $" />
-                <marker date="1526567054000" expanded="true" signature="5207:5279" ph="SELECT * FRO... $" />
-                <marker date="1526567054000" expanded="true" signature="6917:7004" ph="SELECT times... " />
-                <marker date="1526567054000" expanded="false" signature="11293:11337" ph="..." />
-                <marker date="1526567054000" expanded="true" signature="11410:11444" ph="..." />
-                <marker date="1526567054000" expanded="true" signature="12808:12943" ph="..." />
-                <marker date="1526567054000" expanded="true" signature="12847:12929" ph="{...}" />
-                <marker date="1526567054000" expanded="true" signature="13038:13292" ph="..." />
-                <marker date="1526567054000" expanded="true" signature="13076:13279" ph="{...}" />
-                <marker date="1526567054000" expanded="true" signature="30518:30597" ph="SELECT times... " />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -150,36 +174,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>go_ranks_registration</find>
-      <find>activation</find>
-      <find>register</find>
-      <find>tasks</find>
-      <find>singular</find>
-      <find>get_option</find>
-      <find>return_options</find>
-      <find>plural</find>
-      <find>go_stage_pass</find>
-      <find>password</find>
-      <find>$status</find>
-      <find>SELECT bo</find>
-      <find>bonus</find>
-      <find>consol</find>
-      <find>go_bonus_password_validate</find>
-      <find>go_password_validate</find>
-      <find>go_stage_password_validate</find>
-      <find>go_update_stage_progress</find>
-      <find>show_bonus</find>
-      <find>$bonus_count</find>
-      <find>go_print_outro</find>
-      <find>go_checks_for_understanding</find>
       <find>option</find>
       <find>go_checks</find>
       <find>acf</find>
       <find>go_print_bonus_stage</find>
       <find>go_update_actions</find>
-      <find>go_buttons</find>
       <find>go_enable_loading</find>
       <find>status</find>
+      <find>go_checks_for_understanding</find>
+      <find>$go_map_switch</find>
+      <find>get_option</find>
+      <find>$points_array</find>
+      <find>go_location</find>
+      <find>admin_bar</find>
+      <find>$go_store_switch</find>
+      <find>dash</find>
+      <find>map</find>
+      <find>Bonus</find>
+      <find>go_print_messages</find>
+      <find>go_print_outro</find>
+      <find>timer</find>
+      <find>print_outro</find>
+      <find>$repeat_max</find>
+      <find>DONE</find>
+      <find>go_update_stage_progress</find>
+      <find>go_buttons</find>
+      <find>go_no_check</find>
+      <find>complete_bonus</find>
+      <find>maps</find>
+      <find>continue_bonus</find>
+      <find>bonus_stage</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -188,7 +212,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/go_includes.php" />
         <option value="$PROJECT_DIR$/src/go_shortcodes.php" />
         <option value="$PROJECT_DIR$/js/js/go_shortcode_mce.js" />
         <option value="$PROJECT_DIR$/styles/admin/go_enque_styles_admin.php" />
@@ -208,12 +231,10 @@
         <option value="$PROJECT_DIR$/includes/wp-term-order/js/reorder.js" />
         <option value="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" />
         <option value="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" />
-        <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" />
         <option value="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
         <option value="$PROJECT_DIR$/types/tasks/disable/go_bonus_stage.php" />
         <option value="$PROJECT_DIR$/types/tasks/go_timer.php" />
         <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php" />
-        <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" />
         <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
         <option value="$PROJECT_DIR$/styles/css/go_every_page.css" />
         <option value="$PROJECT_DIR$/types/tasks/go_locks.php" />
@@ -221,24 +242,27 @@
         <option value="$PROJECT_DIR$/includes/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/game-on.php" />
         <option value="/Applications/MAMP/bin/phpMyAdmin/index.php" />
-        <option value="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
         <option value="$PROJECT_DIR$/src/go_admin_menus.php" />
-        <option value="$PROJECT_DIR$/src/go_admin_bar.php" />
         <option value="$PROJECT_DIR$/js/front/go_enque_js.php" />
-        <option value="$PROJECT_DIR$/includes/go_enque_includes.php" />
         <option value="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" />
         <option value="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
         <option value="$PROJECT_DIR$/styles/css/tasks-admin.css" />
         <option value="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf.css" />
         <option value="$PROJECT_DIR$/styles/css/go_clipboard.css" />
-        <option value="$PROJECT_DIR$/types/tasks/go_checks.php" />
-        <option value="$PROJECT_DIR$/src/go_updates.php" />
         <option value="$PROJECT_DIR$/src/go_datatable.php" />
-        <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
-        <option value="$PROJECT_DIR$/disabled/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/src/go_pnc.php" />
         <option value="$PROJECT_DIR$/types/tasks/task.php" />
         <option value="$PROJECT_DIR$/types/store/super-store.php" />
+        <option value="$PROJECT_DIR$/src/go_admin_bar.php" />
+        <option value="$PROJECT_DIR$/includes/go_enque_includes.php" />
+        <option value="$PROJECT_DIR$/src/go_updates.php" />
+        <option value="$PROJECT_DIR$/types/tasks/go_checks.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
+        <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
+        <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" />
+        <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" />
+        <option value="$PROJECT_DIR$/includes/featherlight/release/featherlight.min.css" />
+        <option value="$PROJECT_DIR$/disabled/go_acf_groups.php" />
       </list>
     </option>
   </component>
@@ -248,6 +272,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpServers">
     <servers>
       <server host="localhost" id="ce89ff47-52c8-4e08-9a41-c1894d66f7fc" name="Localhost" port="8888" />
@@ -260,7 +285,8 @@
     </include_path>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="42" />
+    <option name="x" value="-11" />
+    <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="852" />
   </component>
@@ -280,38 +306,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="disabled" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="types" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="types" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="store" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Changed Files">
           <expand>
@@ -354,6 +348,22 @@
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="game-on_mmhsart4" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on_mmhsart4" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="disabled" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -364,11 +374,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/disabled" />
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/js/js" />
       <recent name="$PROJECT_DIR$/types" />
-      <recent name="$PROJECT_DIR$/front_end" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -422,17 +432,19 @@
       <workItem from="1526182238988" duration="12102000" />
       <workItem from="1526231243873" duration="34927000" />
       <workItem from="1526484378716" duration="899000" />
+      <workItem from="1526623594929" duration="526000" />
+      <workItem from="1526624134516" duration="959000" />
+      <workItem from="1526656198629" duration="760000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="543162000" />
+    <option name="totallyTimeSpent" value="564106000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="42" width="1440" height="852" extended-state="0" />
-    <editor active="true" />
+    <frame x="-11" y="23" width="1440" height="852" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33402777" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33402777" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -444,25 +456,14 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33205128" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33402777" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08076923" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32948717" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33205128" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -478,11 +479,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php</url>
-          <line>353</line>
-          <option name="timeStamp" value="456" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_datatable.php</url>
           <line>152</line>
           <option name="timeStamp" value="529" />
@@ -493,30 +489,35 @@
           <option name="timeStamp" value="530" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1601</line>
-          <option name="timeStamp" value="564" />
+          <url>file://$PROJECT_DIR$/types/tasks/go_checks.php</url>
+          <line>137</line>
+          <option name="timeStamp" value="580" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1291</line>
-          <option name="timeStamp" value="565" />
+          <line>1391</line>
+          <option name="timeStamp" value="581" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1626</line>
-          <option name="timeStamp" value="568" />
+          <url>file://$PROJECT_DIR$/types/tasks/go_checks.php</url>
+          <line>44</line>
+          <option name="timeStamp" value="582" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1603</line>
-          <option name="timeStamp" value="569" />
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/js/front/scripts/go_tasks.js</url>
+          <line>893</line>
+          <option name="timeStamp" value="570" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/js/front/scripts/go_tasks.js</url>
+          <line>689</line>
+          <option name="timeStamp" value="571" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="570" />
+      <option name="time" value="583" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -535,62 +536,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/navigation.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/go_timer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="13" />
-          <folding>
-            <marker date="1525037226000" expanded="true" signature="980:995" ph="..." />
-            <marker date="1525037226000" expanded="true" signature="996:1285" ph="..." />
-            <marker date="1525037226000" expanded="true" signature="1100:1112" ph="..." />
-            <marker date="1525037226000" expanded="true" signature="1256:1269" ph="..." />
-            <marker date="1525037226000" expanded="true" signature="3142:3223" ph="SELECT start... $" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new/wp-includes/load.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="681" column="0" lean-forward="false" selection-start-line="681" selection-start-column="0" selection-end-line="681" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/tbl_change.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new/wp-includes/cache.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="729" column="0" lean-forward="false" selection-start-line="729" selection-start-column="0" selection-end-line="729" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/buy_the_item.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="194" column="14" lean-forward="false" selection-start-line="194" selection-start-column="8" selection-end-line="194" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="365">
@@ -612,28 +557,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding>
-            <marker date="1526346294000" expanded="true" signature="2426:2977" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="2437:2977" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="2616:2977" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="3880:4615" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="5901:7349" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="8136:10377" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="8146:10367" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="8321:8532" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="8742:10183" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="8754:9378" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="9390:10013" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="10194:10356" ph="..." />
-            <marker date="1526346294000" expanded="true" signature="10206:10344" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new/wp-includes/class-wp-hook.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -652,20 +575,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new/wp-includes/wp-db.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="602" column="0" lean-forward="false" selection-start-line="602" selection-start-column="0" selection-end-line="602" selection-end-column="0" />
-          <folding>
-            <marker date="1516707642000" expanded="true" signature="23403:23410" ph="..." />
-            <marker date="1516707642000" expanded="true" signature="40799:40806" ph="..." />
-            <marker date="1516707642000" expanded="true" signature="45589:45596" ph="..." />
-            <marker date="1516707642000" expanded="true" signature="60640:60674" ph="UPDATE `${$table}`... " />
-            <marker date="1516707642000" expanded="true" signature="62629:62656" ph="DELETE FROM `${$table}`... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -694,17 +603,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="555">
           <caret line="37" column="8" lean-forward="false" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="52" />
-          <folding>
-            <element signature="n#go_until_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_after_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_badge_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_period_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_xp_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_user_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_health_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_task_chain_lock#0;n#!!top" expanded="false" />
-            <element signature="n#go_schedule_access#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -736,13 +634,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/sql.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Applications/MAMP/bin/phpMyAdmin/tbl_replace.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -750,44 +641,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/includes/acf/acf.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4122">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="711">
-          <caret line="55" column="57" lean-forward="false" selection-start-line="55" selection-start-column="54" selection-end-line="55" selection-end-column="57" />
-          <folding>
-            <marker date="1526346084000" expanded="true" signature="10792:10842" ph="SELECT * FRO... $" />
-            <marker date="1526346084000" expanded="true" signature="10925:10973" ph="DELETE FROM $... " />
-            <marker date="1526346084000" expanded="true" signature="12272:12288" ph="..." />
-            <marker date="1526346084000" expanded="true" signature="12289:13654" ph="..." />
-            <marker date="1526346084000" expanded="true" signature="12589:12610" ph="..." />
-            <marker date="1526346084000" expanded="false" signature="12779:12810" ph="..." />
-            <marker date="1526346084000" expanded="true" signature="12811:13557" ph="..." />
-            <marker date="1526346084000" expanded="false" signature="12875:12891" ph="..." />
-            <marker date="1526346084000" expanded="true" signature="12892:13547" ph="..." />
-            <marker date="1526346084000" expanded="true" signature="13665:14003" ph="..." />
-            <marker date="1526346084000" expanded="true" signature="13710:13992" ph="{...}" />
-            <marker date="1526346084000" expanded="true" signature="13729:13984" ph="{&quot;type&quot;: 'post'...}" />
-            <marker date="1526346084000" expanded="true" signature="13787:13871" ph="{&quot;_ajax_nonce&quot;: 'EXTERNAL_FRAGMENT'...}" />
-            <marker date="1526346084000" expanded="true" signature="13903:13978" ph="{...}" />
-            <marker date="1526346084000" expanded="true" signature="13936:13971" ph="{...}" />
-            <marker date="1526346084000" expanded="true" signature="19380:19436" ph="..." />
-            <marker date="1526346084000" expanded="true" signature="21076:21276" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -795,35 +652,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="376">
           <caret line="92" column="26" lean-forward="false" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_admin_menus.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3867">
-          <caret line="88" column="58" lean-forward="false" selection-start-line="88" selection-start-column="58" selection-end-line="88" selection-end-column="58" />
-          <folding>
-            <marker date="1526504617000" expanded="true" signature="7317:7469" ph="..." />
-            <marker date="1526504617000" expanded="true" signature="7576:7829" ph="..." />
-            <marker date="1526504617000" expanded="true" signature="7935:8096" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_admin_bar.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="390" column="54" lean-forward="false" selection-start-line="390" selection-start-column="54" selection-end-line="390" selection-end-column="54" />
-          <folding>
-            <marker date="1526566610000" expanded="true" signature="4571:5110" ph="..." />
-            <marker date="1526566610000" expanded="true" signature="4658:5078" ph="..." />
-            <marker date="1526566610000" expanded="true" signature="5404:5420" ph="..." />
-            <marker date="1526566610000" expanded="true" signature="5562:5617" ph="..." />
-            <marker date="1526566610000" expanded="true" signature="13935:13948" ph="..." />
-            <marker date="1526566610000" expanded="true" signature="14493:14506" ph="..." />
-            <marker date="1526566610000" expanded="true" signature="14911:14924" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -831,7 +659,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="115" lean-forward="false" selection-start-line="16" selection-start-column="115" selection-end-line="16" selection-end-column="115" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -839,7 +666,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -847,7 +673,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1488">
           <caret line="100" column="27" lean-forward="false" selection-start-line="100" selection-start-column="27" selection-end-line="100" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -855,7 +680,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -863,7 +687,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="158">
           <caret line="23" column="62" lean-forward="false" selection-start-line="23" selection-start-column="62" selection-end-line="23" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -871,7 +694,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -879,7 +701,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="369">
           <caret line="583" column="0" lean-forward="false" selection-start-line="583" selection-start-column="0" selection-end-line="583" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -887,7 +708,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="120" lean-forward="false" selection-start-line="18" selection-start-column="120" selection-end-line="18" selection-end-column="120" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -912,21 +732,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php">
+    <entry file="file://$PROJECT_DIR$/types/store/super-store.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding>
-            <element signature="e#6#89#0#PHP" expanded="false" />
-            <element signature="n#go_no_check#0;n#!!top" expanded="false" />
-            <element signature="n#go_url_check#0;n#!!top" expanded="false" />
-            <element signature="n#go_upload_check#0;n#!!top" expanded="false" />
-            <element signature="n#go_test_check#0;n#!!top" expanded="false" />
-            <element signature="n#go_task_get_test_meta#0;n#!!top" expanded="false" />
-            <marker date="1526520469000" expanded="true" signature="3022:3048" ph="..." />
-            <marker date="1526520469000" expanded="true" signature="3791:3817" ph="..." />
-            <marker date="1526520469000" expanded="true" signature="5326:5457" ph="SELECT resul... $" />
-          </folding>
+        <state relative-caret-position="1095">
+          <caret line="79" column="73" lean-forward="false" selection-start-line="79" selection-start-column="73" selection-end-line="79" selection-end-column="73" />
         </state>
       </provider>
     </entry>
@@ -934,26 +743,90 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_pnc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="667" column="1" lean-forward="false" selection-start-line="667" selection-start-column="1" selection-end-line="667" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/tbl_row_action.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="219" column="61" lean-forward="false" selection-start-line="219" selection-start-column="58" selection-end-line="219" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new/wp-includes/wp-db.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="602" column="0" lean-forward="false" selection-start-line="602" selection-start-column="0" selection-end-line="602" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_admin_bar.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_updates.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="75" column="42" lean-forward="false" selection-start-line="75" selection-start-column="42" selection-end-line="75" selection-end-column="42" />
-          <folding>
-            <element signature="n#go_update_stage_undo#0;n#!!top" expanded="false" />
-            <element signature="n#go_update_totals_table#0;n#!!top" expanded="false" />
-            <element signature="n#go_add_user_to_totals_table#0;n#!!top" expanded="false" />
-          </folding>
+        <state relative-caret-position="275">
+          <caret line="29" column="66" lean-forward="false" selection-start-line="29" selection-start-column="66" selection-end-line="29" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new/wp-includes/load.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="681" column="0" lean-forward="false" selection-start-line="681" selection-start-column="0" selection-end-line="681" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new/wp-includes/cache.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="729" column="0" lean-forward="false" selection-start-line="729" selection-start-column="0" selection-end-line="729" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_admin_menus.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="24" column="17" lean-forward="false" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="200" column="66" lean-forward="false" selection-start-line="200" selection-start-column="66" selection-end-line="200" selection-end-column="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_tasks.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="507" column="21" lean-forward="false" selection-start-line="507" selection-start-column="4" selection-end-line="507" selection-end-column="21" />
+        <state relative-caret-position="5055">
+          <caret line="797" column="0" lean-forward="false" selection-start-line="797" selection-start-column="0" selection-end-line="797" selection-end-column="0" />
           <folding>
             <element signature="e#38#505#0" expanded="false" />
             <element signature="n#!!block;n#getTimeRemaining#0" expanded="false" />
@@ -971,85 +844,139 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
+    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11900">
-          <caret line="1291" column="0" lean-forward="false" selection-start-line="1291" selection-start-column="0" selection-end-line="1291" selection-end-column="0" />
+        <state relative-caret-position="180">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
-            <element signature="e#24#228#0#PHP" expanded="false" />
-            <element signature="n#go_record_stage_time#0;n#!!top" expanded="false" />
-            <element signature="n#go_test_point_update#0;n#!!top" expanded="false" />
-            <element signature="n#go_inc_test_fail_count#0;n#!!top" expanded="false" />
-            <marker date="1526566610000" expanded="true" signature="47094:47208" ph="SELECT bonus... $" />
-            <marker date="1526566610000" expanded="true" signature="47337:47414" ph="SELECT statu... $" />
-            <marker date="1526566610000" expanded="true" signature="56941:57023" ph="SELECT bonus... $" />
+            <marker date="1515508415000" expanded="true" signature="4453:4480" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/tbl_row_action.php">
+    <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="16485">
+          <caret line="1294" column="0" lean-forward="false" selection-start-line="1294" selection-start-column="0" selection-end-line="1294" selection-end-column="0" />
+          <folding>
+            <element signature="e#24#228#0#PHP" expanded="false" />
+            <element signature="n#go_print_1_message#0;n#!!top" expanded="false" />
+            <element signature="n#go_unlock_stage#0;n#!!top" expanded="false" />
+            <element signature="n#go_task_done_check#0;n#!!top" expanded="false" />
+            <element signature="n#go_record_stage_time#0;n#!!top" expanded="false" />
+            <element signature="n#go_test_point_update#0;n#!!top" expanded="false" />
+            <element signature="n#go_inc_test_fail_count#0;n#!!top" expanded="false" />
+            <marker date="1526655871000" expanded="true" signature="2274:2351" ph="SELECT statu... $" />
+            <marker date="1526655871000" expanded="true" signature="7994:8077" ph="SELECT ID FR... $" />
+            <marker date="1526655871000" expanded="true" signature="28862:28886" ph="..." />
+            <marker date="1526655871000" expanded="true" signature="40936:41018" ph="SELECT bonus... $" />
+            <marker date="1526655871000" expanded="true" signature="41624:41706" ph="SELECT bonus... $" />
+            <marker date="1526655871000" expanded="true" signature="41943:42045" ph="..." />
+            <marker date="1526655871000" expanded="true" signature="47565:47679" ph="SELECT bonus... $" />
+            <marker date="1526655871000" expanded="true" signature="47808:47885" ph="SELECT statu... $" />
+            <marker date="1526655871000" expanded="true" signature="57457:57539" ph="SELECT bonus... $" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/MAMP/bin/phpMyAdmin/sql.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/wordpress/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
           <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php">
+    <entry file="file://$USER_HOME$/Dropbox/MAMP/htdocs/Library/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="58" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_acf_groups.php">
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="5700" column="6" lean-forward="false" selection-start-line="5700" selection-start-column="6" selection-end-line="5700" selection-end-column="6" />
+        <state relative-caret-position="352">
+          <caret line="330" column="47" lean-forward="false" selection-start-line="330" selection-start-column="47" selection-end-line="330" selection-end-column="47" />
+          <folding>
+            <marker date="1526656267000" expanded="true" signature="11643:11655" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="353" column="39" lean-forward="false" selection-start-line="353" selection-start-column="39" selection-end-line="353" selection-end-column="39" />
+          <folding>
+            <marker date="1526656322000" expanded="true" signature="2426:2977" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="2437:2977" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="2616:2977" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="3880:4615" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="5901:7349" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="8136:10377" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="8146:10367" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="8321:8532" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="8742:10183" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="8754:9378" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="9390:10013" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="10194:10356" ph="..." />
+            <marker date="1526656322000" expanded="true" signature="10206:10344" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding>
+            <element signature="n#go_test_check#0;n#!!top" expanded="false" />
+            <element signature="n#go_task_get_test_meta#0;n#!!top" expanded="false" />
+            <marker date="1526622029000" expanded="true" signature="3160:3186" ph="..." />
+            <marker date="1526622029000" expanded="true" signature="3915:3941" ph="..." />
+            <marker date="1526622029000" expanded="true" signature="5433:5525" ph="SELECT resul... $" />
+            <marker date="1526622029000" expanded="true" signature="5433:5567" ph="SELECT resul... $" />
+            <marker date="1526622029000" expanded="true" signature="6316:6451" ph="SELECT resul... $" />
+            <marker date="1526622029000" expanded="true" signature="7140:7275" ph="SELECT resul... $" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/featherlight/css/wp-featherlight.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#1648#1982#2" expanded="true" />
+            <element signature="e#4182#4429#2" expanded="true" />
+            <element signature="e#4505#4752#2" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/featherlight/release/featherlight.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="1670" lean-forward="false" selection-start-line="7" selection-start-column="1670" selection-end-line="7" selection-end-column="1670" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_pnc.php">
+    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="667" column="1" lean-forward="false" selection-start-line="667" selection-start-column="1" selection-end-line="667" selection-end-column="1" />
-          <folding>
-            <marker date="1526567054000" expanded="true" signature="2304:2376" ph="SELECT * FRO... $" />
-            <marker date="1526567054000" expanded="true" signature="2712:2790" ph="SELECT count... $" />
-            <marker date="1526567054000" expanded="true" signature="3273:3355" ph="SELECT * FRO... $" />
-            <marker date="1526567054000" expanded="true" signature="5207:5279" ph="SELECT * FRO... $" />
-            <marker date="1526567054000" expanded="true" signature="6917:7004" ph="SELECT times... " />
-            <marker date="1526567054000" expanded="false" signature="11293:11337" ph="..." />
-            <marker date="1526567054000" expanded="true" signature="11410:11444" ph="..." />
-            <marker date="1526567054000" expanded="true" signature="12808:12943" ph="..." />
-            <marker date="1526567054000" expanded="true" signature="12847:12929" ph="{...}" />
-            <marker date="1526567054000" expanded="true" signature="13038:13292" ph="..." />
-            <marker date="1526567054000" expanded="true" signature="13076:13279" ph="{...}" />
-            <marker date="1526567054000" expanded="true" signature="30518:30597" ph="SELECT times... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/store/super-store.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1095">
-          <caret line="79" column="73" lean-forward="false" selection-start-line="79" selection-start-column="73" selection-end-line="79" selection-end-column="73" />
-          <folding>
-            <marker date="1526567551000" expanded="true" signature="3221:3237" ph="Insert into item... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2996">
-          <caret line="200" column="66" lean-forward="false" selection-start-line="200" selection-start-column="66" selection-end-line="200" selection-end-column="66" />
-          <folding>
-            <marker date="1526567443000" expanded="true" signature="11215:11290" ph="SELECT statu... $" />
-            <marker date="1526567443000" expanded="true" signature="12339:12413" ph="SELECT count... $" />
-          </folding>
+        <state relative-caret-position="300">
+          <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
