@@ -7,7 +7,7 @@
  */
 
 //Prints Checks for understanding for the current stage
-function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, $bonus, $bonus_count, $repeat_max){
+function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, $bonus, $bonus_status, $repeat_max){
     global $wpdb;
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
     $stage_count = $custom_fields['go_stages'][0]; //total # of stages
@@ -15,7 +15,7 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     $check_type = $custom_fields[$check_type][0];
     //$button_status = $status;
 
-    echo "<div class='go_checks_and_buttons'>";
+    echo "<div class='go_checks_and_buttons' style='display:none;'>";
 
     if ($bonus){
         $check_type = $custom_fields['go_bonus_stage_0_check'][0];
@@ -23,78 +23,69 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
 
 
     if ($check_type == 'upload') {
-        go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count);
+        go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'URL') {
-        go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count);
+        go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'password') {
-        go_password_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count);
+        go_password_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'quiz') {
-        go_test_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count);
+        go_test_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'none') {
         go_no_check($i, $status);
     }
 
     //Buttons
-    go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_count, $repeat_max);
+    go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, false);
 
     echo "</div>";
 }
 
-function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_count, $repeat_max){
+function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, $outro = false){
 
     $is_admin = go_user_is_admin($user_id);
     $admin_view = null;
     if ($is_admin) {
         $admin_view = get_user_meta($user_id, 'go_admin_view', true);
     }
-    if ($admin_view === 'all') {
-        $onclick = '';
-    } else {
-        $onclick_abandon = "onclick='go_task_abandon();this.disabled = true;'";
-        $onclick = "onclick='task_stage_check_input( this );'";
-    }
+
+    $onclick_abandon = "onclick='go_task_abandon();this.disabled = true;'";
+    $onclick = "onclick='task_stage_check_input( this );'";
+
     $undo = 'undo';
     $abandon = 'abandon';
     $complete = 'complete';
     $continue = 'continue';
 
     if ($bonus){
+        $onclick_abandon = "onclick='task_stage_check_input( this );'";
         $stage_count = $repeat_max;
         $undo = 'undo_bonus';
-        $abandon = 'hide_bonus';
+        $abandon = 'abandon_bonus';
         $complete = 'complete_bonus';
         $continue = 'continue_bonus';
-        //$button_status = $bonus_count;
-
-        $status = $bonus_count;
+        if ($i == $repeat_max - 1 && $bonus_status == $repeat_max){
+            $bonus_is_complete = true;
+        }
+        $status = $bonus_status;
+    }
+    if ($admin_view === 'all') {
+        $onclick = '';
     }
 
-
-    //error placeholder
-
     //Buttons
-    if ($check_type == 'show_bonus') {
+    if ($outro || $check_type == 'show_bonus' || $bonus_is_complete) {
+        if (! $bonus_is_complete){
+            $undo = 'undo_last';
+        }
         echo "<div id='go_buttons'>";
-        echo "<div id='go_back_button' " . $onclick . " undo='true' button_type='undo_last' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
-        if ($custom_fields['bonus_switch'][0]) {
+        echo "<div id='go_back_button' " . $onclick . " undo='true' button_type={$undo} status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
+        if ($custom_fields['bonus_switch'][0] && ! $bonus_is_complete) {
             //echo "There is a bonus stage.";
             echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
         }
         echo "</div>";
     }
-    /*
 
-     else if ($bonus &&  $i == $status) {
-        echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
-        echo "<div id='go_buttons'>";
-        echo "<div id='go_back_button' " . $onclick . " undo='true' button_type='undo_bonus' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
-        if (($i + 1) == $stage_count) {
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='complete_bonus'  admin_lock='true' >Complete</button> ";
-        } else {
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='complete_bonus'  admin_lock='true' >Continue</button> ";
-        }
-        echo "</div>";
-    } */
     else if ( $i == $status ) {
         echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
         echo "<div id='go_buttons'>";
@@ -105,7 +96,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         }
         if (($i + 1) == $stage_count) {
             echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='{$complete}' admin_lock='true' >Complete</button> ";
-
         } else {
             echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='{$continue}'  admin_lock='true' >Continue</button> ";
         }
@@ -120,19 +110,19 @@ function go_no_check ($i, $status){
     }
 }
 
-function go_password_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count){
+function go_password_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status){
     global $wpdb;
 
     //for bonus stages
     $stage = 'stage';
     if ($bonus){
-        $status = $bonus_count;
-        $stage = 'bonus_count';
+        $status = $bonus_status;
+        $stage = 'bonus_status';
     }
     //end for bonus stages
 
     if ($i == $status) {
-        echo "<input id='go_result' type='password' placeholder='Enter Password'/>";
+        echo "<input id='go_result' class='clickable' type='password' placeholder='Enter Password'/>";
     }
     else {
         $i++;
@@ -152,20 +142,20 @@ function go_password_check ($custom_fields, $i, $status, $go_actions_table_name,
     }
 }
 
-function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count){
+function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status){
     global $wpdb;
 
     //for bonus stages
     $stage = 'stage';
     if ($bonus){
-        $status = $bonus_count;
-        $stage = 'bonus_count';
+        $status = $bonus_status;
+        $stage = 'bonus_status';
     }
     //end for bonus stages
 
     if ($i == $status) {
         echo "<div id='go_url_div'>";
-        echo "<input id='go_result' type='url' placeholder='Enter Url'>";
+        echo "<input id='go_result' class='clickable' type='url' placeholder='Enter Url'>";
         echo "</div>";
     }
     else {
@@ -185,14 +175,14 @@ function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $use
     }
 }
 
-function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count) {
+function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status) {
     global $wpdb;
 
     //for bonus stages
     $stage = 'stage';
     if ($bonus){
-        $status = $bonus_count;
-        $stage = 'bonus_count';
+        $status = $bonus_status;
+        $stage = 'bonus_status';
     }
     //end for bonus stages
 
@@ -243,7 +233,7 @@ function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $
 
 }
 
-function go_test_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_count){
+function go_test_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status){
     if ($i == $status) {
         //$quiz_data = 'go_stages_' . $i . '_quiz';
         //$quiz_data = $custom_fields[$check_type][0];

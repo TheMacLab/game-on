@@ -234,9 +234,9 @@ add_action( 'init', 'go_register_task_tax_and_cpt', 0 );
  * @param int $user_id Optional. The user ID.
  * @return int|null The status (0,1,2,3,4,5) of a task. Null if the query finds nothing.
  */
-function go_task_get_status( $task_id, $user_id = null ) {
+function go_get_status( $task_id, $user_id = null ) {
 	global $wpdb;
-	$go_table_name = $wpdb->prefix . 'go';
+	$go_table_name = "{$wpdb->prefix}go_tasks";
 
 	if ( empty( $task_id ) ) {
 		return null;
@@ -280,9 +280,9 @@ function go_task_get_status( $task_id, $user_id = null ) {
  * @return int|null The number of fifth stage (repeat) iterations the user has finished. Null if
  *                  the query finds nothing.
  */
-function go_task_get_repeat_count( $task_id, $user_id = null ) {
+function go_get_bonus_status( $task_id, $user_id = null ) {
 	global $wpdb;
-	$go_table_name = $wpdb->prefix . 'go';
+	$go_table_name = "{$wpdb->prefix}go_tasks";
 
 	if ( empty( $task_id ) ) {
 		return null;
@@ -296,7 +296,7 @@ function go_task_get_repeat_count( $task_id, $user_id = null ) {
 
 	$task_count = $wpdb->get_var(
 		$wpdb->prepare(
-			"SELECT count 
+			"SELECT bonus_status
 			FROM {$go_table_name} 
 			WHERE uid = %d AND post_id = %d",
 			$user_id,

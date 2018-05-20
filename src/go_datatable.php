@@ -3,7 +3,7 @@
 
 global $wpdb;
 global $go_db_version;
-$go_db_version = '1.2';
+$go_db_version = '1.3';
 
 function go_update_db_check() {
     global $go_db_version;
@@ -27,7 +27,7 @@ function go_table_tasks() {
 			post_id bigint(20),
 			status TINYINT,
 			complete BOOLEAN DEFAULT 0,
-			bonus_count TINYINT DEFAULT 0,
+			bonus_status TINYINT DEFAULT 0,
 			xp INT,
 			gold INT,
 			health INT,
@@ -87,7 +87,7 @@ function go_table_actions() {
 			source_id bigint(20),
 			TIMESTAMP datetime,
 			stage TINYINT,
-			bonus_count TINYINT,
+			bonus_status TINYINT,
 			check_type VARCHAR (200),
 			result VARCHAR (200),
 			stage_mod TINYINT,

@@ -12,8 +12,10 @@ jQuery( document ).ready( function() {
 	if ( 0 === status && stage_1_gold > 0 ) {
 		go_sounds( 'store' );
 	}
-	make_clickable();
-	jQuery( ".go_stage_message" ).show( 'slow' ); 
+	go_make_clickable()
+	jQuery( ".go_stage_message" ).show( 'slow' );
+    jQuery( ".go_checks_and_buttons" ).show( 'slow' );
+
 }); 
 
 //For the Timer (v4)
@@ -659,33 +661,6 @@ function task_stage_check_input( target ) {
 
 function task_stage_change( target ) {
 
-    //disable button to prevent double clicks
-    //go_enable_loading( target );
-
-    //BUTTON TYPES
-    //Abandon
-    //Start Timer
-    //Continue
-    //Undo
-    //Repeat
-    //Undo Repeat --is this different than just undo
-
-    //Continue or Complete buttton needs to validate input for:
-    ////quizes
-    ///URLs
-    ///passwords
-    ///uploads
-
-    //if it passes validation:
-    ////send information to php with ajax and wait for a response
-
-    //if response is success
-    ////update totals
-    ///flash rewards and sounds
-    ////update last check
-    ////update current stage and check
-
-
     //v4 Set variables
     var button_type = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
@@ -697,44 +672,8 @@ function task_stage_change( target ) {
         task_status = jQuery( target ).attr( 'status' )
     }
 
-    var check_type = "";
-    if ( 'undefined' !== typeof jQuery( target ).attr( 'check_type' ) ) {
-        check_type = jQuery( target ).attr( 'check_type' )
-    }
-
-
     var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
-    //var pass_entered = '';
     var result = jQuery( '#go_result' ).attr( 'value' );
-
-
-    //alert (url_entered);
-    //alert ();
-    /*
-    if ( jQuery( target ).is( '#go_back_button' ) && jQuery( '#new_content' ).length != 0 ) {
-        alert ("back");
-        jQuery( '#new_content p' ).hide( 'slow' );
-        jQuery( target ).remove();
-    }
-
-    // if the button#go_back_button has the attribute of repeat...
-    var repeat_attr = false;
-    if ( 'on' === jQuery( '#go_button' ).attr( 'repeat' ) ) {
-        // set repeat_attr equal to the value of the attribute of button#go_button.
-        repeat_attr = true;
-    } else if ( 'on' === jQuery( '#go_back_button' ).attr( 'repeat' ) ) {
-        // set repeat_attr equal to the value of the attribute of button#go_back_button.
-        repeat_attr = true;
-    }
-    */
-
-    // if the button#go_button exists, set var 'task_status' to the value of the 'status' attribute on the current button#go_button.
-
-
-    // send the following data to the 'wp_ajax_go_task_change_stage' action and use the POST method to do so...
-    // when it succeeds update the content of the page: update the admin bar; set the css display attribute to none for
-    // div#new_content; then slowly display div#new_content; if the button#go_button 'status' attribute is equal to 2
-    // and remove the first child element of div#new_content.
 
     jQuery.ajax({
         type: "POST",
@@ -798,11 +737,8 @@ function task_stage_change( target ) {
                 window.location = res.location;
             }
             else if ( 'refresh' ==  res.json_status  ) {
-                //console.log ('refresh');
                 location.reload();
-
             }else if ( 'bad_password' ==  res.json_status ) {
-                //console.log (2);
                 jQuery( '#go_stage_error_msg' ).show();
                 var error = "Invalid password.";
                 if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
@@ -812,106 +748,52 @@ function task_stage_change( target ) {
                 }
                 go_disable_loading();
             }else {
-               //console.log (button_type);
                 if ( res.button_type == 'undo' ){
-                    //alert ('back');
                     jQuery( '#go_wrapper div' ).last().hide();
-
                     jQuery( '#go_wrapper > div' ).slice(-3).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery( '#go_wrapper' ).append( res.html );
-
-                    //jQuery( '#go_wrapper > div' ).slice(-2).remove();
-
+                    go_append (res);
                 }
                 else if ( res.button_type == 'undo_last' ){
-                    //alert ('back');
                     jQuery( '#go_wrapper div' ).last().hide();
-
-                    jQuery( '#go_wrapper > div' ).slice(-3).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery( '#go_wrapper' ).append( res.html );
-
-                    //jQuery( '#go_wrapper > div' ).slice(-2).remove();
-
+                    jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
+                    go_append (res);
                 }
                 else if ( res.button_type == 'continue' ){
-                    //console.log (res.html);
-                    //alert("success");
                     jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    //status = Number(task_status) + 1;
-                    //alert (status);
-                    jQuery( '#go_wrapper' ).append( res.html ).show( 'slow' );
-                    //jQuery( ".go_stage_message" ).show( 'slow' );
-                    //var fitID = '#message_' + res.status;
-                    Vids_Fit_and_Box();
+                    go_append (res);
                 }else if ( res.button_type == 'complete' ){
-                    //console.log (res.html);
-                    //alert("success");
                     jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    //status = Number(task_status) + 1;
-                    //alert (status);
-                    jQuery( '#go_wrapper' ).append( res.html );
-                    //jQuery( ".go_stage_message" ).show( 'slow' );
-                    //var fitID = '#message_' + res.status;
-                    Vids_Fit_and_Box();
+                    go_append (res);
                 }
                 else if ( res.button_type == 'show_bonus' ){
-                    console.log ("BONUS");
-                    //jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
 					jQuery('#go_buttons').remove();
-                    //status = Number(task_status) + 1;
-                    //alert (status);
-                    jQuery( '#go_wrapper' ).append( res.html );
-                    //jQuery( ".go_stage_message" ).show( 'slow' );
-                    //var fitID = '#message_' + res.status;
-                    Vids_Fit_and_Box();
+                    go_append (res);
                 }
                 else if ( res.button_type == 'continue_bonus' ){
 					jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery( '#go_wrapper' ).append( res.html );
-                    Vids_Fit_and_Box();
-                }else if ( res.button_type == 'complete_bonus' ){
+                    go_append (res);
+                }
+                else if ( res.button_type == 'complete_bonus' ){
                     jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery( '#go_wrapper' ).append( res.html );
-                    Vids_Fit_and_Box();
-                } else if ( res.button_type == 'undo_bonus' ){
-                    jQuery( '#go_wrapper div' ).last().hide();
-
+                    go_append (res);
+                }
+                else if ( res.button_type == 'undo_bonus' ){
                     jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery( '#go_wrapper' ).append( res.html );
-
-
-                    //jQuery('#go_buttons').hide();
-                    //jQuery( '#go_wrapper' ).append( res.html );
-                    Vids_Fit_and_Box();
+                    go_append (res);
                 }
                 else if ( res.button_type == 'abandon_bonus' ){
-				    jQuery('#go_buttons').hide();
-                    jQuery( '#go_wrapper' ).append( res.html );
-                    Vids_Fit_and_Box();
+                    jQuery( '#go_wrapper > div' ).slice(-3).hide( 'slow', function() { jQuery(this).remove();} );
+                    go_append (res);
                 }
                 else if ( res.button_type == 'timer' ){
-                    console.log ("timer");
                     jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                    jQuery( '#go_wrapper' ).append( res.html );
-                    Vids_Fit_and_Box();
-
-
-                    //jQuery('#clockdiv').show('slow');
-                    //jQuery('#clock_message').hide();
-                    //var deadline = new Date(Date.parse(new Date()) + res.time_left);
+                    go_append (res);
 
                     initializeClock('clockdiv', deadline);
                     initializeClock('go_timer', deadline);
 
                     var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
                     audio.play();
-                    //var sound = document.getElementById("audio");
-                    // sound.play();
-
-                    //jQuery( '#go_buttons' ).remove();
-                    //jQuery( '#go_wrapper' ).append( res.html );
-                    //jQuery( ".go_stage_message" ).show( 'slow' );
-                    //Vids_Fit_and_Box();
                 }
 
                 //Pop up currency awards
@@ -927,25 +809,26 @@ function task_stage_change( target ) {
                     check_locks();
                 });
 
-                //Make URL button clickable by clicking enter when field is in focus
-                make_clickable('#go_url_key');
-                make_clickable('#go_pass_lock');
-
                 // fires off the Gold ("store") sound if the stage awarded or revoked Gold
                 if ( 0 !== res.rewards.gold ) {
                     go_sounds( 'store' );
                 }
             }
-
         }
     });
+}
 
+function go_append (res){
+    jQuery( res.html ).appendTo( '#go_wrapper' ).show( 'slow' );
+    Vids_Fit_and_Box();
+    go_make_clickable();
 }
 
 // Makes it so you can press return and enter content in a field
-function make_clickable($go_text_box) {
+function go_make_clickable() {
+	//alert ('click');
 	//Make URL button clickable by clicking enter when field is in focus
-				jQuery($go_text_box).keyup(function(ev) {
+				jQuery('.clickable').keyup(function(ev) {
 				// 13 is ENTER
 				if (ev.which === 13) {
 					// do something

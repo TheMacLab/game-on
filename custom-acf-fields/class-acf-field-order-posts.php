@@ -387,8 +387,6 @@ class acf_field_order_posts extends acf_field {
 		
 	}
 
-
-	
 	/**
 	*  update_value()
 	*
@@ -404,10 +402,10 @@ class acf_field_order_posts extends acf_field {
 	*
 	*  @return	$value - the modified value
 	*/
-       function update_value( $value, $post_id, $field ) {
+   function update_value( $value, $post_id, $field ) {
 
-           return $value;
-       }
+       return $value;
+   }
 
 }
 
@@ -415,17 +413,11 @@ class acf_field_order_posts extends acf_field {
 // initialize
 acf_register_field_type( 'acf_field_order_posts' );
 
-
-
-
-
-
 /**
 *Extend the relationship field so that when a taxonomy is changed in another field the
 *terms and order are loaded in this field
 */
 add_action('wp_ajax_load_order_field_settings', 'ajax_load_order_field_settings');
-
 	
 function ajax_load_order_field_settings() {
 			// this funtion is called by AJAX to load posts
@@ -480,10 +472,6 @@ function ajax_load_order_field_settings() {
 
             $posts = get_posts($args);
 
-
-
-
-
             //create an array of the posts
             $choices = array();
             foreach ($posts as $post) {
@@ -509,7 +497,6 @@ function ajax_load_order_field_settings() {
 			$buffer = ob_get_contents();
 
 			ob_end_clean();
-
 
 			echo json_encode(array(
 				'html' => $buffer

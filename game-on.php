@@ -327,10 +327,17 @@ function go_delete_cpt_data( $cpt_id ) {
 	return true;
 }
 
+
 function go_user_redirect( $redirect_to, $request, $user ) {
-	$redirect_on = get_option( 'go_admin_bar_user_redirect', true );
-	$redirect_url = get_option( 'go_user_redirect_location', true );
-	if ( $redirect_on && isset( $user ) && ( $user instanceof WP_User ) ) {
+	//$redirect_on = get_option( 'options_go_landing_page_on_login', true );
+	$redirect_url = get_option( 'options_go_landing_page_on_login', '');
+    $default_map = get_option('options_go_locations_map_default', '');
+    $user_id = $user->ID;
+    if($default_map !== ''){
+        update_user_meta( $user_id, 'go_last_map', $default_map );
+    }
+	if (  isset( $user ) && ( $user instanceof WP_User ) ) {
+
 		if ( isset( $user->roles ) && is_array( $user->roles ) ) {
 			$roles = $user->roles;
 			if ( is_array( $roles) ) {

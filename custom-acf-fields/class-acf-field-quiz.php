@@ -45,7 +45,7 @@ class acf_field_quiz extends acf_field {
 	*/
 	
 	function render_field( $field ) {
-		$prefix = $field[prefix];
+		$prefix = $field['prefix'];
 		$stage_num = trim($prefix,"]");
         $stage_num = substr($stage_num, strpos($stage_num, ']')+ 2);
 		//$custom = get_post_custom();
@@ -58,7 +58,7 @@ class acf_field_quiz extends acf_field {
 		$ttc = $stage_num;
 
         //$temp_array = ( ! empty( $custom[ $meta_id ][0] ) ? $custom[ $meta_id ][0] : null );
-        $temp_uns = $field[value];
+        $temp_uns = $field['value'];
         if ( ! empty( $temp_uns ) ) {
             //$temp_uns = unserialize( $temp_array );
             $test_field_input_question = ( ! empty( $temp_uns[0] ) ? $temp_uns[0] : null );
@@ -353,10 +353,8 @@ class acf_field_quiz extends acf_field {
 
         $stage_quiz_num = $field['name'];
         $ttc = trim($stage_quiz_num,"stages__quiz");
+        $ttc = (int)$ttc;
         $ttc =$ttc + 1;
-
-
-
 
         $question_temp 		= ( ! empty( $_POST["go_test_field_input_question_{$ttc}"] )	? $_POST["go_test_field_input_question_{$ttc}"] : null );
         $block_count        = count($question_temp);

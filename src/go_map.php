@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 function go_map_activate() {
 	$my_post = array(
 	  'post_title'    => 'Map',
@@ -20,9 +17,10 @@ function go_map_activate() {
 }
 
 function go_make_single_map($last_map_id, $reload = false){
-
+    wp_nonce_field( 'go_update_last_map');
 	$last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');
-	wp_nonce_field( 'go_update_last_map');
+    $user_id = get_current_user_id();
+    $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
 	$taxonomy = 'task_chains';
 
 	if ($reload == false) {echo "<div id='mapwrapper'>";}
@@ -82,8 +80,7 @@ function go_make_single_map($last_map_id, $reload = false){
                     //get post_ids in order
                     //$go_task_ids = get_term_meta($term_id, 'go_order', true);
 
-
-
+					/*
 					///////POD STUFF
 					$chain_pod = get_term_meta($term_id, 'pod_toggle', true);
 
@@ -121,316 +118,51 @@ function go_make_single_map($last_map_id, $reload = false){
 						}					
    						echo "<br><br><span style='padding-top: 10px; font-size: .8em;'>Choose at least $go_pod_count. <br> $tasks_done done.</span>";
    					}
+					echo "</p>";
    					//end pod stuff
 
+*/
 
-
-
-
-
-   					echo "</p><ul class='tasks'>";
-
-
-					if (!empty($go_task_ids)){	
-
+                    echo "<ul class='tasks'>";
+					if (!empty($go_task_ids)){
 						foreach($go_task_ids as $row) {
 							$status = get_post_status( $row );
 							if ($status !== 'publish'){continue; }
 							$task_name = get_the_title($row);
 							$task_link = get_permalink($row);
-							$page_id = $row;
-							$id = $row;
-							$blocked = "";
-						
-							//START OF CODE FOR CHECKBOXES FOR COMPLETED ITEMS
-												
-							$temp_id = $row;
-							$temp_finished = true;
-						
-							$temp_status = go_task_get_status( $temp_id );
-							if (empty($temp_status)) {
-								 $temp_status = 0;
-							}
-						
-							$temp_five_stage_counter = null;
-							$temp_status_required    = 4;
-							$temp_three_stage_active = (boolean) get_post_meta(
-								$temp_id,
-								'go_mta_three_stage_switch',
-								true
-							);
-							$temp_five_stage_active = null;
-							$temp_five_stage_active  = (boolean) get_post_meta(
-								$temp_id,
-								'go_mta_five_stage_switch',
-								true
-							);
-						
-							$temp_optional_task  = (boolean) get_post_meta(
-								$temp_id,
-								'go_mta_optional_task',
-								true
-							);					
-						
-							if ( ! empty( $temp_optional_task ) && ! ($chain_pod) ) {
-								$optional = "optional_task";
-								$bonus_task = get_option( 'go_bonus_task' ).":";
-							}
-							else {
-								$optional = "";
-								$bonus_task ="";
-							}
-							$bonus_stage = get_option( 'go_bonus_stage' );
-							
-							// determines to what stage the user has to progress to finish the task
-							if ( $temp_three_stage_active ) {
-								$temp_status_required = 3;
-							} 
-							
-							if ( $temp_five_stage_active ) {
-								$temp_five_stage_counter = go_task_get_repeat_count( $temp_id );
+
+							$task_color = "";
+							$id = $row->ID;
+                            $custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
+                            $stage_count = $custom_fields['go_stages'][0];//total stages
+
+                            $status = go_get_status($id, $user_id);
+                            if($custom_fields['bonus_switch'][0]) {
+                            	$bonus_stages = go_get_bonus_status($id, $user_id);
+                                $repeat_max = $custom_fields['go_bonus_limit'][0];//max repeats of bonus stage
+                            }
+
+
+                            //if locked
+							$task_is_locked = go_task_locks($id, $user_id, false, $custom_fields, $is_logged_in);
+							if ($task_is_locked){
+                                $task_color = 'locked';
 							}
 
-							// determines whether or not the task is finished
-							if ($temp_status === 0) {
-								$blocked = "available_color";
-								 $finished = "circle";
+							else if ($stage_count == $status){
+                                $task_color = 'done';
 							}
-							elseif ( $temp_status !== $temp_status_required ) {
-
-								$temp_finished = false;
-								$finished = "circle";
-								$blocked = "available_color";	
+							else{
+                            	$task_color = 'available';
 							}
-							else {
-								$finished = "checkmark";
-							}
-						
-						
-	   
-							//END OF CODE FOR CHECKBOXES	
-											
-							 //START OF CODE TO GREY OUT ITEMS THAT ARE INACCESSIBLE		
-						
-							$badge_name = get_option( 'go_badges_name' );
+								//
 
-							// the current user's id
-							$user_id = get_current_user_id();
-						
-							// gets admin user object
-							$go_admin_email = get_option( 'go_admin_email' );
-							if ( $go_admin_email ) {
-								$admin = get_user_by( 'email', $go_admin_email );
-							}
-
-							// use display name of admin with store email, or use default name
-							if ( ! empty( $admin ) ) {
-								$admin_name = addslashes( $admin->display_name );
-							} else {
-								$admin_name = 'an administrator';
-							}			
-							$is_admin = go_user_is_admin( $user_id );
-
-							// determines if user is logged in
-							$is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
-						
-
-							// determines if the task is for users (logged-in users) eyes only
-							$is_user_only = get_post_meta( $id, 'go_mta_user_only_content', true ) ? true : false;
-
-							//blocks access if not logged in if task is for logged in users only
-							if ( $is_user_only && ! $is_logged_in ) {
-							}	
-
-							
-							// determines whether or not the task is filtered at all
-							$is_filtered = false;
-
-							// retrieves the date and time, if specified, after which non-admins can accept this task
-							$start_filter = get_post_meta( $id, 'go_mta_start_filter', true );
-						
-
-							// gets an array of badge IDs to prevent users who don't have the badges from viewing the task
-							$badge_filter_meta = get_post_meta( $id, 'go_mta_badge_filter', true );
-
-							// obtains the chain order list for this task, if there is one
-							$chain_order = get_post_meta( $id, 'go_mta_chain_order', true );
-							
-							$temp_repeat_ammount  = get_post_meta(
-															$id,
-															'go_mta_repeat_amount',
-															true
-														);
-													
-						
-						
+							//$optional = "optional_task";
+                            //$bonus_task = get_option( 'go_bonus_task' ).":";
+							//$bonus_stage = get_option( 'go_bonus_task' ).":";
 
 
-							// if any filters are on, sets variable to check if should be blocked
-							if ( ! empty( $start_filter['checked'] ) || ! empty( $badge_filter_meta[0] ) || ! empty( $chain_order ) ) {
-								$is_filtered = true;
-					 
-							}
-
-							// determines whether or not filters will affect visitors (users that aren't logged in)
-							$filtered_content_hidden = false;
-							$hfc_meta = get_post_meta( $id, 'go_mta_hide_filtered_content', true );
-							if ( '' === $hfc_meta || 'true' === $hfc_meta ) {
-								$filtered_content_hidden = true;
-							}
-
-							if ( $is_logged_in || ( ! $is_logged_in && $is_filtered && $filtered_content_hidden ) ) {
-
-									/**
-									 * Start Filter
-									 */
-
-									// holds the output to be displayed when a non-admin has been stopped by the start filter
-									$time_string = '';
-									$unix_now = current_time( 'timestamp' );
-									if ( ! empty( $start_filter ) && ! empty( $start_filter['checked'] ) && ! $is_admin ) {
-										$start_date = $start_filter['date'];
-										$start_time = $start_filter['time'];
-										$start_unix = strtotime( $start_date . $start_time );
-
-										// stops execution if the user is a non-admin and the start date and time has not
-										// passed yet
-										if ( $unix_now < $start_unix ) {
-											$time_string = date( 'g:i A', $start_unix ) . ' on ' . date( 'D, F j, Y', $start_unix );
-											$blocked = "filtered";
-											//return "<span class='go_error_red'>Will be available at {$time_string}.</span>";
-										}
-									}
-
-									/**
-									 * Task Chain Filter
-									 */
-
-									// determines whether or not the user can proceed, if the task is in a chain
-								
-									if ( ! empty( $chain_order ) ) {
-										$chain_links = array();
-
-										foreach ( $chain_order as $chain_tt_id => $order ) {
-											$pos = array_search( $id, $order );
-											$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
-											$chain_title = ucwords( $the_chain->name );
-											$chain_pod = get_term_meta($chain_tt_id, 'pod_toggle', true);
-										
-											if ( $pos > 0 && ! $is_admin ) {
-												//if ( empty ( $temp_optional_task )){
-												if (empty( $chain_pod )){
-
-												/**
-												 * The current task is not first and the user is not an administrator.
-												 */
-
-												$prev_id = 0;
-
-												// finds the first ID among the tasks before the current one that is published AND not optional
-												for ( $prev_id_counter = 0; $prev_id_counter < $pos; $prev_id_counter++ ) {
-												
-													$temp_id = $order[ $prev_id_counter ];
-													$temp_optional_prev_task  = (boolean) get_post_meta(
-														$temp_id,
-														'go_mta_optional_task',
-														true
-													);
-													if ( empty ( $temp_optional_prev_task )){
-														$temp_task = get_post( $temp_id );
-														$temp_finished           = true;
-														$temp_status             = go_task_get_status( $temp_id );
-														//$temp_five_stage_counter = null;
-														$temp_status_required    = 4;
-														$temp_three_stage_active = (boolean) get_post_meta(
-															$temp_id,
-															'go_mta_three_stage_switch',
-															true
-														);
-														
-														
-
-														// determines to what stage the user has to progress to finish the task
-														if ( $temp_three_stage_active ) {
-															$temp_status_required = 3;
-														} 
-
-														// determines whether or not the task is finished
-														if ( $temp_status !== $temp_status_required ) {
-
-															$temp_finished = false;
-															$blocked = "filtered";
-																									  
-														} 
-													}                                           
-												} // End for().
-											} // End if().
-											//}
-											}
-										} // End foreach().                       
-									} // End if().
-
-									/**
-									 * Badge Filter
-									 */
-
-									// gets the user's current badges
-									$user_badges = get_user_meta( $user_id, 'go_badges', true );
-									if ( ! $user_badges ) {
-										$user_badges = array();
-									}
-
-									// an array of badge IDs
-									$badge_filter_ids = array();
-
-									// determines if the user has the correct badges
-									$badge_diff = array();
-									if ( ! empty( $badge_filter_meta ) &&
-										isset( $badge_filter_meta[0] ) &&
-										$badge_filter_meta[0] &&
-										! $is_admin
-									) {
-										$badge_filter_ids = array_filter( (array) $badge_filter_meta[1], 'go_badge_exists' );
-
-										// checks to see if the filter array are in the the user's badge array
-										$intersection = array_values( array_intersect( $user_badges, $badge_filter_ids ) );
-
-										// stores an array of the badges that were not found in the user's badge array
-										$badge_diff = array_values( array_diff( $badge_filter_ids, $intersection ) );
-										if ( ! empty( $badge_filter_ids ) && ! empty( $badge_diff ) ) {
-											$return_badge_list = true;
-											$blocked = "filtered";
-											$visitor_str = '';
-											/*if ( ! $is_logged_in ) {
-												$blocked = "filtered";
-												//$visitor_str = ', and you must be ' .
-												//	'<a href="' . esc_url( $login_url ) . '">logged in</a> to obtain them';
-											}
-											*/
-
-											// outputs all the badges that the user must obtain before beginning this task
-											/*
-											return sprintf(
-										   
-												'<span class="go_error_red">' .
-													'You need the following %s(s) to begin this %s%s:' .
-												'</span><br/>%s',
-												strtolower( $badge_name ),
-												ucwords( $task_name ),
-												$visitor_str,
-												go_badge_output_list( $badge_diff, $return_badge_list )
-											);
-											*/
-										}
-									} //End badge filter
-							} // End if().
-							 //END OF CODE TO GREY OUT ITEMS THAT ARE INACCESSABLE	
-	
-	
-
-
-			//<div class='fa fa-star-o fa-1x' ></div> 0 / $temp_repeat_ammount</div>
-							echo "<li class='$blocked $optional'><a href='$task_link'><div class='$finished'></div><span <span style='font-size: .8em;'>$bonus_task $task_name</span>";
+							echo "<li class='$task_color $optional'><a href='$task_link'><div class='$finished'></div><span <span style='font-size: .8em;'>$bonus_task $task_name</span>";
 							if ($temp_five_stage_active == true){
 								if ($temp_five_stage_counter == null){
 									echo "<br><div id='repeat_ratio' style='padding-top: 10px; font-size: .7em;'>$bonus_stage: 
@@ -459,12 +191,12 @@ function go_make_single_map($last_map_id, $reload = false){
 									";
 								}
 							}
-							 
+
 							echo"</a>
 									</li>";
 							//}
 					}
-    		
+
     				}
     		echo "</ul>";
     						

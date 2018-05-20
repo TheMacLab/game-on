@@ -24,7 +24,7 @@ function go_update_stage_progress($go_table_name, $user_id, $post_id, $status, $
         ));
 }
 
-function go_update_stage_bonus($go_table_name, $user_id, $post_id, $bonus_count, $xp, $gold, $health, $c4, $complete ){
+function go_update_stage_bonus($go_table_name, $user_id, $post_id, $bonus_status, $xp, $gold, $health, $c4, $complete ){
     global $wpdb;
 
     $time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
@@ -33,7 +33,7 @@ function go_update_stage_bonus($go_table_name, $user_id, $post_id, $bonus_count,
         $go_table_name,
         array(
             'last_time' => $time,
-            'bonus_count' => $bonus_count,
+            'bonus_status' => $bonus_status,
             'complete' => $complete
         ),
         array(
@@ -60,8 +60,25 @@ function go_update_stage_undo($go_table_name, $user_id, $post_id, $status, $xp, 
             'post_id' => $post_id
         ));
 }
+function go_update_stage_undo_bonus($go_table_name, $user_id, $post_id, $bonus_status, $xp, $gold, $health, $c4 ){
+    global $wpdb;
 
-function go_update_actions($go_actions_table_name, $user_id, $type,  $source_id, $time, $status, $bonus_count, $check_type, $result, $stage_mod, $global_mod,  $xp, $gold, $health, $c4, $xp_total, $gold_total, $health_total, $c4_total ){
+    $time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
+    $bonus_status = $bonus_status -1;
+
+    $wpdb->update(
+        $go_table_name,
+        array(
+            'last_time' => $time,
+            'bonus_status' => $bonus_status,
+        ),
+        array(
+            'uid' => $user_id,
+            'post_id' => $post_id
+        ));
+}
+
+function go_update_actions($go_actions_table_name, $user_id, $type,  $source_id, $time, $status, $bonus_status, $check_type, $result, $stage_mod, $global_mod,  $xp, $gold, $health, $c4, $xp_total, $gold_total, $health_total, $c4_total ){
     global $wpdb;
     $wpdb->insert(
         $go_actions_table_name,
@@ -71,7 +88,7 @@ function go_update_actions($go_actions_table_name, $user_id, $type,  $source_id,
             'source_id' => $source_id,
             'TIMESTAMP' => $time,
             'stage' => $status,
-            'bonus_count' => $bonus_count,
+            'bonus_status' => $bonus_status,
             'check_type' => $check_type,
             'result' => $result,
             'stage_mod' => $stage_mod,
