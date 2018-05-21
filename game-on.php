@@ -684,7 +684,7 @@ class wpb_widget extends WP_Widget {
             'wpb_widget',
 
 // Widget name will appear in UI
-            __(get_option('options_go_locations_widget'), 'go_widget_domain'),
+            __(get_option('options_go_locations_widget_name'), 'go_widget_domain'),
 
 // Widget description
             array( 'description' => __( 'Widget of Categories of Game On', 'go_widget_domain' ), )
@@ -763,7 +763,7 @@ class wpb_widget extends WP_Widget {
                         'posts_per_page'   => -1,
                         'orderby'          => 'meta_value_num',
                         'order'            => 'ASC',
-
+                        'posts_per_page'   => 25,
                         'meta_key'         => 'go-location_widget_order_item',
                         'meta_value'       => '',
                         'post_type'        => 'tasks',

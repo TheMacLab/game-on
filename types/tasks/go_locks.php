@@ -493,23 +493,43 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
  */
 function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
 
-    //get tasks in chain
-    //get location of this task
-    //check if previous is done
-    //if previous is not done
-        //message
-        //$this_lock = true;
-    //return $this_lock;
+    //if in a chain
+        //get variables
+        //chain id
+        //is_optional
+        //previous_task
+        //is pod
+        //is first in chain
 
-    /*
-    if( $is_logged_in ) {
+    //if is pod or first in chain
+        //is locked by previous set
+            //if true, then
+                //what was previous chain
+                //what is last task in previous chain that was not optional
+                //is it done
+                //if false
+                    //$task_is_locked = true;
+
+    //else
+        //what is previous task that wasn't optional
+        //is it done
+        //if false
+            //$task_is_locked = true;
+
+    //if $task_is_locked == true
+        //message "you must complete previous task before continuing
+        //return true
+
+
+
+   // if( $is_logged_in ) {
         // determines whether or not the user can proceed, if the task is in a chain
-        $temp_optional_task = (boolean)get_post_meta(
-            $temp_id,
-            'go_mta_optional_task',
-            true
-        );
-        if (!empty($chain_order)) {
+        $temp_optional_task = $custom_fields['go_location_map_opt'][0];
+        $chain_id = $custom_fields['go_location_map_loc'][0];
+
+
+
+        if (!empty($in_chain)) {
             $chain_links = array();
 
             foreach ($chain_order as $chain_tt_id => $order) {
@@ -634,7 +654,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
                 $task_is_locked = true;
             }
         }
-    }// End if().
-*/
+  //  }// End if().
+
 }
 

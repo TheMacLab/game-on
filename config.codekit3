@@ -2279,6 +2279,13 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/disabled\/go_acf_groups.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/disabled\/go_acf_groups.php",
+		"oF": 0
+		},
 	"\/disabled\/go_acf_input.js": {
 		"ft": 64,
 		"ma": 0,
@@ -2322,13 +2329,6 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/game-on.php",
-		"oF": 0
-		},
-	"\/go_acf_groups.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/go_acf_groups.php",
 		"oF": 0
 		},
 	"\/images\/ico.png": {
