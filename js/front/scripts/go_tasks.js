@@ -505,7 +505,8 @@ function go_disable_loading() {
 }
 
 function task_stage_check_input( target ) {
-	console.log('button clicked');
+	//console.log('button clicked');
+
     //disable button to prevent double clicks
     go_enable_loading( target );
 
@@ -548,9 +549,10 @@ function task_stage_check_input( target ) {
     if ( 'undefined' !== typeof jQuery( target ).attr( 'check_type' ) ) {
         check_type = jQuery( target ).attr( 'check_type' )
     }
+
     ///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
     if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
-        if (check_type == 'password') {
+    	if (check_type === 'password' || check_type == 'unlock') {
             var pass_entered = jQuery('#go_result').attr('value').length > 0 ? true : false;
             if (!pass_entered) {
                 jQuery('#go_stage_error_msg').show();
@@ -655,13 +657,15 @@ function task_stage_check_input( target ) {
         }
     }
 
-    task_stage_change( target );
+    task_stage_change( target, button_type, task_status, check_type );
 
 }
 
-function task_stage_change( target ) {
+function task_stage_change( target, button_type, task_status, check_type ) {
 
+   /*
     //v4 Set variables
+
     var button_type = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
         button_type = jQuery( target ).attr( 'button_type' )
@@ -671,7 +675,7 @@ function task_stage_change( target ) {
     if ( 'undefined' !== typeof jQuery( target ).attr( 'status' ) ) {
         task_status = jQuery( target ).attr( 'status' )
     }
-
+*/
     var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
     var result = jQuery( '#go_result' ).attr( 'value' );
 
@@ -688,6 +692,7 @@ function task_stage_change( target ) {
             //repeat: repeat_attr,
             //undo: undoing,
             button_type: button_type,
+            check_type: check_type,
             //timer_start: starting_timer,
             //pass: jQuery('#go_pass_lock').val(),
             //pass: ( pass_entered ? jQuery( '#go_pass_lock' ).attr( 'value' ) : '' ),
@@ -710,9 +715,9 @@ function task_stage_change( target ) {
             } catch (e) {
                 res = {
                     json_status: '101',
-                    notification: '',
+                    //notification: '',
                     //status: '',
-                    undo: '',
+                   // undo: '',
                     timer_start: '',
                     button_type: '',
                     time_left: '',
@@ -722,6 +727,7 @@ function task_stage_change( target ) {
                     },
                 };
             }
+            //alert(json_status);
             if ( '101' === Number.parseInt( res.json_status ) ) {
                 console.log (101);
                 jQuery( '#go_stage_error_msg' ).show();

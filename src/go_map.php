@@ -62,7 +62,7 @@ function go_make_single_map($last_map_id, $reload = false){
                         ),
                         'orderby'          => 'meta_value',
                         'order'            => 'ASC',
-
+                        'posts_per_page'   => 25,
                         'meta_key'         => 'go-location_map_order_item',
                         'meta_value'       => '',
                         'post_type'        => 'tasks',
@@ -249,14 +249,14 @@ function go_make_map_dropdown(){
 }
 
 function go_make_map() {
+    if ( ! is_admin() ) {
+        $user_id = get_current_user_id();
 
-	$user_id = get_current_user_id();
+        $last_map_id = get_user_meta($user_id, 'go_last_map', true);
+        go_make_map_dropdown();
 
-	$last_map_id = get_user_meta($user_id, 'go_last_map', true);
-	go_make_map_dropdown();
-
-	go_make_single_map($last_map_id, false);
-   
+        go_make_single_map($last_map_id, false);// do your thing
+    }
 }
 add_shortcode('go_make_map', 'go_make_map');
 

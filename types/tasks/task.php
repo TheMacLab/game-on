@@ -13,8 +13,8 @@ function go_register_task_tax_and_cpt() {
         'parent_item_colon' => 'Map (Set as none to create a new map):',
         'edit_item' => _x('Edit '. get_option( 'options_go_tasks_name_singular' ) . ' Maps', 'task_chains' ),
         'update_item' => _x('Update '. get_option( 'options_go_tasks_name_singular' ) . ' Maps', 'task_chains' ),
-        'add_new_item' => _x('Add New '. get_option( 'options_go_tasks_name_singular' ) . ' Map', 'task_chains' ),
-        'new_item_name' => _x('Add New '. get_option( 'options_go_tasks_name_singular' ) . ' Map', 'task_chains' ),
+        'add_new_item' => _x('Add New '. get_option( 'options_go_tasks_name_singular' ) . ' Map/Map Section', 'task_chains' ),
+        'new_item_name' => _x('Add New '. get_option( 'options_go_tasks_name_singular' ) . ' Map/Map Section', 'task_chains' ),
         'separate_items_with_commas' => _x('Separate '. get_option( 'options_go_tasks_name_singular' ) . ' Maps with commas', 'task_chains' ),
         'add_or_remove_items' => _x('Add of Remove '. get_option( 'options_go_tasks_name_singular' ) . ' Maps', 'task_chains' ),
         'choose_from_most_used' => _x('Choose from the most used '. get_option( 'options_go_tasks_name_singular' ) . ' Map', 'task_chains' ),
@@ -172,11 +172,6 @@ function go_register_task_tax_and_cpt() {
         'query_var' => true
     );
     register_taxonomy( 'user_go_groups', array( '' ), $focus_args );
-
-
-
-
-
 
 	/*
 	 * Task Custom Post Type

@@ -3,7 +3,7 @@
 
 global $wpdb;
 global $go_db_version;
-$go_db_version = '1.3';
+$go_db_version = '4.00';
 
 function go_update_db_check() {
     global $go_db_version;
@@ -13,6 +13,7 @@ function go_update_db_check() {
     go_table_store();
     go_table_actions();
     go_table_totals();
+    go_on_activate_msdb();
     }
 }
 add_action( 'plugins_loaded', 'go_update_db_check' );
@@ -45,7 +46,7 @@ function go_table_tasks() {
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
-    add_option( 'go_db_version', $go_db_version );
+    //add_option( 'go_db_version', $go_db_version );
 
 }
 
@@ -72,7 +73,7 @@ function go_table_store() {
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
-    add_option( 'go_db_version', $go_db_version );
+    //add_option( 'go_db_version', $go_db_version );
 
 }
 
@@ -112,7 +113,7 @@ function go_table_actions() {
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
-    add_option( 'go_db_version', $go_db_version );
+    //add_option( 'go_db_version', $go_db_version );
 
 }
 
@@ -135,7 +136,7 @@ function go_table_totals() {
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
-    add_option( 'go_db_version', $go_db_version );
+    //add_option( 'go_db_version', $go_db_version );
 
 }
 

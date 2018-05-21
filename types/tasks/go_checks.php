@@ -86,7 +86,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         echo "</div>";
     }
 
-    else if ( $i == $status ) {
+    else if ( $i == $status || $status == 'unlock' ) {
         echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
         echo "<div id='go_buttons'>";
         if ($i == 0) {
