@@ -81,23 +81,23 @@
       <file leaf-file-name="go_datatable.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+            <state relative-caret-position="225">
+              <caret line="15" column="6" lean-forward="false" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
               <folding>
-                <marker date="1526870040000" expanded="true" signature="597:767" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="597:1069" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="1321:1661" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="1917:2572" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="2109:2572" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="2826:3047" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="3533:3553" ph="SELECT blog_... wp_blogs" />
-                <marker date="1526870040000" expanded="true" signature="4962:5775" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="5993:6214" ph="CREATE TABLE... ${$table_name}" />
-                <marker date="1526870040000" expanded="true" signature="14526:14644" ph="SELECT user_... $" />
-                <marker date="1526870040000" expanded="true" signature="15153:15200" ph="SELECT uid F... $" />
-                <marker date="1526870040000" expanded="true" signature="15345:15402" ph="SELECT sum( $" />
-                <marker date="1526870040000" expanded="true" signature="15590:15649" ph="SELECT sum( $" />
-                <marker date="1526870040000" expanded="true" signature="15767:15821" ph="SELECT uid F... $" />
+                <marker date="1526870392000" expanded="true" signature="599:769" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="599:1071" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="1323:1663" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="1919:2574" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="2111:2574" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="2828:3049" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="3535:3555" ph="SELECT blog_... wp_blogs" />
+                <marker date="1526870392000" expanded="true" signature="4964:5777" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="5995:6216" ph="CREATE TABLE... ${$table_name}" />
+                <marker date="1526870392000" expanded="true" signature="14528:14646" ph="SELECT user_... $" />
+                <marker date="1526870392000" expanded="true" signature="15155:15202" ph="SELECT uid F... $" />
+                <marker date="1526870392000" expanded="true" signature="15347:15404" ph="SELECT sum( $" />
+                <marker date="1526870392000" expanded="true" signature="15592:15651" ph="SELECT sum( $" />
+                <marker date="1526870392000" expanded="true" signature="15769:15823" ph="SELECT uid F... $" />
               </folding>
             </state>
           </provider>
@@ -517,12 +517,12 @@
       <workItem from="1526484378716" duration="899000" />
       <workItem from="1526623594929" duration="526000" />
       <workItem from="1526624134516" duration="959000" />
-      <workItem from="1526656198629" duration="68597000" />
+      <workItem from="1526656198629" duration="68855000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="631943000" />
+    <option name="totallyTimeSpent" value="632201000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="852" extended-state="6" />
@@ -1250,23 +1250,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+        <state relative-caret-position="225">
+          <caret line="15" column="6" lean-forward="false" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
           <folding>
-            <marker date="1526870040000" expanded="true" signature="597:767" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="597:1069" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="1321:1661" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="1917:2572" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="2109:2572" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="2826:3047" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="3533:3553" ph="SELECT blog_... wp_blogs" />
-            <marker date="1526870040000" expanded="true" signature="4962:5775" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="5993:6214" ph="CREATE TABLE... ${$table_name}" />
-            <marker date="1526870040000" expanded="true" signature="14526:14644" ph="SELECT user_... $" />
-            <marker date="1526870040000" expanded="true" signature="15153:15200" ph="SELECT uid F... $" />
-            <marker date="1526870040000" expanded="true" signature="15345:15402" ph="SELECT sum( $" />
-            <marker date="1526870040000" expanded="true" signature="15590:15649" ph="SELECT sum( $" />
-            <marker date="1526870040000" expanded="true" signature="15767:15821" ph="SELECT uid F... $" />
+            <marker date="1526870392000" expanded="true" signature="599:769" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="599:1071" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="1323:1663" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="1919:2574" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="2111:2574" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="2828:3049" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="3535:3555" ph="SELECT blog_... wp_blogs" />
+            <marker date="1526870392000" expanded="true" signature="4964:5777" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="5995:6216" ph="CREATE TABLE... ${$table_name}" />
+            <marker date="1526870392000" expanded="true" signature="14528:14646" ph="SELECT user_... $" />
+            <marker date="1526870392000" expanded="true" signature="15155:15202" ph="SELECT uid F... $" />
+            <marker date="1526870392000" expanded="true" signature="15347:15404" ph="SELECT sum( $" />
+            <marker date="1526870392000" expanded="true" signature="15592:15651" ph="SELECT sum( $" />
+            <marker date="1526870392000" expanded="true" signature="15769:15823" ph="SELECT uid F... $" />
           </folding>
         </state>
       </provider>
