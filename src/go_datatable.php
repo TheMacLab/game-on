@@ -13,7 +13,7 @@ function go_update_db_check() {
     go_table_store();
     go_table_actions();
     go_table_totals();
-    go_on_activate_msdb();
+    go_on_activate_msdb(true);
     }
 }
 add_action( 'plugins_loaded', 'go_update_db_check' );
