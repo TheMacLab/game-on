@@ -323,7 +323,7 @@ class acf_field_order_posts extends acf_field {
 	*  @return	$value
 	*/
 	function load_value( $value, $post_id, $field ) {
-		
+
 
     	//$value = get_term_meta( $taxonomy, 'go_order', true);
 
@@ -331,58 +331,41 @@ class acf_field_order_posts extends acf_field {
 		$term_id = get_field($field['sort_term']) ;
         $post_slug = get_post_type( $value[0] );
         $term_obj = get_term( $term_id);
-        $taxonomy =  $term_obj->taxonomy;
-        if ($taxonomy == 'task_chains') {
-            $meta_key = 'go-location_map_order_item';
-        }else if ($taxonomy == 'task_menus') {
-            $meta_key = 'go-location_top_order_item';
-        } else if ($taxonomy == 'task_categories') {
-            $meta_key = 'go-location_side_order_item';
-        }
+        if (!empty($term_obj) && !is_wp_error($term_obj)) {
+            $taxonomy = $term_obj->taxonomy;
+            if ($taxonomy == 'task_chains') {
+                $meta_key = 'go-location_map_order_item';
+            } else if ($taxonomy == 'task_menus') {
+                $meta_key = 'go-location_top_order_item';
+            } else if ($taxonomy == 'task_categories') {
+                $meta_key = 'go-location_side_order_item';
+            }
 // get all posts that are assigned to this taxonomy term
-        $args=array(
-            'tax_query' => array(
-                array(
-                    'taxonomy' => $taxonomy,
-                    'field' => 'term_id',
-                    'terms' => $term_id,
-                )
-            ),
-            'posts_per_page'   => -1,
-            'orderby'          => 'meta_value_num',
-            'order'            => 'ASC',
+            $args = array('tax_query' => array(array('taxonomy' => $taxonomy, 'field' => 'term_id', 'terms' => $term_id,)), 'posts_per_page' => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
 
-            'meta_key'         => $meta_key,
-            'meta_value'       => '',
-            'post_type'        => $post_slug,
-            'post_mime_type'   => '',
-            'post_parent'      => '',
-            'author'	   => '',
-            'author_name'	   => '',
-            'post_status'      => 'publish',
-            'suppress_filters' => true
+                'meta_key' => $meta_key, 'meta_value' => '', 'post_type' => $post_slug, 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
 
-        );
+            );
 
-        $go_tasks_objs = get_posts($args);
-        /*
-        $posts = get_posts(array(
-                'post_type' => $post_slug,
-                'tax_query' => array(
-                    array(
-                        'taxonomy' => $taxonomy,
-                        'field' => 'term_id',
-                        'terms' => $term)
-                ))
-        );
-        */
-        //create an array of the posts
-        $value = array();
-        foreach ($go_tasks_objs as $go_tasks_obj) {
-            $value[] = $go_tasks_obj->ID;
+            $go_tasks_objs = get_posts($args);
+
+            //$posts = get_posts(array(
+            //'post_type' => $post_slug,
+            //'tax_query' => array(
+            // array(
+            //'taxonomy' => $taxonomy,
+            //'field' => 'term_id',
+            // 'terms' => $term)
+            // ))
+            // );
+
+            //create an array of the posts
+            $value = array();
+            foreach ($go_tasks_objs as $go_tasks_obj) {
+                $value[] = $go_tasks_obj->ID;
+            }
+
         }
-
-
     return $value;
 		
 	}

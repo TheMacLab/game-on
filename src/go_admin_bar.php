@@ -92,7 +92,7 @@ function go_admin_bar() {
 		 * the arrays with the array_pop function.
 		 */
 		//$max_rank_index = count( $points_array ) - 1;
-		$max_rank_points = (int) $points_array[ $max_rank_index ];
+		//$max_rank_points = (int) $points_array[ $max_rank_index ];
 
 		if ( null !== $next_rank_points ) {
 			$rank_threshold_diff = $next_rank_points - $current_rank_points;
@@ -101,13 +101,14 @@ function go_admin_bar() {
 		}
 		$pts_to_rank_threshold = $go_current_points - $current_rank_points;
 
+/*
 		if ( $max_rank_points === $current_rank_points ) {
 			$prestige_name = get_option( 'options_go_levels_top_rank' );
 			$pts_to_rank_up_str = $prestige_name;
 		} else {
 			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
 		}
-
+*/
 		$percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
 		if ( $percentage <= 0 ) {
 			$percentage = 0;
@@ -147,8 +148,15 @@ function go_admin_bar() {
                 if ($admin_view == 'guest'){
                     $guest_selected = 'selected = "selected"';
                 }
-                else {$guest_selected = null;}
+                else {$guest_selected = null;
+                }
 
+            }
+            else{
+             $all_selected = null;
+             $player_selected = null;
+             $user_selected = null;
+             $guest_selected = null;
             }
             $content = '<form>
                             View: <select onchange="go_update_admin_view(this.value)">
@@ -175,7 +183,7 @@ function go_admin_bar() {
 								'style="width: '.$percentage.'%; background-color: '.$color.' ;">'.
 							'</div>'.
 							'<div id="points_needed_to_level_up" class="go_admin_bar_text">'.
-								$pts_to_rank_up_str.
+								//$pts_to_rank_up_str.
 							'</div>'.
 						'</div>'.
 					'</div>',
@@ -371,10 +379,12 @@ function go_admin_bar() {
 				'href' => '#',
 			)
 		);
-		
+
         
         if ($go_map_switch){
-			$go_map_link = get_permalink( get_page_by_path('map') );
+            $map_url = get_option('options_go_locations_map_map_link');
+            $map_url = (string) $map_url;
+			$go_map_link = get_permalink( get_page_by_path($map_url) );
 			$name = get_option('options_go_locations_map_title');
 			$wp_admin_bar->add_node( 
 				array(
@@ -386,7 +396,8 @@ function go_admin_bar() {
 		};
 		
 		if ($go_store_switch){
-			$go_store_link = get_permalink( get_page_by_path('store') );
+            $page_path = get_option('options_go_store_store_link');
+			$go_store_link = get_permalink( get_page_by_path($page_path) );
             $name = get_option('options_go_store_name');
 			$wp_admin_bar->add_node( 
 				array(

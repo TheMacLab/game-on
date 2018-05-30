@@ -1,6 +1,7 @@
 <?php
 
 function go_return_currency( $user_id ) {
+/*
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$currency = (int) $wpdb->get_var(
@@ -12,9 +13,11 @@ function go_return_currency( $user_id ) {
 		)
 	);
 	return $currency;
+	*/
 }
 	
 function go_return_points( $user_id ) {
+/*
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$points = (int) $wpdb->get_var(
@@ -26,9 +29,11 @@ function go_return_points( $user_id ) {
 		)
 	);
 	return $points;
+	*/
 }
 
 function go_return_bonus_currency( $user_id ) {
+/*
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$bonus_currency = (int) $wpdb->get_var(
@@ -40,9 +45,11 @@ function go_return_bonus_currency( $user_id ) {
 		)
 	);
 	return $bonus_currency;
+	*/
 }
 
 function go_return_penalty( $user_id ) {
+/*
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$penalty = (int) $wpdb->get_var(
@@ -54,9 +61,11 @@ function go_return_penalty( $user_id ) {
 		)
 	);
 	return $penalty;
+	*/
 }
 
 function go_return_minutes( $user_id ) {
+/*
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_totals";
 	$minutes = (int) $wpdb->get_var(
@@ -68,9 +77,11 @@ function go_return_minutes( $user_id ) {
 		)
 	);
 	return $minutes;
+	*/
 }
 
 function go_display_points( $points ) {
+
 	$prefix = get_option( 'go_points_prefix' );
 	$suffix = get_option( 'go_points_suffix' );
 	return "{$prefix} {$points} {$suffix}";

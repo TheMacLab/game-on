@@ -3,8 +3,6 @@
 function go_acf_scripts ($hook) {
 	
 	global $post;
-	$user_id = get_current_user_id();
-	
 	/*
 	 * Registering Scripts For Admin Pages
 	 */
@@ -23,6 +21,24 @@ function go_acf_scripts ($hook) {
         wp_register_style( 'go_admin_task_afc', plugin_dir_url( __FILE__ ).'css/go_tasks-admin-acf.css' );
 
         wp_enqueue_style( 'go_admin_task_afc' );
+
+        wp_localize_script(
+            'go_acf-min',
+            'GO_ACF_DATA',
+            array(
+                    'go_store_toggle'       => get_option('options_go_store_toggle') ,
+                    'go_map_toggle'         => get_option('options_go_locations_map_toggle') ,
+                    'go_top_menu_toggle'    => get_option('options_go_locations_top_menu_toggle') ,
+                    'go_widget_toggle'      => get_option('options_go_locations_widget_toggle') ,
+                    'go_gold_toggle'        => get_option('options_go_loot_gold_toggle') ,
+                    'go_xp_toggle'          => get_option('options_go_loot_xp_toggle') ,
+                    'go_health_toggle'      => get_option('options_go_loot_health_toggle') ,
+                    'go_c4_toggle'          => get_option('options_go_loot_c4_toggle') ,
+                    'go_badges_toggle'      => get_option('options_go_badges_toggle'),
+                    //'go_leaderboard_toggle'      => get_option('options_go_stats_leaderboard_toggle')
+
+            )
+        );
 	
 }
 

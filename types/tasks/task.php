@@ -260,6 +260,59 @@ function go_get_status( $task_id, $user_id = null ) {
 	return $task_status;
 }
 
+function go_get_chain_order ($task_id){
+	if (!empty($task_id)) {
+        $args = array('tax_query' => array(array('taxonomy' => 'task_chains', 'field' => 'term_id', 'terms' => $task_id,)), 'orderby' => 'meta_value_num', 'order' => 'ASC', 'posts_per_page' => -1, 'meta_key' => 'go-location_map_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', '
+                author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true, 'fields' => 'ids');
+
+        $go_task_ids = get_posts($args);
+        return $go_task_ids;
+    }
+}
+
+function go_is_done( $task_id, $user_id = null ) {
+    global $wpdb;
+    $task_status = go_get_status( $task_id, $user_id);
+
+    $go_table_name = "{$wpdb->prefix}go_tasks";
+
+    if ( empty( $task_id ) ) {
+        return null;
+    }
+
+    if ( empty( $user_id ) ) {
+        $user_id = get_current_user_id();
+    } else {
+        $user_id = (int) $user_id;
+    }
+
+    $task_stage_count= get_post_meta($task_id, 'go_stages', true);
+
+    if ( $task_status == $task_stage_count){
+    	return true;
+	}
+	return false;
+}
+
+function go_master_unlocked($user_id, $post_id){
+	global $wpdb;
+    $go_actions_table_name = "{$wpdb->prefix}go_actions";
+    $is_unlocked = (string) $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d  AND check_type = %s
+				ORDER BY id DESC LIMIT 1",
+            $user_id,
+            $post_id,
+            'unlock'
+        )
+    );
+
+    //$is_unlocked = ( $is_unlocked == 'password' ) ? true : false;
+    return $is_unlocked;
+}
+
 /**
  * Retrieves repeat loop count of a task for a specific user.
  *
@@ -355,39 +408,46 @@ function go_convert_task_id_to_term_in_query($query) {
  */
 
 function go_update_slug( $data, $postarr ) {
-	$post_type = $data['post_type'];
-	if ($post_type == 'tasks' || $post_type =='go_store' ){
-    	$data['post_name'] = wp_unique_post_slug( sanitize_title( $data['post_title'] ), $postarr['ID'], $data['post_status'], $data['post_type'], $data['post_parent'] );
-	}
-    return $data;
+	$slug_toggle = get_option( 'options_go_slugs_toggle');
+	if ($slug_toggle) {
+        $post_type = $data['post_type'];
+        if ($post_type == 'tasks' || $post_type == 'go_store') {
+            $data['post_name'] = wp_unique_post_slug(sanitize_title($data['post_title']), $postarr['ID'], $data['post_status'], $data['post_type'], $data['post_parent']);
+        }
+        return $data;
+    }
 }
 add_filter( 'wp_insert_post_data', 'go_update_slug', 99, 2 );
 
-
-
 // define the wp_update_term_data callback 
 function go_update_term_slug( $data, $term_id, $taxonomy, $args ) {
-	$no_space_slug = sanitize_title($data['name']);
-	$data['slug'] = wp_unique_term_slug( $no_space_slug , (object) $args );
-	return $data;
+	$slug_toggle = get_option( 'options_go_slugs_toggle');
+	if ($slug_toggle) {
+        $no_space_slug = sanitize_title($data['name']);
+        $data['slug'] = wp_unique_term_slug($no_space_slug, (object)$args);
+        return $data;
+    }
 };
 add_filter( 'wp_update_term_data', 'go_update_term_slug', 10, 4 );
 
-
 function hide_all_slugs() {
-	global $post;
-	$hide_slugs = "<style type=\"text/css\"> #slugdiv, #edit-slug-box, .term-slug-wrap { display: none; }</style>";
-	print($hide_slugs);
+	$slug_toggle = get_option( 'options_go_slugs_toggle');
+	if ($slug_toggle) {
+        global $post;
+        $post_type = get_post_type( get_the_ID() );
+        if ($post_type != 'post' && $post_type != 'page') {
+            $hide_slugs = "<style type=\"text/css\"> #slugdiv, #edit-slug-box, .term-slug-wrap { display: none; }</style>";
+            print($hide_slugs);
+        }
+
+    }
 }
 add_action( 'admin_head', 'hide_all_slugs'  );
-
 
 /**
  * TASK CHAINS EDIT COLUMNS AND FIELDS
  *
  */
-
-
 //remove description column
 add_filter('manage_edit-task_chains_columns', function ( $columns ) {
     if( isset( $columns['description'] ) )
@@ -414,7 +474,6 @@ add_filter('manage_edit-task_chains_columns', function ( $columns ) {
  * BADGES EDIT COLUMNS AND FIELDS
  *
  */
-
 //remove description column
 add_filter('manage_edit-go_badges_columns', function ( $columns ) {
     if( isset( $columns['description'] ) )
@@ -435,7 +494,6 @@ add_filter('manage_edit-go_badges_columns', function ( $columns ) {
     return $columns;
 });
 */
-
 
 
 /**
@@ -464,13 +522,10 @@ add_filter('manage_edit-task_focus_categories_columns', function ( $columns ) {
 });
 */
 
-
-
 /**
  * SIDE MENU EDIT COLUMNS AND FIELDS
  *
  */
-
 //remove description column
 add_filter('manage_edit-task_categories_columns', function ( $columns ) {
     if( isset( $columns['description'] ) )
@@ -497,7 +552,6 @@ add_filter('manage_edit-task_categories_columns', function ( $columns ) {
  * TOP MENU EDIT COLUMNS AND FIELDS
  *
  */
-
 //remove description column
 add_filter('manage_edit-task_menus_columns', function ( $columns ) {
     if( isset( $columns['description'] ) )
@@ -523,8 +577,6 @@ add_filter('manage_edit-task_menus_columns', function ( $columns ) {
  * USER GROUPS EDIT COLUMNS AND FIELDS
  *
  */
-
-
 //remove slug column
 add_filter('manage_edit-user_go_groups_columns', function ( $columns ) {
     if( isset( $columns['slug'] ) )
@@ -532,20 +584,13 @@ add_filter('manage_edit-user_go_groups_columns', function ( $columns ) {
     return $columns;
 });
 
-
-
-
-
 //////Limits the dropdown to top level hierarchy.  Removes items that have a parent from the list.
 add_filter( 'taxonomy_parent_dropdown_args', 'limit_parents_wpse_106164', 10, 2 );
 
 function limit_parents_wpse_106164( $args, $taxonomy ) {
-
     //if ( 'task_chains' != $taxonomy ) return $args; // no change
     $args['depth'] = '1';
     return $args;
 }
-
-
 
 ?>

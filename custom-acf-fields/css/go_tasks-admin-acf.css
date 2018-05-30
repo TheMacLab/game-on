@@ -34,14 +34,6 @@
 .go-stages .go-content .acf-input { width:100% !important}
 .go-stages .go-content .acf-label { display:none !important}
 
-.reward {padding: 8px !important;}
-.go-reward .acf-input{max-width: 600px;}
-.go-reward .reward {width: 33.33%;float:left !important; clear: none;}
-.go-reward .reward .acf-label {width: 50px !important;}
-.go-reward .reward .acf-input {width: 80px !important;}
-.go-reward .reward:before {border-width: 0 0 0 1px !important; width: 60px !important;}
-
-
 .acf-accordion-title {background: lightblue !important;}
 
 .acf-hide-label .acf-label,
@@ -52,3 +44,78 @@
 .go-loot .acf-th{
     display: table-cell;
 }
+
+/********************
+*QUIZ
+********************/
+
+#go_test_field_table_1 {  border-collapse: collapse; }
+#go_test_field_table_1 tr {border: solid 1px;}
+
+#go_test_field_table_1 {}
+#go_test_field_table_1 ul {
+    list-style: none;
+
+}
+
+#go_test_field_table_1 li {
+    display: flex;
+    margin-left: 50px;
+    justify-content: flex-end;
+}
+
+.go_test_field_input_question {
+    /* width: 100%; */
+    margin-left: 25px;
+}
+
+.go_test_field_table {
+    width: 100%; }
+
+.go_test_field_table td {
+    padding: 20px !important;
+    margin-left: -2px; }
+
+.go_test_field_input_row select,
+.go_test_field_input_question,
+.go_test_field_add,
+.go_test_field_rm,
+.go_test_field_add_block_button {
+    margin-left: inherit; }
+
+.go_test_loot_mod {
+    text-align: center;
+    width: 40px; }
+
+.go_test_field_input_question {
+    width: 100%; }
+
+.go_test_field_input_question::-webkit-input-placeholder {
+    padding-top: 2px; }
+
+.go_test_field_input_question::-moz-placeholder {
+    padding-top: 2px; }
+
+.go_test_field_input {
+    width: 75%;
+    margin: 0 5px 0 5px !important;
+    padding-top: 4px; }
+
+.go_test_field_input::-webkit-input-placeholder {
+    padding-top: 2px; }
+
+.go_test_field_input::-moz-placeholder {
+    padding-top: 2px; }
+
+.go_test_field_input_checkbox {
+    margin: 0 0 4px -2px !important; }
+
+.go_button_add_field, .go_test_field_add {
+    color: green; }
+
+.go_button_del_field, .go_test_field_rm {
+    color: red;
+    margin-left: 5px; }
+
+.go_test_field_input_rm_row_button {
+    margin-left: -2px !important; }

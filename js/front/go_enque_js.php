@@ -88,13 +88,13 @@ function go_scripts () {
 		
 	/*
 	 * Page-Specific Scripts.  These have localization on these pages for at least one script.
-	 */	
-		
-		if ( is_page('map') ) {
+	 */
+    //$map_url = get_option('options_go_locations_map_map_link');
+	//	if ( is_page($map_url) ) {
 			wp_enqueue_script('go_map-min');
 			$ajax_url   = admin_url( 'admin-ajax.php' );        // Localized AJAX URL
 			wp_localize_script('go_map-min','map_ajax_admin_url',$ajax_url);
-		}	
+	//	}
 
 	
 }

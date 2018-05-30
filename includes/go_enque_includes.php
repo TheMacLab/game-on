@@ -10,8 +10,6 @@ if( ! class_exists( 'WP_Term_Order' ) ) {
 }
 
 function go_admin_includes () {
-	
-
     /**
      * Datatables
      */
@@ -32,7 +30,6 @@ function go_admin_includes () {
     wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js' );
     wp_enqueue_style( 'go_featherlight_css' );
 
-
 }
 
 function go_includes () {
@@ -42,9 +39,7 @@ function go_includes () {
      */
     wp_register_script( 'go_frontend_media', plugin_dir_url( __FILE__ ).'wp-frontend-media-master/js/frontend.js', array( 'jquery' ),
         '2015-05-07', true);
-   wp_enqueue_script( 'go_frontend_media' );
-
-
+    wp_enqueue_script( 'go_frontend_media' );
 
     /**
      * Featherlight
@@ -58,7 +53,6 @@ function go_includes () {
 
     wp_register_script( 'go_collapse_lists', plugin_dir_url( __FILE__ ).'CollapsibleLists.js', array( 'jquery' ),'v2', true);
     wp_enqueue_script( 'go_collapse_lists' );
-
 
 }
 

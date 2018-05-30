@@ -12,9 +12,19 @@
  * @param $is_logged_in
  * @return bool
  */
-function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in ){
+function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only ){
+    global $wpdb;
+
+    if ($check_only) {
+        $is_unlocked = go_master_unlocked($user_id, $id);
+        if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
+            //$is_unlocked = true;
+            return $is_unlocked;
+        }
+    }
 
     $task_is_locked = false;
+    $task_is_locked_l = false;
     if (!$task_name){
         $check_only = true;
     }
@@ -22,7 +32,6 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
     /**
      * This section is for the password lock
      */
-
     if ($custom_fields['go_lock_toggle'][0] == true && $custom_fields['go_password_lock'][0] == true){
         $task_is_locked = true;
     }
@@ -115,17 +124,17 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
  */
 function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
-    $option = "go_locks_".$i."_keys_".$k."_options_0_until";
+    $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_until";
     $start_filter = $custom_fields[$option][0];
 
-    $unix_now = current_time( 'timestamp' );
-    if ( ! empty( $start_filter )) {
+    $unix_now = current_time('timestamp');
+    if (!empty($start_filter)) {
 
         $start_unix = strtotime($start_filter);
 
         // stops execution if the start date and time has not passed yet
-        if ( $unix_now < $start_unix ) {
-            $time_string = date( 'g:i A', $start_unix ) . ' on ' . date( 'D, F j, Y', $start_unix );
+        if ($unix_now < $start_unix) {
+            $time_string = date('g:i A', $start_unix) . ' on ' . date('D, F j, Y', $start_unix);
             if (!$check_only) {
                 echo "<li class='go_error_red'>It is after {$time_string}.</li>";
             }
@@ -133,6 +142,7 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
 
         }
     }
+
     return $this_lock;
 }
 
@@ -141,25 +151,26 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
  */
 function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
-    $option = "go_locks_".$i."_keys_".$k."_options_0_after";
+    $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_after";
     $start_filter = $custom_fields[$option][0];
 
     // holds the output to be displayed when a non-admin has been stopped by the start filter
     $time_string = '';
-    $unix_now = current_time( 'timestamp' );
-    if ( ! empty( $start_filter )) {
+    $unix_now = current_time('timestamp');
+    if (!empty($start_filter)) {
         $start_unix = strtotime($start_filter);
 
         // stops execution if the user is a non-admin and the start date and time has not
         // passed yet
-        if ( $unix_now > $start_unix ) {
-            $time_string = date( 'g:i A', $start_unix ) . ' on ' . date( 'D, F j, Y', $start_unix );
+        if ($unix_now > $start_unix) {
+            $time_string = date('g:i A', $start_unix) . ' on ' . date('D, F j, Y', $start_unix);
             if (!$check_only) {
                 echo "<li class='go_error_red'>This " . $task_name . " was only available until {$time_string}.</li>";
             }
             $this_lock = true;
         }
     }
+
     return $this_lock;
 }
 
@@ -168,46 +179,48 @@ function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
  */
 function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $badge_name = get_option( 'options_go_naming_other_badges' );
-    $this_lock = false;
-    if( $is_logged_in ) {
-        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_badge";
-        $terms_needed = $custom_fields[$option][0];
-        $terms_needed = unserialize($terms_needed);
-        // gets the current user's period(s)
-        $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
-        $user_terms = array();
-        for ($i = 0; $i < $num_terms; $i++) {
-
-            $user_period = "go_section_and_seat_" . $i . "_user-section";
-            $user_period = get_user_meta($user_id, $user_period, true);
-            $user_terms[] = $user_period;
-        }
-
-        //if the current user is in a class period then check if it is the right one
-        if (!$user_terms) {
+    if ($is_logged_in) {
+        $this_lock = false;
+        if ($is_logged_in) {
+            $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_badge";
+            $terms_needed = $custom_fields[$option][0];
+            $terms_needed = unserialize($terms_needed);
+            // gets the current user's period(s)
+            $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
             $user_terms = array();
-        }
+            for ($i = 0; $i < $num_terms; $i++) {
 
-        // determines if the user has the correct badges
-        if (!empty($terms_needed)) {
-            // checks to see if the filter array are in the the user's badge array
-            $intersection = array_values(array_intersect($user_terms, $terms_needed));
-            // stores an array of the badges that were not found in the user's badge array
-            $term_diff = array_diff($terms_needed, $intersection);
-            if (!empty($term_diff)) {
-                if (!$check_only) {
-                    echo "<li class='go_error_red'>You  possess one of these " . $badge_name . ":</li>";
-                    echo "<ul class='go_term_list go_error_red'>";
-                    foreach ($term_diff as $term_id) {
-                        $term_object = get_term($term_id);
-                        $term_name = $term_object->name;
-                        if (!empty($term_name)) {
-                            echo "<li>$term_name</li>";
+                $user_period = "go_section_and_seat_" . $i . "_user-section";
+                $user_period = get_user_meta($user_id, $user_period, true);
+                $user_terms[] = $user_period;
+            }
+
+            //if the current user is in a class period then check if it is the right one
+            if (!$user_terms) {
+                $user_terms = array();
+            }
+
+            // determines if the user has the correct badges
+            if (!empty($terms_needed)) {
+                // checks to see if the filter array are in the the user's badge array
+                $intersection = array_values(array_intersect($user_terms, $terms_needed));
+                // stores an array of the badges that were not found in the user's badge array
+                $term_diff = array_diff($terms_needed, $intersection);
+                if (!empty($term_diff)) {
+                    if (!$check_only) {
+                        echo "<li class='go_error_red'>You  possess one of these " . $badge_name . ":</li>";
+                        echo "<ul class='go_term_list go_error_red'>";
+                        foreach ($term_diff as $term_id) {
+                            $term_object = get_term($term_id);
+                            $term_name = $term_object->name;
+                            if (!empty($term_name)) {
+                                echo "<li>$term_name</li>";
+                            }
                         }
+                        echo "</ul>";
                     }
-                    echo "</ul>";
+                    $this_lock = true;
                 }
-                $this_lock = true;
             }
         }
     }
@@ -491,170 +504,206 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
 /**
  * Task Chain Lock
  */
-function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
-
-    //if in a chain
-        //get variables
-        //chain id
+function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only)
+{
+    global $wpdb;
+    $chain_id = $custom_fields['go-location_map_loc'][0];
+    //if not empty chain id
+    //get variables
         //is_optional
         //previous_task
         //is pod
         //is first in chain
+        //locked by prev
+    if (!empty($chain_id)) {
+        $go_task_ids = go_get_chain_order ($chain_id);
 
-    //if is pod or first in chain
-        //is locked by previous set
-            //if true, then
-                //what was previous chain
-                //what is last task in previous chain that was not optional
-                //is it done
-                //if false
-                    //$task_is_locked = true;
-
-    //else
-        //what is previous task that wasn't optional
-        //is it done
-        //if false
-            //$task_is_locked = true;
-
-    //if $task_is_locked == true
-        //message "you must complete previous task before continuing
-        //return true
-
-
-
-   // if( $is_logged_in ) {
-        // determines whether or not the user can proceed, if the task is in a chain
-        $temp_optional_task = $custom_fields['go_location_map_opt'][0];
-        $chain_id = $custom_fields['go_location_map_loc'][0];
-
-
-
-        if (!empty($in_chain)) {
-            $chain_links = array();
-
-            foreach ($chain_order as $chain_tt_id => $order) {
-                $pos = array_search($id, $order);
-                $the_chain = get_term_by('term_taxonomy_id', $chain_tt_id);
-                $chain_title = ucwords($the_chain->name);
-                $chain_pod = get_term_meta($chain_tt_id, 'pod_toggle', true);
-                if ($pos > 0 && !$is_admin) {
-                    if (empty ($temp_optional_task)) {
-                        if (empty($chain_pod)) {
-
-                             //The current task is not first and the user is not an administrator.
-
-
-                            $prev_id = 0;
-
-                            // finds the first ID among the tasks before the current one that is published
-                            for ($prev_id_counter = 0; $prev_id_counter < $pos; $prev_id_counter++) {
-                                $temp_id = $order[$prev_id_counter];
-                                $temp_optional_prev_task = (boolean)get_post_meta(
-                                    $temp_id,
-                                    'go_mta_optional_task',
-                                    true
-                                );
-                                if (empty ($temp_optional_prev_task)) {
-                                    $temp_task = get_post($temp_id);
-
-                                    $temp_finished = true;
-                                    $temp_status = go_task_get_status($temp_id);
-                                    $temp_five_stage_counter = null;
-                                    $temp_status_required = 4;
-                                    $temp_three_stage_active = (boolean)get_post_meta(
-                                        $temp_id,
-                                        'go_mta_three_stage_switch',
-                                        true
-                                    );
-                                    $temp_five_stage_active = (boolean)get_post_meta(
-                                        $temp_id,
-                                        'go_mta_five_stage_switch',
-                                        true
-                                    );
-
-
-                                    // determines to what stage the user has to progress to finish the task
-                                    if ($temp_three_stage_active) {
-                                        $temp_status_required = 3;
-                                    } elseif ($temp_five_stage_active) {
-                                        $temp_five_stage_counter = go_task_get_repeat_count($temp_id);
-                                    }
-
-                                    // determines whether or not the task is finished
-                                    if ($temp_status !== $temp_status_required &&
-                                        (!$temp_five_stage_active ||
-                                            ($temp_five_stage_active && empty($temp_five_stage_counter)))) {
-
-                                        $temp_finished = false;
-                                    }
-
-                                    if (!empty($temp_task) &&
-                                        'publish' === $temp_task->post_status &&
-                                        !$temp_finished) {
-
-
-                                         // The task is published, but is not finished. This task must be finished
-                                         //before the current task can be accepted.
-
-
-                                        $prev_id = $temp_id;
-                                        break;
-                                    }
-                                }
-                            } // End for().
-
-                            if (0 !== $prev_id) {
-                                $prev_permalink = get_permalink($prev_id);
-                                $prev_title = get_the_title($prev_id);
-
-                                $link_tag = sprintf(
-                                    '<a href="%s">%s (%s)</a>',
-                                    $prev_permalink,
-                                    $prev_title,
-                                    $chain_title
-                                );
-                                if (false === array_search($link_tag, $chain_links)) {
-
-                                    // appends the anchor tag for previous task
-                                    $chain_links[] = $link_tag;
-                                }
-                            }
-                        } // End if().
-                    }
+        $is_optional = $custom_fields['go-location_map_opt'][0];
+        //$post_ids = wp_list_pluck( $go_task_ids, 'ID' );
+        $this_task_order = array_search($id, $go_task_ids);
+        if ($this_task_order == 0) {
+            $first_in_chain = true;
+            $prev_task = null;
+        } else {
+            $first_in_chain = false;
+            $prev_key = (int)$this_task_order - 1;
+            while ($prev_key >= 0){
+                $prev_task = $go_task_ids[$prev_key];
+                $islast_optional = get_post_meta($prev_task, 'go-location_map_opt', true);
+                if (!$islast_optional){
+                    break;
                 }
-            } // End foreach().
-
-            if (!empty($chain_links)) {
-                $link_str = '';
-                for ($link_counter = 0; $link_counter < count($chain_links); $link_counter++) {
-                    if ($link_counter > 0) {
-                        $link_str .= ', ';
-                        if (count($chain_links) > 2 && count($chain_links) === $link_counter + 1) {
-                            $link_str .= 'and ';
-                        }
-                    }
-                    $link_str .= $chain_links[$link_counter];
-                }
-
-                $visitor_str = '';
-                if (!$is_logged_in) {
-                    $visitor_str = ' First, you must be ' .
-                        '<a href="' . esc_url($login_url) . '">logged in</a> to do so.';
-                }
-
-                printf(
-                    '<p><span class="go_error_red">You must finish</span>' .
-                    ' %s ' .
-                    '<span class="go_error_red">to continue.</span></p>	',
-                    $link_str,
-                    ucwords($task_name),
-                    $visitor_str
-                );
-
-                $task_is_locked = true;
+                $prev_key--;
+            }
+            if ($islast_optional){
+                $first_in_chain = true;
+                $prev_task = null;
             }
         }
-  //  }// End if().
+        $is_pod = get_term_meta($chain_id, 'pod_toggle', true);
+        $locked_by_prev = get_term_meta($chain_id, 'locked_by_previous', true);
+    } else {
+        return false;
+    }
 
+    //if this is pod and any task in pod has masterpassword unlock
+    //then unlocked
+    if ($is_pod) {
+        $master_unlock = false;
+        //are any in the pod unlocked by masterpassword
+        foreach ($go_task_ids as $task_id) {
+            $is_unlocked = go_master_unlocked($user_id, $task_id);
+            if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
+                $master_unlock = true;
+            }
+
+        }
+        if ($master_unlock == true) {
+            return false;
+        }
+    }
+    //if this is a pod or the first in the chain
+    //and this chain is not locked by the previous
+    //then set to unlocked
+    if (($is_pod || $first_in_chain) && !$locked_by_prev) {
+        return false;
+    }
+    //else if this is a pod or the first in the chain
+    //and this chain is locked by previous chain
+    //then get the previous chain
+    else if (($is_pod || $first_in_chain) && $locked_by_prev) {
+        $term = get_term($chain_id, 'task_chains');
+        $termParent = ($term->parent == 0) ? $term : get_term($term->parent, 'task_chains');
+        $parent_map_term_id = $termParent->term_id;
+        $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent_map_term_id, 'fields' => 'ids'
+        );
+        //get all chains on this map
+        $sibling_chains = get_terms('task_chains', $args);
+        $this_chain_order = array_search($chain_id, $sibling_chains);
+        //if this is first chain on map
+        //then get the last chain on previous map
+        if ($this_chain_order == 0) {
+            $prev_chain = null;
+            $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => 0, 'fields' => 'ids');
+            //get all parent maps (chains with no parents)
+            $top_chains = get_terms('task_chains', $args);
+            $this_map_order = array_search($parent_map_term_id, $top_chains);
+            //if this is the first map, then return unlocked
+            if ($this_map_order == 0){
+                return false;
+            }
+            //get previous map
+            $prev_map_key = (int)$this_map_order - 1;
+            $prev_map = $top_chains[$prev_map_key];
+            //get last chain on previous map
+            $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'DSC', 'parent' => $prev_map, 'fields' => 'ids'
+            );
+            //children chains
+            $children_chains = get_terms('task_chains', $args);
+            //if no children chains on previous map
+            if ($children_chains == false) {
+                return false;
+            }
+            //get last chain of previous map
+            $prev_chain = $children_chains[0];
+
+        }
+        //else this is not the first chain
+        //then get the previous chain on this map
+        else {
+            $prev_key = (int)$this_chain_order - 1;
+            $prev_chain = $sibling_chains[$prev_key];
+        }
+
+
+        /**
+         * what is last task in previous chain that was not optional
+         * and is it done
+         * */
+
+        $go_task_ids = go_get_chain_order ($prev_chain);
+        $reversed_ids = array_reverse($go_task_ids);
+        //if the previous chain is pod
+        $is_prev_pod = get_term_meta($prev_chain, 'pod_toggle', true);
+        if($is_prev_pod){
+            //count # done and compare to #requried
+            $pod_all = get_term_meta($prev_chain, 'pod_all', true);
+            if ($pod_all) {
+                $pod_min = count($reversed_ids);
+            }
+            else{
+                $pod_min = get_term_meta($prev_chain, 'pod_done_num', true);
+            }
+            $pod_count = 0;
+            foreach ($reversed_ids as $reversed_id) {
+                $is_task_done = go_is_done($reversed_id, $user_id);
+                if ($is_task_done){
+                    $pod_count++;
+                }
+
+            }
+            if ($pod_count >= $pod_min){
+                $is_done = true;
+            }
+            else{
+                $is_done = false;
+            }
+        }
+        //else previous chain is not a pod
+        else {
+            foreach ($reversed_ids as $reversed_id) {
+                //get is optional
+                //if not optional
+                //exit
+                $islast_optional = get_post_meta($reversed_id, 'go-location_map_opt', true);
+                if (!$islast_optional) {
+                    break;
+                }
+            }
+            if (isset($reversed_id)){
+                $is_done = go_is_done($reversed_id, $user_id);
+            }
+            else {
+                //there is no previous task
+                $is_done = true;
+            }
+        }
+        if ($is_done) {
+            return false;
+
+        } else {
+            //the previous task is not done
+            if (!$check_only) {
+                $task_link = get_permalink($reversed_id);
+                $task_title = get_the_title($reversed_id);
+                echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The $task_name, <a href='$task_link'>$task_title</a> must be done first</div>";
+            }
+
+            return true;
+        }
+    }
+    //else if this is not the first task in a chain (and it is not a pod)
+    //get previous task and check if it is complete
+    else if (!$first_in_chain) {
+
+        $is_done = go_is_done($prev_task, $user_id);
+        if ($is_done) {
+            return false;
+        } else {
+            if (!$check_only) {
+                $task_link = get_permalink($prev_task, false) ;
+                $task_title = get_the_title($prev_task);
+                echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The $task_name, <a href='$task_link'>$task_title</a> must be done first</div>";
+            }
+            return true;
+        }
+    }
+    //I think all the options are covered above,
+    //but just in case
+    else {
+        return false;
+    }
 }
 
+
+?>

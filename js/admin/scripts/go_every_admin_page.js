@@ -8,7 +8,7 @@
  */
 /*
  * Disable sorting of metaboxes
- */
+
 jQuery(document).ready( function($) {
     $('.meta-box-sortables').sortable({
         disabled: true
@@ -16,5 +16,21 @@ jQuery(document).ready( function($) {
 
     $('.postbox .hndle').css('cursor', 'pointer');
 });
+
+
+ */
+
+/*
+ * Disable submit with enter key, tab to next field instead
+*/
+jQuery("input,select").bind("keydown", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if(keyCode === 13) {
+        e.preventDefault();
+        $('input, select, textarea')
+            [$('input,select,textarea').index(this)+1].focus();
+    }
+});
+
 
 

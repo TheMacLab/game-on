@@ -399,7 +399,7 @@ function task_unlock(status, target) {
                 //jQuery( '#go_stage_error_msg' ).attr( 'style', 'color:green' );
                 jQuery('#go_stage_error_msg').hide();
                 //jQuery( '#go_stage_error_msg' ).text( "Well done, continue!" );
-                console.log (target);
+                //console.log (target);
                 task_stage_change( target );
 
                 return;
@@ -485,7 +485,6 @@ function go_repeat_replace() {
 	jQuery( '#go_repeat_clicked' ).show( 'slow' );   
 }
 
-
 // disables the target stage button, and adds a loading gif to it
 function go_enable_loading( target ) {
     //console.log ('disable button' );
@@ -505,7 +504,7 @@ function go_disable_loading() {
 }
 
 function task_stage_check_input( target ) {
-	//console.log('button clicked');
+	console.log('button clicked');
 
     //disable button to prevent double clicks
     go_enable_loading( target );
@@ -607,7 +606,7 @@ function task_stage_check_input( target ) {
             }
 
         }else if (check_type == 'quiz') {
-
+            //console.log(button_type);
             var test_list = jQuery(".go_test_list");
             //console.log ('test.length' );
             //console.log (test_list.length );
@@ -657,13 +656,14 @@ function task_stage_check_input( target ) {
         }
     }
 
-    task_stage_change( target, button_type, task_status, check_type );
+
+    task_stage_change( target );
 
 }
 
-function task_stage_change( target, button_type, task_status, check_type ) {
+function task_stage_change( target ) {
+    console.log('button clicked2');
 
-   /*
     //v4 Set variables
 
     var button_type = "";
@@ -675,7 +675,12 @@ function task_stage_change( target, button_type, task_status, check_type ) {
     if ( 'undefined' !== typeof jQuery( target ).attr( 'status' ) ) {
         task_status = jQuery( target ).attr( 'status' )
     }
-*/
+
+    var check_type = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'check_type' ) ) {
+        check_type = jQuery( target ).attr( 'check_type' )
+    }
+
     var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
     var result = jQuery( '#go_result' ).attr( 'value' );
 

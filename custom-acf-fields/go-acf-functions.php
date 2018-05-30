@@ -165,30 +165,32 @@ add_action( 'init', 'go_late_init_flush', 999999 );
  */
 function go_update_order($post_id, $order_field, $item_order_field, $toggle, $term)  {
     $term_obj = get_term($term);
-    $taxonomy = $term_obj->taxonomy;
-    //$term_order = get_term_meta( $term, 'go_order', true );
-    $order = get_post_meta($post_id, $order_field, true);
+    if (!empty($term_obj) && !is_wp_error($term_obj)) {
+        $taxonomy = $term_obj->taxonomy;
+        //$term_order = get_term_meta( $term, 'go_order', true );
+        $order = get_post_meta($post_id, $order_field, true);
 
 
-    if ($toggle == false) {
-        delete_post_meta($post_id, $item_order_field);
-        wp_remove_object_terms($post_id, $term, $taxonomy);
-    } elseif ($toggle == true) {
-        if (empty($term)) {
+        if ($toggle == false) {
             delete_post_meta($post_id, $item_order_field);
-        } else {
-            $i = 0;
-            foreach ($order as $item) {
-                // for each post in the value, set term
-                wp_set_post_terms($item, $term, $taxonomy);
-                // for each post in the value, set order
-                update_post_meta($item, $item_order_field, $i);
-                $i++;
+            wp_remove_object_terms($post_id, $term, $taxonomy);
+        } elseif ($toggle == true) {
+            if (empty($term)) {
+                delete_post_meta($post_id, $item_order_field);
+            } else {
+                $i = 0;
+                foreach ($order as $item) {
+                    // for each post in the value, set term
+                    wp_set_post_terms($item, $term, $taxonomy);
+                    // for each post in the value, set order
+                    update_post_meta($item, $item_order_field, $i);
+                    $i++;
+                }
             }
-        }
 
+        }
+        delete_post_meta($post_id, $order_field);
     }
-    delete_post_meta($post_id, $order_field);
 }
 
 

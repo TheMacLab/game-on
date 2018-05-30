@@ -1,1 +1,1 @@
-jQuery(document).ready(function($){$(".meta-box-sortables").sortable({disabled:!0}),$(".postbox .hndle").css("cursor","pointer")});
+jQuery("input,select").bind("keydown",function(e){13===(e.keyCode||e.which)&&(e.preventDefault(),$("input, select, textarea")[$("input,select,textarea").index(this)+1].focus())});

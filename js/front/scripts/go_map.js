@@ -6,6 +6,9 @@ function go_show_map(mapid) {
 	document.getElementById("maps").style.display = "none";
 	document.getElementById("loader").style.display = "block";
 	var map_nonce = jQuery( '#_wpnonce' ).val();
+
+    console.log(mapid);
+    console.log(map_ajax_admin_url);
 	
 
 	jQuery.ajax({	
@@ -18,7 +21,7 @@ function go_show_map(mapid) {
 			},
 			success:function(data) {			
           		jQuery('#mapwrapper').html(data);				
-				console.log("success!");
+				//console.log("success!");
 				go_resizeMap();
 				document.getElementById("loader").style.display = "none";
  				document.getElementById("maps").style.display = "block";
