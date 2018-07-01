@@ -9,35 +9,7 @@ Version: 4b
 */
 $version = 4.03;
 
-<<<<<<< HEAD
-include( 'go_datatable.php' );
-include( 'go_pnc.php' );
-include( 'go_returns.php' );
-include( 'go_ranks.php' );
-//include( 'go_enque.php' );
-include( 'go_enque_combined.php' );
-include( 'go_globals.php' );
-include( 'go_admin_bar.php' );
-include( 'go_message.php' );
-include( 'go_options.php' );
-include( 'go_stats.php' );
-include( 'go_clipboard.php' );
-include( 'go_open_badge.php' );
-include( 'go_shortcodes.php' );
-include( 'go_comments.php' );
-include( 'go_mail.php' );
-include( 'go_messages.php' );
-include( 'go_task_search.php' );
-include( 'go_pods.php' );
-include( 'types/tasks/task-chains.php' );
-include( 'types/store/store-chains.php' );
-include( 'types/types.php' );
-include( 'go_map.php' );
-include( 'go_store.php' );
-//include( 'go_menus.php' );
-=======
 global $version;
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 include_once( 'includes/acf/acf.php' );
 
@@ -77,12 +49,6 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/front/*.php" ) as $file ) 
     include_once $file;
 }
 
-<<<<<<< HEAD
-//if( ! class_exists( 'CMB2_Bootstrap_2253' ) ) {
-	// CMB2 Plugin is not active
-	//include( 'includes/cmb2/init.php' );
-//}
-=======
 
 
 //if( ! class_exists( 'wp-featherlight' ) ) {
@@ -93,7 +59,6 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/front/*.php" ) as $file ) 
 foreach ( glob( plugin_dir_path( __FILE__ ) . "custom-acf-fields/*.php" ) as $file ) {
     include_once $file;
 }
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 
 // includes
@@ -128,11 +93,7 @@ register_activation_hook( __FILE__, 'go_on_activate_msdb' );
  */
 
 
-<<<<<<< HEAD
-/* 
-=======
 /**
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
  * Registers Game On custom post types and taxonomies, then
  * updates the site's rewrite rules to mitigate cpt and 
  * permalink conflicts. flush_rewrite_rules() must always
@@ -155,15 +116,6 @@ function go_flush_rewrites() {
     flush_rewrite_rules();
 }
 
-<<<<<<< HEAD
-
-//function go_register_tax_and_cpt() {
-//	go_register_task_tax_and_cpt();
-//	go_register_store_tax_and_cpt();
-//	flush_rewrite_rules();
-//}
-=======
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 /*
  * Admin Menu & Admin Bar
@@ -185,14 +137,10 @@ add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'admin_head', 'go_stats_overlay' );
 //add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
-<<<<<<< HEAD
-add_action( 'admin_enqueue_scripts', 'go_admin_scripts_and_styles' );
-=======
 add_action( 'admin_enqueue_scripts', 'go_admin_scripts' );
 add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
 add_action( 'admin_enqueue_scripts', 'go_admin_styles' );
 add_action( 'admin_enqueue_scripts', 'go_acf_scripts' );
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 /*
@@ -201,16 +149,11 @@ add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 // actions
 add_action( 'wp_head', 'go_stats_overlay' );
-<<<<<<< HEAD
-add_action( 'wp_head', 'go_frontend_lightbox_html' );
-add_action( 'wp_enqueue_scripts', 'go_scripts_and_styles' );
-=======
 add_action( 'wp_enqueue_scripts', 'go_scripts' );
 add_action( 'wp_enqueue_scripts', 'go_styles' );
 add_action( 'wp_enqueue_scripts', 'go_includes' );
 //add_action( 'wp_enqueue_scripts', 'go_scripts' );
 //add_action( 'wp_head', 'go_frontend_lightbox_html' );
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 // filters
 add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
@@ -386,43 +329,6 @@ function go_delete_cpt_data( $cpt_id ) {
 	return true;
 }
 
-<<<<<<< HEAD
-
-
-function go_user_redirect( $redirect_to, $request, $user ) {
-	$redirect_on = get_option( 'go_admin_bar_user_redirect', true );
-	$redirect_url = get_option( 'go_user_redirect_location', true );
-	if ( $redirect_on && isset( $user ) && ( $user instanceof WP_User ) ) {
-		if ( isset( $user->roles ) && is_array( $user->roles ) ) {
-			$roles = $user->roles;
-			if ( is_array( $roles) ) {
-				if ( in_array( 'administrator', $roles ) ) {
-					return admin_url();
-				} else {
-					if (! empty ($redirect_url)){
-						return (site_url().'/'.$redirect_url);
-					}
-					else{
-						return site_url();
-					}
-				}
-			} else {
-				if ( $roles == 'administrator' ) {
-					return admin_url();
-				} else {
-					if (! empty ($redirect_url)){
-						return (site_url().'/'.$redirect_url);
-					}
-					else{
-						return site_url();
-					}
-				}
-			}
-		}
-	} else {
-		return $redirect_to;
-	}
-=======
 function go_user_redirect( $redirect_to, $request, $user )
 {
     //if (is_user_logged_in()) {
@@ -462,7 +368,6 @@ function go_user_redirect( $redirect_to, $request, $user )
             return $redirect_to;
         }
     //}
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 }
 
 function go_admin_head_notification() {

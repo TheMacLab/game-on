@@ -2,113 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/bower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/.bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/.bower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.bootstrap4.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.bootstrap4.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.bootstrap4.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.semanticui.css" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.semanticui.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.semanticui.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.semanticui.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.uikit.css" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.uikit.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.uikit.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/css/dataTables.uikit.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.bootstrap4.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.bootstrap4.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.bootstrap4.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.bootstrap4.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.foundation.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.foundation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.foundation.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.foundation.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.semanticui.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.semanticui.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.semanticui.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.semanticui.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.uikit.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.uikit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.uikit.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/dataTables.uikit.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/jquery.dataTables.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/jquery.dataTables.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/jquery.dataTables.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/jquery.dataTables.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/datatables/media/js/jquery.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/datatables/media/js/jquery.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf-min.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf-min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/css/go_tasks-admin-acf.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/admin/class-meta.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/admin/views/meta-box.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/css/wp-featherlight-rtl.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/css/wp-featherlight-rtl.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/scripts/go_options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/css/wp-featherlight-rtl.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/css/wp-featherlight.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/css/wp-featherlight.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/includes/class-i18n.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/includes/class-plugin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/includes/class-scripts.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/includes/constants.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/vendor/featherlight.gallery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/vendor/featherlight.gallery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/vendor/featherlight.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/vendor/featherlight.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/vendor/jquery.detect_swipe.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/vendor/jquery.detect_swipe.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/wpFeatherlight.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/wpFeatherlight.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/wpFeatherlight.pkgd.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/js/wpFeatherlight.pkgd.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/languages/wp-featherlight-de_DE.mo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/languages/wp-featherlight-es_ES.mo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/languages/wp-featherlight-fr_FR .mo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/languages/wp-featherlight-fr_FR.mo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/languages/wp-featherlight-pl_PL.mo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/languages/wp-featherlight-pt_BR.mo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/languages/wp-featherlight.pot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-featherlight/wp-featherlight.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/dev/go_admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/dev/go_admin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/scripts/go_every_admin_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/scripts/go_every_admin_page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/dev/go_frontend.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/dev/go_frontend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/go_enque_js.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/go_enque_js.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_notification.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/js/go_shortcode_mce.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/js/go_shortcode_mce.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_admin_bar.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_admin_bar.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_clipboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_clipboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_datatable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_datatable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_map.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_map.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_open_badge.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_open_badge.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_pnc.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_pnc.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_ranks.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_ranks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_returns.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_returns.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_shortcodes.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_shortcodes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_stats.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_store.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_store.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_updates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_user.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/admin/go_enque_styles_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/styles/admin/go_enque_styles_admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/admin/min/go_admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/admin/min/go_admin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_every_page.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_every_page.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_stats.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_stats.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_store.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_store.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/tasks-admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/tasks-admin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/front/go_enque_styles.php" beforeDir="false" afterPath="$PROJECT_DIR$/styles/front/go_enque_styles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/front/min/go_frontend.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/front/min/go_frontend.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/includes/lightbox/backend-lightbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/store/disabled/backend-lightbox.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/includes/lightbox/buy-ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/store/includes/lightbox/buy-ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/includes/lightbox/css/go-lightbox.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/store-chains.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/super-store.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/store/super-store.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_checks.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/go_checks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_locks.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/go_locks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_timer.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/go_timer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/media/airhorn.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/media/airhorn.mp3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/media/gold.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/media/gold.mp3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/task.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/task.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/task_shortcode.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/task_shortcode.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -145,8 +39,6 @@
               <caret line="988" column="20" selection-start-line="988" selection-start-column="20" selection-end-line="988" selection-end-column="20" />
               <folding>
                 <element signature="n#go_stats_overlay#0;n#!!top" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
               </folding>
@@ -158,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="520">
-              <caret line="525" column="19" lean-forward="true" selection-start-line="525" selection-start-column="19" selection-end-line="525" selection-end-column="19" />
+              <caret line="525" column="19" selection-start-line="525" selection-start-column="19" selection-end-line="525" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -167,7 +59,7 @@
         <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="637">
-              <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
+              <caret line="56" selection-start-line="56" selection-end-line="56" />
             </state>
           </provider>
         </entry>
@@ -176,7 +68,7 @@
         <entry file="file://$PROJECT_DIR$/src/go_clipboard.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-2599">
-              <caret line="117" column="95" lean-forward="true" selection-start-line="113" selection-start-column="28" selection-end-line="117" selection-end-column="95" />
+              <caret line="117" column="95" selection-start-line="113" selection-start-column="28" selection-end-line="117" selection-end-column="95" />
               <folding>
                 <element signature="n#go_clipboard_intable_messages#0;n#!!top" />
               </folding>
@@ -189,15 +81,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="313">
               <caret line="76" column="47" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_every_page.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/styles/css/go_every_page.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1052">
-              <caret line="229" column="20" selection-start-line="229" selection-start-column="20" selection-end-line="229" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -220,29 +103,35 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_frontend.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/front/dev/go_frontend.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="57" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="game-on.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#1;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#ul#0;n#div#0;n#div#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_admin_menus.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/go_admin_menus.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="options-page.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/includes/acf/pro/options-page.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="539">
+              <caret line="180" column="8" lean-forward="true" selection-start-line="180" selection-start-column="8" selection-end-line="180" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -284,10 +173,10 @@
       <find>rank</find>
       <find>get_op</find>
       <find>SELECT status</find>
-      <find>avatar</find>
       <find>table</find>
       <find>go_clipboard_activity</find>
       <find>minutes_l</find>
+      <find>avatar</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -608,10 +497,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1072416000" />
+    <option name="totallyTimeSpent" value="1072616000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="985" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="1015" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="7" />
@@ -620,13 +509,13 @@
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Run" order="3" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14583333" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12760417" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.37088203" />
+      <window_info active="true" anchor="bottom" id="Find" order="2" visible="true" weight="0.37088203" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="4" visible="true" weight="0.3205269" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.3103082" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="PHP-CGI Server" order="12" />
@@ -680,11 +569,6 @@
           <option name="timeStamp" value="690" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/game-on.php</url>
-          <line>335</line>
-          <option name="timeStamp" value="712" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/js/front/go_enque_js.php</url>
           <line>94</line>
           <option name="timeStamp" value="714" />
@@ -731,27 +615,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>832</line>
+          <line>2693</line>
           <option name="timeStamp" value="795" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/go_locks.php</url>
-          <line>138</line>
+          <line>372</line>
           <option name="timeStamp" value="799" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1260</line>
+          <line>3121</line>
           <option name="timeStamp" value="843" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1280</line>
+          <line>3141</line>
           <option name="timeStamp" value="844" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1325</line>
+          <line>3186</line>
           <option name="timeStamp" value="845" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -766,7 +650,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1089</line>
+          <line>2950</line>
           <option name="timeStamp" value="882" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -776,7 +660,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>11</line>
+          <line>29</line>
           <option name="timeStamp" value="901" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -786,17 +670,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/go_locks.php</url>
-          <line>318</line>
+          <line>552</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/go_locks.php</url>
-          <line>340</line>
+          <line>574</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/go_locks.php</url>
-          <line>404</line>
+          <line>638</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -826,37 +710,37 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>212</line>
+          <line>231</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1008</line>
+          <line>2869</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1067</line>
+          <line>2928</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1095</line>
+          <line>2956</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1098</line>
+          <line>2959</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1128</line>
+          <line>2989</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1144</line>
+          <line>3005</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -935,14 +819,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-6">
           <caret line="60" column="23" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="23" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
-            <element signature="n#go_no_check#0;n#!!top" />
-            <element signature="n#go_password_check#0;n#!!top" />
-            <element signature="n#go_upload_check#0;n#!!top" />
-            <element signature="n#go_test_check#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1093,19 +969,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/admin/min/go_admin-min.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/go_ranks.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="538">
           <caret line="317" lean-forward="true" selection-start-line="317" selection-end-line="317" />
-          <folding>
-            <element signature="n#go_update_ranks#0;n#!!top" />
-            <element signature="e#5997#7196#0#PHP" />
-            <element signature="n#go_set_rank#0;n#!!top" />
-            <element signature="e#9786#10192#0#PHP" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1171,16 +1038,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_notification.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_notification.js" />
     <entry file="file://$PROJECT_DIR$/src/go_pnc.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="163">
@@ -1250,9 +1108,6 @@
           <caret line="130" column="83" selection-start-line="130" selection-start-column="9" selection-end-line="130" selection-end-column="83" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_updates.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -1352,14 +1207,14 @@
     <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="637">
-          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_clipboard.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2599">
-          <caret line="117" column="95" lean-forward="true" selection-start-line="113" selection-start-column="28" selection-end-line="117" selection-end-column="95" />
+          <caret line="117" column="95" selection-start-line="113" selection-start-column="28" selection-end-line="117" selection-end-column="95" />
           <folding>
             <element signature="n#go_clipboard_intable_messages#0;n#!!top" />
           </folding>
@@ -1369,7 +1224,7 @@
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="520">
-          <caret line="525" column="19" lean-forward="true" selection-start-line="525" selection-start-column="19" selection-end-line="525" selection-end-column="19" />
+          <caret line="525" column="19" selection-start-line="525" selection-start-column="19" selection-end-line="525" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -1379,18 +1234,30 @@
           <caret line="988" column="20" selection-start-line="988" selection-start-column="20" selection-end-line="988" selection-end-column="20" />
           <folding>
             <element signature="n#go_stats_overlay#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_admin_menus.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/acf/pro/options-page.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="539">
+          <caret line="180" column="8" lean-forward="true" selection-start-line="180" selection-start-column="8" selection-end-line="180" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/game-on.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#1;n#div#0;n#!!top" expanded="true" />
