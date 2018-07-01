@@ -5,8 +5,8 @@
   ],
   "description": "CodeKit automatically generated this file. You should customize it according to: https://github.com/bower/spec/blob/master/json.md",
   "main": [
-  	"index.html",
-  	"main.js"
+    "index.html",
+    "main.js"
   ],
   "moduleType": [
     "amd",
@@ -21,8 +21,8 @@
   "license": "MIT",
   "homepage": "https://google.com",
   "repository": {
-  	"type": "git",
-  	"url": "git://github.com/foo/bar.git"
+    "type": "git",
+    "url": "git://github.com/foo/bar.git"
   },
   "ignore": [
     "**/.*",
@@ -31,5 +31,12 @@
     "test",
     "tests"
   ],
-  "private": true
+  "private": true,
+  "dependencies": {
+    "fitvids": "FitVids#^1.2.0",
+    "datatables": "datatable#^1.10.16",
+    "featherlight": "^1.7.12",
+    "jGrowl": "jgrowl#^1.4.6",
+    "noty": "^3.1.4"
+  }
 }

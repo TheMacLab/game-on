@@ -1,0 +1,1541 @@
+@charset "UTF-8";
+#records_tabs {
+  font: .9em Arial, Verdana, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #111;
+  background-color: #fff;
+  /*
+	 * Colour dictionary: 
+	 *
+	 * Table control elements:   #719ba7
+	 * Header cells:             #66A9BD
+	 * Body header cells:        #91c5d4
+	 * Body content cells:       #d5eaf0
+	 * Body content cells (alt): #bcd9e1
+	 * Footer header:            #b0cc7f
+	 * Footer content:           #d7e1c5
+	 */
+  /*
+	 * Page setup styles
+	 */
+  /*
+	 * DataTables framework
+	 */
+  /* Self clearing - http: //www.webtoolkit.info/css-clearfix.html */
+  /*
+	* Table styles
+	*/
+  /* Header cells */
+  /* Body cells */
+  /* Footer cells */
+  /*
+	 * Pagination
+	 */
+  /*
+	 * Sorting
+	 */ }
+  #records_tabs #go_clipboard_table_wrapper {
+    overflow: auto; }
+  #records_tabs .widefat th {
+    border-right: grey dashed thin;
+    font-size: 9px; }
+  #records_tabs .widefat td {
+    border-right: grey dashed thin;
+    font-size: 9px; }
+  #records_tabs .sortable tbody {
+    counter-reset: sortabletablescope; }
+  #records_tabs .sortable thead tr::before {
+    content: "";
+    display: table-cell; }
+  #records_tabs .sortable tbody tr::before {
+    content: counter(sortabletablescope);
+    counter-increment: sortabletablescope;
+    display: table-cell; }
+  #records_tabs .go_clipboard_add {
+    width: 100px;
+    height: 20px; }
+  #records_tabs #go_clipboard_add {
+    border: thin solid #999;
+    background-color: #FFF;
+    width: 865px;
+    padding: 3px; }
+  #records_tabs #go_clipboard_table_filter {
+    display: inline-block;
+    float: right; }
+  #records_tabs #container {
+    margin: 0 auto;
+    width: 960px; }
+  #records_tabs h1 {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 1em 0; }
+  #records_tabs .dataTables_wrapper {
+    background-color: #FFF; }
+  #records_tabs .dataTables_length {
+    float: left; }
+  #records_tabs .dataTables_filter {
+    float: right; }
+  #records_tabs .dataTables_info {
+    padding: 9px 6px 6px 6px;
+    float: left; }
+  #records_tabs .dataTables_paginate {
+    float: right; }
+  #records_tabs .dataTables_length,
+  #records_tabs .dataTables_filter,
+  #records_tabs .dataTables_paginate {
+    padding: 6px; }
+  #records_tabs .dataTables_wrapper:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0; }
+  #records_tabs html[xmlns] .dataTables_wrapper {
+    display: block; }
+  #records_tabs * html .dataTables_wrapper {
+    height: 1%; }
+  #records_tabs .pretty {
+    width: 100% !important;
+    clear: both;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none; }
+  #records_tabs .pretty td,
+  #records_tabs .pretty th {
+    padding: 5px;
+    border: 1px solid #fff;
+    font-size: 12px; }
+  #records_tabs .pretty thead th {
+    text-align: center;
+    background: #F4F4F4;
+    font-size: 14px; }
+  #records_tabs .pretty th > input[type='checkbox'] {
+    width: 1em !important; }
+  #records_tabs .pretty tbody th {
+    text-align: left;
+    background: #F4F4F4; }
+  #records_tabs .pretty tbody td {
+    text-align: center;
+    background: #F4F4F4; }
+  #records_tabs .pretty tbody td.message {
+    text-align: left;
+    background: #F4F4F4; }
+  #records_tabs .pretty tbody tr.odd td {
+    background: #F4F4F4; }
+  #records_tabs .pretty tfoot th {
+    background: #F4F4F4;
+    text-align: left; }
+  #records_tabs .pretty tfoot td {
+    background: #F4F4F4;
+    text-align: center;
+    font-weight: bold; }
+  #records_tabs a.paginate_button,
+  #records_tabs a.paginate_active {
+    display: inline-block;
+    background-color: #608995;
+    padding: 2px 6px;
+    margin-left: 2px;
+    cursor: pointer;
+    *cursor: hand; }
+  #records_tabs a.paginate_active {
+    background-color: transparent;
+    border: 1px solid black; }
+  #records_tabs a.paginate_button_disabled {
+    color: #3d6672; }
+  #records_tabs .paging_full_numbers a:active {
+    outline: none; }
+  #records_tabs .paging_full_numbers a:hover {
+    text-decoration: none; }
+  #records_tabs .dataTables_paginate span > a {
+    width: 15px;
+    text-align: center; }
+  #records_tabs .pretty thead th.sorting_asc {
+    background: #E2E2E2 url("images/sort_asc.png") no-repeat right center; }
+  #records_tabs .pretty thead th.sorting_desc {
+    background: #F4F4F4 url("images/sort_desc.png") no-repeat right center; }
+  #records_tabs .pretty thead th.sorting {
+    background: #E2E2E2 url("images/sort_both.png") no-repeat right center; }
+  #records_tabs .container {
+    box-sizing: border-box;
+    width: 80%;
+    height: 450px;
+    padding: 20px 15px 15px 15px;
+    margin: 15px auto 30px auto;
+    border: 1px solid #ddd;
+    background: #fff;
+    background: linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); }
+  #records_tabs #placeholder .button {
+    position: absolute;
+    cursor: pointer; }
+  #records_tabs #placeholder .button {
+    font-size: smaller;
+    color: #999;
+    background-color: #eee;
+    padding: 2px; }
+  #records_tabs #choices {
+    width: 10.416666666%;
+    height: 450px;
+    overflow: hidden;
+    margin: 15px 10px 0px 0px;
+    border: solid grey thin;
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: white;
+    z-index: 9999;
+    position: absolute;
+    overflow: auto; }
+  #records_tabs .go_class_a_results {
+    font-size: 13px;
+    position: relative;
+    left: 10%; }
+  #records_tabs .go_#F4F4F4_all {
+    display: none; }
+  #records_tabs .highlight_box {
+    height: 10px;
+    width: 50px;
+    font-size: 8px;
+    padding: 0.2px 0.2px 0.2px 0.2px;
+    border: thin grey solid;
+    color: grey;
+    padding-top: 3px; }
+  #records_tabs .highlight_box:hover {
+    height: 10px;
+    width: 50px;
+    font-size: 8px;
+    padding: 0.2px 0.2px 0.2px 0.2px;
+    border: thin grey solid;
+    color: white;
+    padding-top: 3px;
+    background-color: grey; }
+  #records_tabs .highlight_box_clicked {
+    height: 10px;
+    width: 50px;
+    font-size: 8px;
+    padding: 0.2px 0.2px 0.2px 0.2px;
+    border: thin grey solid;
+    color: white;
+    padding-top: 3px;
+    background-color: grey; }
+  #records_tabs tr.even td {
+    background-color: #E2E2E2 !important; }
+  #records_tabs tr:hover td {
+    background-color: #CFCFCF !important; }
+  #records_tabs .go_focus {
+    margin: 0px;
+    height: 22px !important;
+    font-size: 12px !important; }
+
+/********************
+*	Check for Understanding Buttons
+********************/
+#go_buttons {
+  overflow: auto;
+  position: relative;
+  padding: 10px;
+  min-height: 40px; }
+
+#go_back_button {
+  float: left;
+  position: absolute;
+  bottom: 10px; }
+
+#go_abandon_task {
+  float: left;
+  position: absolute;
+  bottom: 10px; }
+
+#go_button {
+  float: right; }
+
+/********************
+*	Bonus Button
+********************/
+.go_bonus_button {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: red;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 9px #999 !important; }
+
+.go_bonus_button:hover {
+  background-color: red; }
+
+.go_bonus_button:active {
+  background-color: red;
+  box-shadow: 0px 5px #666 !important;
+  transform: translateY(4px); }
+
+/********************
+*	locks
+********************/
+.go_locks {
+  border: 1px solid;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #ddd; }
+
+.go_lock, .go_late_mods, .go_sched_access_message, .go_timer_message, .go_checks_and_buttons {
+  border: solid;
+  border-radius: 25px;
+  padding: 10px;
+  margin: 10px;
+  background-color: cornsilk; }
+
+.go_lock ul ul {
+  list-style-type: disc !important;
+  list-style-position: inside !important; }
+
+/********************
+*	Top Menu
+********************/
+/*no dotted line*/
+.menu-go_top_menu-container a {
+  outline: 0 !important; }
+
+/********************
+*	Collapsible Lists Widget
+********************/
+.collapsibleList li {
+  cursor: auto; }
+
+.collapsibleList li::before {
+  content: "• ︎"; }
+
+li.collapsibleListOpen {
+  cursor: pointer; }
+
+li.collapsibleListOpen::before {
+  content: "▼"; }
+
+li.collapsibleListClosed {
+  cursor: pointer; }
+
+li.collapsibleListClosed::before {
+  content: "▶︎"; }
+
+/********************
+*	Featherlight
+********************/
+#wp-featherlight-enable-wrap {
+  display: none; }
+
+/********************
+*	???
+********************/
+.go_align_right {
+  text-align: right; }
+
+.go_align_center {
+  text-align: center; }
+
+.go_notification {
+  text-align: center;
+  line-height: 60px;
+  vertical-align: middle;
+  font-size: 36px;
+  position: fixed;
+  right: 30px;
+  height: 68px;
+  width: 250px;
+  color: white;
+  display: none;
+  padding: 4px 1px 1px 1px;
+  border-radius: 3px;
+  background: #111111;
+  opacity: 0.9;
+  z-index: 9999999; }
+
+.go_error {
+  padding: 5px 0 5px 0; }
+
+.go_error_red, .go_error {
+  color: red; }
+
+span.go_loading {
+  background-image: url("images/ajax-loader.gif");
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px; }
+
+input[type='text'].go_error_red {
+  border: 2px solid red;
+  outline: none; }
+
+.go_no_scroll {
+  overflow: hidden; }
+
+/********************
+*	Admin-Bar Styles
+********************/
+.fa.ab-icon:before {
+  font-family: Fontawesome !important; }
+
+@media screen and (max-width: 782px) {
+  #wp-admin-bar-go_map, #wp-admin-bar-go_stats, #wp-admin-bar-go_store {
+    display: block !important;
+    width: 52px;
+    height: 46px;
+    overflow: hidden; } }
+
+#wpadminbar {
+  z-index: 1000010 !important; }
+
+.go_message_container {
+  margin: 0 0 0 10px !important; }
+
+.go_message_container a {
+  display: inline-block !important;
+  text-decoration: underline !important;
+  padding: 0px !important;
+  margin: 0px !important; }
+
+#wp-admin-bar-go_info > a > div {
+  height: 16px;
+  display: flex; }
+
+#go_admin_bar_progress_bar_border {
+  height: 100%;
+  width: 120px;
+  border: thin white solid;
+  margin-top: 2px;
+  position: relative; }
+
+#go_admin_health_bar_border {
+  height: 100%;
+  width: 120px;
+  border: thin white solid;
+  margin-top: 2px;
+  position: relative; }
+
+.admin_bar_loot {
+  line-height: 24px !important; }
+
+.progress-bar-border, .admin_bar_loot {
+  margin-left: 10px !important; }
+
+#go_admin_bar_progress_bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100% !important; }
+
+#go_admin_bar_health_bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100% !important; }
+
+#go_admin_bar_title {
+  text-align: left; }
+
+#go_admin_bar_input {
+  width: 250px; }
+
+#go_admin_bar_rank {
+  font-size: 1.2em;
+  color: #eee; }
+
+.go_admin_bar_add_input {
+  width: 50px !important; }
+
+.go_admin_bar_reason {
+  width: 175px !important; }
+
+ul#wp-admin-bar-go_add-default.ab-submenu {
+  height: 380px; }
+
+#points_needed_to_level_up, #health_bar_percentage_str {
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  line-height: initial !important;
+  overflow: hidden; }
+
+#points_needed_to_level_up:hover {
+  color: white; }
+
+.go_admin_bar_text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center !important;
+  color: white;
+  text-shadow: 0px 0px #ff6600;
+  word-break: break-all; }
+
+.progress_bar {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #39b54a; }
+
+#go_messages_bar {
+  background-color: red;
+  border: 1px solid white;
+  box-shadow: 1px 1px 1px black;
+  color: white;
+  height: 16px;
+  text-align: center;
+  min-width: 14px;
+  line-height: 17px;
+  margin-top: 2px; }
+
+.go_messages_anchor {
+  padding: 0 0 0 10px !important; }
+
+#go_admin_bar_task_search_input {
+  height: 24px;
+  font-size: 13px;
+  margin-top: 3px;
+  line-height: 2;
+  display: inline-block; }
+
+#go_admin_bar_task_search_submit {
+  height: 24px;
+  margin-bottom: 3px;
+  font-size: 10px;
+  line-height: 24px;
+  width: 50px;
+  display: inline-block; }
+
+input[name="go_admin_bar_submit"] {
+  height: 40px !important; }
+
+#wp-admin-bar-site-name .ab-submenu {
+  background-color: #4B4B4B !important; }
+
+#wp-admin-bar-site-name .go_site_name_menu {
+  background-color: #333 !important; }
+
+#go_admin_bar_deactivation {
+  height: 25px;
+  line-height: 10px;
+  width: 70px; }
+
+#wp-admin-bar-go_toolbar_login {
+  display: inline !important;
+  padding: 0 8px 0 7px !important; }
+
+#wp-admin-bar-go_toolbar_login a {
+  padding: 0 8px 0 7px !important; }
+
+/********************
+*	File Uploader Styles
+********************/
+#go_option_admin_email_desc p {
+  margin-right: 20px; }
+
+#go_mailer_error_msg {
+  color: red; }
+
+#go_mailer_confirm_msg {
+  color: green; }
+
+/********************
+*	Help Button Styles
+********************/
+.go_task_opt_help {
+  float: right;
+  color: black;
+  margin-right: 0px;
+  width: 15px;
+  height: 15px;
+  border-radius: 8px;
+  padding: 0px 0px 0px 0px;
+  text-align: center;
+  background: white;
+  cursor: pointer;
+  display: inline;
+  position: relative;
+  background-color: #DBDBDB !important; }
+
+.go_task_opt_help:hover::after {
+  position: absolute;
+  content: attr(tooltip);
+  width: 200px;
+  padding: 0 5px 0 5px;
+  background-color: #CCC;
+  font-size: 14px;
+  bottom: 15px;
+  left: 20px;
+  border-radius: 5px;
+  z-index: 99;
+  color: black;
+  white-space: initial; }
+
+/********************
+*	Store Styles
+********************/
+/* Store Item Style | Back-end */
+input#go_store_limit_input {
+  text-align: center;
+  width: 50px; }
+
+input#go_store_limit_input::-webkit-input-placeholder,
+input.go_store_cost_input::-webkit-input-placeholder,
+input.go_store_filter_input::-webkit-input-placeholder,
+input#go_store_item_url_input::-webkit-input-placeholder,
+input#go_store_badge_id_input::-webkit-input-placeholder,
+input.go_store_gift_input::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+input#go_store_limit_input,
+input.go_store_cost_input,
+input.go_store_filter_input,
+input#go_store_item_url_input,
+input#go_store_badge_id_input,
+input.go_store_gift_input {
+  margin-top: 0px;
+  margin-bottom: 0px; }
+
+input.go_store_cost_input {
+  width: 30%; }
+
+input.go_store_filter_input {
+  width: 15%; }
+
+input#go_store_item_url_input {
+  width: 50%; }
+
+input.go_store_gift_input[type="text"] {
+  display: none;
+  width: 21.7%; }
+
+input#go_store_badge_id_input {
+  text-align: center;
+  width: 75px; }
+
+/********************
+*	Task Styles
+********************/
+/* Tasks Style | Back-end */
+div.misc-pub-section-clone {
+  border-top: 1px solid #eee; }
+
+input#go-button-clone {
+  margin-bottom: 7px !important; }
+
+.go_sortable {
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: -moz-grab; }
+
+.go_sortable_item {
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing; }
+
+#go_start_info {
+  display: inline-block; }
+
+#go_list_of_decay_dates,
+#go_list_of_decay_dates tbody,
+#go_list_of_decay_dates th,
+#go_list_of_decay_dates tr,
+#go_list_of_decay_dates td {
+  margin: 0px;
+  padding: 0px; }
+
+.datepicker {
+  border-width: 1px;
+  border-color: #DDD; }
+
+.cmb_id_go_mta_time_modifier td input {
+  width: 30px; }
+
+.go_task_settings_accordion {
+  font-size: 16px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ddd;
+  padding: 5px;
+  cursor: pointer; }
+
+.go_triangle_container {
+  float: right;
+  cursor: pointer;
+  display: block;
+  width: 27px;
+  height: 20px;
+  text-align: center; }
+
+.go_triangle_container:hover .go_task_accordion_triangle {
+  border-top: 5px solid #777; }
+
+.go_task_accordion_triangle {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #AAA;
+  display: inline-block;
+  vertical-align: middle;
+  margin: auto; }
+
+.go_task_settings_accordion.opened .go_task_accordion_triangle {
+  border-top: none;
+  border-bottom: 5px solid #AAA; }
+
+.go_reward_input {
+  color: #BBB !important;
+  text-align: center;
+  width: 40px; }
+
+.go_admin_lock_text {
+  width: 50%; }
+
+.go_admin_lock_text::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+.go_admin_lock_text::-moz-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_table, .go_test_field_input_question {
+  width: 100%; }
+
+.go_test_field_table td {
+  padding: 20px !important;
+  margin-left: -2px; }
+
+.go_test_field_input_row select,
+.go_test_field_input_question,
+.go_test_field_add,
+.go_test_field_rm,
+.go_test_field_add_block_button {
+  margin-left: inherit; }
+
+.go_test_loot_mod {
+  text-align: center;
+  width: 40px; }
+
+.go_test_field_input_question {
+  width: 100%; }
+
+.go_test_field_input_question::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input_question::-moz-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input {
+  width: 75%;
+  margin: 0 5px 0 5px !important;
+  padding-top: 4px; }
+
+.go_test_field_input::-webkit-input-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input::-moz-placeholder {
+  padding-top: 2px; }
+
+.go_test_field_input_checkbox {
+  margin: 0 0 4px -2px !important; }
+
+.go_button_add_field, .go_test_field_add {
+  color: green; }
+
+.go_button_del_field, .go_test_field_rm {
+  color: red;
+  margin-left: 5px; }
+
+.go_test_field_input_rm_row_button {
+  margin-left: -2px !important; }
+
+#go_repeat_amount_input {
+  width: 40px;
+  text-align: center; }
+
+.go_stage_badge_container {
+  list-style: none; }
+
+.go_badge_input {
+  width: 75px; }
+
+input.go_current {
+  color: #000 !important; }
+
+.condensed {
+  padding: 7px !important; }
+
+#go_future_notification {
+  color: red; }
+
+#go_future_notification_task_name {
+  font-weight: bold;
+  color: black !important; }
+
+#go_task_timer {
+  color: red;
+  font-weight: bold; }
+
+div.pod_unfinished,
+div.pod_finished {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 3px;
+  border-color: #ACACAC;
+  background-color: white; }
+
+div.pod_unfinished {
+  border-bottom-color: red; }
+
+div.pod_finished {
+  border-bottom-color: green; }
+
+a.pod_link {
+  font-size: 1.5em;
+  text-decoration: none !important;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 5px 0px 5px 5px;
+  z-index: 10; }
+
+.pod_finished:hover,
+.pod_unfinished:hover {
+  background-color: #eee; }
+
+#go_bonus_loot_checkbox {
+  display: block; }
+
+ul#go_bonus_loot_wrap {
+  list-style: none;
+  margin-top: 15px;
+  margin-bottom: 0; }
+
+ul#go_bonus_loot_wrap li {
+  margin-bottom: 10px; }
+
+ul#go_bonus_loot_wrap li.go_error {
+  padding: 0;
+  margin-top: 15px; }
+
+.go_bonus_loot_rarity {
+  width: 50px; }
+
+/* Tasks Style | Front-end */
+#go_description p,
+#go_content p,
+#new_content p {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+.go_stage_message {
+  border-top: 1px solid;
+  border-top-color: inherit;
+  padding: 20px 0 20px 0; }
+
+#go_description .go_stage_message {
+  background-color: transparent; }
+
+#new_content .go_stage_message {
+  background-color: #fffcf2; }
+
+.go_test_container {
+  margin-bottom: 10px; }
+
+.go_test_container:last-of-type {
+  margin-bottom: 0px; }
+
+.go_test li {
+  list-style: none; }
+
+.go_test li:first-of-type {
+  display: inline; }
+
+.go_test li p {
+  margin: 0px !important;
+  padding: 0px !important; }
+
+#go_test_error_msg {
+  margin: 0 !important; }
+
+.go_wrong_answer_marker {
+  color: red;
+  margin: 0 0 0 10px !important;
+  padding: 0px !important; }
+
+.go_correct_answer_marker {
+  color: green;
+  margin: 0 0 0 10px !important;
+  padding: 0px !important; }
+
+.go_chain_msg_container {
+  margin-top: 20px; }
+
+.go_chain_final_msg {
+  margin: 10px 0;
+  text-align: center; }
+
+.go_chain_title {
+  font-weight: 900; }
+
+.go_chain_links {
+  text-align: center; }
+
+div.go_pod_message {
+  margin-top: 10px; }
+
+.go_test_submit {
+  margin: 10px 0 10px 2px !important; }
+
+#go_pass_lock {
+  margin: 0 0 10px 0; }
+
+#go_pass_lock::-webkit-input-placeholder {
+  padding-left: 4px; }
+
+input#go_pass_lock::-moz-placeholder {
+  padding-left: 4px; }
+
+.go_dark {
+  display: none;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 1001;
+  -moz-opacity: 0.8;
+  opacity: .80;
+  filter: alpha(opacity=80); }
+
+.go_light {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background-color: white;
+  z-index: 999999;
+  padding: 10px 10px 10px 10px; }
+
+.comment {
+  list-style: none; }
+
+.featherlight-iframe .featherlight-content {
+  width: 80%;
+  height: 80%;
+  overflow-y: hidden !important; }
+
+#adminmenu #toplevel_page_game-on-options .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f085'; }
+
+#adminmenu #toplevel_page_badges .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f0a3'; }
+
+#adminmenu #toplevel_page_groups .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f0c0'; }
+
+#adminmenu #menu-posts-tasks .wp-menu-image:before {
+  font-family: Fontawesome !important;
+  content: '\f041'; }
+
+.wp-menu-separator {
+  border-bottom: solid 1px;
+  color: lightgray; }
+
+/********************
+*	Term Meta Field Styles
+
+.metafield-conditional_logic-show {
+    display: block;
+}
+
+.metafield_conditional_logic-hide {
+    display: none;
+}
+tr.metafield-conditional_logic-show {
+    display: table-row;
+    }
+   
+   tr.metafield-conditional_logic-hide {
+    display: none;
+    } 
+    
+    ********************/
+#go_stats_page_black_bg {
+  display: block;
+  position: fixed !important;
+  top: 0% !important;
+  left: 0% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: black;
+  z-index: 999998;
+  -moz-opacity: 0.8;
+  opacity: 0.80;
+  filter: alpha(opacity=80) !important; }
+
+#go_stats_white_overlay {
+  display: none;
+  position: fixed;
+  top: 75px;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  padding: 16px;
+  background-color: white;
+  z-index: 999999;
+  overflow: auto;
+  border-radius: 3px; }
+
+#go_stats_lay {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+
+/** Popup Styles **/
+/* Popup container - can be anything you want */
+/* Tooltip text */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.popup:hover .popuptext {
+  visibility: visible; }
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 50px;
+  background-color: black !important;
+  color: #fff !important;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0px 0;
+  position: absolute;
+  z-index: 1;
+  padding: 5px; }
+
+.popup .popuptext a {
+  padding: 5px;
+  color: #fff !important; }
+
+/* Popup arrow 
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: -8%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+}
+*/
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s; }
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+/** END Popup Styles **/
+/** Header Styles **/
+#go_stats_header {
+  position: relative;
+  overflow: hidden;
+  font-family: verdana;
+  border-bottom: 2px solid #BBB;
+  margin-right: 20px;
+  display: flex;
+  flex-wrap: wrap; }
+
+#go_stats_user_info {
+  font-size: 16px;
+  line-height: 18px;
+  flex-grow: 1; }
+
+#go_stats_gravatar {
+  width: 150px;
+  height: 150px;
+  border: 2px solid #BBB;
+  position: relative;
+  margin: 0px 10px 0px 20px; }
+
+#go_stats_user_loot {
+  flex-grow: 1;
+  min-width: 250px; }
+
+#go_stats_header .progress-bar-border {
+  height: 30px;
+  width: 100%;
+  max-width: 300px;
+  border-color: black;
+  background-color: black; }
+
+.go_stats_reward_name {
+  display: inline-block; }
+
+#go_stats_user_progress {
+  width: 25%;
+  height: 25px;
+  border: 2px solid #AAA;
+  top: 14px;
+  margin-right: 40px; }
+
+#go_stats_progress_text_wrap {
+  float: left;
+  position: relative;
+  left: 50%;
+  height: 25px; }
+
+#go_stats_progress_text {
+  position: relative;
+  height: 100%;
+  font-size: 18px;
+  z-index: 1;
+  left: -50%;
+  line-height: 25px;
+  overflow: hidden;
+  word-break: break-all; }
+
+#go_stats_progress_fill {
+  height: 100%;
+  position: absolute;
+  z-index: 0; }
+
+#go_stats_user_focuses {
+  height: auto;
+  font-size: 24px;
+  clear: right;
+  top: 22px; }
+
+#go_stats_user_tabs {
+  display: inline-block;
+  float: right;
+  clear: both;
+  font-size: 14px; }
+
+#go_stats_user_tabs a {
+  text-decoration: none;
+  color: inherit; }
+
+#go_stats_admin_help {
+  color: #FF0000 !important; }
+
+#go_stats_body {
+  position: relative;
+  height: 70%;
+  margin: 25px 20px 0px 20px;
+  font-size: 13px;
+  font-family: verdana;
+  white-space: nowrap;
+  overflow: hidden; }
+
+#go_stats_body a {
+  text-decoration: none; }
+
+/** Task Styles **/
+#go_stats_tasks_list {
+  list-style-type: none;
+  height: 100%;
+  position: relative;
+  margin-bottom: 50px;
+  float: left;
+  display: inline-block;
+  width: 100%;
+  margin: 0px 3.6% 0px 0px;
+  overflow-y: auto; }
+
+.go_stats_tasks_list_admin {
+  float: none !important;
+  display: inherit !important;
+  margin: 0px !important;
+  width: 100% !important; }
+
+#go_stats_tasks_list:last-child {
+  border-bottom: 1px solid #BBB; }
+
+.go_stats_task {
+  margin: 4px 0px 4px 0px;
+  border-top: 1px solid #BBB;
+  /*overflow: hidden;*/
+  /** Flexbox **/
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-grow: 0;
+  -webkit-flex-grow: 0;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.go_stats_task_list_name {
+  display: inline-block;
+  float: left;
+  width: 25%;
+  white-space: pre-line;
+  margin-top: 1.5px;
+  font-size: 14px;
+  height: auto; }
+
+.go_stats_task_status_wrap {
+  float: right;
+  position: relative;
+  display: inline-block;
+  margin-top: 1.5px;
+  /** Flexbox **/
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px; }
+
+.go_stats_task_status {
+  text-align: center;
+  color: #FFF;
+  display: inline-block;
+  float: right;
+  width: 43px;
+  background-color: #DDD;
+  height: 14px;
+  margin: 4px 0px 2px 4px;
+  line-height: 14px; }
+
+.go_stats_task_admin_submit {
+  cursor: pointer !important;
+  margin: 5.5px 0px 3px 4px !important;
+  height: 15px !important;
+  width: 50px !important;
+  line-height: 10px !important;
+  background-color: silver !important;
+  padding: 2px 6px 3px 6px !important;
+  font-size: 10px !important; }
+
+.go_stats_task_admin_submit_div {
+  /** Flexbox **/
+  flex-grow: 1;
+  float: right !important;
+  -webkit-flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px; }
+
+.go_stats_task_admin_message {
+  float: right !important;
+  height: 16px !important;
+  display: inline-block;
+  margin: 5.5px 0px 2px 4px !important;
+  padding: 0px !important;
+  width: 200px !important;
+  font-size: 12px !important;
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px; }
+
+.go_stats_task_status p {
+  margin-bottom: 0; }
+
+/* 
+ * This makes up for the space that the border takes up on
+ * stage boxes with the future_url class.
+ */
+.go_stats_task_status.future_url p,
+.go_stats_task_status.future_url.completed p {
+  margin-top: -5px; }
+
+/* This only applies to the stats page viewed from the dashboard. */
+body.wp-admin .go_stats_task_status p {
+  margin-top: -2px; }
+
+/* 
+ * This makes up for the space that the border takes up on
+ * stage boxes with the future_url class. This only applies
+ * to the stats page viewed from the dashboard.
+ */
+body.wp-admin .go_stats_task_status.future_url p,
+body.wp-admin .go_stats_task_status.future_url.completed p {
+  margin-top: -3px; }
+
+.go_stats_task_stage_url {
+  cursor: pointer !important; }
+
+.go_user {
+  cursor: default; }
+
+.future_url {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid;
+  background-color: #FFF;
+  color: #AAA; }
+
+.completed {
+  background-color: #AAA; }
+
+.future_url.completed {
+  color: #FFF; }
+
+.chosen {
+  background-color: #000;
+  color: #FFF; }
+
+.go_stage_does_not_exist {
+  background-color: #FFF; }
+
+.go_stats_body_list {
+  display: inline-block;
+  width: 30%;
+  height: 100%;
+  float: left;
+  list-style-type: none;
+  margin: 0px 1.5% 0px 0px !important;
+  overflow-y: auto; }
+
+#go_stats_body .go_stats_body_list:last-of-type {
+  margin-right: 0px; }
+
+.go_stats_body_list li:last-of-type {
+  border-bottom: 1px solid #BBB; }
+
+.go_stats_body_list_head {
+  font-weight: bold;
+  border-top: 0px !important;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.go_stats_body_list li {
+  width: 100%;
+  margin: 0px 0px 0px 0px;
+  border-top: 1px solid #BBB; }
+
+/** Reward Styles **/
+.go_stats_reward {
+  white-space: pre-wrap; }
+
+/** Minutes  List **/
+#go_stats_minutes_list {
+  width: 100% !important; }
+
+/** Penalties  List **/
+#go_stats_penalties_list {
+  width: 100% !important; }
+
+/** Badge Styles **/
+.go_badge_wrap {
+  display: inline-block;
+  float: left;
+  margin-right: 25px;
+  height: 120px; }
+
+.go_badge_container {
+  float: left; }
+
+.go_badge {
+  text-align: center;
+  float: left; }
+
+/** Leaderboard Styles **/
+#go_stats_leaderboard {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap; }
+
+#go_stats_leaderboard_filters {
+  position: relative;
+  display: inline-block;
+  float: right;
+  height: 100%;
+  overflow-y: auto; }
+
+#go_stats_leaderboard_classes {
+  margin-bottom: 10px; }
+
+#go_stats_leaderboard_filters_head {
+  font-weight: bold;
+  margin-top: 5px; }
+
+.go_stats_leaderboard_class_wrap span,
+.go_stats_leaderboard_class_choice,
+.go_stats_leaderboard_focus_wrap span,
+.go_stats_leaderboard_focus_choice {
+  vertical-align: middle; }
+
+.go_stats_leaderboard_class_choice,
+.go_stats_leaderboard_focus_choice {
+  margin-right: 5px; }
+
+#go_stats_leaderboard_focuses {
+  margin-bottom: 10px; }
+
+.go_stats_leaderboard_list {
+  display: inline-block;
+  width: 23%; }
+
+.go_stats_item_wrapper {
+  float: left;
+  max-width: 75%;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.go_stats_amount {
+  text-align: right; }
+
+.stage_url {
+  background-color: black !important; }
+
+/**
+ *ACF Loot Color
+ */
+#go_loot_table .acf-switch {
+  background: pink !important;
+  border-color: indianred !important; }
+
+#go_loot_table .acf-switch.-on {
+  background: forestgreen !important;
+  border-color: darkgreen !important; }
+
+/**
+ * Date Picker Setting Row
+ */
+.go_date_picker_modifier_input {
+  height: 30px;
+  width: 70px; }
+
+/**
+ * Task Chain Setting Row
+ */
+.go_task_chain_order_container {
+  margin-bottom: 20px; }
+
+.go_task_chain_order_container:last-of-type {
+  margin-bottom: 0px; }
+
+.go_task_chain_order_title {
+  margin-bottom: 10px; }
+
+.go_task_chain_order_list {
+  margin: 0; }
+
+/**
+ * Task Chain Final Message Setting Row
+ */
+#go_mta_final_chain_message {
+  width: 100%; }
+
+/**
+*set column widths on manage term pages
+ */
+.column-primary {
+  flex: 1 !important; }
+
+.posts.column-posts,
+.manage-column.column-posts,
+.pod_toggle.column-pod_toggle,
+.manage-column.column-pod_toggle {
+  text-align: center;
+  flex: none !important;
+  display: block;
+  width: 40px; }
+
+.pod_achievement.column-pod_achievement,
+.manage-column.column-pod_achievement,
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num,
+.description.column-description,
+.manage-column.column-description,
+.slug.column-slug,
+.manage-column.column-slug {
+  text-align: center;
+  flex: none !important;
+  display: block;
+  width: 100px; }
+
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num {
+  text-align: center;
+  flex: none !important;
+  display: block;
+  width: 75px; }
+
+/*MAPS*/
+.taxonomy-task_chains .pod_achievement.column-pod_achievement,
+.taxonomy-task_chains .pod_toggle.column-pod_toggle,
+.taxonomy-task_chains .pod_done_num.column-pod_done_num {
+  visibility: hidden; }
+
+.child .pod_achievement.column-pod_achievement,
+.child .pod_toggle.column-pod_toggle,
+.child .pod_done_num.column-pod_done_num {
+  visibility: visible; }
+
+/********************
+*	Edit term tables
+hides table on term page until reorder.js is complete
+********************/
+#col-right {
+  display: none; }
+
+ul .row-actions {
+  display: none; }
+
+/*hides description field*/
+.taxonomy-task_chains .term-description-wrap,
+.taxonomy-task_focus_categories .term-description-wrap,
+.taxonomy-task_categories .term-description-wrap,
+.taxonomy-task_menus .term-description-wrap,
+.taxonomy-stask_badges .term-description-wrap,
+.taxonomy-store_types .term-description-wrap {
+  display: none; }
+
+/********************
+*
+********************/
+.wp-has-submenu.toplevel_page_maps_menus .wp-first-item {
+  display: none; }

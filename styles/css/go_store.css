@@ -1,0 +1,249 @@
+/*
+store categories styles
+ */
+
+.store_row {
+display: flex;
+flex-wrap: wrap;
+    }
+    
+.store_cats {
+	width: 300px;
+    float: left;
+    padding: 10px 30px;
+    margin: 10px;
+    background-color: #f8f8f8;
+    }
+
+
+/*
+store lightbox styles
+ */
+
+.go_store_container {
+    display: flex;
+    padding: 10px;
+    height: 100%;
+    }
+
+#go_cost{
+    background-color: pink;
+    margin: 10px;
+}
+
+#go_reward {
+    background-color: lightgreen;
+    margin: 10px;
+}
+
+.go_store_loot_left {
+    position: relative;
+    left: -25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.go_round_button_container {
+    width: 30px;
+}
+
+.go_store_round_button {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    border-radius: 50%;
+    border: 3px solid #cfdcec;
+    overflow: hidden;
+    box-shadow: 0 0 3px grey;
+    padding-bottom: 25px;
+    text-align: center;
+    color: white;
+}
+
+#gp_store_plus {
+    background-color: green;
+}
+#gp_store_minus {
+    background-color: red;
+}
+
+.go_store_loot_right {
+    margin-left: -20px;
+    flex-grow: 1;
+}
+
+#go_store_loot {display: flex; padding-top: 20px;}
+
+#go_cost, #go_reward {flex-grow: 1; padding: 5px;}
+
+#go_badges_groups {clear: both; padding-top: 20px; display: flex;}
+
+#go_badges {float: left; flex-grow: 1;}
+
+#go_groups {padding-left: 20px; flex-grow: 1;}
+
+#go_store_actions {
+    margin-top: 30px;
+    padding: 10px;
+    background-color: lightgoldenrodyellow;
+    display: flex;
+}
+
+#go_purch_limits {
+    flex-grow: 1;
+}
+
+.black_overlay {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 999999;
+    -moz-opacity: 0.8;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+}
+
+.white_content {
+    position: relative;
+    padding: 16px;
+    background-color: white;
+    z-index: 10000000;
+    overflow: auto;
+    border-radius: 3px;
+    border: 1px solid black !important;
+}
+
+.go_lb_closer {
+    position: absolute;
+    top: 7px;
+    right: 13px;
+}
+
+.go-lb-loading {
+    background: url('../../../../../styles/images/ajax-loader.gif');
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+    margin-top: 25%;
+}
+
+#go-buy-loading {
+    background: url('../../types/store/images/ajax-loader-buy-green.gif');
+    width: 16px;
+    height: 11px;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.buy_g {
+    background: url('../../types/store/images/ajax-loader-buy-green.gif');
+}
+
+.buy_r {
+    background: url('../../types/store/images/ajax-loader-buy-red.gif');
+}
+
+.golb-fr-boxes-r {
+    float: left;
+
+    padding: 5px 10px 5px 10px;
+    margin-top: 7px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 1.5%;
+    color: white;
+    background-color: #ff0000;
+    border: 1px solid #c00;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.golb-fr-boxes-r:hover {
+    border-color: black;
+}
+
+.golb-fr-boxes-r:active {
+    border-color: black;
+}
+
+.golb-fr-boxes-n {
+    float: left;
+    padding: 5px 10px 5px 10px;
+    margin-top: 7px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 1.5%;
+    background-color: #808080;
+    color: white;
+    border: 1px solid;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.golb-fr-boxes-gold {
+    float: left;
+    padding: 5px 10px 5px 10px;
+    margin-top: 7px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 1.5%;
+    background-color: #ffcc00;
+    color: white;
+    border: 1px solid;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.golb-fr-boxes-g {
+    float: left;
+    padding: 5px 10px 5px 10px;
+    margin-top: 7px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 1.5%;
+    background-color: #39b54a;
+    color: white;
+    border: 1px solid;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.golb-fr-boxes-g:hover {
+    border-color: black;
+}
+
+.golb-fr-boxes-g:active {
+    border-color: black;
+}
+
+.go_str_item {
+    cursor: pointer;
+}
+
+.go_str_item:hover {
+    cursor: pointer;
+}
+
+#lb-content h2 {
+    font-size: 30px;
+    margin: 0px 0px 5px 0px;
+    padding: 0px;
+}
+
+#golb-fr-purchase-limit {
+    position: realtive;
+    top: 80%;
+}
+
+.ui-spinner {
+    bottom: 1px;
+}

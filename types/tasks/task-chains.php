@@ -10,7 +10,7 @@
 //https://section214.com/2016/01/adding-custom-meta-fields-to-taxonomies/
 //https://developer.wordpress.org/reference/hooks/taxonomy_add_form_fields/
 //https://stackoverflow.com/questions/7526374/how-to-save-a-checkbox-meta-box-in-wordpress
-
+/*
 function task_chains_add_meta_fields( $taxonomy ) {
     echo '<div class="form-field term-group>
 			<label for="pod_toggle">';
@@ -40,13 +40,16 @@ function task_chains_add_meta_fields( $taxonomy ) {
 	
 		<div id="pod_achievement" class="form-field term-group">
 			<label for="pod_achievement">';
-	_e( go_return_options( 'go_badges_name' ).' #', 'my-plugin' );
+	_e( get_option( 'go_badges_name' ).' #', 'my-plugin' );
 	echo '</label>
-			<input type="number" id="pod_achievement" class="number" min="1" max="" step="any" name="pod_achievement"  placeholder="optional: ID # of '.go_return_options( 'go_badges_name' ).'">
+			<input type="number" id="pod_achievement" class="number" min="1" max="" step="any" name="pod_achievement"  placeholder="optional: ID # of '.get_option( 'go_badges_name' ).'">
 		<p class="description">Number of media file for achievement.</p></div>';
 }
 add_action( 'task_chains_add_form_fields', 'task_chains_add_meta_fields', 10, 2 );
+*/
 
+
+/*
 
 function task_chains_edit_meta_fields( $term, $taxonomy ) {
     $my_field = get_term_meta( $term->term_id, 'my_field', true );
@@ -105,6 +108,9 @@ function task_chains_edit_meta_fields( $term, $taxonomy ) {
 		</tr>';
 }
 add_action( 'task_chains_edit_form_fields', 'task_chains_edit_meta_fields', 10, 2 );
+*/
+
+/*
 
 function task_chains_save_taxonomy_meta( $term_id, $tag_id ) {
     if( isset( $_POST['pod_done_num'] ) ) {
@@ -118,74 +124,9 @@ function task_chains_save_taxonomy_meta( $term_id, $tag_id ) {
 }
 add_action( 'created_task_chains', 'task_chains_save_taxonomy_meta', 10, 2 );
 add_action( 'edited_task_chains', 'task_chains_save_taxonomy_meta', 10, 2 );
-
-function task_chains_add_field_columns( $columns ) {;
-    $columns['pod_toggle'] = __( 'Pod', 'my-plugin' );
-    $columns['pod_achievement'] = __( 'Achievement #', 'my-plugin' );
-    
-
-    return $columns;
-}
-
-add_filter( 'manage_edit-task_chains_columns', 'task_chains_add_field_columns' );
-
-function task_chains_add_field_column_contents( $content, $column_name, $term_id ) {
-    switch( $column_name ) {
-        case 'pod_toggle' :
-            $content = get_term_meta( $term_id, 'pod_toggle', true );
-            break;
-        case 'pod_achievement' :
-            $content = get_term_meta( $term_id, 'pod_achievement', true );
-            break;
-    }
-
-    return $content;
-}
-add_filter( 'manage_task_chains_custom_column', 'task_chains_add_field_column_contents', 10, 3 );
+*/
 
 
-//////Limits the dropdown to maps.  Removes items that have a parent from the list.
-add_filter( 'taxonomy_parent_dropdown_args', 'limit_parents_wpse_106164', 10, 2 );
-
-function limit_parents_wpse_106164( $args, $taxonomy ) {
-
-    if ( 'task_chains' != $taxonomy ) return $args; // no change
-
-    $args['depth'] = '1';
-    return $args;
-}
-
-//remove description metabox
-add_action( 'admin_footer-edit-tags.php', 'wpse_56569_remove_cat_tag_description' );
-
-function wpse_56569_remove_cat_tag_description(){
-    global $current_screen;
-    
-    ?>
-    <script type="text/javascript">
-    jQuery(document).ready( function($) {
-        $('#tag-description').parent().remove();
-    });
-    </script>
-    <?php
-}
-
-
-/**
- * Remove default description column from category
- *
- */
-add_filter('manage_edit-task_chains_columns', function ( $columns ) {
-    if( isset( $columns['description'] ) )
-        unset( $columns['description'] );  
-    return $columns;
-});
-
-add_filter('manage_edit-task_chains_columns', function ( $columns ) {
-    if( isset( $columns['slug'] ) )
-        unset( $columns['slug'] );  
-    return $columns;
-});
 
 //////////////END TERM META
 
@@ -448,7 +389,7 @@ function go_task_chain_add_term_rel( $object_id, $tt_id ) {
 		update_post_meta( $object_id, 'go_mta_chain_order', $new_chain_order );
 	}
 }
-add_action( 'add_term_relationship', 'go_task_chain_add_term_rel', 10, 2 );
+//add_action( 'add_term_relationship', 'go_task_chain_add_term_rel', 10, 2 );
 
 /**
  * Gets a task chain's term object from its term taxonomy ID.

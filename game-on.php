@@ -5,9 +5,11 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 3.5
+Version: 4b
 */
+$version = 4.03;
 
+<<<<<<< HEAD
 include( 'go_datatable.php' );
 include( 'go_pnc.php' );
 include( 'go_returns.php' );
@@ -33,32 +35,83 @@ include( 'types/types.php' );
 include( 'go_map.php' );
 include( 'go_store.php' );
 //include( 'go_menus.php' );
+=======
+global $version;
+>>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
-if( ! class_exists( 'wp-featherlight' ) ) {
-	include( 'includes/wp-featherlight/wp-featherlight.php' );
+include_once( 'includes/acf/acf.php' );
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "*.php" ) as $file ) {
+    include_once $file;
 }
 
-if( ! class_exists( 'FitVidsWP' ) ) {
-	// FitVids Plugin is not active
-	include( 'includes/fitvids-for-wordpress/fitvids-for-wordpress.php' );
+foreach ( glob( plugin_dir_path( __FILE__ ) . "src/*.php" ) as $file ) {
+    include_once $file;
 }
 
-if( ! class_exists( 'WP_Term_Order' ) ) {
-	// WP Term Order Plugin is not active
-	include( 'includes/wp-term-order/wp-term-order.php' );
+
+include_once "types/types.php";
+
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "types/store/*.php" ) as $file ) {
+    include_once $file;
 }
 
+foreach ( glob( plugin_dir_path( __FILE__ ) . "types/tasks/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "js/admin/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "js/front/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/admin/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/front/*.php" ) as $file ) {
+    include_once $file;
+}
+
+<<<<<<< HEAD
 //if( ! class_exists( 'CMB2_Bootstrap_2253' ) ) {
 	// CMB2 Plugin is not active
 	//include( 'includes/cmb2/init.php' );
 //}
+=======
+
+
+//if( ! class_exists( 'wp-featherlight' ) ) {
+//	include( 'includes/wp-featherlight/wp-featherlight.php' );
+//}
+
+// include custom ACF fields
+foreach ( glob( plugin_dir_path( __FILE__ ) . "custom-acf-fields/*.php" ) as $file ) {
+    include_once $file;
+}
+>>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
+
+
+// includes
+foreach ( glob( plugin_dir_path( __FILE__ ) . "includes/*.php" ) as $file ) {
+    include_once $file;
+}
+
+
+include( 'includes/wp-frontend-media-master/frontend-media.php' );
+
+
 
 
 /*
  * Plugin Activation Hooks
  */
 
-register_activation_hook( __FILE__, 'go_table_totals' );
+register_activation_hook( __FILE__, 'go_update_db' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
 register_activation_hook( __FILE__, 'go_presets_registration' );
@@ -67,13 +120,19 @@ register_activation_hook( __FILE__, 'go_open_comments' );
 register_activation_hook( __FILE__, 'go_tsk_actv_activate' );
 register_activation_hook( __FILE__, 'go_map_activate' );
 register_activation_hook( __FILE__, 'go_store_activate' );
+//Multisite--create tables on existing blogs
+register_activation_hook( __FILE__, 'go_on_activate_msdb' );
 
 /*
  * Init
  */
 
 
+<<<<<<< HEAD
 /* 
+=======
+/**
+>>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
  * Registers Game On custom post types and taxonomies, then
  * updates the site's rewrite rules to mitigate cpt and 
  * permalink conflicts. flush_rewrite_rules() must always
@@ -96,21 +155,24 @@ function go_flush_rewrites() {
     flush_rewrite_rules();
 }
 
+<<<<<<< HEAD
 
 //function go_register_tax_and_cpt() {
 //	go_register_task_tax_and_cpt();
 //	go_register_store_tax_and_cpt();
 //	flush_rewrite_rules();
 //}
+=======
+>>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 /*
  * Admin Menu & Admin Bar
  */
 
 // actions
-add_action( 'admin_menu', 'add_game_on_options' );
-add_action( 'admin_menu', 'go_clipboard' );
-add_action( 'admin_menu', 'go_pod_submenu' );
+//add_action( 'admin_menu', 'add_game_on_options' );
+//add_action( 'admin_menu', 'go_clipboard' );
+//add_action( 'admin_menu', 'go_pod_submenu' );
 add_action( 'admin_bar_init', 'go_messages_bar' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
 
@@ -121,9 +183,16 @@ add_action( 'admin_bar_init', 'go_admin_bar' );
 add_action( 'admin_init', 'go_tsk_actv_redirect' );
 add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'admin_head', 'go_stats_overlay' );
-add_action( 'admin_head', 'go_store_head' );
+//add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
+<<<<<<< HEAD
 add_action( 'admin_enqueue_scripts', 'go_admin_scripts_and_styles' );
+=======
+add_action( 'admin_enqueue_scripts', 'go_admin_scripts' );
+add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
+add_action( 'admin_enqueue_scripts', 'go_admin_styles' );
+add_action( 'admin_enqueue_scripts', 'go_acf_scripts' );
+>>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 /*
@@ -132,8 +201,16 @@ add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 // actions
 add_action( 'wp_head', 'go_stats_overlay' );
+<<<<<<< HEAD
 add_action( 'wp_head', 'go_frontend_lightbox_html' );
 add_action( 'wp_enqueue_scripts', 'go_scripts_and_styles' );
+=======
+add_action( 'wp_enqueue_scripts', 'go_scripts' );
+add_action( 'wp_enqueue_scripts', 'go_styles' );
+add_action( 'wp_enqueue_scripts', 'go_includes' );
+//add_action( 'wp_enqueue_scripts', 'go_scripts' );
+//add_action( 'wp_head', 'go_frontend_lightbox_html' );
+>>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 // filters
 add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
@@ -144,10 +221,10 @@ add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
 
 add_action( 'delete_user', 'go_user_delete' );
 add_action( 'user_register', 'go_user_registration' );
-add_action( 'show_user_profile', 'go_extra_profile_fields' );
-add_action( 'edit_user_profile', 'go_extra_profile_fields' );
-add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
-add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
+//add_action( 'show_user_profile', 'go_extra_profile_fields' );
+//add_action( 'edit_user_profile', 'go_extra_profile_fields' );
+//add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
+//add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
 add_action( 'wp_footer', 'go_update_totals_out_of_bounds', 21 );
 
 /*
@@ -158,11 +235,12 @@ add_action( 'wp_ajax_go_deactivate_plugin', 'go_deactivate_plugin' );
 add_action( 'wp_ajax_go_clone_post', 'go_clone_post' );
 add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' );
 add_action( 'wp_ajax_go_clipboard_intable_messages', 'go_clipboard_intable_messages' );
+add_action( 'wp_ajax_go_clipboard_intable_activity', 'go_clipboard_intable_activity' );
 add_action( 'wp_ajax_go_user_option_add', 'go_user_option_add' );
-add_action( 'wp_ajax_go_test_point_update', 'go_test_point_update' );
+//add_action( 'wp_ajax_go_test_point_update', 'go_test_point_update' );
 add_action( 'wp_ajax_go_unlock_stage', 'go_unlock_stage' );
 add_action( 'wp_ajax_go_task_change_stage', 'go_task_change_stage' );
-add_action( 'wp_ajax_go_task_abandon', 'go_task_abandon' );
+//add_action( 'wp_ajax_go_task_abandon', 'go_task_abandon' );
 add_action( 'wp_ajax_go_admin_bar_add', 'go_admin_bar_add' );
 add_action( 'wp_ajax_go_admin_bar_stats', 'go_admin_bar_stats' );
 add_action( 'wp_ajax_go_class_a_save', 'go_class_a_save' );
@@ -176,7 +254,7 @@ add_action( 'wp_ajax_go_stats_task_list', 'go_stats_task_list' );
 add_action( 'wp_ajax_go_stats_move_stage', 'go_stats_move_stage' );
 add_action( 'wp_ajax_go_stats_item_list', 'go_stats_item_list' );
 add_action( 'wp_ajax_go_stats_rewards_list', 'go_stats_rewards_list' );
-add_action( 'wp_ajax_go_stats_minutes_list', 'go_stats_minutes_list' );
+add_action( 'wp_ajax_go_stats_activity_list', 'go_stats_activity_list' );
 add_action( 'wp_ajax_go_stats_penalties_list', 'go_stats_penalties_list' );
 add_action( 'wp_ajax_go_stats_badges_list', 'go_stats_badges_list' );
 add_action( 'wp_ajax_go_stats_leaderboard_choices', 'go_stats_leaderboard_choices' );
@@ -201,10 +279,12 @@ add_action( 'wp_ajax_go_mark_read', 'go_mark_read' );
 add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
 add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
 add_action( 'wp_ajax_go_update_last_map', 'go_update_last_map' );
+add_action( 'wp_ajax_nopriv_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
+add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' );
 
 
-/*
+/**
  * Miscellaneous Filters
  */
 
@@ -215,14 +295,11 @@ add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 // (https://wordpress.org/plugins/jetpack/).
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
 
-
-
-
-/*
+/**
  * Important Functions
  */
 
-/**
+/*
  * Determines if a badge exists.
  *
  * @param int $id The attachment ID.
@@ -237,7 +314,7 @@ function go_badge_exists( $id ) {
 	return wp_get_attachment_image_url( $id ) ? true : false;
 }
 
-/**
+/*
  * Appends errors to the configured PHP error log.
  *
  * Use this function to easily output Game On errors.
@@ -287,7 +364,7 @@ function go_tsk_actv_redirect() {
 	if ( get_option( 'go_tsk_actv_do_activation_redirect', false ) ) {
 		delete_option( 'go_tsk_actv_do_activation_redirect' );
 		if ( ! isset( $_GET['activate-multi'] ) ) {
-			wp_redirect( 'admin.php?page=game-on-options.php&settings-updated=true' );
+			wp_redirect( 'admin.php?page=go_options' );
 		}
 	}
 }
@@ -309,6 +386,7 @@ function go_delete_cpt_data( $cpt_id ) {
 	return true;
 }
 
+<<<<<<< HEAD
 
 
 function go_user_redirect( $redirect_to, $request, $user ) {
@@ -344,6 +422,47 @@ function go_user_redirect( $redirect_to, $request, $user ) {
 	} else {
 		return $redirect_to;
 	}
+=======
+function go_user_redirect( $redirect_to, $request, $user )
+{
+    //if (is_user_logged_in()) {
+        //$redirect_on = get_option( 'options_go_landing_page_on_login', true );
+     if (isset($user) && ($user instanceof WP_User)) {
+            $redirect_url = get_option('options_go_landing_page_on_login', '');
+            $default_map = get_option('options_go_locations_map_default', '');
+            $user_id = $user->ID;
+            if ($default_map !== '') {
+                update_user_meta($user_id, 'go_last_map', $default_map);
+            }
+            if (isset($user->roles) && is_array($user->roles)) {
+                $roles = $user->roles;
+                if (is_array($roles)) {
+                    if (in_array('administrator', $roles)) {
+                        return admin_url();
+                    } else {
+                        if (!empty ($redirect_url)) {
+                            return (site_url() . '/' . $redirect_url);
+                        } else {
+                            return site_url();
+                        }
+                    }
+                } else {
+                    if ($roles == 'administrator') {
+                        return admin_url();
+                    } else {
+                        if (!empty ($redirect_url)) {
+                            return (site_url() . '/' . $redirect_url);
+                        } else {
+                            return site_url();
+                        }
+                    }
+                }
+            }
+        } else {
+            return $redirect_to;
+        }
+    //}
+>>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 }
 
 function go_admin_head_notification() {
@@ -469,9 +588,422 @@ function go_user_is_admin( $user_id = null ) {
 	return false;
 }
 
-if( function_exists('acf_add_options_page') ) {
-	
-	acf_add_options_page();
-	
+/**
+ * Resize All Images on Client Side
+ */
+function client_side_resize_load() {
+    wp_enqueue_script( 'client-resize' , plugins_url( '/js/js/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
+    wp_localize_script( 'client-resize' , 'client_resize' , array( 
+        'plupload' => array(
+                'resize' => array(
+                'enabled' => true,
+                'width' => 1920, // enter your width here
+                'height' => 1200, // enter your width here
+                'quality' => 90,
+            ),
+        )
+    ) );
 }
+add_action( 'wp_enqueue_media' , 'client_side_resize_load' );
+
+/**
+ * @param $items
+ * @return string
+ * Modified from:
+ * https://wordpress.stackexchange.com/questions/121309/how-do-i-programatically-insert-a-new-menu-item
+ *
+ */
+
+// Check if the menu exists
+$menu_name = 'go_top_menu';
+$menu_exists = wp_get_nav_menu_object( $menu_name );
+
+// If it doesn't exist, let's create it.
+if( !$menu_exists) {
+    $menu_id = wp_create_nav_menu($menu_name);
+}
+
+function go_new_nav_menu_items($items) {
+
+    $homelink = '<li class="home go_top_menu_1"><a href="' . home_url( '/' ) . '">' . __('Home') . '</a></li>';
+
+    $menu_link = $homelink . $items;
+
+
+    $terms = get_terms( array(
+        'taxonomy' 		=> 'task_menus',
+        'hide_empty'	=> false,
+        'parent'		=> 0,
+    ) );
+    //$menu_link = '<ul class="collapsibleList">';
+    foreach ($terms as $term) {
+        $term_id = $term->term_id;
+        $child_terms = get_terms(array(
+            'taxonomy' => 'task_menus',
+            'hide_empty' => false,
+            'parent' => $term_id,
+        ));
+        $args=array(
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'task_menus',
+                    'field' => 'term_id',
+                    'terms' => $term_id,
+                )
+            ),
+            'posts_per_page'   => -1,
+            'orderby'          => 'meta_value_num',
+            'order'            => 'ASC',
+
+            'meta_key'         => 'go-location_top_order_item',
+            'meta_value'       => '',
+            'post_type'        => 'tasks',
+            'post_mime_type'   => '',
+            'post_parent'      => '',
+            'author'	   => '',
+            'author_name'	   => '',
+            'post_status'      => 'publish',
+            'suppress_filters' => true
+
+        );
+
+        $go_tasks_objs = get_posts($args);
+
+        if (!empty($go_tasks_objs)) {
+
+            $term_name = $term->name;
+            $term_link = get_term_link($term->term_id);
+            //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
+            $menu_link = $menu_link . '<li class="go_top_menu_1"><a href="#">' . __($term_name) . '</a><ul>';
+
+            foreach ($child_terms as $child_term) {
+                $term_id = $child_term->term_id;
+                $args=array(
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'task_menus',
+                            'field' => 'term_id',
+                            'terms' => $term_id,
+                        )
+                    ),
+                    'posts_per_page'   => -1,
+                    'orderby'          => 'meta_value_num',
+                    'order'            => 'ASC',
+
+                    'meta_key'         => 'go-location_top_order_item',
+                    'meta_value'       => '',
+                    'post_type'        => 'tasks',
+                    'post_mime_type'   => '',
+                    'post_parent'      => '',
+                    'author'	   => '',
+                    'author_name'	   => '',
+                    'post_status'      => 'publish',
+                    'suppress_filters' => true
+
+                );
+
+                $go_tasks_objs = get_posts($args);
+
+                 if (!empty($go_tasks_objs)) {
+
+                     $term_name = $child_term->name;
+                     $term_link = get_term_link($child_term->term_id);
+                     //$menu_link = $menu_link . '<li class="go_top_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>' ;
+                     $menu_link = $menu_link . '<li class="go_top_menu_2"><a href="#">' . __($term_name) . '</a>' ;
+
+                     //get the term id of this chain
+                     $term_id = $child_term->term_id;
+                     $args = array('tax_query' => array(array('taxonomy' => 'task_menus', 'field' => 'term_id', 'terms' => $term_id,)),'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
+
+                         'meta_key' => 'go-location_menu_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
+
+                     );
+
+                     $go_tasks_objs = get_posts($args);
+                     if (!empty($go_tasks_objs)) {
+                         $menu_link = $menu_link . '<ul>';
+                         foreach ($go_tasks_objs as $go_tasks_obj) {
+                             $task_link = $go_tasks_obj->guid;
+                             $task_title = $go_tasks_obj->post_title;
+
+                             $menu_link = $menu_link . '<li class="go_menu_task"><a href="' . $task_link . '">' . __($task_title) . '</a></li>';
+
+                         }
+                         $menu_link = $menu_link . '</ul>';
+                     }
+                     $menu_link = $menu_link . '</li>';
+                 }
+            }
+            $menu_link = $menu_link . '</ul></li>';
+        }
+    }
+    //$menu_link = $menu_link . '</ul>';
+    return $menu_link;
+
+}
+add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
+
+
+/**
+ * Task Categories Widget
+ * Modified from: http://www.wpbeginner.com/wp-tutorials/how-to-create-a-custom-wordpress-widget/
+ */
+// Register and load the widget
+function wpb_load_widget() {
+    register_widget( 'wpb_widget' );
+
+}
+add_action( 'widgets_init', 'wpb_load_widget' );
+
+// Creating the widget
+class wpb_widget extends WP_Widget {
+
+    function __construct() {
+        parent::__construct(
+
+            // Base ID of your widget
+            'wpb_widget',
+
+            // Widget name will appear in UI
+            __(get_option('options_go_locations_widget_name'), 'go_widget_domain'),
+
+            // Widget description
+            array( 'description' => __( 'Widget of Categories of Game On', 'go_widget_domain' ), )
+        );
+    }
+
+    // Creating widget front-end
+    public function widget( $args, $instance ) {
+        //$title = apply_filters( 'widget_title', $instance['title'] );
+        $title = get_option('options_go_locations_widget_title');
+
+        // before and after widget arguments are defined by themes
+        echo $args['before_widget'];
+
+            echo $args['before_title'] . $title . $args['after_title'];
+
+        // This is where you run the code and display the output
+        //echo __( 'Hello, World!', 'wpb_widget_domain' );
+        $terms = get_terms( array(
+            'taxonomy' 		=> 'task_categories',
+            'hide_empty'	=> false,
+            'parent'		=> 0,
+        ) );
+		$menu_link = '<ul class="collapsibleList">';
+        foreach ($terms as $term) {
+            $term_id = $term->term_id;
+            $child_terms = get_terms(array(
+                'taxonomy' => 'task_categories',
+                'hide_empty' => false,
+                'parent' => $term_id,
+            ));
+            $args=array(
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'task_categories',
+                        'field' => 'term_id',
+                        'terms' => $term_id,
+                    )
+                ),
+                'posts_per_page'   => -1,
+                'orderby'          => 'meta_value_num',
+                'order'            => 'ASC',
+
+                'meta_key'         => 'go-location_widget_order_item',
+                'meta_value'       => '',
+                'post_type'        => 'tasks',
+                'post_mime_type'   => '',
+                'post_parent'      => '',
+                'author'	   => '',
+                'author_name'	   => '',
+                'post_status'      => 'publish',
+                'suppress_filters' => true
+
+            );
+
+            $go_tasks_objs = get_posts($args);
+
+            if (!empty($go_tasks_objs)) {
+
+                $term_name = $term->name;
+                $term_link = get_term_link($term->term_id);
+                //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
+                $menu_link = $menu_link . '<li class="go_side_menu_1">' . __($term_name) . '<ul>';
+
+                foreach ($child_terms as $child_term) {
+                    $term_id = $child_term->term_id;
+                    $args=array(
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => 'task_categories',
+                                'field' => 'term_id',
+                                'terms' => $term_id,
+                            )
+                        ),
+                        'posts_per_page'   => -1,
+                        'orderby'          => 'meta_value_num',
+                        'order'            => 'ASC',
+                        'posts_per_page'   => 25,
+                        'meta_key'         => 'go-location_widget_order_item',
+                        'meta_value'       => '',
+                        'post_type'        => 'tasks',
+                        'post_mime_type'   => '',
+                        'post_parent'      => '',
+                        'author'	   => '',
+                        'author_name'	   => '',
+                        'post_status'      => 'publish',
+                        'suppress_filters' => true
+
+                    );
+
+                    $go_tasks_objs = get_posts($args);
+
+                     if (!empty($go_tasks_objs)) {
+
+                         $term_name = $child_term->name;
+
+                         //toggle these next 3 lines on/off if you want links on the terms
+                         //$term_link = get_term_link($child_term->term_id);
+                         //$menu_link = $menu_link . '<li class="go_side_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>';
+                         $menu_link = $menu_link . '<li class="go_side_menu_2">' . __($term_name) ;
+
+                         //get the term id of this chain
+                         $term_id = $child_term->term_id;
+                         $args = array('tax_query' => array(array('taxonomy' => 'task_categories', 'field' => 'term_id', 'terms' => $term_id,)), 'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
+
+                             'meta_key' => 'go-location_widget_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
+
+                         );
+
+                         $go_tasks_objs = get_posts($args);
+                         if (!empty($go_tasks_objs)) {
+                             $menu_link = $menu_link . '<ul>';
+                             foreach ($go_tasks_objs as $go_tasks_obj) {
+                                 $task_link = $go_tasks_obj->guid;
+                                 $task_title = $go_tasks_obj->post_title;
+
+                                 $menu_link = $menu_link . '<li class="go_side_menu_task"><a href="' . $task_link . '">' . __($task_title) . '</a></li>';
+
+                             }
+                             $menu_link = $menu_link . '</ul>';
+                         }
+                         $menu_link = $menu_link . '</li>';
+                     }
+                }
+                $menu_link = $menu_link . '</ul></li>';
+            }
+        }
+        $menu_link = $menu_link . '</ul>';
+        echo $menu_link;
+        //echo $args['after_widget'];
+    }
+
+    // Widget Backend
+    public function form( $instance ) {
+        if ( isset( $instance[ 'title' ] ) ) {
+            $title = $instance[ 'title' ];
+        }
+        else {
+            $title = __( get_option('options_go_locations_widget_title'), 'go_widget_domain' );
+        }
+        // Widget admin form
+        ?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+        <?php
+    }
+
+    // Updating widget replacing old instances with new
+    public function update( $new_instance, $old_instance ) {
+        $instance = array();
+        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        return $instance;
+    }
+} // Class go_widget ends here
+
+
+/**
+ * Sort items that show on menu pages
+ *Modified from: https://wordpress.stackexchange.com/questions/39817/sort-results-by-name-asc-order-on-archive-php
+ * https://www.advancedcustomfields.com/resources/orde-posts-by-custom-fields/
+ */
+
+add_action( 'pre_get_posts', 'go_change_sort_order');
+function go_change_sort_order($query){
+
+    // do not modify queries in the admin
+    if( is_admin() ) {
+
+        return $query;
+
+    }
+
+	if ($query->is_tax('task_menus')){
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
+        $query->set('meta_key', 'go-location_top_order_item');
+        $query->set('order', 'ASC');
+	}
+
+	if ($query->is_tax('task_categories')){
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
+        $query->set('meta_key', 'go-location_side_order_item');
+        $query->set('order', 'ASC');
+	}
+
+	/*
+    if ($query->is_tax('task_chains')){
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
+        $query->set('meta_key', 'go-location_map_order_item');
+        $query->set('order', 'ASC');
+    }
+*/
+
+
+
+    // return
+    //return $query;
+
+
+};
+
+//add_action( 'pre_get_posts', 'enfold_customization_author_archives' );
+
+function enfold_customization_author_archives( $query ) {
+    if ( $query -> is_author ) { $query -> set( 'post_type', 'any' ); }
+    remove_action( 'pre_get_posts', 'enfold_customization_author_archives' );
+}
+
+/**
+ * https://wordpress.stackexchange.com/questions/204779/how-can-i-add-an-author-filter-to-the-media-library
+ *
+ */
+function media_add_author_dropdown()
+{
+    $scr = get_current_screen();
+    if ( $scr->base !== 'upload' ) return;
+
+    $author   = filter_input(INPUT_GET, 'author', FILTER_SANITIZE_STRING );
+    $selected = (int)$author > 0 ? $author : '-1';
+    $args = array(
+        'show_option_none'   => 'All Authors',
+        'name'               => 'author',
+        'selected'           => $selected
+    );
+    wp_dropdown_users( $args );
+}
+add_action('restrict_manage_posts', 'media_add_author_dropdown');
+
+//bbPress visual editor
+function bbp_enable_visual_editor( $args = array() ) {
+    $args['tinymce'] = true;
+    return $args;
+}
+add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
+
+
 ?>

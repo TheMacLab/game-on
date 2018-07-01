@@ -1,5 +1,9 @@
+
+
 //https://stackoverflow.com/questions/918792/use-jquery-to-change-an-html-tag
-//extend jquery to replace tags.  used to turn term table into list in later functions.
+//extend jquery to replace tags.  Used to turn term table into list.
+
+
 jQuery.extend({
     replaceTag: function (currentElem, newTagObj, keepProps) {
         var $currentElem = jQuery(currentElem);
@@ -52,78 +56,59 @@ jQuery("#cb-select-all-2").click(function() {
 });
 
 
-//////ADDED BY GAME ON
-///when document is ready, check to see if items are parents or children
-//if successful make a sortable list, (not a table)
 
-//jQuery("#submit").click(function() {
-//jQuery("#the-list").bind("DOMSubtreeModified", function(){
-//    $(this).document.reload();
-//});
-
-
-//	jQuery("#col-right").css("display", "none");
-//	alert("hi");
-	//table_to_list();
-
-
-	
-
-//jQuery(document).ready(table_to_list());
-	
 
 jQuery(document).ready(function(){
-	
+
     var idArray = [];
     //make array of all the term ids
-    jQuery("#the-list tr").each(function () {
+    jQuery("#the-list").find("tr").each(function () {
     	idArray.push(this.id);
     });
 
-    /////pass the entire array and use JSON to parse and set class    	
     	termDivIDs = (idArray);
     	//alert (termID);
-        jQuery.ajax({	
+        jQuery.ajax({
 		type: "POST",
 		//dataType: 'json',
 		url : ajax_url,
-		
+
 			data: {
 				'action':'check_if_top_term',
 				'goTermDivIDs' : termDivIDs,
 			},
-			success:function(status) {	
+			success:function(status) {
 				var StatusArray = jQuery.parseJSON(status);
 				for (var i = 0; i < idArray.length; i++){
 					var status = StatusArray[i];
 					var rowid = ("#" + idArray[i]);
 					jQuery(rowid).addClass(status);
-				}				
-////////Change table to List			
-				jQuery("#the-list .parent").each(function (index) {
-					jQuery(this).wrapInner('<div class="container parent"></div>'); 
+				}
+				////////Change table to List
+				jQuery("#the-list").find(".parent").each(function (index) {
+					jQuery(this).wrapInner('<div class="container parent"></div>');
 					var currentID = jQuery(this).attr('id');
-   					jQuery(this).nextUntil(".parent").andSelf().wrapAll('<li id=' + currentID + ' class="sortset"></li>');  					
+   					jQuery(this).nextUntil(".parent").andSelf().wrapAll('<li id=' + currentID + ' class="sortset"></li>');
 					var currentID = jQuery(this).attr('id');
    					jQuery(this).nextUntil(".parent").wrapAll('<ul id=' + currentID + ' class="children ulSortable"></ul>');
-   					
+
    					jQuery(this).contents().unwrap();
-   					
+
 				});
 
-				jQuery("#the-list .child").each(function (index) {
-   					jQuery(this).wrapInner('<div class="container child"></div>');  					
+				jQuery("#the-list").find(".child").each(function (index) {
+   					jQuery(this).wrapInner('<div class="container child"></div>');
 				});
 				jQuery('tbody#the-list').replaceTag('<ul>', true);
 				jQuery('#the-list').addClass('ulSortable', true);
-				jQuery('#the-list tr').replaceTag('<li>', true);
-				jQuery('#the-list td').replaceTag('<div>', true);
-				
+				jQuery('#the-list').find('tr').replaceTag('<li>', true);
+				jQuery('#the-list').find('td').replaceTag('<div>', true);
+
 				jQuery('.container').prepend('<div class="handleLeft"><i class="fa fa-arrows-v fa-1x" aria-hidden="true"></i></div>' );
-				
+
 				jQuery('.container.parent').append('<div class="handleRight"><i class="fa fa-chevron-up fa-1x" aria-hidden="true"></i></i></div>' );
 				jQuery('.container.child').append('<div class="handleRight_nograb"></div>' );
-				
+
 				//Edit Inline (Quick Edit)
 				//this doesn't work yet
 				/*
@@ -137,33 +122,33 @@ jQuery(document).ready(function(){
 					jQuery( ':input[name="order"]', '.inline-edit-row' ).val( order );
 				 } );
 				 */
-				 
-				/* 
+
+				/*
 				//Event Listener on mouseover show actions
 				jQuery( "#the-list .column-name" ).mouseover(function() {
   					jQuery(this).find('.row-actions').css( "left", "0px" );
 				});
-				
-    			
+
+
     			jQuery("#the-list .column-name").mouseout(function() {
        				jQuery(this).find('.row-actions').css( "left", "-99999em" );
        				//hideChildren ();
     			});
     			*/
-    			
+
 				jQuery(".handleRight").mousedown(function() {
    						 jQuery(".child.ui-sortable-handle").css('display','none');
 					jQuery("body").mouseup(function() {
        					jQuery(".child.ui-sortable-handle").css('display','block');
-    				});	
+    				});
 				});
-				
-//////////////////////////Begin Sortable List
 
-				
+				//////////////////////////Begin Sortable List
+
+
 				var sortable_terms_table = jQuery( '.ulSortable' ),
 				taxonomy = jQuery( 'form input[name="taxonomy"]' ).val();
-		
+
 				sortable_terms_table.sortable( {
 
 					// Settings
@@ -191,14 +176,14 @@ jQuery(document).ready(function(){
 					 */
 					start: function ( e, ui ) {
 						//sortable_terms_table.sortable( "refreshPositions" );
-						//sortable_terms_table.sortable('refresh'); 
-						
+						//sortable_terms_table.sortable('refresh');
+
 						if ( typeof ( inlineEditTax ) !== 'undefined' ) {
 							inlineEditTax.revert();
 						}
 
 						ui.placeholder.height( ui.item.height() );
-						ui.item.parent().parent().addClass( 'dragging' );	
+						ui.item.parent().parent().addClass( 'dragging' );
 					},
 
 					/**
@@ -210,10 +195,10 @@ jQuery(document).ready(function(){
 					 */
 					helper: function ( e, ui ) {
 						//sortable_terms_table.sortable( "refreshPositions" );
-						//sortable_terms_table.sortable('refresh'); 
+						//sortable_terms_table.sortable('refresh');
 						ui.children().each( function() {
 							jQuery( this ).width( jQuery( this ).width() );
-						
+
 						} );
 
 						return ui;
@@ -231,7 +216,7 @@ jQuery(document).ready(function(){
 						ui.item.children( '.row-actions' ).show();
 						ui.item.parent().parent().removeClass( 'dragging' );
 						//jQuery(".children").show();
-						//window.location.reload();	
+						//window.location.reload();
 					},
 					*/
 
@@ -254,15 +239,15 @@ jQuery(document).ready(function(){
 
 						if ( prevterm.length > 0 ) {
 							prevtermid = prevterm.attr( 'id' ).substr( strlen );
-							
+
 						}
 
 						var nexttermid = false,
 							nextterm   = ui.item.next();
-							
+
 						if ( nextterm.length > 0 ) {
 							nexttermid = nextterm.attr( 'id' ).substr( strlen );
-							
+
 						}
 
 						// Go do the sorting stuff via ajax
@@ -276,9 +261,9 @@ jQuery(document).ready(function(){
 
 						//jQuery(".child").css({"display":"block", "height" : ""} );
 					}
-/////////////end of sortable function
+					/////////////end of sortable function
 				} );
-								
+
 				/**
 				 * Update the term order based on the ajax response
 				 *
@@ -293,12 +278,12 @@ jQuery(document).ready(function(){
 					}
 					*/
 					//alert(response);
-					
+
 					var changes = jQuery.parseJSON( response ),
 						new_pos = changes.new_pos;
-					
+
 					for ( var key in new_pos ) {
-					
+
 						if ( 'next' === key ) {
 							continue;
 						}
@@ -352,7 +337,7 @@ jQuery(document).ready(function(){
 							tax:      taxonomy
 						}, term_order_update_callback );
 
-						
+
 					} else {
 						setTimeout( function() {
 							jQuery( '.to-row-updating' ).removeClass( 'to-row-updating' );
@@ -362,66 +347,64 @@ jQuery(document).ready(function(){
 					}
 				}
 
-
-
-/////////////////
-				
-	
-				
 				jQuery("thead li").each(function (index) {
-   					jQuery(this).wrapInner('<div class="container term_list_header"></div>');  					
+   					jQuery(this).wrapInner('<div class="container term_list_header"></div>');
 				});
-				
+
 				jQuery("tfoot li").each(function (index) {
-   					jQuery(this).wrapInner('<div class="container term_list_footer"></div>');  					
+   					jQuery(this).wrapInner('<div class="container term_list_footer"></div>');
 				});
-				
+
 				jQuery('thead').wrapInner('<div class="the-list-header"></div>');
 				jQuery('thead').contents().unwrap();
 				jQuery('th').replaceTag('<div>', true);
-				
+
 				jQuery('tfoot').wrapInner('<div class="the-list-footer"></ul>');
 				jQuery('tfoot').contents().unwrap();
-				
+
 
 
 				jQuery('.the-list-footer tr').prepend('<div class="handleLeft"></div>' );
 				jQuery('.the-list-header tr').prepend('<div class="handleLeft"></div>' );
 				jQuery('.the-list-footer tr').append('<div class="handleRight_nograb"></div>' );
-				jQuery('.the-list-header tr').append('<div class="handleRight_nograb"></div>' );	
-				
+				jQuery('.the-list-header tr').append('<div class="handleRight_nograb"></div>' );
+
 				jQuery('.the-list-header tr').replaceTag('<div class=container>', true);
 				jQuery('.the-list-header td').replaceTag('<div>', true);
-				
+
 				jQuery('.the-list-footer tr').replaceTag('<div class=container>', true);
-				jQuery('.the-list-footer td').replaceTag('<div>', true);		
-				
+				jQuery('.the-list-footer td').replaceTag('<div>', true);
+
 				jQuery("#col-right").css("display", "block");
-				
+
 				///if submit button is pressed, reload content and redo list from table
 				jQuery("#submit").click(function() {
 					jQuery("#col-right").css("display", "none");
 					jQuery("#col-right").bind("DOMSubtreeModified", function(){
 						location.reload();
-					});	
+					});
 					if ((jQuery(".term-name-wrap").hasClass( "form-invalid" )) == true){
-						jQuery("#col-right").unbind("DOMSubtreeModified");		
+						jQuery("#col-right").unbind("DOMSubtreeModified");
+                        jQuery("#col-right").css("display", "block");
 					}
-					jQuery("#col-right").css("display", "block");
+                    jQuery( ".formfield" ).hasClass( "form-invalid" ).css("display", "block");
+
+					//jQuery("#col-right").css("display", "block");
 				});
-				
-//end success of ajax			
+
+//end success of ajax
 		},
 		error: function(errorThrown){
 			console.log(errorThrown);
 			console.log("fail");
-		}	
-//end ajax and end on ready			
+		}
+//end ajax and end on ready
 	});
-	
-		
+
+
 
 });
 
 
-	
+
+
