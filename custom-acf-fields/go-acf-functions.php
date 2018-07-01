@@ -20,10 +20,10 @@ function acf_load_section_choices( $field ) {
 
 
     // if has rows
-    if( have_rows('sections', 'option') ) {
+    if( have_rows('go_sections', 'option') ) {
 
         // while has rows
-        while( have_rows('sections', 'option') ) {
+        while( have_rows('go_sections', 'option') ) {
 
             // instantiate row
             the_row();
@@ -41,34 +41,9 @@ function acf_load_section_choices( $field ) {
 
 }
 
-add_filter('acf/load_field/name=lock_sections_js_load', 'acf_load_section_choices');
+add_filter('acf/load_field/name=lock_sections', 'acf_load_section_choices');
 add_filter('acf/load_field/name=user-section', 'acf_load_section_choices');
-add_filter('acf/load_field/name=sched_sections_js_load', 'acf_load_section_choices');
-
-//not sure if this is needed
-function acf_load_course_sections( $field ) {
-
-    // reset choices
-    $field['choices'] = array();
-
-    // get the class periods from options page without any formatting
-    $choices = get_option( 'go_class_a' );
-
-    // loop through array and add to field 'choices'
-    if( is_array($choices) ) {
-
-        foreach( $choices as $choice ) {
-
-            $field['choices'][ $choice ] = $choice;
-        }
-    }
-
-    // return the field
-    return $field;
-}
-
-add_filter('acf/load_field/name=course_section', 'acf_load_course_sections');
-
+add_filter('acf/load_field/name=sched_sections', 'acf_load_section_choices');
 
 
 
@@ -85,10 +60,10 @@ function acf_load_seat_choices( $field ) {
 
 
     // if has rows
-    if( have_rows('seats', 'option') ) {
+    if( have_rows('go_seats', 'option') ) {
 
         // while has rows
-        while( have_rows('seats', 'option') ) {
+        while( have_rows('go_seats', 'option') ) {
 
             // instantiate row
             the_row();
@@ -162,6 +137,9 @@ add_action( 'init', 'go_late_init_flush', 999999 );
  * @param $item_order_field
  * @param $toggle
  * @param $term
+ * The order is saved to a field that is assigned in the class-acf-order_posts.php file
+ * That value is then saved here again so it can be loaded back in to the field for all the
+ * items in this taxonomy.
  */
 function go_update_order($post_id, $order_field, $item_order_field, $toggle, $term)  {
     $term_obj = get_term($term);
@@ -169,7 +147,6 @@ function go_update_order($post_id, $order_field, $item_order_field, $toggle, $te
         $taxonomy = $term_obj->taxonomy;
         //$term_order = get_term_meta( $term, 'go_order', true );
         $order = get_post_meta($post_id, $order_field, true);
-
 
         if ($toggle == false) {
             delete_post_meta($post_id, $item_order_field);
@@ -225,6 +202,13 @@ function acf_update_order($post_id ) {
     $toggle = get_post_meta ($post_id, 'go-location_map_toggle', true);
     $term = get_post_meta ($post_id, 'go-location_map_loc', true);
     go_update_order($post_id, $order_field, $item_order_field, $toggle, $term);
+
+    $order_field = 'go-store-location_store-sec_order';
+    $item_order_field = 'go-store-location_store_item';
+    $toggle = get_post_meta ($post_id, 'go-store-location_store-sec_toggle', true);
+    $term = get_post_meta ($post_id, 'go-store-location_store-sec_loc', true);
+    go_update_order($post_id, $order_field, $item_order_field, $toggle, $term);
+
 }
 add_action('acf/save_post', 'acf_update_order', 99);
 

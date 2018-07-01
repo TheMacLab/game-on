@@ -27,10 +27,38 @@ jQuery("input,select").bind("keydown", function (e) {
     var keyCode = e.keyCode || e.which;
     if(keyCode === 13) {
         e.preventDefault();
-        $('input, select, textarea')
-            [$('input,select,textarea').index(this)+1].focus();
+        jQuery('input, select, textarea')
+            [jQuery('input,select,textarea').index(this)+1].focus();
     }
 });
 
+
+/*
+on the create new taxonomy term page,
+this hides the acf stuff until a parent map is selected
+ */
+
+jQuery(document).ready(function(){
+
+
+    if(jQuery('#parent').val() == -1){
+        jQuery('#acf-term-fields').hide();
+    }
+    else{
+        jQuery('#acf-term-fields').show();
+        jQuery('h2').show();
+    }
+
+    jQuery('#parent').change(function(){
+        if(jQuery(this).val() == -1){
+            jQuery('#acf-term-fields').hide();
+        }
+        else{
+            jQuery('#acf-term-fields').show();
+            jQuery('h2').show();
+        }
+    });
+
+});
 
 

@@ -32,14 +32,17 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
     /**
      * This section is for the password lock
      */
-    if ($custom_fields['go_lock_toggle'][0] == true && $custom_fields['go_password_lock'][0] == true){
+    $go_lock_toggle = (isset($custom_fields['go_lock_toggle'][0]) ?  $custom_fields['go_lock_toggle'][0] : null);
+    $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
+    if ($go_lock_toggle == true && $go_password_lock == true){
         $task_is_locked = true;
     }
 
     /**
      * This section is for the chain locks
      */
-    if ($custom_fields['go-location_map_toggle'][0] == true) {
+    $location_map_toggle = (isset($custom_fields['go-location_map_toggle'][0]) ?  $custom_fields['go-location_map_toggle'][0] : null);
+    if ($location_map_toggle == true) {
         ob_start();
         $task_is_locked_cl = go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only);
         $chain_message = ob_get_clean();
@@ -55,7 +58,8 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
     /**
      * This section is for the scheduled access
      */
-    if ($custom_fields['go_sched_toggle'][0] == true) {
+    $go_sched_toggle = (isset($custom_fields['go_sched_toggle'][0]) ?  $custom_fields['go_sched_toggle'][0] : null);
+    if ($go_sched_toggle == true) {
         ob_start();
         $task_is_locked_sa = go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only);
         $scheduled_message = ob_get_clean();
@@ -73,21 +77,28 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
      * Loop to check all the locks and keys
      */
     if ($custom_fields['go_lock_toggle'][0] == true ) {
-        $task_is_locked_l = false;
-        $num_locks = $custom_fields['go_locks'][0];
-        for ($i = 0; $i < $num_locks; $i++) {
+        if (!$check_only) {
+            $task_caps = ucwords($task_name);
+            $lock_message = (isset($custom_fields['go_lock_message'][0]) ?  $custom_fields['go_lock_message'][0] : null);
             ob_start();
+            echo '<div class="go_locks"><h3 class="go_error_red">Locked ' . $task_caps . '</h3>' . $lock_message . '<br>You must unlock one lock to continue.';
+        }
+        //$task_is_locked = false;
+        $num_locks = $custom_fields['go_locks'][0];
+        $lock_num_display = 1;
+        $print_locks = false;
+        for ($i = 0; $i < $num_locks; $i++) {
+            if (!$check_only) {
+                ob_start();
+                if ($lock_num_display > 1){
+                    echo '-or-';
+                }
+                echo '<div class="go_lock"><p>Lock ' . $lock_num_display . '<ul>';
+            }
             $this_lock = false;
             $lock_num = "go_locks_" . $i . "_keys";
             $num_keys = $custom_fields[$lock_num][0];
-            if (!$check_only) {
-                if ($task_is_locked_l == true) {
-                    echo '-or-<div class="go_lock"><p>Lock ' . ($i + 1) . '<ul>';
-                } else {
-                    $task_caps = ucwords($task_name);
-                    echo '<div class="go_locks"><h3 class="go_error_red">Locked ' . $task_caps . '</h3>You must unlock one lock to continue.<div class="go_lock"><p>Lock ' . ($i + 1) . '<ul>';
-                }
-            }
+
             for ($k = 0; $k < $num_keys; $k++) {
                 $key_type = "go_locks_" . $i . "_keys_" . $k . "_key";
                 $key_type = $custom_fields[$key_type][0];
@@ -96,22 +107,37 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
                 }
                 if ($key_type != null) {
                     $this_lock = $key_type($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only);
+                    $print_locks = true;
+                }
+
+                if ($this_lock == true){
+                    $task_is_locked = true;
+                    $this_lock_on = true;
                 }
             }
-            if ($this_lock == true){
-                $task_is_locked_l = true;
-            }
             if (!$check_only) {
-                echo '</ul></p></div>';
-                echo '</div>';
-                $message1 = ob_get_clean();
+                echo '</ul></div>';
+                if ($this_lock_on) {
+                    $lock_num_display++;
+                    echo ob_get_clean();
+                } else {
+                    ob_end_clean();
+                }
+            }
 
+        }
+        if (!$check_only) {
+            echo '</div>';
+            $message1 = ob_get_clean();
+            if($task_is_locked && $print_locks == true) {
                 echo $message1;
             }
         }
+
     }
     if ($task_is_locked_l){
         $task_is_locked = true;
+
     }
 
     //Locks End
@@ -124,6 +150,7 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
  */
 function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
+    $is_admin = go_user_is_admin( $user_id );
     $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_until";
     $start_filter = $custom_fields[$option][0];
 
@@ -137,6 +164,9 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
             $time_string = date('g:i A', $start_unix) . ' on ' . date('D, F j, Y', $start_unix);
             if (!$check_only) {
                 echo "<li class='go_error_red'>It is after {$time_string}.</li>";
+
+                    echo go_timezone_message($user_id);
+
             }
             $this_lock = true;
 
@@ -150,12 +180,12 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
  * Lock After Date
  */
 function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
+    $is_admin = go_user_is_admin( $user_id );
     $this_lock = false;
     $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_after";
     $start_filter = $custom_fields[$option][0];
 
     // holds the output to be displayed when a non-admin has been stopped by the start filter
-    $time_string = '';
     $unix_now = current_time('timestamp');
     if (!empty($start_filter)) {
         $start_unix = strtotime($start_filter);
@@ -166,6 +196,8 @@ function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
             $time_string = date('g:i A', $start_unix) . ' on ' . date('D, F j, Y', $start_unix);
             if (!$check_only) {
                 echo "<li class='go_error_red'>This " . $task_name . " was only available until {$time_string}.</li>";
+                    echo go_timezone_message($user_id);
+
             }
             $this_lock = true;
         }
@@ -234,7 +266,7 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
 function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
     if( $is_logged_in ) {
-        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_lock_sections_js_load";
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_lock_sections";
         $terms_needed = $custom_fields[$option][0];
         $terms_needed = unserialize($terms_needed);
         // gets the current user's period(s)
@@ -280,53 +312,89 @@ function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
 }
 
 /**
- * xp Lock --not finished
+ * Minimum XP Lock
  */
+
 function go_xp_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
     if( $is_logged_in ) {
-        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_sections";
-        $terms_needed = $custom_fields[$option][0];
-        //$terms_needed = unserialize($terms_needed);
-        // gets the current user's period(s)
-        $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
-        $user_terms = array();
-        for ($i = 0; $i < $num_terms; $i++) {
-
-            $user_period = "go_section_and_seat_" . $i . "_user-section";
-            $user_period = get_user_meta($user_id, $user_period, true);
-            $user_terms[] = $user_period;
-        }
-
-        //if the current user is in a class period then check if it is the right one
-        if (!$user_terms) {
-            $user_terms = array();
-        }
-
-        // determines if the user has the correct badges
-        if (!empty($terms_needed)) {
-            // checks to see if the filter array are in the the user's badge array
-            $intersection = array_values(array_intersect($user_terms, $terms_needed));
-            // stores an array of the badges that were not found in the user's badge array
-            $term_diff = array_diff($terms_needed, $intersection);
-            if (!empty($term_diff)) {
-                if (!$check_only) {
-                    echo "<li class='go_error_red'>You need to have XP to continue.</li>";
-                    echo "<ul class='go_term_list go_error_red'>";
-                    foreach ($term_diff as $term_id) {
-                        //$term_object = get_term($term_id);
-                        //$term_name = $term_object->name;
-                        if (!empty($term_id)) {
-                            echo "<li>$term_id</li>";
-                        }
-                    }
-                    echo "</ul>";
-                }
-                $this_lock = true;
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_xp";
+        $xp_needed = $custom_fields[$option][0];
+        //get user health from totals table
+        $user_xp = go_get_user_loot ($user_id, 'xp');
+        $xp_name = get_option('options_go_loot_xp_name');
+        if ($user_xp < $xp_needed){
+            if (!$check_only) {
+                echo "<br><span class='go_error_red'>You must have {$xp_needed} {$xp_name} to access this {$task_name}.</span></br>";
             }
+            $this_lock = true;
         }
     }
+    return $this_lock;
+}
 
+/**
+ * Minimum C4 Lock
+ */
+
+function go_c4_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
+    $this_lock = false;
+    if( $is_logged_in ) {
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_c4";
+        $c4_needed = $custom_fields[$option][0];
+        //get user health from totals table
+        $user_c4 = go_get_user_loot($user_id, 'c4');
+        $c4_name = get_option('options_go_loot_c4_name');
+        if ($user_c4 < $c4_needed){
+            if (!$check_only) {
+                echo "<br><span class='go_error_red'>You must have {$c4_needed} {$c4_name} to access this {$task_name}.</span></br>";
+            }
+            $this_lock = true;
+        }
+    }
+    return $this_lock;
+}
+
+/**
+ * Minimum Gold Lock
+ */
+
+function go_gold_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
+    $this_lock = false;
+    if( $is_logged_in ) {
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_gold";
+        $gold_needed = $custom_fields[$option][0];
+        //get user health from totals table
+        $user_gold = go_get_user_loot ($user_id, 'gold');
+        $gold_name = get_option('options_go_loot_gold_name');
+        if ($user_gold < $gold_needed){
+            if (!$check_only) {
+                echo "<br><span class='go_error_red'>You must have {$gold_needed} {$gold_name} to access this {$task_name}.</span></br>";
+            }
+            $this_lock = true;
+        }
+    }
+    return $this_lock;
+}
+
+/**
+ * Minimum Health Lock
+ */
+function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
+    $this_lock = false;
+    if( $is_logged_in ) {
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_health";
+        $health_needed = $custom_fields[$option][0];
+        //get user health from totals table
+        $user_health = go_get_user_loot ($user_id, 'health');
+        $health_name = get_option('options_go_loot_health_name');
+        if ($user_health < $health_needed){
+            if (!$check_only) {
+                echo "<br><span class='go_error_red'>You must have {$health_needed} {$health_name} to access this {$task_name}.</span></br>";
+            }
+            $this_lock = true;
+        }
+    }
     return $this_lock;
 }
 
@@ -382,30 +450,10 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
 }
 
 /**
- * Minimum Health Lock
- */
-function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
-    $this_lock = false;
-    if( $is_logged_in ) {
-        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_health";
-        $health_needed = $custom_fields[$option][0];
-        //get user health from totals table
-        //$user_health = get from totals table
-        $health_name = get_option('options_go_loot_health_name');
-        //if ($user_health < $health_needed){
-        // echo "<br><span class='go_error_red'>You must have {$option} {$health_name} to access this {$task_name}.</span></br>";
-        //$this_lock = true;
-        //}
-    }
-    return $this_lock;
-}
-
-/**
  * schedule Lock
  */
 function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only){
     if( $is_logged_in ) {
-
         $is_locked = true;
         $user_terms = array();
         $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
@@ -413,32 +461,43 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
 
             $user_period = "go_section_and_seat_" . $i . "_user-section";
             $user_period = get_user_meta($user_id, $user_period, true);
-            $user_terms[] = $user_period;
+            $user_terms[] = $user_period;//an array of the class periods the user is in
         }
 
+        $sched_num = (isset($custom_fields['go_sched_opt'][0]) ?  $custom_fields['go_sched_opt'][0] : null); //the number of schedule locks
 
-        date_default_timezone_set('America/Los_Angeles');
-        $sched_num = $custom_fields['go_sched_opt'][0];
+        //loop through the locks to see if any one of them allows the user to proceed
         for ($i = 0; $i < $sched_num; $i++) {
-            $dow_section = "go_sched_opt_" . $i . "_sched_sections_js_load";
-            $dow_section = unserialize($custom_fields[$dow_section][0]);
-            if (!$dow_section){$dow_section = array();}
+            $dow_section = "go_sched_opt_" . $i . "_sched_sections";
+
+            $dow_section = (isset($custom_fields[$dow_section][0]) ?  unserialize($custom_fields[$dow_section][0]) : null);
+
+            if (!$dow_section){
+                $dow_section = array();
+            }
             $dow_days = "go_sched_opt_" . $i . "_dow";
-            $dow_days = unserialize($custom_fields[$dow_days][0]);
+            $dow_days = (isset($custom_fields[$dow_days][0]) ?  unserialize($custom_fields[$dow_days][0]) : null);
             if (!$dow_days){$dow_days = array();}
+
             $dow_time = "go_sched_opt_" . $i . "_time";
-            $dow_time = $custom_fields[$dow_time][0];
-            if (!$dow_time){$dow_time = array();}
-            $dow_minutes = "go_sched_opt_" . $i . "_min";
-            $dow_minutes = $custom_fields[$dow_minutes][0];
-            if (!$dow_minutes){$dow_minutes = array();}
+            $dow_time = (isset($custom_fields[$dow_time][0]) ?  $custom_fields[$dow_time][0] : null);
             $dow_time = strtotime($dow_time);
+            $offset = 3600 * get_option('gmt_offset');
+            $dow_time = $dow_time + $offset;
+
+            $dow_minutes = "go_sched_opt_" . $i . "_min";
+            $dow_minutes = (isset($custom_fields[$dow_minutes][0]) ?  $custom_fields[$dow_minutes][0] : null);
+            $seconds_available = 60 * $dow_minutes;
+
+            $current_time = current_time( 'timestamp' );
+
             //If the user is in at least one section, continue . . .
             if ((array_intersect($user_terms, $dow_section) != null) || (empty ($dow_section))) {
                 //If today is one of the days it ulocks
                 if (in_array(date("l"), $dow_days)) {
+
                     //if the current time is between the start time and the start time and the minutes unlocked
-                    if ((time() >= strtotime($dow_time)) && (time() < ($dow_time + ($dow_minutes * 60)))) {
+                    if (($current_time >= $dow_time) && ($current_time < ( $dow_time + $seconds_available ))) {
                         //it is unlocked, so exit loop and continue
                         $is_locked = false;
 
@@ -449,30 +508,38 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
         }
 
         if ($is_locked == true) {
-            $task_is_locked = true;
             if (!$check_only) {
+                $lock_message = (isset($custom_fields['go_sched_access_message'][0]) ?  $custom_fields['go_sched_access_message'][0] : null);
+                if (!empty ($lock_message)){
+                    $lock_message = $lock_message . '<br>';
+                }
 
-                echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Access Schedule</h3>";
+                echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Access Schedule</h3>$lock_message";
+                //echo current_time( 'timestamp' );
 
                 $first = true;
                 for ($i = 0; $i < $sched_num; $i++) {
-                    $dow_section = "go_sched_opt_" . $i . "_sched_sections_js_load";
-                    $dow_section = unserialize($custom_fields[$dow_section][0]);
+                    $dow_section = "go_sched_opt_" . $i . "_sched_sections";
+                    //$dow_section = unserialize($custom_fields[$dow_section][0]);
+                    $dow_section = (isset($custom_fields[$dow_section][0]) ?  unserialize($custom_fields[$dow_section][0]) : null);
                     if (!$dow_section) {
                         $dow_section = array();
                     }
                     $dow_days = "go_sched_opt_" . $i . "_dow";
-                    $dow_days = unserialize($custom_fields[$dow_days][0]);
+                    //$dow_days = unserialize($custom_fields[$dow_days][0]);
+                    $dow_days = (isset($custom_fields[$dow_days][0]) ?  unserialize($custom_fields[$dow_days][0]) : null);
                     if (!$dow_days) {
                         $dow_days = array();
                     }
                     $dow_time = "go_sched_opt_" . $i . "_time";
-                    $dow_time = $custom_fields[$dow_time][0];
+                    //$dow_time = $custom_fields[$dow_time][0];
+                    $dow_time = (isset($custom_fields[$dow_time][0]) ?  $custom_fields[$dow_time][0] : null);
                     if (!$dow_time) {
                         $dow_time = array();
                     }
                     $dow_minutes = "go_sched_opt_" . $i . "_min";
-                    $dow_minutes = $custom_fields[$dow_minutes][0];
+                    //$dow_minutes = $custom_fields[$dow_minutes][0];
+                    $dow_minutes = (isset($custom_fields[$dow_minutes][0]) ?  $custom_fields[$dow_minutes][0] : null);
                     if (!$dow_minutes) {
                         $dow_minutes = array();
                     }
@@ -494,10 +561,14 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
                     $first = false;
 
                 }
-                echo "</div>";
+
+                echo go_timezone_message($user_id);
+
+                echo '</div>';
             }
+            return $is_locked;
         }
-        return $task_is_locked;
+
     }
 }
 
@@ -705,5 +776,21 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
     }
 }
 
+/**
+ * Timezone message
+ */
+function go_timezone_message($user_id) {
+    $is_admin = go_user_is_admin( $user_id );
+    $timezone = get_option('timezone_string');
+    $current_time = current_time('timestamp');
+    $offset = 3600 * get_option('gmt_offset');
+    $current_time = $current_time - $offset;
+    $current_time = date( 'g:ia l', $current_time );
+    echo '<div><br> This lock is set based on the timezone ' . $timezone . ' where it is currently ' . $current_time . '.';
+    if ($is_admin){
+        echo '<br>Admin Message: This setting can be changed in the <a href="' . admin_url('options-general.php') . '">wordpress settings.</a> ';
+    }
+    echo '</div>';
+}
 
 ?>

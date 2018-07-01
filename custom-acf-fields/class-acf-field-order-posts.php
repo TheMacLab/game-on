@@ -339,6 +339,8 @@ class acf_field_order_posts extends acf_field {
                 $meta_key = 'go-location_top_order_item';
             } else if ($taxonomy == 'task_categories') {
                 $meta_key = 'go-location_side_order_item';
+            } else if ($taxonomy == 'store_types') {
+                $meta_key = 'go-store-location_store_item';
             }
 // get all posts that are assigned to this taxonomy term
             $args = array('tax_query' => array(array('taxonomy' => $taxonomy, 'field' => 'term_id', 'terms' => $term_id,)), 'posts_per_page' => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
@@ -423,10 +425,15 @@ function ajax_load_order_field_settings() {
             $taxonomy =  $term_obj->taxonomy;
             if ($taxonomy == 'task_chains') {
                 $meta_key = 'go-location_map_order_item';
-            }else if ($taxonomy == 'task_menus') {
+            }
+            else if ($taxonomy == 'task_menus') {
                 $meta_key = 'go-location_top_order_item';
-            } else if ($taxonomy == 'task_categories') {
+            }
+            else if ($taxonomy == 'task_categories') {
                 $meta_key = 'go-location_side_order_item';
+            }
+            else if ($taxonomy == 'store_types') {
+                $meta_key = 'go-store-location_store_item';
             }
             // get all posts that are assigned to this taxonomy term
             $args=array(

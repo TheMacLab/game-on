@@ -6,7 +6,24 @@
  * Time: 6:31 PM
  */
 
-update_option( 'show_avatars', 0 );
+$use_local_avatars = get_option('options_go_avatars_local');
+$use_gravatar = get_option('options_go_avatars_gravatars');
+
+if (!$use_gravatar) {
+    update_option( 'show_avatars', 0 );
+}
+else{
+    update_option( 'show_avatars', 1 );
+}
+
+if (!$use_local_avatars){
+    ///put code to hide local avatars
+    /// js to remove id
+    ///
+}
+
+
+
 
 
 // Callback function to remove default bio field from user profile page & re-title the section

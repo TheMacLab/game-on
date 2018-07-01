@@ -27,7 +27,7 @@ function Max_width_and_LightboxNow(){
 			//add a featherlight lightroom wrapper to the fitvids
 			var max_width_video_wrapper = {};
 			jQuery(".max-width-video-wrapper:not(.wrapped)").each(function(){
-				jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper" href="#" data-featherlight-iframe-width="100%" data-featherlight-iframe-height="100%" data-featherlight="iframe" ><span style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;"></span></a>');
+				jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper" href="#" data-featherlight="iframe" ><span style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;"></span></a>');
 				jQuery(this).addClass('wrapped');
 			});
 	
@@ -39,7 +39,7 @@ function Max_width_and_LightboxNow(){
 				var _href = jQuery(this).attr("href");
 				jQuery(this).attr("href", _href + '?&autoplay=1');
 				//activates the lightbox
-				jQuery.featherlight.defaults.closeOnClick = true;
+				//jQuery.featherlight.defaults.closeOnClick = true;
 				jQuery.featherlight.defaults.iframeWidth = '100%';
 				jQuery.featherlight.defaults.iframeHeight = '100%';
 				jQuery(this).featherlight();

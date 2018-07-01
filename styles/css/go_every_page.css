@@ -207,23 +207,42 @@ input[type='text'].go_error_red {
 
 #wp-admin-bar-go_info > a > div {
 	height: 16px;
-	width: 120px;
-}
+	display: flex;}
 
 #go_admin_bar_progress_bar_border {
 	height: 100%;
-	width: 100%;
+	width: 120px;
 	border: thin white solid;
 	margin-top: 2px;
-	position: relative;
+	position: relative; }
+
+#go_admin_health_bar_border {
+	height: 100%;
+	width: 120px;
+	border: thin white solid;
+	margin-top: 2px;
+	position: relative; }
+
+.admin_bar_loot {
+	line-height: 24px !important;
 }
+
+.progress-bar-border, .admin_bar_loot {
+	margin-left: 10px !important;}
+
 
 #go_admin_bar_progress_bar {
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 100% !important;
-}
+	height: 100% !important; }
+
+#go_admin_bar_health_bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100% !important;}
+
 
 #go_admin_bar_title {
 	text-align: left;
@@ -250,7 +269,7 @@ ul#wp-admin-bar-go_add-default.ab-submenu {
 	height: 380px;
 }
 
-#points_needed_to_level_up {
+#points_needed_to_level_up, #health_bar_percentage_str {
 	position: absolute;
 	width: 100% !important;
 	height: 100% !important;
@@ -833,9 +852,10 @@ input#go_pass_lock::-moz-placeholder {
 }
 
 
-.featherlight-content {
-    width: 100%;
-    height: 100%;
+.featherlight-iframe .featherlight-content {
+    width: 80%;
+    height: 80%;
+	overflow-y: hidden !important;
 }
 
 #adminmenu #toplevel_page_game-on-options .wp-menu-image:before {

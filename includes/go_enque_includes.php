@@ -24,15 +24,37 @@ function go_admin_includes () {
      * Featherlight
      */
 
-    wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.css', array( 'jquery' ),'v1', true);
+    wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js', array( 'jquery' ),'v1', true);
     wp_enqueue_script( 'go_featherlight' );
 
-    wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js' );
+    wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
     wp_enqueue_style( 'go_featherlight_css' );
 
+
+    /**
+     * jGrowl
+     */
+/*
+    wp_register_script( 'go_jGrowl', plugin_dir_url( __FILE__ ).'jGrowl/jquery.jgrowl.min.js', array( 'jquery' ),'v1', true);
+    wp_enqueue_script( 'go_jGrowl' );
+
+    wp_register_style( 'go_jGrowl_css', plugin_dir_url( __FILE__ ).'jGrowl/jquery.jgrowl.min.css' );
+    wp_enqueue_style( 'go_jGrowl_css' );
+*/
 }
 
 function go_includes () {
+
+    /**
+     * Datatables
+     */
+
+    wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
+    wp_enqueue_script( 'go_datatables' );
+
+    wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
+    wp_enqueue_style( 'go_datatables_css' );
+
 
     /**
      * Frontend Media
@@ -53,6 +75,16 @@ function go_includes () {
 
     wp_register_script( 'go_collapse_lists', plugin_dir_url( __FILE__ ).'CollapsibleLists.js', array( 'jquery' ),'v2', true);
     wp_enqueue_script( 'go_collapse_lists' );
+
+    /**
+     * noty
+     */
+
+    wp_register_script( 'go_noty', plugin_dir_url( __FILE__ ).'noty/lib/noty.js', '','v1', true);
+    wp_enqueue_script( 'go_noty' );
+
+    wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );
+    wp_enqueue_style( 'go_noty_css' );
 
 }
 

@@ -22,314 +22,144 @@ function go_user_has_enough_currency( $base = 0, $qty = 1, $cur = 0 ) {
 function go_buy_item() {
 	global $wpdb;
 
-	$user_id = get_current_user_id();
-	$is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
+	//$user_id = get_current_user_id();
+    $user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
+	$is_logged_in = ! empty( $user_id ) && $user_id > 0  && is_user_member_of_blog( $user_id ) ? true : false;
+	if (!$is_logged_in){
+        //echo 'Error: You must be logged in to use the store.';
+        echo "<script> new Noty({
+                type: 'info',
+                layout: 'topRight',
+                text: 'Error: You must be logged in to use the store.',
+                theme: 'relax'
+                }).show();parent.window.$.featherlight.current().close();</script>";
+        die();
+    }
 	if ( ! check_ajax_referer( 'go_buy_item_' . $user_id, false ) ) {
-		die( 'WordPress hiccuped, try logging in again.' );
+        echo "<script> new Noty({
+                type: 'info',
+                layout: 'topRight',
+                text: 'Error: WordPress hiccuped, try logging in again.' ,
+                theme: 'relax'
+                }).show();parent.window.$.featherlight.current().close();</script>";
+		die();
 	}
 
-	$go_table_name = $wpdb->prefix."go";
+	$go_task_table_name = $wpdb->prefix."go";
 	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
-	$qty = ( ! empty( $_POST['qty'] ) && (int) $_POST['qty'] > 0 ? (int) $_POST['qty'] : 1 );
-	$current_purchase_count = ( ! empty( $_POST['purchase_count'] ) ? (int) $_POST['purchase_count'] : 0 );
-	$recipient_id = 0;
+    $custom_fields = get_post_custom( $post_id );
+    $qty = ( ! empty( $_POST['qty'] ) && (int) $_POST['qty'] > 0 ? (int) $_POST['qty'] : 1 );
 
-	if ( ! empty( $_POST['recipient'] ) ) {
-		$recipient = sanitize_text_field( $_POST['recipient'] );
-		$recipient_id = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT id 
-				FROM {$wpdb->users} 
-				WHERE display_name = %s",
-				$recipient
-			)
-		);
-		$recipient_purchase_count = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT count 
-				FROM {$go_table_name} 
-				WHERE post_id = %d AND uid = %d 
-				LIMIT 1",
-				$post_id,
-				$recipient_id
-			)
-		);
-	}
-	
-	$custom_fields = get_post_custom( $post_id );
-	$sending_receipt = get_post_meta( $post_id, 'go_mta_store_receipt', false );
+    $store_limit_toggle = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_toggle'][0] : null );
+    if ($store_limit_toggle) {
+        $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, null);
 
-	$store_cost = ( ! empty( $custom_fields['go_mta_store_cost'][0] ) ? unserialize( $custom_fields['go_mta_store_cost'][0] ) : null );
-	if ( ! empty( $store_cost ) ) {
-		$req_currency = $store_cost[0];
-		$req_points = $store_cost[1];
-		$req_bonus_currency = $store_cost[2];
-		$req_penalty = $store_cost[3];
-		$req_minutes = $store_cost[4];
-	}
-	$debt_enabled = ( ! empty( $custom_fields['go_mta_debt_switch'] ) ? true : false );
+        if ($qty > $purchase_remaining_max) {
+            //echo 'Error: You attempted to buy more than your current limit. Try again.';
+            echo "<script> new Noty({
+                type: 'info',
+                layout: 'topRight',
+                text: 'Error: You attempted to buy more than your current limit.',
+                theme: 'relax'
+                }).show();parent.window.$.featherlight.current().close();</script>";
+            die();
+        }
+    }
 
-	$store_limit = ( ! empty( $custom_fields['go_mta_store_limit'][0] ) ? unserialize( $custom_fields['go_mta_store_limit'][0] ) : null );
-	if ( ! empty( $store_limit ) ) {
-		$is_limited = $store_limit[0];
-		if ( $is_limited ) {
-			$limit = (int) $store_limit[1];
-		}
-	}
-	
-	$store_gift = ( ! empty( $custom_fields['go_mta_store_gift'][0] ) ? unserialize( $custom_fields['go_mta_store_gift'][0] ) : null );
-	$is_giftable = false;
-	if ( ! empty( $store_gift ) ) {
-		$is_giftable = (bool) $store_gift[0];
-		if ( $is_giftable ) {
-			$gift_currency = $store_gift[1];
-			$gift_points = $store_gift[2];
-			$gift_bonus_currency = $store_gift[3];
-			$gift_minutes = $store_gift[4];
-		}
-	}
-	$item_url = ( ! empty( $custom_fields['go_mta_store_item_url'][0] ) ? $custom_fields['go_mta_store_item_url'][0] : null );
-	$badge_id = ( ! empty( $custom_fields['go_mta_badge_id'][0] ) ? $custom_fields['go_mta_badge_id'][0] : null );
+    $the_title = get_the_title($post_id);
+    $health_mod = go_get_health_mod ($user_id);
+    //$health_mod = go_get_user_loot( $user_id, 'health' );
 
-	
-	$item_focus_array = ( ! empty( $custom_fields['go_mta_store_focus'][0] ) ? unserialize( $custom_fields['go_mta_store_focus'][0] ) : null );
-	if ( ! empty( $item_focus_array ) ) {
-		$is_focused = (bool) filter_var( $item_focus_array[0], FILTER_VALIDATE_BOOLEAN );
-		if ( $is_focused ) {
-			$item_focus = $item_focus_array[1];	
-		}
-	}
+    $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ?  $custom_fields['go_loot_loot_xp'][0] : null);
+    if (get_option( 'options_go_loot_xp_toggle' ) && $store_abs_cost_xp > 0){
+        $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
+        $store_mod_val = $store_abs_cost_xp;
+        if ($xp_mod_toggle) {
+            $store_mod_val = ceil($store_abs_cost_xp * $health_mod);
+        }
+        $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ?  $custom_fields['go_loot_reward_toggle_xp'][0] : null);
+        if ($store_toggle_xp == false){
+            $xp = $qty * ($store_mod_val) * -1;
+        }
+        else{
+            $xp = $qty * ($store_mod_val);
+        }
+    }
 
-	$repeat = false;
-	
-	$cur_currency = go_return_currency( $user_id );
-	$cur_points = go_return_points( $user_id );
-	$cur_bonus_currency = go_return_bonus_currency( $user_id );
-	$cur_penalty = go_return_penalty( $user_id );
-	$cur_minutes = go_return_minutes( $user_id );
+    $store_abs_cost_gold = (isset($custom_fields['go_loot_loot_gold'][0]) ?  $custom_fields['go_loot_loot_gold'][0] : null);
+    if (get_option( 'options_go_loot_gold_toggle' )  && $store_abs_cost_gold > 0){
+        $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
+        $store_mod_val = $store_abs_cost_gold;
+        if ($gold_mod_toggle) {
+            $store_mod_val = ceil($store_abs_cost_gold * $health_mod);
+        }
+        $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
+        if ($store_toggle_gold == false){
+            $gold = $qty * ($store_mod_val) * -1;
+        }
+        else{
+            $gold = $qty * ($store_mod_val);
+        }
+    }
 
-	$enough_currency = go_user_has_enough_currency( $req_currency, $qty, $cur_currency );
-	$enough_points = go_user_has_enough_currency( $req_points, $qty, $cur_points );
-	$enough_bonus_currency = go_user_has_enough_currency( $req_bonus_currency, $qty, $cur_bonus_currency );
-	$enough_penalty = go_user_has_enough_currency( $req_penalty, $qty, $cur_penalty );
-	$enough_minutes = go_user_has_enough_currency( $req_minutes, $qty, $cur_minutes );
-	$enough_to_purchase = false;
-	if (
-		$enough_currency &&
-		$enough_points &&
-		$enough_bonus_currency &&
-		$enough_penalty &&
-		$enough_minutes
-	) {
-		$enough_to_purchase = true;
-	}
+    $store_abs_cost_health = (isset($custom_fields['go_loot_loot_health'][0]) ?  $custom_fields['go_loot_loot_health'][0] : null);
+    if (get_option( 'options_go_loot_health_toggle' ) && $store_abs_cost_health > 0){
+        $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
+        $store_mod_val = $store_abs_cost_health;
+        if ($health_mod_toggle) {
+            $store_mod_val = ceil($store_abs_cost_health * $health_mod);
+        }
+        $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
+        if ($store_toggle_health == false){
+            $health = $qty * ($store_mod_val) * -1;
+        }
+        else{
+            $health = $qty * ($store_mod_val);
+        }
+    }
 
-	$within_limit = true;
-	if ( ! empty( $limit ) && $is_limited === "true" ) {
-		$qty_diff = $limit - $current_purchase_count - $qty;
-		if ( $qty_diff < 0 ) {
-			$within_limit = false;
-		}
-	}
+    $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ?  $custom_fields['go_loot_loot_c4'][0] : null);
+    if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
+        $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
+        $store_mod_val = $store_abs_cost_c4;
+        if ($c4_mod_toggle) {
+            $store_mod_val = ceil($store_abs_cost_c4 * $health_mod);
+        }
+        $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
+        if ($store_toggle_c4 == false){
+            $c4 = $qty * ($store_mod_val) * -1;
+        }
+        else{
+            $c4 = $qty * ($store_mod_val);
+        }
+    }
+    ob_start();
+    go_update_actions( $user_id, 'store',  $post_id, $qty, null, null, 'purchase', null, null, null, null,  $xp, $gold, $health, $c4, $badges, true);
 
-	if ( ! $is_logged_in || ( ( $enough_to_purchase || $debt_enabled ) && $within_limit ) ) {
-		if ( $is_focused && ! empty( $item_focus ) ) {
-			$user_focuses = get_user_meta( $user_id, 'go_focus', true );
-			if ( ! is_array( $user_focuses ) ) {
-				$user_focuses = array();
-			}
+    //go_update_totals_table($user_id, $xp, $gold, $health, $c4, null, true);
 
-			// finds and removes the default profession (focus) from the user
-			$default_focus_index = array_search( 'No '.get_option( 'go_focus_name' ), $user_focuses );
-			if ( $default_focus_index ) {
-				unset( $user_focuses[ $default_focus_index ] );
-			}
+    //echo "<h2>Success</h2><br>Item: ". $the_title . "<br>Quantity: " . $qty  ;
 
-			// adds the new profession (focus) to the user
-			$user_focuses[] = $item_focus;
-			update_user_meta( $user_id, 'go_focus', $user_focuses );
-		}
-		if ( ! empty( $recipient_id ) ) {
-			$curr_user_obj = get_userdata( $user_id );
-			go_message_user( $recipient_id, $curr_user_obj->display_name." has purchased {$qty} <a href='javascript:;' onclick='go_lb_opener({$post_id})'>".get_the_title( $post_id )."</a> for you." );
-			if ( $gift_currency || $gift_points || $gift_bonus_currency || $gift_minutes ) {
-				go_add_post( $recipient_id, $post_id, -1, $gift_points, $gift_currency, $gift_bonus_currency, $gift_minutes, null, $repeat );
-				go_add_bonus_currency( $recipient_id, $gift_bonus_currency, $curr_user_obj->display_name." purchase of {$qty} ".get_the_title( $post_id )."." );
-			} else {
-				go_add_post( $recipient_id, $post_id, -1,  0,  0, 0, null, $repeat );
-			}
-			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
-			$wpdb->query(
-				$wpdb->prepare(
-					"UPDATE {$go_table_name} 
-					SET reason = 'Gifted' 
-					WHERE uid = %d AND status = %d AND gifted = %d AND post_id = %d 
-					ORDER BY timestamp DESC, reason DESC, id DESC 
-					LIMIT 1",
-					$user_id,
-					-1,
-					0,
-					$post_id
-				)
-			);
-		} else {
-			go_add_post( $user_id, $post_id, -1, -$req_points, -$req_currency, -$req_bonus_currency, -$req_minutes, null, $repeat );
-			if ( ! empty( $req_penalty ) ) {
-				go_add_penalty( $user_id, -$req_penalty, get_the_title( $post_id ) );	
-			}
-		}
-		if ( ! empty( $badge_id ) ) {
-			go_award_badge(
-				array(
-					'id' 		=> $badge_id,
-					'repeat' 	=> false,
-					'uid' 		=> ( ! empty( $recipient_id ) ? $recipient_id : $user_id )
-				)
-			);
-		}
-		if ( ! empty( $item_url ) && isset( $item_url ) ) {
-			$item_hyperlink = "<a target='_blank' href='{$item_url}'>Link</a>";
-			echo $item_hyperlink;
-		} else {
-			echo "Purchased";
-		}
-		if ( $sending_receipt ) {
-			$receipt = go_mail_item_reciept( $user_id, $post_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_minutes, $qty, $recipient_id );
-			if ( ! empty( $receipt ) ) {
-				echo $receipt;
-			}
-		}
-	} else {
-		$currency_name = get_option( 'go_currency_name' );
-		$points_name = get_option( 'go_points_name' );
-		$bonus_currency_name = get_option( 'go_bonus_currency_name' );
-		$penalty_name = get_option( 'go_penalty_name' );
-		$minutes_name = get_option( 'go_minutes_name' );
-		$enough_array = array(
-			$currency_name => $enough_currency,
-			$points_name => $enough_points,
-			$bonus_currency_name => $enough_bonus_currency,
-			$penalty_name => $enough_penalty,
-			$minutes_name => $enough_minutes,
-		);
+    echo "<script> new Noty({
+    type: 'info',
+    layout: 'topRight',
+    text: '<h2>Receipt</h2><br>Item: $the_title <br>Quantity: $qty',
+    theme: 'relax'
+    //timeout: '3000'
+    
+}).show();parent.window.$.featherlight.current().close();</script>";
 
-		// pulls out the names of the currencies that the user doesn't have enough of, so they can be
-		// handled as errors
-		$errors = array();
-		$err_str = '';
-		$err_glue = ', ';
+    // stores the contents of the buffer and then clears it
+    $buffer = ob_get_contents();
 
-		foreach ( $enough_array as $currency_name => $has_enough ) {
-			if ( ! $has_enough ) {
-				$errors[] = $currency_name;
-			}
-		}
+    ob_end_clean();
 
-		// combines all the erring currencies into one string
-		for ( $ind = 0; $ind < count( $errors ); $ind++ ) {
-			$currency_name = $errors[ $ind ];
-			if ( 0 === $ind ) {
-				$err_str .= $currency_name;
-			} elseif ( $ind > 0 && count( $errors ) === $ind + 1 ) {
-				$err_str .= "{$err_glue}and {$currency_name}";
-			} else {
-				$err_str .= $err_glue . $currency_name;
-			}
-		}
-
-		if ( ! empty( $err_str ) ) {
-			echo "Need more {$err_str}.";
-		}
-		if ( $is_limited === "true" && ! $within_limit ) {
-			$qty_diff *= -1;
-			echo "You've attempted to purchase ".( $qty_diff == 1 ? '1 item' : "{$qty_diff} items" )." greater than the purchase limit.";
-		}
-	}
-	die();
-}
-
-function go_mail_item_reciept( $user_id, $item_id, $req_currency, $req_points, $req_bonus_currency, $req_penalty, $req_mintues, $qty, $recipient_id = 0 ) {
-	global $go_plugin_dir;
-	$currency = ucwords( get_option( 'go_currency_name' ) );
-	$points = ucwords( get_option( 'go_points_name' ) );
-	$bonus_currency = ucwords( get_option( 'go_bonus_currency_name' ) );
-	$penalty = ucwords( get_option( 'go_penalty_name' ) );
-	$minutes = ucwords( get_option( 'go_minutes_name' ) );
-	$item_title = get_the_title( $item_id );
-	$allow_full_name = get_option( 'go_full_student_name_switch' );
-
-	$user_info = get_userdata( $user_id );
-	$user_login = $user_info->user_login;
-	$first_name = trim( $user_info->first_name );
-	$last_name = trim( $user_info->last_name );
-	if ( $allow_full_name == 'On' ) {
-		$user_name = "{$first_name} {$last_name}";
-	} else {
-		$last_initial = substr( $last_name, 0, 1 );
-		$user_name = "{$first_name} {$last_initial}.";
-	}
-	$user_email = $user_info->user_email;
-	$user_role = $user_info->roles;
-
-	$req_currency *= $qty;
-	$req_points *= $qty;
-	$req_bonus_currency *= $qty;
-	$req_penalty *= -1;
-	$req_mintues *= $qty;
-
-	$req_array = array(
-		$currency => $req_currency, 
-		$points => $req_points, 
-		$bonus_currency => $req_bonus_currency, 
-		$penalty => $req_penalty, 
-		$minutes => $req_mintues
-	);
-	$received_str = '';
-	$spent_str = '';
-	foreach ( $req_array as $req_name => $val ) {
-		if ( ! empty( $val ) ) {
-			if ( $req_name === $penalty ) {
-				$received_str .= "\t{$req_name}: {$val}\n\n";
-			} else {
-				if ( $val < 0 ) {
-					$received_str .= "\t{$req_name}: ".( -$val )."\n\n";
-				} elseif ( $val > 0 ) {
-					$spent_str .= "\t{$req_name}: {$val}\n\n";
-				}
-			}
-		}
-	}
-
-	$to = get_option( 'go_admin_email','' );
-	require( "{$go_plugin_dir}/mail/class.phpmailer.php" );
-	$mail = new PHPMailer();
-	$mail->From = get_option( 'go_email_from', 'no-reply@go.net' );
-	$mail->FromName = $user_name;
-	$mail->AddAddress( $to );
-	$mail->Subject = "Purchase: {$item_title} ({$qty}) | {$user_name} {$user_login}";
-	if ( ! empty( $recipient_id ) ) {
-		$recipient = get_userdata( $recipient_id );
-		$recipient_username = $recipient->user_login;
-		$recipient_first_name = trim( $recipient->first_name );
-		$recipient_last_name = trim( $recipient->last_name );
-		if ( $allow_full_name == 'On' ) {
-			$recipient_full_name = "{$recipient_first_name} {$recipient_last_name}";
-		} else {
-			$recipient_last_initial = substr( $recipient_last_name, 0, 1 );
-			$recipient_full_name = "{$recipient_first_name} {$recipient_last_name}.";
-		}
-		$mail->Subject .= " | {$recipient_full_name} {$recipient_username}";
-	}
-
-	$mail->Body = "{$user_email}\n\n".
-		( ! empty( $spent_str ) ? "Spent:\n\n{$spent_str}" : "" ).
-		( ! empty( $received_str ) ? "Received:\n\n{$received_str}" : "" );
-	$mail->WordWrap = 50;
-
-	if ( ! $mail->Send() ) {
-		if ( ( is_array( $user_role ) && in_array( 'administrator', $user_role ) ) || $user_role === 'administrator' ) {
-			return "<div id='go_mailer_error_msg'>{$mail->ErrorInfo}</div>";
-		}
-	}
+    echo json_encode(
+        array(
+            'json_status' => 'success',
+            'html' => $buffer
+        )
+    );
+    die();
 }
 ?>

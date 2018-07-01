@@ -48,6 +48,7 @@ function go_admin_bar() {
 	$go_search_switch = get_option( 'options_go_search_toggle' );
 	$go_map_switch = get_option( 'options_go_locations_map_toggle' );
 	$go_store_switch = get_option( 'options_go_store_toggle' );
+    $go_stats_switch = get_option( 'options_go_stats_toggle' );
 
 	if ( ! is_user_logged_in() ) {
 		$wp_admin_bar->add_node(
@@ -59,68 +60,12 @@ function go_admin_bar() {
 		);
 	} else if ( is_admin_bar_showing() && is_user_logged_in() ) {
 		$user_id = get_current_user_id();
+        $wp_admin_bar->remove_menu( 'wp-logo' );
 
-		// the user's current amount of experience (points)
-		$go_current_points = go_return_points( $user_id );
-
-		// the user's current amount of currency
-		$go_current_currency = go_return_currency( $user_id );
-
-		// the user's current amount of bonus currency,
-		// also used for coloring the admin bar
-		$go_current_bonus_currency = go_return_bonus_currency( $user_id );
-
-		// the user's current amount of penalties,
-		// also used for coloring the admin bar
-		$go_current_penalty = go_return_penalty( $user_id );
-
-		// the user's current amount of minutes
-		$go_current_minutes = go_return_minutes( $user_id );
-
-		$rank = go_get_rank( $user_id );
-		$current_rank = $rank['current_rank'];
-		$current_rank_points = $rank['current_rank_points'];
-		$next_rank = $rank['next_rank'];
-		$next_rank_points = $rank['next_rank_points'];
-
-		$go_option_ranks = get_option( 'options_go_loot_xp_levels_name_singular' );
-		//$points_array = $go_option_ranks['points'];
-
-		/*
-		 * Here we are referring to last element manually,
-		 * since we don't want to modifiy
-		 * the arrays with the array_pop function.
-		 */
-		//$max_rank_index = count( $points_array ) - 1;
-		//$max_rank_points = (int) $points_array[ $max_rank_index ];
-
-		if ( null !== $next_rank_points ) {
-			$rank_threshold_diff = $next_rank_points - $current_rank_points;
-		} else {
-			$rank_threshold_diff = 1;
-		}
-		$pts_to_rank_threshold = $go_current_points - $current_rank_points;
-
-/*
-		if ( $max_rank_points === $current_rank_points ) {
-			$prestige_name = get_option( 'options_go_levels_top_rank' );
-			$pts_to_rank_up_str = $prestige_name;
-		} else {
-			$pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
-		}
-*/
-		$percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
-		if ( $percentage <= 0 ) {
-			$percentage = 0;
-		} else if ( $percentage >= 100 ) {
-			$percentage = 100;
-		}
-
-		$color = barColor( $go_current_bonus_currency, $go_current_penalty );
-
-		$wp_admin_bar->remove_menu( 'wp-logo' );
-
-		$is_admin = go_user_is_admin( $user_id );
+        /**
+         * If is admin, show the dropdown for view type
+         */
+        $is_admin = go_user_is_admin( $user_id );
 
         $post_type = get_post_type();
 
@@ -153,10 +98,10 @@ function go_admin_bar() {
 
             }
             else{
-             $all_selected = null;
-             $player_selected = null;
-             $user_selected = null;
-             $guest_selected = null;
+                $all_selected = null;
+                $player_selected = null;
+                $user_selected = null;
+                $guest_selected = null;
             }
             $content = '<form>
                             View: <select onchange="go_update_admin_view(this.value)">
@@ -171,105 +116,135 @@ function go_admin_bar() {
             }
         }
 
+        /**
+         * Get the percentage for the XP Bar/health Bar and the Loot for the totals
+         * Show bars and create dropdown
+         */
+        $xp_toggle = get_option('options_go_loot_xp_toggle');
+        $gold_toggle = get_option('options_go_loot_gold_toggle');
+        $health_toggle = get_option( 'options_go_loot_health_toggle' );
+        $c4_toggle = get_option('options_go_loot_c4_toggle');
 
+		if ($xp_toggle) {
+            // the user's current amount of experience (points)
+            $go_current_xp = go_get_user_loot($user_id, 'xp');
+
+            $rank = go_get_rank($user_id);
+            $rank_num = $rank['rank_num'];
+            $current_rank = $rank['current_rank'];
+            $current_rank_points = $rank['current_rank_points'];
+            $next_rank = $rank['next_rank'];
+            $next_rank_points = $rank['next_rank_points'];
+
+            $go_option_ranks = get_option('options_go_loot_xp_levels_name_singular');
+            //$points_array = $go_option_ranks['points'];
+
+            /*
+             * Here we are referring to last element manually,
+             * since we don't want to modifiy
+             * the arrays with the array_pop function.
+             */
+            //$max_rank_index = count( $points_array ) - 1;
+            //$max_rank_points = (int) $points_array[ $max_rank_index ];
+
+            if ($next_rank_points != false) {
+                $rank_threshold_diff = $next_rank_points - $current_rank_points;
+                $pts_to_rank_threshold = $go_current_xp - $current_rank_points;
+                $pts_to_rank_up_str = "L{$rank_num}: {$pts_to_rank_threshold} / {$rank_threshold_diff}";
+                $percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
+                //$color = barColor( $go_current_health, 0 );
+                $color = "#39b54a";
+            } else {
+                $pts_to_rank_up_str = $current_rank;
+                $percentage = 100;
+                $color = "gold";
+            }
+            if ( $percentage <= 0 ) {
+                $percentage = 0;
+            } else if ( $percentage >= 100 ) {
+                $percentage = 100;
+            }
+            $progress_bar = '<div id="go_admin_bar_progress_bar_border" class="progress-bar-border">'.'<div id="go_admin_bar_progress_bar" class="progress_bar" '.
+                'style="width: '.$percentage.'%; background-color: '.$color.' ;">'.
+                '</div>'.
+                '<div id="points_needed_to_level_up" class="go_admin_bar_text">'.
+                $pts_to_rank_up_str.
+                '</div>'.
+                '</div>';
+        }
+        else {
+            $progress_bar = '';
+        }
+
+
+        if($health_toggle) {
+            // the user's current amount of bonus currency,
+            // also used for coloring the admin bar
+            $go_current_health = go_get_user_loot($user_id, 'health');
+            $health_percentage = intval($go_current_health / 2);
+            if ($health_percentage <= 0) {
+                $health_percentage = 0;
+            } else if ($health_percentage >= 100) {
+                $health_percentage = 100;
+            }
+            $health_bar = '<div id="go_admin_health_bar_border" class="progress-bar-border">' . '<div id="go_admin_bar_health_bar" class="progress_bar" ' . 'style="width: ' . $health_percentage . '%; background-color: red ;">' . '</div>' . '<div id="health_bar_percentage_str" class="go_admin_bar_text">' . "Health Mod: " . $go_current_health . "%" . '</div>' . '</div>';
+
+        }
+        else{
+            $health_bar = '';
+        }
+
+        if ($gold_toggle) {
+            // the user's current amount of currency
+            $go_current_gold = go_get_user_loot($user_id, 'gold');
+            $gold_total = '<div id="go_admin_bar_gold" class="admin_bar_loot">' . go_display_shorthand_currency('gold', $go_current_gold)  . '</div>';
+        }
+        else{
+            $gold_total = '';
+        }
+
+        if ($c4_toggle) {
+            // the user's current amount of minutes
+            $go_current_c4 = go_get_user_loot( $user_id, 'c4' );
+            $c4_total =  '<div id="go_admin_bar_c4" class="admin_bar_loot">' . go_display_shorthand_currency('c4', $go_current_c4) . '</div>';
+        }
+        else{
+            $c4_total = '';
+        }
 
 		$wp_admin_bar->add_node(
 			array(
 				'id' => 'go_info',
 				'title' => 
 					'<div style="padding-top:5px;">'.
-						'<div id="go_admin_bar_progress_bar_border">'.
-							'<div id="go_admin_bar_progress_bar" class="progress_bar" '.
-								'style="width: '.$percentage.'%; background-color: '.$color.' ;">'.
-							'</div>'.
-							'<div id="points_needed_to_level_up" class="go_admin_bar_text">'.
-								//$pts_to_rank_up_str.
-							'</div>'.
-						'</div>'.
+							$progress_bar.
+                            $health_bar.
+                            $gold_total.
+                            $c4_total.
 					'</div>',
 				'href' => '#',
 			) 
 		);
-		
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_rank',
-				'title' => '<div id="go_admin_bar_rank">' . $current_rank . '</div>',
-				'href' => '#',
-				'parent' => 'go_info',
-			) 
-		);
-		
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_points',
-				'title' => '<div id="go_admin_bar_points">' .
-					go_display_longhand_currency(
-						'points',
-						$go_current_points
-					) .
-					'</div>',
-				'href' => '#',
-				'parent' => 'go_info',
-			) 
-		);
-		
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_currency',
-				'title' => '<div id="go_admin_bar_currency">' .
-					go_display_longhand_currency(
-						'currency',
-						$go_current_currency
-					) .
-					'</div>',
-				'href' => '#',
-				'parent' => 'go_info',
-			) 
-		);
-		
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_bonus_currency',
-				'title' => '<div id="go_admin_bar_bonus_currency">' .
-					go_display_longhand_currency(
-						'bonus_currency',
-						$go_current_bonus_currency
-					) .
-					'</div>',
-				'href' => '#',
-				'parent' => 'go_info',
-			) 
-		);
-		
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_penalty',
-				'title' => '<div id="go_admin_bar_penalty">' .
-					go_display_longhand_currency(
-						'penalty',
-						$go_current_penalty
-					) .
-					'</div>',
-				'href' => '#',
-				'parent' => 'go_info',
-			) 
-		);
-		
-		$wp_admin_bar->add_node( 
-			array(
-				'id' => 'go_minutes',
-				'title' => '<div id="go_admin_bar_minutes">' .
-					go_display_longhand_currency(
-						'minutes',
-						$go_current_minutes
-					) .
-					'</div>',
-				'href' => '#',
-				'parent' => 'go_info',
-			) 
-		);
-		
+
+
+		if($xp_toggle) {
+            $wp_admin_bar->add_node(array('id' => 'go_rank', 'title' => '<div id="go_admin_bar_rank">' . $go_option_ranks . ' ' . $rank_num . ": " . $current_rank . '</div>', 'href' => '#', 'parent' => 'go_info',));
+
+            $wp_admin_bar->add_node(array('id' => 'go_xp', 'title' => '<div id="go_admin_bar_xp">' . go_display_longhand_currency('xp', $go_current_xp) . '</div>', 'href' => '#', 'parent' => 'go_info',));
+        }
+
+        if($gold_toggle) {
+            $wp_admin_bar->add_node(array('id' => 'go_gold', 'title' => '<div id="go_admin_bar_gold">' . go_display_longhand_currency('gold', $go_current_gold) . '</div>', 'href' => '#', 'parent' => 'go_info',));
+        }
+
+        if($health_toggle) {
+            $wp_admin_bar->add_node(array('id' => 'go_health', 'title' => '<div id="go_admin_bar_health">' . go_display_longhand_currency('health', $go_current_health) . '</div>', 'href' => '#', 'parent' => 'go_info',));
+        }
+
+        if($c4_toggle) {
+            $wp_admin_bar->add_node(array('id' => 'go_c4', 'title' => '<div id="go_admin_bar_c4">' . go_display_longhand_currency('c4', $go_current_c4) . '</div>', 'href' => '#', 'parent' => 'go_info',));
+        }
+		/*
 		if ( current_user_can( 'manage_options' ) ) {
 			$wp_admin_bar->add_node( 
 				array(
@@ -279,6 +254,7 @@ function go_admin_bar() {
 				) 
 			);
 		}
+		*/
 		/*
 		if ( get_option( 'go_admin_bar_add_switch' ) == 'On' ) {		
 			$wp_admin_bar->add_node( 
@@ -370,16 +346,12 @@ function go_admin_bar() {
 			}
 		}
 		*/
-        $stats_name = get_option('options_go_stats_name');
-		$wp_admin_bar->add_node(
+        if ($go_stats_switch) {
+            $stats_name = get_option('options_go_stats_name');
+            $wp_admin_bar->add_node(
 
-			array(
-				'id' => 'go_stats',
-				'title' => '<i class="fa fa-area-chart ab-icon" aria-hidden="true"></i><div style="float: right;">' . $stats_name . '</div><div id="go_stats_page"></div><script>jQuery( "#wp-admin-bar-go_stats" ).click(function() {go_admin_bar_stats_page_button();});</script>',
-				'href' => '#',
-			)
-		);
-
+                array('id' => 'go_stats', 'title' => '<i class="fa fa-area-chart ab-icon" aria-hidden="true"></i><div style="float: right;">' . $stats_name . '</div><div id="go_stats_page"></div><script>jQuery( "#wp-admin-bar-go_stats" ).click(function() {go_admin_bar_stats_page_button();});</script>', 'href' => '#',));
+        }
         
         if ($go_map_switch){
             $map_url = get_option('options_go_locations_map_map_link');
@@ -438,6 +410,17 @@ function go_admin_bar() {
 			 * Game On Links
 			 */
 
+            // displays GO options page link
+            $wp_admin_bar->add_node(
+                array(
+                    'id' => 'go_nav_options',
+                    'title' => 'Game-On Options',
+                    'href' => get_admin_url().'admin.php?page=go_options',
+                    'parent' => 'go_site_name_menu',
+                    'meta' => array( 'class' => 'go_site_name_menu_item' )
+                )
+            );
+
 			// displays Clipboard link
 			$wp_admin_bar->add_node(
 				array(
@@ -449,60 +432,89 @@ function go_admin_bar() {
 				) 
 			);
 
-			// displays chains page link
-			$wp_admin_bar->add_node(
-				array(
-					'id' => 'go_nav_chains',
-					'title' => 'Edit '.get_option('go_tasks_name').' Map',
-					'href' => esc_url( get_admin_url() ).'edit-tags.php?taxonomy=task_chains&post_type=tasks',
-					'parent' => 'go_site_name_menu',
-					'meta' => array( 'class' => 'go_site_name_menu_item' )
-				)
-			);
+
 			
 			// displays Task edit page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_tasks',
-					'title' => 'Edit '.get_option( 'go_tasks_plural_name' ),
+					'title' => get_option( 'options_go_tasks_name_plural' ),
 					'href' => get_admin_url().'edit.php?post_type=tasks',
 					'parent' => 'go_site_name_menu',
 					'meta' => array( 'class' => 'go_site_name_menu_item' )
 				) 
 			);
-			
-			// displays Store Categories page link
+
+            // displays chains page link
+            $wp_admin_bar->add_node(
+                array(
+                    'id' => 'go_nav_chains',
+                    'title' => get_option('options_go_tasks_name_plural').' Maps',
+                    'href' => esc_url( get_admin_url() ).'edit-tags.php?taxonomy=task_chains&post_type=tasks',
+                    'parent' => 'go_site_name_menu',
+                    'meta' => array( 'class' => 'go_site_name_menu_item' )
+                )
+            );
+
+            // displays Store Item edit page link
+            $wp_admin_bar->add_node(
+                array(
+                    'id' => 'go_nav_store',
+                    'title' => get_option( 'options_go_store_name' ).' Items',
+                    'href' => get_admin_url().'edit.php?post_type=go_store',
+                    'parent' => 'go_site_name_menu',
+                    'meta' => array( 'class' => 'go_site_name_menu_item' )
+                )
+            );
+
+            // displays Store Categories page link
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_store_types',
-					'title' => get_option('go_store_name').' Categories',
+					'title' => get_option('options_go_store_name').' Categories',
 					'href' => esc_url( get_admin_url() ).'edit-tags.php?taxonomy=store_types&post_type=go_store',
 					'parent' => 'go_site_name_menu',
 					'meta' => array( 'class' => 'go_site_name_menu_item' )
 				)
 			);
 
-			// displays Store Item edit page link
-			$wp_admin_bar->add_node(
-				array(
-					'id' => 'go_nav_store',
-					'title' => 'Edit '.get_option( 'go_store_name' ).' Items',
-					'href' => get_admin_url().'edit.php?post_type=go_store',
-					'parent' => 'go_site_name_menu',
-					'meta' => array( 'class' => 'go_site_name_menu_item' )
-				) 
-			);
+			// displays Store Categories page link
+            $wp_admin_bar->add_node(
+                array(
+                    'id' => 'go_nav_badges',
+                    'title' => get_option('options_go_badges_name'),
+                    'href' => esc_url( get_admin_url() ).'edit-tags.php?taxonomy=go_badges',
+                    'parent' => 'go_site_name_menu',
+                    'meta' => array( 'class' => 'go_site_name_menu_item' )
+                )
+            );
 
-			// displays GO options page link
-			$wp_admin_bar->add_node(
-				array(
-					'id' => 'go_nav_options',
-					'title' => 'Game-On',
-					'href' => get_admin_url().'admin.php?page=game-on-options.php',
-					'parent' => 'go_site_name_menu',
-					'meta' => array( 'class' => 'go_site_name_menu_item' )
-				) 
-			);
+            // displays Store Categories page link
+            $wp_admin_bar->add_node(
+                array(
+                    'id' => 'go_nav_users',
+                    'title' => 'Users',
+                    'href' => esc_url( get_admin_url() ).'users.php',
+                    'parent' => 'go_site_name_menu',
+                    'meta' => array( 'class' => 'go_site_name_menu_item' )
+                )
+            );
+
+            // displays Store Categories page link
+            $wp_admin_bar->add_node(
+                array(
+                    'id' => 'go_nav_user_types',
+                    'title' => 'User Groups',
+                    'href' => esc_url( get_admin_url() ).'edit-tags.php?taxonomy=user_go_groups',
+                    'parent' => 'go_site_name_menu',
+                    'meta' => array( 'class' => 'go_site_name_menu_item' )
+                )
+            );
+
+
+
+
+
 
 
 
@@ -551,6 +563,7 @@ function go_admin_bar() {
 			);
 
 			// displays Users page link
+            /*
 			$wp_admin_bar->add_node(
 				array(
 					'id' => 'go_nav_users',
@@ -559,7 +572,7 @@ function go_admin_bar() {
 					'parent' => 'appearance',
 				)
 			);
-			
+			*/
 		}
 
 
@@ -573,7 +586,7 @@ function go_admin_bar() {
             $atts = shortcode_atts(array(
                 'id' => '', // ID defined in Shortcode
                 'cats' => '', // Cats defined in Shortcode
-            ), $atts);
+            ), '');
             $id = $atts['id'];
             $custom_fields = get_post_custom($id); // Just gathering some data about this task with its post id
 
@@ -612,5 +625,6 @@ function go_update_admin_view (){
         }
     }
 }
+
 
 ?>

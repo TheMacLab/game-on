@@ -505,7 +505,7 @@ function go_get_all_posts() {
 add_shortcode( 'go_task_pod', 'go_task_pod_tasks' );
 function go_task_pod_tasks( $atts ) {
 	global $wpdb;
-	$go_table_name = "{$wpdb->prefix}go";
+	$go_task_table_name = "{$wpdb->prefix}go";
 	$current_tasks = get_posts( 
 		array(
 			'posts_per_page' => -1,
@@ -530,7 +530,7 @@ function go_task_pod_tasks( $atts ) {
 
 	$task_in_pod_query = "
 		SELECT post_id, status 
-		FROM {$go_table_name} 
+		FROM {$go_task_table_name} 
 		WHERE uid = %d AND post_id IN (";
 	for ( $i = 0; $i < count( $current_tasks ); $i++ ) {
 		if ( 0 !== $i ) {
@@ -596,7 +596,7 @@ function go_task_pod_tasks( $atts ) {
 		}
 		$previous_tasks_in_pod_query = "
 			SELECT post_id, status 
-			FROM {$go_table_name} 
+			FROM {$go_task_table_name} 
 			WHERE uid = %d AND post_id IN (";
 		for ( $x = 0; $x < count( $previous_tasks ); $x++ ) {
 			if ( 0 !== $x ) {

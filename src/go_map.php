@@ -49,8 +49,6 @@ function go_make_single_map($last_map_id, $reload){
 
 					echo "<li><p>$term_object->name";
 
-
-
                     //get the term id of this chain
 					//must also be changed in the go_change_sort_order function
                     $term_id = $term_object->term_id;

@@ -8,7 +8,7 @@ Creation Date: 05/09/13
 */
 // Includes
 
-include( 'includes/lightbox/backend-lightbox.php' );
+//include('includes/lightbox/backend-lightbox.php');
 
 function go_register_store_tax_and_cpt() {
 	
@@ -149,6 +149,7 @@ function go_convert_store_id_to_term_in_query($query) {
 		$q_vars[$taxonomy] = $term->slug;
 	}
 }
+
 
 
 

@@ -291,43 +291,29 @@ function go_get_rank ( $user_id ) {
 	if ( empty( $user_id ) ) {
 		return;
 	}
-	$rank = get_user_meta( $user_id, 'go_rank' );
-	if ( ! empty( $rank[0] ) &&
-			! empty( $rank[0][0][0] ) &&
-			! empty( $rank[0][0][1] ) ) {
-		$current_rank = $rank[0][0][0];
-		$current_rank_points = (int) $rank[0][0][1];
-		$next_rank = empty( $rank[0][1][0] ) ? null : $rank[0][1][0];
-		$next_rank_points = empty( $rank[0][1][1] ) ? null : (int) $rank[0][1][1];
+    $go_current_xp = go_get_user_loot( $user_id, 'xp' );
+    $rank_count = get_option('options_go_loot_xp_levels_level');
+    $i = $rank_count - 1; //account for count starting at 0
+    while ( $i >= 0 ) {
+
+        $xp = get_option('options_go_loot_xp_levels_level_' . $i . '_xp');
+        if ($go_current_xp >= $xp){
+            $current_rank = get_option('options_go_loot_xp_levels_level_' . $i . '_name');
+            $current_rank_points = $xp;
+            $next_rank_points = get_option('options_go_loot_xp_levels_level_' . ($i +1) . '_xp');
+            $next_rank = get_option('options_go_loot_xp_levels_level_' . ($i +1) . '_name');
+            break;
+        }
+        $i--;
+    }
 
 		return array(
 			'current_rank' 		  => $current_rank,
 			'current_rank_points' => $current_rank_points,
 			'next_rank' 		  => $next_rank,
-			'next_rank_points' 	  => $next_rank_points
+			'next_rank_points' 	  => $next_rank_points,
+            'rank_num'            => ($i + 1)
 		);
-	} else {
-		$ranks_option = get_option( 'go_ranks' );
-		$points_array = $ranks_option['points'];
-		$name_array = $ranks_option['name'];
-
-		$current_rank = $name_array[0];
-		$current_rank_points = (int) $points_array[0];
-		if ( isset( $name_array[1] ) && isset( $points_array[1] ) ) {
-			$next_rank = $name_array[1];
-			$next_rank_points = (int) $points_array[1];
-		} else {
-			$next_rank = null;
-			$next_rank_points = null;
-		}
-
-		return array(
-			'current_rank' 		  => $current_rank,
-			'current_rank_points' => $current_rank_points,
-			'next_rank' 		  => $next_rank,
-			'next_rank_points' 	  => $next_rank_points
-		);
-	}
 }
 
 /**

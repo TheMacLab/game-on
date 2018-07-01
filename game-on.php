@@ -7,6 +7,9 @@ Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4b
 */
+$version = 4.03;
+
+global $version;
 
 include_once( 'includes/acf/acf.php' );
 
@@ -73,7 +76,7 @@ include( 'includes/wp-frontend-media-master/frontend-media.php' );
  * Plugin Activation Hooks
  */
 
-register_activation_hook( __FILE__, 'go_table_totals' );
+register_activation_hook( __FILE__, 'go_update_db' );
 register_activation_hook( __FILE__, 'go_table_individual' );
 register_activation_hook( __FILE__, 'go_ranks_registration' );
 register_activation_hook( __FILE__, 'go_presets_registration' );
@@ -132,7 +135,7 @@ add_action( 'admin_bar_init', 'go_admin_bar' );
 add_action( 'admin_init', 'go_tsk_actv_redirect' );
 add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'admin_head', 'go_stats_overlay' );
-add_action( 'admin_head', 'go_store_head' );
+//add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
 add_action( 'admin_enqueue_scripts', 'go_admin_scripts' );
 add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
@@ -150,6 +153,7 @@ add_action( 'wp_enqueue_scripts', 'go_scripts' );
 add_action( 'wp_enqueue_scripts', 'go_styles' );
 add_action( 'wp_enqueue_scripts', 'go_includes' );
 //add_action( 'wp_enqueue_scripts', 'go_scripts' );
+//add_action( 'wp_head', 'go_frontend_lightbox_html' );
 
 // filters
 add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
@@ -162,8 +166,8 @@ add_action( 'delete_user', 'go_user_delete' );
 add_action( 'user_register', 'go_user_registration' );
 //add_action( 'show_user_profile', 'go_extra_profile_fields' );
 //add_action( 'edit_user_profile', 'go_extra_profile_fields' );
-add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
-add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
+//add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
+//add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
 add_action( 'wp_footer', 'go_update_totals_out_of_bounds', 21 );
 
 /*
@@ -176,10 +180,10 @@ add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' );
 add_action( 'wp_ajax_go_clipboard_intable_messages', 'go_clipboard_intable_messages' );
 add_action( 'wp_ajax_go_clipboard_intable_activity', 'go_clipboard_intable_activity' );
 add_action( 'wp_ajax_go_user_option_add', 'go_user_option_add' );
-add_action( 'wp_ajax_go_test_point_update', 'go_test_point_update' );
+//add_action( 'wp_ajax_go_test_point_update', 'go_test_point_update' );
 add_action( 'wp_ajax_go_unlock_stage', 'go_unlock_stage' );
 add_action( 'wp_ajax_go_task_change_stage', 'go_task_change_stage' );
-add_action( 'wp_ajax_go_task_abandon', 'go_task_abandon' );
+//add_action( 'wp_ajax_go_task_abandon', 'go_task_abandon' );
 add_action( 'wp_ajax_go_admin_bar_add', 'go_admin_bar_add' );
 add_action( 'wp_ajax_go_admin_bar_stats', 'go_admin_bar_stats' );
 add_action( 'wp_ajax_go_class_a_save', 'go_class_a_save' );
@@ -193,7 +197,7 @@ add_action( 'wp_ajax_go_stats_task_list', 'go_stats_task_list' );
 add_action( 'wp_ajax_go_stats_move_stage', 'go_stats_move_stage' );
 add_action( 'wp_ajax_go_stats_item_list', 'go_stats_item_list' );
 add_action( 'wp_ajax_go_stats_rewards_list', 'go_stats_rewards_list' );
-add_action( 'wp_ajax_go_stats_minutes_list', 'go_stats_minutes_list' );
+add_action( 'wp_ajax_go_stats_activity_list', 'go_stats_activity_list' );
 add_action( 'wp_ajax_go_stats_penalties_list', 'go_stats_penalties_list' );
 add_action( 'wp_ajax_go_stats_badges_list', 'go_stats_badges_list' );
 add_action( 'wp_ajax_go_stats_leaderboard_choices', 'go_stats_leaderboard_choices' );
@@ -233,9 +237,6 @@ add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 // mitigating compatibility issues with Jetpack plugin by Automatic
 // (https://wordpress.org/plugins/jetpack/).
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
-
-
-
 
 /**
  * Important Functions
@@ -332,8 +333,7 @@ function go_user_redirect( $redirect_to, $request, $user )
 {
     //if (is_user_logged_in()) {
         //$redirect_on = get_option( 'options_go_landing_page_on_login', true );
-
-        if (isset($user) && ($user instanceof WP_User)) {
+     if (isset($user) && ($user instanceof WP_User)) {
             $redirect_url = get_option('options_go_landing_page_on_login', '');
             $default_map = get_option('options_go_locations_map_default', '');
             $user_id = $user->ID;
@@ -903,6 +903,12 @@ function media_add_author_dropdown()
 }
 add_action('restrict_manage_posts', 'media_add_author_dropdown');
 
+//bbPress visual editor
+function bbp_enable_visual_editor( $args = array() ) {
+    $args['tinymce'] = true;
+    return $args;
+}
+add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
 
 
 ?>

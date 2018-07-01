@@ -5,20 +5,17 @@
  * @param $custom_fields
  * @param $user_id
  * @param $id
- * @param $go_table_name
  * @param $task_name
  * @return bool
  */
-function go_timer( $custom_fields, $user_id, $id, $go_table_name, $task_name ) {
-        global $wpdb;
+function go_timer( $custom_fields, $user_id, $id, $task_name ) {
 
-
-		$time_left = go_time_left ($custom_fields, $user_id, $id, $wpdb, $go_table_name );		
+		$time_left = go_time_left ($custom_fields, $user_id, $id );//
 		//get the start time from the go table
-		$start_time = go_timer_start_time ( $wpdb, $go_table_name, $id, $user_id );
-		$mod = $custom_fields['go_timer_settings_timer_mod'][0];
+		$start_time = go_timer_start_time ( $id, $user_id );
+        $mod = (isset($custom_fields['go_timer_settings_timer_mod'][0]) ?  $custom_fields['go_timer_settings_timer_mod'][0] : 0);
 
-		//if start time is empty
+    //if start time is empty
 		//the timer has never been started
 		if ( empty($start_time)){
 			$time_string = secondsToTime($time_left);
@@ -26,9 +23,10 @@ function go_timer( $custom_fields, $user_id, $id, $go_table_name, $task_name ) {
 			echo "<div class='go_timer_message'> <h3 class='go_error_red'>Timer</h3>This is a timed ".$task_name.".<br>You will have " . $time_string . " to complete this " . $task_name . " before your rewards are reduced by " . $mod . "%.";
 
 			// Display Buttons
+            $db_status = go_get_status($id, $user_id);
 			echo "<div id='go_buttons' style='overflow: auto;'>";
             echo "<a id='go_abandon_task' onclick='go_timer_abandon();this.disabled = true;' style='float: left;'>Abandon</a>";
-            echo "<button id='go_button' status='0' onclick='task_stage_change( this )' timer='true' button_type='timer' style='float: right;'>Start</button> ";
+            echo "<button id='go_button' status='" . $db_status . "'  timer='true' button_type='timer' style='float: right;'>Start</button> ";
 
 			echo "</div>";
             echo "</div>";
@@ -77,18 +75,19 @@ function secondsToTime($seconds) {
 }
 
 /**
- * @param $wpdb
- * @param $go_table_name
  * @param $id
  * @param $user_id
  * @return mixed
  */
-function go_timer_start_time ( $wpdb, $go_table_name, $id, $user_id ) {
+function go_timer_start_time ($id, $user_id ) {
+    global $wpdb;
+    $go_task_table_name = "{$wpdb->prefix}go_tasks";
+
     //get the start time from the go table
     $start_time = $wpdb->get_var(
         $wpdb->prepare(
             "SELECT start_time 
-				FROM {$go_table_name} 
+				FROM {$go_task_table_name} 
 				WHERE post_id = %d AND uid = %d",
             $id,
             $user_id
@@ -101,20 +100,18 @@ function go_timer_start_time ( $wpdb, $go_table_name, $id, $user_id ) {
  * @param $custom_fields
  * @param $user_id
  * @param $id
- * @param $wpdb
- * @param $go_table_name
  * @return false|int
  */
-function go_time_left ($custom_fields, $user_id, $id, $wpdb, $go_table_name ) {
+function go_time_left ($custom_fields, $user_id, $id ) {
 
-    $start_time = go_timer_start_time ( $wpdb, $go_table_name, $id, $user_id );
+    $start_time = go_timer_start_time ($id, $user_id );
     //get amount of time in seconds on the timer
     $days = $custom_fields['go_timer_settings_days'][0];
     $hours = $custom_fields['go_timer_settings_hours'][0];
     $minutes =  $custom_fields['go_timer_settings_minutes'][0];
     $seconds = $custom_fields['go_timer_settings_seconds'][0];
     $future_time = strtotime( "{$days} days", 0) + strtotime( "{$hours} hours", 0) + strtotime( "{$minutes} minutes", 0) + strtotime( "{$seconds} seconds", 0) ;
-
+    $future_time = $future_time ;
     //get the start time from the go table
     if (empty($start_time)){
         //IF THIS IS THE FIRST TIME YOU CLICK START

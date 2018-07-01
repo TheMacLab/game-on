@@ -12,8 +12,8 @@ function go_add_currency( $user_id, $reason, $status, $raw_points, $raw_currency
 	global $wpdb;
 	$table_name_go = "{$wpdb->prefix}go";
 
-	$user_bonuses = go_return_bonus_currency( $user_id );
-	$user_penalties = go_return_penalty( $user_id );
+	$user_bonuses = go_return_health( $user_id );
+	//$user_penalties = go_return_penalty( $user_id );
 	$points = $raw_points;
 	$currency = $raw_currency;
 	if ( -1 !== $status && 6 !== $status ) {
@@ -61,13 +61,13 @@ function go_add_post( $user_id, $post_id, $status, $points, $currency, $bonus_cu
 	global $wpdb;
 	$table_name_go = "{$wpdb->prefix}go";
 	$time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
-	$user_bonuses = go_return_bonus_currency( $user_id );
-	$user_penalties = go_return_penalty( $user_id );
+	$user_bonuses = go_return_health( $user_id );
+	//$user_penalties = go_return_penalty( $user_id );
 	
 	
 	/*add totals row if user isn't in totals row (this shouldn't happen unless user totals adatabase row is manually deleted)
 	*/	
-		$table_name_go_totals = "{$wpdb->prefix}go_totals";
+		$table_name_go_totals = "{$wpdb->prefix}go_loot";
 		$row_exists = $wpdb->get_row(
 				$wpdb->prepare(
 					"SELECT * 
@@ -394,8 +394,8 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	$current_rank_points = $rank['current_rank_points'];
 	$next_rank_points = $rank['next_rank_points'];
 
-	$current_bonus_currency = go_return_bonus_currency( $user_id );
-	$current_penalty = go_return_penalty( $user_id );
+	$current_bonus_currency = go_return_health( $user_id );
+	//$current_penalty = go_return_penalty( $user_id );
 
 	$go_option_ranks = get_option( 'go_ranks' );
 	$points_array = $go_option_ranks['points'];
@@ -408,7 +408,9 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 	$max_rank_index = count( $points_array ) - 1;
 	$max_rank_points = (int) $points_array[ $max_rank_index ];
 
+	$current_penalty = 0;
 	$color = barColor( $current_bonus_currency, $current_penalty );
+    $color = "#39b54a";
 
 	$display = go_display_longhand_currency( $type, $value );
 	
@@ -445,9 +447,9 @@ function go_update_admin_bar( $type, $title, $value, $status = null ) {
 //Update totals
 function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penalty, $minutes, $status = null, $bonus_loot = null, $undo = false, $notify = true ) {
 	global $wpdb;
-	$table_name_go_totals = "{$wpdb->prefix}go_totals";
-	$user_bonuses = go_return_bonus_currency( $user_id );
-	$user_penalties = go_return_penalty( $user_id );
+	$table_name_go_totals = "{$wpdb->prefix}go_loot";
+	$user_bonuses = go_return_health( $user_id );
+	//$user_penalties = go_return_penalty( $user_id );
 	if ( $user_id !== get_current_user_id() ) {
 		$notify = false;
 	}
@@ -495,7 +497,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		}
 	}
 	if ( $bonus_currency != 0 ) {
-		$total_bonus_currency = go_return_bonus_currency( $user_id );
+		$total_bonus_currency = go_return_health( $user_id );
 		$wpdb->update( 
 			$table_name_go_totals, 
 			array( 
@@ -511,7 +513,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		}
 	}
 	if ( $penalty != 0 ) {
-		$total_penalty = go_return_penalty( $user_id );
+		//$total_penalty = go_return_penalty( $user_id );
 		$wpdb->update( 
 			$table_name_go_totals, 
 			array( 
@@ -527,7 +529,7 @@ function go_update_totals( $user_id, $points, $currency, $bonus_currency, $penal
 		}
 	}
 	if ( $minutes != 0 ) {
-		$total_minutes = go_return_minutes( $user_id );
+		$total_minutes = go_return_c4( $user_id );
 		$wpdb->update( 
 			$table_name_go_totals, 
 			array( 

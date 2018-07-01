@@ -10,10 +10,12 @@
 function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, $bonus, $bonus_status, $repeat_max){
     global $wpdb;
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
-    $stage_count = $custom_fields['go_stages'][0]; //total # of stages
+    $stage_count = (isset($custom_fields['go_stages'][0]) ?  $custom_fields['go_stages'][0] : null); //total # of stages
+
 
     if ($bonus){
-        $check_type = $custom_fields['go_bonus_stage_check'][0];
+        $check_type = (isset($custom_fields['go_bonus_stage_check'][0]) ?  $custom_fields['go_bonus_stage_check'][0] : null);
+
     }
     else{
         $check_type = 'go_stages_' . $i . '_check'; //which type of check to print
@@ -53,8 +55,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
     if ($is_admin) {
         $admin_view = get_user_meta($user_id, 'go_admin_view', true);
     }
-
-    $onclick_abandon = "onclick='go_task_abandon();this.disabled = true;'";
     $onclick = "onclick='task_stage_check_input( this );'";
 
     $undo = 'undo';
@@ -64,7 +64,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
 
     $bonus_is_complete = false;
     if ($bonus){
-        $onclick_abandon = "onclick='task_stage_check_input( this );'";
         $stage_count = $repeat_max;
         $undo = 'undo_bonus';
         $abandon = 'abandon_bonus';
@@ -86,10 +85,10 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
             $undo = 'undo_last';
         }
         echo "<div id='go_buttons'>";
-        echo "<div id='go_back_button' " . $onclick . " undo='true' button_type={$undo} status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
+        echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
         if ($custom_fields['bonus_switch'][0] && ! $bonus_is_complete) {
             //echo "There is a bonus stage.";
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
+            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
         }
         echo "</div>";
     }
@@ -98,14 +97,14 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         echo "<p id='go_stage_error_msg' style='display: none; color: red;'></p>";
         echo "<div id='go_buttons'>";
         if ($i == 0) {
-            echo "<div id='go_abandon_task' " . $onclick_abandon . " button_type='{$abandon}' status='{$status}' check_type='{$check_type}' >Abandon</div>";
+            echo "<div id='go_back_button'  undo='true' button_type='{$abandon}' status='{$status}' check_type='{$check_type}' >Abandon</div>";
         } else {
-            echo "<div id='go_back_button' " . $onclick . " undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
+            echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
         }
         if (($i + 1) == $stage_count) {
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='{$complete}' admin_lock='true' >Complete</button> ";
+            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' button_type='{$complete}' admin_lock='true' >Complete</button> ";
         } else {
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' " . $onclick . " button_type='{$continue}'  admin_lock='true' >Continue</button> ";
+            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' button_type='{$continue}'  admin_lock='true' >Continue</button> ";
         }
         echo "</div>";
     }
@@ -295,37 +294,9 @@ function go_test_check ($custom_fields, $i, $status, $go_actions_table_name, $us
 /**
  * Retrieves and formulates test meta data from a specific task and stage.
  *
- * Note that this function does not check that a stage has the test option enabled. It is expected
- * that such checks will be made prior to calling the function. However, empty test meta data will
- * return null.
- *
- * The test meta data arrays are separately ordered so that index 0 of the question array corresponds
- * to index 0 of all the other arrays, index 1 to all the other index 1 elements, and so on.
- *
- * @since 3.0.0
- *
- * @param string $stage   The stage. e.g. "encounter", "accept", "completion", "mastery" ("repeat"
- *                        would return null, since there is no test option in the fifth stage).
- * @param int    $task_id Optional. The task ID.
- * @return array|null An array of data pertaining to the stage's test(s). Null when the stage's meta
- *                    data is empty.
- *
- * e.g. array(
- *           $test_returns,            // loot meta data
- *           $test_num,                // the number of questions
- *           array(
- *                $test_all_questions, // an array of questions
- *                $test_all_types,     // an array of question types (Multiple Choice or
- *                                     // Multiple Select)
- *                $test_all_answers,   // an array of potential answers
- *                $test_all_keys,      // an array of answer keys
- *           ),
- *      )
  */
 function go_task_get_test_meta($custom_fields, $stage ) {
 
-
-    //$test_array = get_post_meta( $task_id, "go_mta_test_{$stage}_lock_fields", true );
     $test_array = $custom_fields['go_stages_' . $stage . '_quiz'][0];
     $test_array = unserialize($test_array);
     if ( ! empty( $test_array ) ) {

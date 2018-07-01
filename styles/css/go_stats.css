@@ -104,15 +104,7 @@
 /** END Popup Styles **/
 /** Header Styles **/
 
-#go_stats_gravatar {
-	display: inline-block;
-	width: 161px;
-	height: 161px;
-	border: 2px solid #BBB;
-	float: left;
-	position: relative;
-	margin: 0px 10px 0px 20px;
-}
+
 
 #go_stats_header {
 	position: relative;
@@ -120,31 +112,45 @@
 	font-family: verdana;
 	border-bottom: 2px solid #BBB;
 	margin-right: 20px;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 #go_stats_user_info {
-	display: inline-block;
-	float: left;
 	font-size: 16px;
 	line-height: 18px;
+	flex-grow: 1;
 }
 
-#go_stats_user_info div {
-	margin: 0px;
-	padding: 0px;	
+#go_stats_gravatar {
+	width: 150px;
+	height: 150px;
+	border: 2px solid #BBB;
+	position: relative;
+	margin: 0px 10px 0px 20px;
 }
+#go_stats_user_loot{
+	flex-grow: 1;
+	min-width: 250px;
+}
+
+#go_stats_header .progress-bar-border{
+	height: 30px;
+	width: 100%;
+	max-width: 300px;
+	border-color: black;
+	background-color: black;
+}
+
+
+
+
 
 .go_stats_reward_name {
 	display: inline-block;	
 }
 
-#go_stats_user_progress, 
-#go_stats_user_rank, 
-#go_stats_user_focuses {
-	display: inline-block;	
-	float: right;
-	position: relative;
-}
+
 
 #go_stats_user_progress {
 	width: 25%;
@@ -179,11 +185,7 @@
 }
 
 #go_stats_user_rank {
-	height: auto;
-	font-size: 36px;
-	font-weight: bold;
-	vertical-align: middle;
-	top: 18px;
+
 }
 
 #go_stats_user_focuses {

@@ -194,7 +194,7 @@ function go_register_task_tax_and_cpt() {
 		'labels' => $labels_cpt,
 		'hierarchical' => false,
 		'description' => get_option( 'options_go_tasks_name_plural' ),
-        'supports'              => array( 'title', 'comments' ),
+        'supports'              => array( 'title', 'comments', 'thumbnail' ),
 		'taxonomies' => array(),
 		'public' => true,
 		'show_ui' => true,
@@ -231,7 +231,7 @@ add_action( 'init', 'go_register_task_tax_and_cpt', 0 );
  */
 function go_get_status( $task_id, $user_id = null ) {
 	global $wpdb;
-	$go_table_name = "{$wpdb->prefix}go_tasks";
+	$go_task_table_name = "{$wpdb->prefix}go_tasks";
 
 	if ( empty( $task_id ) ) {
 		return null;
@@ -246,7 +246,7 @@ function go_get_status( $task_id, $user_id = null ) {
 	$task_status = $wpdb->get_var(
 		$wpdb->prepare(
 			"SELECT status 
-			FROM {$go_table_name} 
+			FROM {$go_task_table_name} 
 			WHERE uid = %d AND post_id = %d",
 			$user_id,
 			$task_id
@@ -274,7 +274,7 @@ function go_is_done( $task_id, $user_id = null ) {
     global $wpdb;
     $task_status = go_get_status( $task_id, $user_id);
 
-    $go_table_name = "{$wpdb->prefix}go_tasks";
+    $go_task_table_name = "{$wpdb->prefix}go_tasks";
 
     if ( empty( $task_id ) ) {
         return null;
@@ -330,7 +330,7 @@ function go_master_unlocked($user_id, $post_id){
  */
 function go_get_bonus_status( $task_id, $user_id = null ) {
 	global $wpdb;
-	$go_table_name = "{$wpdb->prefix}go_tasks";
+	$go_task_table_name = "{$wpdb->prefix}go_tasks";
 
 	if ( empty( $task_id ) ) {
 		return null;
@@ -345,7 +345,7 @@ function go_get_bonus_status( $task_id, $user_id = null ) {
 	$task_count = $wpdb->get_var(
 		$wpdb->prepare(
 			"SELECT bonus_status
-			FROM {$go_table_name} 
+			FROM {$go_task_table_name} 
 			WHERE uid = %d AND post_id = %d",
 			$user_id,
 			$task_id

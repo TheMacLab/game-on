@@ -1,3 +1,4 @@
+/*
 function go_deactivate_plugin() {
 	var nonce = GO_EVERY_PAGE_DATA.nonces.go_deactivate_plugin;
 	jQuery.ajax({
@@ -14,7 +15,8 @@ function go_deactivate_plugin() {
 		}
 	});
 }
-
+*/
+/*
 function go_submit_pods () {
 	var podInfo = [];
 	var links = [];
@@ -48,7 +50,7 @@ function go_submit_pods () {
 	
 	console.log( podInfo );
 	return podInfo;
-	/*jQuery.ajax({
+	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
 		data:{
@@ -61,19 +63,10 @@ function go_submit_pods () {
 		success: function (html) {
 			
 		}
-	});*/
+	});
 }
-
-function go_sounds( type ) {
-	if ( 'store' == type ) {
-		var audio = new Audio( PluginDir.url + 'media/gold.mp3' );
-		audio.play();
-	} else if ( 'timer' == type ) {
-		var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
-		audio.play();
-	}
-}
-
+*/
+/*
 function hideVid() {
 	if ( jQuery( '#go_option_help_video' ).length ) {
 		myplayer = videojs( 'go_option_help_video' );
@@ -92,7 +85,9 @@ function hideVid() {
 	}
 	jQuery( '#go_help_video_container' ).append( '<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video>' );
 }
+*/
 
+/*
 function go_display_help_video( url ) {
 	jQuery( '.dark' ).show();
 	if ( -1 != url.indexOf( 'youtube' ) || -1 != url.indexOf( 'vimeo' ) ) {
@@ -147,7 +142,9 @@ function go_display_help_video( url ) {
 		});
 	}
 }
+*/
 
+/*
 function go_admin_bar_add() {
 	var nonce = GO_EVERY_PAGE_DATA.nonces.go_admin_bar_add;
 	jQuery.ajax({
@@ -183,8 +180,20 @@ function go_admin_bar_add() {
 				jQuery( '#go_admin_bar_add_button' ).prop( 'disabled', false );
 			}
 		}
-	});	
+	});
 }
+*/
+
+function go_sounds( type ) {
+    if ( 'store' == type ) {
+        var audio = new Audio( PluginDir.url + 'media/gold.mp3' );
+        audio.play();
+    } else if ( 'timer' == type ) {
+        var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
+        audio.play();
+    }
+}
+
 	
 function go_admin_bar_stats_page_button( id ) {
 	var nonce = GO_EVERY_PAGE_DATA.nonces.go_admin_bar_stats;
@@ -237,8 +246,8 @@ function go_admin_bar_stats_page_button( id ) {
 						case 'rewards':
 							go_stats_rewards_list();
 							break;
-						case 'minutes':
-							go_stats_minutes_list();
+						case 'activity':
+							go_stats_activity_list();
 							break;
 						case 'penalties':
 							go_stats_penalties_list();
@@ -468,15 +477,15 @@ function go_stats_rewards_list() {
 		}
 	});
 }	
-
-function go_stats_minutes_list() {
-	var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_minutes_list;
+/* BACKUP
+function go_stats_activity_list() {
+	var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_activity_list;
 	jQuery.ajax({
 		type: 'post',
 		url: MyAjax.ajaxurl,
 		data:{
 			_ajax_nonce: nonce,
-			action: 'go_stats_minutes_list',
+			action: 'go_stats_activity_list',
 			user_id: jQuery( '#go_stats_hidden_input' ).val()
 		},
 		success: function( res ) {
@@ -485,7 +494,74 @@ function go_stats_minutes_list() {
 			}
 		}
 	});
+}*/
+
+function go_stats_activity_list() {
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_activity_list;
+    jQuery.ajax({
+        type: 'post',
+        url: MyAjax.ajaxurl,
+        data:{
+            _ajax_nonce: nonce,
+            action: 'go_stats_activity_list',
+            user_id: jQuery( '#go_stats_hidden_input' ).val()
+        },
+        success: function( res ) {
+            if ( -1 !== res ) {
+                //jQuery( '#go_stats_body' ).html( '' );
+                var oTable = jQuery( '#go_stats_datatable' ).dataTable();
+                oTable.fnDestroy();
+
+                jQuery( '#go_stats_body' ).html( res );
+                jQuery( '#go_stats_datatable' ).dataTable( {
+                    stateSave: true,
+                    "bPaginate": true,
+                    colReorder: true,
+                    "aaSorting": [[1, "asc"]],
+                    "destroy": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+
+                    ]
+                });
+            }
+        }
+    });
 }
+
+/* OK TO DELETE
+function go_clipboard_class_a_choice_activity() {
+    var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_activity;
+    jQuery.ajax({
+        type: "post",
+        url: MyAjax.ajaxurl,
+        data: {
+            _ajax_nonce: nonce,
+            action: 'go_clipboard_intable_activity',
+            go_clipboard_class_a_choice_activity: jQuery( '#go_clipboard_class_a_choice_activity' ).val()
+        },
+        success: function( res ) {
+            if ( -1 !== res ) {
+                jQuery( '#go_clipboard_activity_body' ).html( '' );
+                var oTable = jQuery( '#go_clipboard_activity' ).dataTable();
+                oTable.fnDestroy();
+                jQuery( '#go_clipboard_activity_body' ).html( res );
+                jQuery( '#go_clipboard_activity' ).dataTable( {
+                    stateSave: true,
+                    "bPaginate": false,
+                    colReorder: true,
+                    "aaSorting": [[1, "asc"]],
+                    "destroy": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'excel', 'pdf', 'colvis'
+                    ]
+                });
+            }
+        }
+    });
+}
+*/
 
 function go_stats_penalties_list() {
 	var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_penalties_list;
@@ -624,6 +700,7 @@ function go_change_seen( date, type, obj ) {
 		jQuery( obj ).attr( 'onClick', 'go_mark_seen("' + date + '", "unseen"); go_change_seen("' + date + '", "unseen", this);' );
 	}
 }
+
 function go_add_uploader() {
 	jQuery( '#go_upload_form div#go_uploader' ).append( '<input type="file" name="go_attachment[]"/><br/>' );
 }
@@ -646,6 +723,8 @@ String.prototype.getMid = function( str_1, str_2 ) {
 		}
 	}
 }
+
+
 
 /**
  * Decimal adjustment of a number.
@@ -742,29 +821,3 @@ jQuery.prototype.go_prev_n = function ( n, selector ) {
 };
 
 
-
-/////For NEw ACF map stuff
-
-////////////NEW STUFF
-jQuery(document).ready(function(){
-
-	
-	if(jQuery('#parent').val() == -1){ 
-		jQuery('.acf-field').hide();
-	}
-	else{ 
-		jQuery('.acf-field').show();
-		jQuery('h2').show();
-	}
-
-	jQuery('#parent').change(function(){
-	 	if(jQuery(this).val() == -1){ 
-			jQuery('.acf-field').hide();
-	 	}
-	 	else{ 
-			jQuery('.acf-field').show();
-			jQuery('h2').show();
-			
-	  	}
-	});
-});

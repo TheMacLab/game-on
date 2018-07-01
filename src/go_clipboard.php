@@ -171,9 +171,10 @@ function go_clipboard_intable() {
 					$focuses_list .= "<option value='".esc_attr( $focus )."' >{$focus}</option>";
 				}
 			}
-			$bonus_currency = go_return_bonus_currency( $id->user_id );
-			$penalty = go_return_penalty( $id->user_id );
-			$minutes = go_return_minutes( $id->user_id );
+			$bonus_currency = go_return_health( $id->user_id );
+			
+			//$penalty = go_return_penalty( $id->user_id );
+			$minutes = go_return_c4( $id->user_id );
 			$currency = go_return_currency( $id->user_id );
 			$points = go_return_points( $id->user_id );
 			$badge_count = go_return_badge_count( $id->user_id );
@@ -263,7 +264,7 @@ function go_clipboard_intable_messages() {
 
 function go_clipboard_intable_activity() {
 	global $wpdb;
-	$go_table_name = "{$wpdb->prefix}go";
+	$go_task_table_name = "{$wpdb->prefix}go";
 
 
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -286,7 +287,7 @@ function go_clipboard_intable_activity() {
 
 	// grabs all user ids for non-admin users
 	$table_name_user_meta = $wpdb->prefix.'usermeta';
-	$uid = $wpdb->get_results(
+	$uids = $wpdb->get_results(
 		$wpdb->prepare(
 			"SELECT user_id 
 			FROM {$table_name_user_meta} 
@@ -296,7 +297,7 @@ function go_clipboard_intable_activity() {
 		)
 	);
 	
-	foreach ( $uid as $id ) {
+	foreach ( $uids as $id ) {
 		$class_array = get_user_meta( $id->user_id, 'go_classifications', true );
 
 		// continue if the user has the selected class in their class list
@@ -318,7 +319,7 @@ function go_clipboard_intable_activity() {
 			$task_list = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT post_id, timestamp
-					FROM {$go_table_name} 
+					FROM {$go_task_table_name} 
 					WHERE uid = %d
 					ORDER BY id DESC",
 					$id->user_id
@@ -418,9 +419,9 @@ function go_clipboard_add() {
 			// returning information to the AJAX call to update the clipboard
 			$new_point_total = go_return_points( $user_id );
 			$new_currency_total = go_return_currency( $user_id );
-			$new_bonus_currency_total = go_return_bonus_currency( $user_id );
-			$new_penalty_total = go_return_penalty( $user_id );
-			$new_minute_total = go_return_minutes( $user_id );
+			$new_bonus_currency_total = go_return_health( $user_id );
+			//$new_penalty_total = go_return_penalty( $user_id );
+			$new_minute_total = go_return_c4( $user_id );
 			$new_badge_count = go_return_badge_count( $user_id );
 	
 			if ( ! $output_data[ 'update_status' ] ) {

@@ -35,6 +35,8 @@
   "dependencies": {
     "fitvids": "FitVids#^1.2.0",
     "datatables": "datatable#^1.10.16",
-    "featherlight": "^1.7.12"
+    "featherlight": "^1.7.12",
+    "jGrowl": "jgrowl#^1.4.6",
+    "noty": "^3.1.4"
   }
 }

@@ -36,14 +36,17 @@
 
 .acf-accordion-title {background: lightblue !important;}
 
-.acf-hide-label .acf-label,
-.go-bonus-loot .acf-th{
+.acf-hide-label .acf-label{
     display: none;
 }
 
 .go-loot .acf-th{
     display: table-cell;
 }
+
+.acf-no-padding {padding: 0px !important; }
+.acf-hide-table-header .acf-th {display:none;}
+.acf-table-no-border .acf-table {border: solid 0px !important}
 
 /********************
 *QUIZ

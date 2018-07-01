@@ -171,7 +171,7 @@ function go_award_badge ( $atts ) {
 			}
 		}
 		$badge_count = count ( get_user_meta( $user_id, 'go_badges', true ) );
-		$wpdb->update( "{$wpdb->prefix}go_totals", array( 'badge_count' => $badge_count ), array( 'uid' => $user_id ) );
+		$wpdb->update( "{$wpdb->prefix}go_loot", array( 'badge_count' => $badge_count ), array( 'uid' => $user_id ) );
 	}
 }
 
@@ -232,7 +232,7 @@ function go_remove_badge ( $user_id, $badge_id = -1 ) {
 				$badge_count--;
 			}
 			update_user_meta( $user_id, 'go_badges', $existing_badges );
-			$wpdb->update( "{$wpdb->prefix}go_totals", array( 'badge_count' => $badge_count ), array( 'uid' => $user_id ) );
+			$wpdb->update( "{$wpdb->prefix}go_loot", array( 'badge_count' => $badge_count ), array( 'uid' => $user_id ) );
 		}
 	}
 }

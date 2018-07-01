@@ -3,20 +3,27 @@
 
 global $wpdb;
 global $go_db_version;
-$go_db_version = '4.00';
+$go_db_version = '4.08';
 
 function go_update_db_check() {
     global $go_db_version;
     if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
     update_option('go_db_version', $go_db_version);
-    go_table_tasks();
-    go_table_store();
-    go_table_actions();
-    go_table_totals();
+    go_update_db();
     //go_on_activate_msdb(true);
     }
 }
 add_action( 'plugins_loaded', 'go_update_db_check' );
+
+function go_update_db() {
+
+    global $go_db_version;
+    go_table_totals();
+    go_table_tasks();
+    //go_table_store();
+    go_table_actions();
+    add_option( 'go_db_version', $go_db_version );
+}
 
 function go_table_tasks() {
     global $wpdb;
@@ -27,7 +34,6 @@ function go_table_tasks() {
 			uid bigint(20),
 			post_id bigint(20),
 			status TINYINT,
-			complete BOOLEAN DEFAULT 0,
 			bonus_status TINYINT DEFAULT 0,
 			xp INT,
 			gold INT,
@@ -50,6 +56,7 @@ function go_table_tasks() {
 
 }
 
+/*
 function go_table_store() {
     global $wpdb;
     $table_name = "{$wpdb->prefix}go_store";
@@ -61,7 +68,7 @@ function go_table_store() {
 			returned BOOLEAN DEFAULT 0,
 			xp INT,
 			gold INT,
-			health INT,
+			health DECIMAL (10,2),
 			c4 INT,
 			last_time datetime,
 			PRIMARY KEY  (id),
@@ -76,7 +83,7 @@ function go_table_store() {
     //add_option( 'go_db_version', $go_db_version );
 
 }
-
+*/
 function go_table_actions() {
     global $wpdb;
     $table_name = "{$wpdb->prefix}go_actions";
@@ -84,15 +91,17 @@ function go_table_actions() {
 		CREATE TABLE $table_name (
 			id bigint(20) NOT NULL AUTO_INCREMENT,
 			uid bigint(20),
-			type VARCHAR (200),
+			action_type VARCHAR (200),
 			source_id bigint(20),
 			TIMESTAMP datetime,
 			stage TINYINT,
 			bonus_status TINYINT,
 			check_type VARCHAR (200),
 			result VARCHAR (200),
-			stage_mod TINYINT,
-			global_mod TINYINT,
+			quiz_mod DECIMAL (10,2),
+			late_mod DECIMAL (10,2),
+			timer_mod DECIMAL (10,2),
+			global_mod DECIMAL (10,2),
 			xp INT,
 			gold INT,
 			health INT,
@@ -113,24 +122,25 @@ function go_table_actions() {
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
-    //add_option( 'go_db_version', $go_db_version );
+
 
 }
 
 function go_table_totals() {
     global $wpdb;
-    $table_name = "{$wpdb->prefix}go_totals";
+    $table_name = "{$wpdb->prefix}go_loot";
     $sql = "
 		CREATE TABLE $table_name (
 			id bigint(20) NOT NULL AUTO_INCREMENT,
 			uid bigint(20),
-			xp INT,
-			gold INT,
-			health INT,
-			c4 INT,
+			xp INT DEFAULT 0,
+			gold INT DEFAULT 0,
+			health INT DEFAULT 100,
+			c4 INT DEFAULT 0,
 			badge_count INT,
 			PRIMARY KEY  (id),
-            KEY uid (uid)            
+            KEY uid (uid),
+            UNIQUE (uid)          
 		);
 	";
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
@@ -157,10 +167,7 @@ function go_on_activate_msdb( $network_wide ) {
         $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
         foreach ( $blog_ids as $blog_id ) {
             switch_to_blog( $blog_id );
-            go_table_tasks();
-            go_table_store();
-            go_table_actions();
-            go_table_totals();
+            go_update_db();
             restore_current_blog();
         }
     } else {
@@ -181,10 +188,7 @@ function go_on_activate_msdb( $network_wide ) {
 function go_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
     if ( is_plugin_active_for_network(__FILE__ ) ) {
     switch_to_blog( $blog_id );
-    go_table_tasks();
-    go_table_store();
-    go_table_actions();
-    go_table_totals();
+    go_update_db();
     restore_current_blog();
     }
 }
@@ -280,6 +284,7 @@ function go_table_totals() {
 
 */
 
+/*
 // Updates the rank totals upon activation of plugin.
 function go_ranks_registration() {
     $ranks = get_option( 'go_ranks', false );
@@ -309,7 +314,8 @@ function go_ranks_registration() {
         update_option( 'go_ranks', $ranks );
     }
 }
-
+*/
+/*
 // Updates the presets for task creation upon activation of plugin. 
 function go_presets_registration() {
     $presets = get_option( 'go_presets' );
@@ -360,11 +366,12 @@ function go_presets_registration() {
         update_option( 'go_presets', $presets );
     }
 }
-
+*/
+/*
 function go_install_data () {
     global $wpdb;
     $table_name_user_meta = "{$wpdb->prefix}usermeta";
-    $table_name_go_totals = "{$wpdb->prefix}go_totals";
+    $table_name_go_totals = "{$wpdb->prefix}go_loot";
     $table_name_go = "{$wpdb->prefix}go";
     global $default_role;
     $role = get_option( 'go_role', $default_role );
@@ -608,11 +615,11 @@ function go_install_data () {
         go_update_ranks( $user_id, $total_points );
     }
 }
-
+*/
 // Adds user id to the totals table upon user creation.
 function go_user_registration ( $user_id ) {
     global $wpdb;
-    $table_name_go_totals = "{$wpdb->prefix}go_totals";
+    $table_name_go_totals = "{$wpdb->prefix}go_loot";
     $table_name_capabilities = "{$wpdb->prefix}capabilities";
     $role = get_option( 'go_role', 'subscriber' );
     $user_role = get_user_meta( $user_id, "{$table_name_capabilities}", true );
@@ -622,18 +629,22 @@ function go_user_registration ( $user_id ) {
         go_update_ranks( $user_id, 0 );
 
         // this should set the user's points to 0
-        $wpdb->insert( $table_name_go_totals, array( 'uid' => $user_id, 'points' => 0 ), array( '%s' ) );
+        $wpdb->insert( $table_name_go_totals, array( 'uid' => $user_id), array( '%s' ) );
     }
 }
 
 // Deletes all rows related to a user in the individual and total tables upon deleting said user.
 function go_user_delete( $user_id ) {
     global $wpdb;
-    $table_name_go_totals = "{$wpdb->prefix}go_totals";
-    $table_name_go = "{$wpdb->prefix}go";
+    $table_name_go_totals = "{$wpdb->prefix}go_loot";
+    $table_name_go_tasks = "{$wpdb->prefix}go_tasks";
+    $table_name_go_actions = "{$wpdb->prefix}go_actions";
+    //$table_name_go_store = "{$wpdb->prefix}go_store";
 
     $wpdb->delete( $table_name_go_totals, array( 'uid' => $user_id ) );
-    $wpdb->delete( $table_name_go, array( 'uid' => $user_id ) );
+    $wpdb->delete( $table_name_go_tasks, array( 'uid' => $user_id ) );
+    $wpdb->delete( $table_name_go_actions, array( 'uid' => $user_id ) );
+    //$wpdb->delete( $table_name_store, array( 'uid' => $user_id ) );
 }
 
 function go_open_comments() {
