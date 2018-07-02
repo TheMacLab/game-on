@@ -14,33 +14,27 @@ function go_admin_includes () {
      * Datatables
      */
 
-    wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
+    //wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
+    wp_register_script( 'go_datatables', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', array( 'jquery' ),'v1', false);
     wp_enqueue_script( 'go_datatables' );
 
-    wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
+    //wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
+    wp_register_style( 'go_datatables_css', 'wp_register_style( \'go_datatables_css\', plugin_dir_url( __FILE__ ).\'DataTables/datatables.min.css\' );' );
     wp_enqueue_style( 'go_datatables_css' );
 
     /**
      * Featherlight
      */
 
-    wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js', array( 'jquery' ),'v1', true);
+    //wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js', array( 'jquery' ),'v1', true);
+    wp_register_script( 'go_featherlight', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.js','v1.7.13', true);
     wp_enqueue_script( 'go_featherlight' );
 
-    wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
+    //wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
+    wp_register_style( 'go_featherlight_css', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css', null,'v1.7.13' );
     wp_enqueue_style( 'go_featherlight_css' );
 
 
-    /**
-     * jGrowl
-     */
-/*
-    wp_register_script( 'go_jGrowl', plugin_dir_url( __FILE__ ).'jGrowl/jquery.jgrowl.min.js', array( 'jquery' ),'v1', true);
-    wp_enqueue_script( 'go_jGrowl' );
-
-    wp_register_style( 'go_jGrowl_css', plugin_dir_url( __FILE__ ).'jGrowl/jquery.jgrowl.min.css' );
-    wp_enqueue_style( 'go_jGrowl_css' );
-*/
 }
 
 function go_includes () {
@@ -49,10 +43,12 @@ function go_includes () {
      * Datatables
      */
 
-    wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
+    //wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
+    wp_register_script( 'go_datatables', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', array( 'jquery' ),'v1', false);
     wp_enqueue_script( 'go_datatables' );
 
-    wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
+    //wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
+    wp_register_style( 'go_datatables_css', 'wp_register_style( \'go_datatables_css\', plugin_dir_url( __FILE__ ).\'DataTables/datatables.min.css\' );' );
     wp_enqueue_style( 'go_datatables_css' );
 
 
@@ -67,10 +63,12 @@ function go_includes () {
      * Featherlight
      */
 
-    wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js', array( 'jquery' ),'v1', true);
+    //wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js', array( 'jquery' ),'v1', true);
+    wp_register_script( 'go_featherlight', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.js','v1.7.13', true);
     wp_enqueue_script( 'go_featherlight' );
 
-    wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
+    //wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
+    wp_register_style( 'go_featherlight_css', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css', null,'v1.7.13' );
     wp_enqueue_style( 'go_featherlight_css' );
 
     wp_register_script( 'go_collapse_lists', plugin_dir_url( __FILE__ ).'CollapsibleLists.js', array( 'jquery' ),'v2', true);
