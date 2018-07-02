@@ -1,6 +1,0 @@
-// @codekit-prepend '../scripts/video-js/video.js'
-// @codekit-prepend '../scripts/go_notification.js'
-// @codekit-prepend '../scripts/go_every_page.js'
-// @codekit-prepend '../scripts/types.js'
-// @codekit-prepend '../scripts/go_store_admin.js'
-// @codekit-prepend '../scripts/go_pod_options.js'

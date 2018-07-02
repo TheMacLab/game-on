@@ -1,1 +1,4 @@
 go_definitions.php
+/bower_components
+/bower_components/**
+bower.json

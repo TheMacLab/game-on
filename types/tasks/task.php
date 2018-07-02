@@ -213,10 +213,7 @@ function go_register_task_tax_and_cpt() {
 	
 }
 add_action( 'init', 'go_register_task_tax_and_cpt', 0 );
-<<<<<<< HEAD
-=======
 
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 /**
  * Retrieves the status of a task for a specific user.

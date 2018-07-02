@@ -27,8 +27,6 @@ function go_register_store_tax_and_cpt() {
 		'add_new_item' => _x( 'Add New '.get_option( 'options_go_store_name' ).' Category' , 'store_types'),
 		'new_item_name' => _x( 'New '.get_option( 'options_go_store_name' ).' Category' , 'store_types'),
 	);
-<<<<<<< HEAD
-=======
     $cat_args = array(
         'labels' => $cat_labels,
         'public' => true,
@@ -43,7 +41,6 @@ function go_register_store_tax_and_cpt() {
     );
     register_taxonomy( 'store_types', array( '' ), $cat_args );
 
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 	/*
 	 * Store Custom Post Type
@@ -101,12 +98,8 @@ function go_register_store_tax_and_cpt() {
 	);
 	register_post_type( 'go_store', $args );
 }
-<<<<<<< HEAD
-add_action( 'init', 'go_register_store_tax_and_cpt', 0 );	
-=======
 add_action( 'init', 'go_register_store_tax_and_cpt', 0 );	 
 	 
->>>>>>> 13ea3212a91c646af9bdbddad271e0008c7a7dbe
 
 function go_new_item_permalink( $return, $post_id, $new_title, $new_slug ) {
 	if ( strpos( $return, 'edit-slug' ) !== false ) {
