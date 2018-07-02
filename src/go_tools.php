@@ -52,7 +52,7 @@ function go_upgade4 (){
             update_post_meta($id, 'go_stages_0_check', 'quiz');
         }
         else if($url_toggle){
-            update_post_meta($id, 'go_stages_0_check', 'url');
+            update_post_meta($id, 'go_stages_0_check', 'URL');
         }
         else if($upload_toggle){
             update_post_meta($id, 'go_stages_0_check', 'upload');
@@ -78,7 +78,7 @@ function go_upgade4 (){
             update_post_meta($id, 'go_stages_1_check', 'quiz');
         }
         else if($url_toggle){
-            update_post_meta($id, 'go_stages_1_check', 'url');
+            update_post_meta($id, 'go_stages_1_check', 'URL');
         }
         else if($upload_toggle){
             update_post_meta($id, 'go_stages_1_check', 'upload');
@@ -104,7 +104,7 @@ function go_upgade4 (){
             update_post_meta($id, 'go_stages_2_check', 'quiz');
         }
         else if($url_toggle){
-            update_post_meta($id, 'go_stages_2_check', 'url');
+            update_post_meta($id, 'go_stages_2_check', 'URL');
         }
         else if($upload_toggle){
             update_post_meta($id, 'go_stages_2_check', 'upload');
@@ -160,7 +160,7 @@ function go_upgade4 (){
                 update_post_meta($id, 'go_stages_4_check', 'quiz');
             }
             else if($url_toggle){
-                update_post_meta($id, 'go_stages_4_check', 'url');
+                update_post_meta($id, 'go_stages_4_check', 'URL');
             }
             else if($upload_toggle){
                 update_post_meta($id, 'go_stages_4_check', 'upload');
