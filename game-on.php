@@ -225,6 +225,7 @@ add_action( 'wp_ajax_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_nopriv_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
 add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' );
+add_action( 'wp_ajax_go_upgade4', 'go_upgade4' );
 
 
 /**

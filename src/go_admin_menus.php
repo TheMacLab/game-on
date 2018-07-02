@@ -39,7 +39,7 @@ function go_reorder_admin_menu( ) {
         //'users.php', // Users
         'separator3', // --Space--
         'plugins.php', // Plugins
-        'tools.php', // Tools
+        'go_tools.php', // Tools
         'options-general.php', // Settings
     );
 }
@@ -276,10 +276,15 @@ function go_admin_tools_menu_content() {
 
     <div class="wrap">
 
-        <h2>Tools</h2>
+        <h2>Tools Coming Soon!</h2>
         <p>Export/Import Tasks Tool</p>
         <p>Archive</p>
         <p>Reset User Data</p>
+
+        <h2>Update v3 to v4</h2>
+        <p>This will update your v3 posts and store items to v4.  It's not perfect, but it's better then starting from scratch. The v3 content will be left unchanged and new post metadata will be created.</p>
+        <p>An upcoming update will have an additional tool to purge the v3 content from the database.</p>
+        <button id="go_tool_update">Update</button>
 
 
         <?php

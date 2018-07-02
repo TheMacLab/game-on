@@ -74,6 +74,7 @@ function go_admin_scripts ($hook) {
 					'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' ),
 					'go_stats_leaderboard'         => wp_create_nonce( 'go_stats_leaderboard_' ),
 					'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
+                    'go_upgade4'                     => wp_create_nonce( 'go_upgade4'),
 				),
 			)
 		);

@@ -173,7 +173,7 @@ class ACF {
 			acf_include('includes/admin/admin-field-group.php');
 			acf_include('includes/admin/admin-field-groups.php');
 			acf_include('includes/admin/install.php');
-			acf_include('includes/admin/admin-tools.php');
+			acf_include('includes/admin/admin-go_tools.php');
 			acf_include('includes/admin/settings-info.php');
 			
 			

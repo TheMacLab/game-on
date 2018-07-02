@@ -49,18 +49,21 @@ function go_the_lb_ajax() {
         $xp_abbr         = get_option( 'options_go_loot_xp_abbreviation' );
         $user_xp = go_return_points( $user_id );
         $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ?  $custom_fields['go_loot_reward_toggle_xp'][0] : null);
+        /*
         $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
+
         if ($xp_mod_toggle) {
-            $store_abs_cost_xp = ceil($store_abs_cost_xp * $health_mod);
-            /*
+            $store_mod_val = ceil($store_abs_cost_xp * $health_mod);
+
             if ($store_toggle_xp) {
                 $store_abs_cost_xp = $store_abs_cost_xp - $store_mod_val;
             }
             else {
                 $store_abs_cost_xp = $store_abs_cost_xp + $store_mod_val;
             }
-            */
+
         }
+        */
     }else{
         $xp_on = false;
     }
@@ -72,10 +75,12 @@ function go_the_lb_ajax() {
         $gold_abbr      = get_option( 'options_go_loot_gold_abbreviation' );
         $user_gold = go_return_currency( $user_id );
         $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
+        /*
         $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
         if ($gold_mod_toggle) {
             $store_abs_cost_gold = ceil($store_abs_cost_gold * $health_mod);
         }
+        */
     }else{
         $gold_on = false;
     }
@@ -87,10 +92,12 @@ function go_the_lb_ajax() {
         $health_abbr = get_option( 'options_go_loot_health_abbreviation' );
         $user_health = go_return_health ($user_id );
         $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
+        /*
         $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
         if ($health_mod_toggle) {
             $store_abs_cost_health = ceil($store_abs_cost_health * $health_mod);
         }
+        */
     }else{
         $health_on = false;
     }
@@ -102,10 +109,12 @@ function go_the_lb_ajax() {
         $c4_abbr        = get_option( 'options_go_loot_c4_abbreviation' );
         $user_c4 = go_return_c4( $user_id );
         $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
+        /*
         $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
         if ($c4_mod_toggle) {
             $store_abs_cost_c4 = ceil($store_abs_cost_c4 * $health_mod);
         }
+        */
     }else{
         $c4_on = false;
     }
@@ -131,6 +140,9 @@ function go_the_lb_ajax() {
 
 	echo'<div id="light" class="white_content">';
     echo "<h1>{$the_title}</h1>";
+    if ($is_admin) {
+        echo edit_post_link('edit', null, null, $post_id);
+    }
 	echo '<div id="go-lb-the-content"><div id="go_store_description" style=""'.do_shortcode( $the_content ) . '</div>';
 
 	if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false) || ($c4_on && $store_toggle_c4 == false)) {
