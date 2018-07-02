@@ -1,188 +1,3 @@
-/*
-function go_deactivate_plugin() {
-	var nonce = GO_EVERY_PAGE_DATA.nonces.go_deactivate_plugin;
-	jQuery.ajax({
-		type: 'post', 
-		url: MyAjax.ajaxurl,
-		data:{
-			_ajax_nonce: nonce,
-			action: 'go_deactivate_plugin'
-		},
-		success: function( res ) {
-			if ( -1 !== res ) {
-				location.reload();
-			}
-		}
-	});
-}
-*/
-/*
-function go_submit_pods () {
-	var podInfo = [];
-	var links = [];
-	jQuery( "input[name='go_pod_link[]']" ).each( function() {
-		links.push( jQuery( this ).val() );
-		
-	});
-	podInfo.push( links );
-	console.log( links );
-	
-	var stage = [];
-	jQuery( "select[name='go_pod_stage_select[]']" ).each( function() {
-		stage.push( jQuery( this ).val() );
-	});
-	console.log( stage );
-	podInfo.push( stage );
-	
-	var number = [];
-	jQuery( "input[name='go_pod_number[]']" ).each( function() {
-		number.push( jQuery( this ).val() );
-	});
-	console.log( number );
-	podInfo.push( number );
-	
-	var next = [];
-	jQuery( "select[name='go_next_pod_select[]']" ).each( function() {
-		next.push( jQuery( this ).val() );
-	});
-	console.log( next );
-	podInfo.push( next );
-	
-	console.log( podInfo );
-	return podInfo;
-	jQuery.ajax({
-		type: 'post',
-		url: MyAjax.ajaxurl,
-		data:{
-			action: 'go_submit_pods',
-			podLink: jQuery("input[name='go_pod_link[]']").each(),
-			podStage: jQuery("input[name='go_pod_stage_select[]']").each(),
-			podNumber: jQuery("input[name='go_pod_number[]']").each(),
-			podNext: jQuery("input[name='go_next_pod_select[]']").each()
-		},
-		success: function (html) {
-			
-		}
-	});
-}
-*/
-/*
-function hideVid() {
-	if ( jQuery( '#go_option_help_video' ).length ) {
-		myplayer = videojs( 'go_option_help_video' );
-	}
-
-	// this will stop the body from scrolling behind the video
-	jQuery( 'html' ).removeClass( 'go_no_scroll' );
-	jQuery( '.dark' ).hide();
-	jQuery( '.light' ).hide();
-	if ( jQuery( '#go_option_help_video' ).length ) {
-		myplayer.pause();
-		myplayer.dispose();
-	}
-	if ( jQuery( '#go_video_iframe' ).length ) {
-		jQuery( '#go_video_iframe' ).remove();
-	}
-	jQuery( '#go_help_video_container' ).append( '<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video>' );
-}
-*/
-
-/*
-function go_display_help_video( url ) {
-	jQuery( '.dark' ).show();
-	if ( -1 != url.indexOf( 'youtube' ) || -1 != url.indexOf( 'vimeo' ) ) {
-		if ( -1 != url.indexOf( 'youtube' ) || url.indexOf( 'youtu.be' ) ) {
-			url = url.replace( 'watch?v=', 'v/' );
-			if ( -1 == url.indexOf( '&rel=0' ) ) {
-				url = url + '&rel=0';	
-			}
-			jQuery( '#go_help_video_container' ).html( '<iframe id="go_video_iframe" width="100%" height="100%" src="' + url + '" frameborder="0" cc_load_policy="1" allowfullscreen></iframe>' );
-		}
-		if ( -1 != url.indexOf( 'vimeo' ) ) {
-			vimeo_vid_num = url.match( /\d+$/ )[0];
-			new_url = 'https://player.vimeo.com/video/' + vimeo_vid_num;
-			jQuery( '#go_help_video_container' ).html( '<iframe id="go_video_iframe" src="' + new_url + '" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>' );
-		}
-	}
-	jQuery( '#go_help_video_container' ).show();
-	if ( 0 != jQuery( '#go_option_help_video' ).length ) {
-		var myplayer = videojs( 'go_option_help_video' );
-		myplayer.ready( function() {
-			myplayer.src( url );
-			myplayer.load();
-			myplayer.play();
-			videoStatus = 'playing';
-		});
-	}
-
-	jQuery( '.light' ).show();
-	
-	// this will stop the body from scrolling behind the video
-	jQuery( 'html' ).addClass( 'go_no_scroll' );
-	if ( 'none' != jQuery( '.dark' ).css( 'display' ) ) {
-		jQuery(document).keydown( function( e ) { 
-			if ( jQuery( '#go_help_video_container' ).is(":visible") ) {
-				
-				// If the key pressed is escape, run this.
-				if ( 27 == e.keyCode ) {
-					hideVid();
-				} 
-				if ( 32 == e.keyCode ) {
-					e.preventDefault();
-					if( ! myplayer.paused() ) {
-						myplayer.pause();
-					} else {
-						myplayer.play();	
-					}
-				}
-			}
-		});	
-		jQuery( '.dark' ).click( function() {
-			hideVid();
-		});
-	}
-}
-*/
-
-/*
-function go_admin_bar_add() {
-	var nonce = GO_EVERY_PAGE_DATA.nonces.go_admin_bar_add;
-	jQuery.ajax({
-		type: "post",
-		url: MyAjax.ajaxurl,
-		data: {
-			_ajax_nonce: nonce,
-			action: 'go_admin_bar_add',
-			go_admin_bar_add_points: jQuery( '#go_admin_bar_add_points' ).val(),
-			go_admin_bar_add_points_reason: jQuery( '#go_admin_bar_add_points_reason' ).val(),
-			go_admin_bar_add_currency: jQuery( '#go_admin_bar_add_currency' ).val(),
-			go_admin_bar_add_currency_reason: jQuery( '#go_admin_bar_add_currency_reason' ).val(),
-			go_admin_bar_add_bonus_currency: jQuery( '#go_admin_bar_add_bonus_currency' ).val(),
-			go_admin_bar_add_bonus_currency_reason: jQuery( '#go_admin_bar_add_bonus_currency_reason' ).val(),
-			go_admin_bar_add_minutes: jQuery( '#go_admin_bar_add_minutes' ).val(),
-			go_admin_bar_add_minutes_reason: jQuery( '#go_admin_bar_add_minutes_reason' ).val(),
-			go_admin_bar_add_penalty: jQuery( '#go_admin_bar_add_penalty' ).val(),
-			go_admin_bar_add_penalty_reason: jQuery( '#go_admin_bar_add_penalty_reason' ).val()
-		},
-		success: function( res ) {
-			jQuery( '#go_admin_bar_add_points' ).val( '' );
-			jQuery( '#go_admin_bar_add_points_reason' ).val( '' );
-			jQuery( '#go_admin_bar_add_currency' ).val( '' );
-			jQuery( '#go_admin_bar_add_currency_reason' ).val( '' );
-			jQuery( '#go_admin_bar_add_bonus_currency' ).val( '' );
-			jQuery( '#go_admin_bar_add_bonus_currency_reason' ).val( '' );
-			jQuery( '#go_admin_bar_add_minutes' ).val( '' );
-			jQuery( '#go_admin_bar_add_minutes_reason' ).val( '' );
-			jQuery( '#go_admin_bar_add_penalty' ).val( '' );
-			jQuery( '#go_admin_bar_add_penalty_reason' ).val( '' );
-			if ( -1 !== res ) {
-				jQuery( '#admin_bar_add_return' ).html( res );
-				jQuery( '#go_admin_bar_add_button' ).prop( 'disabled', false );
-			}
-		}
-	});
-}
-*/
 
 function go_sounds( type ) {
     if ( 'store' == type ) {
@@ -298,18 +113,18 @@ function go_stats_close() {
 function go_stats_help() {
 	jQuery( '#go_stats_body' ).append( '<div id="go_stats_help_video_container"></div>' );
 	jQuery( '#go_stats_help_video_container' ).css({ 'margin': '0px 10% 0px 15%', 'height': '100%', 'width': '100%' });
-	jQuery( '#go_option_help_video' ).clone().prop( 'id', 'go_stats_help_video' ).attr( 'width', '70%' ).attr( 'height', '100%' ).appendTo( '#go_stats_help_video_container' );
-	if ( jQuery( '#go_stats_help_video' ).length ) {
-		myplayer = videojs( 'go_stats_help_video' );
-		myplayer.ready( function() {
-			myplayer.src( 'http://maclab.guhsd.net/go/video/stats/help.mp4' );
-			myplayer.load();
-			myplayer.play();
-			videoStatus = 'playing';
-		});
-	}
+    jQuery( '#go_option_help_video' ).clone().prop( 'id', 'go_stats_help_video' ).attr( 'width', '70%' ).attr( 'height', '100%' ).appendTo( '#go_stats_help_video_container' );
+    if ( jQuery( '#go_stats_help_video' ).length ) {
+        myplayer = videojs( 'go_stats_help_video' );
+        myplayer.ready( function() {
+            myplayer.src( 'http://maclab.guhsd.net/go/video/stats/help.mp4' );
+            myplayer.load();
+            myplayer.play();
+            videoStatus = 'playing';
+        });
+    }
 }
-	
+/*
 function go_stats_task_list() {
 	var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;
 	jQuery.ajax({
@@ -353,6 +168,40 @@ function go_stats_task_list() {
 			}
 		}
 	});
+}
+*/
+function go_stats_task_list() {
+
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;
+    jQuery.ajax({
+        type: 'post',
+        url: MyAjax.ajaxurl,
+        data:{
+            _ajax_nonce: nonce,
+            action: 'go_stats_task_list',
+            user_id: jQuery( '#go_stats_hidden_input' ).val()
+        },
+        success: function( res ) {
+            if ( -1 !== res ) {
+                //jQuery( '#go_stats_body' ).html( '' );
+                var oTable = jQuery( '#go_stats_datatable' ).dataTable();
+                oTable.fnDestroy();
+
+                jQuery( '#go_stats_body' ).html( res );
+                jQuery( '#go_stats_datatable' ).dataTable( {
+                    stateSave: true,
+                    "bPaginate": true,
+                    colReorder: true,
+                    "aaSorting": [[1, "asc"]],
+                    "destroy": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+
+                    ]
+                });
+            }
+        }
+    });
 }
 
 function go_stats_move_stage( task_id, status ) {
@@ -647,63 +496,7 @@ function go_stats_leaderboard() {
 		}
 	});
 }
-function go_mark_seen( date, type ) {
-	var nonce = GO_EVERY_PAGE_DATA.nonces.go_mark_read;
-	jQuery.ajax({
-		url: MyAjax.ajaxurl,
-		type: "POST",
-		data:{
-			_ajax_nonce: nonce,
-			action: 'go_mark_read',
-			date: date,
-			type: type
-		},
-		success: function( res ) {
-			if ( -1 !== res ) {
-				var parsed_data = JSON.parse( res );
-				if ( 'remove' == parsed_data[1] ) {
-					jQuery( '#wp-admin-bar-' + parsed_data[0] ).remove();
-					jQuery( '#go_messages_bar' ).html( parsed_data[2] );
-					if ( 0 == parsed_data[2] ) {
-						jQuery( '#go_messages_bar' ).css( 'background', '#222222' );
-					}
-				} else if ( 'unseen' == parsed_data[1] ) {
-					jQuery( '#wp-admin-bar-' + parsed_data[0] + ' div' ).css( 'color','white' );
-					jQuery( '#go_messages_bar' ).html( parsed_data[2] );
-					if ( 0 == parsed_data[2] ) {
-						jQuery( '#go_messages_bar' ).css( 'background', '#222222' );
-					}
-				} else if ( 'seen' == parsed_data[1] ) {
-					jQuery( '#wp-admin-bar-' + parsed_data[0] + ' a:first-of-type div' ).css( 'color','red' );
-					jQuery( '#go_messages_bar' ).html( parsed_data[2] );
-					if ( 1 == parsed_data[2] ) {
-						jQuery( '#go_messages_bar' ).css( 'background', 'red' );
-					}
-				}
-				if ( parsed_data[2] > 1 ) {
-					jQuery( '#wp-admin-bar-no-new-messages-from-admin .ab-item' ).text("New messages from admin");
-				} else if ( 1 == parsed_data[2] ) {
-					jQuery( '#wp-admin-bar-no-new-messages-from-admin .ab-item' ).text("New message from admin");
-				} else {
-					jQuery( '#wp-admin-bar-no-new-messages-from-admin .ab-item' ).text("No new messages from admin");
-				}
-			}
-		}
-	});
-}
-function go_change_seen( date, type, obj ) {
-	if ( 'unseen' == type ) {
-		jQuery( obj ).text( 'Mark Unread' );
-		jQuery( obj ).attr( 'onClick', 'go_mark_seen("' + date + '", "seen"); go_change_seen("' + date + '", "seen", this);' );
-	} else if ( 'seen' == type ) {
-		jQuery( obj ).text( 'Mark Read' );
-		jQuery( obj ).attr( 'onClick', 'go_mark_seen("' + date + '", "unseen"); go_change_seen("' + date + '", "unseen", this);' );
-	}
-}
 
-function go_add_uploader() {
-	jQuery( '#go_upload_form div#go_uploader' ).append( '<input type="file" name="go_attachment[]"/><br/>' );
-}
 	
 //	Grabs substring in the middle of the string object that getMid() is being called from.
 //	Takes two strings, one from the left and one from the right.
@@ -821,3 +614,250 @@ jQuery.prototype.go_prev_n = function ( n, selector ) {
 };
 
 
+
+
+/*
+function go_deactivate_plugin() {
+	var nonce = GO_EVERY_PAGE_DATA.nonces.go_deactivate_plugin;
+	jQuery.ajax({
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			_ajax_nonce: nonce,
+			action: 'go_deactivate_plugin'
+		},
+		success: function( res ) {
+			if ( -1 !== res ) {
+				location.reload();
+			}
+		}
+	});
+}
+*/
+/*
+
+function go_mark_seen( date, type ) {
+	var nonce = GO_EVERY_PAGE_DATA.nonces.go_mark_read;
+	jQuery.ajax({
+		url: MyAjax.ajaxurl,
+		type: "POST",
+		data:{
+			_ajax_nonce: nonce,
+			action: 'go_mark_read',
+			date: date,
+			type: type
+		},
+		success: function( res ) {
+			if ( -1 !== res ) {
+				var parsed_data = JSON.parse( res );
+				if ( 'remove' == parsed_data[1] ) {
+					jQuery( '#wp-admin-bar-' + parsed_data[0] ).remove();
+					jQuery( '#go_messages_bar' ).html( parsed_data[2] );
+					if ( 0 == parsed_data[2] ) {
+						jQuery( '#go_messages_bar' ).css( 'background', '#222222' );
+					}
+				} else if ( 'unseen' == parsed_data[1] ) {
+					jQuery( '#wp-admin-bar-' + parsed_data[0] + ' div' ).css( 'color','white' );
+					jQuery( '#go_messages_bar' ).html( parsed_data[2] );
+					if ( 0 == parsed_data[2] ) {
+						jQuery( '#go_messages_bar' ).css( 'background', '#222222' );
+					}
+				} else if ( 'seen' == parsed_data[1] ) {
+					jQuery( '#wp-admin-bar-' + parsed_data[0] + ' a:first-of-type div' ).css( 'color','red' );
+					jQuery( '#go_messages_bar' ).html( parsed_data[2] );
+					if ( 1 == parsed_data[2] ) {
+						jQuery( '#go_messages_bar' ).css( 'background', 'red' );
+					}
+				}
+				if ( parsed_data[2] > 1 ) {
+					jQuery( '#wp-admin-bar-no-new-messages-from-admin .ab-item' ).text("New messages from admin");
+				} else if ( 1 == parsed_data[2] ) {
+					jQuery( '#wp-admin-bar-no-new-messages-from-admin .ab-item' ).text("New message from admin");
+				} else {
+					jQuery( '#wp-admin-bar-no-new-messages-from-admin .ab-item' ).text("No new messages from admin");
+				}
+			}
+		}
+	});
+}
+function go_change_seen( date, type, obj ) {
+	if ( 'unseen' == type ) {
+		jQuery( obj ).text( 'Mark Unread' );
+		jQuery( obj ).attr( 'onClick', 'go_mark_seen("' + date + '", "seen"); go_change_seen("' + date + '", "seen", this);' );
+	} else if ( 'seen' == type ) {
+		jQuery( obj ).text( 'Mark Read' );
+		jQuery( obj ).attr( 'onClick', 'go_mark_seen("' + date + '", "unseen"); go_change_seen("' + date + '", "unseen", this);' );
+	}
+}
+
+function go_add_uploader() {
+	jQuery( '#go_upload_form div#go_uploader' ).append( '<input type="file" name="go_attachment[]"/><br/>' );
+}
+
+
+function go_submit_pods () {
+	var podInfo = [];
+	var links = [];
+	jQuery( "input[name='go_pod_link[]']" ).each( function() {
+		links.push( jQuery( this ).val() );
+
+	});
+	podInfo.push( links );
+	console.log( links );
+
+	var stage = [];
+	jQuery( "select[name='go_pod_stage_select[]']" ).each( function() {
+		stage.push( jQuery( this ).val() );
+	});
+	console.log( stage );
+	podInfo.push( stage );
+
+	var number = [];
+	jQuery( "input[name='go_pod_number[]']" ).each( function() {
+		number.push( jQuery( this ).val() );
+	});
+	console.log( number );
+	podInfo.push( number );
+
+	var next = [];
+	jQuery( "select[name='go_next_pod_select[]']" ).each( function() {
+		next.push( jQuery( this ).val() );
+	});
+	console.log( next );
+	podInfo.push( next );
+
+	console.log( podInfo );
+	return podInfo;
+	jQuery.ajax({
+		type: 'post',
+		url: MyAjax.ajaxurl,
+		data:{
+			action: 'go_submit_pods',
+			podLink: jQuery("input[name='go_pod_link[]']").each(),
+			podStage: jQuery("input[name='go_pod_stage_select[]']").each(),
+			podNumber: jQuery("input[name='go_pod_number[]']").each(),
+			podNext: jQuery("input[name='go_next_pod_select[]']").each()
+		},
+		success: function (html) {
+
+		}
+	});
+}
+*/
+/*
+function hideVid() {
+	if ( jQuery( '#go_option_help_video' ).length ) {
+		myplayer = videojs( 'go_option_help_video' );
+	}
+
+	// this will stop the body from scrolling behind the video
+	jQuery( 'html' ).removeClass( 'go_no_scroll' );
+	jQuery( '.dark' ).hide();
+	jQuery( '.light' ).hide();
+	if ( jQuery( '#go_option_help_video' ).length ) {
+		myplayer.pause();
+		myplayer.dispose();
+	}
+	if ( jQuery( '#go_video_iframe' ).length ) {
+		jQuery( '#go_video_iframe' ).remove();
+	}
+	jQuery( '#go_help_video_container' ).append( '<video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video>' );
+}
+*/
+
+/*
+function go_display_help_video( url ) {
+	jQuery( '.dark' ).show();
+	if ( -1 != url.indexOf( 'youtube' ) || -1 != url.indexOf( 'vimeo' ) ) {
+		if ( -1 != url.indexOf( 'youtube' ) || url.indexOf( 'youtu.be' ) ) {
+			url = url.replace( 'watch?v=', 'v/' );
+			if ( -1 == url.indexOf( '&rel=0' ) ) {
+				url = url + '&rel=0';
+			}
+			jQuery( '#go_help_video_container' ).html( '<iframe id="go_video_iframe" width="100%" height="100%" src="' + url + '" frameborder="0" cc_load_policy="1" allowfullscreen></iframe>' );
+		}
+		if ( -1 != url.indexOf( 'vimeo' ) ) {
+			vimeo_vid_num = url.match( /\d+$/ )[0];
+			new_url = 'https://player.vimeo.com/video/' + vimeo_vid_num;
+			jQuery( '#go_help_video_container' ).html( '<iframe id="go_video_iframe" src="' + new_url + '" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>' );
+		}
+	}
+	jQuery( '#go_help_video_container' ).show();
+	if ( 0 != jQuery( '#go_option_help_video' ).length ) {
+		var myplayer = videojs( 'go_option_help_video' );
+		myplayer.ready( function() {
+			myplayer.src( url );
+			myplayer.load();
+			myplayer.play();
+			videoStatus = 'playing';
+		});
+	}
+
+	jQuery( '.light' ).show();
+
+	// this will stop the body from scrolling behind the video
+	jQuery( 'html' ).addClass( 'go_no_scroll' );
+	if ( 'none' != jQuery( '.dark' ).css( 'display' ) ) {
+		jQuery(document).keydown( function( e ) {
+			if ( jQuery( '#go_help_video_container' ).is(":visible") ) {
+
+				// If the key pressed is escape, run this.
+				if ( 27 == e.keyCode ) {
+					hideVid();
+				}
+				if ( 32 == e.keyCode ) {
+					e.preventDefault();
+					if( ! myplayer.paused() ) {
+						myplayer.pause();
+					} else {
+						myplayer.play();
+					}
+				}
+			}
+		});
+		jQuery( '.dark' ).click( function() {
+			hideVid();
+		});
+	}
+}
+*/
+
+/*
+function go_admin_bar_add() {
+	var nonce = GO_EVERY_PAGE_DATA.nonces.go_admin_bar_add;
+	jQuery.ajax({
+		type: "post",
+		url: MyAjax.ajaxurl,
+		data: {
+			_ajax_nonce: nonce,
+			action: 'go_admin_bar_add',
+			go_admin_bar_add_points: jQuery( '#go_admin_bar_add_points' ).val(),
+			go_admin_bar_add_points_reason: jQuery( '#go_admin_bar_add_points_reason' ).val(),
+			go_admin_bar_add_currency: jQuery( '#go_admin_bar_add_currency' ).val(),
+			go_admin_bar_add_currency_reason: jQuery( '#go_admin_bar_add_currency_reason' ).val(),
+			go_admin_bar_add_bonus_currency: jQuery( '#go_admin_bar_add_bonus_currency' ).val(),
+			go_admin_bar_add_bonus_currency_reason: jQuery( '#go_admin_bar_add_bonus_currency_reason' ).val(),
+			go_admin_bar_add_minutes: jQuery( '#go_admin_bar_add_minutes' ).val(),
+			go_admin_bar_add_minutes_reason: jQuery( '#go_admin_bar_add_minutes_reason' ).val(),
+			go_admin_bar_add_penalty: jQuery( '#go_admin_bar_add_penalty' ).val(),
+			go_admin_bar_add_penalty_reason: jQuery( '#go_admin_bar_add_penalty_reason' ).val()
+		},
+		success: function( res ) {
+			jQuery( '#go_admin_bar_add_points' ).val( '' );
+			jQuery( '#go_admin_bar_add_points_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_currency' ).val( '' );
+			jQuery( '#go_admin_bar_add_currency_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_bonus_currency' ).val( '' );
+			jQuery( '#go_admin_bar_add_bonus_currency_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_minutes' ).val( '' );
+			jQuery( '#go_admin_bar_add_minutes_reason' ).val( '' );
+			jQuery( '#go_admin_bar_add_penalty' ).val( '' );
+			jQuery( '#go_admin_bar_add_penalty_reason' ).val( '' );
+			if ( -1 !== res ) {
+				jQuery( '#admin_bar_add_return' ).html( res );
+				jQuery( '#go_admin_bar_add_button' ).prop( 'disabled', false );
+			}
+		}
+	});
+}
+*/

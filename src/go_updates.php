@@ -623,9 +623,6 @@ function go_update_admin_bar_v4( $user_id, $xp, $xp_name, $gold, $gold_name, $he
 		</script>";
 }
 
-
-
-
 function go_add_user_to_totals_table($user_id){
     global $wpdb;
     $go_totals_table_name = "{$wpdb->prefix}go_loot";

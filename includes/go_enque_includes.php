@@ -19,7 +19,7 @@ function go_admin_includes () {
     wp_enqueue_script( 'go_datatables' );
 
     //wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
-    wp_register_style( 'go_datatables_css', 'wp_register_style( \'go_datatables_css\', plugin_dir_url( __FILE__ ).\'DataTables/datatables.min.css\' );' );
+    wp_register_style( 'go_datatables_css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' );
     wp_enqueue_style( 'go_datatables_css' );
 
     /**
@@ -48,7 +48,7 @@ function go_includes () {
     wp_enqueue_script( 'go_datatables' );
 
     //wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
-    wp_register_style( 'go_datatables_css', 'wp_register_style( \'go_datatables_css\', plugin_dir_url( __FILE__ ).\'DataTables/datatables.min.css\' );' );
+    wp_register_style( 'go_datatables_css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' );
     wp_enqueue_style( 'go_datatables_css' );
 
 

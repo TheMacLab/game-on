@@ -227,21 +227,13 @@ function go_admin_bar_stats() {
                     	HELP
                     </a> |
                 <?php } ?>
+
 				<a href='javascript:;' id="go_stats_body_tasks" class='go_stats_body_selectors' tab='tasks'>
-					<?php echo strtoupper( get_option( 'go_tasks_plural_name' ) ); ?>
-				</a> | 
-				<a href='javascript:;' id="go_stats_body_items" class='go_stats_body_selectors' tab='items'>
-					<?php echo strtoupper( get_option( 'go_inventory_name' ) ); ?>
-				</a> | 
-				<a href='javascript:;' id="go_stats_body_rewards" class='go_stats_body_selectors' tab='rewards'>
-					REWARDS
-				</a> | 
-				<a href='javascript:;' id="go_stats_body_activity" class='go_stats_body_selectors' tab='activity'>
-					ACTIVITY
+					<?php echo strtoupper( get_option( 'options_go_tasks_name_plural' ) ); ?>
 				</a> |
-				<a href='javascript:;' id="go_stats_body_penalties" class='go_stats_body_selectors' tab='penalties'>
-					<?php echo strtoupper( $penalty_name ) ?>
-				</a> | 
+                <a href='javascript:;' id="go_stats_body_activity" class='go_stats_body_selectors' tab='activity'>
+                    ACTIVITY
+                </a> |
 				<a href='javascript:;' id="go_stats_body_badges" class='go_stats_body_selectors' tab='badges'>
 					<?php echo strtoupper( get_option( 'go_badges_name' ) ); ?>
 				</a> | 
@@ -256,6 +248,83 @@ function go_admin_bar_stats() {
 }
 
 function go_stats_task_list() {
+    global $wpdb;
+    $go_task_table_name = "{$wpdb->prefix}go_tasks";
+    if ( ! empty( $_POST['user_id'] ) ) {
+        $user_id = (int) $_POST['user_id'];
+    } else {
+        $user_id = get_current_user_id();
+    }
+    check_ajax_referer( 'go_stats_task_list_' );
+
+    $tasks = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT * 
+			FROM {$go_task_table_name} 
+			WHERE uid = %d
+			ORDER BY id DESC",
+            $user_id
+        )
+    );
+    echo "<table id='go_stats_datatable' class='pretty'>
+                   <thead>
+						<tr>
+							<th class='header' id='go_stats_post_name'><a href=\"#\">Post Name</a></th>
+							<th class='header' id='go_stats_first_time'><a href=\"#\">First Time</a></th>
+							<th class='header' id='go_stats_last_time'><a href=\"#\">Last Time</a></th>
+							
+							<th class='header' id='go_stats_status'><a href=\"#\">Status</a></th>
+							<th class='header' id='go_stats_bonus_status'><a href=\"#\">Bonus Status</a></th>
+							<th class='header' id='go_stats_links'><a href=\"#\">Links</a></th>
+							
+							<th class='header' id='go_stats_mods'><a href=\"#\">XP</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">G</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">H</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">AP</a></th>
+							
+						</tr>
+						</thead>
+			    <tbody>
+						";
+    foreach ( $tasks as $task ) {
+        $post_id = $task->post_id;
+        $status = $task->status;
+        $bonus_status = $task->bonus_status;
+        $xp = $task->xp;
+        $gold = $task->gold;
+        $health = $task->health;
+        $c4 = $task->c4;
+        $start_time = $task->start_time;
+        $last_time = $task->last_time;
+
+        echo " 			
+			        <tr id='postID_{$post_id}'>
+			           
+					    <td>{$post_id}</td>
+					    <td>{$start_time}</td>
+					    <td>{$last_time}</td>
+					    
+					    <td>{$status}/ add total stages here</td>
+					    <td>{$bonus_status}/ add bonus max</td>
+					    <td>Add links to URLs, Uploads, and Blog Posts</td>
+					    
+					    <td>{$xp}</td>
+					    <td>{$gold}</td>
+					    <td>{$health}</td>
+					    <td>{$c4}</td>
+					 
+					</tr>
+					";
+
+
+    }
+    echo "</tbody>
+				</table>";
+
+    die();
+}
+
+function go_stats_task_listOLD() {
 	global $wpdb;
 	$go_task_table_name = "{$wpdb->prefix}go_tasks";
 	if ( ! empty( $_POST['user_id'] ) ) {
@@ -984,10 +1053,19 @@ function go_stats_activity_list() {
                    <thead>
 						<tr>
 						
-							<th class='header' id='go_stats_action_type'><a href='#'>Action</a></th>
-							<th class='header' id='go_stats_post_id'><a href=\"#\">Action Name</a></th>
 							<th class='header' id='go_stats_time'><a href=\"#\">Time</a></th>
-
+							<th class='header' id='go_stats_action'><a href=\"#\">Type</a></th>
+							<th class='header' id='go_stats_post_name'><a href=\"#\">Action</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">Modifiers</a></th>
+							
+							<th class='header' id='go_stats_mods'><a href=\"#\">XP</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">G</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">H</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">AP</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> XP</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> G</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> H</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> AP</a></th>
 						</tr>
 						</thead>
 			    <tbody>
@@ -1012,12 +1090,91 @@ function go_stats_activity_list() {
         $health_total = $action->health_total;
         $c4_total = $action->c4_total;
 
+        $post_title = get_the_title($source_id);
+
+
+        if ($action_type == 'admin'){
+            $type = "Admin";
+        }
+
+        if ($action_type == 'store'){
+                $store_qnty = $stage;
+                $type = strtoupper( get_option( 'options_go_store_name' ) );
+                $post_title = "Qnt: " . $store_qnty . " of " . $post_title ;
+        }
+
+        if ($action_type == 'task'){
+            $type = strtoupper( get_option( 'options_go_tasks_name_singular' ) );
+            if ($bonus_status == 0) {
+                $type = strtoupper( get_option( 'options_go_tasks_name_singular' ) );
+                $post_title = $post_title . " Stage: " . $stage;
+            }
+        }
+
+        if ($action_type == 'undo_task'){
+            $type = strtoupper( get_option( 'options_go_tasks_name_singular' ) );
+            if ($bonus_status == 0) {
+                $type = strtoupper( get_option( 'options_go_tasks_name_singular' ) ) . " Undo";
+                $post_title = $post_title . " Stage: " . $stage;
+            }
+        }
+        if ($result == 'undo_bonus'){
+            $type = strtoupper( get_option( 'options_go_tasks_name_singular' ) ) . " Undo Bonus";
+            $post_title = $post_title . " Bonus: " . $bonus_status ;
+        }
+
+        $quiz_mod = intval($quiz_mod);
+        if (!empty($quiz_mod)){
+            $quiz_mod = "Quiz: ". $quiz_mod;
+        }
+        else{
+            $quiz_mod = null;
+        }
+
+        $late_mod = intval($late_mod);
+        if (!empty($late_mod)){
+            $late_mod = "Late: ". $late_mod;
+        }
+        else{
+            $late_mod = null;
+        }
+
+        $timer_mod = intval($timer_mod);
+        if (!empty($timer_mod)){
+            $timer_mod = "Timer: ". $timer_mod;
+        }
+        else{
+            $timer_mod = null;
+        }
+
+        $health_mod = intval($health_mod);
+        if (!empty($health_mod)){
+            $health_mod_str = "Health: ". $health_mod;
+        }
+        else{
+            $health_mod_str = null;
+        }
+
+
+
+
+
 
 		echo " 			
 			        <tr id='postID_{$source_id}'>
-					<td>{$action_type}</td>
-					<td>{$source_id}</td>
-					<td>{$TIMESTAMP}</td>
+			            <td>{$TIMESTAMP}</td>
+					    <td>{$type} </td>
+					    <td>{$post_title} </td>
+					    <td>{$health_mod_str} {$timer_mod} {$late_mod} {$quiz_mod}</td>
+					    
+					    <td>{$xp}</td>
+					    <td>{$gold}</td>
+					    <td>{$health}</td>
+					    <td>{$c4}</td>
+					    <td>{$xp_total}</td>
+					    <td>{$gold_total}</td>
+					    <td>{$health_total}</td>
+					    <td>{$c4_total}</td>
 					</tr>
 					";
 
