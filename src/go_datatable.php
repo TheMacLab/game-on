@@ -18,7 +18,7 @@ add_action( 'plugins_loaded', 'go_update_db_check' );
 function go_update_db() {
 
     global $go_db_version;
-    //go_table_totals();
+    go_table_totals();
     go_table_tasks();
     //go_table_store();
     go_table_actions();
@@ -369,7 +369,7 @@ function go_install_data () {
 
     }
 
-
+/*
     $blogusers = get_users( array( 'fields' => array( 'ID' ) ) );
     $blogusers = json_decode(json_encode($blogusers), True); //converts std_class to array
 
@@ -393,7 +393,7 @@ function go_install_data () {
     foreach ($diff_ids as $uid) {
         go_add_user_to_totals_table($uid);
     }
-
+*/
         /*
             $user_id_array = $wpdb->get_results(
                 $wpdb->prepare(

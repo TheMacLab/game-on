@@ -24,7 +24,7 @@ function go_buy_item() {
 
 	//$user_id = get_current_user_id();
     $user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
-	$is_logged_in = ! empty( $user_id ) && $user_id > 0  && is_user_member_of_blog( $user_id ) ? true : false;
+	$is_logged_in = ! empty( $user_id ) && $user_id > 0  || is_user_member_of_blog( $user_id ) ? true : false;
 	if (!$is_logged_in){
         //echo 'Error: You must be logged in to use the store.';
         echo "<script> new Noty({
