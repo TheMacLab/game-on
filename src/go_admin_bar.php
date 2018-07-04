@@ -197,7 +197,7 @@ function go_admin_bar() {
         if ($gold_toggle) {
             // the user's current amount of currency
             $go_current_gold = go_get_user_loot($user_id, 'gold');
-            $gold_total = '<div id="go_admin_bar_gold" class="admin_bar_loot">' . go_display_shorthand_currency('gold', $go_current_gold)  . '</div>';
+            $gold_total = '<div id="go_admin_bar_gold_2" class="admin_bar_loot">' . go_display_shorthand_currency('gold', $go_current_gold)  . '</div>';
         }
         else{
             $gold_total = '';
@@ -206,7 +206,7 @@ function go_admin_bar() {
         if ($c4_toggle) {
             // the user's current amount of minutes
             $go_current_c4 = go_get_user_loot( $user_id, 'c4' );
-            $c4_total =  '<div id="go_admin_bar_c4" class="admin_bar_loot">' . go_display_shorthand_currency('c4', $go_current_c4) . '</div>';
+            $c4_total =  '<div id="go_admin_bar_c4_2" class="admin_bar_loot">' . go_display_shorthand_currency('c4', $go_current_c4) . '</div>';
         }
         else{
             $c4_total = '';

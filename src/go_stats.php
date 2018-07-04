@@ -270,7 +270,6 @@ function go_stats_task_list() {
                    <thead>
 						<tr>
 							<th class='header' id='go_stats_post_name'><a href=\"#\">Post Name</a></th>
-							<th class='header' id='go_stats_first_time'><a href=\"#\">First Time</a></th>
 							<th class='header' id='go_stats_last_time'><a href=\"#\">Last Time</a></th>
 							
 							<th class='header' id='go_stats_status'><a href=\"#\">Status</a></th>
@@ -301,7 +300,7 @@ function go_stats_task_list() {
 			        <tr id='postID_{$post_id}'>
 			           
 					    <td>{$post_id}</td>
-					    <td>{$start_time}</td>
+					    
 					    <td>{$last_time}</td>
 					    
 					    <td>{$status}/ add total stages here</td>
@@ -1131,7 +1130,7 @@ function go_stats_activity_list() {
             $quiz_mod = null;
         }
 
-        $late_mod = intval($late_mod);
+        //$late_mod = intval($late_mod);
         if (!empty($late_mod)){
             $late_mod = "Late: ". $late_mod;
         }
@@ -1139,7 +1138,7 @@ function go_stats_activity_list() {
             $late_mod = null;
         }
 
-        $timer_mod = intval($timer_mod);
+        //$timer_mod = intval($timer_mod);
         if (!empty($timer_mod)){
             $timer_mod = "Timer: ". $timer_mod;
         }
@@ -1147,7 +1146,7 @@ function go_stats_activity_list() {
             $timer_mod = null;
         }
 
-        $health_mod = intval($health_mod);
+        //$health_mod = intval($health_mod);
         if (!empty($health_mod)){
             $health_mod_str = "Health: ". $health_mod;
         }

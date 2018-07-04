@@ -42,280 +42,252 @@ function go_get_user_loot ($user_id, $loot_type){
     return $loot;
 }
 
-function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bonus_status, $progressing, $result = null, $check_type = null ) {
+function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bonus_status, $progressing, $result = null, $check_type = null )
+{
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
-    $is_logged_in = ! empty( $user_id ) && is_user_member_of_blog( $user_id ) ? true : false;
-    $bonus_status = (isset($bonus_status) ?  $bonus_status : null);
-    $status = (isset($status) ?  $status : null);
+    $is_logged_in = !empty($user_id) && is_user_member_of_blog($user_id) ? true : false;
+    $bonus_status = (isset($bonus_status) ? $bonus_status : null);
+    $status = (isset($status) ? $status : null);
     $health_mod = null;
     $stage_mod = null;
-    $time = current_time( 'mysql');
+    $time = current_time('mysql');
     $last_time = $time;
-
-    $start_time = 'null';
     $xp = 0;
     $gold = 0;
     $health = 0;
     $c4 = 0;
     $action_type = 'task';
-    if ($progressing === 'timer'){
+    if ($progressing === 'timer') {
 
-        $start_time = $time;
+        $start_time = $time; //set the timer start time
         $new_status_task = 'null';
         $new_bonus_status_task = 'null';
         $new_bonus_status_actions = 0;
-    }
-    else if ($progressing === true) {
-        if ($status !== null) {
-            $new_status_task = $status + 1;
-            $new_status_actions = $status + 1;
-        } else {
-            $new_status_task = 'null';
-            $new_status_actions = 'null';
-        }
-        if ($bonus_status !== null) {
-            $new_bonus_status_task = $bonus_status + 1;
-            $new_bonus_status_actions = $bonus_status + 1;
-        } else {
-            $new_bonus_status_task = 'null';
-            $new_bonus_status_actions = 'null';
-        }
 
-        //if health toggle is on
-        $health_toggle = get_option('options_go_loot_health_toggle');
-        if ($health_toggle && $is_logged_in) {
-        //get health_mod from the first time this task was tried.
-            //if this is a bonus stage, then get the health mod the first time this bonus stage/repeat was attempted.
+        $wpdb->query($wpdb->prepare("UPDATE {$go_task_table_name} 
+                    SET 
+                        last_time = IFNULL('{$last_time}', last_time) ,
+                        start_time = IFNULL('{$start_time}', start_time)                  
+                    WHERE uid= %d AND post_id=%d ", $user_id, $post_id));
+    } else {
+        if ($progressing === true) {
+            if ($status !== null) {
+                $new_status_task = $status + 1;
+                $new_status_actions = $status + 1;
+            } else {
+                $new_status_task = 'null';
+                $new_status_actions = 'null';
+            }
             if ($bonus_status !== null) {
-                $temp_status = $bonus_status + 1;
-                $original_health_mod = $wpdb->get_var($wpdb->prepare("SELECT global_mod 
+                $new_bonus_status_task = $bonus_status + 1;
+                $new_bonus_status_actions = $bonus_status + 1;
+            } else {
+                $new_bonus_status_task = 'null';
+                $new_bonus_status_actions = 'null';
+            }
+
+            //if health toggle is on
+            $health_toggle = get_option('options_go_loot_health_toggle');
+            if ($health_toggle && $is_logged_in) {
+                //get health_mod from the first time this task was tried.
+                //if this is a bonus stage, then get the health mod the first time this bonus stage/repeat was attempted.
+                if ($bonus_status !== null) {
+                    $temp_status = $bonus_status + 1;
+                    $original_health_mod = $wpdb->get_var($wpdb->prepare("SELECT global_mod 
                 FROM {$go_actions_table_name} 
                 WHERE source_id = %d AND uid = %d AND bonus_status = %d AND NOT result = %s
                 ORDER BY id DESC LIMIT 1", $post_id, $user_id, $temp_status, 'undo_bonus'));
-            }
-            //else this is not a bonus stage and get the health mod first time it was attempted
-            else {
-                $temp_status = $status + 1;
-                $original_health_mod = $wpdb->get_var($wpdb->prepare("SELECT global_mod 
+                } //else this is not a bonus stage and get the health mod first time it was attempted
+                else {
+                    $temp_status = $status + 1;
+                    $original_health_mod = $wpdb->get_var($wpdb->prepare("SELECT global_mod 
                 FROM {$go_actions_table_name} 
                 WHERE source_id = %d AND uid = %d AND stage = %d AND NOT result = %s
                 ORDER BY id DESC LIMIT 1", $post_id, $user_id, $temp_status, 'undo'));
+                }
+                //get current health mod from totals table
+                $current_health_mod = go_get_health_mod($user_id);
+
+
+                if ($original_health_mod === null) {
+                    $health_mod = $current_health_mod;
+                } else if ($original_health_mod > $current_health_mod) {
+                    $health_mod = $current_health_mod;
+                } else {
+                    $health_mod = $original_health_mod;
+                }
+            } else {
+                $health_mod = 1;
             }
-            //get current health mod from totals table
-            $current_health_mod = go_get_health_mod ($user_id);
 
+            $quiz_mod = 0;
 
-            if ($original_health_mod === null) {
-                $health_mod =  $current_health_mod;
-            } else if ($original_health_mod > $current_health_mod){
-                $health_mod = $current_health_mod;
-            }
-            else {
-                $health_mod = $original_health_mod;
-            }
-        } else {
-            $health_mod = 1;
-        }
-
-        $quiz_mod = 0;
-
-        //if not entry loot--it couldn't have a quiz
-        if ($status != -1) {
-            //if stage check is a quiz
-            if ($check_type == 'quiz') {
-                $temp_status = $status + 1;
-                $questions_missed = $wpdb->get_var($wpdb->prepare("SELECT result 
+            //if not entry loot--it couldn't have a quiz
+            if ($status != -1) {
+                //if stage check is a quiz
+                if ($check_type == 'quiz') {
+                    $temp_status = $status + 1;
+                    $questions_missed = $wpdb->get_var($wpdb->prepare("SELECT result 
                 FROM {$go_actions_table_name} 
                 WHERE source_id = %d AND uid = %d AND stage = %d AND action_type = %s", $post_id, $user_id, $temp_status, 'quiz_mod'));
-                if ($questions_missed > 0) {
-                    $quiz_stage_mod = 'go_stages_' . $status . '_quiz_modifier'; //% to take off for each question missed
-                    $quiz_stage_mod = (isset($custom_fields[$quiz_stage_mod][0]) ? $custom_fields[$quiz_stage_mod][0] : 0);
-                    $quiz_mod = $quiz_stage_mod * .01 * $questions_missed;
-                }
-            }
-        }
-
-        $due_date_mod = 0;
-        if ($custom_fields['go_due_dates_toggle'][0] == true && $is_logged_in) {
-            $num_loops = $custom_fields['go_due_dates_mod_settings'][0];
-            $mod_date_latest = null;
-            for ($i = 0; $i < $num_loops; $i++) {
-                $mod_date = 'go_due_dates_mod_settings_' . $i . '_date';
-                $mod_date = $custom_fields[$mod_date][0];
-                $mod_date_timestamp = strtotime($mod_date);
-                //$mod_date = date('F j, Y \a\t g:i a\.', $mod_date_timestamp);
-                $mod_date_offset = $mod_date_timestamp + (3600 * get_option('gmt_offset'));
-                $current_timestamp = current_time('timestamp');
-                $mod_percent = 'go_due_dates_mod_settings_' . $i . '_mod';
-                $mod_percent = $custom_fields[$mod_percent][0];
-                if ($current_timestamp > $mod_date_offset) {
-                    //set the latest mod date if this is the first mod date
-                    if ($mod_date_latest == null) {
-                        $mod_date_latest = $mod_date_offset;
-                        $due_date_mod = $mod_percent * .01;
-                    } else if ($mod_date_offset > $mod_date_latest) {
-                        $mod_date_latest = $mod_date_offset;
-                        $due_date_mod = $mod_percent * .01;
+                    if ($questions_missed > 0) {
+                        $quiz_stage_mod = 'go_stages_' . $status . '_quiz_modifier'; //% to take off for each question missed
+                        $quiz_stage_mod = (isset($custom_fields[$quiz_stage_mod][0]) ? $custom_fields[$quiz_stage_mod][0] : 0);
+                        $quiz_mod = $quiz_stage_mod * .01 * $questions_missed;
                     }
                 }
             }
-        }
 
-        $timer_mod = 0;
-        $timer_on = $custom_fields['go_timer_toggle'][0];
-        if ($timer_on && $is_logged_in) {
-            $time_left = go_time_left($custom_fields, $user_id, $post_id);
-            $current_date = time(); //current date and time
-            $timer_time = $time_left - $current_date;
-            //if the time is up, display message
-            if ($timer_time <= 0) {
-                $timer_mod = (isset($custom_fields['go_timer_settings_timer_mod'][0]) ? $custom_fields['go_timer_settings_timer_mod'][0] : 0);
-                $timer_mod = $timer_mod * .01;
+            $due_date_mod = 0;
+            if ($custom_fields['go_due_dates_toggle'][0] == true && $is_logged_in) {
+                $num_loops = $custom_fields['go_due_dates_mod_settings'][0];
+                $mod_date_latest = null;
+                for ($i = 0; $i < $num_loops; $i++) {
+                    $mod_date = 'go_due_dates_mod_settings_' . $i . '_date';
+                    $mod_date = $custom_fields[$mod_date][0];
+                    $mod_date_timestamp = strtotime($mod_date);
+                    //$mod_date = date('F j, Y \a\t g:i a\.', $mod_date_timestamp);
+                    $mod_date_offset = $mod_date_timestamp + (3600 * get_option('gmt_offset'));
+                    $current_timestamp = current_time('timestamp');
+                    $mod_percent = 'go_due_dates_mod_settings_' . $i . '_mod';
+                    $mod_percent = $custom_fields[$mod_percent][0];
+                    if ($current_timestamp > $mod_date_offset) {
+                        //set the latest mod date if this is the first mod date
+                        if ($mod_date_latest == null) {
+                            $mod_date_latest = $mod_date_offset;
+                            $due_date_mod = $mod_percent * .01;
+                        } else if ($mod_date_offset > $mod_date_latest) {
+                            $mod_date_latest = $mod_date_offset;
+                            $due_date_mod = $mod_percent * .01;
+                        }
+                    }
+                }
             }
-        }
 
-        $stage_mod = ($due_date_mod + $timer_mod + $quiz_mod);
-        if ($stage_mod > 1) {
-            $stage_mod = 1;
-        }
+            $timer_mod = 0;
+            $timer_on = $custom_fields['go_timer_toggle'][0];
+            if ($timer_on && $is_logged_in) {
+                $time_left = go_time_left($custom_fields, $user_id, $post_id);
+                $current_date = time(); //current date and time
+                $timer_time = $time_left - $current_date;
+                //if the time is up, display message
+                if ($timer_time <= 0) {
+                    $timer_mod = (isset($custom_fields['go_timer_settings_timer_mod'][0]) ? $custom_fields['go_timer_settings_timer_mod'][0] : 0);
+                    $timer_mod = $timer_mod * .01;
+                }
+            }
 
-
-
-        $xp_toggle = get_option('options_go_loot_xp_toggle');
-        $gold_toggle = get_option('options_go_loot_gold_toggle');
-        //$health_toggle = get_option( 'options_go_loot_health_toggle' );
-        $c4_toggle = get_option('options_go_loot_c4_toggle');
-
-        if ($xp_toggle) {
-            $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
-        } else {
-            $xp_mod_toggle = false;
-        }
-        if ($gold_toggle) {
-            $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
-        } else {
-            $gold_mod_toggle = false;
-        }
-        if ($health_toggle) {
-            $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
-        } else {
-            $health_mod_toggle = false;
-        }
-        if ($c4_toggle) {
-            $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
-        } else {
-            $c4_mod_toggle = false;
-        }
+            $stage_mod = ($due_date_mod + $timer_mod + $quiz_mod);
+            if ($stage_mod > 1) {
+                $stage_mod = 1;
+            }
 
 
-        if ($status === -1) {
-            /// get entry loot
-            $xp = $custom_fields['go_entry_rewards_xp'][0];
-            $xp = go_mod_loot($xp, $xp_toggle, $xp_mod_toggle, $stage_mod, $health_mod);
+            $xp_toggle = get_option('options_go_loot_xp_toggle');
+            $gold_toggle = get_option('options_go_loot_gold_toggle');
+            //$health_toggle = get_option( 'options_go_loot_health_toggle' );
+            $c4_toggle = get_option('options_go_loot_c4_toggle');
 
-            $gold = $custom_fields['go_entry_rewards_gold'][0];
-            $gold = go_mod_loot($gold, $gold_toggle, $gold_mod_toggle, $stage_mod, $health_mod);
+            if ($xp_toggle) {
+                $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
+            } else {
+                $xp_mod_toggle = false;
+            }
+            if ($gold_toggle) {
+                $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
+            } else {
+                $gold_mod_toggle = false;
+            }
+            if ($health_toggle) {
+                $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
+            } else {
+                $health_mod_toggle = false;
+            }
+            if ($c4_toggle) {
+                $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
+            } else {
+                $c4_mod_toggle = false;
+            }
 
-            $health = $custom_fields['go_entry_rewards_health'][0];
-            $health = go_mod_loot($health, $health_toggle, $health_mod_toggle, $stage_mod, $health_mod);
 
-            $c4 = $custom_fields['go_entry_rewards_c4'][0];
-            $c4 = go_mod_loot($c4, $c4_toggle, $c4_mod_toggle, $stage_mod, $health_mod);
+            if ($status === -1) {
+                /// get entry loot
+                $xp = $custom_fields['go_entry_rewards_xp'][0];
+                $xp = go_mod_loot($xp, $xp_toggle, $xp_mod_toggle, $stage_mod, $health_mod);
 
-        } else if ($status !== null && $progressing === true) {
-            /// get modified stage loot
-            $xp = $custom_fields['go_stages_' . $status . '_rewards_xp'][0];
-            $xp = go_mod_loot($xp, $xp_toggle, $xp_mod_toggle, $stage_mod, $health_mod);
-            $gold = $custom_fields['go_stages_' . $status . '_rewards_gold'][0];
-            $gold = go_mod_loot($gold, $gold_toggle, $gold_mod_toggle, $stage_mod, $health_mod);
-            $health = $custom_fields['go_stages_' . $status . '_rewards_health'][0];
-            $health = go_mod_loot($health, $health_toggle, $health_mod_toggle, $stage_mod, $health_mod);
-            $c4 = $custom_fields['go_stages_' . $status . '_rewards_c4'][0];
-            $c4 = go_mod_loot($c4, $c4_toggle, $c4_mod_toggle, $stage_mod, $health_mod);
-        } else if ($bonus_status !== null && $progressing === true) {
-            /// get modified bonus stage loot
-            $xp = $custom_fields['go_bonus_stage_rewards_xp'][0];
-            $xp = go_mod_loot($xp, $xp_toggle, $xp_mod_toggle, $stage_mod, $health_mod);
-            $gold = $custom_fields['go_bonus_stage_rewards_gold'][0];
-            $gold = go_mod_loot($gold, $gold_toggle, $gold_mod_toggle, $stage_mod, $health_mod);
-            $health = $custom_fields['go_bonus_stage_rewards_health'][0];
-            $health = go_mod_loot($health, $health_toggle, $health_mod_toggle, $stage_mod, $health_mod);
-            $c4 = $custom_fields['go_bonus_stage_rewards_c4'][0];
-            $c4 = go_mod_loot($c4, $c4_toggle, $c4_mod_toggle, $stage_mod, $health_mod);
-        }
-        //make sure we don't go over 200 health
-        $health = go_health_to_add($user_id, $health);
-    }
-    //end progressing = true
-    else if ($progressing === false){
-        $action_type = 'undo_task';
-        if ($status !== null){
-            $new_status_task = $status - 1 ;
-            $new_status_actions = $status;
-        }
-        else {
-            $new_status_task = 'null';
-            $new_status_actions = 'null';
-        }
+                $gold = $custom_fields['go_entry_rewards_gold'][0];
+                $gold = go_mod_loot($gold, $gold_toggle, $gold_mod_toggle, $stage_mod, $health_mod);
 
-        if ($bonus_status !== null){
-            $new_bonus_status_task = $bonus_status - 1;
-            $new_bonus_status_actions = $bonus_status;
-        }
-        else {
-            $new_bonus_status_task = 'null';
-            $new_bonus_status_actions = 'null';
-        }
-        /// get last action loot
-        $xp = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT xp 
+                $health = $custom_fields['go_entry_rewards_health'][0];
+                $health = go_mod_loot($health, $health_toggle, $health_mod_toggle, $stage_mod, $health_mod);
+
+                $c4 = $custom_fields['go_entry_rewards_c4'][0];
+                $c4 = go_mod_loot($c4, $c4_toggle, $c4_mod_toggle, $stage_mod, $health_mod);
+
+            } else if ($status !== null && $progressing === true) {
+                /// get modified stage loot
+                $xp = $custom_fields['go_stages_' . $status . '_rewards_xp'][0];
+                $xp = go_mod_loot($xp, $xp_toggle, $xp_mod_toggle, $stage_mod, $health_mod);
+                $gold = $custom_fields['go_stages_' . $status . '_rewards_gold'][0];
+                $gold = go_mod_loot($gold, $gold_toggle, $gold_mod_toggle, $stage_mod, $health_mod);
+                $health = $custom_fields['go_stages_' . $status . '_rewards_health'][0];
+                $health = go_mod_loot($health, $health_toggle, $health_mod_toggle, $stage_mod, $health_mod);
+                $c4 = $custom_fields['go_stages_' . $status . '_rewards_c4'][0];
+                $c4 = go_mod_loot($c4, $c4_toggle, $c4_mod_toggle, $stage_mod, $health_mod);
+            } else if ($bonus_status !== null && $progressing === true) {
+                /// get modified bonus stage loot
+                $xp = $custom_fields['go_bonus_stage_rewards_xp'][0];
+                $xp = go_mod_loot($xp, $xp_toggle, $xp_mod_toggle, $stage_mod, $health_mod);
+                $gold = $custom_fields['go_bonus_stage_rewards_gold'][0];
+                $gold = go_mod_loot($gold, $gold_toggle, $gold_mod_toggle, $stage_mod, $health_mod);
+                $health = $custom_fields['go_bonus_stage_rewards_health'][0];
+                $health = go_mod_loot($health, $health_toggle, $health_mod_toggle, $stage_mod, $health_mod);
+                $c4 = $custom_fields['go_bonus_stage_rewards_c4'][0];
+                $c4 = go_mod_loot($c4, $c4_toggle, $c4_mod_toggle, $stage_mod, $health_mod);
+            }
+            //make sure we don't go over 200 health
+            $health = go_health_to_add($user_id, $health);
+        } //end progressing = true
+        else if ($progressing === false) {
+            $action_type = 'undo_task';
+            if ($status !== null) {
+                $new_status_task = $status - 1;
+                $new_status_actions = $status;
+            } else {
+                $new_status_task = 'null';
+                $new_status_actions = 'null';
+            }
+
+            if ($bonus_status !== null) {
+                $new_bonus_status_task = $bonus_status - 1;
+                $new_bonus_status_actions = $bonus_status;
+            } else {
+                $new_bonus_status_task = 'null';
+                $new_bonus_status_actions = 'null';
+            }
+            /// get last action loot
+            $xp = $wpdb->get_var($wpdb->prepare("SELECT xp 
 					FROM {$go_actions_table_name} 
 					WHERE uid = %d and source_id  = %d and stage = %d 
-					ORDER BY id DESC LIMIT 1",
-                $user_id,
-                $post_id,
-                $status
-            )
-        ) * -1;
-        $gold = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT gold 
+					ORDER BY id DESC LIMIT 1", $user_id, $post_id, $status)) * -1;
+            $gold = $wpdb->get_var($wpdb->prepare("SELECT gold 
 					FROM {$go_actions_table_name} 
 					WHERE uid = %d and source_id  = %d and stage = %d 
-					ORDER BY id DESC LIMIT 1",
-                $user_id,
-                $post_id,
-                $status
-            )
-        )  * -1;
-        $health = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT health
+					ORDER BY id DESC LIMIT 1", $user_id, $post_id, $status)) * -1;
+            $health = $wpdb->get_var($wpdb->prepare("SELECT health
 					FROM {$go_actions_table_name} 
 					WHERE uid = %d and source_id  = %d and stage = %d 
-					ORDER BY id DESC LIMIT 1",
-                $user_id,
-                $post_id,
-                $status
-            )
-        )  * -1;
-        $c4 = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT c4
+					ORDER BY id DESC LIMIT 1", $user_id, $post_id, $status)) * -1;
+            $c4 = $wpdb->get_var($wpdb->prepare("SELECT c4
 					FROM {$go_actions_table_name} 
 					WHERE uid = %d and source_id  = %d and stage = %d 
-					ORDER BY id DESC LIMIT 1",
-                $user_id,
-                $post_id,
-                $status
-            )
-        )  * -1 ;
-        //make sure we don't go over 200 health
-        $health = go_health_to_add($user_id, $health);
+					ORDER BY id DESC LIMIT 1", $user_id, $post_id, $status)) * -1;
+            //make sure we don't go over 200 health
+            $health = go_health_to_add($user_id, $health);
 
+        }
     }
 
 
@@ -330,8 +302,7 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
                         gold = {$gold} + gold,
                         health = {$health} + health,
                         c4 = {$c4} + c4,
-                        last_time = IFNULL('{$last_time}', last_time) ,
-                        start_time = IFNULL('{$start_time}', start_time)                  
+                        last_time = IFNULL('{$last_time}', last_time)                 
                     WHERE uid= %d AND post_id=%d ",
             $user_id,
             $post_id
@@ -415,7 +386,8 @@ function go_update_actions( $user_id, $type,  $source_id, $status, $bonus_status
     $new_c4_total = $go_current_c4 + $c4;
 
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
-    $time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
+    //$time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
+    $time = current_time('mysql');
     $wpdb->insert(
         $go_actions_table_name,
         array(
@@ -599,8 +571,9 @@ function go_update_admin_bar_v4( $user_id, $xp, $xp_name, $gold, $gold_name, $he
         $display = go_display_longhand_currency('gold', $gold) ;
         $display_short = go_display_shorthand_currency('gold', $gold) ;
         echo "jQuery( '#go_admin_bar_gold' ).html( '{$display}' );";
-        echo "jQuery( '#go_admin_bar_rank' ).html( '{$rank_str}' );";
+        //echo "jQuery( '#go_admin_bar_rank' ).html( '{$rank_str}' );";
         echo "jQuery( '#go_admin_bar_gold' ).html( '{$display_short}' );";
+        echo "jQuery( '#go_admin_bar_gold_2' ).html( '{$display_short}' );";
     }
     if (get_option('options_go_loot_health_toggle')){
         //$suffix = get_option( "options_go_loot_health_abbreviation" );
@@ -616,6 +589,7 @@ function go_update_admin_bar_v4( $user_id, $xp, $xp_name, $gold, $gold_name, $he
         $display_short = go_display_shorthand_currency('c4', $c4) ;
         echo "jQuery( '#go_admin_bar_c4' ).html( '{$display}' );";
         echo "jQuery( '#go_admin_bar_c4' ).html( '{$display_short}' );";
+        echo "jQuery( '#go_admin_bar_c4_2' ).html( '{$display_short}' );";
     }
 
     echo "
