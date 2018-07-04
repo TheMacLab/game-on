@@ -19,9 +19,9 @@ function go_user_has_enough_currency( $base = 0, $qty = 1, $cur = 0 ) {
 	return true;
 }
 
-function go_buy_item() {
+function go_buy_item2() {
 	global $wpdb;
-    check_ajax_referer( 'go_buy_item' );
+    //check_ajax_referer( 'go_buy_item' );
 	//$user_id = get_current_user_id();
     $user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
 	$is_logged_in = ! empty( $user_id ) && $user_id > 0  || is_user_member_of_blog( $user_id ) ? true : false;
@@ -35,7 +35,7 @@ function go_buy_item() {
                 }).show();parent.window.$.featherlight.current().close();</script>";
         die();
     }
-	if ( ! check_ajax_referer( 'go_buy_item_' . $user_id, false ) ) {
+	if ( ! check_ajax_referer( 'go_buy_item2_' . $user_id, false ) ) {
         echo "<script> new Noty({
                 type: 'info',
                 layout: 'topRight',

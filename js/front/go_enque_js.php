@@ -82,7 +82,7 @@ function go_scripts () {
 			'GO_BUY_ITEM_DATA',
 			array(
 				'nonces' => array(
-					'go_buy_item'           => wp_create_nonce( 'go_buy_item_' . $user_id ),
+					'go_buy_item2'           => wp_create_nonce( 'go_buy_item2_' . $user_id ),
 					'go_get_purchase_count' => wp_create_nonce( 'go_get_purchase_count_' . $user_id ),
 				),
                 'userID'	=>  $user_id
