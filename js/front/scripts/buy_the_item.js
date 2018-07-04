@@ -149,7 +149,7 @@ function goBuytheItem( id, count ) {
 	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item;
 	jQuery( document ).ready( function( jQuery ) {
 		var gotoBuy = {
-			_ajax_nonce: nonce,
+			//_ajax_nonce: nonce, 
 			action: 'go_buy_item',
 			the_id: id,
 			qty: jQuery( '#go_qty' ).val(),

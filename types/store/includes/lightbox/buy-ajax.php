@@ -21,7 +21,7 @@ function go_user_has_enough_currency( $base = 0, $qty = 1, $cur = 0 ) {
 
 function go_buy_item() {
 	global $wpdb;
-
+    check_ajax_referer( 'go_buy_item' );
 	//$user_id = get_current_user_id();
     $user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
 	$is_logged_in = ! empty( $user_id ) && $user_id > 0  || is_user_member_of_blog( $user_id ) ? true : false;
@@ -45,7 +45,6 @@ function go_buy_item() {
 		die();
 	}
 
-	$go_task_table_name = $wpdb->prefix."go";
 	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
     $custom_fields = get_post_custom( $post_id );
     $qty = ( ! empty( $_POST['qty'] ) && (int) $_POST['qty'] > 0 ? (int) $_POST['qty'] : 1 );
