@@ -146,6 +146,7 @@ function go_lb_opener( id ) {
 
 //called when the "buy" button is clicked.
 function goBuytheItem( id, count ) {
+    console.log("hi1");
 	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item;
 	jQuery( document ).ready( function( jQuery ) {
 		var gotoBuy = {
@@ -157,7 +158,7 @@ function goBuytheItem( id, count ) {
 			purchase_count: count,
             user_id: 1,
 		};
-		console.log("hi");
+		console.log("hi2");
 
 		jQuery.ajax({
 			url: MyAjax.ajaxurl,
