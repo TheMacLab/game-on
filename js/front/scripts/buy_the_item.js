@@ -147,7 +147,7 @@ function go_lb_opener( id ) {
 //called when the "buy" button is clicked.
 function goBuytheItem( id, count ) {
 
-	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item2;
+	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item;
 	var user_id = GO_BUY_ITEM_DATA.userID;
 	console.log(user_id);
 	jQuery( document ).ready( function( jQuery ) {
