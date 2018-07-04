@@ -132,7 +132,7 @@ store lightbox styles
 }
 
 #go-buy-loading {
-    background: url('../../types/store/images/ajax-loader-buy-green.gif');
+    background: url('../../../types/store/images/ajax-loader-buy-green.gif');
     width: 16px;
     height: 11px;
     margin: 0 auto;
@@ -141,11 +141,11 @@ store lightbox styles
 }
 
 .buy_g {
-    background: url('../../../../types/store/images/ajax-loader-buy-green.gif');
+    background: url('../../../types/store/images/ajax-loader-buy-green.gif');
 }
 
 .buy_r {
-    background: url('../../../../types/store/images/ajax-loader-buy-red.gif');
+    background: url('../../../types/store/images/ajax-loader-buy-red.gif');
 }
 
 .golb-fr-boxes-r {

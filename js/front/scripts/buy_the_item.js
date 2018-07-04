@@ -146,8 +146,9 @@ function go_lb_opener( id ) {
 
 //called when the "buy" button is clicked.
 function goBuytheItem( id, count ) {
-    console.log("hi1");
+
 	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item;
+	nonce = '027c88d88a';
 	jQuery( document ).ready( function( jQuery ) {
 		var gotoBuy = {
 			_ajax_nonce: nonce,
@@ -158,7 +159,7 @@ function goBuytheItem( id, count ) {
 			purchase_count: count,
             user_id: 1,
 		};
-		console.log("hi2");
+
 
 		jQuery.ajax({
 			url: MyAjax.ajaxurl,
