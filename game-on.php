@@ -214,7 +214,7 @@ add_action( 'wp_ajax_go_search_for_user', 'go_search_for_user' );
 add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' );
 add_action( 'wp_ajax_go_get_purchase_count', 'go_get_purchase_count' );
 add_action( 'wp_ajax_nopriv_go_get_purchase_count', 'go_get_purchase_count' );
-add_action( 'wp_ajax_go_buy_item2', 'go_buy_item2' );
+add_action( 'wp_ajax_go_buy_item', 'go_buy_item' );
 add_action( 'wp_ajax_nopriv_go_buy_item', 'go_buy_item' );
 add_action( 'wp_ajax_go_clipboard_add', 'go_clipboard_add' );
 add_action( 'wp_ajax_go_fix_messages', 'go_fix_messages' );

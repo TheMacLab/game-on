@@ -19,7 +19,7 @@ function go_user_has_enough_currency( $base = 0, $qty = 1, $cur = 0 ) {
 	return true;
 }
 
-function go_buy_item2() {
+function go_buy_item() {
 	global $wpdb;
     //check_ajax_referer( 'go_buy_item' );
 	//$user_id = get_current_user_id();
@@ -35,7 +35,7 @@ function go_buy_item2() {
                 }).show();parent.window.$.featherlight.current().close();</script>";
         die();
     }
-	if ( ! check_ajax_referer( 'go_buy_item2_' . $user_id, false ) ) {
+	if ( ! check_ajax_referer( 'go_buy_item_' . $user_id, false ) ) {
         echo "<script> new Noty({
                 type: 'info',
                 layout: 'topRight',
