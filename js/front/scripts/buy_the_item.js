@@ -148,7 +148,7 @@ function go_lb_opener( id ) {
 function goBuytheItem( id, count ) {
 
 	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item;
-	nonce = '027c88d88a';
+	var user_id = GO_BUY_ITEM_DATA.userID;
 	jQuery( document ).ready( function( jQuery ) {
 		var gotoBuy = {
 			_ajax_nonce: nonce,
@@ -156,8 +156,8 @@ function goBuytheItem( id, count ) {
 			the_id: id,
 			qty: jQuery( '#go_qty' ).val(),
 			//recipient: jQuery( '#go_recipient' ).val(),
-			purchase_count: count,
-            user_id: 1,
+			//purchase_count: count,
+            user_id: user_id,
 		};
 
 
