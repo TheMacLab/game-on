@@ -194,13 +194,20 @@ function go_task_shortcode($atts, $content = null ) {
             $wpdb->insert($go_task_table_name, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 0, 'last_time' => $time, 'xp' => 0, 'gold' => 0, 'health' => 0, 'c4' => 0,));
         }
     }
-
+    /**
+     * Display Rewards before task content
+     * This is the list of rewards at the top of the task.
+     */
+    go_display_rewards( $custom_fields, $user_id, $post_id, $task_name );
 
     /**
      * Timer
      */
     $locks_status = go_display_timer ($custom_fields, $is_logged_in, $user_id, $post_id, $task_name );
     if ($locks_status){
+
+        echo "</div>";
+        go_task_render_chain_pagination( $post_id, $custom_fields );
         return null;
     }
 
@@ -215,11 +222,7 @@ function go_task_shortcode($atts, $content = null ) {
 	}
 
 
-    /**
-     * Display Rewards before task content
-     * This is the list of rewards at the top of the task.
-     */
-    go_display_rewards( $custom_fields, $user_id, $post_id, $task_name );
+
 
     /**
      * MAIN CONTENT
@@ -230,7 +233,6 @@ function go_task_shortcode($atts, $content = null ) {
 		//Including stages, checks for understanding and buttons
 		go_print_messages ( $status, $custom_fields, $user_id, $post_id);
 
-		//Prints bonus task
 		echo "</div>";
 
 	//echo "</div></div>";
@@ -841,28 +843,29 @@ function go_lock_password_validate($pass, $custom_fields, $status){
 
 function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status){
     global $wpdb;
-
-	$task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
+    $go_task_table_name = "{$wpdb->prefix}go_tasks";
+    $custom_fields = get_post_custom( $post_id );
+    $task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
     $outro_message = (isset($custom_fields['go_outro_message'][0]) ?  $custom_fields['go_outro_message'][0] : null);
     if (get_option( 'options_go_loot_xp_toggle' )){
         $xp_on = true;
         $xp_name = get_option('options_go_loot_xp_name');
-        $xp_loot = 0;
+        $xp_loot = $wpdb->get_var ("SELECT xp FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
     }
     if (get_option( 'options_go_loot_gold_toggle' )){
         $gold_on = true;
         $gold_name = get_option('options_go_loot_gold_name');
-        $gold_loot= 0;
+        $gold_loot = $wpdb->get_var ("SELECT gold FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
     }
     if (get_option( 'options_go_loot_health_toggle' )){
         $health_on = true;
         $health_name = get_option('options_go_loot_health_name');
-        $health_loot = 0;
+        $health_loot = $wpdb->get_var ("SELECT health FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
     }
     if (get_option( 'options_go_loot_c4_toggle' )){
         $c4_on = true;
         $c4_name = get_option('options_go_loot_c4_name');
-        $c4_loot = 0;
+        $c4_loot = $wpdb->get_var ("SELECT c4 FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
     }
     echo "<div id='outro' class='go_checks_and_buttons'>";
     echo "    
@@ -1016,7 +1019,7 @@ function go_task_change_stage() {
         //print new stage message
         go_print_messages ( $status, $custom_fields, $user_id, $post_id  );
         //Print the bottom of the page
-        go_task_render_chain_pagination( $post_id, $custom_fields );
+        //go_task_render_chain_pagination( $post_id, $custom_fields );
 
         //Print comments
         if ( get_post_type() == 'tasks' ) {
@@ -1164,10 +1167,7 @@ function go_task_change_stage() {
             'html' => $buffer,
             'redirect' => $redirect_url,
             'button_type' => $button_type,
-            'time_left' => $time_left_ms,
-            'rewards' => array(
-                //'gold' => $gold_reward,
-            )
+            'time_left' => $time_left_ms
         )
     );
     die();

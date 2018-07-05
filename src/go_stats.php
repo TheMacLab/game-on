@@ -269,9 +269,10 @@ function go_stats_task_list() {
     echo "<table id='go_stats_datatable' class='pretty'>
                    <thead>
 						<tr>
+							<th class='header' id='go_stats_last_time'><a href=\"#\">Activity Time</a></th>
 							<th class='header' id='go_stats_post_name'><a href=\"#\">Post Name</a></th>
-							<th class='header' id='go_stats_last_time'><a href=\"#\">Last Time</a></th>
 							
+						
 							<th class='header' id='go_stats_status'><a href=\"#\">Status</a></th>
 							<th class='header' id='go_stats_bonus_status'><a href=\"#\">Bonus Status</a></th>
 							<th class='header' id='go_stats_links'><a href=\"#\">Links</a></th>
@@ -286,9 +287,21 @@ function go_stats_task_list() {
 			    <tbody>
 						";
     foreach ( $tasks as $task ) {
+
         $post_id = $task->post_id;
+        $custom_fields = get_post_custom( $post_id );
+        $post_name = get_the_title($post_id);
         $status = $task->status;
-        $bonus_status = $task->bonus_status;
+        $total_stages = (isset($custom_fields['go_stages'][0]) ?  $custom_fields['go_stages'][0] : null);
+
+
+        $bonus_switch = (isset($custom_fields['bonus_switch'][0]) ?  $custom_fields['bonus_switch'][0] : null);
+        $bonus_status = null;
+        $total_bonus_stages = null;
+        if ($bonus_switch) {
+            $bonus_status = $task->bonus_status;
+            $total_bonus_stages = (isset($custom_fields['go_bonus_limit'][0]) ? $custom_fields['go_bonus_limit'][0] : null);
+        }
         $xp = $task->xp;
         $gold = $task->gold;
         $health = $task->health;
@@ -299,12 +312,11 @@ function go_stats_task_list() {
         echo " 			
 			        <tr id='postID_{$post_id}'>
 			           
-					    <td>{$post_id}</td>
-					    
 					    <td>{$last_time}</td>
-					    
-					    <td>{$status}/ add total stages here</td>
-					    <td>{$bonus_status}/ add bonus max</td>
+					    <td>{$post_name}</td>
+					    				    
+					    <td>{$status} / {$total_stages}</td>
+					    <td>{$bonus_status} / {$total_bonus_stages}</td>
 					    <td>Add links to URLs, Uploads, and Blog Posts</td>
 					    
 					    <td>{$xp}</td>

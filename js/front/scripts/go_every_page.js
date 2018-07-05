@@ -189,15 +189,11 @@ function go_stats_task_list() {
 
                 jQuery( '#go_stats_body' ).html( res );
                 jQuery( '#go_stats_datatable' ).dataTable( {
-                    stateSave: true,
+
                     "bPaginate": true,
-                    colReorder: true,
                     "aaSorting": [[1, "asc"]],
                     "destroy": true,
-                    dom: 'Bfrtip',
-                    buttons: [
-
-                    ]
+                    responsive: true
                 });
             }
         }
@@ -363,15 +359,11 @@ function go_stats_activity_list() {
 
                 jQuery( '#go_stats_body' ).html( res );
                 jQuery( '#go_stats_datatable' ).dataTable( {
-                    stateSave: true,
+
                     "bPaginate": true,
-                    colReorder: true,
                     "aaSorting": [[1, "asc"]],
                     "destroy": true,
-                    dom: 'Bfrtip',
-                    buttons: [
-
-                    ]
+                    responsive: true
                 });
             }
         }

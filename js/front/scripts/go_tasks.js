@@ -391,7 +391,7 @@ function task_stage_change( target ) {
                     window.location = res.redirect;
                 }
                 else if ( res.button_type == 'timer' ){
-                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                    jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
 
                     //initializeClock('clockdiv', deadline);
                     //initializeClock('go_timer', deadline);
@@ -409,15 +409,11 @@ function task_stage_change( target ) {
                     //check_locks();
                 });
 
-                // fires off the Gold ("store") sound if the stage awarded or revoked Gold
-                if ( 0 !== res.rewards.gold ) {
-                    go_sounds( 'store' );
-                }
             }
-            //go_disable_loading();
+
         }
     });
-    //go_disable_loading();
+
 }
 
 function go_append (res){

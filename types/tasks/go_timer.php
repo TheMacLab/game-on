@@ -30,6 +30,7 @@ function go_timer( $custom_fields, $user_id, $id, $task_name ) {
 
 			echo "</div>";
             echo "</div>";
+
 			//returning true stops the printing of the rest of the task because the timer is set but not started
 			return true;
 		}
