@@ -16,7 +16,6 @@ function go_admin_scripts ($hook) {
          */
 
             wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'min/go_admin-min.js', array( 'jquery' ),$version, true);
-            //wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'scripts/go_every_admin_page.js', array( 'jquery' ),'v1', true);
 
         /*
          * Page-Specific Scripts

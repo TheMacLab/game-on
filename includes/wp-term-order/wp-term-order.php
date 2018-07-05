@@ -800,6 +800,8 @@ add_action( 'init', '_wp_term_order', 99 );
  */
 
 function go_check_if_top_term () {
+    global $wpdb;
+    $term_taxonomy_table_name = "{$wpdb->prefix}term_taxonomy";
 	if(empty($_POST) || !isset($_POST)) {
 		ajaxStatus('error', 'Nothing to update.');
 		
@@ -812,9 +814,17 @@ function go_check_if_top_term () {
 			foreach ($termDivIDs as $termDivID){
 				$termid = ltrim( $termDivID, "tag-");
 				
-				$the_term = get_term_by( 'term_taxonomy_id', $termid);
-				$the_term_name = ($the_term->name);
-				if($the_term->parent > 0){ 
+				//$the_term = get_term_by( 'term_taxonomy_id', $termid);
+                $the_term_parent = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT parent 
+			FROM {$term_taxonomy_table_name} 
+			WHERE term_id = %d ",
+                        $termid
+                    )
+                );
+				//$the_term_name = ($the_term->name);
+				if($the_term_parent > 0){
 					// THIS IS A CHILD PAGE 
 					// .. DO STUFF HERE.. 
 					$items[] = "child";
