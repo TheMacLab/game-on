@@ -7,6 +7,7 @@
  */
 add_filter('acf/settings/show_admin', '__return_false');
 
+
 if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
@@ -49,7 +50,7 @@ acf_add_local_field_group(array(
 	),
 	'menu_order' => 0,
 	'position' => 'normal',
-	'style' => 'default',
+	'style' => 'seamless',
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
@@ -219,7 +220,7 @@ acf_add_local_field_group(array(
 	),
 	'menu_order' => 0,
 	'position' => 'normal',
-	'style' => 'default',
+	'style' => 'seamless',
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
@@ -1664,25 +1665,6 @@ acf_add_local_field_group(array(
 			'layout' => 'row',
 			'sub_fields' => array(
 				array(
-					'key' => 'field_5ad679397ce16',
-					'label' => 'Toggle',
-					'name' => 'toggle',
-					'type' => 'true_false',
-					'instructions' => '',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => 'acf-hide-label',
-						'id' => '',
-					),
-					'message' => '',
-					'default_value' => 1,
-					'ui' => 1,
-					'ui_on_text' => 'On',
-					'ui_off_text' => 'Off',
-				),
-				array(
 					'key' => 'field_5abc847d427ec',
 					'label' => 'Name',
 					'name' => 'name',
@@ -1708,38 +1690,6 @@ acf_add_local_field_group(array(
 					'prepend' => '',
 					'append' => '',
 					'maxlength' => '',
-				),
-				array(
-					'key' => 'field_5acaeb729ce0f',
-					'label' => 'Bonus Loot Default Setting',
-					'name' => 'bonus_loot_setting',
-					'type' => 'radio',
-					'instructions' => '',
-					'required' => 0,
-					'conditional_logic' => array(
-						array(
-							array(
-								'field' => 'field_5ad679397ce16',
-								'operator' => '==',
-								'value' => '1',
-							),
-						),
-					),
-					'wrapper' => array(
-						'width' => '25',
-						'class' => '',
-						'id' => '',
-					),
-					'choices' => array(
-						'None' => 'None',
-						'Default Loot' => 'Default Loot',
-					),
-					'allow_null' => 0,
-					'other_choice' => 0,
-					'save_other_choice' => 0,
-					'default_value' => '',
-					'layout' => 'vertical',
-					'return_format' => 'value',
 				),
 				array(
 					'key' => 'field_5acaeb729ce10',
@@ -2478,6 +2428,49 @@ you only enter /map',
 ));
 
 acf_add_local_field_group(array(
+	'key' => 'group_5b3eede2d1c5a',
+	'title' => 'Store Category',
+	'fields' => array(
+		array(
+			'key' => 'field_5b3eedee8c291',
+			'label' => 'Hide Category in Store',
+			'name' => 'go_hide_store_cat',
+			'type' => 'true_false',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => 'Yes',
+			'ui_off_text' => 'No',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'taxonomy',
+				'operator' => '==',
+				'value' => 'store_types',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'seamless',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => 1,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
 	'key' => 'group_5abde7f7c65c2',
 	'title' => 'Store Setup',
 	'fields' => array(
@@ -2617,6 +2610,23 @@ acf_add_local_field_group(array(
 					),
 				),
 			),
+		),
+		array(
+			'key' => 'field_5b3ee813d87a3',
+			'label' => 'Shortcode',
+			'name' => '',
+			'type' => 'message',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => 'go_store_item_id',
+			),
+			'message' => 'Item ID #',
+			'new_lines' => 'wpautop',
+			'esc_html' => 0,
 		),
 		array(
 			'key' => 'field_5abde7f93047f',

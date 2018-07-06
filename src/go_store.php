@@ -47,13 +47,20 @@ function go_make_store() {
     //for each row
     foreach ( $rows as $row ) {
         $chainParentNum++;
+        $row_id = $row->term_id;//id of the row
+        $custom_fields = get_term_meta( $row_id );
+        $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
+        if( $cat_hidden == true){
+            continue;
+        }
+
+
 
         echo 	"<div id='row_$chainParentNum' class='store_row_container'>
 						<div class='parent_cat'><h2>$row->name</h2></div>
 						<div class='store_row'>
 						";//row title and row container
 
-        $row_id = $row->term_id;//id of the row
 
         $column_args=array(
             'hide_empty' => false,
@@ -66,9 +73,16 @@ function go_make_store() {
         $columns = get_terms($taxonomy,$column_args);
         /*Loop for each chain.  Prints the chain name then looks up children (quests). */
         foreach ( $columns as $column) {
+            $column_id = $column->term_id;
+            $custom_fields = get_term_meta( $column_id );
+            $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
+            if( $cat_hidden == true){
+                continue;
+            }
+
+
             echo "<div class ='store_cats'><h3>$column->name</h3><ul class='store_items'>";
             /*Gets a list of store items that are assigned to each chain as array. Ordered by post ID */
-            $column_id = $column->term_id;
 
             ///////////////
             ///

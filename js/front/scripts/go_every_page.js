@@ -22,6 +22,7 @@ function go_admin_bar_stats_page_button( id ) {
 		},
 		success: function( res ) {
 			if ( -1 !== res ) {
+				/*
 				jQuery( '#go_stats_white_overlay' ).html( res );
 				jQuery( '#go_stats_page_black_bg' ).show();
 				jQuery( '#go_stats_white_overlay' ).show();
@@ -29,7 +30,9 @@ function go_admin_bar_stats_page_button( id ) {
 
 				// this will stop the body from scrolling behind the stats page
 				jQuery( 'html' ).addClass( 'go_no_scroll' );
-				
+				*/
+                jQuery.featherlight(res, {variant: 'stats'});
+
 				jQuery( '.go_stats_body_selectors' ).click( function() {
 					if ( jQuery( '#go_stats_help_video' ).length ) {
 						myplayer = videojs( 'go_stats_help_video' );
@@ -191,9 +194,10 @@ function go_stats_task_list() {
                 jQuery( '#go_stats_datatable' ).dataTable( {
 
                     "bPaginate": true,
-                    "aaSorting": [[1, "asc"]],
+                    "order": [[0, "desc"]],
                     "destroy": true,
-                    responsive: true
+                    responsive: true,
+                    "autoWidth": false
                 });
             }
         }
@@ -361,9 +365,10 @@ function go_stats_activity_list() {
                 jQuery( '#go_stats_datatable' ).dataTable( {
 
                     "bPaginate": true,
-                    "aaSorting": [[1, "asc"]],
+                    "order": [[0, "desc"]],
                     "destroy": true,
-                    responsive: true
+                    responsive: true,
+                    "autoWidth": false
                 });
             }
         }

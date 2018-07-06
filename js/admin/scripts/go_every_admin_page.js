@@ -41,23 +41,33 @@ this hides the acf stuff until a parent map is selected
 jQuery(document).ready(function(){
 
 
-    if(jQuery('#parent').val() == -1){
+    if(jQuery('.taxonomy-task_chains #parent, .taxonomy-go_badges #parent').val() == -1){
         jQuery('#acf-term-fields').hide();
+        jQuery('.acf-field').hide();
     }
     else{
         jQuery('#acf-term-fields').show();
-        jQuery('h2').show();
+        jQuery('.acf-field').show();
+        //jQuery('h2').show();
     }
 
-    jQuery('#parent').change(function(){
+    jQuery('.taxonomy-task_chains #parent, .taxonomy-go_badges #parent').change(function(){
         if(jQuery(this).val() == -1){
             jQuery('#acf-term-fields').hide();
+            jQuery('.acf-field').hide();
+
         }
         else{
             jQuery('#acf-term-fields').show();
-            jQuery('h2').show();
+            jQuery('.acf-field').show();
+            //jQuery('h2').show();
         }
     });
+
+
+    //store item edit--add item id to bottom
+    var item_id = jQuery('#post_ID').val();
+    jQuery('#go_store_item_id .acf-input').html('[go_store id="' + item_id + '"]');
 
 });
 

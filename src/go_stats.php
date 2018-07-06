@@ -5,7 +5,7 @@ function go_stats_overlay() {
 }
 
 function go_admin_bar_stats() {
-	$user_id = 0;
+	//$user_id = 0;
 	if ( ! empty( $_POST['uid'] ) ) {
 		$user_id = (int) $_POST['uid'];
 		$current_user = get_userdata( $user_id );
@@ -186,21 +186,28 @@ function go_admin_bar_stats() {
 	?>
 	<div id='go_stats_lay'>
         <div id='go_stats_header'>
-		    <div id='go_stats_gravatar'><?php echo $user_avatar; ?></div>
+            <div id="go_stats_id_card">
+		        <div id='go_stats_gravatar'><?php echo $user_avatar; ?></div>
 
-			<div id='go_stats_user_info'>
-				<?php echo "<h2>{$user_fullname}</h2><a href='{$user_website}' target='_blank'>{$user_display_name}</a><br/>"; ?>
+                <div id='go_stats_user_info'>
+                    <?php echo "<h2>{$user_fullname}</h2><a href='{$user_website}' target='_blank'>{$user_display_name}</a><br/>"; ?>
 
+                </div>
             </div>
-            <div id='go_stats_user_loot'>
-
+            <div id="go_stats_bars">
                 <?php
                 if ($xp_toggle) {
-                    echo '<div id="go_stats_rank"><h3>' . $go_option_ranks . ' ' . $rank_num . ": " . $current_rank . '</h3></div>';
+                echo '<div id="go_stats_rank"><h3>' . $go_option_ranks . ' ' . $rank_num . ": " . $current_rank . '</h3></div>';
                 }
                 echo $progress_bar;
                 //echo "<div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br/>{$current_minutes} {$minutes_name}";
                 echo $health_bar;
+                ?>
+            </div>
+            <div id='go_stats_user_loot'>
+
+                <?php
+
                 if ($xp_toggle) {
                     echo '<div id="go_stats_xp">' . go_display_longhand_currency('xp', $go_current_xp) . '</div>';
                 }
@@ -269,12 +276,12 @@ function go_stats_task_list() {
     echo "<table id='go_stats_datatable' class='pretty'>
                    <thead>
 						<tr>
-							<th class='header' id='go_stats_last_time'><a href=\"#\">Activity Time</a></th>
-							<th class='header' id='go_stats_post_name'><a href=\"#\">Post Name</a></th>
+							<th class='header' id='go_stats_last_time'><a href=\"#\">Time</a></th>
+							<th class='header' id='go_stats_post_name'><a href=\"#\">Title</a></th>
 							
 						
 							<th class='header' id='go_stats_status'><a href=\"#\">Status</a></th>
-							<th class='header' id='go_stats_bonus_status'><a href=\"#\">Bonus Status</a></th>
+							<th class='header' id='go_stats_bonus_status'><a href=\"#\">Bonus</a></th>
 							<th class='header' id='go_stats_links'><a href=\"#\">Links</a></th>
 							
 							<th class='header' id='go_stats_mods'><a href=\"#\">XP</a></th>
@@ -306,18 +313,79 @@ function go_stats_task_list() {
         $gold = $task->gold;
         $health = $task->health;
         $c4 = $task->c4;
-        $start_time = $task->start_time;
+        //$start_time = $task->start_time;
         $last_time = $task->last_time;
+        $time  = date("m/d/y g:i A", strtotime($last_time));
+
+
+
+
+
+        $go_actions_table_name = "{$wpdb->prefix}go_actions";
+        $actions = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * 
+			FROM {$go_actions_table_name} 
+			WHERE source_id = %d
+			ORDER BY id DESC",
+                $post_id
+            )
+        );
+        $links = "";
+        $next_bonus_stage = null;
+        $i = 0;
+        $links = array();
+        foreach ($actions as $action){
+            $i++;
+            $check_type = $action->check_type;
+            $result = $action->result;
+            if ($action->action_type == 'task'){
+                $loop_bonus_status = $action->bonus_status; //get the bonus status if it exists
+                $stage = $action->stage ; //get the stage
+
+                if (!isset($next_bonus_stage) && $loop_bonus_status > 0 ){//the last bonus submitted
+                    $links[] = go_result_link($check_type, $result);
+                    $next_bonus_stage = $loop_bonus_status -1;
+                }
+                else if ($next_bonus_stage > 0 && $loop_bonus_status == $next_bonus_stage ){ //get the previous bonus stage
+                    $links[] = go_result_link($check_type, $result);
+                    $next_bonus_stage = $loop_bonus_status -1;
+                }
+                else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {
+                    if (!isset($next_stage) && $stage > 0 ){ //it's not a bonus and it's not the last one completed
+                        $links[] = go_result_link($check_type, $result);
+                        $next_stage = $stage - 1;
+                    }
+                    else if ($next_stage > 0 && $stage == $next_stage){
+                        $links[] = go_result_link($check_type, $result);
+                        $next_stage = $stage - 1;
+                    }
+                }
+
+            }
+
+
+        }
+        $links = array_reverse($links);
+        $links = $comma_separated = implode(" ", $links);
+
+
+
+
+
+
+
+
 
         echo " 			
 			        <tr id='postID_{$post_id}'>
-			           
-					    <td>{$last_time}</td>
+
+					    <td data-order='{$last_time}'>{$time}</td>
 					    <td>{$post_name}</td>
 					    				    
 					    <td>{$status} / {$total_stages}</td>
 					    <td>{$bonus_status} / {$total_bonus_stages}</td>
-					    <td>Add links to URLs, Uploads, and Blog Posts</td>
+					    <td>$links</td>
 					    
 					    <td>{$xp}</td>
 					    <td>{$gold}</td>
@@ -333,6 +401,31 @@ function go_stats_task_list() {
 				</table>";
 
     die();
+}
+
+function go_result_link($check_type, $result){
+    if ($check_type == 'URL'){
+        $link = "<a href='{$result}' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span></a>";
+    }
+    else if ($check_type == 'upload'){
+        $image_url = wp_get_attachment_url($result);
+        $is_image = wp_attachment_is_image($result);
+        if ($is_image) {
+            $link = "<a href='{#}' data-featherlight='{$image_url}'><span class=\"dashicons dashicons-format-image\"></span></a>";
+        }else{
+            $link = "<a href='{$image_url}' target='_blank'><span class=\"dashicons dashicons-media-default\"></span></a>";
+        }
+    }
+    /*
+    else if ($check_type == 'password'){
+        if ($result = 'master password') {
+            $link = "<span>master password</span>";
+        }else{
+            $link = "<span>password</span>";
+        }
+    }*/
+    return $link;
+
 }
 
 function go_stats_task_listOLD() {
@@ -1085,6 +1178,7 @@ function go_stats_activity_list() {
         $action_type = $action->action_type;
         $source_id = $action->source_id;
         $TIMESTAMP = $action->TIMESTAMP;
+        $time  = date("m/d/y g:i A", strtotime($TIMESTAMP));
         $stage = $action->stage;
         $bonus_status = $action->bonus_status;
         $result = $action->result;
@@ -1144,7 +1238,7 @@ function go_stats_activity_list() {
 
         //$late_mod = intval($late_mod);
         if (!empty($late_mod)){
-            $late_mod = "Late: ". $late_mod;
+            $late_mod = "<i class=\"fa fa-calendar\" aria-hidden=\"true\"></i> ". $late_mod;
         }
         else{
             $late_mod = null;
@@ -1152,7 +1246,7 @@ function go_stats_activity_list() {
 
         //$timer_mod = intval($timer_mod);
         if (!empty($timer_mod)){
-            $timer_mod = "Timer: ". $timer_mod;
+            $timer_mod = "<i class=\"fa fa-hourglass\" aria-hidden=\"true\"></i> ". $timer_mod;
         }
         else{
             $timer_mod = null;
@@ -1160,23 +1254,19 @@ function go_stats_activity_list() {
 
         //$health_mod = intval($health_mod);
         if (!empty($health_mod)){
-            $health_mod_str = "Health: ". $health_mod;
+            $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+            $health_mod_str = $health_abbr . ": ". $health_mod;
         }
         else{
             $health_mod_str = null;
         }
 
-
-
-
-
-
 		echo " 			
 			        <tr id='postID_{$source_id}'>
-			            <td>{$TIMESTAMP}</td>
+			            <td data-order='{$TIMESTAMP}'>{$time}</td>
 					    <td>{$type} </td>
 					    <td>{$post_title} </td>
-					    <td>{$health_mod_str} {$timer_mod} {$late_mod} {$quiz_mod}</td>
+					    <td>{$health_mod_str}   {$timer_mod}   {$late_mod}   {$quiz_mod}</td>
 					    
 					    <td>{$xp}</td>
 					    <td>{$gold}</td>

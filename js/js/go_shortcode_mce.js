@@ -13,9 +13,7 @@
 				{ text: '[go_firstname]', onclick: function() { go_tinymce_insert_content( editor, '[go_firstname]' ); } },
 				{ text: '[go_lastname]', onclick: function() { go_tinymce_insert_content( editor, '[go_lastname]' ); } },
 				{ text: '[go_loginname]', onclick: function() { go_tinymce_insert_content( editor, '[go_loginname]' ); } },
-				{ text: '[go_store cats]', onclick: function() { go_tinymce_insert_content( editor, '[go_store cats=""]' ); } },
 				{ text: '[go_store id]', onclick: function() { go_tinymce_insert_content( editor, '[go_store id=""]' ); } },
-				{ text: '[go_store_wrap id]', onclick: function() { go_tinymce_insert_content( editor, '[go_store_wrap id=""][/go_store_wrap]' ); } },
 				{ text: '[go_make_map]', onclick: function() { go_tinymce_insert_content( editor, '[go_make_map]' ); } },
 				{ text: '[go_make_store]', onclick: function() { go_tinymce_insert_content( editor, '[go_make_store]' ); } }
 				

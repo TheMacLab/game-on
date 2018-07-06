@@ -1497,6 +1497,10 @@ ol, ul {
 .star-half .fa.fa-star-half-o {
   color: gold; }
 
+.featherlight.stats .featherlight-content {
+  width: 90%;
+  height: 90%; }
+
 #go_stats_page_black_bg {
   display: block;
   position: fixed !important;
@@ -1525,8 +1529,10 @@ ol, ul {
 
 #go_stats_lay {
   height: 100%;
-  width: 100%;
-  overflow: hidden; }
+  width: 96%;
+  /* overflow: hidden; */
+  margin-left: 2%;
+  margin-right: 2%; }
 
 /** Popup Styles **/
 /* Popup container - can be anything you want */
@@ -1602,10 +1608,15 @@ ol, ul {
   display: flex;
   flex-wrap: wrap; }
 
-#go_stats_user_info {
+#go_stats_id_card, #go_stats_bars, #go_stats_user_loot {
   font-size: 16px;
   line-height: 18px;
-  flex-grow: 1; }
+  min-width: 250px;
+  flex-grow: 1;
+  margin: 0 15px 15px 15px; }
+
+#go_stats_id_card {
+  display: flex; }
 
 #go_stats_gravatar {
   width: 150px;
@@ -1613,10 +1624,6 @@ ol, ul {
   border: 2px solid #BBB;
   position: relative;
   margin: 0px 10px 0px 20px; }
-
-#go_stats_user_loot {
-  flex-grow: 1;
-  min-width: 250px; }
 
 #go_stats_header .progress-bar-border {
   height: 30px;
@@ -1681,7 +1688,7 @@ ol, ul {
   margin: 25px 20px 0px 20px;
   font-size: 13px;
   font-family: verdana;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   overflow: hidden; }
 
 #go_stats_body a {
