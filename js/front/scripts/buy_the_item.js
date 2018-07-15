@@ -39,7 +39,7 @@ function go_lb_opener( id ) {
                 jQuery( "#lb-content" ).innerHTML = "";
                 jQuery( "#lb-content" ).html( '' );
                 //jQuery( "#lb-content" ).append(results);
-                jQuery.featherlight(results);
+                jQuery.featherlight(results, {variant: 'store'});
                 jQuery('.go_str_item').one("click", function(e){
                     go_lb_opener( this.id );
                 });

@@ -1,50 +1,5 @@
 <?php
-/**
- * Prints a block of badges based on an array of badge IDs. A return argument is provided, if the
- * block list needs to be returned instead of printed.
- *
- * @param array $ids    The badge IDs.
- * @param bool  $return Optional. Return the badge list instead of printing it.
- * @return null|string The badge list, if the '$return' argument was passed a value of true.
- *                     Null otherwise.
- */
-function go_badge_output_list( $ids, $return = false ) {
-	$badge_blocks = '';
-	if ( empty( $ids ) || ! is_array( $ids ) ) {
-		go_error_log(
-			'go_badge_output_list() expects a valid array of badge IDs.',
-			__FUNCTION__,
-			__FILE__
-		);
-		return null;
-	}
-	foreach ( $ids as $badge_id ) {
-		$badge_attachment = wp_get_attachment_image( $badge_id, array( 100, 100 ) );
-		$img_post = get_post( $badge_id );
-		if ( ! empty( $badge_attachment ) ) {
-			$badge_blocks .= sprintf(
-				'<div class="go_badge_wrap"> ' .
-					'<div class="go_badge_container">' .
-						'<figure class="go_badge" title="%1$s">' .
-							'%3$s' .
-							'<figcaption>%2$s</figcaption>' .
-						'</figure>' .
-					'</div>' .
-				'</div>',
-				$img_post->post_title,
-				$img_post->post_excerpt ? $img_post->post_excerpt : $img_post->post_title,
-				$badge_attachment
-			);
-		}
-	}
 
-	if ( $return ) {
-		return $badge_blocks;
-	}
-
-	print( $badge_blocks );
-	return null;
-}
 
 /**
  * Add a badge shortcode to every media file.
@@ -57,6 +12,7 @@ function go_badge_output_list( $ids, $return = false ) {
  * @param  obj 	 $post 		  The WP_Post instance for the media file.
  * @return array The modified array of form fields for the media file.
  */
+/*
 function go_badge_add_attachment ( $form_fields, $post ) {
     $form_fields['location'] = array(
         'value' => "[go_award_badge id={$post->ID} repeat=false]",
@@ -65,7 +21,7 @@ function go_badge_add_attachment ( $form_fields, $post ) {
     );
     return $form_fields;	
 }
-
+*/
 /**
  * Recursively award badges.
  *
@@ -80,6 +36,7 @@ function go_badge_add_attachment ( $form_fields, $post ) {
  * @param  array $badges_array 	 Optional. Contains the badge ids of all the ranks, ordered in descending
  *								 order by rank.
  */
+/*
 function go_award_badge_r ( $user_id, $new_rank_index, $rank_count = 0, $badges_array = null ) {
 	if ( ! empty( $user_id ) && $new_rank_index > 0 && $rank_count >= 1 ) {
 		if ( empty( $badges_array ) ) {
@@ -103,7 +60,7 @@ function go_award_badge_r ( $user_id, $new_rank_index, $rank_count = 0, $badges_
 		}
 	}
 }
-
+*/
 /**
  * Awards an individual badge.
  *
@@ -124,6 +81,7 @@ function go_award_badge_r ( $user_id, $new_rank_index, $rank_count = 0, $badges_
  *		@type int 	  $uid 	  The user's id.
  * }
  */
+/*
 function go_award_badge ( $atts ) {
 	$defaults = array(
 		'id' => null,
@@ -174,7 +132,7 @@ function go_award_badge ( $atts ) {
 		$wpdb->update( "{$wpdb->prefix}go_loot", array( 'badge_count' => $badge_count ), array( 'uid' => $user_id ) );
 	}
 }
-
+*/
 /**
  * Recursively removes badges.
  *
@@ -189,6 +147,7 @@ function go_award_badge ( $atts ) {
  * @param  array $badges_array 	 Optional. Contains the badge ids of all the ranks, ordered in descending
  *								 order by rank.
  */
+/*
 function go_remove_badge_r ( $user_id, $old_rank_index, $rank_count, $badges_array = null ) {
 	if ( ! empty( $user_id ) && $old_rank_index > 0 && $rank_count >= 1 ) {
 		if ( empty( $badges_array ) ) {
@@ -206,7 +165,7 @@ function go_remove_badge_r ( $user_id, $old_rank_index, $rank_count, $badges_arr
 		}
 	}
 }
-
+*/
 /**
  * Removes an individual badge.
  *
@@ -220,6 +179,7 @@ function go_remove_badge_r ( $user_id, $old_rank_index, $rank_count, $badges_arr
  * @param  int $user_id  The user's id.
  * @param  int $badge_id The badge's id.
  */
+/*
 function go_remove_badge ( $user_id, $badge_id = -1 ) {
 	if ( ! empty( $user_id ) && ! empty( $badge_id ) && $badge_id > 0 ) {
 		global $wpdb;
@@ -236,7 +196,7 @@ function go_remove_badge ( $user_id, $badge_id = -1 ) {
 		}
 	}
 }
-
+*/
 /**
  * Removes non-existent badges from user's "go_badges" meta data.
  *
@@ -251,6 +211,7 @@ function go_remove_badge ( $user_id, $badge_id = -1 ) {
  * @param  int	$user_id The user's id.
  * @return null Return null if the user id is missing or invalid.
  */
+/*
 function go_clean_badges ( $user_id ) {
 	if ( empty( $user_id ) || $user_id <= 0 ) {
 		return;
@@ -279,4 +240,5 @@ function go_clean_badges ( $user_id ) {
 		}
 	}
 }
+*/
 ?>

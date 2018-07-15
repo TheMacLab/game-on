@@ -14,8 +14,8 @@ date_default_timezone_set('America/Los_Angeles');
 function go_the_lb_ajax() {
     check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
 	global $wpdb;
-	$badge_name = get_option( 'options_go_badges_name' );
-	$table_name_go = "{$wpdb->prefix}go_store";
+	//$badge_name = get_option( 'options_go_badges_name_singular' );
+	//$table_name_go = "{$wpdb->prefix}go_store";
 	$post_id = (int) $_POST['the_item_id'];
 
 	//$the_post = get_post( $post_id );
@@ -131,9 +131,11 @@ function go_the_lb_ajax() {
     }
 
 
-
-    $badges = ( ($custom_fields['go_purch_reward_badges'][0] == true ) ? $custom_fields['go_purch_reward_badges'][0] : null );
-    $badges = unserialize($badges);
+    $badges_toggle = get_option('options_go_badges_toggle');
+    if ($badges_toggle) {
+        $badges = (($custom_fields['go_purch_reward_badges'][0] == true) ? $custom_fields['go_purch_reward_badges'][0] : null);
+        $badges = unserialize($badges);
+    }
     $groups = ( ($custom_fields['go_purch_reward_groups'][0] == true ) ? $custom_fields['go_purch_reward_groups'][0] : null );
     $groups = unserialize($groups);
 

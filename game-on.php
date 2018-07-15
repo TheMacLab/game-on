@@ -168,7 +168,7 @@ add_action( 'user_register', 'go_user_registration' );
 //add_action( 'edit_user_profile', 'go_extra_profile_fields' );
 //add_action( 'personal_options_update', 'go_save_extra_profile_fields' );
 //add_action( 'edit_user_profile_update', 'go_save_extra_profile_fields' );
-add_action( 'wp_footer', 'go_update_totals_out_of_bounds', 21 );
+//add_action( 'wp_footer', 'go_update_totals_out_of_bounds', 21 );
 
 /*
  * AJAX Hooks
@@ -193,15 +193,19 @@ add_action( 'wp_ajax_go_focus_save', 'go_focus_save' );
 add_action( 'wp_ajax_go_reset_levels', 'go_reset_levels' );
 add_action( 'wp_ajax_go_save_levels', 'go_save_levels' );
 add_action( 'wp_ajax_go_reset_data', 'go_reset_data' );
+add_action( 'wp_ajax_go_stats_about', 'go_stats_about' );
 add_action( 'wp_ajax_go_stats_task_list', 'go_stats_task_list' );
 add_action( 'wp_ajax_go_stats_move_stage', 'go_stats_move_stage' );
 add_action( 'wp_ajax_go_stats_item_list', 'go_stats_item_list' );
-add_action( 'wp_ajax_go_stats_rewards_list', 'go_stats_rewards_list' );
+//add_action( 'wp_ajax_go_stats_rewards_list', 'go_stats_rewards_list' );
 add_action( 'wp_ajax_go_stats_activity_list', 'go_stats_activity_list' );
-add_action( 'wp_ajax_go_stats_penalties_list', 'go_stats_penalties_list' );
+add_action( 'wp_ajax_go_stats_single_task_activity_list', 'go_stats_single_task_activity_list' );
+//add_action( 'wp_ajax_go_stats_penalties_list', 'go_stats_penalties_list' );
 add_action( 'wp_ajax_go_stats_badges_list', 'go_stats_badges_list' );
+add_action( 'wp_ajax_go_stats_groups_list', 'go_stats_groups_list' );
 add_action( 'wp_ajax_go_stats_leaderboard_choices', 'go_stats_leaderboard_choices' );
 add_action( 'wp_ajax_go_stats_leaderboard', 'go_stats_leaderboard' );
+add_action( 'wp_ajax_go_stats_lite', 'go_stats_lite' );
 add_action( 'wp_ajax_go_presets_reset', 'go_presets_reset' );
 add_action( 'wp_ajax_go_presets_save', 'go_presets_save' );
 add_action( 'wp_ajax_go_fix_levels', 'go_fix_levels' );
@@ -228,12 +232,16 @@ add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' );
 add_action( 'wp_ajax_go_upgade4', 'go_upgade4' );
 
 
+add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
+add_action('wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
+//add_action('wp_ajax_nopriv_go_tasks_dataloader_ajax', 'fn_my_ajaxified_dataloader_ajax');
+
 /**
  * Miscellaneous Filters
  */
 
 add_filter( 'cron_schedules', 'go_weekly_schedule' );
-add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
+//add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 
 // mitigating compatibility issues with Jetpack plugin by Automatic
 // (https://wordpress.org/plugins/jetpack/).

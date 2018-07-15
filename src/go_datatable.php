@@ -3,7 +3,8 @@
 
 global $wpdb;
 global $go_db_version;
-$go_db_version = '4.08';
+$go_db_version = '4.16';
+
 
 function go_update_db_check() {
     global $go_db_version;
@@ -39,14 +40,15 @@ function go_table_tasks() {
 			gold INT,
 			health INT,
 			c4 INT,
+			badges VARCHAR (4096),
+			groups VARCHAR (4096),
 			start_time datetime,
 			last_time datetime,
 			PRIMARY KEY  (id),
             KEY uid (uid),
             KEY post_id (post_id),
             KEY last_time (last_time),
-            KEY uid_post (uid, post_id)
-            
+            KEY uid_post (uid, post_id)        
 		);
 	";
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
@@ -106,6 +108,8 @@ function go_table_actions() {
 			gold INT,
 			health INT,
 			c4 INT,
+			badges VARCHAR (4096),
+			groups VARCHAR (4096),
 			xp_total INT,
 			gold_total INT,
 			health_total INT,
@@ -128,6 +132,7 @@ function go_table_actions() {
 
 function go_table_totals() {
     global $wpdb;
+    global $go_db_version;
     $table_name = "{$wpdb->prefix}go_loot";
     $sql = "
 		CREATE TABLE $table_name (
@@ -137,12 +142,23 @@ function go_table_totals() {
 			gold INT DEFAULT 0,
 			health INT DEFAULT 100,
 			c4 INT DEFAULT 0,
-			badge_count INT,
+			badges VARCHAR (4096),
+			groups VARCHAR (4096),
+			badge_count INT DEFAULT 0,
 			PRIMARY KEY  (id),
             KEY uid (uid),
             UNIQUE (uid)          
 		);
 	";
+
+    //an early beta had no default on the loot table for badge count
+    //this fixes that
+    $wpdb->query(
+        "UPDATE {$table_name} 
+                    SET 
+                        badge_count = IFNULL(badge_count, 0);");
+
+
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
@@ -246,7 +262,7 @@ function go_open_comments() {
     $wpdb->update( $wpdb->posts, array( 'comment_status' => 'open', 'ping_status' => 'open' ), array( 'post_type' => 'tasks' ) );
 }
 
-function go_install_data () {
+function go_install_data ($reset = false) {
     global $wpdb;
     $table_name_user_meta = "{$wpdb->prefix}usermeta";
     $table_name_go_totals = "{$wpdb->prefix}go_loot";
@@ -265,7 +281,8 @@ function go_install_data () {
         'options_go_store_store_link' => 'store',
         'options_go_store_store_receipts' => 0,
         'options_go_badges_toggle' => 1,
-        'options_go_badges_name' => 'Badges',
+        'options_go_badges_name_singular' => 'Badge',
+        'options_go_badges_name_plural' => 'Badges',
         'options_go_stats_toggle' => 1,
         'options_go_stats_name' => 'Stats',
         'options_go_stats_leaderboard_toggle' => 1,
@@ -330,10 +347,13 @@ function go_install_data () {
     foreach ( $options_array as $key => $value ) {
         add_option( $key, $value );
     }
+    if($reset){
+        update_option( $key, $value );
+    }
 
 
     //For Repeater Fields Sections
-    $isset = get_option('options_go_sections');
+    $isset = get_option('options_go_sections'); //if there are no sections at all
     if ($isset == false){
         add_option('options_go_sections', 7);
         add_option('options_go_sections_0_section', 'Period 1');
@@ -347,7 +367,7 @@ function go_install_data () {
     }
 
     //For Levels
-    $isset = get_option('options_go_loot_xp_levels_level');
+    $isset = get_option('options_go_loot_xp_levels_level'); //if there are no level at all
     if ($isset == false){
         add_option('options_go_loot_xp_levels_level', 15);
         add_option('options_go_loot_xp_levels_level_0_xp', 0);

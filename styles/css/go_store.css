@@ -1,3 +1,6 @@
+.featherlight.store .featherlight-content {
+    min-width: 70%;
+}
 /*
 store categories styles
  */
@@ -14,7 +17,6 @@ flex-wrap: wrap;
     margin: 10px;
     background-color: #f8f8f8;
     }
-
 
 /*
 store lightbox styles

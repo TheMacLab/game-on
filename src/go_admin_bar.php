@@ -478,16 +478,11 @@ function go_admin_bar() {
 				)
 			);
 
-			// displays Store Categories page link
-            $wp_admin_bar->add_node(
-                array(
-                    'id' => 'go_nav_badges',
-                    'title' => get_option('options_go_badges_name'),
-                    'href' => esc_url( get_admin_url() ).'edit-tags.php?taxonomy=go_badges',
-                    'parent' => 'go_site_name_menu',
-                    'meta' => array( 'class' => 'go_site_name_menu_item' )
-                )
-            );
+			// displays Badges
+            $badges_toggle = get_option('options_go_badges_toggle');
+            if($badges_toggle) {
+                $wp_admin_bar->add_node(array('id' => 'go_nav_badges', 'title' => get_option('options_go_badges_name_plural'), 'href' => esc_url(get_admin_url()) . 'edit-tags.php?taxonomy=go_badges', 'parent' => 'go_site_name_menu', 'meta' => array('class' => 'go_site_name_menu_item')));
+            }
 
             // displays Store Categories page link
             $wp_admin_bar->add_node(

@@ -24,10 +24,7 @@ jQuery( document ).ready( function() {
         task_stage_check_input( this );
     });
 
-
-
-
-}); 
+});
 
 //For the Timer (v4)
 function getTimeRemaining(endtime) {

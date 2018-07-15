@@ -222,9 +222,14 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
             $user_terms = array();
             for ($i = 0; $i < $num_terms; $i++) {
 
-                $user_period = "go_section_and_seat_" . $i . "_user-section";
-                $user_period = get_user_meta($user_id, $user_period, true);
-                $user_terms[] = $user_period;
+                //$user_period = "go_section_and_seat_" . $i . "_user-section";
+                //$user_period = get_user_meta($user_id, $user_period, true);
+                //$user_terms[] = $user_period;
+
+                global $wpdb;
+                $go_loot_table_name = "{$wpdb->prefix}go_loot";
+                $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+                $user_terms = unserialize($badges_array);
             }
 
             //if the current user is in a class period then check if it is the right one
@@ -292,13 +297,15 @@ function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
             $term_diff = array_diff($terms_needed, $intersection);
             if (!empty($term_diff)) {
                 if (!$check_only) {
-                    echo "<li class='go_error_red'>You are in one of the following classes:</li>";
+                    echo "<li class='go_error_red'>You must be in one of the following classes:</li>";
                     echo "<ul class='go_term_list go_error_red'>";
                     foreach ($term_diff as $term_id) {
                         //$term_object = get_term($term_id);
                         //$term_name = $term_object->name;
                         if (!empty($term_id)) {
-                            echo "<li>$term_id</li>";
+                            $term = get_term($term_id);
+                            $term_name = $term->name;
+                            echo "<li>$term_name</li>";
                         }
                     }
                     echo "</ul>";
@@ -412,9 +419,18 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
         $user_terms = array();
         for ($i = 0; $i < $num_terms; $i++) {
 
-            $user_period = "go_section_and_seat_" . $i . "_user-section";
-            $user_period = get_user_meta($user_id, $user_period, true);
-            $user_terms[] = $user_period;
+            //$user_period = "go_section_and_seat_" . $i . "_user-section";
+            //$user_period = get_user_meta($user_id, $user_period, true);
+            //$user_terms[] = $user_period;
+
+            global $wpdb;
+            $go_loot_table_name = "{$wpdb->prefix}go_loot";
+            $badges_array = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+            $user_terms = unserialize($badges_array);
+
+
+
+
         }
 
         //if the current user is in a class period then check if it is the right one

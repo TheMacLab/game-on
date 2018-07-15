@@ -78,21 +78,6 @@ function go_buy_item() {
         else{
             $xp = $qty * ($store_abs_cost_xp);
         }
-        /*
-        $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
-
-        $store_mod_val = $store_abs_cost_xp;
-        if ($xp_mod_toggle) {
-            $store_mod_val = ceil($store_abs_cost_xp * $health_mod);
-        }
-
-        if ($store_toggle_xp == false){
-            $xp = $qty * ($store_mod_val) * -1;
-        }
-        else{
-            $xp = $qty * ($store_mod_val);
-        }
-        */
     }
 
     $store_abs_cost_gold = (isset($custom_fields['go_loot_loot_gold'][0]) ?  $custom_fields['go_loot_loot_gold'][0] : null);
@@ -104,21 +89,6 @@ function go_buy_item() {
         else{
             $gold = $qty * ($store_abs_cost_gold);
         }
-
-        /*
-        $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
-        $store_mod_val = $store_abs_cost_gold;
-        if ($gold_mod_toggle) {
-            $store_mod_val = ceil($store_abs_cost_gold * $health_mod);
-        }
-        $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
-        if ($store_toggle_gold == false){
-            $gold = $qty * ($store_mod_val) * -1;
-        }
-        else{
-            $gold = $qty * ($store_mod_val);
-        }
-        */
     }
 
     $store_abs_cost_health = (isset($custom_fields['go_loot_loot_health'][0]) ?  $custom_fields['go_loot_loot_health'][0] : null);
@@ -129,20 +99,8 @@ function go_buy_item() {
         }
         else{
             $health = $qty * ($store_abs_cost_health);
-        }        /*
-        $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
-        $store_mod_val = $store_abs_cost_health;
-        if ($health_mod_toggle) {
-            $store_mod_val = ceil($store_abs_cost_health * $health_mod);
         }
-        $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
-        if ($store_toggle_health == false){
-            $health = $qty * ($store_mod_val) * -1;
-        }
-        else{
-            $health = $qty * ($store_mod_val);
-        }
-        */
+
     }
 
     $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ?  $custom_fields['go_loot_loot_c4'][0] : null);
@@ -154,27 +112,37 @@ function go_buy_item() {
         else{
             $c4 = $qty * ($store_abs_cost_c4);
         }
-        /*
-        $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
-        $store_mod_val = $store_abs_cost_c4;
-        if ($c4_mod_toggle) {
-            $store_mod_val = ceil($store_abs_cost_c4 * $health_mod);
-        }
+    }
+
+    if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
         $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
         if ($store_toggle_c4 == false){
-            $c4 = $qty * ($store_mod_val) * -1;
+            $c4 = $qty * ($store_abs_cost_c4) * -1;
         }
         else{
-            $c4 = $qty * ($store_mod_val);
+            $c4 = $qty * ($store_abs_cost_c4);
         }
-        */
     }
+
     ob_start();
-    go_update_actions( $user_id, 'store',  $post_id, $qty, null, null, 'purchase', null, null, null, null,  $xp, $gold, $health, $c4, $badges, true);
 
-    //go_update_totals_table($user_id, $xp, $gold, $health, $c4, null, true);
+    //BADGES
+    $badge_ids = (isset($custom_fields['go_purch_reward_badges'][0]) ?  $custom_fields['go_purch_reward_badges'][0] : null);
+    if (!empty($badge_ids)) {
+        $new_badges = go_add_badges ($badge_ids, $user_id, true);
+        //$badge_count = count($new_badges);
+        $badge_ids = serialize($new_badges);
+    }
+    //GROUPS
+    $group_ids = (isset($custom_fields['go_purch_reward_groups'][0]) ?  $custom_fields['go_purch_reward_groups'][0] : null);
+    if (!empty($group_ids)) {
+        $new_groups = go_add_groups ($group_ids, $user_id, true);
+        $group_ids = serialize($new_groups);
 
-    //echo "<h2>Success</h2><br>Item: ". $the_title . "<br>Quantity: " . $qty  ;
+    }
+
+
+    go_update_actions( $user_id, 'store',  $post_id, $qty, null, null, 'purchase', null, null, null, null,  $xp, $gold, $health, $c4, $badge_ids, $group_ids, true);
 
     echo "<script> new Noty({
     type: 'info',

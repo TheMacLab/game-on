@@ -1,7 +1,63 @@
 .featherlight.stats .featherlight-content {
 	width: 90%;
 	height: 90%;
+	margin-bottom: 5%;
+	margin-top: 5%;
 }
+
+/*
+TOOLTIP
+ */
+/* Tooltip container */
+.tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: #555;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+
+	/* Position the tooltip text */
+	position: absolute;
+	z-index: 1;
+	bottom: 125%;
+	left: 50%;
+	margin-left: -60px;
+
+	/* Fade in tooltip */
+	opacity: 0;
+	transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+	opacity: 1;
+}
+
+/*
+END TOOLTIP
+ */
+
 
 #go_stats_page_black_bg {
 	display: block;
@@ -103,7 +159,7 @@
 /** Header Styles **/
 
 
-
+/**Header**/
 #go_stats_header {
 	position: relative;
 	overflow: hidden;
@@ -113,18 +169,38 @@
 	display: flex;
 	flex-wrap: wrap;
 }
+.stats_progress_bar{
+	height: 100%;
+	position: absolute;
+	top:0;
+	left: 0;
+}
 
-#go_stats_id_card, #go_stats_bars, #go_stats_user_loot {
+.go_stats_user_loot, .go_stats_bars {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+.go_stats_user_loot_container{
+
+}
+.health_bar_percentage_str, .points_needed_to_level_up {
+	color: white;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.go_stats_id_card, .go_stats_bars, .go_stats_user_loot {
 	font-size: 16px;
 	line-height: 18px;
 	min-width: 250px;
 	flex-grow: 1;
 	margin: 0 15px 15px 15px;
 }
-#go_stats_id_card {
+.go_stats_id_card {
 	display: flex;
 }
-#go_stats_gravatar {
+.go_stats_gravatar {
 	width: 150px;
 	height: 150px;
 	border: 2px solid #BBB;
@@ -132,25 +208,22 @@
 	margin: 0px 10px 0px 20px;
 }
 
-#go_stats_header .progress-bar-border{
+#go_stats_header .progress-bar-border,
+#go_stats_header_lite .progress-bar-border{
 	height: 30px;
 	width: 100%;
 	max-width: 300px;
 	border-color: black;
 	background-color: black;
+	border: solid 1px;
+	position: relative;
 }
-
-
-
-
 
 .go_stats_reward_name {
 	display: inline-block;	
 }
 
-
-
-#go_stats_user_progress {
+.go_stats_user_progress {
 	width: 25%;
 	height: 25px;
 	border: 2px solid #AAA;
@@ -158,14 +231,14 @@
 	margin-right: 40px;
 }
 
-#go_stats_progress_text_wrap {
+.go_stats_progress_text_wrap {
 	float: left;
 	position: relative;
 	left: 50%;
 	height: 25px;
 }
 
-#go_stats_progress_text {
+.go_stats_progress_text {
 	position: relative;
 	height: 100%;
 	font-size: 18px;
@@ -176,14 +249,36 @@
 	word-break: break-all;
 }
 
-#go_stats_progress_fill {
+.go_stats_progress_fill {
 	height: 100%;
 	position: absolute;
 	z-index: 0;
 }
 
-#go_stats_user_rank {
+#go_stats_header_lite {
+	position: relative;
+	overflow: hidden;
+	font-family: verdana;
+	border-bottom: 2px solid #BBB;
+	display: flex;
+	flex-wrap: wrap;
+	background-color: lightgray;
+	padding: 10px;
+}
 
+#go_stats_header_lite{
+	.go_stats_gravatar, .go_stats_gravatar img{
+	 height: 100px;
+	 width: 100px;
+ }
+	.progress-bar-border{
+		height: 20px;
+	}
+
+}
+
+.go_stats_rank h3{
+	font-size: 1em;
 }
 
 #go_stats_user_focuses {
@@ -448,15 +543,27 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 }
 
 /** Badge Styles **/
-
+#go_badges,
+#go_groups{
+	display: flex;
+	flex-wrap: wrap;
+}
 .go_badge_wrap {
 	display: inline-block;
 	float: left;
 	margin-right: 25px;
-	height: 120px; 
+	height: 150px; 
 }
 
-.go_badge_container {
+.go_group_wrap {
+	display: inline-block;
+	float: left;
+	margin-right: 25px;
+	width: 100%;
+}
+
+.go_badge_container,
+.go_group_container{
 	float: left;
 }
 
@@ -465,52 +572,54 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 	float: left;
 }
 
+.go_badge_needed,
+.go_group_needed {
+	opacity: 0.3;
+	filter: alpha(opacity=30); /* msie */
+	background-color: white;
+}
+.badges_row ,
+.groups_row {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#go_badges_list .parent_cat,
+#go_groups_list .parent_cat{
+	border: solid 1px;
+	padding: 15px;
+	margin: 15px;
+}
+
 /** Leaderboard Styles **/
-
-#go_stats_leaderboard {
-	height: 100%;
-	position: relative;
-	overflow: hidden;
-	white-space: nowrap;
+#go_leaderboard_flex{
+	display: flex;
 }
 
-#go_stats_leaderboard_filters {
-	position: relative;
-	display: inline-block;
-	float: right;
-	height: 100%;
-	overflow-y: auto;
+.go_leaderboard_layer {
+	padding: 10px;
+	flex-grow: 1;
+}
+.go_user_links{
+	display: flex;
+}
+.go_user_link {
+	padding: 5px;
+}
+ .go_user_link a, .go_user_link .dashicons{
+	text-decoration: none;
 }
 
-#go_stats_leaderboard_classes {
-	margin-bottom: 10px;
+#go_leaderboard_wrapper thead,
+#go_leaderboard_wrapper .fg-toolbar{
+	display: none;
 }
 
-#go_stats_leaderboard_filters_head {
-	font-weight: bold;
-	margin-top: 5px;
+.go_is_user td {
+	background-color: #fdb7b7 !important;
 }
 
-.go_stats_leaderboard_class_wrap span,
-.go_stats_leaderboard_class_choice,
-.go_stats_leaderboard_focus_wrap span,
-.go_stats_leaderboard_focus_choice {
-	vertical-align: middle;
-}
-
-.go_stats_leaderboard_class_choice,
-.go_stats_leaderboard_focus_choice {
-	margin-right: 5px;
-}
-
-#go_stats_leaderboard_focuses {
-	margin-bottom: 10px;
-}
-
-.go_stats_leaderboard_list {
-	display: inline-block;
-	width: 23%;
-}
+/**This stuff below probably isn't needed*/
 
 .go_stats_item_wrapper {
 	float: left;

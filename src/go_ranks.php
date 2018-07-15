@@ -16,15 +16,16 @@
  *					   notification will be echoed. If the output parameter is false, the rank's
  *					   notification will be returned. Otherwise, null will be returned.
  */
+/*
 function go_update_ranks ( $user_id = null, $total_points = null, $output = false ) {
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
 
-	/**
-	 * Passed to go_set_rank() to determine whether to add or remove badges. The default assumes
-	 * that the user is leveling up. This gets modified below, when the user is down-leveling.
-	 */
+
+	 // Passed to go_set_rank() to determine whether to add or remove badges. The default assumes
+	 //that the user is leveling up. This gets modified below, when the user is down-leveling.
+
 	$is_level_up = true;
 	$ranks = get_option( 'go_ranks' );
 	$name_array = $ranks['name'];
@@ -53,10 +54,10 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 	$next_rank = $user_rank['next_rank'];
 	$next_rank_points = $user_rank['next_rank_points'];
 
-	/*
-	 * Here we search for the index of the current rank by point threshold,
-	 * which should be unique (it's not guaranteed to be unique).
-	 */
+
+	 Here we search for the index of the current rank by point threshold,
+	 // which should be unique (it's not guaranteed to be unique).
+
 	$current_rank_index = array_search( $current_rank_points, $points_array );
 
 	// the current rank's badge id, used when the user is at the minimum rank already
@@ -65,20 +66,20 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 	$min_rank_points = (int) $points_array[ 0 ];
 	$is_min_rank = go_user_at_min_rank( $user_id, $min_rank_points, $current_rank_points );
 
-	/*
-	 * Here we are referring to last element manually,
-	 * since we don't want to modify
-	 * the arrays with the array_pop function.
-	 */
+
+	 // Here we are referring to last element manually,
+	 // since we don't want to modify
+	 //the arrays with the array_pop function.
+
 	$max_rank_index = count( $name_array ) - 1;
 	$max_rank_points = (int) $points_array[ $max_rank_index ];
 	$is_max_rank = go_user_at_max_rank( $user_id, $max_rank_points, $current_rank_points );
 	
-	/*
-	 * If the user's current points are greater than or equal
-	 * to the current max rank's points, we'll handle things
-	 * slightly differently than normal.
-	 */
+
+	// If the user's current points are greater than or equal
+	 // to the current max rank's points, we'll handle things
+	 // slightly differently than normal.
+	 //
 	if ( $current_points >= $max_rank_points ) {
 		if ( ! $is_max_rank ) {
 			
@@ -91,12 +92,12 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 		// case the user's current points will always be greater than the next rank's points
 		if ( $current_points > $next_rank_points && ! $is_max_rank ) {
 
-			/*
-			 * We can safely start the loop at the index immediately after the
-			 * current rank's index in the $points_array array. This is because
-			 * we already know that the current rank is not the max rank, so there
-			 * will be at least one iteration of the loop.
-			 */
+
+			 // We can safely start the loop at the index immediately after the
+			 // current rank's index in the $points_array array. This is because
+			 // we already know that the current rank is not the max rank, so there
+			 // will be at least one iteration of the loop.
+
 			for ( $i = $current_rank_index + 1; $i < count( $points_array ); $i++ ) {
 				
 				// this reflects the points required to reach the rank at the current index
@@ -168,7 +169,7 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
 		return null;
 	}
 }
-
+*/
 /**
  * Update the user's rank.
  *
@@ -192,6 +193,7 @@ function go_update_ranks ( $user_id = null, $total_points = null, $output = fals
  * @return string|null Returns the notification of the user's new level on success.
  *					   Returns NULL on failure and may output errors to the PHP error log.
  */
+/*
 function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $old_rank_index = -1 ) {
 	global $go_notify_counter;
 
@@ -274,7 +276,7 @@ function go_set_rank( $user_id, $new_rank_index, $ranks, $is_rank_up = true, $ol
 
 	return $notification;
 }
-
+*/
 /**
  * Returns an array containing data for the user's current and next rank.
  *

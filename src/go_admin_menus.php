@@ -87,18 +87,19 @@ function go_add_toplevel_menu() {
         4 // menu position
     );
 
-    /* add a new menu item */
-    $badges_name = get_option('options_go_badges_name');
-    add_menu_page(
-        $badges_name, // page title
-        $badges_name, // menu title
-        'edit_posts', // capability
-        'badges' // menu slug
-    //'', // callback function
-    //'', // icon
-    // 4 // menu position
-    );
-
+    $badges_toggle = get_option('options_go_badges_toggle');
+    if($badges_toggle) {
+        /* add a new menu item */
+        $badges_name = get_option('options_go_badges_name_plural');
+        add_menu_page($badges_name, // page title
+            $badges_name, // menu title
+            'edit_posts', // capability
+            'badges' // menu slug
+        //'', // callback function
+        //'', // icon
+        // 4 // menu position
+        );
+    }
     /* add a new menu item */
     add_menu_page(
         'User Groups', // page title
@@ -176,7 +177,7 @@ function go_add_mapmenu_as_submenu() {
 add_action( 'admin_menu', 'go_add_mapmenu_as_submenu', 9 );
 
 function go_add_badges_sub_menus() {
-    $badges_name = get_option('options_go_badges_name');
+    $badges_name = get_option('options_go_badges_name_singular');
 
     // add the sub menu under content for posts */
     add_submenu_page(
@@ -188,6 +189,8 @@ function go_add_badges_sub_menus() {
     );
 }
 add_action( 'admin_menu', 'go_add_badges_sub_menus', 9 );
+
+
 
 /* function go_add_badges_sub_menus2() {
 
@@ -218,6 +221,19 @@ function go_add_groups_as_submenu() {
 
 }
 add_action( 'admin_menu', 'go_add_groups_as_submenu', 9 );
+
+function go_add_sections_sub_menus() {
+
+    // add the sub menu under content for posts */
+    add_submenu_page(
+        'groups', // parent slug
+        'Manage Sections', // page_title,
+        'Manage Sections', // menu_title,
+        'edit_posts', // capability,
+        'edit-tags.php?taxonomy=user_go_sections' // menu_slug,
+    );
+}
+add_action( 'admin_menu', 'go_add_sections_sub_menus', 9 );
 
 function go_add_chains_as_submenu() {
 
@@ -438,6 +454,17 @@ function go_menu_hierarchy_correction( $parent_file ) {
         else if( $screenbase == 'edit-tags' ) {
             /* set the parent file slug to the custom content page */
             $parent_file = 'groups';
+        }
+    }
+    else if ($taxonomy == 'user_go_sections'){
+        if( $screenbase == 'term' ) {
+            /* set the parent file slug to the custom content page */
+            $parent_file = 'sections';
+
+        }
+        else if( $screenbase == 'edit-tags' ) {
+            /* set the parent file slug to the custom content page */
+            $parent_file = 'sections';
         }
     }
 

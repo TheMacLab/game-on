@@ -107,15 +107,15 @@ function go_register_task_tax_and_cpt() {
 
 	// Register Badges
 	$labels_badge = array(
-		'name'                       => _x( get_option('options_go_badges_name'), 'badges' ),
-		'singular_name'              => _x( get_option('options_go_badges_name'), 'badges' ),
-		'menu_name'                  => _x( get_option('options_go_badges_name'), 'badges' ),
-		'all_items'                  => 'All ' . _x( get_option('options_go_badges_name'), 'badges' ),
-		'parent_item'                => 'Parent ' . _x( get_option('options_go_badges_name'), 'badges' ),
+		'name'                       => _x( get_option('options_go_badges_name_plural'), 'badges' ),
+		'singular_name'              => _x( get_option('options_go_badges_name_singular'), 'badges' ),
+		'menu_name'                  => _x( get_option('options_go_badges_name_singular'), 'badges' ),
+		'all_items'                  => 'All ' . _x( get_option('options_go_badges_name_plural'), 'badges' ),
+		'parent_item'                => 'Parent ' . _x( get_option('options_go_badges_name_singular'), 'badges' ),
 		'parent_item_colon'          => 'Parent Item:',
-		'new_item_name'              => 'New ' . _x( get_option('options_go_badges_name'), 'badges' ) . ' Name',
-		'add_new_item'               => 'Add New ' . _x( get_option('options_go_badges_name'), 'badges' ),
-		'edit_item'                  => 'Edit ' . _x( get_option('options_go_badges_name'), 'badges' ),
+		'new_item_name'              => 'New ' . _x( get_option('options_go_badges_name_singular'), 'badges' ) . ' Name',
+		'add_new_item'               => 'Add New ' . _x( get_option('options_go_badges_name_singular'), 'badges' ),
+		'edit_item'                  => 'Edit ' . _x( get_option('options_go_badges_name_singular'), 'badges' ),
 		'update_item'                => 'Update Item',
 		'view_item'                  => 'View Item',
 		'separate_items_with_commas' => 'Separate items with commas',
@@ -172,6 +172,38 @@ function go_register_task_tax_and_cpt() {
         'query_var' => true
     );
     register_taxonomy( 'user_go_groups', array( '' ), $focus_args );
+
+    // Register User Groups
+    $focus_labels = array(
+        'name' => _x( 'Sections', 'user_go_sections' ),
+        'singular_name' => _x( 'Section', 'user_go_sections' ),
+        'search_items' => _x( 'Search Sections', 'user_go_sections' ),
+        'popular_items' => _x( 'Popular User Section', 'user_go_sections' ),
+        'all_items' => _x( 'All Sections', 'user_go_sections' ),
+        'parent_item' => _x('Section Parent', 'user_go_sections' ),
+        'parent_item_colon' => _x( 'Section Parent: ', 'user_go_sections' ),
+        'edit_item' => _x( 'Edit Sections', 'user_go_sections' ),
+        'update_item' => _x( 'Update Sections', 'user_go_sections' ),
+        'add_new_item' => _x( 'Add New Section', 'user_go_sections' ),
+        'new_item_name' => _x( 'New Section', 'user_go_sections' ),
+        'separate_items_with_commas' => _x( 'Separate Section with commas', 'user_go_sections' ),
+        'add_or_remove_items' => _x( 'Add or remove Section ', 'user_go_sections' ),
+        'choose_from_most_used' => _x( 'Choose from the most used Sections', 'user_go_sections' ),
+        'menu_name' => _x( 'Sections', 'user_go_sections' ),
+    );
+    $focus_args = array(
+        'labels' => $focus_labels,
+        'public' => true,
+        'show_in_nav_menus' => false,
+        'show_in_menu' => true,
+        'show_ui' => true,
+        'show_tagcloud' => true,
+        'show_admin_column' => false,
+        'hierarchical' => false,
+        'rewrite' => true,
+        'query_var' => true
+    );
+    register_taxonomy( 'user_go_sections', array( '' ), $focus_args );
 
 	/*
 	 * Task Custom Post Type

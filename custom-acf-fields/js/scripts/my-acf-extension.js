@@ -396,7 +396,7 @@ jQuery(document).ready(function($){
         jQuery('.acf-th[data-name="c4"]').hide();
     }
 
-    if (go_badges_toggle == 1){
+    if (go_badges_toggle == 0){
         jQuery(".go_badges").hide();
         jQuery('option[value="go_badge_lock"]').hide();
     }

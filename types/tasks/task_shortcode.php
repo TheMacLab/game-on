@@ -217,7 +217,7 @@ function go_task_shortcode($atts, $content = null ) {
 	 *
      */
     if ($status === -1){
-    	go_update_stage_table($user_id, $post_id, $custom_fields, -1, null, true, 'entry_reward', null);
+    	go_update_stage_table($user_id, $post_id, $custom_fields, -1, null, true, 'entry_reward', null, null, null);
     	$status = 0;
 	}
 
@@ -698,25 +698,26 @@ function go_display_rewards( $custom_fields, $user_id, $post_id, $task_name ) {
     while ( $stage_count > $i ) {
     	if ($xp_on) {
             $key = 'go_stages_' . $i . '_rewards_xp';
-            $xp = $custom_fields[$key][0];
+            //$xp = $custom_fields[$key][0];
+            $xp = (isset($custom_fields[$key][0]) ?  $custom_fields[$key][0] : null);
             $xp_loot = $xp + $xp_loot;
         }
 
         if($gold_on) {
             $key = 'go_stages_' . $i . '_rewards_gold';
-            $gold = $custom_fields[$key][0];
+            $gold = (isset($custom_fields[$key][0]) ?  $custom_fields[$key][0] : null);
             $gold_loot = $gold + $gold_loot;
         }
 
         if($health_on) {
             $key = 'go_stages_' . $i . '_rewards_health';
-            $health = $custom_fields[$key][0];
+            $health = (isset($custom_fields[$key][0]) ?  $custom_fields[$key][0] : null);
             $health_loot = $health + $health_loot;
         }
 
         if($c4_on) {
             $key = 'go_stages_' . $i . '_rewards_c4';
-            $c4 = $custom_fields[$key][0];
+            $c4 = (isset($custom_fields[$key][0]) ?  $custom_fields[$key][0] : null);
             $c4_loot = $c4 + $c4_loot;
         }
 
@@ -1009,7 +1010,7 @@ function go_task_change_stage() {
 
         //if this task is being started for the first time
         if ( $start_time == null ){
-            go_update_stage_table($user_id, $post_id, $custom_fields, null, null, 'timer', 'start_timer', 'timer');
+            go_update_stage_table($user_id, $post_id, $custom_fields, null, null, 'timer', 'start_timer', 'timer', null, null);
         }
 		$time_left = go_time_left ($custom_fields, $user_id, $post_id );
 		$time_left_ms = $time_left * 1000;
@@ -1058,7 +1059,7 @@ function go_task_change_stage() {
         	$result = go_lock_password_validate($result, $custom_fields, $status);
             if ($result == 'password' || $result == 'master password') {
                 //set unlock flag
-                go_update_actions( $user_id, 'task',  $post_id, null, null, $check_type, $result, null, null,  null, null, null, null, null, null, null, null );
+                go_update_actions( $user_id, 'task',  $post_id, null, null, $check_type, $result, null, null,  null, null, null, null, null, null, null, null, null );
 
                 echo json_encode(array('json_status' => 'refresh'));
                 die;
@@ -1068,8 +1069,17 @@ function go_task_change_stage() {
 
         //////////////////
 		/// UPDATE THE DATABASE for Continue or Complete stage
-        go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, true, $result, $check_type );
+		///
+        $badge_ids = null;
+        $group_ids = null;
+        if ($button_type == 'complete') {
+            $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
+            $group_ids = (isset($custom_fields['go_groups'][0]) ?  $custom_fields['go_groups'][0] : null);
+        }
+
+        go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, true, $result, $check_type, $badge_ids, $group_ids );
         $status = $status + 1;
+
         ////////////////////
         /// Write out the new information
         if ($button_type == 'continue') {
@@ -1096,10 +1106,14 @@ function go_task_change_stage() {
     	//remove entry loot
         $redirect_url = get_option('options_go_landing_page_on_login', '');
         $redirect_url = (site_url() . '/' . $redirect_url);
-        go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'abandon' );
+        go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'abandon', null, null, null );
     }
 	else if ($button_type == 'undo' || $button_type == 'undo_last') {
-        go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'undo' );
+        if ($button_type == 'undo_last') {
+            $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
+            $group_ids = (isset($custom_fields['go_groups'][0]) ?  $custom_fields['go_groups'][0] : null);
+        }
+        go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'undo', null, $badge_ids, $group_ids );
         go_checks_for_understanding ($custom_fields, $status -1 , $status - 1 , $user_id, $post_id, null, null, null);
     }
     else if ($button_type == 'show_bonus'){
@@ -1129,7 +1143,7 @@ function go_task_change_stage() {
             //////////////////
             /// UPDATE THE DATABASE for BONUS stages complete
             ///
-            go_update_stage_table ($user_id, $post_id, $custom_fields, null, $bonus_status, true, $result, $check_type );
+            go_update_stage_table ($user_id, $post_id, $custom_fields, null, $bonus_status, true, $result, $check_type, null, null );
             $bonus_status = $bonus_status + 1;
 			$repeat_max = $custom_fields['go_bonus_limit'][0];
             if ($bonus_status  < $repeat_max) {
@@ -1145,7 +1159,7 @@ function go_task_change_stage() {
             //////////////////
             /// UPDATE THE DATABASE for BONUS stages undo
             ///
-            go_update_stage_table ($user_id, $post_id, $custom_fields, null, $bonus_status, false, 'undo_bonus', $check_type);
+            go_update_stage_table ($user_id, $post_id, $custom_fields, null, $bonus_status, false, 'undo_bonus', $check_type, null, null);
 			go_checks_for_understanding($custom_fields, $bonus_status -1, null, $user_id, $post_id, true, $bonus_status - 1 , $repeat_max);
 		}
         else if ($button_type == 'abandon_bonus') {
@@ -1325,7 +1339,7 @@ function go_update_fail_count($user_id, $task_id, $fail_count, $status){
     );
 	if ($quiz_mod_exists == null) {
         //then update if needed
-        go_update_actions($user_id, 'quiz_mod', $task_id, $status + 1, null, $status, $fail_count, null, null, null, null, null, null, null, null, null, null);
+        go_update_actions($user_id, 'quiz_mod', $task_id, $status + 1, null, $status, $fail_count, null, null, null, null, null, null, null, null, null, null, null);
     }
 }
 /*

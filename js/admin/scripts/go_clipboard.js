@@ -1,17 +1,8 @@
 jQuery( document ).ready( function() {
 	jQuery( '#records_tabs' ).tabs();
-  	if ( jQuery( "#go_clipboard_table" ).length ) {
-    	jQuery( '#go_clipboard_table' ).dataTable({
-            stateSave: true,
-            "bPaginate": false,
-            colReorder: true,
-            "aaSorting": [
-                [ 2, "asc" ]
-            ],
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'excel', 'pdf', 'colvis'
-            ]
+  	if ( jQuery( "#go_clipboard_datatable" ).length ) {
+    	jQuery( '#go_clipboard_datatable' ).dataTable({
+
 		});
  	}
 
@@ -36,22 +27,24 @@ function go_clipboard_class_a_choice() {
 		},
 		success: function( res ) {
 			if ( -1 !== res ) {
-				jQuery( '#go_clipboard_table_body' ).html( '' );
-				var oTable = jQuery( '#go_clipboard_table' ).dataTable();
-				oTable.fnDestroy();
-				jQuery( '#go_clipboard_table_body' ).html( res );
-				jQuery( '#go_clipboard_table' ).dataTable( {
-                    stateSave: true,
-					"bPaginate": false,
-                    colReorder: true,
-					"aaSorting": [ 
-						[ 2, "asc" ]
-					],
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'excel', 'pdf', 'colvis'
-                    ]
-				});
+				//jQuery( '#go_clipboard_table_body' ).html( '' );
+				//var oTable = jQuery( '#go_clipboard_table' ).dataTable();
+				//oTable.fnDestroy();
+				jQuery( '#go_clipboard_table_body' ).append( res );
+                jQuery(document).ready(function() {
+
+                    if (jQuery("#go_clipboard").length) {
+
+                        //XP////////////////////////////
+                        go_sort_leaders("go_xp_leaders_datatable", 4);
+                        var table = jQuery('#go_clipboard').DataTable({
+                            responsive: true,
+                            "autoWidth": false,
+
+                        });
+                    }
+                });
+
 
 			}
 		}

@@ -98,6 +98,7 @@ function go_includes () {
     wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );
     wp_enqueue_style( 'go_noty_css' );
 
+
 }
 
 /*
