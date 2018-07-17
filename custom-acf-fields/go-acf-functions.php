@@ -11,7 +11,7 @@
  * @param $field
  * @return mixed
  * Loads the class periods/sections from the options page in various ACF fields
- */
+
 
 function acf_load_section_choices( $field ) {
 
@@ -45,7 +45,7 @@ function acf_load_section_choices( $field ) {
 add_filter('acf/load_field/name=lock_sections', 'acf_load_section_choices');
 add_filter('acf/load_field/name=user-section', 'acf_load_section_choices');
 add_filter('acf/load_field/name=sched_sections', 'acf_load_section_choices');
-
+ */
 
 
 /**
@@ -59,7 +59,7 @@ function acf_load_seat_choices( $field ) {
     // reset choices
     //$field['choices'] = array();
     $field['choices'][ null ] = "Select";
-    $name = get_option('options_go_seat_name');
+    $name = get_option('options_go_seats_name');
     $number = get_option('options_go_seat_number');
     $field['placeholder'] = 'Select';
 

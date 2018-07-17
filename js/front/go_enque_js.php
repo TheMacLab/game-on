@@ -71,12 +71,12 @@ function go_scripts () {
 					//'go_stats_penalties_list'      => wp_create_nonce( 'go_stats_penalties_list_' ),
 					'go_stats_badges_list'         => wp_create_nonce( 'go_stats_badges_list_' ),
                     'go_stats_groups_list'         => wp_create_nonce( 'go_stats_groups_list_' ),
-					'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' ),
+					//'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' ),
 					'go_stats_leaderboard'         => wp_create_nonce( 'go_stats_leaderboard_' ),
                     'go_stats_lite'                => wp_create_nonce( 'go_stats_lite' ),
 					'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
                     'go_update_admin_view'         => wp_create_nonce( 'go_update_admin_view' ),
-                    'go_lb_ajax_referall'          => wp_create_nonce( 'go_lb_ajax_referall' )
+                    'go_the_lb_ajax'                => wp_create_nonce( 'go_the_lb_ajax' )
 
 				)
 			)

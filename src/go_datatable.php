@@ -3,7 +3,7 @@
 
 global $wpdb;
 global $go_db_version;
-$go_db_version = '4.16';
+$go_db_version = '4.17';
 
 
 function go_update_db_check() {
@@ -23,6 +23,7 @@ function go_update_db() {
     go_table_tasks();
     //go_table_store();
     go_table_actions();
+    go_install_data();
     add_option( 'go_db_version', $go_db_version );
 }
 

@@ -22,7 +22,7 @@ function go_admin_includes () {
     wp_enqueue_script( 'go_pdf_make' );
 
     wp_register_script( 'go_pdf_make_fonts', 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js','v1.7.13', true);
-    wp_enqueue_script( 'go_pdf_make_fonts' );
+    //wp_enqueue_script( 'go_pdf_make_fonts' );
 
     //wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
     wp_register_style( 'go_datatables_css', 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.css' );
@@ -40,6 +40,12 @@ function go_admin_includes () {
     //wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
     wp_register_style( 'go_featherlight_css', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css', null,'v1.7.13' );
     wp_enqueue_style( 'go_featherlight_css' );
+
+    /**
+     * Tabs
+     */
+
+    wp_enqueue_script( 'jquery-ui-tabs' );
 
 
 }
@@ -98,48 +104,13 @@ function go_includes () {
     wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );
     wp_enqueue_style( 'go_noty_css' );
 
+    /**
+     * Tabs
+     */
+
+    wp_enqueue_script( 'jquery-ui-tabs' );
+
 
 }
-
-/*
-
-// 1. customize ACF path
-add_filter('acf/settings/path', 'my_acf_settings_path');
- 
-function my_acf_settings_path( $path ) {
- 
-    // update path
-    $path = '/acf/';
-    
-    // return
-    return $path;
-    
-}
- 
-
-// 2. customize ACF dir
-add_filter('acf/settings/dir', 'my_acf_settings_dir');
- 
-function my_acf_settings_dir( $dir ) {
- 
-    // update path
-    $dir =  '/acf/';
-    
-    // return
-    return $dir;
-    
-}
- */
-
-// 3. Hide ACF field group menu item
-//add_filter('acf/settings/show_admin', '__return_false');
-
-
-// 4. Include ACF
-
-
-
-
-
 
 ?>

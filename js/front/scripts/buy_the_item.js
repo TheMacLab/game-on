@@ -17,11 +17,10 @@ function go_lb_opener( id ) {
     //jQuery( 'html' ).addClass( 'go_no_scroll' );
     if ( ! jQuery.trim( jQuery( '#lb-content' ).html() ).length ) {
         var get_id = id;
-        var nonce = GO_EVERY_PAGE_DATA.nonces.go_lb_ajax_referall;
+        var nonce = GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax;
         var gotoSend = {
-            action:"go_lb_ajax",
-            //nonce: "<?php echo esc_js( wp_create_nonce( 'go_lb_ajax_referall' ) ); ?>",
-            nonce: nonce,
+            action:"go_the_lb_ajax",
+            _ajax_nonce: nonce,
             the_item_id: get_id,
         };
         var url_action = "<?php echo admin_url( '/admin-ajax.php' ); ?>";

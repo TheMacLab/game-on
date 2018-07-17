@@ -12,10 +12,7 @@ include ( 'buy-ajax.php' ); // Ajax run when buying something
 date_default_timezone_set('America/Los_Angeles');
 // Main Lightbox Ajax Function
 function go_the_lb_ajax() {
-    check_ajax_referer( 'go_lb_ajax_referall', 'nonce' );
-	global $wpdb;
-	//$badge_name = get_option( 'options_go_badges_name_singular' );
-	//$table_name_go = "{$wpdb->prefix}go_store";
+    check_ajax_referer( 'go_the_lb_ajax');
 	$post_id = (int) $_POST['the_item_id'];
 
 	//$the_post = get_post( $post_id );

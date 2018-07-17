@@ -124,7 +124,6 @@ function go_flush_rewrites() {
 // actions
 //add_action( 'admin_menu', 'add_game_on_options' );
 //add_action( 'admin_menu', 'go_clipboard' );
-//add_action( 'admin_menu', 'go_pod_submenu' );
 add_action( 'admin_bar_init', 'go_messages_bar' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
 
@@ -138,6 +137,8 @@ add_action( 'admin_head', 'go_stats_overlay' );
 //add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
 add_action( 'admin_enqueue_scripts', 'go_admin_scripts' );
+
+
 add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
 add_action( 'admin_enqueue_scripts', 'go_admin_styles' );
 add_action( 'admin_enqueue_scripts', 'go_acf_scripts' );
@@ -179,6 +180,7 @@ add_action( 'wp_ajax_go_clone_post', 'go_clone_post' );
 add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' );
 add_action( 'wp_ajax_go_clipboard_intable_messages', 'go_clipboard_intable_messages' );
 add_action( 'wp_ajax_go_clipboard_intable_activity', 'go_clipboard_intable_activity' );
+add_action( 'wp_ajax_go_clipboard_save_filters', 'go_clipboard_save_filters' );
 add_action( 'wp_ajax_go_user_option_add', 'go_user_option_add' );
 //add_action( 'wp_ajax_go_test_point_update', 'go_test_point_update' );
 add_action( 'wp_ajax_go_unlock_stage', 'go_unlock_stage' );
@@ -203,7 +205,7 @@ add_action( 'wp_ajax_go_stats_single_task_activity_list', 'go_stats_single_task_
 //add_action( 'wp_ajax_go_stats_penalties_list', 'go_stats_penalties_list' );
 add_action( 'wp_ajax_go_stats_badges_list', 'go_stats_badges_list' );
 add_action( 'wp_ajax_go_stats_groups_list', 'go_stats_groups_list' );
-add_action( 'wp_ajax_go_stats_leaderboard_choices', 'go_stats_leaderboard_choices' );
+//add_action( 'wp_ajax_go_stats_leaderboard_choices', 'go_stats_leaderboard_choices' );
 add_action( 'wp_ajax_go_stats_leaderboard', 'go_stats_leaderboard' );
 add_action( 'wp_ajax_go_stats_lite', 'go_stats_lite' );
 add_action( 'wp_ajax_go_presets_reset', 'go_presets_reset' );
@@ -223,8 +225,8 @@ add_action( 'wp_ajax_nopriv_go_buy_item', 'go_buy_item' );
 add_action( 'wp_ajax_go_clipboard_add', 'go_clipboard_add' );
 add_action( 'wp_ajax_go_fix_messages', 'go_fix_messages' );
 add_action( 'wp_ajax_go_mark_read', 'go_mark_read' );
-add_action( 'wp_ajax_go_lb_ajax', 'go_the_lb_ajax' );
-add_action( 'wp_ajax_nopriv_go_lb_ajax', 'go_the_lb_ajax' );
+add_action( 'wp_ajax_go_the_lb_ajax', 'go_the_lb_ajax' );
+add_action( 'wp_ajax_nopriv_go_the_lb_ajax', 'go_the_lb_ajax' );
 add_action( 'wp_ajax_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_nopriv_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );

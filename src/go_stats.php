@@ -4,6 +4,306 @@ function go_stats_overlay() {
     echo '<div id="go_stats_page_black_bg" style="display:none !important;"></div><div id="go_stats_white_overlay" style="display:none;"></div>';
 }
 
+function go_admin_bar_stats_bak() {
+    //$user_id = 0;
+    if ( ! empty( $_POST['uid'] ) ) {
+        $user_id = (int) $_POST['uid'];
+        $current_user = get_userdata( $user_id );
+    } else {
+        $current_user = wp_get_current_user();
+        $user_id = $current_user->ID;
+    }
+    check_ajax_referer( 'go_admin_bar_stats_' );
+
+    ?>
+    <input type="hidden" id="go_stats_hidden_input" value="<?php echo $user_id; ?>"/>
+    <?php
+    $user_fullname = $current_user->first_name.' '.$current_user->last_name;
+    $user_login =  $current_user->user_login;
+    $user_display_name = $current_user->display_name;
+    //$user_website = $current_user->user_url;
+
+
+
+    $use_local_avatars = get_option('options_go_avatars_local');
+    $use_gravatar = get_option('options_go_avatars_gravatars');
+    if ($use_local_avatars){
+        $user_avatar_id = get_user_meta( $user_id, 'go_avatar', true );
+        $user_avatar = wp_get_attachment_image($user_avatar_id);
+    }
+    if (empty($user_avatar) && $use_gravatar) {
+        $user_avatar = get_avatar( $user_id, 150 );
+    }
+
+    //$user_focuses = go_display_user_focuses( $user_id );
+
+
+
+    $current_points = go_return_points( $user_id );
+
+
+    $go_option_ranks = get_option( 'go_ranks' );
+    $points_array = $go_option_ranks['points'];
+
+    $max_rank_index = count( $points_array ) - 1;
+    $max_rank_points = (int) $points_array[ $max_rank_index ];
+
+    $percentage_of_level = 1;
+
+    // user pnc
+    $rank = go_get_rank( $user_id );
+    $current_rank = $rank['current_rank'];
+    $current_rank_points = $rank['current_rank_points'];
+    $next_rank = $rank['next_rank'];
+    $next_rank_points = $rank['next_rank_points'];
+
+    if ( null !== $next_rank_points ) {
+        $rank_threshold_diff = ( $next_rank_points - $current_rank_points );
+    } else {
+        $rank_threshold_diff = 1;
+    }
+    $pts_to_rank_threshold = ( $current_points - $current_rank_points );
+
+    if ( $max_rank_points === $current_rank_points ) {
+        $prestige_name = get_option( 'go_prestige_name' );
+        $pts_to_rank_up_str = $prestige_name;
+    } else {
+        $pts_to_rank_up_str = "{$pts_to_rank_threshold} / {$rank_threshold_diff}";
+    }
+
+    $percentage_of_level = ( $pts_to_rank_threshold / $rank_threshold_diff ) * 100;
+    if ( $percentage_of_level <= 0 ) {
+        $percentage_of_level = 0;
+    } else if ( $percentage_of_level >= 100 ) {
+        $percentage_of_level = 100;
+    }
+
+
+
+    /////////////////////////
+    ///
+    $xp_toggle = get_option('options_go_loot_xp_toggle');
+    $gold_toggle = get_option('options_go_loot_gold_toggle');
+    $health_toggle = get_option( 'options_go_loot_health_toggle' );
+    $c4_toggle = get_option('options_go_loot_c4_toggle');
+
+    if ($xp_toggle) {
+        // the user's current amount of experience (points)
+        $go_current_xp = go_get_user_loot($user_id, 'xp');
+
+        $rank = go_get_rank($user_id);
+        $rank_num = $rank['rank_num'];
+        $current_rank = $rank['current_rank'];
+        $current_rank_points = $rank['current_rank_points'];
+        $next_rank = $rank['next_rank'];
+        $next_rank_points = $rank['next_rank_points'];
+
+        $go_option_ranks = get_option('options_go_loot_xp_levels_name_singular');
+        //$points_array = $go_option_ranks['points'];
+
+        /*
+         * Here we are referring to last element manually,
+         * since we don't want to modifiy
+         * the arrays with the array_pop function.
+         */
+        //$max_rank_index = count( $points_array ) - 1;
+        //$max_rank_points = (int) $points_array[ $max_rank_index ];
+
+        if ($next_rank_points != false) {
+            $rank_threshold_diff = $next_rank_points - $current_rank_points;
+            $pts_to_rank_threshold = $go_current_xp - $current_rank_points;
+            $pts_to_rank_up_str = "L{$rank_num}: {$pts_to_rank_threshold} / {$rank_threshold_diff}";
+            $percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
+            //$color = barColor( $go_current_health, 0 );
+            $color = "#39b54a";
+        } else {
+            $pts_to_rank_up_str = $current_rank;
+            $percentage = 100;
+            $color = "gold";
+        }
+        if ( $percentage <= 0 ) {
+            $percentage = 0;
+        } else if ( $percentage >= 100 ) {
+            $percentage = 100;
+        }
+        $progress_bar = '<div class="go_admin_bar_progress_bar_border progress-bar-border">'.'<div class="go_admin_bar_progress_bar stats_progress_bar" '.
+            'style="width: '.$percentage.'%; background-color: '.$color.' ;">'.
+            '</div>'.
+            '<div class="points_needed_to_level_up ">'.
+            $pts_to_rank_up_str.
+            '</div>'.
+            '</div>';
+    }
+    else {
+        $progress_bar = '';
+    }
+
+
+    if($health_toggle) {
+        // the user's current amount of bonus currency,
+        // also used for coloring the admin bar
+        $go_current_health = go_get_user_loot($user_id, 'health');
+        $health_percentage = intval($go_current_health / 2);
+        if ($health_percentage <= 0) {
+            $health_percentage = 0;
+        } else if ($health_percentage >= 100) {
+            $health_percentage = 100;
+        }
+        $health_bar = '<div class="go_admin_health_bar_border progress-bar-border">' . '<div class="go_admin_bar_health_bar stats_progress_bar" ' . 'style="width: ' . $health_percentage . '%; background-color: red ;">' . '</div>' . '<div class="health_bar_percentage_str">' . "Health Mod: " . $go_current_health . "%" . '</div>' . '</div>';
+
+    }
+    else{
+        $health_bar = '';
+    }
+
+    if ($gold_toggle) {
+        // the user's current amount of currency
+        $go_current_gold = go_get_user_loot($user_id, 'gold');
+        $gold_total = '<div  class="go_admin_bar_gold admin_bar_loot">' . go_display_shorthand_currency('gold', $go_current_gold)  . '</div>';
+    }
+    else{
+        $gold_total = '';
+    }
+
+    if ($c4_toggle) {
+        // the user's current amount of minutes
+        $go_current_c4 = go_get_user_loot( $user_id, 'c4' );
+        $c4_total =  '<div class="go_admin_bar_c4 admin_bar_loot">' . go_display_shorthand_currency('c4', $go_current_c4) . '</div>';
+    }
+    else{
+        $c4_total = '';
+    }
+    //////////////////
+
+
+
+    ?>
+    <div id='go_stats_lay'>
+        <div id='go_stats_header'>
+            <div class="go_stats_id_card">
+                <div class='go_stats_gravatar'><?php echo $user_avatar; ?></div>
+
+                <div class='go_stats_user_info'>
+                    <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br/>";
+                    go_user_links($user_id, true, true, false, true, true);
+                    ?>
+
+                </div>
+            </div>
+            <div class="go_stats_bars">
+                <?php
+                if ($xp_toggle) {
+                    echo '<div class="go_stats_rank"><h3>' . $go_option_ranks . ' ' . $rank_num . ": " . $current_rank . '</h3></div>';
+                }
+                echo $progress_bar;
+                //echo "<div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br/>{$current_minutes} {$minutes_name}";
+                echo $health_bar;
+                ?>
+            </div>
+            <div class='go_stats_user_loot'>
+
+                <?php
+
+                if ($xp_toggle) {
+                    echo '<div class="go_stats_xp">' . go_display_longhand_currency('xp', $go_current_xp) . '</div>';
+                }
+                if ($gold_toggle) {
+                    echo '<div class="go_stats_gold">' . go_display_longhand_currency('gold', $go_current_gold) . '</div>';
+                }
+                if ($health_toggle) {
+                    echo '<div class="go_stats_health">' . go_display_longhand_currency('health', $go_current_health) . '</div>';
+                }
+                if($c4_toggle) {
+                    echo '<div class="go_stats_c4">' . go_display_longhand_currency('c4', $go_current_c4) . '</div>';
+                }
+                ?>
+            </div>
+        </div>
+
+        <div id="records_tabs">
+            <ul>
+                <li class="stats_tabs" tab="about"><a href="#clipboard_wrap">ABOUT</a></li>
+                <li class="stats_tabs" tab="tasks"><a href="#clipboard_messages_wrap" on><?php echo strtoupper( get_option( 'options_go_tasks_name_plural' ) ); ?></a></li>
+                <li class="stats_tabs" tab="store"><a href="#clipboard_activity_wrap"><?php echo strtoupper( get_option( 'options_go_store_name' ) ); ?></a></li>
+                <li class="stats_tabs" tab="history"><a href="#clipboard_wrap">HISTORY</a></li>
+                <li class="stats_tabs" tab="badges"><a href="#clipboard_wrap"><?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?></a></li>
+                <li class="stats_tabs" tab="groups"><a href="#clipboard_wrap">GROUPS</a></li>
+                <li class="stats_tabs" tab="leaderboard"><a href="#clipboard_wrap"><?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?></a></li>
+            </ul>
+            <div id="clipboard_wrap">
+                <?php
+                go_clipboard_intable();
+
+                ?>
+
+            </div>
+
+            <div id="clipboard_messages_wrap">
+
+            </div>
+
+            <div id="clipboard_activity_wrap">
+
+            </div>
+        </div>
+
+
+        <div id='go_stats_user_tabs'>
+            <!--
+				<a href='javascript:;' id="go_stats_body_progress" class='go_stats_body_selectors' tab='progress'>
+					WEEKLY PROGRESS
+				</a> |
+            -->
+
+            <?php  /*$is_admin = current_user_can( 'manage_options' ); if ( $is_admin ) { ?>
+               		<a href='javascript:;' id='go_stats_admin_help' class='go_stats_body_selectors' tab='help'>
+                    	HELP
+                    </a> |
+                <?php } */?>
+
+            <a href='javascript:;' id="go_stats_body_tasks" class='go_stats_body_selectors' tab='about'>
+                About
+            </a> |
+            <a href='javascript:;' id="go_stats_body_tasks" class='go_stats_body_selectors' tab='tasks'>
+                <?php echo strtoupper( get_option( 'options_go_tasks_name_plural' ) ); ?>
+            </a> |
+            <a href='javascript:;' id="go_stats_item_list" class='go_stats_body_selectors' tab='items'>
+                <?php echo strtoupper( get_option( 'options_go_store_name' ) ); ?>
+            </a> |
+            <a href='javascript:;' id="go_stats_body_activity" class='go_stats_body_selectors' tab='activity'>
+                HISTORY
+            </a> |
+            <?php
+            $badges_toggle = get_option('options_go_badges_toggle');
+            if ($badges_toggle){
+                ?>
+                <a href='javascript:;' id="go_stats_body_badges" class='go_stats_body_selectors' tab='badges'>
+                    <?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?>
+                </a> |
+                <?php
+            }
+            ?>
+            <a href='javascript:;' id="go_stats_body_groups" class='go_stats_body_selectors' tab='groups'>
+                GROUPS
+            </a>
+            <?php
+            $leaderboard_toggle = get_option('options_go_stats_leaderboard_toggle');
+            if ($leaderboard_toggle) {
+                ?>
+                |
+                <a href='javascript:;' id="go_stats_body_leaderboard" class='go_stats_body_selectors' tab='leaderboard'>
+                    <?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?>
+                </a>
+                <?php
+            }
+            ?>
+        </div>
+        <div id='go_stats_body'><div id ='go_stats_sticky' style='display: none;'></div></div>
+    </div>
+    <?php
+    die();
+}
+
 function go_admin_bar_stats() {
     //$user_id = 0;
     if ( ! empty( $_POST['uid'] ) ) {
@@ -219,57 +519,27 @@ function go_admin_bar_stats() {
                 ?>
             </div>
         </div>
-        <div id='go_stats_user_tabs'>
-            <!--
-				<a href='javascript:;' id="go_stats_body_progress" class='go_stats_body_selectors' tab='progress'>
-					WEEKLY PROGRESS
-				</a> | 
-            -->
 
-            <?php  /*$is_admin = current_user_can( 'manage_options' ); if ( $is_admin ) { ?>
-               		<a href='javascript:;' id='go_stats_admin_help' class='go_stats_body_selectors' tab='help'>
-                    	HELP
-                    </a> |
-                <?php } */?>
-
-            <a href='javascript:;' id="go_stats_body_tasks" class='go_stats_body_selectors' tab='about'>
-                About
-            </a> |
-            <a href='javascript:;' id="go_stats_body_tasks" class='go_stats_body_selectors' tab='tasks'>
-                <?php echo strtoupper( get_option( 'options_go_tasks_name_plural' ) ); ?>
-            </a> |
-            <a href='javascript:;' id="go_stats_item_list" class='go_stats_body_selectors' tab='items'>
-                <?php echo strtoupper( get_option( 'options_go_store_name' ) ); ?>
-            </a> |
-            <a href='javascript:;' id="go_stats_body_activity" class='go_stats_body_selectors' tab='activity'>
-                HISTORY
-            </a> |
-            <?php
-            $badges_toggle = get_option('options_go_badges_toggle');
-            if ($badges_toggle){
-                ?>
-                <a href='javascript:;' id="go_stats_body_badges" class='go_stats_body_selectors' tab='badges'>
-                    <?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?>
-                </a> |
-                <?php
-            }
-            ?>
-            <a href='javascript:;' id="go_stats_body_groups" class='go_stats_body_selectors' tab='groups'>
-                GROUPS
-            </a>
-            <?php
-                $leaderboard_toggle = get_option('options_go_stats_leaderboard_toggle');
-            if ($leaderboard_toggle) {
-                ?>
-                |
-                <a href='javascript:;' id="go_stats_body_leaderboard" class='go_stats_body_selectors' tab='leaderboard'>
-                    <?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?>
-                </a>
-                <?php
-            }
-                ?>
+        <div id="stats_tabs">
+            <ul>
+                <li class="stats_tabs" tab="about"><a href="#stats_about">ABOUT</a></li>
+                <li class="stats_tabs" tab="tasks"><a href="#stats_tasks"><?php echo strtoupper( get_option( 'options_go_tasks_name_plural' ) ); ?></a></li>
+                <li class="stats_tabs" tab="store"><a href="#stats_store"><?php echo strtoupper( get_option( 'options_go_store_name' ) ); ?></a></li>
+                <li class="stats_tabs" tab="history"><a href="#stats_history">HISTORY</a></li>
+                <li class="stats_tabs" tab="badges"><a href="#stats_badges"><?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?></a></li>
+                <li class="stats_tabs" tab="groups"><a href="#stats_groups">GROUPS</a></li>
+                <li class="stats_tabs" tab="leaderboard"><a href="#stats_leaderboard"><?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?></a></li>
+            </ul>
+            <div id="stats_about"></div>
+            <div id="stats_tasks"></div>
+            <div id="stats_store"></div>
+            <div id="stats_history"></div>
+            <div id="stats_badges"></div>
+            <div id="stats_groups"></div>
+            <div id="stats_leaderboard"></div>
         </div>
-        <div id='go_stats_body'><div id ='go_stats_sticky' style='display: none;'></div></div>
+
+
     </div>
     <?php
     die();
@@ -517,7 +787,7 @@ function go_stats_about() {
     check_ajax_referer( 'go_stats_about' );
 
 
-    echo "<div id='go_stats_about' class='go_datatables'><h3>About</h3>";
+    echo "<div id='go_stats_about' class='go_datatables'>";
     $user_id = (int) $_POST['user_id'];
 
     echo $user_id;
@@ -537,12 +807,9 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
         $profile = true;
         $blog = true;
     }
-    $user_obj = wp_get_current_user($user_id);
+    $user_obj = get_userdata($user_id);
     echo" <div class='go_user_links'>";
-    if ($website){
-        $user_website = $user_obj->user_url;//user website
-        echo" <div class='go_user_link'><a href='$user_website' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span></a></div>";
-    }
+
     if ($stats && !$on_stats){
         echo" <div class='go_user_link'><a href='#' onclick='go_admin_bar_stats_page_button(" . $user_id .");'><i class=\"fa fa-area-chart ab-icon\" aria-hidden=\"true\"></i></a></div>";
     }
@@ -553,6 +820,12 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
     if ($blog){
         //add this later
 
+    }
+    if ($website){
+        $user_website = $user_obj->user_url;//user website
+        if (!empty($user_website)) {
+            echo " <div class='go_user_link'><a href='$user_website' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span></a></div>";
+        }
     }
     echo" </div>";
 
@@ -592,7 +865,7 @@ function go_stats_task_list() {
 
     $tasks_name = get_option( "options_go_tasks_name_plural" );
 
-    echo "<div id='go_task_list' class='go_datatables'><h3>{$tasks_name}</h3><table id='go_tasks_datatable' class='pretty display'>
+    echo "<div id='go_task_list' class='go_datatables'><table id='go_tasks_datatable' class='pretty display'>
                    <thead>
 						<tr>
 							<th class='header' ><a href=\"#\">Time</a></th>
@@ -1241,7 +1514,6 @@ function go_stats_item_list() {
 
     ?>
     <div id='go_item_list' class='go_datatables'>
-    <h3><?php echo $store_name;?></h3>
     <table id='go_store_datatable' class='pretty display'>
     <thead>
     <tr>
@@ -1381,7 +1653,7 @@ function go_stats_activity_list() {
     $health_toggle = get_option('options_go_loot_health_toggle');
     $c4_toggle = get_option('options_go_loot_c4_toggle');
 
-    echo "<div id='go_activity_list' class='go_datatables'> <h3>History</h3><table id='go_activity_datatable' class='pretty display'>
+    echo "<div id='go_activity_list' class='go_datatables'><table id='go_activity_datatable' class='pretty display'>
                    <thead>
 						<tr>
 						
@@ -1902,15 +2174,15 @@ function go_stats_badges_list($user_id) {
 
     /* Get all task chains with no parents--these are the sections of the store.  */
     $taxonomy = 'go_badges';
-    $badges_name = get_option('options_go_badges_name_plural');
+    //$badges_name = get_option('options_go_badges_name_plural');
 
     $rows = get_terms( $taxonomy, $args);//the rows
-    echo"<div id='go_badges_list' class='go_datatables'> <h3>{$badges_name}</h3>";
+    echo"<div id='go_badges_list' class='go_datatables'> ";
 
 
     /* For each Store Category with no parent, get all the children.  These are the store rows.*/
     $chainParentNum = 0;
-    echo '<div id="go_badges">';
+    echo '<div id="go_stats_badges">';
     //for each row
     foreach ( $rows as $row ) {
         $chainParentNum++;
@@ -1922,16 +2194,6 @@ function go_stats_badges_list($user_id) {
             continue;
         }
         */
-
-
-        echo 	"<div class='parent_cat'>
-                        <div id='row_$chainParentNum' class='badges_row_container'>
-						    <h3>$row->name</h3>
-						</div>
-					    <div class='badges_row'>
-						";//row title and row container
-
-
         $column_args=array(
             'hide_empty' => false,
             'orderby' => 'order',
@@ -1941,6 +2203,20 @@ function go_stats_badges_list($user_id) {
         );
 
         $badges = get_terms($taxonomy,$column_args);
+
+        if(empty($badges)){
+                    continue;
+        }
+
+        echo 	"<div class='parent_cat'>
+                        <div id='row_$chainParentNum' class='badges_row_container'>
+						    <h3>$row->name</h3>
+						</div>
+					    <div class='badges_row'>
+						";//row title and row container
+
+
+
         /*Loop for each chain.  Prints the chain name then looks up children (quests). */
         $badge_blocks = '';
         foreach ( $badges as $badge) {
@@ -2008,7 +2284,7 @@ function go_stats_groups_list($user_id) {
 
 
     $rows = get_terms( $taxonomy, $args);//the rows
-    echo"<div id='go_groups_list' class='go_datatables'><h3>Groups</h3>";
+    echo"<div id='go_groups_list' class='go_datatables'>";
 
 
     /* For each Store Category with no parent, get all the children.  These are the store rows.*/
@@ -2026,14 +2302,6 @@ function go_stats_groups_list($user_id) {
         }
         */
 
-        echo 	"<div class='parent_cat'>
-                            <div id='row_$chainParentNum' class='groups_row_container'>
-                                <h3>$row->name</h3>
-                            </div>
-                            <div class='groups_row'>
-                            ";//row title and row container
-
-
         $column_args=array(
             'hide_empty' => false,
             'orderby' => 'order',
@@ -2043,6 +2311,20 @@ function go_stats_groups_list($user_id) {
         );
 
         $badges = get_terms($taxonomy,$column_args);
+
+        if(empty($badges)){
+            continue;
+        }
+
+        echo 	"<div class='parent_cat'>
+                            <div id='row_$chainParentNum' class='groups_row_container'>
+                                <h3>$row->name</h3>
+                            </div>
+                            <div class='groups_row'>
+                            ";//row title and row container
+
+
+
         /*Loop for each chain.  Prints the chain name then looks up children (quests). */
         $badge_blocks = '';
         foreach ( $badges as $badge) {
@@ -2089,10 +2371,10 @@ function go_stats_groups_list($user_id) {
  *
  */
 
-function go_make_tax_select ($taxonomy, $title = "Show All")
+function go_make_tax_select ($taxonomy, $title = "Show All", $location = null)
 {
     $is_hier = is_taxonomy_hierarchical( $taxonomy );
-    echo "<select id='go_". $taxonomy . "_select'>";
+    echo "<select id='go_". $location . $taxonomy . "_select'>";
 
     echo "<option value='none' selected ><b>" . $title . "</b></option>";
     if ($is_hier) {
@@ -2296,6 +2578,7 @@ function go_stats_lite(){
 
 
     ?>
+    <div id='go_stats_lite_wrapper'>
     <div id='go_stats_lay_lite' class='go_datatables'>
         <div id='go_stats_header_lite'>
             <div class="go_stats_id_card">
@@ -2483,7 +2766,7 @@ function go_stats_lite(){
 
 						</tr>
 						</tfoot>
-				</table></div>";
+				</table></div></div>";
 
     die();
 }
@@ -2552,7 +2835,7 @@ function go_stats_leaderboard() {
             $is_user = null;
         }
 
-        $xp_row= "<tr class='{$is_user}'><td></td></td><td>" . $sections . "</td><td>$group_ids</td><td><a href='javascript:;' class='go_stats_lite' data-UserId='{$user_id}' onclick='go_stats_lite({$user_id});'>$user_name</a></td><td>{$xp}</td></tr>";
+        $xp_row= "<tr class='{$is_user}'><td></td><td>" . $sections . "</td><td>$group_ids</td><td><a href='javascript:;' class='go_stats_lite' data-UserId='{$user_id}' onclick='go_stats_lite({$user_id});'>$user_name</a></td><td>{$xp}</td></tr>";
         $xp_table[] = $xp_row;
         $gold_row = "<tr  class='{$is_user}'><td></td><td>" . $sections . "</td><td>$group_ids </td><td><a href='javascript:;' class='go_stats_lite' data-UserId='{$user_id}' onclick='go_stats_lite({$user_id});'>$user_name</a></td><td>" . $gold . " </td></tr>";
         $gold_table[] = $gold_row;
@@ -2577,9 +2860,8 @@ function go_stats_leaderboard() {
     ob_start();
     ?>
 
-    <div id="go_leaderboard_wrapper" class="go_datatables"><h3><?php echo $leaderboard_name;?></h3>
+    <div id="go_leaderboard_wrapper" class="go_datatables">
         <div id="go_leaderboard_filters">
-            <h4>Filters</h4>
             <span>Section:<?php go_make_tax_select('user_go_sections'); ?></span>
             <span>Group:<?php go_make_tax_select('user_go_groups'); ?></span>
         </div>
@@ -2709,6 +2991,7 @@ function go_stats_leaderboard() {
 }
 
 //OLD STUFF BELOW
+/*
 function go_stats_leaderboard_choices() {
     check_ajax_referer( 'go_stats_leaderboard_choices_' );
 
@@ -2893,5 +3176,5 @@ function go_stats_leaderboardOLD() {
     <?php
     die();
 }
-
+*/
 ?>

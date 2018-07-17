@@ -1,11 +1,25 @@
 jQuery( document ).ready( function() {
-	jQuery( '#records_tabs' ).tabs();
-  	if ( jQuery( "#go_clipboard_datatable" ).length ) {
-    	jQuery( '#go_clipboard_datatable' ).dataTable({
+	if ( jQuery( '#records_tabs' ).length ) {
+		jQuery('#records_tabs').tabs();
+        jQuery( '.clipboard_tabs' ).click( function() {
+        	//console.log("tabs");
+            tab = jQuery(this).attr('tab');
+            switch (tab) {
+                case 'messages':
+                    //console.log("messages");
+                    go_clipboard_class_a_choice_messages();
+                    break;
+                case 'activity':
+                    //console.log("activity");
+                    go_clipboard_class_a_choice_activity();
+                    break;
+            }
+        });
+	}
 
-		});
- 	}
-
+	if ( jQuery( "#go_clipboard_datatable" ).length ) {
+		go_clipboard_class_a_choice();
+	}
 });
 
 function go_toggle( source ) {
@@ -15,104 +29,339 @@ function go_toggle( source ) {
 	}
 }
 
-function go_clipboard_class_a_choice() {
-	var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
-	jQuery.ajax({
-		type: "post",
-		url: MyAjax.ajaxurl,
-		data: {
-			_ajax_nonce: nonce,
-			action: 'go_clipboard_intable',
-			go_clipboard_class_a_choice: jQuery( '#go_clipboard_class_a_choice' ).val()
-		},
-		success: function( res ) {
-			if ( -1 !== res ) {
-				//jQuery( '#go_clipboard_table_body' ).html( '' );
-				//var oTable = jQuery( '#go_clipboard_table' ).dataTable();
-				//oTable.fnDestroy();
-				jQuery( '#go_clipboard_table_body' ).append( res );
+function go_clipboard_class_a_choiceOLD_AJAX() {
+    //var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
+
+    jQuery.fn.dataTable.ext.search.push(
+
+        function( settings, data, dataIndex ) {
+
+            var section = jQuery('#go_user_go_sections_select').val();
+            var group = jQuery('#go_user_go_groups_select').val();
+            ////console.log(section);
+            ////console.log(section);
+            var groups =  data[2] ; // use data for the filter by column
+            var sections = data[1]; // use data for the filter by column
+
+            groups = JSON.parse(groups);
+            sections = JSON.parse(sections);
+            //console.log(groups);
+            //console.log(sections);
+            ////console.log("sections: " + sections);
+
+            var groupexists = jQuery.inArray(section, sections);
+
+            ////console.log ("Exists" + groupexists)
+            if( group == "none" || jQuery.inArray(group, groups) != -1){
+                //alert('value is Array!');
+                if( section == "none" || jQuery.inArray(section, sections) != -1){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            } else {
+                //alert('Not an array');
+                return false;
+            }
+
+
+        }
+    );
+
+    jQuery.ajax({
+        type: "post",
+        url: MyAjax.ajaxurl,
+        data: {
+            _ajax_nonce: nonce,
+            action: 'go_clipboard_intable',
+            go_clipboard_class_a_choice: jQuery( '#go_clipboard_class_a_choice' ).val()
+        },
+        success: function( res ) {
+            if ( -1 !== res ) {
+                //jQuery( '#go_clipboard_table_body' ).html( '' );
+                //var oTable = jQuery( '#go_clipboard_table' ).dataTable();
+                //oTable.fnDestroy();
+                jQuery( '#go_clipboard_table_body' ).append( res );
                 jQuery(document).ready(function() {
 
                     if (jQuery("#go_clipboard").length) {
 
                         //XP////////////////////////////
-                        go_sort_leaders("go_xp_leaders_datatable", 4);
-                        var table = jQuery('#go_clipboard').DataTable({
+                        //go_sort_leaders("go_clipboard", 4);
+                        var Clipboard = jQuery('#go_clipboard').DataTable({
+                            //"paging": true,
+                            "orderFixed": [[4, "desc"]],
+                            //"destroy": true,
                             responsive: true,
                             "autoWidth": false,
-
+                            "paging": false,
+                            "columnDefs": [
+                                {
+                                    "targets": [1],
+                                    "visible": false
+                                },
+                                {
+                                    "targets": [2],
+                                    "visible": false
+                                }
+                            ]
                         });
+                        //on change filter listener
+                        //console.log("change1");
+                        jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
+                            //console.log("change");
+                            Clipboard.draw();
+
+                        } );
                     }
                 });
 
 
-			}
-		}
-	});
+            }
+        }
+    });
+}
+
+function go_clipboard_class_a_choice() {
+	//var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
+    go_filter_datatables();
+
+	if (jQuery("#go_clipboard_datatable").length) {
+
+		//XP////////////////////////////
+		//go_sort_leaders("go_clipboard", 4);
+		var Clipboard = jQuery('#go_clipboard_datatable').DataTable({
+            stateSave: true,
+            "bPaginate": false,
+            //colReorder: true,
+            "order": [[4, "asc"]],
+            //"destroy": true,
+            dom: 'Bfrtip',
+
+			"columnDefs": [
+                {
+                    "targets": [0],
+                    className: 'noVis'
+                },
+				{
+                    "targets": [1],
+                    "visible": false,
+                    className: 'noVis'
+                },
+				{
+					"targets": [2],
+					"visible": false,
+                    className: 'noVis'
+				},
+				{
+					"targets": [3],
+					"visible": false,
+                    className: 'noVis'
+				},
+                {
+                    "targets": [6],
+                    className: 'noVis'
+                },
+                {
+                    "targets": [7],
+                    className: 'noVis'
+                },
+                {
+                    "targets": [9],
+                    className: 'noVis'
+                }
+			],
+            buttons: [
+                'copy', 'excel', 'pdf',
+                {
+                    extend: 'colvis',
+                    columns: ':not(.noVis)',
+                    postfixButtons: [ 'colvisRestore' ]
+                }
+            ]
+		});
+		//on change filter listener
+		//console.log("change5");
+		jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change( function() {
+			console.log("change");
+			Clipboard.draw();
+			//ajax function to save the values
+            var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters;
+            console.log(jQuery( '#go_clipboard_user_go_sections_select' ).val());
+            jQuery.ajax({
+                type: "post",
+                url: MyAjax.ajaxurl,
+                go_clipboard_user_go_sections_select: jQuery( '#go_clipboard_user_go_sections_select' ).val(),
+                go_clipboard_user_go_groups_select: jQuery( '#go_clipboard_user_go_groups_select' ).val(),
+                go_clipboard_go_badges_select: jQuery( '#go_clipboard_go_badges_select' ).val(),
+                data: {
+                    _ajax_nonce: nonce,
+                    action: 'go_clipboard_save_filters'
+                },
+                success: function( res ) {
+                    console.log("values saved");
+                }
+            });
+
+		});
+	}
 }
 
 function go_clipboard_class_a_choice_activity() {
-	var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_activity;
-	jQuery.ajax({
-		type: "post",
-		url: MyAjax.ajaxurl,
-		data: {
-			_ajax_nonce: nonce,
-			action: 'go_clipboard_intable_activity',
-			go_clipboard_class_a_choice_activity: jQuery( '#go_clipboard_class_a_choice_activity' ).val()
-		},
-		success: function( res ) {
-			if ( -1 !== res ) {
-				jQuery( '#go_clipboard_activity_body' ).html( '' );
-				var oTable = jQuery( '#go_clipboard_activity' ).dataTable();
-				oTable.fnDestroy();
-				jQuery( '#go_clipboard_activity_body' ).html( res );
-				jQuery( '#go_clipboard_activity' ).dataTable( {
-                    stateSave: true,
-					"bPaginate": false,
-                    colReorder: true,
-					"aaSorting": [[1, "asc"]],
-					"destroy": true,
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'excel', 'pdf', 'colvis'
-                    ]
-				});
-			}
-		}
-	});
+    if ( jQuery( "#go_clipboard_activity_datatable" ).length == 0 ) {
+        var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_activity;
+        jQuery.ajax({
+            type: "post",
+            url: MyAjax.ajaxurl,
+            data: {
+                _ajax_nonce: nonce,
+                action: 'go_clipboard_intable_activity',
+                go_clipboard_class_a_choice_activity: jQuery( '#go_clipboard_class_a_choice_activity' ).val()
+            },
+            success: function( res ) {
+                if (-1 !== res) {
+                    jQuery('#clipboard_activity_wrap').html(res);
+                    go_filter_datatables();
+                    var Messages = jQuery('#go_clipboard_activity_datatable').DataTable({
+                        stateSave: true,
+                        "bPaginate": false,
+                        //colReorder: true,
+                        "order": [[4, "asc"]],
+                        //"destroy": true,
+                        dom: 'Bfrtip',
+
+                        "columnDefs": [
+                            {
+                                "targets": [0],
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [1],
+                                "visible": false,
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [2],
+                                "visible": false,
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [3],
+                                "visible": false,
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [6],
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [7],
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [9],
+                                className: 'noVis'
+                            }
+                        ],
+                        buttons: [
+                            'copy', 'excel', 'pdf',
+                            {
+                                extend: 'colvis',
+                                columns: ':not(.noVis)',
+                                postfixButtons: ['colvisRestore']
+                            }
+                        ]
+                    });
+                    //on change filter listener
+                    //console.log("change5");
+                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change(function () {
+                        //console.log("change");
+                        Messages.draw();
+
+                    });
+                }
+            }
+        });
+    }
 }
 
 function go_clipboard_class_a_choice_messages() {
-	var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_messages;
-	jQuery.ajax({
-		type: "post",
-		url: MyAjax.ajaxurl,
-		data: {
-			_ajax_nonce: nonce,
-			action: 'go_clipboard_intable_messages',
-			go_clipboard_class_a_choice_messages: jQuery( '#go_clipboard_class_a_choice_messages' ).val()
-		},
-		success: function( res ) {
-			if ( -1 !== res ) {
-				jQuery( '#go_clipboard_messages_body' ).html( '' );
-				var oTable = jQuery( '#go_clipboard_messages' ).dataTable();
-				oTable.fnDestroy();
-				jQuery( '#go_clipboard_messages_body' ).html( res );
-				jQuery( '#go_clipboard_messages' ).dataTable( {
-                    stateSave: true,
-					"bPaginate": false,
-                    colReorder: true,
-					"aaSorting": [[1, "asc"]],
-					"destroy": true,
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'excel', 'pdf', 'colvis'
-                    ]
-				});
-			}
-		}
-	});
+    if ( jQuery( "#go_clipboard_messages_datatable" ).length == 0 ) {
+        var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_messages;
+        jQuery.ajax({
+            type: "post",
+            url: MyAjax.ajaxurl,
+            data: {
+                _ajax_nonce: nonce,
+                action: 'go_clipboard_intable_messages',
+                go_clipboard_class_a_choice_messages: jQuery('#go_clipboard_class_a_choice_messages').val()
+            },
+            success: function (res) {
+                if (-1 !== res) {
+                    jQuery('#clipboard_messages_wrap').html(res);
+                    go_filter_datatables();
+                    var Messages = jQuery('#go_clipboard_messages_datatable').DataTable({
+                        stateSave: true,
+                        "bPaginate": false,
+                        //colReorder: true,
+                        "order": [[4, "asc"]],
+                        //"destroy": true,
+                        dom: 'Bfrtip',
+
+                        "columnDefs": [
+                            {
+                                "targets": [0],
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [1],
+                                "visible": false,
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [2],
+                                "visible": false,
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [3],
+                                "visible": false,
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [6],
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [7],
+                                className: 'noVis'
+                            },
+                            {
+                                "targets": [9],
+                                className: 'noVis'
+                            }
+                        ],
+                        buttons: [
+                            'copy', 'excel', 'pdf',
+                            {
+                                extend: 'colvis',
+                                columns: ':not(.noVis)',
+                                postfixButtons: ['colvisRestore']
+                            }
+                        ]
+                    });
+                    //on change filter listener
+                    //console.log("change5");
+                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change(function () {
+                        //console.log("change");
+                        Messages.draw();
+
+                    });
+                }
+            }
+        });
+    }
 }
 
 function go_user_focus_change( user_id, element ) {

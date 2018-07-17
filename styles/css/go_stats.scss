@@ -543,10 +543,11 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 }
 
 /** Badge Styles **/
-#go_badges,
+#go_stats_badges,
 #go_groups{
 	display: flex;
 	flex-wrap: wrap;
+	flex-grow: 1;
 }
 .go_badge_wrap {
 	display: inline-block;

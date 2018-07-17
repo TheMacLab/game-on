@@ -27,6 +27,8 @@ function go_admin_scripts ($hook) {
             // Options Page
             wp_register_script( 'go_options_admin_js', plugin_dir_url( __FILE__ ).'min/go_options-min.js', null, $version );
 
+            //Edit Store Items
+            wp_register_script('go_edit_store', plugin_dir_url( __FILE__ ).'min/go_edit_store-min.js', null, $version );
 
 			//featherlight
 			//wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );	
@@ -73,11 +75,12 @@ function go_admin_scripts ($hook) {
 					//'go_stats_penalties_list'      => wp_create_nonce( 'go_stats_penalties_list_' ),
 					'go_stats_badges_list'         => wp_create_nonce( 'go_stats_badges_list_' ),
                     'go_stats_groups_list'         => wp_create_nonce( 'go_stats_groups_list_' ),
-					'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' ),
+					//'go_stats_leaderboard_choices' => wp_create_nonce( 'go_stats_leaderboard_choices_' ),
 					'go_stats_leaderboard'         => wp_create_nonce( 'go_stats_leaderboard_' ),
                     'go_stats_lite'                => wp_create_nonce( 'go_stats_lite' ),
 					'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
                     'go_upgade4'                     => wp_create_nonce( 'go_upgade4'),
+                    'go_the_lb_ajax' => wp_create_nonce( 'go_the_lb_ajax' )
 				),
 			)
 		);
@@ -106,6 +109,7 @@ function go_admin_scripts ($hook) {
                     'go_update_user_focuses'        => wp_create_nonce( 'go_update_user_focuses_' . $user_id ),
                     'go_clipboard_add'              => wp_create_nonce( 'go_clipboard_add_' . $user_id ),
                     'go_fix_messages'               => wp_create_nonce( 'go_fix_messages_' . $user_id ),
+                    'go_clipboard_save_filters'     => wp_create_nonce( 'go_clipboard_save_filters_' . $user_id )
                 ),
             )
         );
@@ -116,6 +120,18 @@ function go_admin_scripts ($hook) {
 
         wp_enqueue_script('go_options_admin_js');
         wp_localize_script('go_options_admin_js', 'levelGrowth', get_option('options_go_loot_xp_levels_growth'));
+    }
+
+    if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
+        if ( 'go_store' === $post->post_type ) {
+            wp_enqueue_script('go_edit_store');
+            $id = get_the_ID();
+            $store_name = get_option( 'options_go_store_name');
+            wp_localize_script( 'go_edit_store', 'GO_EDIT_STORE_DATA', array( 'postid' => $id , 'store_name' => $store_name) );
+
+
+
+        }
     }
 }
 

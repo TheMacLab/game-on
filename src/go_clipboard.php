@@ -6,137 +6,53 @@ function go_clipboard() {
 }
 */
 
+function go_clipboard_save_filters (){
+    $user_id = get_current_user_id();
+    check_ajax_referer( 'go_clipboard_save_filters_' . $user_id );
+    $section = $_POST['go_clipboard_user_go_sections_select'];
+    $badge = $_POST['go_clipboard_go_badges_select'];
+    $group = $_POST['go_clipboard_user_go_groups_select'];
+    update_user_meta( $user_id, 'go_clipboard_section', $section );
+    update_user_meta( $user_id, 'go_clipboard_badge', $badge );
+    update_user_meta( $user_id, 'go_clipboard_group', $group );
+}
+
 function go_clipboard_menu() {
+
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} else {
+        $user_id = get_current_user_id();
+	    $section = get_user_meta( $user_id, 'go_clipboard_section' );
+        $badge = get_user_meta( $user_id, 'go_clipboard_badge');
+        $group = get_user_meta( $user_id, 'go_clipboard_group');
+
 	?><div id="go_leaderboard_filters">
-        <h4>Filters</h4>
-        <span>Section:<?php go_make_tax_select('user_go_sections'); ?></span>
-        <span>Group:<?php go_make_tax_select('user_go_groups'); ?></span>
+
+        <span>Section:<?php go_make_tax_select('user_go_sections', "Show All" , "clipboard_"); ?></span>
+        <span>Group:<?php go_make_tax_select('user_go_groups', "Show All"  , "clipboard_"); ?></span>
+        <span>Badges:<?php go_make_tax_select('go_badges', "Show All"  , "clipboard_"); ?></span>
         </div>
 		<div id="records_tabs">
 			<ul>
-				<li><a href="#clipboard_wrap">Stats</a></li>
-				<li><a href="#clipboard_messages_wrap">Messages</a></li>
-				<li><a href="#clipboard_activity_wrap">Activity</a></li>
+				<li class="clipboard_tabs" tab="clipboard"><a href="#clipboard_wrap">Stats</a></li>
+				<li class="clipboard_tabs" tab="messages"><a href="#clipboard_messages_wrap" on>Messages</a></li>
+				<li class="clipboard_tabs" tab="activity"><a href="#clipboard_activity_wrap">Activity</a></li>
 			</ul>
 			<div id="clipboard_wrap">
                 <?php
                 go_clipboard_intable();
-                /*
 
-				<select class="menuitem" id="go_clipboard_class_a_choice" onchange="go_clipboard_class_a_choice();">
-					<option>...</option>
-					<?php
-					$class_a = get_option( 'go_class_a' );
-					if ( $class_a ) {
-						foreach ( $class_a as $key => $value ) {
-							echo "<option class='ui-corner-all'>{$value}</option>";
-						}
-					}
-					?>
-				</select>
-
-
-			
-				<div id="go_clipboard_add">
-					<?php //go_options_help( 'http://maclab.guhsd.net/go/video/clipboard/clipboard.mp4', 'Clipboard Help' ); ?>
-					<label for="go_clipboard_points"><?php echo get_option( 'go_points_name' ); ?>: </label><input name="go_clipboard_points" id="go_clipboard_points" class='go_clipboard_add'/> 
-					<label for="go_clipboard_currency"><?php echo get_option( 'go_currency_name' ); ?>: </label><input name="go_clipboard_currency" id="go_clipboard_currency" class='go_clipboard_add'/>
-					<label for="go_clipboard_bonus_currency"><?php echo get_option( 'go_bonus_currency_name' ); ?>: </label> <input name="go_clipboard_bonus_currency" id="go_clipboard_bonus_currency" class='go_clipboard_add'/>
-					<label for="go_clipboard_penalty"><?php echo get_option( 'go_penalty_name' ); ?>: </label><input name="go_clipboard_penalty" id="go_clipboard_penalty" class='go_clipboard_add'/>
-					<label for="go_clipboard_minutes"><?php echo get_option( 'go_minutes_name' ); ?>: </label><input name="go_clipboard_minutes" id="go_clipboard_minutes" class='go_clipboard_add'/>
-					<label for="go_clipboard_badge">Badge ID:</label><input name="go_clipboard_badge" id="go_clipboard_badge" class='go_clipboard_add'/><br/>
-					<label name="go_clipboard_reason">Message: </label>
-					<div>
-						<textarea name="go_clipboard_reason" id="go_clipboard_reason" placeholder='See me'></textarea><br/>
-						<button class="ui-button-text" id="go_send_message" onclick="go_clipboard_add();">Add</button>
-						<button id="go_fix_messages" onclick="go_fix_messages()">Fix Messages</button>
-					</div>
-                </div>
-
-					<table id="go_clipboard_table" class="pretty">
-						<thead>
-							<tr>
-								<th><input type="checkbox" onClick="go_toggle(this);" /></th>
-								<th class="header"><a href="#" >ID</a></th>
-								<th class="header"><a href="#" ><?php echo get_option( 'go_class_b_name' ); ?></a></th>
-								<th class="header"><a href="#" >Student Name</a></th>
-								<th class="header"><a href="#" >Display Name</a></th>
-								<th class="header"><a href="#" ><?php echo get_option( 'go_level_names' ); ?></a></th>
-								<?php if ( get_option( 'go_focus_switch' ) == 'On' ) { ?><th class="header"><a href="#" ><?php echo get_option( 'go_focus_name' ); ?></a></th><?php } ?>
-								<th class="header"><a href="#"><?php echo get_option( 'go_points_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo get_option( 'go_currency_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo get_option( 'go_bonus_currency_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo get_option( 'go_penalty_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo get_option( 'go_minutes_name' ); ?></a></th>
-								<th class="header"><a href="#"><?php echo get_option( 'go_badges_name' ); ?></a></th>
-							</tr>
-						</thead>
-						<tbody id="go_clipboard_table_body"></tbody>
-					</table>
-                 */
                 ?>
 
 			</div>
 
-
 			<div id="clipboard_messages_wrap">
-				<select class="menuitem" id="go_clipboard_class_a_choice_messages" onchange="go_clipboard_class_a_choice_messages();">
-					<option>...</option>
-					<?php
-					$class_a_messages = get_option( 'go_class_a' );
-					if ( $class_a_messages ) {
-						foreach ( $class_a_messages as $key => $value ) {
-							echo "<option class='ui-corner-all'>{$value}</option>";
-						}
-					}
-					?>
-					<option>All</option>
-				</select>
-				<table id="go_clipboard_messages" class="pretty">
-					<thead>
-						<tr>
-							<th class="header" width="5%" id="messages_id"><a href="#" >ID</a></th>
-							<th class="header" width="5%" id="messages_computer"><a href="#"><?php echo get_option( 'go_class_b_name' ); ?></a></th>
-							<th class="header" width="6.5%" id="messages_student"><a href="#">Student Name</a></th>
-							<th class="header" width="6.5%" id="messages_display"><a href="#">Display Name</a></th>
-							<th class="header" width="6%" id="messages_date"><a href="#">Date</a></th>
-							<th class="header" id="messages_message"><a href="#">Message</a></th>
-						</tr>
-					</thead>
-					<tbody id="go_clipboard_messages_body"></tbody>
-				</table>
+
 			</div>
 
-
 			<div id="clipboard_activity_wrap">
-				<select class="menuitem" id="go_clipboard_class_a_choice_activity" onchange="go_clipboard_class_a_choice_activity();">
-					<option>...</option>
-					<?php
-					$class_a_activity = get_option( 'go_class_a' );
-					if ( $class_a_activity ) {
-						foreach ( $class_a_activity as $key => $value ) {
-							echo "<option class='ui-corner-all'>{$value}</option>";
-						}
-					}
-					?>
-					<option>All</option>
-				</select>
-				<table id="go_clipboard_activity" class="pretty">
-					<thead>
-						<tr>
-							
-							<th class="header" id="activity_computer"><a href="#"><?php echo get_option( 'go_class_b_name' ); ?></a></th>
-							<th class="header" id="activity_student"><a href="#">Student Name</a></th>
-							<th class="header" id="activity_display"><a href="#">Display Name</a></th>
-							<th class="header" id="activity_stats"><a href="#">Links</a></th>
-							<th class="header" id="activity_date"><a href="#">Activity</a></th>
-						</tr>
-					</thead>
-					<tbody id="go_clipboard_activity_body"></tbody>
-				</table>
+
 			</div>
 		</div>
 	<?php
@@ -150,11 +66,7 @@ function go_clipboard_intable() {
 	}
 	//check_ajax_referer( 'go_clipboard_intable_' . get_current_user_id() );
 
-    // prepares tab titles
-    $xp_name = get_option( "options_go_loot_xp_name" );
-    $gold_name = get_option( "options_go_loot_gold_name" );
-    $c4_name = get_option( "options_go_loot_c4_name" );
-    $badges_name = get_option( 'options_go_badges_name_singular' ) . " Count";
+
     $current_user_id =  $user_id = get_current_user_id();
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
     $rows = $wpdb->get_results(
@@ -168,24 +80,71 @@ function go_clipboard_intable() {
     $health_toggle = get_option('options_go_loot_health_toggle');
     $c4_toggle = get_option('options_go_loot_c4_toggle');
     $badges_toggle = get_option('options_go_badges_toggle');
-    echo '<div id="go_clipboard_wrapper" class="go_datatables">';
+
+    // prepares tab titles
+    $xp_name = get_option( "options_go_loot_xp_name" );
+    $gold_name = get_option( "options_go_loot_gold_name" );
+    $c4_name = get_option( "options_go_loot_c4_name" );
+    $badges_name = get_option( 'options_go_badges_name_plural' );
+
+    $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+    $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
+    $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
+
+    $seats_name = get_option( 'options_go_seats_name' );
+
+
+
+
+    echo '<div id="go_clipboard_wrapper" class="go_clipboard">';
     ?>
         <table id='go_clipboard_datatable' class='pretty display'>
             <thead>
             <tr>
                 <th><input type="checkbox" onClick="go_toggle(this);" /></th>
-                <th class="header"><a href="#" >ID</a></th>
-                <th class="header"><a href="#" ><?php echo get_option( 'go_class_b_name' ); ?></a></th>
-                <th class="header"><a href="#" >Student Name</a></th>
-                <th class="header"><a href="#" >Display Name</a></th>
-                <th class="header"><a href="#" ><?php echo get_option( 'go_level_names' ); ?></a></th>
-                <th class="header"><a href="#" ><?php echo get_option( 'go_focus_name' ); ?></a></th>
-                <th class="header"><a href="#"><?php echo get_option( 'go_points_name' ); ?></a></th>
-                <th class="header"><a href="#"><?php echo get_option( 'go_currency_name' ); ?></a></th>
-                <th class="header"><a href="#"><?php echo get_option( 'go_bonus_currency_name' ); ?></a></th>
-                <th class="header"><a href="#"><?php echo get_option( 'go_penalty_name' ); ?></a></th>
-                <th class="header"><a href="#"><?php echo get_option( 'go_minutes_name' ); ?></a></th>
-                <th class="header"><a href="#"><?php echo get_option( 'go_badges_name' ); ?></a></th>
+                <th class="header">sections</th>
+                <th class="header">groups</th>
+                <th class="header">badges</th>
+                <th class="header">Section</th>
+                <th class="header"><?php echo "$seats_name"; ?></a></th>
+                <th class="header">First</th>
+                <th class="header">Last</th>
+                <th class="header">Display</th>
+                <th class="header">Links</th>
+
+                <?php
+                if ($xp_toggle){
+                    ?>
+                    <th class="header"><?php echo get_option( 'options_go_loot_xp_levels_name_singular' ); ?></th>
+                    <th class='header'><?php echo "$xp_abbr"; ?></th>
+                    <?php
+                }
+                if ($gold_toggle){
+                    ?>
+                    <th class='header'><?php echo "$gold_abbr"; ?></th>
+                    <?php
+                }
+                if ($health_toggle){
+                    ?>
+                    <th class='header'><?php echo "$health_abbr"; ?></th>
+                    <?php
+                }
+                if ($c4_toggle){
+                    ?>
+                    <th class='header'><?php echo "$c4_abbr"; ?></th>
+                    <?php
+                }
+                if ($badges_toggle){
+                    ?>
+                    <th class='header'><?php echo "$badges_name"; ?></th>
+                    <?php
+                }
+
+                    ?>
+                <th class='header'>Groups</th>
+
+
             </tr>
             </thead>
             <tbody>
@@ -195,26 +154,30 @@ function go_clipboard_intable() {
     foreach ( $rows as $row ) {
         $user_id = $row->uid;
         $is_admin = go_user_is_admin($user_id);
-        if($is_admin){
+        if ($is_admin) {
             continue;
         }
+        $user_data_key = get_userdata($user_id);
+        $user_display_name = $user_data_key->display_name;
+        $user_firstname = $user_data_key->user_firstname;
+        $user_lastname = $user_data_key->user_lastname;
+
 
         $group_ids = $row->groups;
         $group_ids = unserialize($group_ids);
         $group_ids = json_encode($group_ids);
 
+        $badge_ids = $row->badges;
+        $badge_ids = unserialize($badge_ids);
+        $badge_ids = json_encode($badge_ids);
+
         //$sections = get_user_meta($user_id, "go_sections");
-        $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
+        $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
         $sections = array();
-        for ($i = 0; $i < $num_terms; $i++) {
 
-            $user_period = "go_section_and_seat_" . $i . "_user-section";
-            $user_period = get_user_meta($user_id, $user_period, true);
-            $sections[] = $user_period;
 
-        }
-        $sections = json_encode($sections);
-        $user_data = get_userdata( $user_id );
+        //$sections = json_encode($sections);
+        $user_data = get_userdata($user_id);
         $user_name = $user_data->display_name;
         $xp = $row->xp;
         $gold = $row->gold;
@@ -222,186 +185,317 @@ function go_clipboard_intable() {
         $c4 = $row->c4;
         $badge_count = $row->badge_count;
 
-        echo "<tr id='user_{$user_id}'>
+        $rank = go_get_rank ( $user_id );
+        $current_rank_name = $rank['current_rank'];
+        if (!empty($current_rank_name )){
+            $current_rank_name = ": " . $current_rank_name;
+        }
+        $rank_num = $rank['rank_num'];
+
+
+
+        for ($i = 0; $i < $num_sections; $i++) {
+            $user_period_option = "go_section_and_seat_" . $i . "_user-section";
+            $user_seat_option = "go_section_and_seat_" . $i . "_user-seat";
+
+
+            $user_period = get_user_meta($user_id, $user_period_option, true);
+            $term = get_term( $user_period, "user_go_sections" );
+            //$user_period_name = $term->name;
+            $user_period_name = (isset($term->name) ?  $term->name : null);
+
+            $user_seat = get_user_meta($user_id, $user_seat_option, true);
+
+            echo "<tr>
 					<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/></td>
-					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$user_id}&quot;);'>{$user_name}</a></td>
-					<td>Seat #</td>
-					<td>{$user_name} First Last </a></td>
-					<td>{$user_name} Display Name</td>
-					<td>{}Level</td>
-					<td>Groups</td>
-					<td class='user_points'>{$xp}</td>
-					<td class='user_currency'>{$gold}</td>
-					<td class='user_bonus_currency'>{$health}</td>
-					<td class='user_penalty'>{$c4}</td>
-					<td class='user_minutes'>NOthing</td>
+					<td >{$user_period} </a></td>
+					<td>{$group_ids}</a></td>
+					<td>{$badge_ids}</a></td>
+					<td >{$user_period_name} </a></td>
+					<td>{$user_seat}</td>
+					<td>{$user_firstname}</td>
+					
+					<td>{$user_lastname}</td>
+					<td>{$user_display_name}</td>
+					<td>";
+            go_user_links($user_id, false, true, true, true, true);
+            echo " </a></td>
+					";
+
+            if ($xp_toggle) {
+                echo "<td data-order='{$rank_num}'>{$rank_num}{$current_rank_name}</td>
+                  <td class='user_points'>{$xp}</td>";
+            }
+            if ($gold_toggle) {
+                echo "<td class='user_currency'>{$gold}</td>";
+            }
+            if ($health_toggle) {
+                echo "<td class='user_health'>{$health}</td>";
+            }
+            if ($c4_toggle) {
+                echo "<td class='user_c4'>{$c4}</td>";
+            }
+
+            echo "		
 					<td class='user_badge_count'>{$badge_count}</td>
+					<td class='user_group_count'>{$badge_count}</td>
 				  </tr>";
-
-
+        }
     }
     ?>
-
             </tbody></table></div>
-
     <?php
-
-
-
-
 }
-
 
 function go_clipboard_intable_messages() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		die( -1 );
 	}
 	check_ajax_referer( 'go_clipboard_intable_messages_' . get_current_user_id() );
+    global $wpdb;
 
-	// do not continue if a class hasn't been selected
-	$class_slug = ( ! empty( $_POST['go_clipboard_class_a_choice_messages'] ) ? sanitize_text_field( $_POST['go_clipboard_class_a_choice_messages'] ) : '' );
-	if ( empty( $class_slug ) ) {
-		die();
-	}
+    //check_ajax_referer( 'go_clipboard_intable_' . get_current_user_id() );
 
-	// do not continue if no admin messages are registered on the current admin account
-	$admin_messages = get_user_meta( get_current_user_id(), 'go_admin_message_history', true );
-	if ( empty( $admin_messages ) ) {
-		die();
-	}
 
-	foreach ( $admin_messages as $student_id => $messages ) {
-		$class_messages_array = get_user_meta( $student_id, 'go_classifications', true );
-		
-		$user_data_key = get_userdata( $student_id );
-		$user_login = $user_data_key->user_login;
-		$user_display = $user_data_key->display_name;
-		$user_first_name = $user_data_key->user_firstname;
-		$user_last_name = $user_data_key->user_lastname;
-		$user_url = $user_data_key->user_url;
-		$array_len = count( $messages );
+    $current_user_id =  $user_id = get_current_user_id();
+    $go_totals_table_name = "{$wpdb->prefix}go_loot";
+    $rows = $wpdb->get_results(
+        "SELECT * 
+			        FROM {$go_totals_table_name}"
 
-		if ( ! empty( $class_messages_array[ $class_slug ] ) ) {
-			for ( $i = $array_len - 1; $i >= 0; $i-- ) {
-				echo "<tr id='user_{$student_id}'>
-					<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
-					<td>{$class_messages_array[ $class_slug ]}</td>
-					<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
-					<td>{$user_display}</td>
-					<td>{$messages[$i]['time']}</td>
-					<td class='message'>{$messages[$i]['message']}</td>
-					</tr>";
-			}
-		}  elseif ( $class_slug == 'All' ) {
-			if ( ! empty( $class_messages_array ) ) {
-				foreach ( $class_messages_array as $key => $computer ) {
-					for ( $i = $array_len - 1; $i >= 0; $i-- ) {
-						echo "<tr id='user_{$student_id}'>
-							<td><span><a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$student_id}&quot;);'>{$user_login}</a></td>
-							<td>{$computer}</td>
-							<td><a href='{$user_url}' target='_blank'>{$user_last_name}, {$user_first_name}</a></td>
-							<td>{$user_display}</td>
-							<td>{$messages[$i]['time']}</td>
-							<td class='message'>{$messages[$i]['message']}</td>
-							</tr>";
-					}
-				}
-			}
-		}
-	}
-	die();
+    );
+
+    $xp_toggle = get_option('options_go_loot_xp_toggle');
+    $gold_toggle = get_option('options_go_loot_gold_toggle');
+    $health_toggle = get_option('options_go_loot_health_toggle');
+    $c4_toggle = get_option('options_go_loot_c4_toggle');
+    $badges_toggle = get_option('options_go_badges_toggle');
+
+    // prepares tab titles
+    $xp_name = get_option( "options_go_loot_xp_name" );
+    $gold_name = get_option( "options_go_loot_gold_name" );
+    $c4_name = get_option( "options_go_loot_c4_name" );
+    $badges_name = get_option( 'options_go_badges_name_plural' );
+
+    $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+    $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
+    $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
+
+    $seats_name = get_option( 'options_go_seats_name' );
+
+
+
+
+    echo '<div id="go_clipboard_messages_wrapper" class="go_clipboard">';
+    ?>
+    <table id='go_clipboard_messages_datatable' class='pretty display'>
+        <thead>
+        <tr>
+            <th><input type="checkbox" onClick="go_toggle(this);" /></th>
+            <th class="header">sections</th>
+            <th class="header">groups</th>
+            <th class="header">badges</th>
+            <th class="header">Section</th>
+            <th class="header"><?php echo "$seats_name"; ?></a></th>
+            <th class="header">First</th>
+            <th class="header">Last</th>
+            <th class="header">Display</th>
+            <th class="header">Links</th>
+            <th class='header'>Messages</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+
+
+        foreach ( $rows as $row ) {
+            $user_id = $row->uid;
+            $is_admin = go_user_is_admin($user_id);
+            if ($is_admin) {
+                continue;
+            }
+            $user_data_key = get_userdata($user_id);
+            $user_display_name = $user_data_key->display_name;
+            $user_firstname = $user_data_key->user_firstname;
+            $user_lastname = $user_data_key->user_lastname;
+
+
+            $group_ids = $row->groups;
+            $group_ids = unserialize($group_ids);
+            $group_ids = json_encode($group_ids);
+
+            $badge_ids = $row->badges;
+            $badge_ids = unserialize($badge_ids);
+            $badge_ids = json_encode($badge_ids);
+
+            //$sections = get_user_meta($user_id, "go_sections");
+            $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
+            $sections = array();
+
+
+            //$sections = json_encode($sections);
+            $user_data = get_userdata($user_id);
+            $user_name = $user_data->display_name;
+            $xp = $row->xp;
+            $gold = $row->gold;
+            $health = $row->health;
+            $c4 = $row->c4;
+            $badge_count = $row->badge_count;
+
+            $rank = go_get_rank ( $user_id );
+            $current_rank_name = $rank['current_rank'];
+            if (!empty($current_rank_name )){
+                $current_rank_name = ": " . $current_rank_name;
+            }
+            $rank_num = $rank['rank_num'];
+
+
+
+            for ($i = 0; $i < $num_sections; $i++) {
+                $user_period_option = "go_section_and_seat_" . $i . "_user-section";
+                $user_seat_option = "go_section_and_seat_" . $i . "_user-seat";
+
+
+                $user_period = get_user_meta($user_id, $user_period_option, true);
+                $term = get_term( $user_period, "user_go_sections" );
+                //$user_period_name = $term->name;
+                $user_period_name = (isset($term->name) ?  $term->name : null);
+
+                $user_seat = get_user_meta($user_id, $user_seat_option, true);
+
+                echo "<tr>
+					<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/></td>
+					<td >{$user_period} </a></td>
+					<td>{$group_ids}</a></td>
+					<td>{$badge_ids}</a></td>
+					<td >{$user_period_name} </a></td>
+					<td>{$user_seat}</td>
+					<td>{$user_firstname}</td>
+					
+					<td>{$user_lastname}</td>
+					<td>{$user_display_name}</td>
+					<td>";
+                go_user_links($user_id, false, true, true, true, true);
+                echo " </a></td>	
+					<td class='user_messages'>Coming Soon!</td>
+				  </tr>";
+
+
+            }
+        }
+        ?>
+
+        </tbody></table></div>
+
+    <?php
+    die();
 }
 
-
 function go_clipboard_intable_activity() {
-	global $wpdb;
-	$go_task_table_name = "{$wpdb->prefix}go";
-
-
 	if ( ! current_user_can( 'manage_options' ) ) {
 		die( -1 );
 	}
 
 	check_ajax_referer( 'go_clipboard_intable_activity_' . get_current_user_id() );
+    global $wpdb;
 
-	// do not continue if a class hasn't been selected
-	$class_slug = ( ! empty( $_POST['go_clipboard_class_a_choice_activity'] ) ? sanitize_text_field( $_POST['go_clipboard_class_a_choice_activity'] ) : '' );
-	if ( empty( $class_slug ) ) {
-		die();
-	}
-	//update_user_meta( 1, 'go_admin_activity', 'hi3' );
-	// do not continue if no admin messages are registered on the current admin account
-	//$admin_messages = get_user_meta( get_current_user_id(), 'go_admin_message_history', true );
-	//if ( empty( $admin_messages ) ) {
-	//	die();
-	//}
+    $go_totals_table_name = "{$wpdb->prefix}go_loot";
+    $rows = $wpdb->get_results(
+        "SELECT * 
+			        FROM {$go_totals_table_name}"
 
-	// grabs all user ids for non-admin users
-	$table_name_user_meta = $wpdb->prefix.'usermeta';
-	$uids = $wpdb->get_results(
-		$wpdb->prepare(
-			"SELECT user_id 
-			FROM {$table_name_user_meta} 
-			WHERE meta_key = %s AND meta_value NOT LIKE %s",
-			"{$wpdb->prefix}capabilities",
-			'%administrator%'
-		)
-	);
-	
-	foreach ( $uids as $id ) {
-		$class_array = get_user_meta( $id->user_id, 'go_classifications', true );
+    );
 
-		// continue if the user has the selected class in their class list
-		if ( ! empty( $class_array[ $class_slug ] ) ) {
-			$user_data_key = get_userdata( $id->user_id );
-			$user_login = $user_data_key->user_login;
-			$user_display_name = $user_data_key->display_name;
-			$user_firstname = $user_data_key->user_firstname;
-			$user_lastname = $user_data_key->user_lastname;
-			$user_website = $user_data_key->user_url;
-			$user_edit_link = get_edit_user_link( $id->user_id  );
+    $seats_name = get_option( 'options_go_seats_name' );
 
-			if (! empty ($user_website)) {
-				$user_website = "<a href='{$user_website}' target='_blank'>Web</a>";
-			}
+    echo '<div id="go_clipboard_activity_wrapper" class="go_clipboard">';
+    ?>
+    <table id='go_clipboard_activity_datatable' class='pretty display'>
+        <thead>
+        <tr>
+            <th><input type="checkbox" onClick="go_toggle(this);" /></th>
+            <th class="header">sections</th>
+            <th class="header">groups</th>
+            <th class="header">badges</th>
+            <th class="header">Section</th>
+            <th class="header"><?php echo "$seats_name"; ?></a></th>
+            <th class="header">First</th>
+            <th class="header">Last</th>
+            <th class="header">Display</th>
+            <th class="header">Links</th>
+            <th class='header'>Activity</th>
 
 
+        </tr>
+        </thead>
+        <tbody>
+        <?php
 
-			$task_list = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT post_id, timestamp
-					FROM {$go_task_table_name} 
-					WHERE uid = %d
-					ORDER BY id DESC",
-					$id->user_id
-				)
-			);
 
-			
-		
-			
-			echo "<tr id='user_{$id->user_id}'>
-					<td>{$class_array[ $class_slug ]}</td>
-					<td>{$user_lastname}, {$user_firstname}</td>
+        foreach ( $rows as $row ) {
+            $user_id = $row->uid;
+            $is_admin = go_user_is_admin($user_id);
+            if ($is_admin) {
+                continue;
+            }
+            $user_data_key = get_userdata($user_id);
+            $user_display_name = $user_data_key->display_name;
+            $user_firstname = $user_data_key->user_firstname;
+            $user_lastname = $user_data_key->user_lastname;
+
+
+            $group_ids = $row->groups;
+            $group_ids = unserialize($group_ids);
+            $group_ids = json_encode($group_ids);
+
+            $badge_ids = $row->badges;
+            $badge_ids = unserialize($badge_ids);
+            $badge_ids = json_encode($badge_ids);
+
+
+            $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
+
+
+            for ($i = 0; $i < $num_sections; $i++) {
+                $user_period_option = "go_section_and_seat_" . $i . "_user-section";
+                $user_seat_option = "go_section_and_seat_" . $i . "_user-seat";
+
+
+                $user_period = get_user_meta($user_id, $user_period_option, true);
+                $term = get_term( $user_period, "user_go_sections" );
+                $user_period_name = (isset($term->name) ?  $term->name : null);
+
+                $user_seat = get_user_meta($user_id, $user_seat_option, true);
+
+                echo "<tr>
+					<td><input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/></td>
+					<td >{$user_period} </a></td>
+					<td>{$group_ids}</a></td>
+					<td>{$badge_ids}</a></td>
+					<td >{$user_period_name} </a></td>
+					<td>{$user_seat}</td>
+					<td>{$user_firstname}</td>
+					
+					<td>{$user_lastname}</td>
 					<td>{$user_display_name}</td>
-					<td><span style='float:right;'>{$user_website} <a href='{$user_edit_link}' target='_blank'>Profile</a> <a href='#' onclick='go_admin_bar_stats_page_button(&quot;{$id->user_id}&quot;);'>Stats</a></span></td>
 					<td>";
-
-			foreach ( $task_list as $task ) {
-				$activityDate = date('Y-m-d', strtotime($task->timestamp));
-				$today = date('Y-m-d');
-				if ($activityDate == $today ){
-					$task_name = get_the_title($task->post_id);
-
-					echo $task_name . "<br>";
+                go_user_links($user_id, false, true, true, true, true);
+                echo " </a></td>	
+					<td class='user_activity'>Coming Soon!</td>
+				  </tr>";
 
 
-				}
-			}
-			echo "</td>	  </tr>";
-		}
-	}
-	die();
+            }
+        }
+        ?>
+
+        </tbody></table></div>
+
+    <?php
+    die();
 }
 
  

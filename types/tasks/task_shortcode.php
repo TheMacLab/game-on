@@ -299,6 +299,9 @@ function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_nam
 	if ($custom_fields['go-location_map_toggle'][0] == true && !empty($custom_fields['go-location_map_loc'][0])){
 		$on_map = true;
 	}
+	else{
+		$on_map = false;
+	}
     if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true || $on_map == true) {
         $task_is_locked = go_task_locks($post_id, $user_id, $task_name, $custom_fields, $is_logged_in, false);
     }
@@ -760,8 +763,9 @@ function go_task_render_chain_pagination ( $task_id, $custom_fields ) {
 	}
 
 
-    $chain_id = $custom_fields['go-location_map_loc'][0];
-	if (!empty($chain_id)) {
+    $chain_id = (isset($custom_fields['location_map_loc'][0]) ?  $custom_fields['location_map_loc'][0] : null);
+
+    if (!empty($chain_id)) {
         $chain_order = go_get_chain_order($chain_id);
         if ( empty( $chain_order ) || ! is_array( $chain_order ) ) {
             return;

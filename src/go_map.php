@@ -114,21 +114,23 @@ function go_make_single_map($last_map_id, $reload){
 
                             //if locked
 							$task_is_locked = go_task_locks($id, $user_id, false, $custom_fields, $is_logged_in, true);
+
                             $unlock_message = '';
 							if ($task_is_locked === 'password'){
 								$unlock_message = '<div><i class="fa fa-unlock"></i> Password</div>';
-                                $task_color = 'available';
+                                $task_is_locked = false;
 							}
 							else if ($task_is_locked === 'master password') {
                                 $unlock_message = '<div><i class="fa fa-unlock"></i> Master Password</div>';
-                                $task_color = 'available';
+                                $task_is_locked = false;
                             }
-                            else if ($task_is_locked){
+
+
+                            if ($stage_count == $status){
+                                $task_color = 'done';
+							}else if ($task_is_locked){
                                 $task_color = 'locked';
                             }
-							else if ($stage_count == $status){
-                                $task_color = 'done';
-							}
 							else{
                             	$task_color = 'available';
 							}
