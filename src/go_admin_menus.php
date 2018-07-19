@@ -12,6 +12,15 @@ acf_add_options_page(array(
     //'parent_slug' 	=> 'game-on',
 ));
 
+// add sub page
+acf_add_options_page(array(
+    'page_title' => 'Events',
+    'menu_slug' => 'go_random_events',
+    'capability' => 'edit_posts',
+    'icon_url'  => 'dashicons-clock'
+    //'parent_slug' 	=> 'game-on',
+));
+
 
 /**
  * re-order left admin menu
@@ -28,6 +37,7 @@ function go_reorder_admin_menu( ) {
         'badges', //badges
         'users.php', // Users
         'groups',
+        'go_random_events',
         'game-tools',//gameon tools
         'separator1', // --Space--
         'index.php', // Dashboard

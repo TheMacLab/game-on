@@ -522,21 +522,49 @@ function go_admin_bar_stats() {
 
         <div id="stats_tabs">
             <ul>
-                <li class="stats_tabs" tab="about"><a href="#stats_about">ABOUT</a></li>
+            <?php
+            $current_user_id = get_current_user_id();
+            $is_admin = go_user_is_admin($current_user_id);
+                if ($is_admin){
+                    echo '<li class="stats_tabs" tab="about"><a href="#stats_about">ABOUT</a></li>';
+                }
+            ?>
+
+
                 <li class="stats_tabs" tab="tasks"><a href="#stats_tasks"><?php echo strtoupper( get_option( 'options_go_tasks_name_plural' ) ); ?></a></li>
                 <li class="stats_tabs" tab="store"><a href="#stats_store"><?php echo strtoupper( get_option( 'options_go_store_name' ) ); ?></a></li>
                 <li class="stats_tabs" tab="history"><a href="#stats_history">HISTORY</a></li>
                 <li class="stats_tabs" tab="badges"><a href="#stats_badges"><?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?></a></li>
                 <li class="stats_tabs" tab="groups"><a href="#stats_groups">GROUPS</a></li>
                 <li class="stats_tabs" tab="leaderboard"><a href="#stats_leaderboard"><?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?></a></li>
+                <?php
+                if (!$is_admin){
+                    echo '<li class="stats_tabs" tab="about"><a href="#stats_about">ABOUT</a></li>';
+                }
+            ?>
+
             </ul>
-            <div id="stats_about"></div>
+             <?php
+             if($is_admin){
+                    echo '<div id="stats_about">';
+
+                            go_stats_about($user_id,  true);
+                    echo "</div>";
+             }
+             ?>
+
             <div id="stats_tasks"></div>
             <div id="stats_store"></div>
             <div id="stats_history"></div>
             <div id="stats_badges"></div>
             <div id="stats_groups"></div>
             <div id="stats_leaderboard"></div>
+            <?php
+             if(!$is_admin){
+                    echo '<div id="stats_about"></div>';
+             }
+             ?>
+
         </div>
 
 
@@ -779,22 +807,36 @@ function go_tasks_dataloader_ajax()
     die();
 }
 */
-function go_stats_about() {
-    if ( ! empty( $_POST['user_id'] ) ) {
+function go_stats_about($user_id = null, $not_ajax = false) {
+
+    if ( ! empty( $_POST['user_id'] ) && empty($user_id) ) {
         $user_id = (int) $_POST['user_id'];
     }
 
-    check_ajax_referer( 'go_stats_about' );
-
+    if (!$not_ajax){
+        check_ajax_referer( 'go_stats_about' );
+    }
 
     echo "<div id='go_stats_about' class='go_datatables'>";
-    $user_id = (int) $_POST['user_id'];
+    $headshot_id = get_user_meta($user_id, 'go_headshot', true) ;
+    $headshot = wp_get_attachment_image($headshot_id);
+    ?>
+    <div class='go_stats_gravatar'><?php echo $headshot; ?></div>
+    <?php
 
-    echo $user_id;
+    $num_of_qs = get_option('options_go_user_profile_questions');
+
+     for ($i = 0; $i < $num_of_qs; $i++) {
+         $q_title = get_option('options_go_user_profile_questions_' . $i . '_title');
+         $q_answer = get_user_meta($user_id, 'question_' . $i, true);
+
+         echo "<h4>{$q_title}</h4>";
+         echo "<p>{$q_answer}</p>";
+     }
 
     echo "</div>";
 
-    die();
+    //die();
 }
 
 function go_user_links($user_id, $on_stats, $website = true, $stats = false, $profile = false, $blog = false) {
@@ -848,8 +890,9 @@ function go_stats_task_list() {
             "SELECT *
 			FROM {$go_task_table_name}
 			WHERE uid = %d
-			ORDER BY id ASC",
+			ORDER BY last_time DESC",
             $user_id
+
         )
     );
 
@@ -2187,7 +2230,7 @@ function go_stats_badges_list($user_id) {
     foreach ( $rows as $row ) {
         $chainParentNum++;
         $row_id = $row->term_id;//id of the row
-        $custom_fields = get_term_meta( $row_id );
+        //$custom_fields = get_term_meta( $row_id );
         /*
         $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
         if( $cat_hidden == true){
@@ -2227,7 +2270,7 @@ function go_stats_badges_list($user_id) {
             }else{
                 $badge_class = 'go_badge_needed';
             }
-            $custom_fields = get_term_meta( $badge_id );
+            $badge_img_id = get_term_meta( $badge_id, 'my_image' );
             /*
             $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
             if( $cat_hidden == true){
@@ -2237,8 +2280,8 @@ function go_stats_badges_list($user_id) {
 
             $badge_obj = get_term( $badge_id);
             $badge_name = $badge_obj->name;
-            $badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
-            $badge_img = wp_get_attachment_image($badge_img_id, array( 100, 100 ));
+            //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
+            $badge_img = wp_get_attachment_image($badge_img_id[0], array( 100, 100 ));
 
             //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
             //$img_post = get_post( $badge_id );
@@ -2294,7 +2337,7 @@ function go_stats_groups_list($user_id) {
     foreach ( $rows as $row ) {
         $chainParentNum++;
         $row_id = $row->term_id;//id of the row
-        $custom_fields = get_term_meta( $row_id );
+        //$custom_fields = get_term_meta( $row_id );
         /*
         $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
         if( $cat_hidden == true){
@@ -2371,12 +2414,12 @@ function go_stats_groups_list($user_id) {
  *
  */
 
-function go_make_tax_select ($taxonomy, $title = "Show All", $location = null)
+function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $saved_val = null)
 {
     $is_hier = is_taxonomy_hierarchical( $taxonomy );
     echo "<select id='go_". $location . $taxonomy . "_select'>";
 
-    echo "<option value='none' selected ><b>" . $title . "</b></option>";
+    echo "<option value='none' ><b>" . $title . "</b></option>";
     if ($is_hier) {
         $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => '0');
 
@@ -2385,12 +2428,18 @@ function go_make_tax_select ($taxonomy, $title = "Show All", $location = null)
 
         foreach ( $parents as $parent ) {
             //$row_id = $parent->term_id;
-            echo "<option value='" . $parent->term_id . "' disabled><b>" . $parent->name . "</b></option>";
+
+            $option =  "<option value='" . $parent->term_id . "' disabled><b>" . $parent->name . "</b></option>";
+            echo $option;
             $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent->term_id);
             //children terms
             $children = get_terms($taxonomy, $args);
             foreach ( $children as $child ) {
-                echo "<option value='" . $child->term_id . "'>&nbsp;&nbsp;" . $child->name . "</option>";
+                if ($saved_val[0] == $child->term_id ){
+                    $selected = "selected";
+                }else{$selected = null;}
+                echo "<option value='" . $child->term_id . "' " . $selected . ">&nbsp;&nbsp;" . $child->name . "</option>";
+                echo "";
             }
 
         }
@@ -2400,7 +2449,10 @@ function go_make_tax_select ($taxonomy, $title = "Show All", $location = null)
         //children terms
         $children = get_terms($taxonomy, $args);
         foreach ( $children as $child ) {
-            echo "<option value='" . $child->term_id . "'>" . $child->name . "</option>";
+            if ($saved_val[0] == $child->term_id ){
+                    $selected = "selected";
+                }else{$selected = null;}
+            echo "<option value='" . $child->term_id . "' " . $selected . ">" . $child->name . "</option>";
         }
     }
     echo "</select>";

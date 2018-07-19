@@ -66,6 +66,7 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
                     }
                 });
 
+
             }
         }
     });
@@ -75,7 +76,7 @@ function go_stats_about(user_id) {
     console.log("about");
     //jQuery(".go_datatables").hide();
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_about;
-    if ( jQuery( "#stats_about" ).length == 0 ) {
+    if ( jQuery( "#go_stats_about" ).length == 0 ) {
         jQuery.ajax({
             type: 'post',
             url: MyAjax.ajaxurl,
@@ -86,6 +87,8 @@ function go_stats_about(user_id) {
             },
             success: function (res) {
                 if (-1 !== res) {
+                    console.log(res);
+                    console.log("about me");
                     //jQuery( '#go_stats_body' ).html( '' );
                     //var oTable = jQuery('#go_tasks_datatable').dataTable();
                     //oTable.fnDestroy();
@@ -121,6 +124,7 @@ function go_stats_task_list() {
                         jQuery('#go_tasks_datatable').dataTable({
                             responsive: true,
                             "autoWidth": false,
+                            "order": [[0, "desc"]],
                         });
 
                     }

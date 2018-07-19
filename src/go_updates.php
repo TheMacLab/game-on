@@ -42,6 +42,122 @@ function go_get_user_loot ($user_id, $loot_type){
     return $loot;
 }
 
+function go_update_bonus_loot ($post_id){
+    check_ajax_referer( 'go_update_bonus_loot' );
+    $post_id = $_POST['post_id'];
+
+    $user_id = get_current_user_id();
+    global $wpdb;
+
+    $go_actions_table_name = "{$wpdb->prefix}go_actions";
+    $actions = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT *
+			FROM {$go_actions_table_name}
+			WHERE source_id = %d
+			ORDER BY id DESC",
+            $post_id
+        )
+    );
+
+    $previous_bonus_attempt = $wpdb->get_var($wpdb->prepare("SELECT result 
+                FROM {$go_actions_table_name} 
+                WHERE source_id = %d AND uid = %d AND action_type = %s
+                ORDER BY id DESC LIMIT 1", $post_id, $user_id, 'bonus_loot'));
+    //ob_start();
+    if(!empty($previous_bonus_attempt)) {
+
+        go_noty_message_generic('error', '', "You have previously attempted this bonus.  No award given.", "8000");
+
+
+    }else {
+        //if health toggle is on, get health
+        $health_toggle = get_option('options_go_loot_health_toggle');
+        if ($health_toggle) {
+
+            $health_mod = go_get_health_mod($user_id);
+
+        } else {
+            $health_mod = 1;
+        }
+
+
+        $custom_fields = get_post_custom($post_id);
+
+        $row_count = (isset($custom_fields['bonus_loot_loot'][0]) ? $custom_fields['bonus_loot_loot'][0] : null);//number of loot drops
+        $values = array();
+        if (!empty($row_count)) {//if there are drop rows
+            for ($i = 0; $i < $row_count; $i++) {//get the values for each row
+                $message = "bonus_loot_loot_" . $i . "_message";
+                $message = (isset($custom_fields[$message][0]) ? $custom_fields[$message][0] : null);
+                $title = "bonus_loot_loot_" . $i . "_title";
+                $title = (isset($custom_fields[$title][0]) ? $custom_fields[$title][0] : null);
+                $xp = "bonus_loot_loot_" . $i . "_loot_xp";
+                $xp = (isset($custom_fields[$xp][0]) ? $custom_fields[$xp][0] : null) * $health_mod;
+                $gold = "bonus_loot_loot_" . $i . "_loot_gold";
+                $gold = (isset($custom_fields[$gold][0]) ? $custom_fields[$gold][0] : null) * $health_mod;;
+                $health = "bonus_loot_loot_" . $i . "_loot_health";
+                $health = (isset($custom_fields[$health][0]) ? $custom_fields[$health][0] : null);
+                $c4 = "bonus_loot_loot_" . $i . "_loot_c4";
+                $c4 = (isset($custom_fields[$c4][0]) ? $custom_fields[$c4][0] : null) * $health_mod;
+                $drop = "bonus_loot_loot_" . $i . "_loot_drop_rate";
+                $drop = (isset($custom_fields[$drop][0]) ? $custom_fields[$drop][0] : null) * $health_mod;
+
+                $row_val = array('xp' => $xp, 'gold' => $gold, 'health' => $health, 'c4' => $c4, 'drop' => $drop);
+
+                $values[] = $row_val;//stuff each row in to an array
+
+            }
+
+        }
+
+        $bonus_option = array();
+        foreach ($values as $key => $row) {
+            $bonus_option[$key] = $row['drop']; //sort by drop
+        }
+        array_multisort($bonus_option, SORT_ASC, $values);
+        $winner = false;
+        foreach ($values as $value) { //for each drop, test to award randomly
+            $drop = $value['drop'];
+            if (rand(1, 100) <= $drop) {
+                echo "winner";
+                $xp = $value['xp'];
+                $gold = $value['gold'];
+                $health = $value['health'];
+                $c4 = $value['c4'];
+                $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+                $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
+                $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+                $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
+                $message = $message . "<br><br>" . $xp_abbr . ": " .  $xp . "<br>" . $gold_abbr . ": " .  $gold . "<br>" . $health_abbr . ": " .  $health . "<br>" . $c4_abbr . ": " .  $c4  ;
+                go_noty_message_generic('warning', $title, $message, false);
+                go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Winner', null, null, null, $health_mod, $xp, $gold, $health, $c4, null, null, true);
+                $winner = true;
+                break;
+            }
+        }
+        if (!$winner) {
+            //add update here for no winner
+            go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Not Winner', null, null, null, null, null, null, null, null, null, null, true);
+            go_noty_message_generic('warning', "", "Better luck next time!", 8000);
+        }
+    }
+    /*
+    $buffer = ob_get_contents();
+    ob_end_clean();
+
+    // constructs the JSON response
+    echo json_encode(
+        array(
+            'json_status' => 'success',
+            'html' => $buffer
+        )
+    );
+    */
+    die();
+
+}
+
 function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bonus_status, $progressing, $result = null, $check_type = null, $badge_ids = null, $group_ids = null )
 {
     global $wpdb;
@@ -376,9 +492,14 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
                 foreach ($new_badges as $badge_id) {
                     $badge_obj = get_term($badge_id);
                     $badge_name = $badge_obj->name;
+                    $image_id = get_term_meta($badge_id, 'my_image');
+                    $badge_img = wp_get_attachment_image($image_id[0], array( 100, 100 ));
                     $badge_title = get_option('options_go_badges_name_singular');
-                    $message = "New " . ucfirst($badge_title);
-                    go_noty_loot_success($badge_name, $message);
+                    $title = "New " . ucfirst($badge_title);
+                    //go_noty_loot_success($badge_name, $message);
+                    $content = "<div>" . $badge_img . "<br>" . $badge_name . "</div>";
+                    //$content = "hi";
+                    go_noty_message_generic ('success', $title, $content, 8000);
                 }
             }
             return $new_badges;//array--not serialized
@@ -481,8 +602,8 @@ function go_remove_groups($group_ids, $user_id, $notify = false) {
                 foreach ($remove_groups as $id) {
                     $obj = get_term($id);
                     $name = $obj->name;
-                    $message = "New Group";
-                    go_noty_loot_success($name, $message);
+                    $message = "Group Removed";
+                    go_noty_loot_error($name, $message);
                 }
             }
             return $remove_groups;//array--not serialized of what was removed
@@ -622,6 +743,17 @@ function go_noty_loot_error ($loot, $loot_type) {
     text: '<div style=\"font-size: 1.5em;\">" . $loot_type . ": " . $loot . "</div>',
     theme: 'relax',
     timeout: '3000'
+    
+}).show();</script>";
+}
+
+function go_noty_message_generic ($type = 'alert', $title, $content, $timeout = false) {
+    echo "<script> new Noty({
+    type: '" . $type . "',
+    layout: 'topRight',
+    text: '<h3>" . $title . "</h3><div>$content</div>',
+    theme: 'relax',
+    timeout: $timeout
     
 }).show();</script>";
 }

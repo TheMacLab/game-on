@@ -232,6 +232,7 @@ add_action( 'wp_ajax_nopriv_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
 add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' );
 add_action( 'wp_ajax_go_upgade4', 'go_upgade4' );
+add_action( 'wp_ajax_go_update_bonus_loot', 'go_update_bonus_loot' );
 
 
 add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
@@ -487,6 +488,10 @@ function go_user_is_admin( $user_id = null ) {
 		$user_id = (int) $user_id;
 	}
 
+    if(user_can( $user_id, 'manage_options' )) {
+        return true;
+    }
+/*
 	$the_user = get_user_by( 'id', $user_id );
 	if ( empty( $the_user ) ) {
 		return false;
@@ -500,7 +505,7 @@ function go_user_is_admin( $user_id = null ) {
 			}
 		}
 	}
-
+*/
 	return false;
 }
 
@@ -669,7 +674,11 @@ function wpb_load_widget() {
     register_widget( 'wpb_widget' );
 
 }
-add_action( 'widgets_init', 'wpb_load_widget' );
+
+$widget_toggle = get_option('options_go_locations_widget_toggle');
+if($widget_toggle) {
+    add_action('widgets_init', 'wpb_load_widget');
+}
 
 // Creating the widget
 class wpb_widget extends WP_Widget {

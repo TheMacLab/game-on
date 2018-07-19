@@ -9,9 +9,9 @@ function go_clipboard() {
 function go_clipboard_save_filters (){
     $user_id = get_current_user_id();
     check_ajax_referer( 'go_clipboard_save_filters_' . $user_id );
-    $section = $_POST['go_clipboard_user_go_sections_select'];
-    $badge = $_POST['go_clipboard_go_badges_select'];
-    $group = $_POST['go_clipboard_user_go_groups_select'];
+    $section = $_POST['section'];
+    $badge = $_POST['badge'];
+    $group = $_POST['group'];
     update_user_meta( $user_id, 'go_clipboard_section', $section );
     update_user_meta( $user_id, 'go_clipboard_badge', $badge );
     update_user_meta( $user_id, 'go_clipboard_group', $group );
@@ -29,9 +29,9 @@ function go_clipboard_menu() {
 
 	?><div id="go_leaderboard_filters">
 
-        <span>Section:<?php go_make_tax_select('user_go_sections', "Show All" , "clipboard_"); ?></span>
-        <span>Group:<?php go_make_tax_select('user_go_groups', "Show All"  , "clipboard_"); ?></span>
-        <span>Badges:<?php go_make_tax_select('go_badges', "Show All"  , "clipboard_"); ?></span>
+        <span>Section:<?php go_make_tax_select('user_go_sections', "Show All" , "clipboard_", $section); ?></span>
+        <span>Group:<?php go_make_tax_select('user_go_groups', "Show All"  , "clipboard_", $group); ?></span>
+        <span>Badges:<?php go_make_tax_select('go_badges', "Show All"  , "clipboard_", $badge); ?></span>
         </div>
 		<div id="records_tabs">
 			<ul>
@@ -162,14 +162,51 @@ function go_clipboard_intable() {
         $user_firstname = $user_data_key->user_firstname;
         $user_lastname = $user_data_key->user_lastname;
 
-
+        //these are used in the filter
         $group_ids = $row->groups;
-        $group_ids = unserialize($group_ids);
-        $group_ids = json_encode($group_ids);
+        $group_ids_array = unserialize($group_ids);
+        $group_ids = json_encode($group_ids_array);
 
+        if (is_array($group_ids_array)){
+            $group_list = array();
+            $group_count = count($group_ids_array);
+            foreach ($group_ids_array as $group_id){
+                $term = get_term( $group_id );
+                $name = $term->name;
+                $group_list[] = $name ;
+            }
+            $group_list = implode(",<br>", $group_list);
+            $group_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$group_list</span>{$group_count}</span>";
+        }
+        else{
+            $group_count = null;
+
+        }
+
+
+        //these are used in the filter
         $badge_ids = $row->badges;
-        $badge_ids = unserialize($badge_ids);
-        $badge_ids = json_encode($badge_ids);
+        $badge_ids_array = unserialize($badge_ids);
+        $badge_ids = json_encode($badge_ids_array);
+
+
+        $badge_count = $row->badge_count;
+        $badge_list = array();
+        if (is_array($badge_ids_array)){
+            foreach ($badge_ids_array as $badge_id){
+                $term = get_term( $badge_id );
+                $name = $term->name;
+                $badge_list[] = $name ;
+            }
+            $badge_list = implode(",<br>", $badge_list);
+            $badge_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$badge_list</span>{$badge_count}</span>";
+        }
+        else{
+            $badge_count = null;
+        }
+
+
+
 
         //$sections = get_user_meta($user_id, "go_sections");
         $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
@@ -183,7 +220,7 @@ function go_clipboard_intable() {
         $gold = $row->gold;
         $health = $row->health;
         $c4 = $row->c4;
-        $badge_count = $row->badge_count;
+
 
         $rank = go_get_rank ( $user_id );
         $current_rank_name = $rank['current_rank'];
@@ -238,7 +275,7 @@ function go_clipboard_intable() {
 
             echo "		
 					<td class='user_badge_count'>{$badge_count}</td>
-					<td class='user_group_count'>{$badge_count}</td>
+					<td class='user_group_count'>{$group_count}</td>
 				  </tr>";
         }
     }

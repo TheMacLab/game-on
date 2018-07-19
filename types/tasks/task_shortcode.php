@@ -643,19 +643,59 @@ function go_badges_task_chains ($post_id, $user_id, $is_admin = false, $undo = f
 	}
 }
 
+/**
+ *Bonus Loot
+ */
 function go_bonus_loot () {
+
     $bonus_loot = strtolower( get_option( 'options_go_loot_bonus_loot_name' ) );
     $bonus_loot_uc = ucwords($bonus_loot);
     echo "
+		<div id='go_bonus_loot'>
     	<h4>{$bonus_loot_uc}</h4>
         <p>Click the button below to try and claim " . $bonus_loot . ".
         ";
     echo "<br><br>
 
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-		<button class='go_bonus_button'>?</button>
+		<button id='go_bonus_button' class='go_bonus_button'>?</button>
 	";
-    echo "</p>";
+    echo "</p></div>";
+}
+
+function go_display_stage_badges($badges) {
+	if (is_array($badges)) {
+        foreach ($badges as $badge) {
+            $badge_id = $badge;
+            $badge_class = 'go_badge_earned';
+
+            $badge_img_id = get_term_meta($badge_id, 'my_image');
+            /*
+            $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
+            if( $cat_hidden == true){
+                continue;
+            }
+            */
+
+            $badge_obj = get_term($badge_id);
+            $badge_name = $badge_obj->name;
+            //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
+            $badge_img = wp_get_attachment_image($badge_img_id[0], array(100, 100));
+
+            //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
+            //$img_post = get_post( $badge_id );
+            if (!empty($badge_obj)) {
+                echo "<div class='go_outro_reward'><div>
+                        <div>
+                            <figure title='{$badge_name}'>{$badge_img}
+                                <figcaption>{$badge_name}</figcaption>
+                            </figure>
+                        </div>
+                       </div></div>";
+
+            }
+        }
+    }
 }
 
 function go_display_rewards( $custom_fields, $user_id, $post_id, $task_name ) {
@@ -671,30 +711,38 @@ function go_display_rewards( $custom_fields, $user_id, $post_id, $task_name ) {
     if (get_option( 'options_go_loot_xp_toggle' )){
     	$xp_on = true;
         $xp_name = get_option('options_go_loot_xp_name');
-        $xp_loot = 0;
+        $xp_loot = (isset($custom_fields['go_entry_rewards_xp'][0]) ?  $custom_fields['go_entry_rewards_xp'][0] : null);
     }else{
         $xp_on = false;
 	}
     if (get_option( 'options_go_loot_gold_toggle' )){
     	$gold_on = true;
         $gold_name = get_option('options_go_loot_gold_name');
-        $gold_loot= 0;
+        $gold_loot = (isset($custom_fields['go_entry_rewards_gold'][0]) ?  $custom_fields['go_entry_rewards_gold'][0] : null);
+
     }else{
         $gold_on = false;
     }
     if (get_option( 'options_go_loot_health_toggle' )){
     	$health_on = true;
         $health_name = get_option('options_go_loot_health_name');
-        $health_loot = 0;
+        $health_loot = (isset($custom_fields['go_entry_rewards_health'][0]) ?  $custom_fields['go_entry_rewards_health'][0] : null);
     }else{
         $health_on = false;
     }
     if (get_option( 'options_go_loot_c4_toggle' )){
     	$c4_on = true;
         $c4_name = get_option('options_go_loot_c4_name');
-        $c4_loot = 0;
+        $c4_loot = (isset($custom_fields['go_entry_rewards_c4'][0]) ?  $custom_fields['go_entry_rewards_c4'][0] : null);
     }else{
         $c4_on = false;
+    }
+
+    if (get_option( 'options_go_badges_toggle' )){
+        $badges_on = true;
+        $badges_name = get_option('options_go_badges_name_plural');
+        $badges = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
+        $badges = unserialize($badges);
     }
 
     $i = 0;
@@ -726,7 +774,12 @@ function go_display_rewards( $custom_fields, $user_id, $post_id, $task_name ) {
 
         $i++;
     }
+    if($health_loot > 200){
+    	$health_loot = 200;
+	}
     echo "This {$task_name} has:<br>{$stage_count} {$stage_name}<br>Where you can earn:";
+    echo "<div class='go_task_rewards'>
+        <div class='go_task_reward'>";
     if($xp_on){
     	echo "<br>{$xp_loot} {$xp_name} ";
     }
@@ -739,6 +792,10 @@ function go_display_rewards( $custom_fields, $user_id, $post_id, $task_name ) {
     if($c4_on){
     	echo "<br>{$c4_loot} {$c4_name} ";
     }
+	echo "</div>";
+    go_display_stage_badges($badges);
+    echo "</div>";
+
 }
 
 /**
@@ -852,31 +909,44 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     $custom_fields = get_post_custom( $post_id );
     $task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
     $outro_message = (isset($custom_fields['go_outro_message'][0]) ?  $custom_fields['go_outro_message'][0] : null);
+    $loot = $wpdb->get_results ("SELECT * FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}" );
+    $loot = $loot[0];
     if (get_option( 'options_go_loot_xp_toggle' )){
         $xp_on = true;
         $xp_name = get_option('options_go_loot_xp_name');
-        $xp_loot = $wpdb->get_var ("SELECT xp FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
+        $xp_loot = $loot->xp;
     }
     if (get_option( 'options_go_loot_gold_toggle' )){
         $gold_on = true;
         $gold_name = get_option('options_go_loot_gold_name');
-        $gold_loot = $wpdb->get_var ("SELECT gold FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
+        $gold_loot = $loot->gold;
     }
     if (get_option( 'options_go_loot_health_toggle' )){
         $health_on = true;
         $health_name = get_option('options_go_loot_health_name');
-        $health_loot = $wpdb->get_var ("SELECT health FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
+        $health_loot = $loot->health;
     }
     if (get_option( 'options_go_loot_c4_toggle' )){
         $c4_on = true;
         $c4_name = get_option('options_go_loot_c4_name');
-        $c4_loot = $wpdb->get_var ("SELECT c4 FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
+        $c4_loot = $loot->c4;
     }
+    if (get_option( 'options_go_badges_toggle' )){
+        $badges_on = true;
+        $badges_name = get_option('options_go_badges_name_plural');
+        $badges = $loot->badges;
+        $badges = unserialize($badges);
+    }
+    $groups_loot = $loot->groups;
     echo "<div id='outro' class='go_checks_and_buttons'>";
     echo "    
         <h3>" . ucwords($task_name) . " Complete!</h3>
         <p>".$outro_message."</p>
+        
+        
         <h4>Rewards</h4>
+        <div class='go_task_rewards'>
+        <div class='go_task_reward'>
         <p>You earned  : ";
     if(isset($xp_on)){
         echo "<br>{$xp_loot} {$xp_name} ";
@@ -888,11 +958,25 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         echo "<br>{$health_loot} {$health_name} ";
     }
     if(isset($c4_on)){
-        echo "<br>{$c4_loot} {$c4_name} ";
+        echo "<br>{$c4_loot} {$c4_name} </div>";
     }
 
+    go_display_stage_badges($badges);
+
+
+	echo "</div>";
     if ($custom_fields['bonus_loot_toggle'][0]) {
-        go_bonus_loot();
+        global $wpdb;
+        $go_actions_table_name = "{$wpdb->prefix}go_actions";
+        $previous_bonus_attempt = $wpdb->get_var($wpdb->prepare("SELECT result 
+                FROM {$go_actions_table_name} 
+                WHERE source_id = %d AND uid = %d AND action_type = %s
+                ORDER BY id DESC LIMIT 1", $post_id, $user_id, 'bonus_loot'));
+        //ob_start();
+        if(empty($previous_bonus_attempt)) {
+            go_bonus_loot();
+        }
+
     }
 
     $bonus_status = go_get_bonus_status($post_id, $user_id);

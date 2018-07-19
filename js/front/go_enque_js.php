@@ -12,6 +12,7 @@ function go_scripts () {
 	/*
 	 * Registering Scripts For The Front-end
 	 */
+	wp_enqueue_style( 'dashicons' );
 
 		//task shortcode script is registered here, but enqueued and localized in the shortcode. 
 		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'min/go_tasks-min.js', null, $version );
@@ -76,7 +77,8 @@ function go_scripts () {
                     'go_stats_lite'                => wp_create_nonce( 'go_stats_lite' ),
 					'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
                     'go_update_admin_view'         => wp_create_nonce( 'go_update_admin_view' ),
-                    'go_the_lb_ajax'                => wp_create_nonce( 'go_the_lb_ajax' )
+                    'go_the_lb_ajax'                => wp_create_nonce( 'go_the_lb_ajax' ),
+                    'go_update_bonus_loot'          => wp_create_nonce('go_update_bonus_loot')
 
 				)
 			)

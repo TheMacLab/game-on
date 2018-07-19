@@ -31,7 +31,11 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     }else {
         $instructions = null;
     }
-    echo "<div class='go_checks_and_buttons' style='display:none;'>";
+    if($i == $status){
+        $class = 'active';
+    }else{$class = 'null';}
+    echo "<div class='go_checks_and_buttons {$class}' style='display:none;'>";
+
     if ($check_type == 'upload') {
         go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'URL') {
@@ -40,7 +44,7 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
         go_password_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'quiz') {
         go_test_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
-    } else if ($check_type == 'none') {
+    } else if ($check_type == 'none' || $check_type == null) {
         go_no_check($i, $status, $custom_fields, $instructions, $bonus, $bonus_status);
     }
 
@@ -57,7 +61,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
     if ($is_admin) {
         $admin_view = get_user_meta($user_id, 'go_admin_view', true);
     }
-    $onclick = "onclick='task_stage_check_input( this );'";
+    //$onclick = "onclick='task_stage_check_input( this );'";
 
     $undo = 'undo';
     $abandon = 'abandon';

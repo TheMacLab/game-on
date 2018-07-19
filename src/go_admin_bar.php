@@ -395,8 +395,10 @@ function go_admin_bar() {
 				) 
 			);
         };
-        
-		
+
+        if ( $is_admin ) {
+            $wp_admin_bar->add_node(array('id' => 'go_clipboard', 'title' => '<span class="ab-icon dashicons dashicons-clipboard"></span><div id="go_clipboard_adminbar" style="float: right;">Clipboard</div>', 'href' => get_admin_url() . 'admin.php?page=go_clipboard',));
+        }
 		if ( $is_admin ) {
 			$wp_admin_bar->add_group(
 				array(

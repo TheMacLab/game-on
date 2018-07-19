@@ -1,6 +1,6 @@
 
 jQuery( document ).ready( function() {
-	jQuery.ajaxSetup({ 
+	jQuery.ajaxSetup({
 		url: go_task_data.url += '/wp-admin/admin-ajax.php'
 	});
 	//check_locks();
@@ -24,7 +24,39 @@ jQuery( document ).ready( function() {
         task_stage_check_input( this );
     });
 
+
+//add onclick to bonus loot buttons
+    jQuery( "#go_bonus_button" ).one("click", function(e) {
+        go_update_bonus_loot(this);
+    });
+
+    jQuery("#go_button").closest(".go_checks_and_buttons").addClass('active');
+
+
+
 });
+
+function go_update_bonus_loot(){
+    jQuery('#go_bonus_loot').html('<span class="go_loading"></span>');
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_update_bonus_loot;
+    var post_id = go_task_data.ID;
+    //alert (post_id);
+    jQuery.ajax({
+        type: "post",
+        url: MyAjax.ajaxurl,
+        data: {
+            _ajax_nonce: nonce,
+            action: 'go_update_bonus_loot',
+            post_id: post_id
+        },
+        success: function( res ) {
+            console.log("Bonus Loot");
+            jQuery("#go_bonus_loot").remove();
+            jQuery("#page-container").append(res);
+
+        }
+    });
+}
 
 //For the Timer (v4)
 function getTimeRemaining(endtime) {
@@ -40,7 +72,7 @@ function getTimeRemaining(endtime) {
 	    'minutes': minutes,
 	    'seconds': seconds
 	  };
-	  
+
 	}
 
 //Initializes the new timer (v4)
@@ -52,7 +84,7 @@ function initializeClock(id, endtime) {
 	var secondsSpan = clock.querySelector('.seconds');
 
 	function updateClock() {
-		
+
 	    var t = getTimeRemaining(endtime);
 	    t.days = Math.max(0, t.days);
 	    daysSpan.innerHTML = t.days;
@@ -70,17 +102,17 @@ function initializeClock(id, endtime) {
 
 	    }
   	}
-  	
+
   	updateClock();
   	var t = getTimeRemaining(endtime);
   	var time_ms = t.total;
 	console.log (t.total);
   	if (time_ms > 0 ){
-  		var timeinterval = setInterval(updateClock, 1000);	
+  		var timeinterval = setInterval(updateClock, 1000);
   	}else {
 
   	}
-	
+
 }
 
 function go_timer_abandon() {
@@ -122,6 +154,14 @@ function go_disable_loading( ) {
     jQuery('#go_back_button').off().one("click", function(e){
         task_stage_check_input( this );
     });
+
+    jQuery( "#go_bonus_button" ).off().one("click", function(e) {
+        go_update_bonus_loot(this);
+    });
+
+    //jQuery("#go_buttons").parent().addClass('active');
+    jQuery("#go_button").closest(".go_checks_and_buttons").addClass('active');
+
 }
 
 function task_stage_check_input( target ) {
@@ -369,6 +409,7 @@ function task_stage_change( target ) {
                 }
                 else if ( res.button_type == 'show_bonus' ){
 					jQuery('#go_buttons').remove();
+                    jQuery(".go_checks_and_buttons").removeClass('active');
                 }
                 else if ( res.button_type == 'continue_bonus' ){
 					jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
@@ -414,12 +455,14 @@ function task_stage_change( target ) {
 }
 
 function go_append (res){
-    jQuery( res.html ).appendTo( '#go_wrapper' ).stop().show( 'slow' ).promise().then(function() {
+    //jQuery( res.html ).addClass('active');
+    jQuery( res.html ).appendTo( '#go_wrapper' ).stop().hide().show( 'slow' ).promise().then(function() {
         // Animation complete
         Vids_Fit_and_Box();
         go_make_clickable();
         go_disable_loading();
     });
+    //jQuery("#go_buttons").parent().addClass('active');
 }
 
 // Makes it so you can press return and enter content in a field
@@ -431,7 +474,7 @@ function go_make_clickable() {
 					// do something
 					jQuery("#go_button").click();
 				}
-				});  
+				});
 }
 
 //This updates the admin view option and refreshes the page.

@@ -107,8 +107,6 @@ function acf_load_seat_choices( $field ) {
     return $field;
 
 }
-
-
 add_filter('acf/load_field/name=user-seat', 'acf_load_seat_choices');
 
 
@@ -233,6 +231,102 @@ function acf_update_order($post_id ) {
 }
 add_action('acf/save_post', 'acf_update_order', 99);
 
+
+
+
+
+
+/**
+ *
+ */
+function default_value_field_5aafc60dde152($value, $post_id, $field) {
+    if ($value === false) {
+        $row_count = get_option('options_go_loot_bonus_loot');
+        $value = array();
+        if(!empty($row_count)){
+            for ($i = 0; $i < $row_count; $i++) {
+                $title = "options_go_loot_bonus_loot_" . $i . "_title";
+                $title = get_option($title);
+                $message = "options_go_loot_bonus_loot_" . $i . "_message";
+                $message = get_option($message);
+                $mods_toggle = "options_go_loot_bonus_loot_" . $i . "_mods_toggle";
+                $mods_toggle = get_option($mods_toggle);
+                $xp = "options_go_loot_bonus_loot_" . $i . "_defaults_xp";
+                $xp = get_option($xp);
+                $gold = "options_go_loot_bonus_loot_" . $i . "_defaults_gold";
+                $gold = get_option($gold);
+                $health = "options_go_loot_bonus_loot_" . $i . "_defaults_health";
+                $health = get_option($health);
+                $c4 = "options_go_loot_bonus_loot_" . $i . "_defaults_c4";
+                $c4 = get_option($c4);
+                $drop = "options_go_loot_bonus_loot_" . $i . "_defaults_drop_rate";
+                $drop = get_option($drop);
+
+                $loot_val = array(
+                    'field_5aafc60ede155' => $xp,
+                    'field_5aafc60ede154' => $gold ,
+                    'field_5aafc60ede156' => $health,
+                    'field_5b00f8a0b9e83' => $c4,
+                    'field_5aafc60ede157' => $drop
+                );
+                $row_val = array(
+                    'field_5b4ebb8995f90' => $title,
+                    'field_5b4ebb9f95f91' => $message,
+                    'field_5b4ebbcc95f92' => $mods_toggle,
+                    'field_5b4ebb3195f8f' => $loot_val
+                );
+
+                $value[] = $row_val;
+
+            }
+
+        }
+    }
+    return $value;
+}
+add_filter('acf/load_value/key=field_5aafc60dde152', 'default_value_field_5aafc60dde152', 10, 3);
+
+function default_value_field_5b4ebb3195f8f($value, $post_id, $field) {
+    if ($value === false) {
+        $row_count = get_option('options_go_loot_bonus_loot');
+        $value = array();
+        if(!empty($row_count)){
+            for ($i = 0; $i < $row_count; $i++) {
+                $title = "options_go_loot_bonus_loot_" . $i . "_title";
+                $title = get_option($title);
+                $message = "options_go_loot_bonus_loot_" . $i . "_message";
+                $message = get_option($message);
+                $mods_toggle = "options_go_loot_bonus_loot_" . $i . "_mods_toggle";
+                $mods_toggle = get_option($mods_toggle);
+                $xp = "options_go_loot_bonus_loot_" . $i . "_defaults_xp";
+                $xp = get_option($xp);
+                $gold = "options_go_loot_bonus_loot_" . $i . "_defaults_gold";
+                $gold = get_option($gold);
+                $health = "options_go_loot_bonus_loot_" . $i . "_defaults_health";
+                $health = get_option($health);
+                $c4 = "options_go_loot_bonus_loot_" . $i . "_defaults_c4";
+                $c4 = get_option($c4);
+                $drop = "options_go_loot_bonus_loot_" . $i . "_defaults_drop_rate";
+                $drop = get_option($drop);
+
+                $row_val = array(
+                    'field_5b4ebb3195f8f' => '',
+                    'field_5aafc60ede155' => $xp,
+                    'field_5aafc60ede154' => $gold ,
+                    'field_5aafc60ede156' => $health,
+                    'field_5b00f8a0b9e83' => $c4,
+                    'field_5aafc60ede157' => $drop);
+
+                $value[] = $row_val;
+
+            }
+
+        }
+    }
+    return $value;
+}
+
+add_filter('acf/load_value/key=field_5b4ebb3195f8f', 'default_value_field_5b4ebb3195f8f', 10, 3);
 
 
 

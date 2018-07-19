@@ -10,6 +10,8 @@ function go_admin_scripts ($hook) {
      * Registering Scripts For Admin Pages
      */
 
+        wp_enqueue_style( 'dashicons' );
+
         /*
          * Combined scripts for every admin page. Combine all scripts unless the page needs localization.
          *

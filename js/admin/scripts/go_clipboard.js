@@ -184,20 +184,25 @@ function go_clipboard_class_a_choice() {
 		//on change filter listener
 		//console.log("change5");
 		jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change( function() {
-			console.log("change");
+			//console.log("change");
 			Clipboard.draw();
 			//ajax function to save the values
             var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters;
-            console.log(jQuery( '#go_clipboard_user_go_sections_select' ).val());
+            var section = jQuery( '#go_clipboard_user_go_sections_select' ).val();
+            var group = jQuery( '#go_clipboard_user_go_groups_select' ).val();
+            var badge = jQuery( '#go_clipboard_go_badges_select' ).val();
+            //alert (section);
+            //console.log(jQuery( '#go_clipboard_user_go_sections_select' ).val());
             jQuery.ajax({
                 type: "post",
                 url: MyAjax.ajaxurl,
-                go_clipboard_user_go_sections_select: jQuery( '#go_clipboard_user_go_sections_select' ).val(),
-                go_clipboard_user_go_groups_select: jQuery( '#go_clipboard_user_go_groups_select' ).val(),
-                go_clipboard_go_badges_select: jQuery( '#go_clipboard_go_badges_select' ).val(),
                 data: {
                     _ajax_nonce: nonce,
-                    action: 'go_clipboard_save_filters'
+                    action: 'go_clipboard_save_filters',
+                    section: section,
+                    badge: badge,
+                    group: group
+
                 },
                 success: function( res ) {
                     console.log("values saved");

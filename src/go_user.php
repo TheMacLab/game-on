@@ -70,3 +70,112 @@ if ( ! function_exists( 'cor_remove_personal_options' ) ) {
 }
 add_action( 'admin_head-profile.php', 'cor_profile_subject_start' );
 add_action( 'admin_footer-profile.php', 'cor_profile_subject_end' );
+
+
+
+/**
+ * ACF User Profile Questions
+ */
+if( function_exists('acf_add_local_field_group') ):
+
+    $num_of_qs = get_option('options_go_user_profile_questions');
+    $fields = array();
+    $message = array(
+        'key' => 'field_user_message',
+        'label' => '',
+        'name' => '',
+        'type' => 'message',
+        'instructions' => '',
+        'required' => 0,
+        'conditional_logic' => 0,
+        'wrapper' => array(
+            'width' => '',
+            'class' => '',
+            'id' => '',
+        ),
+        'message' => 'Please provide the following information so we can get to know you better. These items and answers are only visible to site administrators.',
+        'new_lines' => 'wpautop',
+        'esc_html' => 0,
+    );
+    $fields[] = $message;
+    $headshot = array(
+        'key' => 'field_5b4addf715427',
+        'label' => 'Headshot',
+        'name' => 'go_headshot',
+        'type' => 'image',
+        'instructions' => 'Please upload an actual photo of you.',
+        'required' => 0,
+        'conditional_logic' => 0,
+        'wrapper' => array(
+            'width' => '',
+            'class' => '',
+            'id' => '',
+        ),
+        'return_format' => 'id',
+        'preview_size' => 'thumbnail',
+        'library' => 'uploadedTo',
+        'min_width' => '',
+        'min_height' => '',
+        'min_size' => '',
+        'max_width' => '',
+        'max_height' => '',
+        'max_size' => '',
+        'mime_types' => '',
+    );
+
+    $fields[] = $headshot;
+    for ($i = 0; $i < $num_of_qs; $i++) {
+        $q_title = get_option('options_go_user_profile_questions_' . $i . '_title');
+        $q_question = get_option('options_go_user_profile_questions_' . $i . '_question');
+        $num_rows = get_option('options_go_user_profile_questions_' . $i . '_number_of_rows');
+        $field_num = "field_" . $i;
+        $field_name = "question_" . $i;
+        $field = array(
+            'key' => $field_num,
+            'label' => $q_title,
+            'name' => $field_name,
+            'type' => 'textarea',
+            'instructions' => $q_question,
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'default_value' => '',
+            'placeholder' => '',
+            'maxlength' => '',
+            'rows' => $num_rows,
+            'new_lines' => '',
+        );
+
+        $fields[] = $field;
+    }
+
+
+
+    acf_add_local_field_group(array(
+        'key' => 'group_1',
+        'title' => 'About Me',
+        'fields' => $fields,
+        'location' => array(
+            array(
+                array(
+                    'param' => 'user_form',
+                    'operator' => '==',
+                    'value' => 'all',
+                ),
+            ),
+        ),
+        'menu_order' => 1,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'left',
+        'instruction_placement' => 'label',
+        'hide_on_screen' => '',
+        'active' => 1,
+        'description' => 'These items will show only for administrators.',
+    ));
+
+endif;

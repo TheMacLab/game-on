@@ -65,10 +65,19 @@
 	background-color: #ddd;
 }
 .go_lock, .go_late_mods, .go_sched_access_message, .go_timer_message, .go_checks_and_buttons {
-	border: solid;
-	border-radius: 25px;
+	border: solid 1px;
+	border-radius: 5px;
 	padding: 10px;
 	margin: 10px;
+	background-color: #f5b3bd;
+}
+
+.go_checks_and_buttons{
+	background-color: #c9fbc9;
+
+}
+
+.go_checks_and_buttons.active{
 	background-color: cornsilk;
 }
 
@@ -112,6 +121,13 @@ li.collapsibleListClosed{
 li.collapsibleListClosed::before {
 	content: "▶︎";
 }
+
+/********************
+*	Outro
+********************/
+
+
+.go_task_rewards {display: flex;}
 
 /********************
 *	Featherlight

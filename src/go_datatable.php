@@ -3,7 +3,7 @@
 
 global $wpdb;
 global $go_db_version;
-$go_db_version = '4.17';
+$go_db_version = '4.19';
 
 
 function go_update_db_check() {
@@ -141,7 +141,7 @@ function go_table_totals() {
 			uid bigint(20),
 			xp INT DEFAULT 0,
 			gold INT DEFAULT 0,
-			health INT DEFAULT 100,
+			health DECIMAL (10,2) DEFAULT 100,
 			c4 INT DEFAULT 0,
 			badges VARCHAR (4096),
 			groups VARCHAR (4096),
