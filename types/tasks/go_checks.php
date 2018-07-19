@@ -38,10 +38,19 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
         }else{
             $bonus_is_complete = false;
         }
+    }else{
+        $bonus_is_complete = false;
     }
 
 
-    if($i == $status && $bonus_is_complete == false ){
+
+    if ($bonus){
+        $status_active_check = $bonus_status;
+    }else{
+        $status_active_check = $status;
+    }
+
+    if($i == $status_active_check && $bonus_is_complete == false ){
         $class = 'active';
     }else{$class = 'null';}
     echo "<div class='go_checks_and_buttons {$class}' style='display:none;'>";
@@ -87,6 +96,8 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         $continue = 'continue_bonus';
         if ($i == $repeat_max - 1 && $bonus_status == $repeat_max){
             $bonus_is_complete = true;
+            $undo = 'undo_last_bonus';
+
         }
         $status = $bonus_status;
     }
@@ -132,7 +143,6 @@ function go_no_check ($i, $status, $custom_fields, $instructions, $bonus, $bonus
     $stage = 'stage';
     if ($bonus){
         $status = $bonus_status;
-        $stage = 'bonus_status';
     }
     if ($i !=$status) {
         echo "Stage complete!";

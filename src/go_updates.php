@@ -101,42 +101,71 @@ function go_update_bonus_loot ($post_id){
                 $c4 = "bonus_loot_loot_" . $i . "_loot_c4";
                 $c4 = (isset($custom_fields[$c4][0]) ? $custom_fields[$c4][0] : null) * $health_mod;
                 $drop = "bonus_loot_loot_" . $i . "_loot_drop_rate";
-                $drop = (isset($custom_fields[$drop][0]) ? $custom_fields[$drop][0] : null) * $health_mod;
+                $drop = (isset($custom_fields[$drop][0]) ? $custom_fields[$drop][0] : null);
 
-                $row_val = array('xp' => $xp, 'gold' => $gold, 'health' => $health, 'c4' => $c4, 'drop' => $drop);
+                $row_val = array('title' => $title, 'message' => $message, 'xp' => $xp, 'gold' => $gold, 'health' => $health, 'c4' => $c4, 'drop' => $drop);
 
                 $values[] = $row_val;//stuff each row in to an array
 
             }
 
         }
-
+        //sort by drop rate
         $bonus_option = array();
         foreach ($values as $key => $row) {
-            $bonus_option[$key] = $row['drop']; //sort by drop
+            $bonus_option[$key] = $row['drop'];
         }
         array_multisort($bonus_option, SORT_ASC, $values);
+
+        //add all the drop rates together
+        //if greater than 100, treat them as ratios
+        $drop_total = 0;
+        foreach ($values as $value) {
+            $drop_total = $value['drop'] + $drop_total;
+        }
+        if ($drop_total < 100){
+            $drop_total = 100;
+        }
+
         $winner = false;
         foreach ($values as $value) { //for each drop, test to award randomly
             $drop = $value['drop'];
-            if (rand(1, 100) <= $drop) {
-                echo "winner";
-                $xp = $value['xp'];
-                $gold = $value['gold'];
-                $health = $value['health'];
-                $c4 = $value['c4'];
+            $rand = rand(1, $drop_total);
+            if ( $rand <= $drop) {
                 $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
                 $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
                 $health_abbr = get_option( "options_go_loot_health_abbreviation" );
                 $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
-                $message = $message . "<br><br>" . $xp_abbr . ": " .  $xp . "<br>" . $gold_abbr . ": " .  $gold . "<br>" . $health_abbr . ": " .  $health . "<br>" . $c4_abbr . ": " .  $c4  ;
+                $xp = $value['xp'];
+                if ($xp > 0){
+                    $xp = $xp_abbr . ": " .  $xp . "<br>";
+                }else {$xp = '';}
+                $gold = $value['gold'];
+                if ($gold > 0){
+                    $gold = $gold_abbr . ": " .  $gold . "<br>";
+                }else {$gold = '';}
+                $health = $value['health'];
+                if ($health > 0){
+                    $health = $health_abbr . ": " .  $health . "<br>";
+                }else {$health = '';}
+                $c4 = $value['c4'];
+                if ($c4 > 0){
+                    $c4 = $c4_abbr . ": " .  $c4 . "<br>";
+                }else {$c4 = '';}
+                $title = $value['title'];
+                $message = $value['message'];
+
+                //$title = get_option('options_go_loot_bonus_loot_name');;
+                $message = $message . "<br><br>" . $xp . $gold . $health . $c4;
                 go_noty_message_generic('warning', $title, $message, false);
+                //go_noty_loot_success($title,$message );
                 go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Winner', null, null, null, $health_mod, $xp, $gold, $health, $c4, null, null, true);
                 $winner = true;
                 break;
             }
+            $drop_total = $drop_total - $drop;
         }
-        if (!$winner) {
+        if (!$winner) {//NOT winner
             //add update here for no winner
             go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Not Winner', null, null, null, null, null, null, null, null, null, null, true);
             go_noty_message_generic('warning', "", "Better luck next time!", 8000);
@@ -747,13 +776,14 @@ function go_noty_loot_error ($loot, $loot_type) {
 }).show();</script>";
 }
 
-function go_noty_message_generic ($type = 'alert', $title, $content, $timeout = false) {
-    echo "<script> new Noty({
+function go_noty_message_generic ($type = 'alert', $title, $content) {
+    echo "<script> 
+    new Noty({
     type: '" . $type . "',
     layout: 'topRight',
-    text: '<h3>" . $title . "</h3><div>$content</div>',
+    text: '<h3>" . $title . "</h3><div>" . $content . "</div>',
     theme: 'relax',
-    timeout: $timeout
+    timeout: false
     
 }).show();</script>";
 }

@@ -1877,23 +1877,6 @@ acf_add_local_field_group(array(
 			),
 		),
 		array(
-			'key' => 'field_5ad6791a7ce15',
-			'label' => 'Bonus Loot',
-			'name' => 'go_loot_bonus_loot',
-			'type' => 'group',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'layout' => 'row',
-			'sub_fields' => array(
-			),
-		),
-		array(
 			'key' => 'field_5abc7f48f4811',
 			'label' => 'User Information',
 			'name' => '',
@@ -1909,6 +1892,42 @@ acf_add_local_field_group(array(
 			'open' => 0,
 			'multi_expand' => 0,
 			'endpoint' => 0,
+		),
+		array(
+			'key' => 'field_5b50ed31cd73e',
+			'label' => 'Instructions',
+			'name' => '',
+			'type' => 'message',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '<p>Users can be organized into sections and groups.	These are created and managed under the <i class="fa fa-users" aria-hidden="true"></i>"User Groups" menu to the left or by clicking the links below (links open in new tab of window).</p>
+<ul><li><a href="edit-tags.php?taxonomy=user_go_sections" target="_blank">Sections</a></li><li><a href="edit-tags.php?taxonomy=user_go_groups" target="_blank">Groups</a></li></ul>
+
+<div class="more_info_accordian">
+<h3> More Information</h3>
+<div>
+<b>Sections</b>
+<p>
+Sections are the primary sort group for users and if you have multiple classes you will want to use these. Content and store items can be locked by section.	Students can self assign their section on the profile page.
+</p>
+<b>Groups</b>
+<p>
+Groups can by used for a secondary sorting of students( i.e., roles, professions, or table groups).	They are hierarchical--you can create categories so you can have multiple types of groups.	These also allow for locking of content and store items.	If you wish to have students self assign their groups, store items can be created that add students groups.	A future release will likely give you the option to add certain group categories to the profile page as well.
+</p>
+<b>Seats</b>
+<p>Seats allow you to sort students on the clipboard by where they sit in the class.	There isn\'t an actually seating chart.</p>
+<b>Profile Questions</b>
+<p>These show on the students stats panel.	They are only visible to site administrators and the student, not other users.	These are useful for getting to know your students better.</p>
+</div>
+</div>',
+			'new_lines' => '',
+			'esc_html' => 0,
 		),
 		array(
 			'key' => 'field_5b495af34ba69',
@@ -2005,25 +2024,6 @@ acf_add_local_field_group(array(
 			'layout' => 'table',
 			'button_label' => 'Add Question',
 			'sub_fields' => array(
-				array(
-					'key' => 'field_5b495bdb4ba6c',
-					'label' => 'Public',
-					'name' => 'public',
-					'type' => 'true_false',
-					'instructions' => 'Answers show on stats panel. You can select to have answers to each question show to all users or just admin.',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '15',
-						'class' => '',
-						'id' => '',
-					),
-					'message' => '',
-					'default_value' => 0,
-					'ui' => 1,
-					'ui_on_text' => 'Public',
-					'ui_off_text' => 'Private',
-				),
 				array(
 					'key' => 'field_5b4a59ec158e0',
 					'label' => 'Title',
@@ -3247,9 +3247,9 @@ acf_add_local_field_group(array(
 			),
 			'message' => '',
 			'default_value' => 0,
-			'ui' => 0,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
+			'ui' => 1,
+			'ui_on_text' => 'On',
+			'ui_off_text' => 'Off',
 		),
 		array(
 			'key' => 'field_5b1b4d05ca724',
@@ -3414,9 +3414,9 @@ acf_add_local_field_group(array(
 			),
 			'message' => '',
 			'default_value' => 0,
-			'ui' => 0,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
+			'ui' => 1,
+			'ui_on_text' => 'On',
+			'ui_off_text' => 'Off',
 		),
 		array(
 			'key' => 'field_5abde7f9301a8',
@@ -3527,6 +3527,7 @@ acf_add_local_field_group(array(
 								'go_badge_lock' => 'Badges - 1 of these',
 								'go_user_lock' => 'User Groups - 1 of these',
 								'go_health_lock' => 'Minimum Health Level',
+								'go_xp_levels_lock' => 'Minimum XP Level',
 								'go_period_lock' => 'Class Section - 1 of these',
 							),
 							'default_value' => array(
@@ -3725,7 +3726,7 @@ acf_add_local_field_group(array(
 									'key' => 'field_5b1b1f4210e07',
 									'label' => 'Class Section',
 									'name' => 'lock_sections',
-									'type' => 'select',
+									'type' => 'taxonomy',
 									'instructions' => '',
 									'required' => 0,
 									'conditional_logic' => array(
@@ -3742,18 +3743,62 @@ acf_add_local_field_group(array(
 										'class' => '',
 										'id' => '',
 									),
+									'taxonomy' => 'user_go_sections',
+									'field_type' => 'multi_select',
+									'allow_null' => 0,
+									'add_term' => 0,
+									'save_terms' => 0,
+									'load_terms' => 0,
+									'return_format' => 'id',
+									'multiple' => 0,
+								),
+								array(
+									'key' => 'field_5b50dca61b856',
+									'label' => 'Minimum XP Level',
+									'name' => 'xp_level',
+									'type' => 'select',
+									'instructions' => '',
+									'required' => 0,
+									'conditional_logic' => array(
+										array(
+											array(
+												'field' => 'field_5b1b1f4210dff',
+												'operator' => '==',
+												'value' => 'go_xp_levels_lock',
+											),
+										),
+									),
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
 									'choices' => array(
-										'Period 1' => 'Period 1',
-										'Period 2' => 'Period 2',
+										'' => 'Select',
+										0 => 'Level1 - Beginner : 0 XP2',
+										100 => 'Level2 - Beginner : 100 XP2',
+										150 => 'Level3 - Beginner : 150 XP2',
+										225 => 'Level4 - Beginner : 225 XP2',
+										337 => 'Level5 - Beginner : 337 XP2',
+										505 => 'Level6 - Beginner : 505 XP2',
+										757 => 'Level7 - Beginner : 757 XP2',
+										1135 => 'Level8 - Beginner : 1135 XP2',
+										1702 => 'Level9 - Beginner : 1702 XP2',
+										2553 => 'Level10 - Beginner : 2553 XP2',
+										3829 => 'Level11 - Beginner : 3829 XP2',
+										5743 => 'Level12 - Beginner : 5743 XP2',
+										8614 => 'Level13 - Beginner : 8614 XP2',
+										12921 => 'Level14 - Beginner : 12921 XP2',
+										19381 => 'Level15 - Guru : 19381 XP2',
 									),
 									'default_value' => array(
 									),
-									'allow_null' => 1,
-									'multiple' => 1,
-									'ui' => 1,
-									'ajax' => 1,
+									'allow_null' => 0,
+									'multiple' => 0,
+									'ui' => 0,
+									'ajax' => 0,
 									'return_format' => 'value',
-									'placeholder' => '',
+									'placeholder' => 'Select',
 								),
 							),
 						),
@@ -4806,6 +4851,7 @@ acf_add_local_field_group(array(
 								'go_badge_lock' => 'Badges - 1 of these',
 								'go_user_lock' => 'User Groups - 1 of these',
 								'go_xp_lock' => 'Minimum XP',
+								'go_xp_levels_lock' => 'Minimum XP Level',
 								'go_gold_lock' => 'Minimum Gold',
 								'go_health_lock' => 'Minimum Health',
 								'go_c4_lock' => 'Minimum Currency 4',
@@ -5002,6 +5048,54 @@ acf_add_local_field_group(array(
 									'min' => 0,
 									'max' => '',
 									'step' => '',
+								),
+								array(
+									'key' => 'field_5b50d33f928d2',
+									'label' => 'Minimum XP Level',
+									'name' => 'xp_level',
+									'type' => 'select',
+									'instructions' => '',
+									'required' => 0,
+									'conditional_logic' => array(
+										array(
+											array(
+												'field' => 'field_5ac134bb7858e',
+												'operator' => '==',
+												'value' => 'go_xp_levels_lock',
+											),
+										),
+									),
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'choices' => array(
+										'' => 'Select',
+										0 => 'Level1 - Beginner : 0 XP2',
+										100 => 'Level2 - Beginner : 100 XP2',
+										150 => 'Level3 - Beginner : 150 XP2',
+										225 => 'Level4 - Beginner : 225 XP2',
+										337 => 'Level5 - Beginner : 337 XP2',
+										505 => 'Level6 - Beginner : 505 XP2',
+										757 => 'Level7 - Beginner : 757 XP2',
+										1135 => 'Level8 - Beginner : 1135 XP2',
+										1702 => 'Level9 - Beginner : 1702 XP2',
+										2553 => 'Level10 - Beginner : 2553 XP2',
+										3829 => 'Level11 - Beginner : 3829 XP2',
+										5743 => 'Level12 - Beginner : 5743 XP2',
+										8614 => 'Level13 - Beginner : 8614 XP2',
+										12921 => 'Level14 - Beginner : 12921 XP2',
+										19381 => 'Level15 - Guru : 19381 XP2',
+									),
+									'default_value' => array(
+									),
+									'allow_null' => 0,
+									'multiple' => 0,
+									'ui' => 0,
+									'ajax' => 0,
+									'return_format' => 'value',
+									'placeholder' => 'Select',
 								),
 								array(
 									'key' => 'field_5b23c8f967b82',

@@ -52,6 +52,7 @@ function go_update_bonus_loot(){
         },
         success: function( res ) {
             console.log("Bonus Loot");
+            console.log(res);
             jQuery("#go_bonus_loot").remove();
             jQuery("#page-container").append(res);
 
@@ -422,6 +423,9 @@ function task_stage_change( target ) {
                 }
                 else if ( res.button_type == 'undo_bonus' ){
                     jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'undo_last_bonus' ){
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
                 }
                 else if ( res.button_type == 'abandon_bonus' ){
                     jQuery( '#go_wrapper > div' ).slice(-3).remove();

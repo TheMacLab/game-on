@@ -33,6 +33,12 @@ jQuery(document).ready(function(){
             go_level_names();
     }
     });
+
+    jQuery( ".more_info_accordian" ).accordion({
+        collapsible: true,
+        header: "h3",
+        active: false
+    });
 });
 
 function go_validate_growth() {

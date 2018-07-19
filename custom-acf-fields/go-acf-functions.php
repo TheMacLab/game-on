@@ -110,6 +110,37 @@ function acf_load_seat_choices( $field ) {
 add_filter('acf/load_field/name=user-seat', 'acf_load_seat_choices');
 
 
+
+function acf_load_xp_levels( $field ) {
+
+    // reset choices
+    //$field['choices'] = array();
+    $field['choices'][ null ] = "Select";
+    $num_levels = get_option('options_go_loot_xp_levels_level');
+    $number = get_option('options_go_seat_number');
+    $field['placeholder'] = 'Select';
+
+    for ($i = 0; $i < $num_levels; $i++) {
+        $num = $i+1;
+        $xp = get_option('options_go_loot_xp_levels_level_' . $i . '_xp');
+        $level_name = get_option('options_go_loot_xp_levels_level_' . $i . '_name');
+        $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+
+        $name = "Level" . $num . " - " . "$level_name" . " : " . $xp . " " . $xp_abbr;
+
+        $field['choices'][ $xp ] = $name;
+    }
+
+
+
+    // return the field
+    return $field;
+
+}
+add_filter('acf/load_field/key=field_5b50d33f928d2', 'acf_load_xp_levels');
+add_filter('acf/load_field/key=field_5b50dca61b856', 'acf_load_xp_levels');
+
+
 /**
  * Flushes the rewrite rules when options page is saved.
  * It does this by setting a option to true (1) and then another action
@@ -237,7 +268,9 @@ add_action('acf/save_post', 'acf_update_order', 99);
 
 
 /**
- *
+ *Loads the default options in bonus loot
+ * Default is set in options and loaded on tasks
+ * both the next two functions are needed
  */
 function default_value_field_5aafc60dde152($value, $post_id, $field) {
     if ($value === false) {

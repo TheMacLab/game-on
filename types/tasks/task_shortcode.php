@@ -1058,7 +1058,7 @@ function go_task_change_stage() {
 	//If they are different then respond and have the page refresh.
     // get the user's current progress on this task as db_status
 
-    if ($button_type == 'continue_bonus' || $button_type == 'complete_bonus' || $button_type == 'undo_bonus' || $button_type == 'abandon_bonus') {
+    if ($button_type == 'continue_bonus' || $button_type == 'complete_bonus' || $button_type == 'undo_bonus' || $button_type == 'undo_last_bonus' || $button_type == 'abandon_bonus') {
         $db_status = go_get_bonus_status($post_id, $user_id);
     }
     else{
@@ -1210,7 +1210,7 @@ function go_task_change_stage() {
 
 
     }
-    else if ($button_type == 'complete_bonus' || $button_type == 'continue_bonus' || $button_type == 'undo_bonus' || $button_type == 'abandon_bonus'){
+    else if ($button_type == 'complete_bonus' || $button_type == 'continue_bonus' || $button_type == 'undo_bonus' || $button_type == 'undo_last_bonus' || $button_type == 'abandon_bonus'){
         $repeat_max = $custom_fields['go_bonus_limit'][0];
         $bonus_status = go_get_bonus_status($post_id, $user_id);
 
@@ -1242,7 +1242,7 @@ function go_task_change_stage() {
                 go_checks_for_understanding($custom_fields, $bonus_status - 1, null, $user_id, $post_id, true, $bonus_status, $repeat_max);
             }
 		}
-	 	else if ($button_type == 'undo_bonus') {
+	 	else if ($button_type == 'undo_bonus' || $button_type == 'undo_last_bonus') {
 
             //////////////////
             /// UPDATE THE DATABASE for BONUS stages undo

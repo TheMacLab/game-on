@@ -340,6 +340,29 @@ function go_xp_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logge
     return $this_lock;
 }
 
+
+/**
+ * Minimum XP LEVELS Lock
+ */
+
+function go_xp_levels_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
+    $this_lock = false;
+    if( $is_logged_in ) {
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_xp_level";
+        $xp_needed = $custom_fields[$option][0];
+
+        $user_xp = go_get_user_loot ($user_id, 'xp');
+        $xp_name = get_option('options_go_loot_xp_name');
+        if ($user_xp < $xp_needed){
+            if (!$check_only) {
+                echo "<br><span class='go_error_red'>You must have {$xp_needed} {$xp_name} to access this {$task_name}.</span></br>";
+            }
+            $this_lock = true;
+        }
+    }
+    return $this_lock;
+}
+
 /**
  * Minimum C4 Lock
  */

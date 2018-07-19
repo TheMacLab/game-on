@@ -52,16 +52,16 @@
 *QUIZ
 ********************/
 
-#go_test_field_table_1 {  border-collapse: collapse; }
-#go_test_field_table_1 tr {border: solid 1px;}
+.go_test_field_table {  border-collapse: collapse; }
+.go_test_field_table tr {border: solid 20px;
+                             border-color: #f3f0f0;}
 
-#go_test_field_table_1 {}
-#go_test_field_table_1 ul {
+.go_test_field_table ul {
     list-style: none;
 
 }
 
-#go_test_field_table_1 li {
+.go_test_field_table li {
     display: flex;
     margin-left: 50px;
     justify-content: flex-end;
