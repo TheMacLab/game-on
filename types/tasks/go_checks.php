@@ -31,7 +31,17 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     }else {
         $instructions = null;
     }
-    if($i == $status){
+
+    if ($bonus){
+        if ($i == $repeat_max - 1 && $bonus_status == $repeat_max){
+            $bonus_is_complete = true;
+        }else{
+            $bonus_is_complete = false;
+        }
+    }
+
+
+    if($i == $status && $bonus_is_complete == false ){
         $class = 'active';
     }else{$class = 'null';}
     echo "<div class='go_checks_and_buttons {$class}' style='display:none;'>";
@@ -94,7 +104,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
         if ($custom_fields['bonus_switch'][0] && ! $bonus_is_complete) {
             //echo "There is a bonus stage.";
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
+            echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
         }
         echo "</div>";
     }
@@ -108,9 +118,9 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
             echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
         }
         if (($i + 1) == $stage_count) {
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' button_type='{$complete}' admin_lock='true' >Complete</button> ";
+            echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='{$complete}' admin_lock='true' >Complete</button> ";
         } else {
-            echo "<button id='go_button' status='{$status}' check_type='{$check_type}' button_type='{$continue}'  admin_lock='true' >Continue</button> ";
+            echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='{$continue}'  admin_lock='true' >Continue</button> ";
         }
         echo "</div>";
     }

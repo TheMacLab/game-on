@@ -30,7 +30,8 @@ jQuery( document ).ready( function() {
         go_update_bonus_loot(this);
     });
 
-    jQuery("#go_button").closest(".go_checks_and_buttons").addClass('active');
+    //add active class to checks and buttons
+    jQuery(".progress").closest(".go_checks_and_buttons").addClass('active');
 
 
 
@@ -159,8 +160,9 @@ function go_disable_loading( ) {
         go_update_bonus_loot(this);
     });
 
-    //jQuery("#go_buttons").parent().addClass('active');
-    jQuery("#go_button").closest(".go_checks_and_buttons").addClass('active');
+
+    //add active class to checks and buttons
+    jQuery(".progress").closest(".go_checks_and_buttons").addClass('active');
 
 }
 
@@ -409,6 +411,7 @@ function task_stage_change( target ) {
                 }
                 else if ( res.button_type == 'show_bonus' ){
 					jQuery('#go_buttons').remove();
+                    //remove active class to checks and buttons
                     jQuery(".go_checks_and_buttons").removeClass('active');
                 }
                 else if ( res.button_type == 'continue_bonus' ){

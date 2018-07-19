@@ -247,7 +247,6 @@ function go_task_shortcode($atts, $content = null ) {
 }
 add_shortcode( 'go_task','go_task_shortcode' );
 
-
 /**
  * VISITOR CONTENT
  */
@@ -820,7 +819,7 @@ function go_task_render_chain_pagination ( $task_id, $custom_fields ) {
 	}
 
 
-    $chain_id = (isset($custom_fields['location_map_loc'][0]) ?  $custom_fields['location_map_loc'][0] : null);
+    $chain_id = (isset($custom_fields['go-location_map_loc'][0]) ?  $custom_fields['go-location_map_loc'][0] : null);
 
     if (!empty($chain_id)) {
         $chain_order = go_get_chain_order($chain_id);
@@ -958,8 +957,9 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         echo "<br>{$health_loot} {$health_name} ";
     }
     if(isset($c4_on)){
-        echo "<br>{$c4_loot} {$c4_name} </div>";
+        echo "<br>{$c4_loot} {$c4_name}";
     }
+    echo " </div>";
 
     go_display_stage_badges($badges);
 
