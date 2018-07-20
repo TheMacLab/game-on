@@ -1906,25 +1906,6 @@ acf_add_local_field_group(array(
 			'layout' => 'block',
 			'sub_fields' => array(
 				array(
-					'key' => 'field_5b495a7d7257c',
-					'label' => 'Show Seats on User Profile',
-					'name' => 'toggle',
-					'type' => 'true_false',
-					'instructions' => 'Allow students to select their own seat in the User Profile.',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'message' => '',
-					'default_value' => 1,
-					'ui' => 1,
-					'ui_on_text' => 'Yes',
-					'ui_off_text' => 'No',
-				),
-				array(
 					'key' => 'field_5b3a5c3e316c6',
 					'label' => 'Seats Name',
 					'name' => 'name',

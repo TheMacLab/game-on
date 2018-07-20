@@ -69,8 +69,7 @@
 
 
 
-function go_user_profile_page ()
-{
+//function go_user_profile_page (){
     /**
      * ACF User Profile Questions
      */
@@ -106,7 +105,6 @@ function go_user_profile_page ()
         $message = array('key' => 'field_user_message', 'label' => '', 'name' => '', 'type' => 'message', 'instructions' => '', 'required' => 0, 'conditional_logic' => 0, 'wrapper' => array('width' => '', 'class' => '', 'id' => '',), 'message' => 'Please provide the following information so we can get to know you better. These items and answers are only visible to site administrators.', 'new_lines' => 'wpautop', 'esc_html' => 0,);
         $fields[] = $message;
         $headshot = array('key' => 'field_5b4addf715427', 'label' => 'Headshot', 'name' => 'go_headshot', 'type' => 'image', 'instructions' => 'Please upload an actual photo of you.', 'required' => 0, 'conditional_logic' => 0, 'wrapper' => array('width' => '', 'class' => '', 'id' => '',), 'return_format' => 'id', 'preview_size' => 'thumbnail', 'library' => 'uploadedTo', 'min_width' => '', 'min_height' => '', 'min_size' => '', 'max_width' => '', 'max_height' => '', 'max_size' => '', 'mime_types' => '',);
-
         $fields[] = $headshot;
         for ($i = 0; $i < $num_of_qs; $i++) {
             $q_title = get_option('options_go_user_profile_questions_' . $i . '_title');
@@ -123,8 +121,8 @@ function go_user_profile_page ()
         acf_add_local_field_group(array('key' => 'group_1', 'title' => 'About Me', 'fields' => $fields, 'location' => array(array(array('param' => 'user_form', 'operator' => '==', 'value' => 'all',),),), 'menu_order' => 1, 'position' => 'normal', 'style' => 'default', 'label_placement' => 'left', 'instruction_placement' => 'label', 'hide_on_screen' => '', 'active' => 1, 'description' => 'These items will show only for administrators.',));
 
     endif;
-}
-add_action('profile_personal_options', 'go_user_profile_page');
+//}
+//add_action('profile_personal_options', 'go_user_profile_page');
 //"There is no equivalent hook at this point for injecting content onto the profile pages of non-current users."
 //https://codex.wordpress.org/Plugin_API/Action_Reference/profile_personal_options
 
