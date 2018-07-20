@@ -993,7 +993,6 @@ END TOOLTIP
   position: relative;
   overflow: hidden;
   font-family: verdana;
-  border-bottom: 2px solid #BBB;
   display: flex;
   flex-wrap: wrap;
   background-color: lightgray;
@@ -1260,12 +1259,20 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
   text-align: center;
   float: left; }
 
-.go_badge_needed,
 .go_group_needed {
   opacity: 0.3;
   filter: alpha(opacity=30);
   /* msie */
   background-color: white; }
+
+.go_badge_needed {
+  background-color: white; }
+
+.go_badge_needed img,
+.go_badge_needed figcaption {
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+  /* msie */ }
 
 .badges_row,
 .groups_row {
@@ -1389,17 +1396,21 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
   display: block;
   width: 75px; }
 
-/*MAPS*/
+/*MAPS
+
 .taxonomy-task_chains .pod_achievement.column-pod_achievement,
 .taxonomy-task_chains .pod_toggle.column-pod_toggle,
 .taxonomy-task_chains .pod_done_num.column-pod_done_num {
-  visibility: hidden; }
+	visibility: hidden;
+}
+
+
 
 .child .pod_achievement.column-pod_achievement,
 .child .pod_toggle.column-pod_toggle,
 .child .pod_done_num.column-pod_done_num {
   visibility: visible; }
-
+*/
 /********************
 *	Edit term tables
 hides table on term page until reorder.js is complete

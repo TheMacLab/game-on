@@ -931,4 +931,11 @@ function bbp_enable_visual_editor( $args = array() ) {
 add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
 
 
+/*list all queries--config file also needs option set
+echo "<pre>";
+print_r($wpdb->queries);
+echo "</pre>";
+*/
+
+
 ?>

@@ -58,6 +58,7 @@ function acf_load_seat_choices( $field ) {
 
     // reset choices
     //$field['choices'] = array();
+    $field['choices'] = null;
     $field['choices'][ null ] = "Select";
     $name = get_option('options_go_seats_name');
     $number = get_option('options_go_seat_number');
@@ -115,6 +116,7 @@ function acf_load_xp_levels( $field ) {
 
     // reset choices
     //$field['choices'] = array();
+    $field['choices'] = null;
     $field['choices'][ null ] = "Select";
     $num_levels = get_option('options_go_loot_xp_levels_level');
     $number = get_option('options_go_seat_number');

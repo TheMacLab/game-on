@@ -34,7 +34,8 @@ function go_register_task_tax_and_cpt() {
         ),
         'query_var' => true
     );
-    register_taxonomy( 'task_chains', array( 'maps_menus' ), $task_chains_args );
+    register_taxonomy( 'task_chains', array( 'tasks' ), $task_chains_args );
+    register_taxonomy_for_object_type( 'task_chains', 'tasks' );
 
     // Register Task TOP MENU Taxonomy
     $task_menu_labels = array(
@@ -133,10 +134,14 @@ function go_register_task_tax_and_cpt() {
 		'hierarchical'               => true,
 		'public'                     => true,
 		'show_ui'                    => true,
-		'show_admin_column'          => false,
+		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
-		'show_in_menu' 				 => true,
-		'show_tagcloud'              => false,
+		'show_in_menu' 				 => false,
+		'show_tagcloud'              => true,
+        'rewrite' => array(
+            'slug' => 'go_badges'
+        ),
+        'query_var' => true
 	);
 	register_taxonomy( 'go_badges', array( '' ), $args_badge );
 
@@ -227,7 +232,7 @@ function go_register_task_tax_and_cpt() {
 		'hierarchical' => false,
 		'description' => get_option( 'options_go_tasks_name_plural' ),
         'supports'              => array( 'title', 'comments', 'thumbnail' ),
-		'taxonomies' => array(),
+		'taxonomies' => array('task_chains'),
 		'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => true,
@@ -367,6 +372,7 @@ function go_get_bonus_status( $task_id, $user_id = null ) {
 	if ( empty( $task_id ) ) {
 		return null;
 	}
+
 
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();

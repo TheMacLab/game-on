@@ -2271,6 +2271,7 @@ function go_stats_badges_list($user_id) {
                 $badge_class = 'go_badge_needed';
             }
             $badge_img_id = get_term_meta( $badge_id, 'my_image' );
+            $badge_description = term_description( $badge_id );
             /*
             $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
             if( $cat_hidden == true){
@@ -2287,9 +2288,15 @@ function go_stats_badges_list($user_id) {
             //$img_post = get_post( $badge_id );
             if ( ! empty( $badge_obj ) ) {
                 echo"<div class='go_badge_wrap'>
-                        <div class='go_badge_container {$badge_class}'>
-                            <figure class=go_badge title='{$badge_name}'>{$badge_img}
-                                <figcaption>{$badge_name}</figcaption>
+                        <div class='go_badge_container {$badge_class}'><figure class=go_badge title='{$badge_name}'>";
+
+                        if (!empty($badge_description)){
+                            echo "<span class='tooltip' ><span class='tooltiptext'>{$badge_description}</span>{$badge_img}</span>";
+                        }else{
+                            echo "$badge_img";
+                        }
+                echo "        
+               <figcaption>{$badge_name}</figcaption>
                             </figure>
                         </div>
                        </div>";

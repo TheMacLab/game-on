@@ -62,18 +62,22 @@ function go_task_shortcode($atts, $content = null ) {
 		$go_fitvids_maxwidth = get_option('options_go_video_width_percent')."%";
 	}
 
-	// gets admin user object
-	$go_admin_email = get_option( 'options_go_email' );
-	if ( $go_admin_email ) {
-		$admin = get_user_by( 'email', $go_admin_email );
-	}
+    /* Removing Queries --admin name can just be 'an administrator'
+    // gets admin user object
+    $go_admin_email = get_option( 'options_go_email' );
+    if ( $go_admin_email ) {
+        $admin = get_user_by( 'email', $go_admin_email );
+    }
 
-	// use display name of admin with store email, or use default name
-	if ( ! empty( $admin ) ) {
-		$admin_name = addslashes( $admin->display_name );
-	} else {
-		$admin_name = 'an administrator';
-	}
+    // use display name of admin with store email, or use default name
+
+    if ( ! empty( $admin ) ) {
+        $admin_name = addslashes( $admin->display_name );
+    } else {
+        $admin_name = 'an administrator';
+    }
+    */
+    $admin_name = 'an administrator';
 	$is_admin = go_user_is_admin( $user_id );
 
     $admin_view = ($is_admin ?  get_user_meta($user_id, 'go_admin_view', true) : null);
@@ -237,7 +241,7 @@ function go_task_shortcode($atts, $content = null ) {
 
 	//echo "</div></div>";
 		//Print the bottom of the page
-		go_task_render_chain_pagination( $post_id, $custom_fields );
+		go_task_render_chain_pagination( $post_id, $custom_fields );//3 Queries
 
 		//Print comments
 		if ( get_post_type() == 'tasks' ) {
@@ -485,161 +489,6 @@ function go_print_1_message ( $custom_fields, $i ){
 		if(isset($GLOBALS['wp_embed']))
 		$message  = $GLOBALS['wp_embed']->autoembed($message );
 	echo "<div id='message_" . $i . "' class='go_stage_message'  style='display: none;'>".do_shortcode(wpautop( $message  ) )."</div>";
-}
-
-/**
- * checks if the task is done
- * Used when awarding badges on the last stage of the last quest in a chain
- * @param $post_id
- * @param bool $is_current_task
- * @param bool $undo
- * @return bool
- */
-function go_task_done_check( $post_id , $is_current_task = false, $undo = false) {
-	global $wpdb;
-
-	$temp_status_required    = 4;
-	$temp_three_stage_active = (boolean) get_post_meta(
-		$post_id,
-		'go_mta_three_stage_switch',
-		true
-	);
-	if ($temp_three_stage_active == true) {
-		$temp_status_required    = 3;
-	}
-	$temp_five_stage_active  = (boolean) get_post_meta(
-		$post_id,
-		'go_mta_five_stage_switch',
-		true
-	);
-	if ($temp_five_stage_active == true) {
-		$temp_status_required    = 5;
-	}
-	//echo '<script type="text/javascript">alert("# needed '.$temp_status_required.'");</script>';
-	//gets the current stage
-	$temp_status = go_task_get_status( $post_id );
-	//echo '<script type="text/javascript">alert("# done '.$temp_status.'");</script>';
-	//echo '<script type="text/javascript">alert("'.$undo.'");</script>';
-	if (($is_current_task == true) && ($undo != true) ){
-		++$temp_status;
-		//echo '<script type="text/javascript">alert("'.$temp_status.' adjusted");</script>';
-		//echo '<script type="text/javascript">alert("current task");</script>';
-	}
-	if ( $temp_status === $temp_status_required) {
-		$result = true;
-		//echo '<script type="text/javascript">alert("done");</script>';
-	}
-	else {
-		//echo '<script type="text/javascript">alert("not done");</script>';
-		$result = false;
-	}
-	return $result;
-}
-
-/**
- * Award an achievement if this is the last stage in a pod or chain.
-*/
-function go_badges_task_chains ($post_id, $user_id, $is_admin = false, $undo = false ) {
-	$chain_order = get_post_meta( $post_id, 'go_mta_chain_order', true );
-	///set variables for each chain the task is in
-	foreach ( $chain_order as $chain_tt_id => $order ) {
-		$pos = array_search( $post_id, $order );
-		$the_chain = get_term_by( 'term_taxonomy_id', $chain_tt_id );
-		$chain_title = ucwords( $the_chain->name );
-		$chain_id = ( $the_chain->term_id );
-		$chain_pod = get_term_meta($chain_tt_id, 'pod_toggle', true);
-		$chain_badge = get_term_meta($chain_tt_id, 'pod_achievement', true);
-		///////////////////////////////////////////////
-		//Award badge if button is continue and is last in chain
-		if ( ($undo != true ) && (! empty( $chain_order ))) {
-			//////////////////////////////////
-			///check if this is the last stage in the current task -->
-			//////////////////////////////////
-			if ( go_task_done_check($post_id, true, false ) == true ){
-				$tasks_done_count = 1;
-				//if this is part of a pod, then count number of tasks complete in pod
-				if ($chain_pod == true){
-					//get number of tasks to complete pod
-					$pod_done_num = get_term_meta($chain_tt_id, 'pod_done_num', true);
-					$chain_items = array_shift($chain_order);
-					//echo '<script type="text/javascript">alert("'.$chain_items.'");</script>';
-					foreach ( $chain_items as $chain_item ) {
-						if ( go_task_done_check($chain_item, false, false) == true ) {
-							++$tasks_done_count;
-						}
-					}
-					//if the number complete is equal to the number to recieve then give achievement
-					if ( $tasks_done_count == $pod_done_num ){
-						if ( ! empty ($chain_badge)) {
-							go_award_badge(
-								array(
-									'id'        => $chain_badge,
-									'repeat'    => false,
-									'uid'       => $user_id
-								)
-							);
-						}
-					}
-				}
-				//else the task is not a pod
-				else {
-					//if the task is the last item then give achievement assigned to chain
-					$last_in_chain = go_task_chain_is_final_task( $post_id, $chain_tt_id );
-					if ($last_in_chain == true){
-						if ( ! empty ($chain_badge)) {
-							go_award_badge(
-								array(
-									'id'        => $chain_badge,
-									'repeat'    => false,
-									'uid'       => $user_id
-								)
-							);
-						}
-					}
-				}
-			}
-		}
-	///////////////////////////////////////////////
-	//REMOVE CHAIN BADGE IF BUTTON CLICKED IS UNDO
-	if ( ($undo == true ) && (! empty( $chain_order ))) {
-		//////////////////////////////////
-		///check if this is the last stage in the current task -->
-		//////////////////////////////////
-		if ( go_task_done_check($post_id, true, $undo ) == true ){
-			//echo '<script type="text/javascript">alert("last stage undo");</script>';
-			$tasks_done_count = 0;
-				//if this is part of a pod, then count number of tasks complete in pod
-				if ($chain_pod == true){
-					//get number of tasks to complete pod
-					$pod_done_num = get_term_meta($chain_tt_id, 'pod_done_num', true);
-					$chain_items = array_shift($chain_order);
-					foreach ( $chain_items as $chain_item ) {
-						if ( go_task_done_check($chain_item, false, false) == true ) {
-							++$tasks_done_count;
-						}
-					}
-					//echo '<script type="text/javascript">alert("'.$tasks_done_count.'");</script>';
-					//echo '<script type="text/javascript">alert("'.$pod_done_num.'");</script>';
-					//if the number complete is equal to the number to recieve then give achievement
-					if ( $tasks_done_count == $pod_done_num ){
-						if ( ! empty ($chain_badge)) {
-							go_remove_badge( $user_id, $chain_badge );
-						}
-					}
-				}
-				//else the task is not a pod
-				else {
-					//if the task is the last item then give achievement assigned to chain
-					$last_in_chain = go_task_chain_is_final_task( $post_id, $chain_tt_id );
-					if ($last_in_chain == true){
-						if ( ! empty ($chain_badge)) {
-							go_remove_badge( $user_id, $chain_badge );
-						}
-					}
-				}
-			}
-		}
-	}
 }
 
 /**
@@ -905,7 +754,7 @@ function go_lock_password_validate($pass, $custom_fields, $status){
 function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status){
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
-    $custom_fields = get_post_custom( $post_id );
+    //$custom_fields = get_post_custom( $post_id );
     $task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
     $outro_message = (isset($custom_fields['go_outro_message'][0]) ?  $custom_fields['go_outro_message'][0] : null);
     $loot = $wpdb->get_results ("SELECT * FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}" );
@@ -931,12 +780,12 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         $c4_loot = $loot->c4;
     }
     if (get_option( 'options_go_badges_toggle' )){
-        $badges_on = true;
-        $badges_name = get_option('options_go_badges_name_plural');
+        //$badges_on = true;
+        //$badges_name = get_option('options_go_badges_name_plural');
         $badges = $loot->badges;
         $badges = unserialize($badges);
     }
-    $groups_loot = $loot->groups;
+    //$groups_loot = $loot->groups;
     echo "<div id='outro' class='go_checks_and_buttons'>";
     echo "    
         <h3>" . ucwords($task_name) . " Complete!</h3>
@@ -1162,7 +1011,17 @@ function go_task_change_stage() {
         $group_ids = null;
         if ($button_type == 'complete') {
             $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
+
             $group_ids = (isset($custom_fields['go_groups'][0]) ?  $custom_fields['go_groups'][0] : null);
+            $badge_ids_terms = go_badges_task_chains($post_id, $user_id, $custom_fields);
+            if (!empty($badge_ids_terms)){
+            	$badge_ids = unserialize($badge_ids);
+                if (!is_array($badge_ids)){
+                    $badge_ids = array();
+                }
+            	$badge_ids = array_unique(array_merge($badge_ids, $badge_ids_terms));
+            	$badge_ids = serialize($badge_ids);
+			}
         }
 
         go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, true, $result, $check_type, $badge_ids, $group_ids );
@@ -1430,6 +1289,19 @@ function go_update_fail_count($user_id, $task_id, $fail_count, $status){
         go_update_actions($user_id, 'quiz_mod', $task_id, $status + 1, null, $status, $fail_count, null, null, null, null, null, null, null, null, null, null, null);
     }
 }
+
+
+
+
+
+
+
+
+////////////////NOT USED????????
+
+
+
+
 /*
 //DON"T KNOW WHAT IT DOES
 function go_inc_test_fail_count( $s_name, $test_fail_max = null ) {

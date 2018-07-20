@@ -1186,7 +1186,6 @@ class acf_field_taxonomy2 extends acf_field {
 		
 }
 
-
 // initialize
 acf_register_field_type( 'acf_field_taxonomy2' );
 

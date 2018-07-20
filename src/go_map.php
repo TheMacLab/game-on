@@ -80,13 +80,20 @@ function go_make_single_map($last_map_id, $reload){
                     if($is_pod) {
                         $pod_min = get_term_meta($term_id, 'pod_done_num', true);
                         $pod_all = get_term_meta($term_id, 'pod_all', true);
-                        $task_name_pl = get_option('options_go_tasks_name_plural');
+
                         $pod_count = count($go_task_ids);
                         if ($pod_all || ($pod_min >= $pod_count)){
+                            $task_name_pl = get_option('options_go_tasks_name_plural');
                             echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
 						}
 						else {
-                            echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete at least $pod_min $task_name_pl. </span>";
+                        	if ($pod_min>1){
+                            	$task_name = get_option('options_go_tasks_name_plural');
+                        	}else{
+                                $task_name = get_option('options_go_tasks_name_singular');
+							}
+
+                            echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete at least $pod_min $task_name. </span>";
                         }
                     }
 

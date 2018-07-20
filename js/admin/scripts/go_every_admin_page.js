@@ -40,28 +40,35 @@ on the create new taxonomy term page,
 this hides the acf stuff until a parent map is selected
  */
 
-jQuery(document).ready(function(){
-
-
+function go_hide_child_tax_acfs() {
     if(jQuery('.taxonomy-task_chains #parent, .taxonomy-go_badges #parent').val() == -1){
-        jQuery('#acf-term-fields').hide();
-        jQuery('.acf-field').hide();
+        //jQuery('#acf-term-fields').hide();
+        //jQuery('.acf-field').hide();
+        jQuery('.go_child_term').hide();
     }
     else{
-        jQuery('#acf-term-fields').show();
-        jQuery('.acf-field').show();
+        jQuery('.go_child_term').show();
+        //jQuery('#acf-term-fields').show();
+        //jQuery('.acf-field').show();
         //jQuery('h2').show();
     }
 
+}
+
+jQuery(document).ready(function(){
+    go_hide_child_tax_acfs();
+
     jQuery('.taxonomy-task_chains #parent, .taxonomy-go_badges #parent').change(function(){
         if(jQuery(this).val() == -1){
-            jQuery('#acf-term-fields').hide();
-            jQuery('.acf-field').hide();
+            //jQuery('#acf-term-fields').hide();
+            //jQuery('.acf-field').hide();
+            jQuery('.go_child_term').hide();
 
         }
         else{
-            jQuery('#acf-term-fields').show();
-            jQuery('.acf-field').show();
+            jQuery('.go_child_term').show();
+            //jQuery('#acf-term-fields').show();
+            //jQuery('.acf-field').show();
             //jQuery('h2').show();
         }
     });
