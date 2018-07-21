@@ -139,8 +139,8 @@ function acf_load_xp_levels( $field ) {
     return $field;
 
 }
-add_filter('acf/load_field/key=field_5b50d33f928d2', 'acf_load_xp_levels');
-add_filter('acf/load_field/key=field_5b50dca61b856', 'acf_load_xp_levels');
+add_filter('acf/load_field/key=field_5b23676184648', 'acf_load_xp_levels');
+add_filter('acf/load_field/key=field_5b52731ddd4f7', 'acf_load_xp_levels');
 
 
 /**
@@ -274,7 +274,7 @@ add_action('acf/save_post', 'acf_update_order', 99);
  * Default is set in options and loaded on tasks
  * both the next two functions are needed
  */
-function default_value_field_5aafc60dde152($value, $post_id, $field) {
+function default_value_field_5b526d2e7957e($value, $post_id, $field) {
     if ($value === false) {
         $row_count = get_option('options_go_loot_bonus_loot');
         $value = array();
@@ -298,17 +298,17 @@ function default_value_field_5aafc60dde152($value, $post_id, $field) {
                 $drop = get_option($drop);
 
                 $loot_val = array(
-                    'field_5aafc60ede155' => $xp,
-                    'field_5aafc60ede154' => $gold ,
-                    'field_5aafc60ede156' => $health,
-                    'field_5b00f8a0b9e83' => $c4,
-                    'field_5aafc60ede157' => $drop
+                    'field_5b526d2e79583' => $xp,
+                    'field_5b526d2e79584' => $gold ,
+                    'field_5b526d2e79585' => $health,
+                    'field_5b526d2e79586' => $c4,
+                    'field_5b526d2e79588' => $drop
                 );
                 $row_val = array(
-                    'field_5b4ebb8995f90' => $title,
-                    'field_5b4ebb9f95f91' => $message,
-                    'field_5b4ebbcc95f92' => $mods_toggle,
-                    'field_5b4ebb3195f8f' => $loot_val
+                    'field_5b526d2e7957f' => $title,
+                    'field_5b526d2e79580' => $message,
+                    'field_5b526d2e79581' => $mods_toggle,
+                    'field_5b526d2e79582' => $loot_val
                 );
 
                 $value[] = $row_val;
@@ -319,9 +319,10 @@ function default_value_field_5aafc60dde152($value, $post_id, $field) {
     }
     return $value;
 }
-add_filter('acf/load_value/key=field_5aafc60dde152', 'default_value_field_5aafc60dde152', 10, 3);
+add_filter('acf/load_value/key=field_5b526d2e7957e', 'default_value_field_5b526d2e7957e', 10, 3);
 
-function default_value_field_5b4ebb3195f8f($value, $post_id, $field) {
+/*
+function default_value_field_5b526d2e79582($value, $post_id, $field) {
     if ($value === false) {
         $row_count = get_option('options_go_loot_bonus_loot');
         $value = array();
@@ -361,8 +362,8 @@ function default_value_field_5b4ebb3195f8f($value, $post_id, $field) {
     return $value;
 }
 
-add_filter('acf/load_value/key=field_5b4ebb3195f8f', 'default_value_field_5b4ebb3195f8f', 10, 3);
-
+add_filter('acf/load_value/key=field_5b526d2e79582', 'default_value_field_5b526d2e79582', 10, 3);
+*/
 
 
 
