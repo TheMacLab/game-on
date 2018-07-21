@@ -1886,6 +1886,42 @@ acf_add_local_field_group(array(
 			'endpoint' => 0,
 		),
 		array(
+			'key' => 'field_5b52b4261ff75',
+			'label' => 'User Information',
+			'name' => '',
+			'type' => 'message',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '<p>Users can be organized into sections and groups.	These are created and managed under the <i class="fa fa-users" aria-hidden="true"></i>"User Groups" menu to the left or by clicking the links below (links open in new tab of window).</p>
+<ul><li><a href="edit-tags.php?taxonomy=user_go_sections" target="_blank">Sections</a></li><li><a href="edit-tags.php?taxonomy=user_go_groups" target="_blank">Groups</a></li></ul>
+
+<div class="more_info_accordian">
+<h3> More Information</h3>
+<div>
+<b>Sections</b>
+<p>
+Sections are the primary sort group for users and if you have multiple classes you will want to use these. Content and store items can be locked by section.	Students can self assign their section on the profile page.
+</p>
+<b>Groups</b>
+<p>
+Groups can by used for a secondary sorting of students( i.e., roles, professions, or table groups).	They are hierarchical--you can create categories so you can have multiple types of groups.	These also allow for locking of content and store items.	If you wish to have students self assign their groups, store items can be created that add students groups.	A future release will likely give you the option to add certain group categories to the profile page as well.
+</p>
+<b>Seats</b>
+<p>Seats allow you to sort students on the clipboard by where they sit in the class.	There isn\\\'t an actually seating chart.</p>
+<b>Profile Questions</b>
+<p>These show on the students stats panel.	They are only visible to site administrators and the student, not other users.	These are useful for getting to know your students better.</p>
+</div>
+</div>',
+			'new_lines' => '',
+			'esc_html' => 0,
+		),
+		array(
 			'key' => 'field_5b495af34ba69',
 			'label' => 'Seats',
 			'name' => 'go_seats',
@@ -2016,25 +2052,6 @@ acf_add_local_field_group(array(
 			'layout' => 'table',
 			'button_label' => 'Add Question',
 			'sub_fields' => array(
-				array(
-					'key' => 'field_5b495bdb4ba6c',
-					'label' => 'Public',
-					'name' => 'public',
-					'type' => 'true_false',
-					'instructions' => 'Answers show on stats panel. You can select to have answers to each question show to all users or just admin.',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'message' => '',
-					'default_value' => 0,
-					'ui' => 1,
-					'ui_on_text' => 'Public',
-					'ui_off_text' => 'Private',
-				),
 				array(
 					'key' => 'field_5b4a59ec158e0',
 					'label' => 'Title',
