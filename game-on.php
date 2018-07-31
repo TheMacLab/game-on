@@ -7,7 +7,7 @@ Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4.06b
 */
-$version = 4.06;
+$version = 4.07;
 
 global $version;
 
