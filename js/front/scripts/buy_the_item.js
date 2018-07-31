@@ -13,8 +13,7 @@ function go_lb_opener( id ) {
         jQuery( '#fade' ).css( 'display', 'block' );
     }
 
-    // this will stop the body from scrolling behind the lightbox
-    //jQuery( 'html' ).addClass( 'go_no_scroll' );
+
     if ( ! jQuery.trim( jQuery( '#lb-content' ).html() ).length ) {
         var get_id = id;
         var nonce = GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax;
@@ -34,7 +33,7 @@ function go_lb_opener( id ) {
                 jQuery( "#lb-content" ).append( '<div class="go-lb-loading"></div>' );
             },
             cache: false,
-            success: function( results, textStatus, XMLHttpRequest ) {
+            success: function( results) {
                 jQuery( "#lb-content" ).innerHTML = "";
                 jQuery( "#lb-content" ).html( '' );
                 //jQuery( "#lb-content" ).append(results);

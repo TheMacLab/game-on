@@ -13,6 +13,8 @@ date_default_timezone_set('America/Los_Angeles');
 // Main Lightbox Ajax Function
 function go_the_lb_ajax() {
     check_ajax_referer( 'go_the_lb_ajax');
+
+
 	$post_id = (int) $_POST['the_item_id'];
 
 	//$the_post = get_post( $post_id );

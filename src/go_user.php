@@ -109,7 +109,7 @@
         for ($i = 0; $i < $num_of_qs; $i++) {
             $q_title = get_option('options_go_user_profile_questions_' . $i . '_title');
             $q_question = get_option('options_go_user_profile_questions_' . $i . '_question');
-            $num_rows = get_option('options_go_user_profile_questions_' . $i . '_number_of_rows');
+            $num_rows = get_option('options_go_user_profile_questions_' . $i . '_rows');
             $field_num = "field_" . $i;
             $field_name = "question_" . $i;
             $field = array('key' => $field_num, 'label' => $q_title, 'name' => $field_name, 'type' => 'textarea', 'instructions' => $q_question, 'required' => 0, 'conditional_logic' => 0, 'wrapper' => array('width' => '', 'class' => '', 'id' => '',), 'default_value' => '', 'placeholder' => '', 'maxlength' => '', 'rows' => $num_rows, 'new_lines' => '',);

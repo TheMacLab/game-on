@@ -1,205 +1,844 @@
 <?php
-function go_messages_bar() {
-	if ( ! is_admin_bar_showing() || ! is_user_logged_in() ) {
-		return;
-	}
-	global $wp_admin_bar;
-	$messages = get_user_meta( get_current_user_id(), 'go_admin_messages', true );
-	$msg_count = ( isset( $messages[0] ) ? intval( $messages[0] ) : 0 );
-	$msg_array = ( ! empty( $messages[1] ) ? $messages[1] : null );
-	if ( $msg_count > 0 ) {
-		$style = 'background: #ff0000;';
-		if ( 1 === $msg_count ) {
-			$wp_admin_bar->add_menu( 
-				array(
-					'id' => 'go_messages_blurb',
-					'title' => 'New message from admin',
-					'href' => '#',
-					'parent' => 'go_messages'
-				) 
-			);
-		} else {
-			$wp_admin_bar->add_menu( 
-				array(
-					'id' => 'go_messages_blurb',
-					'title' => 'New messages from admin',
-					'href' => '#',
-					'parent' => 'go_messages'
-				) 
-			);
-		}
-	} else {
-		$style = 'background: #222222;';
-		$wp_admin_bar->add_menu( 
-			array(
-				'id' => 'go_messages_blurb',
-				'title' => 'No new messages from admin',
-				'href' => '#',
-				'parent' => 'go_messages'
-			) 
-		);
-	}
-	$wp_admin_bar->add_menu( 
-		array(
-			'id' => 'go_messages',
-			'title' => 
-				"<div style='padding-top:5px;'>" .
-					"<div id='go_messages_bar' style='{$style}'>" .
-						"{$msg_count}" .
-					"</div>" .
-				"</div>",
-			'href' => '#',
-		)
-	);
-	if ( ! empty( $msg_array ) ) {
-		foreach ( $msg_array as $date => $message_obj ) {
-			if ( ! empty( $message_obj[0] ) ) {
-				$msg_body = $message_obj[0];
+/**
+ * Created by PhpStorm.
+ * User: mmcmurray
+ * Date: 7/21/18
+ * Time: 6:04 PM
+ */
 
-				// $message_obj[1] will contain 0 (int) when read or 1 (int) when unread
-				$msg_already_seen = ( empty( $message_obj[1] ) ? true : false );
-				
-				// if the message has already been read, apply no styling
-				$style = ( $msg_already_seen ? '' : 'color: red;' );
-				$formatted_date = date( 'm-d-Y', $date );
-				$seen_elem = '';
-				$title = '';
+function go_create_admin_message (){
 
-				if ( preg_match( "/[<>]+/", $msg_body ) ) {
-					$title = preg_replace( "/(<a[^>]+>|<\/a>)+/", '', $msg_body );
-				} else {
-					$title = $msg_body;
-				}
+    check_ajax_referer( 'go_create_admin_message');
 
-				if ( ! $msg_already_seen ) {
-					$seen_elem = "{$formatted_date} " .
-						"<a class='go_messages_anchor' " .
-								"onClick='go_mark_seen({$date}, \"unseen\" ); " .
-									"go_change_seen({$date}, \"unseen\", this);' " .
-								"style='display: inline;' " .
-								"href='#' >" .
-							"Mark Read" .
-						"</a> " .
-						"<a class='go_messages_anchor' " .
-								"onClick='go_mark_seen({$date}, \"remove\" );' " .
-								"style='display:inline;' " .
-								"href='#' >" .
-							"Delete" .
-						"</a>";
-				} else {
-					$seen_elem = "{$formatted_date} " .
-						"<a class='go_messages_anchor' " .
-								"onClick='go_mark_seen({$date}, \"seen\" ); " .
-									"go_change_seen({$date}, \"seen\", this);' " .
-								"style='display: inline;' " .
-								"href='#' >" .
-							"Mark Unread".
-						"</a> ".
-						"<a class='go_messages_anchor' ".
-								"onClick='go_mark_seen({$date}, \"remove\" );' " .
-								"style='display:inline;' ".
-								"href='#' >".
-							"Delete".
-						"</a>";
-				}
+    $user_ids = $_POST['user_ids'];
+    $post_id = $_POST['post_id'];
+    $message_type = $_POST['message_type'];
 
-				$wp_admin_bar->add_menu( 
-					array(
-						'id' => $date,
-						'title' => "<div style='{$style}'>{$title}...</div>",
-						'href' => '#',
-						'parent' => 'go_messages'
-					) 
-				);
 
-				$wp_admin_bar->add_menu( 
-					array(
-						'id' => rand(),
-						'title' => $seen_elem,
-						'parent' => $date,
-						'meta' => array( 
-							'html' => 
-								"<div class='go_message_container' style='width:350px;'>".
-									$msg_body .
-								"</div>",
-							'class' => 'go_message_item'
-						)
-					) 
-				);
-			}
-		}
-	}
+    if (empty($user_ids)){
+        ?> <div>No User Selected.</div> <?php
+        die();
+    }
+
+    if ($message_type == 'reset'){
+        $task_name = get_option('options_go_tasks_name_singular');
+        $task_title = get_the_title($post_id);
+        ?>
+
+
+        <div id="go_messages_container">
+            <h3> Reset <?php echo $task_name . ": " . $task_title ; ?></h3>
+            <p>You can customize the message below. In addition to removing loot that had been awarded, you may assign an additional penalty.</p>
+            <p>Also, if the bonus loot had already been awarded, the user will not have another attempt.  This is to prevent mining of loot.</p>
+            <form method="post">
+                <div id="go_messages" style="display:flex;">
+
+                    <div id="messages_form">
+                        <table class="form-table">
+                            <tr valign="top">
+                                <th scope="row">To</th>
+                                <td style="width: 100%;">
+                                    <div>
+                                        <?php
+                                        $is_first = true;
+                                        foreach ($user_ids as $user_id) {
+                                            $user = get_userdata($user_id);
+                                            if (!$is_first) {
+                                                echo ", ";
+                                            }
+                                            $user_fullname = $user->first_name . ' ' . $user->last_name;
+                                            if (empty($user_fullname) || $user_fullname = ' ') {
+                                                $user_fullname = $user->display_name;
+                                            }
+                                            echo $user_fullname;
+                                            $is_first = false;
+                                        }
+                                        ?>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row">Title</th>
+                                <td style="width: 100%;"><input type="text" name="title" value="<?php echo $task_title ; ?> has been reset" style="width: 100%;"/>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row">Message</th>
+                                <td><textarea name="message" class="widefat" cols="50" rows="5">This task was reset. All loot and rewards have been removed.</textarea></td>
+                            </tr>
+
+                        </table>
+                        <div id="go_loot_table" class="acf-field acf-field-group " data-type="group">
+                            <div class="acf-input">
+                                <p style="font-weight: 600;">Addtional Penalties</p>
+                                <div class="acf-fields -top -border">
+                                    <div class="acf-field acf-field-group acf-hide-label acf-no-padding acf-table-no-border"
+                                         data-name="reward_toggle" data-type="group">
+                                        <div class="acf-input">
+                                            <table class="acf-table form-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>XP</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Gold</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Health</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>C4</label></div>
+                                                    </th>
+                                                </tr>
+
+
+                                                </thead>
+                                                <tbody>
+
+
+                                                <tr class="acf-row">
+                                                    <td class="acf-field acf-field-number go_reward go_xp  data-name="
+                                                        xp
+                                                    " data-type="number">
+                                                    <div class="acf-input">
+                                                        <div class="acf-input-wrap"><input name="xp" type="number"
+                                                                                           value="0" min="0" step="1" oninput="validity.valid||(value='');">
+                                                        </div>
+                                                    </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-number go_reward go_gold"
+                                                        data-name="gold" data-type="number">
+                                                        <div class="acf-input">
+                                                            <div class="acf-input-wrap"><input name="gold" type="number"
+                                                                                               value="0" min="0"
+                                                                                               step="1" oninput="validity.valid||(value='');"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-number go_reward go_health "
+                                                        data-name="health" data-type="number">
+                                                        <div class="acf-input">
+                                                            <div class="acf-input-wrap"><input name="health"
+                                                                                               type="number" value="0"
+                                                                                               min="0" step=".01" oninput="validity.valid||(value='');"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-number go_reward go_c4 "
+                                                        data-name="c4" data-type="number">
+                                                        <div class="acf-input">
+                                                            <div class="acf-input-wrap"><input name="c4" type="number"
+                                                                                               value="0" min="0"
+                                                                                               step="1" placeholder="0" oninput="validity.valid||(value='');">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p></p>
+                                        <div class="acf-input">
+                                            <table class="acf-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Remove Badges</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Remove Groups</label></div>
+                                                    </th>
+
+                                                </tr>
+
+                                                </thead>
+                                                <tbody>
+
+                                                <tr class="acf-row">
+                                                    <td class="acf-field acf-field-true-false go_reward go_badges"
+                                                        data-name="gold" data-type="true_false">
+                                                        <?php go_make_tax_select('go_badges', "Select One", "messages_", null, true); ?>
+
+                                                    </td>
+                                                    <td class="acf-field acf-field-true-false go_reward go_groups"
+                                                        data-name="gold" data-type="true_false">
+                                                        <?php go_make_tax_select('user_go_groups', "Select One", "messages_", null, true); ?>
+                                                    </td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="go_message_submit"><input type="button" id="go_message_submit"
+                                                            class="button button-primary" value="Send"></p>
+                    </div>
+
+
+                </div>
+            </form>
+
+            <script type="text/javascript">
+                jQuery(document).ready(function () {
+                    //jQuery('.go_messages_select2').select2();
+
+                });
+            </script>
+        </div>
+        <?php
+
+    }
+    else {
+        ?>
+
+
+        <div id="go_messages_container">
+            <form method="post">
+                <div id="go_messages" style="display:flex;">
+
+                    <div id="messages_form">
+                        <table class="form-table">
+                            <tr valign="top">
+                                <th scope="row">To</th>
+                                <td style="width: 100%;">
+                                    <div>
+                                        <?php
+                                        $is_first = true;
+                                        foreach ($user_ids as $user_id) {
+                                            $user = get_userdata($user_id);
+                                            if (!$is_first) {
+                                                echo ", ";
+                                            }
+                                            $user_fullname = $user->first_name . ' ' . $user->last_name;
+                                            if (empty($user_fullname) || $user_fullname = ' ') {
+                                                $user_fullname = $user->display_name;
+                                            }
+                                            echo $user_fullname;
+                                            $is_first = false;
+                                        }
+                                        ?>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row">Title</th>
+                                <td style="width: 100%;"><input type="text" name="title" value="" style="width: 100%;"/>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row">Message</th>
+                                <td><textarea name="message" class="widefat" cols="50" rows="5"></textarea></td>
+                            </tr>
+
+                        </table>
+                        <div id="go_loot_table" class="acf-field acf-field-group" data-type="group">
+                            <div class="acf-input">
+                                <div class="acf-fields -top -border">
+                                    <div class="acf-field acf-field-group acf-hide-label acf-no-padding acf-table-no-border"
+                                         data-name="reward_toggle" data-type="group">
+                                        <div class="acf-input">
+                                            <table class="acf-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>XP</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Gold</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Health</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>C4</label></div>
+                                                    </th>
+                                                </tr>
+
+
+                                                </thead>
+                                                <tbody>
+                                                <tr class="acf-row">
+                                                    <td class="acf-field acf-field-true-false go_reward go_xp"
+                                                        data-name="xp" data-type="true_false">
+                                                        <div class="acf-input">
+                                                            <div class="acf-true-false">
+                                                                <input value="0" type="hidden">
+                                                                <label>
+                                                                    <input name="xp_toggle" type="checkbox" value="1"
+                                                                           class="acf-switch-input">
+                                                                    <div class="acf-switch"><span class="acf-switch-on"
+                                                                                                  style="min-width: 36px;">+</span><span
+                                                                                class="acf-switch-off"
+                                                                                style="min-width: 36px;">-</span>
+                                                                        <div class="acf-switch-slider"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                        data-name="gold" data-type="true_false">
+                                                        <div class="acf-input">
+                                                            <div class="acf-true-false">
+                                                                <input value="0" type="hidden">
+                                                                <label>
+                                                                    <input name="gold_toggle" type="checkbox"
+                                                                           class="acf-switch-input">
+                                                                    <div class="acf-switch"><span class="acf-switch-on"
+                                                                                                  style="min-width: 36px;">+</span><span
+                                                                                class="acf-switch-off"
+                                                                                style="min-width: 36px;">-</span>
+                                                                        <div class="acf-switch-slider"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-true-false go_reward go_health"
+                                                        data-name="health" data-type="true_false">
+                                                        <div class="acf-input">
+                                                            <div class="acf-true-false">
+                                                                <input value="0" type="hidden">
+                                                                <label>
+                                                                    <input name="health_toggle" type="checkbox"
+                                                                           value="1" class="acf-switch-input">
+                                                                    <div class="acf-switch"><span class="acf-switch-on"
+                                                                                                  style="min-width: 36px;">+</span><span
+                                                                                class="acf-switch-off"
+                                                                                style="min-width: 36px;">-</span>
+                                                                        <div class="acf-switch-slider"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-true-false go_reward go_c4"
+                                                        data-name="c4" data-type="true_false">
+                                                        <div class="acf-input">
+                                                            <div class="acf-true-false">
+                                                                <input value="0" type="hidden">
+                                                                <label>
+                                                                    <input name="c4_toggle" type="checkbox" value="1"
+                                                                           class="acf-switch-input">
+                                                                    <div class="acf-switch"><span class="acf-switch-on"
+                                                                                                  style="min-width: 36px;">+</span><span
+                                                                                class="acf-switch-off"
+                                                                                style="min-width: 36px;">-</span>
+                                                                        <div class="acf-switch-slider"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="acf-row">
+                                                    <td class="acf-field acf-field-number go_reward go_xp  data-name="
+                                                        xp
+                                                    " data-type="number">
+                                                    <div class="acf-input">
+                                                        <div class="acf-input-wrap"><input name="xp" type="number"
+                                                                                           value="0" min="0" step="1" oninput="validity.valid||(value='');">
+                                                        </div>
+                                                    </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-number go_reward go_gold"
+                                                        data-name="gold" data-type="number">
+                                                        <div class="acf-input">
+                                                            <div class="acf-input-wrap"><input name="gold" type="number"
+                                                                                               value="0" min="0"
+                                                                                               step="1" oninput="validity.valid||(value='');"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-number go_reward go_health "
+                                                        data-name="health" data-type="number">
+                                                        <div class="acf-input">
+                                                            <div class="acf-input-wrap"><input name="health"
+                                                                                               type="number" value="0"
+                                                                                               min="0" step=".01" oninput="validity.valid||(value='');"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-number go_reward go_c4 "
+                                                        data-name="c4" data-type="number">
+                                                        <div class="acf-input">
+                                                            <div class="acf-input-wrap"><input name="c4" type="number"
+                                                                                               value="0" min="0"
+                                                                                               step="1" placeholder="0" oninput="validity.valid||(value='');">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p></p>
+                                        <div class="acf-input">
+                                            <table class="acf-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Badges</label></div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="acf-th">
+                                                            <label>Groups</label></div>
+                                                    </th>
+
+                                                </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                <tr class="acf-row">
+                                                    <td class="acf-field acf-field-true-false go_reward go_xp"
+                                                        data-name="xp" data-type="true_false">
+                                                        <div class="acf-input">
+                                                            <div class="acf-true-false">
+                                                                <input value="0" type="hidden">
+                                                                <label>
+                                                                    <input name="badges_toggle" type="checkbox"
+                                                                           value="1" class="acf-switch-input">
+                                                                    <div class="acf-switch"><span class="acf-switch-on"
+                                                                                                  style="min-width: 36px;">+</span><span
+                                                                                class="acf-switch-off"
+                                                                                style="min-width: 36px;">-</span>
+                                                                        <div class="acf-switch-slider"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                        data-name="gold" data-type="true_false">
+                                                        <div class="acf-input">
+                                                            <div class="acf-true-false">
+                                                                <input value="0" type="hidden">
+                                                                <label>
+                                                                    <input name="groups_toggle" type="checkbox"
+                                                                           value="1" class="acf-switch-input">
+                                                                    <div class="acf-switch"><span class="acf-switch-on"
+                                                                                                  style="min-width: 36px;">+</span><span
+                                                                                class="acf-switch-off"
+                                                                                style="min-width: 36px;">-</span>
+                                                                        <div class="acf-switch-slider"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                <tr class="acf-row">
+                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                        data-name="gold" data-type="true_false">
+                                                        <?php go_make_tax_select('go_badges', "Select One", "messages_", null, true); ?>
+
+                                                    </td>
+                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                        data-name="gold" data-type="true_false">
+                                                        <?php go_make_tax_select('user_go_groups', "Select One", "messages_", null, true); ?>
+                                                    </td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="go_message_submit"><input type="button" id="go_message_submit"
+                                                            class="button button-primary" value="Send"></p>
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+        <?php
+    }
 }
 
-function go_mark_read() {
-	$user_id = get_current_user_id();
-	check_ajax_referer( 'go_mark_read_' . $user_id );
+function go_send_message(){
+    check_ajax_referer( 'go_send_message');
 
-	$messages = get_user_meta( $user_id, 'go_admin_messages', true );
-	if ( ! empty( $messages[1][ $_POST['date'] ] ) ) {
-		if ( $_POST['type'] == 'unseen' ) {
-			if ( $messages[1][ $_POST['date'] ][1] == 1) {
-				$messages[1][ $_POST['date'] ][1] = 0;
-				(int) $messages[0] = (int) $messages[0] - 1;
-			}
-		} elseif ( $_POST['type'] == 'remove' ) {
-			if ( $messages[1][ $_POST['date'] ][1] == 1) {
-				(int) $messages[0] = (int) $messages[0] - 1;
-			}	
-			unset( $messages[1][ $_POST['date'] ] );
-		} elseif ( $_POST['type'] == 'seen' ) {
-			if ( $messages[1][ $_POST['date'] ][1] == 0) {
-				$messages[1][ $_POST['date'] ][1] = 1;
-				(int) $messages[0] = (int) $messages[0] + 1;
-			}
-		}
-	}
-	update_user_meta( $user_id, 'go_admin_messages', $messages );
-	echo JSON_encode( array (0 => $_POST['date'], 1 => $_POST['type'], 2 => $messages[0] ) );
-	die();
+    $title = ( !empty( $_POST['title'] ) ? $_POST['title'] : "" );
+
+    $message = ( !empty( $_POST['message'] ) ? $_POST['message'] : "" );
+    $result = array();
+    $result[] = $title;
+    $result[] = $message;
+
+
+    $post_id = ( !empty( $_POST['post_id'] ) ? $_POST['post_id'] : 0 );
+
+    $type = ( !empty( $_POST['message_type'] ) ? $_POST['message_type'] : "message" );// can be message, or task
+
+    $user_ids = $_POST['user_ids'];
+
+    $xp = $_POST['xp'];
+    $gold = $_POST['gold'];
+    $health = $_POST['health'];
+    $c4 = $_POST['c4'];
+
+    $badges_toggle = $_POST['badges_toggle'];
+    $badge_ids = $_POST['badges'];
+
+
+    $groups_toggle = $_POST['groups_toggle'];
+    $group_ids = $_POST['groups'];
+
+    if ($type == 'reset'){
+        $user_id = $user_ids[0];
+        global $wpdb;
+        $go_task_table_name = "{$wpdb->prefix}go_tasks";
+        $tasks = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT *
+			FROM {$go_task_table_name}
+			WHERE uid = %d and post_id = %d
+			ORDER BY last_time DESC",
+                $user_id,
+                $post_id
+
+            )
+        );
+        $task = $tasks[0];
+        $xp = ($task->xp * -1) + $xp;
+        $gold = ($task->gold * -1) + $gold;
+        $health = ($task->health * -1) + $health;
+        $c4 = ($task->c4 * -1) + $c4;
+
+        $task_badge_ids = $task->badges;
+        $task_badge_ids = unserialize($task_badge_ids);
+        if(is_array($badge_ids)) {
+            $badge_ids = array_merge($badge_ids, $task_badge_ids);
+            $badge_ids = arary_unique($badge_ids);
+        }else{
+            $badge_ids = $task_badge_ids;
+        }
+
+        $task_group_ids = $task->groups;
+        $task_group_ids = unserialize($task_group_ids);
+        if(is_array($group_ids)) {
+            $group_ids = array_merge($group_ids, $task_group_ids);
+            $group_ids = arary_unique($group_ids);
+        }else{
+            $group_ids = $task_group_ids;
+        }
+
+        //set messages flag to read
+        $wpdb->update(
+            $go_task_table_name,
+            array(
+                'status' => -1,// integer (number)
+                'bonus_status' => 0,
+                'xp' => 0,
+                'gold' => 0,
+                'health' => 0,
+                'c4' => 0,
+                'badges' => null,
+                'groups' => null
+            ),
+            array(
+                'uid' => $user_id,
+                'post_id' => $post_id
+            ),
+            array(
+                '%d',
+                '%d',
+                '%d',
+                '%d',
+                '%d',
+                '%d',
+                '%s',
+                '%s'
+            ),
+            array(
+                '%d',
+                '%d'
+            )
+        );
+
+    }
+
+
+    //store the badge and group toggles so later we know if they were awarded or taken.
+
+    if ($badges_toggle == "true" && !empty($badge_ids)) {//if badges toggle is true and badges exist
+        $result[] = "badges+";
+        $badge_ids = serialize($badge_ids);
+    }else if ($badges_toggle == "false" && !empty($badge_ids)) {//else if badges toggle is false and badges exist
+        $result[] = "badges-";
+        $badge_ids = serialize($badge_ids);
+    }else {
+        $result[] = "badges0";
+        $badge_ids = null;
+    }
+
+
+    if ($groups_toggle == "true" && !empty($group_ids)) {//if groups toggle is true and groups exist
+        $result[] = "groups+";
+        $group_ids = serialize($group_ids);
+    }else if ($groups_toggle == "false" && !empty($group_ids)) {//else if groups toggle is false and groups exist
+        $result[] = "groups-";
+        $group_ids = serialize($group_ids);
+    }else{
+        $result[] = "groups0";
+        $group_ids = null;
+    }
+
+
+    $result = serialize($result);
+
+    //update actions with loot, title and message
+    //for each user id
+    foreach ($user_ids as $user_id) {
+        //if this is a task reset, update task
+
+        if ($badges_toggle == "true" && !empty($badge_ids)) {//if badges toggle is true and badges exist
+            go_add_badges ($badge_ids, $user_id,  false);//add badges
+        }else if ($badges_toggle == "false" && !empty($badge_ids)) {//else if badges toggle is false and badges exist
+            go_remove_badges ($badge_ids, $user_id, false);//remove badges
+        }
+
+
+        if ($groups_toggle && !empty($group_ids)) {//if groups toggle is true and groups exist
+            go_add_groups($group_ids, $user_id, false);//add groups
+        }else if (!$groups_toggle && !empty($group_ids)) {//else if groups toggle is false and groups exist
+            go_remove_groups($group_ids, $user_id,  false);//remove groups
+        }
+
+        go_update_actions($user_id, $type, $post_id, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+
+        update_user_meta($user_id, 'go_new_messages', true);
+
+    } //end foreach user
 }
 
-function go_message_user( $user_id, $message ) {
-	date_default_timezone_set( 'America/Los_Angeles' );
-	$timestamp = time();
-	$current_messages = get_user_meta( $user_id, 'go_admin_messages',true );
-	$current_messages[1][ $timestamp ] = array( $message, 1 );
-	$is_admin = false;
-	$admin_user = get_user_by( 'id', get_current_user_id() );
-	if ( ! empty( $admin_user ) ) {
-		$admin_user_roles = $admin_user->roles;
-		if ( is_array( $admin_user_roles ) ) {
-			foreach ( $admin_user_roles as $key => $role ) {
-				if ( $role === 'administrator' ) {
-					$is_admin = true;
-					break;
-				}
-			}
-		}
-	}
-	$message_time = date( "m/d @ h:i", $timestamp );
-	$admin_messages = get_user_meta(get_current_user_id(), 'go_admin_message_history', true );
-	$admin_messages[ $user_id ][] = array(
-		'message' => $message,
-		'time' => $message_time
-	);
-	krsort( $admin_messages[ $user_id ] );
-	if ( $is_admin = true ) {
-		update_user_meta( $admin_user->ID, 'go_admin_message_history', $admin_messages );
-	}
-	krsort( $current_messages[1] );
-	if (count( $current_messages[1] ) > 9) {
-		array_pop( $current_messages[1] );
-	}
-	if ( ! isset( $current_messages[0] ) ) {
-		$current_messages[0] = 1;
-	} else {
-		(int) $current_messages[0] = (int) $current_messages[0] + 1;
-		if ( (int) $current_messages[0] > 9 ) {
-			(int) $current_messages[0] = 9;
-		}
-	}
-	update_user_meta( $user_id, 'go_admin_messages', $current_messages );
-}
+function go_check_messages(){
+    global $wpdb;
+    //on each page load, check if user has new messages
+    $user_id =  get_current_user_id();
+    $is_logged_in = is_user_logged_in();
+    $is_new_messages = get_user_meta($user_id, 'go_new_messages', true);
 
-?>
+    $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+    $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
+    $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
+
+    if ($is_logged_in && $is_new_messages ){
+        //get unread messages
+        $go_actions_table_name = "{$wpdb->prefix}go_actions";
+        $actions = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT *
+			FROM {$go_actions_table_name}
+			WHERE uid = %d and (action_type = %s or action_type = %s)  and stage = %d
+			ORDER BY id DESC",
+                $user_id,
+                'message',
+                'reset',
+                1
+            )
+        );
+        //turn them into noty
+        //set them as read
+        foreach ($actions as $action) {
+            $result = $action->result;
+            $result = unserialize($result);
+            $title = $result[0];
+            $message = $result[1];
+            $xp = $action->xp;
+            $gold = $action->gold;
+            $health = $action->health;
+            $c4 = $action->c4;
+            $badges = $action->badges;
+            $badges = unserialize($badges);
+            $groups = $action->groups;
+            $groups = unserialize($groups);
+
+            if(empty($xp)){
+                $xp_penalty = null;
+                $xp_reward = null;
+            }else if ($xp > 0){
+                $xp_reward = $xp . " " . $xp_abbr . "<br>";
+                $xp_penalty = null;
+            }else if ($xp < 0){
+                $xp_penalty = $xp . " " . $xp_abbr . "<br>";
+                $xp_reward = null;
+            }else{
+                $xp_penalty = null;
+                $xp_reward = null;
+            }
+
+            if(empty($gold)){
+                $gold_penalty = null;
+                $gold_reward = null;
+            }else if ($gold > 0){
+                $gold_reward = $gold . " " . $gold_abbr . "<br>";
+                $gold_penalty = null;
+            }else if ($gold < 0){
+                $gold_penalty = $gold . " " . $gold_abbr . "<br>";
+                $gold_reward = null;
+            }else{
+                $gold_penalty = null;
+                $gold_reward = null;
+            }
+
+            if(empty($health)){
+                $health_penalty = null;
+                $health_reward = null;
+            }else if ($health > 0){
+                $health_reward = $health . " " . $health_abbr . "<br>";
+                $health_penalty = null;
+            }else if ($health < 0){
+                $health_reward = null;
+                $health_penalty = $health . " " . $health_abbr . "<br>";
+            }else{
+                $health_penalty = null;
+                $health_reward = null;
+            }
+
+            if(empty($c4)){
+                $c4_penalty = null;
+                $c4_reward = null;
+            } else if ($c4 > 0){
+                $c4_reward = $c4 . " " . $c4_abbr . "<br>";
+                $c4_penalty = null;
+            }else if ($c4 < 0 ){
+                $c4_reward = null;
+                $c4_penalty = $c4 . " " . $c4_abbr . "<br>";
+            }else{
+                $c4_penalty = null;
+                $c4_reward = null;
+            }
+
+
+            $badges_toggle = get_option('options_go_badges_toggle');
+            if ($badges_toggle && !empty($badges)) {
+                $badge_dir = $result[2];
+
+                $badges_name = get_option('options_go_badges_name_plural');
+
+                $badges_names = array();
+                $badges_names[] = "<b>" . $badges_name . ":</b>";
+                foreach ($badges as $badge) {
+                    $term = get_term($badge, "go_badges");
+                    if (!empty($term)) {
+                        $badge_name = $term->name;
+                        $badges_names[] = $badge_name;
+                    }
+                }
+
+                if ($badge_dir == "badges+"){
+                    //message for awarding badges
+                    $badge_award = implode("<br>" , $badges_names);
+                    $badge_penalty =null;
+                }else if ($badge_dir == "badges-"){
+                    //message for taking badges
+                    //get all badge names
+                    $badge_penalty = implode("<br>" , $badges_names);
+                    $badge_award =null;
+                }else{
+                    $badge_penalty =null;
+                    $badge_award =null;
+                }
+
+
+            }
+            else{
+                $badge_penalty =null;
+                $badge_award =null;
+            }
+
+            if (!empty($groups)){
+                $groups_dir = $result[3];
+                $groups_names = array();
+                $groups_names[] = "<br><b>Groups:</b>";
+                foreach ($groups as $group) {
+                    $term = get_term($group, "user_go_groups");
+                    if (!empty($term)) {
+                        $group_name = $term->name;
+                        $groups_names[] = $group_name;
+                    }
+                }
+
+                if ($groups_dir == "groups+"){
+                    //message for awarding badges
+                    $group_award = implode("<br>" , $groups_names);
+                    $group_penalty = null;
+                }else if ($groups_dir == "groups-") {
+                    //message for taking badges
+                    //get all badge names
+                    $group_penalty = implode("<br>", $groups_names);
+                    $group_award = null;
+                }else{
+                    $group_penalty = null;
+                    $group_award = null;
+                }
+            }else{
+                $group_penalty = null;
+                $group_award = null;
+            }
+
+
+            if (!empty($xp_reward) || !empty($gold_reward) || !empty($health_reward) || !empty($c4_reward) || !empty($badge_award) || !empty($group_award)){
+                $reward = "<h4>Reward</h4>{$xp_reward}{$gold_reward}{$health_reward}{$c4_reward}{$badge_award}{$group_award}";
+            }else{
+                $reward = '';
+            }
+
+            if (!empty($xp_penalty) || !empty($gold_penalty) || !empty($health_penalty) || !empty($c4_penalty) || !empty($badge_penalty) || !empty($group_penalty)){
+                $penalty = "<h4>Penalty:</h4>{$xp_penalty}{$gold_penalty}{$health_penalty}{$c4_penalty}{$badge_penalty}{$group_penalty}";
+            }else{
+                $penalty = '';
+            }
+            $message = "<div> {$message}</div><div>{$reward}{$penalty}</div>";
+
+            go_noty_message_generic('warning', $title, $message);
+
+        }
+        //set messages flag to read
+        $wpdb->update(
+            $go_actions_table_name,
+            array(
+                'stage' => 0 // integer (number)
+            ),
+            array(
+                'uid' => $user_id,
+                'action_type' => 'message',
+                'stage' => 1
+
+            ),
+            array(
+                '%d'	// value2
+            ),
+            array(
+                '%d',
+                '%s',
+                '%d'
+            )
+        );
+
+    }
+
+   update_user_meta($user_id, 'go_new_messages', false);
+}
+add_action( 'wp_footer', 'go_check_messages' );

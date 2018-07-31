@@ -1,7 +1,7 @@
 <?php
 
 function go_acf_scripts ($hook) {
-	
+
 	global $post;
 	/*
 	 * Registering Scripts For Admin Pages
@@ -42,6 +42,7 @@ function go_acf_scripts ($hook) {
 	
 }
 
+add_action('acf/field_group/admin_enqueue_scripts', 'go_acf_scripts');
 
 
 

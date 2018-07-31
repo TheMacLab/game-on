@@ -36,7 +36,7 @@ function go_admin_scripts ($hook) {
 			//wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );	
 				
 	/*
-	 * Enqueue Scripts For Admin Pages (Exept for page specific ones below)
+	 * Enqueue Scripts For Admin Pages (Except for page specific ones below)
 	 */
 
 		// Dependencies
@@ -82,7 +82,9 @@ function go_admin_scripts ($hook) {
                     'go_stats_lite'                => wp_create_nonce( 'go_stats_lite' ),
 					'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
                     'go_upgade4'                     => wp_create_nonce( 'go_upgade4'),
-                    'go_the_lb_ajax' => wp_create_nonce( 'go_the_lb_ajax' )
+                    'go_the_lb_ajax' => wp_create_nonce( 'go_the_lb_ajax' ),
+                    'go_create_admin_message' => wp_create_nonce('go_create_admin_message'),
+                    'go_send_message' => wp_create_nonce('go_send_message')
 				),
 			)
 		);

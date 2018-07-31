@@ -338,6 +338,12 @@ function task_stage_change( target ) {
     var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
     var result = jQuery( '#go_result' ).attr( 'value' );
 
+    if( check_type == 'blog'){
+        result = tinyMCE.activeEditor.getContent();
+        var result_title = jQuery( '#go_result_title' ).attr( 'value' );
+    }else{
+        var result_title = null;
+    }
     jQuery.ajax({
         type: "POST",
         data: {
@@ -349,6 +355,7 @@ function task_stage_change( target ) {
             button_type: button_type,
             check_type: check_type,
             result: result,
+            result_title: result_title
         },
         success: function( raw ) {
             console.log('success');
@@ -447,6 +454,13 @@ function task_stage_change( target ) {
                     //console.log(res.html);
                     go_append(res);
 
+                go_mce();
+
+
+
+
+
+
                 //Pop up currency awards
                 jQuery( '#notification' ).html( res.notification );
                 jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
@@ -461,6 +475,16 @@ function task_stage_change( target ) {
 
 }
 
+function go_mce() {
+    // remove existing editor instance
+    console.log('mce2');
+    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
+
+    // init editor for newly appended div
+    var init = tinymce.extend( {}, tinyMCEPreInit.mceInit[ 'go_blog_post' ] );
+    try { tinymce.init( init ); } catch(e){}
+}
+
 function go_append (res){
     //jQuery( res.html ).addClass('active');
     jQuery( res.html ).appendTo( '#go_wrapper' ).stop().hide().show( 'slow' ).promise().then(function() {
@@ -469,7 +493,6 @@ function go_append (res){
         go_make_clickable();
         go_disable_loading();
     });
-    //jQuery("#go_buttons").parent().addClass('active');
 }
 
 // Makes it so you can press return and enter content in a field

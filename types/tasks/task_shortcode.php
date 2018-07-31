@@ -881,6 +881,7 @@ function go_task_change_stage() {
     $check_type 			= ( ! empty( $_POST['check_type'] ) ? $_POST['check_type'] : null );
     $status        = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
 	$result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
+    $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : ''); // Contains the result from the check for understanding
 
     /**
      * Security
@@ -986,10 +987,25 @@ function go_task_change_stage() {
             //get id of media item
             //$result = ( ! empty( $_POST['url'] ) ? (string) $_POST['url'] : '' );
         //}
-        //else if ($check_type == 'blog'){
-        	//create blog post function ($uid, $result);
+        else if ($check_type == 'blog'){
+            $post_name = get_the_title($post_id);
+            $my_post = array(
+                'post_type'     => 'go_blogs',
+                'post_title'    => $result_title,
+                'post_content'  => $result,
+                'post_status'   => 'publish',
+                'post_author'   => $user_id,
+                'tax_input'    => array(
+                    'go_blog_tags'     => $post_name
+                ),
+            );
+
+            // Insert the post into the database
+            $new_post_id = wp_insert_post( $my_post );
+            //create blog post function ($uid, $result);
             //get id of blog post item to set in actions
-        //}
+            $result = $new_post_id;
+        }
         else if ($check_type == 'unlock'){
             //this function checks password and returns
 			//invalid or return true
@@ -1003,6 +1019,7 @@ function go_task_change_stage() {
                 //refresh
 			}
 		}
+
 
         //////////////////
 		/// UPDATE THE DATABASE for Continue or Complete stage

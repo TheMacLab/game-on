@@ -12,6 +12,7 @@ function go_sounds( type ) {
 
 function go_admin_bar_stats_page_button( id ) {//this is called from the admin bar and is hard coded in the php code
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_admin_bar_stats;
+
     jQuery.ajax({
         type: "post",
         url: MyAjax.ajaxurl,
@@ -33,6 +34,7 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
                 */
                 jQuery.featherlight(res, {variant: 'stats'});
 
+                go_stats_task_list();
 
                 jQuery('#stats_tabs').tabs();
                 jQuery( '.stats_tabs' ).click( function() {
@@ -43,7 +45,6 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
                             go_stats_about();
                             break;
                         case 'tasks':
-                            console.log("tasks2");
                             go_stats_task_list();
                             break;
                         case 'store':
@@ -108,6 +109,8 @@ function go_stats_task_list() {
     jQuery("#go_task_list").show();
     //jQuery(".go_datatables").hide();
 
+
+
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;
     if ( jQuery( "#go_tasks_datatable" ).length == 0) {
             jQuery.ajax({
@@ -124,10 +127,20 @@ function go_stats_task_list() {
                         jQuery('#go_tasks_datatable').dataTable({
                             responsive: true,
                             "autoWidth": false,
-                            "order": [[0, "desc"]],
+                            "order": [[jQuery('th.go_tasks_timestamps').index(), "desc"]],
+                            "columnDefs": [
+                                {
+                                    "targets": 'go_tasks_reset',
+                                    sortable: false,
+                                }
+                            ],
                         });
 
                     }
+                    var user_id = jQuery("#go_stats_messages_icon").attr("name");
+                    jQuery(".go_reset_task").one("click", function(e){
+                        go_messages_opener( user_id, this.id, 'reset' );
+                    });
                 }
             });
     }

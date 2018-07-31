@@ -48,7 +48,6 @@ function go_scripts () {
 		wp_enqueue_script( 'jquery-effects-core' );
 
 
-
 		// Localization
 		$user_id = get_current_user_id();
 
@@ -78,7 +77,9 @@ function go_scripts () {
 					'go_mark_read'                 => wp_create_nonce( 'go_mark_read_' . $user_id ),
                     'go_update_admin_view'         => wp_create_nonce( 'go_update_admin_view' ),
                     'go_the_lb_ajax'                => wp_create_nonce( 'go_the_lb_ajax' ),
-                    'go_update_bonus_loot'          => wp_create_nonce('go_update_bonus_loot')
+                    'go_update_bonus_loot'          => wp_create_nonce('go_update_bonus_loot'),
+                    'go_create_admin_message' => wp_create_nonce('go_create_admin_message'),
+                    'go_send_message' => wp_create_nonce('go_send_message')
 
 				)
 			)

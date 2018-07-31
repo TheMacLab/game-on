@@ -1,9 +1,15 @@
 <?php
 
+/**
+ *
+ */
 function go_stats_overlay() {
     echo '<div id="go_stats_page_black_bg" style="display:none !important;"></div><div id="go_stats_white_overlay" style="display:none;"></div>';
 }
 
+/**
+ *
+ */
 function go_admin_bar_stats_bak() {
     //$user_id = 0;
     if ( ! empty( $_POST['uid'] ) ) {
@@ -184,7 +190,7 @@ function go_admin_bar_stats_bak() {
                 <div class='go_stats_gravatar'><?php echo $user_avatar; ?></div>
 
                 <div class='go_stats_user_info'>
-                    <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br/>";
+                    <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>";
                     go_user_links($user_id, true, true, false, true, true);
                     ?>
 
@@ -196,7 +202,7 @@ function go_admin_bar_stats_bak() {
                     echo '<div class="go_stats_rank"><h3>' . $go_option_ranks . ' ' . $rank_num . ": " . $current_rank . '</h3></div>';
                 }
                 echo $progress_bar;
-                //echo "<div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br/>{$current_minutes} {$minutes_name}";
+                //echo "<div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br>{$current_minutes} {$minutes_name}";
                 echo $health_bar;
                 ?>
             </div>
@@ -304,6 +310,9 @@ function go_admin_bar_stats_bak() {
     die();
 }
 
+/**
+ *
+ */
 function go_admin_bar_stats() {
     //$user_id = 0;
     if ( ! empty( $_POST['uid'] ) ) {
@@ -484,7 +493,7 @@ function go_admin_bar_stats() {
                 <div class='go_stats_gravatar'><?php echo $user_avatar; ?></div>
 
                 <div class='go_stats_user_info'>
-                    <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br/>";
+                    <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>";
                     go_user_links($user_id, true, true, false, true, true);
                     ?>
 
@@ -496,7 +505,7 @@ function go_admin_bar_stats() {
                     echo '<div class="go_stats_rank"><h3>' . $go_option_ranks . ' ' . $rank_num . ": " . $current_rank . '</h3></div>';
                 }
                 echo $progress_bar;
-                //echo "<div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br/>{$current_minutes} {$minutes_name}";
+                //echo "<div id='go_stats_user_points'><span id='go_stats_user_points_value'>{$current_points}</span> {$points_name}</div><div id='go_stats_user_currency'><span id='go_stats_user_currency_value'>{$current_currency}</span> {$currency_name}</div><div id='go_stats_user_bonus_currency'><span id='go_stats_user_bonus_currency_value'>{$current_bonus_currency}</span> {$bonus_currency_name}</div>{$current_penalty} {$penalty_name}<br>{$current_minutes} {$minutes_name}";
                 echo $health_bar;
                 ?>
             </div>
@@ -553,7 +562,10 @@ function go_admin_bar_stats() {
              }
              ?>
 
-            <div id="stats_tasks"></div>
+            <div id="stats_tasks">
+
+
+            </div>
             <div id="stats_store"></div>
             <div id="stats_history"></div>
             <div id="stats_badges"></div>
@@ -807,6 +819,10 @@ function go_tasks_dataloader_ajax()
     die();
 }
 */
+/**
+* @param null $user_id
+* @param bool $not_ajax
+*/
 function go_stats_about($user_id = null, $not_ajax = false) {
 
     if ( ! empty( $_POST['user_id'] ) && empty($user_id) ) {
@@ -839,6 +855,14 @@ function go_stats_about($user_id = null, $not_ajax = false) {
     //die();
 }
 
+/**
+* @param $user_id
+* @param $on_stats
+* @param bool $website
+* @param bool $stats
+* @param bool $profile
+* @param bool $blog
+*/
 function go_user_links($user_id, $on_stats, $website = true, $stats = false, $profile = false, $blog = false) {
     //if current user is admin, set all to true
     $current_id = get_current_user_id();
@@ -860,7 +884,8 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
         echo" <div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class=\"fa fa-user\" aria-hidden=\"true\"></i></a></div>";
     }
     if ($blog){
-        //add this later
+         $user_blog_link = get_site_url(null, '/author/' . $user_id);
+        echo" <div class='go_user_link'><a href='$user_blog_link' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span></a></div>";
 
     }
     if ($website){
@@ -869,21 +894,31 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
             echo " <div class='go_user_link'><a href='$user_website' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span></a></div>";
         }
     }
-    echo" </div>";
+    if($is_admin && $on_stats){
+        echo "<div id='go_stats_messages_icon' class='go_user_link go_messages_icon' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        echo '<script>var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id); console.log(user_id);});</script>';
+    }
+    echo "</div>";
 
 
 
 
 }
+
 /**Non server side processing (SSP)*/
 
-function go_stats_task_list() {
+function go_stats_task_list($user_id = null, $not_ajax = false) {
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
     if ( ! empty( $_POST['user_id'] ) ) {
         $user_id = (int) $_POST['user_id'];
     }
-    check_ajax_referer( 'go_stats_task_list_' );
+    $current_user = get_current_user_id();
+    $is_admin = go_user_is_admin($current_user);
+
+    if (!$not_ajax){
+        check_ajax_referer( 'go_stats_task_list_' );
+    }
 
     $tasks = $wpdb->get_results(
         $wpdb->prepare(
@@ -908,10 +943,17 @@ function go_stats_task_list() {
 
     $tasks_name = get_option( "options_go_tasks_name_plural" );
 
+
+
     echo "<div id='go_task_list' class='go_datatables'><table id='go_tasks_datatable' class='pretty display'>
                    <thead>
-						<tr>
-							<th class='header' ><a href=\"#\">Time</a></th>
+						<tr>";
+    if ($is_admin){
+        echo "<th class='header go_tasks_reset' ><a href='#'>Reset</a></th>";
+    }
+    echo"
+							
+							<th class='header go_tasks_timestamps' ><a href=\"#\">Time</a></th>
 							<th class='header' ><a href=\"#\">Title</a></th>
 
 
@@ -985,8 +1027,10 @@ function go_stats_task_list() {
                 $badges_names[] = "<b>" . $badges_name_sing . ":</b>";
                 foreach ($badge_ids as $badge_id) {
                     $term = get_term($badge_id, "go_badges");
-                    $badge_name = $term->name;
-                    $badges_names[] = $badge_name;
+                    if (!empty($term)) {
+                        $badge_name = $term->name;
+                        $badges_names[] = $badge_name;
+                    }
                 }
             }
         }
@@ -995,13 +1039,15 @@ function go_stats_task_list() {
         $group_ids = unserialize($group_ids);
         if (!empty($group_ids)){
             if (!empty($badge_ids)) {
-                $badges_names[] = "<br";
+                $badges_names[] = "<br>";
             }
             $badges_names[] = "<b>Group:</b>";
             foreach ($group_ids as $group_id) {
                 $term = get_term($group_id, "user_go_groups");
-                $group_name = $term->name;
-                $badges_names[] = $group_name;
+                if (!empty($term)) {
+                    $group_name = $term->name;
+                    $badges_names[] = $group_name;
+                }
             }
         }
         $badges_names = implode("<br>" , $badges_names);
@@ -1073,10 +1119,14 @@ function go_stats_task_list() {
         }else{
             $bonus_str = null;
         }
-        echo "
-			        <tr id='postID_{$post_id}'>
+        echo " <tr id='postID_{$post_id}'>";
 
-					    <td data-order='{$last_time}'>{$time}</td>
+	    if ($is_admin){
+            echo " <td id='{$post_id}' class='go_reset_task' value='{$post_id}' {$reset_col_style}  style='color: red; text-align: center;'><i class='fa fa-times-circle' aria-hidden='true'></i></td>";
+	    }
+	    echo"
+			        
+                        <td data-order='{$last_time}'>{$time}</td>
 					    <td><a href='{$post_link}' >{$post_name}<a></td>
 
 					    <td data-order='{$status_order}'>{$status} / {$total_stages}</td>
@@ -1108,6 +1158,9 @@ function go_stats_task_list() {
     die();
 }
 
+/**
+* @param $post_id
+*/
 function go_stats_single_task_activity_list($post_id) {
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_actions";
@@ -1176,6 +1229,9 @@ function go_stats_single_task_activity_list($post_id) {
 
         if ($action_type == 'admin'){
             $type = "Admin";
+        }
+        if ($action_type == 'reset'){
+            $type = "Reset";
         }
 
         if ($action_type == 'store'){
@@ -1264,7 +1320,13 @@ function go_stats_single_task_activity_list($post_id) {
     die();
 }
 
-function go_result_link($check_type, $result, $stage, $time){
+/**
+* @param $check_type
+* @param $result
+* @param $stage
+* @param $time
+ * @return string
+*/function go_result_link($check_type, $result, $stage, $time){
     $link = '';
     if ($check_type == 'URL'){
         $link = "<a href='{$result}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
@@ -1275,8 +1337,12 @@ function go_result_link($check_type, $result, $stage, $time){
         if ($is_image) {
             $link = "<a href='{#}' class='tooltip' data-featherlight='{$image_url}'><span class=\"dashicons dashicons-format-image\"></span> <span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
         }else{
-            $link = "<a href='{$image_url}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-media-default\"></span><span class=\"tooltiptext\">{Stage: {$stage} at <br> {$time}</span></a>";
+            $link = "<a href='{$image_url}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-media-default\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
         }
+    }
+    else if ($check_type == 'blog'){
+        $blog_link = get_permalink($result);
+        $link = "<a href='{$blog_link}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
     }
     /*
     else if ($check_type == 'password'){
@@ -1291,7 +1357,9 @@ function go_result_link($check_type, $result, $stage, $time){
 }
 
 //I don't think this does anything
-function go_stats_move_stage() {
+/**
+ *
+ */function go_stats_move_stage() {
     global $wpdb;
 
     if ( ! current_user_can( 'manage_options' ) ) {
@@ -1518,6 +1586,9 @@ function go_stats_move_stage() {
 }
 
 //store items
+/**
+ *
+ */
 function go_stats_item_list() {
 
     global $wpdb;
@@ -1637,7 +1708,7 @@ function go_stats_item_list() {
         $group_ids = unserialize($group_ids);
         if (!empty($group_ids)){
             if (!empty($badge_ids)) {
-                $badges_names[] = "<br";
+                $badges_names[] = "<br>";
             }
             $badges_names[] = "<b>Group:</b>";
             foreach ($group_ids as $group_id) {
@@ -1683,6 +1754,9 @@ function go_stats_item_list() {
 }
 
 //History table
+/**
+ *
+ */
 function go_stats_activity_list() {
     check_ajax_referer( 'go_stats_activity_list_' );
 
@@ -1921,7 +1995,6 @@ die();
  * go_activity_dataloader_ajax
  * Called for Server Side Processing from the JS
  */
-
 function go_activity_dataloader_ajax()
 {
 
@@ -2066,26 +2139,69 @@ function go_activity_dataloader_ajax()
         }
 
 
+        $group_names = array();
         $group_ids = unserialize($group_ids);
         if (!empty($group_ids)){
             if (!empty($badge_ids)) {
-                $badges_names[] = "<br";
+                $badges_names[] = "<br>";
             }
-            $badges_names[] = "<b>Group:</b>";
+            $group_names[] = "<b>Group:</b>";
             foreach ($group_ids as $group_id) {
                 $term = get_term($group_id, "user_go_groups");
                 $group_name = $term->name;
-                $badges_names[] = $group_name;
+                $group_names[] = $group_name;
             }
         }
         $badges_names = implode("<br>" , $badges_names);
+        $group_names = implode("<br>" , $group_names);
 
         $post_title = get_the_title($source_id);
 
 
-        if ($action_type == 'admin'){
-            $type = "Admin";
+        if ($action_type == 'message' || $action_type == 'reset'){
+            $type = ucfirst($action_type);
+            $result_array = unserialize($result);
+            $title = $result_array[0];
+            $message = $result_array[1];
+            $message = $title . ": <br>" . $message;
+            $action = "<span class='tooltip' ><span class='tooltiptext'>{$message}</span>See Message</span>";
+
+             if (!empty($badge_ids)) {
+                $badge_dir = $result_array[2];
+
+                //$badges_name = get_option('options_go_badges_name_plural');
+
+                if ($badge_dir == "badges+"){
+                    $badge_dir = "<b>Add </b> ";
+                }else if ($badge_dir == "badges-"){
+                    $badge_dir = "<b>Remove </b> ";
+                }else{
+                    $badge_dir = "";
+                }
+            }
+            else{
+                $badge_dir = "";
+            }
+
+            if (!empty($group_ids)){
+                $groups_dir = $result_array[3];
+                if ($groups_dir == "groups+"){
+                    $group_dir = "<b>Add </b> ";
+                }else if ($groups_dir == "groups-") {
+                    $group_dir = "<b>Remove </b> ";
+                }else{
+                    $group_dir = "";
+                }
+            }else{
+                $group_dir = "";
+            }
+
+        }else{
+            $badge_dir = "";
+            $group_dir = "";
         }
+
+        $badges_names = $badge_dir . $badges_names . $group_dir . $group_names;
 
         if ($action_type == 'store'){
             $store_qnty = $stage;
@@ -2199,7 +2315,9 @@ function go_activity_dataloader_ajax()
     die();
 }
 
-function go_stats_badges_list($user_id) {
+/**
+* @param $user_id
+*/function go_stats_badges_list($user_id) {
     global $wpdb;
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
     if ( ! empty( $_POST['user_id'] ) ) {
@@ -2311,6 +2429,9 @@ function go_stats_badges_list($user_id) {
 }
 //add_shortcode('go_make_badges', 'go_make_badges');
 
+/**
+* @param $user_id
+*/
 function go_stats_groups_list($user_id) {
     global $wpdb;
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
@@ -2421,10 +2542,13 @@ function go_stats_groups_list($user_id) {
  *
  */
 
-function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $saved_val = null)
+function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $saved_val = null, $multiple = false)
 {
     $is_hier = is_taxonomy_hierarchical( $taxonomy );
-    echo "<select id='go_". $location . $taxonomy . "_select'>";
+    if ($multiple == true){
+        $multiple = "multiple='multiple'";
+    }
+    echo "<select id='go_". $location . $taxonomy . "_select' class='go_tax_select' name='" . $taxonomy . "[]' " . $multiple . ">";
 
     echo "<option value='none' ><b>" . $title . "</b></option>";
     if ($is_hier) {
@@ -2436,7 +2560,7 @@ function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $
         foreach ( $parents as $parent ) {
             //$row_id = $parent->term_id;
 
-            $option =  "<option value='" . $parent->term_id . "' disabled><b>" . $parent->name . "</b></option>";
+            $option =  "<optgroup label='" . $parent->name . "' " ;
             echo $option;
             $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent->term_id);
             //children terms
@@ -2445,9 +2569,10 @@ function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $
                 if ($saved_val[0] == $child->term_id ){
                     $selected = "selected";
                 }else{$selected = null;}
-                echo "<option value='" . $child->term_id . "' " . $selected . ">&nbsp;&nbsp;" . $child->name . "</option>";
+                echo "<option value='" . $child->term_id . "' " . $selected . ">" . $child->name . "</option>";
                 echo "";
             }
+            echo "</optgroup>";
 
         }
 
@@ -2465,6 +2590,9 @@ function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $
     echo "</select>";
 }
 
+/**
+ *
+ */
 function go_stats_lite(){
     //$user_id = 0;
     if ( ! empty( $_POST['uid'] ) ) {
@@ -2644,7 +2772,7 @@ function go_stats_lite(){
                 <div class='go_stats_gravatar'><?php echo $user_avatar; ?></div>
 
                 <div class='go_stats_user_info'>
-                    <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br/>"; ?>
+                    <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>"; ?>
                     <?php
                     go_user_links($user_id,true, true, false, false, true);
                     ?>
@@ -2830,6 +2958,9 @@ function go_stats_lite(){
     die();
 }
 
+/**
+ *
+ */
 function go_stats_leaderboard() {
     global $wpdb;
     check_ajax_referer( 'go_stats_leaderboard_' );

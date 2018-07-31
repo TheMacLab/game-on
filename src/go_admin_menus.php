@@ -12,6 +12,7 @@ acf_add_options_page(array(
     //'parent_slug' 	=> 'game-on',
 ));
 
+/*
 // add sub page
 acf_add_options_page(array(
     'page_title' => 'Events',
@@ -20,7 +21,7 @@ acf_add_options_page(array(
     'icon_url'  => 'dashicons-clock'
     //'parent_slug' 	=> 'game-on',
 ));
-
+*/
 
 /**
  * re-order left admin menu
@@ -37,6 +38,7 @@ function go_reorder_admin_menu( ) {
         'badges', //badges
         'users.php', // Users
         'groups',
+        'edit.php?post_type=go_blogs',
         'go_random_events',
         'game-tools',//gameon tools
         'separator1', // --Space--
@@ -129,7 +131,7 @@ function go_add_toplevel_menu() {
         'game-tools',
         'go_admin_tools_menu_content',
         'dashicons-admin-tools',
-        '4'
+        4
     );
 }
 add_action( 'admin_menu', 'go_add_toplevel_menu' );

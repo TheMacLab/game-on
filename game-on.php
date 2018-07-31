@@ -13,6 +13,7 @@ global $version;
 
 include_once( 'includes/acf/acf.php' );
 
+
 foreach ( glob( plugin_dir_path( __FILE__ ) . "*.php" ) as $file ) {
     include_once $file;
 }
@@ -124,7 +125,7 @@ function go_flush_rewrites() {
 // actions
 //add_action( 'admin_menu', 'add_game_on_options' );
 //add_action( 'admin_menu', 'go_clipboard' );
-add_action( 'admin_bar_init', 'go_messages_bar' );
+//add_action( 'admin_bar_init', 'go_messages_bar' );
 add_action( 'admin_bar_init', 'go_admin_bar' );
 
 /*
@@ -233,6 +234,8 @@ add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
 add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' );
 add_action( 'wp_ajax_go_upgade4', 'go_upgade4' );
 add_action( 'wp_ajax_go_update_bonus_loot', 'go_update_bonus_loot' );
+add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );
+add_action( 'wp_ajax_go_send_message', 'go_send_message' );
 
 
 add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');

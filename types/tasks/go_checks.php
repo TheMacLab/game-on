@@ -57,6 +57,8 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
 
     if ($check_type == 'upload') {
         go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
+    } else if ($check_type == 'blog') {
+        go_blog_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'URL') {
         go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'password') {
@@ -186,6 +188,63 @@ function go_password_check ($custom_fields, $i, $status, $go_actions_table_name,
     }
 }
 
+function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
+    global $wpdb;
+
+    //for bonus stages
+    $stage = 'stage';
+    if ($bonus){
+        $status = $bonus_status;
+        $stage = 'bonus_status';
+    }
+    //end for bonus stages
+
+    if ($i == $status) {
+        echo $instructions;
+        $i++;
+        $post_id = (string) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
+				ORDER BY id DESC LIMIT 1",
+                $user_id,
+                $post_id,
+                $i,
+                'task'
+            )
+        );
+        $post      = get_post( $post_id, OBJECT, 'edit' );
+        $content   = $post->post_content;
+        $title = get_the_title($post_id);
+
+        echo "<div id='go_url_div'>";
+        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' placeholder='' value ='{$title}'></div> </div>";
+        $settings  = array(
+            'textarea_name' => 'go_result',
+            'media_buttons' => true
+        );
+        wp_editor( $content, 'go_blog_post', $settings );
+        echo "</div>";
+    }
+    else {
+        $i++;
+        $post_id = (string) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND {$stage}  = %d
+				ORDER BY id DESC LIMIT 1",
+                $user_id,
+                $post_id,
+                $i
+            )
+        );
+        $post_link = get_permalink($post_id);
+        echo "Post Link : <a href='" . $post_link . "' target='blank'>" . $post_link . "</a>";
+    }
+}
+
 function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
     global $wpdb;
 
@@ -199,8 +258,21 @@ function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $use
 
     if ($i == $status) {
         echo $instructions;
+        $i++;
+        $url = (string) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
+				ORDER BY id DESC LIMIT 1",
+                $user_id,
+                $post_id,
+                $i,
+                'task'
+            )
+        );
         echo "<div id='go_url_div'>";
-        echo "<input id='go_result' class='clickable' type='url' placeholder='Enter Url'>";
+        echo "<input id='go_result' class='clickable' type='url' placeholder='Enter Url' value='{$url}'>";
         echo "</div>";
     }
     else {
@@ -209,7 +281,7 @@ function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $use
             $wpdb->prepare(
                 "SELECT result 
 				FROM {$go_actions_table_name} 
-				WHERE uid = %d AND source_id = %d AND {$stage}  = %d
+				WHERE uid = %d AND source_id = %d AND {$stage}  = %d 
 				ORDER BY id DESC LIMIT 1",
                 $user_id,
                 $post_id,

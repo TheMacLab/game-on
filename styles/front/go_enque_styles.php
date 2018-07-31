@@ -13,7 +13,7 @@ function go_styles () {
 	 */
 
 		// Dependencies
-		wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css', null, $version );
+		wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, $version );
 		//wp_register_style( 'video-js-css', plugin_dir_url( __FILE__ ).'scripts/front/scripts/video-js/video-js.css' );
 		//wp_register_style( 'go_lightbox', plugin_dir_url( __FILE__ ).'min/go-lightbox.css' );
 

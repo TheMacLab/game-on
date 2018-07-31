@@ -61,7 +61,7 @@ function acf_load_seat_choices( $field ) {
     $field['choices'] = null;
     $field['choices'][ null ] = "Select";
     $name = get_option('options_go_seats_name');
-    $number = get_option('options_go_seat_number');
+    $number = get_option('options_go_seats_number');
     $field['placeholder'] = 'Select';
 
     if ($number > 0){
