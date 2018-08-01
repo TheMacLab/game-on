@@ -142,8 +142,9 @@ function go_template_loader($template){
 
     // load the custom template if ?query_type=all_post is  found on wordpress url/request
     if( $query_var == 'user_blog' ){
+        $directory = plugin_dir_path( __FILE__ ) . 'blogs/go_user_blog.php';
         //return get_stylesheet_directory_uri() . 'go_user_blog.php';
-        return WP_PLUGIN_DIR . '/game-on-mmhsart/src/blogs/go_user_blog.php';
+        return $directory;
 
     }
     return $template;
