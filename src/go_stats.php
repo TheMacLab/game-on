@@ -884,7 +884,9 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
         echo" <div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class=\"fa fa-user\" aria-hidden=\"true\"></i></a></div>";
     }
     if ($blog){
-         $user_blog_link = get_site_url(null, '/author/' . $user_id);
+        $user_info = get_userdata($user_id);
+        $userloginname = $user_info->user_login;
+         $user_blog_link = get_site_url(null, '/user/' . $userloginname);
         echo" <div class='go_user_link'><a href='$user_blog_link' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span></a></div>";
 
     }
