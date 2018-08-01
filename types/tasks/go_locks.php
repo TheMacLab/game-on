@@ -10,10 +10,11 @@
  * @param $task_name
  * @param $custom_fields
  * @param $is_logged_in
+ * @param $check_only
  * @return bool
  */
 function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only ){
-    global $wpdb;
+
 
     if ($check_only) {
         $is_unlocked = go_master_unlocked($user_id, $id);
@@ -24,7 +25,7 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
     }
 
     $task_is_locked = false;
-    $task_is_locked_l = false;
+    //$task_is_locked_l = false;
     if (!$task_name){
         $check_only = true;
     }
@@ -135,10 +136,9 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
         }
 
     }
-    if ($task_is_locked_l){
-        $task_is_locked = true;
-
-    }
+    //if ($task_is_locked_l){
+    //    $task_is_locked = true;
+    //}
 
     //Locks End
     return $task_is_locked;
@@ -147,6 +147,15 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
 
 /**
  * Lock Until Date
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
@@ -178,6 +187,15 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
 
 /**
  * Lock After Date
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $is_admin = go_user_is_admin( $user_id );
@@ -208,6 +226,15 @@ function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
 
 /**
  * Badge Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $badge_name = get_option( 'options_go_naming_other_badges' );
@@ -267,6 +294,15 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
 
 /**
  * Seating Chart/ Period Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
@@ -284,7 +320,7 @@ function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
             $user_terms[] = $user_period;
         }
 
-        //if the current user is in a class period then check if it is the right one
+        //set $user_terms to empty array if not set
         if (!$user_terms) {
             $user_terms = array();
         }
@@ -320,8 +356,16 @@ function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
 
 /**
  * Minimum XP Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
-
 function go_xp_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -340,11 +384,18 @@ function go_xp_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logge
     return $this_lock;
 }
 
-
 /**
  * Minimum XP LEVELS Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
-
 function go_xp_levels_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -365,8 +416,16 @@ function go_xp_levels_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $i
 
 /**
  * Minimum C4 Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
-
 function go_c4_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -387,8 +446,16 @@ function go_c4_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logge
 
 /**
  * Minimum Gold Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
-
 function go_gold_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
     if( $is_logged_in ) {
@@ -409,6 +476,15 @@ function go_gold_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
 
 /**
  * Minimum Health Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
@@ -429,7 +505,16 @@ function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
 }
 
 /**
- * User Group Lock
+ * Groups Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
     $this_lock = false;
@@ -441,31 +526,22 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
         $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
         $user_terms = array();
         for ($i = 0; $i < $num_terms; $i++) {
-
-            //$user_period = "go_section_and_seat_" . $i . "_user-section";
-            //$user_period = get_user_meta($user_id, $user_period, true);
-            //$user_terms[] = $user_period;
-
             global $wpdb;
             $go_loot_table_name = "{$wpdb->prefix}go_loot";
-            $badges_array = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-            $user_terms = unserialize($badges_array);
-
-
-
-
+            $groups_array = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+            $user_terms = unserialize($groups_array);
         }
 
-        //if the current user is in a class period then check if it is the right one
+        //set $user_terms to empty array if not set
         if (!$user_terms) {
             $user_terms = array();
         }
 
-        // determines if the user has the correct badges
+        // determines if the user has the correct group
         if (!empty($terms_needed)) {
-            // checks to see if the filter array are in the the user's badge array
+            // checks to see if the filter array are in the the user's groups array
             $intersection = array_values(array_intersect($user_terms, $terms_needed));
-            // stores an array of the badges that were not found in the user's badge array
+            // stores an array of the groups that were not found in the user's groups array
             $term_diff = array_diff($terms_needed, $intersection);
             if (!empty($term_diff)) {
                 if (!$check_only) {
@@ -489,7 +565,12 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
 }
 
 /**
- * schedule Lock
+ * Scheduled Access
+ * @param $user_id
+ * @param $custom_fields
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only){
     if( $is_logged_in ) {

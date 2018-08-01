@@ -307,6 +307,41 @@ function go_clipboard_class_a_choice_activity(refresh) {
                         Messages.draw();
 
                     });
+
+                    // Add event listener for opening and closing more actions
+                    jQuery('#go_clipboard_activity_datatable .show_more').click( function () {
+                        var hidden = jQuery(this).hasClass('shown');
+                        console.log(hidden);
+                        if (hidden == false) {
+                            jQuery(this).addClass('shown');
+                            jQuery(this).siblings('.hidden_action').show();
+                            jQuery(this).find('.hide_more_actions').show();
+                            jQuery(this).find('.show_more_actions').hide();
+                            console.log("show");
+                        }else{
+                            jQuery(this).removeClass('shown');
+                            jQuery(this).siblings('.hidden_action').hide();
+                            jQuery(this).find('.hide_more_actions').hide();
+                            jQuery(this).find('.show_more_actions').show();
+                            console.log("hide");
+                        }
+/*
+                        var table = jQuery(this).closest('table');
+                        console.log(table);
+                        var row = table.row( table );
+                        console.log(row);
+                        if ( row.isShown() ) {
+                            // This row is already open - close it
+                            row.child.hide();
+                            tr.removeClass('shown');
+                        }
+                        else {
+                            // Open this row
+                            row.child( format(row.data()) ).show();
+                            tr.addClass('shown');
+                        }
+                        */
+                    } );
                 }
 
 

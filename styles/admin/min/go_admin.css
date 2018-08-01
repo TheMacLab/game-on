@@ -17,6 +17,9 @@
 .dt-buttons {
   padding: 10px; }
 
+.hidden_action {
+  display: none; }
+
 /********************
 *	Check for Understanding Buttons
 ********************/

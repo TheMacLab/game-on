@@ -2,15 +2,20 @@
 
 Game-On (GO) is an educational framework that provides teachers with a vast amount of tools to create their own <a href="http://en.wikipedia.org/wiki/Gamification" target="_blank">gamified</a> learning system.
 
-<a href="http://maclab.guhsd.net/game-on" target="_blank">Game-On Documentation</a>
+### Information and Help
 
-<a href="http://edex.adobe.com/group/game-on/discussions/" target="_blank">Adobe Education Exchange (AEE) Game-On Group Forum</a>
+* <a href="http://maclab.guhsd.net/game-on" rel="nofollow">Game-On Documentation</a>: This is still v3 documentation.  v4 documentation is in the works.
+* <a href='https://www.youtube.com/channel/UC1G3josozpubdzaINcFjk0g' >YouTube</a> Visit our YouTube Channel for the most recent updates.
+* <a href="http://edex.adobe.com/group/game-on/discussions/" rel="nofollow">Adobe Education Exchange (AEE)</a> Game-On Group Forum
 
-If you think Game-On could use a new feature or would like to discuss the v3.X versions, refer to the <a href="https://edex.adobe.com/group/game-on/discussion/-9038000/" target="_blank">Questions and Observations</a> thread.
+The Game  <a href="https://edex.adobe.com/group/game-on/discussion/-9038000/" rel="nofollow">Questions and Observations</a> thread.
+If you found a bug or are having any difficulties in v3.X versions, refer to the <a href="https://edex.adobe.com/group/game-on/discussion/v9f80aa7d/" rel="nofollow">Game On v3.x Discussion</a> thread.
+Currently, AEE does not support thread subscription without commenting. If you'd like to recieve updates in any of the AEE threads, be sure to leave a comment. Something as simple as "Hi, following along." will do!
+    
+* <a href="https://gameful.me/forums" rel="nofollow">Gameful.me Forum</a></li>
 
-If you found a bug or are having any difficulties in v3.X versions, refer to the <a href="https://edex.adobe.com/group/game-on/discussion/v9f80aa7d/" target="_blank">Game On v3.x Discussion</a> thread.
+For v4 information, bug reporting, and feature requests, please refer to the <a href="https://gameful.me/forums" rel="nofollow">forum on Gameful.me</a>.
 
-Currently, (August '17) AEE does not support thread subscription without commenting. If you'd like to recieve updates in any of the AEE threads, be sure to leave a comment. Something as simple as "Hi, following along." will do!
 
 ### Installation Requirements
 
@@ -33,11 +38,12 @@ We highly recommend keeping your WordPress installation up to date. This not onl
 ### Lovingly Created By
 
 Current Authors:
+* Mick McMurray
 
-* Zach Hofmeister
 
 Previous Authors/Contributors:
 
+* Zach Hofmeister
 * <a href='http://foresthoffman.com' target='_blank'>Forest Hoffman</a>
 * Ezio Ballarin
 * Charles Leon

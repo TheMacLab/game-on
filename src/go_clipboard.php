@@ -298,11 +298,11 @@ function go_clipboard_intable() {
 }
 
 function go_clipboard_intable_activity() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		die( -1 );
-	}
+    if ( ! current_user_can( 'manage_options' ) ) {
+        die( -1 );
+    }
 
-	check_ajax_referer( 'go_clipboard_intable_activity_' . get_current_user_id() );
+    check_ajax_referer( 'go_clipboard_intable_activity_' . get_current_user_id() );
     global $wpdb;
 
     $date_ajax = $_POST['date'];
@@ -310,7 +310,7 @@ function go_clipboard_intable_activity() {
 
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
     $rows = $wpdb->get_results(
-        "SELECT * 
+        "SELECT *
 			        FROM {$go_totals_table_name}"
 
     );
@@ -347,8 +347,9 @@ function go_clipboard_intable_activity() {
         $actions = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT *
-			FROM {$go_task_table_name} 
-			WHERE DATE(TIMESTAMP) = %s",
+			FROM {$go_task_table_name}
+			WHERE DATE(TIMESTAMP) = %s
+			ORDER BY TIMESTAMP DESC",
                 $date_ajax
 
             )
@@ -379,10 +380,36 @@ function go_clipboard_intable_activity() {
             $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
 
             $action_list = array();
-            foreach ($actions as $action){
+
+            $action_count = 0;
+            $user_actions = array();
+            foreach ($actions as $action) {
                 $action = json_decode(json_encode($action), True);//convert stdclass to array by encoding and decoding
                 $uid = intval($action[uid]);
                 if ($uid == $user_id) {
+                    $action_count++;
+                    $user_actions[] = $action;
+                }
+
+
+            }
+
+
+            $i=0;
+            foreach ($user_actions as $action){
+                $action = json_decode(json_encode($action), True);//convert stdclass to array by encoding and decoding
+                $uid = intval($action[uid]);
+                if ($uid == $user_id) {
+                    $i++;
+                    if ( $i < 4){
+                        $class = 'recent_action';
+                    }else if ($i == 4){
+                        $more = $action_count - 3;
+                        $action_list[] = "<tr class='show_more'><td colspan='6'><span class='show_more_actions'>Show</span><span class='hide_more_actions' style='display: none;'>Hide</span> " . $more . " more actions.</td></tr>";
+                        $class = 'hidden_action';
+                    }else{
+                        $class = 'hidden_action';
+                    }
 
                     ///////////
                     ///
@@ -565,7 +592,7 @@ function go_clipboard_intable_activity() {
                     $c4_toggle = get_option('options_go_loot_c4_toggle');
 
                     if ($xp_toggle) {
-                       $xp = $xp_abbr . ": " . $xp;
+                        $xp = $xp_abbr . ": " . $xp;
                     }
                     if ($gold_toggle) {
                         $gold = $gold_abbr . ": " . $gold;
@@ -583,7 +610,7 @@ function go_clipboard_intable_activity() {
                     $loot = $xp . "<br>" . $gold . "<br>" . $health  . "<br>" . $c4;
                     $loot = "<span class='tooltip' ><span class='tooltiptext'>{$loot}</span>Loot</span>";
 
-                        $action_list[] = "<tr><td>" . $time . "</td><td>" . $type . "</td><td>" .$post_title . "</td><td>" . $action . "</td><td>" . $loot . "</td><td>" . $badges_names . "</td></tr>";
+                    $action_list[] = "<tr class='" . $class . "'><td>" . $time . "</td><td>" . $type . "</td><td>" . $post_title . "</td><td>" . $action . "</td><td>" . $loot . "</td><td>" . $badges_names . "</td></tr>";
 
                 }
                 ////////////////////////////////////////////////////////////////////////
@@ -600,20 +627,20 @@ function go_clipboard_intable_activity() {
 
                 $user_seat = get_user_meta($user_id, $user_seat_option, true);
 
-                echo "<tr>
+                echo "<tr style='vertical-align: top;'>
 					<td style='text-align: center;'><input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/></td>
 					<td >{$user_period} </a></td>
 					<td>{$group_ids}</a></td>
 					<td>{$badge_ids}</a></td>
 					<td >{$user_period_name} </a></td>
 					<td>{$user_seat}</td>
-					<td>{$user_firstname}</td>				
+					<td>{$user_firstname}</td>
 					<td>{$user_lastname}</td>
 					<td>{$user_display_name}</td>
 					<td>";
                 go_user_links($user_id, false, true, true, true, true);
-                echo " </a></td>	
-					<td class='user_activity'>{$action_list}</td>
+                echo " </a></td>
+					<td class='user_activity' style='padding: 4px;'>{$action_list} </td>
 				  </tr>";
 
 

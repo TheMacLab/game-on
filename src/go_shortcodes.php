@@ -198,7 +198,6 @@ function go_get_firstname_function( $atts, $content = null ) {
 }
 add_shortcode( 'go_firstname', 'go_get_firstname_function' );
 
-
 //Gets the users last name
 function go_get_lastname_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
@@ -455,7 +454,6 @@ function go_get_category() {
 	echo '</div>';
 }
 
-
 add_shortcode( 'go_get_category', 'go_get_category' );
 function go_get_all_terms() {
 	check_ajax_referer( 'go_get_all_terms_' . get_the_ID() );
@@ -668,15 +666,20 @@ function go_task_pod_tasks( $atts ) {
 
 add_filter( 'mce_buttons', 'go_shortcode_button_add_button', 0);
 function go_shortcode_button_add_button( $buttons ) {
-    array_push( $buttons, "separator", "go_shortcode_button" );
-    return $buttons;
+
+        array_push($buttons, "separator", "go_shortcode_button");
+        return $buttons;
+
 }
 
 add_filter( 'mce_external_plugins', 'go_shortcode_button_register' );
 function go_shortcode_button_register( $plugin_array ) {
-    $url = plugins_url( "../js/js/go_shortcode_mce.js", __FILE__ );
-    $plugin_array['go_shortcode_button'] = $url;
-    return $plugin_array;
+    $is_admin = go_user_is_admin();
+    if($is_admin) {
+        $url = plugins_url("../js/js/go_shortcode_mce.js", __FILE__);
+        $plugin_array['go_shortcode_button'] = $url;
+        return $plugin_array;
+    }
 }
 
 // from go_open_badge.php

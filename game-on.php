@@ -18,13 +18,7 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "*.php" ) as $file ) {
     include_once $file;
 }
 
-foreach ( glob( plugin_dir_path( __FILE__ ) . "src/*.php" ) as $file ) {
-    include_once $file;
-}
-
-
 include_once "types/types.php";
-
 
 foreach ( glob( plugin_dir_path( __FILE__ ) . "types/store/*.php" ) as $file ) {
     include_once $file;
@@ -47,6 +41,10 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/admin/*.php" ) as $file ) 
 }
 
 foreach ( glob( plugin_dir_path( __FILE__ ) . "styles/front/*.php" ) as $file ) {
+    include_once $file;
+}
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "src/*.php" ) as $file ) {
     include_once $file;
 }
 
@@ -114,6 +112,8 @@ function go_flush_rewrites() {
     // call your CPT registration function here (it should also be hooked into 'init')
     go_register_task_tax_and_cpt();
     go_register_store_tax_and_cpt();
+    go_blog_tags();
+    go_blogs();
     flush_rewrite_rules();
 }
 
@@ -133,7 +133,7 @@ add_action( 'admin_bar_init', 'go_admin_bar' );
  */
 
 add_action( 'admin_init', 'go_tsk_actv_redirect' );
-add_action( 'admin_init', 'go_add_delete_post_hook' );
+//add_action( 'admin_init', 'go_add_delete_post_hook' );
 add_action( 'admin_head', 'go_stats_overlay' );
 //add_action( 'admin_head', 'go_store_head' );
 add_action( 'admin_notices', 'go_admin_head_notification' );
@@ -257,20 +257,7 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
  * Important Functions
  */
 
-/*
- * Determines if a badge exists.
- *
- * @param int $id The attachment ID.
- * @return boolean True if the attachment exists, false otherwise.
- */
-function go_badge_exists( $id ) {
-	if ( ! is_int( $id ) || $id < 0 ) {
-		return false;
-	}
 
-	// checks to see that the corresponding attachment exists
-	return wp_get_attachment_image_url( $id ) ? true : false;
-}
 
 /*
  * Appends errors to the configured PHP error log.
@@ -327,23 +314,6 @@ function go_tsk_actv_redirect() {
 	}
 }
 
-function go_add_delete_post_hook() {
-	if ( current_user_can( 'delete_posts' ) ) {
-		add_action( 'delete_post', 'go_delete_cpt_data' );
-	}
-}
-
-function go_delete_cpt_data( $cpt_id ) {
-	global $wpdb;
-	if ( "tasks" == get_post_type( $cpt_id ) || "go_store" == get_post_type( $cpt_id ) ) {
-		$cpt_to_delete = $wpdb->get_var( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}go WHERE post_id = %d", $cpt_id ) );
-		if ( $cpt_to_delete ) {
-			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}go WHERE post_id = %d", $cpt_id ) );
-		}
-	}
-	return true;
-}
-
 function go_user_redirect( $redirect_to, $request, $user )
 {
     //if (is_user_logged_in()) {
@@ -391,16 +361,10 @@ function go_admin_head_notification() {
 		$plugin_version = $plugin_data['Version'];
 		$nonce = wp_create_nonce( 'go_admin_remove_notification_' . get_current_user_id() );
 
-		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Watch <a href='javascript:;'  onclick='go_display_help_video(&quot;http://maclab.guhsd.net/go/video/gameOn.mp4&quot;);' style='display:inline-block;'>this short video</a> for important information.<br/>Or visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/>
+		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/>
 			<div style='position: relative; left: 20px;'>
 				</br>
-				SEE WHAT'S NEW IN THIS VERSION: 
-				<ul style='list-style:disc;'>
-					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/g_xP8BflPAs?autoplay=1&rel=0 \" ) '>Overview of What's New</a></li>
-					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/rPQiirHBjt4?autoplay=1&rel=0 \" ) ' tooltip='hi'>Maps</a></li>
-					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/m2IAYdNZoM4?autoplay=1&rel=0 \" ) ' tooltip='hi'>Auto Store Page</a></li>
-					<li><a href='#' onclick='go_display_help_video( \" https://www.youtube.com/embed/6iZsyDUt98w?autoplay=1&rel=0 \" ) ' tooltip='hi'>Videos: Auto Embed, Fit, and Lightbox</a></li>
-				</ul>
+				<a href='https://www.youtube.com/channel/UC1G3josozpubdzaINcFjk0g' >Visit our YouTube Channel for the most recent updates.</a
 			</div>
 			<a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a>
 		</div>
@@ -494,21 +458,6 @@ function go_user_is_admin( $user_id = null ) {
     if(user_can( $user_id, 'manage_options' )) {
         return true;
     }
-/*
-	$the_user = get_user_by( 'id', $user_id );
-	if ( empty( $the_user ) ) {
-		return false;
-	}
-	$roles = $the_user->roles;
-	if ( ! empty( $roles ) ) {
-		$can_manage = user_can( $the_user, 'manage_options' );
-		foreach ( $roles as $role ) {
-			if ( 'administrator' === $role && $can_manage ) {
-				return true;
-			}
-		}
-	}
-*/
 	return false;
 }
 
@@ -530,22 +479,7 @@ function client_side_resize_load() {
 }
 add_action( 'wp_enqueue_media' , 'client_side_resize_load' );
 
-/**
- * @param $items
- * @return string
- * Modified from:
- * https://wordpress.stackexchange.com/questions/121309/how-do-i-programatically-insert-a-new-menu-item
- *
- */
 
-// Check if the menu exists
-$menu_name = 'go_top_menu';
-$menu_exists = wp_get_nav_menu_object( $menu_name );
-
-// If it doesn't exist, let's create it.
-if( !$menu_exists) {
-    $menu_id = wp_create_nav_menu($menu_name);
-}
 
 function go_new_nav_menu_items($items) {
 
@@ -678,6 +612,99 @@ function wpb_load_widget() {
 
 }
 
+
+/**
+ * Added v4.0 Sort items that show on menu pages
+ *Modified from: https://wordpress.stackexchange.com/questions/39817/sort-results-by-name-asc-order-on-archive-php
+ * https://www.advancedcustomfields.com/resources/orde-posts-by-custom-fields/
+ */
+add_action( 'pre_get_posts', 'go_change_sort_order');
+function go_change_sort_order($query){
+
+    // do not modify queries in the admin
+    if( is_admin() ) {
+
+        return $query;
+
+    }
+
+	if ($query->is_tax('task_menus')){
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
+        $query->set('meta_key', 'go-location_top_order_item');
+        $query->set('order', 'ASC');
+	}
+
+	if ($query->is_tax('task_categories')){
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
+        $query->set('meta_key', 'go-location_side_order_item');
+        $query->set('order', 'ASC');
+	}
+
+	/*
+    if ($query->is_tax('task_chains')){
+        $query->set('orderby', 'meta_value_num');
+        $query->set('posts_per_page', -1);
+        $query->set('meta_key', 'go-location_map_order_item');
+        $query->set('order', 'ASC');
+    }
+*/
+
+
+
+    // return
+    //return $query;
+
+
+};
+
+/**
+ * https://wordpress.stackexchange.com/questions/204779/how-can-i-add-an-author-filter-to-the-media-library
+ *
+ */
+function media_add_author_dropdown()
+{
+    $scr = get_current_screen();
+    if ( $scr->base !== 'upload' ) return;
+
+    $author   = filter_input(INPUT_GET, 'author', FILTER_SANITIZE_STRING );
+    $selected = (int)$author > 0 ? $author : '-1';
+    $args = array(
+        'show_option_none'   => 'All Authors',
+        'name'               => 'author',
+        'selected'           => $selected
+    );
+    wp_dropdown_users( $args );
+}
+add_action('restrict_manage_posts', 'media_add_author_dropdown');
+
+//bbPress visual editor
+function bbp_enable_visual_editor( $args = array() ) {
+    $args['tinymce'] = true;
+    return $args;
+}
+add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
+
+
+/**
+ * @param $items
+ * @return string
+ * Modified from:
+ * https://wordpress.stackexchange.com/questions/121309/how-do-i-programatically-insert-a-new-menu-item
+ *
+ */
+
+// Check if the menu exists
+$menu_name = 'go_top_menu';
+$menu_exists = wp_get_nav_menu_object( $menu_name );
+
+// If it doesn't exist, let's create it.
+if( !$menu_exists) {
+    $menu_id = wp_create_nav_menu($menu_name);
+}
+
+
 $widget_toggle = get_option('options_go_locations_widget_toggle');
 if($widget_toggle) {
     add_action('widgets_init', 'wpb_load_widget');
@@ -689,7 +716,7 @@ class wpb_widget extends WP_Widget {
     function __construct() {
         parent::__construct(
 
-            // Base ID of your widget
+        // Base ID of your widget
             'wpb_widget',
 
             // Widget name will appear in UI
@@ -708,7 +735,7 @@ class wpb_widget extends WP_Widget {
         // before and after widget arguments are defined by themes
         echo $args['before_widget'];
 
-            echo $args['before_title'] . $title . $args['after_title'];
+        echo $args['before_title'] . $title . $args['after_title'];
 
         // This is where you run the code and display the output
         //echo __( 'Hello, World!', 'wpb_widget_domain' );
@@ -717,7 +744,7 @@ class wpb_widget extends WP_Widget {
             'hide_empty'	=> false,
             'parent'		=> 0,
         ) );
-		$menu_link = '<ul class="collapsibleList">';
+        $menu_link = '<ul class="collapsibleList">';
         foreach ($terms as $term) {
             $term_id = $term->term_id;
             $child_terms = get_terms(array(
@@ -786,37 +813,37 @@ class wpb_widget extends WP_Widget {
 
                     $go_tasks_objs = get_posts($args);
 
-                     if (!empty($go_tasks_objs)) {
+                    if (!empty($go_tasks_objs)) {
 
-                         $term_name = $child_term->name;
+                        $term_name = $child_term->name;
 
-                         //toggle these next 3 lines on/off if you want links on the terms
-                         //$term_link = get_term_link($child_term->term_id);
-                         //$menu_link = $menu_link . '<li class="go_side_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>';
-                         $menu_link = $menu_link . '<li class="go_side_menu_2">' . __($term_name) ;
+                        //toggle these next 3 lines on/off if you want links on the terms
+                        //$term_link = get_term_link($child_term->term_id);
+                        //$menu_link = $menu_link . '<li class="go_side_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>';
+                        $menu_link = $menu_link . '<li class="go_side_menu_2">' . __($term_name) ;
 
-                         //get the term id of this chain
-                         $term_id = $child_term->term_id;
-                         $args = array('tax_query' => array(array('taxonomy' => 'task_categories', 'field' => 'term_id', 'terms' => $term_id,)), 'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
+                        //get the term id of this chain
+                        $term_id = $child_term->term_id;
+                        $args = array('tax_query' => array(array('taxonomy' => 'task_categories', 'field' => 'term_id', 'terms' => $term_id,)), 'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
 
-                             'meta_key' => 'go-location_widget_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
+                            'meta_key' => 'go-location_widget_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
 
-                         );
+                        );
 
-                         $go_tasks_objs = get_posts($args);
-                         if (!empty($go_tasks_objs)) {
-                             $menu_link = $menu_link . '<ul>';
-                             foreach ($go_tasks_objs as $go_tasks_obj) {
-                                 $task_link = $go_tasks_obj->guid;
-                                 $task_title = $go_tasks_obj->post_title;
+                        $go_tasks_objs = get_posts($args);
+                        if (!empty($go_tasks_objs)) {
+                            $menu_link = $menu_link . '<ul>';
+                            foreach ($go_tasks_objs as $go_tasks_obj) {
+                                $task_link = $go_tasks_obj->guid;
+                                $task_title = $go_tasks_obj->post_title;
 
-                                 $menu_link = $menu_link . '<li class="go_side_menu_task"><a href="' . $task_link . '">' . __($task_title) . '</a></li>';
+                                $menu_link = $menu_link . '<li class="go_side_menu_task"><a href="' . $task_link . '">' . __($task_title) . '</a></li>';
 
-                             }
-                             $menu_link = $menu_link . '</ul>';
-                         }
-                         $menu_link = $menu_link . '</li>';
-                     }
+                            }
+                            $menu_link = $menu_link . '</ul>';
+                        }
+                        $menu_link = $menu_link . '</li>';
+                    }
                 }
                 $menu_link = $menu_link . '</ul></li>';
             }
@@ -836,10 +863,10 @@ class wpb_widget extends WP_Widget {
         }
         // Widget admin form
         ?>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-		</p>
+        <p>
+            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+        </p>
         <?php
     }
 
@@ -852,93 +879,7 @@ class wpb_widget extends WP_Widget {
 } // Class go_widget ends here
 
 
-/**
- * Sort items that show on menu pages
- *Modified from: https://wordpress.stackexchange.com/questions/39817/sort-results-by-name-asc-order-on-archive-php
- * https://www.advancedcustomfields.com/resources/orde-posts-by-custom-fields/
- */
 
-add_action( 'pre_get_posts', 'go_change_sort_order');
-function go_change_sort_order($query){
-
-    // do not modify queries in the admin
-    if( is_admin() ) {
-
-        return $query;
-
-    }
-
-	if ($query->is_tax('task_menus')){
-        $query->set('orderby', 'meta_value_num');
-        $query->set('posts_per_page', -1);
-        $query->set('meta_key', 'go-location_top_order_item');
-        $query->set('order', 'ASC');
-	}
-
-	if ($query->is_tax('task_categories')){
-        $query->set('orderby', 'meta_value_num');
-        $query->set('posts_per_page', -1);
-        $query->set('meta_key', 'go-location_side_order_item');
-        $query->set('order', 'ASC');
-	}
-
-	/*
-    if ($query->is_tax('task_chains')){
-        $query->set('orderby', 'meta_value_num');
-        $query->set('posts_per_page', -1);
-        $query->set('meta_key', 'go-location_map_order_item');
-        $query->set('order', 'ASC');
-    }
-*/
-
-
-
-    // return
-    //return $query;
-
-
-};
-
-//add_action( 'pre_get_posts', 'enfold_customization_author_archives' );
-
-function enfold_customization_author_archives( $query ) {
-    if ( $query -> is_author ) { $query -> set( 'post_type', 'any' ); }
-    remove_action( 'pre_get_posts', 'enfold_customization_author_archives' );
-}
-
-/**
- * https://wordpress.stackexchange.com/questions/204779/how-can-i-add-an-author-filter-to-the-media-library
- *
- */
-function media_add_author_dropdown()
-{
-    $scr = get_current_screen();
-    if ( $scr->base !== 'upload' ) return;
-
-    $author   = filter_input(INPUT_GET, 'author', FILTER_SANITIZE_STRING );
-    $selected = (int)$author > 0 ? $author : '-1';
-    $args = array(
-        'show_option_none'   => 'All Authors',
-        'name'               => 'author',
-        'selected'           => $selected
-    );
-    wp_dropdown_users( $args );
-}
-add_action('restrict_manage_posts', 'media_add_author_dropdown');
-
-//bbPress visual editor
-function bbp_enable_visual_editor( $args = array() ) {
-    $args['tinymce'] = true;
-    return $args;
-}
-add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
-
-
-/*list all queries--config file also needs option set
-echo "<pre>";
-print_r($wpdb->queries);
-echo "</pre>";
-*/
 
 
 ?>

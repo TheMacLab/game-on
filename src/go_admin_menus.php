@@ -304,26 +304,24 @@ function go_admin_game_on_menu_content() {
       <h1></a>Game-On</h1>
 
 
-        <div style="border: solid 1px; background-color: lightpink; padding: 25px;">
-            <p>
-                This beta is ready for building a game, but not ready for game play.  Quests, loot, and store items should work.
-
-                Things that don't work yet:
-                Clipboard, Stats Panel, Bonus Loot Button, assigning badges, and probably some other stuff.  A production release should be ready by August 1, 2018.
-
-                There is a tool to update your version 3 tasks to version 4.
-            </p>
-        </div>
+    
 <p>Game-On (GO) is an educational framework that provides teachers with a vast amount of tools to create their own <a href="http://en.wikipedia.org/wiki/Gamification" rel="nofollow">gamified</a> learning system.</p>
-<p><a href="http://maclab.guhsd.net/game-on" rel="nofollow">Game-On Documentation</a></p>
-<p><a href="http://edex.adobe.com/group/game-on/discussions/" rel="nofollow">Adobe Education Exchange (AEE) Game-On Group Forum</a></p>
-<p>The Game  <a href="https://edex.adobe.com/group/game-on/discussion/-9038000/" rel="nofollow">Questions and Observations</a> thread.</p>
-<p>If you found a bug or are having any difficulties in v3.X versions, refer to the <a href="https://edex.adobe.com/group/game-on/discussion/v9f80aa7d/" rel="nofollow">Game On v3.x Discussion</a> thread.</p>
-<p>Currently, (August '17) AEE does not support thread subscription without commenting. If you'd like to recieve updates in any of the AEE threads, be sure to leave a comment. Something as simple as "Hi, following along." will do!</p>
-        <p><a href="http://edex.adobe.com/group/game-on/discussions/" rel="nofollow">Gameful.me Forum</a></p>
-        <p>For v4 information, bug reporting, and feature requests, please refer to the <a href="https://gameful.me/forums" rel="nofollow">forum on Gameful.me</a>.</p>
 
-
+<h3>Information and Help</h3>
+<ul style="list-style-position: outside; list-style-type: circle; margin-left: 30px;">
+    <li><a href="http://maclab.guhsd.net/game-on" rel="nofollow">Game-On Documentation</a>: This is still v3 documentation.  v4 documentation is in the works.</li>
+    <li><a href='https://www.youtube.com/channel/UC1G3josozpubdzaINcFjk0g' >YouTube</a> Visit our YouTube Channel for the most recent updates.</li>
+    <li><a href="http://edex.adobe.com/group/game-on/discussions/" rel="nofollow">Adobe Education Exchange (AEE)</a> Game-On Group Forum</li>
+        <ul>
+            <li>The Game  <a href="https://edex.adobe.com/group/game-on/discussion/-9038000/" rel="nofollow">Questions and Observations</a> thread.</li>
+            <li>If you found a bug or are having any difficulties in v3.X versions, refer to the <a href="https://edex.adobe.com/group/game-on/discussion/v9f80aa7d/" rel="nofollow">Game On v3.x Discussion</a> thread.</li>
+            <li>Currently, AEE does not support thread subscription without commenting. If you'd like to recieve updates in any of the AEE threads, be sure to leave a comment. Something as simple as "Hi, following along." will do!</li>
+        </ul>
+    <li><a href="http://edex.adobe.com/group/game-on/discussions/" rel="nofollow">Gameful.me Forum</a></li>
+    <ul>
+        <li>For v4 information, bug reporting, and feature requests, please refer to the <a href="https://gameful.me/forums" rel="nofollow">forum on Gameful.me</a>.</li>
+    </ul>
+</ul>
         <h3>Installation Requirements</h3>
 <p>Make sure to talk to your web hosting service provider about these technical requirements, if you have any doubts.</p>
 <h4> PHP</h4>

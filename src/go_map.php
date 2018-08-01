@@ -17,8 +17,10 @@ function go_map_activate() {
 }
 
 function go_make_single_map($last_map_id, $reload){
+	global $wpdb;
+    $go_task_table_name = "{$wpdb->prefix}go_tasks";
     wp_nonce_field( 'go_update_last_map');
-	$last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');
+	$last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');//Query 1 - get the map
     $user_id = get_current_user_id();
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
 	$taxonomy_name = 'task_chains';
@@ -27,6 +29,19 @@ function go_make_single_map($last_map_id, $reload){
 	echo "<div id='loader-wrapper style='width: 100%'><div id='loader' style='display:none;'></div></div><div id='maps' data-mapid='$last_map_id'>";
 	if(!empty($last_map_id)){
 
+
+		///////////////
+        $tasks = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT *
+			FROM {$go_task_table_name}
+			WHERE uid = %d
+			ORDER BY last_time DESC",
+                $user_id
+
+            )
+        );
+///////////////////
 				echo 	"<div id='map_$last_map_id' class='map'>
 						<ul class='primaryNav'>
 						<li class='ParentNav'><p>$last_map_object->name</p></li>";
@@ -42,7 +57,7 @@ function go_make_single_map($last_map_id, $reload){
 				);
 				
 				//parent chain
-				$Children_term_objects = get_terms($taxonomy_name,$args);
+				$Children_term_objects = get_terms($taxonomy_name,$args); //query 2 --get the chains
 
 				/*For each chain.  Prints the chain name then find and prints the tasks. */
    				foreach ( $Children_term_objects as $term_object ) {
@@ -75,43 +90,49 @@ function go_make_single_map($last_map_id, $reload){
 
                     );
 
-					$go_task_ids = get_posts($args);
-                    $is_pod = get_term_meta($term_id, 'pod_toggle', true);
+					$go_task_ids = get_posts($args); //Query 3-- One for each chain
+                    $is_pod = get_term_meta($term_id, 'pod_toggle', true); //Q --metadata
                     if($is_pod) {
-                        $pod_min = get_term_meta($term_id, 'pod_done_num', true);
-                        $pod_all = get_term_meta($term_id, 'pod_all', true);
+                        $pod_min = get_term_meta($term_id, 'pod_done_num', true); //Q metadata
+                        $pod_all = get_term_meta($term_id, 'pod_all', true);// Q metadata
 
                         $pod_count = count($go_task_ids);
                         if ($pod_all || ($pod_min >= $pod_count)){
-                            $task_name_pl = get_option('options_go_tasks_name_plural');
+                            $task_name_pl = get_option('options_go_tasks_name_plural'); //Q option
                             echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
 						}
 						else {
                         	if ($pod_min>1){
-                            	$task_name = get_option('options_go_tasks_name_plural');
+                            	$task_name = get_option('options_go_tasks_name_plural'); //Q option
                         	}else{
-                                $task_name = get_option('options_go_tasks_name_singular');
+                                $task_name = get_option('options_go_tasks_name_singular'); //Q option
 							}
 
                             echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete at least $pod_min $task_name. </span>";
                         }
                     }
 
+                    //////The list of tasks in the chain//
                     echo "<ul class='tasks'>";
 					if (!empty($go_task_ids)){
 						foreach($go_task_ids as $row) {
-							$status = get_post_status( $row );
-							if ($status !== 'publish'){continue; }
-							$task_name = get_the_title($row);
-							$task_link = get_permalink($row);
+							$status = get_post_status( $row );//is post published
+							if ($status !== 'publish'){continue; }//don't show if not pubished
+
+							$task_name = get_the_title($row); //Q
+							$task_link = get_permalink($row); //Q
 							$id = $row->ID;
-                            $custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
+                            $custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
                             $stage_count = $custom_fields['go_stages'][0];//total stages
 
-                            $status = go_get_status($id, $user_id);
+                            $key = array_search($id, array_column($tasks, 'post_id'));
+                            $this_task = $tasks[$key];
+							$status = $this_task -> status;
+
                             if($custom_fields['bonus_switch'][0]) {
                             	$bonus_stage_toggle = true;
-                            	$bonus_status = go_get_bonus_status($id, $user_id);
+                                $bonus_status = $this_task -> bonus_status;
+                            	//$bonus_status = go_get_bonus_status($id, $user_id);
                                 $repeat_max = $custom_fields['go_bonus_limit'][0];//max repeats of bonus stage
 								$bonus_stage_name = get_option('options_go_tasks_bonus_stage').':';
                             }
@@ -122,6 +143,8 @@ function go_make_single_map($last_map_id, $reload){
                             //if locked
 							$task_is_locked = go_task_locks($id, $user_id, false, $custom_fields, $is_logged_in, true);
 
+
+							//$task_is_locked = false;
                             $unlock_message = '';
 							if ($task_is_locked === 'password'){
 								$unlock_message = '<div><i class="fa fa-unlock"></i> Password</div>';
@@ -135,24 +158,25 @@ function go_make_single_map($last_map_id, $reload){
 
                             if ($stage_count == $status){
                                 $task_color = 'done';
+                                $finished = 'checkmark';
 							}else if ($task_is_locked){
                                 $task_color = 'locked';
+                                $finished = null;
                             }
 							else{
                             	$task_color = 'available';
+                                $finished = null;
 							}
 
 							if ($custom_fields['go-location_map_opt'][0] && !$is_pod) {
 								$optional = 'optional_task';
-                                $bonus_task = get_option('options_go_tasks_optional_task').':';
+                                $bonus_task = get_option('options_go_tasks_optional_task').':';  //Q option
 							}
 							else {
                                 $optional = null;
                                 $bonus_task = null;
 							}
-							if (go_is_done($id, $user_id)){
-								$finished = 'checkmark';
-							}else{$finished = null;}
+
 
 							echo "<li class='$task_color $optional '><a href='$task_link'><div class='$finished'></div><span <span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
 							if ($bonus_stage_toggle == true){

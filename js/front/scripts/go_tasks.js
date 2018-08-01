@@ -33,8 +33,10 @@ jQuery( document ).ready( function() {
     //add active class to checks and buttons
     jQuery(".progress").closest(".go_checks_and_buttons").addClass('active');
 
-
-
+    jQuery('#go_admin_override').appendTo(".go_locks");
+    jQuery('#go_admin_override').click( function () {
+        jQuery('.go_password').show();
+    });
 });
 
 function go_update_bonus_loot(){
@@ -454,7 +456,10 @@ function task_stage_change( target ) {
                     //console.log(res.html);
                     go_append(res);
 
-                go_mce();
+
+                //, function() {
+                //                         setTimeout(function(){ go_mce(); }, 1000);
+                //                 }
 
 
 
@@ -485,14 +490,16 @@ function go_mce() {
     try { tinymce.init( init ); } catch(e){}
 }
 
-function go_append (res){
+function go_append (res, callback){
     //jQuery( res.html ).addClass('active');
     jQuery( res.html ).appendTo( '#go_wrapper' ).stop().hide().show( 'slow' ).promise().then(function() {
         // Animation complete
         Vids_Fit_and_Box();
         go_make_clickable();
         go_disable_loading();
+        go_mce();
     });
+    callback();
 }
 
 // Makes it so you can press return and enter content in a field

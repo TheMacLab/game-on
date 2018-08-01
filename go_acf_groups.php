@@ -1922,6 +1922,25 @@ Groups can by used for a secondary sorting of students( i.e., roles, professions
 			'esc_html' => 0,
 		),
 		array(
+			'key' => 'field_5b61435c5a17e',
+			'label' => 'User Blogs',
+			'name' => 'go_blogs_toggle',
+			'type' => 'true_false',
+			'instructions' => 'Show blogs link on Stats Panel and Clipboard.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 1,
+			'ui' => 1,
+			'ui_on_text' => '',
+			'ui_off_text' => '',
+		),
+		array(
 			'key' => 'field_5b495af34ba69',
 			'label' => 'Seats',
 			'name' => 'go_seats',
@@ -5186,10 +5205,12 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_5ac26b076b323',
-			'label' => 'Password Required',
+			'label' => 'Show Password Box',
 			'name' => 'go_password_lock',
 			'type' => 'true_false',
-			'instructions' => '',
+			'instructions' => 'Show a box to users for a password.	This will prompt them to get a password from a teacher or provide instructions in the lock message field above on how to get the password elsewhere in the game.
+
+The master password that is set in the options page will work here, but you may also set another password that is specific to this lock.',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(

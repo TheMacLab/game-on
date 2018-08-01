@@ -83,17 +83,19 @@ if($user_obj)
 
 // get the username based from uname value in query var request.
 
-
+$paged = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
+$paged = get_query_var('paged');
 // Query param
 $arg = array(
     'post_type'         => 'go_blogs',
-    'posts_per_page'    => 15,
+    'posts_per_page'    => 5,
     'orderby'           => 'date',
     'order'             => 'DESC',
     'author_name'       => $user,
+    'paged' => $paged,
 );
 //build query
-$query = new WP_QUery( $arg );
+$query = new WP_Query( $arg );
 
 // get query request
 $posts = $query->get_posts();
@@ -104,14 +106,19 @@ if ( empty($posts) ) {
 } else {
     ?>
     <div class="go_blog_container1" style="display: flex; justify-content: center;">
-    <div class="go_blog_container" style="display: flex; justify-content: center; flex-direction: column; padding:20px;"><?php
+    <div class="go_blog_container" style="    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    flex-grow: 1;
+    max-width: 800px;"><?php
    foreach ($posts as $post){
        $post = json_decode(json_encode($post), True);//convert stdclass to array by encoding and decoding
        $title =  $post['post_title'];
        $content =  $post['post_content'];
        $date = $post['post_date'];
        ?>
-       <div class="go_blog_post_wrapper" style="max-width: 800px; ">
+       <div class="go_blog_post_wrapper" style="padding: 20px; ">
            <hr>
            <h2><?php echo $title;?></h2>
            <div><?php echo $date;?></div>
@@ -122,7 +129,33 @@ if ( empty($posts) ) {
 
        <?php
    }
-   echo "</div></div>";
+
+
+   ?>
+
+   <div class="pagination">
+    <?php
+        echo paginate_links( array(
+            'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+            'total'        => $query->max_num_pages,
+            'current'      => max( 1, get_query_var( 'paged' ) ),
+            'format'       => '?paged=%#%',
+            'show_all'     => false,
+            'type'         => 'plain',
+            'end_size'     => 2,
+            'mid_size'     => 1,
+            'prev_next'    => true,
+            'prev_text'    => sprintf( '<i></i> %1$s', __( 'Newer Posts', 'text-domain' ) ),
+            'next_text'    => sprintf( '%1$s <i></i>', __( 'Older Posts', 'text-domain' ) ),
+            'add_args'     => false,
+            'add_fragment' => '',
+        ) );
+    ?>
+    </div>
+    </div>
+    </div>
+
+    <?php
 }
 
 get_footer();

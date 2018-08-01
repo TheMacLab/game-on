@@ -308,10 +308,6 @@ function go_get_chain_order ($task_id){
 }
 
 function go_is_done( $task_id, $user_id = null ) {
-    global $wpdb;
-    $task_status = go_get_status( $task_id, $user_id);
-
-    $go_task_table_name = "{$wpdb->prefix}go_tasks";
 
     if ( empty( $task_id ) ) {
         return null;
@@ -322,6 +318,8 @@ function go_is_done( $task_id, $user_id = null ) {
     } else {
         $user_id = (int) $user_id;
     }
+
+    $task_status = go_get_status( $task_id, $user_id);
 
     $task_stage_count= get_post_meta($task_id, 'go_stages', true);
 
