@@ -2560,7 +2560,7 @@ function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $
         foreach ( $parents as $parent ) {
             //$row_id = $parent->term_id;
 
-            $option =  "<optgroup label='" . $parent->name . "' " ;
+            $option =  "<optgroup label='" . $parent->name . "' >" ;
             echo $option;
             $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent->term_id);
             //children terms

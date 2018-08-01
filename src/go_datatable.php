@@ -237,7 +237,7 @@ function go_user_registration ( $user_id ) {
     if ( array_search( 1, $user_role ) == $role || array_search( 1, $user_role ) == 'administrator' ) {
 
         // this should update the user's rank metadata
-        go_update_ranks( $user_id, 0 );
+        //go_update_ranks( $user_id, 0 );
 
         // this should set the user's points to 0
         $wpdb->insert( $table_name_go_totals, array( 'uid' => $user_id), array( '%s' ) );
