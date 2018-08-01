@@ -366,12 +366,7 @@ class acf_field_checkbox extends acf_field {
 			'name'			=> 'save_custom',
 			'type'			=> 'true_false',
 			'ui'			=> 1,
-			'message'		=> __("Save 'custom' values to the field's choices", 'acf'),
-			'conditions'	=> array(
-				'field'		=> 'allow_custom',
-				'operator'	=> '==',
-				'value'		=> 1
-			)
+			'message'		=> __("Save 'custom' values to the field's choices", 'acf')
 		));
 		
 		

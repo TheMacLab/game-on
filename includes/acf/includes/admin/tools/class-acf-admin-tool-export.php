@@ -479,11 +479,7 @@ class ACF_Admin_Tool_Export extends ACF_Admin_Tool {
 					
 					
 					// tooltip
-					acf.newTooltip({
-						text: 		"<?php _e('Copied', 'acf' ); ?>",
-						timeout:	250,
-						target: 	$(this),
-					});
+					acf.tooltip.temp('Copied', $a);
 					
 				} catch (err) {
 					

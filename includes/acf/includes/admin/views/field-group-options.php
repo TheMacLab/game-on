@@ -103,27 +103,6 @@ acf_render_field_wrap(array(
 
 
 // hide on screen
-$choices = array(
-	'permalink'			=>	__("Permalink", 'acf'),
-	'the_content'		=>	__("Content Editor",'acf'),
-	'excerpt'			=>	__("Excerpt", 'acf'),
-	'custom_fields'		=>	__("Custom Fields", 'acf'),
-	'discussion'		=>	__("Discussion", 'acf'),
-	'comments'			=>	__("Comments", 'acf'),
-	'revisions'			=>	__("Revisions", 'acf'),
-	'slug'				=>	__("Slug", 'acf'),
-	'author'			=>	__("Author", 'acf'),
-	'format'			=>	__("Format", 'acf'),
-	'page_attributes'	=>	__("Page Attributes", 'acf'),
-	'featured_image'	=>	__("Featured Image", 'acf'),
-	'categories'		=>	__("Categories", 'acf'),
-	'tags'				=>	__("Tags", 'acf'),
-	'send-trackbacks'	=>	__("Send Trackbacks", 'acf'),
-);
-if( acf_get_setting('remove_wp_meta_box') ) {
-	unset( $choices['custom_fields'] );	
-}
-
 acf_render_field_wrap(array(
 	'label'			=> __('Hide on screen','acf'),
 	'instructions'	=> __('<b>Select</b> items to <b>hide</b> them from the edit screen.','acf') . '<br /><br />' . __("If multiple field groups appear on an edit screen, the first field group's options will be used (the one with the lowest order number)",'acf'),
@@ -132,7 +111,23 @@ acf_render_field_wrap(array(
 	'prefix'		=> 'acf_field_group',
 	'value'			=> $field_group['hide_on_screen'],
 	'toggle'		=> true,
-	'choices' 		=> $choices
+	'choices' => array(
+		'permalink'			=>	__("Permalink", 'acf'),
+		'the_content'		=>	__("Content Editor",'acf'),
+		'excerpt'			=>	__("Excerpt", 'acf'),
+		'custom_fields'		=>	__("Custom Fields", 'acf'),
+		'discussion'		=>	__("Discussion", 'acf'),
+		'comments'			=>	__("Comments", 'acf'),
+		'revisions'			=>	__("Revisions", 'acf'),
+		'slug'				=>	__("Slug", 'acf'),
+		'author'			=>	__("Author", 'acf'),
+		'format'			=>	__("Format", 'acf'),
+		'page_attributes'	=>	__("Page Attributes", 'acf'),
+		'featured_image'	=>	__("Featured Image", 'acf'),
+		'categories'		=>	__("Categories", 'acf'),
+		'tags'				=>	__("Tags", 'acf'),
+		'send-trackbacks'	=>	__("Send Trackbacks", 'acf'),
+	)
 ));
 
 
@@ -146,7 +141,7 @@ do_action('acf/render_field_group_settings', $field_group);
 <script type="text/javascript">
 if( typeof acf !== 'undefined' ) {
 		
-	acf.newPostbox({
+	acf.postbox.render({
 		'id': 'acf-field-group-options',
 		'label': 'left'
 	});	

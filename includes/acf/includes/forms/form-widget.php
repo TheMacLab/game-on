@@ -199,7 +199,7 @@ class acf_form_widget {
 			<script type="text/javascript">
 			(function($) {
 				
-				acf.doAction('append', $('[id^="widget"][id$="<?php echo $widget->id; ?>"]') );
+				acf.do_action('append', $('[id^="widget"][id$="<?php echo $widget->id; ?>"]') );
 				
 			})(jQuery);	
 			</script>
@@ -262,64 +262,115 @@ class acf_form_widget {
 (function($) {
 	
 	// vars
-	acf.set('post_id', 'widgets');
+	acf.update('post_id', 'widgets');
+	
 	
 	// restrict get fields
-	acf.addFilter('find_fields_args', function( args ){
+	acf.add_filter('get_fields', function( $fields ){
+	
+		// widgets
+		$fields = $fields.not('#available-widgets .acf-field');
 		
-		// add parent
-		if( !args.parent ) {
-			args.parent = $('#widgets-right');
-		}
+		
+		// customizer
+		$fields = $fields.not('.widget-tpl .acf-field');
+		
 		
 		// return
-		return args;
+		return $fields;
+		
 	});
 	
-	// on publish
+	
 	$('#widgets-right').on('click', '.widget-control-save', function( e ){
 		
 		// vars
-		var $button = $(this);
-		var $form = $button.closest('form');
+		var $form = $(this).closest('form');
 		
-		// validate
-		var valid = acf.validateForm({
-			form: $form,
-			event: e,
-			lock: false
-		});
 		
-		// if not valid, stop event and allow validation to continue
-		if( !valid ) {
-			e.preventDefault();
-			e.stopImmediatePropagation();
+		// bail early if not active
+		if( !acf.validation.active ) {
+		
+			return true;
+			
 		}
+		
+		
+		// ignore validation (only ignore once)
+		if( acf.validation.ignore ) {
+		
+			acf.validation.ignore = 0;
+			return true;
+			
+		}
+		
+		
+		// bail early if this form does not contain ACF data
+		if( !$form.find('#acf-form-data').exists() ) {
+		
+			return true;
+		
+		}
+
+		
+		// stop WP JS validation
+		e.stopImmediatePropagation();
+		
+		
+		// store submit trigger so it will be clicked if validation is passed
+		acf.validation.$trigger = $(this);
+		
+		
+		// run validation
+		acf.validation.fetch( $form );
+		
+		
+		// stop all other click events on this input
+		return false;
+		
 	});
 	
-	// show
-	$('#widgets-right').on('click', '.widget-top', function(){
-		var $widget = $(this).parent();
-		if( $widget.hasClass('open') ) {
-			acf.doAction('hide', $widget);
-		} else {
-			acf.doAction('show', $widget);
-		}
+	
+	$(document).on('click', '.widget-top', function(){
+		
+		var $el = $(this).parent().children('.widget-inside');
+		
+		setTimeout(function(){
+			
+			acf.get_fields('', $el).each(function(){
+				
+				acf.do_action('show_field', $(this));	
+				
+			});
+			
+		}, 250);
+				
 	});
 	
 	$(document).on('widget-added', function( e, $widget ){
 		
 		// - use delay to avoid rendering issues with customizer (ensures div is visible)
 		setTimeout(function(){
-			acf.doAction('append', $widget );
+			
+			acf.do_action('append', $widget );
+			
 		}, 100);
+		
 	});
 	
+	$(document).on('widget-saved widget-updated', function( e, $widget ){
+		
+		// unlock form
+		acf.validation.toggle( $widget, 'unlock' );
+		
+	});
+		
 })(jQuery);	
 </script>
 <?php
 		
 	}
+	
 }
 
 new acf_form_widget();

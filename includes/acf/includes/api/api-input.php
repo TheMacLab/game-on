@@ -401,7 +401,7 @@ function acf_get_select_input( $atts = array() ) {
 	
 	// html
 	$html = '';
-	$html .= '<select ' . acf_esc_atts( $atts ) . '>';
+	$html .= '<select ' . acf_esc_atts( $atts ) . '>' . "\n";
 	$html .= acf_walk_select_input( $choices, $value );
 	$html .= '</select>' . "\n";
 	
@@ -447,7 +447,7 @@ function acf_walk_select_input( $choices = array(), $values = array(), $depth = 
 		// optgroup
 		if( is_array($label) ){
 			
-			$html .= '<optgroup label="' . esc_attr($value) . '">';
+			$html .= '<optgroup label="' . esc_attr($value) . '">' . "\n";
 			$html .= acf_walk_select_input( $label, $values, $depth+1 );
 			$html .= '</optgroup>';
 		
@@ -467,7 +467,7 @@ function acf_walk_select_input( $choices = array(), $values = array(), $depth = 
 			
 			
 			// append
-			$html .= '<option ' . acf_esc_attr($atts) . '>' . esc_html($label) . '</option>';
+			$html .= '<option ' . acf_esc_attr($atts) . '>' . esc_html($label) . '</option>' . "\n";
 			
 		}
 		

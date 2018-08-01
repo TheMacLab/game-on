@@ -65,19 +65,20 @@
 					success: function( json ){
 						
 						// vars
-						var response = '';
+						var message = acf.get_ajax_message(json);
 						
-						// success
-						if( acf.isAjaxSuccess(json) ) {
-							response = acf.getAjaxMessage(json);
-						} else {
-							response = acf.getAjaxError(json);
-						}
 						
 						// bail early if no message text
-						if( response ) {
-							$('.show-on-ajax').html( response );
+						if( !message.text ) {
+							
+							return;
+							
 						}
+						
+						
+						// show message
+						$('.show-on-ajax').html( message.text );
+						
 					},
 					complete: function( json ){
 						

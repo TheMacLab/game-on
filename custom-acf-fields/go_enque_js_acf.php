@@ -42,7 +42,7 @@ function go_acf_scripts ($hook) {
 	
 }
 
-add_action('acf/field_group/admin_enqueue_scripts', 'go_acf_scripts');
+//add_action('acf/field_group/admin_enqueue_scripts', 'go_acf_scripts');
 
 
 
