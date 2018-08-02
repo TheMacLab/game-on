@@ -9,7 +9,33 @@
 	background: forestgreen !important;
 	border-color: darkgreen !important;
 }
+/**
+ *Messages form
+ */
+#go_messages .form-table th {
+	vertical-align: top;
+	text-align: left;
+	padding: 5px 10px 20px 10px;
+	width: 200px;
+	line-height: 1.3;
+	font-weight: 600;
+}
+#wp-admin #go_messages .form-table th {
 
+	text-align: left;
+	padding: 20px 10px 20px 0px;
+	width: 200px;
+	line-height: 1.3;
+	font-weight: 600;
+
+}
+#go_messages .acf-table{
+	border: solid 1px #8c8888!important;
+
+}
+#go_messages textarea{
+	width: 100%;
+}
 
 
 /********************

@@ -69,7 +69,7 @@ function go_admin_scripts ($hook) {
 					'go_admin_bar_stats'           => wp_create_nonce( 'go_admin_bar_stats_' ),
                     'go_stats_about'               => wp_create_nonce( 'go_stats_about' ),
 					'go_stats_task_list'           => wp_create_nonce( 'go_stats_task_list_' ),
-					'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' ),
+					//'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' ),
 					'go_stats_item_list'           => wp_create_nonce( 'go_stats_item_list_' ),
 					//'go_stats_rewards_list'        => wp_create_nonce( 'go_stats_rewards_list_' ),
 					'go_stats_activity_list'       => wp_create_nonce( 'go_stats_activity_list_' ),

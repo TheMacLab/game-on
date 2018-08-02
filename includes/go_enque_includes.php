@@ -94,7 +94,7 @@ function go_includes () {
      */
     wp_register_script( 'go_frontend_media', plugin_dir_url( __FILE__ ).'wp-frontend-media-master/js/frontend.js', array( 'jquery' ),
         '2015-05-07', true);
-    wp_enqueue_script( 'go_frontend_media' );
+    //wp_enqueue_script( 'go_frontend_media' );
 
     /**
      * Featherlight

@@ -107,7 +107,6 @@ function go_stats_about(user_id) {
 function go_stats_task_list() {
     jQuery( '#go_task_list_single' ).remove();
     jQuery("#go_task_list").show();
-    //jQuery(".go_datatables").hide();
 
     var table = jQuery('#go_tasks_datatable').DataTable();
     table.columns.adjust().draw();
@@ -138,6 +137,8 @@ function go_stats_task_list() {
                         });
 
                     }
+                    console.log("everypage");
+                    //make task reset buttons into links
                     var user_id = jQuery("#go_stats_messages_icon").attr("name");
                     jQuery(".go_reset_task").one("click", function(e){
                         go_messages_opener( user_id, this.id, 'reset' );
@@ -367,7 +368,6 @@ function go_stats_activity_list() {
                         "serverSide": true,
                         "ajax": {
                             "url": MyAjax.ajaxurl + '?action=go_activity_dataloader_ajax',
-                            "type":"POST",
                             "data": function(d){
                                 d.user_id = jQuery('#go_stats_hidden_input').val();}//this doesn't actually pass something to my PHP like it does normally with AJAX.
                         },
@@ -377,7 +377,7 @@ function go_stats_activity_list() {
                             { targets: '_all', "orderable": false }
                         ],
 
-                        "searching": false,
+                        "searching": true,
                         'createdRow': function (row, data, dataIndex) {
                             var dateCell = jQuery(row).find('td:eq(0)').text(); // get first column
 

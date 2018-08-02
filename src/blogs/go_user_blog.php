@@ -39,7 +39,7 @@ if($user_obj)
 
 
     ?>
-    <input type="hidden" id="go_stats_hidden_input" value="<?php echo $user_id; ?>"/>
+
     <?php
     $user_fullname = $user_obj->first_name.' '.$user_obj->last_name;
     $user_login =  $user_obj->user_login;
@@ -71,7 +71,7 @@ if($user_obj)
                 <div class='go_stats_user_info'>
                     <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>"; ?>
                     <?php
-                    go_user_links($user_id,false, true, false, false, true);
+                    go_user_links($user_id,false, true, false, false, true, true);
                     ?>
 
                 </div>

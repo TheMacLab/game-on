@@ -9,17 +9,19 @@
 
 function go_scripts () {
     global $version;
+    //$site_url = get_site_url(null, 'wp-admin/css/media.css');
+    wp_register_script( 'go_wp_media', get_site_url(null, 'wp-admin/css/media.css'), null, $version );
 	/*
 	 * Registering Scripts For The Front-end
 	 */
 	wp_enqueue_style( 'dashicons' );
 
-		//task shortcode script is registered here, but enqueued and localized in the shortcode. 
+		//task shortcode script is registered here, but enqueued and localized in the shortcode.
 		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'min/go_tasks-min.js', null, $version );
-	
+
 		//COMBINED FILE
 		wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'min/go_frontend-min.js', array('jquery'),$version, false);
-	
+
 		//PAGE SPECIFIC
 		wp_register_script('go_map-min', plugins_url('min/go_map-min.js', __FILE__), array('jquery'),$version, true);
 
@@ -32,7 +34,9 @@ function go_scripts () {
 	 */
 		//Combined File
 		wp_enqueue_script( 'go_frontend-min' );
-		
+
+    wp_enqueue_script( 'go_wp_media' );
+
 		//END COMBINED
 
 		// Dependencies
@@ -63,7 +67,7 @@ function go_scripts () {
 					'go_admin_bar_stats'           => wp_create_nonce( 'go_admin_bar_stats_' ),
                     'go_stats_about'               => wp_create_nonce( 'go_stats_about' ),
                     'go_stats_task_list'           => wp_create_nonce( 'go_stats_task_list_' ),
-					'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' ),
+					//'go_stats_move_stage'          => wp_create_nonce( 'go_stats_move_stage_' ),
 					'go_stats_item_list'           => wp_create_nonce( 'go_stats_item_list_' ),
 					//'go_stats_rewards_list'        => wp_create_nonce( 'go_stats_rewards_list_' ),
 					'go_stats_activity_list'       => wp_create_nonce( 'go_stats_activity_list_' ),
@@ -95,7 +99,7 @@ function go_scripts () {
                 'userID'	=>  $user_id
 			)
 		);
-		
+
 	/*
 	 * Page-Specific Scripts.  These have localization on these pages for at least one script.
 	 */
@@ -106,6 +110,6 @@ function go_scripts () {
 			wp_localize_script('go_map-min','map_ajax_admin_url',$ajax_url);
 	//	}
 
-	
+
 }
 ?>

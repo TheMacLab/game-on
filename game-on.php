@@ -199,7 +199,7 @@ add_action( 'wp_ajax_go_save_levels', 'go_save_levels' );
 add_action( 'wp_ajax_go_reset_data', 'go_reset_data' );
 add_action( 'wp_ajax_go_stats_about', 'go_stats_about' );
 add_action( 'wp_ajax_go_stats_task_list', 'go_stats_task_list' );
-add_action( 'wp_ajax_go_stats_move_stage', 'go_stats_move_stage' );
+//add_action( 'wp_ajax_go_stats_move_stage', 'go_stats_move_stage' );
 add_action( 'wp_ajax_go_stats_item_list', 'go_stats_item_list' );
 //add_action( 'wp_ajax_go_stats_rewards_list', 'go_stats_rewards_list' );
 add_action( 'wp_ajax_go_stats_activity_list', 'go_stats_activity_list' );
@@ -673,21 +673,45 @@ function go_change_sort_order($query){
  * https://wordpress.stackexchange.com/questions/204779/how-can-i-add-an-author-filter-to-the-media-library
  *
  */
-function media_add_author_dropdown()
+function go_media_add_author_dropdown()
 {
     $scr = get_current_screen();
     if ( $scr->base !== 'upload' ) return;
-
-    $author   = filter_input(INPUT_GET, 'author', FILTER_SANITIZE_STRING );
-    $selected = (int)$author > 0 ? $author : '-1';
-    $args = array(
-        'show_option_none'   => 'All Authors',
-        'name'               => 'author',
-        'selected'           => $selected
-    );
-    wp_dropdown_users( $args );
+    if (current_user_can( 'manage_options' )) {
+        $author = filter_input(INPUT_GET, 'author', FILTER_SANITIZE_STRING);
+        $selected = (int)$author > 0 ? $author : '0';
+        $args = array('show_option_all' => 'All Authors', 'name' => 'author', 'selected' => $selected);
+        wp_dropdown_users($args);
+    }
 }
-add_action('restrict_manage_posts', 'media_add_author_dropdown');
+add_action('restrict_manage_posts', 'go_media_add_author_dropdown');
+
+
+
+/**
+ * Show Only Current Users Media
+ * @param $wp_query
+ * https://stackoverflow.com/questions/28787575/wordpress-restrict-users-to-see-only-their-uploads
+ */
+function go_my_files_only( $wp_query ) {
+    if ( strpos( $_SERVER[ 'REQUEST_URI' ], '/wp-admin/upload.php' ) !== false ) {
+        if ( !current_user_can('activate_plugins') && !current_user_can('edit_others_posts') ) {
+            $user_id = get_current_user_id();
+            $wp_query->set( 'author', $user_id );
+        }
+    }
+}
+
+add_filter('parse_query', 'go_my_files_only' );
+
+
+
+
+
+
+
+
+
 
 //bbPress visual editor
 function bbp_enable_visual_editor( $args = array() ) {
@@ -888,6 +912,33 @@ class wpb_widget extends WP_Widget {
     }
 } // Class go_widget ends here
 
+
+
+
+/**
+ * Plugin Name: Disable ACF on Frontend
+ * Description: Provides a performance boost if ACF frontend functions aren't being used
+ * Version:     1.0
+ * Author:      Bill Erickson
+ * Author URI:  http://www.billerickson.net
+ * License:     MIT
+ * License URI: http://www.opensource.org/licenses/mit-license.php
+ */
+
+/**
+ * Disable ACF on Frontend
+ *
+
+function ea_disable_acf_on_frontend( $plugins ) {
+	if( is_admin() )
+		return $plugins;
+	foreach( $plugins as $i => $plugin )
+		if( 'advanced-custom-fields-pro/acf.php' == $plugin )
+			unset( $plugins[$i] );
+	return $plugins;
+}
+add_filter( 'option_active_plugins', 'ea_disable_acf_on_frontend' );
+*/
 
 
 

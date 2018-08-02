@@ -7,7 +7,6 @@ function go_stats_overlay() {
     echo '<div id="go_stats_page_black_bg" style="display:none !important;"></div><div id="go_stats_white_overlay" style="display:none;"></div>';
 }
 
-
 /**
  *
  */
@@ -194,7 +193,7 @@ function go_admin_bar_stats() {
 
                 <div class='go_stats_user_info'>
                     <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>";
-                    go_user_links($user_id, true, true, false, true, true);
+                    go_user_links($user_id, true, true, false, true, true, true);
                     ?>
 
                 </div>
@@ -563,7 +562,7 @@ function go_stats_about($user_id = null, $not_ajax = false) {
 * @param bool $profile
 * @param bool $blog
 */
-function go_user_links($user_id, $on_stats, $website = true, $stats = false, $profile = false, $blog = false) {
+function go_user_links($user_id, $on_stats, $website = true, $stats = false, $profile = false, $blog = false, $show_messages = false) {
     //if current user is admin, set all to true
     $current_id = get_current_user_id();
     $is_admin = go_user_is_admin($current_id);
@@ -599,9 +598,15 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
             echo " <div class='go_user_link'><a href='$user_website' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span></a></div>";
         }
     }
-    if($is_admin && $on_stats){
-        echo "<div id='go_stats_messages_icon' class='go_user_link' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
-        echo '<script>var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id); console.log(user_id);});</script>';
+    if($is_admin && $show_messages && $on_stats){
+        echo "<div id='go_stats_messages_icon' class='go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        //make the messages icon a link to this user
+        echo '<script>console.log("on_stats"); var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id);}); </script>';
+    }
+    else if($is_admin && $show_messages ){
+        echo "<div id='go_blog_messages_icon' class='go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        //make the messages icon a link to this user
+        echo '<script>console.log("on_blog"); var user_id = jQuery("#go_blog_messages_icon").attr("name"); jQuery("#go_blog_messages_icon").one("click", function(e){ go_messages_opener(user_id); }); </script>';
     }
     echo "</div>";
 
@@ -1062,235 +1067,6 @@ function go_result_link($check_type, $result, $stage, $time){
 
 }
 
-//I don't think this does anything
-/**
- *
- */function go_stats_move_stage() {
-    global $wpdb;
-
-    if ( ! current_user_can( 'manage_options' ) ) {
-        die( -1 );
-    }
-
-    $go_task_table_name = "{$wpdb->prefix}go";
-    if ( ! empty( $_POST['user_id'] ) ) {
-        $user_id = (int) $_POST['user_id'];
-    } else {
-        $user_id = get_current_user_id();
-    }
-    check_ajax_referer( 'go_stats_move_stage_' );
-
-    $current_rank = get_user_meta( $user_id, 'go_rank', true );
-    $task_id = ( ! empty( $_POST['task_id'] ) ? (int) $_POST['task_id'] : 0 );
-    $status  = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 1 );
-    $count   = ( ! empty( $_POST['count'] ) ? (int) $_POST['count'] : 0 );
-    $message = ( ! empty( $_POST['message'] ) ? sanitize_text_field( $_POST['message'] ) : 'See me' );
-    $custom_fields = get_post_custom( $task_id );
-    $date_picker = (
-    ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ?
-        array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) :
-        null
-    );
-    $rewards = unserialize( $custom_fields['go_presets'][0] );
-    $current_status = $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT status 
-			FROM {$go_task_table_name} 
-			WHERE uid = %d AND post_id = %d",
-            $user_id,
-            $task_id
-        )
-    );
-    $page_id = $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT page_id 
-			FROM {$go_task_table_name} 
-			WHERE uid = %d AND post_id = %d",
-            $user_id,
-            $task_id
-        )
-    );
-
-    $go_option_ranks = get_option( 'go_ranks' );
-    $points_array = $go_option_ranks['points'];
-
-    $max_rank_index = count( $points_array ) - 1;
-    $max_rank_points = (int) $points_array[ $max_rank_index ];
-    $prestige_name = get_option( 'go_prestige_name' );
-
-    $changed = array(
-        'type'            => 'json',
-        'points'          => 0,
-        'currency'        => 0,
-        'bonus_currency'  => 0,
-        'max_rank_points' => $max_rank_points,
-        'prestige_name'   => $prestige_name,
-    );
-
-    if ( ! empty( $date_picker ) ) {
-        $dates = $date_picker['date'];
-        $percentages = $date_picker['percent'];
-        $unix_today = strtotime( date( 'Y-m-d' ) );
-
-        $past_dates = array();
-
-        foreach ( $dates as $key => $date ) {
-            if ( $unix_today >= strtotime( $date ) ) {
-                $past_dates[ $key ] = abs( $unix_today - strtotime( $date ) );
-            }
-        }
-
-        if ( ! empty( $past_dates ) ) {
-            asort( $past_dates );
-            $update_percent = (float) ( ( $percentages[ key( $past_dates ) ] ) / 100);
-        } else {
-            $update_percent = 1;
-        }
-    } else {
-        $update_percent = 1;
-    }
-
-    if ( 1 === $status ) {
-        $current_rewards = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT points, currency, bonus_currency 
-				FROM {$go_task_table_name} 
-				WHERE uid = %d AND post_id = %d",
-                $user_id,
-                $task_id
-            )
-        );
-
-        go_task_abandon(
-            $user_id,
-            $task_id,
-            $current_rewards[0]->points,
-            $current_rewards[0]->currency,
-            $current_rewards[0]->bonus_currency * $update_percent
-        );
-
-        $changed['points'] = -$current_rewards[0]->points;
-        $changed['currency'] = -$current_rewards[0]->currency;
-        $changed['bonus_currency'] = -$current_rewards[0]->bonus_currency;
-
-        $current_points = go_return_points( $user_id );
-        $updated_rank = get_user_meta( $user_id, 'go_rank', true );
-        if ( $current_rank[0][1] != $updated_rank[0][1] ) {
-            $changed['rank'] = $updated_rank[0][0];
-        }
-        $changed['current_points'] = $current_points;
-        $changed['current_rank_points'] = $updated_rank[0][1];
-        $changed['next_rank_points'] = $updated_rank[1][1];
-        $changed['abandon'] = 'true';
-
-        if ( 'See me' === $message ) {
-            go_message_user( $user_id, $message.' about, <a href="'.get_permalink( $task_id ).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title( $task_id ).'</a>, please.' );
-        } else {
-            go_message_user( $user_id, 'RE: <a href="' . get_permalink( $task_id ) . '">' . get_the_title( $task_id ) . '</a> ' . $message );
-        }
-    } else {
-
-        for ( $count; $count > 0; $count-- ) {
-            go_add_post(
-                $user_id, $task_id, $current_status,
-                floor( -$rewards['points'][ $current_status ] * $update_percent ),
-                floor( -$rewards['currency'][ $current_status ] * $update_percent ),
-                floor( -$rewards['bonus_currency'][ $current_status ] * $update_percent ),
-                null, $page_id, true, -1
-            );
-
-            $changed['points'] += floor(
-                -$rewards['points'][ $current_status ] * $update_percent
-            );
-            $changed['currency'] += floor(
-                -$rewards['currency'][ $current_status ] * $update_percent
-            );
-            $changed['bonus_currency'] += floor(
-                -$rewards['bonus_currency'][ $current_status ] * $update_percent
-            );
-        }
-
-        while ( $current_status != $status ) {
-            if ( $current_status > $status ) {
-                $current_status--;
-
-                go_add_post(
-                    $user_id, $task_id, $current_status,
-                    floor( -$rewards['points'][ $current_status ] * $update_percent ),
-                    floor( -$rewards['currency'][ $current_status ] * $update_percent ),
-                    floor( -$rewards['bonus_currency'][ $current_status ] * $update_percent ),
-                    null, $page_id, false, null
-                );
-
-                $changed['points'] += floor(
-                    -$rewards['points'][ $current_status ] * $update_percent
-                );
-                $changed['currency'] += floor(
-                    -$rewards['currency'][ $current_status ] * $update_percent
-                );
-                $changed['bonus_currency'] += floor(
-                    -$rewards['bonus_currency'][ $current_status ] * $update_percent
-                );
-
-            } elseif ( $current_status < $status ) {
-                $current_status++;
-                $current_count = $wpdb->get_var(
-                    $wpdb->prepare(
-                        "SELECT count 
-						FROM {$go_task_table_name} 
-						WHERE uid = %d AND post_id = %d",
-                        $user_id,
-                        $task_id
-                    )
-                );
-                if ( 5 === $current_status && 0 === $current_count ) {
-                    go_add_post(
-                        $user_id, $task_id, $current_status - 1,
-                        floor( $rewards['points'][ $current_status - 1 ] * $update_percent ),
-                        floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ),
-                        floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ),
-                        null, $page_id, true, 1
-                    );
-
-                    $changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );
-                    $changed['currency'] += floor( $rewards['currency'][ $current_status - 1 ] * $update_percent );
-                    $changed['bonus_currency'] += floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent );
-
-                } elseif ( $current_status < 5 ) {
-                    go_add_post(
-                        $user_id, $task_id, $current_status,
-                        floor( $rewards['points'][ $current_status - 1 ] * $update_percent ),
-                        floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ),
-                        floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ),
-                        null, $page_id, false, null
-                    );
-
-                    $changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );
-                    $changed['currency'] += floor( $rewards['currency'][ $current_status - 1 ] * $update_percent );
-                    $changed['bonus_currency'] += floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent );
-                }
-            }
-        }
-
-        if ( 'See me' === $message ) {
-            go_message_user( $user_id, $message.' about, <a href="'.get_permalink( $task_id ).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title( $task_id ).'</a>, please.' );
-        } else {
-            go_message_user( $user_id, 'RE: <a href="'.get_permalink( $task_id ).'">'.get_the_title( $task_id ).'</a> '.$message );
-        }
-        $current_points = go_return_points( $user_id );
-        $updated_rank = get_user_meta( $user_id, 'go_rank', true );
-        if ( $current_rank[0][1] != $updated_rank[0][1] ) {
-            $changed['rank'] = $updated_rank[0][0];
-        }
-        $changed['current_points'] = $current_points;
-        $changed['current_rank_points'] = $updated_rank[0][1];
-        $changed['next_rank_points'] = $updated_rank[1][1];
-    }
-
-    echo json_encode( $changed );
-    die();
-}
-
 //store items
 /**
  *
@@ -1706,22 +1482,30 @@ function go_activity_dataloader_ajax()
 
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_actions";
+    //$table = "{$wpdb->prefix}go_actions";
+
     $aColumns = array( 'id', 'uid', 'action_type', 'source_id', 'TIMESTAMP' ,'stage', 'bonus_status', 'check_type', 'result', 'quiz_mod', 'late_mod', 'timer_mod', 'global_mod', 'xp', 'gold', 'health', 'c4', 'xp_total', 'gold_total', 'health_total', 'c4_total', 'badges', 'groups' );
+
+    //$primaryKey = 'id';
     $sIndexColumn = "id";
     $sTable = $go_task_table_name;
 
-    $sLimit = "LIMIT " . $_REQUEST['length'];
-    /*
-    if ( isset( $_REQUEST['iDisplayStart'] ) && $_REQUEST['iDisplayLength'] != '-1' )
+
+    $sLimit = '';
+     //$draw = $_GET['draw'];
+     //$start = (((intval($_GET['draw']) - 1) * 10) + 1 );
+    if ( isset( $_GET['start'] ) && $_GET['length'] != '-1' )
     {
-        $sLimit = "LIMIT ".intval( $_REQUEST['iDisplayStart'] ).", ".
-            intval( $_REQUEST['iDisplayLength'] );
+        $sLimit = "LIMIT ".intval( $_GET['start'] ).", ".
+            intval( $_GET['length'] );
     }
-    */
-    $sOrder = "ORDER BY TIMESTAMP desc";
+    //$sLimit = "LIMIT " . $_GET['length'];
+
+
+    $sOrder = "ORDER BY TIMESTAMP desc"; //always in reverse order
+
     /*
-     *
-     if ( isset( $_REQUEST['iSortCol_0'] ) )
+     if ( isset( $_GET['iSortCol_0'] ) )
     {
         $sOrder = "ORDER BY  ";
         for ( $i=0 ; $i<intval( $_REQUEST['iSortingCols'] ) ; $i++ )
@@ -1740,14 +1524,15 @@ function go_activity_dataloader_ajax()
         }
     }
     */
+    $sWhere = "";
+    $search_val = $_GET['search']['value'];
 
-    $sWhere = "WHERE uid = " . $_REQUEST['user_id'];
-    /*if ( isset($_REQUEST['sSearch']) && $_REQUEST['sSearch'] != "" )
+    if ( isset($search_val) && $search_val != "" )
     {
         $sWhere = "WHERE (";
         for ( $i=0 ; $i<count($aColumns) ; $i++ )
         {
-            $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql( $_REQUEST['sSearch'] )."%' OR ";
+            $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql( $search_val )."%' OR ";
         }
         $sWhere = substr_replace( $sWhere, "", -3 );
         $sWhere .= ')';
@@ -1755,7 +1540,8 @@ function go_activity_dataloader_ajax()
 
     for ( $i=0 ; $i<count($aColumns) ; $i++ )
     {
-        if ( isset($_REQUEST['bSearchable_'.$i]) && $_REQUEST['bSearchable_'.$i] == "true" && $_REQUEST['sSearch_'.$i] != '' )
+        $searchable = $_GET['columns'][$i]['searchable'];
+        if ( isset($searchable) && $searchable == "true" && $_GET['columns'][$i]['search']['value'] != '' )
         {
             if ( $sWhere == "" )
             {
@@ -1765,10 +1551,24 @@ function go_activity_dataloader_ajax()
             {
                 $sWhere .= " AND ";
             }
-            $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql($_REQUEST['sSearch_'.$i])."%' ";
+            $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql($_GET['columns'][$i]['search']['value'])."%' ";
         }
     }
-    */
+    //add the filter by UID
+    $user_id = $_GET['user_id'];
+    if($user_id != ''){
+        if ( $sWhere == "" )
+        {
+            $sWhere = "WHERE ";
+        }
+        else
+        {
+            $sWhere .= " AND ";
+        }
+         $sWhere .= "uid = ".$user_id;
+    }
+$totalWhere = " WHERE uid = ".$user_id;
+
 
     $sQuery = "
   SELECT SQL_CALC_FOUND_ROWS `".str_replace(" , ", " ", implode("`, `", $aColumns))."`
@@ -1788,6 +1588,7 @@ function go_activity_dataloader_ajax()
     $sQuery = "
   SELECT COUNT(`".$sIndexColumn."`)
   FROM   $sTable
+  $totalWhere
  ";
     $rResultTotal = $wpdb->get_results($sQuery, ARRAY_N);
     $iTotal = $rResultTotal [0];
@@ -2023,7 +1824,8 @@ function go_activity_dataloader_ajax()
 
 /**
 * @param $user_id
-*/function go_stats_badges_list($user_id) {
+*/
+function go_stats_badges_list($user_id) {
     global $wpdb;
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
     if ( ! empty( $_POST['user_id'] ) ) {
@@ -2480,7 +2282,7 @@ function go_stats_lite(){
                 <div class='go_stats_user_info'>
                     <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>"; ?>
                     <?php
-                    go_user_links($user_id,true, true, false, false, true);
+                    go_user_links($user_id,true, true, false, false, true, true);
                     ?>
 
                 </div>
@@ -2887,6 +2689,235 @@ function go_stats_leaderboard() {
 }
 
 //OLD STUFF BELOW
+
+/*
+ function go_stats_move_stage() {
+    global $wpdb;
+
+    if ( ! current_user_can( 'manage_options' ) ) {
+        die( -1 );
+    }
+
+    $go_task_table_name = "{$wpdb->prefix}go";
+    if ( ! empty( $_POST['user_id'] ) ) {
+        $user_id = (int) $_POST['user_id'];
+    } else {
+        $user_id = get_current_user_id();
+    }
+    check_ajax_referer( 'go_stats_move_stage_' );
+
+    $current_rank = get_user_meta( $user_id, 'go_rank', true );
+    $task_id = ( ! empty( $_POST['task_id'] ) ? (int) $_POST['task_id'] : 0 );
+    $status  = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 1 );
+    $count   = ( ! empty( $_POST['count'] ) ? (int) $_POST['count'] : 0 );
+    $message = ( ! empty( $_POST['message'] ) ? sanitize_text_field( $_POST['message'] ) : 'See me' );
+    $custom_fields = get_post_custom( $task_id );
+    $date_picker = (
+    ! empty( $custom_fields['go_mta_date_picker'][0] ) && unserialize( $custom_fields['go_mta_date_picker'][0] ) ?
+        array_filter( unserialize( $custom_fields['go_mta_date_picker'][0] ) ) :
+        null
+    );
+    $rewards = unserialize( $custom_fields['go_presets'][0] );
+    $current_status = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT status
+			FROM {$go_task_table_name}
+			WHERE uid = %d AND post_id = %d",
+            $user_id,
+            $task_id
+        )
+    );
+    $page_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT page_id
+			FROM {$go_task_table_name}
+			WHERE uid = %d AND post_id = %d",
+            $user_id,
+            $task_id
+        )
+    );
+
+    $go_option_ranks = get_option( 'go_ranks' );
+    $points_array = $go_option_ranks['points'];
+
+    $max_rank_index = count( $points_array ) - 1;
+    $max_rank_points = (int) $points_array[ $max_rank_index ];
+    $prestige_name = get_option( 'go_prestige_name' );
+
+    $changed = array(
+        'type'            => 'json',
+        'points'          => 0,
+        'currency'        => 0,
+        'bonus_currency'  => 0,
+        'max_rank_points' => $max_rank_points,
+        'prestige_name'   => $prestige_name,
+    );
+
+    if ( ! empty( $date_picker ) ) {
+        $dates = $date_picker['date'];
+        $percentages = $date_picker['percent'];
+        $unix_today = strtotime( date( 'Y-m-d' ) );
+
+        $past_dates = array();
+
+        foreach ( $dates as $key => $date ) {
+            if ( $unix_today >= strtotime( $date ) ) {
+                $past_dates[ $key ] = abs( $unix_today - strtotime( $date ) );
+            }
+        }
+
+        if ( ! empty( $past_dates ) ) {
+            asort( $past_dates );
+            $update_percent = (float) ( ( $percentages[ key( $past_dates ) ] ) / 100);
+        } else {
+            $update_percent = 1;
+        }
+    } else {
+        $update_percent = 1;
+    }
+
+    if ( 1 === $status ) {
+        $current_rewards = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT points, currency, bonus_currency
+				FROM {$go_task_table_name}
+				WHERE uid = %d AND post_id = %d",
+                $user_id,
+                $task_id
+            )
+        );
+
+        go_task_abandon(
+            $user_id,
+            $task_id,
+            $current_rewards[0]->points,
+            $current_rewards[0]->currency,
+            $current_rewards[0]->bonus_currency * $update_percent
+        );
+
+        $changed['points'] = -$current_rewards[0]->points;
+        $changed['currency'] = -$current_rewards[0]->currency;
+        $changed['bonus_currency'] = -$current_rewards[0]->bonus_currency;
+
+        $current_points = go_return_points( $user_id );
+        $updated_rank = get_user_meta( $user_id, 'go_rank', true );
+        if ( $current_rank[0][1] != $updated_rank[0][1] ) {
+            $changed['rank'] = $updated_rank[0][0];
+        }
+        $changed['current_points'] = $current_points;
+        $changed['current_rank_points'] = $updated_rank[0][1];
+        $changed['next_rank_points'] = $updated_rank[1][1];
+        $changed['abandon'] = 'true';
+
+        if ( 'See me' === $message ) {
+            go_message_user( $user_id, $message.' about, <a href="'.get_permalink( $task_id ).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title( $task_id ).'</a>, please.' );
+        } else {
+            go_message_user( $user_id, 'RE: <a href="' . get_permalink( $task_id ) . '">' . get_the_title( $task_id ) . '</a> ' . $message );
+        }
+    } else {
+
+        for ( $count; $count > 0; $count-- ) {
+            go_add_post(
+                $user_id, $task_id, $current_status,
+                floor( -$rewards['points'][ $current_status ] * $update_percent ),
+                floor( -$rewards['currency'][ $current_status ] * $update_percent ),
+                floor( -$rewards['bonus_currency'][ $current_status ] * $update_percent ),
+                null, $page_id, true, -1
+            );
+
+            $changed['points'] += floor(
+                -$rewards['points'][ $current_status ] * $update_percent
+            );
+            $changed['currency'] += floor(
+                -$rewards['currency'][ $current_status ] * $update_percent
+            );
+            $changed['bonus_currency'] += floor(
+                -$rewards['bonus_currency'][ $current_status ] * $update_percent
+            );
+        }
+
+        while ( $current_status != $status ) {
+            if ( $current_status > $status ) {
+                $current_status--;
+
+                go_add_post(
+                    $user_id, $task_id, $current_status,
+                    floor( -$rewards['points'][ $current_status ] * $update_percent ),
+                    floor( -$rewards['currency'][ $current_status ] * $update_percent ),
+                    floor( -$rewards['bonus_currency'][ $current_status ] * $update_percent ),
+                    null, $page_id, false, null
+                );
+
+                $changed['points'] += floor(
+                    -$rewards['points'][ $current_status ] * $update_percent
+                );
+                $changed['currency'] += floor(
+                    -$rewards['currency'][ $current_status ] * $update_percent
+                );
+                $changed['bonus_currency'] += floor(
+                    -$rewards['bonus_currency'][ $current_status ] * $update_percent
+                );
+
+            } elseif ( $current_status < $status ) {
+                $current_status++;
+                $current_count = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT count
+						FROM {$go_task_table_name}
+						WHERE uid = %d AND post_id = %d",
+                        $user_id,
+                        $task_id
+                    )
+                );
+                if ( 5 === $current_status && 0 === $current_count ) {
+                    go_add_post(
+                        $user_id, $task_id, $current_status - 1,
+                        floor( $rewards['points'][ $current_status - 1 ] * $update_percent ),
+                        floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ),
+                        floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ),
+                        null, $page_id, true, 1
+                    );
+
+                    $changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );
+                    $changed['currency'] += floor( $rewards['currency'][ $current_status - 1 ] * $update_percent );
+                    $changed['bonus_currency'] += floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent );
+
+                } elseif ( $current_status < 5 ) {
+                    go_add_post(
+                        $user_id, $task_id, $current_status,
+                        floor( $rewards['points'][ $current_status - 1 ] * $update_percent ),
+                        floor( $rewards['currency'][ $current_status - 1 ] * $update_percent ),
+                        floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent ),
+                        null, $page_id, false, null
+                    );
+
+                    $changed['points'] += floor( $rewards['points'][ $current_status - 1 ] * $update_percent );
+                    $changed['currency'] += floor( $rewards['currency'][ $current_status - 1 ] * $update_percent );
+                    $changed['bonus_currency'] += floor( $rewards['bonus_currency'][ $current_status - 1 ] * $update_percent );
+                }
+            }
+        }
+
+        if ( 'See me' === $message ) {
+            go_message_user( $user_id, $message.' about, <a href="'.get_permalink( $task_id ).'" style="display: inline-block; text-decoration: underline; padding: 0px; margin: 0px;">'.get_the_title( $task_id ).'</a>, please.' );
+        } else {
+            go_message_user( $user_id, 'RE: <a href="'.get_permalink( $task_id ).'">'.get_the_title( $task_id ).'</a> '.$message );
+        }
+        $current_points = go_return_points( $user_id );
+        $updated_rank = get_user_meta( $user_id, 'go_rank', true );
+        if ( $current_rank[0][1] != $updated_rank[0][1] ) {
+            $changed['rank'] = $updated_rank[0][0];
+        }
+        $changed['current_points'] = $current_points;
+        $changed['current_rank_points'] = $updated_rank[0][1];
+        $changed['next_rank_points'] = $updated_rank[1][1];
+    }
+
+    echo json_encode( $changed );
+    die();
+}
+*/
+
 /*
 function go_stats_leaderboard_choices() {
     check_ajax_referer( 'go_stats_leaderboard_choices_' );

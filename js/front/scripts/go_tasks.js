@@ -1,5 +1,7 @@
 
 jQuery( document ).ready( function() {
+    console.log("admin");
+
 	jQuery.ajaxSetup({
 		url: go_task_data.url += '/wp-admin/admin-ajax.php'
 	});
@@ -34,6 +36,7 @@ jQuery( document ).ready( function() {
     jQuery(".progress").closest(".go_checks_and_buttons").addClass('active');
 
     jQuery('#go_admin_override').appendTo(".go_locks");
+
     jQuery('#go_admin_override').click( function () {
         jQuery('.go_password').show();
     });

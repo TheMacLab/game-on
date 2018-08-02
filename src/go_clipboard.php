@@ -270,7 +270,7 @@ function go_clipboard_intable() {
 					<td>{$user_lastname}</td>
 					<td>{$user_display_name}</td>
 					<td>";
-            go_user_links($user_id, false, true, true, true, true);
+            go_user_links($user_id, false, true, true, true, true, false);
             echo " </a></td>
 					";
 
@@ -642,7 +642,7 @@ function go_clipboard_intable_activity() {
 					<td>{$user_lastname}</td>
 					<td>{$user_display_name}</td>
 					<td>";
-                go_user_links($user_id, false, true, true, true, true);
+                go_user_links($user_id, false, true, true, true, true, false);
                 echo " </a></td>
 					<td class='user_activity' style='padding: 4px;'>{$action_list} </td>
 				  </tr>";

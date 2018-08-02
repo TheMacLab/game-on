@@ -122,7 +122,7 @@ add_action( 'init', 'go_blogs', 0 );
 function go_custom_rewrite() {
     // we are telling wordpress that if somebody access yoursite.com/all-post/user/username
     // wordpress will do a request on this query var yoursite.com/index.php?query_type=all_post&uname=username
-    flush_rewrite_rules();
+    //flush_rewrite_rules();
 
     add_rewrite_rule( "^user/([^/]*)/page/(.*)/?", 'index.php?query_type=user_blog&uname=$matches[1]&paged=$matches[2]', "top");
     add_rewrite_rule( "^user/(.*)", 'index.php?query_type=user_blog&uname=$matches[1]', "top");
@@ -156,10 +156,10 @@ function go_template_loader($template){
 add_filter('template_include', 'go_template_loader');
 
 
-function go_blog_posts_pages( $query ) {
+/*function go_blog_posts_pages( $query ) {
     if ( $query->is_post_type_archive('go_blogs') && $query->is_main_query() ) {
         $query->set( 'posts_per_page', '5' );
     }
 }
 add_action( 'pre_get_posts', 'go_blog_posts_pages' );
-
+*/

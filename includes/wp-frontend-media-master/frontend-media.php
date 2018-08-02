@@ -53,7 +53,7 @@ class Front_End_Media {
 
         wp_register_script( 'go_frontend_media', plugin_dir_url( __FILE__ ).'wp-frontend-media-master/js/frontend.js', array( 'jquery' ),
             '2015-05-07', true);
-        //wp_enqueue_script( 'go_frontend_media' );
+        wp_enqueue_script( 'go_frontend_media' );
 	}
 
 
@@ -63,9 +63,9 @@ class Front_End_Media {
 	 */
 	function filter_media( $query ) {
 		// admins get to see everything
-		if ( ! current_user_can( 'manage_options' ) )
-			$query['author'] = get_current_user_id();
-
+		//if ( ! current_user_can( 'manage_options' ) ) {
+            $query['author'] = get_current_user_id();
+        //}
 		return $query;
 	}
 

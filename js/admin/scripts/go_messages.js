@@ -1,9 +1,12 @@
 
 function go_messages_opener( user_id, post_id, message_type ) {
     console.log(message_type);
-    jQuery('.go_messages_icon').prop('onclick',null).off('click');
-    jQuery('#go_stats_messages_icon').prop('onclick',null).off('click');
-    jQuery('.go_reset_task').prop('onclick',null).off('click');
+    jQuery('.go_messages_icon').prop('onclick',null).off('click'); //clipboard
+    jQuery('#go_stats_messages_icon').prop('onclick',null).off('click'); //stats
+    jQuery('.go_reset_task').prop('onclick',null).off('click'); //reset task links
+    jQuery('#go_blog_messages_icon').prop('onclick',null).off('click'); //stats
+    //remove the onclick events from any message link and then reattach after ajax call
+    //types of links 1. clipboard 2. stats link 3. task reset button and 4. blog page
 
 
     if (!user_id){//no user_id sent, this is from the clipboard and get user ids from checkboxes
@@ -49,6 +52,10 @@ function go_messages_opener( user_id, post_id, message_type ) {
             jQuery(".go_reset_task").one("click", function(e){
                 go_messages_opener( user_id, this.id, 'reset' );
             });
+            var user_id = jQuery("#go_blog_messages_icon").attr("name");
+            jQuery("#go_blog_messages_icon").one("click", function(e){
+                go_messages_opener( user_id );
+            });
 
         },
         error: function(e, ts, et) {
@@ -61,6 +68,10 @@ function go_messages_opener( user_id, post_id, message_type ) {
             });
             jQuery(".go_reset_task").one("click", function(e){
                 go_messages_opener( user_id, this.id, 'reset' );
+            });
+            var user_id = jQuery("#go_blog_messages_icon").attr("name");
+            jQuery("#go_blog_messages_icon").one("click", function(e){
+                go_messages_opener( user_id );
             });
 
         }
