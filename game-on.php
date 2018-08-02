@@ -360,11 +360,20 @@ function go_admin_head_notification() {
 		$plugin_data = get_plugin_data( __FILE__, false, false );
 		$plugin_version = $plugin_data['Version'];
 		$nonce = wp_create_nonce( 'go_admin_remove_notification_' . get_current_user_id() );
+        $url = get_site_url(null, 'wp-admin/admin.php?page=game-tools');
+		echo "<div id='message' class='update-nag' style='font-size: 16px; padding-right: 50px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).
 
-		echo "<div id='message' class='update-nag' style='font-size: 16px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).<br/>Visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.<br/>
 			<div style='position: relative; left: 20px;'>
-				</br>
-				<a href='https://www.youtube.com/channel/UC1G3josozpubdzaINcFjk0g' >Visit our YouTube Channel for the most recent updates.</a
+				<br>
+				Visit the <a href='http://maclab.guhsd.net/game-on' target='_blank'>documentation page</a>.
+				<br>
+				<br>
+				Visit our <a href='https://www.youtube.com/channel/UC1G3josozpubdzaINcFjk0g' >YouTube Channel</a> for the most recent updates.
+				<br>
+				<br>
+				Did you just update from version 3? Check out the <a href='{$url}'>upgrade tool</a>.
+				<br>
+				<br>
 			</div>
 			<a href='javascript:;' onclick='go_remove_admin_notification()'>Dismiss messsage</a>
 		</div>
