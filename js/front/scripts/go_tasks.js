@@ -346,6 +346,9 @@ function task_stage_change( target ) {
     if( check_type == 'blog'){
         result = tinyMCE.activeEditor.getContent();
         var result_title = jQuery( '#go_result_title' ).attr( 'value' );
+        var blog_post_id= jQuery( '#go_result_title' ).attr( 'blog_post_id' );
+        console.log(blog_post_id);
+
     }else{
         var result_title = null;
     }
@@ -360,7 +363,8 @@ function task_stage_change( target ) {
             button_type: button_type,
             check_type: check_type,
             result: result,
-            result_title: result_title
+            result_title: result_title,
+            blog_post_id: blog_post_id
         },
         success: function( raw ) {
             console.log('success');
@@ -493,7 +497,7 @@ function go_mce() {
     try { tinymce.init( init ); } catch(e){}
 }
 
-function go_append (res, callback){
+function go_append (res){
     //jQuery( res.html ).addClass('active');
     jQuery( res.html ).appendTo( '#go_wrapper' ).stop().hide().show( 'slow' ).promise().then(function() {
         // Animation complete
@@ -502,7 +506,7 @@ function go_append (res, callback){
         go_disable_loading();
         go_mce();
     });
-    callback();
+    //callback();
 }
 
 // Makes it so you can press return and enter content in a field

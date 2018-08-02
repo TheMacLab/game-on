@@ -891,7 +891,8 @@ function go_task_change_stage() {
     $check_type 			= ( ! empty( $_POST['check_type'] ) ? $_POST['check_type'] : null );
     $status        = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
 	$result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
-    $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : ''); // Contains the result from the check for understanding
+    $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
+    $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
 
     /**
      * Security
@@ -1000,6 +1001,7 @@ function go_task_change_stage() {
         else if ($check_type == 'blog'){
             $post_name = get_the_title($post_id);
             $my_post = array(
+                    'ID'        => $blog_post_id,
                 'post_type'     => 'go_blogs',
                 'post_title'    => $result_title,
                 'post_content'  => $result,

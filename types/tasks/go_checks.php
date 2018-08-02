@@ -219,7 +219,7 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
         $title = get_the_title($post_id);
 
         echo "<div id='go_url_div'>";
-        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' placeholder='' value ='{$title}'></div> </div>";
+        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' placeholder='' value ='{$title}' blog_post_id ='{$post_id}'></div> </div>";
         $settings  = array(
             'textarea_name' => 'go_result',
             'media_buttons' => true
