@@ -1481,14 +1481,14 @@ function go_activity_dataloader_ajax()
 {
 
     global $wpdb;
-    $go_task_table_name = "{$wpdb->prefix}go_actions";
+    $go_action_table_name = "{$wpdb->prefix}go_actions";
     //$table = "{$wpdb->prefix}go_actions";
 
     $aColumns = array( 'id', 'uid', 'action_type', 'source_id', 'TIMESTAMP' ,'stage', 'bonus_status', 'check_type', 'result', 'quiz_mod', 'late_mod', 'timer_mod', 'global_mod', 'xp', 'gold', 'health', 'c4', 'xp_total', 'gold_total', 'health_total', 'c4_total', 'badges', 'groups' );
 
     //$primaryKey = 'id';
     $sIndexColumn = "id";
-    $sTable = $go_task_table_name;
+    $sTable = $go_action_table_name;
 
 
     $sLimit = '';
@@ -1535,8 +1535,39 @@ function go_activity_dataloader_ajax()
             $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql( $search_val )."%' OR ";
         }
         $sWhere = substr_replace( $sWhere, "", -3 );
+        //$sWhere .= ')';
+   //////////////////
+   //}
+
+        $posts_table_name = "{$wpdb->prefix}posts";
+
+        $tWhere = " WHERE post_title LIKE '%".$search_val."%'";
+        $task_id_query = "
+                SELECT ID
+          FROM $posts_table_name
+          $tWhere
+        
+        ";
+        $task_ids = $wpdb->get_results($task_id_query, ARRAY_A);
+        if(is_array($task_ids)){
+            $sWhere .= "OR ";
+
+            foreach ($task_ids as $task_id){
+                $sWhere .= "`source_id` LIKE '%".esc_sql( $task_id[ID] )."%' OR ";
+            }
+            $sWhere = substr_replace( $sWhere, "", -3 );
+        }
         $sWhere .= ')';
+
     }
+
+
+
+
+
+
+
+
 
     for ( $i=0 ; $i<count($aColumns) ; $i++ )
     {
@@ -1554,7 +1585,7 @@ function go_activity_dataloader_ajax()
             $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql($_GET['columns'][$i]['search']['value'])."%' ";
         }
     }
-    //add the filter by UID
+     //add the filter by UID
     $user_id = $_GET['user_id'];
     if($user_id != ''){
         if ( $sWhere == "" )
@@ -1567,6 +1598,7 @@ function go_activity_dataloader_ajax()
         }
          $sWhere .= "uid = ".$user_id;
     }
+
 $totalWhere = " WHERE uid = ".$user_id;
 
 
@@ -1776,8 +1808,8 @@ $totalWhere = " WHERE uid = ".$user_id;
         else{
             $health_mod_str = null;
         }
-        $unix_time = strtotime($TIMESTAMP);
-        $row[] = "{$unix_time}";
+        //$unix_time = strtotime($TIMESTAMP);
+        $row[] = "{$TIMESTAMP}";
         $row[] = "{$type}";
         $row[] = "{$post_title}";
         $row[] = "{$action}";

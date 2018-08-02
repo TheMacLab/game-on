@@ -378,11 +378,11 @@ function go_stats_activity_list() {
                         ],
 
                         "searching": true,
-                        'createdRow': function (row, data, dataIndex) {
+                        /*'createdRow': function (row, data, dataIndex) {
                             var dateCell = jQuery(row).find('td:eq(0)').text(); // get first column
 
                             var d = new Date(dateCell * 1000);
-                            var month = d.getMonth();
+                            var month = d.getMonth() + 1;
                             var day = d.getDate();
                             var year = d.getFullYear().toString().slice(-2);
                             var hours = d.getHours();
@@ -405,7 +405,7 @@ function go_stats_activity_list() {
                             jQuery(row).find('td:eq(0)').attr("data-order", dateCell).text(formattedTime);
 
 
-                        }
+                        }*/
 
 
                     });
