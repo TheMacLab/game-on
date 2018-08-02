@@ -70,7 +70,7 @@ function go_clipboard_class_a_choice() {
             stateSave: true,
             "bPaginate": false,
             //colReorder: true,
-            "order": [[4, "asc"]],
+            "order": [[5, "asc"]],
             responsive: true,
             "autoWidth": false,
             //"destroy": true,
@@ -85,34 +85,42 @@ function go_clipboard_class_a_choice() {
                 {
                     "targets": [0],
                     className: 'noVis',
-                    "width": "20px"
+                    "width": "1px",
+                    sortable: false
+                },
+                {
+                    "targets": [1],
+                    className: 'noVis',
+                    "width": "20px",
+                    sortable: false
                 },
 				{
-                    "targets": [1],
+                    "targets": [2],
                     "visible": false,
                     className: 'noVis'
                 },
-				{
-					"targets": [2],
-					"visible": false,
-                    className: 'noVis'
-				},
 				{
 					"targets": [3],
 					"visible": false,
                     className: 'noVis'
 				},
-                {
-                    "targets": [6],
+				{
+					"targets": [4],
+					"visible": false,
                     className: 'noVis'
-                },
+				},
                 {
                     "targets": [7],
                     className: 'noVis'
                 },
                 {
-                    "targets": [9],
+                    "targets": [8],
                     className: 'noVis'
+                },
+                {
+                    "targets": [10],
+                    className: 'noVis',
+                    sortable: false
                 }
 			],
             buttons: [
@@ -227,12 +235,14 @@ function go_clipboard_class_a_choice_activity(refresh) {
                             {
                                 "targets": [0],
                                 className: 'noVis',
-                                "width": "20px"
+                                "width": "5px",
+                                sortable: false
                             },
                             {
                                 "targets": [1],
-                                "visible": false,
-                                className: 'noVis'
+                                className: 'noVis',
+                                "width": "20px",
+                                sortable: false
                             },
                             {
                                 "targets": [2],
@@ -245,7 +255,8 @@ function go_clipboard_class_a_choice_activity(refresh) {
                                 className: 'noVis'
                             },
                             {
-                                "targets": [6],
+                                "targets": [4],
+                                "visible": false,
                                 className: 'noVis'
                             },
                             {
@@ -253,8 +264,13 @@ function go_clipboard_class_a_choice_activity(refresh) {
                                 className: 'noVis'
                             },
                             {
-                                "targets": [9],
+                                "targets": [8],
                                 className: 'noVis'
+                            },
+                            {
+                                "targets": [10],
+                                className: 'noVis',
+                                sortable: false
                             }
                         ],
                         buttons: [

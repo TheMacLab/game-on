@@ -12,6 +12,8 @@ function go_stats_overlay() {
  *
  */
 function go_admin_bar_stats() {
+
+
     //$user_id = 0;
     if ( ! empty( $_POST['uid'] ) ) {
         $user_id = (int) $_POST['uid'];
@@ -598,7 +600,7 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
         }
     }
     if($is_admin && $on_stats){
-        echo "<div id='go_stats_messages_icon' class='go_user_link go_messages_icon' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        echo "<div id='go_stats_messages_icon' class='go_user_link' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
         echo '<script>var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id); console.log(user_id);});</script>';
     }
     echo "</div>";
@@ -648,11 +650,11 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
 
 
 
-    echo "<div id='go_task_list' class='go_datatables'><table id='go_tasks_datatable' class='pretty display'>
+    echo "<div id='go_task_list' class='go_datatables'> <div class='table-responsive'><table id='go_tasks_datatable' class='pretty display'>
                    <thead>
 						<tr>";
     if ($is_admin){
-        echo "<th class='header go_tasks_reset' ><a href='#'>Reset</a></th>";
+        echo "<th></th><th class='header go_tasks_reset' ><a href='#'>Reset</a></th>";
     }
     echo"
 							
@@ -825,7 +827,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
         echo " <tr id='postID_{$post_id}'>";
 
 	    if ($is_admin){
-            echo " <td id='{$post_id}' class='go_reset_task' value='{$post_id}' {$reset_col_style}  style='color: red; text-align: center;'><i class='fa fa-times-circle' aria-hidden='true'></i></td>";
+            echo " <td></td><td id='{$post_id}' class='go_reset_task' value='{$post_id}'  style='color: red; text-align: center;'><i class='fa fa-times-circle' aria-hidden='true'></i></td>";
 	    }
 	    echo"
 			        
@@ -856,7 +858,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
 
     }
     echo "</tbody>
-				</table></div>";
+				</table></div></div>";
 
     die();
 }
@@ -1029,7 +1031,8 @@ function go_stats_single_task_activity_list($post_id) {
 * @param $stage
 * @param $time
  * @return string
-*/function go_result_link($check_type, $result, $stage, $time){
+*/
+function go_result_link($check_type, $result, $stage, $time){
     $link = '';
     if ($check_type == 'URL'){
         $link = "<a href='{$result}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";

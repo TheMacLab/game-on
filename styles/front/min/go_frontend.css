@@ -298,6 +298,26 @@ template {
 [hidden] {
   display: none; }
 
+/**
+ *ACF Loot Color
+ */
+#go_loot_table .acf-switch {
+  background: pink !important;
+  border-color: indianred !important; }
+
+#go_loot_table .acf-switch.-on {
+  background: forestgreen !important;
+  border-color: darkgreen !important; }
+
+/********************
+*	Select2 fields for taxonomy selects
+********************/
+.select2-container {
+  min-width: 125px; }
+
+.select2-container--open {
+  z-index: 9999999999; }
+
 /********************
 *	Check for Understanding Buttons
 ********************/

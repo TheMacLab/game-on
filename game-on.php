@@ -154,6 +154,7 @@ add_action( 'wp_head', 'go_stats_overlay' );
 add_action( 'wp_enqueue_scripts', 'go_scripts' );
 add_action( 'wp_enqueue_scripts', 'go_styles' );
 add_action( 'wp_enqueue_scripts', 'go_includes' );
+add_action( 'wp_enqueue_scripts', 'go_acf_scripts' );
 //add_action( 'wp_enqueue_scripts', 'go_scripts' );
 //add_action( 'wp_head', 'go_frontend_lightbox_html' );
 

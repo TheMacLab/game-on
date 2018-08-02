@@ -1,14 +1,3 @@
-/**
- *ACF Loot Color
- */
-#go_loot_table .acf-switch{
-	background: pink !important;
-	border-color: indianred !important;
-}
-#go_loot_table .acf-switch.-on{
-	background: forestgreen !important;
-	border-color: darkgreen !important;
-}
 
 /**
  * Date Picker Setting Row

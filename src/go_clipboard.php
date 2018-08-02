@@ -107,6 +107,7 @@ function go_clipboard_intable() {
         <table id='go_clipboard_datatable' class='pretty display'>
             <thead>
             <tr>
+                <th></th>
                 <th><input type="checkbox" onClick="go_toggle(this);" /></th>
                 <th class="header">sections</th>
                 <th class="header">groups</th>
@@ -257,6 +258,7 @@ function go_clipboard_intable() {
             $user_seat = get_user_meta($user_id, $user_seat_option, true);
 
             echo "<tr>
+                    <td></td>
 					<td style='text-align: center;'><input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/></td>
 					<td >{$user_period} </a></td>
 					<td>{$group_ids}</a></td>
@@ -324,7 +326,8 @@ function go_clipboard_intable_activity() {
     <table id='go_clipboard_activity_datatable' class='pretty display'>
         <thead>
         <tr>
-            <th><input type="checkbox" onClick="go_toggle(this);" /></th>
+            <th>
+            </th><th><input type="checkbox" onClick="go_toggle(this);" /></th>
             <th class="header">sections</th>
             <th class="header">groups</th>
             <th class="header">badges</th>
@@ -628,6 +631,7 @@ function go_clipboard_intable_activity() {
                 $user_seat = get_user_meta($user_id, $user_seat_option, true);
 
                 echo "<tr style='vertical-align: top;'>
+					<td></td>
 					<td style='text-align: center;'><input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/></td>
 					<td >{$user_period} </a></td>
 					<td>{$group_ids}</a></td>

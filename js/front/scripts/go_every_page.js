@@ -109,7 +109,8 @@ function go_stats_task_list() {
     jQuery("#go_task_list").show();
     //jQuery(".go_datatables").hide();
 
-
+    var table = jQuery('#go_tasks_datatable').DataTable();
+    table.columns.adjust().draw();
 
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;
     if ( jQuery( "#go_tasks_datatable" ).length == 0) {
@@ -141,6 +142,7 @@ function go_stats_task_list() {
                     jQuery(".go_reset_task").one("click", function(e){
                         go_messages_opener( user_id, this.id, 'reset' );
                     });
+
                 }
             });
     }
@@ -606,19 +608,19 @@ function go_stats_leaderboard() {
                 try {
                     var res = JSON.parse( raw );
                 } catch (e) {
-                    //console.log("parse_error");
+                    console.log("parse_error");
                 }
                 ////console.log(res.xp_sticky);
-                ////console.log(res.html);
+                //console.log(res.html);
 
                 jQuery('#stats_leaderboard').html(res.html);
 
 
 
-					//console.log("________XP___________");
 
-					jQuery(document).ready(function() {
 
+					//jQuery(document).ready(function() {
+                        console.log("________XP___________");
                         if (jQuery("#go_xp_leaders_datatable").length) {
 
                             //XP////////////////////////////
@@ -647,105 +649,105 @@ function go_stats_leaderboard() {
                         	});
                     	}
 
-                    //GOLD
+                        //GOLD
 
-                    if (jQuery("#go_gold_leaders_datatable").length) {
-                        go_sort_leaders("go_gold_leaders_datatable", 4);
-                        //console.log("________GOLD___________");
-                        var table2 = jQuery('#go_gold_leaders_datatable').DataTable({
-                            "paging": false,
-                            "orderFixed": [[4, "desc"]],
-                            //"destroy": true,
-                            responsive: true,
-                            "autoWidth": false,
-                            "columnDefs": [
-                                {
-                                    "targets": [1],
-                                    "visible": false
-                                },
-                                {
-                                    "targets": [2],
-                                    "visible": false
-                                }
-                            ],
-                            'createdRow': function (row, data, dataIndex) {
-                                jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
-                            }
-                        });
-                    }
-
-                    //C4//////////////////
-                    if (jQuery("#go_c4_leaders_datatable").length) {
-                        go_sort_leaders("go_c4_leaders_datatable", 4);
-                        //console.log("________C4___________");
-                        var table3 = jQuery('#go_c4_leaders_datatable').DataTable({
-                            "paging": false,
-                            "orderFixed": [[4, "desc"]],
-                            //"destroy": true,
-                            responsive: true,
-                            "autoWidth": false,
-                            "columnDefs": [
-                                {
-                                    "targets": [1],
-                                    "visible": false
-                                },
-                                {
-                                    "targets": [2],
-                                    "visible": false
-                                }
-                            ],
-                            'createdRow': function (row, data, dataIndex) {
-                                jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
-                            }
-                        });
-                    }
-
-                    //BADGES
-
-                    if (jQuery("#go_badges_leaders_datatable").length) {
-                        go_sort_leaders("go_badges_leaders_datatable", 4);
-                        //console.log("________Badges___________");
-                        var table4 = jQuery('#go_badges_leaders_datatable').DataTable({
-                            "paging": false,
-                            "orderFixed": [[4, "desc"]],
-                            //"destroy": true,
-                            responsive: true,
-                            "autoWidth": false,
-                            "columnDefs": [
-                                {
-                                    "targets": [1],
-                                    "visible": false
-                                },
-                                {
-                                    "targets": [2],
-                                    "visible": false
-                                }
-                            ],
-                            'createdRow': function (row, data, dataIndex) {
-                                jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
-
-                            }
-                        });
-                    }
-
-
-                    // Event listener to the two range filtering inputs to redraw on input
-                    jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
-                        if (jQuery("#go_xp_leaders_datatable").length) {
-                        	table.draw();
-                        }
                         if (jQuery("#go_gold_leaders_datatable").length) {
-                        	table2.draw();
+                            go_sort_leaders("go_gold_leaders_datatable", 4);
+                            //console.log("________GOLD___________");
+                            var table2 = jQuery('#go_gold_leaders_datatable').DataTable({
+                                "paging": false,
+                                "orderFixed": [[4, "desc"]],
+                                //"destroy": true,
+                                responsive: true,
+                                "autoWidth": false,
+                                "columnDefs": [
+                                    {
+                                        "targets": [1],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [2],
+                                        "visible": false
+                                    }
+                                ],
+                                'createdRow': function (row, data, dataIndex) {
+                                    jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
+                                }
+                            });
                         }
-                        if (jQuery("#go_c4_leaders_datatable").length) {
-                            table3.draw();
-                        }
-                        if (jQuery("#go_badges_leaders_datatable").length) {
-                            table4.draw();
-                        }
-                    } );
 
-                } );
+                        //C4//////////////////
+                        if (jQuery("#go_c4_leaders_datatable").length) {
+                            go_sort_leaders("go_c4_leaders_datatable", 4);
+                            //console.log("________C4___________");
+                            var table3 = jQuery('#go_c4_leaders_datatable').DataTable({
+                                "paging": false,
+                                "orderFixed": [[4, "desc"]],
+                                //"destroy": true,
+                                responsive: true,
+                                "autoWidth": false,
+                                "columnDefs": [
+                                    {
+                                        "targets": [1],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [2],
+                                        "visible": false
+                                    }
+                                ],
+                                'createdRow': function (row, data, dataIndex) {
+                                    jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
+                                }
+                            });
+                        }
+
+                        //BADGES
+
+                        if (jQuery("#go_badges_leaders_datatable").length) {
+                            go_sort_leaders("go_badges_leaders_datatable", 4);
+                            //console.log("________Badges___________");
+                            var table4 = jQuery('#go_badges_leaders_datatable').DataTable({
+                                "paging": false,
+                                "orderFixed": [[4, "desc"]],
+                                //"destroy": true,
+                                responsive: true,
+                                "autoWidth": false,
+                                "columnDefs": [
+                                    {
+                                        "targets": [1],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [2],
+                                        "visible": false
+                                    }
+                                ],
+                                'createdRow': function (row, data, dataIndex) {
+                                    jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
+
+                                }
+                            });
+                        }
+
+
+                        // Event listener to the two range filtering inputs to redraw on input
+                        jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
+                            if (jQuery("#go_xp_leaders_datatable").length) {
+                                table.draw();
+                            }
+                            if (jQuery("#go_gold_leaders_datatable").length) {
+                                table2.draw();
+                            }
+                            if (jQuery("#go_c4_leaders_datatable").length) {
+                                table3.draw();
+                            }
+                            if (jQuery("#go_badges_leaders_datatable").length) {
+                                table4.draw();
+                            }
+                        } );
+
+                //});
 
             }
         });

@@ -5,12 +5,6 @@
 #records_tabs a, #records_tabs .tooltip {
   color: blue; }
 
-.select2-container {
-  min-width: 125px; }
-
-.select2-container--open {
-  z-index: 9999999999; }
-
 #go_messages .select2-container {
   width: 100% !important; }
 
@@ -19,6 +13,15 @@
 
 .hidden_action {
   display: none; }
+
+/********************
+*	Select2 fields for taxonomy selects
+********************/
+.select2-container {
+  min-width: 125px; }
+
+.select2-container--open {
+  z-index: 9999999999; }
 
 /********************
 *	Check for Understanding Buttons

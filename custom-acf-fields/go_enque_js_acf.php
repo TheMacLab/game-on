@@ -42,6 +42,7 @@ function go_acf_scripts ($hook) {
 	
 }
 
+//enqueued in main plugin file
 //add_action('acf/field_group/admin_enqueue_scripts', 'go_acf_scripts');
 
 
