@@ -21,6 +21,7 @@ add_filter( 'show_admin_bar', 'go_display_admin_bar' );
 
 get_header();
 
+
 /////////////////////USER HEADER
 ///
 ///
@@ -44,7 +45,8 @@ if($user_obj)
     $user_login =  $user_obj->user_login;
     $user_display_name = $user_obj->display_name;
     $user_website = $user_obj->user_url;
-
+    $page_title = $user_display_name . "'s Blog";
+    ?><script>document.title = "<?php echo $page_title; ?>";</script><?php
     $use_local_avatars = get_option('options_go_avatars_local');
     $use_gravatar = get_option('options_go_avatars_gravatars');
     if ($use_local_avatars){
@@ -84,7 +86,7 @@ if($user_obj)
 // get the username based from uname value in query var request.
 
 $paged = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
-$paged = get_query_var('paged');
+//$paged = get_query_var('paged');
 // Query param
 $arg = array(
     'post_type'         => 'go_blogs',
