@@ -114,7 +114,9 @@ function go_flush_rewrites() {
     go_register_store_tax_and_cpt();
     go_blog_tags();
     go_blogs();
+    go_custom_rewrite();
     flush_rewrite_rules();
+    go_custom_rewrite();
 }
 
 
