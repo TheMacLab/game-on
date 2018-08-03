@@ -47,7 +47,6 @@ function Max_width_and_LightboxNow(){
         } 
  }
  
- 
 function Vids_Fit_and_Box(){
     function runmefirst(callback) {
         fitVidsNow();

@@ -220,6 +220,36 @@ function go_make_single_map($last_map_id, $reload){
 	if ($reload == false) {echo "</div>";}	
 }
 
+/**
+ * For php below 5.5
+ */
+if (! function_exists('array_column')) {
+    function array_column(array $input, $columnKey, $indexKey = null) {
+        $array = array();
+        foreach ($input as $value) {
+            if ( !array_key_exists($columnKey, $value)) {
+                trigger_error("Key \"$columnKey\" does not exist in array");
+                return false;
+            }
+            if (is_null($indexKey)) {
+                $array[] = $value[$columnKey];
+            }
+            else {
+                if ( !array_key_exists($indexKey, $value)) {
+                    trigger_error("Key \"$indexKey\" does not exist in array");
+                    return false;
+                }
+                if ( ! is_scalar($value[$indexKey])) {
+                    trigger_error("Key \"$indexKey\" does not contain scalar value");
+                    return false;
+                }
+                $array[$value[$indexKey]] = $value[$columnKey];
+            }
+        }
+        return $array;
+    }
+}
+
 function go_make_map_dropdown(){
 /* Get all task chains with no parents--these are the top level on the map.  They are chains of chains (realms). */
 	$taxonomy = 'task_chains';
