@@ -125,13 +125,21 @@ function go_make_single_map($last_map_id, $reload){
                             $custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
                             $stage_count = $custom_fields['go_stages'][0];//total stages
 
-                            $key = array_search($id, array_column($tasks, 'post_id'));
+
+                            $tasks = json_decode(json_encode($tasks), True);
+                            $ids = array_map(function ($each) {
+
+                                return $each['post_id'];
+
+                            }, $tasks);
+
+                            $key = array_search($id, $ids);
                             $this_task = $tasks[$key];
-							$status = $this_task -> status;
+							$status = $this_task['status'];
 
                             if($custom_fields['bonus_switch'][0]) {
                             	$bonus_stage_toggle = true;
-                                $bonus_status = $this_task -> bonus_status;
+                                $bonus_status = $this_task['bonus_status'];
                             	//$bonus_status = go_get_bonus_status($id, $user_id);
                                 $repeat_max = $custom_fields['go_bonus_limit'][0];//max repeats of bonus stage
 								$bonus_stage_name = get_option('options_go_tasks_bonus_stage').':';
@@ -220,35 +228,7 @@ function go_make_single_map($last_map_id, $reload){
 	if ($reload == false) {echo "</div>";}	
 }
 
-/**
- * For php below 5.5
- */
-if (! function_exists('array_column')) {
-    function array_column(array $input, $columnKey, $indexKey = null) {
-        $array = array();
-        foreach ($input as $value) {
-            if ( !array_key_exists($columnKey, $value)) {
-                trigger_error("Key \"$columnKey\" does not exist in array");
-                return false;
-            }
-            if (is_null($indexKey)) {
-                $array[] = $value[$columnKey];
-            }
-            else {
-                if ( !array_key_exists($indexKey, $value)) {
-                    trigger_error("Key \"$indexKey\" does not exist in array");
-                    return false;
-                }
-                if ( ! is_scalar($value[$indexKey])) {
-                    trigger_error("Key \"$indexKey\" does not contain scalar value");
-                    return false;
-                }
-                $array[$value[$indexKey]] = $value[$columnKey];
-            }
-        }
-        return $array;
-    }
-}
+
 
 function go_make_map_dropdown(){
 /* Get all task chains with no parents--these are the top level on the map.  They are chains of chains (realms). */
