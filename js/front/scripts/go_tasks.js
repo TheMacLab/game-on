@@ -1,6 +1,10 @@
 
 jQuery( document ).ready( function() {
-    console.log("admin");
+
+    //removes hidden mce that is used for blog check for understanding
+    jQuery('#go_hidden_mce').remove();
+    go_mce();
+
 
 	jQuery.ajaxSetup({
 		url: go_task_data.url += '/wp-admin/admin-ajax.php'
@@ -347,7 +351,7 @@ function task_stage_change( target ) {
         result = tinyMCE.activeEditor.getContent();
         var result_title = jQuery( '#go_result_title' ).attr( 'value' );
         var blog_post_id= jQuery( '#go_result_title' ).attr( 'blog_post_id' );
-        console.log(blog_post_id);
+        //console.log(blog_post_id);
 
     }else{
         var result_title = null;
@@ -461,12 +465,8 @@ function task_stage_change( target ) {
                     audio.play();
                 }
                     //console.log(res.html);
+                    jQuery('go_hidden_mce').remove();
                     go_append(res);
-
-
-                //, function() {
-                //                         setTimeout(function(){ go_mce(); }, 1000);
-                //                 }
 
 
 
@@ -489,13 +489,14 @@ function task_stage_change( target ) {
 
 function go_mce() {
     // remove existing editor instance
-    console.log('mce2');
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
+    tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post' );
+    //tinyMCE.execCommand('mceAddControl', false, 'go_blog_post');
 
-    // init editor for newly appended div
-    var init = tinymce.extend( {}, tinyMCEPreInit.mceInit[ 'go_blog_post' ] );
-    try { tinymce.init( init ); } catch(e){}
+
 }
+
+
 
 function go_append (res){
     //jQuery( res.html ).addClass('active');
@@ -505,8 +506,8 @@ function go_append (res){
         go_make_clickable();
         go_disable_loading();
         go_mce();
+
     });
-    //callback();
 }
 
 // Makes it so you can press return and enter content in a field

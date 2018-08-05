@@ -63,9 +63,9 @@ class Front_End_Media {
 	 */
 	function filter_media( $query ) {
 		// admins get to see everything
-		//if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
             $query['author'] = get_current_user_id();
-        //}
+        }
 		return $query;
 	}
 

@@ -11,6 +11,7 @@ function go_scripts () {
     global $version;
     //$site_url = get_site_url(null, 'wp-admin/css/media.css');
     wp_register_script( 'go_wp_media', get_site_url(null, 'wp-admin/css/media.css'), null, $version );
+    //wp_enqueue_script( 'go_wp_media' );
 	/*
 	 * Registering Scripts For The Front-end
 	 */
@@ -35,7 +36,7 @@ function go_scripts () {
 		//Combined File
 		wp_enqueue_script( 'go_frontend-min' );
 
-    wp_enqueue_script( 'go_wp_media' );
+   
 
 		//END COMBINED
 
@@ -83,7 +84,9 @@ function go_scripts () {
                     'go_the_lb_ajax'                => wp_create_nonce( 'go_the_lb_ajax' ),
                     'go_update_bonus_loot'          => wp_create_nonce('go_update_bonus_loot'),
                     'go_create_admin_message' => wp_create_nonce('go_create_admin_message'),
-                    'go_send_message' => wp_create_nonce('go_send_message')
+                    'go_send_message' => wp_create_nonce('go_send_message'),
+                    'go_blog_opener'                => wp_create_nonce('go_blog_opener'),
+                    'go_blog_submit'                => wp_create_nonce('go_blog_submit')
 
 				)
 			)

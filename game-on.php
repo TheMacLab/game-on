@@ -103,6 +103,7 @@ register_activation_hook( __FILE__, 'go_on_activate_msdb' );
  
 register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
 register_activation_hook( __FILE__, 'go_flush_rewrites' );
+
  
  
 /**
@@ -119,6 +120,19 @@ function go_flush_rewrites() {
     go_custom_rewrite();
 }
 
+
+
+function go_changeMceDefaults($in) {
+
+    // customize the buttons
+    $in['theme_advanced_buttons1'] = 'bold,italic,underline,bullist,numlist,hr,blockquote,link,unlink,justifyleft,justifycenter,justifyright,justifyfull,outdent,indent';
+    $in['theme_advanced_buttons2'] = 'formatselect,pastetext,pasteword,charmap,undo,redo';
+
+    // Keep the "kitchen sink" open
+    $in[ 'wordpress_adv_hidden' ] = FALSE;
+    return $in;
+}
+add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
 
 /*
  * Admin Menu & Admin Bar
@@ -239,6 +253,8 @@ add_action( 'wp_ajax_go_upgade4', 'go_upgade4' );
 add_action( 'wp_ajax_go_update_bonus_loot', 'go_update_bonus_loot' );
 add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );
 add_action( 'wp_ajax_go_send_message', 'go_send_message' );
+add_action( 'wp_ajax_go_blog_opener', 'go_blog_opener' );
+add_action( 'wp_ajax_go_blog_submit', 'go_blog_submit' );
 
 
 add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
@@ -419,17 +435,6 @@ function go_weekly_schedule( $schedules ) {
 	return $schedules;
 }
 
-function go_task_timer_headers() {
-	$custom_fields = get_post_custom();
-	$future_switches = ( ! empty( $custom_fields['go_mta_time_filters'][0] ) ? unserialize( $custom_fields['go_mta_time_filters'][0] ) : '' );
-	if ( 'tasks' == get_post_type() && ! empty( $future_switches['future'] ) && 'on' == $future_switches['future'] ) {
-		header( 'Expires: Thu, 1 Jan 1970 00:00:00 GMT' );
-		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-		header( 'Cache-Control: post-check=0, pre-check=0', FALSE );
-		header( 'Pragma: no-cache' );	
-	}
-}
-
 /**
  * Determines if the string has a boolean value of true (case is ignored).
  *
@@ -474,25 +479,10 @@ function go_user_is_admin( $user_id = null ) {
 }
 
 /**
- * Resize All Images on Client Side
+ * TOP MENU ITEMS
+ * @param $items
+ * @return string
  */
-function client_side_resize_load() {
-    wp_enqueue_script( 'client-resize' , plugins_url( '/js/js/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
-    wp_localize_script( 'client-resize' , 'client_resize' , array( 
-        'plupload' => array(
-                'resize' => array(
-                'enabled' => true,
-                'width' => 1920, // enter your width here
-                'height' => 1200, // enter your width here
-                'quality' => 90,
-            ),
-        )
-    ) );
-}
-add_action( 'wp_enqueue_media' , 'client_side_resize_load' );
-
-
-
 function go_new_nav_menu_items($items) {
 
     $homelink = '<li class="home go_top_menu_1"><a href="' . home_url( '/' ) . '">' . __('Home') . '</a></li>';
@@ -613,7 +603,6 @@ function go_new_nav_menu_items($items) {
 }
 add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
 
-
 /**
  * Task Categories Widget
  * Modified from: http://www.wpbeginner.com/wp-tutorials/how-to-create-a-custom-wordpress-widget/
@@ -623,7 +612,6 @@ function wpb_load_widget() {
     register_widget( 'wpb_widget' );
 
 }
-
 
 /**
  * Added v4.0 Sort items that show on menu pages
@@ -670,48 +658,6 @@ function go_change_sort_order($query){
 
 
 };
-
-/**
- * https://wordpress.stackexchange.com/questions/204779/how-can-i-add-an-author-filter-to-the-media-library
- *
- */
-function go_media_add_author_dropdown()
-{
-    $scr = get_current_screen();
-    if ( $scr->base !== 'upload' ) return;
-    if (current_user_can( 'manage_options' )) {
-        $author = filter_input(INPUT_GET, 'author', FILTER_SANITIZE_STRING);
-        $selected = (int)$author > 0 ? $author : '0';
-        $args = array('show_option_all' => 'All Authors', 'name' => 'author', 'selected' => $selected);
-        wp_dropdown_users($args);
-    }
-}
-add_action('restrict_manage_posts', 'go_media_add_author_dropdown');
-
-
-
-/**
- * Show Only Current Users Media
- * @param $wp_query
- * https://stackoverflow.com/questions/28787575/wordpress-restrict-users-to-see-only-their-uploads
- */
-function go_my_files_only( $wp_query ) {
-    if ( strpos( $_SERVER[ 'REQUEST_URI' ], '/wp-admin/upload.php' ) !== false ) {
-        if ( !current_user_can('activate_plugins') && !current_user_can('edit_others_posts') ) {
-            $user_id = get_current_user_id();
-            $wp_query->set( 'author', $user_id );
-        }
-    }
-}
-
-add_filter('parse_query', 'go_my_files_only' );
-
-
-
-
-
-
-
 
 
 
@@ -914,9 +860,6 @@ class wpb_widget extends WP_Widget {
     }
 } // Class go_widget ends here
 
-
-
-
 /**
  * Plugin Name: Disable ACF on Frontend
  * Description: Provides a performance boost if ACF frontend functions aren't being used
@@ -926,7 +869,6 @@ class wpb_widget extends WP_Widget {
  * License:     MIT
  * License URI: http://www.opensource.org/licenses/mit-license.php
  */
-
 /**
  * Disable ACF on Frontend
  *

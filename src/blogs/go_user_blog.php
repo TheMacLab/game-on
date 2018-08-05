@@ -23,18 +23,18 @@ get_header();
 
 
 /////////////////////USER HEADER
-///
-///
-    //$user_id = 0;
+
     $user = get_query_var('uname');
 
     $user_obj = get_user_by('login',$user);
-if($user_obj)
-{
-   $user_id = $user_obj->ID;
-}else{
-    $user_id = 0;
-}
+    if($user_obj)
+    {
+       $user_id = $user_obj->ID;
+    }else{
+        $user_id = 0;
+    }
+
+    $current_user_id = get_current_user_id();
 
 
 
@@ -72,7 +72,11 @@ if($user_obj)
                     <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>"; ?>
                     <?php
                     go_user_links($user_id,false, true, false, false, true, true);
+                    if ($current_user_id === $user_id){
+                        echo '<button class="go_blog_opener" blog_post_id ="">New Post</button>';
+                     }
                     ?>
+
 
                 </div>
 
@@ -119,11 +123,18 @@ if ( empty($posts) ) {
        $title =  $post['post_title'];
        $content =  $post['post_content'];
        $date = $post['post_date'];
+       $post_id = $post['ID'];
        ?>
        <div class="go_blog_post_wrapper" style="padding: 20px; ">
            <hr>
            <h2><?php echo $title;?></h2>
            <div><?php echo $date;?></div>
+           <?php
+if ($current_user_id === $user_id){
+    echo '<button class="go_blog_opener" blog_post_id ="'.$post_id.'">edit post</button>';
+}
+ ?>
+
            <p></p>
            <div><?php echo $content;?></div>
        </div>
@@ -156,8 +167,18 @@ if ( empty($posts) ) {
     </div>
     </div>
     </div>
+    <script>
+
+        jQuery( document ).ready( function() {
+            jQuery(".go_blog_opener").one("click", function(e){
+                go_blog_opener( this );
+            });
+        });
+
+    </script>
 
     <?php
+    go_hidden_footer();
 }
 
 get_footer();

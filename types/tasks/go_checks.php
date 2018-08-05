@@ -202,7 +202,7 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
     if ($i == $status) {
         echo $instructions;
         $i++;
-        $post_id = (string) $wpdb->get_var(
+        $blog_post_id = (string) $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT result 
 				FROM {$go_actions_table_name} 
@@ -214,15 +214,21 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
                 'task'
             )
         );
-        $post      = get_post( $post_id, OBJECT, 'edit' );
+        $post      = get_post( $blog_post_id, OBJECT, 'edit' );
         $content   = $post->post_content;
-        $title = get_the_title($post_id);
-
+        $title = get_the_title($blog_post_id);
+        if (empty($title)){
+            $title = get_the_title($post_id);
+        }
         echo "<div id='go_url_div'>";
-        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' placeholder='' value ='{$title}' blog_post_id ='{$post_id}'></div> </div>";
+        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' placeholder='' value ='{$title}' blog_post_id ='{$blog_post_id}'></div> </div>";
         $settings  = array(
+            //'tinymce'=>true,
+            //'wpautop' =>false,
             'textarea_name' => 'go_result',
-            'media_buttons' => true
+            'media_buttons' => true,
+            //'teeny' => true,
+            //'quicktags'=>false
         );
         wp_editor( $content, 'go_blog_post', $settings );
         echo "</div>";

@@ -60,6 +60,24 @@ function go_admin_includes () {
 }
 
 function go_includes () {
+
+    wp_enqueue_media();
+
+    /**
+     * Tiny MCE on frontend
+     */
+
+    wp_register_script( 'go_frontend_tinymce', get_site_url(null, '/wp-includes/js/tinymce/tinymce.min.js'), array( 'jquery' ), null, false);
+    //wp_enqueue_script( 'go_frontend_tinymce' );
+
+    $test_url = get_site_url(null, '/wp-includes/js/tinymce/tiny_mce.js');
+    ?>
+    <script>
+        console.log("
+            <?php echo $test_url;?>
+            )
+    </script>
+<?php
     /**
      * Select 2
      */
@@ -92,8 +110,7 @@ function go_includes () {
     /**
      * Frontend Media
      */
-    wp_register_script( 'go_frontend_media', plugin_dir_url( __FILE__ ).'wp-frontend-media-master/js/frontend.js', array( 'jquery' ),
-        '2015-05-07', true);
+    wp_register_script( 'go_frontend_media', plugin_dir_url( __FILE__ ).'wp-frontend-media-master/js/frontend.js', array( 'jquery' ), '2015-05-07', true);
     //wp_enqueue_script( 'go_frontend_media' );
 
     /**

@@ -157,6 +157,7 @@ function go_task_shortcode($atts, $content = null ) {
             if ($task_is_locked) {
                 //Print the bottom of the page
                 go_task_render_chain_pagination( $post_id, $custom_fields );
+                go_hidden_footer();
                 return null;
             }
         }
@@ -212,6 +213,7 @@ function go_task_shortcode($atts, $content = null ) {
 
         echo "</div>";
         go_task_render_chain_pagination( $post_id, $custom_fields );
+        go_hidden_footer ();
         return null;
     }
 
@@ -242,6 +244,7 @@ function go_task_shortcode($atts, $content = null ) {
 	//echo "</div></div>";
 		//Print the bottom of the page
 		go_task_render_chain_pagination( $post_id, $custom_fields );//3 Queries
+        go_hidden_footer();
 
 		//Print comments
 		if ( get_post_type() == 'tasks' ) {
@@ -414,6 +417,7 @@ function go_display_all_admin_content( $custom_fields, $is_logged_in, $task_name
 
     // displays the chain pagination list so that visitors can still navigate chains easily
     go_task_render_chain_pagination( $post_id, $custom_fields);
+    go_hidden_footer();
     echo "</div>";
 }
 
@@ -876,6 +880,19 @@ function go_print_bonus_stage ($user_id, $post_id, $custom_fields, $task_name){
 
 }
 
+function go_hidden_footer(){
+    /**
+     * Hidden mce so it can be initialized later
+     */
+    echo "<div id='go_hidden_mce' style='display: block;'>";
+    $settings  = array(
+        'textarea_name' => 'go_result',
+        'media_buttons' => true
+    );
+    wp_editor( '', 'go_blog_post', $settings );
+    echo "</div>";
+}
+
 function go_task_change_stage() {
     global $wpdb;
 
@@ -893,6 +910,7 @@ function go_task_change_stage() {
 	$result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
     $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
+
 
     /**
      * Security
