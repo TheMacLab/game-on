@@ -120,6 +120,15 @@ function go_flush_rewrites() {
     go_custom_rewrite();
 }
 
+/**
+ * Changes roles so subscribers can upload media
+ */
+function go_media_access() {
+    $role = get_role( 'subscriber' );
+    $role->add_cap( 'upload_files' );
+}
+register_activation_hook( __FILE__, 'go_media_access' );
+
 
 
 function go_changeMceDefaults($in) {

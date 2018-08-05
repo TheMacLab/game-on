@@ -211,9 +211,12 @@ function go_blog_submit(){
 
 
     );
-
-    // Insert the post into the database
-    wp_insert_post( $my_post );
+    if (empty($blog_post_id)) {
+        // Insert the post into the database
+        wp_insert_post($my_post);
+    }else{
+        wp_update_post($my_post);
+    }
 }
 
 

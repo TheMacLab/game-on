@@ -884,7 +884,7 @@ function go_hidden_footer(){
     /**
      * Hidden mce so it can be initialized later
      */
-    echo "<div id='go_hidden_mce' style='display: block;'>";
+    echo "<div id='go_hidden_mce' style='display: none;'>";
     $settings  = array(
         'textarea_name' => 'go_result',
         'media_buttons' => true

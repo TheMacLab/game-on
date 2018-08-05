@@ -95,7 +95,7 @@ $paged = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
 $arg = array(
     'post_type'         => 'go_blogs',
     'posts_per_page'    => 5,
-    'orderby'           => 'date',
+    'orderby'           => 'publish_date',
     'order'             => 'DESC',
     'author_name'       => $user,
     'paged' => $paged,
@@ -167,7 +167,14 @@ if ($current_user_id === $user_id){
     </div>
     </div>
     </div>
-    <script>
+
+
+    <?php
+
+}
+    go_hidden_footer();
+?>
+ <script>
 
         jQuery( document ).ready( function() {
             jQuery(".go_blog_opener").one("click", function(e){
@@ -176,9 +183,5 @@ if ($current_user_id === $user_id){
         });
 
     </script>
-
-    <?php
-    go_hidden_footer();
-}
-
+<?php
 get_footer();

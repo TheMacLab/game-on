@@ -365,11 +365,7 @@ function go_wp_enqueue_media( $args = array() ) {
 //add_action( 'wp_loaded', 'go_wp_enqueue_media' );
 
 
-function go_media_access() {
-    $role = get_role( 'subscriber' );
-    $role->add_cap( 'upload_files' );
-}
-register_activation_hook( __FILE__, 'go_media_access' );
+
 
 /**
  * Resize All Images on Client Side
