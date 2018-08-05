@@ -577,11 +577,17 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
         $is_locked = true;
         $user_terms = array();
         $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
+        $user_terms = array();
         for ($i = 0; $i < $num_terms; $i++) {
 
             $user_period = "go_section_and_seat_" . $i . "_user-section";
             $user_period = get_user_meta($user_id, $user_period, true);
-            $user_terms[] = $user_period;//an array of the class periods the user is in
+            $user_terms[] = $user_period;
+        }
+
+        //set $user_terms to empty array if not set
+        if (!$user_terms) {
+            $user_terms = array();
         }
 
         $sched_num = (isset($custom_fields['go_sched_opt'][0]) ?  $custom_fields['go_sched_opt'][0] : null); //the number of schedule locks
@@ -639,12 +645,23 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
 
                 $first = true;
                 for ($i = 0; $i < $sched_num; $i++) {
-                    $dow_section = "go_sched_opt_" . $i . "_sched_sections";
+                    $dow_sections = "go_sched_opt_" . $i . "_sched_sections";
                     //$dow_section = unserialize($custom_fields[$dow_section][0]);
-                    $dow_section = (isset($custom_fields[$dow_section][0]) ?  unserialize($custom_fields[$dow_section][0]) : null);
-                    if (!$dow_section) {
+                    $dow_sections = (isset($custom_fields[$dow_sections][0]) ?  unserialize($custom_fields[$dow_sections][0]) : null);
+                    //if (!$dow_sections) {
                         $dow_section = array();
+                    //}
+
+                    foreach ($dow_sections as $dow_term) {
+                        if (!empty($dow_term)) {
+                            $term = get_term($dow_term);
+                            $term_name = $term->name;
+                            $dow_section[] = $term_name;
+
+                        }
                     }
+
+
                     $dow_days = "go_sched_opt_" . $i . "_dow";
                     //$dow_days = unserialize($custom_fields[$dow_days][0]);
                     $dow_days = (isset($custom_fields[$dow_days][0]) ?  unserialize($custom_fields[$dow_days][0]) : null);
