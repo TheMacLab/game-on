@@ -28,9 +28,9 @@ function go_clipboard_menu() {
         <div>
             <div id="go_leaderboard_filters" style="float: left;">
 
-                <span> Section: <?php go_make_tax_select('user_go_sections', "Show All" , "clipboard_", $section); ?></span>
-                <span> Group: <?php go_make_tax_select('user_go_groups', "Show All"  , "clipboard_", $group); ?></span>
-                <span> Badges: <?php go_make_tax_select('go_badges', "Show All"  , "clipboard_", $badge); ?></span>
+                <span> Section: <?php go_make_tax_select('user_go_sections', "Show All" , "clipboard_", $section, false); ?></span>
+                <span> Group: <?php go_make_tax_select('user_go_groups', "Show All"  , "clipboard_", $group, false); ?></span>
+                <span> Badges: <?php go_make_tax_select('go_badges', "Show All"  , "clipboard_", $badge, false); ?></span>
 
             </div>
 

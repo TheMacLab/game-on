@@ -496,6 +496,7 @@ function go_sort_leaders(tableID, column) {
     }
 }
 
+//this is for the leaderboard on the stats page and the clipboard
 function go_filter_datatables() { //function that filters all tables on draw
     jQuery.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
@@ -504,14 +505,24 @@ function go_filter_datatables() { //function that filters all tables on draw
                 var section = jQuery('#go_clipboard_user_go_sections_select').val();
                 var group = jQuery('#go_clipboard_user_go_groups_select').val();
                 var badge = jQuery('#go_clipboard_go_badges_select').val();
-                var badges =  data[3] ;
-                var groups =  data[2] ; // use data for the filter by column
-                var sections = data[1]; // use data for the filter by column
+                var badges =  data[4] ;
+                var groups =  data[3] ; // use data for the filter by column
+                var sections = data[2]; // use data for the filter by column
+                console.log("data" + data);
+                console.log("badges" + badges);
+                console.log("groups" + groups);
+                console.log("sections" + sections);
                 //console.log(sections);
 
+
                 groups = JSON.parse(groups);
+
+                console.log("groups" + groups);
                 //sections = JSON.parse(sections);
                 badges = JSON.parse(badges);
+                console.log("badges" + badges);
+
+                console.log("sections" + sections);
 
                 var inlist = true;
                 if( group == "none" || jQuery.inArray(group, groups) != -1) {
@@ -566,15 +577,7 @@ function go_filter_datatables() { //function that filters all tables on draw
                         inlist = false;
                     }
                 }
-                if (mytable == "go_clipboard_datatable") {
-                    if (inlist) {
-                        if (badge == "none" || jQuery.inArray(badge, badges) != -1) {
-                            inlist = true;
-                        } else {
-                            inlist = false;
-                        }
-                    }
-                }
+
                 return inlist;
             }else{
                 return true;

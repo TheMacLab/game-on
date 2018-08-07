@@ -38,8 +38,8 @@ jQuery( document ).ready( function() {
         });
 
 	}
-
-    jQuery('.go_tax_select').select2();
+    //console.log('ready');
+   // jQuery('.go_tax_select').select2();
 
 });
 
@@ -49,7 +49,6 @@ function go_toggle( source ) {
 		checkboxes[ i ].checked = source.checked;
 	}
 }
-
 
 function go_toggle_off() {
     checkboxes = jQuery( '.go_checkbox' );
