@@ -2,8 +2,9 @@
 //https://codex.wordpress.org/Creating_Tables_with_Plugins
 
 global $wpdb;
+global $version;
 global $go_db_version;
-$go_db_version = '4.07';
+$go_db_version = $version;
 
 
 function go_update_db_check() {
