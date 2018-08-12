@@ -26,6 +26,16 @@ function fitVidsNow(){
 function go_native_video_resize() {
 
     jQuery(window).resize(function() {
+
+    	//initializes featherlight on the class "featherlight_wrapper_vid_link"
+		jQuery('.featherlight_wrapper_vid_link').featherlight({
+			targetAttr: 'href',
+			afterOpen: function(event){
+				jQuery(".featherlight-content").css("overflow","hidden")
+			}
+		});
+
+		//fixes height on native WP video shortcode on resize of window
         jQuery("video.wp-video-shortcode").css("height", "");
         setTimeout(function(){ jQuery("mediaelementwrapper .wp-video-shortcode, .mejs-container").css("height", "");
             var vidHeight = jQuery("video.wp-video-shortcode").height();
@@ -105,4 +115,7 @@ function Max_width_and_LightboxNow(){
 
         } 
  }
- 
+
+ function go_test_after(){
+	console.log("hello");
+ }

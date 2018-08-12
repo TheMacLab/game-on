@@ -70,7 +70,7 @@ function listurl() {
 }
 add_shortcode( 'go_list_URL', 'go_list_user_URL' );
 
-function go_display_video( $atts, $video_url ) {
+function go_video_link( $atts, $video_url ) {
 	$atts = shortcode_atts( 
 		array(
 			'video_url' => '',
@@ -107,18 +107,78 @@ function go_display_video( $atts, $video_url ) {
 		}
 		if ( $video_title ) {
 			//return "<a href='#'  data-featherlight='<video controls><source src=\"".$video_url."\"></video>'>{$video_title}</a>";
-            return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>{$video_title}</a>";
+            //return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>{$video_title}</a>";
+            return "<a  class='featherlight_wrapper_vid_link' href='<div id=\"go_video_container\" style=\"
+    height: 90vh;
+    overflow: hidden;
+\"> <video controls style=\"
+    height: 100%;
+\">
+  <source src=\"{$video_url}\" type=\"video/mp4\">
+Your browser does not support the video tag.
+</video></div>'    >{$video_title}</a> ";
 		} else {
 			//return "<a href='#'  data-featherlight='<div class=\"video-wrapper\"><video class=\"video\" controls><source src=\"".$video_url."\"></video></div>'>video</a>";
-            return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>Video</a>";
+            return "<a  class='featherlight_wrapper_vid_link' href='<div id=\"go_video_container\" style=\"
+    height: 90vh;
+    overflow: hidden;
+\"> <video controls style=\"
+    height: 100%;
+\">
+  <source src=\"{$video_url}\" type=\"video/mp4\">
+Your browser does not support the video tag.
+</video></div>'    >Video</a> ";
 
         }
 
 	}
 }
 
-add_shortcode( 'go_display_video', 'go_display_video' );
-add_shortcode( 'go_video_link', 'go_display_video' );
+add_shortcode( 'go_display_video', 'go_video_link' );
+add_shortcode( 'go_video_link', 'go_video_link' );
+
+function go_display_video( $atts, $video_url ) {
+    $atts = shortcode_atts(
+        array(
+            'video_url' => '',
+            'video_title' => '',
+            'height' => '',
+            'width' => '',
+        ),
+        $atts
+    );
+    $video_url = ( ! empty ( $video_url ) ? $video_url : $atts['video_url'] );
+    $video_title = $atts['video_title'];
+    if ( $video_url ) {
+        if ( $atts['height'] && $atts['width'] ) {
+            ?>
+            <script type="text/javascript">
+                jQuery( '.light' ).css({'height': '<?php echo $atts['height']; ?>px', 'width': '<?php echo $atts['width']; ?>px'});
+            </script>
+            <?php
+        }
+        if ( $atts['height'] ) {
+            ?>
+            <script type="text/javascript">
+                jQuery( '.light' ).css({'height': '<?php echo $atts['height']; ?>px', 'margin-top': '-<?php echo $atts['height']/2; ?>px'});
+            </script>
+            <?php
+        }
+        if ( $atts['width'] ) {
+            ?>
+            <script type="text/javascript">
+                jQuery( '.light' ).css({'width': '<?php echo $atts['width']; ?>px', 'margin-left': '-<?php echo $atts['width']/2; ?>px'});
+            </script>
+            <?php
+        }
+        if ( $video_title ) {
+            return "<a href='javascript:;' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );'>{$video_title}</a>";
+        } else {
+            return "<a href='javascript:;' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );'>video</a>";
+        }
+    }
+}
+//add_shortcode( 'go_display_video', 'go_display_video' );
 
 function go_video($atts){
     extract(shortcode_atts(array(

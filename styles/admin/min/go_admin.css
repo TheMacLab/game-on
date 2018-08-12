@@ -14,6 +14,62 @@
 .hidden_action {
   display: none; }
 
+/**VIDEOS EMBEDED WITH MEDIA MANAGER
+https://cfxdesign.com/how-to-make-the-wordpress-video-shortcode-responsive/
+*/
+.wp-video, video.wp-video-shortcode, .mejs-container, .mejs-overlay.load {
+  width: 100% !important; }
+
+.mejs-container {
+  /**padding-top: 56.25%;*/ }
+
+.wp-video, video.wp-video-shortcode {
+  max-width: 100% !important; }
+
+video.wp-video-shortcode {
+  position: relative; }
+
+.mejs-mediaelement {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+
+.mejs-controls {
+  display: none;
+  background: rgba(0, 0, 0, 0.5); }
+
+.mejs-overlay-play {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto !important;
+  height: auto !important; }
+
+/**
+ *for the media modal
+ */
+/* Text meant only for screen readers. */
+.screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important; }
+
+.featherlight {
+  z-index: 2147483646 !important; }
+
+#__wp-uploader-id-2 {
+  z-index: 2147483647 !important; }
+
 /**
  *ACF Loot Color
  */

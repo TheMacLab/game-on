@@ -173,4 +173,19 @@ function go_clone_post() {
 }
 
 
+function go_create_help_video_lb() {
+    ?>
+    <div class="dark" style="display: none;"> </div>
+    <div class="light" style="display: none;">
+        <div id="go_help_video_container" style="height: 100%; width: 100%;">
+            <video id="go_option_help_video" class="video-js vjs-default-skin vjs-big-play-centered" controls height="100%" width="100%" ><source src="" type="video/mp4"/></video/options>
+        </div>
+    </div>
+    <?php
+}
+//add_action( 'admin_head', 'go_create_help_video_lb' );
+add_action( 'wp_head', 'go_create_help_video_lb' );
+
+
+
 ?>

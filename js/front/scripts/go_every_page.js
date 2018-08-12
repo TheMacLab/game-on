@@ -1,5 +1,3 @@
-
-
 function go_sounds( type ) {
     if ( 'store' == type ) {
         var audio = new Audio( PluginDir.url + 'media/gold.mp3' );
