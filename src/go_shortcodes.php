@@ -88,7 +88,7 @@ function go_video_link( $atts, $video_url ) {
             return "<a  class='featherlight_wrapper_vid_link' href='<div id=\"go_video_container\" style=\"
     height: 90vh;
     overflow: hidden;
-\"> <video controls style=\"
+\"> <video controls autoplay style=\"
     height: 100%;
 \">
   <source src=\"{$video_url}\" type=\"video/mp4\">
@@ -99,7 +99,7 @@ Your browser does not support the video tag.
             return "<a  class='featherlight_wrapper_vid_link' href='<div id=\"go_video_container\" style=\"
     height: 90vh;
     overflow: hidden;
-\"> <video controls style=\"
+\"> <video controls autoplay style=\"
     height: 100%;
 \">
   <source src=\"{$video_url}\" type=\"video/mp4\">

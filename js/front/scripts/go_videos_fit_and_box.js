@@ -91,25 +91,36 @@ function Max_width_and_LightboxNow(){
 
             //add a featherlight lightroom wrapper to the fitvids native video
             jQuery(".max-width-video-wrapper:not(.wrapped):has(video)").each(function(){
-                jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_native_vid" href="#" data-featherlight="iframe" ><span style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 4;"></span></a>');
+                //jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_native_vid" href="#" data-featherlight="iframe" ><span style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 4;"></span></a>');
+
+                jQuery(this).prepend('<a  class="featherlight_wrapper_vid_native" href="<div id=\'go_video_container\' style=\'height: 90vh;overflow: hidden;\'> <video controls autoplay style=\'height: 100%;\'> <source src=\'#\' type=\'video/mp4\'>Your browser does not support the video tag. </video></div>"<span style=\'position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 4;\'></span></a>');
+
+
                 jQuery(this).addClass('wrapped');
             });
 
             //adds a html link to the wrapper for featherlight lightbox
             setTimeout(function(){
-            jQuery('[class^="featherlight_wrapper_native_vid"]').each(function(){
+            jQuery('[class^="featherlight_wrapper_vid_native"]').each(function(){
                     var _src = jQuery(this).parent().find('video').attr('src');
-                    //var _src = jQuery(this).attr('src');
-                    console.log(_src);
-                    //jQuery(this).attr("href", _src);
-                    //var _href = jQuery(this).attr("href");
-                    //console.log("href:" + _href);
-                    jQuery(this).attr("href", _src + '?&autoplay=1');
-                    //activates the lightbox
-                    //jQuery.featherlight.defaults.closeOnClick = true;
-                    jQuery.featherlight.defaults.iframeWidth = '100%';
-                    jQuery.featherlight.defaults.iframeHeight = '100%';
-                    jQuery(this).featherlight();
+                    	//var _src = jQuery(this).attr('src');
+                    console.log("SRC:" + _src);
+                    	//jQuery(this).attr("href", _src);
+                    	//var _href = jQuery(this).attr("href");
+                    	//console.log("href:" + _href);
+                    //jQuery(this).parent().find('source').attr("src", _src );
+                	jQuery(this).attr("href", "<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden;\"> <video controls autoplay style=\"height: 100%;\"> <source src=\"" + _src + "\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>" );
+                    	//activates the lightbox
+                    	//jQuery.featherlight.defaults.closeOnClick = true;
+                    //jQuery.featherlight.defaults.iframeWidth = '100%';
+                    //jQuery.featherlight.defaults.iframeHeight = '100%';
+                    //jQuery(this).featherlight();
+					jQuery('.featherlight_wrapper_vid_native').featherlight({
+						targetAttr: 'href',
+						afterOpen: function(event){
+							jQuery(".featherlight-content").css("overflow","hidden")
+						}
+					});
                 });
             }, 200);
 
