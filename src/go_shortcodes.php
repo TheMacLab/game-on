@@ -74,9 +74,7 @@ function go_video_link( $atts, $video_url ) {
 	$atts = shortcode_atts( 
 		array(
 			'video_url' => '',
-			'video_title' => '',
-			'height' => '',
-			'width' => '',
+			'video_title' => ''
 		), 
 		$atts
 	);
@@ -84,27 +82,6 @@ function go_video_link( $atts, $video_url ) {
 	$video_title = $atts['video_title'];
 	if ( $video_url ) {
 
-	    if ( $atts['height'] && $atts['width'] ) {
-            ?>
-            <script type="text/javascript">
-                jQuery( '.light' ).css({'height': '<?php echo $atts['height']; ?>px', 'width': '<?php echo $atts['width']; ?>px'});
-            </script>
-            <?php
-		}
-		if ( $atts['height'] ) {
-		?>
-		<script type="text/javascript"> 
-            jQuery( '.light' ).css({'height': '<?php echo $atts['height']; ?>px', 'margin-top': '-<?php echo $atts['height']/2; ?>px'});
-        </script>
-        <?php
-		} 
-		if ( $atts['width'] ) {
-		?>
-		<script type="text/javascript"> 
-            jQuery( '.light' ).css({'width': '<?php echo $atts['width']; ?>px', 'margin-left': '-<?php echo $atts['width']/2; ?>px'});
-        </script>
-        <?php
-		}
 		if ( $video_title ) {
 			//return "<a href='#'  data-featherlight='<video controls><source src=\"".$video_url."\"></video>'>{$video_title}</a>";
             //return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>{$video_title}</a>";

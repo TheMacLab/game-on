@@ -16,7 +16,7 @@
 				{ text: '[go_store id]', onclick: function() { go_tinymce_insert_content( editor, '[go_store id=""]' ); } },
 				{ text: '[go_make_map]', onclick: function() { go_tinymce_insert_content( editor, '[go_make_map]' ); } },
 				{ text: '[go_make_store]', onclick: function() { go_tinymce_insert_content( editor, '[go_make_store]' ); } },
-                { text: '[go_video_link video_url]', onclick: function() { go_tinymce_insert_content( editor, '[go_video_link video_url="" video_title="" width="" height=""]' ); } },
+                { text: '[go_video_link video_url]', onclick: function() { go_tinymce_insert_content( editor, '[go_video_link video_url="" video_title=""]' ); } },
                 { text: '[go_lightbox]', onclick: function() { go_tinymce_insert_content( editor, '[go_lightbox_url link_url="" link_text=""]' ); } },
                 { text: '[video]', onclick: function() { go_tinymce_insert_content( editor, '[go_video video_url="" ]' ); } },
 
