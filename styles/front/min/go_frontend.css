@@ -298,6 +298,40 @@ template {
 [hidden] {
   display: none; }
 
+/**VIDEOS EMBEDED WITH MEDIA MANAGER
+https://cfxdesign.com/how-to-make-the-wordpress-video-shortcode-responsive/
+*/
+.wp-video, video.wp-video-shortcode, .mejs-container, .mejs-overlay.load {
+  width: 100% !important; }
+
+.mejs-container {
+  /**padding-top: 56.25%;*/ }
+
+.wp-video, video.wp-video-shortcode {
+  max-width: 100% !important; }
+
+video.wp-video-shortcode {
+  position: relative; }
+
+.mejs-mediaelement {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+
+.mejs-controls {
+  display: none;
+  background: rgba(0, 0, 0, 0.5); }
+
+.mejs-overlay-play {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto !important;
+  height: auto !important; }
+
 /**
  *for the media modal
  */

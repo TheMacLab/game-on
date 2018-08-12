@@ -19,7 +19,10 @@ jQuery( document ).ready( function() {
 		go_sounds( 'store' );
 	}
 	go_make_clickable()
-	jQuery( ".go_stage_message" ).show( 'slow' );
+	jQuery( ".go_stage_message" ).show(  );
+    setTimeout(function(){
+        go_native_video_resize();
+    }, 1000);
     jQuery( ".go_checks_and_buttons" ).show( 'slow' );
 
     //add onclick to continue buttons

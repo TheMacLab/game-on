@@ -56,7 +56,8 @@ function go_scripts () {
 		// Localization
 		$user_id = get_current_user_id();
 
-		wp_localize_script( 'go_frontend-min', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+        wp_localize_script( 'go_frontend-min', 'SiteURL', get_site_url() );
+        wp_localize_script( 'go_frontend-min', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		wp_localize_script( 'go_frontend-min', 'PluginDir', array( 'url' => plugin_dir_url( __FILE__ ) ) );
 		wp_localize_script(
 			'go_frontend-min',

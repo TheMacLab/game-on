@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function go_list_user_URL() {
 	$class_names = get_option( 'go_class_a' );
@@ -83,12 +83,13 @@ function go_display_video( $atts, $video_url ) {
 	$video_url = ( ! empty ( $video_url ) ? $video_url : $atts['video_url'] );
 	$video_title = $atts['video_title'];
 	if ( $video_url ) {
-		if ( $atts['height'] && $atts['width'] ) {
-		?>
-    	<script type="text/javascript"> 
-			jQuery( '.light' ).css({'height': '<?php echo $atts['height']; ?>px', 'width': '<?php echo $atts['width']; ?>px'});
-		</script>
-        <?php	
+
+	    if ( $atts['height'] && $atts['width'] ) {
+            ?>
+            <script type="text/javascript">
+                jQuery( '.light' ).css({'height': '<?php echo $atts['height']; ?>px', 'width': '<?php echo $atts['width']; ?>px'});
+            </script>
+            <?php
 		}
 		if ( $atts['height'] ) {
 		?>
@@ -105,13 +106,56 @@ function go_display_video( $atts, $video_url ) {
         <?php
 		}
 		if ( $video_title ) {
-			return "<a href='javascript:;' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );'>{$video_title}</a>";	
+			//return "<a href='#'  data-featherlight='<video controls><source src=\"".$video_url."\"></video>'>{$video_title}</a>";
+            return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>{$video_title}</a>";
 		} else {
-			return "<a href='javascript:;' onclick='go_display_help_video( ".esc_attr( '\''.$video_url.'\'' )." );'>video</a>";	
-		}
+			//return "<a href='#'  data-featherlight='<div class=\"video-wrapper\"><video class=\"video\" controls><source src=\"".$video_url."\"></video></div>'>video</a>";
+            return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>Video</a>";
+
+        }
+
 	}
 }
+
 add_shortcode( 'go_display_video', 'go_display_video' );
+add_shortcode( 'go_video_link', 'go_display_video' );
+
+function go_video($atts){
+    extract(shortcode_atts(array(
+        'video_url' => ''
+    ), $atts));
+
+
+    $video_url = $atts['video_url'];;
+
+    $lightbox = "
+    <video class='wp-video-shortcode' preload='metadata' src='{$video_url }?_=1' style='width: 200px;'><source src='{$video_url }?_=1'><a href='{$video_url }'>{$video_url }</a></video>
+    "
+;
+    return $lightbox;
+
+}
+add_shortcode( 'go_video','go_video' );
+
+function go_lightbox_url($atts){
+    extract(shortcode_atts(array(
+        'link_url' => '',
+        'link_text' => ''
+    ), $atts));
+
+    $link_text = $atts['link_text'];
+    $link_url = $atts['link_url'];;
+
+    $lightbox = "
+    
+    <a class='featherlight_wrapper_iframe' href='{$link_url}' data-featherlight='iframe'>{$link_text}</a>
+";
+    return $lightbox;
+
+}
+add_shortcode( 'go_lightbox_url','go_lightbox_url' );
+
+
 
 //Function that grabs the current page
 function go_page_grabber_shortcode() { 
@@ -185,6 +229,8 @@ function go_get_displayname_function( $atts, $content = null ) {
 }
 add_shortcode( 'get_displayname', 'go_get_displayname_function' );
 add_shortcode( 'go_get_displayname', 'go_get_displayname_function' );
+
+
 
 
 //Gets the users first name

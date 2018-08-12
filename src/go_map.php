@@ -119,11 +119,12 @@ function go_make_single_map($last_map_id, $reload){
 							$status = get_post_status( $row );//is post published
 							if ($status !== 'publish'){continue; }//don't show if not pubished
 
-							$task_name = get_the_title($row); //Q
+							$task_name = $row->post_title; //Q
 							$task_link = get_permalink($row); //Q
 							$id = $row->ID;
                             $custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
                             $stage_count = $custom_fields['go_stages'][0];//total stages
+
 
 
                             $tasks = json_decode(json_encode($tasks), True);
@@ -134,12 +135,21 @@ function go_make_single_map($last_map_id, $reload){
                             }, $tasks);
 
                             $key = array_search($id, $ids);
-                            $this_task = $tasks[$key];
-							$status = $this_task['status'];
+                            if ($key) {
+                                $this_task = $tasks[$key];
+                                $status = $this_task['status'];
+                            }else{
+                            	$status = 0;
+							}
+
 
                             if($custom_fields['bonus_switch'][0]) {
                             	$bonus_stage_toggle = true;
-                                $bonus_status = $this_task['bonus_status'];
+                            	if ($key) {
+                                    $bonus_status = $this_task['bonus_status'];
+                                }else{
+                                    $bonus_status = 0;
+                                }
                             	//$bonus_status = go_get_bonus_status($id, $user_id);
                                 $repeat_max = $custom_fields['go_bonus_limit'][0];//max repeats of bonus stage
 								$bonus_stage_name = get_option('options_go_tasks_bonus_stage').':';
@@ -164,7 +174,7 @@ function go_make_single_map($last_map_id, $reload){
                             }
 
 
-                            if ($stage_count == $status){
+                            if ($stage_count === $status){
                                 $task_color = 'done';
                                 $finished = 'checkmark';
 							}else if ($task_is_locked){

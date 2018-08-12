@@ -57,6 +57,7 @@ function go_admin_scripts ($hook) {
 		//END Combined Scripts
 
 		// Localization for every admin page
+        wp_localize_script( 'go_admin-min', 'SiteURL', get_site_url() );
         wp_localize_script( 'go_admin-min', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		wp_localize_script( 'go_admin-min', 'PluginDir', array( 'url' => plugin_dir_url( __FILE__ ) ) );
 		wp_localize_script(
