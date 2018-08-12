@@ -26,7 +26,7 @@ function go_update_db() {
     go_table_actions();
     go_install_data();
     add_option( 'go_db_version', $go_db_version );
-    flush_rewrite_rules();
+    //flush_rewrite_rules();
 }
 
 function go_table_tasks() {
