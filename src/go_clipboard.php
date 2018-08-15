@@ -224,7 +224,10 @@ function go_clipboard_intable() {
 
         //$sections = get_user_meta($user_id, "go_sections");
         $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
-        $sections = array();
+        if (empty($num_sections)){
+            $num_sections =1;
+        }
+        //$sections = array();
 
 
         //$sections = json_encode($sections);
