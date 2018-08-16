@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="go4@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Sass File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>store</find>
+      <find>selectors</find>
+      <find>aspectRatio</find>
+      <find>fitvi</find>
+      <find>feather</find>
+      <find>fit</find>
+      <find>video</find>
+      <find>url</find>
+      <find>option</find>
+      <find>hide</find>
+      <find>cons</find>
+      <find>padding</find>
+      <find>do_shortcode</find>
+      <find>z-</find>
+      <find>go_create_help_video_lb</find>
+      <find>Timeout</find>
+      <find>afterOpen</find>
+      <find>controls</find>
+      <find>auto</find>
+      <find>$user_data_key</find>
+      <find>$term_id</find>
+      <find>bonus</find>
+      <find>bonu</find>
+      <find>success</find>
+      <find>go_noty_loot_success</find>
+      <find>$go_task_ids</find>
+      <find>$last_map_id</find>
+      <find>bonus_loot</find>
+      <find>time</find>
+      <find>noty</find>
+    </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/js/front/scripts</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" />
+        <option value="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" />
+        <option value="$PROJECT_DIR$/src/go_user.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" />
+        <option value="$PROJECT_DIR$/src/go_messages.php" />
+        <option value="$PROJECT_DIR$/styles/front/go_enque_styles.php" />
+        <option value="$PROJECT_DIR$/styles/admin/go_enque_styles_admin.php" />
+        <option value="$PROJECT_DIR$/src/go_user_blog.php" />
+        <option value="$PROJECT_DIR$/types/tasks/task.php" />
+        <option value="$PROJECT_DIR$/src/go_admin_menus.php" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
+        <option value="$PROJECT_DIR$/styles/css/go_clipboard_sass.scss" />
+        <option value="$PROJECT_DIR$/styles/css/tasks-admin.css" />
+        <option value="$PROJECT_DIR$/styles/css/go_map.css" />
+        <option value="$PROJECT_DIR$/js/admin/scripts/go_messages.js" />
+        <option value="$PROJECT_DIR$/src/go_task_search.php" />
+        <option value="$PROJECT_DIR$/src/go_stats.php" />
+        <option value="$PROJECT_DIR$/src/go_admin_bar.php" />
+        <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
+        <option value="$PROJECT_DIR$/types/tasks/go_checks.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_blogs.js" />
+        <option value="$PROJECT_DIR$/src/blogs/go_user_blog.php" />
+        <option value="$PROJECT_DIR$/src/go_blogs.php" />
+        <option value="$PROJECT_DIR$/src/go_store.php" />
+        <option value="$PROJECT_DIR$/game-on.php" />
+        <option value="$PROJECT_DIR$/includes/fitvids-for-wordpress/jquery.fitvids.js" />
+        <option value="$PROJECT_DIR$/js/admin/dev/go_admin.js" />
+        <option value="$PROJECT_DIR$/js/front/go_enque_js.php" />
+        <option value="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" />
+        <option value="$PROJECT_DIR$/src/go_media.php" />
+        <option value="$PROJECT_DIR$/js/front/dev/go_frontend.js" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_fitvids.js" />
+        <option value="$PROJECT_DIR$/types/types.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
+        <option value="$PROJECT_DIR$/styles/css/go_every_page.css" />
+        <option value="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
+        <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
+        <option value="$PROJECT_DIR$/src/go_datatable.php" />
+        <option value="$PROJECT_DIR$/js/js/go_shortcode_mce.js" />
+        <option value="$PROJECT_DIR$/src/go_shortcodes.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" />
+        <option value="$PROJECT_DIR$/src/go_clipboard.php" />
+        <option value="$PROJECT_DIR$/src/go_map.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
+        <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
+        <option value="$PROJECT_DIR$/src/go_updates.php" />
+        <option value="$PROJECT_DIR$/types/tasks/go_locks.php" />
+        <option value="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" />
+        <option value="$PROJECT_DIR$/includes/go_enque_includes.php" />
+        <option value="$PROJECT_DIR$/go_acf_groups.php" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="PhpDebugGeneral" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
+  <component name="PhpServers">
+    <servers>
+      <server host="localhost" id="3921dc9d-31df-49b8-a3ad-25e0abc23ff5" name="localhost">
+        <path_mappings>
+          <mapping local-root="$PROJECT_DIR$/../htdocs/wordpress_new/wp-admin" remote-root="/Users/mmcmurray/Dropbox/MAMP/htdocs/go4/wp-admin" />
+        </path_mappings>
+      </server>
+    </servers>
+  </component>
+  <component name="PhpWebServerValidation" path_to_validation_script="$PROJECT_DIR$/../htdocs" selected_validation_type="LOCAL" web_path_to_validation_script="http://localhost:80" />
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.2">
+    <include_path>
+      <path value="$PROJECT_DIR$/../htdocs/wordpress_new" />
+    </include_path>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="965" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Changed Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
+              <item name="custom-acf-fields" type="cbb8eebc:String" user="custom-acf-fields" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
+              <item name="custom-acf-fields" type="cbb8eebc:String" user="custom-acf-fields" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Constants" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
+    <property name="list.type.of.created.stylesheet" value="Sass" />
+    <property name="nodejs_interpreter_path" value="node" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="settings.editor.selected.configurable" value="settings.php.debug.servers" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/disabled" />
+      <recent name="$PROJECT_DIR$/src/blogs" />
+      <recent name="$PROJECT_DIR$/styles/css/Disabled" />
+      <recent name="$PROJECT_DIR$/js/admin/scripts" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="PHP Web Page.Debug">
+    <configuration name="go_tasks.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="go_tasks.js" working-dir="$PROJECT_DIR$/js/front/scripts" />
+    <configuration name="Unnamed" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server" document_root="http://localhost:8888/wordpress_new/tasks/uytf/" />
+    <configuration name="Debug" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" server_name="localhost" start_url="http://localhost/go4/wp-admin/edit-tags.php?taxonomy=user_go_groups" />
+    <list>
+      <item itemvalue="PHP Built-in Web Server.Unnamed" />
+      <item itemvalue="PHP Web Page.Debug" />
+      <item itemvalue="Node.js.go_tasks.js" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.go_tasks.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="" />
+      <created>1522211354214</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1522211354214</updated>
+      <workItem from="1522211355371" duration="892000" />
+      <workItem from="1522212672126" duration="39768000" />
+      <workItem from="1522609806113" duration="151059000" />
+      <workItem from="1524189624735" duration="61162000" />
+      <workItem from="1524609886145" duration="42803000" />
+      <workItem from="1524799083374" duration="21545000" />
+      <workItem from="1525033769315" duration="17402000" />
+      <workItem from="1525063498726" duration="114597000" />
+      <workItem from="1526182238988" duration="12102000" />
+      <workItem from="1526231243873" duration="34927000" />
+      <workItem from="1526484378716" duration="899000" />
+      <workItem from="1526623594929" duration="526000" />
+      <workItem from="1526624134516" duration="959000" />
+      <workItem from="1526656198629" duration="70670000" />
+      <workItem from="1526876845324" duration="2121000" />
+      <workItem from="1527054430593" duration="36880000" />
+      <workItem from="1527300737849" duration="27751000" />
+      <workItem from="1527482224990" duration="130163000" />
+      <workItem from="1528836271991" duration="19901000" />
+      <workItem from="1528896316499" duration="126000" />
+      <workItem from="1528896461302" duration="55742000" />
+      <workItem from="1529045522193" duration="62000" />
+      <workItem from="1529899136489" duration="7804000" />
+      <workItem from="1529975499846" duration="61738000" />
+      <workItem from="1530294356026" duration="82467000" />
+      <workItem from="1530498867741" duration="296509000" />
+      <workItem from="1531804988438" duration="2311000" />
+      <workItem from="1531834570981" duration="1368000" />
+      <workItem from="1531836825414" duration="73000" />
+      <workItem from="1531836980163" duration="1783000" />
+      <workItem from="1531841713237" duration="282000" />
+      <workItem from="1531861151185" duration="106417000" />
+      <workItem from="1532120961940" duration="10573000" />
+      <workItem from="1532352956957" duration="204092000" />
+      <workItem from="1533395675462" duration="45916000" />
+      <workItem from="1533758962289" duration="66145000" />
+      <workItem from="1534372082665" duration="15708000" />
+      <workItem from="1534390673582" duration="575000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="1826129000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1680" height="965" extended-state="0" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19285715" />
+      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5113095" side_tool="true" weight="0.3135776" />
+      <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Run" order="3" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.48869047" weight="0.3131313" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="PHP-CGI Server" order="12" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection Results" order="14" weight="0.08076923" />
+      <window_info anchor="bottom" id="Command Line Tools Console" order="0" weight="0.3275862" />
+      <window_info anchor="bottom" id="Messages" order="8" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49009386" visible="true" weight="0.3838384" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="WordPressConfiguration" enabled="true">
+    <wordpressPath>$PROJECT_DIR$/../htdocs/wordpress_new</wordpressPath>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>113</line>
+          <option name="timeStamp" value="345" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>104</line>
+          <option name="timeStamp" value="346" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>786</line>
+          <option name="timeStamp" value="347" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>124</line>
+          <option name="timeStamp" value="348" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>154</line>
+          <option name="timeStamp" value="349" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php</url>
+          <line>72</line>
+          <option name="timeStamp" value="353" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php</url>
+          <line>101</line>
+          <option name="timeStamp" value="354" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php</url>
+          <line>869</line>
+          <option name="timeStamp" value="366" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php</url>
+          <line>1044</line>
+          <option name="timeStamp" value="368" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php</url>
+          <line>1194</line>
+          <option name="timeStamp" value="369" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
+          <line>1073</line>
+          <option name="timeStamp" value="373" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
+          <line>1062</line>
+          <option name="timeStamp" value="377" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-chains.php</url>
+          <line>189</line>
+          <option name="timeStamp" value="384" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
+          <line>1063</line>
+          <option name="timeStamp" value="385" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>391</line>
+          <option name="timeStamp" value="386" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>488</line>
+          <option name="timeStamp" value="387" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>494</line>
+          <option name="timeStamp" value="388" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-chains.php</url>
+          <line>145</line>
+          <option name="timeStamp" value="389" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-chains.php</url>
+          <line>195</line>
+          <option name="timeStamp" value="390" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-chains.php</url>
+          <line>206</line>
+          <option name="timeStamp" value="392" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-chains.php</url>
+          <line>263</line>
+          <option name="timeStamp" value="393" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-chains.php</url>
+          <line>229</line>
+          <option name="timeStamp" value="394" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-admin.php</url>
+          <line>33</line>
+          <option name="timeStamp" value="395" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task-admin.php</url>
+          <line>39</line>
+          <option name="timeStamp" value="396" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>477</line>
+          <option name="timeStamp" value="436" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>527</line>
+          <option name="timeStamp" value="437" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
+          <line>1033</line>
+          <option name="timeStamp" value="453" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
+          <line>1634</line>
+          <option name="timeStamp" value="508" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php</url>
+          <line>63</line>
+          <option name="timeStamp" value="511" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
+          <line>1550</line>
+          <option name="timeStamp" value="513" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
+          <line>1541</line>
+          <option name="timeStamp" value="514" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
+          <line>1536</line>
+          <option name="timeStamp" value="515" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
+          <line>1557</line>
+          <option name="timeStamp" value="516" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
+          <line>1601</line>
+          <option name="timeStamp" value="517" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/go_checks.php</url>
+          <line>223</line>
+          <option name="timeStamp" value="522" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_blogs.php</url>
+          <line>159</line>
+          <option name="timeStamp" value="523" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_blogs.php</url>
+          <line>171</line>
+          <option name="timeStamp" value="524" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/go_locks.php</url>
+          <line>656</line>
+          <option name="timeStamp" value="526" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_shortcodes.php</url>
+          <line>81</line>
+          <option name="timeStamp" value="536" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_shortcodes.php</url>
+          <line>96</line>
+          <option name="timeStamp" value="537" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_shortcodes.php</url>
+          <line>86</line>
+          <option name="timeStamp" value="538" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_clipboard.php</url>
+          <line>251</line>
+          <option name="timeStamp" value="539" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_clipboard.php</url>
+          <line>226</line>
+          <option name="timeStamp" value="541" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>45</line>
+          <option name="timeStamp" value="549" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>160</line>
+          <option name="timeStamp" value="551" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>150</line>
+          <option name="timeStamp" value="552" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/go_locks.php</url>
+          <line>160</line>
+          <option name="timeStamp" value="553" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/go_locks.php</url>
+          <line>617</line>
+          <option name="timeStamp" value="555" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/js/front/scripts/go_every_page.js</url>
+          <line>507</line>
+          <option name="timeStamp" value="529" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="556" />
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="index.php">
+        <watch expression="$taxonomy_name" />
+        <watch expression="$task_name" />
+      </configuration>
+      <configuration name="admin.php">
+        <watch expression="$_REQUEST" />
+        <watch expression="$user_name" />
+        <watch expression="$user_id" />
+      </configuration>
+      <configuration name="admin-ajax.php">
+        <watch expression="$user_id" />
+        <watch expression="$sWhere" />
+        <watch expression="$searchable" />
+      </configuration>
+      <configuration name="PhpWebAppRunConfigurationType">
+        <watch expression="$term" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>‌‌preg_replace(&quot;/\([^)]+\)/&quot;,&quot;&quot;,$prefix);</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>‌‌preg_replace(&quot;/\([^)]+\)/&quot;,&quot;&quot;,$string);</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/languages/front-end-media.pot" />
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/uninstall.php" />
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/index.php" />
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js" />
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" />
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/buy_the_item.js" />
+    <entry file="file:///Applications/MAMP/htdocs/go4/wp-includes/class-wp-hook.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="292" selection-start-line="292" selection-end-line="292" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php" />
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_blogs.js" />
+    <entry file="file://$PROJECT_DIR$/src/blogs/go_user_blog.php" />
+    <entry file="file://$PROJECT_DIR$/src/go_blogs.php" />
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" />
+    <entry file="file://$PROJECT_DIR$/js/admin/min/go_clipboard_combined-min.js" />
+    <entry file="file://$PROJECT_DIR$/src/go_stats.php" />
+    <entry file="file://$PROJECT_DIR$/src/go_store.php" />
+    <entry file="file://$PROJECT_DIR$/src/go_admin_bar.php" />
+    <entry file="file://$PROJECT_DIR$/game-on.php" />
+    <entry file="file://$PROJECT_DIR$/js/admin/dev/go_admin.js" />
+    <entry file="file://$PROJECT_DIR$/src/go_media.php" />
+    <entry file="file://$PROJECT_DIR$/includes/fitvids-for-wordpress/fitvids-for-wordpress.php" />
+    <entry file="file://$PROJECT_DIR$/js/admin/go_enque_js_admin.php" />
+    <entry file="file://$PROJECT_DIR$/js/front/go_enque_js.php" />
+    <entry file="file://$PROJECT_DIR$/js/front/dev/go_frontend.js" />
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_fitvids.js" />
+    <entry file="file://$PROJECT_DIR$/includes/fitvids-for-wordpress/jquery.fitvids.js" />
+    <entry file="file://$PROJECT_DIR$/js/front/dev/go_tasks.js" />
+    <entry file="file://$PROJECT_DIR$/types/types.php" />
+    <entry file="file:///Applications/MAMP/htdocs/go4/wp-includes/shortcodes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2338">
+          <caret line="63" column="27" lean-forward="true" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
+    <entry file="file://$PROJECT_DIR$/styles/css/go_every_page.css" />
+    <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
+    <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
+    <entry file="file://$PROJECT_DIR$/src/go_datatable.php" />
+    <entry file="file://$PROJECT_DIR$/js/js/go_shortcode_mce.js" />
+    <entry file="file://$PROJECT_DIR$/src/go_shortcodes.php" />
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" />
+    <entry file="file://$PROJECT_DIR$/src/go_clipboard.php" />
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" />
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/js/scripts/my-acf-extension.js" />
+    <entry file="file://$PROJECT_DIR$/types/tasks/task-chains.php" />
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php" />
+    <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php" />
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
+    <entry file="file://$PROJECT_DIR$/src/go_updates.php" />
+    <entry file="file://$PROJECT_DIR$/types/tasks/go_locks.php" />
+    <entry file="file://$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" />
+    <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php" />
+    <entry file="file://$PROJECT_DIR$/src/go_map.php" />
+    <entry file="file://$PROJECT_DIR$/go_acf_groups.php" />
+  </component>
+</project>
