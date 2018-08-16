@@ -66,7 +66,7 @@ function go_update_bonus_loot(){
             console.log("Bonus Loot");
             console.log(res);
             jQuery("#go_bonus_loot").remove();
-            jQuery("#page-container").append(res);
+            jQuery("#go_wrapper").append(res);
 
         }
     });

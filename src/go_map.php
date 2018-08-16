@@ -30,208 +30,220 @@ function go_make_single_map($last_map_id, $reload){
 	if(!empty($last_map_id)){
 
 
+
+
 		///////////////
-        $tasks = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT *
-			FROM {$go_task_table_name}
-			WHERE uid = %d
-			ORDER BY last_time DESC",
-                $user_id
+		///
+		/// This is going to get every task in the task table for this user
 
-            )
-        );
 ///////////////////
-				echo 	"<div id='map_$last_map_id' class='map'>
-						<ul class='primaryNav'>
-						<li class='ParentNav'><p>$last_map_object->name</p></li>";
+		echo 	"<div id='map_$last_map_id' class='map'>
+				<ul class='primaryNav'>
+				<li class='ParentNav'><p>$last_map_object->name</p></li>";
 
-				
-				//$Parent_ID = $last_map_object->term_id;
-	
-				$args=array(
-  					'hide_empty' => false,
-  					'orderby' => 'order',
-  					'order' => 'ASC',
-  					'parent' => $last_map_id,
+		//Query 1: Get all chains on map--chains with this map as parent
+		$args=array(
+			'hide_empty' => false,
+			'orderby' => 'order',
+			'order' => 'ASC',
+			'parent' => $last_map_id,
+		);
+
+		//parent chain
+		$Children_term_objects = get_terms($taxonomy_name,$args); //query 1 --get the chains
+
+		/*For each chain.  Prints the chain name then find and prints the tasks. */
+		foreach ( $Children_term_objects as $term_object ) {
+
+            //get the term id of this chain
+            $term_id = $term_object->term_id;
+
+            //Query 2
+            //Get all posts on this chain
+            $args=array(
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => $taxonomy_name,
+                        'field' => 'term_id',
+                        'terms' => $term_id,
+                    )
+                ),
+                'orderby'          => 'meta_value_num',
+                'order'            => 'ASC',
+                'posts_per_page'   => -1,
+                'meta_key'         => 'go-location_map_order_item',
+                'meta_value'       => '',
+                'post_type'        => 'tasks',
+                'post_mime_type'   => '',
+                'post_parent'      => '',
+                'author'	   => '',
+                'author_name'	   => '',
+                'post_status'      => 'publish',
+                'suppress_filters' => true
+
+            );
+
+            $go_task_obj = get_posts($args); //Query 2
+
+			echo "<li><p>$term_object->name";
+
+
+
+			$is_pod = get_term_meta($term_id, 'pod_toggle', true); //Q --metadata
+			if($is_pod) {
+				$pod_min = get_term_meta($term_id, 'pod_done_num', true); //Q metadata
+				$pod_all = get_term_meta($term_id, 'pod_all', true);// Q metadata
+
+				$pod_count = count($go_task_obj);
+				if ($pod_all || ($pod_min >= $pod_count)){
+					$task_name_pl = get_option('options_go_tasks_name_plural'); //Q option
+					echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
+				}
+				else {
+					if ($pod_min>1){
+						$task_name = get_option('options_go_tasks_name_plural'); //Q option
+					}else{
+						$task_name = get_option('options_go_tasks_name_singular'); //Q option
+					}
+
+					echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete at least $pod_min $task_name. </span>";
+				}
+			}
+
+			//////The list of tasks in the chain//
+			echo "<ul class='tasks'>";
+			if (!empty($go_task_obj)){
+                $go_task_ids = array();
+                foreach($go_task_obj as $row) {
+                    $go_task_ids[] = $row->ID;
+                }
+                //Query 3
+                //Get User info for these tasks
+				$id_string = implode(',', $go_task_ids);
+                $tasks = $wpdb->get_results(
+                        "SELECT *
+						FROM {$go_task_table_name}
+						WHERE uid = $user_id AND post_id IN ($id_string)
+						ORDER BY last_time DESC"
 				);
-				
-				//parent chain
-				$Children_term_objects = get_terms($taxonomy_name,$args); //query 2 --get the chains
+                $tasks = json_decode(json_encode($tasks), True);
 
-				/*For each chain.  Prints the chain name then find and prints the tasks. */
-   				foreach ( $Children_term_objects as $term_object ) {
+                foreach($go_task_obj as $row) {
+					$status = get_post_status( $row );//is post published
+					if ($status !== 'publish'){continue; }//don't show if not pubished
 
-					echo "<li><p>$term_object->name";
+					$task_name = $row->post_title; //Q
+					$task_link = get_permalink($row); //Q
+					$id = $row->ID;
+					$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
+					$stage_count = $custom_fields['go_stages'][0];//total stages
 
-                    //get the term id of this chain
-					//must also be changed in the go_change_sort_order function
-                    $term_id = $term_object->term_id;
-                    $args=array(
-                        'tax_query' => array(
-                            array(
-                                'taxonomy' => $taxonomy_name,
-                                'field' => 'term_id',
-                                'terms' => $term_id,
-                            )
-                        ),
-                        'orderby'          => 'meta_value_num',
-                        'order'            => 'ASC',
-                        'posts_per_page'   => -1,
-                        'meta_key'         => 'go-location_map_order_item',
-                        'meta_value'       => '',
-                        'post_type'        => 'tasks',
-                        'post_mime_type'   => '',
-                        'post_parent'      => '',
-                        'author'	   => '',
-                        'author_name'	   => '',
-                        'post_status'      => 'publish',
-                        'suppress_filters' => true
 
-                    );
+					//
+					//Get the status of this task from the tasks array
+					//get the position of this task in the array, then get the status
+					$ids = array_map(function ($each) {
+						return $each['post_id'];
+					}, $tasks);
 
-					$go_task_ids = get_posts($args); //Query 3-- One for each chain
-                    $is_pod = get_term_meta($term_id, 'pod_toggle', true); //Q --metadata
-                    if($is_pod) {
-                        $pod_min = get_term_meta($term_id, 'pod_done_num', true); //Q metadata
-                        $pod_all = get_term_meta($term_id, 'pod_all', true);// Q metadata
+					$key = array_search($id, $ids);
+					if ($key !== false) {
+						$this_task = $tasks[$key];
+						$status = $this_task['status'];
+					}else{
+						$status = 0;
+					}
 
-                        $pod_count = count($go_task_ids);
-                        if ($pod_all || ($pod_min >= $pod_count)){
-                            $task_name_pl = get_option('options_go_tasks_name_plural'); //Q option
-                            echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
+
+					if($custom_fields['bonus_switch'][0]) {
+						$bonus_stage_toggle = true;
+						if ($key) {
+							$bonus_status = $this_task['bonus_status'];
+						}else{
+							$bonus_status = 0;
+						}
+						//$bonus_status = go_get_bonus_status($id, $user_id);
+						$repeat_max = $custom_fields['go_bonus_limit'][0];//max repeats of bonus stage
+						$bonus_stage_name = get_option('options_go_tasks_bonus_stage').':';
+					}
+					else{
+						$bonus_stage_toggle = false;
+					}
+
+					//if locked
+					$task_is_locked = go_task_locks($id, $user_id, false, $custom_fields, $is_logged_in, true);
+
+
+					//$task_is_locked = false;
+					$unlock_message = '';
+					if ($task_is_locked === 'password'){
+						$unlock_message = '<div><i class="fa fa-unlock"></i> Password</div>';
+						$task_is_locked = false;
+					}
+					else if ($task_is_locked === 'master password') {
+						$unlock_message = '<div><i class="fa fa-unlock"></i> Master Password</div>';
+						$task_is_locked = false;
+					}
+
+
+					if ($stage_count === $status){
+						$task_color = 'done';
+						$finished = 'checkmark';
+					}else if ($task_is_locked){
+						$task_color = 'locked';
+						$finished = null;
+					}
+					else{
+						$task_color = 'available';
+						$finished = null;
+					}
+
+					if ($custom_fields['go-location_map_opt'][0] && !$is_pod) {
+						$optional = 'optional_task';
+						$bonus_task = get_option('options_go_tasks_optional_task').':';  //Q option
+					}
+					else {
+						$optional = null;
+						$bonus_task = null;
+					}
+
+
+					echo "<li class='$task_color $optional '><a href='$task_link'><div class='$finished'></div><span <span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
+					if ($bonus_stage_toggle == true){
+						if ($bonus_status == 0 || $bonus_status == null){
+							echo "<br><div id='repeat_ratio' style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name 
+								<div class='star-empty fa-stack'>
+									<i class='fa fa-star fa-stack-2x''></i>
+									<i class='fa fa-star-o fa-stack-2x'></i>
+								</div> 0 / $repeat_max</div>
+							
+						";
+						}
+						else if ($bonus_status == $repeat_max) {
+							echo "<br><div style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name
+								<div class='star-full fa-stack'>
+									<i class='fa fa-star fa-stack-2x''></i>
+									<i class='fa fa-star-o fa-stack-2x'></i>
+								</div> $bonus_status / $repeat_max</div>
+							";
 						}
 						else {
-                        	if ($pod_min>1){
-                            	$task_name = get_option('options_go_tasks_name_plural'); //Q option
-                        	}else{
-                                $task_name = get_option('options_go_tasks_name_singular'); //Q option
-							}
-
-                            echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete at least $pod_min $task_name. </span>";
-                        }
-                    }
-
-                    //////The list of tasks in the chain//
-                    echo "<ul class='tasks'>";
-					if (!empty($go_task_ids)){
-						foreach($go_task_ids as $row) {
-							$status = get_post_status( $row );//is post published
-							if ($status !== 'publish'){continue; }//don't show if not pubished
-
-							$task_name = $row->post_title; //Q
-							$task_link = get_permalink($row); //Q
-							$id = $row->ID;
-                            $custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
-                            $stage_count = $custom_fields['go_stages'][0];//total stages
-
-
-
-                            $tasks = json_decode(json_encode($tasks), True);
-                            $ids = array_map(function ($each) {
-
-                                return $each['post_id'];
-
-                            }, $tasks);
-
-                            $key = array_search($id, $ids);
-                            if ($key) {
-                                $this_task = $tasks[$key];
-                                $status = $this_task['status'];
-                            }else{
-                            	$status = 0;
-							}
-
-
-                            if($custom_fields['bonus_switch'][0]) {
-                            	$bonus_stage_toggle = true;
-                            	if ($key) {
-                                    $bonus_status = $this_task['bonus_status'];
-                                }else{
-                                    $bonus_status = 0;
-                                }
-                            	//$bonus_status = go_get_bonus_status($id, $user_id);
-                                $repeat_max = $custom_fields['go_bonus_limit'][0];//max repeats of bonus stage
-								$bonus_stage_name = get_option('options_go_tasks_bonus_stage').':';
-                            }
-                            else{
-                                $bonus_stage_toggle = false;
-							}
-
-                            //if locked
-							$task_is_locked = go_task_locks($id, $user_id, false, $custom_fields, $is_logged_in, true);
-
-
-							//$task_is_locked = false;
-                            $unlock_message = '';
-							if ($task_is_locked === 'password'){
-								$unlock_message = '<div><i class="fa fa-unlock"></i> Password</div>';
-                                $task_is_locked = false;
-							}
-							else if ($task_is_locked === 'master password') {
-                                $unlock_message = '<div><i class="fa fa-unlock"></i> Master Password</div>';
-                                $task_is_locked = false;
-                            }
-
-
-                            if ($stage_count === $status){
-                                $task_color = 'done';
-                                $finished = 'checkmark';
-							}else if ($task_is_locked){
-                                $task_color = 'locked';
-                                $finished = null;
-                            }
-							else{
-                            	$task_color = 'available';
-                                $finished = null;
-							}
-
-							if ($custom_fields['go-location_map_opt'][0] && !$is_pod) {
-								$optional = 'optional_task';
-                                $bonus_task = get_option('options_go_tasks_optional_task').':';  //Q option
-							}
-							else {
-                                $optional = null;
-                                $bonus_task = null;
-							}
-
-
-							echo "<li class='$task_color $optional '><a href='$task_link'><div class='$finished'></div><span <span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
-							if ($bonus_stage_toggle == true){
-								if ($bonus_status == 0 || $bonus_status == null){
-									echo "<br><div id='repeat_ratio' style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name 
-										<div class='star-empty fa-stack'>
-											<i class='fa fa-star fa-stack-2x''></i>
-  											<i class='fa fa-star-o fa-stack-2x'></i>
-										</div> 0 / $repeat_max</div>
+							echo "<br><div style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name
+								<div class='star-half fa-stack'>
+									<i class='fa fa-star fa-stack-2x''></i>
+									<i class='fa fa-star-half-o fa-stack-2x'></i>
+									<i class='fa fa-star-o fa-stack-2x'></i>
 									
-								";
-								}
-								else if ($bonus_status == $repeat_max) {
-									echo "<br><div style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name
-										<div class='star-full fa-stack'>
-											<i class='fa fa-star fa-stack-2x''></i>
-  											<i class='fa fa-star-o fa-stack-2x'></i>
-										</div> $bonus_status / $repeat_max</div>
-									";
-								}
-								else {
-									echo "<br><div style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name
-										<div class='star-half fa-stack'>
-											<i class='fa fa-star fa-stack-2x''></i>
-											<i class='fa fa-star-half-o fa-stack-2x'></i>
-											<i class='fa fa-star-o fa-stack-2x'></i>
-  											
-										</div> $bonus_status / $repeat_max</div>
-									";
-								}
-							}
-
-							echo"</a>
-									</li>";
+								</div> $bonus_status / $repeat_max</div>
+							";
 						}
-    				}
-    		echo "</ul>";
+					}
+
+					echo"</a>
+							</li>";
+				}
+			}
+		echo "</ul>";
 		}
 		echo "</ul></div>";
 	}			

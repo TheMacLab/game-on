@@ -50,15 +50,6 @@ function go_update_bonus_loot ($post_id){
     global $wpdb;
 
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
-    $actions = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT *
-			FROM {$go_actions_table_name}
-			WHERE source_id = %d
-			ORDER BY id DESC",
-            $post_id
-        )
-    );
 
     $previous_bonus_attempt = $wpdb->get_var($wpdb->prepare("SELECT result 
                 FROM {$go_actions_table_name} 
@@ -84,23 +75,23 @@ function go_update_bonus_loot ($post_id){
 
         $custom_fields = get_post_custom($post_id);
 
-        $row_count = (isset($custom_fields['bonus_loot_loot'][0]) ? $custom_fields['bonus_loot_loot'][0] : null);//number of loot drops
+        $row_count = (isset($custom_fields['bonus_loot_go_bonus_loot'][0]) ? $custom_fields['bonus_loot_go_bonus_loot'][0] : null);//number of loot drops
         $values = array();
         if (!empty($row_count)) {//if there are drop rows
             for ($i = 0; $i < $row_count; $i++) {//get the values for each row
-                $message = "bonus_loot_loot_" . $i . "_message";
+                $message = "bonus_loot_go_bonus_loot_" . $i . "_message";
                 $message = (isset($custom_fields[$message][0]) ? $custom_fields[$message][0] : null);
-                $title = "bonus_loot_loot_" . $i . "_title";
+                $title = "bonus_loot_go_bonus_loot_" . $i . "_title";
                 $title = (isset($custom_fields[$title][0]) ? $custom_fields[$title][0] : null);
-                $xp = "bonus_loot_loot_" . $i . "_loot_xp";
+                $xp = "bonus_loot_go_bonus_loot_" . $i . "_defaults_xp";
                 $xp = (isset($custom_fields[$xp][0]) ? $custom_fields[$xp][0] : null) * $health_mod;
-                $gold = "bonus_loot_loot_" . $i . "_loot_gold";
+                $gold = "bonus_loot_go_bonus_loot_" . $i . "_defaults_gold";
                 $gold = (isset($custom_fields[$gold][0]) ? $custom_fields[$gold][0] : null) * $health_mod;;
-                $health = "bonus_loot_loot_" . $i . "_loot_health";
+                $health = "bonus_loot_go_bonus_loot_" . $i . "_defaults_health";
                 $health = (isset($custom_fields[$health][0]) ? $custom_fields[$health][0] : null);
-                $c4 = "bonus_loot_loot_" . $i . "_loot_c4";
+                $c4 = "bonus_loot_go_bonus_loot_" . $i . "_defaults_c4";
                 $c4 = (isset($custom_fields[$c4][0]) ? $custom_fields[$c4][0] : null) * $health_mod;
-                $drop = "bonus_loot_loot_" . $i . "_loot_drop_rate";
+                $drop = "bonus_loot_go_bonus_loot_" . $i . "_defaults_drop_rate";
                 $drop = (isset($custom_fields[$drop][0]) ? $custom_fields[$drop][0] : null);
 
                 $row_val = array('title' => $title, 'message' => $message, 'xp' => $xp, 'gold' => $gold, 'health' => $health, 'c4' => $c4, 'drop' => $drop);
@@ -138,26 +129,26 @@ function go_update_bonus_loot ($post_id){
                 $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
                 $xp = $value['xp'];
                 if ($xp > 0){
-                    $xp = $xp_abbr . ": " .  $xp . "<br>";
-                }else {$xp = '';}
+                    $xp_message = $xp_abbr . ": " .  $xp . "<br>";
+                }else {$xp_message = '';}
                 $gold = $value['gold'];
                 if ($gold > 0){
-                    $gold = $gold_abbr . ": " .  $gold . "<br>";
-                }else {$gold = '';}
+                    $gold_message = $gold_abbr . ": " .  $gold . "<br>";
+                }else {$gold_message = '';}
                 $health = $value['health'];
                 if ($health > 0){
-                    $health = $health_abbr . ": " .  $health . "<br>";
-                }else {$health = '';}
+                    $health_message = $health_abbr . ": " .  $health . "<br>";
+                }else {$health_message = '';}
                 $c4 = $value['c4'];
                 if ($c4 > 0){
-                    $c4 = $c4_abbr . ": " .  $c4 . "<br>";
-                }else {$c4 = '';}
+                    $c4_message = $c4_abbr . ": " .  $c4 . "<br>";
+                }else {$c4_message = '';}
                 $title = $value['title'];
                 $message = $value['message'];
 
                 //$title = get_option('options_go_loot_bonus_loot_name');;
-                $message = $message . "<br><br>" . $xp . $gold . $health . $c4;
-                go_noty_message_generic('warning', $title, $message);
+                $message = $message . "<br><br>" . $xp_message .  $gold_message . $health_message . $c4_message;
+                go_noty_message_generic('success', $title, $message);
                 //go_noty_loot_success($title,$message );
                 go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Winner', null, null, null, $health_mod, $xp, $gold, $health, $c4, null, null, true);
                 $winner = true;

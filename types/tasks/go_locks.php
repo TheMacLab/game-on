@@ -164,6 +164,8 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
     $start_filter = $custom_fields[$option][0];
 
     $unix_now = current_time('timestamp');
+    $offset = 3600 * get_option('gmt_offset');
+    $unix_now = $unix_now - $offset;
     if (!empty($start_filter)) {
 
         $start_unix = strtotime($start_filter);
@@ -205,6 +207,8 @@ function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
 
     // holds the output to be displayed when a non-admin has been stopped by the start filter
     $unix_now = current_time('timestamp');
+    $offset = 3600 * get_option('gmt_offset');
+    $unix_now = $unix_now - $offset;
     if (!empty($start_filter)) {
         $start_unix = strtotime($start_filter);
 
@@ -615,7 +619,10 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
             $dow_minutes = (isset($custom_fields[$dow_minutes][0]) ?  $custom_fields[$dow_minutes][0] : null);
             $seconds_available = 60 * $dow_minutes;
 
-            $current_time = current_time( 'timestamp' );
+
+            $current_time = current_time('timestamp');
+            //$offset = 3600 * get_option('gmt_offset');
+            //$current_time = $current_time - $offset;
 
             //If the user is in at least one section, continue . . .
             if ((array_intersect($user_terms, $dow_section) != null) || (empty ($dow_section))) {
@@ -648,16 +655,17 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
                     $dow_sections = "go_sched_opt_" . $i . "_sched_sections";
                     //$dow_section = unserialize($custom_fields[$dow_section][0]);
                     $dow_sections = (isset($custom_fields[$dow_sections][0]) ?  unserialize($custom_fields[$dow_sections][0]) : null);
-                    //if (!$dow_sections) {
+
                         $dow_section = array();
-                    //}
 
-                    foreach ($dow_sections as $dow_term) {
-                        if (!empty($dow_term)) {
-                            $term = get_term($dow_term);
-                            $term_name = $term->name;
-                            $dow_section[] = $term_name;
+                    if (!empty($dow_sections)){
+                        foreach ($dow_sections as $dow_term) {
+                            if (!empty($dow_term)) {
+                                $term = get_term($dow_term);
+                                $term_name = $term->name;
+                                $dow_section[] = $term_name;
 
+                            }
                         }
                     }
 
@@ -684,8 +692,9 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
                     if (!$first) {
                         echo "-or-<br>";
                     }
-                    print_r(implode(" & ", $dow_section));
+
                     if (!empty ($dow_section)) {
+                        print_r(implode(" & ", $dow_section));
                         echo ' on ';
                     } else {
                         echo 'All Classes on ';

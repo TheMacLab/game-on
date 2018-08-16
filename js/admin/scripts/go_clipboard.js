@@ -81,6 +81,7 @@ function go_clipboard_class_a_choice() {
             },
 
 			"columnDefs": [
+                { type: 'natural', targets: '_all'  },
                 {
                     "targets": [0],
                     className: 'noVis',
@@ -231,6 +232,7 @@ function go_clipboard_class_a_choice_activity(refresh) {
                             });
                         },
                         "columnDefs": [
+                            { type: 'natural', targets: '_all'  },
                             {
                                 "targets": [0],
                                 className: 'noVis',
