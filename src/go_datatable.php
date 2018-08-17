@@ -40,7 +40,7 @@ function go_table_tasks() {
 			status TINYINT,
 			bonus_status TINYINT DEFAULT 0,
 			xp INT,
-			gold INT,
+			gold DECIMAL (10,2),
 			health INT,
 			c4 INT,
 			badges VARCHAR (4096),
@@ -106,17 +106,17 @@ function go_table_actions() {
 			quiz_mod DECIMAL (10,2),
 			late_mod DECIMAL (10,2),
 			timer_mod DECIMAL (10,2),
-			global_mod DECIMAL (10,2),
-			xp INT,
-			gold INT,
-			health INT,
-			c4 INT,
+			global_mod DECIMAL (10,4),
+			xp INT unsigned,
+			gold DECIMAL (10,2) unsigned,
+			health INT unsigned,
+			c4 INT unsigned,
 			badges VARCHAR (4096),
 			groups VARCHAR (4096),
-			xp_total INT,
-			gold_total INT,
-			health_total INT,
-			c4_total INT,
+			xp_total INT unsigned,
+			gold_total DECIMAL (10,2) unsigned,
+			health_total INT unsigned,
+			c4_total INT unsigned,
 			PRIMARY KEY  (id),
             KEY uid (uid),
             KEY source_id (source_id),
@@ -141,10 +141,10 @@ function go_table_totals() {
 		CREATE TABLE $table_name (
 			id bigint(20) NOT NULL AUTO_INCREMENT,
 			uid bigint(20),
-			xp INT DEFAULT 0,
-			gold INT DEFAULT 0,
-			health DECIMAL (10,2) DEFAULT 100,
-			c4 INT DEFAULT 0,
+			xp INT unsigned DEFAULT 0,
+			gold DECIMAL (10,2) unsigned DEFAULT 0,
+			health DECIMAL (10,2) unsigned DEFAULT 100,
+			c4 INT unsigned DEFAULT 0,
 			badges VARCHAR (4096),
 			groups VARCHAR (4096),
 			badge_count INT DEFAULT 0,
@@ -153,15 +153,6 @@ function go_table_totals() {
             UNIQUE (uid)          
 		);
 	";
-
-    //an early beta had no default on the loot table for badge count
-    //this fixes that
-    $wpdb->query(
-        "UPDATE {$table_name} 
-                    SET 
-                        badge_count = IFNULL(badge_count, 0);");
-
-
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 

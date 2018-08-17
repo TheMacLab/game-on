@@ -1881,7 +1881,7 @@ function go_stats_badges_list($user_id) {
     echo"<div id='go_badges_list' class='go_datatables'> ";
 
 
-    /* For each Store Category with no parent, get all the children.  These are the store rows.*/
+    /* For each Store Category with no parent, get all the children. */
     $chainParentNum = 0;
     echo '<div id="go_stats_badges">';
     //for each row

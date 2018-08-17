@@ -126,7 +126,8 @@ function go_the_lb_ajax() {
         $store_limit_duration = (($custom_fields['go-store-options_limit_toggle'][0] == true) ? $custom_fields['go-store-options_limit_duration'][0] : null);
         $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
     }else{
-        $purchase_remaining_max = 9999;
+        $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
+        //$purchase_remaining_max = 9999;
     }
 
 
@@ -312,11 +313,16 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     if ($purchase_count == null) {
         $purchase_count = go_get_purchase_count($post_id, $user_id, $custom_fields);
     }
-    $store_limit = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_num'][0] : null );
+    $store_limit = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_num'][0] : false );
     //$store_limit_duration = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_duration'][0] : null );
 
-    $purchases_left = $store_limit - $purchase_count;
+    if ($store_limit){
+        $purchases_left = $store_limit - $purchase_count;
+    }else{
+        $purchases_left = false;
+    }
 
+    /*
     $debt_allowed = (isset($custom_fields['go-store-options_debt'][0]) ?  $custom_fields['go-store-options_debt'][0] : null);
 
     if ($debt_allowed) {
@@ -326,16 +332,16 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
         }
     return $purchase_remaining_min;
     }
-
-    $health_mod = go_get_health_mod ($user_id);
+    */
+    //$health_mod = go_get_health_mod ($user_id);
 
     $max_xp = 9999;
     $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ?  $custom_fields['go_loot_loot_xp'][0] : null);
     if (get_option( 'options_go_loot_xp_toggle' ) && $store_abs_cost_xp > 0){
-        $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
-        if ($xp_mod_toggle) {
-            $store_abs_cost_xp = $store_abs_cost_xp * $health_mod;
-        }
+        //$xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
+        //if ($xp_mod_toggle) {
+        //    $store_abs_cost_xp = $store_abs_cost_xp * $health_mod;
+        //}
         $user_xp = go_return_points( $user_id );
         $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ?  $custom_fields['go_loot_reward_toggle_xp'][0] : null);
         if ($store_toggle_xp == false){
@@ -347,10 +353,10 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     $max_gold = 9999;
     $store_abs_cost_gold = (isset($custom_fields['go_loot_loot_gold'][0]) ?  $custom_fields['go_loot_loot_gold'][0] : null);
     if (get_option( 'options_go_loot_gold_toggle' )  && $store_abs_cost_gold > 0){
-        $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
-        if ($gold_mod_toggle) {
-            $store_abs_cost_gold = $store_abs_cost_gold * $health_mod;
-        }
+        //$gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
+        //if ($gold_mod_toggle) {
+         //   $store_abs_cost_gold = $store_abs_cost_gold * $health_mod;
+        //}
         $user_gold = go_return_currency( $user_id );
         $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
         if ($store_toggle_gold == false){
@@ -362,10 +368,10 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     $max_health = 9999;
     $store_abs_cost_health = (isset($custom_fields['go_loot_loot_health'][0]) ?  $custom_fields['go_loot_loot_health'][0] : null);
     if (get_option( 'options_go_loot_health_toggle' ) && $store_abs_cost_health > 0){
-        $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
-        if ($health_mod_toggle) {
-            $store_abs_cost_health = $store_abs_cost_health * $health_mod;
-        }
+        //$health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
+        //if ($health_mod_toggle) {
+        //    $store_abs_cost_health = $store_abs_cost_health * $health_mod;
+        //}
         $user_health = go_return_health ($user_id );
         $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
         if ($store_toggle_health == false){
@@ -377,10 +383,10 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     $max_c4 = 9999;
     $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ?  $custom_fields['go_loot_loot_c4'][0] : null);
     if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
-        $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
-        if ($c4_mod_toggle) {
-            $store_abs_cost_c4 = $store_abs_cost_c4 * $health_mod;
-        }
+        //$c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
+        //if ($c4_mod_toggle) {
+        //    $store_abs_cost_c4 = $store_abs_cost_c4 * $health_mod;
+        //}
         $user_c4 = go_return_c4( $user_id );
         $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
         if ($store_toggle_c4 == false){
@@ -388,8 +394,11 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
             $max_c4 = $user_c4 / $store_abs_cost_c4;
         }
     }
-
-    $purchase_remaining_min = floor(min($purchases_left, $max_xp, $max_gold, $max_health, $max_c4));
+    if ($purchases_left) {
+        $purchase_remaining_min = floor(min($purchases_left, $max_xp, $max_gold, $max_health, $max_c4));
+    }else{
+        $purchase_remaining_min = floor(min($max_xp, $max_gold, $max_health, $max_c4));
+    }
     if ($purchase_remaining_min < 0){
         $purchase_remaining_min = 0;
     }

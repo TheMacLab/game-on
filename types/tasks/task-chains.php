@@ -125,7 +125,7 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 
 
 /**
- * Award an achievement if this is the last stage in a pod or chain.
+ * Get achievements associated with the map of a particular post
  * @param $post_id
  * @param $user_id
  * @param $custom_fields

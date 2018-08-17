@@ -1609,6 +1609,26 @@ ol, ul {
 .star-half .fa.fa-star-half-o {
   color: gold; }
 
+/* ------------------------------------------------------------
+	Badges
+------------------------------------------------------------ */
+/** Badge Styles **/
+#maps .go_badge_wrap {
+  width: 100%;
+  padding-right: 20px; }
+
+#maps .go_badge_container {
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  margin: 0 auto;
+  background: white;
+  float: none; }
+
+#maps .go_badge {
+  text-align: center;
+  float: none; }
+
 .featherlight.stats .featherlight-content {
   width: 90%;
   height: 90%;

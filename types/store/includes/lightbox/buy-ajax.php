@@ -47,7 +47,19 @@ function go_buy_item() {
 
 	$post_id = ( ! empty( $_POST["the_id"] ) ? (int) $_POST["the_id"] : 0 );
     $custom_fields = get_post_custom( $post_id );
+
+    $purchase_count = go_get_purchase_count($post_id, $user_id, $custom_fields);
+    $purchase_limit = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
     $qty = ( ! empty( $_POST['qty'] ) && (int) $_POST['qty'] > 0 ? (int) $_POST['qty'] : 1 );
+    if ($qty > $purchase_limit){
+        echo "<script> new Noty({
+                type: 'error',
+                layout: 'topRight',
+                text: 'Error: You exceeded your loot available. Try a lower quantity.' ,
+                theme: 'relax'
+                }).show();parent.window.$.featherlight.current().close();</script>";
+        die();
+    }
 
     $store_limit_toggle = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_toggle'][0] : null );
     if ($store_limit_toggle) {

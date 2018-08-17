@@ -481,8 +481,6 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
     go_update_actions( $user_id, $action_type,  $post_id, $new_status_actions, $new_bonus_status_actions, $check_type, $result, $quiz_mod, $due_date_mod, $timer_mod, $health_mod,  $xp, $gold, $health, $c4, $badge_ids, $group_ids, true);
 }
 
-
-
 function go_add_badges ($badge_ids, $user_id, $notify = false) {
 
     global $wpdb;

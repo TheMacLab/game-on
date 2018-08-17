@@ -242,6 +242,46 @@ function go_make_single_map($last_map_id, $reload){
 					echo"</a>
 							</li>";
 				}
+
+
+
+				//does this term have a badge assigned and if so show it
+                $badge = get_term_meta($term_id, "pod_achievement", true);
+                if($badge){
+                    $badge_img_id = get_term_meta( $badge, 'my_image' );
+                    $badge_description = term_description( $badge );
+
+                    echo "<li>";
+                    $badge_obj = get_term( $badge);
+                    $badge_name = $badge_obj->name;
+                    //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
+                    $badge_img = wp_get_attachment_image($badge_img_id[0], array( 100, 100 ));
+                    if (!$badge_img){
+                    	$badge_img = "<div style='width:100px; height: 100px;'></div>";
+                    }
+
+                    //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
+                    //$img_post = get_post( $badge_id );
+                    if ( ! empty( $badge_obj ) ) {
+                        echo"<div class='go_badge_wrap'>
+                        <div class='go_badge_container '><figure class=go_badge title='{$badge_name}'>";
+
+                        if (!empty($badge_description)){
+                            echo "<span class='tooltip' ><span class='tooltiptext'>{$badge_description}</span>{$badge_img}</span>";
+                        }else{
+                            echo "$badge_img";
+                        }
+                        echo "        
+              				 <figcaption>{$badge_name}</figcaption>
+                            </figure>
+                        </div>
+                       </div>";
+
+                    }
+                    echo "</li>";
+
+				}
+
 			}
 		echo "</ul>";
 		}
