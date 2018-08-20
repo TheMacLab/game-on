@@ -123,12 +123,13 @@ function go_the_lb_ajax() {
     $store_limit_toggle = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_toggle'][0] : null );
     if ($store_limit_toggle) {
         $store_limit = (($custom_fields['go-store-options_limit_num'][0] == true) ? $custom_fields['go-store-options_limit_num'][0] : null);
-        $store_limit_duration = (($custom_fields['go-store-options_limit_toggle'][0] == true) ? $custom_fields['go-store-options_limit_duration'][0] : null);
-        $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
-    }else{
+        $store_limit_duration = (($custom_fields['go-store-options_limit_toggle'][0] == true) ? $custom_fields['go-store-options_limit_frequency'][0] : null);
+        //$purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
+    }
+    //else{
         $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
         //$purchase_remaining_max = 9999;
-    }
+   // }
 
 
     $badges_toggle = get_option('options_go_badges_toggle');
@@ -230,9 +231,15 @@ function go_the_lb_ajax() {
             }else{
                 $var1 = ' / ';
             }
-            ?>
-		<div id="golb-fr-purchase-limit" val="<?php echo ( ! empty( $purchase_remaining_max ) ? $purchase_remaining_max : 0 ); ?>"><?php echo ( ($store_limit_toggle ) ? "Limit {$store_limit}{$var1}{$store_limit_duration}" : 'No limit' ); ?></div>
-		<div id="golb-purchased">
+
+            if ($store_limit_toggle) {
+                ?>
+                <div id="golb-fr-purchase-limit"
+                     val="<?php echo(!empty($purchase_remaining_max) ? $purchase_remaining_max : 0); ?>"><?php echo(($store_limit_toggle) ? "Limit {$store_limit}{$var1}{$store_limit_duration}" : 'No limit'); ?></div>
+                <?php
+            }
+                ?>
+                <div id="golb-purchased">
 		<?php
 		if ( is_null( $purchase_count ) ) {
 			echo 'Quantity purchased: 0';
@@ -319,7 +326,7 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     if ($store_limit){
         $purchases_left = $store_limit - $purchase_count;
     }else{
-        $purchases_left = false;
+        $purchases_left = 9999;
     }
 
     /*
@@ -394,11 +401,11 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
             $max_c4 = $user_c4 / $store_abs_cost_c4;
         }
     }
-    if ($purchases_left) {
+    //if ($purchases_left) {
         $purchase_remaining_min = floor(min($purchases_left, $max_xp, $max_gold, $max_health, $max_c4));
-    }else{
-        $purchase_remaining_min = floor(min($max_xp, $max_gold, $max_health, $max_c4));
-    }
+    //}else{
+   //     $purchase_remaining_min = floor(min($max_xp, $max_gold, $max_health, $max_c4));
+   // }
     if ($purchase_remaining_min < 0){
         $purchase_remaining_min = 0;
     }
