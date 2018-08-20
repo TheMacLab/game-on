@@ -156,6 +156,25 @@ function go_buy_item() {
 
     go_update_actions( $user_id, 'store',  $post_id, $qty, null, null, 'purchase', null, null, null, null,  $xp, $gold, $health, $c4, $badge_ids, $group_ids, true);
 
+    $go_admin_message = (isset($custom_fields['go-store-options_admin_notifications'][0]) ?  $custom_fields['go-store-options_admin_notifications'][0] : null);
+
+    if ($go_admin_message){
+
+        $username = go_get_users_name($user_id);
+        $result = array();
+        $result[] = $username . " bought " . $the_title;
+        $result[] = "";
+
+        $result = serialize($result);
+        $admin_users = get_option('options_go_admin_user_notifications');
+        foreach ($admin_users as $admin_user) {
+            go_update_actions($admin_user, 'admin_notification', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+            update_user_meta($admin_user, 'go_new_messages', true);
+        }
+        //go_update_actions($user_id, 'message', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+        //update_user_meta($user_id, 'go_new_messages', true);
+    }
+
     echo "<script> new Noty({
     type: 'info',
     layout: 'topRight',

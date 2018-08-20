@@ -59,6 +59,17 @@ function go_admin_includes () {
 
     wp_enqueue_script( 'jquery-ui-tabs' );
 
+    /**
+     * noty
+     */
+
+    wp_register_script( 'go_noty', plugin_dir_url( __FILE__ ).'noty/lib/noty.js', '','v1', false);
+    wp_enqueue_script( 'go_noty' );
+
+    wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );
+    wp_enqueue_style( 'go_noty_css' );
+
+
 
 }
 
@@ -141,7 +152,7 @@ function go_includes () {
      * noty
      */
 
-    wp_register_script( 'go_noty', plugin_dir_url( __FILE__ ).'noty/lib/noty.js', '','v1', true);
+    wp_register_script( 'go_noty', plugin_dir_url( __FILE__ ).'noty/lib/noty.js', '','v1', false);
     wp_enqueue_script( 'go_noty' );
 
     wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );

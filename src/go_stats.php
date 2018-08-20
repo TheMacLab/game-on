@@ -604,9 +604,9 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
         echo '<script>console.log("on_stats"); var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id);}); </script>';
     }
     else if($is_admin && $show_messages ){
-        echo "<div id='go_blog_messages_icon' class='go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        echo "<div id='go_stats_messages_icon' class='go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
         //make the messages icon a link to this user
-        echo '<script>console.log("on_blog"); var user_id = jQuery("#go_blog_messages_icon").attr("name"); jQuery("#go_blog_messages_icon").one("click", function(e){ go_messages_opener(user_id); }); </script>';
+        echo '<script>console.log("on_blog"); var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id); }); </script>';
     }
     echo "</div>";
 

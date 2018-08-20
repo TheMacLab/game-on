@@ -1,12 +1,16 @@
+/*
 function go_sounds( type ) {
+
+    console.log("sounds" + PluginDir.url);
     if ( 'store' == type ) {
-        var audio = new Audio( PluginDir.url + 'media/gold.mp3' );
+        var audio = new Audio( PluginDir.url + 'media/win.mp3' );
         audio.play();
     } else if ( 'timer' == type ) {
         var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
         audio.play();
     }
 }
+*/
 
 function go_admin_bar_stats_page_button( id ) {//this is called from the admin bar and is hard coded in the php code
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_admin_bar_stats;

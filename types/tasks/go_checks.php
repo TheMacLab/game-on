@@ -340,8 +340,10 @@ function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $
                 $type_image = false;
         }
         if ($type_image == true){
-            $thumb = wp_get_attachment_image_src( $media_id, 'thumbnail' );
-            echo "<img src='" . $thumb[0] . "' >" ;
+            $med = wp_get_attachment_image_src( $media_id, 'medium' );
+            $full = wp_get_attachment_image_src( $media_id, 'full' );
+            //echo "<img src='" . $thumb[0] . "' >" ;
+            echo '<a href="#" data-featherlight="' . $full[0] . '"><img src="' . $med[0] . '"></a>';
 
         }
         else{

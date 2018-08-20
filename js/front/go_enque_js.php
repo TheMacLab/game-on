@@ -36,6 +36,22 @@ function go_scripts () {
 		//Combined File
 		wp_enqueue_script( 'go_frontend-min' );
 
+        $is_admin = go_user_is_admin();
+        if ($is_admin){
+            wp_register_script('go_admin_notification_listener', plugins_url('min/go_admin_notifications-min.js', __FILE__), array('jquery'),$version, true);
+            wp_enqueue_script( 'go_admin_notification_listener' );
+            wp_localize_script(
+                'go_admin_notification_listener',
+                'GO_ADMIN_DATA',
+                array(
+                    'nonces' => array(
+                        'go_admin_messages'         => wp_create_nonce( 'go_admin_messages'),
+                    )
+                )
+            );
+        }
+
+
    
 
 		//END COMBINED

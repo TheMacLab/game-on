@@ -2619,12 +2619,57 @@
 		"oAP": "\/js\/front\/media\/airhorn.mp3",
 		"oF": 0
 		},
+	"\/js\/front\/media\/down.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/js\/front\/media\/down.wav",
+		"oF": 0
+		},
 	"\/js\/front\/media\/gold.mp3": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/js\/front\/media\/gold.mp3",
 		"oF": 0
+		},
+	"\/js\/front\/media\/milestone.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/js\/front\/media\/milestone.wav",
+		"oF": 0
+		},
+	"\/js\/front\/media\/notification.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/js\/front\/media\/notification.wav",
+		"oF": 0
+		},
+	"\/js\/front\/media\/wayup.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/js\/front\/media\/wayup.wav",
+		"oF": 0
+		},
+	"\/js\/front\/media\/win.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/js\/front\/media\/win.wav",
+		"oF": 0
+		},
+	"\/js\/front\/min\/go_admin_notifications-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/front\/min\/go_admin_notifications-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
 		},
 	"\/js\/front\/min\/go_frontend-min.js": {
 		"ft": 64,
@@ -2663,6 +2708,16 @@
 		"oA": 1,
 		"oAP": "\/js\/front\/scripts\/buy_the_item-min.js",
 		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/js\/front\/scripts\/go_admin_notifications.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/front\/min\/go_admin_notifications-min.js",
+		"oF": 2,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2768,6 +2823,55 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/mail\/PHPMailerAutoload.php",
+		"oF": 0
+		},
+	"\/media\/airhorn.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/media\/airhorn.mp3",
+		"oF": 0
+		},
+	"\/media\/down.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/media\/down.wav",
+		"oF": 0
+		},
+	"\/media\/gold.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/media\/gold.mp3",
+		"oF": 0
+		},
+	"\/media\/milestone.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/media\/milestone.wav",
+		"oF": 0
+		},
+	"\/media\/notification.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/media\/notification.wav",
+		"oF": 0
+		},
+	"\/media\/wayup.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/media\/wayup.wav",
+		"oF": 0
+		},
+	"\/media\/win.wav": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/media\/win.wav",
 		"oF": 0
 		},
 	"\/README.html": {

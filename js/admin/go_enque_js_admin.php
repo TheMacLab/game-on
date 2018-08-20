@@ -34,10 +34,25 @@ function go_admin_scripts ($hook) {
 
 			//featherlight
 			//wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );	
-				
-	/*
-	 * Enqueue Scripts For Admin Pages (Except for page specific ones below)
-	 */
+
+
+        $is_admin = go_user_is_admin();
+        if ($is_admin){
+            wp_register_script('go_admin_notification_listener', plugins_url('front/min/go_admin_notifications-min.js', dirname(__FILE__)), array('jquery'),$version, true);
+            wp_enqueue_script( 'go_admin_notification_listener' );
+            wp_localize_script(
+                'go_admin_notification_listener',
+                'GO_ADMIN_DATA',
+                array(
+                    'nonces' => array(
+                        'go_admin_messages'         => wp_create_nonce( 'go_admin_messages'),
+                    )
+                )
+            );
+        }
+        /*
+         * Enqueue Scripts For Admin Pages (Except for page specific ones below)
+         */
 
 		// Dependencies
 		wp_enqueue_script( 'jquery' );

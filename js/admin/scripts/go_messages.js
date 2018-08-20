@@ -1,13 +1,13 @@
 
 function go_messages_opener( user_id, post_id, message_type ) {
-    console.log(message_type);
+    //console.log(message_type);
     jQuery('.go_messages_icon').prop('onclick',null).off('click'); //clipboard
     jQuery('#go_stats_messages_icon').prop('onclick',null).off('click'); //stats
     jQuery('.go_reset_task').prop('onclick',null).off('click'); //reset task links
-    jQuery('#go_blog_messages_icon').prop('onclick',null).off('click'); //stats
+    //jQuery('#go_messages_icon').prop('onclick',null).off('click'); //blog
     //remove the onclick events from any message link and then reattach after ajax call
     //types of links 1. clipboard 2. stats link 3. task reset button and 4. blog page
-
+    //alert(user_id);
 
     if (!user_id){//no user_id sent, this is from the clipboard and get user ids from checkboxes
         var inputs = jQuery(".go_checkbox:visible");
@@ -42,37 +42,54 @@ function go_messages_opener( user_id, post_id, message_type ) {
             jQuery('#go_message_submit').one("click", function(e){
                 go_send_message(user_ids, post_id, message_type);
             });
+
+            //clipboard
             jQuery(".go_messages_icon").one("click", function(e){
                 go_messages_opener( );
             });
+
+            //stats and blog
             var user_id = jQuery("#go_stats_messages_icon").attr("name");
+            console.log("hi1" + user_id);
             jQuery("#go_stats_messages_icon").one("click", function(e){
-                go_messages_opener( user_id );
+                go_messages_opener(user_id);
             });
+
+            //reset task links
             jQuery(".go_reset_task").one("click", function(e){
                 go_messages_opener( user_id, this.id, 'reset' );
             });
-            var user_id = jQuery("#go_blog_messages_icon").attr("name");
-            jQuery("#go_blog_messages_icon").one("click", function(e){
-                go_messages_opener( user_id );
-            });
+
+            //blog
+            //var user_id = jQuery("#go_stats_messages_icon").attr("name");
+            //console.log("hi" + user_id);
+            //jQuery("#go_stats_messages_icon").one("click", function(e){
+            //    go_messages_opener( user_id );
+            //});
 
         },
         error: function(e, ts, et) {
+            //clipboard
             jQuery(".go_messages_icon").one("click", function(e){
                 go_messages_opener( );
             });
+
+            //stats and blog
             var user_id = jQuery("#go_stats_messages_icon").attr("name");
             jQuery("#go_stats_messages_icon").one("click", function(e){
                 go_messages_opener( user_id );
             });
+
+            //reset task links
             jQuery(".go_reset_task").one("click", function(e){
                 go_messages_opener( user_id, this.id, 'reset' );
             });
-            var user_id = jQuery("#go_blog_messages_icon").attr("name");
-            jQuery("#go_blog_messages_icon").one("click", function(e){
-                go_messages_opener( user_id );
-            });
+
+            //blog
+            //var user_id = jQuery("#go_stats_messages_icon").attr("name");
+            //jQuery("#go_stats_messages_icon").one("click", function(e){
+            //    go_messages_opener( user_id );
+            //});
 
         }
 

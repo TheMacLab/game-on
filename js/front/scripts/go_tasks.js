@@ -15,9 +15,9 @@ jQuery( document ).ready( function() {
 	// ("store") sound, if the task has Gold rewards for the first stage
 	var status = go_task_data.status;
 	var stage_1_gold = go_task_data.currency;
-	if ( 0 === status && stage_1_gold > 0 ) {
-		go_sounds( 'store' );
-	}
+	//if ( 0 === status && stage_1_gold > 0 ) {
+		//go_sounds( 'store' );
+	//}
 	go_make_clickable()
 	jQuery( ".go_stage_message" ).show(  );
     setTimeout(function(){

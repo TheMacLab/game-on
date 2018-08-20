@@ -770,6 +770,28 @@ function go_noty_loot_success ($loot, $loot_type) {
 }).show();</script>";
 }
 
+function go_noty_level_up ($rank, $rank_name) {
+    echo "<script> new Noty({
+    type: 'success',
+    layout: 'topRight',
+    text: '<h1>Level Up! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
+    theme: 'relax', 
+    timeout: false
+    
+}).show();</script>";
+}
+
+function go_noty_level_down ($rank, $rank_name) {
+    echo "<script> new Noty({
+    type: 'error',
+    layout: 'topRight',
+    text: '<h1>Level Down! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
+    theme: 'relax', 
+    timeout: false
+    
+}).show();</script>";
+}
+
 function go_noty_loot_error ($loot, $loot_type) {
     echo "<script> new Noty({
     type: 'error',
@@ -782,12 +804,18 @@ function go_noty_loot_error ($loot, $loot_type) {
 }
 
 function go_noty_message_generic ($type = 'alert', $title, $content) {
+    if (!empty($title)){
+        $text = '<h3>" . $title . "</h3><div>" . $content . "</div>';
+    }
+    else{
+        $text = $content;
+    }
     echo "<script> 
     jQuery( document ).ready( function() {
     new Noty({
     type: '" . $type . "',
     layout: 'topRight',
-    text: '<h3>" . $title . "</h3><div>" . $content . "</div>',
+    text: '" . $text . "',
     theme: 'relax',
     timeout: false
     
@@ -867,35 +895,74 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         )
     );
 
+    if ($xp != 0) {
+        $new_rank = go_get_rank($user_id);
+        $rank_num = $new_rank['rank_num'];
+        $rank_name = $new_rank['current_rank'];
+        $old_rank = get_user_meta($user_id, "go_rank", true);
+        if ($rank_num > $old_rank){
+            update_user_meta($user_id, "go_rank", $rank_num);
+            go_noty_level_up($rank_num, $rank_name );
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/milestone.wav' ); audio.play();</script>";
+        }
+
+        if ($rank_num < $old_rank){
+            update_user_meta($user_id, "go_rank", $rank_num);
+            go_noty_level_down($rank_num, $rank_name );
+        }
+
+
+
+    }
+
+
+
     if ($notify === true) {
+        $up = false;
+        $down = false;
         if ($xp > 0) {
             go_noty_loot_success($xp, $xp_name);
+            $up = true;
         }
         else if ($xp < 0) {
             go_noty_loot_error($xp, $xp_name);
+            $down = true;
         }
 
         if ($gold > 0) {
             go_noty_loot_success($gold, $gold_name);
+            $up = true;
         }
         else if ($gold < 0) {
             go_noty_loot_error($gold, $gold_name);
+            $down = true;
         }
 
         if ($health > 0) {
             go_noty_loot_success($health, $health_name);
+            $up = true;
         }
         else if ($health < 0) {
             go_noty_loot_error($health, $health_name);
+            $down = true;
         }
 
         if ($c4 > 0) {
             go_noty_loot_success($c4, $c4_name);
+            $up = true;
         }
         else if ($c4 < 0) {
             go_noty_loot_error($c4, $c4_name);
+            $down = true;
         }
-        echo "<script>var audio = new Audio( PluginDir.url + 'media/gold.mp3' ); audio.play();</script>";
+
+        if ($up == true){
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/win.wav' ); audio.play();</script>";
+        }
+        if ($down == true){
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/down.wav' ); audio.play();</script>";
+        }
+
     }
 }
 

@@ -5,9 +5,9 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 4.07.21
+Version: 4.07.19
 */
-$version = 4.0725;
+$version = 4.0719;
 
 global $version;
 
@@ -120,28 +120,6 @@ function go_flush_rewrites() {
     go_custom_rewrite();
 }
 
-/**
- * Changes roles so subscribers can upload media
- */
-function go_media_access() {
-    $role = get_role( 'subscriber' );
-    $role->add_cap( 'upload_files' );
-}
-register_activation_hook( __FILE__, 'go_media_access' );
-
-
-
-function go_changeMceDefaults($in) {
-
-    // customize the buttons
-    $in['theme_advanced_buttons1'] = 'bold,italic,underline,bullist,numlist,hr,blockquote,link,unlink,justifyleft,justifycenter,justifyright,justifyfull,outdent,indent';
-    $in['theme_advanced_buttons2'] = 'formatselect,pastetext,pasteword,charmap,undo,redo';
-
-    // Keep the "kitchen sink" open
-    $in[ 'wordpress_adv_hidden' ] = FALSE;
-    return $in;
-}
-add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
 
 /*
  * Admin Menu & Admin Bar
@@ -264,6 +242,7 @@ add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );
 add_action( 'wp_ajax_go_send_message', 'go_send_message' );
 add_action( 'wp_ajax_go_blog_opener', 'go_blog_opener' );
 add_action( 'wp_ajax_go_blog_submit', 'go_blog_submit' );
+add_action( 'wp_ajax_go_admin_messages', 'go_admin_messages' );
 
 
 add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
@@ -281,10 +260,62 @@ add_filter( 'cron_schedules', 'go_weekly_schedule' );
 // (https://wordpress.org/plugins/jetpack/).
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
 
+
+
+
 /**
  * Important Functions
  */
 
+/**
+ * Get user's first and last name, else just their first name, else their
+ * display name. Defalts to the current user if $user_id is not provided.
+ *
+ * @param  mixed  $user_id The user ID or object. Default is current user.
+ * @return string          The user's name.
+ */
+function go_get_users_name( $user_id = null ) {
+    $user_info = $user_id ? new WP_User( $user_id ) : wp_get_current_user();
+    if ( $user_info->first_name ) {
+        if ( $user_info->last_name ) {
+            return $user_info->first_name . ' ' . $user_info->last_name;
+        }
+        return $user_info->first_name;
+    }
+    return $user_info->display_name;
+}
+
+/**
+ * Check for new admin messages
+ */
+function go_admin_messages(){
+    $user_id = get_current_user_id();
+    check_ajax_referer( 'go_admin_messages');
+    go_check_messages();
+}
+
+/**
+ * Changes roles so subscribers can upload media
+ */
+function go_media_access() {
+    $role = get_role( 'subscriber' );
+    $role->add_cap( 'upload_files' );
+}
+register_activation_hook( __FILE__, 'go_media_access' );
+
+
+
+function go_changeMceDefaults($in) {
+
+    // customize the buttons
+    $in['theme_advanced_buttons1'] = 'bold,italic,underline,bullist,numlist,hr,blockquote,link,unlink,justifyleft,justifycenter,justifyright,justifyfull,outdent,indent';
+    $in['theme_advanced_buttons2'] = 'formatselect,pastetext,pasteword,charmap,undo,redo';
+
+    // Keep the "kitchen sink" open
+    $in[ 'wordpress_adv_hidden' ] = FALSE;
+    return $in;
+}
+add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
 
 
 /*
@@ -383,6 +414,7 @@ function go_user_redirect( $redirect_to, $request, $user )
     //}
 }
 
+//this is the activation notification
 function go_admin_head_notification() {
 	if ( get_option( 'go_display_admin_explanation' ) && current_user_can( 'manage_options' ) ) {
 		$plugin_data = get_plugin_data( __FILE__, false, false );
@@ -667,8 +699,6 @@ function go_change_sort_order($query){
 
 
 };
-
-
 
 //bbPress visual editor
 function bbp_enable_visual_editor( $args = array() ) {
