@@ -12,9 +12,9 @@ function go_admin_check_messages(){
             action: 'go_admin_messages'
         },
         success: function( res ) {
-            if ( -1 !== res ) {
+            if ( 0 !== res ) {
                 jQuery('body').append(res);
-                console.log(res);
+                //console.log(res);
 
             }
         }
@@ -23,7 +23,7 @@ function go_admin_check_messages(){
 
 jQuery( document ).ready( function() {
     go_admin_check_messages();
-    setInterval(go_admin_check_messages_focus, 1000);
+    setInterval(go_admin_check_messages_focus, 10000);
 });
 
 function go_admin_check_messages_focus(){
