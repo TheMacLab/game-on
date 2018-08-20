@@ -805,7 +805,7 @@ function go_noty_loot_error ($loot, $loot_type) {
 
 function go_noty_message_generic ($type = 'alert', $title, $content) {
     if (!empty($title)){
-        $text = '<h3>" . $title . "</h3><div>" . $content . "</div>';
+        $text = "<h3>" . $title . "</h3><div>" . $content . "</div>";
     }
     else{
         $text = $content;

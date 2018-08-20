@@ -1162,6 +1162,7 @@ function go_task_change_stage() {
             go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
         }
 	}
+    go_check_messages();
 
     // stores the contents of the buffer and then clears it
     $buffer = ob_get_contents();
