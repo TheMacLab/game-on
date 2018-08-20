@@ -9,7 +9,7 @@
 /////////////////////////////////////////////
 //Includes
 include ( 'buy-ajax.php' ); // Ajax run when buying something
-date_default_timezone_set('America/Los_Angeles');
+//date_default_timezone_set('America/Los_Angeles');
 // Main Lightbox Ajax Function
 function go_the_lb_ajax() {
     check_ajax_referer( 'go_the_lb_ajax');
@@ -271,16 +271,17 @@ function go_the_lb_ajax() {
 function go_get_purchase_count($post_id, $user_id, $custom_fields) {
     global $wpdb;
     $store_limit_frequency = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_frequency'][0] : null );
+    $current_time = current_time('Ymd');
 
     //set the search for the correct time period
     if ($store_limit_frequency == 'day') {
-        $timeSQL = ' Date(timestamp)= CURDATE() AND';
+        $timeSQL = ' Date(timestamp)= '.$current_time.' AND';
     }
     else if ($store_limit_frequency == 'week') {
-        $timeSQL = ' YEARWEEK(timestamp)= YEARWEEK(CURDATE()) AND';
+        $timeSQL = ' YEARWEEK(timestamp)= YEARWEEK('.$current_time.') AND';
     }
     else if ($store_limit_frequency == 'month') {
-        $timeSQL = ' Year(timestamp)=Year(CURDATE()) AND Month(timestamp)= Month(CURDATE()) AND';
+        $timeSQL = ' Year(timestamp)=Year('.$current_time.') AND Month(timestamp)= Month('.$current_time.') AND';
     }
     else {
         $timeSQL = '';
