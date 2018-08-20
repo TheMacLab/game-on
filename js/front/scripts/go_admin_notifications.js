@@ -21,8 +21,10 @@ function go_admin_check_messages(){
 }
 
 jQuery( document ).ready( function() {
-    go_admin_check_messages();
     setInterval(go_admin_check_messages_focus, 10000);
+    jQuery(window).focus(function() {
+        go_admin_check_messages();
+    });
 });
 
 function go_admin_check_messages_focus(){
