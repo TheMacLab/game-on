@@ -146,7 +146,7 @@ add_action( 'admin_enqueue_scripts', 'go_admin_scripts' );
 add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
 add_action( 'admin_enqueue_scripts', 'go_admin_styles' );
 add_action( 'admin_enqueue_scripts', 'go_acf_scripts' );
-add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
+
 
 /*
  * Front-end
@@ -373,6 +373,17 @@ function go_tsk_actv_redirect() {
 	}
 }
 
+function go_default_map(){
+    $default_map = get_option('options_go_locations_map_default', '');
+    $user_id = get_current_user_id();
+
+    //$user_id = $user->ID;
+    if ($default_map !== '') {
+        update_user_meta($user_id, 'go_last_map', $default_map);
+    }
+}
+add_action('wp_login', 'go_default_map');
+
 function go_user_redirect( $redirect_to, $request, $user )
 {
     //if (is_user_logged_in()) {
@@ -413,6 +424,7 @@ function go_user_redirect( $redirect_to, $request, $user )
         }
     //}
 }
+add_action( 'login_redirect', 'go_user_redirect', 10, 3 );
 
 //this is the activation notification
 function go_admin_head_notification() {
