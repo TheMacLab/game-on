@@ -5,7 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
-//add_filter('acf/settings/show_admin', '__return_false');
+add_filter('acf/settings/show_admin', '__return_false');
 
 
 if( function_exists('acf_add_local_field_group') ):
@@ -3241,9 +3241,9 @@ acf_add_local_field_group(array(
 			),
 			'message' => '',
 			'default_value' => 0,
-			'ui' => 0,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
+			'ui' => 1,
+			'ui_on_text' => 'On',
+			'ui_off_text' => 'Off',
 		),
 		array(
 			'key' => 'field_5b1b4d05ca724',
@@ -3295,7 +3295,7 @@ acf_add_local_field_group(array(
 			),
 			'collapsed' => '',
 			'min' => 1,
-			'max' => 5,
+			'max' => 15,
 			'layout' => 'row',
 			'button_label' => 'and',
 			'sub_fields' => array(
@@ -3406,9 +3406,9 @@ acf_add_local_field_group(array(
 			),
 			'message' => '',
 			'default_value' => 0,
-			'ui' => 0,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
+			'ui' => 1,
+			'ui_on_text' => 'On',
+			'ui_off_text' => 'Off',
 		),
 		array(
 			'key' => 'field_5abde7f9301a8',
@@ -4621,7 +4621,7 @@ acf_add_local_field_group(array(
 			),
 			'collapsed' => '',
 			'min' => 1,
-			'max' => 5,
+			'max' => 15,
 			'layout' => 'row',
 			'button_label' => 'and',
 			'sub_fields' => array(
