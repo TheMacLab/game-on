@@ -15,7 +15,6 @@ function go_admin_check_messages(){
             if ( 0 !== res ) {
                 jQuery('body').append(res);
                 //console.log(res);
-
             }
         }
     });
