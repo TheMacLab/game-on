@@ -137,9 +137,11 @@ function go_make_single_map($last_map_id, $reload){
 					$id = $row->ID;
 					$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
 					$stage_count = $custom_fields['go_stages'][0];//total stages
+					$badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
 
 
-					//
+
+                    //
 					//Get the status of this task from the tasks array
 					//get the position of this task in the array, then get the status
 					$ids = array_map(function ($each) {
@@ -209,6 +211,14 @@ function go_make_single_map($last_map_id, $reload){
 
 
 					echo "<li class='$task_color $optional '><a href='$task_link'><div class='$finished'></div><span <span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
+
+                    if($badge_ids) {
+                    	$badge_ids = unserialize($badge_ids);
+                        foreach($badge_ids as $badge_id) {
+                            go_map_quest_badge($badge_id);
+                        }
+                    }
+
 					if ($bonus_stage_toggle == true){
 						if ($bonus_status == 0 || $bonus_status == null){
 							echo "<br><div id='repeat_ratio' style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name 
@@ -244,50 +254,99 @@ function go_make_single_map($last_map_id, $reload){
 				}
 
 
-
-				//does this term have a badge assigned and if so show it
                 $badge = get_term_meta($term_id, "pod_achievement", true);
-                if($badge){
-                    $badge_img_id = get_term_meta( $badge, 'my_image' );
-                    $badge_description = term_description( $badge );
+                go_map_badge($badge);
 
-                    echo "<li>";
-                    $badge_obj = get_term( $badge);
-                    $badge_name = $badge_obj->name;
-                    //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
-                    $badge_img = wp_get_attachment_image($badge_img_id[0], array( 100, 100 ));
-                    if (!$badge_img){
-                    	$badge_img = "<div style='width:100px; height: 100px;'></div>";
-                    }
+			}
+		echo "</ul>";
+		}
+        $badge = get_term_meta($last_map_id, "pod_achievement", true);
+        go_map_badge($badge);
 
-                    //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
-                    //$img_post = get_post( $badge_id );
-                    if ( ! empty( $badge_obj ) ) {
-                        echo"<div class='go_badge_wrap'>
+
+
+		echo "</ul></div>";
+	}			
+	if ($reload == false) {echo "</div>";}	
+}
+
+function go_map_badge($badge){
+    //does this term have a badge assigned and if so show it
+
+    if($badge){
+        $badge_img_id = get_term_meta( $badge, 'my_image' );
+        $badge_description = term_description( $badge );
+
+        echo "<li>";
+        $badge_obj = get_term( $badge);
+        $badge_name = $badge_obj->name;
+        //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
+        $badge_img = wp_get_attachment_image($badge_img_id[0], array( 100, 100 ));
+        if (!$badge_img){
+            $badge_img = "<div style='width:100px; height: 100px;'></div>";
+        }
+
+        //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
+        //$img_post = get_post( $badge_id );
+        if ( ! empty( $badge_obj ) ) {
+            echo"<div class='go_badge_wrap'>
                         <div class='go_badge_container '><figure class=go_badge title='{$badge_name}'>";
 
-                        if (!empty($badge_description)){
-                            echo "<span class='tooltip' ><span class='tooltiptext'>{$badge_description}</span>{$badge_img}</span>";
-                        }else{
-                            echo "$badge_img";
-                        }
-                        echo "        
+            if (!empty($badge_description)){
+                echo "<span class='tooltip' ><span class='tooltiptext'>{$badge_description}</span>{$badge_img}</span>";
+            }else{
+                echo "$badge_img";
+            }
+            echo "        
               				 <figcaption>{$badge_name}</figcaption>
                             </figure>
                         </div>
                        </div>";
 
-                    }
-                    echo "</li>";
+        }
+        echo "</li>";
 
-				}
+    }
+}
 
-			}
-		echo "</ul>";
-		}
-		echo "</ul></div>";
-	}			
-	if ($reload == false) {echo "</div>";}	
+
+function go_map_quest_badge($badge){
+    //does this term have a badge assigned and if so show it
+
+    if($badge){
+        $badge_img_id = get_term_meta( $badge, 'my_image' );
+        $badge_description = term_description( $badge );
+
+        //echo "<li>";
+        $badge_obj = get_term( $badge);
+        $badge_name = $badge_obj->name;
+        //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
+        $badge_img = wp_get_attachment_image($badge_img_id[0], array( 50, 50 ));
+        if (!$badge_img){
+            $badge_img = "<div style='width:50px; height: 50px;'></div>";
+        }
+
+        //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
+        //$img_post = get_post( $badge_id );
+        if ( ! empty( $badge_obj ) ) {
+            echo"<div class='go_badge_quest_wrap'>
+                        <div class='go_badge_quest_container '><figure class=go_quest_badge title='{$badge_name}'>";
+
+            if (!empty($badge_description)){
+                echo "<span class='tooltip' ><span class='tooltiptext'>{$badge_description}</span>{$badge_img}</span>";
+            }else{
+                echo "$badge_img";
+            }
+            echo "        
+              				 <figcaption>{$badge_name}</figcaption>
+                            </figure>
+                        </div>
+                       </div>";
+
+        }
+        //echo "</li>";
+
+    }
 }
 
 

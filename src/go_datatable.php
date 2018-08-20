@@ -135,12 +135,11 @@ function go_table_actions() {
 
 function go_table_totals() {
     global $wpdb;
-    global $go_db_version;
     $table_name = "{$wpdb->prefix}go_loot";
     $sql = "
 		CREATE TABLE $table_name (
 			id bigint(20) NOT NULL AUTO_INCREMENT,
-			uid bigint(20),
+			uid bigint(20) NOT NULL UNIQUE,
 			xp INT unsigned DEFAULT 0,
 			gold DECIMAL (10,2) unsigned DEFAULT 0,
 			health DECIMAL (10,2) unsigned DEFAULT 100,
@@ -149,8 +148,7 @@ function go_table_totals() {
 			groups VARCHAR (4096),
 			badge_count INT DEFAULT 0,
 			PRIMARY KEY  (id),
-            KEY uid (uid),
-            UNIQUE (uid)          
+            KEY uid (uid)         
 		);
 	";
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
