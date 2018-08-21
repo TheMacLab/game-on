@@ -33,11 +33,17 @@ function go_the_lb_ajax() {
     $health_mod = go_get_health_mod ($user_id);
     //$health_mod = go_get_user_loot( $user_id, 'health' );
 
+    if ($is_admin) {
+        echo edit_post_link('edit', null, null, $post_id);
+    }
+
+
     if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true ) {
         $task_is_locked = go_task_locks($post_id, $user_id, "Item", $custom_fields, $is_logged_in, false);
     }
     //$task_is_locked = go_display_locks($post_id, $user_id, $is_admin, 'item', $badge_name, $custom_fields, $is_logged_in, 'Item');
     if ($task_is_locked){
+
         return null;
     }
 
@@ -143,9 +149,7 @@ function go_the_lb_ajax() {
 
 	echo'<div id="light" class="white_content">';
     echo "<h1>{$the_title}</h1>";
-    if ($is_admin) {
-        echo edit_post_link('edit', null, null, $post_id);
-    }
+
 	echo '<div id="go-lb-the-content"><div id="go_store_description" style=""'.do_shortcode( $the_content ) . '</div>';
 
 	if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false) || ($c4_on && $store_toggle_c4 == false)) {

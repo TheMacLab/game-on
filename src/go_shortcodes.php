@@ -192,8 +192,6 @@ function go_lightbox_url($atts){
 }
 add_shortcode( 'go_lightbox_url','go_lightbox_url' );
 
-
-
 //Function that grabs the current page
 function go_page_grabber_shortcode() { 
 	echo '';
@@ -254,7 +252,6 @@ function go_post_grabber_content_exerpt_shortcode() {
 	endwhile;
 }
 
-
 //Gets the user's display name
 function go_get_displayname_function( $atts, $content = null ) {
 	if ( is_user_logged_in() ) {
@@ -266,9 +263,6 @@ function go_get_displayname_function( $atts, $content = null ) {
 }
 add_shortcode( 'get_displayname', 'go_get_displayname_function' );
 add_shortcode( 'go_get_displayname', 'go_get_displayname_function' );
-
-
-
 
 //Gets the users first name
 function go_get_firstname_function( $atts, $content = null ) {
@@ -377,7 +371,6 @@ function go_admin_only_content_function( $atts, $content = null ) {
 }
 add_shortcode ( 'admin_only_content', 'go_admin_only_content_function' );
 add_shortcode ( 'go_admin_only_content', 'go_admin_only_content_function' );
-
 
 //Sorts posts based on tags
 
@@ -752,7 +745,6 @@ function go_shortcode_button_add_button( $buttons ) {
 
         array_push($buttons, "separator", "go_shortcode_button");
         return $buttons;
-
 }
 
 add_filter( 'mce_external_plugins', 'go_shortcode_button_register' );

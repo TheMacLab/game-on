@@ -75,6 +75,8 @@ function go_clipboard_class_a_choice() {
             //"destroy": true,
             dom: 'Bfrtip',
             "drawCallback": function( settings ) {
+                jQuery('.go_messages_icon').prop('onclick',null).off('click');
+
                 jQuery(".go_messages_icon").one("click", function(e){
                     go_messages_opener();
                 });
@@ -195,8 +197,11 @@ function go_clipboard_class_a_choice() {
             });
 
 		});
+		jQuery("#records_tabs").show();
 	}
 }
+
+
 
 function go_clipboard_class_a_choice_activity(refresh) {
     if ( jQuery( "#go_clipboard_activity_datatable" ).length == 0  || refresh == true) {
@@ -227,6 +232,7 @@ function go_clipboard_class_a_choice_activity(refresh) {
                         //"destroy": true,
                         dom: 'Bfrtip',
                         "drawCallback": function( settings ) {
+                            jQuery('.go_messages_icon').prop('onclick',null).off('click');
                             jQuery(".go_messages_icon").one("click", function(e){
                                 go_messages_opener();
                             });

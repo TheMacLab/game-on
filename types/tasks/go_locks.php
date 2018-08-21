@@ -648,6 +648,8 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
                 }
 
                 echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Access Schedule</h3>$lock_message";
+
+
                 //echo current_time( 'timestamp' );
 
                 $first = true;

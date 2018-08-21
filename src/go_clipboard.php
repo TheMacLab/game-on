@@ -35,7 +35,7 @@ function go_clipboard_menu() {
             </div>
 
         </div>
-		<div id="records_tabs" style="clear: both;">
+		<div id="records_tabs" style="clear: both; display: none">
 			<ul>
 				<li class="clipboard_tabs" tab="clipboard"><a href="#clipboard_wrap">Stats</a></li>
                 <?php

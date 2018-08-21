@@ -29,14 +29,6 @@ function go_make_single_map($last_map_id, $reload){
 	echo "<div id='loader-wrapper style='width: 100%'><div id='loader' style='display:none;'></div></div><div id='maps' data-mapid='$last_map_id'>";
 	if(!empty($last_map_id)){
 
-
-
-
-		///////////////
-		///
-		/// This is going to get every task in the task table for this user
-
-///////////////////
 		echo 	"<div id='map_$last_map_id' class='map'>
 				<ul class='primaryNav'>
 				<li class='ParentNav'><p>$last_map_object->name</p></li>";
@@ -138,8 +130,6 @@ function go_make_single_map($last_map_id, $reload){
 					$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
 					$stage_count = $custom_fields['go_stages'][0];//total stages
 					$badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
-
-
 
                     //
 					//Get the status of this task from the tasks array
@@ -309,7 +299,6 @@ function go_map_badge($badge){
     }
 }
 
-
 function go_map_quest_badge($badge){
     //does this term have a badge assigned and if so show it
 
@@ -349,8 +338,6 @@ function go_map_quest_badge($badge){
     }
 }
 
-
-
 function go_make_map_dropdown(){
 /* Get all task chains with no parents--these are the top level on the map.  They are chains of chains (realms). */
 	$taxonomy = 'task_chains';
@@ -387,12 +374,12 @@ function go_make_map() {
 }
 add_shortcode('go_make_map', 'go_make_map');
 
-function go_update_last_map() {
+function go_update_last_map($map_id = false) {
  	if(empty($_POST) || !isset($_POST)) {
         ajaxStatus('error', 'Nothing to update.');
     } else {
         try {
-        	$mapid = $_POST['goLastMap'];
+        	if (!$map_id){$mapid = $_POST['goLastMap'];}
         	check_ajax_referer('go_update_last_map', 'security' );
 			$user_id = get_current_user_id();
 			update_user_meta( $user_id, 'go_last_map', $mapid );
@@ -404,5 +391,25 @@ function go_update_last_map() {
         }
     }
 }
+
+
+function go_single_map_link( $atts, $content = null ) {
+    $atts = shortcode_atts(
+        array(
+            "map_id" => ''
+        ),
+        $atts
+    );
+    $map_id = $atts['map_id'];
+    $user_id = 1;
+    update_user_meta( $user_id, 'go_last_map', $map_id );
+    $map_url = get_option('options_go_locations_map_map_link');
+    $map_url = (string) $map_url;
+    $go_map_link = get_permalink( get_page_by_path($map_url) );
+    echo "<a href='" . $go_map_link . "'>" . $content . "</a>";
+
+
+}
+//add_shortcode( 'go_single_map_link', 'go_single_map_link' );
          
 ?>
