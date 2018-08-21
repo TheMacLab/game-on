@@ -438,12 +438,12 @@ function go_due_date_mods ($custom_fields, $is_logged_in, $task_name ){
             $mod_date = $custom_fields[$mod_date][0];
             $mod_date_timestamp = strtotime($mod_date);
             $mod_date = date('F j, Y \a\t g:i a\.' ,$mod_date_timestamp);
-            $mod_date_offset = $mod_date_timestamp + (3600 * get_option('gmt_offset'));
+            //$mod_date_timestamp = $mod_date_timestamp + (3600 * get_option('gmt_offset'));
             $current_timestamp = current_time( 'timestamp' );
-            //$current_time = current_time( 'mysql' );
+            ////$current_time = current_time( 'mysql' );
             $mod_percent = 'go_due_dates_mod_settings_'.$i.'_mod';
             $mod_percent = $custom_fields[$mod_percent][0];
-            if ($current_timestamp > $mod_date_offset){
+            if ($current_timestamp > $mod_date_timestamp){
                 echo '<li>The rewards on this '. $task_name . '  were reduced by<br>';
 			}
 			else {

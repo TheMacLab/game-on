@@ -164,8 +164,8 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
     $start_filter = $custom_fields[$option][0];
 
     $unix_now = current_time('timestamp');
-    $offset = 3600 * get_option('gmt_offset');
-    $unix_now = $unix_now - $offset;
+    //$offset = 3600 * get_option('gmt_offset');
+    //$unix_now = $unix_now - $offset;
     if (!empty($start_filter)) {
 
         $start_unix = strtotime($start_filter);
@@ -207,8 +207,8 @@ function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
 
     // holds the output to be displayed when a non-admin has been stopped by the start filter
     $unix_now = current_time('timestamp');
-    $offset = 3600 * get_option('gmt_offset');
-    $unix_now = $unix_now - $offset;
+    //$offset = 3600 * get_option('gmt_offset');
+    //$unix_now = $unix_now - $offset;
     if (!empty($start_filter)) {
         $start_unix = strtotime($start_filter);
 
@@ -612,8 +612,8 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
             $dow_time = "go_sched_opt_" . $i . "_time";
             $dow_time = (isset($custom_fields[$dow_time][0]) ?  $custom_fields[$dow_time][0] : null);
             $dow_time = strtotime($dow_time);
-            $offset = 3600 * get_option('gmt_offset');
-            $dow_time = $dow_time + $offset;
+            //$offset = 3600 * get_option('gmt_offset');
+            //$dow_time = $dow_time + $offset;
 
             $dow_minutes = "go_sched_opt_" . $i . "_min";
             $dow_minutes = (isset($custom_fields[$dow_minutes][0]) ?  $custom_fields[$dow_minutes][0] : null);
@@ -929,8 +929,8 @@ function go_timezone_message($user_id) {
     $is_admin = go_user_is_admin( $user_id );
     $timezone = get_option('timezone_string');
     $current_time = current_time('timestamp');
-    $offset = 3600 * get_option('gmt_offset');
-    $current_time = $current_time - $offset;
+    //$offset = 3600 * get_option('gmt_offset');
+    //$current_time = $current_time - $offset;
     $current_time = date( 'g:ia l', $current_time );
     echo '<div><br> This lock is set based on the timezone ' . $timezone . ' where it is currently ' . $current_time . '.';
     if ($is_admin){

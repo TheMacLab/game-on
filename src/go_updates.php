@@ -284,18 +284,18 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
                     $mod_date = 'go_due_dates_mod_settings_' . $i . '_date';
                     $mod_date = $custom_fields[$mod_date][0];
                     $mod_date_timestamp = strtotime($mod_date);
-                    //$mod_date = date('F j, Y \a\t g:i a\.', $mod_date_timestamp);
-                    $mod_date_offset = $mod_date_timestamp + (3600 * get_option('gmt_offset'));
+                    ////$mod_date = date('F j, Y \a\t g:i a\.', $mod_date_timestamp);
+                    //$mod_date_timestamp = $mod_date_timestamp + (3600 * get_option('gmt_offset'));
                     $current_timestamp = current_time('timestamp');
                     $mod_percent = 'go_due_dates_mod_settings_' . $i . '_mod';
                     $mod_percent = $custom_fields[$mod_percent][0];
-                    if ($current_timestamp > $mod_date_offset) {
+                    if ($current_timestamp > $mod_date_timestamp) {
                         //set the latest mod date if this is the first mod date
                         if ($mod_date_latest == null) {
-                            $mod_date_latest = $mod_date_offset;
+                            $mod_date_latest = $mod_date_timestamp;
                             $due_date_mod = $mod_percent * .01;
-                        } else if ($mod_date_offset > $mod_date_latest) {
-                            $mod_date_latest = $mod_date_offset;
+                        } else if ($mod_date_timestamp > $mod_date_latest) {
+                            $mod_date_latest = $mod_date_timestamp;
                             $due_date_mod = $mod_percent * .01;
                         }
                     }
