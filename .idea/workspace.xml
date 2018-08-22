@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/min/go_clipboard_combined-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_clipboard_combined-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/scripts/go_every_admin_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/scripts/go_every_admin_page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/go_enque_js.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/go_enque_js.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_map-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_map-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_map.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_map.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_map.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,6 +32,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/game-on.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="go_map.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/go_map.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -98,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_admin_notifications.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_admin_notifications.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+            <state relative-caret-position="215">
+              <caret line="15" column="21" lean-forward="true" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -139,21 +139,6 @@
                 <element signature="n#!!block;n#go_resizeMap#0" />
                 <element signature="n#!!block;n#go_map_dropDown#0" />
                 <element signature="e#4685#5018#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_datatable.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="141" column="42" selection-start-line="141" selection-start-column="42" selection-end-line="141" selection-end-column="42" />
-              <folding>
-                <element signature="n#go_update_db_check#0;n#!!top" />
-                <element signature="e#1446#2053#0#PHP" />
-                <element signature="n#go_on_activate_msdb#0;n#!!top" />
-                <element signature="n#go_on_create_blog#0;n#!!top" />
               </folding>
             </state>
           </provider>
@@ -272,13 +257,13 @@
         <option value="$PROJECT_DIR$/src/go_shortcodes.php" />
         <option value="$PROJECT_DIR$/js/js/go_shortcode_mce.js" />
         <option value="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" />
-        <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/js/front/go_enque_js.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_map.js" />
         <option value="$PROJECT_DIR$/src/go_map.php" />
         <option value="$PROJECT_DIR$/js/admin/scripts/go_every_admin_page.js" />
         <option value="$PROJECT_DIR$/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" />
+        <option value="$PROJECT_DIR$/game-on.php" />
       </list>
     </option>
   </component>
@@ -552,12 +537,12 @@
       <workItem from="1533758962289" duration="66145000" />
       <workItem from="1534372082665" duration="15708000" />
       <workItem from="1534390673582" duration="1222000" />
-      <workItem from="1534459174458" duration="54896000" />
+      <workItem from="1534459174458" duration="55282000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1881672000" />
+    <option name="totallyTimeSpent" value="1882058000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="155" y="23" width="1658" height="979" extended-state="0" />
@@ -1249,17 +1234,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="245" column="53" selection-start-line="245" selection-start-column="53" selection-end-line="245" selection-end-column="53" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="354">
@@ -1419,8 +1393,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+        <state relative-caret-position="215">
+          <caret line="15" column="21" lean-forward="true" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
