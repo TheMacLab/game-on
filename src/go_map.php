@@ -401,7 +401,7 @@ function go_single_map_link( $atts, $content = null ) {
         $atts
     );
     $map_id = $atts['map_id'];
-    echo "<a href='#' onclick='go_to_this_map(" . $map_id . ")'>" . $content . "</a>";
+    return "<a href='#' onclick='go_to_this_map(" . $map_id . ")'>" . $content . "</a>";
 }
 add_shortcode( 'go_single_map_link', 'go_single_map_link' );
 
