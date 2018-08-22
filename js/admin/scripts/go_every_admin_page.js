@@ -45,38 +45,41 @@ function go_hide_child_tax_acfs() {
         //jQuery('#acf-term-fields').hide();
         //jQuery('.acf-field').hide();
         jQuery('.go_child_term').hide();
+        jQuery('#go_map_shortcode_id').show();
     }
     else{
         jQuery('.go_child_term').show();
         //jQuery('#acf-term-fields').show();
         //jQuery('.acf-field').show();
         //jQuery('h2').show();
+        jQuery('#go_map_shortcode_id').hide();
+    }
+
+    var map_id = jQuery('[name="tag_ID"]').val();
+    if (map_id == null) {
+        jQuery('#go_map_shortcode_id').hide();
+    }
+
+    //store item shortcode--add item id to bottom
+    var item_id = jQuery('#post_ID').val();
+    jQuery('#go_store_item_id .acf-input').html('[go_store id="' + item_id + '"]');
+
+    //map shortcode message
+    //var map_id = jQuery('[name="tag_ID"]').val();
+    //console.log(map_id);
+    var map_name = jQuery('#name').val();
+    jQuery('#go_map_shortcode_id .acf-input').html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="' + map_id + '"]' + map_name + '[/go_single_map_link]');
+    if (map_id == null) {
+        jQuery('#go_map_shortcode_id').hide();
     }
 
 }
 
 jQuery(document).ready(function(){
     go_hide_child_tax_acfs();
-
     jQuery('.taxonomy-task_chains #parent, .taxonomy-go_badges #parent').change(function(){
-        if(jQuery(this).val() == -1){
-            //jQuery('#acf-term-fields').hide();
-            //jQuery('.acf-field').hide();
-            jQuery('.go_child_term').hide();
-
-        }
-        else{
-            jQuery('.go_child_term').show();
-            //jQuery('#acf-term-fields').show();
-            //jQuery('.acf-field').show();
-            //jQuery('h2').show();
-        }
+        go_hide_child_tax_acfs();
     });
-
-
-    //store item edit--add item id to bottom
-    var item_id = jQuery('#post_ID').val();
-    jQuery('#go_store_item_id .acf-input').html('[go_store id="' + item_id + '"]');
 
 });
 

@@ -207,7 +207,7 @@ function go_clipboard_class_a_choice_activity(refresh) {
     if ( jQuery( "#go_clipboard_activity_datatable" ).length == 0  || refresh == true) {
         var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_activity;
         var date = jQuery( '.datepicker' ).val();
-        console.log(date);
+        //console.log(date);
         jQuery.ajax({
             type: "post",
             url: MyAjax.ajaxurl,

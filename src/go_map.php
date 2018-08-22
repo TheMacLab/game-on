@@ -401,15 +401,22 @@ function go_single_map_link( $atts, $content = null ) {
         $atts
     );
     $map_id = $atts['map_id'];
-    $user_id = 1;
+    echo "<a href='#' onclick='go_to_this_map(" . $map_id . ")'>" . $content . "</a>";
+}
+add_shortcode( 'go_single_map_link', 'go_single_map_link' );
+
+function go_to_this_map(){
+
+    check_ajax_referer( 'go_to_this_map');
+    $user_id = get_current_user_id();
+    $map_id = $_POST['map_id'];
     update_user_meta( $user_id, 'go_last_map', $map_id );
+
     $map_url = get_option('options_go_locations_map_map_link');
     $map_url = (string) $map_url;
     $go_map_link = get_permalink( get_page_by_path($map_url) );
-    echo "<a href='" . $go_map_link . "'>" . $content . "</a>";
-
-
+    echo $go_map_link;
+    die;
 }
-//add_shortcode( 'go_single_map_link', 'go_single_map_link' );
          
 ?>

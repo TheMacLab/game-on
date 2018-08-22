@@ -243,6 +243,7 @@ add_action( 'wp_ajax_go_send_message', 'go_send_message' );
 add_action( 'wp_ajax_go_blog_opener', 'go_blog_opener' );
 add_action( 'wp_ajax_go_blog_submit', 'go_blog_submit' );
 add_action( 'wp_ajax_go_admin_messages', 'go_admin_messages' );
+add_action( 'wp_ajax_go_to_this_map', 'go_to_this_map' );
 
 
 add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');

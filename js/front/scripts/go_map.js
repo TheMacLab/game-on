@@ -1,4 +1,23 @@
 //Hide and show map on click
+
+function go_to_this_map(map_id) {
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_to_this_map;
+    jQuery.ajax({
+        type: "post",
+        url: MyAjax.ajaxurl,
+        data: {
+            _ajax_nonce: nonce,
+            action: 'go_to_this_map',
+            map_id: map_id
+
+        },
+        success: function (res) {
+            console.log("success");
+            window.location.href=res;
+        }
+    });
+}
+
 function go_show_map(mapid) {
 //https://stackoverflow.com/questions/28180584/wordpress-update-user-meta-onclick-with-ajax
 //https://wordpress.stackexchange.com/questions/216140/update-user-meta-using-with-ajax
