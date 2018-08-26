@@ -168,7 +168,7 @@ function go_buy_item() {
         $result = serialize($result);
         $admin_users = get_option('options_go_admin_user_notifications');
         foreach ($admin_users as $admin_user) {
-            go_update_actions($admin_user, 'admin_notification', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+            go_update_actions($admin_user, 'admin_notification', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, 'admin');
             update_user_meta($admin_user, 'go_new_messages', true);
         }
         //go_update_actions($user_id, 'message', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);

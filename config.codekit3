@@ -2853,6 +2853,14 @@
 		"oAP": "\/media\/milestone.wav",
 		"oF": 0
 		},
+	"\/media\/mysterybox_inner_glow_sm.gif": {
+		"ft": 4194304,
+		"iS": 82102,
+		"oA": 0,
+		"oAP": "\/media\/mysterybox_inner_glow_sm.gif",
+		"oF": 0,
+		"opt": 0
+		},
 	"\/media\/notification.wav": {
 		"cB": 0,
 		"ft": 8192,

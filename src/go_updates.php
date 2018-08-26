@@ -669,21 +669,21 @@ function go_health_to_add( $user_id, $added_health){
     return $added_health;
 }
 
-function go_update_actions( $user_id, $type,  $source_id, $status, $bonus_status, $check_type, $result, $quiz_mod, $late_mod, $timer_mod, $global_mod, $xp, $gold, $health, $c4, $badge_ids, $group_ids, $notify){
+function go_update_actions( $user_id, $type,  $source_id, $status, $bonus_status, $check_type, $result, $quiz_mod, $late_mod, $timer_mod, $global_mod, $xp, $gold, $health, $c4, $badge_ids, $group_ids, $notify)
+{
     global $wpdb;
 
 
-
-    if (get_option('options_go_loot_xp_toggle') == false){
+    if (get_option('options_go_loot_xp_toggle') == false) {
         $xp = 0;
     }
-    if (get_option('options_go_loot_gold_toggle') == false){
+    if (get_option('options_go_loot_gold_toggle') == false) {
         $gold = 0;
     }
-    if (get_option('options_go_loot_health_toggle') == false){
+    if (get_option('options_go_loot_health_toggle') == false) {
         $health = 0;
     }
-    if (get_option('options_go_loot_c4_toggle') == false){
+    if (get_option('options_go_loot_c4_toggle') == false) {
         $c4 = 0;
     }
 
@@ -693,60 +693,33 @@ function go_update_actions( $user_id, $type,  $source_id, $status, $bonus_status
     $c4_name = null;
 
     // the user's current amount of experience (points)
-    $go_current_xp = go_get_user_loot( $user_id, 'xp' );
+    $go_current_xp = go_get_user_loot($user_id, 'xp');
     $new_xp_total = $go_current_xp + $xp;
 
     // the user's current amount of currency
-    $go_current_gold = go_get_user_loot( $user_id, 'gold' );
+    $go_current_gold = go_get_user_loot($user_id, 'gold');
     $new_gold_total = $go_current_gold + $gold;
 
     // the user's current amount of bonus currency,
     // also used for coloring the admin bar
-    $go_current_health = go_get_user_loot( $user_id, 'health' );
+    $go_current_health = go_get_user_loot($user_id, 'health');
     $new_health_total = $go_current_health + $health;
     if ($new_health_total < 0) {
         $new_health_total = 0;
         $health = $go_current_health * -1;
-    }
-    else if ($new_health_total > 200) {
+    } else if ($new_health_total > 200) {
         $new_health_total = 200;
-        $health = 200 -$go_current_health;
+        $health = 200 - $go_current_health;
     }
 
     // the user's current amount of minutes
-    $go_current_c4 = go_get_user_loot( $user_id, 'c4' );
+    $go_current_c4 = go_get_user_loot($user_id, 'c4');
     $new_c4_total = $go_current_c4 + $c4;
 
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
     //$time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
     $time = current_time('mysql');
-    $wpdb->insert(
-        $go_actions_table_name,
-        array(
-            'uid' => $user_id,
-            'action_type' => $type,
-            'source_id' => $source_id,
-            'TIMESTAMP' => $time,
-            'stage' => $status,
-            'bonus_status' => $bonus_status,
-            'check_type' => $check_type,
-            'result' => $result,
-            'quiz_mod' => $quiz_mod,
-            'late_mod' => $late_mod,
-            'timer_mod' => $timer_mod,
-            'global_mod' => $global_mod,
-            'xp' => $xp,
-            'gold' => $gold,
-            'health' => $health,
-            'c4' => $c4,
-            'badges' => $badge_ids,
-            'groups' => $group_ids,
-            'xp_total' => $new_xp_total,
-            'gold_total' => $new_gold_total,
-            'health_total' => $new_health_total,
-            'c4_total' => $new_c4_total
-        )
-    );
+    $wpdb->insert($go_actions_table_name, array('uid' => $user_id, 'action_type' => $type, 'source_id' => $source_id, 'TIMESTAMP' => $time, 'stage' => $status, 'bonus_status' => $bonus_status, 'check_type' => $check_type, 'result' => $result, 'quiz_mod' => $quiz_mod, 'late_mod' => $late_mod, 'timer_mod' => $timer_mod, 'global_mod' => $global_mod, 'xp' => $xp, 'gold' => $gold, 'health' => $health, 'c4' => $c4, 'badges' => $badge_ids, 'groups' => $group_ids, 'xp_total' => $new_xp_total, 'gold_total' => $new_gold_total, 'health_total' => $new_health_total, 'c4_total' => $new_c4_total));
     if ($notify === true) {
         $xp_name = get_option('options_go_loot_xp_name');
         $gold_name = get_option('options_go_loot_gold_name');
@@ -754,7 +727,10 @@ function go_update_actions( $user_id, $type,  $source_id, $status, $bonus_status
         $c4_name = get_option('options_go_loot_c4_name');
         go_update_admin_bar_v4($user_id, $new_xp_total, $xp_name, $new_gold_total, $gold_name, $new_health_total, $health_name, $new_c4_total, $c4_name);
     }
-    go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name, $notify);
+    //if this is not a store item with admin notifications, then continue to update the totals table
+    if ($notify !== 'admin') {
+        go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name, $notify);
+    }
     //badges and groups are only updated from the add/remove badges and groups functions
 
 }

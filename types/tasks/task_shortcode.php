@@ -512,15 +512,16 @@ function go_bonus_loot () {
 
     $bonus_loot = strtolower( get_option( 'options_go_loot_bonus_loot_name' ) );
     $bonus_loot_uc = ucwords($bonus_loot);
+    //$mystery_box_url =
     echo "
 		<div id='go_bonus_loot'>
     	<h4>{$bonus_loot_uc}</h4>
-        <p>Click the button below to try and claim " . $bonus_loot . ".
+        <p>Click the box to try and claim " . $bonus_loot . ".
         ";
     echo "<br><br>
 
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-		<button id='go_bonus_button' class='go_bonus_button'>?</button>
+		<img id='go_bonus_button' class='go_bonus_button'src=" . esc_url( plugins_url( '../media/mysterybox_inner_glow_sm.gif', dirname(__FILE__) ) ) . " > 
 	";
     echo "</p></div>";
 }
