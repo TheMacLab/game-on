@@ -295,6 +295,16 @@ function go_display_visitor_content ( $custom_fields, $post_id, $task_name, $bad
  * if they do not meet the requirements.
  * The task_locks function will set the output for the locks
  * and set the task_is_locked variable to true if it is locked.
+ *
+ * @param $post_id
+ * @param $user_id
+ * @param $is_admin
+ * @param $task_name
+ * @param $badge_name
+ * @param $custom_fields
+ * @param $is_logged_in
+ * @param $uc_task_name
+ * @return bool
  */
 function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $is_logged_in, $uc_task_name){
 
@@ -353,6 +363,7 @@ function go_display_visitor_messages( $custom_fields, $post_id ) {
 
     // displays the chain pagination list so that visitors can still navigate chains easily
     go_task_render_chain_pagination( $post_id, $custom_fields );
+    go_hidden_footer();
     echo "</div>";
 }
 

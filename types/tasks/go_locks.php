@@ -577,7 +577,7 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
  * @return bool
  */
 function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only){
-    if( $is_logged_in ) {
+    if( $is_logged_in || !$is_logged_in) {
         $is_locked = true;
         $user_terms = array();
         $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);

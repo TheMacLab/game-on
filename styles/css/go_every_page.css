@@ -975,6 +975,14 @@ input#go_pass_lock::-moz-placeholder {
     list-style: none;
 }
 
+.fit_and_box .featherlight-content {
+	padding: 0px !important;
+	border-bottom: 0px !important;
+	background:rgba(0,0,0,0 ) !important;
+	margin-left: 0% !important;
+	margin-right: 0% !important;
+}
+
 
 .featherlight-iframe .featherlight-content {
     width: 80%;

@@ -85,26 +85,9 @@ function go_video_link( $atts, $video_url ) {
 		if ( $video_title ) {
 			//return "<a href='#'  data-featherlight='<video controls><source src=\"".$video_url."\"></video>'>{$video_title}</a>";
             //return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>{$video_title}</a>";
-            return "<a  class='featherlight_wrapper_vid_link' href='<div id=\"go_video_container\" style=\"
-    height: 90vh;
-    overflow: hidden;
-\"> <video controls autoplay style=\"
-    height: 100%;
-\">
-  <source src=\"{$video_url}\" type=\"video/mp4\">
-Your browser does not support the video tag.
-</video></div>'    >{$video_title}</a> ";
+            return "<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden;\"> <video controls autoplay style=\"height: 100%;\"><source src=\"{$video_url}\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' >{$video_title}</a> ";
 		} else {
-			//return "<a href='#'  data-featherlight='<div class=\"video-wrapper\"><video class=\"video\" controls><source src=\"".$video_url."\"></video></div>'>video</a>";
-            return "<a  class='featherlight_wrapper_vid_link' href='<div id=\"go_video_container\" style=\"
-    height: 90vh;
-    overflow: hidden;
-\"> <video controls autoplay style=\"
-    height: 100%;
-\">
-  <source src=\"{$video_url}\" type=\"video/mp4\">
-Your browser does not support the video tag.
-</video></div>'    >Video</a> ";
+            return "<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden;\"> <video controls autoplay style=\"height: 100%;\"><source src=\"{$video_url}\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' >Video</a> ";
 
         }
 
@@ -165,11 +148,10 @@ function go_video($atts){
 
     $video_url = $atts['video_url'];;
 
-    $lightbox = "
-    <video class='wp-video-shortcode' preload='metadata' src='{$video_url }?_=1' style='width: 200px;'><source src='{$video_url }?_=1'><a href='{$video_url }'>{$video_url }</a></video>
-    "
-;
-    return $lightbox;
+    $lightbox = "[video mp4=" . $video_url . "][/video]";
+    //<video class='wp-video-shortcode' preload='metadata' src='{$video_url }?_=1' style='width: 200px;'><source src='{$video_url }?_=1'><a href='{$video_url }'>{$video_url }</a></video>
+
+    return do_shortcode($lightbox);
 
 }
 add_shortcode( 'go_video','go_video' );
