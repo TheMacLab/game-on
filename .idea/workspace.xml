@@ -3,16 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/go_shortcodes.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_shortcodes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/admin/min/go_admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/admin/min/go_admin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_every_page.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_every_page.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/front/min/go_frontend.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/front/min/go_frontend.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_locks.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/go_locks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/task_shortcode.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/task_shortcode.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -60,15 +51,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_admin.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="go_frontend.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss">
           <provider selected="true" editor-type-id="text-editor">
@@ -81,8 +63,8 @@
       <file leaf-file-name="go_videos_fit_and_box.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="182" column="10" selection-start-line="182" selection-start-column="10" selection-end-line="182" selection-end-column="10" />
+            <state relative-caret-position="178">
+              <caret line="161" column="144" selection-start-line="161" selection-start-column="126" selection-end-line="161" selection-end-column="144" />
               <folding>
                 <element signature="n#!!block;n#go_native_video_resize#0" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
@@ -102,8 +84,8 @@
       <file leaf-file-name="task_shortcode.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="321" column="32" selection-start-line="321" selection-start-column="32" selection-end-line="321" selection-end-column="32" />
+            <state relative-caret-position="159">
+              <caret line="509" selection-start-line="509" selection-end-line="509" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#go_admin_content#0;n#!!top" />
@@ -123,7 +105,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_locks.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_locks.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/types/tasks/go_locks.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="125">
@@ -132,17 +114,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_shortcodes.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="go_shortcodes.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/go_shortcodes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="81" selection-start-line="81" selection-end-line="81" />
+            <state relative-caret-position="433">
+              <caret line="168" selection-start-line="168" selection-end-line="168" />
               <folding>
                 <element signature="n#go_list_user_URL#0;n#!!top" />
                 <element signature="n#listurl#0;n#!!top" />
                 <element signature="n#go_display_video#0;n#!!top" />
+                <element signature="n#go_video#0;n#!!top" />
                 <element signature="n#style#0;n#video#0;n#!!top" expanded="true" />
-                <element signature="n#go_lightbox_url#0;n#!!top" />
                 <element signature="n#go_page_grabber_shortcode#0;n#!!top" />
                 <element signature="n#go_post_grabber_shortcode#0;n#!!top" />
                 <element signature="n#go_post_grabber_content_exerpt_shortcode#0;n#!!top" />
@@ -157,6 +139,15 @@
                 <element signature="n#go_get_all_terms#0;n#!!top" />
                 <element signature="n#go_get_all_posts#0;n#!!top" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shortcodes.php" pinned="false" current-in-tab="false">
+        <entry file="file:///Applications/MAMP/htdocs/go4/wp-includes/shortcodes.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="194">
+              <caret line="330" selection-start-line="330" selection-end-line="330" />
             </state>
           </provider>
         </entry>
@@ -206,8 +197,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>edit</find>
-      <find>gmt</find>
       <find>messages</find>
       <find>go_award_badge</find>
       <find>Maps</find>
@@ -230,12 +219,14 @@
       <find>featherlight_wrapper_vid_link</find>
       <find>video</find>
       <find>_=1</find>
-      <find>resize</find>
-      <find>featherlight_wrapper_vid_shortcode</find>
       <find>go_hidden_footer</find>
       <find>go_task_render_chain_pagination</find>
-      <find>$is_logged_in$is_logged_in</find>
+      <find>resize</find>
       <find>$is_logged_in</find>
+      <find>$is_logged_in$is_logged_in</find>
+      <find>fit_and_box</find>
+      <find>featherlight_wrapper_vid_shortcode</find>
+      <find>go_video_container</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -294,10 +285,10 @@
         <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
         <option value="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
-        <option value="$PROJECT_DIR$/src/go_shortcodes.php" />
-        <option value="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" />
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/types/tasks/go_locks.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" />
+        <option value="$PROJECT_DIR$/src/go_shortcodes.php" />
       </list>
     </option>
   </component>
@@ -310,7 +301,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="PhpDebugGeneral" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
+  <component name="PhpDebugGeneral" listening_started="true" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
   <component name="PhpServers">
     <servers>
       <server host="localhost" id="3921dc9d-31df-49b8-a3ad-25e0abc23ff5" name="localhost">
@@ -522,16 +513,15 @@
       <workItem from="1533758962289" duration="66145000" />
       <workItem from="1534372082665" duration="15708000" />
       <workItem from="1534390673582" duration="1222000" />
-      <workItem from="1534459174458" duration="81962000" />
+      <workItem from="1534459174458" duration="82874000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1908738000" />
+    <option name="totallyTimeSpent" value="1909650000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="155" y="23" width="1658" height="979" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5113095" side_tool="true" weight="0.3135776" />
@@ -542,10 +532,10 @@
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19541617" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
-      <window_info active="true" anchor="bottom" id="Find" order="2" sideWeight="0.49009386" visible="true" weight="0.3756906" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49009386" weight="0.3756906" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.48869047" weight="0.3127072" />
+      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.48869047" visible="true" weight="0.3127072" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="PHP-CGI Server" order="12" />
@@ -836,9 +826,9 @@
           <option name="timeStamp" value="584" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>509</line>
-          <option name="timeStamp" value="585" />
+          <url>file://$PROJECT_DIR$/src/go_shortcodes.php</url>
+          <line>165</line>
+          <option name="timeStamp" value="586" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/front/scripts/go_every_page.js</url>
@@ -849,7 +839,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="586" />
+      <option name="time" value="587" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="index.php">
@@ -887,7 +877,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
     <entry file="file://$PROJECT_DIR$/types/tasks/task-admin.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
@@ -1325,52 +1314,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="182" column="10" selection-start-line="182" selection-start-column="10" selection-end-line="182" selection-end-column="10" />
-          <folding>
-            <element signature="n#!!block;n#go_native_video_resize#0" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_shortcodes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
-          <folding>
-            <element signature="n#go_list_user_URL#0;n#!!top" />
-            <element signature="n#listurl#0;n#!!top" />
-            <element signature="n#go_display_video#0;n#!!top" />
-            <element signature="n#style#0;n#video#0;n#!!top" expanded="true" />
-            <element signature="n#go_lightbox_url#0;n#!!top" />
-            <element signature="n#go_page_grabber_shortcode#0;n#!!top" />
-            <element signature="n#go_post_grabber_shortcode#0;n#!!top" />
-            <element signature="n#go_post_grabber_content_exerpt_shortcode#0;n#!!top" />
-            <element signature="n#go_get_displayname_function#0;n#!!top" />
-            <element signature="n#go_get_login_function#0;n#!!top" />
-            <element signature="n#go_latest_post_url_shortcode#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_login#0;n#!!top" />
-            <element signature="n#go_get_category#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_get_all_terms#0;n#!!top" />
-            <element signature="n#go_get_all_posts#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_tasks.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
@@ -1387,10 +1330,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///Applications/MAMP/htdocs/go4/wp-includes/shortcodes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="330" selection-start-line="330" selection-end-line="330" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/go_locks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="579" column="39" selection-start-line="579" selection-start-column="39" selection-end-line="579" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="321" column="32" selection-start-line="321" selection-start-column="32" selection-end-line="321" selection-end-column="32" />
+        <state relative-caret-position="159">
+          <caret line="509" selection-start-line="509" selection-end-line="509" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#go_admin_content#0;n#!!top" />
@@ -1409,10 +1366,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/go_locks.php">
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="579" column="39" selection-start-line="579" selection-start-column="39" selection-end-line="579" selection-end-column="39" />
+        <state relative-caret-position="178">
+          <caret line="161" column="144" selection-start-line="161" selection-start-column="126" selection-end-line="161" selection-end-column="144" />
+          <folding>
+            <element signature="n#!!block;n#go_native_video_resize#0" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_shortcodes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="168" selection-start-line="168" selection-end-line="168" />
+          <folding>
+            <element signature="n#go_list_user_URL#0;n#!!top" />
+            <element signature="n#listurl#0;n#!!top" />
+            <element signature="n#go_display_video#0;n#!!top" />
+            <element signature="n#go_video#0;n#!!top" />
+            <element signature="n#style#0;n#video#0;n#!!top" expanded="true" />
+            <element signature="n#go_page_grabber_shortcode#0;n#!!top" />
+            <element signature="n#go_post_grabber_shortcode#0;n#!!top" />
+            <element signature="n#go_post_grabber_content_exerpt_shortcode#0;n#!!top" />
+            <element signature="n#go_get_displayname_function#0;n#!!top" />
+            <element signature="n#go_get_login_function#0;n#!!top" />
+            <element signature="n#go_latest_post_url_shortcode#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#go_login#0;n#!!top" />
+            <element signature="n#go_get_category#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#go_get_all_terms#0;n#!!top" />
+            <element signature="n#go_get_all_posts#0;n#!!top" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -165,10 +165,7 @@ function go_lightbox_url($atts){
     $link_text = $atts['link_text'];
     $link_url = $atts['link_url'];;
 
-    $lightbox = "
-    
-    <a class='featherlight_wrapper_iframe' href='{$link_url}' data-featherlight='iframe'>{$link_text}</a>
-";
+    $lightbox = "<a href='{$link_url}' data-featherlight='iframe' data-featherlight-iframe-height='100%' data-featherlight-iframe-width='100%'>{$link_text}</a>";
     return $lightbox;
 
 }
