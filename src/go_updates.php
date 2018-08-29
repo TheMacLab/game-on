@@ -125,7 +125,7 @@ function go_update_bonus_loot ($post_id){
         foreach ($values as $value) { //for each drop, test to award randomly
             $drop = $value['drop'] * 1000;
 
-            $rand = rand(0, $drop_total);
+            $rand = mt_rand(0, $drop_total);
             if ( $rand <= $drop) {
                 $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
                 $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );

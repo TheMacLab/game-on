@@ -2,25 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/media/down.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/media/milestone.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/media/notification.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/media/wayup.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/media/win.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/airhorn.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/down.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/gold.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/milestone.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/notification.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/wayup.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/win.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_datatable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_datatable.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/go_updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_updates.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -80,8 +61,8 @@
       <file leaf-file-name="go_updates.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/go_updates.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="939" column="58" selection-start-line="939" selection-start-column="49" selection-end-line="939" selection-end-column="58" />
+            <state relative-caret-position="264">
+              <caret line="130" column="79" lean-forward="true" selection-start-line="130" selection-start-column="79" selection-end-line="130" selection-end-column="79" />
               <folding>
                 <element signature="n#go_get_health_mod#0;n#!!top" />
                 <element signature="n#go_get_user_loot#0;n#!!top" />
@@ -310,8 +291,8 @@
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" />
         <option value="$PROJECT_DIR$/game-on.php" />
-        <option value="$PROJECT_DIR$/src/go_updates.php" />
         <option value="$PROJECT_DIR$/js/front/go_enque_js.php" />
+        <option value="$PROJECT_DIR$/src/go_updates.php" />
       </list>
     </option>
   </component>
@@ -566,12 +547,12 @@
       <workItem from="1534390673582" duration="1222000" />
       <workItem from="1534459174458" duration="85924000" />
       <workItem from="1535418952617" duration="9181000" />
-      <workItem from="1535491366082" duration="5636000" />
+      <workItem from="1535491366082" duration="5858000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1927517000" />
+    <option name="totallyTimeSpent" value="1927739000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="53" width="1658" height="979" extended-state="0" />
@@ -1383,8 +1364,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_updates.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="939" column="58" selection-start-line="939" selection-start-column="49" selection-end-line="939" selection-end-column="58" />
+        <state relative-caret-position="264">
+          <caret line="130" column="79" lean-forward="true" selection-start-line="130" selection-start-column="79" selection-end-line="130" selection-end-column="79" />
           <folding>
             <element signature="n#go_get_health_mod#0;n#!!top" />
             <element signature="n#go_get_user_loot#0;n#!!top" />
