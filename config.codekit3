@@ -2619,11 +2619,18 @@
 		"oAP": "\/js\/front\/media\/airhorn.mp3",
 		"oF": 0
 		},
-	"\/js\/front\/media\/down.wav": {
+	"\/js\/front\/media\/coins.mp3": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/js\/front\/media\/down.wav",
+		"oAP": "\/js\/front\/media\/coins.mp3",
+		"oF": 0
+		},
+	"\/js\/front\/media\/down.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/js\/front\/media\/down.mp3",
 		"oF": 0
 		},
 	"\/js\/front\/media\/gold.mp3": {
@@ -2633,32 +2640,32 @@
 		"oAP": "\/js\/front\/media\/gold.mp3",
 		"oF": 0
 		},
-	"\/js\/front\/media\/milestone.wav": {
+	"\/js\/front\/media\/milestone.mp3": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/js\/front\/media\/milestone.wav",
+		"oAP": "\/js\/front\/media\/milestone.mp3",
 		"oF": 0
 		},
-	"\/js\/front\/media\/notification.wav": {
+	"\/js\/front\/media\/milestone2.mp3": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/js\/front\/media\/notification.wav",
+		"oAP": "\/js\/front\/media\/milestone2.mp3",
 		"oF": 0
 		},
-	"\/js\/front\/media\/wayup.wav": {
+	"\/js\/front\/media\/notification.mp3": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/js\/front\/media\/wayup.wav",
+		"oAP": "\/js\/front\/media\/notification.mp3",
 		"oF": 0
 		},
-	"\/js\/front\/media\/win.wav": {
+	"\/js\/front\/media\/win.mp3": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/js\/front\/media\/win.wav",
+		"oAP": "\/js\/front\/media\/win.mp3",
 		"oF": 0
 		},
 	"\/js\/front\/min\/go_admin_notifications-min.js": {
@@ -2825,34 +2832,6 @@
 		"oAP": "\/mail\/PHPMailerAutoload.php",
 		"oF": 0
 		},
-	"\/media\/airhorn.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/media\/airhorn.mp3",
-		"oF": 0
-		},
-	"\/media\/down.wav": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/media\/down.wav",
-		"oF": 0
-		},
-	"\/media\/gold.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/media\/gold.mp3",
-		"oF": 0
-		},
-	"\/media\/milestone.wav": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/media\/milestone.wav",
-		"oF": 0
-		},
 	"\/media\/mysterybox_inner_glow_sm.gif": {
 		"ft": 4194304,
 		"iS": 82102,
@@ -2860,27 +2839,6 @@
 		"oAP": "\/media\/mysterybox_inner_glow_sm.gif",
 		"oF": 0,
 		"opt": 0
-		},
-	"\/media\/notification.wav": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/media\/notification.wav",
-		"oF": 0
-		},
-	"\/media\/wayup.wav": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/media\/wayup.wav",
-		"oF": 0
-		},
-	"\/media\/win.wav": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/media\/win.wav",
-		"oF": 0
 		},
 	"\/README.html": {
 		"cB": 0,

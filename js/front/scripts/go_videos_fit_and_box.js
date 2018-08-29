@@ -159,7 +159,7 @@ function Max_width_and_LightboxNow(){
                     var vidURL = jQuery(this).find('video').attr('src');
                     console.log("src:" + vidURL);
                     //jQuery(this).prepend('<a  class="featherlight_wrapper_vid_native" href="#"><span style=\'position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 4;\'></span></a>');
-                    jQuery(this).prepend("<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden;\"> <video controls autoplay style=\"height: 100%;\"><source src=\"" + vidURL + "\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' ><span style=\"position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 2;\"></span></a> ")
+                    jQuery(this).prepend("<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden;\"> <video controls autoplay style=\"height: 100%;\"><source src=\"" + vidURL + "\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' ><span style=\"position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 4;\"></span></a> ")
                     //jQuery(this).children(".featherlight_wrapper_vid_shortcode").prepend("<span style=\"position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;\"></span>");
                     //jQuery(".mejs-overlay-play").unbind("click");
                     jQuery(this).addClass('wrapped');

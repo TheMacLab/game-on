@@ -128,9 +128,6 @@ function go_table_actions() {
 	";
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
-
-
-
 }
 
 function go_table_totals() {
@@ -155,7 +152,6 @@ function go_table_totals() {
     dbDelta( $sql );
 
     //add_option( 'go_db_version', $go_db_version );
-
 }
 
 /**
@@ -168,6 +164,7 @@ function go_table_totals() {
  * Activate for existing sites on plugin activation
  * @param $network_wide
  */
+//I DOn't think this is active--fix this.
 function go_on_activate_msdb( $network_wide ) {
     global $wpdb;
     if ( is_multisite() && $network_wide ) {
@@ -211,8 +208,8 @@ function go_on_delete_blog( $tables ) {
     global $wpdb;
     $tables[] = $wpdb->prefix . 'go_tasks';
     $tables[] = $wpdb->prefix . 'go_actions';
-    $tables[] = $wpdb->prefix . 'go_store';
-    $tables[] = $wpdb->prefix . 'go_totals';
+    $tables[] = $wpdb->prefix . 'go_loot';
+    //$tables[] = $wpdb->prefix . 'go_totals';
 
     return $tables;
 }

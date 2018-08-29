@@ -57,6 +57,7 @@ function go_update_bonus_loot ($post_id){
                 ORDER BY id DESC LIMIT 1", $post_id, $user_id, 'bonus_loot'));
     //ob_start();
     if(!empty($previous_bonus_attempt)) {
+        //if(0==1){
 
         go_noty_message_generic('error', '', "You have previously attempted this bonus.  No award given.");
 
@@ -118,10 +119,13 @@ function go_update_bonus_loot ($post_id){
             $drop_total = 100;
         }
 
+        $drop_total = $drop_total * 1000;
+
         $winner = false;
         foreach ($values as $value) { //for each drop, test to award randomly
-            $drop = $value['drop'];
-            $rand = rand(1, $drop_total);
+            $drop = $value['drop'] * 1000;
+
+            $rand = rand(0, $drop_total);
             if ( $rand <= $drop) {
                 $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
                 $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
@@ -879,7 +883,7 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         if ($rank_num > $old_rank){
             update_user_meta($user_id, "go_rank", $rank_num);
             go_noty_level_up($rank_num, $rank_name );
-            echo "<script>var audio = new Audio( PluginDir.url + 'media/milestone.wav' ); audio.play();</script>";
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/milestone2.mp3' ); audio.play();</script>";
         }
 
         if ($rank_num < $old_rank){
@@ -933,10 +937,10 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         }
 
         if ($up == true){
-            echo "<script>var audio = new Audio( PluginDir.url + 'media/win.wav' ); audio.play();</script>";
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/coins.mp3' ); audio.play();</script>";
         }
         if ($down == true){
-            echo "<script>var audio = new Audio( PluginDir.url + 'media/down.wav' ); audio.play();</script>";
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/down.mp3' ); audio.play();</script>";
         }
 
     }

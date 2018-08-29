@@ -5,7 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
-add_filter('acf/settings/show_admin', '__return_false');
+//add_filter('acf/settings/show_admin', '__return_false');
 
 
 if( function_exists('acf_add_local_field_group') ):
@@ -62,6 +62,28 @@ if( function_exists('acf_add_local_field_group') ):
         'key' => 'group_5a8b6cf082397',
         'title' => 'Map Settings',
         'fields' => array(
+            array(
+                'key' => 'field_5b8307b4eaf72',
+                'label' => 'taxonomy',
+                'name' => 'taxonomy',
+                'type' => 'taxonomy',
+                'instructions' => '',
+                'required' => 1,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'taxonomy' => 'task_chains',
+                'field_type' => 'select',
+                'allow_null' => 0,
+                'add_term' => 1,
+                'save_terms' => 0,
+                'load_terms' => 1,
+                'return_format' => 'id',
+                'multiple' => 0,
+            ),
             array(
                 'key' => 'field_5afcb6e0dad88',
                 'label' => 'Locked by Previous',
@@ -1839,7 +1861,7 @@ if( function_exists('acf_add_local_field_group') ):
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => '.01',
                             ),
                             array(
                                 'key' => 'field_5adbfdbfa5d4c',
@@ -1881,7 +1903,7 @@ if( function_exists('acf_add_local_field_group') ):
                                 'append' => '%',
                                 'min' => 0,
                                 'max' => 100,
-                                'step' => '',
+                                'step' => '.001',
                             ),
                         ),
                     ),
@@ -5647,7 +5669,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => '.01',
                             ),
                             array(
                                 'key' => 'field_5adbff00683ea',
@@ -5910,7 +5932,7 @@ The master password that is set in the options page will work here, but you may 
                                         'append' => '',
                                         'min' => 0,
                                         'max' => '',
-                                        'step' => '',
+                                        'step' => '.01',
                                     ),
                                     array(
                                         'key' => 'field_5b526d2e79586',
@@ -5952,7 +5974,7 @@ The master password that is set in the options page will work here, but you may 
                                         'append' => '%',
                                         'min' => 0,
                                         'max' => 100,
-                                        'step' => '',
+                                        'step' => '.001',
                                     ),
                                 ),
                             ),
@@ -6162,7 +6184,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => '.01',
                             ),
                             array(
                                 'key' => 'field_5b00f8f508726',
