@@ -1,11 +1,9 @@
 <?php
 //https://codex.wordpress.org/Creating_Tables_with_Plugins
-
 global $wpdb;
 global $version;
 global $go_db_version;
 $go_db_version = $version;
-
 
 function go_update_db_check() {
     global $go_db_version;
@@ -109,7 +107,7 @@ function go_table_actions() {
 			global_mod DECIMAL (10,4),
 			xp INT,
 			gold DECIMAL (10,2),
-			health INT,
+			health DECIMAL (10,2),
 			c4 INT,
 			badges VARCHAR (4096),
 			groups VARCHAR (4096),
@@ -136,7 +134,7 @@ function go_table_totals() {
     $sql = "
 		CREATE TABLE $table_name (
 			id bigint(20) NOT NULL AUTO_INCREMENT,
-			uid bigint(20) NOT NULL UNIQUE,
+			uid bigint(20) NOT NULL,
 			xp INT unsigned DEFAULT 0,
 			gold DECIMAL (10,2) unsigned DEFAULT 0,
 			health DECIMAL (10,2) unsigned DEFAULT 100,
@@ -145,9 +143,10 @@ function go_table_totals() {
 			groups VARCHAR (4096),
 			badge_count INT DEFAULT 0,
 			PRIMARY KEY  (id),
-            KEY uid (uid)         
+            CONSTRAINT user_id UNIQUE (uid)                
 		);
 	";
+
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
 
@@ -164,7 +163,7 @@ function go_table_totals() {
  * Activate for existing sites on plugin activation
  * @param $network_wide
  */
-//I DOn't think this is active--fix this.
+//I DOn't think this is active--fix this. (it's called in the main file.)
 function go_on_activate_msdb( $network_wide ) {
     global $wpdb;
     if ( is_multisite() && $network_wide ) {

@@ -2,7 +2,291 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/acf.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/acf.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/css/acf-field-group.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/css/acf-field-group.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/css/acf-global.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/css/acf-global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/css/acf-input.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/css/acf-input.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/README.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/acf.eot" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/acf.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/acf.svg" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/acf.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/acf.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/acf.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/acf.woff" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/acf.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/acf.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/acf.woff2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/font/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/font/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/images/spinner.gif" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/images/spinner.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/images/spinner@2x.gif" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/images/spinner@2x.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/images/sprite.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/images/sprite@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-bg_highlight-soft_0_ffffff_1x100.png" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-bg_highlight-soft_0_ffffff_1x100.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-icons_444444_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-icons_444444_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-icons_DDDDDD_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-icons_DDDDDD_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-icons_ffffff_256x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/images/ui-icons_ffffff_256x240.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/jquery-ui-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/jquery-ui.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/jquery-ui.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/jquery-ui.min-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/jquery-ui.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/datepicker/jquery-ui.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2-spinner.gif" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2-spinner.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.min-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.png" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2x2.png" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/3/select2x2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.full-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.full.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.full.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.full.min-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.full.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.full.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.min-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.min-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/select2/4/select2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/js/acf-field-group.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/js/acf-field-group.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/js/acf-field-group.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/js/acf-field-group.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/js/acf-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/js/acf-input.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/assets/js/acf-input.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/assets/js/acf-input.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/admin-field-group.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/admin-field-group.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/admin-field-groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/admin-field-groups.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/admin-tools.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/admin-tools.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/install-network.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/install-updates.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/install.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/settings-addons.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/settings-addons.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/settings-info.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/settings-info.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/tools/class-acf-admin-tool-export.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/tools/class-acf-admin-tool-export.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/tools/class-acf-admin-tool-import.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/tools/class-acf-admin-tool-import.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/tools/class-acf-admin-tool.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/tools/class-acf-admin-tool.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-field-conditional-logic.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-field-conditional-logic.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-field.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-field.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-fields.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-fields.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-locations.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-locations.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-options.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/field-group-options.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/html-admin-tools.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/html-admin-tools.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/html-location-group.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/html-location-group.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/html-location-rule.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/html-location-rule.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/install-network.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/install-notice.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/install.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/settings-addons.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/settings-addons.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/admin/views/settings-info.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/admin/views/settings-info.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/ajax.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-field-group.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-field-group.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-field.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-field.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-helpers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-input.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-input.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-value.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-value.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/cache.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/compatibility.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/compatibility.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/deprecated.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/deprecated.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-accordion.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-accordion.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-button-group.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-button-group.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-checkbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-checkbox.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-color_picker.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-color_picker.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-date_picker.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-date_picker.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-date_time_picker.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-date_time_picker.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-email.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-email.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-file.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-file.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-google-map.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-google-map.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-group.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-group.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-image.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-image.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-link.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-link.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-message.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-number.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-number.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-oembed.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-oembed.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-output.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-output.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-page_link.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-page_link.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-password.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-password.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-post_object.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-post_object.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-radio.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-radio.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-range.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-range.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-relationship.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-relationship.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-select.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-select.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-separator.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-separator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-tab.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-taxonomy.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-taxonomy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-text.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-text.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-textarea.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-textarea.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-time_picker.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-time_picker.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-true_false.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-true_false.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-url.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-url.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-user.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-wysiwyg.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field-wysiwyg.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/fields/class-acf-field.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-attachment.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-attachment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-comment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-customizer.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-customizer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-front.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-front.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-gutenberg.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-gutenberg.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-nav-menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-nav-menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-post.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-taxonomy.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-taxonomy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-user.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/forms/form-widget.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/forms/form-widget.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/input.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/json.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/json.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/local.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/local.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-attachment.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-attachment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-comment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-current-user-role.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-current-user-role.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-current-user.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-current-user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-nav-menu-item.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-nav-menu-item.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-nav-menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-nav-menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page-parent.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page-parent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page-type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-category.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-format.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-format.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-status.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-status.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-taxonomy.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-taxonomy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post-type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-taxonomy.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-taxonomy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-user-form.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-user-form.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-user-role.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-user-role.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-widget.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location-widget.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/locations/class-acf-location.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/loop.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/loop.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/media.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/revisions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/revisions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/third-party.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/third-party.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/updates.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/validation.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/validation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/walkers/class-acf-walker-nav-menu-edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/walkers/class-acf-walker-nav-menu-edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/walkers/class-acf-walker-taxonomy-field.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/walkers/class-acf-walker-taxonomy-field.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/includes/wpml.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/wpml.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ar.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ar.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ar.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ar.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-bg_BG.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-bg_BG.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-bg_BG.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-bg_BG.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-cs_CZ.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-cs_CZ.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-cs_CZ.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-cs_CZ.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-de_CH.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-de_CH.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-de_CH.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-de_CH.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE_formal.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE_formal.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE_formal.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-de_DE_formal.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-es_ES.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-es_ES.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-es_ES.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-es_ES.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-fa_IR.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-fa_IR.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-fa_IR.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-fa_IR.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-fi.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-fi.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-fi.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-fi.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-fr_FR.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-fr_FR.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-fr_FR.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-fr_FR.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-he_IL.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-he_IL.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-he_IL.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-he_IL.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-hu_HU.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-hu_HU.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-hu_HU.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-hu_HU.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-id_ID.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-id_ID.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-id_ID.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-id_ID.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-it_IT.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-it_IT.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-it_IT.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-it_IT.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ja.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ja.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ja.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ja.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-nb_NO.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-nb_NO.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-nb_NO.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-nb_NO.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-nl_NL.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-nl_NL.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-nl_NL.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-nl_NL.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-pl_PL.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-pl_PL.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-pl_PL.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-pl_PL.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-pt_BR.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-pt_BR.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-pt_BR.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-pt_BR.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-pt_PT.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-pt_PT.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-pt_PT.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-pt_PT.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ro_RO.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ro_RO.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ro_RO.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ro_RO.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ru_RU.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ru_RU.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-ru_RU.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-ru_RU.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-sk_SK.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-sk_SK.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-sk_SK.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-sk_SK.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-sv_SE.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-sv_SE.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-sv_SE.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-sv_SE.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-tr_TR.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-tr_TR.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-tr_TR.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-tr_TR.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-uk.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-uk.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-uk.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-uk.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-zh_CN.mo" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-zh_CN.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf-zh_CN.po" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf-zh_CN.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/lang/acf.pot" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/lang/acf.pot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/acf-pro.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/acf-pro.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/admin/admin-options-page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/admin/admin-options-page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/admin/admin-settings-updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/admin/admin-settings-updates.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/admin/views/html-options-page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/admin/views/html-options-page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/admin/views/html-settings-updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/admin/views/html-settings-updates.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/css/acf-pro-field-group-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/css/acf-pro-field-group.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/assets/css/acf-pro-field-group.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/css/acf-pro-input-min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/css/acf-pro-input.css" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/assets/css/acf-pro-input.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-field-group.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-field-group.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-field-group.min-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-field-group.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-field-group.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-input.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-input.min-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-input.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/assets/js/acf-pro-input.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-clone.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-clone.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-flexible-content.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-flexible-content.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-gallery.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-gallery.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-repeater.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/fields/class-acf-field-repeater.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/locations/class-acf-location-options-page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/locations/class-acf-location-options-page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/options-page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/options-page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/pro/updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/pro/updates.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/acf/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/admin/min/go_clipboard_combined-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_clipboard_combined-min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/admin/scripts/go_messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/scripts/go_messages.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/blogs/go_user_blog.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/blogs/go_user_blog.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_admin_bar.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_admin_bar.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_admin_menus.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_admin_menus.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_blogs.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_blogs.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_clipboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_clipboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_datatable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_datatable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_map.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_map.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_media.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_messages.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_returns.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_returns.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_stats.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_store.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_store.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/go_updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_updates.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/admin/min/go_admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/admin/min/go_admin.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/css/go_every_page.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_every_page.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/front/min/go_frontend.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/front/min/go_frontend.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/store/super-store.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/store/super-store.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/tasks/go_checks.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/go_checks.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/tasks/task-chains.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/task-chains.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/tasks/task_shortcode.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/task_shortcode.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/types.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/types.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,14 +315,329 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game-on.php">
+    <leaf>
+      <file leaf-file-name="go_stats.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/go_stats.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="385" column="2" selection-start-line="385" selection-start-column="2" selection-end-line="385" selection-end-column="2" />
+            <state relative-caret-position="181">
+              <caret line="573" column="18" selection-start-line="573" selection-start-column="18" selection-end-line="573" selection-end-column="18" />
               <folding>
+                <element signature="e#7#17#0#PHP" />
+                <element signature="n#go_stats_overlay#0;n#!!top" />
+                <element signature="e#197#207#0#PHP" />
+                <element signature="n#go_admin_bar_stats#0;n#!!top" />
+                <element signature="e#266#493#0#PHP" />
+                <element signature="e#396#493#0#PHP" />
+                <element signature="e#610#615#0#PHP" />
+                <element signature="e#641#646#0#PHP" />
+                <element signature="e#1007#1174#0#PHP" />
+                <element signature="e#1179#1280#0#PHP" />
+                <element signature="e#1887#2052#0#PHP" />
+                <element signature="e#2006#2052#0#PHP" />
+                <element signature="e#2131#2388#0#PHP" />
+                <element signature="e#2293#2388#0#PHP" />
+                <element signature="e#2478#2636#0#PHP" />
+                <element signature="e#2558#2636#0#PHP" />
+                <element signature="e#2929#4976#0#PHP" />
+                <element signature="e#3495#3661#0#PHP" />
+                <element signature="e#3796#4388#0#PHP" />
+                <element signature="e#4263#4388#0#PHP" />
+                <element signature="e#4397#4535#0#PHP" />
+                <element signature="e#4467#4535#0#PHP" />
+                <element signature="e#4936#4976#0#PHP" />
+                <element signature="e#4983#5796#0#PHP" />
+                <element signature="e#5244#5406#0#PHP" />
+                <element signature="e#5326#5406#0#PHP" />
+                <element signature="e#5759#5796#0#PHP" />
+                <element signature="e#5802#6124#0#PHP" />
+                <element signature="e#6087#6124#0#PHP" />
+                <element signature="e#6130#6436#0#PHP" />
+                <element signature="e#6401#6436#0#PHP" />
+                <element signature="e#6623#6628#0#PHP" />
+                <element signature="e#6727#6732#0#PHP" />
+                <element signature="e#6995#7000#0#PHP" />
+                <element signature="e#7017#7188#0#PHP" />
+                <element signature="e#7840#7845#0#PHP" />
+                <element signature="e#7863#8016#0#PHP" />
+                <element signature="e#8033#8194#0#PHP" />
+                <element signature="e#8211#8380#0#PHP" />
+                <element signature="e#8397#8549#0#PHP" />
+                <element signature="e#8663#8668#0#PHP" />
+                <element signature="e#8799#8933#0#PHP" />
+                <element signature="e#9025#9030#0#PHP" />
+                <element signature="e#9182#9187#0#PHP" />
+                <element signature="e#9429#9434#0#PHP" />
+                <element signature="e#9691#9696#0#PHP" />
+                <element signature="e#9791#9796#0#PHP" />
+                <element signature="e#9813#9948#0#PHP" />
+                <element signature="e#9996#10001#0#PHP" />
+                <element signature="e#10015#10192#0#PHP" />
+                <element signature="e#10493#10498#0#PHP" />
+                <element signature="e#10512#10599#0#PHP" />
+                <element signature="e#10741#19245#0#PHP" />
+                <element signature="e#19246#19299#0#PHP" />
+                <element signature="n#go_stats_about#0;n#!!top" />
+                <element signature="e#19367#19473#0#PHP" />
+                <element signature="e#19479#19549#0#PHP" />
+                <element signature="e#19774#19779#0#PHP" />
+                <element signature="e#19888#20162#0#PHP" />
+                <element signature="e#20200#20330#0#PHP" />
+                <element signature="e#21713#21991#0#PHP" />
+                <element signature="e#21795#21985#0#PHP" />
+                <element signature="n#go_stats_task_list#0;n#!!top" />
+                <element signature="e#23159#23246#0#PHP" />
+                <element signature="e#23344#23419#0#PHP" />
+                <element signature="e#23434#23614#0#PHP" />
+                <element signature="e#23462#23608#1#PHP" />
+                <element signature="n#style#0;n#td#0;n#!!top" expanded="true" />
+                <element signature="e#24826#24984#0#PHP" />
+                <element signature="e#24922#24927#0#PHP" />
+                <element signature="e#24993#25155#0#PHP" />
+                <element signature="e#25091#25096#0#PHP" />
+                <element signature="e#25164#25330#0#PHP" />
+                <element signature="e#25264#25269#0#PHP" />
+                <element signature="e#25339#25497#0#PHP" />
+                <element signature="e#25435#25440#0#PHP" />
+                <element signature="e#26163#26367#0#PHP" />
+                <element signature="e#26804#27389#0#PHP" />
+                <element signature="e#26968#27379#0#PHP" />
+                <element signature="e#27081#27365#0#PHP" />
+                <element signature="e#27199#27347#0#PHP" />
+                <element signature="e#27446#27899#0#PHP" />
+                <element signature="e#27483#27564#0#PHP" />
+                <element signature="e#27624#27889#0#PHP" />
+                <element signature="e#27739#27875#0#PHP" />
+                <element signature="e#28043#28244#0#PHP" />
+                <element signature="e#28075#28234#1#PHP" />
+                <element signature="e#28850#30051#0#PHP" />
+                <element signature="e#29136#30051#0#PHP" />
+                <element signature="e#29439#30051#0#PHP" />
+                <element signature="e#29518#30033#0#PHP" />
+                <element signature="e#29813#30033#0#PHP" />
+                <element signature="e#30339#30498#0#PHP" />
+                <element signature="e#30452#30498#0#PHP" />
+                <element signature="n#style#0;n#td#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#1;n#!!top" expanded="true" />
+                <element signature="e#31283#31343#0#PHP" />
+                <element signature="e#31352#31416#0#PHP" />
+                <element signature="e#31425#31493#0#PHP" />
+                <element signature="e#31502#31562#0#PHP" />
+                <element signature="e#31702#31726#0#PHP" />
+                <element signature="n#go_stats_single_task_activity_list#0;n#!!top" />
+                <element signature="e#31860#31947#0#PHP" />
+                <element signature="e#32067#32262#0#PHP" />
+                <element signature="e#32095#32256#1#PHP" />
+                <element signature="e#33483#37029#0#PHP" />
+                <element signature="e#34330#34398#0#PHP" />
+                <element signature="e#34407#34475#0#PHP" />
+                <element signature="e#34485#34704#0#PHP" />
+                <element signature="e#34714#35061#0#PHP" />
+                <element signature="e#34837#35051#0#PHP" />
+                <element signature="e#35071#35331#0#PHP" />
+                <element signature="e#35199#35321#0#PHP" />
+                <element signature="e#35340#35482#0#PHP" />
+                <element signature="e#35535#35725#0#PHP" />
+                <element signature="e#35680#35725#0#PHP" />
+                <element signature="e#35778#35962#0#PHP" />
+                <element signature="e#35917#35962#0#PHP" />
+                <element signature="e#36017#36206#0#PHP" />
+                <element signature="e#36160#36206#0#PHP" />
+                <element signature="e#36263#36506#0#PHP" />
+                <element signature="e#36455#36506#0#PHP" />
+                <element signature="e#37085#37178#0#PHP" />
+                <element signature="n#go_result_link#0;n#!!top" />
+                <element signature="e#37261#38397#0#PHP" />
+                <element signature="e#37499#38397#0#PHP" />
+                <element signature="e#37643#38104#0#PHP" />
+                <element signature="e#37883#38104#0#PHP" />
+                <element signature="e#38402#38618#0#PHP" />
+                <element signature="e#38655#38665#0#PHP" />
+                <element signature="n#go_stats_item_list#0;n#!!top" />
+                <element signature="e#38776#38863#0#PHP" />
+                <element signature="e#38968#39164#0#PHP" />
+                <element signature="e#38996#39158#1#PHP" />
+                <element signature="e#40496#40652#0#PHP" />
+                <element signature="e#40590#40595#0#PHP" />
+                <element signature="e#40661#40821#0#PHP" />
+                <element signature="e#40757#40762#0#PHP" />
+                <element signature="e#40830#40994#0#PHP" />
+                <element signature="e#40928#40933#0#PHP" />
+                <element signature="e#41003#41159#0#PHP" />
+                <element signature="e#41097#41102#0#PHP" />
+                <element signature="e#41229#41234#0#PHP" />
+                <element signature="e#41313#43824#0#PHP" />
+                <element signature="e#42284#42719#0#PHP" />
+                <element signature="e#42369#42709#0#PHP" />
+                <element signature="e#42482#42695#0#PHP" />
+                <element signature="e#42776#43166#0#PHP" />
+                <element signature="e#42813#42894#0#PHP" />
+                <element signature="e#42954#43156#0#PHP" />
+                <element signature="e#43484#43544#0#PHP" />
+                <element signature="e#43553#43617#0#PHP" />
+                <element signature="e#43626#43694#0#PHP" />
+                <element signature="e#43703#43763#0#PHP" />
+                <element signature="e#43896#43906#0#PHP" />
+                <element signature="n#go_stats_activity_list#0;n#!!top" />
+                <element signature="e#44970#45109#0#PHP" />
+                <element signature="e#45047#45052#0#PHP" />
+                <element signature="e#45118#45261#0#PHP" />
+                <element signature="e#45197#45202#0#PHP" />
+                <element signature="e#45351#45356#0#PHP" />
+                <element signature="e#45426#45565#0#PHP" />
+                <element signature="e#45503#45508#0#PHP" />
+                <element signature="e#45574#45722#0#PHP" />
+                <element signature="e#45660#45665#0#PHP" />
+                <element signature="e#45731#45883#0#PHP" />
+                <element signature="e#45819#45824#0#PHP" />
+                <element signature="e#46057#46205#0#PHP" />
+                <element signature="e#46143#46148#0#PHP" />
+                <element signature="e#46323#50565#0#PHP" />
+                <element signature="e#50567#50654#0#PHP" />
+                <element signature="n#go_activity_dataloader_ajax#0;n#!!top" />
+                <element signature="e#50833#51098#0#PHP" />
+                <element signature="e#51303#51469#0#PHP" />
+                <element signature="e#51588#52191#0#PHP" />
+                <element signature="e#52259#53215#0#PHP" />
+                <element signature="e#52349#52496#0#PHP" />
+                <element signature="e#52920#53184#0#PHP" />
+                <element signature="e#52988#53117#0#PHP" />
+                <element signature="e#53229#53755#0#PHP" />
+                <element signature="e#53343#53749#0#PHP" />
+                <element signature="e#53465#53630#0#PHP" />
+                <element signature="e#53562#53630#0#PHP" />
+                <element signature="e#53822#54032#0#PHP" />
+                <element signature="e#53850#53987#0#PHP" />
+                <element signature="e#53931#53987#0#PHP" />
+                <element signature="e#54632#54806#0#PHP" />
+                <element signature="e#54813#62126#0#PHP" />
+                <element signature="e#55895#56409#0#PHP" />
+                <element signature="e#56059#56399#0#PHP" />
+                <element signature="e#56172#56385#0#PHP" />
+                <element signature="e#56498#56886#0#PHP" />
+                <element signature="e#56535#56616#0#PHP" />
+                <element signature="e#56675#56876#0#PHP" />
+                <element signature="e#57059#58492#0#PHP" />
+                <element signature="e#57468#57976#0#PHP" />
+                <element signature="e#57637#57897#0#PHP" />
+                <element signature="e#57738#57897#0#PHP" />
+                <element signature="e#57837#57897#0#PHP" />
+                <element signature="e#57924#57976#0#PHP" />
+                <element signature="e#57990#58408#0#PHP" />
+                <element signature="e#58079#58342#0#PHP" />
+                <element signature="e#58181#58342#0#PHP" />
+                <element signature="e#58282#58342#0#PHP" />
+                <element signature="e#58356#58408#0#PHP" />
+                <element signature="e#58419#58492#0#PHP" />
+                <element signature="e#58583#58772#0#PHP" />
+                <element signature="e#58782#59335#0#PHP" />
+                <element signature="e#58902#59325#0#PHP" />
+                <element signature="e#59126#59325#0#PHP" />
+                <element signature="e#59345#59702#0#PHP" />
+                <element signature="e#59470#59692#0#PHP" />
+                <element signature="e#59711#59941#0#PHP" />
+                <element signature="e#60139#60184#0#PHP" />
+                <element signature="e#60376#60421#0#PHP" />
+                <element signature="e#60619#60665#0#PHP" />
+                <element signature="e#60914#60965#0#PHP" />
+                <element signature="e#61488#61544#0#PHP" />
+                <element signature="e#61553#61613#0#PHP" />
+                <element signature="e#61695#61751#0#PHP" />
+                <element signature="e#61761#61823#0#PHP" />
+                <element signature="e#61832#61898#0#PHP" />
+                <element signature="e#61986#62048#0#PHP" />
+                <element signature="e#62176#62200#0#PHP" />
+                <element signature="n#go_stats_badges_list#0;n#!!top" />
+                <element signature="e#62317#62404#0#PHP" />
+                <element signature="e#62620#62742#0#PHP" />
+                <element signature="e#63363#63562#0#PHP" />
+                <element signature="e#63584#63733#0#PHP" />
+                <element signature="e#63798#63857#0#PHP" />
+                <element signature="e#64377#64531#0#PHP" />
+                <element signature="e#64462#64531#0#PHP" />
+                <element signature="e#64676#64895#0#PHP" />
+                <element signature="e#65341#66034#0#PHP" />
+                <element signature="e#65565#65833#0#PHP" />
+                <element signature="e#65755#65833#0#PHP" />
+                <element signature="e#66173#66197#0#PHP" />
+                <element signature="n#go_stats_groups_list#0;n#!!top" />
+                <element signature="e#66314#66456#0#PHP" />
+                <element signature="e#66402#66456#0#PHP" />
+                <element signature="e#66672#66793#0#PHP" />
+                <element signature="e#67210#69694#0#PHP" />
+                <element signature="e#67374#67573#0#PHP" />
+                <element signature="e#67596#67745#0#PHP" />
+                <element signature="e#67810#67861#0#PHP" />
+                <element signature="e#68320#69659#0#PHP" />
+                <element signature="e#68470#68624#0#PHP" />
+                <element signature="e#68555#68624#0#PHP" />
+                <element signature="e#68694#68913#0#PHP" />
+                <element signature="e#69354#69649#0#PHP" />
+                <element signature="n#go_make_tax_select#0;n#!!top" />
+                <element signature="n#go_stats_lite#0;n#!!top" />
+                <element signature="n#go_stats_leaderboard#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="task_shortcode.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="163">
+              <caret line="494" column="21" selection-start-line="494" selection-start-column="8" selection-end-line="494" selection-end-column="35" />
+              <folding>
+                <element signature="n#go_task_shortcode#0;n#!!top" />
+                <element signature="n#go_display_visitor_content#0;n#!!top" />
+                <element signature="n#go_display_locks#0;n#!!top" />
+                <element signature="n#go_display_visitor_messages#0;n#!!top" />
+                <element signature="n#go_admin_content#0;n#!!top" />
+                <element signature="n#go_due_date_mods#0;n#!!top" />
+                <element signature="n#go_display_timer#0;n#!!top" />
+                <element signature="n#go_print_1_message#0;n#!!top" />
+                <element signature="n#go_bonus_loot#0;n#!!top" />
+                <element signature="n#go_display_stage_badges#0;n#!!top" />
+                <element signature="n#go_display_rewards#0;n#!!top" />
+                <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
+                <element signature="n#go_stage_password_validate#0;n#!!top" />
+                <element signature="n#go_lock_password_validate#0;n#!!top" />
+                <element signature="n#go_print_outro#0;n#!!top" />
+                <element signature="n#go_print_bonus_stage#0;n#!!top" />
+                <element signature="n#go_hidden_footer#0;n#!!top" />
+                <element signature="n#go_task_change_stage#0;n#!!top" />
+                <element signature="n#go_unlock_stage#0;n#!!top" />
+                <element signature="n#go_update_fail_count#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_checks.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="155">
+              <caret line="304" column="48" selection-start-line="304" selection-start-column="48" selection-end-line="304" selection-end-column="48" />
+              <folding>
+                <element signature="e#474#879#0#PHP" />
+                <element signature="e#624#879#0#PHP" />
+                <element signature="e#885#1350#0#PHP" />
+                <element signature="e#1106#1350#0#PHP" />
+                <element signature="e#1308#1350#0#PHP" />
+                <element signature="e#1356#1593#0#PHP" />
+                <element signature="e#1377#1540#0#PHP" />
+                <element signature="e#1485#1540#0#PHP" />
+                <element signature="e#1546#1593#0#PHP" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#go_buttons#0;n#!!top" />
+                <element signature="e#4758#5694#0#PHP" />
+                <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+                <element signature="n#go_no_check#0;n#!!top" />
+                <element signature="n#go_password_check#0;n#!!top" />
+                <element signature="n#go_blog_check#0;n#!!top" />
+                <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#go_upload_check#0;n#!!top" />
+                <element signature="n#go_test_check#0;n#!!top" />
+                <element signature="n#go_task_get_test_meta#0;n#!!top" />
               </folding>
             </state>
           </provider>
@@ -47,26 +646,57 @@
       <file leaf-file-name="go_datatable.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-251">
-              <caret line="19" column="21" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="21" />
+            <state relative-caret-position="223">
+              <caret line="217" column="18" lean-forward="true" selection-start-line="217" selection-start-column="9" selection-end-line="217" selection-end-column="29" />
               <folding>
+                <element signature="n#go_update_db_check#0;n#!!top" />
+                <element signature="n#go_update_db#0;n#!!top" />
                 <element signature="n#go_table_tasks#0;n#!!top" />
-                <element signature="e#1446#2053#0#PHP" />
-                <element signature="n#go_table_actions#0;n#!!top" />
+                <element signature="e#1444#2051#0#PHP" />
+                <element signature="n#go_on_activate_msdb#0;n#!!top" />
+                <element signature="n#go_on_create_blog#0;n#!!top" />
+                <element signature="n#go_on_delete_blog#0;n#!!top" />
+                <element signature="n#go_user_delete#0;n#!!top" />
+                <element signature="n#go_open_comments#0;n#!!top" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_updates.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_updates.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/go_updates.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="130" column="79" lean-forward="true" selection-start-line="130" selection-start-column="79" selection-end-line="130" selection-end-column="79" />
+            <state relative-caret-position="169">
+              <caret line="830" column="29" lean-forward="true" selection-start-line="830" selection-start-column="29" selection-end-line="830" selection-end-column="51" />
               <folding>
                 <element signature="n#go_get_health_mod#0;n#!!top" />
+                <element signature="e#321#524#0#PHP" />
+                <element signature="e#487#524#0#PHP" />
+                <element signature="e#529#581#0#PHP" />
+                <element signature="e#586#638#0#PHP" />
                 <element signature="n#go_get_user_loot#0;n#!!top" />
-                <element signature="n#go_update_stage_table#0;n#!!top" />
+                <element signature="e#835#1010#0#PHP" />
+                <element signature="e#859#1004#1#PHP" />
+                <element signature="n#go_update_bonus_loot#0;n#!!top" />
+                <element signature="e#1306#1547#0#PHP" />
+                <element signature="e#1321#1546#1#PHP" />
+                <element signature="e#1571#6776#0#PHP" />
+                <element signature="e#1745#6776#0#PHP" />
+                <element signature="e#1875#2009#0#PHP" />
+                <element signature="e#1964#2009#0#PHP" />
+                <element signature="e#2254#3866#0#PHP" />
+                <element signature="e#2316#3855#0#PHP" />
+                <element signature="e#3936#4029#0#PHP" />
+                <element signature="e#4217#4312#0#PHP" />
+                <element signature="e#4321#4385#0#PHP" />
+                <element signature="e#4463#6428#0#PHP" />
+                <element signature="e#4634#6371#0#PHP" />
+                <element signature="e#5025#5147#0#PHP" />
+                <element signature="e#5204#5336#0#PHP" />
+                <element signature="e#5397#5539#0#PHP" />
+                <element signature="e#5592#5714#0#PHP" />
+                <element signature="e#6437#6770#0#PHP" />
+                <element signature="e#6781#7004#0#PHP" />
                 <element signature="n#go_add_badges#0;n#!!top" />
                 <element signature="n#go_remove_badges#0;n#!!top" />
                 <element signature="n#go_add_groups#0;n#!!top" />
@@ -74,89 +704,36 @@
                 <element signature="n#go_mod_loot#0;n#!!top" />
                 <element signature="n#go_health_to_add#0;n#!!top" />
                 <element signature="n#go_noty_loot_success#0;n#!!top" />
+                <element signature="n#go_noty_level_up#0;n#!!top" />
                 <element signature="n#go_noty_level_down#0;n#!!top" />
                 <element signature="n#go_noty_loot_error#0;n#!!top" />
-                <element signature="n#go_update_totals_table_Badges#0;n#!!top" />
-                <element signature="n#go_update_totals_table_Groups#0;n#!!top" />
+                <element signature="n#go_noty_message_generic#0;n#!!top" />
                 <element signature="n#go_update_admin_bar_v4#0;n#!!top" />
-                <element signature="n#go_add_user_to_totals_table#0;n#!!top" />
                 <element signature="n#go_add_user_to_totals_table_login#0;n#!!top" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_enque_js.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/front/go_enque_js.php">
+      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="76" column="102" selection-start-line="76" selection-start-column="76" selection-end-line="76" selection-end-column="102" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6362">
-              <caret line="6492" column="6" selection-start-line="6492" selection-start-column="6" selection-end-line="6492" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_shortcodes.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_shortcodes.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="400" column="8" selection-start-line="400" selection-start-column="8" selection-end-line="400" selection-end-column="8" />
+            <state relative-caret-position="168">
+              <caret line="169" column="30" selection-start-line="169" selection-start-column="30" selection-end-line="169" selection-end-column="30" />
               <folding>
-                <element signature="n#go_list_user_URL#0;n#!!top" />
-                <element signature="n#listurl#0;n#!!top" />
-                <element signature="n#go_display_video#0;n#!!top" />
-                <element signature="n#go_video#0;n#!!top" />
-                <element signature="n#go_page_grabber_shortcode#0;n#!!top" />
-                <element signature="n#go_post_grabber_shortcode#0;n#!!top" />
-                <element signature="n#go_post_grabber_content_exerpt_shortcode#0;n#!!top" />
-                <element signature="n#go_get_displayname_function#0;n#!!top" />
-                <element signature="n#go_get_login_function#0;n#!!top" />
-                <element signature="n#go_latest_post_url_shortcode#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#go_get_category#0;n#!!top" />
-                <element signature="n#go_get_all_terms#0;n#!!top" />
-                <element signature="n#go_get_all_posts#0;n#!!top" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wp-login.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../wp-login.php">
+      <file leaf-file-name="frontend-media.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17867">
-              <caret line="1058" selection-start-line="1058" selection-end-line="1058" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="task_shortcode.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="534" column="65" selection-start-line="534" selection-start-column="65" selection-end-line="534" selection-end-column="149" />
+            <state relative-caret-position="257">
+              <caret line="77" column="98" selection-start-line="77" selection-start-column="82" selection-end-line="77" selection-end-column="98" />
               <folding>
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#go_admin_content#0;n#!!top" />
-                <element signature="n#go_display_all_admin_content#0;n#!!top" />
-                <element signature="n#go_display_timer#0;n#!!top" />
-                <element signature="n#go_display_stage_badges#0;n#!!top" />
-                <element signature="n#go_display_rewards#0;n#!!top" />
-                <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
-                <element signature="n#go_stage_password_validate#0;n#!!top" />
-                <element signature="n#go_lock_password_validate#0;n#!!top" />
-                <element signature="n#go_print_bonus_stage#0;n#!!top" />
-                <element signature="n#go_hidden_footer#0;n#!!top" />
-                <element signature="n#go_unlock_stage#0;n#!!top" />
-                <element signature="n#go_update_fail_count#0;n#!!top" />
+                <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,26 +742,26 @@
       <file leaf-file-name="go_every_page.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/styles/css/go_every_page.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="53" column="21" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="21" />
+            <state relative-caret-position="431">
+              <caret line="145" column="12" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="12" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_videos_fit_and_box.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js">
+      <file leaf-file-name="go_frontend.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="167" column="37" selection-start-line="167" selection-start-column="37" selection-end-line="167" selection-end-column="37" />
-              <folding>
-                <element signature="n#!!block;n#go_native_video_resize#0" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="85">
+              <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_admin.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -201,36 +778,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Shortcode</find>
-      <find>outro</find>
-      <find>feather</find>
-      <find>90vh</find>
-      <find>.featherlight(</find>
-      <find>src</find>
-      <find>iframe</find>
-      <find>mce</find>
-      <find>featherlight_wrapper_vid_link</find>
-      <find>video</find>
-      <find>_=1</find>
-      <find>go_hidden_footer</find>
-      <find>go_task_render_chain_pagination</find>
-      <find>resize</find>
-      <find>$is_logged_in$is_logged_in</find>
-      <find>fit_and_box</find>
-      <find>go_video_container</find>
-      <find>$is_logged_in</find>
-      <find>cpu</find>
-      <find>go_install_data</find>
-      <find>Bonus Lo</find>
-      <find>Bonus loot</find>
-      <find>go_update_bonus_loot</find>
-      <find>z-inde</find>
-      <find>featherlight_wrapper_vid_shortcode</find>
-      <find>wp_login</find>
-      <find>PluginDir</find>
-      <find>mp3</find>
-      <find>Bonus</find>
-      <find>Plugin</find>
+      <find>$user_ids</find>
+      <find>message_type</find>
+      <find>go_tasks_datatable_length</find>
+      <find>go_stats_messages_icon_stats</find>
+      <find>go_admin_bar_stats_page_button</find>
+      <find>wp-admin-bar-go_stats</find>
+      <find>go_stats_lay</find>
+      <find>reset</find>
+      <find>foreach</find>
+      <find>fa-times-circle</find>
+      <find>$is_first</find>
+      <find>go_stats_messages_icon</find>
+      <find>&lt;td</find>
+      <find>$post_id</find>
+      <find>Penalty</find>
+      <find>loot</find>
+      <find>go_message_submit</find>
+      <find>singul</find>
+      <find>multiple</find>
+      <find>count</find>
+      <find>Penal</find>
+      <find>$xp</find>
+      <find>$reset_multiple</find>
+      <find>$result</find>
+      <find>multipl</find>
+      <find>go_tasks_reset</find>
+      <find>go_back_button</find>
+      <find>button</find>
+      <find>go_result_name</find>
+      <find>$status</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -242,57 +819,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/types/tasks/task.php" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
-        <option value="$PROJECT_DIR$/styles/css/go_clipboard_sass.scss" />
-        <option value="$PROJECT_DIR$/styles/css/tasks-admin.css" />
         <option value="$PROJECT_DIR$/src/go_task_search.php" />
-        <option value="$PROJECT_DIR$/src/go_admin_bar.php" />
-        <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_blogs.js" />
-        <option value="$PROJECT_DIR$/src/blogs/go_user_blog.php" />
-        <option value="$PROJECT_DIR$/src/go_blogs.php" />
-        <option value="$PROJECT_DIR$/src/go_store.php" />
         <option value="$PROJECT_DIR$/includes/fitvids-for-wordpress/jquery.fitvids.js" />
         <option value="$PROJECT_DIR$/js/admin/dev/go_admin.js" />
-        <option value="$PROJECT_DIR$/src/go_media.php" />
         <option value="$PROJECT_DIR$/js/front/dev/go_frontend.js" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_fitvids.js" />
-        <option value="$PROJECT_DIR$/types/types.php" />
-        <option value="$PROJECT_DIR$/src/go_stats.php" />
-        <option value="$PROJECT_DIR$/types/tasks/task-chains.php" />
-        <option value="$PROJECT_DIR$/js/admin/scripts/go_messages.js" />
-        <option value="$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
-        <option value="$PROJECT_DIR$/src/go_messages.php" />
         <option value="$PROJECT_DIR$/js/admin/go_enque_js_admin.php" />
         <option value="$PROJECT_DIR$/includes/go_enque_includes.php" />
-        <option value="$PROJECT_DIR$/types/tasks/go_checks.php" />
         <option value="$PROJECT_DIR$/styles/css/go_map.css" />
         <option value="$PROJECT_DIR$/mail/class.phpmailer.php" />
-        <option value="$PROJECT_DIR$/src/go_admin_menus.php" />
         <option value="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" />
-        <option value="$PROJECT_DIR$/src/go_clipboard.php" />
         <option value="$PROJECT_DIR$/js/js/go_shortcode_mce.js" />
-        <option value="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_map.js" />
         <option value="$PROJECT_DIR$/js/admin/scripts/go_every_admin_page.js" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" />
-        <option value="$PROJECT_DIR$/src/go_map.php" />
         <option value="$PROJECT_DIR$/types/store/includes/lightbox/buy-ajax.php" />
-        <option value="$PROJECT_DIR$/styles/css/go_every_page.css" />
-        <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
-        <option value="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_tasks.js" />
         <option value="$PROJECT_DIR$/types/tasks/go_locks.php" />
         <option value="$PROJECT_DIR$/src/go_shortcodes.php" />
-        <option value="$PROJECT_DIR$/src/go_datatable.php" />
-        <option value="$PROJECT_DIR$/go_acf_groups.php" />
-        <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" />
-        <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/js/front/go_enque_js.php" />
+        <option value="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" />
+        <option value="$PROJECT_DIR$/src/go_admin_menus.php" />
+        <option value="$PROJECT_DIR$/src/go_blogs.php" />
+        <option value="$PROJECT_DIR$/src/go_map.php" />
+        <option value="$PROJECT_DIR$/src/go_media.php" />
+        <option value="$PROJECT_DIR$/src/go_returns.php" />
+        <option value="$PROJECT_DIR$/src/go_store.php" />
+        <option value="$PROJECT_DIR$/src/go_user.php" />
+        <option value="$PROJECT_DIR$/types/store/super-store.php" />
+        <option value="$PROJECT_DIR$/types/tasks/task-chains.php" />
+        <option value="$PROJECT_DIR$/types/types.php" />
+        <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
+        <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" />
+        <option value="$PROJECT_DIR$/src/blogs/go_user_blog.php" />
+        <option value="$PROJECT_DIR$/src/go_clipboard.php" />
+        <option value="$PROJECT_DIR$/src/go_admin_bar.php" />
+        <option value="$PROJECT_DIR$/js/admin/scripts/go_messages.js" />
         <option value="$PROJECT_DIR$/src/go_updates.php" />
+        <option value="$PROJECT_DIR$/src/go_messages.php" />
+        <option value="$PROJECT_DIR$/go_acf_groups.php" />
+        <option value="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
+        <option value="$PROJECT_DIR$/src/go_stats.php" />
+        <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
+        <option value="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
+        <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
+        <option value="$PROJECT_DIR$/styles/css/go_every_page.css" />
+        <option value="$PROJECT_DIR$/types/tasks/go_checks.php" />
+        <option value="$PROJECT_DIR$/src/go_datatable.php" />
+        <option value="$PROJECT_DIR$/game-on.php" />
       </list>
     </option>
   </component>
@@ -308,18 +885,13 @@
   <component name="PhpDebugGeneral" xdebug_show_addresses="true" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
   <component name="PhpServers">
     <servers>
-      <server host="localhost" id="3921dc9d-31df-49b8-a3ad-25e0abc23ff5" name="localhost">
-        <path_mappings>
-          <mapping local-root="$PROJECT_DIR$/../htdocs/wordpress_new/wp-admin" remote-root="/Users/mmcmurray/Dropbox/MAMP/htdocs/go4/wp-admin" />
-        </path_mappings>
-      </server>
+      <server host="localhost" id="3921dc9d-31df-49b8-a3ad-25e0abc23ff5" name="localhost" />
     </servers>
   </component>
   <component name="PhpWebServerValidation" path_to_validation_script="$PROJECT_DIR$/../htdocs" selected_validation_type="LOCAL" web_path_to_validation_script="http://localhost:80" />
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.2">
     <include_path>
-      <path value="$USER_HOME$/Dropbox/MAMP/htdocs/wordpress_new" />
-      <path value="$PROJECT_DIR$/../htdocs/wordpress_new" />
+      <path value="$PROJECT_DIR$" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds">
@@ -384,26 +956,29 @@
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="includes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="includes" type="462c0819:PsiDirectoryNode" />
+              <item name="wp-frontend-media-master" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="front" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="front" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="mail" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -419,25 +994,38 @@
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+              <item name="dev" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
               <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="styles" type="462c0819:PsiDirectoryNode" />
-              <item name="front" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="styles" type="462c0819:PsiDirectoryNode" />
-              <item name="front" type="462c0819:PsiDirectoryNode" />
-              <item name="min" type="462c0819:PsiDirectoryNode" />
+              <item name="types" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="types" type="462c0819:PsiDirectoryNode" />
+              <item name="store" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="types" type="462c0819:PsiDirectoryNode" />
+              <item name="store" type="462c0819:PsiDirectoryNode" />
+              <item name="disabled" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -459,7 +1047,7 @@
     <property name="list.type.of.created.stylesheet" value="Sass" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="settings.editor.selected.configurable" value="settings.php.debug.servers" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php.debug" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -485,7 +1073,7 @@
   <component name="RunManager" selected="PHP Web Page.Debug">
     <configuration name="go_tasks.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="go_tasks.js" working-dir="$PROJECT_DIR$/js/front/scripts" />
     <configuration name="Unnamed" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server" document_root="http://localhost:8888/wordpress_new/tasks/uytf/" />
-    <configuration name="Debug" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" server_name="localhost" start_url="http://localhost/go4/wp-admin/" />
+    <configuration name="Debug" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" server_name="localhost" start_url="http://localhost/go4/wp-login.php" />
     <list>
       <item itemvalue="PHP Built-in Web Server.Unnamed" />
       <item itemvalue="PHP Web Page.Debug" />
@@ -547,41 +1135,68 @@
       <workItem from="1534390673582" duration="1222000" />
       <workItem from="1534459174458" duration="85924000" />
       <workItem from="1535418952617" duration="9181000" />
-      <workItem from="1535491366082" duration="5858000" />
+      <workItem from="1535491366082" duration="19593000" />
+      <workItem from="1535828252910" duration="2000" />
+      <workItem from="1535833749520" duration="46503000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1927739000" />
+    <option name="totallyTimeSpent" value="1987979000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="53" width="1658" height="979" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.51085645" side_tool="true" visible="true" weight="0.3756906" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5072376" side_tool="true" visible="true" weight="0.3756906" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Run" order="3" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19541617" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19541617" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
-      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.48914355" visible="true" weight="0.3756906" />
+      <window_info active="true" anchor="bottom" id="Find" order="2" sideWeight="0.49276236" visible="true" weight="0.3756906" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.75814235" weight="0.3127072" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.7569361" weight="0.3127072" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="PHP-CGI Server" order="12" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Inspection Results" order="14" weight="0.08076923" />
-      <window_info anchor="bottom" id="Command Line Tools Console" order="0" weight="0.3275862" />
+      <window_info anchor="bottom" id="Command Line Tools Console" order="0" sideWeight="0.49939686" weight="0.32707182" />
       <window_info anchor="bottom" id="Messages" order="8" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="3" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19541617" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="PHP-CGI Server" order="13" />
+      <window_info anchor="bottom" id="Inspection Results" order="15" weight="0.08076923" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.48914355" weight="0.3756906" />
+      <window_info active="true" anchor="bottom" id="Command Line Tools Console" order="0" sideWeight="0.49939686" visible="true" weight="0.32707182" />
+      <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
+      <window_info anchor="bottom" id="Terminal" order="12" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50060314" side_tool="true" visible="true" weight="0.32707182" />
+      <window_info anchor="bottom" id="Database Changes" order="10" />
+      <window_info anchor="bottom" id="Version Control" order="11" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.7575392" weight="0.3127072" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Messages" order="9" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -607,7 +1222,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_updates.php</url>
-          <line>792</line>
+          <line>793</line>
           <option name="timeStamp" value="347" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -647,12 +1262,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_updates.php</url>
-          <line>490</line>
+          <line>491</line>
           <option name="timeStamp" value="387" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_updates.php</url>
-          <line>496</line>
+          <line>497</line>
           <option name="timeStamp" value="388" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -667,22 +1282,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_messages.php</url>
-          <line>477</line>
+          <line>694</line>
           <option name="timeStamp" value="436" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
-          <line>527</line>
-          <option name="timeStamp" value="437" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1045</line>
+          <line>1046</line>
           <option name="timeStamp" value="453" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1634</line>
+          <line>1652</line>
           <option name="timeStamp" value="508" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -692,52 +1302,52 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1550</line>
+          <line>1574</line>
           <option name="timeStamp" value="513" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1541</line>
+          <line>1565</line>
           <option name="timeStamp" value="514" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1536</line>
+          <line>1560</line>
           <option name="timeStamp" value="515" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1557</line>
+          <line>1581</line>
           <option name="timeStamp" value="516" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1601</line>
+          <line>1619</line>
           <option name="timeStamp" value="517" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/go_checks.php</url>
-          <line>223</line>
+          <line>220</line>
           <option name="timeStamp" value="522" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_blogs.php</url>
-          <line>159</line>
+          <line>158</line>
           <option name="timeStamp" value="523" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_blogs.php</url>
-          <line>171</line>
+          <line>170</line>
           <option name="timeStamp" value="524" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_clipboard.php</url>
-          <line>251</line>
+          <line>248</line>
           <option name="timeStamp" value="539" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_clipboard.php</url>
-          <line>226</line>
+          <line>223</line>
           <option name="timeStamp" value="541" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -771,13 +1381,8 @@
           <option name="timeStamp" value="557" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
-          <line>610</line>
-          <option name="timeStamp" value="559" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/tasks/task_shortcode.php</url>
-          <line>1074</line>
+          <line>1075</line>
           <option name="timeStamp" value="563" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -786,29 +1391,9 @@
           <option name="timeStamp" value="565" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1942</line>
-          <option name="timeStamp" value="566" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/go_stats.php</url>
-          <line>1930</line>
-          <option name="timeStamp" value="567" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_updates.php</url>
-          <line>681</line>
+          <line>682</line>
           <option name="timeStamp" value="569" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
-          <line>626</line>
-          <option name="timeStamp" value="570" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
-          <line>877</line>
-          <option name="timeStamp" value="572" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/types/store/includes/lightbox/buy-ajax.php</url>
@@ -832,7 +1417,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_map.php</url>
-          <line>410</line>
+          <line>409</line>
           <option name="timeStamp" value="582" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -846,18 +1431,13 @@
           <option name="timeStamp" value="584" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/game-on.php</url>
-          <line>377</line>
-          <option name="timeStamp" value="587" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_datatable.php</url>
-          <line>22</line>
+          <line>20</line>
           <option name="timeStamp" value="588" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/go_datatable.php</url>
-          <line>133</line>
+          <line>131</line>
           <option name="timeStamp" value="589" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -865,16 +1445,66 @@
           <line>117</line>
           <option name="timeStamp" value="590" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/go_checks.php</url>
+          <line>248</line>
+          <option name="timeStamp" value="593" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/types/tasks/go_checks.php</url>
+          <line>245</line>
+          <option name="timeStamp" value="595" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>413</line>
+          <option name="timeStamp" value="600" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>23</line>
+          <option name="timeStamp" value="609" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>788</line>
+          <option name="timeStamp" value="619" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>847</line>
+          <option name="timeStamp" value="620" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>760</line>
+          <option name="timeStamp" value="621" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>694</line>
+          <option name="timeStamp" value="622" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_updates.php</url>
+          <line>849</line>
+          <option name="timeStamp" value="623" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/go_messages.php</url>
+          <line>717</line>
+          <option name="timeStamp" value="624" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/front/scripts/go_every_page.js</url>
-          <line>511</line>
+          <line>571</line>
           <option name="timeStamp" value="529" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="591" />
+      <option name="time" value="625" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="index.php">
@@ -912,232 +1542,706 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../../wp-includes/wp-db.php">
+    <entry file="file://$PROJECT_DIR$/src/go_ranks.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="602" selection-start-line="602" selection-end-line="602" />
+        <state relative-caret-position="102">
+          <caret line="291" column="35" selection-start-line="291" selection-start-column="35" selection-end-line="291" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../wp-includes/cache.php">
+    <entry file="file://$PROJECT_DIR$/src/go_returns.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="729" selection-start-line="729" selection-end-line="729" />
+        <state relative-caret-position="112">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_notification.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/min/go_admin_notifications-min.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/store/super-store.php">
+    <entry file="file://$PROJECT_DIR$/src/go_shortcodes.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-110">
-          <folding>
-            <element signature="n#go_register_store_tax_and_cpt#0;n#!!top" />
-            <element signature="n#go_new_item_permalink#0;n#!!top" />
-            <element signature="n#go_filter_store_by_taxonomy#0;n#!!top" />
-            <element signature="n#go_convert_store_id_to_term_in_query#0;n#!!top" />
-          </folding>
+        <state relative-caret-position="1309">
+          <caret line="343" column="67" selection-start-line="343" selection-start-column="67" selection-end-line="343" selection-end-column="67" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/admin/go_enque_js_admin.php">
+    <entry file="file://$PROJECT_DIR$/src/go_store.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="43" column="47" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
+        <state relative-caret-position="85">
+          <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_tools.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_user.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-75">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/store/disabled/backend-lightbox.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/store/disabled/store-chains.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-211">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/types/store/store-shortcode.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-27" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/buy_the_item.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="171" column="38" lean-forward="true" selection-start-line="171" selection-start-column="21" selection-end-line="171" selection-end-column="38" />
+        <state relative-caret-position="51">
+          <caret line="22" column="3" lean-forward="true" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_ranks.php">
+    <entry file="file://$PROJECT_DIR$/types/store/super-store.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="310" lean-forward="true" selection-start-line="310" selection-end-line="310" />
+        <state relative-caret-position="306">
+          <caret line="150" selection-start-line="150" selection-end-line="150" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/go_locks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="578" column="82" selection-start-line="578" selection-start-column="82" selection-end-line="578" selection-end-column="82" />
           <folding>
-            <element signature="e#909#5973#0#PHP" />
-            <element signature="e#7174#9767#0#PHP" />
+            <element signature="e#7#314#0#PHP" />
+            <element signature="n#go_task_locks#0;n#!!top" />
+            <element signature="e#419#658#0#PHP" />
+            <element signature="e#504#652#0#PHP" />
+            <element signature="e#726#777#0#PHP" />
+            <element signature="e#783#839#0#PHP" />
+            <element signature="e#1078#1174#0#PHP" />
+            <element signature="e#1180#1234#0#PHP" />
+            <element signature="e#1374#1780#0#PHP" />
+            <element signature="e#1600#1774#0#PHP" />
+            <element signature="e#1786#1845#0#PHP" />
+            <element signature="e#1967#2352#0#PHP" />
+            <element signature="e#2176#2346#0#PHP" />
+            <element signature="e#2446#2501#0#PHP" />
+            <element signature="e#2506#4709#0#PHP" />
+            <element signature="e#2566#2947#0#PHP" />
+            <element signature="e#3104#4493#0#PHP" />
+            <element signature="e#3154#3393#0#PHP" />
+            <element signature="e#3218#3296#0#PHP" />
+            <element signature="e#3545#4202#0#PHP" />
+            <element signature="e#3727#3819#0#PHP" />
+            <element signature="e#3836#4042#0#PHP" />
+            <element signature="e#4060#4188#0#PHP" />
+            <element signature="e#4215#4482#0#PHP" />
+            <element signature="e#4287#4468#0#PHP" />
+            <element signature="e#4408#4468#0#PHP" />
+            <element signature="e#4502#4702#0#PHP" />
+            <element signature="e#4601#4692#0#PHP" />
+            <element signature="e#4831#5024#0#PHP" />
+            <element signature="n#go_until_lock#0;n#!!top" />
+            <element signature="e#5452#5973#0#PHP" />
+            <element signature="e#5612#5967#0#PHP" />
+            <element signature="e#5752#5925#0#PHP" />
+            <element signature="e#6001#6194#0#PHP" />
+            <element signature="n#go_after_lock#0;n#!!top" />
+            <element signature="e#6716#7310#0#PHP" />
+            <element signature="e#6914#7304#0#PHP" />
+            <element signature="e#7054#7263#0#PHP" />
+            <element signature="e#7338#7526#0#PHP" />
+            <element signature="n#go_badge_lock#0;n#!!top" />
+            <element signature="e#7701#10054#0#PHP" />
+            <element signature="e#7758#10048#0#PHP" />
+            <element signature="e#8143#8670#0#PHP" />
+            <element signature="e#0#69#1" />
+            <element signature="e#8773#8845#0#PHP" />
+            <element signature="e#8920#10038#0#PHP" />
+            <element signature="e#9309#10024#0#PHP" />
+            <element signature="e#9355#9967#0#PHP" />
+            <element signature="e#9579#9907#0#PHP" />
+            <element signature="e#9766#9881#0#PHP" />
+            <element signature="e#10082#10286#0#PHP" />
+            <element signature="n#go_period_lock#0;n#!!top" />
+            <element signature="e#10420#12367#0#PHP" />
+            <element signature="e#10786#11022#0#PHP" />
+            <element signature="e#11084#11148#0#PHP" />
+            <element signature="e#11213#12361#0#PHP" />
+            <element signature="e#11582#12351#0#PHP" />
+            <element signature="e#11624#12302#0#PHP" />
+            <element signature="e#11834#12250#0#PHP" />
+            <element signature="e#12013#12228#0#PHP" />
+            <element signature="e#12395#12588#0#PHP" />
+            <element signature="n#go_xp_lock#0;n#!!top" />
+            <element signature="e#12718#13277#0#PHP" />
+            <element signature="e#13023#13271#0#PHP" />
+            <element signature="e#13063#13230#0#PHP" />
+            <element signature="e#13304#13504#0#PHP" />
+            <element signature="n#go_xp_levels_lock#0;n#!!top" />
+            <element signature="e#13641#14163#0#PHP" />
+            <element signature="e#13909#14157#0#PHP" />
+            <element signature="e#13949#14116#0#PHP" />
+            <element signature="e#14190#14383#0#PHP" />
+            <element signature="n#go_c4_lock#0;n#!!top" />
+            <element signature="e#14513#15071#0#PHP" />
+            <element signature="e#14817#15065#0#PHP" />
+            <element signature="e#14857#15024#0#PHP" />
+            <element signature="e#15098#15293#0#PHP" />
+            <element signature="n#go_gold_lock#0;n#!!top" />
+            <element signature="e#15425#16004#0#PHP" />
+            <element signature="e#15742#15998#0#PHP" />
+            <element signature="e#15786#15957#0#PHP" />
+            <element signature="e#16031#16228#0#PHP" />
+            <element signature="n#go_health_lock#0;n#!!top" />
+            <element signature="e#16362#16961#0#PHP" />
+            <element signature="e#16691#16955#0#PHP" />
+            <element signature="e#16739#16914#0#PHP" />
+            <element signature="e#16988#17177#0#PHP" />
+            <element signature="n#go_user_lock#0;n#!!top" />
+            <element signature="e#17309#19198#0#PHP" />
+            <element signature="e#17667#17966#0#PHP" />
+            <element signature="e#0#69#1" />
+            <element signature="e#18028#18092#0#PHP" />
+            <element signature="e#18158#19192#0#PHP" />
+            <element signature="e#18529#19182#0#PHP" />
+            <element signature="e#18571#19133#0#PHP" />
+            <element signature="e#18777#19081#0#PHP" />
+            <element signature="e#18952#19059#0#PHP" />
+            <element signature="e#19226#19359#0#PHP" />
+            <element signature="n#go_schedule_access#0;n#!!top" />
+            <element signature="e#19447#25484#0#PHP" />
+            <element signature="e#19658#19894#0#PHP" />
+            <element signature="e#19956#20020#0#PHP" />
+            <element signature="e#20257#22206#0#PHP" />
+            <element signature="e#20502#20575#0#PHP" />
+            <element signature="e#21578#22196#0#PHP" />
+            <element signature="e#21736#22182#0#PHP" />
+            <element signature="e#21907#22164#0#PHP" />
+            <element signature="e#22216#25477#0#PHP" />
+            <element signature="e#22254#25436#0#PHP" />
+            <element signature="e#22432#22538#0#PHP" />
+            <element signature="e#22762#25337#0#PHP" />
+            <element signature="e#23166#23568#0#PHP" />
+            <element signature="e#23218#23546#0#PHP" />
+            <element signature="e#23285#23520#0#PHP" />
+            <element signature="e#23854#23938#0#PHP" />
+            <element signature="e#24197#24281#0#PHP" />
+            <element signature="e#24557#24647#0#PHP" />
+            <element signature="e#24722#24799#0#PHP" />
+            <element signature="e#24821#25048#0#PHP" />
+            <element signature="e#24972#25048#0#PHP" />
+            <element signature="e#25488#25514#0#PHP" />
+            <element signature="n#go_task_chain_lock#0;n#!!top" />
+            <element signature="e#25696#25719#0#PHP" />
+            <element signature="e#25860#26961#0#PHP" />
+            <element signature="e#26133#26776#0#PHP" />
+            <element signature="e#26239#26776#0#PHP" />
+            <element signature="e#26346#26642#0#PHP" />
+            <element signature="e#26531#26599#0#PHP" />
+            <element signature="e#26655#26766#0#PHP" />
+            <element signature="e#26927#26961#0#PHP" />
+            <element signature="e#27054#27495#0#PHP" />
+            <element signature="e#27165#27415#0#PHP" />
+            <element signature="e#27281#27404#0#PHP" />
+            <element signature="e#27424#27489#0#PHP" />
+            <element signature="e#27627#32938#0#PHP" />
+            <element signature="e#27857#32938#0#PHP" />
+            <element signature="e#28125#28254#0#PHP" />
+            <element signature="e#28520#29934#0#PHP" />
+            <element signature="e#28975#29045#0#PHP" />
+            <element signature="e#29248#29371#0#PHP" />
+            <element signature="e#29531#29607#0#PHP" />
+            <element signature="e#29812#29934#0#PHP" />
+            <element signature="e#29945#30057#0#PHP" />
+            <element signature="e#30287#31672#0#PHP" />
+            <element signature="e#30437#30624#0#PHP" />
+            <element signature="e#30528#30624#0#PHP" />
+            <element signature="e#30665#30877#0#PHP" />
+            <element signature="e#30791#30862#0#PHP" />
+            <element signature="e#30890#31031#0#PHP" />
+            <element signature="e#30978#31031#0#PHP" />
+            <element signature="e#31093#31672#0#PHP" />
+            <element signature="e#31112#31437#0#PHP" />
+            <element signature="e#31354#31423#0#PHP" />
+            <element signature="e#31450#31662#0#PHP" />
+            <element signature="e#31565#31662#0#PHP" />
+            <element signature="e#31681#32158#0#PHP" />
+            <element signature="e#31734#32158#0#PHP" />
+            <element signature="e#31797#32122#0#PHP" />
+            <element signature="e#32300#32938#0#PHP" />
+            <element signature="e#32386#32821#0#PHP" />
+            <element signature="e#32438#32821#0#PHP" />
+            <element signature="e#32457#32786#0#PHP" />
+            <element signature="e#32904#32938#0#PHP" />
+            <element signature="e#32942#32969#0#PHP" />
+            <element signature="n#go_timezone_message#0;n#!!top" />
+            <element signature="e#33428#33595#0#PHP" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/styles/css/go_map.css">
+    <entry file="file://$PROJECT_DIR$/types/tasks/go_timer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="519" column="23" selection-start-line="519" selection-start-column="23" selection-end-line="519" selection-end-column="23" />
+        <state relative-caret-position="68">
+          <caret line="10" column="64" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="64" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/styles/admin/go_enque_styles_admin.php">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/types/tasks/task.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1017">
+          <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/task-admin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="12" column="84" selection-start-line="12" selection-start-column="84" selection-end-line="12" selection-end-column="84" />
+          <folding>
+            <element signature="n#task_chains_add_field_columns#0;n#!!top" />
+            <element signature="n#task_chains_add_field_column_contents#0;n#!!top" />
+            <element signature="e#444#1564#0#PHP" />
+            <element signature="e#477#724#0#PHP" />
+            <element signature="e#579#705#0#PHP" />
+            <element signature="e#667#705#0#PHP" />
+            <element signature="e#733#1031#0#PHP" />
+            <element signature="e#837#1012#0#PHP" />
+            <element signature="e#962#1012#0#PHP" />
+            <element signature="e#1040#1558#0#PHP" />
+            <element signature="e#1318#1395#0#PHP" />
+            <element signature="e#1408#1538#0#PHP" />
+            <element signature="e#1488#1538#0#PHP" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/types/tasks/task-chains.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="141" column="8" selection-start-line="141" selection-start-column="8" selection-end-line="141" selection-end-column="66" />
+        <state>
+          <caret column="5" selection-start-column="5" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/tasks/test_shortcode.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/types/types.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="183" column="51" selection-start-line="183" selection-start-column="51" selection-end-line="183" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-admin/post.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1964">
+          <caret line="25" column="3" selection-start-line="25" selection-start-column="3" selection-end-line="25" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../../bin/php/php7.2.1/conf/php.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-32013" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-cron.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../../bin/phpMyAdmin/sql.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/js/min/go_acf-min.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="23" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/js/dev/go_acf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
           <folding>
-            <element signature="n#go_task_chain_get_tasks#0;n#!!top" />
-            <element signature="n#go_task_chain_is_final_task#0;n#!!top" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mail/class.phpmailer.php">
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="3302" />
+        <state relative-caret-position="153">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php">
+    <entry file="file://$PROJECT_DIR$/src/go_blogs.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="37" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_admin_menus.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" selection-start-line="6" selection-end-line="12" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
+        <state relative-caret-position="221">
+          <caret line="164" column="39" lean-forward="true" selection-start-line="164" selection-start-column="39" selection-end-line="164" selection-end-column="39" />
           <folding>
-            <element signature="e#6#51#0#PHP" expanded="true" />
-            <element signature="n#go_get_purchase_limit#0;n#!!top" />
+            <element signature="e#171#2463#0#PHP" />
+            <element signature="e#216#1738#0#PHP" />
+            <element signature="e#1759#1938#0#PHP" />
+            <element signature="e#1956#2382#0#PHP" />
+            <element signature="e#2579#4634#0#PHP" />
+            <element signature="e#4844#5723#0#PHP" />
+            <element signature="e#5811#6301#0#PHP" />
+            <element signature="e#6303#6507#0#PHP" />
+            <element signature="e#6668#7134#0#PHP" />
+            <element signature="e#8221#9124#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-includes/plugin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="455" selection-start-line="455" selection-end-line="455" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-admin/admin-ajax.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="117" selection-start-line="117" selection-end-line="117" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_admin_bar.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="352" column="298" selection-start-line="352" selection-start-column="205" selection-end-line="352" selection-end-column="298" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-hook.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="531">
+          <caret line="312" selection-start-line="312" selection-end-line="312" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_clipboard.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="248" selection-start-line="248" selection-end-line="248" />
+          <folding>
+            <element signature="n#go_clipboard_save_filters#0;n#!!top" />
+            <element signature="n#go_clipboard_menu#0;n#!!top" />
+            <element signature="e#499#2571#0#PHP" />
+            <element signature="e#631#2571#0#PHP" />
+            <element signature="e#997#1002#0#PHP" />
+            <element signature="e#1127#1132#0#PHP" />
+            <element signature="e#1255#1260#0#PHP" />
+            <element signature="e#1556#1561#0#PHP" />
+            <element signature="e#1826#1831#0#PHP" />
+            <element signature="e#2625#2688#0#PHP" />
+            <element signature="e#2889#2975#0#PHP" />
+            <element signature="e#3288#3310#0#PHP" />
+            <element signature="e#4392#4397#0#PHP" />
+            <element signature="e#4654#4922#0#PHP" />
+            <element signature="e#4733#4738#0#PHP" />
+            <element signature="e#4848#4853#0#PHP" />
+            <element signature="e#4939#5096#0#PHP" />
+            <element signature="e#5020#5025#0#PHP" />
+            <element signature="e#5113#5274#0#PHP" />
+            <element signature="e#5196#5201#0#PHP" />
+            <element signature="e#5291#5444#0#PHP" />
+            <element signature="e#5370#5375#0#PHP" />
+            <element signature="e#5461#5622#0#PHP" />
+            <element signature="e#5544#5549#0#PHP" />
+            <element signature="e#5885#5933#0#PHP" />
+            <element signature="e#6344#7052#0#PHP" />
+            <element signature="e#6476#6793#0#PHP" />
+            <element signature="e#6533#6779#0#PHP" />
+            <element signature="e#6627#6761#0#PHP" />
+            <element signature="e#7316#7936#0#PHP" />
+            <element signature="e#7361#7678#0#PHP" />
+            <element signature="e#7418#7664#0#PHP" />
+            <element signature="e#7512#7646#0#PHP" />
+            <element signature="e#8539#8642#0#PHP" />
+            <element signature="e#9821#9995#0#PHP" />
+            <element signature="e#10008#10104#0#PHP" />
+            <element signature="e#10117#10215#0#PHP" />
+            <element signature="e#10228#10314#0#PHP" />
+            <element signature="n#go_clipboard_intable_activity#0;n#!!top" />
+            <element signature="e#10577#10649#0#PHP" />
+            <element signature="e#10909#10994#0#PHP" />
+            <element signature="e#11066#11071#0#PHP" />
+            <element signature="e#11556#11561#0#PHP" />
+            <element signature="e#11865#11870#0#PHP" />
+            <element signature="e#11951#12165#0#PHP" />
+            <element signature="e#11983#12155#1#PHP" />
+            <element signature="e#12177#25191#0#PHP" />
+            <element signature="e#12303#12359#0#PHP" />
+            <element signature="e#13081#13434#0#PHP" />
+            <element signature="e#13293#13418#0#PHP" />
+            <element signature="e#13467#23882#0#PHP" />
+            <element signature="e#13683#23779#0#PHP" />
+            <element signature="e#13753#14286#0#PHP" />
+            <element signature="e#13843#14286#0#PHP" />
+            <element signature="e#14209#14286#0#PHP" />
+            <element signature="e#15951#16639#0#PHP" />
+            <element signature="e#16165#16617#0#PHP" />
+            <element signature="e#16309#16591#0#PHP" />
+            <element signature="e#16778#17322#0#PHP" />
+            <element signature="e#16835#16947#0#PHP" />
+            <element signature="e#17030#17300#0#PHP" />
+            <element signature="e#17541#19404#0#PHP" />
+            <element signature="e#18034#18680#0#PHP" />
+            <element signature="e#18239#18576#0#PHP" />
+            <element signature="e#18366#18576#0#PHP" />
+            <element signature="e#18491#18576#0#PHP" />
+            <element signature="e#18603#18680#0#PHP" />
+            <element signature="e#18706#19270#0#PHP" />
+            <element signature="e#18827#19166#0#PHP" />
+            <element signature="e#18955#19166#0#PHP" />
+            <element signature="e#19081#19166#0#PHP" />
+            <element signature="e#19193#19270#0#PHP" />
+            <element signature="e#19294#19404#0#PHP" />
+            <element signature="e#19519#19752#0#PHP" />
+            <element signature="e#19774#20445#0#PHP" />
+            <element signature="e#19915#20423#0#PHP" />
+            <element signature="e#20175#20423#0#PHP" />
+            <element signature="e#20467#20905#0#PHP" />
+            <element signature="e#20613#20883#0#PHP" />
+            <element signature="e#20926#21204#0#PHP" />
+            <element signature="e#21281#21514#0#PHP" />
+            <element signature="e#21444#21514#0#PHP" />
+            <element signature="e#21591#21818#0#PHP" />
+            <element signature="e#21748#21818#0#PHP" />
+            <element signature="e#21897#22129#0#PHP" />
+            <element signature="e#22058#22129#0#PHP" />
+            <element signature="e#22210#22506#0#PHP" />
+            <element signature="e#22430#22506#0#PHP" />
+            <element signature="e#22839#22931#0#PHP" />
+            <element signature="e#22952#23052#0#PHP" />
+            <element signature="e#23073#23181#0#PHP" />
+            <element signature="e#23202#23294#0#PHP" />
+            <element signature="e#23975#25181#0#PHP" />
+            <element signature="e#25260#25276#0#PHP" />
+            <element signature="e#25453#30373#0#PHP" />
+            <element signature="e#30374#32835#0#PHP" />
+            <element signature="e#32836#33373#0#PHP" />
+            <element signature="e#33374#34116#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-includes/wp-db.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="602" selection-start-line="602" selection-end-line="602" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/game-on-v4-master 11/src/go_messages.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="626" column="104" selection-start-line="626" selection-start-column="101" selection-end-line="626" selection-end-column="104" />
+          <folding>
+            <element signature="n#go_create_admin_message#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_messages.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="693" column="27" selection-start-line="693" selection-start-column="27" selection-end-line="693" selection-end-column="27" />
+          <folding>
+            <element signature="n#go_create_admin_message#0;n#!!top" />
+            <element signature="e#398#11530#0#PHP" />
+            <element signature="e#14393#14413#0#HTML" expanded="true" />
+            <element signature="e#14836#14856#0#HTML" expanded="true" />
+            <element signature="e#12087#12867#0#PHP" />
+            <element signature="e#12241#12363#0#PHP" />
+            <element signature="e#12513#12697#0#PHP" />
+            <element signature="e#41668#42021#0#HTML" />
+            <element signature="e#30783#30788#0#PHP" />
+            <element signature="n#go_send_message#0;n#!!top" />
+            <element signature="n#go_check_messages#0;n#!!top" />
+            <element signature="e#38721#39223#0#PHP" />
+            <element signature="e#38841#39223#0#PHP" />
+            <element signature="e#38983#39223#0#PHP" />
+            <element signature="e#39120#39223#0#PHP" />
+            <element signature="e#39241#39773#0#PHP" />
+            <element signature="e#39367#39773#0#PHP" />
+            <element signature="e#39519#39773#0#PHP" />
+            <element signature="e#39666#39773#0#PHP" />
+            <element signature="e#39791#40353#0#PHP" />
+            <element signature="e#39923#40353#0#PHP" />
+            <element signature="e#40085#40353#0#PHP" />
+            <element signature="e#40242#40353#0#PHP" />
+            <element signature="e#40371#40873#0#PHP" />
+            <element signature="e#40491#40873#0#PHP" />
+            <element signature="e#40633#40873#0#PHP" />
+            <element signature="e#40770#40873#0#PHP" />
+            <element signature="e#40965#42337#0#PHP" />
+            <element signature="e#41268#41567#0#PHP" />
+            <element signature="e#41385#41545#0#PHP" />
+            <element signature="e#41589#42208#0#PHP" />
+            <element signature="e#41819#42208#0#PHP" />
+            <element signature="e#42088#42208#0#PHP" />
+            <element signature="e#42229#42337#0#PHP" />
+            <element signature="e#42355#43623#0#PHP" />
+            <element signature="e#42549#42853#0#PHP" />
+            <element signature="e#42671#42831#0#PHP" />
+            <element signature="e#42875#43496#0#PHP" />
+            <element signature="e#43106#43496#0#PHP" />
+            <element signature="e#43376#43496#0#PHP" />
+            <element signature="e#43515#43623#0#PHP" />
+            <element signature="e#43642#43995#0#PHP" />
+            <element signature="e#43937#43995#0#PHP" />
+            <element signature="e#44327#44386#0#PHP" />
+            <element signature="e#44567#44650#0#PHP" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/admin/scripts/go_messages.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="67" />
+        <state relative-caret-position="17">
+          <caret line="1" column="62" selection-start-line="1" selection-start-column="62" selection-end-line="1" selection-end-column="62" />
+          <folding>
+            <element signature="n#!!block;n#go_messages_opener#0" />
+            <element signature="n#!!block;n#go_send_message#0" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_admin_bar.php">
+    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="357" column="12" selection-start-line="357" selection-start-column="12" selection-end-line="359" selection-end-column="71" />
+        <state relative-caret-position="34">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/admin/scripts/go_clipboard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="323" lean-forward="true" selection-start-line="210" selection-start-column="8" selection-end-line="323" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_blogs.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-          <folding>
-            <element signature="e#93#2511#0#PHP" />
-            <element signature="e#2542#5772#0#PHP" />
-            <element signature="e#5812#6302#0#PHP" />
-            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_clipboard.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="618" column="118" selection-start-line="618" selection-start-column="117" selection-end-line="618" selection-end-column="118" />
-          <folding>
-            <element signature="n#style#0;n#span#1;n#td#0;n#tr#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_stats.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="2149" column="46" selection-start-line="2149" selection-start-column="36" selection-end-line="2149" selection-end-column="46" />
-          <folding>
-            <element signature="n#go_stats_task_list#0;n#!!top" />
-            <element signature="n#go_stats_single_task_activity_list#0;n#!!top" />
-            <element signature="n#go_result_link#0;n#!!top" />
-            <element signature="n#go_stats_item_list#0;n#!!top" />
-            <element signature="n#go_stats_activity_list#0;n#!!top" />
-            <element signature="n#go_activity_dataloader_ajax#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_store.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="223" selection-start-line="223" selection-end-line="223" />
+        <state relative-caret-position="164">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_url_check#0;n#!!top" />
-            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#!!block;n#go_clipboard_class_a_choice#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_map.js">
+    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="15" column="21" lean-forward="true" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_messages.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="633" column="29" selection-start-line="633" selection-start-column="29" selection-end-line="633" selection-end-column="29" />
+        <state relative-caret-position="209">
+          <caret line="110" column="1" selection-start-line="110" selection-start-column="1" selection-end-line="110" selection-end-column="1" />
           <folding>
-            <element signature="e#32800#34835#0#PHP" />
-            <element signature="n#go_check_messages#0;n#!!top" />
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#go_admin_bar_stats_page_button#0" />
+            <element signature="n#!!block;n#go_stats_about#0" />
+            <element signature="e#5187#9946#0" />
+            <element signature="n#!!block;n#go_stats_single_task_activity_list#0" />
+            <element signature="n#!!block;n#go_stats_item_list#0" />
+            <element signature="e#11926#12882#0" />
+            <element signature="n#!!block;n#go_stats_activity_list#0" />
+            <element signature="n#!!block;n#go_stats_badges_list#0" />
+            <element signature="n#!!block;n#go_stats_groups_list#0" />
+            <element signature="n#!!block;n#go_sort_leaders#0" />
+            <element signature="n#!!block;n#go_filter_datatables#0" />
+            <element signature="n#!!block;n#go_stats_leaderboard#0" />
+            <element signature="n#!!block;n#go_stats_lite#0" />
+            <element signature="n#!!block;n#decimalAdjust#0" />
+            <element signature="e#31908#32016#0" />
+            <element signature="e#32057#32165#0" />
+            <element signature="e#32204#32310#0" />
+            <element signature="e#32402#32802#0" />
+            <element signature="e#32857#33649#0" />
+            <element signature="e#33652#36901#0" />
+            <element signature="e#36903#37661#0" />
+            <element signature="e#37663#38159#0" />
+            <element signature="e#38161#38663#0" />
+            <element signature="e#38665#38981#0" />
+            <element signature="e#38983#42353#0" />
+            <element signature="e#42355#43055#0" />
+            <element signature="e#43057#44865#0" />
+            <element signature="e#44867#46675#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/types/store/includes/lightbox/buy-ajax.php">
+    <entry file="file://$PROJECT_DIR$/src/blogs/go_user_blog.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="173" column="161" lean-forward="true" selection-start-line="173" selection-start-column="161" selection-end-line="173" selection-end-column="161" />
+        <state relative-caret-position="1189">
+          <caret line="133" column="9" selection-start-line="133" selection-start-column="9" selection-end-line="133" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_fitvids.js">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="494" column="21" selection-start-line="494" selection-start-column="8" selection-end-line="494" selection-end-column="35" />
+          <folding>
+            <element signature="n#go_task_shortcode#0;n#!!top" />
+            <element signature="n#go_display_visitor_content#0;n#!!top" />
+            <element signature="n#go_display_locks#0;n#!!top" />
+            <element signature="n#go_display_visitor_messages#0;n#!!top" />
+            <element signature="n#go_admin_content#0;n#!!top" />
+            <element signature="n#go_due_date_mods#0;n#!!top" />
+            <element signature="n#go_display_timer#0;n#!!top" />
+            <element signature="n#go_print_1_message#0;n#!!top" />
+            <element signature="n#go_bonus_loot#0;n#!!top" />
+            <element signature="n#go_display_stage_badges#0;n#!!top" />
+            <element signature="n#go_display_rewards#0;n#!!top" />
+            <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
+            <element signature="n#go_stage_password_validate#0;n#!!top" />
+            <element signature="n#go_lock_password_validate#0;n#!!top" />
+            <element signature="n#go_print_outro#0;n#!!top" />
+            <element signature="n#go_print_bonus_stage#0;n#!!top" />
+            <element signature="n#go_hidden_footer#0;n#!!top" />
+            <element signature="n#go_task_change_stage#0;n#!!top" />
+            <element signature="n#go_unlock_stage#0;n#!!top" />
+            <element signature="n#go_update_fail_count#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss">
       <provider selected="true" editor-type-id="text-editor">
@@ -1148,228 +2252,353 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
+        <state relative-caret-position="85">
+          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
+    <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="38" column="37" lean-forward="true" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+        <state relative-caret-position="257">
+          <caret line="77" column="98" selection-start-line="77" selection-start-column="82" selection-end-line="77" selection-end-column="98" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/js/go_shortcode_mce.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="103" selection-start-line="17" selection-start-column="103" selection-end-line="17" selection-end-column="163" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/admin/scripts/go_every_admin_page.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="70" column="196" selection-start-line="70" selection-start-column="196" selection-end-line="70" selection-end-column="196" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_tasks.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="4" column="26" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="26" />
-          <folding>
-            <element signature="n#!!block;n#go_update_bonus_loot#0" />
-            <element signature="n#!!block;n#getTimeRemaining#0" />
-            <element signature="n#!!block;n#initializeClock#0" />
-            <element signature="n#!!block;n#go_timer_abandon#0" />
-            <element signature="n#!!block;n#flash_error_msg#0" />
-            <element signature="n#!!block;n#go_disable_loading#0" />
-            <element signature="n#!!block;n#task_stage_check_input#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../wp-includes/shortcodes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5117">
-          <caret line="330" selection-start-line="330" selection-end-line="330" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_map.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="131" selection-start-line="131" selection-end-line="131" />
-          <folding>
-            <element signature="n#go_map_activate#0;n#!!top" />
-            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#a#0;n#li#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_map_badge#0;n#!!top" />
-            <element signature="n#go_map_quest_badge#0;n#!!top" />
-            <element signature="n#go_make_map_dropdown#0;n#!!top" />
-            <element signature="n#go_update_last_map#0;n#!!top" />
-            <element signature="n#go_single_map_link#0;n#!!top" />
-            <element signature="n#go_to_this_map#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/go_locks.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10693">
-          <caret line="629" selection-start-line="629" selection-end-line="629" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-hook.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5253">
-          <caret line="315" selection-start-line="315" selection-end-line="315" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../wp-includes/plugin.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7395">
-          <caret line="455" selection-start-line="455" selection-end-line="455" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../wp-includes/user.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1768">
-          <caret line="109" selection-start-line="109" selection-end-line="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../wp-login.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17867">
-          <caret line="1058" selection-start-line="1058" selection-end-line="1058" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-251">
-          <caret line="19" column="21" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="21" />
-          <folding>
-            <element signature="n#go_table_tasks#0;n#!!top" />
-            <element signature="e#1446#2053#0#PHP" />
-            <element signature="n#go_table_actions#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_shortcodes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="400" column="8" selection-start-line="400" selection-start-column="8" selection-end-line="400" selection-end-column="8" />
-          <folding>
-            <element signature="n#go_list_user_URL#0;n#!!top" />
-            <element signature="n#listurl#0;n#!!top" />
-            <element signature="n#go_display_video#0;n#!!top" />
-            <element signature="n#go_video#0;n#!!top" />
-            <element signature="n#go_page_grabber_shortcode#0;n#!!top" />
-            <element signature="n#go_post_grabber_shortcode#0;n#!!top" />
-            <element signature="n#go_post_grabber_content_exerpt_shortcode#0;n#!!top" />
-            <element signature="n#go_get_displayname_function#0;n#!!top" />
-            <element signature="n#go_get_login_function#0;n#!!top" />
-            <element signature="n#go_latest_post_url_shortcode#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_get_category#0;n#!!top" />
-            <element signature="n#go_get_all_terms#0;n#!!top" />
-            <element signature="n#go_get_all_posts#0;n#!!top" />
+            <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/styles/css/go_every_page.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="53" column="21" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="21" />
+        <state relative-caret-position="431">
+          <caret line="145" column="12" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js">
+    <entry file="file://$PROJECT_DIR$/types/tasks/go_checks.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="167" column="37" selection-start-line="167" selection-start-column="37" selection-end-line="167" selection-end-column="37" />
+        <state relative-caret-position="155">
+          <caret line="304" column="48" selection-start-line="304" selection-start-column="48" selection-end-line="304" selection-end-column="48" />
           <folding>
-            <element signature="n#!!block;n#go_native_video_resize#0" />
+            <element signature="e#474#879#0#PHP" />
+            <element signature="e#624#879#0#PHP" />
+            <element signature="e#885#1350#0#PHP" />
+            <element signature="e#1106#1350#0#PHP" />
+            <element signature="e#1308#1350#0#PHP" />
+            <element signature="e#1356#1593#0#PHP" />
+            <element signature="e#1377#1540#0#PHP" />
+            <element signature="e#1485#1540#0#PHP" />
+            <element signature="e#1546#1593#0#PHP" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#go_buttons#0;n#!!top" />
+            <element signature="e#4758#5694#0#PHP" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#go_no_check#0;n#!!top" />
+            <element signature="n#go_password_check#0;n#!!top" />
+            <element signature="n#go_blog_check#0;n#!!top" />
+            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#go_upload_check#0;n#!!top" />
+            <element signature="n#go_test_check#0;n#!!top" />
+            <element signature="n#go_task_get_test_meta#0;n#!!top" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
+    <entry file="file://$PROJECT_DIR$/src/go_stats.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="385" column="2" selection-start-line="385" selection-start-column="2" selection-end-line="385" selection-end-column="2" />
+        <state relative-caret-position="181">
+          <caret line="573" column="18" selection-start-line="573" selection-start-column="18" selection-end-line="573" selection-end-column="18" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#7#17#0#PHP" />
+            <element signature="n#go_stats_overlay#0;n#!!top" />
+            <element signature="e#197#207#0#PHP" />
+            <element signature="n#go_admin_bar_stats#0;n#!!top" />
+            <element signature="e#266#493#0#PHP" />
+            <element signature="e#396#493#0#PHP" />
+            <element signature="e#610#615#0#PHP" />
+            <element signature="e#641#646#0#PHP" />
+            <element signature="e#1007#1174#0#PHP" />
+            <element signature="e#1179#1280#0#PHP" />
+            <element signature="e#1887#2052#0#PHP" />
+            <element signature="e#2006#2052#0#PHP" />
+            <element signature="e#2131#2388#0#PHP" />
+            <element signature="e#2293#2388#0#PHP" />
+            <element signature="e#2478#2636#0#PHP" />
+            <element signature="e#2558#2636#0#PHP" />
+            <element signature="e#2929#4976#0#PHP" />
+            <element signature="e#3495#3661#0#PHP" />
+            <element signature="e#3796#4388#0#PHP" />
+            <element signature="e#4263#4388#0#PHP" />
+            <element signature="e#4397#4535#0#PHP" />
+            <element signature="e#4467#4535#0#PHP" />
+            <element signature="e#4936#4976#0#PHP" />
+            <element signature="e#4983#5796#0#PHP" />
+            <element signature="e#5244#5406#0#PHP" />
+            <element signature="e#5326#5406#0#PHP" />
+            <element signature="e#5759#5796#0#PHP" />
+            <element signature="e#5802#6124#0#PHP" />
+            <element signature="e#6087#6124#0#PHP" />
+            <element signature="e#6130#6436#0#PHP" />
+            <element signature="e#6401#6436#0#PHP" />
+            <element signature="e#6623#6628#0#PHP" />
+            <element signature="e#6727#6732#0#PHP" />
+            <element signature="e#6995#7000#0#PHP" />
+            <element signature="e#7017#7188#0#PHP" />
+            <element signature="e#7840#7845#0#PHP" />
+            <element signature="e#7863#8016#0#PHP" />
+            <element signature="e#8033#8194#0#PHP" />
+            <element signature="e#8211#8380#0#PHP" />
+            <element signature="e#8397#8549#0#PHP" />
+            <element signature="e#8663#8668#0#PHP" />
+            <element signature="e#8799#8933#0#PHP" />
+            <element signature="e#9025#9030#0#PHP" />
+            <element signature="e#9182#9187#0#PHP" />
+            <element signature="e#9429#9434#0#PHP" />
+            <element signature="e#9691#9696#0#PHP" />
+            <element signature="e#9791#9796#0#PHP" />
+            <element signature="e#9813#9948#0#PHP" />
+            <element signature="e#9996#10001#0#PHP" />
+            <element signature="e#10015#10192#0#PHP" />
+            <element signature="e#10493#10498#0#PHP" />
+            <element signature="e#10512#10599#0#PHP" />
+            <element signature="e#10741#19245#0#PHP" />
+            <element signature="e#19246#19299#0#PHP" />
+            <element signature="n#go_stats_about#0;n#!!top" />
+            <element signature="e#19367#19473#0#PHP" />
+            <element signature="e#19479#19549#0#PHP" />
+            <element signature="e#19774#19779#0#PHP" />
+            <element signature="e#19888#20162#0#PHP" />
+            <element signature="e#20200#20330#0#PHP" />
+            <element signature="e#21713#21991#0#PHP" />
+            <element signature="e#21795#21985#0#PHP" />
+            <element signature="n#go_stats_task_list#0;n#!!top" />
+            <element signature="e#23159#23246#0#PHP" />
+            <element signature="e#23344#23419#0#PHP" />
+            <element signature="e#23434#23614#0#PHP" />
+            <element signature="e#23462#23608#1#PHP" />
+            <element signature="n#style#0;n#td#0;n#!!top" expanded="true" />
+            <element signature="e#24826#24984#0#PHP" />
+            <element signature="e#24922#24927#0#PHP" />
+            <element signature="e#24993#25155#0#PHP" />
+            <element signature="e#25091#25096#0#PHP" />
+            <element signature="e#25164#25330#0#PHP" />
+            <element signature="e#25264#25269#0#PHP" />
+            <element signature="e#25339#25497#0#PHP" />
+            <element signature="e#25435#25440#0#PHP" />
+            <element signature="e#26163#26367#0#PHP" />
+            <element signature="e#26804#27389#0#PHP" />
+            <element signature="e#26968#27379#0#PHP" />
+            <element signature="e#27081#27365#0#PHP" />
+            <element signature="e#27199#27347#0#PHP" />
+            <element signature="e#27446#27899#0#PHP" />
+            <element signature="e#27483#27564#0#PHP" />
+            <element signature="e#27624#27889#0#PHP" />
+            <element signature="e#27739#27875#0#PHP" />
+            <element signature="e#28043#28244#0#PHP" />
+            <element signature="e#28075#28234#1#PHP" />
+            <element signature="e#28850#30051#0#PHP" />
+            <element signature="e#29136#30051#0#PHP" />
+            <element signature="e#29439#30051#0#PHP" />
+            <element signature="e#29518#30033#0#PHP" />
+            <element signature="e#29813#30033#0#PHP" />
+            <element signature="e#30339#30498#0#PHP" />
+            <element signature="e#30452#30498#0#PHP" />
+            <element signature="n#style#0;n#td#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#1;n#!!top" expanded="true" />
+            <element signature="e#31283#31343#0#PHP" />
+            <element signature="e#31352#31416#0#PHP" />
+            <element signature="e#31425#31493#0#PHP" />
+            <element signature="e#31502#31562#0#PHP" />
+            <element signature="e#31702#31726#0#PHP" />
+            <element signature="n#go_stats_single_task_activity_list#0;n#!!top" />
+            <element signature="e#31860#31947#0#PHP" />
+            <element signature="e#32067#32262#0#PHP" />
+            <element signature="e#32095#32256#1#PHP" />
+            <element signature="e#33483#37029#0#PHP" />
+            <element signature="e#34330#34398#0#PHP" />
+            <element signature="e#34407#34475#0#PHP" />
+            <element signature="e#34485#34704#0#PHP" />
+            <element signature="e#34714#35061#0#PHP" />
+            <element signature="e#34837#35051#0#PHP" />
+            <element signature="e#35071#35331#0#PHP" />
+            <element signature="e#35199#35321#0#PHP" />
+            <element signature="e#35340#35482#0#PHP" />
+            <element signature="e#35535#35725#0#PHP" />
+            <element signature="e#35680#35725#0#PHP" />
+            <element signature="e#35778#35962#0#PHP" />
+            <element signature="e#35917#35962#0#PHP" />
+            <element signature="e#36017#36206#0#PHP" />
+            <element signature="e#36160#36206#0#PHP" />
+            <element signature="e#36263#36506#0#PHP" />
+            <element signature="e#36455#36506#0#PHP" />
+            <element signature="e#37085#37178#0#PHP" />
+            <element signature="n#go_result_link#0;n#!!top" />
+            <element signature="e#37261#38397#0#PHP" />
+            <element signature="e#37499#38397#0#PHP" />
+            <element signature="e#37643#38104#0#PHP" />
+            <element signature="e#37883#38104#0#PHP" />
+            <element signature="e#38402#38618#0#PHP" />
+            <element signature="e#38655#38665#0#PHP" />
+            <element signature="n#go_stats_item_list#0;n#!!top" />
+            <element signature="e#38776#38863#0#PHP" />
+            <element signature="e#38968#39164#0#PHP" />
+            <element signature="e#38996#39158#1#PHP" />
+            <element signature="e#40496#40652#0#PHP" />
+            <element signature="e#40590#40595#0#PHP" />
+            <element signature="e#40661#40821#0#PHP" />
+            <element signature="e#40757#40762#0#PHP" />
+            <element signature="e#40830#40994#0#PHP" />
+            <element signature="e#40928#40933#0#PHP" />
+            <element signature="e#41003#41159#0#PHP" />
+            <element signature="e#41097#41102#0#PHP" />
+            <element signature="e#41229#41234#0#PHP" />
+            <element signature="e#41313#43824#0#PHP" />
+            <element signature="e#42284#42719#0#PHP" />
+            <element signature="e#42369#42709#0#PHP" />
+            <element signature="e#42482#42695#0#PHP" />
+            <element signature="e#42776#43166#0#PHP" />
+            <element signature="e#42813#42894#0#PHP" />
+            <element signature="e#42954#43156#0#PHP" />
+            <element signature="e#43484#43544#0#PHP" />
+            <element signature="e#43553#43617#0#PHP" />
+            <element signature="e#43626#43694#0#PHP" />
+            <element signature="e#43703#43763#0#PHP" />
+            <element signature="e#43896#43906#0#PHP" />
+            <element signature="n#go_stats_activity_list#0;n#!!top" />
+            <element signature="e#44970#45109#0#PHP" />
+            <element signature="e#45047#45052#0#PHP" />
+            <element signature="e#45118#45261#0#PHP" />
+            <element signature="e#45197#45202#0#PHP" />
+            <element signature="e#45351#45356#0#PHP" />
+            <element signature="e#45426#45565#0#PHP" />
+            <element signature="e#45503#45508#0#PHP" />
+            <element signature="e#45574#45722#0#PHP" />
+            <element signature="e#45660#45665#0#PHP" />
+            <element signature="e#45731#45883#0#PHP" />
+            <element signature="e#45819#45824#0#PHP" />
+            <element signature="e#46057#46205#0#PHP" />
+            <element signature="e#46143#46148#0#PHP" />
+            <element signature="e#46323#50565#0#PHP" />
+            <element signature="e#50567#50654#0#PHP" />
+            <element signature="n#go_activity_dataloader_ajax#0;n#!!top" />
+            <element signature="e#50833#51098#0#PHP" />
+            <element signature="e#51303#51469#0#PHP" />
+            <element signature="e#51588#52191#0#PHP" />
+            <element signature="e#52259#53215#0#PHP" />
+            <element signature="e#52349#52496#0#PHP" />
+            <element signature="e#52920#53184#0#PHP" />
+            <element signature="e#52988#53117#0#PHP" />
+            <element signature="e#53229#53755#0#PHP" />
+            <element signature="e#53343#53749#0#PHP" />
+            <element signature="e#53465#53630#0#PHP" />
+            <element signature="e#53562#53630#0#PHP" />
+            <element signature="e#53822#54032#0#PHP" />
+            <element signature="e#53850#53987#0#PHP" />
+            <element signature="e#53931#53987#0#PHP" />
+            <element signature="e#54632#54806#0#PHP" />
+            <element signature="e#54813#62126#0#PHP" />
+            <element signature="e#55895#56409#0#PHP" />
+            <element signature="e#56059#56399#0#PHP" />
+            <element signature="e#56172#56385#0#PHP" />
+            <element signature="e#56498#56886#0#PHP" />
+            <element signature="e#56535#56616#0#PHP" />
+            <element signature="e#56675#56876#0#PHP" />
+            <element signature="e#57059#58492#0#PHP" />
+            <element signature="e#57468#57976#0#PHP" />
+            <element signature="e#57637#57897#0#PHP" />
+            <element signature="e#57738#57897#0#PHP" />
+            <element signature="e#57837#57897#0#PHP" />
+            <element signature="e#57924#57976#0#PHP" />
+            <element signature="e#57990#58408#0#PHP" />
+            <element signature="e#58079#58342#0#PHP" />
+            <element signature="e#58181#58342#0#PHP" />
+            <element signature="e#58282#58342#0#PHP" />
+            <element signature="e#58356#58408#0#PHP" />
+            <element signature="e#58419#58492#0#PHP" />
+            <element signature="e#58583#58772#0#PHP" />
+            <element signature="e#58782#59335#0#PHP" />
+            <element signature="e#58902#59325#0#PHP" />
+            <element signature="e#59126#59325#0#PHP" />
+            <element signature="e#59345#59702#0#PHP" />
+            <element signature="e#59470#59692#0#PHP" />
+            <element signature="e#59711#59941#0#PHP" />
+            <element signature="e#60139#60184#0#PHP" />
+            <element signature="e#60376#60421#0#PHP" />
+            <element signature="e#60619#60665#0#PHP" />
+            <element signature="e#60914#60965#0#PHP" />
+            <element signature="e#61488#61544#0#PHP" />
+            <element signature="e#61553#61613#0#PHP" />
+            <element signature="e#61695#61751#0#PHP" />
+            <element signature="e#61761#61823#0#PHP" />
+            <element signature="e#61832#61898#0#PHP" />
+            <element signature="e#61986#62048#0#PHP" />
+            <element signature="e#62176#62200#0#PHP" />
+            <element signature="n#go_stats_badges_list#0;n#!!top" />
+            <element signature="e#62317#62404#0#PHP" />
+            <element signature="e#62620#62742#0#PHP" />
+            <element signature="e#63363#63562#0#PHP" />
+            <element signature="e#63584#63733#0#PHP" />
+            <element signature="e#63798#63857#0#PHP" />
+            <element signature="e#64377#64531#0#PHP" />
+            <element signature="e#64462#64531#0#PHP" />
+            <element signature="e#64676#64895#0#PHP" />
+            <element signature="e#65341#66034#0#PHP" />
+            <element signature="e#65565#65833#0#PHP" />
+            <element signature="e#65755#65833#0#PHP" />
+            <element signature="e#66173#66197#0#PHP" />
+            <element signature="n#go_stats_groups_list#0;n#!!top" />
+            <element signature="e#66314#66456#0#PHP" />
+            <element signature="e#66402#66456#0#PHP" />
+            <element signature="e#66672#66793#0#PHP" />
+            <element signature="e#67210#69694#0#PHP" />
+            <element signature="e#67374#67573#0#PHP" />
+            <element signature="e#67596#67745#0#PHP" />
+            <element signature="e#67810#67861#0#PHP" />
+            <element signature="e#68320#69659#0#PHP" />
+            <element signature="e#68470#68624#0#PHP" />
+            <element signature="e#68555#68624#0#PHP" />
+            <element signature="e#68694#68913#0#PHP" />
+            <element signature="e#69354#69649#0#PHP" />
+            <element signature="n#go_make_tax_select#0;n#!!top" />
+            <element signature="n#go_stats_lite#0;n#!!top" />
+            <element signature="n#go_stats_leaderboard#0;n#!!top" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/types/tasks/task_shortcode.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="534" column="65" selection-start-line="534" selection-start-column="65" selection-end-line="534" selection-end-column="149" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_admin_content#0;n#!!top" />
-            <element signature="n#go_display_all_admin_content#0;n#!!top" />
-            <element signature="n#go_display_timer#0;n#!!top" />
-            <element signature="n#go_display_stage_badges#0;n#!!top" />
-            <element signature="n#go_display_rewards#0;n#!!top" />
-            <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
-            <element signature="n#go_stage_password_validate#0;n#!!top" />
-            <element signature="n#go_lock_password_validate#0;n#!!top" />
-            <element signature="n#go_print_bonus_stage#0;n#!!top" />
-            <element signature="n#go_hidden_footer#0;n#!!top" />
-            <element signature="n#go_unlock_stage#0;n#!!top" />
-            <element signature="n#go_update_fail_count#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6362">
-          <caret line="6492" column="6" selection-start-line="6492" selection-start-column="6" selection-end-line="6492" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/front/go_enque_js.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="76" column="102" selection-start-line="76" selection-start-column="76" selection-end-line="76" selection-end-column="102" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_updates.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="130" column="79" lean-forward="true" selection-start-line="130" selection-start-column="79" selection-end-line="130" selection-end-column="79" />
+        <state relative-caret-position="169">
+          <caret line="830" column="29" lean-forward="true" selection-start-line="830" selection-start-column="29" selection-end-line="830" selection-end-column="51" />
           <folding>
             <element signature="n#go_get_health_mod#0;n#!!top" />
+            <element signature="e#321#524#0#PHP" />
+            <element signature="e#487#524#0#PHP" />
+            <element signature="e#529#581#0#PHP" />
+            <element signature="e#586#638#0#PHP" />
             <element signature="n#go_get_user_loot#0;n#!!top" />
-            <element signature="n#go_update_stage_table#0;n#!!top" />
+            <element signature="e#835#1010#0#PHP" />
+            <element signature="e#859#1004#1#PHP" />
+            <element signature="n#go_update_bonus_loot#0;n#!!top" />
+            <element signature="e#1306#1547#0#PHP" />
+            <element signature="e#1321#1546#1#PHP" />
+            <element signature="e#1571#6776#0#PHP" />
+            <element signature="e#1745#6776#0#PHP" />
+            <element signature="e#1875#2009#0#PHP" />
+            <element signature="e#1964#2009#0#PHP" />
+            <element signature="e#2254#3866#0#PHP" />
+            <element signature="e#2316#3855#0#PHP" />
+            <element signature="e#3936#4029#0#PHP" />
+            <element signature="e#4217#4312#0#PHP" />
+            <element signature="e#4321#4385#0#PHP" />
+            <element signature="e#4463#6428#0#PHP" />
+            <element signature="e#4634#6371#0#PHP" />
+            <element signature="e#5025#5147#0#PHP" />
+            <element signature="e#5204#5336#0#PHP" />
+            <element signature="e#5397#5539#0#PHP" />
+            <element signature="e#5592#5714#0#PHP" />
+            <element signature="e#6437#6770#0#PHP" />
+            <element signature="e#6781#7004#0#PHP" />
             <element signature="n#go_add_badges#0;n#!!top" />
             <element signature="n#go_remove_badges#0;n#!!top" />
             <element signature="n#go_add_groups#0;n#!!top" />
@@ -1377,13 +2606,40 @@
             <element signature="n#go_mod_loot#0;n#!!top" />
             <element signature="n#go_health_to_add#0;n#!!top" />
             <element signature="n#go_noty_loot_success#0;n#!!top" />
+            <element signature="n#go_noty_level_up#0;n#!!top" />
             <element signature="n#go_noty_level_down#0;n#!!top" />
             <element signature="n#go_noty_loot_error#0;n#!!top" />
-            <element signature="n#go_update_totals_table_Badges#0;n#!!top" />
-            <element signature="n#go_update_totals_table_Groups#0;n#!!top" />
+            <element signature="n#go_noty_message_generic#0;n#!!top" />
             <element signature="n#go_update_admin_bar_v4#0;n#!!top" />
-            <element signature="n#go_add_user_to_totals_table#0;n#!!top" />
             <element signature="n#go_add_user_to_totals_table_login#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="217" column="18" lean-forward="true" selection-start-line="217" selection-start-column="9" selection-end-line="217" selection-end-column="29" />
+          <folding>
+            <element signature="n#go_update_db_check#0;n#!!top" />
+            <element signature="n#go_update_db#0;n#!!top" />
+            <element signature="n#go_table_tasks#0;n#!!top" />
+            <element signature="e#1444#2051#0#PHP" />
+            <element signature="n#go_on_activate_msdb#0;n#!!top" />
+            <element signature="n#go_on_create_blog#0;n#!!top" />
+            <element signature="n#go_on_delete_blog#0;n#!!top" />
+            <element signature="n#go_user_delete#0;n#!!top" />
+            <element signature="n#go_open_comments#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="169" column="30" selection-start-line="169" selection-start-column="30" selection-end-line="169" selection-end-column="30" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

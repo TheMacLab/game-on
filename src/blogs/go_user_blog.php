@@ -46,7 +46,12 @@ get_header();
     $user_display_name = $user_obj->display_name;
     $user_website = $user_obj->user_url;
     $page_title = $user_display_name . "'s Blog";
-    ?><script>document.title = "<?php echo $page_title; ?>";</script><?php
+    ?><script>
+    document.title = "<?php echo $page_title; ?>";
+    jQuery( document ).ready(function() {
+        go_lightbox_blog_img();
+    });
+    </script><?php
     $use_local_avatars = get_option('options_go_avatars_local');
     $use_gravatar = get_option('options_go_avatars_gravatars');
     if ($use_local_avatars){
@@ -71,7 +76,7 @@ get_header();
                 <div class='go_stats_user_info'>
                     <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>"; ?>
                     <?php
-                    go_user_links($user_id,false, true, false, false, true, true);
+                    go_user_links($user_id,false, true, false, false, false, true);
                     if ($current_user_id === $user_id){
                         echo '<button class="go_blog_opener" blog_post_id ="">New Post</button>';
                      }
@@ -122,10 +127,15 @@ if ( empty($posts) ) {
        $post = json_decode(json_encode($post), True);//convert stdclass to array by encoding and decoding
        $title =  $post['post_title'];
        $content =  $post['post_content'];
+
+       $content = apply_filters('the_content', $content);
+       //$content = str_replace(']]>', ']]&gt;', $content);
+
+       //$content = do_shortcode($content);
        $date = $post['post_date'];
        $post_id = $post['ID'];
        ?>
-       <div class="go_blog_post_wrapper" style="padding: 20px; ">
+       <div class="go_blog_post_wrapper" style="padding: 20px;">
            <hr>
            <h2><?php echo $title;?></h2>
            <div><?php echo $date;?></div>

@@ -5,7 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
-//add_filter('acf/settings/show_admin', '__return_false');
+add_filter('acf/settings/show_admin', '__return_false');
 
 
 if( function_exists('acf_add_local_field_group') ):
@@ -2964,7 +2964,7 @@ you only enter /map',
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                             array(
                                 'key' => 'field_5abde803a0718',
@@ -2985,7 +2985,7 @@ you only enter /map',
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                             array(
                                 'key' => 'field_5abde803a0864',
@@ -3006,7 +3006,7 @@ you only enter /map',
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => '.01',
                             ),
                             array(
                                 'key' => 'field_5b1374afa413a',
@@ -5627,7 +5627,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                             array(
                                 'key' => 'field_5ac134fe12f55',
@@ -5648,7 +5648,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                             array(
                                 'key' => 'field_5ac134fe12f56',
@@ -5690,7 +5690,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                         ),
                     ),
@@ -5890,7 +5890,7 @@ The master password that is set in the options page will work here, but you may 
                                         'append' => '',
                                         'min' => 0,
                                         'max' => '',
-                                        'step' => '',
+                                        'step' => 1,
                                     ),
                                     array(
                                         'key' => 'field_5b526d2e79584',
@@ -5911,7 +5911,7 @@ The master password that is set in the options page will work here, but you may 
                                         'append' => '',
                                         'min' => 0,
                                         'max' => '',
-                                        'step' => '',
+                                        'step' => 1,
                                     ),
                                     array(
                                         'key' => 'field_5b526d2e79585',
@@ -5953,7 +5953,7 @@ The master password that is set in the options page will work here, but you may 
                                         'append' => '',
                                         'min' => 0,
                                         'max' => '',
-                                        'step' => '',
+                                        'step' => 1,
                                     ),
                                     array(
                                         'key' => 'field_5b526d2e79588',
@@ -6142,7 +6142,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                             array(
                                 'key' => 'field_5a8b14a6f32f8',
@@ -6163,7 +6163,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                             array(
                                 'key' => 'field_5a8b14a6f32f9',
@@ -6205,7 +6205,7 @@ The master password that is set in the options page will work here, but you may 
                                 'append' => '',
                                 'min' => 0,
                                 'max' => '',
-                                'step' => '',
+                                'step' => 1,
                             ),
                         ),
                     ),

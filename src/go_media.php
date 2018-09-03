@@ -366,9 +366,6 @@ function go_wp_enqueue_media( $args = array() ) {
 
 //add_action( 'wp_loaded', 'go_wp_enqueue_media' );
 
-
-
-
 /**
  * Resize All Images on Client Side
  */

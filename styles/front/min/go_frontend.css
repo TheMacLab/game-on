@@ -420,6 +420,11 @@ video.wp-video-shortcode {
 #go_button {
   float: right; }
 
+#go_back_button,
+#go_button,
+#frontend-button {
+  cursor: pointer; }
+
 /********************
 *	Bonus Button
 

@@ -134,6 +134,19 @@ video.wp-video-shortcode {
 	float: right;
 }
 
+#go_back_button,
+#go_button,
+#frontend-button {
+	cursor: pointer;
+}
+
+#go_upload_button {
+	margin: auto;
+	font-size: 1.4em;
+	padding: 6px;
+
+}
+
 /********************
 *	Bonus Button
 

@@ -75,7 +75,7 @@ class Front_End_Media {
         $role->add_cap( 'upload_files' );
 		if ( current_user_can( 'read' ) ) {
 			$str = __( 'Select File', 'frontend-media' );
-			return '<img id="go_result" /><div id="go_result_name"></div><input id="frontend-button" type="button" onclick="go_upload_frontend();" value="' . $str . '" class="button" style="position: relative; z-index: 1;">';
+			return '<img id="go_result" /><div id="go_result_name"></div><div id="go_upload_button"><input id="frontend-button" type="button" onclick="go_upload_frontend();" value="' . $str . '" class="button" style="position: relative; z-index: 1;"></div>';
 		}
 
 		return __( 'Please Login To Upload', 'frontend-media' );

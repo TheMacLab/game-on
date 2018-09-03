@@ -62,8 +62,6 @@ function go_return_c4( $user_id ) {
 
 }
 
-
-
 function go_display_points( $points ) {
 
 	$prefix = get_option( 'go_points_prefix' );

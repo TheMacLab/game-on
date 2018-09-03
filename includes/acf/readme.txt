@@ -1,7 +1,7 @@
 === Advanced Custom Fields Pro ===
 Contributors: elliotcondon
 Tags: acf, advanced, custom, field, fields, form, repeater, content
-Requires at least: 3.6.0
+Requires at least: 4.4.0
 Tested up to: 4.9.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,58 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 5.7.4 =
+*Release Date - 30 August 2018*
+
+* Fix - Fixed bug causing field groups to disappear when selecting a taxonomy term with WPML active.
+* Tweak - Added more Dark Mode styles.
+* Tweak - Improved DB upgrade prompt, functions and AJAX logic.
+* Tweak - Improved the "What's New" admin page seen after DB Upgrade.
+* Dev - Added new location rules filters.
+
+= 5.7.3 =
+*Release Date - 20 August 2018*
+
+* New - Added Dark Mode styles for the [Dark Mode Plugin](https://en-au.wordpress.org/plugins/dark-mode/).
+* New - Added "Value Contains" condition to the Select field type.
+* New - Added support for the WooCommerce product type dropdown to trigger "update metaboxes".
+* Tweak - Improved acf.screen model responsible for "updating metaboxes" when changing post data.
+* Tweak - Removed user fields from the multisite "Add New User" page. 
+* Fix - Fixed bug preventing some tinymce customizations from working.
+* Fix - Fixed JS bug throwing "preference" error in console.
+* Dev - Added action 'acf/enqueue_uploader' triggered after the hidden "ACF Content" editor is rendered.
+
+= 5.7.2 =
+*Release Date - 6 August 2018*
+
+* Fix - Fixed bug preventing the Google Maps Field address from being customised.
+* Fix - Improved logic to request and cache plugin update information.
+* Fix - Fixed bug preventing JS initialization when editing widgets in accessibility mode.
+* Fix - Added missing $parent argument to term_exists() function when adding a new term via taxonomy field popup.
+* Fix - Fixed bug where nested Group Fields did not delete their values.
+* Fix - Fixed JS error thrown by localStorage if cookies are not enabled.
+* Dev - Bumped minimum WP version requirement to 4.4.
+* Dev - Added action 'wp_nav_menu_item_custom_fields' for compatibility with other plugins modifying the menu walker class.
+* Dev - Added 'multiple' to the allowed attributes for an email field.
+* Dev - Added new ACF_Ajax class for upcoming features.
+
+= 5.7.1 =
+* Core: Minor fixes and improvements
+
+= 5.7.0 =
+* Core: Major JavaScript updates
+* Core: Improved conditional logic with new types and more supported fields
+* Core: Improved localization and internationalization
+* Repeater field: Improved logic that remembers collapsed row states
+* Repeater field: Added support to collapse multiple rows (hold shift)
+* API: Improved lookup to find fields without a reference value
+* Language: Added Croatian translation - Thanks to Vlado Bosnjak
+* Language: Updated Italian translation - thanks to Davide Pantè
+* Language: Updated Romanian translation - thanks to Ionut Staicu
+* Language: Updated German translation - thanks to Ralf Koller
+* Language: Updated Arabic translation - thanks to Karim Ramadan
+* Language: Updated Portuguese translation - thanks to Pedro Mendonça
 
 = 5.6.10 =
 * Core: Minor fixes and improvements

@@ -7,8 +7,6 @@
  */
 
 
-
-
 // Callback function to remove default bio field from user profile page & re-title the section
 // ------------------------------------------------------------------
 // Thanks to original code found here: https://wordpress.org/support/topic/remove-the-bio-section-from-user-profile
@@ -65,8 +63,6 @@
     }
     add_action('admin_head-profile.php', 'cor_profile_subject_start');
     add_action('admin_footer-profile.php', 'cor_profile_subject_end');
-
-
 
 
 //function go_user_profile_page (){

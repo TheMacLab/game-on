@@ -98,8 +98,7 @@ function go_register_store_tax_and_cpt() {
 	);
 	register_post_type( 'go_store', $args );
 }
-add_action( 'init', 'go_register_store_tax_and_cpt', 0 );	 
-	 
+add_action( 'init', 'go_register_store_tax_and_cpt', 0 );
 
 function go_new_item_permalink( $return, $post_id, $new_title, $new_slug ) {
 	if ( strpos( $return, 'edit-slug' ) !== false ) {
@@ -149,8 +148,5 @@ function go_convert_store_id_to_term_in_query($query) {
 		$q_vars[$taxonomy] = $term->slug;
 	}
 }
-
-
-
 
 ?>

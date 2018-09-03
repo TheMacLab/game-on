@@ -42,8 +42,6 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
         $bonus_is_complete = false;
     }
 
-
-
     if ($bonus){
         $status_active_check = $bonus_status;
     }else{
@@ -138,7 +136,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         echo "</div>";
     }
 }
-
 
 function go_no_check ($i, $status, $custom_fields, $instructions, $bonus, $bonus_status){
     //for bonus stages
@@ -246,8 +243,17 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
                 $i
             )
         );
-        $post_link = get_permalink($post_id);
-        echo "Post Link : <a href='" . $post_link . "' target='blank'>" . $post_link . "</a>";
+        echo $post_id;
+        //$post_link = get_permalink($post_id);
+        //echo "Post Link : <a href='" . $post_link . "' target='blank'>" . $post_link . "</a>";
+        $content_post = get_post($post_id);
+        $content = $content_post->post_content;
+        //$content = apply_filters('the_content', $content);
+        //$content = str_replace(']]>', ']]&gt;', $content);
+        $content = do_shortcode($content);
+
+        echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 20px;\">" . $content . "</div>";
+
     }
 }
 
@@ -294,7 +300,10 @@ function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $use
                 $i
             )
         );
+        //add lightbox to this
         echo "URL Submitted : <a href='" . $url . "' target='blank'>" . $url . "</a>";
+        //Too many security errors with Lightbox
+        //echo "<br><a href='" . $url . "' data-featherlight='iframe'>Open in a lightbox.</a>";
     }
 }
 
@@ -311,7 +320,9 @@ function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $
 
     if ($i == $status) {
         echo $instructions;
+
         echo do_shortcode('[frontend-button]');
+
     }
     else {
         $i++;

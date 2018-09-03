@@ -118,7 +118,6 @@ function go_blogs() {
 }
 add_action( 'init', 'go_blogs', 0 );
 
-
 function go_custom_rewrite() {
     // we are telling wordpress that if somebody access yoursite.com/all-post/user/username
     // wordpress will do a request on this query var yoursite.com/index.php?query_type=all_post&uname=username
@@ -191,9 +190,6 @@ function go_blog_opener(){
 <?php
 }
 
-
-
-
 function go_blog_submit(){
 
     check_ajax_referer( 'go_blog_submit' );
@@ -218,7 +214,6 @@ function go_blog_submit(){
         wp_update_post($my_post);
     }
 }
-
 
 /*function go_blog_posts_pages( $query ) {
     if ( $query->is_post_type_archive('go_blogs') && $query->is_main_query() ) {

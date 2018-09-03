@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 
 /**
  * TASK SHORTCODE
@@ -783,6 +783,7 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     //$custom_fields = get_post_custom( $post_id );
     $task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
     $outro_message = (isset($custom_fields['go_outro_message'][0]) ?  $custom_fields['go_outro_message'][0] : null);
+    $outro_message = do_shortcode($outro_message);
     $loot = $wpdb->get_results ("SELECT * FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}" );
     $loot = $loot[0];
     if (get_option( 'options_go_loot_xp_toggle' )){

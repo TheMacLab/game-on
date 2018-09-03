@@ -186,6 +186,11 @@ function go_admin_bar_stats() {
 
 
     ?>
+    <script>
+        go_stats_links();
+        jQuery('#wp-admin-bar-go_stats').prop('onclick',null).off('click');
+        jQuery("#wp-admin-bar-go_stats").one("click", function(){ go_admin_bar_stats_page_button()});
+    </script>
     <div id='go_stats_lay'>
         <div id='go_stats_header'>
             <div class="go_stats_id_card">
@@ -567,20 +572,17 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
     $current_id = get_current_user_id();
     $is_admin = go_user_is_admin($current_id);
     if($is_admin){
-        $website = true;
         $stats = true;
-        $profile = true;
-        $blog = true;
     }
     $user_obj = get_userdata($user_id);
     echo" <div class='go_user_links'>";
 
     if ($stats && !$on_stats){
-        echo" <div class='go_user_link'><a href='#' onclick='go_admin_bar_stats_page_button(" . $user_id .");'><i class=\"fa fa-area-chart ab-icon\" aria-hidden=\"true\"></i></a></div>";
+        echo "<div class='go_user_link_stats go_user_link' name='{$user_id}'><a href='#';'><i class=\"fa fa-area-chart ab-icon\" aria-hidden=\"true\"></i></a></div>";
     }
     if ($profile){
         $user_edit_link = get_edit_user_link( $user_id  );
-        echo" <div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class=\"fa fa-user\" aria-hidden=\"true\"></i></a></div>";
+        echo "<div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class=\"fa fa-user\" aria-hidden=\"true\"></i></a></div>";
     }
     if ($blog){
         $blog_toggle = get_option('options_go_blogs_toggle');
@@ -599,14 +601,15 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
         }
     }
     if($is_admin && $show_messages && $on_stats){
-        echo "<div id='go_stats_messages_icon' class='go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        echo "<div id='go_stats_messages_icon_stats' class='go_stats_messages_icon go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
         //make the messages icon a link to this user
-        echo '<script>console.log("on_stats"); var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id);}); </script>';
+        echo '<script>console.log("on_stats");  jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id);}); </script>';
     }
     else if($is_admin && $show_messages ){
-        echo "<div id='go_stats_messages_icon' class='go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        echo "<div id='go_stats_messages_icon_blog' class='go_stats_messages_icon go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
         //make the messages icon a link to this user
-        echo '<script>console.log("on_blog"); var user_id = jQuery("#go_stats_messages_icon").attr("name"); jQuery("#go_stats_messages_icon").one("click", function(e){ go_messages_opener(user_id); }); </script>';
+        echo '<script>console.log("on_blog"); jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id); }); </script>';
+        echo "<script>  jQuery('.go_user_link_stats').one('click', function(){  var user_id = jQuery(this).attr('name'); go_admin_bar_stats_page_button(user_id)}); </script>";
     }
     echo "</div>";
 
@@ -659,8 +662,10 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
                    <thead>
 						<tr>";
     if ($is_admin){
-        echo "<th></th><th class='header go_tasks_reset' ><a href='#'>Reset</a></th>";
+        echo "<th></th><th class='header go_tasks_reset_multiple'  style='color: red; text-align: center;'><a href='#'><i class='fa fa-times-circle' aria-hidden='true'></i></a></th>
+    <th class='header go_tasks_reset' ><a href='#'>Reset</a></th>";
     }
+
     echo"
 							
 							<th class='header go_tasks_timestamps' ><a href=\"#\">Time</a></th>
@@ -820,6 +825,11 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
 
 
         $status_order = $status/$total_stages;
+        if ($status == -1){
+            $status_print = "reset";
+        }else{
+            $status_print = $status . " / " . $total_stages;
+        }
         $bonus_status_order = $bonus_status/$total_bonus_stages;
 
 
@@ -832,14 +842,14 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
         echo " <tr id='postID_{$post_id}'>";
 
 	    if ($is_admin){
-            echo " <td></td><td id='{$post_id}' class='go_reset_task' value='{$post_id}'  style='color: red; text-align: center;'><i class='fa fa-times-circle' aria-hidden='true'></i></td>";
+            echo " <td></td><td style='text-align: center;'><input class='go_checkbox' type='checkbox' name='go_selected' value='{$post_id}'/></td><td id='{$post_id}' class='go_reset_task' value='{$post_id}'  style='color: red; text-align: center;'><a href='#'><i class='fa fa-times-circle' aria-hidden='true'></i></a></td>";
 	    }
 	    echo"
 			        
                         <td data-order='{$last_time}'>{$time}</td>
 					    <td><a href='{$post_link}' >{$post_name}<a></td>
 
-					    <td data-order='{$status_order}'>{$status} / {$total_stages}</td>
+					    <td data-order='{$status_order}'>$status_print</td>
 					    <td data-order='{$bonus_status_order}'>$bonus_str</td>
 					    <td data-order='{$link_count}'>{$links} <a href='javascript:;' class='go_stats_body_activity_single_task' data-postID='{$post_id}' onclick='go_stats_single_task_activity_list({$post_id});'> ALL</a></td>
         ";
@@ -1052,8 +1062,22 @@ function go_result_link($check_type, $result, $stage, $time){
         }
     }
     else if ($check_type == 'blog'){
+
+        $content_post = get_post($result);
+        $content = $content_post->post_content;
+        $content = apply_filters('the_content', $content);
+        //$content = str_replace(']]>', ']]&gt;', $content);
+        //$content = do_shortcode($content);
+
+        //echo $content;
+
         $blog_link = get_permalink($result);
-        $link = "<a href='{$blog_link}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
+        //$link = "<a href='{$blog_link}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
+        $link = "<a href='#' data-featherlight='#blog_post_" . $result . "' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
+        echo "<div style='display:none;'><div id='blog_post_" . $result. "'>".$content."</div><script>jQuery( document ).ready(function() {
+                go_lightbox_blog_img();
+            });;</script></div>";
+
     }
     /*
     else if ($check_type == 'password'){
@@ -1563,12 +1587,6 @@ function go_activity_dataloader_ajax()
 
 
 
-
-
-
-
-
-
     for ( $i=0 ; $i<count($aColumns) ; $i++ )
     {
         $searchable = $_GET['columns'][$i]['searchable'];
@@ -1800,7 +1818,7 @@ $totalWhere = " WHERE uid = ".$user_id;
             $timer_mod = null;
         }
 
-        $health_mod_int = intval($health_mod);
+        $health_mod_int = $health_mod;
         if (!empty($health_mod_int)){
             $health_abbr = get_option( "options_go_loot_health_abbreviation" );
             $health_mod_str = $health_abbr . ": ". $health_mod;
@@ -2076,7 +2094,6 @@ function go_stats_groups_list($user_id) {
     die();
 }
 //add_shortcode('go_make_groups', 'go_make_groups');
-
 
 /**Leaderboard Stuff Below
  *

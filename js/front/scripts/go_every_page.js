@@ -12,6 +12,36 @@ function go_sounds( type ) {
 }
 */
 
+
+
+
+function go_lightbox_blog_img(){
+    jQuery('[class*= wp-image]').each(function(  ) {
+        var class1 = jQuery(this).attr('class');
+        console.log(class1);
+        //var patt = /w3schools/i;
+        var regEx = /.*wp-image/;
+        var imageID = class1.replace(regEx,'wp-image');
+        console.log(imageID);
+
+        var src1 = jQuery(this).attr('src');
+        console.log(src1);
+        //var patt = /w3schools/i;
+        var regEx2 = /-([^-]+).$/;
+
+
+        var regEx3 = /\.[0-9a-z]+$/i;
+        var patt1 = /\.[0-9a-z]+$/i;
+        var m1 = (src1).match(patt1);
+
+        //var imagesrc = src1.replace(regEx2, regEx3);
+        var imagesrc = src1.replace(regEx2, m1 );
+        console.log(imagesrc);
+        jQuery(this).featherlight(imagesrc);
+    });
+}
+
+
 function go_admin_bar_stats_page_button( id ) {//this is called from the admin bar and is hard coded in the php code
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_admin_bar_stats;
 
@@ -75,6 +105,11 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
     });
 }
 
+function go_stats_links(){
+    jQuery('.go_user_link_stats').prop('onclick',null).off('click');
+    jQuery('.go_user_link_stats').one('click', function(){  var user_id = jQuery(this).attr('name'); go_admin_bar_stats_page_button(user_id)});
+}
+
 function go_stats_about(user_id) {
     console.log("about");
     //jQuery(".go_datatables").hide();
@@ -136,15 +171,40 @@ function go_stats_task_list() {
                                     sortable: false,
                                 }
                             ],
+                            "drawCallback": function( ) {
+                                    var user_id = jQuery("#go_stats_messages_icon_stats").attr("name");
+                                    jQuery('.go_reset_task').prop('onclick',null).off('click');
+                                    jQuery(".go_reset_task").one("click", function(){
+                                        go_messages_opener( user_id, this.id, 'reset' );
+                                    });
+                                    jQuery('.go_tasks_reset_multiple').prop('onclick',null).off('click');
+                                    jQuery(".go_tasks_reset_multiple").one("click", function(){
+                                        go_messages_opener( user_id, null, 'reset_multiple' );
+                                    });
+
+                            }
                         });
 
                     }
-                    console.log("everypage");
+
+                    //console.log("everypage");
                     //make task reset buttons into links
-                    var user_id = jQuery("#go_stats_messages_icon").attr("name");
-                    jQuery(".go_reset_task").one("click", function(e){
-                        go_messages_opener( user_id, this.id, 'reset' );
-                    });
+
+                    //jQuery(".go_reset_task").one("click", function(){
+                        //go_messages_opener( user_id, this.id, 'reset' );
+                    //});
+                    /*
+                    jQuery("#go_tasks_datatable_length select").focus(
+                        function(){
+                            console.log("click");
+                            jQuery('.go_reset_task').prop('onclick',null).off('click');
+                            jQuery(".go_tasks_reset").one("click", function(){
+                                go_messages_opener( user_id, this.id, 'reset' );
+                            });
+                        }
+                    );
+                    */
+
 
                 }
             });
@@ -289,7 +349,7 @@ function go_stats_single_task_activity_list (postID) {
 }
 
 function go_stats_item_list() {
-    console.log("store");
+    //console.log("store");
     //jQuery(".go_datatables").hide();
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_item_list;
     if (jQuery("#go_store_datatable").length == 0 ) {

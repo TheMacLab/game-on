@@ -7,7 +7,7 @@ function go_upload_frontend() {
 
     // attach a click event (or whatever you want) to some element on your page
     //$( '#frontend-button' ).on( 'click', function( event ) {
-    event.preventDefault();
+    //event.preventDefault();
 
     //if the file_frame has already been created, just reuse it
     if (file_frame) {

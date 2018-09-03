@@ -182,6 +182,7 @@ function go_update_bonus_loot ($post_id){
 
 }
 
+
 function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bonus_status, $progressing, $result = null, $check_type = null, $badge_ids = null, $group_ids = null )
 {
     global $wpdb;

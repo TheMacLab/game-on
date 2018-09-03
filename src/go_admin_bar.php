@@ -17,7 +17,6 @@ function remove_wp_admin_items( $wp_admin_bar ) {
 	}	
 }
 
-
 //remove dashboard
 add_action( 'admin_menu', 'Wps_remove_tools', 99 );
 function Wps_remove_tools(){
@@ -351,7 +350,7 @@ function go_admin_bar() {
             $stats_name = get_option('options_go_stats_name');
             $wp_admin_bar->add_node(
 
-                array('id' => 'go_stats', 'title' => '<i class="fa fa-area-chart ab-icon" aria-hidden="true"></i><div style="float: right;">' . $stats_name . '</div><div id="go_stats_page"></div><script>jQuery( "#wp-admin-bar-go_stats" ).click(function() {go_admin_bar_stats_page_button();});</script>', 'href' => '#',));
+                array('id' => 'go_stats', 'title' => '<i class="fa fa-area-chart ab-icon" aria-hidden="true"></i><div style="float: right;">' . $stats_name . '</div><div id="go_stats_page"></div><script>  jQuery("#wp-admin-bar-go_stats").one("click", function(){ go_admin_bar_stats_page_button()}); </script>', 'href' => '#',));
         }
         
         if ($go_map_switch){

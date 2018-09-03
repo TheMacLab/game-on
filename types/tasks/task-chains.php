@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Retrieves all the published tasks in a chain, using a chain ID.
  *
@@ -123,7 +122,6 @@ function go_task_chain_is_final_task( $task_id, $tt_id = null ) {
 	return false;
 }
 
-
 /**
  * Get achievements associated with the map of a particular post
  * @param $post_id
@@ -190,7 +188,6 @@ function go_badges_task_chains ($post_id, $user_id, $custom_fields ) {
         return $badges;
     }
 }
-
 
 function is_chain_done($chain_id, $user_id, $post_id){
     $is_pod = get_term_meta($chain_id, "pod_toggle", true);

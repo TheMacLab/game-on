@@ -41,7 +41,10 @@ jQuery( document ).ready( function() {
     //console.log('ready');
    // jQuery('.go_tax_select').select2();
 
+
 });
+
+
 
 function go_toggle( source ) {
 	checkboxes = jQuery( '.go_checkbox' );
@@ -80,6 +83,7 @@ function go_clipboard_class_a_choice() {
                 jQuery(".go_messages_icon").one("click", function(e){
                     go_messages_opener();
                 });
+                go_stats_links();
             },
 
 			"columnDefs": [
@@ -201,8 +205,6 @@ function go_clipboard_class_a_choice() {
 	}
 }
 
-
-
 function go_clipboard_class_a_choice_activity(refresh) {
     if ( jQuery( "#go_clipboard_activity_datatable" ).length == 0  || refresh == true) {
         var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_activity;
@@ -236,6 +238,7 @@ function go_clipboard_class_a_choice_activity(refresh) {
                             jQuery(".go_messages_icon").one("click", function(e){
                                 go_messages_opener();
                             });
+                            go_stats_links();
                         },
                         "columnDefs": [
                             { type: 'natural', targets: '_all'  },

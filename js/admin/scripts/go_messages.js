@@ -2,8 +2,14 @@
 function go_messages_opener( user_id, post_id, message_type ) {
     //console.log(message_type);
     jQuery('.go_messages_icon').prop('onclick',null).off('click'); //clipboard
-    jQuery('#go_stats_messages_icon').prop('onclick',null).off('click'); //stats
-    jQuery('.go_reset_task').prop('onclick',null).off('click'); //reset task links
+    jQuery('.go_stats_messages_icon').prop('onclick',null).off('click'); //stats
+    jQuery('.go_reset_task').prop('onclick',null).off('click');
+    jQuery('.go_tasks_reset').prop('onclick',null).off('click'); //reset task links
+
+    //reset the multiple task reset button
+    jQuery('.go_tasks_reset_multiple').prop('onclick',null).off('click');
+
+
     //jQuery('#go_messages_icon').prop('onclick',null).off('click'); //blog
     //remove the onclick events from any message link and then reattach after ajax call
     //types of links 1. clipboard 2. stats link 3. task reset button and 4. blog page
@@ -21,12 +27,24 @@ function go_messages_opener( user_id, post_id, message_type ) {
         var user_ids = [user_id];
     }
 
+    if (post_id == null && message_type == 'reset_multiple'){//this is a reset multiple quests from stats panel
+        var inputs = jQuery(".go_checkbox:visible");
+        var post_ids = [];
+        for(var i = 0; i < inputs.length; i++){
+            if (inputs[i]['checked'] === true ){
+                post_ids.push(jQuery(inputs[i]).val());
+            }
+        }
+    }else{ //this is from the stats panel, so user_id was sent so stuff it in an array
+        var post_ids = [post_id];
+    }
+
 
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_create_admin_message;
     var gotoSend = {
         action:"go_create_admin_message",
         _ajax_nonce: nonce,
-        post_id: post_id,
+        post_id: post_ids,
         user_ids: user_ids,
         message_type: message_type
     };
@@ -35,12 +53,12 @@ function go_messages_opener( user_id, post_id, message_type ) {
         type:'POST',
         data: gotoSend,
         success: function( results ) {
-
+            console.log(results);
             jQuery.featherlight(results, {variant: 'message'});
 
             jQuery('.go_tax_select').select2();
             jQuery('#go_message_submit').one("click", function(e){
-                go_send_message(user_ids, post_id, message_type);
+                go_send_message(user_ids, post_ids, message_type);
             });
 
             //clipboard
@@ -49,15 +67,22 @@ function go_messages_opener( user_id, post_id, message_type ) {
             });
 
             //stats and blog
-            var user_id = jQuery("#go_stats_messages_icon").attr("name");
-            console.log("hi1" + user_id);
-            jQuery("#go_stats_messages_icon").one("click", function(e){
+
+            console.log("hi:" + user_id);
+            jQuery(".go_stats_messages_icon").one("click", function(e){
+                var user_id = jQuery(this).attr("name");
                 go_messages_opener(user_id);
             });
 
             //reset task links
+            var user_id2 = jQuery("#go_stats_messages_icon_stats").attr("name");
             jQuery(".go_reset_task").one("click", function(e){
-                go_messages_opener( user_id, this.id, 'reset' );
+                go_messages_opener( user_id2, this.id, 'reset' );
+            });
+
+            //reset multiple tasks link
+            jQuery(".go_tasks_reset_multiple").one("click", function(){
+                go_messages_opener( user_id, null, 'reset_multiple' );
             });
 
             //blog
@@ -75,7 +100,7 @@ function go_messages_opener( user_id, post_id, message_type ) {
             });
 
             //stats and blog
-            var user_id = jQuery("#go_stats_messages_icon").attr("name");
+            var user_id = jQuery("#go_stats_messages_icon_stats").attr("name");
             jQuery("#go_stats_messages_icon").one("click", function(e){
                 go_messages_opener( user_id );
             });

@@ -1,6 +1,5 @@
 <?php
 
-
 add_filter( 'template_include', 'go_tasks_template_function', 1 );
 function go_tasks_template_function( $template_path ) {
     if ( get_post_type() == 'tasks' ) {
@@ -24,7 +23,6 @@ function go_tasks_template_function( $template_path ) {
 function go_tasks_filter_content() {
     echo do_shortcode( '[go_task id="'.get_the_id().'"]' );
 }
-
 
 add_action( 'post_submitbox_misc_actions', 'go_clone_post_ajax' );
 function go_clone_post_ajax() {
@@ -172,7 +170,6 @@ function go_clone_post() {
     die();
 }
 
-
 function go_create_help_video_lb() {
     ?>
     <div class="dark" style="display: none;"> </div>
@@ -185,7 +182,5 @@ function go_create_help_video_lb() {
 }
 //add_action( 'admin_head', 'go_create_help_video_lb' );
 add_action( 'wp_head', 'go_create_help_video_lb' );
-
-
 
 ?>

@@ -39,6 +39,37 @@ function acf_is_empty( $value ) {
 	
 }
 
+/**
+*  acf_idify
+*
+*  Returns an id friendly string
+*
+*  @date	24/12/17
+*  @since	5.6.5
+*
+*  @param	type $var Description. Default.
+*  @return	type Description.
+*/
+
+function acf_idify( $str = '' ) {
+	return str_replace(array('][', '[', ']'), array('-', '-', ''), strtolower($str));
+}
+
+/**
+*  acf_slugify
+*
+*  Returns a slug friendly string
+*
+*  @date	24/12/17
+*  @since	5.6.5
+*
+*  @param	type $var Description. Default.
+*  @return	type Description.
+*/
+
+function acf_slugify( $str = '' ) {
+	return str_replace('_', '-', strtolower($str));
+}
 
 /**
 *  acf_has_setting
@@ -400,6 +431,24 @@ function acf_include( $file ) {
 	
 }
 
+/**
+*  acf_include_once
+*
+*  Includes a file one time only.
+*
+*  @date	24/8/18
+*  @since	5.7.4
+*
+*  @param	string $file The relative file path.
+*  @return	void
+*/
+
+function acf_include_once( $file = '' ) {
+	$path = acf_get_path( $file );
+	if( file_exists($path) ) {
+		include_once( $path );
+	}
+}
 
 /*
 *  acf_get_external_path
@@ -962,29 +1011,18 @@ function acf_verify_nonce( $value) {
 function acf_verify_ajax() {
 	
 	// vars
-	$action = acf_maybe_get_POST('action');
-	$nonce = acf_maybe_get_POST('nonce');
-	
-	
-	// bail early if not acf action
-	if( !$action || substr($action, 0, 3) !== 'acf' ) {
-		return false;
-	}
-	
+	$nonce = isset($_REQUEST['nonce']) ? $_REQUEST['nonce'] : '';
 	
 	// bail early if not acf nonce
 	if( !$nonce || !wp_verify_nonce($nonce, 'acf_nonce') ) {
 		return false;
 	}
 	
-	
 	// action for 3rd party customization
 	do_action('acf/verify_ajax');
 	
-	
 	// return
 	return true;
-	
 }
 
 
@@ -1213,105 +1251,6 @@ function acf_get_terms( $args ) {
 	
 	// return
 	return $terms;
-	
-}
-
-
-/*
-*  acf_get_taxonomies
-*
-*  This function will return an array of available taxonomies
-*
-*  @type	function
-*  @date	7/10/13
-*  @since	5.0.0
-*
-*  @param	n/a
-*  @return	(array)
-*/
-
-function acf_get_taxonomies() {
-
-	// get all taxonomies
-	$taxonomies = get_taxonomies( false, 'objects' );
-	$ignore = array( 'nav_menu', 'link_category' );
-	$r = array();
-	
-	
-	// populate $r
-	foreach( $taxonomies as $taxonomy )
-	{
-		if( in_array($taxonomy->name, $ignore) )
-		{
-			continue;
-		
-		}
-		
-		$r[ $taxonomy->name ] = $taxonomy->name; //"{$taxonomy->labels->singular_name}"; // ({$taxonomy->name})
-	}
-	
-	
-	// return
-	return $r;
-	
-}
-
-
-function acf_get_pretty_taxonomies( $taxonomies = array() ) {
-	
-	// get post types
-	if( empty($taxonomies) ) {
-		
-		// get all custom post types
-		$taxonomies = acf_get_taxonomies();
-		
-	}
-	
-	
-	// get labels
-	$ref = array();
-	$r = array();
-	
-	foreach( array_keys($taxonomies) as $i ) {
-		
-		// vars
-		$taxonomy = acf_extract_var( $taxonomies, $i);
-		$obj = get_taxonomy( $taxonomy );
-		$name = $obj->labels->singular_name;
-		
-		
-		// append to r
-		$r[ $taxonomy ] = $name;
-		
-		
-		// increase counter
-		if( !isset($ref[ $name ]) ) {
-			
-			$ref[ $name ] = 0;
-			
-		}
-		
-		$ref[ $name ]++;
-	}
-	
-	
-	// get slugs
-	foreach( array_keys($r) as $i ) {
-		
-		// vars
-		$taxonomy = $r[ $i ];
-		
-		if( $ref[ $taxonomy ] > 1 ) {
-			
-			$r[ $i ] .= ' (' . $i . ')';
-			
-		}
-		
-	}
-	
-	
-	// return
-	return $r;
 	
 }
 
@@ -3160,6 +3099,9 @@ function acf_get_post_id_info( $post_id = 0 ) {
 	//acf_set_cache($cache_key, $info);
 	
 	
+	// filter
+	$info = apply_filters("acf/get_post_id_info", $info, $post_id);
+	
 	// return
 	return $info;
 	
@@ -3386,8 +3328,7 @@ function acf_upload_file( $uploaded_file ) {
 	$object = array(
 		'post_title' => $filename,
 		'post_mime_type' => $type,
-		'guid' => $url,
-		'context' => 'acf-upload'
+		'guid' => $url
 	);
 
 	// Save the data
@@ -3466,20 +3407,25 @@ function acf_update_nested_array( &$array, $ancestors, $value ) {
 function acf_is_screen( $id = '' ) {
 	
 	// bail early if not defined
-	if( !function_exists('get_current_screen') ) return false;
-	
+	if( !function_exists('get_current_screen') ) {
+		return false;
+	}
 	
 	// vars
 	$current_screen = get_current_screen();
 	
+	// no screen
+	if( !$current_screen ) {
+		return false;
 	
-	// bail early if no screen
-	if( !$current_screen ) return false;
+	// array
+	} elseif( is_array($id) ) {
+		return in_array($current_screen->id, $id);
 	
-	
-	// return
-	return ($id === $current_screen->id);
-	
+	// string
+	} else {
+		return ($id === $current_screen->id);
+	}
 }
 
 
@@ -4609,33 +4555,43 @@ function acf_format_date( $value, $format ) {
 function acf_log() {
 	
 	// vars
-	$log = '';
 	$args = func_get_args();
-	
 	
 	// loop
 	foreach( $args as $i => $arg ) {
 		
+		// array | object
 		if( is_array($arg) || is_object($arg) ) {
-			
 			$arg = print_r($arg, true);
-			
-		} elseif( is_bool($arg) ) {
-			
-			$arg = ( $arg ? 'true' : 'false' ) . ' (bool)';
-			
-		}
 		
+		// bool	
+		} elseif( is_bool($arg) ) {
+			$arg = 'bool(' . ( $arg ? 'true' : 'false' ) . ')';
+		}
 		
 		// update
 		$args[ $i ] = $arg;
-		
 	}
-	
 	
 	// log
 	error_log( implode(' ', $args) );
-	
+}
+
+/**
+*  acf_dev_log
+*
+*  Used to log variables only if ACF_DEV is defined
+*
+*  @date	25/8/18
+*  @since	5.7.4
+*
+*  @param	mixed
+*  @return	void
+*/
+function acf_dev_log() {
+	if( defined('ACF_DEV') && ACF_DEV ) {
+		call_user_func_array('acf_log', func_get_args());
+	}
 }
 
 
@@ -4931,7 +4887,7 @@ function acf_send_ajax_results( $response ) {
 	
 	// validate
 	$response = wp_parse_args($response, array(
-		'results'	=> false,
+		'results'	=> array(),
 		'more'		=> false,
 		'limit'		=> 0
 	));
@@ -5295,6 +5251,142 @@ function acf_get_post_templates() {
 	// return
 	return $post_templates;
 	
+}
+
+/**
+*  acf_parse_markdown
+*
+*  A very basic regex-based Markdown parser function based off [slimdown](https://gist.github.com/jbroadway/2836900).
+*
+*  @date	6/8/18
+*  @since	5.7.2
+*
+*  @param	string $text The string to parse.
+*  @return	string
+*/
+
+function acf_parse_markdown( $text = '' ) {
+	
+	// trim
+	$text = trim($text);
+	
+	// rules
+	$rules = array (
+		'/=== (.+?) ===/'				=> '<h2>$1</h2>',					// headings
+		'/== (.+?) ==/'					=> '<h3>$1</h3>',					// headings
+		'/= (.+?) =/'					=> '<h4>$1</h4>',					// headings
+		'/\[([^\[]+)\]\(([^\)]+)\)/' 	=> '<a href="$2">$1</a>',			// links
+		'/(\*\*)(.*?)\1/' 				=> '<strong>$2</strong>',			// bold
+		'/(\*)(.*?)\1/' 				=> '<em>$2</em>',					// intalic
+		'/`(.*?)`/'						=> '<code>$1</code>',				// inline code
+		'/\n\*(.*)/'					=> "\n<ul>\n\t<li>$1</li>\n</ul>",	// ul lists
+		'/\n[0-9]+\.(.*)/'				=> "\n<ol>\n\t<li>$1</li>\n</ol>",	// ol lists
+		'/<\/ul>\s?<ul>/'				=> '',								// fix extra ul
+		'/<\/ol>\s?<ol>/'				=> '',								// fix extra ol
+	);
+	foreach( $rules as $k => $v ) {
+		$text = preg_replace($k, $v, $text);
+	}
+		
+	// autop
+	$text = wpautop($text);
+	
+	// return
+	return $text;
+}
+
+/**
+*  acf_get_sites
+*
+*  Returns an array of sites for a network.
+*
+*  @date	29/08/2016
+*  @since	5.4.0
+*
+*  @param	void
+*  @return	array
+*/
+function acf_get_sites() {
+	
+	// vars
+	$results = array();
+	
+	// function get_sites() was added in WP 4.6
+	if( function_exists('get_sites') ) {
+		
+		$_sites = get_sites(array(
+			'number' => 0
+		));
+		
+		if( $_sites ) {
+		foreach( $_sites as $_site ) {
+			$_site = get_site( $_site );
+	        $results[] = $_site->to_array();
+	    }}
+		
+	// function wp_get_sites() returns in the desired output
+	} else {
+		$results = wp_get_sites(array(
+			'limit' => 0
+		));
+	}
+	
+	// return
+	return $results;
+}
+
+/**
+*  acf_convert_rules_to_groups
+*
+*  Converts an array of rules from ACF4 to an array of groups for ACF5
+*
+*  @date	25/8/18
+*  @since	5.7.4
+*
+*  @param	array $rules An array of rules.
+*  @param	string $anyorall The anyorall setting used in ACF4. Defaults to 'any'.
+*  @return	array
+*/
+function acf_convert_rules_to_groups( $rules, $anyorall = 'any' ) {
+	
+	// vars
+	$groups = array();
+	$index = 0;
+	
+	// loop
+	foreach( $rules as $rule ) {
+		
+		// extract vars
+		$group = acf_extract_var( $rule, 'group_no' );
+		$order = acf_extract_var( $rule, 'order_no' );
+		
+		// calculate group if not defined
+		if( $group === null ) {
+			$group = $index;
+			
+			// use $anyorall to determine if a new group is needed
+			if( $anyorall == 'any' ) {
+				$index++;
+			}
+		}
+		
+		// calculate order if not defined
+		if( $order === null ) {
+			$order = isset($groups[ $group ]) ? count($groups[ $group ]) : 0;
+		}
+		
+		// append to group
+		$groups[ $group ][ $order ] = $rule;
+		
+		// sort groups
+		ksort( $groups[ $group ] );
+	}
+	
+	// sort groups
+	ksort( $groups );
+	
+	// return
+	return $groups;
 }
 
 ?>

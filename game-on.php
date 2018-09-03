@@ -5,9 +5,9 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 4.07.27
+Version: 4.08
 */
-$version = 4.0727;
+$version = 4.08;
 
 global $version;
 
@@ -68,9 +68,6 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "includes/*.php" ) as $file ) {
 
 include( 'includes/wp-frontend-media-master/frontend-media.php' );
 
-
-
-
 /*
  * Plugin Activation Hooks
  */
@@ -86,6 +83,7 @@ register_activation_hook( __FILE__, 'go_map_activate' );
 register_activation_hook( __FILE__, 'go_store_activate' );
 //Multisite--create tables on existing blogs
 register_activation_hook( __FILE__, 'go_on_activate_msdb' );
+register_activation_hook( __FILE__, 'go_menu_and_widget' );
 
 /*
  * Init
@@ -157,7 +155,7 @@ add_action( 'wp_head', 'go_stats_overlay' );
 add_action( 'wp_enqueue_scripts', 'go_scripts' );
 add_action( 'wp_enqueue_scripts', 'go_styles' );
 add_action( 'wp_enqueue_scripts', 'go_includes' );
-add_action( 'wp_enqueue_scripts', 'go_acf_scripts' );
+//add_action( 'wp_enqueue_scripts', 'go_acf_scripts' );
 //add_action( 'wp_enqueue_scripts', 'go_scripts' );
 //add_action( 'wp_head', 'go_frontend_lightbox_html' );
 
@@ -304,8 +302,6 @@ function go_media_access() {
 }
 register_activation_hook( __FILE__, 'go_media_access' );
 
-
-
 function go_changeMceDefaults($in) {
 
     // customize the buttons
@@ -317,7 +313,6 @@ function go_changeMceDefaults($in) {
     return $in;
 }
 add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
-
 
 /*
  * Appends errors to the configured PHP error log.
@@ -728,20 +723,22 @@ add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' )
  * https://wordpress.stackexchange.com/questions/121309/how-do-i-programatically-insert-a-new-menu-item
  *
  */
-
+function go_menu_and_widget()
+{
 // Check if the menu exists
-$menu_name = 'go_top_menu';
-$menu_exists = wp_get_nav_menu_object( $menu_name );
+    $menu_name = 'go_top_menu';
+    $menu_exists = wp_get_nav_menu_object($menu_name);
 
 // If it doesn't exist, let's create it.
-if( !$menu_exists) {
-    $menu_id = wp_create_nav_menu($menu_name);
-}
+    if (!$menu_exists) {
+        $menu_id = wp_create_nav_menu($menu_name);
+    }
 
 
-$widget_toggle = get_option('options_go_locations_widget_toggle');
-if($widget_toggle) {
-    add_action('widgets_init', 'wpb_load_widget');
+    $widget_toggle = get_option('options_go_locations_widget_toggle');
+    if ($widget_toggle) {
+        add_action('widgets_init', 'wpb_load_widget');
+    }
 }
 
 // Creating the widget

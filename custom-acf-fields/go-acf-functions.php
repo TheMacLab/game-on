@@ -264,11 +264,6 @@ function acf_update_order($post_id ) {
 }
 add_action('acf/save_post', 'acf_update_order', 99);
 
-
-
-
-
-
 /**
  *Loads the default options in bonus loot
  * Default is set in options and loaded on tasks

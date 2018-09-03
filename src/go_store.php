@@ -1,6 +1,5 @@
 <?php
 
-
 function go_store_activate() {
 
 	$my_post = array(
@@ -19,7 +18,6 @@ function go_store_activate() {
      	wp_insert_post( $my_post );
      }
 }
-
 
 /**
  *

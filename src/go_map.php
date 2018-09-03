@@ -392,7 +392,6 @@ function go_update_last_map($map_id = false) {
     }
 }
 
-
 function go_single_map_link( $atts, $content = null ) {
     $atts = shortcode_atts(
         array(

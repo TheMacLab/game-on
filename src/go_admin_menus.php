@@ -202,8 +202,6 @@ function go_add_badges_sub_menus() {
 }
 add_action( 'admin_menu', 'go_add_badges_sub_menus', 9 );
 
-
-
 /* function go_add_badges_sub_menus2() {
 
 
@@ -415,7 +413,6 @@ function go_admin_maps_menu_content() {
 }
 */
 
-
 /**
  * @param $parent_file
  * @return string
@@ -483,8 +480,5 @@ function go_menu_hierarchy_correction( $parent_file ) {
 
 }
 add_action( 'parent_file', 'go_menu_hierarchy_correction', 999 );
-
-
-
 
 ?>
