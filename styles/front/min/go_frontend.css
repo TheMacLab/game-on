@@ -425,6 +425,11 @@ video.wp-video-shortcode {
 #frontend-button {
   cursor: pointer; }
 
+#go_upload_button {
+  margin: auto;
+  font-size: 1.4em;
+  padding: 6px; }
+
 /********************
 *	Bonus Button
 
@@ -1793,7 +1798,6 @@ END TOOLTIP
   position: relative;
   overflow: hidden;
   font-family: verdana;
-  border-bottom: 2px solid #BBB;
   margin-right: 20px;
   display: flex;
   flex-wrap: wrap; }

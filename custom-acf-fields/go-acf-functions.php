@@ -110,8 +110,6 @@ function acf_load_seat_choices( $field ) {
 }
 add_filter('acf/load_field/name=user-seat', 'acf_load_seat_choices');
 
-
-
 function acf_load_xp_levels( $field ) {
 
     // reset choices

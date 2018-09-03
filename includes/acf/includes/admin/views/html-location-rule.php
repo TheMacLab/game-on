@@ -1,9 +1,3 @@
-<?php 
-
-// vars
-$prefix = 'acf_field_group[location]['.$rule['group'].']['.$rule['id'].']';
-
-?>
 <tr data-id="<?php echo $rule['id']; ?>">
 	<td class="param">
 		<?php 
@@ -18,7 +12,7 @@ $prefix = 'acf_field_group[location]['.$rule['group'].']['.$rule['id'].']';
 			acf_render_field(array(
 				'type'		=> 'select',
 				'name'		=> 'param',
-				'prefix'	=> $prefix,
+				'prefix'	=> $rule['prefix'],
 				'value'		=> $rule['param'],
 				'choices'	=> $choices,
 				'class'		=> 'refresh-location-rule'
@@ -41,7 +35,7 @@ $prefix = 'acf_field_group[location]['.$rule['group'].']['.$rule['id'].']';
 			acf_render_field(array(
 				'type'		=> 'select',
 				'name'		=> 'operator',
-				'prefix'	=> $prefix,
+				'prefix'	=> $rule['prefix'],
 				'value'		=> $rule['operator'],
 				'choices'	=> $choices
 			));
@@ -68,7 +62,7 @@ $prefix = 'acf_field_group[location]['.$rule['group'].']['.$rule['id'].']';
 			acf_render_field(array(
 				'type'		=> 'select',
 				'name'		=> 'value',
-				'prefix'	=> $prefix,
+				'prefix'	=> $rule['prefix'],
 				'value'		=> $rule['value'],
 				'choices'	=> $choices
 			));

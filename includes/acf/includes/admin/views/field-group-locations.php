@@ -36,7 +36,7 @@ global $field_group;
 <script type="text/javascript">
 if( typeof acf !== 'undefined' ) {
 		
-	acf.newPostbox({
+	acf.postbox.render({
 		'id': 'acf-field-group-locations',
 		'label': 'left'
 	});	

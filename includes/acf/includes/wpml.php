@@ -48,8 +48,8 @@ class acf_wpml_compatibility {
 		
 		
 		// actions
-		add_action('acf/upgrade_500',					array($this, 'upgrade_500'), 10);
-		add_action('acf/upgrade_500_field_group',		array($this, 'upgrade_500_field_group'), 10, 2);
+		add_action('acf/update_500',					array($this, 'update_500'), 10);
+		add_action('acf/update_500_field_group',		array($this, 'update_500_field_group'), 10, 2);
 		add_action('acf/update_field_group',			array($this, 'update_field_group'), 2, 1);
 		add_action('icl_make_duplicate',				array($this, 'icl_make_duplicate'), 10, 4);
 		
@@ -112,7 +112,7 @@ class acf_wpml_compatibility {
 	
 	
 	/*
-	*  upgrade_500
+	*  update_500
 	*
 	*  This function will update the WPML settings to allow 'acf-field-group' to be translatable
 	*
@@ -124,7 +124,7 @@ class acf_wpml_compatibility {
 	*  @return	$post_id (int)
 	*/
 	
-	function upgrade_500() {
+	function update_500() {
 		
 		// global
 		global $sitepress;
@@ -153,7 +153,7 @@ class acf_wpml_compatibility {
 	
 	
 	/*
-	*  upgrade_500_field_group
+	*  update_500_field_group
 	*
 	*  This function will update the icl_translations table data when creating the fiedl groups
 	*
@@ -165,7 +165,7 @@ class acf_wpml_compatibility {
 	*  @return	n/a
 	*/
 	
-	function upgrade_500_field_group($field_group, $ofg) {
+	function update_500_field_group($field_group, $ofg) {
 		
 		// global
 		global $wpdb;
@@ -432,13 +432,28 @@ class acf_wpml_compatibility {
 	
 	function verify_ajax() {
 		
-		// set the language for this AJAX request
+		// globals
+		global $sitepress;
+		
+		
+		// vars
+		$lang = acf_maybe_get($_POST, 'lang');
+		
+		
+		// bail early if no lang
+		if( !$lang ) return;
+		
+		
+		// switch lang
 		// this will allow get_posts to work as expected (load posts from the correct language)
-		if( isset($_REQUEST['lang']) ) {
-			global $sitepress;
-			$sitepress->switch_lang( $_REQUEST['lang'] );
-			//$sitepress->set_default_language($_REQUEST['lang']);
-		}
+		$sitepress->switch_lang( $_REQUEST['lang'] );
+			
+		
+		// remove post_id
+		// this will prevent WPML from setting the current language based on the current post being edited
+		// in theory, WPML is correct, however, when adding a new post, the post's lang is not found and will default to 'en'
+		unset( $_REQUEST['post_id'] );
+		
 	}
 	
 	

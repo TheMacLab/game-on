@@ -791,7 +791,7 @@ function go_send_message(){
     }//end of task resets
     else { //this isn't a task reset message and set the message and update the actions and totals
         $result = $original_result;
-        $result = serialize($result);
+
 
         //store the badge and group toggles so later we know if they were awarded or taken.
         if ($badges_toggle == "true" && !empty($badge_ids)) {//if badges toggle is true and badges exist
@@ -818,7 +818,7 @@ function go_send_message(){
         }
 
 
-
+        $result = serialize($result);
         //update actions with loot, title and message
         //for each user id
         foreach ($user_ids as $user_id) {

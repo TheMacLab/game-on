@@ -156,12 +156,7 @@ class acf_field_true_false extends acf_field {
 			'instructions'	=> __('Text shown when active','acf'),
 			'type'			=> 'text',
 			'name'			=> 'ui_on_text',
-			'placeholder'	=> __('Yes', 'acf'),
-			'conditions'	=> array(
-				'field'		=> 'ui',
-				'operator'	=> '==',
-				'value'		=> 1
-			)
+			'placeholder'	=> __('Yes', 'acf')
 		));
 		
 		
@@ -171,12 +166,7 @@ class acf_field_true_false extends acf_field {
 			'instructions'	=> __('Text shown when inactive','acf'),
 			'type'			=> 'text',
 			'name'			=> 'ui_off_text',
-			'placeholder'	=> __('No', 'acf'),
-			'conditions'	=> array(
-				'field'		=> 'ui',
-				'operator'	=> '==',
-				'value'		=> 1
-			)
+			'placeholder'	=> __('No', 'acf')
 		));
 		
 	}

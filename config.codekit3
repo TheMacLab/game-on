@@ -328,16 +328,6 @@
 		"oAP": "\/includes\/acf\/acf.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/assets\/css\/acf-dark.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/assets\/css\/acf-dark-min.css",
-		"oF": 0,
-		"oS": 3
-		},
 	"\/includes\/acf\/assets\/css\/acf-field-group.css": {
 		"aP": 1,
 		"bl": 0,
@@ -428,17 +418,6 @@
 		"oAP": "\/includes\/acf\/assets\/font\/README.txt",
 		"oF": 0
 		},
-	"\/includes\/acf\/assets\/images\/acf-logo.png": {
-		"ft": 32768,
-		"iS": 3478,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/assets\/images\/acf-logo.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
 	"\/includes\/acf\/assets\/images\/spinner.gif": {
 		"ft": 4194304,
 		"iS": 4777,
@@ -454,6 +433,28 @@
 		"oAP": "\/includes\/acf\/assets\/images\/spinner@2x.gif",
 		"oF": 0,
 		"opt": 0
+		},
+	"\/includes\/acf\/assets\/images\/sprite.png": {
+		"ft": 32768,
+		"iS": 1533,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/images\/sprite.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"\/includes\/acf\/assets\/images\/sprite@2x.png": {
+		"ft": 32768,
+		"iS": 3205,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/images\/sprite@2x.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
 		},
 	"\/includes\/acf\/assets\/inc\/datepicker\/images\/ui-bg_highlight-soft_0_ffffff_1x100.png": {
 		"ft": 32768,
@@ -499,6 +500,16 @@
 		"oT": 1,
 		"q": 100
 		},
+	"\/includes\/acf\/assets\/inc\/datepicker\/jquery-ui-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/datepicker\/jquery-ui-min-min.css",
+		"oF": 0,
+		"oS": 3
+		},
 	"\/includes\/acf\/assets\/inc\/datepicker\/jquery-ui.css": {
 		"aP": 1,
 		"bl": 0,
@@ -506,6 +517,16 @@
 		"ma": 0,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/assets\/inc\/datepicker\/jquery-ui-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"\/includes\/acf\/assets\/inc\/datepicker\/jquery-ui.min-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/datepicker\/jquery-ui.min-min-min.css",
 		"oF": 0,
 		"oS": 3
 		},
@@ -547,6 +568,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/includes\/acf\/assets\/inc\/select2\/3\/select2.min-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/select2\/3\/select2.min-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/includes\/acf\/assets\/inc\/select2\/3\/select2.min.js": {
 		"ft": 64,
 		"ma": 0,
@@ -579,6 +610,26 @@
 		"oT": 1,
 		"q": 100
 		},
+	"\/includes\/acf\/assets\/inc\/select2\/4\/select2-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/select2\/4\/select2-min-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"\/includes\/acf\/assets\/inc\/select2\/4\/select2-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/select2\/4\/select2-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/includes\/acf\/assets\/inc\/select2\/4\/select2.css": {
 		"aP": 1,
 		"bl": 0,
@@ -589,12 +640,32 @@
 		"oF": 0,
 		"oS": 3
 		},
+	"\/includes\/acf\/assets\/inc\/select2\/4\/select2.full-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/select2\/4\/select2.full-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/includes\/acf\/assets\/inc\/select2\/4\/select2.full.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/assets\/inc\/select2\/4\/select2.full-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/includes\/acf\/assets\/inc\/select2\/4\/select2.full.min-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/select2\/4\/select2.full.min-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -619,6 +690,26 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/includes\/acf\/assets\/inc\/select2\/4\/select2.min-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/select2\/4\/select2.min-min-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"\/includes\/acf\/assets\/inc\/select2\/4\/select2.min-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/select2\/4\/select2.min-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/includes\/acf\/assets\/inc\/select2\/4\/select2.min.css": {
 		"aP": 1,
 		"bl": 0,
@@ -639,6 +730,26 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon-min-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon.css": {
 		"aP": 1,
 		"bl": 0,
@@ -655,6 +766,26 @@
 		"mi": 1,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon.min-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon.min-min-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon.min-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/assets\/inc\/timepicker\/jquery-ui-timepicker-addon.min-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -740,18 +871,32 @@
 		"oAP": "\/includes\/acf\/includes\/admin\/admin-tools.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/includes\/admin\/admin-upgrade.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/admin\/admin-upgrade.php",
-		"oF": 0
-		},
 	"\/includes\/acf\/includes\/admin\/admin.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/includes\/admin\/admin.php",
+		"oF": 0
+		},
+	"\/includes\/acf\/includes\/admin\/install-network.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/includes\/admin\/install-network.php",
+		"oF": 0
+		},
+	"\/includes\/acf\/includes\/admin\/install-updates.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/includes\/admin\/install-updates.php",
+		"oF": 0
+		},
+	"\/includes\/acf\/includes\/admin\/install.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/includes\/admin\/install.php",
 		"oF": 0
 		},
 	"\/includes\/acf\/includes\/admin\/settings-addons.php": {
@@ -824,20 +969,6 @@
 		"oAP": "\/includes\/acf\/includes\/admin\/views\/field-group-options.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/includes\/admin\/views\/html-admin-page-upgrade-network.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/admin\/views\/html-admin-page-upgrade-network.php",
-		"oF": 0
-		},
-	"\/includes\/acf\/includes\/admin\/views\/html-admin-page-upgrade.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/admin\/views\/html-admin-page-upgrade.php",
-		"oF": 0
-		},
 	"\/includes\/acf\/includes\/admin\/views\/html-admin-tools.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -859,11 +990,25 @@
 		"oAP": "\/includes\/acf\/includes\/admin\/views\/html-location-rule.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/includes\/admin\/views\/html-notice-upgrade.php": {
+	"\/includes\/acf\/includes\/admin\/views\/install-network.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/admin\/views\/html-notice-upgrade.php",
+		"oAP": "\/includes\/acf\/includes\/admin\/views\/install-network.php",
+		"oF": 0
+		},
+	"\/includes\/acf\/includes\/admin\/views\/install-notice.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/includes\/admin\/views\/install-notice.php",
+		"oF": 0
+		},
+	"\/includes\/acf\/includes\/admin\/views\/install.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/includes\/admin\/views\/install.php",
 		"oF": 0
 		},
 	"\/includes\/acf\/includes\/admin\/views\/settings-addons.php": {
@@ -880,46 +1025,11 @@
 		"oAP": "\/includes\/acf\/includes\/admin\/views\/settings-info.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/includes\/ajax\/class-acf-ajax-check-screen.php": {
+	"\/includes\/acf\/includes\/ajax.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/ajax\/class-acf-ajax-check-screen.php",
-		"oF": 0
-		},
-	"\/includes\/acf\/includes\/ajax\/class-acf-ajax-query-terms.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/ajax\/class-acf-ajax-query-terms.php",
-		"oF": 0
-		},
-	"\/includes\/acf\/includes\/ajax\/class-acf-ajax-query.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/ajax\/class-acf-ajax-query.php",
-		"oF": 0
-		},
-	"\/includes\/acf\/includes\/ajax\/class-acf-ajax-upgrade.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/ajax\/class-acf-ajax-upgrade.php",
-		"oF": 0
-		},
-	"\/includes\/acf\/includes\/ajax\/class-acf-ajax-user-setting.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/ajax\/class-acf-ajax-user-setting.php",
-		"oF": 0
-		},
-	"\/includes\/acf\/includes\/ajax\/class-acf-ajax.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/ajax\/class-acf-ajax.php",
+		"oAP": "\/includes\/acf\/includes\/ajax.php",
 		"oF": 0
 		},
 	"\/includes\/acf\/includes\/api\/api-field-group.php": {
@@ -957,25 +1067,11 @@
 		"oAP": "\/includes\/acf\/includes\/api\/api-template.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/includes\/api\/api-term.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/api\/api-term.php",
-		"oF": 0
-		},
 	"\/includes\/acf\/includes\/api\/api-value.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/includes\/api\/api-value.php",
-		"oF": 0
-		},
-	"\/includes\/acf\/includes\/assets.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/assets.php",
 		"oF": 0
 		},
 	"\/includes\/acf\/includes\/cache.php": {
@@ -1244,13 +1340,6 @@
 		"oAP": "\/includes\/acf\/includes\/fields\/class-acf-field.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/includes\/form.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/form.php",
-		"oF": 0
-		},
 	"\/includes\/acf\/includes\/forms\/form-attachment.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -1319,6 +1408,13 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/includes\/forms\/form-widget.php",
+		"oF": 0
+		},
+	"\/includes\/acf\/includes\/input.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/includes\/input.php",
 		"oF": 0
 		},
 	"\/includes\/acf\/includes\/json.php": {
@@ -1531,13 +1627,6 @@
 		"oAP": "\/includes\/acf\/includes\/updates.php",
 		"oF": 0
 		},
-	"\/includes\/acf\/includes\/upgrades.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/includes\/upgrades.php",
-		"oF": 0
-		},
 	"\/includes\/acf\/includes\/validation.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -1718,20 +1807,6 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/lang\/acf-he_IL.po",
-		"oF": 0
-		},
-	"\/includes\/acf\/lang\/acf-hr_HR.mo": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/lang\/acf-hr_HR.mo",
-		"oF": 0
-		},
-	"\/includes\/acf\/lang\/acf-hr_HR.po": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/includes\/acf\/lang\/acf-hr_HR.po",
 		"oF": 0
 		},
 	"\/includes\/acf\/lang\/acf-hu_HU.mo": {
@@ -2000,6 +2075,16 @@
 		"oAP": "\/includes\/acf\/pro\/admin\/views\/html-settings-updates.php",
 		"oF": 0
 		},
+	"\/includes\/acf\/pro\/assets\/css\/acf-pro-field-group-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/pro\/assets\/css\/acf-pro-field-group-min-min.css",
+		"oF": 0,
+		"oS": 3
+		},
 	"\/includes\/acf\/pro\/assets\/css\/acf-pro-field-group.css": {
 		"aP": 1,
 		"bl": 0,
@@ -2007,6 +2092,16 @@
 		"ma": 0,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/pro\/assets\/css\/acf-pro-field-group-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"\/includes\/acf\/pro\/assets\/css\/acf-pro-input-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/pro\/assets\/css\/acf-pro-input-min-min.css",
 		"oF": 0,
 		"oS": 3
 		},
@@ -2030,6 +2125,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/includes\/acf\/pro\/assets\/js\/acf-pro-field-group.min-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/pro\/assets\/js\/acf-pro-field-group.min-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/includes\/acf\/pro\/assets\/js\/acf-pro-field-group.min.js": {
 		"ft": 64,
 		"ma": 0,
@@ -2046,6 +2151,16 @@
 		"mi": 1,
 		"oA": 0,
 		"oAP": "\/includes\/acf\/pro\/assets\/js\/acf-pro-input-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/includes\/acf\/pro\/assets\/js\/acf-pro-input.min-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/includes\/acf\/pro\/assets\/js\/acf-pro-input.min-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0

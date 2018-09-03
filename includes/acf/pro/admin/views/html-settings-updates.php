@@ -123,8 +123,13 @@ $readonly = $active ? 1 : 0;
 					<?php endif; ?>
 				</tbody>
 			</table>
+			</form>
+            
 		</div>
+		
+		
 	</div>
+	
 </div>
 <style type="text/css">
 	#acf_pro_licence {

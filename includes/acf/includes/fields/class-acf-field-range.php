@@ -101,11 +101,8 @@ class acf_field_range extends acf_field_number {
 			// range
 			$html .= acf_get_text_input( $atts );
 			
-			// calculate input width based on character length (+1 char if using decimals)
-			$len = strlen( (string) $field['max'] );
-			if( $atts['step'] < 1 ) $len++;
-			
 			// input
+			$len = strlen( (string) $field['max'] );
 			$html .= acf_get_text_input(array(
 				'type'	=> 'number', 
 				'id'	=> $atts['id'] . '-alt', 

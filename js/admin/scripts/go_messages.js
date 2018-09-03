@@ -53,7 +53,7 @@ function go_messages_opener( user_id, post_id, message_type ) {
         type:'POST',
         data: gotoSend,
         success: function( results ) {
-            console.log(results);
+            //console.log(results);
             jQuery.featherlight(results, {variant: 'message'});
 
             jQuery('.go_tax_select').select2();
@@ -68,7 +68,7 @@ function go_messages_opener( user_id, post_id, message_type ) {
 
             //stats and blog
 
-            console.log("hi:" + user_id);
+            //console.log("hi:" + user_id);
             jQuery(".go_stats_messages_icon").one("click", function(e){
                 var user_id = jQuery(this).attr("name");
                 go_messages_opener(user_id);
