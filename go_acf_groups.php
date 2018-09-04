@@ -193,7 +193,7 @@ if( function_exists('acf_add_local_field_group') ):
                 ),
                 'taxonomy' => 'go_badges',
                 'field_type' => 'select',
-                'allow_null' => 0,
+                'allow_null' => 1,
                 'add_term' => 0,
                 'save_terms' => 1,
                 'load_terms' => 1,
