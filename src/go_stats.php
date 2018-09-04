@@ -776,9 +776,10 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
             $wpdb->prepare(
                 "SELECT *
 			FROM {$go_actions_table_name}
-			WHERE source_id = %d
+			WHERE source_id = %d and uid = %d
 			ORDER BY id DESC",
-                $post_id
+                $post_id,
+                $user_id
             )
         );
 

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_stats.php" afterDir="false" />
-    </list>
+    <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -93,8 +90,8 @@
       <file leaf-file-name="go_stats.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/go_stats.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="807" column="90" selection-start-line="807" selection-start-column="90" selection-end-line="807" selection-end-column="90" />
+            <state relative-caret-position="1436">
+              <caret line="706" column="25" selection-start-line="706" selection-start-column="25" selection-end-line="706" selection-end-column="25" />
               <folding>
                 <element signature="e#7#17#0#PHP" />
                 <element signature="n#go_stats_overlay#0;n#!!top" />
@@ -522,12 +519,12 @@
       <workItem from="1535418952617" duration="9181000" />
       <workItem from="1535491366082" duration="19593000" />
       <workItem from="1535828252910" duration="2000" />
-      <workItem from="1535833749520" duration="53735000" />
+      <workItem from="1535833749520" duration="54689000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1995211000" />
+    <option name="totallyTimeSpent" value="1996165000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -1731,8 +1728,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/go_stats.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="807" column="90" selection-start-line="807" selection-start-column="90" selection-end-line="807" selection-end-column="90" />
+        <state relative-caret-position="1436">
+          <caret line="706" column="25" selection-start-line="706" selection-start-column="25" selection-end-line="706" selection-end-column="25" />
           <folding>
             <element signature="e#7#17#0#PHP" />
             <element signature="n#go_stats_overlay#0;n#!!top" />
