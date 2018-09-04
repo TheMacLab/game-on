@@ -63,28 +63,6 @@ if( function_exists('acf_add_local_field_group') ):
         'title' => 'Map Settings',
         'fields' => array(
             array(
-                'key' => 'field_5b8307b4eaf72',
-                'label' => 'taxonomy',
-                'name' => 'taxonomy',
-                'type' => 'taxonomy',
-                'instructions' => '',
-                'required' => 1,
-                'conditional_logic' => 0,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
-                'taxonomy' => 'task_chains',
-                'field_type' => 'select',
-                'allow_null' => 0,
-                'add_term' => 1,
-                'save_terms' => 0,
-                'load_terms' => 1,
-                'return_format' => 'id',
-                'multiple' => 0,
-            ),
-            array(
                 'key' => 'field_5afcb6e0dad88',
                 'label' => 'Locked by Previous',
                 'name' => 'locked_by_previous',
