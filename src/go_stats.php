@@ -704,7 +704,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
 			    <tbody>
 	";
     foreach ( $tasks as $task ) {
-
+        unset($next_stage);
         $post_id = $task->post_id;
         $custom_fields = get_post_custom( $post_id );
         $post_name = get_the_title($post_id);
@@ -804,8 +804,8 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
                     $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
                     $next_bonus_stage = $loop_bonus_status -1;
                 }
-                else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {
-                    if (!isset($next_stage) && $stage > 0 ){ //it's not a bonus and it's not the last one completed
+                else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {//if it's not a bonus and it's not the last one completed
+                    if (!isset($next_stage) && $stage > 0 ){ //the last stage in the table
                         $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
                         $next_stage = $stage - 1;
                     }
