@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go_datatable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_datatable.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,21 +33,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="go_messages.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_messages.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4947">
-              <caret line="688" column="14" selection-start-line="688" selection-start-column="14" selection-end-line="688" selection-end-column="14" />
-              <folding>
-                <element signature="e#398#11530#0#PHP" />
-                <element signature="e#11540#44654#0#PHP" />
-                <element signature="e#45713#50708#0#PHP" />
-                <element signature="n#go_check_messages#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="PageResource.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../themes/Divi/core/components/PageResource.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -59,8 +45,11 @@
       <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2533">
-              <caret line="149" column="12" selection-start-line="149" selection-start-column="12" selection-end-line="149" selection-end-column="12" />
+            <state relative-caret-position="178">
+              <caret line="169" column="26" selection-start-line="169" selection-start-column="13" selection-end-line="169" selection-end-column="26" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -130,11 +119,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="541">
               <caret line="6470" column="6" selection-start-line="6470" selection-start-column="6" selection-end-line="6470" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_datatable.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="401">
+              <caret line="229" column="35" lean-forward="true" selection-start-line="229" selection-start-column="22" selection-end-line="229" selection-end-column="35" />
+              <folding>
+                <element signature="n#go_update_db_check#0;n#!!top" />
+                <element signature="n#go_update_db#0;n#!!top" />
+                <element signature="n#go_table_tasks#0;n#!!top" />
+                <element signature="e#1444#2051#0#PHP" />
+                <element signature="n#go_on_activate_msdb#0;n#!!top" />
+                <element signature="n#go_on_create_blog#0;n#!!top" />
+                <element signature="n#go_on_delete_blog#0;n#!!top" />
+                <element signature="n#go_user_delete#0;n#!!top" />
+                <element signature="n#go_open_comments#0;n#!!top" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -192,7 +201,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>go_stats_lay</find>
       <find>reset</find>
       <find>foreach</find>
       <find>fa-times-circle</find>
@@ -222,6 +230,7 @@
       <find>acf.fields.order_posts</find>
       <find>$next_bonus_stage</find>
       <find>$next_stage</find>
+      <find>go_user_registration</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -274,7 +283,6 @@
         <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
         <option value="$PROJECT_DIR$/styles/css/go_every_page.css" />
         <option value="$PROJECT_DIR$/types/tasks/go_checks.php" />
-        <option value="$PROJECT_DIR$/src/go_datatable.php" />
         <option value="$PROJECT_DIR$/js/admin/scripts/go_messages.js" />
         <option value="$PROJECT_DIR$/src/go_messages.php" />
         <option value="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" />
@@ -284,6 +292,7 @@
         <option value="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" />
         <option value="$PROJECT_DIR$/src/go_stats.php" />
         <option value="$PROJECT_DIR$/go_acf_groups.php" />
+        <option value="$PROJECT_DIR$/src/go_datatable.php" />
       </list>
     </option>
   </component>
@@ -502,12 +511,12 @@
       <workItem from="1535491366082" duration="19593000" />
       <workItem from="1535828252910" duration="2000" />
       <workItem from="1535833749520" duration="56824000" />
-      <workItem from="1536042395126" duration="482000" />
+      <workItem from="1536042395126" duration="2198000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1998782000" />
+    <option name="totallyTimeSpent" value="2000498000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="53" width="1658" height="979" extended-state="0" />
@@ -1495,24 +1504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="217" column="18" lean-forward="true" selection-start-line="217" selection-start-column="9" selection-end-line="217" selection-end-column="29" />
-          <folding>
-            <element signature="n#go_update_db_check#0;n#!!top" />
-            <element signature="n#go_update_db#0;n#!!top" />
-            <element signature="n#go_table_tasks#0;n#!!top" />
-            <element signature="e#1444#2051#0#PHP" />
-            <element signature="n#go_on_activate_msdb#0;n#!!top" />
-            <element signature="n#go_on_create_blog#0;n#!!top" />
-            <element signature="n#go_on_delete_blog#0;n#!!top" />
-            <element signature="n#go_user_delete#0;n#!!top" />
-            <element signature="n#go_open_comments#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/includes/go_enque_includes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2471" />
@@ -1635,13 +1626,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2533">
-          <caret line="149" column="12" selection-start-line="149" selection-start-column="12" selection-end-line="149" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/custom-acf-fields/js/dev/go_acf.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1660,13 +1644,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="26" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="121" selection-start-line="14" selection-start-column="117" selection-end-line="14" selection-end-column="121" />
         </state>
       </provider>
     </entry>
@@ -1724,10 +1701,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="169" column="26" selection-start-line="169" selection-start-column="13" selection-end-line="169" selection-end-column="26" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="121" selection-start-line="14" selection-start-column="117" selection-end-line="14" selection-end-column="121" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="541">
           <caret line="6470" column="6" selection-start-line="6470" selection-start-column="6" selection-end-line="6470" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/go_datatable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="229" column="35" lean-forward="true" selection-start-line="229" selection-start-column="22" selection-end-line="229" selection-end-column="35" />
+          <folding>
+            <element signature="n#go_update_db_check#0;n#!!top" />
+            <element signature="n#go_update_db#0;n#!!top" />
+            <element signature="n#go_table_tasks#0;n#!!top" />
+            <element signature="e#1444#2051#0#PHP" />
+            <element signature="n#go_on_activate_msdb#0;n#!!top" />
+            <element signature="n#go_on_create_blog#0;n#!!top" />
+            <element signature="n#go_on_delete_blog#0;n#!!top" />
+            <element signature="n#go_user_delete#0;n#!!top" />
+            <element signature="n#go_open_comments#0;n#!!top" />
+          </folding>
         </state>
       </provider>
     </entry>
