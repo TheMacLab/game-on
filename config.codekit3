@@ -2872,48 +2872,6 @@
 		"oAP": "\/src\/blogs\/go_user_blog.php",
 		"oF": 0
 		},
-	"\/src\/disabled\/go_globals.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/src\/disabled\/go_globals.php",
-		"oF": 0
-		},
-	"\/src\/disabled\/go_message.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/src\/disabled\/go_message.php",
-		"oF": 0
-		},
-	"\/src\/disabled\/go_messages.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/src\/disabled\/go_messages.php",
-		"oF": 0
-		},
-	"\/src\/disabled\/go_open_badge.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/src\/disabled\/go_open_badge.php",
-		"oF": 0
-		},
-	"\/src\/disabled\/go_pnc.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/src\/disabled\/go_pnc.php",
-		"oF": 0
-		},
-	"\/src\/disabled\/go_task_search.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/src\/disabled\/go_task_search.php",
-		"oF": 0
-		},
 	"\/src\/go_admin_bar.php": {
 		"cB": 0,
 		"ft": 8192,
