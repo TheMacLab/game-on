@@ -810,13 +810,7 @@ function go_update_totals_table_Badges($user_id, $badges, $badge_count)
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
     //create row for user if none exists
-    $row_exists = $wpdb->get_var($wpdb->prepare("SELECT ID 
-					FROM {$go_totals_table_name} 
-					WHERE uid = %d LIMIT 1", $user_id));
-    //create the row
-    if ($row_exists == null) {
-        go_add_user_to_totals_table($user_id);
-    }
+    go_add_user_to_totals_table($user_id);
 
     $wpdb->query($wpdb->prepare("UPDATE {$go_totals_table_name} 
                     SET 
@@ -831,13 +825,7 @@ function go_update_totals_table_Groups($user_id, $groups)
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
     //create row for user if none exists
-    $row_exists = $wpdb->get_var($wpdb->prepare("SELECT ID 
-					FROM {$go_totals_table_name} 
-					WHERE uid = %d LIMIT 1", $user_id));
-    //create the row
-    if ($row_exists == null) {
-        go_add_user_to_totals_table($user_id);
-    }
+    go_add_user_to_totals_table($user_id);
 
     $wpdb->query($wpdb->prepare("UPDATE {$go_totals_table_name} 
                     SET 
@@ -850,18 +838,7 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
     //create row for user if none exists
-    $row_exists = $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT ID 
-					FROM {$go_totals_table_name} 
-					WHERE uid = %d LIMIT 1",
-            $user_id
-        )
-    );
-    //create the row
-    if ( $row_exists == null ) {
-        go_add_user_to_totals_table ($user_id);
-    }
+    go_add_user_to_totals_table($user_id);
 
     $wpdb->query(
         $wpdb->prepare(
@@ -1033,13 +1010,29 @@ function go_update_admin_bar_v4( $user_id, $xp, $xp_name, $gold, $gold_name, $he
 function go_add_user_to_totals_table($user_id){
     global $wpdb;
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
-    $wpdb->insert(
-        $go_totals_table_name,
-        array(
-            'uid' => $user_id
+
+    //create row for user if none exists
+    $row_exists = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT ID 
+					FROM {$go_totals_table_name} 
+					WHERE uid = %d LIMIT 1",
+            $user_id
         )
     );
+
+    //create the row
+    if ( $row_exists == null ) {
+        $wpdb->insert(
+            $go_totals_table_name,
+            array(
+                'uid' => $user_id
+            )
+        );
+    }
 }
+
+/*
 function go_add_user_to_totals_table_login($user_login, $user){
     global $wpdb;
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
@@ -1051,4 +1044,5 @@ function go_add_user_to_totals_table_login($user_login, $user){
         )
     );
 }
-add_action('wp_login', 'go_add_user_to_totals_table_login', 10, 2);
+*/
+//add_action('wp_login', 'go_add_user_to_totals_table_login', 10, 2);
