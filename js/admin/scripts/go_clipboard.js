@@ -75,6 +75,7 @@ function go_clipboard_class_a_choice() {
             "order": [[5, "asc"]],
             responsive: true,
             "autoWidth": false,
+            stateSave: true,
             //"destroy": true,
             dom: 'Bfrtip',
             "drawCallback": function( settings ) {
@@ -231,6 +232,7 @@ function go_clipboard_class_a_choice_activity(refresh) {
                         "order": [[4, "asc"]],
                         responsive: true,
                         "autoWidth": false,
+                        stateSave: true,
                         //"destroy": true,
                         dom: 'Bfrtip',
                         "drawCallback": function( settings ) {
