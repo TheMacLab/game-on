@@ -368,6 +368,9 @@ final class WP_Term_Order {
 	public function add_term_order( $term_id = 0, $tt_id = 0, $taxonomy = '' ) {
 
 		// Bail if not updating order
+        if (empty( $_POST['order'])) {
+           return;
+        }
 		$order = ! empty( $_POST['order'] )
 			? (int) $_POST['order']
 			: 0;

@@ -9,17 +9,20 @@
 				go_tinymce_insert_content ( editor, '[go_get_displayname]' );
 			},
 			menu: [
-				{ text: '[go_get_displayname]', onclick: function() { go_tinymce_insert_content( editor, '[go_get_displayname]' ); } },
-				{ text: '[go_firstname]', onclick: function() { go_tinymce_insert_content( editor, '[go_firstname]' ); } },
-				{ text: '[go_lastname]', onclick: function() { go_tinymce_insert_content( editor, '[go_lastname]' ); } },
-				{ text: '[go_loginname]', onclick: function() { go_tinymce_insert_content( editor, '[go_loginname]' ); } },
-				{ text: '[go_store id]', onclick: function() { go_tinymce_insert_content( editor, '[go_store id=""]' ); } },
-				{ text: '[go_make_map]', onclick: function() { go_tinymce_insert_content( editor, '[go_make_map]' ); } },
+				{ text: 'Display Name', onclick: function() { go_tinymce_insert_content( editor, '[go_get_displayname]' ); } },
+				{ text: 'First Name', onclick: function() { go_tinymce_insert_content( editor, '[go_firstname]' ); } },
+				{ text: 'Last Name', onclick: function() { go_tinymce_insert_content( editor, '[go_lastname]' ); } },
+				{ text: 'Login Name', onclick: function() { go_tinymce_insert_content( editor, '[go_loginname]' ); } },
+                { text: '–––––––––––––',  },
+				{ text: 'Insert the Map', onclick: function() { go_tinymce_insert_content( editor, '[go_make_map]' ); } },
                 //{ text: '[go_single_map]', onclick: function() { go_tinymce_insert_content( editor, '[go_single_map_link map_id=""]Go to Map[/go_single_map_link]' ); } },
-				{ text: '[go_make_store]', onclick: function() { go_tinymce_insert_content( editor, '[go_make_store]' ); } },
-                { text: '[go_video_link video_url]', onclick: function() { go_tinymce_insert_content( editor, '[go_video_link video_url="" video_title=""]' ); } },
-                { text: '[go_lightbox]', onclick: function() { go_tinymce_insert_content( editor, '[go_lightbox_url link_url="" link_text=""]' ); } },
-                { text: '[video]', onclick: function() { go_tinymce_insert_content( editor, '[go_video video_url="" ]' ); } },
+				{ text: 'Insert the Store', onclick: function() { go_tinymce_insert_content( editor, '[go_make_store]' ); } },
+                { text: 'Store Item (get the Item ID from the edit page)', onclick: function() { go_tinymce_insert_content( editor, '[go_store id=""]' ); } },
+                { text: '–––––––––––––',  },
+				{ text: 'Video: Text link to Lightbox of Video URL', onclick: function() { go_tinymce_insert_content( editor, '[go_video_link video_url="" video_title=""]' ); } },
+                { text: 'Video: Thumbnail to  Lightbox of Video URL', onclick: function() { go_tinymce_insert_content( editor, '[go_video video_url="" ]' ); } },
+				{ text: 'iFrame Lightbox of any URL', onclick: function() { go_tinymce_insert_content( editor, '[go_lightbox_url link_url="" link_text=""]' ); } },
+
 			],
 		});
 	});
