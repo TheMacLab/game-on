@@ -1,7 +1,6 @@
 <?php
 
 function go_return_currency( $user_id ) {
-
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_loot";
 	$currency = (int) $wpdb->get_var(
@@ -17,7 +16,6 @@ function go_return_currency( $user_id ) {
 }
 	
 function go_return_points( $user_id ) {
-
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_loot";
 	$points = (int) $wpdb->get_var(
@@ -32,7 +30,6 @@ function go_return_points( $user_id ) {
 }
 
 function go_return_health( $user_id ) {
-
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_loot";
 	$health = (int) $wpdb->get_var(
@@ -47,7 +44,6 @@ function go_return_health( $user_id ) {
 }
 
 function go_return_c4( $user_id ) {
-
 	global $wpdb;
 	$table_name_go_totals = $wpdb->prefix . "go_loot";
 	$c4 = (int) $wpdb->get_var(

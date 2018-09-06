@@ -520,7 +520,6 @@ function go_print_1_message ( $custom_fields, $i ){
  *Bonus Loot
  */
 function go_bonus_loot () {
-
     $bonus_loot = strtolower( get_option( 'options_go_loot_bonus_loot_name' ) );
     $bonus_loot_uc = ucwords($bonus_loot);
     //$mystery_box_url =

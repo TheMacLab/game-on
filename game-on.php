@@ -49,6 +49,8 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "src/*.php" ) as $file ) {
 }
 
 
+include_once( 'includes/wp-term-order/wp-term-order.php' );
+
 
 //if( ! class_exists( 'wp-featherlight' ) ) {
 //	include( 'includes/wp-featherlight/wp-featherlight.php' );

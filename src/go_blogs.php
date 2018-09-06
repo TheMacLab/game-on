@@ -6,54 +6,53 @@
  * Time: 10:25 AM
  */
 
-if ( ! function_exists( 'go_blog_tags' ) ) {
 
 // Register Custom Taxonomy
-    function go_blog_tags() {
+function go_blog_tags() {
 
-        $labels = array(
-            'name'                       => _x( 'Task Tags', 'Taxonomy General Name', 'go' ),
-            'singular_name'              => _x( 'Task Tag', 'Taxonomy Singular Name', 'go' ),
-            'menu_name'                  => __( 'Task Tags', 'go' ),
-            'all_items'                  => __( 'All Items', 'go' ),
-            'parent_item'                => __( 'Parent Item', 'go' ),
-            'parent_item_colon'          => __( 'Parent Item:', 'go' ),
-            'new_item_name'              => __( 'New Item Name', 'go' ),
-            'add_new_item'               => __( 'Add New Item', 'go' ),
-            'edit_item'                  => __( 'Edit Item', 'go' ),
-            'update_item'                => __( 'Update Item', 'go' ),
-            'view_item'                  => __( 'View Item', 'go' ),
-            'separate_items_with_commas' => __( 'Separate items with commas', 'go' ),
-            'add_or_remove_items'        => __( 'Add or remove items', 'go' ),
-            'choose_from_most_used'      => __( 'Choose from the most used', 'go' ),
-            'popular_items'              => __( 'Popular Items', 'go' ),
-            'search_items'               => __( 'Search Items', 'go' ),
-            'not_found'                  => __( 'Not Found', 'go' ),
-            'no_terms'                   => __( 'No items', 'go' ),
-            'items_list'                 => __( 'Items list', 'go' ),
-            'items_list_navigation'      => __( 'Items list navigation', 'go' ),
-        );
-        $rewrite = array(
-                'slug'                       => 'user_posts',
-            'with_front'                 => true,
-            'hierarchical'               => false,
-        );
-        $args = array(
-            'labels'                     => $labels,
-            'hierarchical'               => false,
-            'public'                     => false,
-            'show_ui'                    => false,
-            'show_admin_column'          => true,
-            'show_in_nav_menus'          => true,
-            'show_tagcloud'              => true,
-            'rewrite'                    => $rewrite,
-        );
-        register_taxonomy( 'go_blog_tags', array( 'go_blogs' ), $args );
-
-    }
-    add_action( 'init', 'go_blog_tags', 0 );
+    $labels = array(
+        'name'                       => _x( 'Task Tags', 'Taxonomy General Name', 'go' ),
+        'singular_name'              => _x( 'Task Tag', 'Taxonomy Singular Name', 'go' ),
+        'menu_name'                  => __( 'Task Tags', 'go' ),
+        'all_items'                  => __( 'All Items', 'go' ),
+        'parent_item'                => __( 'Parent Item', 'go' ),
+        'parent_item_colon'          => __( 'Parent Item:', 'go' ),
+        'new_item_name'              => __( 'New Item Name', 'go' ),
+        'add_new_item'               => __( 'Add New Item', 'go' ),
+        'edit_item'                  => __( 'Edit Item', 'go' ),
+        'update_item'                => __( 'Update Item', 'go' ),
+        'view_item'                  => __( 'View Item', 'go' ),
+        'separate_items_with_commas' => __( 'Separate items with commas', 'go' ),
+        'add_or_remove_items'        => __( 'Add or remove items', 'go' ),
+        'choose_from_most_used'      => __( 'Choose from the most used', 'go' ),
+        'popular_items'              => __( 'Popular Items', 'go' ),
+        'search_items'               => __( 'Search Items', 'go' ),
+        'not_found'                  => __( 'Not Found', 'go' ),
+        'no_terms'                   => __( 'No items', 'go' ),
+        'items_list'                 => __( 'Items list', 'go' ),
+        'items_list_navigation'      => __( 'Items list navigation', 'go' ),
+    );
+    $rewrite = array(
+            'slug'                       => 'user_posts',
+        'with_front'                 => true,
+        'hierarchical'               => false,
+    );
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => false,
+        'public'                     => false,
+        'show_ui'                    => false,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'rewrite'                    => $rewrite,
+    );
+    register_taxonomy( 'go_blog_tags', array( 'go_blogs' ), $args );
 
 }
+add_action( 'init', 'go_blog_tags', 0 );
+
+
 
 // Register Custom Post Type
 function go_blogs() {

@@ -1,29 +1,6 @@
 <?php
 
 /**
- * Add GO Options Page using ACF
- */
-// add sub page
-acf_add_options_page(array(
-    'page_title' => 'Options',
-    'menu_slug' => 'go_options',
-    'capability' => 'edit_posts',
-    'icon_url'  => 'dashicons-admin-settings'
-    //'parent_slug' 	=> 'game-on',
-));
-
-/*
-// add sub page
-acf_add_options_page(array(
-    'page_title' => 'Events',
-    'menu_slug' => 'go_random_events',
-    'capability' => 'edit_posts',
-    'icon_url'  => 'dashicons-clock'
-    //'parent_slug' 	=> 'game-on',
-));
-*/
-
-/**
  * re-order left admin menu
  */
 
@@ -64,6 +41,17 @@ add_filter( 'menu_order', 'go_reorder_admin_menu' );
  * Add new top level menus
  */
 function go_add_toplevel_menu() {
+    /**
+     * Add GO Options Page using ACF
+     */
+// add sub page
+    acf_add_options_page(array(
+        'page_title' => 'Options',
+        'menu_slug' => 'go_options',
+        'capability' => 'edit_posts',
+        'icon_url'  => 'dashicons-admin-settings'
+        //'parent_slug' 	=> 'game-on',
+    ));
 
     /* add a new menu item */
     add_menu_page(
@@ -137,43 +125,6 @@ function go_add_toplevel_menu() {
 add_action( 'admin_menu', 'go_add_toplevel_menu' );
 
 
-/**
- * Add sub menus
- */
-
-/*
-function go_about_go_as_submenu() {
-
-    //add the sub menu under content for posts
-    add_submenu_page(
-        'game-on', // parent slug
-        'About Game On', // page_title,
-        'About Game On', // menu_title,
-        'edit_posts', // capability,
-        'admin.php?page=game-on', // menu_slug,
-        'go_admin_tools_menu_content' // callback function
-    );
-
-}
-add_action( 'admin_menu', 'go_about_go_as_submenu', 9 );
-
-
-function go_tools_as_submenu() {
-
-    // add the sub menu under content for posts
-    add_submenu_page(
-        'game-on', // parent slug
-        'Tools', // page_title,
-        'Tools', // menu_title,
-        'edit_posts', // capability,
-        'admin.php?page=tools', // menu_slug,
-        'go_admin_tools_menu_content' // callback function
-    );
-
-}
-add_action( 'admin_menu', 'go_tools_as_submenu', 10);
-*/
-
 function go_add_mapmenu_as_submenu() {
 
     /* add the sub menu under content for posts */
@@ -202,22 +153,6 @@ function go_add_badges_sub_menus() {
 }
 add_action( 'admin_menu', 'go_add_badges_sub_menus', 9 );
 
-/* function go_add_badges_sub_menus2() {
-
-
-      add the sub menu under content for posts
-     add_submenu_page(
-         'badges', // parent slug
-         'About Badges', // page_title,
-         'About Badges', // menu_title,
-         'edit_posts', // capability,
-         'admin.php?page=about-badges', // menu_slug
-         'go_admin_badges_menu_content'// callback function
-     );
-
- }
- add_action( 'admin_menu', 'go_add_badges_sub_menus2', 10 );
- */
 function go_add_groups_as_submenu() {
 
     /* add the sub menu under content for posts */
@@ -391,27 +326,6 @@ function go_admin_tools_menu_content() {
     <?php
 
 }
-/*
-function go_admin_maps_menu_content() {
-
-    ?>
-
-    <div class="wrap">
-
-        <h2>Game On Maps and Menus</h2>
-
-        <?php
-
-        // your admin pages content would be added here!
-
-        ?>
-
-    </div>
-
-    <?php
-
-}
-*/
 
 /**
  * @param $parent_file

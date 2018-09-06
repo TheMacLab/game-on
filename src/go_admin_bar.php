@@ -37,7 +37,6 @@ function go_display_admin_bar() {
 	return false;
 	}
 }
-
 add_filter( 'show_admin_bar', 'go_display_admin_bar' );
 
 function go_admin_bar() {
@@ -597,8 +596,6 @@ function go_admin_bar() {
 
 	// end-if the admin bar is turned on and the user is logged in
 	}
-
-
 }
 
 function go_update_admin_view (){

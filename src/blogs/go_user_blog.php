@@ -17,7 +17,7 @@
  * @since 1.0
  * @version 1.0
  */
-add_filter( 'show_admin_bar', 'go_display_admin_bar' );
+//add_filter( 'show_admin_bar', 'go_display_admin_bar' );
 
 get_header();
 

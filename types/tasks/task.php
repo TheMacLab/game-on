@@ -419,6 +419,7 @@ function go_filter_tasks_by_taxonomy() {
 		));
 	};
 }
+
 /**
  * Filter posts by taxonomy in admin
  * @author  Mike Hemberger
@@ -426,14 +427,18 @@ function go_filter_tasks_by_taxonomy() {
 */
 add_filter('parse_query', 'go_convert_task_id_to_term_in_query');
 function go_convert_task_id_to_term_in_query($query) {
-	global $pagenow;
-	$post_type = 'tasks'; // change to your post type
-	$taxonomy  = 'task_chains'; // change to your taxonomy
-	$q_vars    = &$query->query_vars;
-	if ( $pagenow == 'edit.php' && isset($q_vars['post_type']) && $q_vars['post_type'] == $post_type && isset($q_vars[$taxonomy]) && is_numeric($q_vars[$taxonomy]) && $q_vars[$taxonomy] != 0 ) {
-		$term = get_term_by('id', $q_vars[$taxonomy], $taxonomy);
-		$q_vars[$taxonomy] = $term->slug;
-	}
+        if ( ! is_admin() ){
+            return;
+        }
+
+        global $pagenow;
+        $post_type = 'tasks'; // change to your post type
+        $taxonomy  = 'task_chains'; // change to your taxonomy
+        $q_vars    = &$query->query_vars;
+        if ( $pagenow == 'edit.php' && isset($q_vars['post_type']) && $q_vars['post_type'] == $post_type && isset($q_vars[$taxonomy]) && is_numeric($q_vars[$taxonomy]) && $q_vars[$taxonomy] != 0 ) {
+            $term = get_term_by('id', $q_vars[$taxonomy], $taxonomy);
+            $q_vars[$taxonomy] = $term->slug;
+        }
 }
  
 /**
@@ -480,150 +485,130 @@ function hide_all_slugs() {
 }
 add_action( 'admin_head', 'hide_all_slugs'  );
 
-/**
- * TASK CHAINS EDIT COLUMNS AND FIELDS
- *
- */
+function manage_task_chains_columns(){
+    /**
+     * TASK CHAINS EDIT COLUMNS AND FIELDS
+     *
+     */
 //remove description column
-add_filter('manage_edit-task_chains_columns', function ( $columns ) {
-    if( isset( $columns['description'] ) )
-        unset( $columns['description'] );  
-    return $columns;
-});
+    add_filter('manage_edit-task_chains_columns', function ( $columns ) {
+        if( isset( $columns['description'] ) )
+            unset( $columns['description'] );
+        return $columns;
+    });
 //remove slug column
-add_filter('manage_edit-task_chains_columns', function ( $columns ) {
-    if( isset( $columns['slug'] ) )
-        unset( $columns['slug'] );  
-    return $columns;
-});
-//remove count column
-/*
-add_filter('manage_edit-task_chains_columns', function ( $columns ) {
-    if( isset( $columns['posts'] ) )
-        unset( $columns['posts'] );  
-    return $columns;
-});
-*/
+    add_filter('manage_edit-task_chains_columns', function ( $columns ) {
+        if( isset( $columns['slug'] ) )
+            unset( $columns['slug'] );
+        return $columns;
+    });
 
-
-/**
- * BADGES EDIT COLUMNS AND FIELDS
- *
- */
+    /**
+     * BADGES EDIT COLUMNS AND FIELDS
+     *
+     */
 //remove description column
-add_filter('manage_edit-go_badges_columns', function ( $columns ) {
-    if( isset( $columns['description'] ) )
-        unset( $columns['description'] );  
-    return $columns;
-});
+    add_filter('manage_edit-go_badges_columns', function ( $columns ) {
+        if( isset( $columns['description'] ) )
+            unset( $columns['description'] );
+        return $columns;
+    });
 //remove slug column
-add_filter('manage_edit-go_badges_columns', function ( $columns ) {
-    if( isset( $columns['slug'] ) )
-        unset( $columns['slug'] );  
-    return $columns;
-});
+    add_filter('manage_edit-go_badges_columns', function ( $columns ) {
+        if( isset( $columns['slug'] ) )
+            unset( $columns['slug'] );
+        return $columns;
+    });
 //remove count column
-/*
-add_filter('manage_edit-go_badges_columns', function ( $columns ) {
-    if( isset( $columns['posts'] ) )
-        unset( $columns['posts'] );  
-    return $columns;
-});
-*/
+    /*
+    add_filter('manage_edit-go_badges_columns', function ( $columns ) {
+        if( isset( $columns['posts'] ) )
+            unset( $columns['posts'] );
+        return $columns;
+    });
+    */
 
 
-/**
- * JOBS EDIT COLUMNS AND FIELDS
- *
- */
+    /**
+     * JOBS EDIT COLUMNS AND FIELDS
+     *
+     */
 
 //remove description column
-add_filter('manage_edit-task_focus_categories_columns', function ( $columns ) {
-    if( isset( $columns['description'] ) )
-        unset( $columns['description'] );  
-    return $columns;
-});
+    add_filter('manage_edit-task_focus_categories_columns', function ( $columns ) {
+        if( isset( $columns['description'] ) )
+            unset( $columns['description'] );
+        return $columns;
+    });
 //remove slug column
-add_filter('manage_edit-task_focus_categories_columns', function ( $columns ) {
-    if( isset( $columns['slug'] ) )
-        unset( $columns['slug'] );  
-    return $columns;
-});
+    add_filter('manage_edit-task_focus_categories_columns', function ( $columns ) {
+        if( isset( $columns['slug'] ) )
+            unset( $columns['slug'] );
+        return $columns;
+    });
 //remove count column
-/*
-add_filter('manage_edit-task_focus_categories_columns', function ( $columns ) {
-    if( isset( $columns['posts'] ) )
-        unset( $columns['posts'] );  
-    return $columns;
-});
-*/
+    /*
+    add_filter('manage_edit-task_focus_categories_columns', function ( $columns ) {
+        if( isset( $columns['posts'] ) )
+            unset( $columns['posts'] );
+        return $columns;
+    });
+    */
 
-/**
- * SIDE MENU EDIT COLUMNS AND FIELDS
- *
- */
+    /**
+     * SIDE MENU EDIT COLUMNS AND FIELDS
+     *
+     */
 //remove description column
-add_filter('manage_edit-task_categories_columns', function ( $columns ) {
-    if( isset( $columns['description'] ) )
-        unset( $columns['description'] );  
-    return $columns;
-});
+    add_filter('manage_edit-task_categories_columns', function ( $columns ) {
+        if( isset( $columns['description'] ) )
+            unset( $columns['description'] );
+        return $columns;
+    });
 //remove slug column
-add_filter('manage_edit-task_categories_columns', function ( $columns ) {
-    if( isset( $columns['slug'] ) )
-        unset( $columns['slug'] );  
-    return $columns;
-});
-//remove count column
-/*
-add_filter('manage_edit-task_categories_columns', function ( $columns ) {
-    if( isset( $columns['posts'] ) )
-        unset( $columns['posts'] );  
-    return $columns;
-});
-*/
+    add_filter('manage_edit-task_categories_columns', function ( $columns ) {
+        if( isset( $columns['slug'] ) )
+            unset( $columns['slug'] );
+        return $columns;
+    });
 
 
-/**
- * TOP MENU EDIT COLUMNS AND FIELDS
- *
- */
+    /**
+     * TOP MENU EDIT COLUMNS AND FIELDS
+     *
+     */
 //remove description column
-add_filter('manage_edit-task_menus_columns', function ( $columns ) {
-    if( isset( $columns['description'] ) )
-        unset( $columns['description'] );  
-    return $columns;
-});
+    add_filter('manage_edit-task_menus_columns', function ( $columns ) {
+        if( isset( $columns['description'] ) )
+            unset( $columns['description'] );
+        return $columns;
+    });
 //remove slug column
-add_filter('manage_edit-task_menus_columns', function ( $columns ) {
-    if( isset( $columns['slug'] ) )
-        unset( $columns['slug'] );  
-    return $columns;
-});
-//remove count column
-/*
-add_filter('manage_edit-task_menus_columns', function ( $columns ) {
-    if( isset( $columns['posts'] ) )
-        unset( $columns['posts'] );  
-    return $columns;
-});
-*/
+    add_filter('manage_edit-task_menus_columns', function ( $columns ) {
+        if( isset( $columns['slug'] ) )
+            unset( $columns['slug'] );
+        return $columns;
+    });
 
-/**
- * USER GROUPS EDIT COLUMNS AND FIELDS
- *
- */
+
+    /**
+     * USER GROUPS EDIT COLUMNS AND FIELDS
+     *
+     */
 //remove slug column
-add_filter('manage_edit-user_go_groups_columns', function ( $columns ) {
-    if( isset( $columns['slug'] ) )
-        unset( $columns['slug'] );
-    return $columns;
-});
+    add_filter('manage_edit-user_go_groups_columns', function ( $columns ) {
+        if( isset( $columns['slug'] ) )
+            unset( $columns['slug'] );
+        return $columns;
+    });
+    //////Limits the dropdown to top level hierarchy.  Removes items that have a parent from the list.
+    add_filter( 'taxonomy_parent_dropdown_args', 'go_limit_parents', 10, 2 );
+}
+add_action( 'admin_init', 'manage_task_chains_columns' );
 
-//////Limits the dropdown to top level hierarchy.  Removes items that have a parent from the list.
-add_filter( 'taxonomy_parent_dropdown_args', 'limit_parents_wpse_106164', 10, 2 );
 
-function limit_parents_wpse_106164( $args, $taxonomy ) {
+
+function go_limit_parents( $args, $taxonomy ) {
     //if ( 'task_chains' != $taxonomy ) return $args; // no change
     $args['depth'] = '1';
     return $args;

@@ -14,8 +14,6 @@
  * @return bool
  */
 function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only ){
-
-
     if ($check_only) {
         $is_unlocked = go_master_unlocked($user_id, $id);
         if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
@@ -200,7 +198,7 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
  * @return bool
  */
 function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
-    $is_admin = go_user_is_admin( $user_id );
+    //$is_admin = go_user_is_admin( $user_id );
     $this_lock = false;
     $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_after";
     $start_filter = $custom_fields[$option][0];
@@ -723,8 +721,7 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
 /**
  * Task Chain Lock
  */
-function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only)
-{
+function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
     global $wpdb;
     $chain_id = $custom_fields['go-location_map_loc'][0];
     //if not empty chain id

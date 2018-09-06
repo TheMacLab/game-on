@@ -6,8 +6,6 @@
  * Time: 1:29 PM
  */
 
-
-
 function go_wp_enqueue_media( $args = array() ) {
     // Enqueue me just once per page, please.
     if ( did_action( 'wp_enqueue_media' ) )
@@ -388,8 +386,7 @@ add_action( 'wp_enqueue_media' , 'client_side_resize_load' );
  * https://wordpress.stackexchange.com/questions/204779/how-can-i-add-an-author-filter-to-the-media-library
  *
  */
-function go_media_add_author_dropdown()
-{
+function go_media_add_author_dropdown(){
     $scr = get_current_screen();
     if ( $scr->base !== 'upload' ) return;
     if (current_user_can( 'manage_options' )) {

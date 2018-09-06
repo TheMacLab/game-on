@@ -139,7 +139,10 @@ function go_filter_store_by_taxonomy() {
  */
 add_filter('parse_query', 'go_convert_store_id_to_term_in_query');
 function go_convert_store_id_to_term_in_query($query) {
-	global $pagenow;
+    if ( ! is_admin() ){
+        return;
+    }
+    global $pagenow;
 	$post_type = 'go_store'; // change to your post type
 	$taxonomy  = 'store_types'; // change to your taxonomy
 	$q_vars    = &$query->query_vars;

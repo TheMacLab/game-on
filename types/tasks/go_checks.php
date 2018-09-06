@@ -139,7 +139,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
 
 function go_no_check ($i, $status, $custom_fields, $instructions, $bonus, $bonus_status){
     //for bonus stages
-    $stage = 'stage';
     if ($bonus){
         $status = $bonus_status;
     }

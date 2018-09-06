@@ -208,6 +208,20 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/disabled\/mail\/class.phpmailer.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/disabled\/mail\/class.phpmailer.php",
+		"oF": 0
+		},
+	"\/disabled\/mail\/PHPMailerAutoload.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/disabled\/mail\/PHPMailerAutoload.php",
+		"oF": 0
+		},
 	"\/game-on.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -2818,20 +2832,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"\/mail\/class.phpmailer.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/mail\/class.phpmailer.php",
-		"oF": 0
-		},
-	"\/mail\/PHPMailerAutoload.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/mail\/PHPMailerAutoload.php",
-		"oF": 0
-		},
 	"\/media\/mysterybox_inner_glow_sm.gif": {
 		"ft": 4194304,
 		"iS": 82102,
@@ -2912,13 +2912,6 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/src\/go_datatable.php",
-		"oF": 0
-		},
-	"\/src\/go_mail.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "\/src\/go_mail.php",
 		"oF": 0
 		},
 	"\/src\/go_map.php": {

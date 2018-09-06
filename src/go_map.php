@@ -405,7 +405,6 @@ function go_single_map_link( $atts, $content = null ) {
 add_shortcode( 'go_single_map_link', 'go_single_map_link' );
 
 function go_to_this_map(){
-
     check_ajax_referer( 'go_to_this_map');
     $user_id = get_current_user_id();
     $map_id = $_POST['map_id'];

@@ -351,11 +351,6 @@ function go_admin_only_content_function( $atts, $content = null ) {
 add_shortcode ( 'admin_only_content', 'go_admin_only_content_function' );
 add_shortcode ( 'go_admin_only_content', 'go_admin_only_content_function' );
 
-//Sorts posts based on tags
-
-//Sorts posts based on focus
-
-//Sorts posts based on catigories
 
 
 //Adds the ability to put a login box anywhere it is needed

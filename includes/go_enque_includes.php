@@ -1,15 +1,7 @@
 <?php
-if( ! class_exists( 'FitVidsWP' ) ) {
-    // FitVids Plugin is not active
-    //include( 'fitvids-for-wordpress/fitvids-for-wordpress.php' );
-}
-
-if( ! class_exists( 'WP_Term_Order' ) ) {
-    // WP Term Order Plugin is not active
-    include( 'wp-term-order/wp-term-order.php' );
-}
 
 function go_admin_includes () {
+
     /**
      * Select 2
      */
