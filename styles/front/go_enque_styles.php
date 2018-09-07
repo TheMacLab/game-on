@@ -6,14 +6,14 @@
  */
 
 function go_styles () {
-    global $version;
+
 
 	/*
 	 * Registering Styles For The Front-end
 	 */
 
 		// Dependencies
-		wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, $version );
+		wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, 1.112 );
 		//wp_register_style( 'video-js-css', plugin_dir_url( __FILE__ ).'scripts/front/scripts/video-js/video-js.css' );
 		//wp_register_style( 'go_lightbox', plugin_dir_url( __FILE__ ).'min/go-lightbox.css' );
 
@@ -22,7 +22,7 @@ function go_styles () {
 		//wp_enqueue_style( 'go_featherlight_css' );
 
 		// COMBINED STYLES
-		wp_register_style( 'go_frontend', plugin_dir_url( __FILE__ ).'min/go_frontend.css', null, $version );
+		wp_register_style( 'go_frontend', plugin_dir_url( __FILE__ ).'min/go_frontend.css', null, 1.01 );
 		
 	/*
 	 * Enqueue Styles For The Front-end

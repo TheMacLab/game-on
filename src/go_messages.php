@@ -691,6 +691,15 @@ function go_create_admin_message (){
     }
 }
 
+/**
+ * Check for new admin messages
+ */
+function go_admin_messages(){
+    //$user_id = get_current_user_id();
+    check_ajax_referer( 'go_admin_messages');
+    go_check_messages();
+}
+
 function go_send_message(){
     check_ajax_referer( 'go_send_message');
 

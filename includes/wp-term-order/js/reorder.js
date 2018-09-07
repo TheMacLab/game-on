@@ -1,8 +1,5 @@
-
-
 //https://stackoverflow.com/questions/918792/use-jquery-to-change-an-html-tag
 //extend jquery to replace tags.  Used to turn term table into list.
-
 
 jQuery.extend({
     replaceTag: function (currentElem, newTagObj, keepProps) {
@@ -54,9 +51,6 @@ jQuery("#cb-select-all-1").click(function() {
 jQuery("#cb-select-all-2").click(function() {
 	toggle(this);
 });
-
-
-
 
 jQuery(document).ready(function(){
 
@@ -327,6 +321,7 @@ jQuery(document).ready(function(){
 					}
 
 					if ( changes.next ) {
+
 						jQuery.post( ajaxurl, {
 							action:  'reordering_terms',
 							id:       changes.next['id'],

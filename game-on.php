@@ -85,7 +85,7 @@ register_activation_hook( __FILE__, 'go_map_activate' );
 register_activation_hook( __FILE__, 'go_store_activate' );
 //Multisite--create tables on existing blogs
 register_activation_hook( __FILE__, 'go_on_activate_msdb' );
-register_activation_hook( __FILE__, 'go_menu_and_widget' );
+
 
 /*
  * Init
@@ -244,8 +244,6 @@ add_action( 'wp_ajax_go_blog_opener', 'go_blog_opener' );
 add_action( 'wp_ajax_go_blog_submit', 'go_blog_submit' );
 add_action( 'wp_ajax_go_admin_messages', 'go_admin_messages' );
 add_action( 'wp_ajax_go_to_this_map', 'go_to_this_map' );
-
-
 add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
 add_action('wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
 //add_action('wp_ajax_nopriv_go_tasks_dataloader_ajax', 'fn_my_ajaxified_dataloader_ajax');
@@ -254,15 +252,12 @@ add_action('wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax')
  * Miscellaneous Filters
  */
 
-add_filter( 'cron_schedules', 'go_weekly_schedule' );
+//add_filter( 'cron_schedules', 'go_weekly_schedule' );
 //add_filter( 'attachment_fields_to_edit', 'go_badge_add_attachment', 2, 2 );
 
 // mitigating compatibility issues with Jetpack plugin by Automatic
 // (https://wordpress.org/plugins/jetpack/).
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
-
-
-
 
 /**
  * Important Functions
@@ -286,24 +281,6 @@ function go_get_users_name( $user_id = null ) {
     return $user_info->display_name;
 }
 
-/**
- * Check for new admin messages
- */
-function go_admin_messages(){
-    $user_id = get_current_user_id();
-    check_ajax_referer( 'go_admin_messages');
-    go_check_messages();
-}
-
-/**
- * Changes roles so subscribers can upload media
- */
-function go_media_access() {
-    $role = get_role( 'subscriber' );
-    $role->add_cap( 'upload_files' );
-}
-register_activation_hook( __FILE__, 'go_media_access' );
-
 function go_changeMceDefaults($in) {
 
     // customize the buttons
@@ -315,35 +292,6 @@ function go_changeMceDefaults($in) {
     return $in;
 }
 add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
-
-/*
- * Appends errors to the configured PHP error log.
- *
- * Use this function to easily output Game On errors.
- *
- * @since 3.0.0
- *
- * @param  string  $error The error message.
- * @param  string  $func  The name of the function which is calling go_error_log().
- * @param  string  $file  The name of the file in which go_error_log() is being called.
- * @param  boolean $trace Whether or not to output a stack trace.
- */
-function go_error_log( $error = '', $func = __FUNCTION__, $file = __FILE__, $trace = false ) {
-	if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-		return;
-	}
-
-	if ( '' !== $error ) {
-		$log = "Game On Error: {$error}. " .
-			( ! empty( $func ) ? "from {$func}() " : '' ) .
-			( ! empty( $file ) ? "in {$file}" : 'erring file not provided' );
-		if ( true === $trace ) {
-			$exception = new Exception;
-			$log .= print_r( "\nTrace:\n" . $exception->getTraceAsString(), true );
-		}
-		error_log( $log );
-	}
-}
 
 function go_deactivate_plugin() {
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -370,17 +318,6 @@ function go_tsk_actv_redirect() {
 		}
 	}
 }
-
-function go_default_map($user_login, $user){
-    $default_map = get_option('options_go_locations_map_default', '');
-    //$user = $user;
-
-    $user_id = $user->ID;
-    if ($default_map !== '') {
-        update_user_meta($user_id, 'go_last_map', $default_map);
-    }
-}
-//add_action('wp_login', 'go_default_map', 10, 2);
 
 function go_user_redirect( $redirect_to, $request, $user )
 {
@@ -478,34 +415,19 @@ function go_admin_remove_notification() {
 	die( 'success' );
 }
 
-function go_weekly_schedule( $schedules ) {
-	$schedules['go_weekly'] = array(
-		'interval' => 604800,
-		'display' => __( 'Once Weekly' )
-	);
-	return $schedules;
-}
+//CHECK THESE
 
-/**
- * Determines if the string has a boolean value of true (case is ignored).
- *
- * This exists because `boolval( 'true' )` equals the boolean value of true, as does
- * `boolval( 'false' )`. Typecasting a string as a boolean (using `(boolean) $var`) doesn't work
- * either. That achieves the same undesired effect. This function isn't insanely helpful, but it
- * does save a few lines.
- *
- * @since 3.0.0
- *
- * @param  string $str The string to check for a boolean value of true.
- * @return boolean Returns true if the string is equal to 'true', otherwise it returns false.
- */
-function go_is_true_str( $str ) {
-	if ( ! empty( $str ) && 'string' === gettype( $str ) && 'true' === strtolower( $str ) ) {
-		return true;
-	} else {
-		return false;
-	}
+function go_default_map($user_login, $user){
+    $default_map = get_option('options_go_locations_map_default', '');
+    //$user = $user;
+
+    $user_id = $user->ID;
+    if ($default_map !== '') {
+        update_user_meta($user_id, 'go_last_map', $default_map);
+    }
 }
+//add_action('wp_login', 'go_default_map', 10, 2);
+
 
 /**
  * Determines whether or not a user is an administrator with management capabilities.
@@ -529,12 +451,120 @@ function go_user_is_admin( $user_id = null ) {
 	return false;
 }
 
+/*
+//bbPress visual editor
+function bbp_enable_visual_editor( $args = array() ) {
+    $args['tinymce'] = true;
+    return $args;
+}
+add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
+*/
+
+/**
+ * Plugin Name: Disable ACF on Frontend
+ * Description: Provides a performance boost if ACF frontend functions aren't being used
+ * Version:     1.0
+ * Author:      Bill Erickson
+ * Author URI:  http://www.billerickson.net
+ * License:     MIT
+ * License URI: http://www.opensource.org/licenses/mit-license.php
+ */
+/**
+ * Disable ACF on Frontend
+ *
+
+function ea_disable_acf_on_frontend( $plugins ) {
+if( is_admin() )
+return $plugins;
+foreach( $plugins as $i => $plugin )
+if( 'advanced-custom-fields-pro/acf.php' == $plugin )
+unset( $plugins[$i] );
+return $plugins;
+}
+add_filter( 'option_active_plugins', 'ea_disable_acf_on_frontend' );
+ */
+
+
+/**NOT USED FUNCTIONS
+ *
+ */
+
+/*
+function go_weekly_schedule( $schedules ) {
+    $schedules['go_weekly'] = array(
+        'interval' => 604800,
+        'display' => __( 'Once Weekly' )
+    );
+    return $schedules;
+}
+*/
+
+/*
+ * Appends errors to the configured PHP error log.
+ *
+ * Use this function to easily output Game On errors.
+ *
+ * @since 3.0.0
+ *
+ * @param  string  $error The error message.
+ * @param  string  $func  The name of the function which is calling go_error_log().
+ * @param  string  $file  The name of the file in which go_error_log() is being called.
+ * @param  boolean $trace Whether or not to output a stack trace.
+ */
+/*
+function go_error_log( $error = '', $func = __FUNCTION__, $file = __FILE__, $trace = false ) {
+    if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+        return;
+    }
+
+    if ( '' !== $error ) {
+        $log = "Game On Error: {$error}. " .
+            ( ! empty( $func ) ? "from {$func}() " : '' ) .
+            ( ! empty( $file ) ? "in {$file}" : 'erring file not provided' );
+        if ( true === $trace ) {
+            $exception = new Exception;
+            $log .= print_r( "\nTrace:\n" . $exception->getTraceAsString(), true );
+        }
+        error_log( $log );
+    }
+}
+*/
+
+
+/*
+ * Determines if the string has a boolean value of true (case is ignored).
+ *
+ * This exists because `boolval( 'true' )` equals the boolean value of true, as does
+ * `boolval( 'false' )`. Typecasting a string as a boolean (using `(boolean) $var`) doesn't work
+ * either. That achieves the same undesired effect. This function isn't insanely helpful, but it
+ * does save a few lines.
+ *
+ * @since 3.0.0
+ *
+ * @param  string $str The string to check for a boolean value of true.
+ * @return boolean Returns true if the string is equal to 'true', otherwise it returns false.
+ */
+/*function go_is_true_str( $str ) {
+    if ( ! empty( $str ) && 'string' === gettype( $str ) && 'true' === strtolower( $str ) ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+*/
+
+//MENU AND SIDEBAR
+
+//register_activation_hook( __FILE__, 'go_menu_and_widget' );
+
 /**
  * TOP MENU ITEMS
  * @param $items
  * @return string
  */
-function go_new_nav_menu_items($items) {
+
+/*
+ function go_new_nav_menu_items($items) {
 
     $homelink = '<li class="home go_top_menu_1"><a href="' . home_url( '/' ) . '">' . __('Home') . '</a></li>';
 
@@ -652,23 +682,26 @@ function go_new_nav_menu_items($items) {
     return $menu_link;
 
 }
-add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
+*/
+//add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
 
 /**
  * Task Categories Widget
  * Modified from: http://www.wpbeginner.com/wp-tutorials/how-to-create-a-custom-wordpress-widget/
  */
+/*
 // Register and load the widget
 function wpb_load_widget() {
     register_widget( 'wpb_widget' );
 
 }
-
+*/
 /**
  * Added v4.0 Sort items that show on menu pages
  *Modified from: https://wordpress.stackexchange.com/questions/39817/sort-results-by-name-asc-order-on-archive-php
  * https://www.advancedcustomfields.com/resources/orde-posts-by-custom-fields/
  */
+/*
 add_action( 'pre_get_posts', 'go_change_sort_order');
 function go_change_sort_order($query){
 
@@ -693,29 +726,8 @@ function go_change_sort_order($query){
         $query->set('order', 'ASC');
 	}
 
-	/*
-    if ($query->is_tax('task_chains')){
-        $query->set('orderby', 'meta_value_num');
-        $query->set('posts_per_page', -1);
-        $query->set('meta_key', 'go-location_map_order_item');
-        $query->set('order', 'ASC');
-    }
-*/
-
-
-
-    // return
-    //return $query;
-
-
 };
-
-//bbPress visual editor
-function bbp_enable_visual_editor( $args = array() ) {
-    $args['tinymce'] = true;
-    return $args;
-}
-add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
+*/
 
 
 /**
@@ -725,6 +737,7 @@ add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' )
  * https://wordpress.stackexchange.com/questions/121309/how-do-i-programatically-insert-a-new-menu-item
  *
  */
+/*
 function go_menu_and_widget()
 {
 // Check if the menu exists
@@ -742,7 +755,8 @@ function go_menu_and_widget()
         add_action('widgets_init', 'wpb_load_widget');
     }
 }
-
+*/
+/*
 // Creating the widget
 class wpb_widget extends WP_Widget {
 
@@ -910,31 +924,7 @@ class wpb_widget extends WP_Widget {
         return $instance;
     }
 } // Class go_widget ends here
-
-/**
- * Plugin Name: Disable ACF on Frontend
- * Description: Provides a performance boost if ACF frontend functions aren't being used
- * Version:     1.0
- * Author:      Bill Erickson
- * Author URI:  http://www.billerickson.net
- * License:     MIT
- * License URI: http://www.opensource.org/licenses/mit-license.php
- */
-/**
- * Disable ACF on Frontend
- *
-
-function ea_disable_acf_on_frontend( $plugins ) {
-	if( is_admin() )
-		return $plugins;
-	foreach( $plugins as $i => $plugin )
-		if( 'advanced-custom-fields-pro/acf.php' == $plugin )
-			unset( $plugins[$i] );
-	return $plugins;
-}
-add_filter( 'option_active_plugins', 'ea_disable_acf_on_frontend' );
 */
-
 
 
 

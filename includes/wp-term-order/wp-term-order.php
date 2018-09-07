@@ -404,10 +404,19 @@ final class WP_Term_Order {
 			)
 		);
 
+        if ($taxonomy == 'store_types') {
+            $html = go_make_store_html();
+
+            update_option('go_store_html', $html);
+        }
+
 		// Maybe clean the term cache
 		if ( true === $clean_cache ) {
 			clean_term_cache( $term_id, $taxonomy );
-		}
+		};
+
+
+
 	}
 
 	/**

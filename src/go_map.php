@@ -53,6 +53,7 @@ function go_make_single_map($last_map_id, $reload){
             //Query 2
             //Get all posts on this chain
             $args=array(
+                'post_type'        => 'tasks',
                 'tax_query' => array(
                     array(
                         'taxonomy' => $taxonomy_name,
@@ -64,20 +65,15 @@ function go_make_single_map($last_map_id, $reload){
                 'order'            => 'ASC',
                 'posts_per_page'   => -1,
                 'meta_key'         => 'go-location_map_order_item',
-                'meta_value'       => '',
-                'post_type'        => 'tasks',
-                'post_mime_type'   => '',
-                'post_parent'      => '',
-                'author'	   => '',
-                'author_name'	   => '',
                 'post_status'      => 'publish',
                 'suppress_filters' => true
 
             );
 
-            $go_task_obj = get_posts($args); //Query 2
-
-			echo "<li><p>$term_object->name";
+            //$go_task_obj = get_posts($args); //Query 2
+            $go_task_obj2 = new WP_Query( $args );
+            $go_task_obj = $go_task_obj2->posts;
+            echo "<li><p>$term_object->name";
 
 
 
