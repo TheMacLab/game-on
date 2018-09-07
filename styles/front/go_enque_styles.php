@@ -22,7 +22,7 @@ function go_styles () {
 		//wp_enqueue_style( 'go_featherlight_css' );
 
 		// COMBINED STYLES
-		wp_register_style( 'go_frontend', plugin_dir_url( __FILE__ ).'min/go_frontend.css', null, 1.01 );
+		wp_register_style( 'go_frontend', plugin_dir_url( __FILE__ ).'min/go_frontend.css', null, 4.09 );
 		
 	/*
 	 * Enqueue Styles For The Front-end

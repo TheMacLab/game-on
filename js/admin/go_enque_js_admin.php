@@ -15,20 +15,20 @@ function go_admin_scripts ($hook) {
          *
          */
 
-            wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'min/go_admin-min.js', array( 'jquery' ), 1.01, true);
+            wp_register_script( 'go_admin-min', plugin_dir_url( __FILE__ ).'min/go_admin-min.js', array( 'jquery' ), 4.09, true);
 
         /*
          * Page-Specific Scripts
          */
 
             // Clipboard
-            wp_register_script( 'go_clipboard_combined-min', plugin_dir_url( __FILE__ ).'min/go_clipboard_combined-min.js', null, 1.01 );
+            wp_register_script( 'go_clipboard_combined-min', plugin_dir_url( __FILE__ ).'min/go_clipboard_combined-min.js', null, 4.09 );
 
             // Options Page
-            wp_register_script( 'go_options_admin_js', plugin_dir_url( __FILE__ ).'min/go_options-min.js', null, 1.01 );
+            wp_register_script( 'go_options_admin_js', plugin_dir_url( __FILE__ ).'min/go_options-min.js', null, 4.09 );
 
             //Edit Store Items
-            wp_register_script('go_edit_store', plugin_dir_url( __FILE__ ).'min/go_edit_store-min.js', null, 1.01 );
+            wp_register_script('go_edit_store', plugin_dir_url( __FILE__ ).'min/go_edit_store-min.js', null, 4.09 );
 
 			//featherlight
 			//wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );	
@@ -36,7 +36,7 @@ function go_admin_scripts ($hook) {
 
         $is_admin = go_user_is_admin();
         if ($is_admin){
-            wp_register_script('go_admin_notification_listener', plugins_url('front/min/go_admin_notifications-min.js', dirname(__FILE__)), array('jquery'), 1.01, true);
+            wp_register_script('go_admin_notification_listener', plugins_url('front/min/go_admin_notifications-min.js', dirname(__FILE__)), array('jquery'), 4.09, true);
             wp_enqueue_script( 'go_admin_notification_listener' );
             wp_localize_script(
                 'go_admin_notification_listener',

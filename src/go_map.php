@@ -73,10 +73,9 @@ function go_make_single_map($last_map_id, $reload){
             //$go_task_obj = get_posts($args); //Query 2
             $go_task_obj2 = new WP_Query( $args );
             $go_task_obj = $go_task_obj2->posts;
+
             echo "<li><p>$term_object->name";
-
-
-
+			$term_custom = get_term_meta($term_id, '', true);
 			$is_pod = get_term_meta($term_id, 'pod_toggle', true); //Q --metadata
 			if($is_pod) {
 				$pod_min = get_term_meta($term_id, 'pod_done_num', true); //Q metadata

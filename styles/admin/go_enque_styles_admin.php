@@ -6,9 +6,9 @@ function go_admin_styles () {
      */
 
     // Dependencies
-    wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, 1.01 );
+    wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, 1.112 );
 
-    wp_register_style( 'go_admin', plugin_dir_url( __FILE__ ).'min/go_admin.css', null, 1.01 );
+    wp_register_style( 'go_admin', plugin_dir_url( __FILE__ ).'min/go_admin.css', null, 4.09 );
 
     /*
      * Enqueueing Styles For Admin Pages
