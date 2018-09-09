@@ -1118,9 +1118,9 @@ function go_check_messages(){
                 '%d'
             )
         );
-
+        update_user_meta($user_id, 'go_new_messages', false);
     }
 
-   update_user_meta($user_id, 'go_new_messages', false);
+
 }
 add_action( 'wp_footer', 'go_check_messages' );
