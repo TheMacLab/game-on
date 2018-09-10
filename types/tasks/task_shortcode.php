@@ -1059,7 +1059,7 @@ function go_task_change_stage() {
             if ($result == 'password' || $result == 'master password') {
                 //set unlock flag
                 go_update_actions( $user_id, 'task',  $post_id, null, null, $check_type, $result, null, null,  null, null, null, null, null, null, null, null, null );
-
+                go_update_task_post_save( $post_id );
                 echo json_encode(array('json_status' => 'refresh'));
                 die;
                 //refresh

@@ -336,7 +336,7 @@ function task_stage_change( target ) {
     if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
         button_type = jQuery( target ).attr( 'button_type' )
     }
-    console.log(button_type);
+    //console.log(button_type);
 
     var task_status = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'status' ) ) {
