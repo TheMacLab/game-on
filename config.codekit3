@@ -2977,6 +2977,13 @@
 		"oAP": "\/src\/go_tools.php",
 		"oF": 0
 		},
+	"\/src\/go_transients.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/src\/go_transients.php",
+		"oF": 0
+		},
 	"\/src\/go_updates.php": {
 		"cB": 0,
 		"ft": 8192,

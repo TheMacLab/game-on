@@ -200,6 +200,9 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
     $health = 0;
     $c4 = 0;
     $action_type = 'task';
+    $quiz_mod = 0;
+    $due_date_mod = 0;
+    $timer_mod = 0;
     if ($progressing === 'timer') {
 
         $start_time = $time; //set the timer start time
@@ -263,7 +266,7 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
                 $health_mod = 1;
             }
 
-            $quiz_mod = 0;
+
 
             //if not entry loot--it couldn't have a quiz
             if ($status != -1) {

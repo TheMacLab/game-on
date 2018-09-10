@@ -1,5 +1,6 @@
 <?php
 
+//creates a page for the store on activation of plugin
 function go_store_activate() {
 
 	$my_post = array(
@@ -114,8 +115,10 @@ function go_make_store_new() {
     $html = get_option('go_store_html');
     echo $html;
 }
-
 add_shortcode('go_make_store', 'go_make_store_new');
+
+
+
 
 function go_make_store_html() {
 
@@ -229,7 +232,7 @@ function go_update_store_post_save( $post_id ) {
 }
 
 add_action( 'wp_trash_post',    'go_update_store_post_save' );
-add_action( 'delete_post',      'go_update_store_post_save' );
+add_action( 'deleted_post',      'go_update_store_post_save' );
 add_action( 'save_post', 'go_update_store_post_save' );
 
 /**
@@ -248,6 +251,7 @@ add_action( "delete_store_types", 'go_update_store_term_save', 10, 4 );
 add_action( "create_store_types", 'go_update_store_term_save', 10, 4 );
 add_action( "edit_store_types", 'go_update_store_term_save', 10, 4 );
 
+/*
 function go_update_store_term_meta_update( $meta_id, $object_id, $meta_key, $_meta_value ) {
     $meta_id = $meta_id;
 
@@ -255,5 +259,7 @@ function go_update_store_term_meta_update( $meta_id, $object_id, $meta_key, $_me
 
     update_option( 'go_store_html', $html );
 }
-//add_action( 'updated_term_meta', 'go_update_store_term_meta_update', 10, 4 );
+add_action( 'updated_term_meta', 'go_update_store_term_meta_update', 10, 4 );
+*/
+
 ?>

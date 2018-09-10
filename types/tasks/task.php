@@ -266,45 +266,49 @@ add_action( 'init', 'go_register_task_tax_and_cpt', 0 );
  * @param int $user_id Optional. The user ID.
  * @return int|null The status (0,1,2,3,4,5) of a task. Null if the query finds nothing.
  */
-function go_get_status( $task_id, $user_id = null ) {
+function go_get_status( $task_id, $user_id = null, $task = null ) {
 	global $wpdb;
-	$go_task_table_name = "{$wpdb->prefix}go_tasks";
 
-	if ( empty( $task_id ) ) {
-		return null;
-	}
+    //$key = 'go_get_status_' . $task_id;
+    //$data = wp_cache_get( $key );
+    //if ($data !== false){
+        //$task_status = $data;
+   // }else {
+        if ($task != null){
+            $task_status = $task['status'];
+        }
+        else{
+            $go_task_table_name = "{$wpdb->prefix}go_tasks";
 
-	if ( empty( $user_id ) ) {
-		$user_id = get_current_user_id();
-	} else {
-		$user_id = (int) $user_id;
-	}
+            if ( empty( $task_id ) ) {
+                return null;
+            }
 
-	$task_status = $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT status 
+            if ( empty( $user_id ) ) {
+                $user_id = get_current_user_id();
+            } else {
+                $user_id = (int) $user_id;
+            }
+
+            $task_status = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT status 
 			FROM {$go_task_table_name} 
 			WHERE uid = %d AND post_id = %d",
-			$user_id,
-			$task_id
-		)
-	);
+                    $user_id,
+                    $task_id
+                )
+            );
 
-	if ( null !== $task_status && ! is_int( $task_status ) ) {
-		$task_status = (int) $task_status;
-	}
+            if ( null !== $task_status && ! is_int( $task_status ) ) {
+                $task_status = (int) $task_status;
+            }
+        }
+        //wp_cache_set ($key, $task_status);
+   // }
+
 
 	return $task_status;
-}
-
-function go_get_chain_order ($task_id){
-	if (!empty($task_id)) {
-        $args = array('tax_query' => array(array('taxonomy' => 'task_chains', 'field' => 'term_id', 'terms' => $task_id,)), 'orderby' => 'meta_value_num', 'order' => 'ASC', 'posts_per_page' => -1, 'meta_key' => 'go-location_map_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', '
-                author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true, 'fields' => 'ids');
-
-        $go_task_ids = get_posts($args);
-        return $go_task_ids;
-    }
 }
 
 function go_is_done( $task_id, $user_id = null ) {
@@ -313,36 +317,54 @@ function go_is_done( $task_id, $user_id = null ) {
         return null;
     }
 
-    if ( empty( $user_id ) ) {
-        $user_id = get_current_user_id();
-    } else {
-        $user_id = (int) $user_id;
+    $key = 'go_is_done_' . $task_id;
+    $data = wp_cache_get( $key );
+    if ($data !== false){
+        $is_done = $data;
+    }else {
+
+        if (empty($user_id)) {
+            $user_id = get_current_user_id();
+        } else {
+            $user_id = (int)$user_id;
+        }
+
+        //get status from cache
+        $task_status = go_get_status($task_id, $user_id);
+
+        //get data from transient
+        $task_data = go_map_task_data($task_id);
+        $task_custom_meta = $task_data[3];
+        $task_stage_count = (isset($task_custom_meta['go_stages'][0]) ?  $task_custom_meta['go_stages'][0] : null);
+        //$task_stage_count = get_post_meta($task_id, 'go_stages', true);
+
+        if ($task_status == $task_stage_count) {
+            $is_done = true;
+        } else {
+            $is_done = false;
+        }
+        wp_cache_set($key, $is_done);
+
     }
-
-    $task_status = go_get_status( $task_id, $user_id);
-
-    $task_stage_count= get_post_meta($task_id, 'go_stages', true);
-
-    if ( $task_status == $task_stage_count){
-    	return true;
-	}
-	return false;
+    return $is_done;
 }
 
 function go_master_unlocked($user_id, $post_id){
 	global $wpdb;
-    $go_actions_table_name = "{$wpdb->prefix}go_actions";
-    $is_unlocked = (string) $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT result 
+	$key = 'go_master_unlocked_' . $post_id;
+    $data = wp_cache_get( $key );
+	if ($data !== false){
+        $is_unlocked = $data;
+    }else {
+
+        $go_actions_table_name = "{$wpdb->prefix}go_actions";
+        $is_unlocked = (string)$wpdb->get_var($wpdb->prepare("SELECT result 
 				FROM {$go_actions_table_name} 
 				WHERE uid = %d AND source_id = %d  AND check_type = %s
-				ORDER BY id DESC LIMIT 1",
-            $user_id,
-            $post_id,
-            'unlock'
-        )
-    );
+				ORDER BY id DESC LIMIT 1", $user_id, $post_id, 'unlock'));
+
+        wp_cache_set( $key, $is_unlocked);
+    }
 
     //$is_unlocked = ( $is_unlocked == 'password' ) ? true : false;
     return $is_unlocked;

@@ -336,6 +336,7 @@ function task_stage_change( target ) {
     if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
         button_type = jQuery( target ).attr( 'button_type' )
     }
+    console.log(button_type);
 
     var task_status = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'status' ) ) {
@@ -350,7 +351,7 @@ function task_stage_change( target ) {
     var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
     var result = jQuery( '#go_result' ).attr( 'value' );
 
-    if( check_type == 'blog'){
+    if( check_type == 'blog' && button_type != 'undo_last_bonus'){
         result = tinyMCE.activeEditor.getContent();
         var result_title = jQuery( '#go_result_title' ).attr( 'value' );
         var blog_post_id= jQuery( '#go_result_title' ).attr( 'blog_post_id' );

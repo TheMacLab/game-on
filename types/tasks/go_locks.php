@@ -11,11 +11,15 @@
  * @param $custom_fields
  * @param $is_logged_in
  * @param $check_only
+ * @param $loot
  * @return bool
  */
-function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only ){
+function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
+
+
+
     if ($check_only) {
-        $is_unlocked = go_master_unlocked($user_id, $id);
+        $is_unlocked = go_master_unlocked($user_id, $id); //one query per quest on map
         if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
             //$is_unlocked = true;
             return $is_unlocked;
@@ -76,6 +80,8 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
      * Loop to check all the locks and keys
      */
     if ($custom_fields['go_lock_toggle'][0] == true ) {
+
+
         if (!$check_only) {
             $task_caps = ucwords($task_name);
             $lock_message = (isset($custom_fields['go_lock_message'][0]) ?  $custom_fields['go_lock_message'][0] : null);
@@ -239,59 +245,128 @@ function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
  * @return bool
  */
 function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
+
     $badge_name = get_option( 'options_go_naming_other_badges' );
+    $this_lock = false;
     if ($is_logged_in) {
-        $this_lock = false;
-        if ($is_logged_in) {
-            $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_badge";
-            $terms_needed = $custom_fields[$option][0];
-            $terms_needed = unserialize($terms_needed);
-            // gets the current user's period(s)
-            $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_badge";
+        $terms_needed = $custom_fields[$option][0];
+        $terms_needed = unserialize($terms_needed);
+        // gets the current user's period(s)
+        //$num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
+        //$user_terms = array();
+        //for ($i = 0; $i < $num_terms; $i++) {
+
+            //$user_period = "go_section_and_seat_" . $i . "_user-section";
+            //$user_period = get_user_meta($user_id, $user_period, true);
+            //$user_terms[] = $user_period;
+/*
+            global $wpdb;
+            $go_loot_table_name = "{$wpdb->prefix}go_loot";
+            $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+            $user_terms = unserialize($badges_array);
+*/
+            $loot = go_get_loot($user_id);
+            $badges_array = $loot['badges'];
+            $user_terms = unserialize($badges_array);
+        //}
+
+
+
+        //if the current user is in a class period then check if it is the right one
+        if (!$user_terms || !is_array($user_terms)) {
             $user_terms = array();
-            for ($i = 0; $i < $num_terms; $i++) {
+        }
 
-                //$user_period = "go_section_and_seat_" . $i . "_user-section";
-                //$user_period = get_user_meta($user_id, $user_period, true);
-                //$user_terms[] = $user_period;
-
-                global $wpdb;
-                $go_loot_table_name = "{$wpdb->prefix}go_loot";
-                $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-                $user_terms = unserialize($badges_array);
-            }
-
-            //if the current user is in a class period then check if it is the right one
-            if (!$user_terms) {
-                $user_terms = array();
-            }
-
-            // determines if the user has the correct badges
-            if (!empty($terms_needed)) {
-                // checks to see if the filter array are in the the user's badge array
-                $intersection = array_values(array_intersect($user_terms, $terms_needed));
-                // stores an array of the badges that were not found in the user's badge array
-                $term_diff = array_diff($terms_needed, $intersection);
-                if (!empty($term_diff)) {
-                    if (!$check_only) {
-                        echo "<li class='go_error_red'>You  possess one of these " . $badge_name . ":</li>";
-                        echo "<ul class='go_term_list go_error_red'>";
-                        foreach ($term_diff as $term_id) {
-                            $term_object = get_term($term_id);
-                            $term_name = $term_object->name;
-                            if (!empty($term_name)) {
-                                echo "<li>$term_name</li>";
-                            }
+        // determines if the user has the correct badges
+        if (!empty($terms_needed)) {
+            // checks to see if the filter array are in the the user's badge array
+            $intersection = array_values(array_intersect($user_terms, $terms_needed));
+            // stores an array of the badges that were not found in the user's badge array
+            $term_diff = array_diff($terms_needed, $intersection);
+            if (!empty($term_diff)) {
+                if (!$check_only) {
+                    echo "<li class='go_error_red'>You are in the possession of one of these " . $badge_name . ":</li>";
+                    echo "<ul class='go_term_list go_error_red'>";
+                    foreach ($term_diff as $term_id) {
+                        $term_object = get_term($term_id);
+                        $term_name = $term_object->name;
+                        if (!empty($term_name)) {
+                            echo "<li>$term_name</li>";
                         }
-                        echo "</ul>";
                     }
-                    $this_lock = true;
+                    echo "</ul>";
                 }
+                $this_lock = true;
             }
         }
     }
     return $this_lock;
+}
 
+/**
+ * Groups Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $i
+ * @param $k
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
+ */
+function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
+    $this_lock = false;
+    if( $is_logged_in ) {
+        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_group";
+        $terms_needed = $custom_fields[$option][0];
+        $terms_needed = unserialize($terms_needed);
+        // gets the current user's period(s)
+        //$num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
+        // $user_terms = array();
+        //for ($i = 0; $i < $num_terms; $i++) {
+            /*
+            global $wpdb;
+            $go_loot_table_name = "{$wpdb->prefix}go_loot";
+            $groups_array = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+            $user_terms = unserialize($groups_array);
+            */
+            $loot = go_get_loot($user_id);
+            $groups_array = $loot['groups'];
+            $user_terms = unserialize($groups_array);
+        //}
+
+        //set $user_terms to empty array if not set
+        if (!$user_terms || !is_array($user_terms)) {
+            $user_terms = array();
+        }
+
+        // determines if the user has the correct group
+        if (!empty($terms_needed)) {
+            // checks to see if the filter array are in the the user's groups array
+            $intersection = array_values(array_intersect($user_terms, $terms_needed));
+            // stores an array of the groups that were not found in the user's groups array
+            $term_diff = array_diff($terms_needed, $intersection);
+            if (!empty($term_diff)) {
+                if (!$check_only) {
+                    echo "<li class='go_error_red'>You are a member of one of these groups:</li>";
+                    echo "<ul class='go_term_list go_error_red'>";
+                    foreach ($term_diff as $term_id) {
+                        $term_object = get_term($term_id);
+                        $term_name = $term_object->name;
+                        if (!empty($term_name)) {
+                            echo "<li>$term_name</li>";
+                        }
+                    }
+                    echo "</ul>";
+                }
+                $this_lock = true;
+            }
+        }
+    }
+
+    return $this_lock;
 }
 
 /**
@@ -374,7 +449,9 @@ function go_xp_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logge
         $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_xp";
         $xp_needed = $custom_fields[$option][0];
         //get user health from totals table
-        $user_xp = go_get_user_loot ($user_id, 'xp');
+        //$user_xp = go_get_user_loot ($user_id, 'xp');
+        $loot = go_get_loot($user_id);
+        $user_xp = $loot['xp'];
         $xp_name = get_option('options_go_loot_xp_name');
         if ($user_xp < $xp_needed){
             if (!$check_only) {
@@ -404,7 +481,9 @@ function go_xp_levels_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $i
         $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_xp_level";
         $xp_needed = $custom_fields[$option][0];
 
-        $user_xp = go_get_user_loot ($user_id, 'xp');
+        //$user_xp = go_get_user_loot ($user_id, 'xp');
+        $loot = go_get_loot($user_id);
+        $user_xp = $loot['xp'];
         $xp_name = get_option('options_go_loot_xp_name');
         if ($user_xp < $xp_needed){
             if (!$check_only) {
@@ -435,6 +514,8 @@ function go_c4_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logge
         $c4_needed = $custom_fields[$option][0];
         //get user health from totals table
         $user_c4 = go_get_user_loot($user_id, 'c4');
+        $loot = go_get_loot($user_id);
+        $user_c4 = $loot['c4'];
         $c4_name = get_option('options_go_loot_c4_name');
         if ($user_c4 < $c4_needed){
             if (!$check_only) {
@@ -465,6 +546,8 @@ function go_gold_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
         $gold_needed = $custom_fields[$option][0];
         //get user health from totals table
         $user_gold = go_get_user_loot ($user_id, 'gold');
+        $loot = go_get_loot($user_id);
+        $user_gold = $loot['gold'];
         $gold_name = get_option('options_go_loot_gold_name');
         if ($user_gold < $gold_needed){
             if (!$check_only) {
@@ -494,7 +577,9 @@ function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
         $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_health";
         $health_needed = $custom_fields[$option][0];
         //get user health from totals table
-        $user_health = go_get_user_loot ($user_id, 'health');
+        //$user_health = go_get_user_loot ($user_id, 'health');
+        $loot = go_get_loot($user_id);
+        $user_health = $loot['health'];
         $health_name = get_option('options_go_loot_health_name');
         if ($user_health < $health_needed){
             if (!$check_only) {
@@ -503,66 +588,6 @@ function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
             $this_lock = true;
         }
     }
-    return $this_lock;
-}
-
-/**
- * Groups Lock
- * @param $id
- * @param $user_id
- * @param $task_name
- * @param $custom_fields
- * @param $i
- * @param $k
- * @param $is_logged_in
- * @param $check_only
- * @return bool
- */
-function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logged_in, $check_only ){
-    $this_lock = false;
-    if( $is_logged_in ) {
-        $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_group";
-        $terms_needed = $custom_fields[$option][0];
-        $terms_needed = unserialize($terms_needed);
-        // gets the current user's period(s)
-        $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
-        $user_terms = array();
-        for ($i = 0; $i < $num_terms; $i++) {
-            global $wpdb;
-            $go_loot_table_name = "{$wpdb->prefix}go_loot";
-            $groups_array = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-            $user_terms = unserialize($groups_array);
-        }
-
-        //set $user_terms to empty array if not set
-        if (!$user_terms) {
-            $user_terms = array();
-        }
-
-        // determines if the user has the correct group
-        if (!empty($terms_needed)) {
-            // checks to see if the filter array are in the the user's groups array
-            $intersection = array_values(array_intersect($user_terms, $terms_needed));
-            // stores an array of the groups that were not found in the user's groups array
-            $term_diff = array_diff($terms_needed, $intersection);
-            if (!empty($term_diff)) {
-                if (!$check_only) {
-                    echo "<li class='go_error_red'>You are a member of one of these groups:</li>";
-                    echo "<ul class='go_term_list go_error_red'>";
-                    foreach ($term_diff as $term_id) {
-                        $term_object = get_term($term_id);
-                        $term_name = $term_object->name;
-                        if (!empty($term_name)) {
-                            echo "<li>$term_name</li>";
-                        }
-                    }
-                    echo "</ul>";
-                }
-                $this_lock = true;
-            }
-        }
-    }
-
     return $this_lock;
 }
 
@@ -718,8 +743,16 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
     }
 }
 
+
 /**
  * Task Chain Lock
+ * @param $id
+ * @param $user_id
+ * @param $task_name
+ * @param $custom_fields
+ * @param $is_logged_in
+ * @param $check_only
+ * @return bool
  */
 function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
     global $wpdb;
@@ -732,9 +765,9 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
         //is first in chain
         //locked by prev
     if (!empty($chain_id)) {
-        $go_task_ids = go_get_chain_order ($chain_id);
+        $go_task_ids = go_get_chain_posts ($chain_id, false);
 
-        $is_optional = $custom_fields['go-location_map_opt'][0];
+        //$is_optional = $custom_fields['go-location_map_opt'][0];
         //$post_ids = wp_list_pluck( $go_task_ids, 'ID' );
         $this_task_order = array_search($id, $go_task_ids);
         if ($this_task_order == 0) {
@@ -745,13 +778,17 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             $prev_key = (int)$this_task_order - 1;
             while ($prev_key >= 0){
                 $prev_task = $go_task_ids[$prev_key];
-                $islast_optional = get_post_meta($prev_task, 'go-location_map_opt', true);
-                if (!$islast_optional){
+                $prev_task_data = go_map_task_data($id);
+                $prev_task_custom_meta = $prev_task_data[3];
+                $is_last_optional = (isset($prev_task_custom_meta['location_map_opt'][0]) ?  $prev_task_custom_meta['location_map_opt'][0] : null);
+
+                //$islast_optional = get_post_meta($prev_task, 'go-location_map_opt', true);
+                if (!$is_last_optional){
                     break;
                 }
                 $prev_key--;
             }
-            if ($islast_optional){
+            if ($is_last_optional){
                 $first_in_chain = true;
                 $prev_task = null;
             }
@@ -794,7 +831,8 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
         $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent_map_term_id, 'fields' => 'ids'
         );
         //get all chains on this map
-        $sibling_chains = get_terms('task_chains', $args);
+        //$sibling_chains = get_terms('task_chains', $args);
+        $sibling_chains = go_get_map_chain_term_ids($parent_map_term_id);
         $this_chain_order = array_search($chain_id, $sibling_chains);
         //if this is first chain on map
         //then get the last chain on previous map
@@ -812,10 +850,10 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             $prev_map_key = (int)$this_map_order - 1;
             $prev_map = $top_chains[$prev_map_key];
             //get last chain on previous map
-            $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'DSC', 'parent' => $prev_map, 'fields' => 'ids'
-            );
+            //$args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'DSC', 'parent' => $prev_map, 'fields' => 'ids');
             //children chains
-            $children_chains = get_terms('task_chains', $args);
+            //$children_chains = get_terms('task_chains', $args);
+            $children_chains = go_get_map_chain_term_ids($prev_map);
             //if no children chains on previous map
             if ($children_chains == false) {
                 return false;
@@ -837,7 +875,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
          * and is it done
          * */
 
-        $go_task_ids = go_get_chain_order ($prev_chain);
+        $go_task_ids = go_get_chain_posts ($prev_chain, false);
         $reversed_ids = array_reverse($go_task_ids);
         //if the previous chain is pod
         $is_prev_pod = get_term_meta($prev_chain, 'pod_toggle', true);
@@ -936,6 +974,27 @@ function go_timezone_message($user_id) {
         echo '<br>Admin Message: This setting can be changed in the <a href="' . admin_url('options-general.php') . '">wordpress settings.</a> ';
     }
     echo '</div>';
+}
+
+/**
+ * @param $user_id
+ * @return mixed
+ */
+function go_get_loot($user_id){
+    global $wpdb;
+    $key = 'go_get_loot';
+    $data = wp_cache_get( $key );
+    if ($data !== false){
+        $loot = $data;
+    }else {
+
+        $go_loot_table_name = "{$wpdb->prefix}go_loot";
+        $loot = $wpdb->get_results("SELECT * FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+        $loot = $loot[0];
+        $loot = json_decode(json_encode($loot), True);
+        wp_cache_set($key, $loot);
+    }
+    return $loot;
 }
 
 ?>

@@ -104,6 +104,7 @@ register_activation_hook( __FILE__, 'go_on_activate_msdb' );
 register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
 register_activation_hook( __FILE__, 'go_flush_rewrites' );
 
+
  
  
 /**
@@ -119,6 +120,24 @@ function go_flush_rewrites() {
     flush_rewrite_rules();
     go_custom_rewrite();
 }
+
+
+
+/**
+ * Update the store html on activation if it doesn't exist
+ */
+function go_update_store_html( ) {
+
+    if(get_option('go_store_html') == false) {
+
+
+        $html = go_make_store_html();
+
+        update_option('go_store_html', $html);
+    }
+}
+register_activation_hook( __FILE__, 'go_update_store_html' );
+
 
 
 /*
@@ -262,6 +281,37 @@ add_filter( 'jetpack_enable_open_graph', '__return_false' );
 /**
  * Important Functions
  */
+
+
+
+
+function go_get_post_meta($post_id = null, $reset = false) {
+    if ($post_id === null){
+        return;
+    }
+
+    $key = 'go_post_meta_' . $post_id;
+
+
+    $data = get_transient($key);
+
+    if ($data === false || $reset === true) {
+        $data = get_post_custom( $post_id );
+        set_transient($key, $data, 3600 * 24);
+    }
+
+    return $data;
+
+    $data = $wpdb->get_results(' // SQL query // ');
+
+    return $data;
+}
+
+
+
+
+
+
 
 /**
  * Get user's first and last name, else just their first name, else their

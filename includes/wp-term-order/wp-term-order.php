@@ -410,6 +410,12 @@ final class WP_Term_Order {
             update_option('go_store_html', $html);
         }
 
+        if ($taxonomy == 'task_chains') {
+            $key = 'go_get_map_chain_term_ids_' . $term_id;
+            delete_transient( $key );
+        }
+
+
 		// Maybe clean the term cache
 		if ( true === $clean_cache ) {
 			clean_term_cache( $term_id, $taxonomy );
