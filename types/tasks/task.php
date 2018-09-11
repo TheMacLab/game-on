@@ -269,11 +269,11 @@ add_action( 'init', 'go_register_task_tax_and_cpt', 0 );
 function go_get_status( $task_id, $user_id = null, $task = null ) {
 	global $wpdb;
 
-    //$key = 'go_get_status_' . $task_id;
-    //$data = wp_cache_get( $key );
-    //if ($data !== false){
-        //$task_status = $data;
-   // }else {
+    $key = 'go_get_status_' . $task_id;
+    $data = wp_cache_get( $key );
+    if ($data !== false){
+        $task_status = $data;
+    }else {
         if ($task != null){
             $task_status = $task['status'];
         }
@@ -304,8 +304,8 @@ function go_get_status( $task_id, $user_id = null, $task = null ) {
                 $task_status = (int) $task_status;
             }
         }
-        //wp_cache_set ($key, $task_status);
-   // }
+        wp_cache_set ($key, $task_status, 'go_single');
+   }
 
 
 	return $task_status;
@@ -343,7 +343,7 @@ function go_is_done( $task_id, $user_id = null ) {
         } else {
             $is_done = false;
         }
-        wp_cache_set($key, $is_done);
+        wp_cache_set($key, $is_done, 'go_single');
 
     }
     return $is_done;
@@ -363,7 +363,7 @@ function go_master_unlocked($user_id, $post_id){
 				WHERE uid = %d AND source_id = %d  AND check_type = %s
 				ORDER BY id DESC LIMIT 1", $user_id, $post_id, 'unlock'));
 
-        wp_cache_set( $key, $is_unlocked);
+        wp_cache_set( $key, $is_unlocked, 'go_single');
     }
 
     //$is_unlocked = ( $is_unlocked == 'password' ) ? true : false;

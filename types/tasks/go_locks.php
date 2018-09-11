@@ -992,7 +992,7 @@ function go_get_loot($user_id){
         $loot = $wpdb->get_results("SELECT * FROM {$go_loot_table_name} WHERE uid = {$user_id}");
         $loot = $loot[0];
         $loot = json_decode(json_encode($loot), True);
-        wp_cache_set($key, $loot);
+        wp_cache_set($key, $loot, 'go_single');
     }
     return $loot;
 }

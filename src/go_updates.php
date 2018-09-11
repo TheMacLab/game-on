@@ -504,7 +504,7 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
             $user_badges = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
             if (!empty($user_badges) && $user_badges != null) {
                 $user_badges_array = unserialize($user_badges);
-                $user_badges_array = ((is_array($user_badges_array)) ? $user_badges_array : null);
+                $user_badges_array = ((is_array($user_badges_array)) ? $user_badges_array : array());
                 $new_badges = array_diff($badge_ids_array, $user_badges_array);
                 $all_user_badges_array = array_unique(array_merge($user_badges_array, $badge_ids_array));
 

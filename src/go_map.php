@@ -159,8 +159,8 @@ function go_make_single_map1($last_map_id, $reload){
 
                     }
                     //add status to cache
-                    //$cache_key = 'go_get_status_' . $id;
-                    //wp_cache_set ($cache_key, $status );
+                    $cache_key = 'go_get_status_' . $id;
+                    wp_cache_set ($cache_key, $status, 'go_single' );
 
 
                     if($custom_fields['bonus_switch'][0]) {
@@ -720,8 +720,8 @@ function go_make_single_map($last_map_id, $reload){
 
                     }
                     //add status to cache
-                    //$cache_key = 'go_get_status_' . $post_id;
-                    //wp_cache_set ($cache_key, $status );
+                    $cache_key = 'go_get_status_' . $post_id;
+                    wp_cache_set ($cache_key, $status, 'go_single' );
 
 
                     if($custom_fields['bonus_switch'][0]) {
