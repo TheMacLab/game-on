@@ -1,5 +1,8 @@
 <?php
 
+/**
+ *
+ */
 function go_register_task_tax_and_cpt() {
 
     // Register Task chains Taxonomy
@@ -311,7 +314,12 @@ function go_get_status( $task_id, $user_id = null, $task = null ) {
 	return $task_status;
 }
 
-function go_is_done( $task_id, $user_id = null ) {
+/**
+ * @param $task_id
+ * @param null $user_id
+ * @return bool|null
+ */
+function go_is_done($task_id, $user_id = null ) {
 
     if ( empty( $task_id ) ) {
         return null;
@@ -349,6 +357,11 @@ function go_is_done( $task_id, $user_id = null ) {
     return $is_done;
 }
 
+/**
+ * @param $user_id
+ * @param $post_id
+ * @return string
+ */
 function go_master_unlocked($user_id, $post_id){
 	global $wpdb;
 	$key = 'go_master_unlocked_' . $post_id;
@@ -370,29 +383,19 @@ function go_master_unlocked($user_id, $post_id){
     return $is_unlocked;
 }
 
+
 /**
- * Retrieves repeat loop count of a task for a specific user.
- *
- * Task "count" values are stored in the `go`.`count` column. The `count` column is used by other GO
- * custom post types (which it should not be), so this function is for tasks ONLY.
- *
- * @since 3.0.0
- *
- * @global wpdb $wpdb The WordPress database class.
- *
- * @param int $task_id The task ID.
- * @param int $user_id Optional. The user ID.
- * @return int|null The number of fifth stage (repeat) iterations the user has finished. Null if
- *                  the query finds nothing.
+ * @param $task_id
+ * @param null $user_id
+ * @return int|null
  */
-function go_get_bonus_status( $task_id, $user_id = null ) {
+function go_get_bonus_status($task_id, $user_id = null ) {
 	global $wpdb;
 	$go_task_table_name = "{$wpdb->prefix}go_tasks";
 
 	if ( empty( $task_id ) ) {
 		return null;
 	}
-
 
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
@@ -423,6 +426,9 @@ function go_get_bonus_status( $task_id, $user_id = null ) {
  * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
  */
 add_action('restrict_manage_posts', 'go_filter_tasks_by_taxonomy');
+/**
+ *
+ */
 function go_filter_tasks_by_taxonomy() {
 	global $typenow;
 	$post_type = 'tasks'; // change to your post type
@@ -448,6 +454,9 @@ function go_filter_tasks_by_taxonomy() {
  * @link http://thestizmedia.com/custom-post-type-filter-admin-custom-taxonomy/
 */
 add_filter('parse_query', 'go_convert_task_id_to_term_in_query');
+/**
+ * @param $query
+ */
 function go_convert_task_id_to_term_in_query($query) {
         if ( ! is_admin() ){
             return;
@@ -483,7 +492,14 @@ function go_update_slug( $data, $postarr ) {
 add_filter( 'wp_insert_post_data', 'go_update_slug', 99, 2 );
 
 // define the wp_update_term_data callback 
-function go_update_term_slug( $data, $term_id, $taxonomy, $args ) {
+/**
+ * @param $data
+ * @param $term_id
+ * @param $taxonomy
+ * @param $args
+ * @return mixed
+ */
+function go_update_term_slug($data, $term_id, $taxonomy, $args ) {
 	$slug_toggle = get_option( 'options_go_slugs_toggle');
 	if ($slug_toggle) {
         $no_space_slug = sanitize_title($data['name']);
@@ -493,6 +509,9 @@ function go_update_term_slug( $data, $term_id, $taxonomy, $args ) {
 };
 add_filter( 'wp_update_term_data', 'go_update_term_slug', 10, 4 );
 
+/**
+ *
+ */
 function hide_all_slugs() {
 	$slug_toggle = get_option( 'options_go_slugs_toggle');
 	if ($slug_toggle) {
@@ -507,6 +526,9 @@ function hide_all_slugs() {
 }
 add_action( 'admin_head', 'hide_all_slugs'  );
 
+/**
+ *
+ */
 function manage_task_chains_columns(){
     /**
      * TASK CHAINS EDIT COLUMNS AND FIELDS
@@ -629,8 +651,12 @@ function manage_task_chains_columns(){
 add_action( 'admin_init', 'manage_task_chains_columns' );
 
 
-
-function go_limit_parents( $args, $taxonomy ) {
+/**
+ * @param $args
+ * @param $taxonomy
+ * @return mixed
+ */
+function go_limit_parents($args, $taxonomy ) {
     //if ( 'task_chains' != $taxonomy ) return $args; // no change
     $args['depth'] = '1';
     return $args;

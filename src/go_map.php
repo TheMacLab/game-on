@@ -302,18 +302,13 @@ function go_make_single_map_new($last_map_id, $reload){
 		//parent chain
 		//$Children_term_objects = get_terms($taxonomy_name,$args); //query 1 --get the chains
         //$term_objects = go_get_map_chain_term_objects($last_map_id, $taxonomy_name);
-        $term_ids = go_get_map_chain_term_ids($last_map_id, $taxonomy_name);
+        $term_ids = go_get_map_chain_term_ids($last_map_id);
 
         //(this is so we can get the names and meta data in the object cache)
         $term_objects = get_terms( $taxonomy_name, array(
             'include' => $term_ids,
         ) );
         //$term_names = go_get_map_chain_term_names($last_map_id, $taxonomy_name);
-
-
-        $go_loot_table_name = "{$wpdb->prefix}go_loot";
-        $loot = $wpdb->get_results ("SELECT * FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-
 
 		foreach ( $term_objects as $term_object ) {
 
@@ -559,10 +554,10 @@ function go_make_single_map($last_map_id, $reload){
     if(!empty($last_map_id)){
 
         //get user loot to pass to locks so they don't have to look it up for each task
-        $go_loot_table_name = "{$wpdb->prefix}go_loot";
-        $loot = $wpdb->get_results ("SELECT * FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-        $loot =$loot[0];
-        $loot = json_decode(json_encode($loot), True);
+        //$go_loot_table_name = "{$wpdb->prefix}go_loot";
+        //$loot = $wpdb->get_results ("SELECT * FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+        //$loot =$loot[0];
+        //$loot = json_decode(json_encode($loot), True);
 
 
         echo 	"<div id='map_$last_map_id' class='map'>
@@ -582,7 +577,7 @@ function go_make_single_map($last_map_id, $reload){
 //Query 1: parent chain
         //$Children_term_objects = get_terms($taxonomy_name,$args); //query 1 --get the chains
 
-        $term_ids = go_get_map_chain_term_ids($last_map_id, $taxonomy_name);
+        $term_ids = go_get_map_chain_term_ids($last_map_id);
 
         //(this is so we can get the names and meta data in the object cache)
         //$Children_term_objects = get_terms( $taxonomy_name, array('include' => $term_ids) );
@@ -591,7 +586,7 @@ function go_make_single_map($last_map_id, $reload){
         //foreach ( $Children_term_objects as $term_object ) {
         foreach ( $term_ids as $term_id ) {
 
-            $term_data = go_map_term_data($term_id);
+            $term_data = go_term_data($term_id);
             $term_name = $term_data[0];
             $term_custom = $term_data[1];
 

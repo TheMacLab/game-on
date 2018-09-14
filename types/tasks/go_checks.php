@@ -6,7 +6,18 @@
  * Time: 10:31 PM
  */
 
-//Prints Checks for understanding for the current stage
+
+/**
+ * Prints Checks for understanding for the current stage
+ * @param $custom_fields
+ * @param $i
+ * @param $status
+ * @param $user_id
+ * @param $post_id
+ * @param $bonus
+ * @param $bonus_status
+ * @param $repeat_max
+ */
 function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, $bonus, $bonus_status, $repeat_max){
     global $wpdb;
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
@@ -73,6 +84,19 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     echo "</div>";
 }
 
+/**
+ * Prints the buttons on checks for understanding/task pages
+ * @param $user_id
+ * @param $custom_fields
+ * @param $i
+ * @param $stage_count
+ * @param $status
+ * @param $check_type
+ * @param $bonus
+ * @param $bonus_status
+ * @param $repeat_max
+ * @param bool $outro
+ */
 function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, $outro = false){
 
     $is_admin = go_user_is_admin($user_id);
@@ -137,6 +161,14 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
     }
 }
 
+/**
+ * @param $i
+ * @param $status
+ * @param $custom_fields
+ * @param $instructions
+ * @param $bonus
+ * @param $bonus_status
+ */
 function go_no_check ($i, $status, $custom_fields, $instructions, $bonus, $bonus_status){
     //for bonus stages
     if ($bonus){
@@ -151,6 +183,17 @@ function go_no_check ($i, $status, $custom_fields, $instructions, $bonus, $bonus
     }
 }
 
+/**
+ * @param $custom_fields
+ * @param $i
+ * @param $status
+ * @param $go_actions_table_name
+ * @param $user_id
+ * @param $post_id
+ * @param $bonus
+ * @param $bonus_status
+ * @param $instructions
+ */
 function go_password_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
     global $wpdb;
 
@@ -184,6 +227,17 @@ function go_password_check ($custom_fields, $i, $status, $go_actions_table_name,
     }
 }
 
+/**
+ * @param $custom_fields
+ * @param $i
+ * @param $status
+ * @param $go_actions_table_name
+ * @param $user_id
+ * @param $post_id
+ * @param $bonus
+ * @param $bonus_status
+ * @param $instructions
+ */
 function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
     global $wpdb;
 
@@ -256,6 +310,17 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
     }
 }
 
+/**
+ * @param $custom_fields
+ * @param $i
+ * @param $status
+ * @param $go_actions_table_name
+ * @param $user_id
+ * @param $post_id
+ * @param $bonus
+ * @param $bonus_status
+ * @param $instructions
+ */
 function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
     global $wpdb;
 
@@ -306,6 +371,17 @@ function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $use
     }
 }
 
+/**
+ * @param $custom_fields
+ * @param $i
+ * @param $status
+ * @param $go_actions_table_name
+ * @param $user_id
+ * @param $post_id
+ * @param $bonus
+ * @param $bonus_status
+ * @param $instructions
+ */
 function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions) {
     global $wpdb;
 
@@ -368,6 +444,17 @@ function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $
 
 }
 
+/**
+ * @param $custom_fields
+ * @param $i
+ * @param $status
+ * @param $go_actions_table_name
+ * @param $user_id
+ * @param $post_id
+ * @param $bonus
+ * @param $bonus_status
+ * @param $instructions
+ */
 function go_test_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
     if ($i == $status) {
         echo $instructions;

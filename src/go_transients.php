@@ -13,15 +13,14 @@
  * change to term (could now be a pod, etc.)        OK
  * change to term order --includes term-order.php   OK
  *
- * @param $last_map_id
- * @param $taxonomy_name
- * @param bool $reset
+ * @param $term_id
  * @return mixed
  */
-function go_get_map_chain_term_ids($last_map_id) {
+function go_get_map_chain_term_ids($term_id) {
     //global $wpdb;
+
     $taxonomy_name = 'task_chains';
-    $key = 'go_get_map_chain_term_ids_' . $last_map_id;
+    $key = 'go_get_map_chain_term_ids_' . $term_id;
 
 
     $data = get_transient($key);
@@ -32,11 +31,65 @@ function go_get_map_chain_term_ids($last_map_id) {
             'hide_empty' => false,
             'orderby' => 'order',
             'order' => 'ASC',
-            'parent' => $last_map_id,
+            'parent' => $term_id,
         );
 
         $data = get_terms($taxonomy_name,$args); //query 1 --get the chains
         $data = wp_list_pluck( $data, 'term_id' );
+
+        set_transient($key, $data, 3600 * 24);
+    }
+
+    return $data;
+
+}
+
+/**
+ * @param $term_id
+ * @return mixed
+ *
+ * Delete on save or update of term
+ */
+function go_get_parent_map_id($term_id){
+
+    $key = 'go_get_parent_map_id_' . $term_id;
+
+    $data = get_transient($key);
+
+    if ($data === false) {
+
+
+
+        //find if term is a map
+        //if not a map, get map_id
+        $term = get_term($term_id, 'task_chains');
+        //Get the parent object, if needed
+        $termParent = ($term->parent == 0) ? $term : get_term($term->parent, 'task_chains');
+        //GET THE ID FROM THE MAP OBJECT
+        $data = $termParent->term_id;
+
+        set_transient($key, $data, 3600 * 24);
+    }
+
+    return $data;
+
+}
+
+/**
+ * @return mixed
+ *
+ * Delete on save or update of any term
+ */
+function go_get_maps_term_ids(){
+    $key = 'go_get_maps_term_ids';
+
+    $data = get_transient($key);
+
+    if ($data === false) {
+        $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => 0, 'fields' => 'ids');
+        //get all parent maps (chains with no parents)
+
+        $data = get_terms('task_chains', $args);
 
         set_transient($key, $data, 3600 * 24);
     }
@@ -53,8 +106,8 @@ function go_get_map_chain_term_ids($last_map_id) {
  * @param $term_id
  * @return array
  */
-function go_map_term_data($term_id){
-    $key = 'go_map_term_data_' . $term_id;
+function go_term_data($term_id){
+    $key = 'go_term_data_' . $term_id;
     $data = get_transient($key);
 
     if ($data !== false){
@@ -70,39 +123,6 @@ function go_map_term_data($term_id){
         set_transient($key, $term_data, 3600 * 24);
     }
     return $term_data;
-
-}
-
-/**
- * Gets/sets transient of the task data
- *
- * Reset on:
- * post save                                        OK
- *
- * @param $post_id
- * @return array
- */
-function go_map_task_data($post_id){
-    $key = 'go_map_task_data_' . $post_id;
-    $data = get_transient($key);
-
-    if ($data !== false){
-        $task_data = $data;
-
-    }else {
-        $task_data = array();
-        $task = get_post($post_id);
-        $term_name = $task->post_title;
-        $task_data[] = $term_name;//0
-        $term_status = $task->post_status;
-        $task_data[] = $term_status;//1
-        $term_permalink = get_permalink($task);
-        $task_data[] = $term_permalink;//2
-        $term_custom = get_post_custom($post_id);
-        $task_data[] = $term_custom;//3
-        set_transient($key, $task_data, 3600 * 24);
-    }
-    return $task_data;
 
 }
 
@@ -170,6 +190,39 @@ function go_get_chain_posts($term_id, $is_map = false ){
 }
 
 /**
+ * Gets/sets transient of the task data
+ *
+ * Reset on:
+ * post save                                        OK
+ *
+ * @param $post_id
+ * @return array
+ */
+function go_map_task_data($post_id){
+    $key = 'go_map_task_data_' . $post_id;
+    $data = get_transient($key);
+
+    if ($data !== false){
+        $task_data = $data;
+
+    }else {
+        $task_data = array();
+        $task = get_post($post_id);
+        $term_name = $task->post_title;
+        $task_data[] = $term_name;//0
+        $term_status = $task->post_status;
+        $task_data[] = $term_status;//1
+        $term_permalink = get_permalink($task);
+        $task_data[] = $term_permalink;//2
+        $term_custom = get_post_custom($post_id);
+        $task_data[] = $term_custom;//3
+        set_transient($key, $task_data, 3600 * 24);
+    }
+    return $task_data;
+
+}
+
+/**
  * Get/set transient of post_ids of tasks on a chain by map term_id
  *
  * Reset on:
@@ -220,12 +273,12 @@ function go_update_task_post_save( $post_id ) {
 
     //delete task chain transient for old and new task chain
 
-
     //delete old task chain transient
     //this is the original task_chain for this post
+    //there is an option created/updated when the transient is created
     $key = 'go_post_task_chain_' . $post_id;
     $term_id = get_option($key);
-    //delete the original task chain
+    //delete the original task chain post_ids transient
     $key = 'go_get_chain_posts_' . $term_id;
     delete_transient( $key );
 
@@ -252,8 +305,15 @@ function go_update_task_chain_term_save( $term_id ) {
     $key = 'go_get_map_chain_term_ids_' . $term_id;
     delete_transient( $key );
 
-    $key = 'go_map_term_data_' . $term_id;
+    $key = 'go_term_data_' . $term_id;
     delete_transient( $key );
+
+    $key = 'go_get_parent_map_id_' . $term_id;
+    delete_transient( $key );
+
+    $key = 'go_get_maps_term_ids';
+    delete_transient( $key );
+
 
 }
 

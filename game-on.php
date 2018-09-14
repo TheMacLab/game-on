@@ -70,6 +70,9 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "includes/*.php" ) as $file ) {
 
 include( 'includes/wp-frontend-media-master/frontend-media.php' );
 
+
+//create non-persistent cache group
+wp_cache_add_non_persistent_groups( 'go_single' );
 /*
  * Plugin Activation Hooks
  */
@@ -256,6 +259,7 @@ add_action( 'wp_ajax_nopriv_go_update_last_map', 'go_update_last_map' );
 add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
 add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' );
 add_action( 'wp_ajax_go_upgade4', 'go_upgade4' );
+add_action( 'wp_ajax_go_reset_all_users', 'go_reset_all_users' );
 add_action( 'wp_ajax_go_update_bonus_loot', 'go_update_bonus_loot' );
 add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );
 add_action( 'wp_ajax_go_send_message', 'go_send_message' );
@@ -465,7 +469,6 @@ function go_admin_remove_notification() {
 	die( 'success' );
 }
 
-//CHECK THESE
 
 function go_default_map($user_login, $user){
     $default_map = get_option('options_go_locations_map_default', '');
@@ -476,7 +479,16 @@ function go_default_map($user_login, $user){
         update_user_meta($user_id, 'go_last_map', $default_map);
     }
 }
-//add_action('wp_login', 'go_default_map', 10, 2);
+add_action('wp_login', 'go_default_map', 10, 2);
+
+function go_add_user_to_totals_table_at_login($user_login, $user){
+    $user_id = $user->ID;
+
+    go_add_user_to_totals_table($user_id);
+}
+add_action('wp_login', 'go_add_user_to_totals_table_at_login', 10, 2);
+
+
 
 
 /**

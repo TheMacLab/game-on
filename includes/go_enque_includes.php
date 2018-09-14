@@ -61,6 +61,11 @@ function go_admin_includes () {
     wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );
     wp_enqueue_style( 'go_noty_css' );
 
+    /**
+     * Sweet Alert
+     */
+    wp_register_script( 'go_sweet_alert', 'https://unpkg.com/sweetalert/dist/sweetalert.min.js', null,'v1' );
+    wp_enqueue_script( 'go_sweet_alert' );
 
 
 }

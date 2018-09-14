@@ -16,8 +16,6 @@
  */
 function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
 
-
-
     if ($check_only) {
         $is_unlocked = go_master_unlocked($user_id, $id); //one query per quest on map
         if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
@@ -743,6 +741,67 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
     }
 }
 
+//gets the last non optional task on a task chain
+//starts at the $id of the task if provided
+//returns the post_id of the previous task, or false if no previous non optional task on this chain
+function go_prev_task($id = null, $chain_id){
+    $prev_task = false;
+    //FIND IF THE PREVIOUS NON OPTIONAL TASK IS ON THE PREVIOUS CHAIN
+    //if this task is on a chain
+    //get the ids on this chain
+    $go_task_ids = go_get_chain_posts ($chain_id, false);
+
+    //Get this order of this task on the chain it is on
+    if ($id === null){//if no post_id provided, then just get the last task on the chain
+        $this_task_order = count($go_task_ids);
+    }else{//else get the order
+        $this_task_order = array_search($id, $go_task_ids);
+    }
+
+    //this is not the first item on a chain
+    if ($this_task_order > 0) {
+        //the order in the list of task of the previous task
+        $prev_key = (int)$this_task_order - 1;
+
+        //loop backwards through the list of tasks in this chain until it finds one that isn't optional
+        $is_last_optional = false;
+        while ($prev_key >= 0){
+            $prev_task = $go_task_ids[$prev_key];
+            $prev_task_data = go_map_task_data($prev_task);
+            $prev_task_custom_meta = $prev_task_data[3];
+            $is_last_optional = (isset($prev_task_custom_meta['location_map_opt'][0]) ?  $prev_task_custom_meta['location_map_opt'][0] : false);
+
+            if (!$is_last_optional){//if a not optional task is found, break the loop and return the id
+                break;
+                return $prev_task;
+            }
+            $prev_key--;
+        }
+        //if all previous tasks on this chain are optional return false
+        if ($is_last_optional){
+            $prev_task = false;
+        }
+    }
+    //else this is the first item on a chain, set variables that it is first and there is no previous task
+    else{
+        $prev_task = false;
+    }
+    return $prev_task;
+}
+
+function go_task_chain_lock_message($prev_task, $task_name){
+
+        $go_task_data = go_map_task_data($prev_task); //0--name, 1--status, 2--permalink, 3--metadata
+        $task_title = $go_task_data[0];
+        //$status = $go_task_data[1];
+        $task_link = $go_task_data[2];
+        //$custom_fields = $go_task_data[3];
+
+        $task_link = $task_link;
+        $task_title = $task_title;
+        echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The $task_name, <a href='$task_link'>$task_title</a> must be done first</div>";
+
+}
 
 /**
  * Task Chain Lock
@@ -754,54 +813,65 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
  * @param $check_only
  * @return bool
  */
-function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
-    global $wpdb;
+function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only)
+{
     $chain_id = $custom_fields['go-location_map_loc'][0];
     //if not empty chain id
     //get variables
-        //is_optional
-        //previous_task
-        //is pod
-        //is first in chain
-        //locked by prev
-    if (!empty($chain_id)) {
-        $go_task_ids = go_get_chain_posts ($chain_id, false);
+    //is_optional
+    //previous_task
+    //is pod
+    //is first in chain
+    //locked by prev
 
-        //$is_optional = $custom_fields['go-location_map_opt'][0];
-        //$post_ids = wp_list_pluck( $go_task_ids, 'ID' );
-        $this_task_order = array_search($id, $go_task_ids);
-        if ($this_task_order == 0) {
-            $first_in_chain = true;
-            $prev_task = null;
-        } else {
-            $first_in_chain = false;
-            $prev_key = (int)$this_task_order - 1;
-            while ($prev_key >= 0){
-                $prev_task = $go_task_ids[$prev_key];
-                $prev_task_data = go_map_task_data($id);
-                $prev_task_custom_meta = $prev_task_data[3];
-                $is_last_optional = (isset($prev_task_custom_meta['location_map_opt'][0]) ?  $prev_task_custom_meta['location_map_opt'][0] : null);
-
-                //$islast_optional = get_post_meta($prev_task, 'go-location_map_opt', true);
-                if (!$is_last_optional){
-                    break;
-                }
-                $prev_key--;
-            }
-            if ($is_last_optional){
-                $first_in_chain = true;
-                $prev_task = null;
-            }
-        }
-        $is_pod = get_term_meta($chain_id, 'pod_toggle', true);
-        $locked_by_prev = get_term_meta($chain_id, 'locked_by_previous', true);
-    } else {
+    //if this task is not on a chain, it couldn't be locked by a chain
+    if (empty($chain_id)) {
         return false;
     }
 
-    //if this is pod and any task in pod has masterpassword unlock
-    //then unlocked
-    if ($is_pod) {
+    //SET SOME VARIABLES ABOUT THE CHAIN THIS TASK IS ON, (is it a pod, is it locked by previous chain)
+    $term_data = go_term_data($chain_id);
+    $term_custom = $term_data[1];
+    $is_pod = (isset($term_custom['pod_toggle'][0]) ? $term_custom['pod_toggle'][0] : null);
+    $locked_by_prev = (isset($term_custom['locked_by_previous'][0]) ? $term_custom['locked_by_previous'][0] : null);
+    $first_in_chain = false;
+
+    //GET THE TASK ID OF THE FIRST PREVIOUS NON_OPTIONAL TASK ON THE CURRENT CHAIN
+    $prev_task = go_prev_task($id, $chain_id);
+    if ($prev_task === false) {//if there is no previous task
+        $first_in_chain = true;
+    }
+
+
+    //CHECK #1
+    // IF NOT FIRST ON CHAIN (and it is not a pod) then CHECK THE PREVIOUS TASK
+    // AND RETURN TRUE OR FALSE
+    if (!$first_in_chain && !$is_pod) {
+        $is_done = go_is_done($prev_task, $user_id);
+        if ($is_done) {
+            return false;
+        } else {
+            if (!$check_only) {
+                go_task_chain_lock_message($prev_task, $task_name);
+            }
+            return true;
+        }
+    }
+
+    //CHECK #2
+    //IF THIS IS A POD OR THE FIRST IN THE CHAIN
+    //AND THIS CHAIN is not LOCKED BY THE PREVIOUS
+    //THEN SET THIS TASK TO UNLOCKED
+    else if (($is_pod || $first_in_chain) && !$locked_by_prev) {
+        return false;
+    }
+
+    //CHECK #3
+    //IF THIS IS A POD
+    //CHECK IF THE MASTER PASSWORD WAS USED ON ANY TASK ON THIS CHAIN
+    //THEN SET THIS (AND ALL TASKS) TO UNLOCKED IF TRUE
+    else if ($is_pod) {
+        $go_task_ids = go_get_chain_posts($chain_id, false);
         $master_unlock = false;
         //are any in the pod unlocked by masterpassword
         foreach ($go_task_ids as $task_id) {
@@ -815,31 +885,173 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             return false;
         }
     }
-    //if this is a pod or the first in the chain
-    //and this chain is not locked by the previous
-    //then set to unlocked
-    if (($is_pod || $first_in_chain) && !$locked_by_prev) {
+
+
+    //CHECK #4
+    //THESE CHECKS ARE FOR PODS/FIRST IN CHAIN THAT ARE LOCKED BY PREVIOUS (that should be everything else)
+    //IF THIS IS THE FIRST ON THE CHAIN or A POD
+    //CHECK IF THIS CHAIN IS FIRST ON THE MAP
+
+    else {
+        $first_on_map = false;
+        //if (($is_pod || $first_in_chain) && $locked_by_prev) {
+
+        //GET THE CHAINS ON THE MAP (TERM_IDS)
+        $parent_map_term_id = go_get_parent_map_id($chain_id);
+        $sibling_chains = go_get_map_chain_term_ids($parent_map_term_id);
+        //GET WHERE THIS CHAIN IS THE MAP BY ARRAY POSITION
+        $this_chain_order = array_search($chain_id, $sibling_chains);
+
+        //if this is first chain on map
+
+        if ($this_chain_order == 0) {
+            $first_on_map = true;
+        }
+
+        //CHECK #4.1
+        //Get the previous chain id
+        //either from this map
+        //or the last chain on the previous map
+        if ($first_on_map == false) {
+            //this is not the first chain
+            //then get the previous chain on this map
+            $prev_key = (int)$this_chain_order - 1;
+            $prev_chain = $sibling_chains[$prev_key];
+        } else {//this was the first chain on the map. Get the id of the previous chain
+
+                    //$prev_chain = null;
+            //get the ids of the terms on this map
+            $top_chains = go_get_maps_term_ids();
+            $this_map_order = array_search($parent_map_term_id, $top_chains);
+
+            //if this is the first map, then return unlocked
+            if ($this_map_order == 0) {
+                return false;
+            }
+
+            //if this is not the first map,
+            //get previous map
+            $prev_map_key = (int)$this_map_order - 1;
+            $prev_map = $top_chains[$prev_map_key];
+
+
+            //get last chain on previous map
+            $children_chains = go_get_map_chain_term_ids($prev_map);
+            //if no children chains on previous map, then return unlocked
+            if ($children_chains == false) {
+                return false;
+            }
+            //get last chain of previous map
+            $rev_children_chains = array_reverse($children_chains);
+            $prev_chain = $rev_children_chains[0];
+        }
+
+        //CHECK #4.2
+        //IF THE PREVIOUS CHAIN IS A POD
+        //check if previous chain is a pod
+
+        $term_data = go_term_data($prev_chain);
+        $term_custom = $term_data[1];
+        $is_pod = (isset($term_custom['pod_toggle'][0]) ? $term_custom['pod_toggle'][0] : null);
+
+        //CHECK #4.3
+        //IF IT IS A POD
+        //CHECK IF IT IS DONE
+        if ($is_pod){
+            //count # done and compare to #requried
+            $go_task_ids = go_get_chain_posts($prev_chain, false);
+            //if all tasks in pod must be complete toggle is on
+            $pod_all = (isset($term_custom['pod_all'][0]) ? $term_custom['pod_all'][0] : null);
+            if ($pod_all) {
+                $pod_min = count($go_task_ids);
+            }
+            else{
+//HERE
+                $pod_min = get_term_meta($prev_chain, 'pod_done_num', true);
+            }
+            $pod_count = 0;
+            foreach ($go_task_ids as $task_id) {
+                $is_task_done = go_is_done($task_id, $user_id);
+                if ($is_task_done){
+                    $pod_count++;
+                }
+
+            }
+            if ($pod_count >= $pod_min){
+                //the pod is complete so return that the current task is not locked
+                return false;
+
+            }
+            else{
+                //the found previous POD is NOT done, so print message
+                if (!$check_only) {
+                    $task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
+                    $uc_task_name = ucwords($task_name);
+
+                    $map_url = get_option('options_go_locations_map_map_link');
+                    $map_url = (string) $map_url;
+                    $go_map_link = get_permalink( get_page_by_path($map_url) );
+
+                    echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The previous group of " . $uc_task_name . " must be done first. Please check the <a href='" . $go_map_link . "'>map</a>.</div>";
+                }
+
+                return true;
+
+            }
+        }
+        //CHECK #4.4
+        //ELSE THE PREVIOUS CHAIN IS NOT A POD
+        //CHECK IF
+        //last task on previous chain is done
+        else {
+            $prev_task_id = go_prev_task(null, $prev_chain);
+            if ($prev_task_id === false) {
+                //if previous chain has no last task
+                return false;
+            }
+            $is_done = go_is_done($prev_task_id, $user_id);
+            if ($is_done) {
+                return false;
+            } else {
+                if (!$check_only) {
+                    go_task_chain_lock_message($prev_task_id, $task_name);
+                }
+                return true;
+            }
+        }
         return false;
     }
-    //else if this is a pod or the first in the chain
-    //and this chain is locked by previous chain
-    //then get the previous chain
-    else if (($is_pod || $first_in_chain) && $locked_by_prev) {
+
+/*
+    //CHECK #OLD--Split this
+    //IF THIS IS A POD OR THE FIRST IN THE CHAIN
+    //AND THIS CHAIN is LOCKED BY THE PREVIOUS
+    //THEN CHECK THE PREVIOUS CHAIN TO SEE IF
+    //      THE LAST NON-OPTIONAL TASK IS DONE
+    //      OR THE POD IS COMPLETE
+    if (($is_pod || $first_in_chain) && $locked_by_prev) {
+
+//HERE
+        //get term object for the chain
         $term = get_term($chain_id, 'task_chains');
+        //Get the parent object
         $termParent = ($term->parent == 0) ? $term : get_term($term->parent, 'task_chains');
+        //GET THE ID FROM THE MAP OBJECT
         $parent_map_term_id = $termParent->term_id;
-        $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent_map_term_id, 'fields' => 'ids'
-        );
-        //get all chains on this map
-        //$sibling_chains = get_terms('task_chains', $args);
+        //GET THE CHAINS ON THE MAP (TERM_IDS)
         $sibling_chains = go_get_map_chain_term_ids($parent_map_term_id);
+        //GET WHERE THIS CHAIN IS THE MAP BY ARRAY POSITION
         $this_chain_order = array_search($chain_id, $sibling_chains);
+        ////////////////////////////////////////
+
+
         //if this is first chain on map
         //then get the last chain on previous map
         if ($this_chain_order == 0) {
             $prev_chain = null;
             $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => 0, 'fields' => 'ids');
             //get all parent maps (chains with no parents)
+//HERE
             $top_chains = get_terms('task_chains', $args);
             $this_map_order = array_search($parent_map_term_id, $top_chains);
             //if this is the first map, then return unlocked
@@ -856,7 +1068,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             $children_chains = go_get_map_chain_term_ids($prev_map);
             //if no children chains on previous map
             if ($children_chains == false) {
-                return false;
+                return true;
             }
             //get last chain of previous map
             $prev_chain = $children_chains[0];
@@ -870,22 +1082,21 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
         }
 
 
-        /**
-         * what is last task in previous chain that was not optional
-         * and is it done
-         * */
-
         $go_task_ids = go_get_chain_posts ($prev_chain, false);
         $reversed_ids = array_reverse($go_task_ids);
-        //if the previous chain is pod
+
+        //if the previous chain is pod, check if all tasks are done
+//HERE
         $is_prev_pod = get_term_meta($prev_chain, 'pod_toggle', true);
         if($is_prev_pod){
             //count # done and compare to #requried
+//HERE
             $pod_all = get_term_meta($prev_chain, 'pod_all', true);
             if ($pod_all) {
                 $pod_min = count($reversed_ids);
             }
             else{
+//HERE
                 $pod_min = get_term_meta($prev_chain, 'pod_done_num', true);
             }
             $pod_count = 0;
@@ -897,10 +1108,25 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
 
             }
             if ($pod_count >= $pod_min){
-                $is_done = true;
+                //the pod is complete so return that the current task is not locked
+                return false;
+
             }
             else{
-                $is_done = false;
+                //the found previous POD is NOT done, so print message
+                if (!$check_only) {
+                    $task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
+                    $uc_task_name = ucwords($task_name);
+
+                    $map_url = get_option('options_go_locations_map_map_link');
+                    $map_url = (string) $map_url;
+                    $go_map_link = get_permalink( get_page_by_path($map_url) );
+
+                    echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The previous group of " . $uc_task_name . " must be done first. Please check the <a href='" . $go_map_link . "'>map</a>.</div>";
+                }
+
+                return true;
+
             }
         }
         //else previous chain is not a pod
@@ -909,6 +1135,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
                 //get is optional
                 //if not optional
                 //exit
+//HERE
                 $islast_optional = get_post_meta($reversed_id, 'go-location_map_opt', true);
                 if (!$islast_optional) {
                     break;
@@ -916,47 +1143,43 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             }
             if (isset($reversed_id)){
                 $is_done = go_is_done($reversed_id, $user_id);
+                //the found previous task is done, so return false
+                if ($is_done) {
+                    return false;
+
+                } else {
+                    //the found previous task is NOT done, so print message, then return that it is locked
+                    if (!$check_only) {
+
+                        $go_task_data = go_map_task_data($reversed_id); //0--name, 1--status, 2--permalink, 3--metadata
+                        $task_title = $go_task_data[0];
+                        //$status = $go_task_data[1];
+                        $task_link = $go_task_data[2];
+                        //$custom_fields = $go_task_data[3];
+
+                        $task_link = $task_link;
+                        $task_title = $task_title;
+                        echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The $task_name, <a href='$task_link'>$task_title</a> must be done first</div>";
+                    }
+
+                    return true;
+                }
             }
             else {
-                //there is no previous task
-                $is_done = true;
+                //there is no previous task so it is unlocked
+                //$is_done = true;
+                return false;
             }
         }
-        if ($is_done) {
-            return false;
 
-        } else {
-            //the previous task is not done
-            if (!$check_only) {
-                $task_link = get_permalink($reversed_id);
-                $task_title = get_the_title($reversed_id);
-                echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The $task_name, <a href='$task_link'>$task_title</a> must be done first</div>";
-            }
-
-            return true;
-        }
     }
-    //else if this is not the first task in a chain (and it is not a pod)
-    //get previous task and check if it is complete
-    else if (!$first_in_chain) {
 
-        $is_done = go_is_done($prev_task, $user_id);
-        if ($is_done) {
-            return false;
-        } else {
-            if (!$check_only) {
-                $task_link = get_permalink($prev_task, false) ;
-                $task_title = get_the_title($prev_task);
-                echo "<div class='go_sched_access_message'><h3 class='go_error_red'>Locked</h3>The $task_name, <a href='$task_link'>$task_title</a> must be done first</div>";
-            }
-            return true;
-        }
-    }
+
     //I think all the options are covered above,
     //but just in case
-    else {
-        return false;
-    }
+    return true;
+
+*/
 }
 
 /**

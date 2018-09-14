@@ -234,12 +234,20 @@ function go_upgade4 (){
                     update_post_meta($id, 'go_loot_reward_toggle_xp', 1);
                 }
             }
-
-
-
-
         }
+}
 
+function go_reset_all_users(){
+    global $wpdb;
+    check_ajax_referer( 'go_reset_all_users' );
+    global $wpdb;
+    $loot_table  = $wpdb->prefix . 'go_loot';
+    $wpdb->query("TRUNCATE TABLE $loot_table");
 
+    $tasks_table  = $wpdb->prefix . 'go_tasks';
+    $wpdb->query("TRUNCATE TABLE $tasks_table");
+
+    $actions_table  = $wpdb->prefix . 'go_actions';
+    $wpdb->query("TRUNCATE TABLE $actions_table");
 
 }

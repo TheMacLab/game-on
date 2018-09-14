@@ -392,6 +392,12 @@ final class WP_Term_Order {
 	public static function set_term_order( $term_id = 0, $taxonomy = '', $order = 0, $clean_cache = false ) {
 		global $wpdb;
 
+		if ($taxonomy == 'task_chains') {
+            //Delete transient of map term order on previous map
+		    go_reset_map_transient($term_id);
+        }
+
+
 		// Update the database row
 		$wpdb->update(
 			$wpdb->term_taxonomy,
@@ -411,8 +417,19 @@ final class WP_Term_Order {
         }
 
         if ($taxonomy == 'task_chains') {
-            $key = 'go_get_map_chain_term_ids_' . $term_id;
+
+            //Delete transient of map term order on new map
+            go_reset_map_transient($term_id);
+
+            $key = 'go_term_data_' . $term_id;
             delete_transient( $key );
+
+            $key = 'go_get_parent_map_id_' . $term_id;
+            delete_transient( $key );
+
+            $key = 'go_get_maps_term_ids';
+            delete_transient( $key );
+
         }
 
 
@@ -816,6 +833,17 @@ add_action( 'init', '_wp_term_order', 99 );
 /**
  *Added for Game ON
  */
+
+
+function go_reset_map_transient($term_id){
+    $term = get_term($term_id, 'task_chains');
+    //Get the parent object
+    $termParent = ($term->parent == 0) ? $term : get_term($term->parent, 'task_chains');
+    //GET THE ID FROM THE MAP OBJECT
+    $term_id = $termParent->term_id;
+    $key = 'go_get_map_chain_term_ids_' . $term_id;
+    delete_transient($key);
+}
 
 function go_check_if_top_term () {
     global $wpdb;

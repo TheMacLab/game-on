@@ -27,9 +27,17 @@ function go_get_health_mod ($user_id){
     return $health_mod;
 }
 
+/**
+ * @param $user_id
+ * @param $loot_type
+ * @return mixed
+ */
 function go_get_user_loot ($user_id, $loot_type){
     //get health from totals table
     global $wpdb;
+    $user_loot = go_get_loot($user_id);
+    //unserialize ($user_loot);
+    /*
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
     $loot = $wpdb->get_var(
         $wpdb->prepare(
@@ -39,9 +47,14 @@ function go_get_user_loot ($user_id, $loot_type){
             $user_id
         )
     );
+    */
+    $loot = $user_loot[$loot_type];
     return $loot;
 }
 
+/**
+ * @param $post_id
+ */
 function go_update_bonus_loot ($post_id){
     check_ajax_referer( 'go_update_bonus_loot' );
     $post_id = $_POST['post_id'];
@@ -183,6 +196,18 @@ function go_update_bonus_loot ($post_id){
 }
 
 
+/**
+ * @param $user_id
+ * @param $post_id
+ * @param $custom_fields
+ * @param $status
+ * @param $bonus_status
+ * @param $progressing
+ * @param null $result
+ * @param null $check_type
+ * @param null $badge_ids
+ * @param null $group_ids
+ */
 function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bonus_status, $progressing, $result = null, $check_type = null, $badge_ids = null, $group_ids = null )
 {
     global $wpdb;
@@ -489,6 +514,12 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
     go_update_actions( $user_id, $action_type,  $post_id, $new_status_actions, $new_bonus_status_actions, $check_type, $result, $quiz_mod, $due_date_mod, $timer_mod, $health_mod,  $xp, $gold, $health, $c4, $badge_ids, $group_ids, true);
 }
 
+/**
+ * @param $badge_ids
+ * @param $user_id
+ * @param bool $notify
+ * @return array|mixed|null
+ */
 function go_add_badges ($badge_ids, $user_id, $notify = false) {
 
     global $wpdb;
@@ -539,6 +570,12 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
     }
 }
 
+/**
+ * @param $badge_ids
+ * @param $user_id
+ * @param bool $notify
+ * @return array
+ */
 function go_remove_badges ($badge_ids, $user_id, $notify = false) {
     global $wpdb;
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
@@ -582,6 +619,12 @@ function go_remove_badges ($badge_ids, $user_id, $notify = false) {
     }
 }
 
+/**
+ * @param $group_ids
+ * @param $user_id
+ * @param bool $notify
+ * @return array|mixed|null
+ */
 function go_add_groups($group_ids, $user_id, $notify = false) {
     global $wpdb;
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
@@ -619,6 +662,12 @@ function go_add_groups($group_ids, $user_id, $notify = false) {
 
 }
 
+/**
+ * @param $group_ids
+ * @param $user_id
+ * @param bool $notify
+ * @return array
+ */
 function go_remove_groups($group_ids, $user_id, $notify = false) {
     global $wpdb;
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
@@ -654,6 +703,14 @@ function go_remove_groups($group_ids, $user_id, $notify = false) {
 
 }
 
+/**
+ * @param $loot
+ * @param $toggle
+ * @param $mod_toggle
+ * @param $stage_mod
+ * @param $health_mod
+ * @return float|int
+ */
 function go_mod_loot($loot, $toggle, $mod_toggle, $stage_mod, $health_mod)
 {
     $loot = ($loot - ($loot * $stage_mod));
@@ -666,7 +723,12 @@ function go_mod_loot($loot, $toggle, $mod_toggle, $stage_mod, $health_mod)
 }
 
 //makes sure health doesn't go over 200
-function go_health_to_add( $user_id, $added_health){
+/**
+ * @param $user_id
+ * @param $added_health
+ * @return int|mixed
+ */
+function go_health_to_add($user_id, $added_health){
     global $wpdb;
     $current_health = go_get_user_loot( $user_id, 'health' );
     $max_new_health = 200 - $current_health;
@@ -677,7 +739,27 @@ function go_health_to_add( $user_id, $added_health){
     return $added_health;
 }
 
-function go_update_actions( $user_id, $type,  $source_id, $status, $bonus_status, $check_type, $result, $quiz_mod, $late_mod, $timer_mod, $global_mod, $xp, $gold, $health, $c4, $badge_ids, $group_ids, $notify)
+/**
+ * @param $user_id
+ * @param $type
+ * @param $source_id
+ * @param $status
+ * @param $bonus_status
+ * @param $check_type
+ * @param $result
+ * @param $quiz_mod
+ * @param $late_mod
+ * @param $timer_mod
+ * @param $global_mod
+ * @param $xp
+ * @param $gold
+ * @param $health
+ * @param $c4
+ * @param $badge_ids
+ * @param $group_ids
+ * @param $notify
+ */
+function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, $check_type, $result, $quiz_mod, $late_mod, $timer_mod, $global_mod, $xp, $gold, $health, $c4, $badge_ids, $group_ids, $notify)
 {
     global $wpdb;
 
@@ -743,6 +825,10 @@ function go_update_actions( $user_id, $type,  $source_id, $status, $bonus_status
 
 }
 
+/**
+ * @param $loot
+ * @param $loot_type
+ */
 function go_noty_loot_success ($loot, $loot_type) {
     echo "<script> new Noty({
     type: 'success',
@@ -754,6 +840,10 @@ function go_noty_loot_success ($loot, $loot_type) {
 }).show();</script>";
 }
 
+/**
+ * @param $rank
+ * @param $rank_name
+ */
 function go_noty_level_up ($rank, $rank_name) {
     echo "<script> new Noty({
     type: 'success',
@@ -765,6 +855,10 @@ function go_noty_level_up ($rank, $rank_name) {
 }).show();</script>";
 }
 
+/**
+ * @param $rank
+ * @param $rank_name
+ */
 function go_noty_level_down ($rank, $rank_name) {
     echo "<script> new Noty({
     type: 'error',
@@ -776,6 +870,10 @@ function go_noty_level_down ($rank, $rank_name) {
 }).show();</script>";
 }
 
+/**
+ * @param $loot
+ * @param $loot_type
+ */
 function go_noty_loot_error ($loot, $loot_type) {
     echo "<script> new Noty({
     type: 'error',
@@ -787,6 +885,11 @@ function go_noty_loot_error ($loot, $loot_type) {
 }).show();</script>";
 }
 
+/**
+ * @param string $type
+ * @param $title
+ * @param $content
+ */
 function go_noty_message_generic ($type = 'alert', $title, $content) {
     if (!empty($title)){
         $text = "<h3>" . $title . "</h3><div>" . $content . "</div>";
@@ -807,6 +910,11 @@ function go_noty_message_generic ($type = 'alert', $title, $content) {
 });</script>";
 }
 
+/**
+ * @param $user_id
+ * @param $badges
+ * @param $badge_count
+ */
 function go_update_totals_table_Badges($user_id, $badges, $badge_count)
 {
     global $wpdb;
@@ -822,6 +930,10 @@ function go_update_totals_table_Badges($user_id, $badges, $badge_count)
                     WHERE uid= %d", $user_id));
 }
 
+/**
+ * @param $user_id
+ * @param $groups
+ */
 function go_update_totals_table_Groups($user_id, $groups)
 {
     global $wpdb;
@@ -836,6 +948,18 @@ function go_update_totals_table_Groups($user_id, $groups)
                     WHERE uid= %d", $user_id));
 }
 
+/**
+ * @param $user_id
+ * @param $xp
+ * @param $xp_name
+ * @param $gold
+ * @param $gold_name
+ * @param $health
+ * @param $health_name
+ * @param $c4
+ * @param $c4_name
+ * @param $notify
+ */
 function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name, $notify){
     global $wpdb;
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
@@ -927,7 +1051,18 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
     }
 }
 
-function go_update_admin_bar_v4( $user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name) {
+/**
+ * @param $user_id
+ * @param $xp
+ * @param $xp_name
+ * @param $gold
+ * @param $gold_name
+ * @param $health
+ * @param $health_name
+ * @param $c4
+ * @param $c4_name
+ */
+function go_update_admin_bar_v4($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name) {
     //$user_id = get_current_user_id();
 
     $rank = go_get_rank( $user_id );
@@ -1010,6 +1145,9 @@ function go_update_admin_bar_v4( $user_id, $xp, $xp_name, $gold, $gold_name, $he
 		</script>";
 }
 
+/**
+ * @param $user_id
+ */
 function go_add_user_to_totals_table($user_id){
     global $wpdb;
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
