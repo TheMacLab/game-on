@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/css/go_store.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_store.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,27 +34,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="go_updates.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_updates.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="14161">
-              <caret line="833" column="6" selection-start-line="833" selection-start-column="6" selection-end-line="833" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_every_page.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="go_map.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/go_map.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -152,14 +132,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
+            <state relative-caret-position="323">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_store.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/styles/css/go_store.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="112">
+              <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_frontend.scss" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_admin.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -173,25 +180,6 @@
                 <element signature="n#go_make_store_old#0;n#!!top" />
                 <element signature="n#go_make_store_new#0;n#!!top" />
                 <element signature="n#go_update_store_term_save#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_tasks.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/front/scripts/go_tasks.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="38" selection-start-line="1" selection-end-line="1" selection-end-column="38" />
-              <folding>
-                <element signature="n#!!block;n#go_update_bonus_loot#0" />
-                <element signature="n#!!block;n#getTimeRemaining#0" />
-                <element signature="n#!!block;n#initializeClock#0" />
-                <element signature="n#!!block;n#go_timer_abandon#0" />
-                <element signature="n#!!block;n#flash_error_msg#0" />
-                <element signature="n#!!block;n#go_enable_loading#0" />
-                <element signature="n#!!block;n#go_disable_loading#0" />
-                <element signature="n#!!block;n#task_stage_check_input#0" />
               </folding>
             </state>
           </provider>
@@ -287,9 +275,6 @@
         <option value="$PROJECT_DIR$/types/tasks/go_locks.php" />
         <option value="$PROJECT_DIR$/src/go_clipboard.php" />
         <option value="$PROJECT_DIR$/js/admin/scripts/go_clipboard.js" />
-        <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
-        <option value="$PROJECT_DIR$/styles/css/go_store.css" />
-        <option value="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
         <option value="$PROJECT_DIR$/src/go_stats.php" />
         <option value="$PROJECT_DIR$/src/go_updates.php" />
         <option value="$PROJECT_DIR$/types/store/includes/lightbox/buy-ajax.php" />
@@ -301,6 +286,9 @@
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" />
         <option value="$PROJECT_DIR$/game-on.php" />
+        <option value="$PROJECT_DIR$/styles/css/go_store.css" />
+        <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
+        <option value="$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
       </list>
     </option>
   </component>
@@ -383,6 +371,43 @@
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+              <item name="dev" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="front" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="front" type="462c0819:PsiDirectoryNode" />
+              <item name="dev" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -566,12 +591,12 @@
       <workItem from="1536042395126" duration="57515000" />
       <workItem from="1536508095017" duration="7805000" />
       <workItem from="1536516115256" duration="101259000" />
-      <workItem from="1537192729014" duration="54000" />
+      <workItem from="1537192729014" duration="813000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2164933000" />
+    <option name="totallyTimeSpent" value="2165692000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -965,27 +990,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/styles/css/go_store.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="40" column="47" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/types/store/super-store.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="457">
@@ -1206,11 +1210,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game-on.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
+        <state relative-caret-position="323">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/styles/css/go_store.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/styles/admin/dev/go_admin.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
         </state>
       </provider>
     </entry>

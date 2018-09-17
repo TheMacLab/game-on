@@ -1571,20 +1571,24 @@ store categories styles
   margin: 10px;
   background-color: #f8f8f8; }
 
-.store_items li,
-go_store_loot_list {
+.store_items li {
+  display: flex;
+  margin: 5px 0;
+  align-items: flex-start; }
+
+.go_store_loot_list {
   display: flex; }
 
 .go_store_loot_list_item {
-  border: solid 1px;
+  border-radius: 30px;
   padding: 0 5px;
   margin: 0 5px; }
 
 .go_store_loot_list_cost {
-  background-color: pink; }
+  background-color: rgba(255, 192, 203, 0.5); }
 
 .go_store_loot_list_reward {
-  background-color: lightgreen; }
+  background-color: rgba(144, 238, 144, 0.5); }
 
 /*
 store lightbox styles

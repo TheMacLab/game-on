@@ -21,6 +21,7 @@ flex-wrap: wrap;
 .store_items li{
     display: flex;
     margin: 5px 0;
+    align-items: flex-start;
 }
 
 .go_store_loot_list{
