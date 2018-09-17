@@ -825,19 +825,29 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
 
 }
 
+
 /**
  * @param $loot
  * @param $loot_type
  */
 function go_noty_loot_success ($loot, $loot_type) {
-    echo "<script> new Noty({
-    type: 'success',
-    layout: 'topRight',
-    text: '<div style=\"font-size: 1.5em;\">" . $loot_type . ": " . $loot . "</div>',
-    theme: 'relax',
-    timeout: '3000'
-    
-}).show();</script>";
+    //go_noty_close_oldest();
+    echo "<script> 
+
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text: '<div style=\"font-size: 1.5em;\">" . $loot_type . ": " . $loot . "</div>',
+            theme: 'relax',
+            timeout: '3000',
+            visibilityControl: true,
+            callbacks: {
+                beforeShow: function() { go_noty_close_oldest();},
+            }
+        }).show();
+     </script>";
+
+
 }
 
 /**
@@ -845,14 +855,21 @@ function go_noty_loot_success ($loot, $loot_type) {
  * @param $rank_name
  */
 function go_noty_level_up ($rank, $rank_name) {
-    echo "<script> new Noty({
-    type: 'success',
-    layout: 'topRight',
-    text: '<h1>Level Up! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
-    theme: 'relax', 
-    timeout: false
-    
-}).show();</script>";
+    //go_noty_close_oldest();
+    echo "<script> 
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text: '<h1>Level Up! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
+            theme: 'relax', 
+            timeout: false,
+            visibilityControl: true,
+            callbacks: {
+                beforeShow: function() { go_noty_close_oldest();},
+            }
+        
+        }).show();        
+        </script>";
 }
 
 /**
@@ -860,14 +877,21 @@ function go_noty_level_up ($rank, $rank_name) {
  * @param $rank_name
  */
 function go_noty_level_down ($rank, $rank_name) {
-    echo "<script> new Noty({
-    type: 'error',
-    layout: 'topRight',
-    text: '<h1>Level Down! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
-    theme: 'relax', 
-    timeout: false
-    
-}).show();</script>";
+    //go_noty_close_oldest();
+    echo "<script> 
+        new Noty({
+            type: 'error',
+            layout: 'topRight',
+            text: '<h1>Level Down! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
+            theme: 'relax', 
+            timeout: false,
+            visibilityControl: true,
+            callbacks: {
+                beforeShow: function() { go_noty_close_oldest();},
+            }
+            
+        }).show();    
+    </script>";
 }
 
 /**
@@ -875,14 +899,21 @@ function go_noty_level_down ($rank, $rank_name) {
  * @param $loot_type
  */
 function go_noty_loot_error ($loot, $loot_type) {
-    echo "<script> new Noty({
-    type: 'error',
-    layout: 'topRight',
-    text: '<div style=\"font-size: 1.5em;\">" . $loot_type . ": " . $loot . "</div>',
-    theme: 'relax',
-    timeout: '3000'
-    
-}).show();</script>";
+    //go_noty_close_oldest();
+    echo "<script> 
+        new Noty({
+            type: 'error',
+            layout: 'topRight',
+            text: '<div style=\"font-size: 1.5em;\">" . $loot_type . ": " . $loot . "</div>',
+            theme: 'relax',
+            timeout: '3000',
+            visibilityControl: true,
+            callbacks: {
+                beforeShow: function() { go_noty_close_oldest();},
+            }
+            
+        }).show();
+    </script>";
 }
 
 /**
@@ -897,17 +928,22 @@ function go_noty_message_generic ($type = 'alert', $title, $content) {
     else{
         $text = $content;
     }
+    //go_noty_close_oldest();
     echo "<script> 
-    jQuery( document ).ready( function() {
-    new Noty({
-    type: '" . $type . "',
-    layout: 'topRight',
-    text: '" . $text . "',
-    theme: 'relax',
-    timeout: false
-    
-}).show();
-});</script>";
+        jQuery( document ).ready( function() {
+            
+            new Noty({
+                type: '" . $type . "',
+                layout: 'topRight',
+                text: '" . $text . "',
+                theme: 'relax',
+                timeout: false,
+                visibilityControl: true,
+                callbacks: {
+                    beforeShow: function() { go_noty_close_oldest();},
+                }   
+            }).show();
+        });</script>";
 }
 
 /**

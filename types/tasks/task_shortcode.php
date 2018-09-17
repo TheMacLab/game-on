@@ -46,7 +46,7 @@ function go_task_shortcode($atts, $content = null ) {
     else { $is_unlocked = false;}
     //Get all the custom fields
     //$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
-    $go_task_data = go_map_task_data($post_id); //0--name, 1--status, 2--permalink, 3--metadata
+    $go_task_data = go_post_data($post_id); //0--name, 1--status, 2--permalink, 3--metadata
     //$task_title = $go_task_data[0];
     //$status = $go_task_data[1];
     //$task_link = $go_task_data[2];
@@ -731,7 +731,7 @@ function go_task_render_chain_pagination ( $task_id, $custom_fields ) {
             $prev_key = (int)$this_task_order - 1;
             $prev_task = $chain_order[$prev_key];
             if (is_int($prev_task)){
-                $go_task_data = go_map_task_data($prev_task); //0--name, 1--status, 2--permalink, 3--metadata
+                $go_task_data = go_post_data($prev_task); //0--name, 1--status, 2--permalink, 3--metadata
                 $task_title = $go_task_data[0];
                 //$status = $go_task_data[1];
                 $task_link = $go_task_data[2];
@@ -746,7 +746,7 @@ function go_task_render_chain_pagination ( $task_id, $custom_fields ) {
         if ($count > $next_key){
             $next_task = $chain_order[$next_key];
             if (is_int($next_task)){
-                $go_task_data = go_map_task_data($prev_task); //0--name, 1--status, 2--permalink, 3--metadata
+                $go_task_data = go_post_data($next_task); //0--name, 1--status, 2--permalink, 3--metadata
                 $task_title = $go_task_data[0];
                 //$status = $go_task_data[1];
                 $task_link = $go_task_data[2];
@@ -1128,7 +1128,7 @@ function go_task_change_stage() {
             if ($result == 'password' || $result == 'master password') {
                 //set unlock flag
                 go_update_actions( $user_id, 'task',  $post_id, null, null, $check_type, $result, null, null,  null, null, null, null, null, null, null, null, null );
-                go_update_task_post_save( $post_id );
+                //go_update_task_post_save( $post_id );
                 echo json_encode(array('json_status' => 'refresh'));
                 die;
                 //refresh

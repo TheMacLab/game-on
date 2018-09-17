@@ -341,7 +341,7 @@ function go_is_done($task_id, $user_id = null ) {
         $task_status = go_get_status($task_id, $user_id);
 
         //get data from transient
-        $task_data = go_map_task_data($task_id);
+        $task_data = go_post_data($task_id);
         $task_custom_meta = $task_data[3];
         $task_stage_count = (isset($task_custom_meta['go_stages'][0]) ?  $task_custom_meta['go_stages'][0] : null);
         //$task_stage_count = get_post_meta($task_id, 'go_stages', true);

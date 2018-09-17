@@ -23,6 +23,7 @@ function go_buy_item() {
 	global $wpdb;
     //check_ajax_referer( 'go_buy_item' );
 	//$user_id = get_current_user_id();
+
     $user_id = ( ! empty( $_POST['user_id'] ) ? (int) $_POST['user_id'] : 0 ); // User id posted from ajax function
 	$is_logged_in = ! empty( $user_id ) && $user_id > 0  || is_user_member_of_blog( $user_id ) ? true : false;
 	if (!$is_logged_in){
@@ -31,6 +32,7 @@ function go_buy_item() {
                 type: 'info',
                 layout: 'topRight',
                 text: 'Error: You must be logged in to use the store.',
+                visibilityControl: true,
                 theme: 'relax'
                 }).show();parent.window.$.featherlight.current().close();</script>";
         die();
@@ -40,7 +42,8 @@ function go_buy_item() {
                 type: 'info',
                 layout: 'topRight',
                 text: 'Error: WordPress hiccuped, try logging in again.' ,
-                theme: 'relax'
+                theme: 'relax',
+                visibilityControl: true
                 }).show();parent.window.$.featherlight.current().close();</script>";
 		die();
 	}
@@ -56,7 +59,8 @@ function go_buy_item() {
                 type: 'error',
                 layout: 'topRight',
                 text: 'Error: You exceeded your loot available. Try a lower quantity.' ,
-                theme: 'relax'
+                theme: 'relax',
+                visibilityControl: true
                 }).show();parent.window.$.featherlight.current().close();</script>";
         die();
     }
@@ -71,7 +75,8 @@ function go_buy_item() {
                 type: 'info',
                 layout: 'topRight',
                 text: 'Error: You attempted to buy more than your current limit.',
-                theme: 'relax'
+                theme: 'relax',
+                visibilityControl: true
                 }).show();parent.window.$.featherlight.current().close();</script>";
             die();
         }
@@ -80,6 +85,10 @@ function go_buy_item() {
     $the_title = get_the_title($post_id);
     $health_mod = go_get_health_mod ($user_id);
     //$health_mod = go_get_user_loot( $user_id, 'health' );
+    $xp = 0;
+    $gold = 0;
+    $health = 0;
+    $c4 = 0;
 
     $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ?  $custom_fields['go_loot_loot_xp'][0] : null);
     if (get_option( 'options_go_loot_xp_toggle' ) && $store_abs_cost_xp > 0){
@@ -179,7 +188,11 @@ function go_buy_item() {
     type: 'info',
     layout: 'topRight',
     text: '<h2>Receipt</h2><br>Item: $the_title <br>Quantity: $qty',
-    theme: 'relax'
+    theme: 'relax',
+    visibilityControl: true,
+    callbacks: {
+                    beforeShow: function() { go_noty_close_oldest();},
+                }
     //timeout: '3000'
     
 }).show();parent.window.$.featherlight.current().close();</script>";

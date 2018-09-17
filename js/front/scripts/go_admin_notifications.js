@@ -12,7 +12,7 @@ function go_admin_check_messages(){
             action: 'go_admin_messages'
         },
         success: function( res ) {
-            console.log(res);
+            //console.log(res);
             if ( 0 != res ) {
                 jQuery('body').append(res);
                 //console.log(res);

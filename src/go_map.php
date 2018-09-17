@@ -547,7 +547,7 @@ function go_make_single_map($last_map_id, $reload){
     $last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');//Query 1 - get the map
     $user_id = get_current_user_id();
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
-    $taxonomy_name = 'task_chains';
+    //$taxonomy_name = 'task_chains';
 
     if ($reload == false) {echo "<div id='mapwrapper'>";}
     echo "<div id='loader-wrapper style='width: 100%'><div id='loader' style='display:none;'></div></div><div id='maps' data-mapid='$last_map_id'>";
@@ -679,7 +679,7 @@ function go_make_single_map($last_map_id, $reload){
 
                 //for each of the tasks (objects retrieved in query 2)
                 foreach($go_post_ids as $post_id) {
-                    $go_task_data = go_map_task_data($post_id); //0--name, 1--status, 2--permalink, 3--metadata
+                    $go_task_data = go_post_data($post_id); //0--name, 1--status, 2--permalink, 3--metadata
                     $task_name = $go_task_data[0];
                     $status = $go_task_data[1];
                     $task_link = $go_task_data[2];
@@ -840,7 +840,7 @@ function go_map_badge($badge){
         $badge_img_id = get_term_meta( $badge, 'my_image' );
         $badge_description = term_description( $badge );
 
-        echo "<li>";
+        echo "<div>";
         $badge_obj = get_term( $badge);
         $badge_name = $badge_obj->name;
         //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
@@ -856,6 +856,7 @@ function go_map_badge($badge){
                         <div class='go_badge_container '><figure class=go_badge title='{$badge_name}'>";
 
             if (!empty($badge_description)){
+                $badge_description = strip_tags($badge_description );
                 echo "<span class='tooltip' ><span class='tooltiptext'>{$badge_description}</span>{$badge_img}</span>";
             }else{
                 echo "$badge_img";
@@ -867,7 +868,7 @@ function go_map_badge($badge){
                        </div>";
 
         }
-        echo "</li>";
+        echo "</div>";
 
     }
 }
@@ -898,6 +899,7 @@ function go_map_quest_badge($badge){
                         <div class='go_badge_quest_container '><figure class=go_quest_badge title='{$badge_name}'>";
 
             if (!empty($badge_description)){
+                $badge_description = strip_tags($badge_description );
                 echo "<span class='tooltip' ><span class='tooltiptext'>{$badge_description}</span>{$badge_img}</span>";
             }else{
                 echo "$badge_img";

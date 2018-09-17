@@ -20,13 +20,13 @@ jQuery( document ).ready( function() {
 
 	}
 
-	if ( jQuery( "#go_clipboard_datatable" ).length ) {
+	if ( jQuery( "#go_clipboard_stats_datatable" ).length ) {
 		go_clipboard_class_a_choice();
 
         jQuery( ".datepicker" ).datepicker({ firstDay: 0 });
         jQuery(".datepicker").datepicker('setDate', new Date());
         jQuery('.datepicker').change(function () {
-            console.log("change");
+            //console.log("change");
             jQuery('#go_clipboard_activity_datatable').html("<div id='loader' style='font-size: 1.5em; text-align: center; height: 200px'>loading . . .</div>");
             go_clipboard_class_a_choice_activity(true);
 
@@ -64,12 +64,12 @@ function go_clipboard_class_a_choice() {
 	//var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
     go_filter_datatables();
 
-	if (jQuery("#go_clipboard_datatable").length) {
+	if (jQuery("#go_clipboard_stats_datatable").length) {
 
 		//XP////////////////////////////
 		//go_sort_leaders("go_clipboard", 4);
-		var Clipboard = jQuery('#go_clipboard_datatable').DataTable({
-            stateSave: true,
+		var Clipboard = jQuery('#go_clipboard_stats_datatable').DataTable({
+            //stateSave: false,
             "bPaginate": false,
             //colReorder: true,
             "order": [[5, "asc"]],
@@ -173,6 +173,8 @@ function go_clipboard_class_a_choice() {
 
             ]
 		});
+
+
 		//on change filter listener
 		//console.log("change5");
 		jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change( function() {
@@ -197,13 +199,19 @@ function go_clipboard_class_a_choice() {
 
                 },
                 success: function( res ) {
-                    console.log("values saved");
+                    //console.log("values saved");
                 }
             });
 
 		});
-		jQuery("#records_tabs").show();
+		jQuery("#records_tabs").css("margin-left", '');
+
+
 	}
+    //force window resize on load to initialize responsive behavior
+        jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust()
+        .responsive.recalc();
+
 }
 
 function go_clipboard_class_a_choice_activity(refresh) {
@@ -221,12 +229,12 @@ function go_clipboard_class_a_choice_activity(refresh) {
                 date: jQuery( '.datepicker' ).val()
             },
             success: function( res ) {
-                console.log("success");
+                //console.log("success");
                 if (-1 !== res) {
                     jQuery('#clipboard_activity_datatable_container').html(res);
                     //go_filter_datatables();
                     var Messages = jQuery('#go_clipboard_activity_datatable').DataTable({
-                        stateSave: false,
+                        //stateSave: false,
                         "bPaginate": false,
                         //colReorder: true,
                         "order": [[4, "asc"]],
@@ -328,6 +336,9 @@ function go_clipboard_class_a_choice_activity(refresh) {
                     ]
 
                     });
+                    //show date filter
+                    jQuery('#go_timestamp_filters').show();
+
                     //on change filter listener
                     //console.log("change5");
                     jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change(function () {
@@ -339,19 +350,19 @@ function go_clipboard_class_a_choice_activity(refresh) {
                     // Add event listener for opening and closing more actions
                     jQuery('#go_clipboard_activity_datatable .show_more').click( function () {
                         var hidden = jQuery(this).hasClass('shown');
-                        console.log(hidden);
+                        //console.log(hidden);
                         if (hidden == false) {
                             jQuery(this).addClass('shown');
                             jQuery(this).siblings('.hidden_action').show();
                             jQuery(this).find('.hide_more_actions').show();
                             jQuery(this).find('.show_more_actions').hide();
-                            console.log("show");
+                            //console.log("show");
                         }else{
                             jQuery(this).removeClass('shown');
                             jQuery(this).siblings('.hidden_action').hide();
                             jQuery(this).find('.hide_more_actions').hide();
                             jQuery(this).find('.show_more_actions').show();
-                            console.log("hide");
+                            //console.log("hide");
                         }
 /*
                         var table = jQuery(this).closest('table');

@@ -13,6 +13,18 @@ function go_sounds( type ) {
 */
 
 
+function go_noty_close_oldest(){
+    Noty.setMaxVisible(6);
+    var noty_list_count = jQuery('#noty_layout__topRight > div').length;
+    if(noty_list_count == 0) {
+        jQuery('#noty_layout__topRight').remove();
+    }
+    if(noty_list_count >= 5) {
+        jQuery('#noty_layout__topRight > div').first().trigger( "click" );
+    }
+}
+
+
 
 
 function go_lightbox_blog_img(){

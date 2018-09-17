@@ -127,7 +127,7 @@ function go_term_data($term_id){
 }
 
 /**
- * gets/sets transient of posts assigned to a term in order
+ * gets/sets transient of post_ids assigned to a term, in order set on map
  * If run from map and also sets the transient data for each task if needed
  *
  * Reset on:
@@ -174,7 +174,7 @@ function go_get_chain_posts($term_id, $is_map = false ){
         if ($is_map) {
             foreach ($data as $task) {
                 $post_id = $task->ID;
-                go_map_task_data($post_id);
+                go_post_data($post_id);
             }
         }
 
@@ -190,16 +190,19 @@ function go_get_chain_posts($term_id, $is_map = false ){
 }
 
 /**
- * Gets/sets transient of the task data
- *
+ * Gets/sets transient of the post data for tasks and store items
+ * [0]-title
+ * [1]-status [published]
+ * [2]-permalink
+ * [3]-metadata
  * Reset on:
  * post save                                        OK
  *
  * @param $post_id
  * @return array
  */
-function go_map_task_data($post_id){
-    $key = 'go_map_task_data_' . $post_id;
+function go_post_data($post_id){
+    $key = 'go_post_data_' . $post_id;
     $data = get_transient($key);
 
     if ($data !== false){
@@ -266,28 +269,30 @@ function go_update_task_post_save( $post_id ) {
     if ( 'tasks' !== $post->post_type ) {
         return;
     }
-    //delete task data transient
-    $key = 'go_map_task_data_' . $post_id;
-    delete_transient( $key );
+
+        //delete task data transient
+        $key = 'go_post_data_' . $post_id;
+        delete_transient($key);
 
 
-    //delete task chain transient for old and new task chain
+        //delete task chain transient for old and new task chain
 
-    //delete old task chain transient
-    //this is the original task_chain for this post
-    //there is an option created/updated when the transient is created
-    $key = 'go_post_task_chain_' . $post_id;
-    $term_id = get_option($key);
-    //delete the original task chain post_ids transient
-    $key = 'go_get_chain_posts_' . $term_id;
-    delete_transient( $key );
+        //delete old task chain transient
+        //this is the original task_chain for this post
+        //there is an option created/updated when the transient is created
+        $key = 'go_post_task_chain_' . $post_id;
+        $term_id = get_option($key);
+        //delete the original task chain post_ids transient
+        $key = 'go_get_chain_posts_' . $term_id;
+        delete_transient($key);
 
-    //delete new task chain transient
-    get_post($post_id);
-    $custom_fields = get_post_custom( $post_id );
-    $term_id = (isset($custom_fields['go-location_map_loc'][0]) ?  $custom_fields['go-location_map_loc'][0] : null);
-    $key = 'go_get_chain_posts_' . $term_id;
-    delete_transient( $key );
+        //delete new task chain transient
+        get_post($post_id);
+        $custom_fields = get_post_custom($post_id);
+        $term_id = (isset($custom_fields['go-location_map_loc'][0]) ? $custom_fields['go-location_map_loc'][0] : null);
+        $key = 'go_get_chain_posts_' . $term_id;
+        delete_transient($key);
+
 
 }
 
@@ -297,7 +302,7 @@ add_action( 'deleted_post', 'go_update_task_post_save' );//after delete
 add_action( 'save_post', 'go_update_task_post_save' );//after save
 
 /**
- * Update store on store term
+ * Update map on map/chain term
  * @param  integer $term_id
  */
 function go_update_task_chain_term_save( $term_id ) {

@@ -767,7 +767,7 @@ function go_prev_task($id = null, $chain_id){
         $is_last_optional = false;
         while ($prev_key >= 0){
             $prev_task = $go_task_ids[$prev_key];
-            $prev_task_data = go_map_task_data($prev_task);
+            $prev_task_data = go_post_data($prev_task);
             $prev_task_custom_meta = $prev_task_data[3];
             $is_last_optional = (isset($prev_task_custom_meta['location_map_opt'][0]) ?  $prev_task_custom_meta['location_map_opt'][0] : false);
 
@@ -791,7 +791,7 @@ function go_prev_task($id = null, $chain_id){
 
 function go_task_chain_lock_message($prev_task, $task_name){
 
-        $go_task_data = go_map_task_data($prev_task); //0--name, 1--status, 2--permalink, 3--metadata
+        $go_task_data = go_post_data($prev_task); //0--name, 1--status, 2--permalink, 3--metadata
         $task_title = $go_task_data[0];
         //$status = $go_task_data[1];
         $task_link = $go_task_data[2];
@@ -844,7 +844,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
 
 
     //CHECK #1
-    // IF NOT FIRST ON CHAIN (and it is not a pod) then CHECK THE PREVIOUS TASK
+    // IF NOT FIRST ON CHAIN and IT IS NOT A POD then CHECK THE PREVIOUS TASK
     // AND RETURN TRUE OR FALSE
     if (!$first_in_chain && !$is_pod) {
         $is_done = go_is_done($prev_task, $user_id);
@@ -866,33 +866,41 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
         return false;
     }
 
+
+
+
     //CHECK #3
-    //IF THIS IS A POD
-    //CHECK IF THE MASTER PASSWORD WAS USED ON ANY TASK ON THIS CHAIN
-    //THEN SET THIS (AND ALL TASKS) TO UNLOCKED IF TRUE
-    else if ($is_pod) {
-        $go_task_ids = go_get_chain_posts($chain_id, false);
-        $master_unlock = false;
-        //are any in the pod unlocked by masterpassword
-        foreach ($go_task_ids as $task_id) {
-            $is_unlocked = go_master_unlocked($user_id, $task_id);
-            if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
-                $master_unlock = true;
-            }
-
-        }
-        if ($master_unlock == true) {
-            return false;
-        }
-    }
-
-
-    //CHECK #4
     //THESE CHECKS ARE FOR PODS/FIRST IN CHAIN THAT ARE LOCKED BY PREVIOUS (that should be everything else)
     //IF THIS IS THE FIRST ON THE CHAIN or A POD
     //CHECK IF THIS CHAIN IS FIRST ON THE MAP
 
     else {
+
+        //CHECK #4.1
+        //IF THIS IS A POD
+        //CHECK IF THE MASTER PASSWORD WAS USED ON ANY TASK ON THIS CHAIN
+        //THEN SET THIS (AND ALL TASKS) TO UNLOCKED IF TRUE
+        if ($is_pod) {
+            $go_task_ids = go_get_chain_posts($chain_id, false);
+            $master_unlock = false;
+            //are any in the pod unlocked by masterpassword
+            foreach ($go_task_ids as $task_id) {
+                $is_unlocked = go_master_unlocked($user_id, $task_id);
+                if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
+                    $master_unlock = true;
+                }
+
+            }
+            if ($master_unlock == true) {
+                return false;
+            }
+        }
+
+
+        //#4.2
+        // CONTINUE FOR PODS THAT DO NOT HAVE A MASTER UNLOCK ON A TASK
+        //AND TASKS THAT ARE FIRST ON THEIR CHAIN
+
         $first_on_map = false;
         //if (($is_pod || $first_in_chain) && $locked_by_prev) {
 
@@ -908,7 +916,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             $first_on_map = true;
         }
 
-        //CHECK #4.1
+        //CHECK #4.3
         //Get the previous chain id
         //either from this map
         //or the last chain on the previous map
@@ -946,7 +954,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             $prev_chain = $rev_children_chains[0];
         }
 
-        //CHECK #4.2
+        //CHECK #4.4
         //IF THE PREVIOUS CHAIN IS A POD
         //check if previous chain is a pod
 
@@ -1151,7 +1159,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
                     //the found previous task is NOT done, so print message, then return that it is locked
                     if (!$check_only) {
 
-                        $go_task_data = go_map_task_data($reversed_id); //0--name, 1--status, 2--permalink, 3--metadata
+                        $go_task_data = go_post_data($reversed_id); //0--name, 1--status, 2--permalink, 3--metadata
                         $task_title = $go_task_data[0];
                         //$status = $go_task_data[1];
                         $task_link = $go_task_data[2];

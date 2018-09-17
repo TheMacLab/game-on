@@ -35,7 +35,7 @@ function go_clipboard_menu() {
             </div>
 
         </div>
-		<div id="records_tabs" style="clear: both; display: none">
+		<div id="records_tabs" style="clear: both; margin-left: -9999px;">
 			<ul>
 				<li class="clipboard_tabs" tab="clipboard"><a href="#clipboard_wrap">Stats</a></li>
                 <?php
@@ -54,7 +54,7 @@ function go_clipboard_menu() {
 			</div>
 
 			<div id="clipboard_activity_wrap">
-                <div id="go_timestamp_filters" style="float: right;">
+                <div id="go_timestamp_filters" style="float: right; display:none;">
                     <span><button class="go_datepicker_refresh dt-button ui-button ui-state-default ui-button-text-only buttons-collection"><span class="ui-button-text">Update <span class="dashicons dashicons-update" style="vertical-align: center;"></span></span></button></span>
                     <span> Date: <input type="text" class="datepicker" name="datepicker" value=""/></span>
                 </div>
@@ -104,7 +104,8 @@ function go_clipboard_intable() {
 
     echo '<div id="go_clipboard_wrapper" class="go_clipboard">';
     ?>
-        <table id='go_clipboard_datatable' class='pretty display'>
+
+        <table id='go_clipboard_stats_datatable' class='pretty display'>
             <thead>
             <tr>
                 <th></th>
@@ -388,7 +389,7 @@ function go_clipboard_intable_activity() {
             $user_actions = array();
             foreach ($actions as $action) {
                 $action = json_decode(json_encode($action), True);//convert stdclass to array by encoding and decoding
-                $uid = intval($action[uid]);
+                $uid = intval($action['uid']);
                 if ($uid == $user_id) {
                     $action_count++;
                     $user_actions[] = $action;

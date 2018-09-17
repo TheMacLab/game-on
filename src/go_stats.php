@@ -1504,48 +1504,23 @@ function go_activity_dataloader_ajax(){
 
     global $wpdb;
     $go_action_table_name = "{$wpdb->prefix}go_actions";
-    //$table = "{$wpdb->prefix}go_actions";
 
     $aColumns = array( 'id', 'uid', 'action_type', 'source_id', 'TIMESTAMP' ,'stage', 'bonus_status', 'check_type', 'result', 'quiz_mod', 'late_mod', 'timer_mod', 'global_mod', 'xp', 'gold', 'health', 'c4', 'xp_total', 'gold_total', 'health_total', 'c4_total', 'badges', 'groups' );
 
-    //$primaryKey = 'id';
     $sIndexColumn = "id";
     $sTable = $go_action_table_name;
 
-
     $sLimit = '';
-     //$draw = $_GET['draw'];
-     //$start = (((intval($_GET['draw']) - 1) * 10) + 1 );
+
     if ( isset( $_GET['start'] ) && $_GET['length'] != '-1' )
     {
         $sLimit = "LIMIT ".intval( $_GET['start'] ).", ".
             intval( $_GET['length'] );
     }
-    //$sLimit = "LIMIT " . $_GET['length'];
-
 
     $sOrder = "ORDER BY TIMESTAMP desc"; //always in reverse order
 
-    /*
-     if ( isset( $_GET['iSortCol_0'] ) )
-    {
-        $sOrder = "ORDER BY  ";
-        for ( $i=0 ; $i<intval( $_REQUEST['iSortingCols'] ) ; $i++ )
-        {
-            if ( $_REQUEST[ 'bSortable_'.intval($_REQUEST['iSortCol_'.$i]) ] == "true" )
-            {
-                $sOrder .= "`".$aColumns[ intval( $_REQUEST['iSortCol_'.$i] ) ]."` ".
-                    ($_REQUEST['sSortDir_'.$i]==='asc' ? 'asc' : 'desc') .", ";
-            }
-        }
 
-        $sOrder = substr_replace( $sOrder, "", -2 );
-        if ( $sOrder == "ORDER BY" )
-        {
-            $sOrder = "";
-        }
-    }
-    */
     $sWhere = "";
     $search_val = $_GET['search']['value'];
 
@@ -1557,9 +1532,7 @@ function go_activity_dataloader_ajax(){
             $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql( $search_val )."%' OR ";
         }
         $sWhere = substr_replace( $sWhere, "", -3 );
-        //$sWhere .= ')';
-   //////////////////
-   //}
+
 
         $posts_table_name = "{$wpdb->prefix}posts";
 
@@ -1612,10 +1585,10 @@ function go_activity_dataloader_ajax(){
         {
             $sWhere .= " AND ";
         }
-         $sWhere .= "uid = ".$user_id;
+         $sWhere .= "uid = ".$user_id . " AND NOT action_type = 'admin_notification'";
     }
 
-$totalWhere = " WHERE uid = ".$user_id;
+$totalWhere = " WHERE uid = ".$user_id . " AND NOT action_type = 'admin_notification'";
 
 
     $sQuery = "

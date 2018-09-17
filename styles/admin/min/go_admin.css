@@ -1571,6 +1571,21 @@ store categories styles
   margin: 10px;
   background-color: #f8f8f8; }
 
+.store_items li,
+go_store_loot_list {
+  display: flex; }
+
+.go_store_loot_list_item {
+  border: solid 1px;
+  padding: 0 5px;
+  margin: 0 5px; }
+
+.go_store_loot_list_cost {
+  background-color: pink; }
+
+.go_store_loot_list_reward {
+  background-color: lightgreen; }
+
 /*
 store lightbox styles
  */

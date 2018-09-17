@@ -17,9 +17,15 @@ function go_the_lb_ajax() {
 
 	$post_id = (int) $_POST['the_item_id'];
 
+    $go_post_data = go_post_data($post_id); //0--name, 1--status, 2--permalink, 3--metadata
+    $the_title = $go_post_data[0];
+    $status = $go_post_data[1];
+    $task_link = $go_post_data[2];
+    $custom_fields = $go_post_data[3];
+
 	//$the_post = get_post( $post_id );
-	$the_title = get_the_title($post_id);
-    $custom_fields = get_post_custom( $post_id );
+	//$the_title = get_the_title($post_id);
+    //$custom_fields = get_post_custom( $post_id );
 	//$item_content = get_post_field( 'post_content', $post_id );
     $item_content = (isset($custom_fields['go_store_item_desc'][0]) ?  $custom_fields['go_store_item_desc'][0] : null);
     $the_content = wpautop( $item_content );
@@ -37,7 +43,7 @@ function go_the_lb_ajax() {
         echo edit_post_link('edit', null, null, $post_id);
     }
 
-
+    $task_is_locked = false;
     if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true ) {
         $task_is_locked = go_task_locks($post_id, $user_id, "Item", $custom_fields, $is_logged_in, false);
     }
@@ -51,8 +57,8 @@ function go_the_lb_ajax() {
     if (get_option( 'options_go_loot_xp_toggle' ) && $store_abs_cost_xp > 0){
         $xp_on = true;
         $xp_name = get_option('options_go_loot_xp_name');
-        $xp_abbr         = get_option( 'options_go_loot_xp_abbreviation' );
-        $user_xp = go_return_points( $user_id );
+        //$xp_abbr         = get_option( 'options_go_loot_xp_abbreviation' );
+        //$user_xp = go_return_points( $user_id );
         $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ?  $custom_fields['go_loot_reward_toggle_xp'][0] : null);
         /*
         $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
@@ -77,8 +83,8 @@ function go_the_lb_ajax() {
     if (get_option( 'options_go_loot_gold_toggle' )  && $store_abs_cost_gold > 0){
         $gold_on = true;
         $gold_name = get_option('options_go_loot_gold_name');
-        $gold_abbr      = get_option( 'options_go_loot_gold_abbreviation' );
-        $user_gold = go_return_currency( $user_id );
+        //$gold_abbr      = get_option( 'options_go_loot_gold_abbreviation' );
+        //$user_gold = go_return_currency( $user_id );
         $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
         /*
         $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
@@ -94,8 +100,8 @@ function go_the_lb_ajax() {
     if (get_option( 'options_go_loot_health_toggle' ) && $store_abs_cost_health > 0){
         $health_on = true;
         $health_name = get_option('options_go_loot_health_name');
-        $health_abbr = get_option( 'options_go_loot_health_abbreviation' );
-        $user_health = go_return_health ($user_id );
+        //$health_abbr = get_option( 'options_go_loot_health_abbreviation' );
+        //$user_health = go_return_health ($user_id );
         $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
         /*
         $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
@@ -111,8 +117,8 @@ function go_the_lb_ajax() {
     if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
         $c4_on = true;
         $c4_name = get_option('options_go_loot_c4_name');
-        $c4_abbr        = get_option( 'options_go_loot_c4_abbreviation' );
-        $user_c4 = go_return_c4( $user_id );
+        //$c4_abbr        = get_option( 'options_go_loot_c4_abbreviation' );
+        //$user_c4 = go_return_c4( $user_id );
         $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
         /*
         $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
@@ -230,6 +236,7 @@ function go_the_lb_ajax() {
 
         <div id="go_purch_limits">
             <?php
+            $store_limit_duration = false;
             if ($store_limit_duration == 'Total'){
                 $var1 = ' ';
             }else{
