@@ -47,9 +47,9 @@ function go_the_lb_ajax() {
     if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true ) {
         $task_is_locked = go_task_locks($post_id, $user_id, "Item", $custom_fields, $is_logged_in, false);
     }
+
     //$task_is_locked = go_display_locks($post_id, $user_id, $is_admin, 'item', $badge_name, $custom_fields, $is_logged_in, 'Item');
     if ($task_is_locked){
-
         return null;
     }
 
