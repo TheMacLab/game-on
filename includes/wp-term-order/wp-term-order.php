@@ -848,13 +848,17 @@ function go_reset_map_transient($term_id){
 function go_check_if_top_term () {
     global $wpdb;
     $term_taxonomy_table_name = "{$wpdb->prefix}term_taxonomy";
-	if(empty($_POST) || !isset($_POST)) {
+    $termDivIDs = (isset($_POST['goTermDivIDs']) ?  $_POST['goTermDivIDs'] : null);
+    if ($termDivIDs ==null){
+        return;
+    }
+	if(empty($_POST) || !isset($_POST)  ) {
 		ajaxStatus('error', 'Nothing to update.');
 		
 	} 
 	else {
 		 try {
-			$termDivIDs = $_POST['goTermDivIDs'];
+			//$termDivIDs = $_POST['goTermDivIDs'];
 
 			$items = array();
 			foreach ($termDivIDs as $termDivID){

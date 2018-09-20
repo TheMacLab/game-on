@@ -575,7 +575,8 @@ function go_filter_datatables() { //function that filters all tables on draw
     jQuery.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
             var mytable = settings.sTableId;
-            if (mytable == "go_clipboard_datatable" || mytable == "go_clipboard_messages_datatable" || mytable == "go_clipboard_activity_datatable") {
+            //console.log(myTable);
+            if (mytable == "go_clipboard_stats_datatable" || mytable == "go_clipboard_messages_datatable" || mytable == "go_clipboard_activity_datatable") {
                 var section = jQuery('#go_clipboard_user_go_sections_select').val();
                 var group = jQuery('#go_clipboard_user_go_groups_select').val();
                 var badge = jQuery('#go_clipboard_go_badges_select').val();
@@ -691,9 +692,6 @@ function go_stats_leaderboard() {
                 //console.log(res.html);
 
                 jQuery('#stats_leaderboard').html(res.html);
-
-
-
 
 
 					//jQuery(document).ready(function() {

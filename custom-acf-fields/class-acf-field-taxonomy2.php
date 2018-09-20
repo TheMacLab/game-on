@@ -346,10 +346,10 @@ class acf_field_taxonomy2 extends acf_field {
     	if ( is_a( $terms, 'WP_Error' ) ) {
         	$terms = array();
 	    }
-	    $object_terms = wp_get_object_terms( $post->ID, $taxonomy_slug, array('fields'=>'ids'));
-	    if ( is_a( $object_terms, 'WP_Error' ) ) {
-	        $object_terms = array();
-	    }
+	    //$object_terms = wp_get_object_terms( $post->ID, $taxonomy_slug, array('fields'=>'ids'));
+	    //if ( is_a( $object_terms, 'WP_Error' ) ) {
+	    //    $object_terms = array();
+	    //}
 	    //TO DO
 	    //ajax to load terms
 	    //new item
@@ -371,10 +371,10 @@ class acf_field_taxonomy2 extends acf_field {
 		    	if ( is_a( $terms_child, 'WP_Error' ) ) {
 		        	$terms_child = array();
 			    }
-			    $child_object_terms = wp_get_object_terms( $post->ID, $taxonomy_slug, array('fields'=>'ids'));
-			    if ( is_a( $object_terms, 'WP_Error' ) ) {
-			        $child_object_terms = array();
-			    }
+			    //$child_object_terms = wp_get_object_terms( $post->ID, $taxonomy_slug, array('fields'=>'ids'));
+			    //if ( is_a( $object_terms, 'WP_Error' ) ) {
+			    //    $child_object_terms = array();
+			    //}
 			    $children = null;
 				foreach ( $terms_child as $term_child ) {
 		            if ( $term_child->term_id == $field['value']) {

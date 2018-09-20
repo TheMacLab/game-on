@@ -5,6 +5,7 @@ jQuery( document ).ready( function() {
         	//console.log("tabs");
             tab = jQuery(this).attr('tab');
             switch (tab) {
+
                 /*
                 case 'messages':
                     //console.log("messages");
@@ -14,6 +15,14 @@ jQuery( document ).ready( function() {
                 case 'activity':
                     //console.log("activity");
                     go_clipboard_class_a_choice_activity();
+                    jQuery("#go_clipboard_activity_datatable").DataTable().columns.adjust()
+                        .responsive.recalc();
+                    break;
+                case 'clipboard':
+                    //console.log("activity");
+                    //force window resize on load to initialize responsive behavior
+                    jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust()
+                        .responsive.recalc();
                     break;
             }
         });
@@ -40,11 +49,7 @@ jQuery( document ).ready( function() {
 	}
     //console.log('ready');
    // jQuery('.go_tax_select').select2();
-
-
 });
-
-
 
 function go_toggle( source ) {
 	checkboxes = jQuery( '.go_checkbox' );

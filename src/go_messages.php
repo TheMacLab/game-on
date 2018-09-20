@@ -845,7 +845,7 @@ function go_send_message(){
                 go_remove_groups($group_ids, $user_id, false);//remove groups
             }
 
-            go_update_actions($user_id, $type, $post_ids, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+            go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
 
             //update_user_meta($user_id, 'go_new_messages', true);
 

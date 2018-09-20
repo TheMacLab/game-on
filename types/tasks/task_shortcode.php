@@ -964,8 +964,14 @@ function go_hidden_footer(){
      */
     echo "<div id='go_hidden_mce' style='display: none;'>";
     $settings  = array(
-        'textarea_name' => 'go_result',
-        'media_buttons' => true
+        //'tinymce'=>true,
+            //'wpautop' =>false,
+            'textarea_name' => 'go_result',
+            'media_buttons' => true,
+            //'teeny' => true,
+            'quicktags'=>false,
+            'menubar' => false,
+            'drag_drop_upload' => true
     );
     wp_editor( '', 'go_blog_post', $settings );
     echo "</div>";

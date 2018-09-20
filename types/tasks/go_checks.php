@@ -278,7 +278,9 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
             'textarea_name' => 'go_result',
             'media_buttons' => true,
             //'teeny' => true,
-            //'quicktags'=>false
+            'quicktags'=>false,
+            'menubar' => false,
+            'drag_drop_upload' => true
         );
         wp_editor( $content, 'go_blog_post', $settings );
         echo "</div>";
@@ -296,16 +298,16 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
                 $i
             )
         );
-        echo $post_id;
+        //echo $post_id;
         //$post_link = get_permalink($post_id);
         //echo "Post Link : <a href='" . $post_link . "' target='blank'>" . $post_link . "</a>";
         $content_post = get_post($post_id);
         $content = $content_post->post_content;
         //$content = apply_filters('the_content', $content);
         //$content = str_replace(']]>', ']]&gt;', $content);
-        $content = do_shortcode($content);
+        //$content = do_shortcode($content);
 
-        echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 20px;\">" . $content . "</div>";
+        echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">" . $content . "</div>";
 
     }
 }

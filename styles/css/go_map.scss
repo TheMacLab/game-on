@@ -1,0 +1,551 @@
+/* ------------------------------------------------------------
+	Loader (from https://www.w3schools.com/howto/howto_css_loader.asp)
+------------------------------------------------------------ */
+#maps {
+	visibility: hidden;
+
+	/* ------------------------------------------------------------
+        Reset Styles (from meyerweb.com)
+    ------------------------------------------------------------ */
+
+	html, body, div, span, applet, object, iframe,
+	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+	a, abbr, acronym, address, big, cite, code,
+	del, dfn, em, font, img, ins, kbd, q, s, samp,
+	small, strike, strong, sub, sup, tt, var,
+	dl, dt, dd, ol, ul, li,
+	fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		outline: 0;
+		font-weight: inherit;
+		font-style: inherit;
+		font-size: 100%;
+		font-family: inherit;
+		vertical-align: baseline;
+	}
+
+	/* Center the loader */
+	#loader {
+		position: relative;
+		left: 50%;
+		top: 50%;
+		z-index: 1;
+		width: 150px;
+		height: 150px;
+		margin: 40px 0 0 -75px;
+		border: 16px solid #f3f3f3;
+		border-radius: 50%;
+		border-top: 16px solid #3498db;
+		width: 120px;
+		height: 120px;
+		-webkit-animation: spin 2s linear infinite;
+		animation: spin 2s linear infinite;
+	}
+
+	@-webkit-keyframes spin {
+		0% {
+			-webkit-transform: rotate(0deg);
+		}
+		100% {
+			-webkit-transform: rotate(360deg);
+		}
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	/* Add animation to "page content" */
+	.animate-bottom {
+		position: relative;
+		-webkit-animation-name: animatebottom;
+		-webkit-animation-duration: 1s;
+		animation-name: animatebottom;
+		animation-duration: 1s
+	}
+
+	@-webkit-keyframes animatebottom {
+		from {
+			bottom: -100px;
+			opacity: 0
+		}
+		to {
+			bottom: 0px;
+			opacity: 1
+		}
+	}
+
+	@keyframes animatebottom {
+		from {
+			bottom: -100px;
+			opacity: 0
+		}
+		to {
+			bottom: 0;
+			opacity: 1
+		}
+	}
+
+	#myDiv {
+		display: none;
+		text-align: center;
+	}
+
+	/* ------------------------------------------------------------
+        Checkmarks
+    ------------------------------------------------------------ */
+
+	.checkmark {
+		display: inline-block;
+		float: left;
+		margin: 0 10px 0 10px;
+	}
+	.checkmark:after {
+		/*Add another block-level blank space*/
+		content: '';
+		display: block;
+		/*Make it a small rectangle so the border will create an L-shape*/
+		width: 6px;
+		height: 12px;
+		/*Add a white border on the bottom and left, creating that 'L' */
+		border: solid green;
+		border-width: 0 4px 4px 0;
+		/*Rotate the L 45 degrees to turn it into a checkmark*/
+		transform: rotate(45deg);
+	}
+
+	/* ------------------------------------------------------------
+        NUMBER OF COLUMNS: Adjust .primaryNav li to set the number
+        of columns required in your site map. The default is
+        4 columns (25%). 5 columns would be 20%, 6 columns would
+        be 16.6%, etc.
+    ------------------------------------------------------------ */
+
+	.primaryNav li {
+		width: 90%;
+	}
+
+	.primaryNav li ul {
+		padding: 0px !important;
+	}
+
+	/* ------------------------------------------------------------
+        General Styles
+    ------------------------------------------------------------ */
+
+	body {
+		background: white;
+		color: black;
+		padding: 40px;
+		font-family: Gotham, Helvetica, Arial, sans-serif;
+		font-size: 12px;
+		line-height: 1;
+	}
+	.sitemap {
+		margin: 0 0 40px 0;
+		float: left;
+		width: 100%;
+	}
+	h1 {
+		font-weight: bold;
+		text-transform: uppercase;
+		font-size: 20px;
+		margin: 0 0 5px 0;
+	}
+	h2 {
+		font-family: "Lucida Grande", Verdana, sans-serif;
+		font-size: 10px;
+		color: #777777;
+		margin: 0 0 20px 0;
+	}
+	a {
+		text-decoration: none;
+	}
+	ol, ul {
+		list-style: none !important;
+	}
+	.map {
+		padding-top: 20px;
+		display: block;
+	}
+
+	/* ------------------------------------------------------------
+        Site Map Styles
+    ------------------------------------------------------------ */
+
+	/* --------	Top Level --------- */
+
+	.primaryNav {
+		margin: 0px 0 0 0;
+		float: left;
+		width: 100%;
+		padding: 30px 40px 0 40px !important;
+		background-color: #f5eade;
+
+	}
+
+	.primaryNav li {
+		float: left;
+		background: url('../../../images/map/L1-center.png') center top no-repeat;
+		padding: 30px 0;
+		margin-top: -30px;
+	}
+	.primaryNav .ParentNav {
+		display: block;
+		float: none;
+		background: none !important;
+		position: relative;
+		z-index: 2;
+		width: 100% !important;
+	}
+	.primaryNav li p,
+	.primaryNav li a {
+		margin: 0 20px 0 0;
+		padding: 10px 0;
+		display: block;
+		font-size: 14px;
+		font-weight: bold;
+		text-align: center;
+		color: black;
+		background: #c3eafb;
+		border: 2px solid #b5d9ea;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+		-moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px; /* FF 3.5+ */
+	}
+	/*
+    .primaryNav li p:hover {
+        background-color: #e2f4fd;
+        border-color: #97bdcf;
+    }
+    */
+	.primaryNav li:last-child {
+		background: url('../../../images/map/L1-right.png') center top no-repeat;
+	}
+	.primaryNav > li:nth-child(2) {
+		background: url('../../../images/map/L1-left.png') center top no-repeat;
+	}
+
+	.primaryNav > li:first-child {
+		background: none;
+	}
+
+	/* --------	Second Level --------- */
+	.primaryNav ul {
+		margin: 0;
+	}
+	.primaryNav li li {
+		width: 100%;
+		clear: left;
+		margin-top: 0;
+		padding: 10px 0 0 0;
+		background: url('../../../images/map/vertical-line.png') center bottom repeat-y;
+	}
+
+	.singleCol {
+		background: url('../../../images/map/vertical-line.png') center top no-repeat !important;
+	}
+
+	.primaryNav li li a {
+		background-color: #cee3ac;
+		border-color: #b8da83;
+	}
+	.primaryNav li li a:hover {
+		border-color: #94b75f;
+		background-color: #e7f1d7;
+	}
+
+	.optional_task {
+		width: 80% !important;
+		margin-left: 20% !important;
+	}
+
+	.optional_task a {
+		font-size: 1em !important;
+		font-style: italic;
+	}
+	/* --------	grey out colors --------- */
+	.primaryNav li .locked a,
+	.primaryNav li .locked a:hover {
+		background-color: #cccccc;
+		border-color: #000;
+		color: #555;
+	}
+
+	/* --------	available tasks colors --------- */
+	.primaryNav li .available a {
+		background-color: #fff7aa;
+		border-color: #e3ca4b;
+
+	}
+
+	.primaryNav li .available a:hover {
+		background-color: #fffce5;
+		border-color: #d1b62c;
+
+	}
+
+	.primaryNav li li:first-child {
+		padding-top: 30px;
+	}
+	.primaryNav li li:last-child {
+		background: url('../../../images/map/vertical-line.png') center bottom repeat-y;
+	}
+
+	/* --------	Third Level --------- */
+
+	.primaryNav li li ul {
+		margin: 10px 0 0 0;
+		width: 100%;
+		float: right;
+		padding: 9px 0 10px 0;
+		background: #ffffff url('../../../images/map/L3-ul-top.png') center top no-repeat;
+	}
+	.primaryNav li li li {
+		background: url('../../../images/map/L3-center.png') left center no-repeat;
+		padding: 5px 0;
+	}
+	.primaryNav li li li a {
+		background-color: #fff7aa;
+		border-color: #e3ca4b;
+		font-size: 12px;
+		padding: 5px 0;
+		width: 80%;
+		float: right;
+	}
+	.primaryNav li li li a:hover {
+		background-color: #fffce5;
+		border-color: #d1b62c;
+	}
+	.primaryNav li li li:first-child {
+		padding: 15px 0 5px 0;
+		background: url('../../../images/map/L3-li-top.png') left center no-repeat;
+	}
+	.primaryNav li li li:last-child {
+		background: url('../../../images/map/L3-bottom.png') left center no-repeat;
+	}
+
+
+	/* ------------------------------------------------------------
+        Bonus Stars
+    ------------------------------------------------------------ */
+
+	.star-empty .fa.fa-star {
+		color: white;
+	}
+	.star-full .fa.fa-star {
+		color: gold;
+	}
+	.star-half .fa.fa-star {
+		color: white;
+	}
+	.star-half .fa.fa-star-half-o {
+		color: gold;
+	}
+
+	/* ------------------------------------------------------------
+        Badges
+    ------------------------------------------------------------ */
+
+	/** Badge Styles **/
+
+	.go_badge_wrap {
+		width: 100%;
+		padding-right: 20px;
+	}
+
+	.go_badge_container {
+		width: 150px;
+		height: 150px;
+		border-radius: 150px;
+		margin: 0 auto;
+		margin: 25px 0px 0 55px !important;
+		float: none;
+	}
+
+	.go_badge {
+		text-align: center;
+		float: none;
+	}
+	.tooltiptext {
+		margin: 0 -60px;
+	}
+}
+
+/* ------------------------------------------------------------
+        Utility Navigation
+
+
+    #utilityNav {
+        float: left;
+        max-width: 100%;
+        margin-right: 10px;
+    }
+    #utilityNav li {
+        float: left;
+        margin-bottom: 10px;
+    }
+    #utilityNav li a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        display: block;
+        border: 2px solid #e3ca4b;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        color: black;
+        background: #fff7aa url('images/map/white-highlight.png') top left repeat-x;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+        -moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+        cursor: pointer;
+    }
+
+    #utilityNav .filtered a,
+    #utilityNav .filtered a:hover{
+        background-color: #cccccc;
+        border-color: #000;
+        color: #555;
+    }
+    #utilityNav .done a,
+    #utilityNav .done a:hover{
+        background-color: #cee3ac;
+        border-color: #b8da83;
+    }
+
+    #utilityNav li a:hover {
+        background-color: #fffce5;
+        border-color: #d1b62c;
+        cursor: pointer;
+    }
+
+
+    ------------------------------------------------------------ */
+
+/* Dropdown Button */
+.dropbtn, .dropbtn:hover, .dropbtn:focus {
+	cursor: pointer;
+	margin: 0;
+	display: block;
+	text-align: center;
+	color: black;
+	background: #c3eafb;
+	border: 2px solid #b5d9ea;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px; /* FF 3.5+ */
+
+	/* styling */
+
+	border-radius: 4px;
+	font: inherit;
+	line-height: 1.5em;
+	padding: 0.5em 3.5em 0.5em 1em;
+
+	/* reset */
+
+	background-image: linear-gradient(45deg, transparent 50%, blue 50%),
+	linear-gradient(135deg, blue 50%, transparent 50%),
+	linear-gradient(to right, skyblue, skyblue);
+	background-position: calc(100% - 16px) calc(1em + 2px),
+	calc(100% - 11px) calc(1em + 2px),
+	100% 0;
+	background-size: 5px 5px,
+	5px 5px,
+	2.5em 2.5em;
+	background-repeat: no-repeat;
+
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+	position: relative;
+	display: inline-block;
+	z-index: 3;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+	color: black;
+	padding: 8px 10px;
+	text-decoration: none;
+	display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+	background-color: #f1f1f1
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+	display: block;
+}
+
+/* ------------------------------------------------------------
+    Utility Navigation
+------------------------------------------------------------ */
+
+#myDropdown {
+	float: left;
+	max-width: 100%;
+	margin-right: 10px;
+}
+#utilityNav li {
+	float: left;
+	margin-bottom: 10px;
+}
+#myDropdown a {
+	display: block;
+	font-size: 12px;
+	min-width: 150px;
+	color: black;
+	background: #bae9ff;
+	cursor: pointer;
+
+}
+
+#myDropdown a:hover {
+
+	background: #aee1ff;
+	box-shadow: inset 0 -1px 0 rgb(146, 140, 140);
+}
+
+#myDropdown .locked a,
+#myDropdown .locked a:hover {
+	background-color: #cccccc;
+	border-color: #000;
+	color: #555;
+}
+#myDropdown .done a,
+#myDropdown .done a:hover {
+	background-color: #cee3ac;
+	border-color: #b8da83;
+}
+
+#utilityNav li a:hover {
+	background-color: #fffce5;
+	border-color: #d1b62c;
+	cursor: pointer;
+}

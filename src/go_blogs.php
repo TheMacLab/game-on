@@ -170,8 +170,14 @@ function go_blog_opener(){
     echo "<div id='go_url_div'>";
     echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' value ='{$title}'></div> </div>";
     $settings  = array(
-        'textarea_name' => 'go_result',
-        'media_buttons' => true,
+        'tinymce'=>true,
+            //'wpautop' =>false,
+            'textarea_name' => 'go_result',
+            'media_buttons' => true,
+            //'teeny' => true,
+            'quicktags'=>false,
+            'menubar' => false,
+            'drag_drop_upload' => true
     );
     wp_editor( $content, 'go_blog_post', $settings );
     echo "</div>";
@@ -194,6 +200,34 @@ function go_blog_submit(){
     check_ajax_referer( 'go_blog_submit' );
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
+    $user_id = get_current_user_id();
+    $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
+    $my_post = array(
+        'ID'        => $blog_post_id,
+        'post_type'     => 'go_blogs',
+        'post_title'    => $result_title,
+        'post_content'  => $result,
+        'post_status'   => 'publish',
+        'post_author'   => $user_id,
+
+
+    );
+    if (empty($blog_post_id)) {
+        // Insert the post into the database
+        wp_insert_post($my_post);
+    }else{
+        wp_update_post($my_post);
+    }
+}
+
+function go_url_to_blog_submit($result_title, $description, $url){
+    //How to link the blog post to the check for understanding,
+    // so that when the url is changed or removed
+    // the post gets updated?
+
+    //check_ajax_referer( 'go_blog_submit' );
+    $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
+    //$result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
     $user_id = get_current_user_id();
     $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
     $my_post = array(

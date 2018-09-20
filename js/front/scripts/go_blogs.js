@@ -23,6 +23,7 @@ function go_blog_opener( el ) {
             tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
             tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post' );
             jQuery(".featherlight").css('background', 'rgba(0,0,0,.8)');
+            jQuery(".featherlight .featherlight-content").css('width', '80%')
 
 
             jQuery(".go_blog_opener").one("click", function(e){
@@ -59,3 +60,5 @@ function go_blog_submit( el ) {
         }
     });
 }
+
+

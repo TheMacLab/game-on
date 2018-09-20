@@ -396,6 +396,7 @@ add_action( 'wp_enqueue_media' , 'client_side_resize_load' );
  * https://wordpress.stackexchange.com/questions/204779/how-can-i-add-an-author-filter-to-the-media-library
  *
  */
+/*
 function go_media_add_author_dropdown(){
     $scr = get_current_screen();
     if ( $scr->base !== 'upload' ) return;
@@ -406,8 +407,8 @@ function go_media_add_author_dropdown(){
         wp_dropdown_users($args);
     }
 }
-add_action('restrict_manage_posts', 'go_media_add_author_dropdown');
-
+//add_action('restrict_manage_posts', 'go_media_add_author_dropdown');
+*/
 
 
 /**
@@ -415,13 +416,36 @@ add_action('restrict_manage_posts', 'go_media_add_author_dropdown');
  * @param $wp_query
  * https://stackoverflow.com/questions/28787575/wordpress-restrict-users-to-see-only-their-uploads
  * This works on the grid view only.  There is a filter in the upload plugin that filters the list view.
- */
+ *//*
 function go_my_files_only( $wp_query ) {
     if ( strpos( $_SERVER[ 'REQUEST_URI' ], '/wp-admin/upload.php' ) !== false ) {
-        if ( !current_user_can('activate_plugins') && !current_user_can('edit_others_posts') ) {
+        //if ( !current_user_can('activate_plugins') && !current_user_can('edit_others_posts') ) {
             $user_id = get_current_user_id();
             $wp_query->set( 'author', $user_id );
-        }
+        //}
     }
 }
-add_filter('parse_query', 'go_my_files_only' );
+//add_filter('parse_query', 'go_my_files_only' );
+*/
+
+add_action('pre_get_posts','go_users_own_attachments');
+function go_users_own_attachments( $wp_query_obj ) {
+
+    global $current_user, $pagenow;
+
+    $is_attachment_request = ($wp_query_obj->get('post_type')=='attachment');
+
+    if( !$is_attachment_request )
+        return;
+
+    if( !is_a( $current_user, 'WP_User') )
+        return;
+
+    if( !in_array( $pagenow, array( 'upload.php', 'admin-ajax.php' ) ) )
+        return;
+
+    //if( !current_user_can('delete_pages') )
+        $wp_query_obj->set('author', $current_user->ID );
+
+    return;
+}

@@ -37,8 +37,8 @@ function go_register_task_tax_and_cpt() {
         ),
         'query_var' => true
     );
-    register_taxonomy( 'task_chains', array( 'tasks' ), $task_chains_args );
-    register_taxonomy_for_object_type( 'task_chains', 'tasks' );
+    register_taxonomy( 'task_chains', array( '' ), $task_chains_args );
+    //register_taxonom  y_for_object_type( 'task_chains', 'tasks' );
 
     // Register Task TOP MENU Taxonomy
     $task_menu_labels = array(
@@ -235,7 +235,7 @@ function go_register_task_tax_and_cpt() {
 		'hierarchical' => false,
 		'description' => get_option( 'options_go_tasks_name_plural' ),
         'supports'              => array( 'title', 'comments', 'thumbnail' ),
-		'taxonomies' => array('task_chains'),
+		'taxonomies' => array(''),
 		'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => true,

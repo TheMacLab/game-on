@@ -804,11 +804,8 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
                     $next_bonus_stage = $loop_bonus_status -1;
                 }
                 else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {//if it's not a bonus and it's not the last one completed
-                    if (!isset($next_stage) && $stage > 0 ){ //the last stage in the table
-                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                        $next_stage = $stage - 1;
-                    }
-                    else if ($next_stage > 0 && $stage == $next_stage){
+                    $next_stage = (isset($next_stage) ?  $next_stage : $stage );
+                    if ($next_stage > 0 && $stage == $next_stage){
                         $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
                         $next_stage = $stage - 1;
                     }
@@ -829,11 +826,12 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
         }else{
             $status_print = $status . " / " . $total_stages;
         }
-        $bonus_status_order = $bonus_status/$total_bonus_stages;
+
 
 
 
         if (!empty($total_bonus_stages)){
+            $bonus_status_order = $bonus_status/$total_bonus_stages;
             $bonus_str = $bonus_status . " / " . $total_bonus_stages;
         }else{
             $bonus_str = null;

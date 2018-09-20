@@ -5,9 +5,9 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 4.12
+Version: 4.13
 */
-$version = 4.12;
+$version = 4.13;
 
 global $version;
 
@@ -343,9 +343,13 @@ function go_changeMceDefaults($in) {
 
     // Keep the "kitchen sink" open
     $in[ 'wordpress_adv_hidden' ] = FALSE;
+
+    $in[ 'menubar' ] = FALSE;
     return $in;
 }
 add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
+
+
 
 function go_deactivate_plugin() {
 	if ( ! current_user_can( 'manage_options' ) ) {

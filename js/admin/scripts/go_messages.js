@@ -1,5 +1,7 @@
 
 function go_messages_opener( user_id, post_id, message_type ) {
+    post_id = (typeof post_id !== 'undefined') ?  post_id : null;
+    message_type = (typeof message_type !== 'undefined') ?  message_type : null;
     //console.log(message_type);
     jQuery('.go_messages_icon').prop('onclick',null).off('click'); //clipboard
     jQuery('.go_stats_messages_icon').prop('onclick',null).off('click'); //stats
