@@ -1,9 +1,9 @@
 <?php
 //https://codex.wordpress.org/Creating_Tables_with_Plugins
 global $wpdb;
-global $version;
+//global $version;
 global $go_db_version;
-$go_db_version = $version;
+$go_db_version = 4.13;
 
 function go_update_db_check() {
     global $go_db_version;
@@ -16,7 +16,6 @@ function go_update_db_check() {
 add_action( 'plugins_loaded', 'go_update_db_check' );
 
 function go_update_db() {
-
     global $go_db_version;
     go_table_totals();
     go_table_tasks();
@@ -158,7 +157,6 @@ function go_table_totals() {
  *
  */
 
-
 /**
  * Activate for existing sites on plugin activation
  * @param $network_wide
@@ -178,7 +176,6 @@ function go_on_activate_msdb( $network_wide ) {
         go_update_db_check();
     }
 }
-
 
 /**
  * Creating table whenever a new blog is created

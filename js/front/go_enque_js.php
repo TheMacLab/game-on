@@ -8,9 +8,9 @@
  */
 
 function go_scripts () {
-    global $version;
+    global $go_js_version;
     //$site_url = get_site_url(null, 'wp-admin/css/media.css');
-    wp_register_script( 'go_wp_media', get_site_url(null, 'wp-admin/css/media.css'), null, 4.13 );
+    wp_register_script( 'go_wp_media', get_site_url(null, 'wp-admin/css/media.css'), null, $go_js_version );
     //wp_enqueue_script( 'go_wp_media' );
 	/*
 	 * Registering Scripts For The Front-end
@@ -18,13 +18,13 @@ function go_scripts () {
 	wp_enqueue_style( 'dashicons' );
 
 		//task shortcode script is registered here, but enqueued and localized in the shortcode.
-		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'min/go_tasks-min.js', null, 4.13 );
+		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'min/go_tasks-min.js', null, $go_js_version );
 
 		//COMBINED FILE
-		wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'min/go_frontend-min.js', array('jquery'), 4.13, false);
+		wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'min/go_frontend-min.js', array('jquery'), $go_js_version, false);
 
 		//PAGE SPECIFIC
-		wp_register_script('go_map-min', plugins_url('min/go_map-min.js', __FILE__), array('jquery'), 4.13, true);
+		wp_register_script('go_map-min', plugins_url('min/go_map-min.js', __FILE__), array('jquery'), $go_js_version, true);
 
 		//featherlight
 		//wp_register_script( 'go_featherlight_min', plugin_dir_url( __FILE__ ).'bower_components/featherlight/release/featherlight.min.js' );
@@ -38,7 +38,7 @@ function go_scripts () {
 
         $is_admin = go_user_is_admin();
         if ($is_admin){
-            wp_register_script('go_admin_notification_listener', plugins_url('min/go_admin_notifications-min.js', __FILE__), array('jquery'), 4.13, true);
+            wp_register_script('go_admin_notification_listener', plugins_url('min/go_admin_notifications-min.js', __FILE__), array('jquery'), $go_js_version, true);
             wp_enqueue_script( 'go_admin_notification_listener' );
             wp_localize_script(
                 'go_admin_notification_listener',

@@ -7,9 +7,11 @@ Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4.13
 */
-$version = 4.13;
+$go_js_version = 4.13;
+global $go_js_version;
 
-global $version;
+$go_css_version = 4.13;
+global $go_css_version;
 
 include_once( 'includes/acf/acf.php' );
 
