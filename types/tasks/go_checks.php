@@ -306,7 +306,12 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
         //$content = apply_filters('the_content', $content);
         //$content = str_replace(']]>', ']]&gt;', $content);
         //$content = do_shortcode($content);
-
+        ?><script>
+            document.title = "<?php echo $page_title; ?>";
+            jQuery( document ).ready(function() {
+                go_lightbox_blog_img();
+            });
+        </script><?php
         echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">" . $content . "</div>";
 
     }
