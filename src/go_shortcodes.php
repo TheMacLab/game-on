@@ -85,9 +85,9 @@ function go_video_link( $atts, $video_url ) {
 		if ( $video_title ) {
 			//return "<a href='#'  data-featherlight='<video controls><source src=\"".$video_url."\"></video>'>{$video_title}</a>";
             //return "<a class='featherlight_wrapper_vid_link' href='{$video_url}' data-featherlight='iframe'>{$video_title}</a>";
-            return "<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden;\"> <video controls autoplay style=\"height: 100%;\"><source src=\"{$video_url}\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' >{$video_title}</a> ";
+            return "<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden; text-align: center;\"> <video controls autoplay style=\"height: 100%; max-width: 100%;\"><source src=\"{$video_url}\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' >{$video_title}</a> ";
 		} else {
-            return "<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden;\"> <video controls autoplay style=\"height: 100%;\"><source src=\"{$video_url}\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' >Video</a> ";
+            return "<a href='#' class='featherlight_wrapper_vid_shortcode' data-featherlight='<div id=\"go_video_container\" style=\"height: 90vh; overflow: hidden; text-align: center;\"> <video controls autoplay style=\"height: 100%; max-width: 100%;\"><source src=\"{$video_url}\" type=\"video/mp4\">Your browser does not support the video tag.</video></div>'  data-featherlight-close-on-esc='true' data-featherlight-variant='fit_and_box native2' >Video</a> ";
 
         }
 
@@ -171,49 +171,6 @@ function go_lightbox_url($atts){
 }
 add_shortcode( 'go_lightbox_url','go_lightbox_url' );
 
-//Function that grabs the current page
-function go_page_grabber_shortcode() { 
-	echo '';
-	$args=array(
-	  'child_of' => $parent
-	);
-	$pages = get_pages( $args );  
-	if ( $pages ) {
-		$pageids = array();
-		foreach ( $pages as $page ) {
-			$pageids[] = $page->ID;
-		}
-		$args=array(
-			'include' =>  $parent . ',' . implode( ",", $pageids ),
-			'sort_column'=> 'post_date',
-			'sort_order' => 'DESC',
-			'show_date'  => 'created',
-		);
-		wp_list_pages( $args );
-	}
-}
- 
-//Function that grabs the current post
-function go_post_grabber_shortcode() { 
-	echo '';
-	$archive_query = new WP_Query( 'showposts=1000000000' );
-	while ( $archive_query->have_posts() ) : $archive_query->the_post(); 
-	?>
-		<li>
-			<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title(); ?>">
-				<?php the_title(); ?>
-			</a> 
-				<?php the_time( get_option( 'date_format' ) ); ?> 
-			<a href="/?cat=<?php get_category_link( $category_id ); the_category_ID( $echo ); ?>">
-				<?php
-				$category = get_the_category(); 
-				echo $category[0]->cat_name;
-				?>
-			</a>
-		</li>
-	<?php 
-	endwhile;
-}
 
 //Creates an excerpt for grabbed post
 function go_post_grabber_content_exerpt_shortcode() { 

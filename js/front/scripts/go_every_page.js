@@ -29,26 +29,33 @@ function go_noty_close_oldest(){
 
 function go_lightbox_blog_img(){
     jQuery('[class*= wp-image]').each(function(  ) {
-        var class1 = jQuery(this).attr('class');
-        console.log(class1);
-        //var patt = /w3schools/i;
-        var regEx = /.*wp-image/;
-        var imageID = class1.replace(regEx,'wp-image');
-        console.log(imageID);
+        var fullSize = jQuery( this ).hasClass( "size-full" );
+        //console.log("fullsize:" + fullSize);
+        if (fullSize == true) {
+            var imagesrc = jQuery(this).attr('src');
+        }else{
 
-        var src1 = jQuery(this).attr('src');
-        console.log(src1);
-        //var patt = /w3schools/i;
-        var regEx2 = /-([^-]+).$/;
+            var class1 = jQuery(this).attr('class');
+            //console.log(class1);
+            //var patt = /w3schools/i;
+            var regEx = /.*wp-image/;
+            var imageID = class1.replace(regEx, 'wp-image');
+            //console.log(imageID);
+
+            var src1 = jQuery(this).attr('src');
+            //console.log(src1);
+            //var patt = /w3schools/i;
+            var regEx2 = /-([^-]+).$/;
 
 
-        var regEx3 = /\.[0-9a-z]+$/i;
-        var patt1 = /\.[0-9a-z]+$/i;
-        var m1 = (src1).match(patt1);
+            //var regEx3 = /\.[0-9a-z]+$/i;
+            var patt1 = /\.[0-9a-z]+$/i;
+            var m1 = (src1).match(patt1);
 
-        //var imagesrc = src1.replace(regEx2, regEx3);
-        var imagesrc = src1.replace(regEx2, m1 );
-        console.log(imagesrc);
+            //var imagesrc = src1.replace(regEx2, regEx3);
+            var imagesrc = src1.replace(regEx2, m1);
+            //console.log(imagesrc);
+        }
         jQuery(this).featherlight(imagesrc);
     });
 }
