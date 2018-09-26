@@ -157,6 +157,8 @@ function go_blog_opener(){
 
     check_ajax_referer( 'go_blog_opener' );
 
+
+
     $blog_post_id = ( ! empty( $_POST['blog_post_id'] ) ? (int) $_POST['blog_post_id'] : 0 );
 
     if(!empty($blog_post_id)) {
@@ -209,7 +211,6 @@ function go_blog_submit(){
         'post_content'  => $result,
         'post_status'   => 'publish',
         'post_author'   => $user_id,
-
 
     );
     if (empty($blog_post_id)) {

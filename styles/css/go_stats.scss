@@ -575,11 +575,6 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 .go_group_needed {
 	opacity: 0.3;
 	filter: alpha(opacity=30); /* msie */
-	background-color: white;
-}
-
-.go_badge_needed{
-	background-color: white;
 }
 
 .go_badge_needed img,
@@ -604,11 +599,15 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 /** Leaderboard Styles **/
 #go_leaderboard_flex{
 	display: flex;
+	flex-wrap: wrap;
+	font-size: .9em;
+
 }
 
 .go_leaderboard_layer {
 	padding: 10px;
 	flex-grow: 1;
+	flex-basis: 0;
 }
 .go_user_links{
 	display: flex;
@@ -622,7 +621,7 @@ body.wp-admin .go_stats_task_status.future_url.completed p {
 
 #go_leaderboard_wrapper thead,
 #go_leaderboard_wrapper .fg-toolbar{
-	display: none;
+	/**display: block;*/
 }
 
 .go_is_user td {

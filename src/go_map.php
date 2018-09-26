@@ -28,6 +28,7 @@ function go_map_activate() {
  */
 function go_make_single_map($last_map_id, $reload){
     global $wpdb;
+    $go_loot_table_name = "{$wpdb->prefix}go_loot";
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
     wp_nonce_field( 'go_update_last_map');
     $last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');//Query 1 - get the map
@@ -117,6 +118,10 @@ function go_make_single_map($last_map_id, $reload){
                     //$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
                     $stage_count = $custom_fields['go_stages'][0];//total stages
                     $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
+                    if(!isset($user_badges)){
+                        $user_badges =  $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+                        $user_badges = unserialize($user_badges);
+                    }
 
                     //$user_tasks is an array of task object arrays
                     //These next lines pull information from the array by
@@ -197,7 +202,7 @@ function go_make_single_map($last_map_id, $reload){
                     if($badge_ids) {
                         $badge_ids = unserialize($badge_ids);
                         foreach($badge_ids as $badge_id) {
-                            go_map_quest_badge($badge_id);
+                            go_map_quest_badge($badge_id, $user_badges);
                         }
                     }
 
@@ -237,15 +242,25 @@ function go_make_single_map($last_map_id, $reload){
 
 
                 $badge = get_term_meta($term_id, "pod_achievement", true);
-                go_map_badge($badge);
-                //go_map_quest_badge($badge);
+                if (!empty($badge)) {
+                    if(!isset($user_badges)){
+                        $user_badges =  $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+                        $user_badges = unserialize($user_badges);
+                    }
+                    go_map_badge($badge, $user_badges);
+                }
 
             }
             echo "</ul>";
         }
         $badge = get_term_meta($last_map_id, "pod_achievement", true);
-        go_map_badge($badge);
-        //go_map_quest_badge($badge);
+        if (!empty($badge)) {
+            if(!isset($user_badges)){
+                $user_badges =  $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+                $user_badges = unserialize($user_badges);
+            }
+            go_map_badge($badge, $user_badges);
+        }
 
 
 
@@ -257,6 +272,7 @@ function go_make_single_map($last_map_id, $reload){
 /**
  * @param $badge
  */
+/*
 function go_map_badge($badge){
     //does this term have a badge assigned and if so show it
 
@@ -276,8 +292,7 @@ function go_map_badge($badge){
         //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
         //$img_post = get_post( $badge_id );
         if ( ! empty( $badge_obj ) ) {
-            echo"<div class='go_badge_wrap'>
-                        <div class='go_badge_container '><figure class=go_badge title='{$badge_name}'>";
+            echo"<li class='go_badge_wrap go_badge_container '><figure class=go_badge title='{$badge_name}'>";
 
             if (!empty($badge_description)){
                 $badge_description = strip_tags($badge_description );
@@ -288,22 +303,50 @@ function go_map_badge($badge){
             echo "        
               				 <figcaption>{$badge_name}</figcaption>
                             </figure>
-                        </div>
-                       </div>";
+
+                       </li>";
 
         }
         //echo "</>";
 
     }
 }
+*/
 
 /**
  * @param $badge
  */
-function go_map_quest_badge($badge){
+function go_map_badge($badge, $user_badges = null){
     //does this term have a badge assigned and if so show it
+    if (in_array($badge, $user_badges)){
+        $task_color = 'done';
+        //$badge_needed = '';
+    }else{
+        $task_color = 'locked';
+        //$badge_needed = 'go_badge_needed';
+    }
+    echo "<li class='". $task_color . "'><a class='go_map_badge'>";
+    go_map_quest_badge($badge, $user_badges);
+    echo "</a></li>";
 
+}
+
+/**
+ * @param $badge
+ */
+function go_map_quest_badge($badge, $user_badges = null){
+    //does this term have a badge assigned and if so show it
+    if ($user_badges == null){
+        $user_badges = array();
+    }
     if($badge){
+        if (in_array($badge, $user_badges)){
+            //$task_color = 'done';
+            $badge_needed = '';
+        }else{
+            //$task_color = 'locked';
+            $badge_needed = 'go_badge_needed';
+        }
         $badge_img_id = get_term_meta( $badge, 'my_image' );
         $badge_description = term_description( $badge );
 
@@ -320,7 +363,7 @@ function go_map_quest_badge($badge){
         //$img_post = get_post( $badge_id );
         if ( ! empty( $badge_obj ) ) {
             echo"<div class='go_badge_quest_wrap'>
-                        <div class='go_badge_quest_container '><figure class=go_quest_badge title='{$badge_name}'>";
+                        <div class='go_badge_quest_container ". $badge_needed . "'><figure class=go_quest_badge title='{$badge_name}'>";
 
             if (!empty($badge_description)){
                 $badge_description = strip_tags($badge_description );

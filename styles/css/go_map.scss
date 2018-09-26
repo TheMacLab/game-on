@@ -255,11 +255,13 @@
 		background: url('../../../images/map/vertical-line.png') center top no-repeat !important;
 	}
 
-	.primaryNav li li a {
+	.primaryNav li li a,
+	.primaryNav .done a{
 		background-color: #cee3ac;
 		border-color: #b8da83;
 	}
-	.primaryNav li li a:hover {
+	.primaryNav li li a:hover,
+	.primaryNav .done a:hover{
 		border-color: #94b75f;
 		background-color: #e7f1d7;
 	}
@@ -274,6 +276,7 @@
 		font-style: italic;
 	}
 	/* --------	grey out colors --------- */
+	.primaryNav .locked a,
 	.primaryNav li .locked a,
 	.primaryNav li .locked a:hover {
 		background-color: #cccccc;
@@ -285,14 +288,12 @@
 	.primaryNav li .available a {
 		background-color: #fff7aa;
 		border-color: #e3ca4b;
-
 	}
-
 	.primaryNav li .available a:hover {
 		background-color: #fffce5;
 		border-color: #d1b62c;
-
 	}
+
 
 	.primaryNav li li:first-child {
 		padding-top: 30px;

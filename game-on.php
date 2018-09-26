@@ -5,12 +5,12 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 4.131
+Version: 4.132
 */
-$go_js_version = 4.131;
+$go_js_version = 4.132;
 global $go_js_version;
 
-$go_css_version = 4.131;
+$go_css_version = 4.132;
 global $go_css_version;
 
 include_once( 'includes/acf/acf.php' );
@@ -236,6 +236,7 @@ add_action( 'wp_ajax_go_stats_badges_list', 'go_stats_badges_list' );
 add_action( 'wp_ajax_go_stats_groups_list', 'go_stats_groups_list' );
 //add_action( 'wp_ajax_go_stats_leaderboard_choices', 'go_stats_leaderboard_choices' );
 add_action( 'wp_ajax_go_stats_leaderboard', 'go_stats_leaderboard' );
+add_action( 'wp_ajax_go_stats_leaderboard2', 'go_stats_leaderboard2' );
 add_action( 'wp_ajax_go_stats_lite', 'go_stats_lite' );
 add_action( 'wp_ajax_go_presets_reset', 'go_presets_reset' );
 add_action( 'wp_ajax_go_presets_save', 'go_presets_save' );
@@ -474,6 +475,50 @@ function go_admin_remove_notification() {
 
 	die( 'success' );
 }
+
+function go_make_contributor ($user_login, $user){
+    $roles = $user->roles;
+    $role = $roles[0];
+    if($role == "subscriber"){
+        $user->set_role('contributor');
+        $roles = $user->roles;
+        $role = $roles[0];
+        $role->add_cap( 'upload_files' );
+    }
+
+}
+//add_action('wp_login', 'go_make_contributor', 10, 2);
+
+/**
+ * Changes roles so subscribers can upload media
+ */
+function go_media_access() {
+    $role = get_role( 'subscriber' );
+    $role->add_cap( 'upload_files' );
+    //$role->add_cap( 'edit_posts' );
+
+    //$role = get_role( 'contributor' );
+    //$role->add_cap( 'upload_files' );
+
+}
+register_activation_hook( __FILE__, 'go_media_access' );
+
+
+function override_caps($allcaps){
+    //$role_name = 'subscriber';
+    //$role = get_role($role_name);
+    //$role->remove_cap('edit_posts');
+    //$allcaps = $role->capabilities;
+    if ( $_POST['action'] == 'parse-embed' ){ // override capabilities when embedding content in WYSIWIG
+        $role_name = 'contributor';
+        $role = get_role($role_name); // Get the role object by role name
+        $allcaps = $role->capabilities;  // Get the capabilities for the role
+        $allcaps['contributor'] = true;     // Add role name to capabilities
+    }
+    return $allcaps;
+}
+add_filter( 'user_has_cap', 'override_caps' );
+
 
 
 function go_default_map($user_login, $user){

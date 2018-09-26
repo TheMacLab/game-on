@@ -110,8 +110,8 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
                         case 'groups':
                             go_stats_groups_list();
                             break;
-                        case 'leaderboard':
-                            go_stats_leaderboard();
+                        case 'leaderboard2':
+                            go_stats_leaderboard2();
                             break;
 
 
@@ -539,24 +539,23 @@ function go_stats_groups_list() {
     }
 }
 
+/*
 function go_sort_leaders(tableID, column) {
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById(tableID);
     switching = true;
-    /*Make a loop that will continue until
-    no switching has been done:*/
+    //Make a loop that will continue until
+    //no switching has been done:
     console.log("switching");
     while (switching) {
         //start by saying: no switching is done:
         switching = false;
         rows = table.getElementsByTagName("TR");
-        /*Loop through all table rows (except the
-        first, which contains table headers):*/
+        //Loop through all table rows (except the first, which contains table headers):
         for (i = 1; i < (rows.length - 1); i++) {
             //start by saying there should be no switching:
             shouldSwitch = false;
-            /*Get the two elements you want to compare,
-            one from current row and one from the next:*/
+            //Get the two elements you want to compare, one from current row and one from the next:
             x = rows[i].getElementsByTagName("TD")[column];
             xVal = x.innerHTML;
             y = rows[i + 1].getElementsByTagName("TD")[column];
@@ -569,13 +568,13 @@ function go_sort_leaders(tableID, column) {
             }
         }
         if (shouldSwitch) {
-            /*If a switch has been marked, make the switch
-            and mark that a switch has been done:*/
+            //If a switch has been marked, make the switch and mark that a switch has been done:
             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
             switching = true;
         }
     }
 }
+*/
 
 //this is for the leaderboard on the stats page and the clipboard
 function go_filter_datatables() { //function that filters all tables on draw
@@ -667,8 +666,9 @@ function go_filter_datatables() { //function that filters all tables on draw
         });
 }
 
+/*
 function go_stats_leaderboard() {
-    jQuery( '#go_stats_lite_wrapper' ).remove();
+    //jQuery( '#go_stats_lite_wrapper' ).remove();
     jQuery("#go_leaderboard_wrapper").show();
     go_filter_datatables();
 
@@ -706,43 +706,66 @@ function go_stats_leaderboard() {
                         if (jQuery("#go_xp_leaders_datatable").length) {
 
                             //XP////////////////////////////
-							go_sort_leaders("go_xp_leaders_datatable", 4);
+							//go_sort_leaders("go_xp_leaders_datatable", 4);
 							var table = jQuery('#go_xp_leaders_datatable').DataTable({
 
 								//"paging": true,
 								"orderFixed": [[4, "desc"]],
 								//"destroy": true,
-								responsive: true,
+								responsive: false,
 								"autoWidth": false,
-								"paging": false,
+								"paging": true,
+                                "searching": false,
 								"columnDefs": [
-									{
+
+                                    {
+                                        "targets": [0],
+                                        "orderable": false
+                                    },
+                                    {
 										"targets": [1],
 										"visible": false
 									},
 									{
 										"targets": [2],
 										"visible": false
-									}
-								],
-								'createdRow': function (row, data, dataIndex) {
-									jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
-								}
+									},
+                                    {
+                                        "targets": [3],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [4],
+                                        "orderable": false
+                                    }
+								]
                         	});
+
+                            table.on( 'order.dt search.dt', function () {
+                                table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
                     	}
 
                         //GOLD
 
                         if (jQuery("#go_gold_leaders_datatable").length) {
-                            go_sort_leaders("go_gold_leaders_datatable", 4);
+                            //go_sort_leaders("go_gold_leaders_datatable", 4);
                             //console.log("________GOLD___________");
                             var table2 = jQuery('#go_gold_leaders_datatable').DataTable({
-                                "paging": false,
+                                "paging": true,
                                 "orderFixed": [[4, "desc"]],
                                 //"destroy": true,
-                                responsive: true,
+                                responsive: false,
                                 "autoWidth": false,
+                                "searching": false,
                                 "columnDefs": [
+
+                                    {
+                                        "targets": [0],
+                                        "orderable": false
+                                    },
                                     {
                                         "targets": [1],
                                         "visible": false
@@ -750,25 +773,42 @@ function go_stats_leaderboard() {
                                     {
                                         "targets": [2],
                                         "visible": false
+                                    },
+                                    {
+                                        "targets": [3],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [4],
+                                        "orderable": false
                                     }
-                                ],
-                                'createdRow': function (row, data, dataIndex) {
-                                    jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
-                                }
+                                ]
                             });
+
+                            table2.on( 'order.dt search.dt', function () {
+                                table2.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
                         }
 
                         //C4//////////////////
-                        if (jQuery("#go_c4_leaders_datatable").length) {
-                            go_sort_leaders("go_c4_leaders_datatable", 4);
+                        if (jQuery("#go_health_leaders_datatable").length) {
+                            //go_sort_leaders("go_c4_leaders_datatable", 4);
                             //console.log("________C4___________");
-                            var table3 = jQuery('#go_c4_leaders_datatable').DataTable({
-                                "paging": false,
+                            var table3 = jQuery('#go_health_leaders_datatable').DataTable({
+                                "paging": true,
                                 "orderFixed": [[4, "desc"]],
                                 //"destroy": true,
-                                responsive: true,
+                                responsive: false,
                                 "autoWidth": false,
+                                "searching": false,
                                 "columnDefs": [
+
+                                    {
+                                        "targets": [0],
+                                        "orderable": false
+                                    },
                                     {
                                         "targets": [1],
                                         "visible": false
@@ -776,25 +816,38 @@ function go_stats_leaderboard() {
                                     {
                                         "targets": [2],
                                         "visible": false
+                                    },
+                                    {
+                                        "targets": [3],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [4],
+                                        "orderable": false
                                     }
-                                ],
-                                'createdRow': function (row, data, dataIndex) {
-                                    jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
-                                }
+                                ]
                             });
+
+
+                            table3.on( 'order.dt search.dt', function () {
+                                table3.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
                         }
 
                         //BADGES
 
                         if (jQuery("#go_badges_leaders_datatable").length) {
-                            go_sort_leaders("go_badges_leaders_datatable", 4);
+                            //go_sort_leaders("go_badges_leaders_datatable", 4);
                             //console.log("________Badges___________");
                             var table4 = jQuery('#go_badges_leaders_datatable').DataTable({
-                                "paging": false,
+                                "paging": true,
                                 "orderFixed": [[4, "desc"]],
                                 //"destroy": true,
-                                responsive: true,
+                                responsive: false,
                                 "autoWidth": false,
+                                "searching": false,
                                 "columnDefs": [
                                     {
                                         "targets": [1],
@@ -804,12 +857,14 @@ function go_stats_leaderboard() {
                                         "targets": [2],
                                         "visible": false
                                     }
-                                ],
-                                'createdRow': function (row, data, dataIndex) {
-                                    jQuery(row).find('td:eq(0)').text(dataIndex + 1); //adds number to 1st column
-
-                                }
+                                ]
                             });
+
+                            table4.on( 'order.dt search.dt', function () {
+                                table4.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
                         }
 
 
@@ -821,13 +876,95 @@ function go_stats_leaderboard() {
                             if (jQuery("#go_gold_leaders_datatable").length) {
                                 table2.draw();
                             }
-                            if (jQuery("#go_c4_leaders_datatable").length) {
+                            if (jQuery("#go_health_leaders_datatable").length) {
                                 table3.draw();
                             }
                             if (jQuery("#go_badges_leaders_datatable").length) {
                                 table4.draw();
                             }
                         } );
+
+                //});
+
+            }
+        });
+    }
+}
+*/
+function go_stats_leaderboard2() {
+    //jQuery( '#go_stats_lite_wrapper' ).remove();
+    jQuery("#go_leaderboard2_wrapper").show();
+    go_filter_datatables();
+
+    //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
+    //remove from localized data and actions
+    var nonce_leaderboard = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard2;
+    if (jQuery("#go_leaderboard2_wrapper").length == 0) {
+        jQuery(".go_leaderboard2_wrapper").show();
+        jQuery.ajax({
+            type: 'post',
+            url: MyAjax.ajaxurl,
+            data: {
+                _ajax_nonce: nonce_leaderboard,
+                action: 'go_stats_leaderboard2',
+                user_id: jQuery('#go_stats_hidden_input').val()
+            },
+            success: function( raw ) {
+                console.log('success');
+                ////console.log(raw);
+                // parse the raw response to get the desired JSON
+                var res = {};
+                try {
+                    var res = JSON.parse( raw );
+                } catch (e) {
+                    console.log("parse_error");
+                }
+                ////console.log(res.xp_sticky);
+                //console.log(res.html);
+
+                jQuery('#stats_leaderboard2').html(res.html);
+
+
+                //jQuery(document).ready(function() {
+                console.log("________XP___________");
+                if (jQuery("#go_leaders_datatable").length) {
+
+                    //XP////////////////////////////
+                    //go_sort_leaders("go_xp_leaders_datatable", 4);
+                    var table5 = jQuery('#go_leaders_datatable').DataTable({
+                        //"orderFixed": [[4, "desc"]],
+                        //"destroy": true,
+                        responsive: false,
+                        "autoWidth": false,
+                        "paging": true,
+                        "order": [[4, "desc"]],
+                        "columnDefs": [
+
+                            {
+                                "targets": [1],
+                                "visible": false
+                            },
+                            {
+                                "targets": [2],
+                                "visible": false
+                            }
+                        ]
+                    });
+
+                    table5.on( 'order.dt search.dt', function () {
+                        table5.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                            cell.innerHTML = i+1;
+                        } );
+                    } ).draw();
+                }
+
+
+                // Event listener to the two range filtering inputs to redraw on input
+                jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
+                    if (jQuery("#go_leaders_datatable").length) {
+                        table.draw();
+                    }
+                } );
 
                 //});
 

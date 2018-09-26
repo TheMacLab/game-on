@@ -300,18 +300,34 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
         );
         //echo $post_id;
         //$post_link = get_permalink($post_id);
-        //echo "Post Link : <a href='" . $post_link . "' target='blank'>" . $post_link . "</a>";
+        //echo "<a href='" . $post_link . "' target='blank'>View/Edit Post</a>";
         $content_post = get_post($post_id);
         $content = $content_post->post_content;
+        $page_title = $content_post->post_title;
         //$content = apply_filters('the_content', $content);
-        //$content = str_replace(']]>', ']]&gt;', $content);
-        //$content = do_shortcode($content);
+        $content = str_replace(']]>', ']]&gt;', $content);
+        $content = do_shortcode($content);
+        if(isset($GLOBALS['wp_embed']))
+            $content  = $GLOBALS['wp_embed']->autoembed($content );
         ?><script>
             document.title = "<?php echo $page_title; ?>";
             jQuery( document ).ready(function() {
                 go_lightbox_blog_img();
             });
         </script><?php
+        echo "<h3>". $page_title . "</h3>";
+        echo '<button class="go_blog_opener" blog_post_id ="'.$post_id.'">edit post</button>';
+        ?>
+        <script>
+
+            jQuery( document ).ready( function() {
+                jQuery(".go_blog_opener").one("click", function(e){
+                    go_blog_opener( this );
+                });
+            });
+
+        </script>
+        <?php
         echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">" . $content . "</div>";
 
     }

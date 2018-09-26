@@ -111,11 +111,23 @@ $query = new WP_Query( $arg );
 // get query request
 $posts = $query->get_posts();
 
+//video options
+    $go_lightbox_switch = get_option( 'options_go_video_lightbox' );
+    $go_video_unit = get_option ('options_go_video_width_unit');
+    if ($go_video_unit == 'px'){
+        $go_fitvids_maxwidth = get_option('options_go_video_width_pixels')."px";
+    }
+    if ($go_video_unit == '%'){
+        $go_fitvids_maxwidth = get_option('options_go_video_width_percent')."%";
+    }
+
 // check if there's any results
 if ( empty($posts) ) {
     echo "Author doesn't have any posts";
 } else {
+    echo "<div id='go_wrapper' data-lightbox='{$go_lightbox_switch}' data-maxwidth='{$go_fitvids_maxwidth}' >";
     ?>
+
     <div class="go_blog_container1" style="display: flex; justify-content: center;">
     <div class="go_blog_container" style="    display: flex;
     justify-content: center;
@@ -127,8 +139,9 @@ if ( empty($posts) ) {
        $post = json_decode(json_encode($post), True);//convert stdclass to array by encoding and decoding
        $title =  $post['post_title'];
        $content =  $post['post_content'];
-
-       $content = apply_filters('the_content', $content);
+       $content  = $GLOBALS['wp_embed']->autoembed($content );
+       $content = do_shortcode(wpautop( $content  ) );
+       //$content = apply_filters('the_content', $content);
        //$content = str_replace(']]>', ']]&gt;', $content);
 
        //$content = do_shortcode($content);
@@ -174,6 +187,7 @@ if ($current_user_id === $user_id){
             'add_fragment' => '',
         ) );
     ?>
+    </div>
     </div>
     </div>
     </div>

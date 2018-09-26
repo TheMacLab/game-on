@@ -6,15 +6,6 @@
  * Time: 1:29 PM
  */
 
-/**
- * Changes roles so subscribers can upload media
- */
-function go_media_access() {
-    $role = get_role( 'subscriber' );
-    $role->add_cap( 'upload_files' );
-}
-register_activation_hook( __FILE__, 'go_media_access' );
-
 
 function go_wp_enqueue_media( $args = array() ) {
     // Enqueue me just once per page, please.
