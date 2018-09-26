@@ -509,7 +509,9 @@ function override_caps($allcaps){
     //$role = get_role($role_name);
     //$role->remove_cap('edit_posts');
     //$allcaps = $role->capabilities;
-    if ( $_POST['action'] == 'parse-embed' ){ // override capabilities when embedding content in WYSIWIG
+    $post_action = (isset($_POST['action']) ?  $_POST['action'] : null);
+
+    if ( $post_action == 'parse-embed' ){ // override capabilities when embedding content in WYSIWIG
         $role_name = 'contributor';
         $role = get_role($role_name); // Get the role object by role name
         $allcaps = $role->capabilities;  // Get the capabilities for the role
