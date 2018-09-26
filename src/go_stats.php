@@ -247,7 +247,7 @@ function go_admin_bar_stats() {
                 <li class="stats_tabs" tab="history"><a href="#stats_history">HISTORY</a></li>
                 <li class="stats_tabs" tab="badges"><a href="#stats_badges"><?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?></a></li>
                 <li class="stats_tabs" tab="groups"><a href="#stats_groups">GROUPS</a></li>
-                <li class="stats_tabs" tab="leaderboard2"><a href="#stats_leaderboard2"><?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?></a></li>
+                <li class="stats_tabs" tab="leaderboard"><a href="#stats_leaderboard"><?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?></a></li>
                 <?php
                 if (!$is_admin){
                     echo '<li class="stats_tabs" tab="about"><a href="#stats_about">ABOUT</a></li>';
@@ -272,7 +272,7 @@ function go_admin_bar_stats() {
             <div id="stats_history"></div>
             <div id="stats_badges"></div>
             <div id="stats_groups"></div>
-            <div id="stats_leaderboard2"></div>
+            <div id="stats_leaderboard"></div>
             <?php
              if(!$is_admin){
                     echo '<div id="stats_about"></div>';
@@ -2486,9 +2486,9 @@ function go_stats_lite(){
 /**
  *
  */
-function go_stats_leaderboard2() {
+function go_stats_leaderboard() {
     global $wpdb;
-    check_ajax_referer( 'go_stats_leaderboard2_' );
+    check_ajax_referer( 'go_stats_leaderboard_' );
     if ( ! empty( $_POST['user_id'] ) ) {
         $current_user_id = (int) $_POST['user_id'];
     }
@@ -2515,13 +2515,13 @@ function go_stats_leaderboard2() {
     ob_start();
     ?>
 
-    <div id="go_leaderboard2_wrapper" class="go_datatables">
-        <div id="go_leaderboard2_filters">
+    <div id="go_leaderboard_wrapper" class="go_datatables">
+        <div id="go_leaderboard_filters">
             <span>Section:<?php go_make_tax_select('user_go_sections'); ?></span>
             <span>Group:<?php go_make_tax_select('user_go_groups'); ?></span>
         </div>
 
-        <div id="go_leaderboard2_flex">
+        <div id="go_leaderboard_flex">
 
                 <div id="go_leaderboard" class="go_leaderboard_layer">
 

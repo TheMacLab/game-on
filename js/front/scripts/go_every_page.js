@@ -110,8 +110,8 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
                         case 'groups':
                             go_stats_groups_list();
                             break;
-                        case 'leaderboard2':
-                            go_stats_leaderboard2();
+                        case 'leaderboard':
+                            go_stats_leaderboard();
                             break;
 
 
@@ -891,22 +891,22 @@ function go_stats_leaderboard() {
     }
 }
 */
-function go_stats_leaderboard2() {
-    //jQuery( '#go_stats_lite_wrapper' ).remove();
-    jQuery("#go_leaderboard2_wrapper").show();
+function go_stats_leaderboard() {
+    jQuery( '#go_stats_lite_wrapper' ).remove();
+    jQuery("#go_leaderboard_wrapper").show();
     go_filter_datatables();
 
     //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
     //remove from localized data and actions
-    var nonce_leaderboard = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard2;
-    if (jQuery("#go_leaderboard2_wrapper").length == 0) {
-        jQuery(".go_leaderboard2_wrapper").show();
+    var nonce_leaderboard = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;
+    if (jQuery("#go_leaderboard_wrapper").length == 0) {
+        jQuery(".go_leaderboard_wrapper").show();
         jQuery.ajax({
             type: 'post',
             url: MyAjax.ajaxurl,
             data: {
                 _ajax_nonce: nonce_leaderboard,
-                action: 'go_stats_leaderboard2',
+                action: 'go_stats_leaderboard',
                 user_id: jQuery('#go_stats_hidden_input').val()
             },
             success: function( raw ) {
@@ -922,11 +922,11 @@ function go_stats_leaderboard2() {
                 ////console.log(res.xp_sticky);
                 //console.log(res.html);
 
-                jQuery('#stats_leaderboard2').html(res.html);
+                jQuery('#stats_leaderboard').html(res.html);
 
 
                 //jQuery(document).ready(function() {
-                console.log("________XP___________");
+                console.log("________here___________");
                 if (jQuery("#go_leaders_datatable").length) {
 
                     //XP////////////////////////////

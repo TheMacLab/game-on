@@ -55,7 +55,7 @@ function go_sounds( type ) {
 */
 function go_noty_close_oldest(){Noty.setMaxVisible(6);var e=jQuery("#noty_layout__topRight > div").length;0==e&&jQuery("#noty_layout__topRight").remove(),5<=e&&jQuery("#noty_layout__topRight > div").first().trigger("click")}function go_lightbox_blog_img(){jQuery("[class*= wp-image]").each(function(){var e;
 //console.log("fullsize:" + fullSize);
-if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var a,s=/.*wp-image/,o=jQuery(this).attr("class").replace(s,"wp-image"),r=jQuery(this).attr("src"),_=/-([^-]+).$/,n=/\.[0-9a-z]+$/i,i=r.match(n),t=r.replace(_,i);
+if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var a,s=/.*wp-image/,o=jQuery(this).attr("class").replace(s,"wp-image"),r=jQuery(this).attr("src"),_=/-([^-]+).$/,i=/\.[0-9a-z]+$/i,n=r.match(i),t=r.replace(_,n);
 //console.log(class1);
 //var patt = /w3schools/i;
 jQuery(this).featherlight(t)})}function go_admin_bar_stats_page_button(e){//this is called from the admin bar and is hard coded in the php code
@@ -71,7 +71,7 @@ var t=GO_EVERY_PAGE_DATA.nonces.go_admin_bar_stats;jQuery.ajax({type:"post",url:
                 */
 jQuery.featherlight(e,{variant:"stats"}),go_stats_task_list(),jQuery("#stats_tabs").tabs(),jQuery(".stats_tabs").click(function(){switch(
 //console.log("tabs");
-tab=jQuery(this).attr("tab"),tab){case"about":go_stats_about();break;case"tasks":go_stats_task_list();break;case"store":go_stats_item_list();break;case"history":go_stats_activity_list();break;case"badges":go_stats_badges_list();break;case"groups":go_stats_groups_list();break;case"leaderboard":go_stats_leaderboard();break;case"leaderboard2":go_stats_leaderboard2();break}}))}})}function go_stats_links(){jQuery(".go_user_link_stats").prop("onclick",null).off("click"),jQuery(".go_user_link_stats").one("click",function(){var e;go_admin_bar_stats_page_button(jQuery(this).attr("name"))})}function go_stats_about(e){console.log("about");
+tab=jQuery(this).attr("tab"),tab){case"about":go_stats_about();break;case"tasks":go_stats_task_list();break;case"store":go_stats_item_list();break;case"history":go_stats_activity_list();break;case"badges":go_stats_badges_list();break;case"groups":go_stats_groups_list();break;case"leaderboard":go_stats_leaderboard();break}}))}})}function go_stats_links(){jQuery(".go_user_link_stats").prop("onclick",null).off("click"),jQuery(".go_user_link_stats").one("click",function(){var e;go_admin_bar_stats_page_button(jQuery(this).attr("name"))})}function go_stats_about(e){console.log("about");
 //jQuery(".go_datatables").hide();
 var t=GO_EVERY_PAGE_DATA.nonces.go_stats_about;0==jQuery("#go_stats_about").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_stats_about",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&(console.log(e),console.log("about me"),
 //jQuery( '#go_stats_body' ).html( '' );
@@ -286,17 +286,240 @@ function go_sort_leaders(tableID, column) {
 function go_filter_datatables(){//function that filters all tables on draw
 jQuery.fn.dataTable.ext.search.push(function(e,t,a){var s=e.sTableId;
 //console.log(myTable);
-if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),_=jQuery("#go_clipboard_go_badges_select").val(),n=t[4],i=t[3],l=t[2];// use data for the filter by column
-console.log("data"+t),console.log("badges"+n),console.log("groups"+i),console.log("sections"+l),
+if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),_=jQuery("#go_clipboard_go_badges_select").val(),i=t[4],n=t[3],l=t[2];// use data for the filter by column
+console.log("data"+t),console.log("badges"+i),console.log("groups"+n),console.log("sections"+l),
 //console.log(sections);
-i=JSON.parse(i),console.log("groups"+i),
+n=JSON.parse(n),console.log("groups"+n),
 //sections = JSON.parse(sections);
-n=JSON.parse(n),console.log("badges"+n),console.log("sections"+l);var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,i))&&(u="none"==o||l==o),"go_clipboard_datatable"==s&&u&&(u="none"==_||-1!=jQuery.inArray(_,n)),u}if("go_xp_leaders_datatable"!=s&&"go_gold_leaders_datatable"!=s&&"go_c4_leaders_datatable"!=s&&"go_badges_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),i=t[2],l=t[1];// use data for the filter by column
-i=JSON.parse(i),l=JSON.parse(l);
+i=JSON.parse(i),console.log("badges"+i),console.log("sections"+l);var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||l==o),"go_clipboard_datatable"==s&&u&&(u="none"==_||-1!=jQuery.inArray(_,i)),u}if("go_xp_leaders_datatable"!=s&&"go_gold_leaders_datatable"!=s&&"go_c4_leaders_datatable"!=s&&"go_badges_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],l=t[1];// use data for the filter by column
+n=JSON.parse(n),l=JSON.parse(l);
 //badges = JSON.parse(badges);
-var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,i))&&(u="none"==o||-1!=jQuery.inArray(o,l)),u})}function go_stats_leaderboard(){
-//jQuery( '#go_stats_lite_wrapper' ).remove();
-jQuery("#go_leaderboard_wrapper").show(),go_filter_datatables();
+var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||-1!=jQuery.inArray(o,l)),u})}
+/*
+function go_stats_leaderboard() {
+    //jQuery( '#go_stats_lite_wrapper' ).remove();
+    jQuery("#go_leaderboard_wrapper").show();
+    go_filter_datatables();
+
+    //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
+    //remove from localized data and actions
+    var nonce_leaderboard = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;
+    if (jQuery("#go_leaderboard_wrapper").length == 0) {
+        jQuery(".go_leaderboard_wrapper").show();
+        jQuery.ajax({
+            type: 'post',
+            url: MyAjax.ajaxurl,
+            data: {
+                _ajax_nonce: nonce_leaderboard,
+                action: 'go_stats_leaderboard',
+                user_id: jQuery('#go_stats_hidden_input').val()
+            },
+            success: function( raw ) {
+                console.log('success');
+                ////console.log(raw);
+                // parse the raw response to get the desired JSON
+                var res = {};
+                try {
+                    var res = JSON.parse( raw );
+                } catch (e) {
+                    console.log("parse_error");
+                }
+                ////console.log(res.xp_sticky);
+                //console.log(res.html);
+
+                jQuery('#stats_leaderboard').html(res.html);
+
+
+					//jQuery(document).ready(function() {
+                        console.log("________XP___________");
+                        if (jQuery("#go_xp_leaders_datatable").length) {
+
+                            //XP////////////////////////////
+							//go_sort_leaders("go_xp_leaders_datatable", 4);
+							var table = jQuery('#go_xp_leaders_datatable').DataTable({
+
+								//"paging": true,
+								"orderFixed": [[4, "desc"]],
+								//"destroy": true,
+								responsive: false,
+								"autoWidth": false,
+								"paging": true,
+                                "searching": false,
+								"columnDefs": [
+
+                                    {
+                                        "targets": [0],
+                                        "orderable": false
+                                    },
+                                    {
+										"targets": [1],
+										"visible": false
+									},
+									{
+										"targets": [2],
+										"visible": false
+									},
+                                    {
+                                        "targets": [3],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [4],
+                                        "orderable": false
+                                    }
+								]
+                        	});
+
+                            table.on( 'order.dt search.dt', function () {
+                                table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
+                    	}
+
+                        //GOLD
+
+                        if (jQuery("#go_gold_leaders_datatable").length) {
+                            //go_sort_leaders("go_gold_leaders_datatable", 4);
+                            //console.log("________GOLD___________");
+                            var table2 = jQuery('#go_gold_leaders_datatable').DataTable({
+                                "paging": true,
+                                "orderFixed": [[4, "desc"]],
+                                //"destroy": true,
+                                responsive: false,
+                                "autoWidth": false,
+                                "searching": false,
+                                "columnDefs": [
+
+                                    {
+                                        "targets": [0],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [1],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [2],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [3],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [4],
+                                        "orderable": false
+                                    }
+                                ]
+                            });
+
+                            table2.on( 'order.dt search.dt', function () {
+                                table2.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
+                        }
+
+                        //C4//////////////////
+                        if (jQuery("#go_health_leaders_datatable").length) {
+                            //go_sort_leaders("go_c4_leaders_datatable", 4);
+                            //console.log("________C4___________");
+                            var table3 = jQuery('#go_health_leaders_datatable').DataTable({
+                                "paging": true,
+                                "orderFixed": [[4, "desc"]],
+                                //"destroy": true,
+                                responsive: false,
+                                "autoWidth": false,
+                                "searching": false,
+                                "columnDefs": [
+
+                                    {
+                                        "targets": [0],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [1],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [2],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [3],
+                                        "orderable": false
+                                    },
+                                    {
+                                        "targets": [4],
+                                        "orderable": false
+                                    }
+                                ]
+                            });
+
+
+                            table3.on( 'order.dt search.dt', function () {
+                                table3.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
+                        }
+
+                        //BADGES
+
+                        if (jQuery("#go_badges_leaders_datatable").length) {
+                            //go_sort_leaders("go_badges_leaders_datatable", 4);
+                            //console.log("________Badges___________");
+                            var table4 = jQuery('#go_badges_leaders_datatable').DataTable({
+                                "paging": true,
+                                "orderFixed": [[4, "desc"]],
+                                //"destroy": true,
+                                responsive: false,
+                                "autoWidth": false,
+                                "searching": false,
+                                "columnDefs": [
+                                    {
+                                        "targets": [1],
+                                        "visible": false
+                                    },
+                                    {
+                                        "targets": [2],
+                                        "visible": false
+                                    }
+                                ]
+                            });
+
+                            table4.on( 'order.dt search.dt', function () {
+                                table4.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                    cell.innerHTML = i+1;
+                                } );
+                            } ).draw();
+                        }
+
+
+                        // Event listener to the two range filtering inputs to redraw on input
+                        jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
+                            if (jQuery("#go_xp_leaders_datatable").length) {
+                                table.draw();
+                            }
+                            if (jQuery("#go_gold_leaders_datatable").length) {
+                                table2.draw();
+                            }
+                            if (jQuery("#go_health_leaders_datatable").length) {
+                                table3.draw();
+                            }
+                            if (jQuery("#go_badges_leaders_datatable").length) {
+                                table4.draw();
+                            }
+                        } );
+
+                //});
+
+            }
+        });
+    }
+}
+*/function go_stats_leaderboard(){jQuery("#go_stats_lite_wrapper").remove(),jQuery("#go_leaderboard_wrapper").show(),go_filter_datatables();
 //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
 //remove from localized data and actions
 var e=GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;0==jQuery("#go_leaderboard_wrapper").length&&(jQuery(".go_leaderboard_wrapper").show(),jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_leaderboard",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){console.log("success");
@@ -307,50 +530,7 @@ var t={};try{var t=JSON.parse(e)}catch(e){console.log("parse_error")}
 //console.log(res.html);
 if(jQuery("#stats_leaderboard").html(t.html),
 //jQuery(document).ready(function() {
-console.log("________XP___________"),jQuery("#go_xp_leaders_datatable").length){
-//XP////////////////////////////
-//go_sort_leaders("go_xp_leaders_datatable", 4);
-var a=jQuery("#go_xp_leaders_datatable").DataTable({
-//"paging": true,
-orderFixed:[[4,"desc"]],
-//"destroy": true,
-responsive:!1,autoWidth:!1,paging:!0,searching:!1,columnDefs:[{targets:[0],orderable:!1},{targets:[1],visible:!1},{targets:[2],visible:!1},{targets:[3],orderable:!1},{targets:[4],orderable:!1}]});a.on("order.dt search.dt",function(){a.column(0,{search:"applied",order:"applied"}).nodes().each(function(e,t){e.innerHTML=t+1})}).draw()}
-//GOLD
-if(jQuery("#go_gold_leaders_datatable").length){
-//go_sort_leaders("go_gold_leaders_datatable", 4);
-//console.log("________GOLD___________");
-var s=jQuery("#go_gold_leaders_datatable").DataTable({paging:!0,orderFixed:[[4,"desc"]],
-//"destroy": true,
-responsive:!1,autoWidth:!1,searching:!1,columnDefs:[{targets:[0],orderable:!1},{targets:[1],visible:!1},{targets:[2],visible:!1},{targets:[3],orderable:!1},{targets:[4],orderable:!1}]});s.on("order.dt search.dt",function(){s.column(0,{search:"applied",order:"applied"}).nodes().each(function(e,t){e.innerHTML=t+1})}).draw()}
-//C4//////////////////
-if(jQuery("#go_health_leaders_datatable").length){
-//go_sort_leaders("go_c4_leaders_datatable", 4);
-//console.log("________C4___________");
-var o=jQuery("#go_health_leaders_datatable").DataTable({paging:!0,orderFixed:[[4,"desc"]],
-//"destroy": true,
-responsive:!1,autoWidth:!1,searching:!1,columnDefs:[{targets:[0],orderable:!1},{targets:[1],visible:!1},{targets:[2],visible:!1},{targets:[3],orderable:!1},{targets:[4],orderable:!1}]});o.on("order.dt search.dt",function(){o.column(0,{search:"applied",order:"applied"}).nodes().each(function(e,t){e.innerHTML=t+1})}).draw()}
-//BADGES
-if(jQuery("#go_badges_leaders_datatable").length){
-//go_sort_leaders("go_badges_leaders_datatable", 4);
-//console.log("________Badges___________");
-var r=jQuery("#go_badges_leaders_datatable").DataTable({paging:!0,orderFixed:[[4,"desc"]],
-//"destroy": true,
-responsive:!1,autoWidth:!1,searching:!1,columnDefs:[{targets:[1],visible:!1},{targets:[2],visible:!1}]});r.on("order.dt search.dt",function(){r.column(0,{search:"applied",order:"applied"}).nodes().each(function(e,t){e.innerHTML=t+1})}).draw()}
-// Event listener to the two range filtering inputs to redraw on input
-jQuery("#go_user_go_sections_select, #go_user_go_groups_select").change(function(){jQuery("#go_xp_leaders_datatable").length&&a.draw(),jQuery("#go_gold_leaders_datatable").length&&s.draw(),jQuery("#go_health_leaders_datatable").length&&o.draw(),jQuery("#go_badges_leaders_datatable").length&&r.draw()})}}))}function go_stats_leaderboard2(){
-//jQuery( '#go_stats_lite_wrapper' ).remove();
-jQuery("#go_leaderboard2_wrapper").show(),go_filter_datatables();
-//var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
-//remove from localized data and actions
-var e=GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard2;0==jQuery("#go_leaderboard2_wrapper").length&&(jQuery(".go_leaderboard2_wrapper").show(),jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_leaderboard2",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){console.log("success");
-////console.log(raw);
-// parse the raw response to get the desired JSON
-var t={};try{var t=JSON.parse(e)}catch(e){console.log("parse_error")}
-////console.log(res.xp_sticky);
-//console.log(res.html);
-if(jQuery("#stats_leaderboard2").html(t.html),
-//jQuery(document).ready(function() {
-console.log("________XP___________"),jQuery("#go_leaders_datatable").length){
+console.log("________here___________"),jQuery("#go_leaders_datatable").length){
 //XP////////////////////////////
 //go_sort_leaders("go_xp_leaders_datatable", 4);
 var a=jQuery("#go_leaders_datatable").DataTable({
@@ -452,7 +632,7 @@ jQuery(".go_tasks_reset_multiple").prop("onclick",null).off("click"),a)//this is
 var o=[a];else for(//no user_id sent, this is from the clipboard and get user ids from checkboxes
 var t=jQuery(".go_checkbox:visible"),o=[],r=0;r<t.length;r++)!0===t[r].checked&&o.push(jQuery(t[r]).val());if(null==e&&"reset_multiple"==s)for(//this is a reset multiple quests from stats panel
 var t=jQuery(".go_checkbox:visible"),_=[],r=0;r<t.length;r++)!0===t[r].checked&&_.push(jQuery(t[r]).val());else//this is from the stats panel, so user_id was sent so stuff it in an array
-var _=[e];var n,i={action:"go_create_admin_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_create_admin_message,post_id:_,user_ids:o,message_type:s};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:i,success:function(e){
+var _=[e];var i,n={action:"go_create_admin_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_create_admin_message,post_id:_,user_ids:o,message_type:s};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:n,success:function(e){
 //console.log(results);
 jQuery.featherlight(e,{variant:"message"}),jQuery(".go_tax_select").select2(),jQuery("#go_message_submit").one("click",function(e){go_send_message(o,_,s)}),
 //clipboard
@@ -473,7 +653,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(s,this.id,"r
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,n=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=gold]").val()*n,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,u=jQuery("[name=health]").val()*l,c=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*c,d=jQuery("#go_messages_go_badges_select").val(),y=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),p=jQuery("#go_messages_user_go_groups_select").val(),j=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),h,b={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:i,health:u,c4:g,badges_toggle:y,badges:d,groups_toggle:j,groups:p};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:b,success:function(e){
+var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,i=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*i,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,u=jQuery("[name=health]").val()*l,c=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*c,d=jQuery("#go_messages_go_badges_select").val(),y=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),j=jQuery("#go_messages_user_go_groups_select").val(),p=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),h,m={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:n,health:u,c4:g,badges_toggle:y,badges:d,groups_toggle:p,groups:j};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:m,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()})}),String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,s=this.length-(e.length+t.length),o;return this.substr(a,s)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
 // Decimal floor
