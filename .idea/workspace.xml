@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_stats.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,11 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="go_every_page.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_every_page.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="319">
-              <caret line="928" column="53" selection-start-line="928" selection-start-column="53" selection-end-line="928" selection-end-column="53" />
+              <caret line="928" column="52" selection-start-line="928" selection-start-column="52" selection-end-line="928" selection-end-column="52" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="n#!!block;n#go_lightbox_blog_img#0" />
@@ -57,11 +55,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_media.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/go_media.php">
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+            <state relative-caret-position="544">
+              <caret line="6470" column="6" selection-start-line="6470" selection-start-column="6" selection-end-line="6470" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -183,7 +181,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>badge</find>
       <find>done</find>
       <find>locked</find>
       <find>message</find>
@@ -213,6 +210,7 @@
       <find>leader</find>
       <find>oard2</find>
       <find>go_leaders_datatable</find>
+      <find>________XP___________</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -225,7 +223,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/js/admin/dev/go_clipboard_combined.js" />
-        <option value="$PROJECT_DIR$/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/src/go_admin_menus.php" />
         <option value="$PROJECT_DIR$/src/go_ranks.php" />
         <option value="$PROJECT_DIR$/src/go_returns.php" />
@@ -275,6 +272,7 @@
         <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/src/go_stats.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
+        <option value="$PROJECT_DIR$/go_acf_groups.php" />
       </list>
     </option>
   </component>
@@ -511,12 +509,12 @@
       <workItem from="1537192729014" duration="34400000" />
       <workItem from="1537812504364" duration="14848000" />
       <workItem from="1537848747693" duration="6680000" />
-      <workItem from="1537894247662" duration="8119000" />
+      <workItem from="1537894247662" duration="8240000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2228926000" />
+    <option name="totallyTimeSpent" value="2229047000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -721,9 +719,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/front/scripts/go_notification.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/go_store.php" />
     <entry file="file://$PROJECT_DIR$/src/go_transients.php" />
     <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-hook.php">
@@ -945,7 +940,7 @@
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="319">
-          <caret line="928" column="53" selection-start-line="928" selection-start-column="53" selection-end-line="928" selection-end-column="53" />
+          <caret line="928" column="52" selection-start-line="928" selection-start-column="52" selection-end-line="928" selection-end-column="52" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="n#!!block;n#go_lightbox_blog_img#0" />
@@ -960,6 +955,13 @@
             <element signature="e#19967#21409#0" />
             <element signature="n#!!block;n#go_filter_datatables#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="6470" column="6" selection-start-line="6470" selection-start-column="6" selection-end-line="6470" selection-end-column="6" />
         </state>
       </provider>
     </entry>

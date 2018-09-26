@@ -5,7 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
-//add_filter('acf/settings/show_admin', '__return_false');
+add_filter('acf/settings/show_admin', '__return_false');
 
 
 if( function_exists('acf_add_local_field_group') ):
@@ -3646,7 +3646,7 @@ you only enter /map',
                                         'key' => 'field_5b1b1f4210e04',
                                         'label' => 'Badges',
                                         'name' => 'badge',
-                                        'type' => 'taxonomy',
+                                        'type' => 'taxonomy2',
                                         'instructions' => '',
                                         'required' => 0,
                                         'conditional_logic' => array(
@@ -3666,8 +3666,8 @@ you only enter /map',
                                         'taxonomy' => 'go_badges',
                                         'field_type' => 'multi_select',
                                         'allow_null' => 0,
-                                        'add_term' => 0,
-                                        'save_terms' => 1,
+                                        'add_term' => 1,
+                                        'save_terms' => 0,
                                         'load_terms' => 0,
                                         'return_format' => 'id',
                                         'multiple' => 0,
@@ -6081,7 +6081,7 @@ The master password that is set in the options page will work here, but you may 
                             'id' => '',
                         ),
                         'default_value' => '',
-                        'tabs' => 'visual',
+                        'tabs' => 'all',
                         'toolbar' => 'full',
                         'media_upload' => 1,
                         'delay' => 0,
