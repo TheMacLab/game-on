@@ -630,7 +630,7 @@ function go_filter_datatables() { //function that filters all tables on draw
                 }
                 return inlist;
             }
-            else if (mytable == "go_xp_leaders_datatable" || mytable == "go_gold_leaders_datatable" || mytable == "go_c4_leaders_datatable" || mytable == "go_badges_leaders_datatable") {
+            else if (mytable == "go_leaders_datatable") {
                 var section = jQuery('#go_user_go_sections_select').val();
                 var group = jQuery('#go_user_go_groups_select').val();
 
@@ -931,7 +931,7 @@ function go_stats_leaderboard() {
 
                     //XP////////////////////////////
                     //go_sort_leaders("go_xp_leaders_datatable", 4);
-                    var table5 = jQuery('#go_leaders_datatable').DataTable({
+                    var table = jQuery('#go_leaders_datatable').DataTable({
                         //"orderFixed": [[4, "desc"]],
                         //"destroy": true,
                         responsive: false,
@@ -951,8 +951,8 @@ function go_stats_leaderboard() {
                         ]
                     });
 
-                    table5.on( 'order.dt search.dt', function () {
-                        table5.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    table.on( 'order.dt search.dt', function () {
+                        table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                             cell.innerHTML = i+1;
                         } );
                     } ).draw();

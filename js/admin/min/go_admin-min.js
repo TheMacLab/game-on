@@ -291,7 +291,7 @@ console.log("data"+t),console.log("badges"+i),console.log("groups"+n),console.lo
 //console.log(sections);
 n=JSON.parse(n),console.log("groups"+n),
 //sections = JSON.parse(sections);
-i=JSON.parse(i),console.log("badges"+i),console.log("sections"+l);var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||l==o),"go_clipboard_datatable"==s&&u&&(u="none"==_||-1!=jQuery.inArray(_,i)),u}if("go_xp_leaders_datatable"!=s&&"go_gold_leaders_datatable"!=s&&"go_c4_leaders_datatable"!=s&&"go_badges_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],l=t[1];// use data for the filter by column
+i=JSON.parse(i),console.log("badges"+i),console.log("sections"+l);var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||l==o),"go_clipboard_datatable"==s&&u&&(u="none"==_||-1!=jQuery.inArray(_,i)),u}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],l=t[1];// use data for the filter by column
 n=JSON.parse(n),l=JSON.parse(l);
 //badges = JSON.parse(badges);
 var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||-1!=jQuery.inArray(o,l)),u})}
@@ -538,7 +538,7 @@ var a=jQuery("#go_leaders_datatable").DataTable({
 //"destroy": true,
 responsive:!1,autoWidth:!1,paging:!0,order:[[4,"desc"]],columnDefs:[{targets:[1],visible:!1},{targets:[2],visible:!1}]});a.on("order.dt search.dt",function(){a.column(0,{search:"applied",order:"applied"}).nodes().each(function(e,t){e.innerHTML=t+1})}).draw()}
 // Event listener to the two range filtering inputs to redraw on input
-jQuery("#go_user_go_sections_select, #go_user_go_groups_select").change(function(){jQuery("#go_leaders_datatable").length&&table.draw()})}}))}function go_stats_lite(e){
+jQuery("#go_user_go_sections_select, #go_user_go_groups_select").change(function(){jQuery("#go_leaders_datatable").length&&a.draw()})}}))}function go_stats_lite(e){
 //jQuery(".go_datatables").hide();
 var t=GO_EVERY_PAGE_DATA.nonces.go_stats_lite;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_stats_lite",uid:e},success:function(e){-1!==e&&(
 //jQuery( '#go_stats_body' ).html( '' );

@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,11 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="go_every_page.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="go_every_page.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="928" column="52" selection-start-line="928" selection-start-column="52" selection-end-line="928" selection-end-column="52" />
+            <state relative-caret-position="184">
+              <caret line="954" column="29" selection-start-line="954" selection-start-column="29" selection-end-line="954" selection-end-column="29" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="n#!!block;n#go_lightbox_blog_img#0" />
@@ -49,16 +52,16 @@
                 <element signature="n#!!block;n#go_stats_badges_list#0" />
                 <element signature="n#!!block;n#go_stats_groups_list#0" />
                 <element signature="e#19967#21409#0" />
-                <element signature="n#!!block;n#go_filter_datatables#0" />
+                <element signature="e#24869#34558#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
+            <state relative-caret-position="1202">
               <caret line="6470" column="6" selection-start-line="6470" selection-start-column="6" selection-end-line="6470" selection-end-column="6" />
             </state>
           </provider>
@@ -79,8 +82,8 @@
       <file leaf-file-name="go_stats.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/go_stats.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="2527" column="51" selection-start-line="2527" selection-start-column="51" selection-end-line="2527" selection-end-column="51" />
+            <state relative-caret-position="126">
+              <caret line="2518" column="39" selection-start-line="2518" selection-start-column="17" selection-end-line="2518" selection-end-column="39" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
@@ -181,8 +184,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>done</find>
-      <find>locked</find>
       <find>message</find>
       <find>go_wrapper</find>
       <find>#cee3ac</find>
@@ -209,8 +210,10 @@
       <find>lite</find>
       <find>leader</find>
       <find>oard2</find>
-      <find>go_leaders_datatable</find>
       <find>________XP___________</find>
+      <find>filters</find>
+      <find>go_filter_datatables</find>
+      <find>go_leaders_datatable</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -271,8 +274,8 @@
         <option value="$PROJECT_DIR$/src/go_blogs.php" />
         <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/src/go_stats.php" />
-        <option value="$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
         <option value="$PROJECT_DIR$/go_acf_groups.php" />
+        <option value="$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
       </list>
     </option>
   </component>
@@ -509,12 +512,12 @@
       <workItem from="1537192729014" duration="34400000" />
       <workItem from="1537812504364" duration="14848000" />
       <workItem from="1537848747693" duration="6680000" />
-      <workItem from="1537894247662" duration="8240000" />
+      <workItem from="1537894247662" duration="8844000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2229047000" />
+    <option name="totallyTimeSpent" value="2229651000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -919,10 +922,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1202">
+          <caret line="6470" column="6" selection-start-line="6470" selection-start-column="6" selection-end-line="6470" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/go_stats.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="2527" column="51" selection-start-line="2527" selection-start-column="51" selection-end-line="2527" selection-end-column="51" />
+        <state relative-caret-position="126">
+          <caret line="2518" column="39" selection-start-line="2518" selection-start-column="17" selection-end-line="2518" selection-end-column="39" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
@@ -939,8 +949,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="928" column="52" selection-start-line="928" selection-start-column="52" selection-end-line="928" selection-end-column="52" />
+        <state relative-caret-position="184">
+          <caret line="954" column="29" selection-start-line="954" selection-start-column="29" selection-end-line="954" selection-end-column="29" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="n#!!block;n#go_lightbox_blog_img#0" />
@@ -953,15 +963,8 @@
             <element signature="n#!!block;n#go_stats_badges_list#0" />
             <element signature="n#!!block;n#go_stats_groups_list#0" />
             <element signature="e#19967#21409#0" />
-            <element signature="n#!!block;n#go_filter_datatables#0" />
+            <element signature="e#24869#34558#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="6470" column="6" selection-start-line="6470" selection-start-column="6" selection-end-line="6470" selection-end-column="6" />
         </state>
       </provider>
     </entry>
