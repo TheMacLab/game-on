@@ -35,7 +35,7 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
      */
     $go_lock_toggle = (isset($custom_fields['go_lock_toggle'][0]) ?  $custom_fields['go_lock_toggle'][0] : null);
     $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
-    if ($go_lock_toggle == true && $go_password_lock == true){
+    if ($go_lock_toggle == true || $go_password_lock == true){
         $task_is_locked = true;
     }
 
@@ -78,8 +78,6 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
      * Loop to check all the locks and keys
      */
     if ($custom_fields['go_lock_toggle'][0] == true ) {
-
-
         if (!$check_only) {
             $task_caps = ucwords($task_name);
             $lock_message = (isset($custom_fields['go_lock_message'][0]) ?  $custom_fields['go_lock_message'][0] : null);
@@ -114,7 +112,7 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
                 }
 
                 if ($this_lock == true){
-                    $task_is_locked = true;
+                    $task_is_locked_locks = true;
                     $this_lock_on = true;
                 }
             }
@@ -132,7 +130,7 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
         if (!$check_only) {
             echo '</div>';
             $message1 = ob_get_clean();
-            if($task_is_locked && $print_locks == true) {
+            if($task_is_locked_locks && $print_locks == true) {
                 echo $message1;
             }
         }
@@ -598,9 +596,9 @@ function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
  * @return bool
  */
 function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only){
-    if( $is_logged_in || !$is_logged_in) {
+    //if( $is_logged_in || !$is_logged_in) {
         $is_locked = true;
-        $user_terms = array();
+        //$user_terms = array();
         $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
         $user_terms = array();
         for ($i = 0; $i < $num_terms; $i++) {
@@ -620,18 +618,20 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
         //loop through the locks to see if any one of them allows the user to proceed
         for ($i = 0; $i < $sched_num; $i++) {
             $dow_section = "go_sched_opt_" . $i . "_sched_sections";
-
             $dow_section = (isset($custom_fields[$dow_section][0]) ?  unserialize($custom_fields[$dow_section][0]) : null);
 
             if (!$dow_section){
                 $dow_section = array();
             }
+
             $dow_days = "go_sched_opt_" . $i . "_dow";
             $dow_days = (isset($custom_fields[$dow_days][0]) ?  unserialize($custom_fields[$dow_days][0]) : null);
             if (!$dow_days){$dow_days = array();}
 
+            $current_time = current_time('Y-m-d');
             $dow_time = "go_sched_opt_" . $i . "_time";
             $dow_time = (isset($custom_fields[$dow_time][0]) ?  $custom_fields[$dow_time][0] : null);
+            $dow_time = $current_time ." ". $dow_time;
             $dow_time = strtotime($dow_time);
             //$offset = 3600 * get_option('gmt_offset');
             //$dow_time = $dow_time + $offset;
@@ -647,8 +647,10 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
 
             //If the user is in at least one section, continue . . .
             if ((array_intersect($user_terms, $dow_section) != null) || (empty ($dow_section))) {
-                //If today is one of the days it ulocks
-                if (in_array(date("l"), $dow_days)) {
+                //If today is one of the days it unlocks
+
+                //$current_time = date( 'l', $current_time );
+                if (in_array(date( 'l', $current_time ), $dow_days)) {
 
                     //if the current time is between the start time and the start time and the minutes unlocked
                     if (($current_time >= $dow_time) && ($current_time < ( $dow_time + $seconds_available ))) {
@@ -718,11 +720,14 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
 
                     if (!empty ($dow_section)) {
                         print_r(implode(" & ", $dow_section));
-                        echo ' on ';
+                        //echo ' on ';
                     } else {
-                        echo 'All Classes on ';
+                        echo 'All Classes';
                     }
-                    print_r(implode(" & ", $dow_days));
+                    if (!empty($dow_days)){
+                        echo " on";
+                        print_r(implode(" & ", $dow_days));
+                    }
                     echo " @ ";
                     echo date('g:iA', $dow_time);
                     echo " for " . $dow_minutes . " minutes.";
@@ -735,10 +740,12 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
 
                 echo '</div>';
             }
-            return $is_locked;
-        }
+
+       // }
 
     }
+    return $is_locked;
+
 }
 
 //gets the last non optional task on a task chain

@@ -44,10 +44,31 @@ function go_the_lb_ajax() {
     }
 
     $task_is_locked = false;
-    if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true ) {
+    if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true || $custom_fields['go_password_lock'][0] == true ) {
         $task_is_locked = go_task_locks($post_id, $user_id, "Item", $custom_fields, $is_logged_in, false);
     }
 
+    $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
+    //Get option (show password field) from custom fields
+    if (($task_is_locked || $go_password_lock) && $is_logged_in) {
+        //Show password unlock
+        ?>
+        <div class='go_lock'><h3>Unlock</h3><input id='go_store_password_result' class='clickable' type='password' placeholder='Enter Password'>
+            <div id="go_store_buttons" style="overflow: auto; position: relative; padding: 10px; min-height: 40px;">
+                <p id='go_store_error_msg' style='display: none; color: red;'></p>
+                <button style="float: right; cursor: pointer;" id="go_store_pass_button" class="progress" check_type="unlock_store" button_type="continue" admin_lock="true">Submit</button>
+            </div>
+        </div>
+        <script>
+            jQuery( document ).ready( function() {
+                jQuery('#go_store_pass_button').one("click", function(e){
+                    go_store_password( this );
+                });
+            });
+        </script>
+
+    <?php
+    }
     //$task_is_locked = go_display_locks($post_id, $user_id, $is_admin, 'item', $badge_name, $custom_fields, $is_logged_in, 'Item');
     if ($task_is_locked){
         return null;

@@ -526,9 +526,12 @@ function go_print_1_message ( $custom_fields, $i ){
     $content = $custom_fields[$key][0];
     $message = ( ! empty( $content ) ? $content : '' ); // Completion Message
     //adds oembed to content
-    if(isset($GLOBALS['wp_embed']))
-        $message  = $GLOBALS['wp_embed']->autoembed($message );
-    echo "<div id='message_" . $i . "' class='go_stage_message'  style='display: none;'>".do_shortcode(wpautop( $message  ) )."</div>";
+    //if(isset($GLOBALS['wp_embed']))
+    //    $message  = $GLOBALS['wp_embed']->autoembed($message );
+    //echo "<div id='message_" . $i . "' class='go_stage_message'  style='display: none;'>".do_shortcode(wpautop( $message  ) )."</div>";
+
+    $message  = apply_filters( 'go_awesome_text', $message );
+    echo "<div id='message_" . $i . "' class='go_stage_message'  style='display: none;'>". $message ."</div>";
 }
 
 /**
@@ -762,7 +765,7 @@ function go_task_render_chain_pagination ( $task_id, $custom_fields ) {
         return false;
     }
 
-    echo"<div>";
+    echo"<div style='height: 100px;'>";
     if (isset($prev_link)){
         echo "<div style='float: left;'><p>Previous:<br><a href='$prev_link'>$prev_title</a></p></div> ";
     }
@@ -839,7 +842,8 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     //$custom_fields = get_post_custom( $post_id );
     $task_name = strtolower( get_option( 'options_go_tasks_name_singular' ) );
     $outro_message = (isset($custom_fields['go_outro_message'][0]) ?  $custom_fields['go_outro_message'][0] : null);
-    $outro_message = do_shortcode($outro_message);
+    //$outro_message = do_shortcode($outro_message);
+    $outro_message  = apply_filters( 'go_awesome_text', $outro_message );
     $loot = $wpdb->get_results ("SELECT * FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}" );
     $loot = $loot[0];
     if (get_option( 'options_go_loot_xp_toggle' )){
@@ -931,6 +935,7 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
 function go_print_bonus_stage ($user_id, $post_id, $custom_fields){
     $bonus_status = go_get_bonus_status($post_id, $user_id);
     $content = (isset($custom_fields['go_bonus_stage_content'][0]) ?  $custom_fields['go_bonus_stage_content'][0] : null);
+    $content  = apply_filters( 'go_awesome_text', $content );
 
     $bonus_stage_name =  get_option( 'options_go_tasks_bonus_stage' );
     $repeat_max = (isset($custom_fields['go_bonus_limit'][0]) ?  $custom_fields['go_bonus_limit'][0] : null);

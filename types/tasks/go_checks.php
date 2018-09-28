@@ -36,9 +36,13 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     }
 
     if (isset($custom_fields['go_stages_' . $i . '_instructions'][0]) && (!$bonus)) {
-        $instructions = "<div class='go_call_to_action'>" . $custom_fields['go_stages_' . $i . '_instructions'][0] . " </div>";
+        $instructions = $custom_fields['go_stages_' . $i . '_instructions'][0];
+        $instructions = apply_filters( 'go_awesome_text', $instructions );
+        $instructions = "<div class='go_call_to_action'>" . $instructions . " </div>";
     } else if (isset($custom_fields['go_bonus_stage_instructions'][0]) && ($bonus)) {
-        $instructions = "<div class='go_call_to_action'>" . $custom_fields['go_bonus_stage_instructions'][0] . " </div>";
+        $instructions = $custom_fields['go_bonus_stage_instructions'][0];
+        $instructions = apply_filters( 'go_awesome_text', $instructions );
+        $instructions = "<div class='go_call_to_action'>" . $instructions . " </div>";
     }else {
         $instructions = null;
     }
@@ -305,10 +309,11 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
         $content = $content_post->post_content;
         $page_title = $content_post->post_title;
         //$content = apply_filters('the_content', $content);
-        $content = str_replace(']]>', ']]&gt;', $content);
-        $content = do_shortcode($content);
-        if(isset($GLOBALS['wp_embed']))
-            $content  = $GLOBALS['wp_embed']->autoembed($content );
+        //$content = str_replace(']]>', ']]&gt;', $content);
+        //$content = do_shortcode($content);
+        $content  = apply_filters( 'go_awesome_text', $content );
+        //if(isset($GLOBALS['wp_embed']))
+            //$content  = $GLOBALS['wp_embed']->autoembed($content );
         ?><script>
             document.title = "<?php echo $page_title; ?>";
             jQuery( document ).ready(function() {

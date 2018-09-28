@@ -2534,16 +2534,16 @@ function go_stats_leaderboard() {
                             <th class='header'><a href="#">Name</a></th>
             <?php
                 if($xp_toggle){
-                    echo "<th class='header'><a href=''#'>" . $xp_name . "</a></th>";
+                    echo "<th class='header'><a href='#'>" . $xp_name . "</a></th>";
                 }
                 if($gold_toggle){
-                    echo "<th class='header'><a href=''#'>" . $gold_name . "</a></th>";
+                    echo "<th class='header'><a href='#'>" . $gold_name . "</a></th>";
                 }
                 if($health_toggle){
-                    echo "<th class='header'><a href=''#'>" . $health_name . "</a></th>";
+                    echo "<th class='header'><a href='#'>" . $health_name . "</a></th>";
                 }
                 if($badges_toggle){
-                    echo "<th class='header'><a href=''#'>" . $badges_name . "</a></th>";
+                    echo "<th class='header'><a href='#'>" . $badges_name . "</a></th>";
                 }
             ?>
 

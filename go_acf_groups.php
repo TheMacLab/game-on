@@ -5,7 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
-add_filter('acf/settings/show_admin', '__return_false');
+//add_filter('acf/settings/show_admin', '__return_false');
 
 
 if( function_exists('acf_add_local_field_group') ):
@@ -3836,6 +3836,46 @@ you only enter /map',
                     ),
                 ),
             ),
+            array(
+                'key' => 'field_5baddeb26be92',
+                'label' => 'Show Password Box',
+                'name' => 'go_password_lock',
+                'type' => 'true_false',
+                'instructions' => 'Show a box to users for a password.	This will prompt them to get a password from a teacher or provide instructions in the lock message field above on how to get the password elsewhere in the game.
+
+The master password that is set in the options page will work here, but you may also set another password that is specific to this lock.',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'message' => '',
+                'default_value' => 0,
+                'ui' => 1,
+                'ui_on_text' => 'On',
+                'ui_off_text' => 'Off',
+            ),
+            array(
+                'key' => 'field_5baddec36be93',
+                'label' => 'Unlock Password',
+                'name' => 'go_unlock_password',
+                'type' => 'text',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'default_value' => '',
+                'placeholder' => 'Optional password.',
+                'prepend' => '',
+                'append' => '',
+                'maxlength' => '',
+            ),
         ),
         'location' => array(
             array(
@@ -4669,7 +4709,7 @@ you only enter /map',
                         'label' => 'Days of Week Available',
                         'name' => 'dow',
                         'type' => 'select',
-                        'instructions' => '',
+                        'instructions' => 'Optional',
                         'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
@@ -5227,15 +5267,7 @@ you only enter /map',
 
 The master password that is set in the options page will work here, but you may also set another password that is specific to this lock.',
                 'required' => 0,
-                'conditional_logic' => array(
-                    array(
-                        array(
-                            'field' => 'field_5ac134b37858a',
-                            'operator' => '==',
-                            'value' => '1',
-                        ),
-                    ),
-                ),
+                'conditional_logic' => 0,
                 'wrapper' => array(
                     'width' => '',
                     'class' => '',
@@ -5452,7 +5484,7 @@ The master password that is set in the options page will work here, but you may 
                         'key' => 'field_5ae79e3fb5228',
                         'label' => 'Call to Action',
                         'name' => 'instructions',
-                        'type' => 'textarea',
+                        'type' => 'wysiwyg',
                         'instructions' => '',
                         'required' => 0,
                         'conditional_logic' => 0,
@@ -5462,10 +5494,10 @@ The master password that is set in the options page will work here, but you may 
                             'id' => '',
                         ),
                         'default_value' => '',
-                        'placeholder' => '',
-                        'maxlength' => '',
-                        'rows' => 4,
-                        'new_lines' => '',
+                        'tabs' => 'all',
+                        'toolbar' => 'full',
+                        'media_upload' => 1,
+                        'delay' => 0,
                     ),
                     array(
                         'key' => 'field_5ac134fe12f57',
@@ -6191,7 +6223,7 @@ The master password that is set in the options page will work here, but you may 
                         'key' => 'field_5afa59e675cec',
                         'label' => 'Call to Action',
                         'name' => 'instructions',
-                        'type' => 'textarea',
+                        'type' => 'wysiwyg',
                         'instructions' => '',
                         'required' => 0,
                         'conditional_logic' => 0,
@@ -6201,10 +6233,10 @@ The master password that is set in the options page will work here, but you may 
                             'id' => '',
                         ),
                         'default_value' => '',
-                        'placeholder' => 'optional',
-                        'maxlength' => '',
-                        'rows' => 4,
-                        'new_lines' => '',
+                        'tabs' => 'all',
+                        'toolbar' => 'full',
+                        'media_upload' => 1,
+                        'delay' => 0,
                     ),
                     array(
                         'key' => 'field_5a8b14a6f32fa',

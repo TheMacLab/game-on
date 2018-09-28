@@ -13,7 +13,7 @@ function go_sounds( type ) {
 */
 function go_noty_close_oldest(){Noty.setMaxVisible(6);var e=jQuery("#noty_layout__topRight > div").length;0==e&&jQuery("#noty_layout__topRight").remove(),5<=e&&jQuery("#noty_layout__topRight > div").first().trigger("click")}function go_lightbox_blog_img(){jQuery("[class*= wp-image]").each(function(){var e;
 //console.log("fullsize:" + fullSize);
-if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var a,s=/.*wp-image/,o=jQuery(this).attr("class").replace(s,"wp-image"),r=jQuery(this).attr("src"),i=/-([^-]+).$/,n=/\.[0-9a-z]+$/i,_=r.match(n),t=r.replace(i,_);
+if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var a,o=/.*wp-image/,s=jQuery(this).attr("class").replace(o,"wp-image"),r=jQuery(this).attr("src"),i=/-([^-]+).$/,n=/\.[0-9a-z]+$/i,_=r.match(n),t=r.replace(i,_);
 //console.log(class1);
 //var patt = /w3schools/i;
 jQuery(this).featherlight(t)})}function go_admin_bar_stats_page_button(e){//this is called from the admin bar and is hard coded in the php code
@@ -242,17 +242,17 @@ function go_sort_leaders(tableID, column) {
 */
 //this is for the leaderboard on the stats page and the clipboard
 function go_filter_datatables(){//function that filters all tables on draw
-jQuery.fn.dataTable.ext.search.push(function(e,t,a){var s=e.sTableId;
+jQuery.fn.dataTable.ext.search.push(function(e,t,a){var o=e.sTableId;
 //console.log(myTable);
-if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),i=jQuery("#go_clipboard_go_badges_select").val(),n=t[4],_=t[3],l=t[2];// use data for the filter by column
+if("go_clipboard_stats_datatable"==o||"go_clipboard_messages_datatable"==o||"go_clipboard_activity_datatable"==o){var s=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),i=jQuery("#go_clipboard_go_badges_select").val(),n=t[4],_=t[3],l=t[2];// use data for the filter by column
 console.log("data"+t),console.log("badges"+n),console.log("groups"+_),console.log("sections"+l),
 //console.log(sections);
 _=JSON.parse(_),console.log("groups"+_),
 //sections = JSON.parse(sections);
-n=JSON.parse(n),console.log("badges"+n),console.log("sections"+l);var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,_))&&(c="none"==o||l==o),"go_clipboard_datatable"==s&&c&&(c="none"==i||-1!=jQuery.inArray(i,n)),c}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),_=t[2],l=t[1];// use data for the filter by column
+n=JSON.parse(n),console.log("badges"+n),console.log("sections"+l);var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,_))&&(c="none"==s||l==s),"go_clipboard_datatable"==o&&c&&(c="none"==i||-1!=jQuery.inArray(i,n)),c}if("go_leaders_datatable"!=o)return!0;var s=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),_=t[2],l=t[1];// use data for the filter by column
 _=JSON.parse(_),l=JSON.parse(l);
 //badges = JSON.parse(badges);
-var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,_))&&(c="none"==o||-1!=jQuery.inArray(o,l)),c})}
+var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,_))&&(c="none"==s||-1!=jQuery.inArray(s,l)),c})}
 /*
 function go_stats_leaderboard() {
     //jQuery( '#go_stats_lite_wrapper' ).remove();
@@ -522,11 +522,11 @@ t=t.toString().split("e"),+((
 t=(t=Math[e](+(t[0]+"e"+(t[1]?+t[1]-a:-a)))).toString().split("e"))[0]+"e"+(t[1]?+t[1]+a:a))))}
 // Decimal round
 //open the lightbox for the store items
-function go_lb_opener(e){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var t=e,a,s={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:t},o="<?php echo admin_url( '/admin-ajax.php' ); ?>";
+function go_lb_opener(e){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var t=e,a,o={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:t},s="<?php echo admin_url( '/admin-ajax.php' ); ?>";
 //jQuery.ajaxSetup({ cache: true });
 jQuery.ajax({
 //url: url_action,
-url:MyAjax.ajaxurl,type:"POST",data:s,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
+url:MyAjax.ajaxurl,type:"POST",data:o,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
 //jQuery( "#lb-content" ).append(results);
 jQuery.featherlight(e,{variant:"store"}),jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),
 //window.go_req_currency = jQuery( '#golb-fr-price' ).attr( 'req' );
@@ -566,14 +566,37 @@ var t=go_purchase_limit;
                 }
                 */jQuery("#go_qty").spinner({max:t,min:1,stop:function(){jQuery(this).change()}})}})}}
 //called when the "buy" button is clicked.
-function goBuytheItem(t,e){var s=GO_BUY_ITEM_DATA.nonces.go_buy_item,o=GO_BUY_ITEM_DATA.userID;console.log(o),jQuery(document).ready(function(a){var e={_ajax_nonce:s,action:"go_buy_item",the_id:t,qty:a("#go_qty").val(),
+function goBuytheItem(t,e){var o=GO_BUY_ITEM_DATA.nonces.go_buy_item,s=GO_BUY_ITEM_DATA.userID;console.log(s),jQuery(document).ready(function(a){var e={_ajax_nonce:o,action:"go_buy_item",the_id:t,qty:a("#go_qty").val(),
 //recipient: jQuery( '#go_recipient' ).val(),
 //purchase_count: count,
-user_id:o};a.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){a("#golb-fr-buy").innerHTML="",a("#golb-fr-buy").html(""),a("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){
+user_id:s};a.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){a("#golb-fr-buy").innerHTML="",a("#golb-fr-buy").html(""),a("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){
 //console.log("SUccess: " + raw);
 var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?a("#light").html(e):
 //go_sounds( 'store' );
-a("#light").html(t.html)}})})}
+a("#light").html(t.html)}})})}function go_store_password(){
+//disable button to prevent double clicks
+//go_enable_loading( target );
+var e;if(console.log("button clicked"),0<jQuery("#go_store_password_result").attr("value").length)jQuery.ajax({type:"POST",data:{_ajax_nonce:go_task_data.go_task_change_stage,action:"go_store_password",post_id:go_task_data.ID,//store item id
+result:result},success:function(e){console.log("success");
+//console.log(raw);
+// parse the raw response to get the desired JSON
+var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",timer_start:"",button_type:"",time_left:"",html:"",redirect:"",rewards:{gold:0}}}
+//console.log(res.html);
+//alert(json_status);
+if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_stage_error_msg").show();var a="Server Error.";jQuery("#go_stage_error_msg").text()!=a?jQuery("#go_stage_error_msg").text(a):flash_error_msg("#go_stage_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("refresh"==t.json_status)location.reload();else if("bad_password"==t.json_status){jQuery("#go_stage_error_msg").show();var a="Invalid password.";jQuery("#go_stage_error_msg").text()!=a?jQuery("#go_stage_error_msg").text(a):flash_error_msg("#go_stage_error_msg")}else{if("undo"==t.button_type)jQuery("#go_wrapper div").last().hide(),jQuery("#go_wrapper > div").slice(-3).hide("slow",function(){jQuery(this).remove()});else if("undo_last"==t.button_type)jQuery("#go_wrapper div").last().hide(),jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()});else if("continue"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("complete"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("show_bonus"==t.button_type)jQuery("#go_buttons").remove(),
+//remove active class to checks and buttons
+jQuery(".go_checks_and_buttons").removeClass("active");else if("continue_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("complete_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("undo_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()});else if("undo_last_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("abandon_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-3).remove();else if("abandon"==t.button_type)window.location=t.redirect;else if("timer"==t.button_type){
+//initializeClock('clockdiv', deadline);
+//initializeClock('go_timer', deadline);
+var o;jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()}),new Audio(PluginDir.url+"media/airhorn.mp3").play()}
+//console.log(res.html);
+jQuery("go_hidden_mce").remove(),go_append(t),
+//Pop up currency awards
+jQuery("#notification").html(t.notification),jQuery("#go_admin_bar_progress_bar").css({"background-color":color}),jQuery("#go_button").ready(function(){
+//check_locks();
+})}}});else{jQuery("#go_store_error_msg").show();var t="Please enter a password.";jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg("#go_store_error_msg");
+//go_disable_loading();
+}}
 //Not sure if this is still used
 function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}function Vids_Fit_and_Box(){runmefirst(function(){
 //after making the video fit, set the max width and add the lightbox code
@@ -586,7 +609,7 @@ jQuery("body").fitVids();
 //jQuery("body").fitVids({customSelector: "video"});
 }
 //resize in the lightbox--featherlight
-function go_video_resize(){var e=jQuery(".featherlight-content .fluid-width-video-wrapper").css("padding-top"),t=jQuery(".featherlight-content .fluid-width-video-wrapper").css("width"),a=(e=parseFloat(e))/(t=parseFloat(t));console.log("Vratio:"+a);var s=jQuery(window).width();console.log("vW:"+s);var o=s,r=jQuery(window).height();console.log("vH:"+r);var i=s*a;console.log("cH1:"+i),r<i&&(i=r-50,console.log("cH2:"+i),o=i/a,console.log("cW:"+o)),jQuery(".featherlight-content").css("width",o),jQuery(".featherlight-content").css("height",i)}function Max_width_and_LightboxNow(){
+function go_video_resize(){var e=jQuery(".featherlight-content .fluid-width-video-wrapper").css("padding-top"),t=jQuery(".featherlight-content .fluid-width-video-wrapper").css("width"),a=(e=parseFloat(e))/(t=parseFloat(t));console.log("Vratio:"+a);var o=jQuery(window).width();console.log("vW:"+o);var s=o,r=jQuery(window).height();console.log("vH:"+r);var i=o*a;console.log("cH1:"+i),r<i&&(i=r-50,console.log("cH2:"+i),s=i/a,console.log("cW:"+s)),jQuery(".featherlight-content").css("width",s),jQuery(".featherlight-content").css("height",i)}function Max_width_and_LightboxNow(){
 //console.log("max_width");
 //add a max width video wrapper to the fitVid
 var e=jQuery("#go_wrapper").data("maxwidth"),t;
@@ -615,32 +638,32 @@ jQuery(this).prepend('<a href=\'#\' class=\'featherlight_wrapper_vid_shortcode\'
 jQuery(this).addClass("wrapped")}))},100);// check every 100ms
 }}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
 //var result_title = jQuery( this ).attr( 'value' );
-var t=jQuery(e).attr("blog_post_id"),a,s={action:"go_blog_opener",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_opener,blog_post_id:t};
+var t=jQuery(e).attr("blog_post_id"),a,o={action:"go_blog_opener",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_opener,blog_post_id:t};
 //console.log(el);
 //console.log(blog_post_id);
 //jQuery.ajaxSetup({ cache: true });
-jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:s,cache:!1,success:function(e){
+jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:o,cache:!1,success:function(e){
 //console.log(results);
-jQuery.featherlight(e),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post"),jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e){var t,a,s,o,r={action:"go_blog_submit",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_submit,result:tinyMCE.activeEditor.getContent(),result_title:jQuery("#go_result_title").attr("value"),blog_post_id:jQuery(e).attr("blog_post_id")};
+jQuery.featherlight(e),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post"),jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e){var t,a,o,s,r={action:"go_blog_submit",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_submit,result:tinyMCE.activeEditor.getContent(),result_title:jQuery("#go_result_title").attr("value"),blog_post_id:jQuery(e).attr("blog_post_id")};
 //jQuery.ajaxSetup({ cache: true });
-jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,cache:!1,success:function(){console.log("success"),location.reload()}})}function go_messages_opener(a,e,s){
+jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,cache:!1,success:function(){console.log("success"),location.reload()}})}function go_messages_opener(a,e,o){
 //jQuery('#go_messages_icon').prop('onclick',null).off('click'); //blog
 //remove the onclick events from any message link and then reattach after ajax call
 //types of links 1. clipboard 2. stats link 3. task reset button and 4. blog page
 //alert(user_id);
-if(e=void 0!==e?e:null,s=void 0!==s?s:null,
+if(e=void 0!==e?e:null,o=void 0!==o?o:null,
 //console.log(message_type);
 jQuery(".go_messages_icon").prop("onclick",null).off("click"),//clipboard
 jQuery(".go_stats_messages_icon").prop("onclick",null).off("click"),//stats
 jQuery(".go_reset_task").prop("onclick",null).off("click"),jQuery(".go_tasks_reset").prop("onclick",null).off("click"),//reset task links
 //reset the multiple task reset button
 jQuery(".go_tasks_reset_multiple").prop("onclick",null).off("click"),a)//this is from the stats panel, so user_id was sent so stuff it in an array
-var o=[a];else for(//no user_id sent, this is from the clipboard and get user ids from checkboxes
-var t=jQuery(".go_checkbox:visible"),o=[],r=0;r<t.length;r++)!0===t[r].checked&&o.push(jQuery(t[r]).val());if(null==e&&"reset_multiple"==s)for(//this is a reset multiple quests from stats panel
+var s=[a];else for(//no user_id sent, this is from the clipboard and get user ids from checkboxes
+var t=jQuery(".go_checkbox:visible"),s=[],r=0;r<t.length;r++)!0===t[r].checked&&s.push(jQuery(t[r]).val());if(null==e&&"reset_multiple"==o)for(//this is a reset multiple quests from stats panel
 var t=jQuery(".go_checkbox:visible"),i=[],r=0;r<t.length;r++)!0===t[r].checked&&i.push(jQuery(t[r]).val());else//this is from the stats panel, so user_id was sent so stuff it in an array
-var i=[e];var n,_={action:"go_create_admin_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_create_admin_message,post_id:i,user_ids:o,message_type:s};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:_,success:function(e){
+var i=[e];var n,_={action:"go_create_admin_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_create_admin_message,post_id:i,user_ids:s,message_type:o};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:_,success:function(e){
 //console.log(results);
-jQuery.featherlight(e,{variant:"message"}),jQuery(".go_tax_select").select2(),jQuery("#go_message_submit").one("click",function(e){go_send_message(o,i,s)}),
+jQuery.featherlight(e,{variant:"message"}),jQuery(".go_tax_select").select2(),jQuery("#go_message_submit").one("click",function(e){go_send_message(s,i,o)}),
 //clipboard
 jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),
 //stats and blog
@@ -653,36 +676,36 @@ jQuery(".go_tasks_reset_multiple").one("click",function(){go_messages_opener(a,n
 //clipboard
 jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()});
 //stats and blog
-var s=jQuery("#go_stats_messages_icon_stats").attr("name");jQuery("#go_stats_messages_icon").one("click",function(e){go_messages_opener(s)}),
+var o=jQuery("#go_stats_messages_icon_stats").attr("name");jQuery("#go_stats_messages_icon").one("click",function(e){go_messages_opener(o)}),
 //reset task links
-jQuery(".go_reset_task").one("click",function(e){go_messages_opener(s,this.id,"reset")})}})}function go_send_message(e,t,a){
+jQuery(".go_reset_task").one("click",function(e){go_messages_opener(o,this.id,"reset")})}})}function go_send_message(e,t,a){
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,n=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=gold]").val()*n,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,d=jQuery("[name=c4]").val()*u,g=jQuery("#go_messages_go_badges_select").val(),p=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),h=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,f={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:i,gold:_,health:c,c4:d,badges_toggle:p,badges:g,groups_toggle:y,groups:h};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:f,success:function(e){
+var o=jQuery("[name=title]").val(),s=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,n=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=gold]").val()*n,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*u,d=jQuery("#go_messages_go_badges_select").val(),p=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),y=jQuery("#go_messages_user_go_groups_select").val(),h=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,f={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:o,message:s,xp:i,gold:_,health:c,c4:g,badges_toggle:p,badges:d,groups_toggle:h,groups:y};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:f,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}function go_toggle(e){checkboxes=jQuery(".go_checkbox");for(var t=0,a=checkboxes.length;t<a;t++)checkboxes[t].checked=e.checked}function go_toggle_off(){checkboxes=jQuery(".go_checkbox");for(var e=0,t=checkboxes.length;e<t;e++)checkboxes[e].checked=!1}function go_clipboard_class_a_choice(){if(
 //var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
 go_filter_datatables(),jQuery("#go_clipboard_stats_datatable").length){
 //XP////////////////////////////
 //go_sort_leaders("go_clipboard", 4);
-var o=jQuery("#go_clipboard_stats_datatable").DataTable({
+var s=jQuery("#go_clipboard_stats_datatable").DataTable({
 //stateSave: false,
 bPaginate:!1,
 //colReorder: true,
 order:[[5,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,
 //"destroy": true,
-dom:"Bfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"1px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,s){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
+dom:"Bfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"1px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
 //on change filter listener
 //console.log("change5");
 jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").change(function(){
 //console.log("change");
-o.draw();
+s.draw();
 //ajax function to save the values
-var e=GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters,t=jQuery("#go_clipboard_user_go_sections_select").val(),a=jQuery("#go_clipboard_user_go_groups_select").val(),s=jQuery("#go_clipboard_go_badges_select").val();
+var e=GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters,t=jQuery("#go_clipboard_user_go_sections_select").val(),a=jQuery("#go_clipboard_user_go_groups_select").val(),o=jQuery("#go_clipboard_go_badges_select").val();
 //alert (section);
 //console.log(jQuery( '#go_clipboard_user_go_sections_select' ).val());
-jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_clipboard_save_filters",section:t,badge:s,group:a},success:function(e){
+jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_clipboard_save_filters",section:t,badge:o,group:a},success:function(e){
 //console.log("values saved");
 }})}),jQuery("#records_tabs").css("margin-left","")}
 //force window resize on load to initialize responsive behavior
@@ -698,7 +721,7 @@ bPaginate:!1,
 //colReorder: true,
 order:[[4,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,
 //"destroy": true,
-dom:"Bfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,s){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
+dom:"Bfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
 //show date filter
 jQuery("#go_timestamp_filters").show(),
 //on change filter listener
@@ -1065,7 +1088,7 @@ var t=jQuery("#post_ID").val();jQuery("#go_store_item_id .acf-input").html('[go_
 //map shortcode message
 //var map_id = jQuery('[name="tag_ID"]').val();
 //console.log(map_id);
-var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,s=this.length-(e.length+t.length),o;return this.substr(a,s)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
+var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,o=this.length-(e.length+t.length),s;return this.substr(a,o)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
 // Decimal floor
 Math.floor10||(Math.floor10=function(e,t){return decimalAdjust("floor",e,t)}),
 // Decimal ceil
@@ -1086,14 +1109,14 @@ Math.ceil10||(Math.ceil10=function(e,t){return decimalAdjust("ceil",e,t)}),
  */
 jQuery.prototype.go_prev_n=function(e,t){if(void 0===e)
 //console.error( 'Game On Error: go_prev_n() requires at least one argument.' );
-return null;"int"!=typeof e&&(e=Number.parseInt(e));for(var a=null,s=0;s<e;s++)if(0===s)a=void 0!==t?jQuery(this).prev(t):jQuery(this).prev();else{if(null===a)break;a=void 0!==t?jQuery(a).prev(t):jQuery(a).prev()}return a},//Add an on click to all store items
+return null;"int"!=typeof e&&(e=Number.parseInt(e));for(var a=null,o=0;o<e;o++)if(0===o)a=void 0!==t?jQuery(this).prev(t):jQuery(this).prev();else{if(null===a)break;a=void 0!==t?jQuery(a).prev(t):jQuery(a).prev()}return a},//Add an on click to all store items
 jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})}),jQuery(window).ready(function(){
 //jQuery(".mejs-container").hide();
 Vids_Fit_and_Box()}),function(i){"use strict";i.fn.fitVids=function(e){var a={customSelector:null,ignore:null};if(!document.getElementById("fit-vids-style")){
 // appendStyles: https://github.com/toddmotto/fluidvids/blob/master/dist/fluidvids.js
-var t=document.head||document.getElementsByTagName("head")[0],s=".fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}",o=document.createElement("div");o.innerHTML='<p>x</p><style id="fit-vids-style">'+s+"</style>",t.appendChild(o.childNodes[1])}return e&&i.extend(a,e),this.each(function(){var e=['iframe[src*="player.vimeo.com"]','iframe[src*="youtube.com"]','iframe[src*="youtube-nocookie.com"]','iframe[src*="kickstarter.com"][src*="video.html"]',"object","embed"];a.customSelector&&e.push(a.customSelector);var r=".fitvidsignore";a.ignore&&(r=r+", "+a.ignore);var t=i(this).find(e.join(","));// Disable FitVids on this video.
+var t=document.head||document.getElementsByTagName("head")[0],o=".fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}",s=document.createElement("div");s.innerHTML='<p>x</p><style id="fit-vids-style">'+o+"</style>",t.appendChild(s.childNodes[1])}return e&&i.extend(a,e),this.each(function(){var e=['iframe[src*="player.vimeo.com"]','iframe[src*="youtube.com"]','iframe[src*="youtube-nocookie.com"]','iframe[src*="kickstarter.com"][src*="video.html"]',"object","embed"];a.customSelector&&e.push(a.customSelector);var r=".fitvidsignore";a.ignore&&(r=r+", "+a.ignore);var t=i(this).find(e.join(","));// Disable FitVids on this video.
 (// SwfObj conflict patch
-t=(t=t.not("object object")).not(r)).each(function(){var e=i(this);if(!(0<e.parents(r).length||"embed"===this.tagName.toLowerCase()&&e.parent("object").length||e.parent(".fluid-width-video-wrapper").length)){e.css("height")||e.css("width")||!isNaN(e.attr("height"))&&!isNaN(e.attr("width"))||(e.attr("height",9),e.attr("width",16));var t,a,s=("object"===this.tagName.toLowerCase()||e.attr("height")&&!isNaN(parseInt(e.attr("height"),10))?parseInt(e.attr("height"),10):e.height())/(isNaN(parseInt(e.attr("width"),10))?e.width():parseInt(e.attr("width"),10));if(!e.attr("name")){var o="fitvid"+i.fn.fitVids._count;e.attr("name",o),i.fn.fitVids._count++}e.wrap('<div class="fluid-width-video-wrapper"></div>').parent(".fluid-width-video-wrapper").css("padding-top",100*s+"%"),e.removeAttr("height").removeAttr("width")}})})},
+t=(t=t.not("object object")).not(r)).each(function(){var e=i(this);if(!(0<e.parents(r).length||"embed"===this.tagName.toLowerCase()&&e.parent("object").length||e.parent(".fluid-width-video-wrapper").length)){e.css("height")||e.css("width")||!isNaN(e.attr("height"))&&!isNaN(e.attr("width"))||(e.attr("height",9),e.attr("width",16));var t,a,o=("object"===this.tagName.toLowerCase()||e.attr("height")&&!isNaN(parseInt(e.attr("height"),10))?parseInt(e.attr("height"),10):e.height())/(isNaN(parseInt(e.attr("width"),10))?e.width():parseInt(e.attr("width"),10));if(!e.attr("name")){var s="fitvid"+i.fn.fitVids._count;e.attr("name",s),i.fn.fitVids._count++}e.wrap('<div class="fluid-width-video-wrapper"></div>').parent(".fluid-width-video-wrapper").css("padding-top",100*o+"%"),e.removeAttr("height").removeAttr("width")}})})},
 // Internal counter for unique video names.
 i.fn.fitVids._count=0}(window.jQuery||window.Zepto),jQuery(document).ready(function(){jQuery("#records_tabs").length&&(jQuery("#records_tabs").tabs(),jQuery(".clipboard_tabs").click(function(){switch(
 //console.log("tabs");

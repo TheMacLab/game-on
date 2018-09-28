@@ -286,15 +286,15 @@ function go_sort_leaders(tableID, column) {
 function go_filter_datatables(){//function that filters all tables on draw
 jQuery.fn.dataTable.ext.search.push(function(e,t,a){var s=e.sTableId;
 //console.log(myTable);
-if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),_=jQuery("#go_clipboard_go_badges_select").val(),i=t[4],n=t[3],l=t[2];// use data for the filter by column
-console.log("data"+t),console.log("badges"+i),console.log("groups"+n),console.log("sections"+l),
+if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),_=jQuery("#go_clipboard_go_badges_select").val(),i=t[4],n=t[3],u=t[2];// use data for the filter by column
+console.log("data"+t),console.log("badges"+i),console.log("groups"+n),console.log("sections"+u),
 //console.log(sections);
 n=JSON.parse(n),console.log("groups"+n),
 //sections = JSON.parse(sections);
-i=JSON.parse(i),console.log("badges"+i),console.log("sections"+l);var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||l==o),"go_clipboard_datatable"==s&&u&&(u="none"==_||-1!=jQuery.inArray(_,i)),u}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],l=t[1];// use data for the filter by column
-n=JSON.parse(n),l=JSON.parse(l);
+i=JSON.parse(i),console.log("badges"+i),console.log("sections"+u);var l=!0;return(l="none"==r||-1!=jQuery.inArray(r,n))&&(l="none"==o||u==o),"go_clipboard_datatable"==s&&l&&(l="none"==_||-1!=jQuery.inArray(_,i)),l}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],u=t[1];// use data for the filter by column
+n=JSON.parse(n),u=JSON.parse(u);
 //badges = JSON.parse(badges);
-var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||-1!=jQuery.inArray(o,l)),u})}
+var l=!0;return(l="none"==r||-1!=jQuery.inArray(r,n))&&(l="none"==o||-1!=jQuery.inArray(o,u)),l})}
 /*
 function go_stats_leaderboard() {
     //jQuery( '#go_stats_lite_wrapper' ).remove();
@@ -615,7 +615,30 @@ user_id:o};a.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){a
 //console.log("SUccess: " + raw);
 var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?a("#light").html(e):
 //go_sounds( 'store' );
-a("#light").html(t.html)}})})}
+a("#light").html(t.html)}})})}function go_store_password(){
+//disable button to prevent double clicks
+//go_enable_loading( target );
+var e;if(console.log("button clicked"),0<jQuery("#go_store_password_result").attr("value").length)jQuery.ajax({type:"POST",data:{_ajax_nonce:go_task_data.go_task_change_stage,action:"go_store_password",post_id:go_task_data.ID,//store item id
+result:result},success:function(e){console.log("success");
+//console.log(raw);
+// parse the raw response to get the desired JSON
+var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",timer_start:"",button_type:"",time_left:"",html:"",redirect:"",rewards:{gold:0}}}
+//console.log(res.html);
+//alert(json_status);
+if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_stage_error_msg").show();var a="Server Error.";jQuery("#go_stage_error_msg").text()!=a?jQuery("#go_stage_error_msg").text(a):flash_error_msg("#go_stage_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("refresh"==t.json_status)location.reload();else if("bad_password"==t.json_status){jQuery("#go_stage_error_msg").show();var a="Invalid password.";jQuery("#go_stage_error_msg").text()!=a?jQuery("#go_stage_error_msg").text(a):flash_error_msg("#go_stage_error_msg")}else{if("undo"==t.button_type)jQuery("#go_wrapper div").last().hide(),jQuery("#go_wrapper > div").slice(-3).hide("slow",function(){jQuery(this).remove()});else if("undo_last"==t.button_type)jQuery("#go_wrapper div").last().hide(),jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()});else if("continue"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("complete"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("show_bonus"==t.button_type)jQuery("#go_buttons").remove(),
+//remove active class to checks and buttons
+jQuery(".go_checks_and_buttons").removeClass("active");else if("continue_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("complete_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("undo_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()});else if("undo_last_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("abandon_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-3).remove();else if("abandon"==t.button_type)window.location=t.redirect;else if("timer"==t.button_type){
+//initializeClock('clockdiv', deadline);
+//initializeClock('go_timer', deadline);
+var s;jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()}),new Audio(PluginDir.url+"media/airhorn.mp3").play()}
+//console.log(res.html);
+jQuery("go_hidden_mce").remove(),go_append(t),
+//Pop up currency awards
+jQuery("#notification").html(t.notification),jQuery("#go_admin_bar_progress_bar").css({"background-color":color}),jQuery("#go_button").ready(function(){
+//check_locks();
+})}}});else{jQuery("#go_store_error_msg").show();var t="Please enter a password.";jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg("#go_store_error_msg");
+//go_disable_loading();
+}}
 //Not sure if this is still used
 function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}function go_messages_opener(a,e,s){
 //jQuery('#go_messages_icon').prop('onclick',null).off('click'); //blog
@@ -653,7 +676,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(s,this.id,"r
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,i=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*i,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,u=jQuery("[name=health]").val()*l,c=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*c,d=jQuery("#go_messages_go_badges_select").val(),y=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),j=jQuery("#go_messages_user_go_groups_select").val(),p=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),h,m={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:n,health:u,c4:g,badges_toggle:y,badges:d,groups_toggle:p,groups:j};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:m,success:function(e){
+var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,i=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*i,u=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,l=jQuery("[name=health]").val()*u,c=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*c,d=jQuery("#go_messages_go_badges_select").val(),y=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),p=jQuery("#go_messages_user_go_groups_select").val(),j=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),h,m={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:n,health:l,c4:g,badges_toggle:y,badges:d,groups_toggle:j,groups:p};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:m,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()})}),String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,s=this.length-(e.length+t.length),o;return this.substr(a,s)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
 // Decimal floor

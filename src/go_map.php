@@ -318,6 +318,9 @@ function go_map_badge($badge){
  */
 function go_map_badge($badge, $user_badges = null){
     //does this term have a badge assigned and if so show it
+    if ($user_badges == null){
+        $user_badges = array();
+    }
     if (in_array($badge, $user_badges)){
         $task_color = 'done';
         //$badge_needed = '';

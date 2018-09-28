@@ -191,6 +191,149 @@ function goBuytheItem( id, count ) {
 	});
 }
 
+
+function go_store_password(){
+    console.log('button clicked');
+    //disable button to prevent double clicks
+    //go_enable_loading( target );
+    var pass_entered = jQuery('#go_store_password_result').attr('value').length > 0 ? true : false;
+    if (!pass_entered) {
+        jQuery('#go_store_error_msg').show();
+        var error = "Please enter a password.";
+        if (jQuery('#go_store_error_msg').text() != error) {
+            jQuery('#go_store_error_msg').text(error);
+        } else {
+            flash_error_msg('#go_store_error_msg');
+        }
+        //go_disable_loading();
+        return;
+    }
+
+    jQuery.ajax({
+        type: "POST",
+        data: {
+            _ajax_nonce: go_task_data.go_task_change_stage,
+            action: 'go_store_password',
+            post_id: go_task_data.ID, //store item id
+            result: result //password
+        },
+        success: function( raw ) {
+            console.log('success');
+            //console.log(raw);
+            // parse the raw response to get the desired JSON
+            var res = {};
+            try {
+                var res = JSON.parse( raw );
+            } catch (e) {
+                res = {
+                    json_status: '101',
+                    timer_start: '',
+                    button_type: '',
+                    time_left: '',
+                    html: '',
+                    redirect: '',
+                    rewards: {
+                        gold: 0,
+                    },
+                };
+            }
+            //console.log(res.html);
+            //alert(json_status);
+            if ( '101' === Number.parseInt( res.json_status ) ) {
+                console.log (101);
+                jQuery( '#go_stage_error_msg' ).show();
+                var error = "Server Error.";
+                if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
+                    jQuery( '#go_stage_error_msg' ).text( error );
+                } else {
+                    flash_error_msg( '#go_stage_error_msg' );
+                }
+            } else if ( 302 === Number.parseInt( res.json_status ) ) {
+                console.log (302);
+                window.location = res.location;
+            }
+            else if ( 'refresh' ==  res.json_status  ) {
+                location.reload();
+            }else if ( 'bad_password' ==  res.json_status ) {
+                jQuery( '#go_stage_error_msg' ).show();
+                var error = "Invalid password.";
+                if ( jQuery( '#go_stage_error_msg' ).text() != error ) {
+                    jQuery( '#go_stage_error_msg' ).text( error );
+                } else {
+                    flash_error_msg( '#go_stage_error_msg' );
+                }
+            }else {
+
+                if ( res.button_type == 'undo' ){
+                    jQuery( '#go_wrapper div' ).last().hide();
+                    jQuery( '#go_wrapper > div' ).slice(-3).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'undo_last' ){
+                    jQuery( '#go_wrapper div' ).last().hide();
+                    jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'continue' ){
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                }else if ( res.button_type == 'complete' ){
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'show_bonus' ){
+                    jQuery('#go_buttons').remove();
+                    //remove active class to checks and buttons
+                    jQuery(".go_checks_and_buttons").removeClass('active');
+                }
+                else if ( res.button_type == 'continue_bonus' ){
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'complete_bonus' ){
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'undo_bonus' ){
+                    jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'undo_last_bonus' ){
+                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
+                }
+                else if ( res.button_type == 'abandon_bonus' ){
+                    jQuery( '#go_wrapper > div' ).slice(-3).remove();
+
+                }
+                else if ( res.button_type == 'abandon' ){
+
+                    window.location = res.redirect;
+                }
+                else if ( res.button_type == 'timer' ){
+                    jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
+
+                    //initializeClock('clockdiv', deadline);
+                    //initializeClock('go_timer', deadline);
+
+                    var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
+                    audio.play();
+                }
+                //console.log(res.html);
+                jQuery('go_hidden_mce').remove();
+                go_append(res);
+
+
+
+
+
+
+                //Pop up currency awards
+                jQuery( '#notification' ).html( res.notification );
+                jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
+                jQuery( '#go_button' ).ready( function() {
+                    //check_locks();
+                });
+
+            }
+
+        }
+    });
+
+}
+
 //Not sure if this is still used
 function go_count_item( item_id ) {
 	var nonce = GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;

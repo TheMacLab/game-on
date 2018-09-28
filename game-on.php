@@ -188,6 +188,21 @@ add_action( 'wp_enqueue_scripts', 'go_includes' );
 // filters
 add_filter( 'get_comment_author', 'go_display_comment_author', 10, 3 );
 
+//these are the text filters
+//https://themehybrid.com/weblog/how-to-apply-content-filters
+add_filter( 'go_awesome_text', 'wptexturize'       );
+add_filter( 'go_awesome_text', 'convert_smilies'   );
+add_filter( 'go_awesome_text', 'convert_chars'     );
+add_filter( 'go_awesome_text', 'wpautop'           );
+add_filter( 'go_awesome_text', 'shortcode_unautop' );
+add_filter( 'go_awesome_text', 'do_shortcode'      );
+add_filter( 'go_awesome_text', 'go_oembed_text' );
+function go_oembed_text($content)
+{
+    $content = $GLOBALS['wp_embed']->autoembed($content);
+    return $content;
+}
+
 /*
  * User Data
  */
@@ -476,18 +491,6 @@ function go_admin_remove_notification() {
 	die( 'success' );
 }
 
-function go_make_contributor ($user_login, $user){
-    $roles = $user->roles;
-    $role = $roles[0];
-    if($role == "subscriber"){
-        $user->set_role('contributor');
-        $roles = $user->roles;
-        $role = $roles[0];
-        $role->add_cap( 'upload_files' );
-    }
-
-}
-//add_action('wp_login', 'go_make_contributor', 10, 2);
 
 /**
  * Changes roles so subscribers can upload media
@@ -511,11 +514,14 @@ function override_caps($allcaps){
     //$allcaps = $role->capabilities;
     $post_action = (isset($_POST['action']) ?  $_POST['action'] : null);
 
-    if ( $post_action == 'parse-embed' ){ // override capabilities when embedding content in WYSIWIG
-        $role_name = 'contributor';
-        $role = get_role($role_name); // Get the role object by role name
-        $allcaps = $role->capabilities;  // Get the capabilities for the role
-        $allcaps['contributor'] = true;     // Add role name to capabilities
+    if ( $post_action == 'parse-embed' ){// override capabilities when embedding content in WYSIWIG
+        //(!current_user_can( 'edit_posts' )) {
+            $role_name = 'administrator';
+            $role = get_role($role_name); // Get the role object by role name
+            $allcaps = $role->capabilities;  // Get the capabilities for the role
+            $allcaps['contributor'] = true;     // Add role name to capabilities
+        //}
+
     }
     return $allcaps;
 }
