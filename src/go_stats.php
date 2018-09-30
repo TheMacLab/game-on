@@ -1853,6 +1853,9 @@ function go_stats_badges_list($user_id) {
     check_ajax_referer( 'go_stats_badges_list_' );
     $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
     $badges_array = unserialize($badges_array);
+    if (empty($badges_array)){
+        $badges_array = array();
+    }
     $args = array(
         'hide_empty' => false,
         'orderby' => 'name',
