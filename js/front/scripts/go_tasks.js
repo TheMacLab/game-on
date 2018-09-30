@@ -1,4 +1,3 @@
-
 jQuery( document ).ready( function() {
 
     //removes hidden mce that is used for blog check for understanding
@@ -16,7 +15,7 @@ jQuery( document ).ready( function() {
 	var status = go_task_data.status;
 	var stage_1_gold = go_task_data.currency;
 
-	go_make_clickable()
+	go_make_clickable();
 	jQuery( ".go_stage_message" ).show(  );
 
     jQuery( ".go_checks_and_buttons" ).show( 'slow' );

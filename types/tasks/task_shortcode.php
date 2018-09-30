@@ -330,28 +330,31 @@ function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_nam
 
     //if it is locked, show master password field and stop printing of the task.
     $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
+    if ($go_password_lock == true){
+        $task_is_locked = true;
+    }
     //Get option (show password field) from custom fields
-    if ($task_is_locked && $go_password_lock && $is_logged_in) {
+    if ($go_password_lock && $is_logged_in) {
         //Show password unlock
         echo "<div class='go_lock'><h3>Unlock {$uc_task_name}</h3><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
         go_buttons($user_id, $custom_fields, null, null, null, 'unlock',false,null,null, false );
         echo "</div>";
 
     }
-    else if ($task_is_locked == true) { //change this code to show admin override box
-        if ($is_logged_in) { //add of show password field is on
+    else if ($task_is_locked == true  && $is_logged_in) { //change this code to show admin override box
+        //if ($is_logged_in) { //add of show password field is on
             ?>
-            <div id="go_admin_override" style="overflow: auto; width: 100%;"><div style="float: right; font-size: .8em;">Admin Overide</div></div>
+            <div id="go_store_admin_override" style="overflow: auto; width: 100%;"><div style="float: right; font-size: .8em;">Admin Override</div></div>
             <?php
             //Show password unlock
             echo "<div class='go_lock go_password' style='display: none;'><h3>Admin Override</h3><p>This field is not for users. Do not ask for this password. It is not part of the gameplay.</p><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
             go_buttons($user_id, $custom_fields, null, null, null, 'unlock',false,null,null, false );
             echo "</div>";
 
-        }
+        //}
     }
     return $task_is_locked;
-    //ADD TASK CHAIN LOCKS
+
 }
 
 /**
@@ -813,7 +816,7 @@ function go_stage_password_validate($pass, $custom_fields, $status, $bonus){
  * @param $status
  * @return string
  */
-function go_lock_password_validate($pass, $custom_fields, $status){
+function go_lock_password_validate($pass, $custom_fields){
 
     $lock_pass = $custom_fields['go_unlock_password'][0];
     $master_pass = get_option('options_go_masterpass');
@@ -969,7 +972,6 @@ function go_hidden_footer(){
      */
     echo "<div id='go_hidden_mce' style='display: none;'>";
     $settings  = array(
-        //'tinymce'=>true,
             //'wpautop' =>false,
             'textarea_name' => 'go_result',
             'media_buttons' => true,
@@ -1135,7 +1137,7 @@ function go_task_change_stage() {
         else if ($check_type == 'unlock'){
             //this function checks password and returns
             //invalid or return true
-            $result = go_lock_password_validate($result, $custom_fields, $status);
+            $result = go_lock_password_validate($result, $custom_fields);
             if ($result == 'password' || $result == 'master password') {
                 //set unlock flag
                 go_update_actions( $user_id, 'task',  $post_id, null, null, $check_type, $result, null, null,  null, null, null, null, null, null, null, null, null );

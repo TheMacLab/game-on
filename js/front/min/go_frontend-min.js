@@ -521,82 +521,44 @@ t=t.toString().split("e"),+((
 // Shift back
 t=(t=Math[e](+(t[0]+"e"+(t[1]?+t[1]-a:-a)))).toString().split("e"))[0]+"e"+(t[1]?+t[1]+a:a))))}
 // Decimal round
+// Makes it so you can press return and enter content in a field
+function go_make_store_clickable(){
+//Make URL button clickable by clicking enter when field is in focus
+jQuery(".clickable").keyup(function(e){
+// 13 is ENTER
+13===e.which&&jQuery("#go_store_pass_button").click()})}
 //open the lightbox for the store items
-function go_lb_opener(e){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var t=e,a,o={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:t},s="<?php echo admin_url( '/admin-ajax.php' ); ?>";
-//jQuery.ajaxSetup({ cache: true });
-jQuery.ajax({
-//url: url_action,
-url:MyAjax.ajaxurl,type:"POST",data:o,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
+function go_lb_opener(e){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var t=e,a,o={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:t};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:o,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
 //jQuery( "#lb-content" ).append(results);
-jQuery.featherlight(e,{variant:"store"}),jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),
-//window.go_req_currency = jQuery( '#golb-fr-price' ).attr( 'req' );
-//window.go_req_points = jQuery( '#golb-fr-points' ).attr( 'req' );
-//window.go_req_bonus_currency = jQuery( '#golb-fr-bonus_currency' ).attr( 'req' );
-//window.go_req_penalty = jQuery( '#golb-fr-penalty' ).attr( 'req' );
-//window.go_req_minutes = jQuery( '#golb-fr-minutes' ).attr( 'req' );
-//window.go_cur_currency = jQuery( '#golb-fr-price' ).attr( 'cur' );
-//window.go_cur_points = jQuery( '#golb-fr-points' ).attr( 'cur' );
-//window.go_cur_bonus_currency = jQuery( '#golb-fr-bonus_currency' ).attr( 'cur' );
-//window.go_cur_minutes = jQuery( '#golb-fr-minutes' ).attr( 'cur' );
-window.go_purchase_limit=jQuery("#golb-fr-purchase-limit").attr("val"),
-// `window.go_store_debt_enabled` was implemented as a temporary hotfix for
-// bugs in v2.6.1
-window.go_store_debt_enabled="true"===jQuery(".golb-fr-boxes-debt").val();
-//if ( go_purchase_limit == 0 ) {go_purchase_limit = 9999;}
-// determines the upper limit of the purchase quantity spinner, which is limited
-// by the amount of currency that the user has and the cost of the Store Item
-var t=go_purchase_limit;
-/*
-                if ( ! go_store_debt_enabled ) {
-
-                    var point_cost_ratio = go_purchase_limit;
-                    var currency_cost_ratio = go_purchase_limit;
-                    if ( go_req_points > 0 ) {
-                        point_cost_ratio = Math.floor( go_cur_points / go_req_points );
-                    }
-                    if ( go_req_currency > 0 ) {
-                        currency_cost_ratio = Math.floor( go_cur_currency / go_req_currency );
-                    }
-
-                    if ( point_cost_ratio < 1 || currency_cost_ratio < 1 ) {
-                        spinner_max_size = 1;
-                    } else {
-                        spinner_max_size = Math.min( point_cost_ratio, currency_cost_ratio, spinner_max_size );
-                    }
-                }
-                */jQuery("#go_qty").spinner({max:t,min:1,stop:function(){jQuery(this).change()}})}})}}
+jQuery.featherlight(e,{variant:"store"}),jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),window.go_purchase_limit=jQuery("#golb-fr-purchase-limit").attr("val");var t=go_purchase_limit;jQuery("#go_qty").spinner({max:t,min:1,stop:function(){jQuery(this).change()}}),go_make_store_clickable(),
+//jQuery('#go_store_admin_override').click( function () {
+//    jQuery('.go_store_lock').show();
+//});
+jQuery("#go_store_admin_override").one("click",function(e){
+//console.log("override");
+jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}})}}
 //called when the "buy" button is clicked.
-function goBuytheItem(t,e){var o=GO_BUY_ITEM_DATA.nonces.go_buy_item,s=GO_BUY_ITEM_DATA.userID;console.log(s),jQuery(document).ready(function(a){var e={_ajax_nonce:o,action:"go_buy_item",the_id:t,qty:a("#go_qty").val(),
-//recipient: jQuery( '#go_recipient' ).val(),
-//purchase_count: count,
-user_id:s};a.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){a("#golb-fr-buy").innerHTML="",a("#golb-fr-buy").html(""),a("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){
+function goBuytheItem(t,e){var o=GO_BUY_ITEM_DATA.nonces.go_buy_item,s=GO_BUY_ITEM_DATA.userID;console.log(s),jQuery(document).ready(function(a){var e={_ajax_nonce:o,action:"go_buy_item",the_id:t,qty:a("#go_qty").val(),user_id:s};a.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){a("#golb-fr-buy").innerHTML="",a("#golb-fr-buy").html(""),a("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){
 //console.log("SUccess: " + raw);
 var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?a("#light").html(e):
 //go_sounds( 'store' );
-a("#light").html(t.html)}})})}function go_store_password(){
+a("#light").html(t.html)}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(o){
+//console.log('button clicked');
 //disable button to prevent double clicks
 //go_enable_loading( target );
-var e;if(console.log("button clicked"),0<jQuery("#go_store_password_result").attr("value").length)jQuery.ajax({type:"POST",data:{_ajax_nonce:go_task_data.go_task_change_stage,action:"go_store_password",post_id:go_task_data.ID,//store item id
-result:result},success:function(e){console.log("success");
+var e;if(!(0<jQuery("#go_store_password_result").attr("value").length)){jQuery("#go_store_error_msg").show();var t="Please enter a password.";return jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg_store("#go_store_error_msg"),void jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)})}var a=jQuery("#go_store_password_result").attr("value");if(jQuery("#light").css("display","block"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var s=o,r,i={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:s,skip_locks:!0,result:a};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:i,cache:!1,success:function(e){
+//console.log('success');
 //console.log(raw);
-// parse the raw response to get the desired JSON
-var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",timer_start:"",button_type:"",time_left:"",html:"",redirect:"",rewards:{gold:0}}}
+var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
+//console.log('html');
 //console.log(res.html);
-//alert(json_status);
-if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_stage_error_msg").show();var a="Server Error.";jQuery("#go_stage_error_msg").text()!=a?jQuery("#go_stage_error_msg").text(a):flash_error_msg("#go_stage_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("refresh"==t.json_status)location.reload();else if("bad_password"==t.json_status){jQuery("#go_stage_error_msg").show();var a="Invalid password.";jQuery("#go_stage_error_msg").text()!=a?jQuery("#go_stage_error_msg").text(a):flash_error_msg("#go_stage_error_msg")}else{if("undo"==t.button_type)jQuery("#go_wrapper div").last().hide(),jQuery("#go_wrapper > div").slice(-3).hide("slow",function(){jQuery(this).remove()});else if("undo_last"==t.button_type)jQuery("#go_wrapper div").last().hide(),jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()});else if("continue"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("complete"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("show_bonus"==t.button_type)jQuery("#go_buttons").remove(),
-//remove active class to checks and buttons
-jQuery(".go_checks_and_buttons").removeClass("active");else if("continue_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("complete_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("undo_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()});else if("undo_last_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-1).hide("slow",function(){jQuery(this).remove()});else if("abandon_bonus"==t.button_type)jQuery("#go_wrapper > div").slice(-3).remove();else if("abandon"==t.button_type)window.location=t.redirect;else if("timer"==t.button_type){
-//initializeClock('clockdiv', deadline);
-//initializeClock('go_timer', deadline);
-var o;jQuery("#go_wrapper > div").slice(-2).hide("slow",function(){jQuery(this).remove()}),new Audio(PluginDir.url+"media/airhorn.mp3").play()}
-//console.log(res.html);
-jQuery("go_hidden_mce").remove(),go_append(t),
-//Pop up currency awards
-jQuery("#notification").html(t.notification),jQuery("#go_admin_bar_progress_bar").css({"background-color":color}),jQuery("#go_button").ready(function(){
-//check_locks();
-})}}});else{jQuery("#go_store_error_msg").show();var t="Please enter a password.";jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg("#go_store_error_msg");
-//go_disable_loading();
-}}
+//console.log(res.json_status);
+//alert(res.json_status);
+if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var a="Server Error.";jQuery("#go_store_error_msg").text()!=a?jQuery("#go_store_error_msg").text(a):flash_error_msg_store("#go_store_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("bad_password"==t.json_status){
+//console.log("bad");
+jQuery("#go_store_error_msg").show();var a="Invalid password.";jQuery("#go_store_error_msg").text()!=a?jQuery("#go_store_error_msg").text(a):flash_error_msg_store("#go_store_error_msg"),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)})}else
+//console.log("good");
+jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)}),jQuery("#go_store_lightbox_container").hide(),jQuery(".featherlight-content").html(t.html)}})}}
 //Not sure if this is still used
 function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}function Vids_Fit_and_Box(){runmefirst(function(){
 //after making the video fit, set the max width and add the lightbox code
@@ -636,7 +598,8 @@ jQuery(this).prepend('<a href=\'#\' class=\'featherlight_wrapper_vid_shortcode\'
 //jQuery(this).children(".featherlight_wrapper_vid_shortcode").prepend("<span style=\"position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;\"></span>");
 //jQuery(".mejs-overlay-play").unbind("click");
 jQuery(this).addClass("wrapped")}))},100);// check every 100ms
-}}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
+}}function mce_limit(e){var t=[8,37,38,39,40,46];// backspace, delete and cursor keys
+e.on("keydown",function(e){return-1!=t.indexOf(e.keyCode)||(!(tinymce_getContentLength()+1>this.settings.max_chars)||(e.preventDefault(),e.stopPropagation(),!1))}),e.on("keyup",function(e){tinymce_updateCharCounter(this,tinymce_getContentLength())})}function tinymce_updateCharCounter(e,t){jQuery(".char_count").text(t+"/500")}function tinymce_getContentLength(){var e=tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText.length;return console.log(e),e}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
 //var result_title = jQuery( this ).attr( 'value' );
 var t=jQuery(e).attr("blog_post_id"),a,o={action:"go_blog_opener",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_opener,blog_post_id:t};
 //console.log(el);

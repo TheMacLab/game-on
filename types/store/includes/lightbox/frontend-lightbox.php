@@ -9,69 +9,102 @@
 /////////////////////////////////////////////
 //Includes
 include ( 'buy-ajax.php' ); // Ajax run when buying something
-//date_default_timezone_set('America/Los_Angeles');
+
 // Main Lightbox Ajax Function
 function go_the_lb_ajax() {
     check_ajax_referer( 'go_the_lb_ajax');
 
 
 	$post_id = (int) $_POST['the_item_id'];
+    $skip_locks = (isset($_POST['skip_locks']) ?  $_POST['skip_locks'] : false);
 
     $go_post_data = go_post_data($post_id); //0--name, 1--status, 2--permalink, 3--metadata
     $the_title = $go_post_data[0];
-    $status = $go_post_data[1];
-    $task_link = $go_post_data[2];
+    //$status = $go_post_data[1];
+    //$task_link = $go_post_data[2];
     $custom_fields = $go_post_data[3];
 
-	//$the_post = get_post( $post_id );
-	//$the_title = get_the_title($post_id);
-    //$custom_fields = get_post_custom( $post_id );
-	//$item_content = get_post_field( 'post_content', $post_id );
     $item_content = (isset($custom_fields['go_store_item_desc'][0]) ?  $custom_fields['go_store_item_desc'][0] : null);
     $the_content = wpautop( $item_content );
 
     $user_id = get_current_user_id();
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
-    $login_url = home_url( '/wp-login.php' );
     $is_admin = go_user_is_admin( $user_id );
 
-    //set the health mod
-    $health_mod = go_get_health_mod ($user_id);
-    //$health_mod = go_get_user_loot( $user_id, 'health' );
+    ob_start();
 
-    if ($is_admin) {
-        echo edit_post_link('edit', null, null, $post_id);
-    }
+    if($skip_locks == false) {
+        echo "<div class='go_store_lightbox_container'>";
+        if ($is_admin) {
+            echo edit_post_link('edit', null, null, $post_id);
+        }
+        $task_is_locked = false;
+        if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true) {
+            $task_is_locked = go_task_locks($post_id, $user_id, "Item", $custom_fields, $is_logged_in, false);
+        }
 
-    $task_is_locked = false;
-    if ($custom_fields['go_lock_toggle'][0] == true || $custom_fields['go_sched_toggle'][0] == true || $custom_fields['go_password_lock'][0] == true ) {
-        $task_is_locked = go_task_locks($post_id, $user_id, "Item", $custom_fields, $is_logged_in, false);
-    }
-
-    $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
-    //Get option (show password field) from custom fields
-    if (($task_is_locked || $go_password_lock) && $is_logged_in) {
-        //Show password unlock
-        ?>
-        <div class='go_lock'><h3>Unlock</h3><input id='go_store_password_result' class='clickable' type='password' placeholder='Enter Password'>
-            <div id="go_store_buttons" style="overflow: auto; position: relative; padding: 10px; min-height: 40px;">
-                <p id='go_store_error_msg' style='display: none; color: red;'></p>
-                <button style="float: right; cursor: pointer;" id="go_store_pass_button" class="progress" check_type="unlock_store" button_type="continue" admin_lock="true">Submit</button>
+        $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ? $custom_fields['go_password_lock'][0] : null);
+        if ($go_password_lock == true) {
+            $task_is_locked = true;
+        }
+        //Get option (show password field) from custom fields
+        if ($go_password_lock && $is_logged_in) {
+            //Show password unlock
+            ?>
+            <div class='go_lock go_store_lock'><h3>Unlock</h3><input id='go_store_password_result' class='clickable' type='password' placeholder='Enter Password'>
+                <div id="go_store_buttons" style="overflow: auto; position: relative; padding: 10px; min-height: 40px;">
+                    <p id='go_store_error_msg' style='display: none; color: red;'></p>
+                    <button style="float: right; cursor: pointer;" id="go_store_pass_button" class="progress"
+                            check_type="unlock_store" button_type="continue" admin_lock="true">Submit
+                    </button>
+                </div>
             </div>
-        </div>
+            <?php
+        } else if ($task_is_locked == true && $is_logged_in) { //change this code to show admin override box
+            //if ($is_logged_in) { //add of show password field is on
+            ?>
+            <div id="go_store_admin_override" style="overflow: auto; width: 100%;">
+                <div style="float: right; font-size: .8em;">Admin Override</div>
+            </div>
+
+            <div class='go_lock go_store_lock go_lock go_password' style="display:none;"><h3>Admin Override</h3><input id='go_store_password_result' class='clickable' type='password' placeholder='Enter Password'>
+                <div id="go_store_buttons" style="overflow: auto; position: relative; padding: 10px; min-height: 40px;">
+                    <p id='go_store_error_msg' style='display: none; color: red;'></p>
+                    <button style="float: right; cursor: pointer;" id="go_store_pass_button" class="progress"
+                            check_type="unlock_store" button_type="continue" admin_lock="true">Submit
+                    </button>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
         <script>
-            jQuery( document ).ready( function() {
-                jQuery('#go_store_pass_button').one("click", function(e){
-                    go_store_password( this );
+            jQuery(document).ready(function () {
+                jQuery('#go_store_pass_button').one("click", function (e) {
+                    go_store_password(<?php echo $post_id; ?>);
                 });
             });
         </script>
-
-    <?php
+        <?php
+        echo "</div>";
+        //$task_is_locked = go_display_locks($post_id, $user_id, $is_admin, 'item', $badge_name, $custom_fields, $is_logged_in, 'Item');
+        if ($task_is_locked) {
+            return null;
+        }
     }
-    //$task_is_locked = go_display_locks($post_id, $user_id, $is_admin, 'item', $badge_name, $custom_fields, $is_logged_in, 'Item');
-    if ($task_is_locked){
-        return null;
+    else{//skip locks is true--this is a request from the password field
+        //check the password and return an error
+        //or return the store item
+        $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the password field
+        $result = go_lock_password_validate($result, $custom_fields);
+        if ($result == 'password' || $result ==  'master password') {
+            //set unlock flag
+            $unlock_flag = 'password_valid';
+            //the password is correct so just continue
+        }
+        else {//the password is invalid
+            $unlock_flag = 'bad_password';
+        }
     }
 
     $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ?  $custom_fields['go_loot_loot_xp'][0] : null);
@@ -104,15 +137,8 @@ function go_the_lb_ajax() {
     if (get_option( 'options_go_loot_gold_toggle' )  && $store_abs_cost_gold > 0){
         $gold_on = true;
         $gold_name = get_option('options_go_loot_gold_name');
-        //$gold_abbr      = get_option( 'options_go_loot_gold_abbreviation' );
-        //$user_gold = go_return_currency( $user_id );
         $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
-        /*
-        $gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
-        if ($gold_mod_toggle) {
-            $store_abs_cost_gold = ceil($store_abs_cost_gold * $health_mod);
-        }
-        */
+
     }else{
         $gold_on = false;
     }
@@ -121,15 +147,8 @@ function go_the_lb_ajax() {
     if (get_option( 'options_go_loot_health_toggle' ) && $store_abs_cost_health > 0){
         $health_on = true;
         $health_name = get_option('options_go_loot_health_name');
-        //$health_abbr = get_option( 'options_go_loot_health_abbreviation' );
-        //$user_health = go_return_health ($user_id );
         $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
-        /*
-        $health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
-        if ($health_mod_toggle) {
-            $store_abs_cost_health = ceil($store_abs_cost_health * $health_mod);
-        }
-        */
+
     }else{
         $health_on = false;
     }
@@ -138,15 +157,7 @@ function go_the_lb_ajax() {
     if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
         $c4_on = true;
         $c4_name = get_option('options_go_loot_c4_name');
-        //$c4_abbr        = get_option( 'options_go_loot_c4_abbreviation' );
-        //$user_c4 = go_return_c4( $user_id );
         $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
-        /*
-        $c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
-        if ($c4_mod_toggle) {
-            $store_abs_cost_c4 = ceil($store_abs_cost_c4 * $health_mod);
-        }
-        */
     }else{
         $c4_on = false;
     }
@@ -156,14 +167,8 @@ function go_the_lb_ajax() {
     $store_limit_toggle = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_toggle'][0] : null );
     if ($store_limit_toggle) {
         $store_limit = (($custom_fields['go-store-options_limit_num'][0] == true) ? $custom_fields['go-store-options_limit_num'][0] : null);
-        $store_limit_duration = (($custom_fields['go-store-options_limit_toggle'][0] == true) ? $custom_fields['go-store-options_limit_frequency'][0] : null);
-        //$purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
     }
-    //else{
-        $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
-        //$purchase_remaining_max = 9999;
-   // }
-
+    $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
 
     $badges_toggle = get_option('options_go_badges_toggle');
     if ($badges_toggle) {
@@ -297,6 +302,11 @@ function go_the_lb_ajax() {
         </div></div>
 
 	<?php
+    $store_html = ob_get_contents();
+    ob_end_clean();
+
+    echo json_encode(array('json_status' => $unlock_flag, 'html' => $store_html));
+    die;
 
 }
 
@@ -320,14 +330,10 @@ function go_get_purchase_count($post_id, $user_id, $custom_fields) {
     }
 
 	$table_name = $wpdb->prefix."go_actions";
-	//$post_id = ( ! empty( $_POST['item_id'] ) ? (int) $_POST['item_id'] : 0 );
 
 	if ( empty( $post_id ) ) {
 		die( '0' );
 	}
-
-	//$user_id = get_current_user_id();
-	//check_ajax_referer( 'go_get_purchase_count_' . $user_id );
 
 	$purchase_count = $wpdb->get_var(
 		$wpdb->prepare(
@@ -344,17 +350,14 @@ function go_get_purchase_count($post_id, $user_id, $custom_fields) {
 	} else {
 		return $purchase_count;
 	}
-	//die();
 }
 
 function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count) {
 
-    global $wpdb;
     if ($purchase_count == null) {
         $purchase_count = go_get_purchase_count($post_id, $user_id, $custom_fields);
     }
     $store_limit = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_num'][0] : false );
-    //$store_limit_duration = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_duration'][0] : null );
 
     if ($store_limit){
         $purchases_left = $store_limit - $purchase_count;
@@ -362,26 +365,9 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
         $purchases_left = 9999;
     }
 
-    /*
-    $debt_allowed = (isset($custom_fields['go-store-options_debt'][0]) ?  $custom_fields['go-store-options_debt'][0] : null);
-
-    if ($debt_allowed) {
-        $purchase_remaining_min = $purchases_left;
-        if ($purchase_remaining_min < 0) {
-            $purchase_remaining_min = 0;
-        }
-    return $purchase_remaining_min;
-    }
-    */
-    //$health_mod = go_get_health_mod ($user_id);
-
     $max_xp = 9999;
     $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ?  $custom_fields['go_loot_loot_xp'][0] : null);
     if (get_option( 'options_go_loot_xp_toggle' ) && $store_abs_cost_xp > 0){
-        //$xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
-        //if ($xp_mod_toggle) {
-        //    $store_abs_cost_xp = $store_abs_cost_xp * $health_mod;
-        //}
         $user_xp = go_return_points( $user_id );
         $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ?  $custom_fields['go_loot_reward_toggle_xp'][0] : null);
         if ($store_toggle_xp == false){
@@ -393,14 +379,9 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     $max_gold = 9999;
     $store_abs_cost_gold = (isset($custom_fields['go_loot_loot_gold'][0]) ?  $custom_fields['go_loot_loot_gold'][0] : null);
     if (get_option( 'options_go_loot_gold_toggle' )  && $store_abs_cost_gold > 0){
-        //$gold_mod_toggle = get_option('options_go_loot_gold_mods_toggle');
-        //if ($gold_mod_toggle) {
-         //   $store_abs_cost_gold = $store_abs_cost_gold * $health_mod;
-        //}
         $user_gold = go_return_currency( $user_id );
         $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
         if ($store_toggle_gold == false){
-            //$store_cost_gold = $store_abs_cost_gold * -1;
             $max_gold = $user_gold / $store_abs_cost_gold;
         }
     }
@@ -408,14 +389,9 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     $max_health = 9999;
     $store_abs_cost_health = (isset($custom_fields['go_loot_loot_health'][0]) ?  $custom_fields['go_loot_loot_health'][0] : null);
     if (get_option( 'options_go_loot_health_toggle' ) && $store_abs_cost_health > 0){
-        //$health_mod_toggle = get_option('options_go_loot_health_mods_toggle');
-        //if ($health_mod_toggle) {
-        //    $store_abs_cost_health = $store_abs_cost_health * $health_mod;
-        //}
         $user_health = go_return_health ($user_id );
         $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
         if ($store_toggle_health == false){
-            //$store_cost_health = $store_abs_cost_health * -1;
             $max_health = $user_health / $store_abs_cost_health;
         }
     }
@@ -423,22 +399,15 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
     $max_c4 = 9999;
     $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ?  $custom_fields['go_loot_loot_c4'][0] : null);
     if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
-        //$c4_mod_toggle = get_option('options_go_loot_c4_mods_toggle');
-        //if ($c4_mod_toggle) {
-        //    $store_abs_cost_c4 = $store_abs_cost_c4 * $health_mod;
-        //}
         $user_c4 = go_return_c4( $user_id );
         $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
         if ($store_toggle_c4 == false){
-            //$store_cost_c4 = $store_abs_cost_c4 * -1;
             $max_c4 = $user_c4 / $store_abs_cost_c4;
         }
     }
-    //if ($purchases_left) {
-        $purchase_remaining_min = floor(min($purchases_left, $max_xp, $max_gold, $max_health, $max_c4));
-    //}else{
-   //     $purchase_remaining_min = floor(min($max_xp, $max_gold, $max_health, $max_c4));
-   // }
+
+    $purchase_remaining_min = floor(min($purchases_left, $max_xp, $max_gold, $max_health, $max_c4));
+
     if ($purchase_remaining_min < 0){
         $purchase_remaining_min = 0;
     }

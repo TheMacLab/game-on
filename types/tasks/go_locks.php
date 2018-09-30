@@ -31,15 +31,6 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
     }
 
     /**
-     * This section is for the password lock
-     */
-    $go_lock_toggle = (isset($custom_fields['go_lock_toggle'][0]) ?  $custom_fields['go_lock_toggle'][0] : null);
-    $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
-    if ($go_lock_toggle == true || $go_password_lock == true){
-        $task_is_locked = true;
-    }
-
-    /**
      * This section is for the chain locks
      */
     $location_map_toggle = (isset($custom_fields['go-location_map_toggle'][0]) ?  $custom_fields['go-location_map_toggle'][0] : null);
@@ -77,7 +68,9 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
     /**
      * Loop to check all the locks and keys
      */
-    if ($custom_fields['go_lock_toggle'][0] == true ) {
+    $go_lock_toggle = (isset($custom_fields['go_lock_toggle'][0]) ?  $custom_fields['go_lock_toggle'][0] : null);
+    if ($go_lock_toggle == true ) {
+        $task_is_locked_locks = false;
         if (!$check_only) {
             $task_caps = ucwords($task_name);
             $lock_message = (isset($custom_fields['go_lock_message'][0]) ?  $custom_fields['go_lock_message'][0] : null);
@@ -99,7 +92,7 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
             $this_lock = false;
             $lock_num = "go_locks_" . $i . "_keys";
             $num_keys = $custom_fields[$lock_num][0];
-
+            $this_lock_on = false;
             for ($k = 0; $k < $num_keys; $k++) {
                 $key_type = "go_locks_" . $i . "_keys_" . $k . "_key";
                 $key_type = $custom_fields[$key_type][0];
@@ -114,6 +107,7 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
                 if ($this_lock == true){
                     $task_is_locked_locks = true;
                     $this_lock_on = true;
+                    $task_is_locked = true;
                 }
             }
             if (!$check_only) {
@@ -136,6 +130,17 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
         }
 
     }
+
+    /**
+     * This section is for the password lock
+
+
+    $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
+    //if ($go_lock_toggle == true || $go_password_lock == true){
+    if ($go_password_lock == true){
+        $task_is_locked = true;
+    }
+     */
     //if ($task_is_locked_l){
     //    $task_is_locked = true;
     //}

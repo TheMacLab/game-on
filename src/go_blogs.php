@@ -153,11 +153,9 @@ function go_template_loader($template){
 }
 add_filter('template_include', 'go_template_loader');
 
+
 function go_blog_opener(){
-
     check_ajax_referer( 'go_blog_opener' );
-
-
 
     $blog_post_id = ( ! empty( $_POST['blog_post_id'] ) ? (int) $_POST['blog_post_id'] : 0 );
 
@@ -170,20 +168,26 @@ function go_blog_opener(){
         $title = '';
     }
     echo "<div id='go_url_div'>";
+
     echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' value ='{$title}'></div> </div>";
     $settings  = array(
-        'tinymce'=>true,
             //'wpautop' =>false,
-            'textarea_name' => 'go_result',
+            'textarea_name' => 'go_blog_post',
             'media_buttons' => true,
             //'teeny' => true,
             'quicktags'=>false,
             'menubar' => false,
-            'drag_drop_upload' => true
+            'drag_drop_upload' => true,
+            'textarea_rows'=>'6'
     );
     wp_editor( $content, 'go_blog_post', $settings );
+
+    $length = strlen(strip_tags($content));
+    $minimum = '300';
+
     echo "</div>";
-    echo "<button id='go_blog_submit' blog_post_id =" .$blog_post_id. ">Submit</button>";
+    //echo "<div id='go_blog_min' style='text-align:left'>Character Count: <span class='char_count'>".$length."/".$minimum ."</span> Minimum</div>";
+    echo "<button id='go_blog_submit' style='display:block;' blog_post_id =" .$blog_post_id. ">Submit</button>";
     ?>
     <script>
 
@@ -191,11 +195,14 @@ function go_blog_opener(){
         jQuery("#go_blog_submit").one("click", function(e){
             go_blog_submit( this );
         });
+
     });
 
     </script>
 <?php
 }
+
+
 
 function go_blog_submit(){
 
