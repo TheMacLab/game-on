@@ -322,17 +322,7 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
         </script><?php
         echo "<h3>". $page_title . "</h3>";
         echo '<button class="go_blog_opener" blog_post_id ="'.$post_id.'">edit post</button>';
-        ?>
-        <script>
 
-            jQuery( document ).ready( function() {
-                jQuery(".go_blog_opener").one("click", function(e){
-                    go_blog_opener( this );
-                });
-            });
-
-        </script>
-        <?php
         echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">" . $content . "</div>";
 
     }

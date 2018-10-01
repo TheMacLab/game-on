@@ -172,7 +172,7 @@ function go_blog_opener(){
     echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' value ='{$title}'></div> </div>";
     $settings  = array(
             //'wpautop' =>false,
-            'textarea_name' => 'go_blog_post',
+            'textarea_name' => 'go_result',
             'media_buttons' => true,
             //'teeny' => true,
             'quicktags'=>false,
@@ -180,7 +180,7 @@ function go_blog_opener(){
             'drag_drop_upload' => true,
             'textarea_rows'=>'6'
     );
-    wp_editor( $content, 'go_blog_post', $settings );
+    wp_editor( $content, 'go_blog_post_edit', $settings );
 
     $length = strlen(strip_tags($content));
     $minimum = '300';
@@ -201,7 +201,6 @@ function go_blog_opener(){
     </script>
 <?php
 }
-
 
 
 function go_blog_submit(){

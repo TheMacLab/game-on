@@ -66,7 +66,7 @@ jQuery("#notification").html(o.notification),jQuery("#go_admin_bar_progress_bar"
 //check_locks();
 })}}})}function go_mce(){
 // remove existing editor instance
-tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post")}function go_append(e){
+tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post"),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post_edit")}function go_append(e){
 //jQuery( res.html ).addClass('active');
 jQuery(e.html).appendTo("#go_wrapper").stop().hide().show("slow").promise().then(function(){
 // Animation complete
@@ -93,7 +93,7 @@ var s=_[t].children[1].children[0].type;o.push(s);
 // get the checked inputs of each test
 var i="#"+_[t].id+" :checked",u=jQuery(i);if("radio"==s)
 // push indiviudal answers to the choice_array
-null!=u[0]&&r.push(u[0].value);else if("checkbox"==s){for(var g=[],l=0;l<u.length;l++)g.push(u[l].value);var c=g.join("### ");r.push(c)}}var d=r.join("#### "),y=o.join("### ")}else{var j=jQuery(".go_test_list li input:checked"),y;if("radio"==(y=jQuery(".go_test_list li input").first().attr("type")))var d=j[0].value;else if("checkbox"==y){for(var d=[],l=0;l<j.length;l++)d.push(j[l].value);d=d.join("### ")}}}jQuery.ajax({type:"POST",data:{_ajax_nonce:go_task_data.go_unlock_stage,action:"go_unlock_stage",task_id:go_task_data.ID,user_id:go_task_data.userID,list_size:n,chosen_answer:d,type:y,status:e},success:function(e){if("refresh"==e)location.reload();else{if(1==e)return jQuery(".go_test_container").hide("slow"),jQuery("#test_failure_msg").hide("slow"),jQuery(".go_test_submit_div").hide("slow"),jQuery(".go_wrong_answer_marker").hide(),jQuery("#go_stage_error_msg").hide(),task_stage_change(a),0;//return a mod of 0
+null!=u[0]&&r.push(u[0].value);else if("checkbox"==s){for(var g=[],l=0;l<u.length;l++)g.push(u[l].value);var c=g.join("### ");r.push(c)}}var d=r.join("#### "),y=o.join("### ")}else{var m=jQuery(".go_test_list li input:checked"),y;if("radio"==(y=jQuery(".go_test_list li input").first().attr("type")))var d=m[0].value;else if("checkbox"==y){for(var d=[],l=0;l<m.length;l++)d.push(m[l].value);d=d.join("### ")}}}jQuery.ajax({type:"POST",data:{_ajax_nonce:go_task_data.go_unlock_stage,action:"go_unlock_stage",task_id:go_task_data.ID,user_id:go_task_data.userID,list_size:n,chosen_answer:d,type:y,status:e},success:function(e){if("refresh"==e)location.reload();else{if(1==e)return jQuery(".go_test_container").hide("slow"),jQuery("#test_failure_msg").hide("slow"),jQuery(".go_test_submit_div").hide("slow"),jQuery(".go_wrong_answer_marker").hide(),jQuery("#go_stage_error_msg").hide(),task_stage_change(a),0;//return a mod of 0
 if(0==e)
 //go_disable_loading();
 return jQuery("#go_stage_error_msg").show(),jQuery("#go_stage_error_msg").text("Wrong answer, try again!"),1;//return a mod of 1
@@ -103,6 +103,8 @@ if("string"==typeof e&&1<n){
 for(var o=e.split(", "),r=0;r<_.length;r++){var t="#"+_[r].id;-1===jQuery.inArray(t,o)?(jQuery(t+" .go_wrong_answer_marker").is(":visible")&&jQuery(t+" .go_wrong_answer_marker").hide(),jQuery(t+" .go_correct_answer_marker").is(":visible")||jQuery(t+" .go_correct_answer_marker").show()):(jQuery(t+" .go_correct_answer_marker").is(":visible")&&jQuery(t+" .go_correct_answer_marker").hide(),jQuery(t+" .go_wrong_answer_marker").is(":visible")||jQuery(t+" .go_wrong_answer_marker").show())}var s;
 //go_disable_loading();
 return void("Wrong answer, try again!"!=jQuery("#go_stage_error_msg").text()?(jQuery("#go_stage_error_msg").show(),jQuery("#go_stage_error_msg").text("Wrong answer, try again!")):flash_error_msg("#go_stage_error_msg"))}}}})}jQuery(document).ready(function(){
+//add onclick to blog edit buttons
+jQuery(document).ready(function(){jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}),
 //removes hidden mce that is used for blog check for understanding
 jQuery("#go_hidden_mce").remove(),go_mce(),jQuery.ajaxSetup({url:go_task_data.url+="/wp-admin/admin-ajax.php"});
 //check_locks();

@@ -602,8 +602,7 @@ jQuery(this).prepend('<a href=\'#\' class=\'featherlight_wrapper_vid_shortcode\'
 //jQuery(this).children(".featherlight_wrapper_vid_shortcode").prepend("<span style=\"position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;\"></span>");
 //jQuery(".mejs-overlay-play").unbind("click");
 jQuery(this).addClass("wrapped")}))},100);// check every 100ms
-}}function mce_limit(e){var t=[8,37,38,39,40,46];// backspace, delete and cursor keys
-e.on("keydown",function(e){return-1!=t.indexOf(e.keyCode)||(!(tinymce_getContentLength()+1>this.settings.max_chars)||(e.preventDefault(),e.stopPropagation(),!1))}),e.on("keyup",function(e){tinymce_updateCharCounter(this,tinymce_getContentLength())})}function tinymce_updateCharCounter(e,t){jQuery(".char_count").text(t+"/500")}function tinymce_getContentLength(){var e=tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText.length;return console.log(e),e}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
+}}function tinymce_updateCharCounter(e,t){jQuery(".char_count").text(t+"/500")}function tinymce_getContentLength(){var e=tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText.length;return console.log(e),e}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
 //var result_title = jQuery( this ).attr( 'value' );
 var t=jQuery(e).attr("blog_post_id"),a,o={action:"go_blog_opener",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_opener,blog_post_id:t};
 //console.log(el);
@@ -611,7 +610,7 @@ var t=jQuery(e).attr("blog_post_id"),a,o={action:"go_blog_opener",_ajax_nonce:GO
 //jQuery.ajaxSetup({ cache: true });
 jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:o,cache:!1,success:function(e){
 //console.log(results);
-jQuery.featherlight(e),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post"),jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e){var t,a,o,s,r={action:"go_blog_submit",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_submit,result:tinyMCE.activeEditor.getContent(),result_title:jQuery("#go_result_title").attr("value"),blog_post_id:jQuery(e).attr("blog_post_id")};
+jQuery.featherlight(e),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post_edit"),jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e){var t,a,o,s,r={action:"go_blog_submit",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_submit,result:tinyMCE.activeEditor.getContent(),result_title:jQuery("#go_result_title").attr("value"),blog_post_id:jQuery(e).attr("blog_post_id")};
 //jQuery.ajaxSetup({ cache: true });
 jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,cache:!1,success:function(){console.log("success"),location.reload()}})}function go_messages_opener(a,e,o){
 //jQuery('#go_messages_icon').prop('onclick',null).off('click'); //blog

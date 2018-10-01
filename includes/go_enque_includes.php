@@ -75,24 +75,6 @@ function go_includes () {
     wp_enqueue_media();
 
     /**
-     * Tiny MCE on frontend
-
-
-    //wp_register_script( 'go_frontend_tinymce', get_site_url(null, '/wp-includes/js/tinymce/tinymce.min.js'), array( 'jquery' ), null, false);
-    //wp_enqueue_script( 'go_frontend_tinymce' );
-
-    $test_url = get_site_url(null, '/wp-includes/js/tinymce/tiny_mce.js');
-    ?>
-    <script>
-        console.log("
-            <?php echo $test_url;?>
-            )
-    </script>
-<?php
-     */
-
-
-    /**
      * Select 2
      */
     wp_register_script( 'go_select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', array( 'jquery' ),'v1.1', false);

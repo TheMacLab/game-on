@@ -1,5 +1,13 @@
 jQuery( document ).ready( function() {
 
+    //add onclick to blog edit buttons
+    
+    jQuery( document ).ready( function() {
+        jQuery(".go_blog_opener").one("click", function(e){
+            go_blog_opener( this );
+        });
+    });
+
     //removes hidden mce that is used for blog check for understanding
     jQuery('#go_hidden_mce').remove();
     go_mce();
@@ -494,6 +502,10 @@ function go_mce() {
     // remove existing editor instance
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
     tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post' );
+
+    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+    tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post_edit' );
+
     //tinyMCE.execCommand('mceAddControl', false, 'go_blog_post');
 
 

@@ -981,6 +981,17 @@ function go_hidden_footer(){
             'drag_drop_upload' => true
     );
     wp_editor( '', 'go_blog_post', $settings );
+
+    $settings2  = array(
+        //'wpautop' =>false,
+        'textarea_name' => 'go_result',
+        'media_buttons' => true,
+        //'teeny' => true,
+        'quicktags'=>false,
+        'menubar' => false,
+        'drag_drop_upload' => true
+    );
+    wp_editor( '', 'go_blog_post_edit', $settings2 );
     echo "</div>";
 }
 
@@ -1095,8 +1106,6 @@ function go_task_change_stage() {
 
     }
     else if ($button_type == 'continue' || $button_type == 'complete'){
-        //$result = null;
-        //if password
 
         ////////////////
         /// DO ANY FINAL VALIDATION
@@ -1104,16 +1113,6 @@ function go_task_change_stage() {
         if ($check_type == 'password'){
             $result = go_stage_password_validate($result, $custom_fields, $status, false);
         }
-        //else if ($check_type == 'URL'){
-        //$result = ( ! empty( $_POST['url'] ) ? (string) $_POST['url'] : '' ); // Contains user-entered url
-        //}
-        //else if ($check_type == 'quiz'){
-        //get ratio of number correct
-        //}
-        //else if ($check_type == 'upload'){
-        //get id of media item
-        //$result = ( ! empty( $_POST['url'] ) ? (string) $_POST['url'] : '' );
-        //}
         else if ($check_type == 'blog'){
             $post_name = get_the_title($post_id);
             $my_post = array(
@@ -1223,6 +1222,26 @@ function go_task_change_stage() {
             //validate the check for understanding and get modifiers
             if ($check_type == 'password'){
                 $result = go_stage_password_validate($result, $custom_fields, $status, true);
+            }
+            else if ($check_type == 'blog'){
+                $post_name = get_the_title($post_id);
+                $my_post = array(
+                    'ID'        => $blog_post_id,
+                    'post_type'     => 'go_blogs',
+                    'post_title'    => $result_title,
+                    'post_content'  => $result,
+                    'post_status'   => 'publish',
+                    'post_author'   => $user_id,
+                    'tax_input'    => array(
+                        'go_blog_tags'     => $post_name
+                    ),
+                );
+
+                // Insert the post into the database
+                $new_post_id = wp_insert_post( $my_post );
+                //create blog post function ($uid, $result);
+                //get id of blog post item to set in actions
+                $result = $new_post_id;
             }
 
             //get the rewards and apply modifiers

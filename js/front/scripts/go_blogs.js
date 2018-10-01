@@ -1,23 +1,3 @@
-function mce_limit(ed) {
-            var allowedKeys = [8, 37, 38, 39, 40, 46]; // backspace, delete and cursor keys
-            ed.on('keydown', function (e) {
-                if (allowedKeys.indexOf(e.keyCode) != -1) return true;
-                if (tinymce_getContentLength() + 1 > this.settings.max_chars) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-                return true;
-            });
-            ed.on('keyup', function (e) {
-                tinymce_updateCharCounter(this, tinymce_getContentLength());
-            });
-}
-
-
-
-
-
 function tinymce_updateCharCounter(el, len) {
     jQuery('.char_count').text(len + '/' + '500');
 }
@@ -52,8 +32,8 @@ function go_blog_opener( el ) {
         success: function (results) {
             //console.log(results);
             jQuery.featherlight(results);
-            tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
-            tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post' );
+            tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+            tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post_edit' );
             jQuery(".featherlight").css('background', 'rgba(0,0,0,.8)');
             jQuery(".featherlight .featherlight-content").css('width', '80%');
 
@@ -62,7 +42,7 @@ function go_blog_opener( el ) {
                 go_blog_opener( this );
             });
 
-            /*
+            /*This code is for the min length validation
             ///counts length of blog posts and activates submit button
             tinyMCE.activeEditor.on('keyup', function(ed) {
                 tinymce_updateCharCounter(this, tinymce_getContentLength());
