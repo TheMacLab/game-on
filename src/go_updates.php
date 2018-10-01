@@ -472,21 +472,24 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
             //make sure we don't go over 200 health
             $health = go_health_to_add($user_id, $health);
 
-            $badges = $wpdb->get_var($wpdb->prepare("SELECT badges
+            if ($status != 0) {
+
+                $badges = $wpdb->get_var($wpdb->prepare("SELECT badges
 					FROM {$go_actions_table_name} 
 					WHERE uid = %d and source_id  = %d and stage = %d 
 					ORDER BY id DESC LIMIT 1", $user_id, $post_id, $status));
 
-            $badge_ids = go_remove_badges ($badges, $user_id, true);
+                $badge_ids = go_remove_badges($badges, $user_id, true);
 
-            $badge_ids = serialize($badge_ids);
+                $badge_ids = serialize($badge_ids);
 
-            $groups = $wpdb->get_var($wpdb->prepare("SELECT groups
+                $groups = $wpdb->get_var($wpdb->prepare("SELECT groups
 					FROM {$go_actions_table_name} 
 					WHERE uid = %d and source_id  = %d and stage = %d 
 					ORDER BY id DESC LIMIT 1", $user_id, $post_id, $status));
-            $group_ids = go_remove_groups ($groups, $user_id,true);
-            $group_ids = serialize($group_ids);
+                $group_ids = go_remove_groups($groups, $user_id, true);
+                $group_ids = serialize($group_ids);
+            }
         }
 
 
