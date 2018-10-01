@@ -357,7 +357,7 @@ class acf_field_quiz extends acf_field {
         //$val_uns = unserialize($value);
 
         $stage_quiz_num = $field['name'];
-        $ttc = trim($stage_quiz_num,"stages__quiz");
+        $ttc = trim($stage_quiz_num,"go_stages__quiz");
         $ttc = (int)$ttc;
         $ttc =$ttc + 1;
 
