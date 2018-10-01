@@ -1,7 +1,7 @@
 jQuery( document ).ready( function() {
 
     //add onclick to blog edit buttons
-    
+
     jQuery( document ).ready( function() {
         jQuery(".go_blog_opener").one("click", function(e){
             go_blog_opener( this );
