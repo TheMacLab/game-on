@@ -88,9 +88,7 @@ function go_the_lb_ajax() {
         <?php
         echo "</div>";
         //$task_is_locked = go_display_locks($post_id, $user_id, $is_admin, 'item', $badge_name, $custom_fields, $is_logged_in, 'Item');
-        if ($task_is_locked) {
-            return null;
-        }
+
     }
     else{//skip locks is true--this is a request from the password field
         //check the password and return an error
@@ -106,202 +104,211 @@ function go_the_lb_ajax() {
             $unlock_flag = 'bad_password';
         }
     }
+    if (!$task_is_locked) {
 
-    $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ?  $custom_fields['go_loot_loot_xp'][0] : null);
-    if (get_option( 'options_go_loot_xp_toggle' ) && $store_abs_cost_xp > 0){
-        $xp_on = true;
-        $xp_name = get_option('options_go_loot_xp_name');
-        //$xp_abbr         = get_option( 'options_go_loot_xp_abbreviation' );
-        //$user_xp = go_return_points( $user_id );
-        $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ?  $custom_fields['go_loot_reward_toggle_xp'][0] : null);
-        /*
-        $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
 
-        if ($xp_mod_toggle) {
-            $store_mod_val = ceil($store_abs_cost_xp * $health_mod);
+        $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ? $custom_fields['go_loot_loot_xp'][0] : null);
+        if (get_option('options_go_loot_xp_toggle') && $store_abs_cost_xp > 0) {
+            $xp_on = true;
+            $xp_name = get_option('options_go_loot_xp_name');
+            //$xp_abbr         = get_option( 'options_go_loot_xp_abbreviation' );
+            //$user_xp = go_return_points( $user_id );
+            $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ? $custom_fields['go_loot_reward_toggle_xp'][0] : null);
+            /*
+            $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
 
-            if ($store_toggle_xp) {
-                $store_abs_cost_xp = $store_abs_cost_xp - $store_mod_val;
+            if ($xp_mod_toggle) {
+                $store_mod_val = ceil($store_abs_cost_xp * $health_mod);
+
+                if ($store_toggle_xp) {
+                    $store_abs_cost_xp = $store_abs_cost_xp - $store_mod_val;
+                }
+                else {
+                    $store_abs_cost_xp = $store_abs_cost_xp + $store_mod_val;
+                }
+
             }
-            else {
-                $store_abs_cost_xp = $store_abs_cost_xp + $store_mod_val;
+            */
+        } else {
+            $xp_on = false;
+        }
+
+        $store_abs_cost_gold = (isset($custom_fields['go_loot_loot_gold'][0]) ? $custom_fields['go_loot_loot_gold'][0] : null);
+        if (get_option('options_go_loot_gold_toggle') && $store_abs_cost_gold > 0) {
+            $gold_on = true;
+            $gold_name = get_option('options_go_loot_gold_name');
+            $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ? $custom_fields['go_loot_reward_toggle_gold'][0] : null);
+
+        } else {
+            $gold_on = false;
+        }
+
+        $store_abs_cost_health = (isset($custom_fields['go_loot_loot_health'][0]) ? $custom_fields['go_loot_loot_health'][0] : null);
+        if (get_option('options_go_loot_health_toggle') && $store_abs_cost_health > 0) {
+            $health_on = true;
+            $health_name = get_option('options_go_loot_health_name');
+            $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ? $custom_fields['go_loot_reward_toggle_health'][0] : null);
+
+        } else {
+            $health_on = false;
+        }
+
+        $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ? $custom_fields['go_loot_loot_c4'][0] : null);
+        if (get_option('options_go_loot_c4_toggle') && $store_abs_cost_c4 > 0) {
+            $c4_on = true;
+            $c4_name = get_option('options_go_loot_c4_name');
+            $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ? $custom_fields['go_loot_reward_toggle_c4'][0] : null);
+        } else {
+            $c4_on = false;
+        }
+
+        $purchase_count = go_get_purchase_count($post_id, $user_id, $custom_fields);
+
+        $store_limit_toggle = (($custom_fields['go-store-options_limit_toggle'][0] == true) ? $custom_fields['go-store-options_limit_toggle'][0] : null);
+        if ($store_limit_toggle) {
+            $store_limit = (($custom_fields['go-store-options_limit_num'][0] == true) ? $custom_fields['go-store-options_limit_num'][0] : null);
+        }
+        $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
+
+        $badges_toggle = get_option('options_go_badges_toggle');
+        if ($badges_toggle) {
+            $badges = (($custom_fields['go_purch_reward_badges'][0] == true) ? $custom_fields['go_purch_reward_badges'][0] : null);
+            $badges = unserialize($badges);
+        }
+        $groups = (($custom_fields['go_purch_reward_groups'][0] == true) ? $custom_fields['go_purch_reward_groups'][0] : null);
+        $groups = unserialize($groups);
+
+
+        echo '<div id="light" class="white_content">';
+        echo "<h1>{$the_title}</h1>";
+
+        echo '<div id="go-lb-the-content"><div id="go_store_description" style=""' . do_shortcode($the_content) . '</div>';
+
+        if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false) || ($c4_on && $store_toggle_c4 == false)) {
+            echo "<div id='go_store_loot'><div id='go_cost'> <div id='go_store_cost_container' class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_minus' class='go_store_round_button'>-</div></div></div><div class='go_store_loot_right'><h3>Cost</h3>";
+            if ($xp_on && $store_toggle_xp == false) {
+                echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_xp . ' : ' . $xp_name . '</div>';
+            }
+            if ($gold_on && $store_toggle_gold == false) {
+                echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_gold . ' : ' . $gold_name . '</div>';
+            }
+            if ($health_on && $store_toggle_health == false) {
+                echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_health . ' : ' . $health_name . '</div>';
+            }
+            if ($c4_on && $store_toggle_c4 == false) {
+                echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_c4 . ' : ' . $c4_name . '</div>';
             }
 
+            echo "</div></div></div>";
         }
-        */
-    }else{
-        $xp_on = false;
-    }
 
-    $store_abs_cost_gold = (isset($custom_fields['go_loot_loot_gold'][0]) ?  $custom_fields['go_loot_loot_gold'][0] : null);
-    if (get_option( 'options_go_loot_gold_toggle' )  && $store_abs_cost_gold > 0){
-        $gold_on = true;
-        $gold_name = get_option('options_go_loot_gold_name');
-        $store_toggle_gold = (isset($custom_fields['go_loot_reward_toggle_gold'][0]) ?  $custom_fields['go_loot_reward_toggle_gold'][0] : null);
-
-    }else{
-        $gold_on = false;
-    }
-
-    $store_abs_cost_health = (isset($custom_fields['go_loot_loot_health'][0]) ?  $custom_fields['go_loot_loot_health'][0] : null);
-    if (get_option( 'options_go_loot_health_toggle' ) && $store_abs_cost_health > 0){
-        $health_on = true;
-        $health_name = get_option('options_go_loot_health_name');
-        $store_toggle_health = (isset($custom_fields['go_loot_reward_toggle_health'][0]) ?  $custom_fields['go_loot_reward_toggle_health'][0] : null);
-
-    }else{
-        $health_on = false;
-    }
-
-    $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ?  $custom_fields['go_loot_loot_c4'][0] : null);
-    if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
-        $c4_on = true;
-        $c4_name = get_option('options_go_loot_c4_name');
-        $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
-    }else{
-        $c4_on = false;
-    }
-
-    $purchase_count = go_get_purchase_count($post_id, $user_id, $custom_fields);
-
-    $store_limit_toggle = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_toggle'][0] : null );
-    if ($store_limit_toggle) {
-        $store_limit = (($custom_fields['go-store-options_limit_num'][0] == true) ? $custom_fields['go-store-options_limit_num'][0] : null);
-    }
-    $purchase_remaining_max = go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_count);
-
-    $badges_toggle = get_option('options_go_badges_toggle');
-    if ($badges_toggle) {
-        $badges = (($custom_fields['go_purch_reward_badges'][0] == true) ? $custom_fields['go_purch_reward_badges'][0] : null);
-        $badges = unserialize($badges);
-    }
-    $groups = ( ($custom_fields['go_purch_reward_groups'][0] == true ) ? $custom_fields['go_purch_reward_groups'][0] : null );
-    $groups = unserialize($groups);
+        if (($xp_on && $store_toggle_xp == true) || ($gold_on && $store_toggle_gold == true) || ($health_on && $store_toggle_health == true) || ($c4_on && $store_toggle_c4 == true) || (!empty($badges)) || (!empty($groups))) {
+            echo "<div id='go_reward'><div class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_plus' class='go_store_round_button'>+</div></div></div><div class='go_store_loot_right'><h3>Reward</h3>";
+            if ($xp_on && $store_toggle_xp == true) {
+                echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_xp . ' : ' . $xp_name . '</div>';
+            }
+            if ($gold_on && $store_toggle_gold == true) {
+                echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_gold . ' : ' . $gold_name . '</div>';
+            }
+            if ($health_on && $store_toggle_health == true) {
+                echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_health . ' : ' . $health_name . '</div>';
+            }
+            if ($c4_on && $store_toggle_c4 == true) {
+                echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_c4 . ' : ' . $c4_name . '</div>';
+            }
 
 
-	echo'<div id="light" class="white_content">';
-    echo "<h1>{$the_title}</h1>";
+            echo '<div id="go_badges_groups">';
+            if (!empty($badges)) {
+                echo '<div id="go_badges"><h4>Badges</h4>';
+                foreach ($badges as $badge) {
+                    $term = get_term($badge);
+                    $name = $term->name;
+                    echo '<div>' . $name . '</div>';
+                }
+                echo '</div>';
+            }
 
-	echo '<div id="go-lb-the-content"><div id="go_store_description" style=""'.do_shortcode( $the_content ) . '</div>';
-
-	if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false) || ($c4_on && $store_toggle_c4 == false)) {
-        echo "<div id='go_store_loot'><div id='go_cost'> <div id='go_store_cost_container' class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_minus' class='go_store_round_button'>-</div></div></div><div class='go_store_loot_right'><h3>Cost</h3>";
-        if ($xp_on && $store_toggle_xp == false) {
-            echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_xp . ' : ' . $xp_name . '</div>';
+            if (!empty($groups)) {
+                echo '<div id="go_groups"><h4>Groups</h4>';
+                foreach ($groups as $group) {
+                    $term = get_term($group);
+                    $name = $term->name;
+                    echo '<div>' . $name . '</div>';
+                }
+                echo '</div>';
+            }
+            echo "</div></div></div>";
         }
-        if ($gold_on && $store_toggle_gold == false) {
-            echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_gold . ' : ' . $gold_name . '</div>';
-        }
-        if ($health_on && $store_toggle_health == false) {
-            echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_health . ' : ' . $health_name . '</div>';
-        }
-        if ($c4_on && $store_toggle_c4 == false) {
-            echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_c4 . ' : ' . $c4_name . '</div>';
-        }
+
 
         echo "</div></div></div>";
-    }
 
-    if(($xp_on && $store_toggle_xp == true) || ($gold_on && $store_toggle_gold == true) || ($health_on && $store_toggle_health == true) || ($c4_on && $store_toggle_c4 == true) || (!empty($badges)) || (!empty($groups)) ) {
-        echo "<div id='go_reward'><div class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_plus' class='go_store_round_button'>+</div></div></div><div class='go_store_loot_right'><h3>Reward</h3>";
-        if ($xp_on && $store_toggle_xp == true) {
-            echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_xp . ' : ' . $xp_name . '</div>';
-        }
-        if ($gold_on && $store_toggle_gold == true) {
-            echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_gold . ' : ' . $gold_name . '</div>';
-        }
-        if ($health_on && $store_toggle_health == true) {
-            echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_health . ' : ' . $health_name . '</div>';
-        }
-        if ($c4_on && $store_toggle_c4 == true) {
-            echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_c4 . ' : ' . $c4_name . '</div>';
-        }
-
-
-        echo '<div id="go_badges_groups">';
-        if (!empty($badges)) {
-            echo '<div id="go_badges"><h4>Badges</h4>';
-            foreach ($badges as $badge) {
-                $term = get_term($badge);
-                $name = $term->name;
-                echo '<div>' . $name . '</div>';
-            }
-            echo '</div>';
-        }
-
-        if (!empty($groups)) {
-            echo '<div id="go_groups"><h4>Groups</h4>';
-            foreach ($groups as $group) {
-                $term = get_term($group);
-                $name = $term->name;
-                echo '<div>' . $name . '</div>';
-            }
-            echo '</div>';
-        }
-        echo "</div></div></div>";
-    }
-
-
-    echo "</div></div></div>";
-
-		?>
-        <div id="go_store_actions">
-        <?php
-        $store_multiple_toggle = (isset($custom_fields['go-store-options_multiple'][0]) ?  $custom_fields['go-store-options_multiple'][0] : null);
-
-        if ($purchase_remaining_max > 0  && $store_multiple_toggle) {
-            ?>
-
-            <div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty"
-                                                                      style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;"
-                                                                      type="number" value="1" disabled="disabled"/>
-            </div>
-            <?php
-        }
         ?>
-
-        <div id="go_purch_limits">
+        <div id="go_store_actions">
             <?php
-            $store_limit_duration = false;
-            if ($store_limit_duration == 'Total'){
-                $var1 = ' ';
-            }else{
-                $var1 = ' / ';
-            }
+            $store_multiple_toggle = (isset($custom_fields['go-store-options_multiple'][0]) ? $custom_fields['go-store-options_multiple'][0] : null);
 
-            if ($store_limit_toggle) {
+            if ($purchase_remaining_max > 0 && $store_multiple_toggle) {
                 ?>
-                <div id="golb-fr-purchase-limit"
-                     val="<?php echo(!empty($purchase_remaining_max) ? $purchase_remaining_max : 0); ?>"><?php echo(($store_limit_toggle) ? "Limit {$store_limit}{$var1}{$store_limit_duration}" : 'No limit'); ?></div>
+
+                <div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty"
+                                                                          style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;"
+                                                                          type="number" value="1" disabled="disabled"/>
+                </div>
                 <?php
             }
+            ?>
+
+            <div id="go_purch_limits">
+                <?php
+                $store_limit_duration = false;
+                if ($store_limit_duration == 'Total') {
+                    $var1 = ' ';
+                } else {
+                    $var1 = ' / ';
+                }
+
+                if ($store_limit_toggle) {
+                    ?>
+                    <div id="golb-fr-purchase-limit"
+                         val="<?php echo(!empty($purchase_remaining_max) ? $purchase_remaining_max : 0); ?>"><?php echo(($store_limit_toggle) ? "Limit {$store_limit}{$var1}{$store_limit_duration}" : 'No limit'); ?></div>
+                    <?php
+                }
                 ?>
                 <div id="golb-purchased">
-		<?php
-		if ( is_null( $purchase_count ) ) {
-			echo 'Quantity purchased: 0';
-		} else {
-			echo "Quantity purchased: {$purchase_count}";
-		}
-	    ?>
+                    <?php
+                    if (is_null($purchase_count)) {
+                        echo 'Quantity purchased: 0';
+                    } else {
+                        echo "Quantity purchased: {$purchase_count}";
+                    }
+                    ?>
+                </div>
+            </div>
+
+            <?php
+            if ($purchase_remaining_max > 0) {
+                ?>
+                <div id="golb-fr-buy" class="golb-fr-boxes-gold"
+                     onclick="goBuytheItem( '<?php echo $post_id; ?>', '<?php echo $purchase_count ?>' ); this.removeAttribute( 'onclick' );">
+                    Buy
+                </div>
+                <?php
+            }
+            if ($purchase_remaining_max == 0) {
+                ?>
+                <div class="error">You have reached your purchase limit or do not have enough loot to purchase this
+                    item.
+                </div>
+                <?php
+            }
+            ?>
+
         </div></div>
 
         <?php
-        if ($purchase_remaining_max > 0) {
-            ?>
-            <div id="golb-fr-buy" class="golb-fr-boxes-gold" onclick="goBuytheItem( '<?php echo $post_id; ?>', '<?php echo $purchase_count?>' ); this.removeAttribute( 'onclick' );">Buy</div>
-            <?php
-        }
-        if ($purchase_remaining_max == 0) {
-            ?>
-            <div class="error">You have reached your purchase limit or do not have enough loot to purchase this item.</div>
-            <?php
-        }
-        ?>
-
-        </div></div>
-
-	<?php
+    }
     $store_html = ob_get_contents();
     ob_end_clean();
 

@@ -39,38 +39,58 @@ function go_lb_opener( id ) {
                 jQuery( "#lb-content" ).append( '<div class="go-lb-loading"></div>' );
             },
             cache: false,
-            success: function( results) {
+            success: function( raw) {
+                console.log('success');
+                console.log(raw);
+                var res = JSON.parse( raw );
+
+                try {
+                    var res = JSON.parse( raw );
+                } catch (e) {
+                    res = {
+                        json_status: '101',
+                        html: ''
+                    };
+                }
+                console.log('html');
+                console.log(res.html);
+                console.log(res.json_status);
+
                 jQuery( "#lb-content" ).innerHTML = "";
                 jQuery( "#lb-content" ).html( '' );
                 //jQuery( "#lb-content" ).append(results);
-                jQuery.featherlight(results, {variant: 'store'});
+                //jQuery('.featherlight-content').html(res.html);
+                jQuery.featherlight(res.html, {variant: 'store'});
+
+
+                //console.log('success');
+                //console.log(raw);
+
+
+
+                if ( '101' === Number.parseInt( res.json_status ) ) {
+                    console.log (101);
+                    jQuery( '#go_store_error_msg' ).show();
+                    var error = "Server Error.";
+                    if ( jQuery( '#go_store_error_msg' ).text() != error ) {
+                        jQuery( '#go_store_error_msg' ).text( error );
+                    } else {
+                        flash_error_msg_store( '#go_store_error_msg' );
+                    }
+                } else if ( 302 === Number.parseInt( res.json_status ) ) {
+                    console.log (302);
+                    window.location = res.location;
+
+                }
                 jQuery('.go_str_item').one("click", function(e){
                     go_lb_opener( this.id );
                 });
 
-                window.go_purchase_limit = jQuery( '#golb-fr-purchase-limit' ).attr( 'val' );
-
-                var spinner_max_size = go_purchase_limit;
-
-                jQuery( '#go_qty' ).spinner({
-                    max: spinner_max_size,
-                    min: 1,
-                    stop: function() {
-                        jQuery( this ).change();
-                    }
-                });
-                go_make_store_clickable();
-                //jQuery('#go_store_admin_override').click( function () {
-                //    jQuery('.go_store_lock').show();
-                //});
-                jQuery('#go_store_admin_override').one("click", function (e) {
-                    //console.log("override");
-                    jQuery('.go_store_lock').show();
-                    jQuery('#go_store_admin_override').hide();
-                    go_make_store_clickable();
-
+                jQuery('#go_store_pass_button').one("click", function (e) {
+                    go_store_password(id);
                 });
 
+                go_max_purchase_limit();
             }
         });
     }
@@ -228,10 +248,38 @@ function go_store_password( id ){
                         });
                         jQuery('#go_store_lightbox_container').hide();
                         jQuery('.featherlight-content').html(res.html);
+                        go_max_purchase_limit();
+
+
                     }
             }
         });
     }
+}
+
+function go_max_purchase_limit(){
+    window.go_purchase_limit = jQuery( '#golb-fr-purchase-limit' ).attr( 'val' );
+
+    var spinner_max_size = go_purchase_limit;
+
+    jQuery( '#go_qty' ).spinner({
+        max: spinner_max_size,
+        min: 1,
+        stop: function() {
+            jQuery( this ).change();
+        }
+    });
+    go_make_store_clickable();
+    //jQuery('#go_store_admin_override').click( function () {
+    //    jQuery('.go_store_lock').show();
+    //});
+    jQuery('#go_store_admin_override').one("click", function (e) {
+        //console.log("override");
+        jQuery('.go_store_lock').show();
+        jQuery('#go_store_admin_override').hide();
+        go_make_store_clickable();
+
+    });
 }
 
 //Not sure if this is still used

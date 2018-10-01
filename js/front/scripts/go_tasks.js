@@ -29,9 +29,7 @@ jQuery( document ).ready( function() {
     });
 
 
-
-
-//add onclick to bonus loot buttons
+    //add onclick to bonus loot buttons
     jQuery( "#go_bonus_button" ).one("click", function(e) {
         go_update_bonus_loot(this);
     });
@@ -169,7 +167,7 @@ function go_disable_loading( ) {
     jQuery( "#go_bonus_button" ).off().one("click", function(e) {
         go_update_bonus_loot(this);
     });
-    
+
     jQuery('.go_str_item').off().one("click", function(e){
         go_lb_opener( this.id );
     });

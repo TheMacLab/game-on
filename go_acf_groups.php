@@ -7,7 +7,6 @@
  */
 //add_filter('acf/settings/show_admin', '__return_false');
 
-
 if( function_exists('acf_add_local_field_group') ):
 
     acf_add_local_field_group(array(
@@ -3728,7 +3727,7 @@ you only enter /map',
                                         'prepend' => '',
                                         'append' => '',
                                         'min' => 0,
-                                        'max' => 100,
+                                        'max' => 200,
                                         'step' => '',
                                     ),
                                     array(
