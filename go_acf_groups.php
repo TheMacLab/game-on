@@ -5,7 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
-//add_filter('acf/settings/show_admin', '__return_false');
+add_filter('acf/settings/show_admin', '__return_false');
 
 if( function_exists('acf_add_local_field_group') ):
 
@@ -5489,7 +5489,7 @@ The master password that is set in the options page will work here, but you may 
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
-                            'class' => '',
+                            'class' => 'go_call_to_action',
                             'id' => '',
                         ),
                         'default_value' => '',
@@ -5508,7 +5508,7 @@ The master password that is set in the options page will work here, but you may 
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
-                            'class' => '',
+                            'class' => 'go_call_to_action',
                             'id' => '',
                         ),
                         'choices' => array(
@@ -5544,7 +5544,7 @@ The master password that is set in the options page will work here, but you may 
                         ),
                         'wrapper' => array(
                             'width' => '',
-                            'class' => '',
+                            'class' => 'go_call_to_action',
                             'id' => '',
                         ),
                         'default_value' => 0,
@@ -5573,7 +5573,7 @@ The master password that is set in the options page will work here, but you may 
                         ),
                         'wrapper' => array(
                             'width' => '',
-                            'class' => '',
+                            'class' => 'go_call_to_action',
                             'id' => '',
                         ),
                     ),
@@ -5595,7 +5595,7 @@ The master password that is set in the options page will work here, but you may 
                         ),
                         'wrapper' => array(
                             'width' => '',
-                            'class' => '',
+                            'class' => 'go_call_to_action',
                             'id' => '',
                         ),
                         'placeholder' => '',
@@ -6118,6 +6118,106 @@ The master password that is set in the options page will work here, but you may 
                         'delay' => 0,
                     ),
                     array(
+                        'key' => 'field_5afa59e675cec',
+                        'label' => 'Call to Action',
+                        'name' => 'instructions',
+                        'type' => 'wysiwyg',
+                        'instructions' => '',
+                        'required' => 0,
+                        'conditional_logic' => 0,
+                        'wrapper' => array(
+                            'width' => '',
+                            'class' => 'go_call_to_action',
+                            'id' => '',
+                        ),
+                        'default_value' => '',
+                        'tabs' => 'all',
+                        'toolbar' => 'full',
+                        'media_upload' => 1,
+                        'delay' => 0,
+                    ),
+                    array(
+                        'key' => 'field_5a8b14a6f32fa',
+                        'label' => 'Check for Understanding',
+                        'name' => 'check',
+                        'type' => 'radio',
+                        'instructions' => '',
+                        'required' => 0,
+                        'conditional_logic' => 0,
+                        'wrapper' => array(
+                            'width' => '',
+                            'class' => 'go_call_to_action',
+                            'id' => '',
+                        ),
+                        'choices' => array(
+                            'blog' => 'Blog (beta)',
+                            'upload' => 'Upload File',
+                            'URL' => 'URL',
+                            'password' => 'Password',
+                            'none' => 'none',
+                        ),
+                        'allow_null' => 0,
+                        'other_choice' => 0,
+                        'save_other_choice' => 0,
+                        'default_value' => 'none',
+                        'layout' => 'horizontal',
+                        'return_format' => 'value',
+                    ),
+                    array(
+                        'key' => 'field_5afa5a78d25dc',
+                        'label' => 'Quiz Modifier',
+                        'name' => 'quiz_modifier',
+                        'type' => 'number',
+                        'instructions' => '% of Stage Loot Lost for Each Wrong Answer',
+                        'required' => 0,
+                        'conditional_logic' => array(
+                            array(
+                                array(
+                                    'field' => 'field_5a8b14a6f32fa',
+                                    'operator' => '==',
+                                    'value' => 'quiz',
+                                ),
+                            ),
+                        ),
+                        'wrapper' => array(
+                            'width' => '',
+                            'class' => 'go_call_to_action',
+                            'id' => '',
+                        ),
+                        'default_value' => 0,
+                        'placeholder' => '',
+                        'prepend' => '',
+                        'append' => '%',
+                        'min' => 0,
+                        'max' => 100,
+                        'step' => '',
+                    ),
+                    array(
+                        'key' => 'field_5a8b14a6f3301',
+                        'label' => 'Password',
+                        'name' => 'password',
+                        'type' => 'password',
+                        'instructions' => 'Users will need a password to proceed. The master password that is set on the options page will work.	You can set an additional password that only applies to this stage.',
+                        'required' => 0,
+                        'conditional_logic' => array(
+                            array(
+                                array(
+                                    'field' => 'field_5a8b14a6f32fa',
+                                    'operator' => '==',
+                                    'value' => 'password',
+                                ),
+                            ),
+                        ),
+                        'wrapper' => array(
+                            'width' => '',
+                            'class' => 'go_call_to_action',
+                            'id' => '',
+                        ),
+                        'placeholder' => '',
+                        'prepend' => '',
+                        'append' => '',
+                    ),
+                    array(
                         'key' => 'field_5a8b14a6f32f6',
                         'label' => 'Reward',
                         'name' => 'rewards',
@@ -6217,107 +6317,6 @@ The master password that is set in the options page will work here, but you may 
                                 'step' => 1,
                             ),
                         ),
-                    ),
-                    array(
-                        'key' => 'field_5afa59e675cec',
-                        'label' => 'Call to Action',
-                        'name' => 'instructions',
-                        'type' => 'wysiwyg',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'default_value' => '',
-                        'tabs' => 'all',
-                        'toolbar' => 'full',
-                        'media_upload' => 1,
-                        'delay' => 0,
-                    ),
-                    array(
-                        'key' => 'field_5a8b14a6f32fa',
-                        'label' => 'Check for Understanding',
-                        'name' => 'check',
-                        'type' => 'radio',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'choices' => array(
-                            'blog' => 'Blog (beta)',
-                            'quiz' => 'Multiple Choice',
-                            'upload' => 'Upload File',
-                            'URL' => 'URL',
-                            'password' => 'Password',
-                            'none' => 'none',
-                        ),
-                        'allow_null' => 0,
-                        'other_choice' => 0,
-                        'save_other_choice' => 0,
-                        'default_value' => 'none',
-                        'layout' => 'horizontal',
-                        'return_format' => 'value',
-                    ),
-                    array(
-                        'key' => 'field_5afa5a78d25dc',
-                        'label' => 'Quiz Modifier',
-                        'name' => 'quiz_modifier',
-                        'type' => 'number',
-                        'instructions' => '% of Stage Loot Lost for Each Wrong Answer',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5a8b14a6f32fa',
-                                    'operator' => '==',
-                                    'value' => 'quiz',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'default_value' => 0,
-                        'placeholder' => '',
-                        'prepend' => '',
-                        'append' => '%',
-                        'min' => 0,
-                        'max' => 100,
-                        'step' => '',
-                    ),
-                    array(
-                        'key' => 'field_5a8b14a6f3301',
-                        'label' => 'Password',
-                        'name' => 'password',
-                        'type' => 'password',
-                        'instructions' => 'Users will need a password to proceed. The master password that is set on the options page will work.	You can set an additional password that only applies to this stage.',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5a8b14a6f32fa',
-                                    'operator' => '==',
-                                    'value' => 'password',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'placeholder' => '',
-                        'prepend' => '',
-                        'append' => '',
                     ),
                 ),
             ),

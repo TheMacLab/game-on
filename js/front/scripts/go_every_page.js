@@ -159,6 +159,31 @@ function go_stats_about(user_id) {
     }
 }
 
+function go_blog_lightbox_opener(post_id){
+    console.log("open");
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_lightbox_opener;
+    jQuery.ajax({
+        type: 'post',
+        url: MyAjax.ajaxurl,
+        data: {
+            _ajax_nonce: nonce,
+            action: 'go_blog_lightbox_opener',
+            blog_post_id: post_id
+        },
+        success: function (res) {
+            if (-1 !== res) {
+                jQuery.featherlight(res, {variant: 'blog_post'});
+
+                jQuery(".go_blog_lightbox").off().one("click", function(){
+                    go_blog_lightbox_opener(this.id);
+                });
+
+            }
+
+        }
+    });
+}
+
 //The v4 no Server Side Processing (SSP)
 function go_stats_task_list() {
     jQuery( '#go_task_list_single' ).remove();
@@ -200,6 +225,10 @@ function go_stats_task_list() {
                                     jQuery(".go_tasks_reset_multiple").one("click", function(){
                                         go_messages_opener( user_id, null, 'reset_multiple' );
                                     });
+
+                                    jQuery(".go_blog_lightbox").off().one("click", function(){
+                                        go_blog_lightbox_opener(this.id);
+                                     });
 
                             }
                         });

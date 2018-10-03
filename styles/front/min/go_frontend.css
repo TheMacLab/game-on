@@ -440,6 +440,9 @@
   margin-bottom: 5%;
   margin-top: 5%; }
 
+.featherlight-content .go_featherlight_content {
+  display: block !important; }
+
 /*
 TOOLTIP
  */

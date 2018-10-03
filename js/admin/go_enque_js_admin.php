@@ -105,7 +105,8 @@ function go_admin_scripts ($hook) {
                     'go_reset_all_users'			=> wp_create_nonce( 'go_reset_all_users'),
                     'go_the_lb_ajax' 				=> wp_create_nonce( 'go_the_lb_ajax' ),
                     'go_create_admin_message' 		=> wp_create_nonce('go_create_admin_message'),
-                    'go_send_message' 				=> wp_create_nonce('go_send_message')
+                    'go_send_message' 				=> wp_create_nonce('go_send_message'),
+                    'go_blog_lightbox_opener'                => wp_create_nonce('go_blog_lightbox_opener')
 				),
 			)
 		);

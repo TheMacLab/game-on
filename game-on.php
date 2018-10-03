@@ -7,10 +7,10 @@ Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4.134
 */
-$go_js_version = 4.134;
+$go_js_version = 4.135;
 global $go_js_version;
 
-$go_css_version = 4.134;
+$go_css_version = 4.135;
 global $go_css_version;
 
 include_once( 'includes/acf/acf.php' );
@@ -285,8 +285,10 @@ add_action( 'wp_ajax_go_blog_opener', 'go_blog_opener' );
 add_action( 'wp_ajax_go_blog_submit', 'go_blog_submit' );
 add_action( 'wp_ajax_go_admin_messages', 'go_admin_messages' );
 add_action( 'wp_ajax_go_to_this_map', 'go_to_this_map' );
-add_action('wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
-add_action('wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
+add_action( 'wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
+add_action( 'wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
+add_action( 'wp_ajax_go_blog_lightbox_opener', 'go_blog_lightbox_opener' );
+//add_action( 'wp_ajax_nopriv_go_blog_lightbox_opener', 'go_blog_lightbox_opener' );
 //add_action('wp_ajax_nopriv_go_tasks_dataloader_ajax', 'fn_my_ajaxified_dataloader_ajax');
 
 /**

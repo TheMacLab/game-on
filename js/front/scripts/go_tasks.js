@@ -648,6 +648,7 @@ function go_quiz_check_answers(status, target) {
                 return 1;//return a mod of 1
             }
             else if ( typeof response === 'string' && list_size > 1 ) {
+                console.log("response" + response);
                 var failed_questions = response.split( ', ' );
                 //var failed_count = failed_questions.length;
                 //console.log (failed_count);

@@ -202,6 +202,30 @@ function go_blog_opener(){
 <?php
 }
 
+function go_blog_lightbox_opener(){
+    check_ajax_referer( 'go_blog_lightbox_opener' );
+
+    $blog_post_id = ( ! empty( $_POST['blog_post_id'] ) ? (int) $_POST['blog_post_id'] : 0 );
+
+    if(!empty($blog_post_id)) {
+        $post = get_post($blog_post_id, OBJECT, 'edit');
+        $content = $post->post_content;
+        $content  = apply_filters( 'go_awesome_text', $content );
+        $title = get_the_title($blog_post_id);
+    }else{
+        $content = '';
+        $title = '';
+    }
+    echo "<div id='go_url_div'>";
+
+    echo "<div><h3>{$title}</h3></div>";
+
+    echo "<div>{$content}</div>";
+
+    echo "</div>";
+
+}
+
 
 function go_blog_submit(){
 

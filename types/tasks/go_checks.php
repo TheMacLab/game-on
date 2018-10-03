@@ -281,7 +281,7 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
             //'wpautop' =>false,
             'textarea_name' => 'go_result',
             'media_buttons' => true,
-            //'teeny' => true,
+            //'teeny' => false,
             'quicktags'=>false,
             'menubar' => false,
             'drag_drop_upload' => true

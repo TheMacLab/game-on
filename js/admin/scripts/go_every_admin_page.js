@@ -23,8 +23,6 @@ jQuery(document).ready( function($) {
 /*
  * Disable submit with enter key, tab to next field instead
 */
-
-
 jQuery("input,select").bind("keydown", function (e) {
     var keyCode = e.keyCode || e.which;
     if(keyCode === 13) {

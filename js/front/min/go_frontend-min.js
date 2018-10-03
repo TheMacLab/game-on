@@ -13,7 +13,7 @@ function go_sounds( type ) {
 */
 function go_noty_close_oldest(){Noty.setMaxVisible(6);var e=jQuery("#noty_layout__topRight > div").length;0==e&&jQuery("#noty_layout__topRight").remove(),5<=e&&jQuery("#noty_layout__topRight > div").first().trigger("click")}function go_lightbox_blog_img(){jQuery("[class*= wp-image]").each(function(){var e;
 //console.log("fullsize:" + fullSize);
-if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var a,o=/.*wp-image/,s=jQuery(this).attr("class").replace(o,"wp-image"),r=jQuery(this).attr("src"),i=/-([^-]+).$/,n=/\.[0-9a-z]+$/i,_=r.match(n),t=r.replace(i,_);
+if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var a,o=/.*wp-image/,s=jQuery(this).attr("class").replace(o,"wp-image"),r=jQuery(this).attr("src"),i=/-([^-]+).$/,_=/\.[0-9a-z]+$/i,n=r.match(_),t=r.replace(i,n);
 //console.log(class1);
 //var patt = /w3schools/i;
 jQuery(this).featherlight(t)})}function go_admin_bar_stats_page_button(e){//this is called from the admin bar and is hard coded in the php code
@@ -35,9 +35,9 @@ var t=GO_EVERY_PAGE_DATA.nonces.go_stats_about;0==jQuery("#go_stats_about").leng
 //jQuery( '#go_stats_body' ).html( '' );
 //var oTable = jQuery('#go_tasks_datatable').dataTable();
 //oTable.fnDestroy();
-jQuery("#stats_about").html(e))}})}
+jQuery("#stats_about").html(e))}})}function go_blog_lightbox_opener(e){console.log("open");var t=GO_EVERY_PAGE_DATA.nonces.go_blog_lightbox_opener;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_blog_lightbox_opener",blog_post_id:e},success:function(e){-1!==e&&(jQuery.featherlight(e,{variant:"blog_post"}),jQuery(".go_blog_lightbox").off().one("click",function(){go_blog_lightbox_opener(this.id)}))}})}
 //The v4 no Server Side Processing (SSP)
-function go_stats_task_list(){var e;jQuery("#go_task_list_single").remove(),jQuery("#go_task_list").show(),jQuery("#go_tasks_datatable").DataTable().columns.adjust().draw();var t=GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;0==jQuery("#go_tasks_datatable").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_stats_task_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&(jQuery("#stats_tasks").html(e),jQuery("#go_tasks_datatable").dataTable({responsive:!0,autoWidth:!1,order:[[jQuery("th.go_tasks_timestamps").index(),"desc"]],columnDefs:[{targets:"go_tasks_reset",sortable:!1}],drawCallback:function(){var e=jQuery("#go_stats_messages_icon_stats").attr("name");jQuery(".go_reset_task").prop("onclick",null).off("click"),jQuery(".go_reset_task").one("click",function(){go_messages_opener(e,this.id,"reset")}),jQuery(".go_tasks_reset_multiple").prop("onclick",null).off("click"),jQuery(".go_tasks_reset_multiple").one("click",function(){go_messages_opener(e,null,"reset_multiple")})}}));
+function go_stats_task_list(){var e;jQuery("#go_task_list_single").remove(),jQuery("#go_task_list").show(),jQuery("#go_tasks_datatable").DataTable().columns.adjust().draw();var t=GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;0==jQuery("#go_tasks_datatable").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_stats_task_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&(jQuery("#stats_tasks").html(e),jQuery("#go_tasks_datatable").dataTable({responsive:!0,autoWidth:!1,order:[[jQuery("th.go_tasks_timestamps").index(),"desc"]],columnDefs:[{targets:"go_tasks_reset",sortable:!1}],drawCallback:function(){var e=jQuery("#go_stats_messages_icon_stats").attr("name");jQuery(".go_reset_task").prop("onclick",null).off("click"),jQuery(".go_reset_task").one("click",function(){go_messages_opener(e,this.id,"reset")}),jQuery(".go_tasks_reset_multiple").prop("onclick",null).off("click"),jQuery(".go_tasks_reset_multiple").one("click",function(){go_messages_opener(e,null,"reset_multiple")}),jQuery(".go_blog_lightbox").off().one("click",function(){go_blog_lightbox_opener(this.id)})}}));
 //console.log("everypage");
 //make task reset buttons into links
 //jQuery(".go_reset_task").one("click", function(){
@@ -244,15 +244,15 @@ function go_sort_leaders(tableID, column) {
 function go_filter_datatables(){//function that filters all tables on draw
 jQuery.fn.dataTable.ext.search.push(function(e,t,a){var o=e.sTableId;
 //console.log(myTable);
-if("go_clipboard_stats_datatable"==o||"go_clipboard_messages_datatable"==o||"go_clipboard_activity_datatable"==o){var s=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),i=jQuery("#go_clipboard_go_badges_select").val(),n=t[4],_=t[3],l=t[2];// use data for the filter by column
-console.log("data"+t),console.log("badges"+n),console.log("groups"+_),console.log("sections"+l),
+if("go_clipboard_stats_datatable"==o||"go_clipboard_messages_datatable"==o||"go_clipboard_activity_datatable"==o){var s=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),i=jQuery("#go_clipboard_go_badges_select").val(),_=t[4],n=t[3],l=t[2];// use data for the filter by column
+console.log("data"+t),console.log("badges"+_),console.log("groups"+n),console.log("sections"+l),
 //console.log(sections);
-_=JSON.parse(_),console.log("groups"+_),
+n=JSON.parse(n),console.log("groups"+n),
 //sections = JSON.parse(sections);
-n=JSON.parse(n),console.log("badges"+n),console.log("sections"+l);var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,_))&&(c="none"==s||l==s),"go_clipboard_datatable"==o&&c&&(c="none"==i||-1!=jQuery.inArray(i,n)),c}if("go_leaders_datatable"!=o)return!0;var s=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),_=t[2],l=t[1];// use data for the filter by column
-_=JSON.parse(_),l=JSON.parse(l);
+_=JSON.parse(_),console.log("badges"+_),console.log("sections"+l);var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,n))&&(c="none"==s||l==s),"go_clipboard_datatable"==o&&c&&(c="none"==i||-1!=jQuery.inArray(i,_)),c}if("go_leaders_datatable"!=o)return!0;var s=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],l=t[1];// use data for the filter by column
+n=JSON.parse(n),l=JSON.parse(l);
 //badges = JSON.parse(badges);
-var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,_))&&(c="none"==s||-1!=jQuery.inArray(s,l)),c})}
+var c=!0;return(c="none"==r||-1!=jQuery.inArray(r,n))&&(c="none"==s||-1!=jQuery.inArray(s,l)),c})}
 /*
 function go_stats_leaderboard() {
     //jQuery( '#go_stats_lite_wrapper' ).remove();
@@ -627,7 +627,7 @@ jQuery(".go_tasks_reset_multiple").prop("onclick",null).off("click"),a)//this is
 var s=[a];else for(//no user_id sent, this is from the clipboard and get user ids from checkboxes
 var t=jQuery(".go_checkbox:visible"),s=[],r=0;r<t.length;r++)!0===t[r].checked&&s.push(jQuery(t[r]).val());if(null==e&&"reset_multiple"==o)for(//this is a reset multiple quests from stats panel
 var t=jQuery(".go_checkbox:visible"),i=[],r=0;r<t.length;r++)!0===t[r].checked&&i.push(jQuery(t[r]).val());else//this is from the stats panel, so user_id was sent so stuff it in an array
-var i=[e];var n,_={action:"go_create_admin_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_create_admin_message,post_id:i,user_ids:s,message_type:o};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:_,success:function(e){
+var i=[e];var _,n={action:"go_create_admin_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_create_admin_message,post_id:i,user_ids:s,message_type:o};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:n,success:function(e){
 //console.log(results);
 jQuery.featherlight(e,{variant:"message"}),jQuery(".go_tax_select").select2(),jQuery("#go_message_submit").one("click",function(e){go_send_message(s,i,o)}),
 //clipboard
@@ -648,7 +648,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(o,this.id,"r
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var o=jQuery("[name=title]").val(),s=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,n=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=gold]").val()*n,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*u,d=jQuery("#go_messages_go_badges_select").val(),p=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),h=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,m={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:o,message:s,xp:i,gold:_,health:c,c4:g,badges_toggle:p,badges:d,groups_toggle:y,groups:h};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:m,success:function(e){
+var o=jQuery("[name=title]").val(),s=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,_=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*_,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*u,d=jQuery("#go_messages_go_badges_select").val(),p=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),h=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,f={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:o,message:s,xp:i,gold:n,health:c,c4:g,badges_toggle:p,badges:d,groups_toggle:y,groups:h};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:f,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}function go_toggle(e){checkboxes=jQuery(".go_checkbox");for(var t=0,a=checkboxes.length;t<a;t++)checkboxes[t].checked=e.checked}function go_toggle_off(){checkboxes=jQuery(".go_checkbox");for(var e=0,t=checkboxes.length;e<t;e++)checkboxes[e].checked=!1}function go_clipboard_class_a_choice(){if(
 //var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;

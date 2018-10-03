@@ -97,7 +97,7 @@ null!=u[0]&&r.push(u[0].value);else if("checkbox"==s){for(var g=[],l=0;l<u.lengt
 if(0==e)
 //go_disable_loading();
 return jQuery("#go_stage_error_msg").show(),jQuery("#go_stage_error_msg").text("Wrong answer, try again!"),1;//return a mod of 1
-if("string"==typeof e&&1<n){
+if("string"==typeof e&&1<n){console.log("response"+e);
 //var failed_count = failed_questions.length;
 //console.log (failed_count);
 for(var o=e.split(", "),r=0;r<_.length;r++){var t="#"+_[r].id;-1===jQuery.inArray(t,o)?(jQuery(t+" .go_wrong_answer_marker").is(":visible")&&jQuery(t+" .go_wrong_answer_marker").hide(),jQuery(t+" .go_correct_answer_marker").is(":visible")||jQuery(t+" .go_correct_answer_marker").show()):(jQuery(t+" .go_correct_answer_marker").is(":visible")&&jQuery(t+" .go_correct_answer_marker").hide(),jQuery(t+" .go_wrong_answer_marker").is(":visible")||jQuery(t+" .go_wrong_answer_marker").show())}var s;

@@ -784,36 +784,56 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
         $next_bonus_stage = null;
         $i = 0;
         $links = array();
+        $bonus_needs_close = false;
+        $bonus_links = array();
         foreach ($actions as $action){
             $i++;
             $check_type = $action->check_type;
             $result = $action->result;
             $action_time = $action->TIMESTAMP;
             $action_time = date("m/d/y g:i A", strtotime($action_time));
-            $action_stage = $action->stage;
             if ($action->action_type == 'task'){
+
+
                 $loop_bonus_status = $action->bonus_status; //get the bonus status if it exists
                 $stage = $action->stage ; //get the stage
 
-                if (!isset($loop_bonus_status) && $loop_bonus_status > 0 ){//the last bonus submitted
-                    $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                    $next_bonus_stage = $loop_bonus_status -1;
+                if ($loop_bonus_status > 0){//it is a bonus stage
+                    $last_bonus = (isset($last_bonus) ?  false : true);//if this is the first encounter set to true, after that false
+                    if($last_bonus){
+
+                        $links[] = '<a href="#" data-featherlight="#bonus_lightbox_' . $post_id. '"><i class="fa fa-star" aria-hidden="true"></i></a>';
+                        echo "<div style='display:none;'><div id=\"bonus_lightbox_" . $post_id. "\" class='go_featherlight_content' >";
+                        //echo " <a class='tooltip bonus_layer' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span><span class=\"tooltiptext\">";
+                        $bonus_needs_close = true;
+                    }
+                    if ($last_bonus || ($next_bonus_stage > 0 && $loop_bonus_status == $next_bonus_stage )){
+                        //$links[] = go_result_link($check_type, $result, $action_stage, $action_time);
+                        $next_bonus_stage = $loop_bonus_status -1;
+                        $bonus_links[]= go_bonus_result_link($check_type, $result, $loop_bonus_status, $action_time, true);
+                    }
                 }
-                else if ($next_bonus_stage > 0 && $loop_bonus_status == $next_bonus_stage ){ //get the previous bonus stage
-                    $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                    $next_bonus_stage = $loop_bonus_status -1;
+                else if ($bonus_needs_close ){
+                    $bonus_links = array_reverse( $bonus_links );
+                    $bonus_links  = implode("<br>", $bonus_links);
+                    echo $bonus_links;
+                    echo "</div></div>";
+                    //echo "</span></a>";
+                    //$bonus_links = ob_get_contents();
+                    //ob_end_clean();
+                    //$links[] = $bonus_links;
+                    $bonus_needs_close = false;
                 }
                 else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {//if it's not a bonus and it's not the last one completed
                     $next_stage = (isset($next_stage) ?  $next_stage : $stage );
                     if ($next_stage > 0 && $stage == $next_stage){
-                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
+                        $action_stage = $action->stage;
+                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time, false);
                         $next_stage = $stage - 1;
                     }
                 }
 
             }
-
-
         }
         $links = array_reverse($links);
         $link_count = count($links);
@@ -1042,48 +1062,71 @@ function go_stats_single_task_activity_list($post_id) {
 * @param $result
 * @param $stage
 * @param $time
+* @param $bonus
  * @return string
 */
-function go_result_link($check_type, $result, $stage, $time){
+function go_result_link($check_type, $result, $stage, $time, $bonus = false){
+    if ($bonus){
+        $stage = 'Bonus ' . $stage ;
+    }
+    else{
+        $stage = 'Stage: ' . $stage ;
+    }
     $link = '';
     if ($check_type == 'URL'){
-        $link = "<a href='{$result}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
+        $link = "<a href='{$result}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span><span class=\"tooltiptext\">{$stage} at <br> {$time}</span></a>";
     }
     else if ($check_type == 'upload'){
         $image_url = wp_get_attachment_url($result);
         $is_image = wp_attachment_is_image($result);
         if ($is_image) {
-            $link = "<a href='{#}' class='tooltip' data-featherlight='{$image_url}'><span class=\"dashicons dashicons-format-image\"></span> <span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
+            $link = "<a href='#' class='tooltip' data-featherlight='{$image_url}'><span class=\"dashicons dashicons-format-image\"></span> <span class=\"tooltiptext\">{$stage} at <br> {$time}</span></a>";
         }else{
-            $link = "<a href='{$image_url}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-media-default\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
+            $link = "<a href='{$image_url}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-media-default\"></span><span class=\"tooltiptext\">{$stage} at <br> {$time}</span></a>";
         }
     }
     else if ($check_type == 'blog'){
-
-        $content_post = get_post($result);
-        $content = $content_post->post_content;
-        $content = apply_filters('the_content', $content);
-        //$content = str_replace(']]>', ']]&gt;', $content);
-        //$content = do_shortcode($content);
-
-        //echo $content;
-
-        $blog_link = get_permalink($result);
-        //$link = "<a href='{$blog_link}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
-        $link = "<a href='#' data-featherlight='#blog_post_" . $result . "' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">Stage: {$stage} at <br> {$time}</span></a>";
-        echo "<div style='display:none;'><div id='blog_post_" . $result. "'>".$content."</div><script>jQuery( document ).ready(function() {
-                go_lightbox_blog_img();
-            });;</script></div>";
+       $link = "<a href='#' onclick='return false' id='$result' class='go_blog_lightbox tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">{$stage} at <br> {$time}</span></a>";
+        //$link = "<a href='javascript:;' id='$result' class='go_blog_lightbox' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span>{$stage} at <br> {$time}</a>";
 
     }
-    /*
-    else if ($check_type == 'password'){
-        if ($result = 'master password') {
-            $link = "<span>master password</span>";
+    return $link;
+
+}
+
+/**
+* @param $check_type
+* @param $result
+* @param $stage
+* @param $time
+* @param $bonus
+ * @return string
+*/
+function go_bonus_result_link($check_type, $result, $stage, $time, $bonus = true){
+    if ($bonus){
+        $stage = 'Bonus ' . $stage ;
+    }
+    else{
+        $stage = 'Stage: ' . $stage ;
+    }
+    $link = '';
+    if ($check_type == 'URL'){
+        $link = "<a href='{$result}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span>{$stage} at <br> {$time}</a>";
+    }
+    else if ($check_type == 'upload'){
+        $image_url = wp_get_attachment_url($result);
+        $is_image = wp_attachment_is_image($result);
+        if ($is_image) {
+            $link = "<a href='{#}' class='tooltip' data-featherlight='{$image_url}'><span class=\"dashicons dashicons-format-image\"></span>{$stage} at <br> {$time}</a>";
         }else{
-            $link = "<span>password</span>";
+            $link = "<a href='{$image_url}' class='tooltip' target='_blank'><span class=\"dashicons dashicons-media-default\"></span>{$stage} at <br> {$time}</a>";
         }
-    }*/
+    }
+    else if ($check_type == 'blog'){
+       //echo "<a href='javascript:;' id='$result' class='go_blog_lightbox tooltip' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span><span class=\"tooltiptext\">{$stage} at <br> {$time}</span></a>";
+        $link = "<a href='javascript:;' id='$result' class='go_blog_lightbox' target='_blank'><span class=\"dashicons dashicons-admin-post \"></span>{$stage} at {$time}</a>";
+
+    }
     return $link;
 
 }
@@ -2391,9 +2434,6 @@ function go_stats_lite(){
         $time  = date("m/d/y g:i A", strtotime($last_time));
 
 
-
-
-
         $go_actions_table_name = "{$wpdb->prefix}go_actions";
         $actions = $wpdb->get_results(
             $wpdb->prepare(
@@ -2419,21 +2459,19 @@ function go_stats_lite(){
                 $loop_bonus_status = $action->bonus_status; //get the bonus status if it exists
                 $stage = $action->stage ; //get the stage
 
-                if (!isset($loop_bonus_status) && $loop_bonus_status > 0 ){//the last bonus submitted
-                    $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                    $next_bonus_stage = $loop_bonus_status -1;
-                }
-                else if ($next_bonus_stage > 0 && $loop_bonus_status == $next_bonus_stage ){ //get the previous bonus stage
-                    $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                    $next_bonus_stage = $loop_bonus_status -1;
-                }
-                else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {
-                    if (!isset($next_stage) && $stage > 0 ){ //it's not a bonus and it's not the last one completed
-                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                        $next_stage = $stage - 1;
+                if ($loop_bonus_status > 0){//it is a bonus stage
+                    $last_bonus = (isset($last_bonus) ?  false : true);//if this is the first encounter set to true, after that false
+                    if ($last_bonus || ($next_bonus_stage > 0 && $loop_bonus_status == $next_bonus_stage )){
+                        //$links[] = go_result_link($check_type, $result, $action_stage, $action_time);
+                        $next_bonus_stage = $loop_bonus_status -1;
+                        $links[] = go_result_link($check_type, $result, $loop_bonus_status, $action_time, true);
                     }
-                    else if ($next_stage > 0 && $stage == $next_stage){
-                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
+                }
+                else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {//if it's not a bonus and it's not the last one completed
+                    $next_stage = (isset($next_stage) ?  $next_stage : $stage );
+                    if ($next_stage > 0 && $stage == $next_stage){
+                        $action_stage = $action->stage;
+                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time, false);
                         $next_stage = $stage - 1;
                     }
                 }
