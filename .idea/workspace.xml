@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_tasks-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_blogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_blogs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/go_blogs.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/go_blogs.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_map.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_map.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/front/min/go_frontend.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/front/min/go_frontend.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/go_checks.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/go_checks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/tasks/task_shortcode.php" beforeDir="false" afterPath="$PROJECT_DIR$/types/tasks/task_shortcode.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -125,11 +112,20 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file leaf-file-name="buy_the_item.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="buy_the_item.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/front/scripts/buy_the_item.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="541">
               <caret line="63" column="63" selection-start-line="63" selection-start-column="63" selection-end-line="63" selection-end-column="63" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/game-on.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="23" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -247,7 +243,6 @@
         <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
         <option value="$PROJECT_DIR$/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/styles/css/go_map.scss" />
-        <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/types/tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/types/tasks/go_checks.php" />
         <option value="$PROJECT_DIR$/src/go_blogs.php" />
@@ -256,6 +251,7 @@
         <option value="$PROJECT_DIR$/types/store/includes/lightbox/frontend-lightbox.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js" />
         <option value="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" />
+        <option value="$PROJECT_DIR$/game-on.php" />
       </list>
     </option>
   </component>
@@ -527,12 +523,12 @@
       <workItem from="1537192729014" duration="34400000" />
       <workItem from="1537812504364" duration="14848000" />
       <workItem from="1537848747693" duration="6680000" />
-      <workItem from="1537894247662" duration="104817000" />
+      <workItem from="1537894247662" duration="105315000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2325624000" />
+    <option name="totallyTimeSpent" value="2326122000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -1053,16 +1049,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1086">
-          <caret line="605" column="2" selection-start-line="605" selection-start-column="2" selection-end-line="605" selection-end-column="2" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/go_blogs.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1152,6 +1138,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="541">
           <caret line="63" column="63" selection-start-line="63" selection-start-column="63" selection-end-line="63" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="23" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
         </state>
       </provider>
     </entry>
