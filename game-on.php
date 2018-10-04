@@ -591,11 +591,9 @@ add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' )
  * Author URI:  http://www.billerickson.net
  * License:     MIT
  * License URI: http://www.opensource.org/licenses/mit-license.php
- */
-/**
- * Disable ACF on Frontend
  *
-
+*/
+/*
 function ea_disable_acf_on_frontend( $plugins ) {
 if( is_admin() )
 return $plugins;
@@ -605,7 +603,7 @@ unset( $plugins[$i] );
 return $plugins;
 }
 add_filter( 'option_active_plugins', 'ea_disable_acf_on_frontend' );
- */
+*/
 
 
 /**NOT USED FUNCTIONS

@@ -344,7 +344,7 @@ function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_nam
     else if ($task_is_locked == true  && $is_logged_in) { //change this code to show admin override box
         //if ($is_logged_in) { //add of show password field is on
             ?>
-            <div id="go_store_admin_override" style="overflow: auto; width: 100%;"><div style="float: right; font-size: .8em;">Admin Override</div></div>
+            <div id="go_admin_override" style="overflow: auto; width: 100%;"><div style="float: right; font-size: .8em;">Admin Override</div></div>
             <?php
             //Show password unlock
             echo "<div class='go_lock go_password' style='display: none;'><h3>Admin Override</h3><p>This field is not for users. Do not ask for this password. It is not part of the gameplay.</p><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
@@ -967,28 +967,36 @@ function go_print_bonus_stage ($user_id, $post_id, $custom_fields){
  *
  */
 function go_hidden_footer(){
+
     /**
      * Hidden mce so it can be initialized later
      */
-    echo "<div id='go_hidden_mce' style='display: none;'>";
+    echo "<div id='go_hidden_mce' style='display: block;'>";
     $settings  = array(
-            //'wpautop' =>false,
-            'textarea_name' => 'go_result',
-            'media_buttons' => true,
-            //'teeny' => true,
-            'quicktags'=>false,
-            'menubar' => false,
-            'drag_drop_upload' => true
+        //'wpautop' =>false,
+        //'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
+        //'tinymce'=>true,
+        'textarea_name' => 'go_result',
+        'media_buttons' => true,
+        //'teeny' => true,
+        'quicktags'=>false,
+        'menubar' => true,
+        'drag_drop_upload' => true
     );
     wp_editor( '', 'go_blog_post', $settings );
 
+    echo "</div>";
+    echo "<div id='go_hidden_mce_edit' style='display: block;'>";
+
     $settings2  = array(
+        //'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
+        //'tinymce'=>true,
         //'wpautop' =>false,
         'textarea_name' => 'go_result',
         'media_buttons' => true,
         //'teeny' => true,
         'quicktags'=>false,
-        'menubar' => false,
+        'menubar' => true,
         'drag_drop_upload' => true
     );
     wp_editor( '', 'go_blog_post_edit', $settings2 );

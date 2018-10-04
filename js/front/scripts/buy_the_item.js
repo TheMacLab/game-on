@@ -40,8 +40,8 @@ function go_lb_opener( id ) {
             },
             cache: false,
             success: function( raw) {
-                console.log('success');
-                console.log(raw);
+                //console.log('success');
+                //console.log(raw);
                 var res = JSON.parse( raw );
 
                 try {
@@ -52,15 +52,17 @@ function go_lb_opener( id ) {
                         html: ''
                     };
                 }
-                console.log('html');
-                console.log(res.html);
-                console.log(res.json_status);
+                //console.log('html');
+                //console.log(res.html);
+                //console.log(res.json_status);
 
                 jQuery( "#lb-content" ).innerHTML = "";
                 jQuery( "#lb-content" ).html( '' );
+
                 //jQuery( "#lb-content" ).append(results);
                 //jQuery('.featherlight-content').html(res.html);
                 jQuery.featherlight(res.html, {variant: 'store'});
+
 
 
                 //console.log('success');
@@ -91,6 +93,7 @@ function go_lb_opener( id ) {
                 });
 
                 go_max_purchase_limit();
+
             }
         });
     }

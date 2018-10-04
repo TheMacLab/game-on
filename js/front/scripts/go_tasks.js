@@ -8,10 +8,6 @@ jQuery( document ).ready( function() {
         });
     });
 
-    //removes hidden mce that is used for blog check for understanding
-    jQuery('#go_hidden_mce').remove();
-    go_mce();
-
 
 	jQuery.ajaxSetup({
 		url: go_task_data.url += '/wp-admin/admin-ajax.php'
@@ -26,7 +22,22 @@ jQuery( document ).ready( function() {
 	go_make_clickable();
 	jQuery( ".go_stage_message" ).show(  );
 
-    jQuery( ".go_checks_and_buttons" ).show( 'slow' );
+	/*
+    jQuery( ".go_checks_and_buttons" ).show( 'slow',function() {
+        // Animation complete.
+
+    } );
+    */
+    //removes hidden mce that is used for blog check for understanding
+
+
+    // remove existing editor instance
+    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
+    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+    jQuery('#go_hidden_mce').remove();
+    jQuery('#go_hidden_mce_edit').remove();
+
+
 
     //add onclick to continue buttons
     jQuery('#go_button').one("click", function(e){
@@ -178,6 +189,10 @@ function go_disable_loading( ) {
 
     jQuery('.go_str_item').off().one("click", function(e){
         go_lb_opener( this.id );
+    });
+
+    jQuery(".go_blog_opener").off().one("click", function(e){
+        go_blog_opener( this );
     });
 
 
@@ -359,8 +374,9 @@ function task_stage_change( target ) {
     var result = jQuery( '#go_result' ).attr( 'value' );
 
     if( check_type == 'blog' && button_type != 'undo_last_bonus'){
-        result = tinyMCE.activeEditor.getContent();
-        var result_title = jQuery( '#go_result_title' ).attr( 'value' );
+        //result = tinyMCE.activeEditor.getContent();
+        result = go_get_tinymce_content_check();
+        var result_title = jQuery( '#go_result_title_check' ).val( );
         var blog_post_id= jQuery( '#go_result_title' ).attr( 'blog_post_id' );
         //console.log(blog_post_id);
 
@@ -426,6 +442,7 @@ function task_stage_change( target ) {
                 } else {
                     flash_error_msg( '#go_stage_error_msg' );
                 }
+                go_disable_loading();
             }else {
 
                 if ( res.button_type == 'undo' ){
@@ -436,9 +453,7 @@ function task_stage_change( target ) {
                     jQuery( '#go_wrapper div' ).last().hide();
                     jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
                 }
-                else if ( res.button_type == 'continue' ){
-                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                }else if ( res.button_type == 'complete' ){
+                else if ( res.button_type == 'continue' || res.button_type == 'complete' ){
                     jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
                 }
                 else if ( res.button_type == 'show_bonus' ){
@@ -446,11 +461,8 @@ function task_stage_change( target ) {
                     //remove active class to checks and buttons
                     jQuery(".go_checks_and_buttons").removeClass('active');
                 }
-                else if ( res.button_type == 'continue_bonus' ){
+                else if ( res.button_type == 'continue_bonus' || res.button_type == 'complete_bonus' ){
 					jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
-                }
-                else if ( res.button_type == 'complete_bonus' ){
-                    jQuery( '#go_wrapper > div' ).slice(-1).hide( 'slow', function() { jQuery(this).remove();} );
                 }
                 else if ( res.button_type == 'undo_bonus' ){
                     jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
@@ -460,7 +472,6 @@ function task_stage_change( target ) {
                 }
                 else if ( res.button_type == 'abandon_bonus' ){
                     jQuery( '#go_wrapper > div' ).slice(-3).remove();
-
                 }
                 else if ( res.button_type == 'abandon' ){
 
@@ -476,12 +487,8 @@ function task_stage_change( target ) {
                     audio.play();
                 }
                     //console.log(res.html);
-                    jQuery('go_hidden_mce').remove();
+
                     go_append(res);
-
-
-
-
 
 
                 //Pop up currency awards
@@ -490,25 +497,30 @@ function task_stage_change( target ) {
                 jQuery( '#go_button' ).ready( function() {
                     //check_locks();
                 });
-
             }
-
         }
     });
-
 }
 
-function go_mce() {
+function go_get_tinymce_content_check(){
+    console.log("html");
+    if (jQuery("#wp-go_blog_post-wrap .wp-editor-area").is(":visible")){
+        return jQuery('#wp-go_blog_post-wrap .wp-editor-area').val();
+
+    }else{
+        console.log("visual");
+        return tinyMCE.activeEditor.getContent();
+    }
+}
+
+//This isn't currently used, but saving just in case . . .
+function go_mce_reset() {
     // remove existing editor instance
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
-    tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post' );
+    tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post' );
 
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
-    tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post_edit' );
-
-    //tinyMCE.execCommand('mceAddControl', false, 'go_blog_post');
-
-
+    tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
 }
 
 
@@ -520,7 +532,10 @@ function go_append (res){
         Vids_Fit_and_Box();
         go_make_clickable();
         go_disable_loading();
-        go_mce();
+        //go_mce();
+        // remove existing editor instance, and add new one
+        tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
+        tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post' );
 
     });
 }

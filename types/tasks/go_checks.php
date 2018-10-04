@@ -66,7 +66,7 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     if($i == $status_active_check && $bonus_is_complete == false ){
         $class = 'active';
     }else{$class = 'null';}
-    echo "<div class='go_checks_and_buttons {$class}' style='display:none;'>";
+    echo "<div class='go_checks_and_buttons {$class}' style='display:block;'>";
 
     if ($check_type == 'upload') {
         go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
@@ -275,14 +275,15 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
             $title = get_the_title($post_id);
         }
         echo "<div id='go_url_div'>";
-        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' placeholder='' value ='{$title}' blog_post_id ='{$blog_post_id}'></div> </div>";
+        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title_check' type='text' placeholder='' value ='{$title}' blog_post_id ='{$blog_post_id}'></div> </div>";
         $settings  = array(
+            //'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
             //'tinymce'=>true,
             //'wpautop' =>false,
             'textarea_name' => 'go_result',
             'media_buttons' => true,
             //'teeny' => false,
-            'quicktags'=>false,
+            'quicktags'=> array( 'buttons' => '' ),
             'menubar' => false,
             'drag_drop_upload' => true
         );

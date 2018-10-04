@@ -25,7 +25,8 @@ function go_the_lb_ajax() {
     $custom_fields = $go_post_data[3];
 
     $item_content = (isset($custom_fields['go_store_item_desc'][0]) ?  $custom_fields['go_store_item_desc'][0] : null);
-    $the_content = wpautop( $item_content );
+    $the_content  = apply_filters( 'go_awesome_text', $item_content );
+    //$the_content = wpautop( $item_content );
 
     $user_id = get_current_user_id();
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;

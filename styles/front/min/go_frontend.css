@@ -273,6 +273,8 @@
     color: white; }
   #maps .star-half .fa.fa-star-half-o {
     color: gold; }
+  #maps .go_quest_badge {
+    margin: 0px; }
   #maps .go_badge_wrap {
     width: 100%;
     padding-right: 20px; }

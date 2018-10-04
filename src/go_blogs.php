@@ -169,16 +169,18 @@ function go_blog_opener(){
     }
     echo "<div id='go_url_div'>";
 
-    echo "<div>Title:<div><input style='width: 100%;' id='go_result_title' type='text' value ='{$title}'></div> </div>";
+    echo "<div>Title:<div><input style='width: 100%;' id='go_result_title_blog' type='text' value ='{$title}'></div> </div>";
     $settings  = array(
-            //'wpautop' =>false,
-            'textarea_name' => 'go_result',
-            'media_buttons' => true,
-            //'teeny' => true,
-            'quicktags'=>false,
-            'menubar' => false,
-            'drag_drop_upload' => true,
-            'textarea_rows'=>'6'
+        //'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
+        //'tinymce'=>true,
+        //'wpautop' =>false,
+        'textarea_name' => 'go_result',
+        'media_buttons' => true,
+        //'teeny' => true,
+        'quicktags'=> array( 'buttons' => '' ),
+        'menubar' => false,
+        'drag_drop_upload' => true,
+        //'textarea_rows'=>'6'
     );
     wp_editor( $content, 'go_blog_post_edit', $settings );
 

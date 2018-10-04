@@ -528,10 +528,16 @@ jQuery(".clickable").keyup(function(e){
 // 13 is ENTER
 13===e.which&&jQuery("#go_store_pass_button").click()})}
 //open the lightbox for the store items
-function go_lb_opener(o){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=o,t,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){console.log("success"),console.log(e);var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
+function go_lb_opener(o){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=o,t,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){
 //console.log('success');
 //console.log(raw);
-if(console.log("html"),console.log(t.html),console.log(t.json_status),jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
+var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
+//console.log('html');
+//console.log(res.html);
+//console.log(res.json_status);
+//console.log('success');
+//console.log(raw);
+if(jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
 //jQuery( "#lb-content" ).append(results);
 //jQuery('.featherlight-content').html(res.html);
 jQuery.featherlight(t.html,{variant:"store"}),"101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var a="Server Error.";jQuery("#go_store_error_msg").text()!=a?jQuery("#go_store_error_msg").text(a):flash_error_msg_store("#go_store_error_msg")}else 302===Number.parseInt(t.json_status)&&(console.log(302),window.location=t.location);jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)}),go_max_purchase_limit()}})}}
@@ -610,9 +616,14 @@ var t=jQuery(e).attr("blog_post_id"),a,o={action:"go_blog_opener",_ajax_nonce:GO
 //jQuery.ajaxSetup({ cache: true });
 jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:o,cache:!1,success:function(e){
 //console.log(results);
-jQuery.featherlight(e),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),tinymce.execCommand("mceAddEditor",!1,"go_blog_post_edit"),jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e){var t,a,o,s,r={action:"go_blog_submit",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_submit,result:tinyMCE.activeEditor.getContent(),result_title:jQuery("#go_result_title").attr("value"),blog_post_id:jQuery(e).attr("blog_post_id")};
+//tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+//tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+jQuery.featherlight(e,{afterContent:function(){console.log("after"),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),tinymce.execCommand("mceAddEditor",!0,"go_blog_post_edit")}}),
+//tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+//tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e){var t,a,o,s,r={action:"go_blog_submit",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_submit,result:go_get_tinymce_content_blog(),result_title:jQuery("#go_result_title_blog").val(),blog_post_id:jQuery(e).attr("blog_post_id")};
 //jQuery.ajaxSetup({ cache: true });
-jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,cache:!1,success:function(){console.log("success"),location.reload()}})}function go_messages_opener(a,e,o){
+jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,cache:!1,success:function(){console.log("success"),location.reload()}})}function go_get_tinymce_content_blog(){return console.log("html"),jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").is(":visible")?jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").val():(console.log("visual"),tinyMCE.activeEditor.getContent())}function go_messages_opener(a,e,o){
 //jQuery('#go_messages_icon').prop('onclick',null).off('click'); //blog
 //remove the onclick events from any message link and then reattach after ajax call
 //types of links 1. clipboard 2. stats link 3. task reset button and 4. blog page

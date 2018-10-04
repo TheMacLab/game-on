@@ -31,9 +31,20 @@ function go_blog_opener( el ) {
         cache: false,
         success: function (results) {
             //console.log(results);
-            jQuery.featherlight(results);
-            tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
-            tinymce.execCommand( 'mceAddEditor', false, 'go_blog_post_edit' );
+            //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+            //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+            jQuery.featherlight(results, {afterContent: function(){
+                    console.log("after");
+
+                    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+                    tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+                    //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
+                    //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
+                }
+            });
+            //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+            //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+
             jQuery(".featherlight").css('background', 'rgba(0,0,0,.8)');
             jQuery(".featherlight .featherlight-content").css('width', '80%');
 
@@ -69,8 +80,10 @@ function go_blog_opener( el ) {
 
 function go_blog_submit( el ) {
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_submit;
-    var result = tinyMCE.activeEditor.getContent();
-    var result_title = jQuery( '#go_result_title' ).attr( 'value' );
+    var result = go_get_tinymce_content_blog();
+    //var result = tinyMCE.activeEditor.getContent();
+    var result_title = jQuery( '#go_result_title_blog' ).val( );
+
     var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
     var gotoSend = {
         action:"go_blog_submit",
@@ -92,6 +105,17 @@ function go_blog_submit( el ) {
             //});
         }
     });
+}
+
+function go_get_tinymce_content_blog(){
+    console.log("html");
+    if (jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").is(":visible")){
+        return jQuery('#wp-go_blog_post_edit-wrap .wp-editor-area').val();
+
+    }else{
+        console.log("visual");
+        return tinyMCE.activeEditor.getContent();
+    }
 }
 
 
