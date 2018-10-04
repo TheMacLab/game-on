@@ -523,8 +523,6 @@ function go_mce_reset() {
     tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
 }
 
-
-
 function go_append (res){
     //jQuery( res.html ).addClass('active');
     jQuery( res.html ).appendTo( '#go_wrapper' ).stop().hide().show( 'slow' ).promise().then(function() {

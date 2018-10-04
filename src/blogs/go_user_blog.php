@@ -204,8 +204,14 @@ if ($current_user_id === $user_id){
             jQuery(".go_blog_opener").one("click", function(e){
                 go_blog_opener( this );
             });
+            // remove existing editor instance
+            tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
+            tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+            jQuery('#go_hidden_mce').remove();
+            jQuery('#go_hidden_mce_edit').remove();
         });
 
     </script>
 <?php
+
 get_footer();
