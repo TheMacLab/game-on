@@ -47,9 +47,6 @@ function go_task_shortcode($atts, $content = null ) {
     //Get all the custom fields
     //$custom_fields = get_post_custom( $post_id ); // Just gathering some data about this task with its post id
     $go_task_data = go_post_data($post_id); //0--name, 1--status, 2--permalink, 3--metadata
-    //$task_title = $go_task_data[0];
-    //$status = $go_task_data[1];
-    //$task_link = $go_task_data[2];
     $custom_fields = $go_task_data[3];
 
     /**
@@ -67,21 +64,6 @@ function go_task_shortcode($atts, $content = null ) {
         $go_fitvids_maxwidth = get_option('options_go_video_width_percent')."%";
     }
 
-    /* Removing Queries --admin name can just be 'an administrator'
-    // gets admin user object
-    $go_admin_email = get_option( 'options_go_email' );
-    if ( $go_admin_email ) {
-        $admin = get_user_by( 'email', $go_admin_email );
-    }
-
-    // use display name of admin with store email, or use default name
-
-    if ( ! empty( $admin ) ) {
-        $admin_name = addslashes( $admin->display_name );
-    } else {
-        $admin_name = 'an administrator';
-    }
-    */
     $admin_name = 'an administrator';
     $is_admin = go_user_is_admin( $user_id );
 
@@ -313,9 +295,6 @@ function go_display_visitor_content ( $custom_fields, $post_id, $task_name, $bad
  * @return bool
  */
 function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_name, $custom_fields, $is_logged_in, $uc_task_name){
-
-    //ADD:add code to check for master unlocked already set and then skip this next section if that is so
-    //if($is_logged_in && $master_unlock != true){
 
     $task_is_locked = false;
     if ($custom_fields['go-location_map_toggle'][0] == true && !empty($custom_fields['go-location_map_loc'][0])){

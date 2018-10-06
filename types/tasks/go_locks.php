@@ -16,12 +16,16 @@
  */
 function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
 
+    //this is for maps. Add the password check here.
+    //This check is done on tasks and store as well.
+    //It is separated out because they treat it differently
     if ($check_only) {
         $is_unlocked = go_master_unlocked($user_id, $id); //one query per quest on map
         if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
             //$is_unlocked = true;
             return $is_unlocked;
         }
+        else { return true;}
     }
 
     $task_is_locked = false;
@@ -184,6 +188,9 @@ function go_until_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
                     echo go_timezone_message($user_id);
 
             }
+            else{
+                return true;
+            }
             $this_lock = true;
 
         }
@@ -225,6 +232,9 @@ function go_after_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
                 echo "<li class='go_error_red'>This " . $task_name . " was only available until {$time_string}.</li>";
                     echo go_timezone_message($user_id);
 
+            }
+            else{
+                return true;
             }
             $this_lock = true;
         }
@@ -298,6 +308,9 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
                     }
                     echo "</ul>";
                 }
+                else{
+                    return true;
+                }
                 $this_lock = true;
             }
         }
@@ -361,6 +374,8 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
                         }
                     }
                     echo "</ul>";
+                }else{
+                    return true;
                 }
                 $this_lock = true;
             }
@@ -424,6 +439,9 @@ function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
                     }
                     echo "</ul>";
                 }
+                else{
+                    return true;
+                }
                 $this_lock = true;
             }
         }
@@ -458,6 +476,9 @@ function go_xp_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logge
             if (!$check_only) {
                 echo "<br><span class='go_error_red'>You must have {$xp_needed} {$xp_name} to access this {$task_name}.</span></br>";
             }
+            else{
+                return true;
+            }
             $this_lock = true;
         }
     }
@@ -489,6 +510,9 @@ function go_xp_levels_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $i
         if ($user_xp < $xp_needed){
             if (!$check_only) {
                 echo "<br><span class='go_error_red'>You must have {$xp_needed} {$xp_name} to access this {$task_name}.</span></br>";
+            }
+            else{
+                return true;
             }
             $this_lock = true;
         }
@@ -522,6 +546,9 @@ function go_c4_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_logge
             if (!$check_only) {
                 echo "<br><span class='go_error_red'>You must have {$c4_needed} {$c4_name} to access this {$task_name}.</span></br>";
             }
+            else{
+                return true;
+            }
             $this_lock = true;
         }
     }
@@ -554,6 +581,9 @@ function go_gold_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
             if (!$check_only) {
                 echo "<br><span class='go_error_red'>You must have {$gold_needed} {$gold_name} to access this {$task_name}.</span></br>";
             }
+            else{
+                return true;
+            }
             $this_lock = true;
         }
     }
@@ -585,6 +615,9 @@ function go_health_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
         if ($user_health < $health_needed){
             if (!$check_only) {
                 echo "<br><span class='go_error_red'>You must have {$health_needed} {$health_name} to access this {$task_name}.</span></br>";
+            }
+            else{
+                return true;
             }
             $this_lock = true;
         }
@@ -744,6 +777,9 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
                 echo go_timezone_message($user_id);
 
                 echo '</div>';
+            }
+            else{
+                return true;
             }
 
        // }
