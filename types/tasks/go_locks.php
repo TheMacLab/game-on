@@ -25,7 +25,13 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
             //$is_unlocked = true;
             return $is_unlocked;
         }
-        else { return true;}
+        else {
+            $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
+            if ($go_password_lock == true){
+                return true;
+            }
+
+        }
     }
 
     $task_is_locked = false;
@@ -374,7 +380,8 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
                         }
                     }
                     echo "</ul>";
-                }else{
+                }
+                else{
                     return true;
                 }
                 $this_lock = true;
@@ -777,9 +784,6 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
                 echo go_timezone_message($user_id);
 
                 echo '</div>';
-            }
-            else{
-                return true;
             }
 
        // }
