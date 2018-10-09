@@ -370,7 +370,6 @@ function go_changeMceDefaults($in) {
 add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
 
 
-
 function go_deactivate_plugin() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		die( -1 );
@@ -583,470 +582,60 @@ function bbp_enable_visual_editor( $args = array() ) {
 add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
 */
 
-/**
- * Plugin Name: Disable ACF on Frontend
- * Description: Provides a performance boost if ACF frontend functions aren't being used
- * Version:     1.0
- * Author:      Bill Erickson
- * Author URI:  http://www.billerickson.net
- * License:     MIT
- * License URI: http://www.opensource.org/licenses/mit-license.php
- *
+
+
+
+/*
+Plugin Name: Frameitron
+Plugin URI: http://ninnypants.com
+Description: Allow iframes in tinymce for all user levels
+Version: 1.0
+Author: ninnypants
+Author URI: http://ninnypants.com
+License: GPL2
+Copyright 2013  Tyrel Kelsey  (email : tyrel@ninnypants.com)
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License, version 2, as
+published by the Free Software Foundation.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-/*
-function ea_disable_acf_on_frontend( $plugins ) {
-if( is_admin() )
-return $plugins;
-foreach( $plugins as $i => $plugin )
-if( 'advanced-custom-fields-pro/acf.php' == $plugin )
-unset( $plugins[$i] );
-return $plugins;
-}
-add_filter( 'option_active_plugins', 'ea_disable_acf_on_frontend' );
-*/
-
-
-/**NOT USED FUNCTIONS
- *
- */
-
-/*
-function go_weekly_schedule( $schedules ) {
-    $schedules['go_weekly'] = array(
-        'interval' => 604800,
-        'display' => __( 'Once Weekly' )
-    );
-    return $schedules;
-}
-*/
-
-/*
- * Appends errors to the configured PHP error log.
- *
- * Use this function to easily output Game On errors.
- *
- * @since 3.0.0
- *
- * @param  string  $error The error message.
- * @param  string  $func  The name of the function which is calling go_error_log().
- * @param  string  $file  The name of the file in which go_error_log() is being called.
- * @param  boolean $trace Whether or not to output a stack trace.
- */
-/*
-function go_error_log( $error = '', $func = __FUNCTION__, $file = __FILE__, $trace = false ) {
-    if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-        return;
-    }
-
-    if ( '' !== $error ) {
-        $log = "Game On Error: {$error}. " .
-            ( ! empty( $func ) ? "from {$func}() " : '' ) .
-            ( ! empty( $file ) ? "in {$file}" : 'erring file not provided' );
-        if ( true === $trace ) {
-            $exception = new Exception;
-            $log .= print_r( "\nTrace:\n" . $exception->getTraceAsString(), true );
-        }
-        error_log( $log );
-    }
-}
-*/
-
-
-/*
- * Determines if the string has a boolean value of true (case is ignored).
- *
- * This exists because `boolval( 'true' )` equals the boolean value of true, as does
- * `boolval( 'false' )`. Typecasting a string as a boolean (using `(boolean) $var`) doesn't work
- * either. That achieves the same undesired effect. This function isn't insanely helpful, but it
- * does save a few lines.
- *
- * @since 3.0.0
- *
- * @param  string $str The string to check for a boolean value of true.
- * @return boolean Returns true if the string is equal to 'true', otherwise it returns false.
- */
-/*function go_is_true_str( $str ) {
-    if ( ! empty( $str ) && 'string' === gettype( $str ) && 'true' === strtolower( $str ) ) {
-        return true;
-    } else {
-        return false;
-    }
-}
-*/
-
-//MENU AND SIDEBAR
-
-//register_activation_hook( __FILE__, 'go_menu_and_widget' );
-
-/**
- * TOP MENU ITEMS
- * @param $items
- * @return string
- */
-
-/*
- function go_new_nav_menu_items($items) {
-
-    $homelink = '<li class="home go_top_menu_1"><a href="' . home_url( '/' ) . '">' . __('Home') . '</a></li>';
-
-    $menu_link = $homelink . $items;
-
-
-    $terms = get_terms( array(
-        'taxonomy' 		=> 'task_menus',
-        'hide_empty'	=> false,
-        'parent'		=> 0,
-    ) );
-    //$menu_link = '<ul class="collapsibleList">';
-    foreach ($terms as $term) {
-        $term_id = $term->term_id;
-        $child_terms = get_terms(array(
-            'taxonomy' => 'task_menus',
-            'hide_empty' => false,
-            'parent' => $term_id,
-        ));
-        $args=array(
-            'tax_query' => array(
-                array(
-                    'taxonomy' => 'task_menus',
-                    'field' => 'term_id',
-                    'terms' => $term_id,
-                )
-            ),
-            'posts_per_page'   => -1,
-            'orderby'          => 'meta_value_num',
-            'order'            => 'ASC',
-
-            'meta_key'         => 'go-location_top_order_item',
-            'meta_value'       => '',
-            'post_type'        => 'tasks',
-            'post_mime_type'   => '',
-            'post_parent'      => '',
-            'author'	   => '',
-            'author_name'	   => '',
-            'post_status'      => 'publish',
-            'suppress_filters' => true
-
-        );
-
-        $go_tasks_objs = get_posts($args);
-
-        if (!empty($go_tasks_objs)) {
-
-            $term_name = $term->name;
-            $term_link = get_term_link($term->term_id);
-            //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
-            $menu_link = $menu_link . '<li class="go_top_menu_1"><a href="#">' . __($term_name) . '</a><ul>';
-
-            foreach ($child_terms as $child_term) {
-                $term_id = $child_term->term_id;
-                $args=array(
-                    'tax_query' => array(
-                        array(
-                            'taxonomy' => 'task_menus',
-                            'field' => 'term_id',
-                            'terms' => $term_id,
-                        )
-                    ),
-                    'posts_per_page'   => -1,
-                    'orderby'          => 'meta_value_num',
-                    'order'            => 'ASC',
-
-                    'meta_key'         => 'go-location_top_order_item',
-                    'meta_value'       => '',
-                    'post_type'        => 'tasks',
-                    'post_mime_type'   => '',
-                    'post_parent'      => '',
-                    'author'	   => '',
-                    'author_name'	   => '',
-                    'post_status'      => 'publish',
-                    'suppress_filters' => true
-
-                );
-
-                $go_tasks_objs = get_posts($args);
-
-                 if (!empty($go_tasks_objs)) {
-
-                     $term_name = $child_term->name;
-                     $term_link = get_term_link($child_term->term_id);
-                     //$menu_link = $menu_link . '<li class="go_top_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>' ;
-                     $menu_link = $menu_link . '<li class="go_top_menu_2"><a href="#">' . __($term_name) . '</a>' ;
-
-                     //get the term id of this chain
-                     $term_id = $child_term->term_id;
-                     $args = array('tax_query' => array(array('taxonomy' => 'task_menus', 'field' => 'term_id', 'terms' => $term_id,)),'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
-
-                         'meta_key' => 'go-location_menu_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
-
-                     );
-
-                     $go_tasks_objs = get_posts($args);
-                     if (!empty($go_tasks_objs)) {
-                         $menu_link = $menu_link . '<ul>';
-                         foreach ($go_tasks_objs as $go_tasks_obj) {
-                             $task_link = $go_tasks_obj->guid;
-                             $task_title = $go_tasks_obj->post_title;
-
-                             $menu_link = $menu_link . '<li class="go_menu_task"><a href="' . $task_link . '">' . __($task_title) . '</a></li>';
-
-                         }
-                         $menu_link = $menu_link . '</ul>';
-                     }
-                     $menu_link = $menu_link . '</li>';
-                 }
-            }
-            $menu_link = $menu_link . '</ul></li>';
-        }
-    }
-    //$menu_link = $menu_link . '</ul>';
-    return $menu_link;
-
-}
-*/
-//add_filter( 'wp_nav_menu_go_top_menu_items', 'go_new_nav_menu_items' );
-
-/**
- * Task Categories Widget
- * Modified from: http://www.wpbeginner.com/wp-tutorials/how-to-create-a-custom-wordpress-widget/
- */
-/*
-// Register and load the widget
-function wpb_load_widget() {
-    register_widget( 'wpb_widget' );
-
-}
-*/
-/**
- * Added v4.0 Sort items that show on menu pages
- *Modified from: https://wordpress.stackexchange.com/questions/39817/sort-results-by-name-asc-order-on-archive-php
- * https://www.advancedcustomfields.com/resources/orde-posts-by-custom-fields/
- */
-/*
-add_action( 'pre_get_posts', 'go_change_sort_order');
-function go_change_sort_order($query){
-
-    // do not modify queries in the admin
-    if( is_admin() ) {
-
-        return $query;
-
-    }
-
-	if ($query->is_tax('task_menus')){
-        $query->set('orderby', 'meta_value_num');
-        $query->set('posts_per_page', -1);
-        $query->set('meta_key', 'go-location_top_order_item');
-        $query->set('order', 'ASC');
+class Frameitron {
+	public function __construct(){
+		add_action( 'init', array( $this, 'frame_it_up' ), 20 );
+		add_filter( 'tiny_mce_before_init', array( $this, 'frame_it_up_tinymce' ) );
 	}
-
-	if ($query->is_tax('task_categories')){
-        $query->set('orderby', 'meta_value_num');
-        $query->set('posts_per_page', -1);
-        $query->set('meta_key', 'go-location_side_order_item');
-        $query->set('order', 'ASC');
+	public function Frameitron(){
+		$this->__construct();
 	}
-
-};
-*/
-
-
-/**
- * @param $items
- * @return string
- * Modified from:
- * https://wordpress.stackexchange.com/questions/121309/how-do-i-programatically-insert-a-new-menu-item
- *
- */
-/*
-function go_menu_and_widget()
-{
-// Check if the menu exists
-    $menu_name = 'go_top_menu';
-    $menu_exists = wp_get_nav_menu_object($menu_name);
-
-// If it doesn't exist, let's create it.
-    if (!$menu_exists) {
-        $menu_id = wp_create_nav_menu($menu_name);
-    }
-
-
-    $widget_toggle = get_option('options_go_locations_widget_toggle');
-    if ($widget_toggle) {
-        add_action('widgets_init', 'wpb_load_widget');
-    }
+	public function frame_it_up( $init_array ){
+		global $allowedtags, $allowedposttags;
+		$allowedposttags['iframe'] = $allowedtags['iframe'] = array(
+			'name' => true,
+			'id' => true,
+			'class' => true,
+			'style' => true,
+			'src' => true,
+			'width' => true,
+			'height' => true,
+			'allowtransparency' => true,
+			'frameborder' => true,
+		);
+	}
+	public function frame_it_up_tinymce( $init_array ){
+		if( isset( $init_array['extended_valid_elements'] ) )
+			$init_array['extended_valid_elements'] .= ',iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
+		else
+			$init_array['extended_valid_elements'] = 'iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
+		return $init_array;
+	}
 }
-*/
-/*
-// Creating the widget
-class wpb_widget extends WP_Widget {
-
-    function __construct() {
-        parent::__construct(
-
-        // Base ID of your widget
-            'wpb_widget',
-
-            // Widget name will appear in UI
-            __(get_option('options_go_locations_widget_name'), 'go_widget_domain'),
-
-            // Widget description
-            array( 'description' => __( 'Widget of Categories of Game On', 'go_widget_domain' ), )
-        );
-    }
-
-    // Creating widget front-end
-    public function widget( $args, $instance ) {
-        //$title = apply_filters( 'widget_title', $instance['title'] );
-        $title = get_option('options_go_locations_widget_title');
-
-        // before and after widget arguments are defined by themes
-        echo $args['before_widget'];
-
-        echo $args['before_title'] . $title . $args['after_title'];
-
-        // This is where you run the code and display the output
-        //echo __( 'Hello, World!', 'wpb_widget_domain' );
-        $terms = get_terms( array(
-            'taxonomy' 		=> 'task_categories',
-            'hide_empty'	=> false,
-            'parent'		=> 0,
-        ) );
-        $menu_link = '<ul class="collapsibleList">';
-        foreach ($terms as $term) {
-            $term_id = $term->term_id;
-            $child_terms = get_terms(array(
-                'taxonomy' => 'task_categories',
-                'hide_empty' => false,
-                'parent' => $term_id,
-            ));
-            $args=array(
-                'tax_query' => array(
-                    array(
-                        'taxonomy' => 'task_categories',
-                        'field' => 'term_id',
-                        'terms' => $term_id,
-                    )
-                ),
-                'posts_per_page'   => -1,
-                'orderby'          => 'meta_value_num',
-                'order'            => 'ASC',
-
-                'meta_key'         => 'go-location_widget_order_item',
-                'meta_value'       => '',
-                'post_type'        => 'tasks',
-                'post_mime_type'   => '',
-                'post_parent'      => '',
-                'author'	   => '',
-                'author_name'	   => '',
-                'post_status'      => 'publish',
-                'suppress_filters' => true
-
-            );
-
-            $go_tasks_objs = get_posts($args);
-
-            if (!empty($go_tasks_objs)) {
-
-                $term_name = $term->name;
-                $term_link = get_term_link($term->term_id);
-                //$menu_link = $menu_link . '<li><a href="' . $term_link . '">' . __($term_name) . '</a><ul>';
-                $menu_link = $menu_link . '<li class="go_side_menu_1">' . __($term_name) . '<ul>';
-
-                foreach ($child_terms as $child_term) {
-                    $term_id = $child_term->term_id;
-                    $args=array(
-                        'tax_query' => array(
-                            array(
-                                'taxonomy' => 'task_categories',
-                                'field' => 'term_id',
-                                'terms' => $term_id,
-                            )
-                        ),
-                        'posts_per_page'   => -1,
-                        'orderby'          => 'meta_value_num',
-                        'order'            => 'ASC',
-                        'posts_per_page'   => 25,
-                        'meta_key'         => 'go-location_widget_order_item',
-                        'meta_value'       => '',
-                        'post_type'        => 'tasks',
-                        'post_mime_type'   => '',
-                        'post_parent'      => '',
-                        'author'	   => '',
-                        'author_name'	   => '',
-                        'post_status'      => 'publish',
-                        'suppress_filters' => true
-
-                    );
-
-                    $go_tasks_objs = get_posts($args);
-
-                    if (!empty($go_tasks_objs)) {
-
-                        $term_name = $child_term->name;
-
-                        //toggle these next 3 lines on/off if you want links on the terms
-                        //$term_link = get_term_link($child_term->term_id);
-                        //$menu_link = $menu_link . '<li class="go_side_menu_2"><a href="' . $term_link . '">' . __($term_name) . '</a>';
-                        $menu_link = $menu_link . '<li class="go_side_menu_2">' . __($term_name) ;
-
-                        //get the term id of this chain
-                        $term_id = $child_term->term_id;
-                        $args = array('tax_query' => array(array('taxonomy' => 'task_categories', 'field' => 'term_id', 'terms' => $term_id,)), 'posts_per_page'   => -1, 'orderby' => 'meta_value_num', 'order' => 'ASC',
-
-                            'meta_key' => 'go-location_widget_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
-
-                        );
-
-                        $go_tasks_objs = get_posts($args);
-                        if (!empty($go_tasks_objs)) {
-                            $menu_link = $menu_link . '<ul>';
-                            foreach ($go_tasks_objs as $go_tasks_obj) {
-                                $task_link = $go_tasks_obj->guid;
-                                $task_title = $go_tasks_obj->post_title;
-
-                                $menu_link = $menu_link . '<li class="go_side_menu_task"><a href="' . $task_link . '">' . __($task_title) . '</a></li>';
-
-                            }
-                            $menu_link = $menu_link . '</ul>';
-                        }
-                        $menu_link = $menu_link . '</li>';
-                    }
-                }
-                $menu_link = $menu_link . '</ul></li>';
-            }
-        }
-        $menu_link = $menu_link . '</ul>';
-        echo $menu_link;
-        //echo $args['after_widget'];
-    }
-
-    // Widget Backend
-    public function form( $instance ) {
-        if ( isset( $instance[ 'title' ] ) ) {
-            $title = $instance[ 'title' ];
-        }
-        else {
-            $title = __( get_option('options_go_locations_widget_title'), 'go_widget_domain' );
-        }
-        // Widget admin form
-        ?>
-        <p>
-            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-        </p>
-        <?php
-    }
-
-    // Updating widget replacing old instances with new
-    public function update( $new_instance, $old_instance ) {
-        $instance = array();
-        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-        return $instance;
-    }
-} // Class go_widget ends here
-*/
-
+$frameitron = new Frameitron;
 
 
 ?>

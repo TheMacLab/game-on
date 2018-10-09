@@ -36,6 +36,10 @@ function go_make_single_map($last_map_id, $reload){
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
     //$taxonomy_name = 'task_chains';
 
+
+
+
+
     if ($reload == false) {echo "<div id='mapwrapper'>";}
     echo "<div id='loader-wrapper style='width: 100%'><div id='loader' style='display:none;'></div></div><div id='maps' data-mapid='$last_map_id'>";
     if(!empty($last_map_id)){
