@@ -322,13 +322,13 @@ function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_nam
     }
     else if ($task_is_locked == true  && $is_logged_in) { //change this code to show admin override box
         //if ($is_logged_in) { //add of show password field is on
-            ?>
-            <div id="go_admin_override" style="overflow: auto; width: 100%;"><div style="float: right; font-size: .8em;">Admin Override</div></div>
-            <?php
-            //Show password unlock
-            echo "<div class='go_lock go_password' style='display: none;'><h3>Admin Override</h3><p>This field is not for users. Do not ask for this password. It is not part of the gameplay.</p><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
-            go_buttons($user_id, $custom_fields, null, null, null, 'unlock',false,null,null, false );
-            echo "</div>";
+        ?>
+        <div id="go_admin_override" style="overflow: auto; width: 100%;"><div style="float: right; font-size: .8em;">Admin Override</div></div>
+        <?php
+        //Show password unlock
+        echo "<div class='go_lock go_password' style='display: none;'><h3>Admin Override</h3><p>This field is not for users. Do not ask for this password. It is not part of the gameplay.</p><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
+        go_buttons($user_id, $custom_fields, null, null, null, 'unlock',false,null,null, false );
+        echo "</div>";
 
         //}
     }
@@ -1126,7 +1126,7 @@ function go_task_change_stage() {
             $result = go_lock_password_validate($result, $custom_fields);
             if ($result == 'password' || $result == 'master password') {
                 //set unlock flag
-                go_update_actions( $user_id, 'task',  $post_id, null, null, $check_type, $result, null, null,  null, null, null, null, null, null, null, null, null );
+                go_update_actions( $user_id, 'task',  $post_id, null, null, $check_type, $result, null, null,  null, null, null, null, null, null, null, null, null, false );
                 //go_update_task_post_save( $post_id );
                 echo json_encode(array('json_status' => 'refresh'));
                 die;
@@ -1446,7 +1446,7 @@ function go_update_fail_count($user_id, $task_id, $fail_count, $status){
     );
     if ($quiz_mod_exists == null) {
         //then update if needed
-        go_update_actions($user_id, 'quiz_mod', $task_id, $status + 1, null, $status, $fail_count, null, null, null, null, null, null, null, null, null, null, null);
+        go_update_actions($user_id, 'quiz_mod', $task_id, $status + 1, null, $status, $fail_count, null, null, null, null, null, null, null, null, null, null, null, false);
     }
 }
 

@@ -1065,7 +1065,7 @@ var t=jQuery("#post_ID").val();jQuery("#go_store_item_id .acf-input").html('[go_
 //map shortcode message
 //var map_id = jQuery('[name="tag_ID"]').val();
 //console.log(map_id);
-var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,o=this.length-(e.length+t.length),s;return this.substr(a,o)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
+var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,o=this.length-(e.length+t.length),s;return this.substr(a,o)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
 // Decimal floor
 Math.floor10||(Math.floor10=function(e,t){return decimalAdjust("floor",e,t)}),
 // Decimal ceil
@@ -1136,4 +1136,4 @@ jQuery(document).ready( function($) {
 /*
  * Disable submit with enter key, tab to next field instead
 */
-jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()})});
+jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()}),setTimeout(set_height_mce,1e3)});

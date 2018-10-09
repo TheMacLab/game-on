@@ -47,6 +47,7 @@ function go_admin_bar() {
 	$go_map_switch = get_option( 'options_go_locations_map_toggle' );
 	$go_store_switch = get_option( 'options_go_store_toggle' );
     $go_stats_switch = get_option( 'options_go_stats_toggle' );
+    $go_blog_switch = get_option('options_go_blogs_toggle');
 
 	if ( ! is_user_logged_in() ) {
 		$wp_admin_bar->add_node(
@@ -350,6 +351,18 @@ function go_admin_bar() {
             $wp_admin_bar->add_node(
 
                 array('id' => 'go_stats', 'title' => '<i class="fa fa-area-chart ab-icon" aria-hidden="true"></i><div style="float: right;">' . $stats_name . '</div><div id="go_stats_page"></div><script>  jQuery("#wp-admin-bar-go_stats").one("click", function(){ go_admin_bar_stats_page_button()}); </script>', 'href' => '#',));
+        };
+
+        if ($go_blog_switch) {
+            acf_form_head();
+            //$stats_name = get_option('options_go_stats_name');
+
+            $user_info = get_userdata($user_id);
+            $userloginname = $user_info->user_login;
+            $user_blog_link = get_site_url(null, '/user/' . $userloginname);
+
+            $wp_admin_bar->add_node(
+                array('id' => 'go_blog_menu_link', 'title' => '<span class="ab-icon dashicons dashicons-admin-post "></span><div style="float: right;">My Blog</div>', 'href' => $user_blog_link,));
         }
         
         if ($go_map_switch){

@@ -79,6 +79,13 @@ jQuery(document).ready(function(){
         go_hide_child_tax_acfs();
     });
 
+    setTimeout(set_height_mce, 1000);
+
 });
+
+function set_height_mce() {
+    jQuery('.go_call_to_action .mce-edit-area iframe').height( 100 );
+
+}
 
 

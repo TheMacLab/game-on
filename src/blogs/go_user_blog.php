@@ -209,6 +209,7 @@ if ($current_user_id === $user_id){
             tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
             jQuery('#go_hidden_mce').remove();
             jQuery('#go_hidden_mce_edit').remove();
+            jQuery('#wpadminbar').css('z-index', 99999)
         });
 
     </script>

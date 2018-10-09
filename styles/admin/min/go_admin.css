@@ -79,7 +79,7 @@ END TOOLTIP
   width: 100% !important;
   height: 100% !important;
   background-color: black;
-  z-index: 999998;
+  z-index: 99998;
   -moz-opacity: 0.8;
   opacity: 0.80;
   filter: alpha(opacity=80) !important; }
@@ -93,7 +93,7 @@ END TOOLTIP
   height: 80%;
   padding: 16px;
   background-color: white;
-  z-index: 999999;
+  z-index: 99999;
   overflow: auto;
   border-radius: 3px; }
 

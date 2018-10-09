@@ -167,7 +167,7 @@ function go_update_bonus_loot ($post_id){
                 $message = $message . "<br><br>" . $xp_message .  $gold_message . $health_message . $c4_message;
                 go_noty_message_generic('success', $title, $message);
                 //go_noty_loot_success($title,$message );
-                go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Winner', null, null, null, $health_mod, $xp, $gold, $health, $c4, null, null, true);
+                go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Winner', null, null, null, $health_mod, $xp, $gold, $health, $c4, null, null, true, false);
                 $winner = true;
                 break;
             }
@@ -175,7 +175,7 @@ function go_update_bonus_loot ($post_id){
         }
         if (!$winner) {//NOT winner
             //add update here for no winner
-            go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Not Winner', null, null, null, null, null, null, null, null, null, null, true);
+            go_update_actions($user_id, 'bonus_loot', $post_id, null, null, null, 'Bonus Loot Not Winner', null, null, null, null, null, null, null, null, null, null, true, false);
             go_noty_message_generic('warning', "", "Better luck next time!");
         }
     }
@@ -514,7 +514,7 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
         )
     );
 
-    go_update_actions( $user_id, $action_type,  $post_id, $new_status_actions, $new_bonus_status_actions, $check_type, $result, $quiz_mod, $due_date_mod, $timer_mod, $health_mod,  $xp, $gold, $health, $c4, $badge_ids, $group_ids, true);
+    go_update_actions( $user_id, $action_type,  $post_id, $new_status_actions, $new_bonus_status_actions, $check_type, $result, $quiz_mod, $due_date_mod, $timer_mod, $health_mod,  $xp, $gold, $health, $c4, $badge_ids, $group_ids, true, true);
 }
 
 /**
@@ -761,8 +761,9 @@ function go_health_to_add($user_id, $added_health){
  * @param $badge_ids
  * @param $group_ids
  * @param $notify
+ * @param $debt
  */
-function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, $check_type, $result, $quiz_mod, $late_mod, $timer_mod, $global_mod, $xp, $gold, $health, $c4, $badge_ids, $group_ids, $notify)
+function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, $check_type, $result, $quiz_mod, $late_mod, $timer_mod, $global_mod, $xp, $gold, $health, $c4, $badge_ids, $group_ids, $notify, $debt)
 {
     global $wpdb;
 
@@ -822,7 +823,7 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
     }
     //if this is not a store item with admin notifications, then continue to update the totals table
     if ($notify !== 'admin') {
-        go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name, $notify);
+        go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name, $notify, $debt);
     }
     //badges and groups are only updated from the add/remove badges and groups functions
 
@@ -998,26 +999,31 @@ function go_update_totals_table_Groups($user_id, $groups)
  * @param $c4
  * @param $c4_name
  * @param $notify
+ * @param $debt
  */
-function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name, $notify){
+function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $c4, $c4_name, $notify, $debt){
     global $wpdb;
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
     //create row for user if none exists
     go_add_user_to_totals_table($user_id);
-
-    $wpdb->query(
-        $wpdb->prepare(
-            "UPDATE {$go_totals_table_name} 
+    if ($debt == true) {
+        $wpdb->query($wpdb->prepare("UPDATE {$go_totals_table_name} 
                     SET 
                         xp = {$xp} + xp,
                         gold = {$gold} + gold,
                         health = {$health} + health,
                         c4 = {$c4} + c4                     
-                    WHERE uid= %d",
-            $user_id
-        )
-    );
+                    WHERE uid= %d", $user_id));
+    }else{
+        $wpdb->query($wpdb->prepare("UPDATE {$go_totals_table_name} 
+                    SET 
+                        xp = {$xp} + xp,
+                        gold = GREATEST(({$gold} + gold), 0),
+                        health = {$health} + health,
+                        c4 = {$c4} + c4                     
+                    WHERE uid= %d", $user_id));
+    }
 
     if ($xp != 0) {
         $new_rank = go_get_rank($user_id);

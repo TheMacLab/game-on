@@ -767,7 +767,7 @@ function go_send_message(){
 
         //set the main reset message and additional penalties
         $result = serialize($result);
-        go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+        go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false, false);
 
         //reset each task
         foreach ($post_ids as $post_id) {
@@ -795,7 +795,7 @@ function go_send_message(){
 
 
             //update actions with loot, title and message
-            go_update_actions($user_id, $type, $post_id, 1, null, null, $result, null, null, null, null, $xp_task, $gold_task, $health_task, $c4_task, null, null, false);
+            go_update_actions($user_id, $type, $post_id, 1, null, null, $result, null, null, null, null, $xp_task, $gold_task, $health_task, $c4_task, null, null, false, true);
         }
     }//end of task resets
     else { //this isn't a task reset message and set the message and update the actions and totals
@@ -845,7 +845,7 @@ function go_send_message(){
                 go_remove_groups($group_ids, $user_id, false);//remove groups
             }
 
-            go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+            go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false, false);
 
             //update_user_meta($user_id, 'go_new_messages', true);
 

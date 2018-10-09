@@ -51,8 +51,8 @@ video.wp-video-shortcode {
 	word-wrap: normal !important;
 }
 
-.featherlight {z-index: 2147483646 !important;}
-#__wp-uploader-id-2 {z-index: 2147483647 !important;}
+.featherlight {z-index: 100000 !important;}
+#__wp-uploader-id-2 {z-index: 100001 !important;}
 
 /**
  *ACF Loot Color
@@ -144,6 +144,13 @@ video.wp-video-shortcode {
 	margin: auto;
 	font-size: 1.4em;
 	padding: 6px;
+
+}
+
+#go_button.show_bonus {
+	background-color: gold;
+	color: black;
+	border: 1px solid;
 
 }
 
@@ -328,7 +335,7 @@ input[type='text'].go_error_red {
 
 
 #wpadminbar {
-    z-index: 1000010 !important;
+    z-index: 99997 !important;
 }
 
 .go_message_container {
@@ -968,7 +975,7 @@ input#go_pass_lock::-moz-placeholder {
 	width: 100%;
 	height: 100%;
 	background-color: black;
-	z-index: 1001;
+	z-index: 99998;
 	-moz-opacity: 0.8;
 	opacity: .80;
 	filter: alpha(opacity=80);
@@ -980,7 +987,7 @@ input#go_pass_lock::-moz-placeholder {
 	top: 50%;
 	left: 50%;
 	background-color: white;
-	z-index: 999999;
+	z-index: 99999;
 	padding: 10px 10px 10px 10px;
 }
 

@@ -122,7 +122,7 @@ function go_store_head() { // Run this function that inserts things into the hea
 			width: 100%;
 			height: 100%;
 			background-color: black;
-			z-index:100001;
+			z-index:99998;
 			-moz-opacity: 0.8;
 			opacity:.80;
 			filter: alpha(opacity=80);
@@ -144,7 +144,7 @@ function go_store_head() { // Run this function that inserts things into the hea
 			background-image: linear-gradient(to top, #f5f5f5, #f9f9f9);
 			-webkit-border-radius: 3px;
 			border-radius: 3px;
-			z-index:100002;
+			z-index:99999;
 			overflow: auto;
 		}
 		
@@ -261,7 +261,7 @@ function go_store_head() { // Run this function that inserts things into the hea
 			width: 100%;
 			height: 100%;
 			background-color: black;
-			z-index:100001;
+			z-index:99998;
 			-moz-opacity: 0.8;
 			opacity:.80;
 			filter: alpha(opacity=80);
@@ -283,7 +283,7 @@ function go_store_head() { // Run this function that inserts things into the hea
 			background-image: linear-gradient(to top, #f5f5f5, #f9f9f9);
 			-webkit-border-radius: 3px;
 			border-radius: 3px;
-			z-index:100002;
+			z-index:99999;
 			overflow: auto;
 		}
 		

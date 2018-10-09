@@ -111,7 +111,10 @@ for(var o=e.split(", "),r=0;r<_.length;r++){var t="#"+_[r].id;-1===jQuery.inArra
 //go_disable_loading();
 return void("Wrong answer, try again!"!=jQuery("#go_stage_error_msg").text()?(jQuery("#go_stage_error_msg").show(),jQuery("#go_stage_error_msg").text("Wrong answer, try again!")):flash_error_msg("#go_stage_error_msg"))}}}})}jQuery(document).ready(function(){
 //add onclick to blog edit buttons
-jQuery(document).ready(function(){jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}),jQuery.ajaxSetup({url:go_task_data.url+="/wp-admin/admin-ajax.php"});
+//jQuery( document ).ready( function() {
+jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)}),
+//});
+jQuery.ajaxSetup({url:go_task_data.url+="/wp-admin/admin-ajax.php"});
 //check_locks();
 // checks to see that the task has just been encountered, and fires off the Gold
 // ("store") sound, if the task has Gold rewards for the first stage

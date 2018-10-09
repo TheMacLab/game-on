@@ -53,8 +53,8 @@
 ********************/
 
 .go_test_field_table {  border-collapse: collapse; }
-.go_test_field_table tr {border: solid 20px;
-                             border-color: #f3f0f0;}
+.go_test_field_table tr {    border: solid 2px;
+    border-color: #969696;}
 
 .go_test_field_table ul {
     list-style: none;

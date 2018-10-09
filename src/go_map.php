@@ -36,10 +36,6 @@ function go_make_single_map($last_map_id, $reload){
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
     //$taxonomy_name = 'task_chains';
 
-
-
-
-
     if ($reload == false) {echo "<div id='mapwrapper'>";}
     echo "<div id='loader-wrapper style='width: 100%'><div id='loader' style='display:none;'></div></div><div id='maps' data-mapid='$last_map_id'>";
     if(!empty($last_map_id)){
@@ -210,6 +206,7 @@ function go_make_single_map($last_map_id, $reload){
                         }
                     }
 
+                    /*
                     if ($bonus_stage_toggle == true){
                         if ($bonus_status == 0 || $bonus_status == null){
                             echo "<br><div id='repeat_ratio' style='padding-top: 10px; font-size: .7em;'>$bonus_stage_name 
@@ -238,6 +235,19 @@ function go_make_single_map($last_map_id, $reload){
 								</div> $bonus_status / $repeat_max</div>
 							";
                         }
+                    }
+                    */
+
+                    if ($bonus_stage_toggle == true){
+                        $percentage = $bonus_status / $repeat_max * 100;
+                        $color = 'gold';
+                        $progress_bar = '<div style="position: relative; width:90%; margin-left: 5%; height:15px; border: 1px solid; background-color: white;">'.'<div class="go_bonus_progress_bar" '.
+                            'style="position: absolute; height: 15px; width: '.$percentage.'%; background-color: '.$color.' ;">'.
+                            '</div>'.
+                            '<div style="position: absolute; width: 100%; height: 100%; font-size: .7em;" class="bonus_progress">Bonus: '.
+                            $bonus_status . ' / ' . $repeat_max .'</div>'.
+                            '</div>';
+                        echo $progress_bar;
                     }
 
                     echo"</a>

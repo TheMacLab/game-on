@@ -143,7 +143,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
         if ($custom_fields['bonus_switch'][0] && ! $bonus_is_complete) {
             //echo "There is a bonus stage.";
-            echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
+            echo "<button id='go_button' class='show_bonus' status='{$status}' check_type='{$check_type}' button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
         }
         echo "</div>";
     }
@@ -268,9 +268,15 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
                 'task'
             )
         );
-        $post      = get_post( $blog_post_id, OBJECT, 'edit' );
-        $content   = $post->post_content;
-        $title = get_the_title($blog_post_id);
+        if (!empty($blog_post_id)) {
+            $post = get_post($blog_post_id, OBJECT, 'edit');
+            $content = $post->post_content;
+            $title = get_the_title($blog_post_id);
+        }
+        else{
+            $title = null;
+            $content = null;
+        }
         if (empty($title)){
             $title = get_the_title($post_id);
         }
