@@ -581,57 +581,7 @@ function bbp_enable_visual_editor( $args = array() ) {
 add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
 */
 
-/*
-Plugin Name: Frameitron
-Plugin URI: http://ninnypants.com
-Description: Allow iframes in tinymce for all user levels
-Version: 1.0
-Author: ninnypants
-Author URI: http://ninnypants.com
-License: GPL2
-Copyright 2013  Tyrel Kelsey  (email : tyrel@ninnypants.com)
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License, version 2, as
-published by the Free Software Foundation.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-class Frameitron {
-	public function __construct(){
-		add_action( 'init', array( $this, 'frame_it_up' ), 20 );
-		add_filter( 'tiny_mce_before_init', array( $this, 'frame_it_up_tinymce' ) );
-	}
-	public function Frameitron(){
-		$this->__construct();
-	}
-	public function frame_it_up( $init_array ){
-		global $allowedtags, $allowedposttags;
-		$allowedposttags['iframe'] = $allowedtags['iframe'] = array(
-			'name' => true,
-			'id' => true,
-			'class' => true,
-			'style' => true,
-			'src' => true,
-			'width' => true,
-			'height' => true,
-			'allowtransparency' => true,
-			'frameborder' => true,
-		);
-	}
-	public function frame_it_up_tinymce( $init_array ){
-		if( isset( $init_array['extended_valid_elements'] ) )
-			$init_array['extended_valid_elements'] .= ',iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
-		else
-			$init_array['extended_valid_elements'] = 'iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
-		return $init_array;
-	}
-}
-$frameitron = new Frameitron;
+
 
 
 ?>
