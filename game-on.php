@@ -581,6 +581,7 @@ function bbp_enable_visual_editor( $args = array() ) {
 add_filter( 'bbp_after_get_the_content_parse_args', 'bbp_enable_visual_editor' );
 */
 
+<<<<<<< HEAD
 /*
 Plugin Name: Frameitron
 Plugin URI: http://ninnypants.com
@@ -627,6 +628,8 @@ function frame_it_up_tinymce( $init_array ){
 			$init_array['extended_valid_elements'] = 'iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
 		return $init_array;
 }
+=======
+>>>>>>> 034b0c72b4a543bccf7717b2635551a42d933f3d
 
 
 
