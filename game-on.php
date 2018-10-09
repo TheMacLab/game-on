@@ -5,12 +5,12 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 4.21
+Version: 4.211
 */
-$go_js_version = 4.21;
+$go_js_version = 4.211;
 global $go_js_version;
 
-$go_css_version = 4.21;
+$go_css_version = 4.211;
 global $go_css_version;
 
 include_once( 'includes/acf/acf.php' );
@@ -601,15 +601,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-class Frameitron {
-	public function __construct(){
-		add_action( 'init', array( $this, 'frame_it_up' ), 20 );
-		add_filter( 'tiny_mce_before_init', array( $this, 'frame_it_up_tinymce' ) );
-	}
-	public function Frameitron(){
-		$this->__construct();
-	}
-	public function frame_it_up( $init_array ){
+
+add_action( 'init', 'frame_it_up' );
+add_filter( 'tiny_mce_before_init', 'frame_it_up_tinymce' );
+
+function frame_it_up( $init_array ){
 		global $allowedtags, $allowedposttags;
 		$allowedposttags['iframe'] = $allowedtags['iframe'] = array(
 			'name' => true,
@@ -622,16 +618,16 @@ class Frameitron {
 			'allowtransparency' => true,
 			'frameborder' => true,
 		);
-	}
-	public function frame_it_up_tinymce( $init_array ){
+}
+
+function frame_it_up_tinymce( $init_array ){
 		if( isset( $init_array['extended_valid_elements'] ) )
 			$init_array['extended_valid_elements'] .= ',iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
 		else
 			$init_array['extended_valid_elements'] = 'iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
 		return $init_array;
-	}
 }
-$frameitron = new Frameitron;
+
 
 
 ?>

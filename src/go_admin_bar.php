@@ -363,7 +363,7 @@ function go_admin_bar() {
 
             $wp_admin_bar->add_node(
                 array('id' => 'go_blog_menu_link', 'title' => '<span class="ab-icon dashicons dashicons-admin-post "></span><div style="float: right;">My Blog</div>', 'href' => $user_blog_link,));
-        }
+        };
         
         if ($go_map_switch){
             $map_url = get_option('options_go_locations_map_map_link');
