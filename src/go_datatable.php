@@ -1,29 +1,22 @@
 <?php
 //https://codex.wordpress.org/Creating_Tables_with_Plugins
 global $wpdb;
-//global $version;
-global $go_db_version;
-$go_db_version = 4.21;
 
 function go_update_db_check() {
-    global $go_db_version;
+    $go_db_version = 4.21;
     if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
-    update_option('go_db_version', $go_db_version);
-    go_update_db();
-    //go_on_activate_msdb(true);
+        update_option('go_db_version', $go_db_version);
+        go_update_db();
+        //go_on_activate_msdb(true);
     }
 }
-add_action( 'plugins_loaded', 'go_update_db_check' );
+//add_action( 'plugins_loaded', 'go_update_db_check' );
 
 function go_update_db() {
-    global $go_db_version;
     go_table_totals();
     go_table_tasks();
-    //go_table_store();
     go_table_actions();
     go_install_data();
-    add_option( 'go_db_version', $go_db_version );
-    //flush_rewrite_rules();
 }
 
 function go_table_tasks() {
@@ -53,39 +46,8 @@ function go_table_tasks() {
 	";
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
-
-    //add_option( 'go_db_version', $go_db_version );
-
 }
 
-/*
-function go_table_store() {
-    global $wpdb;
-    $table_name = "{$wpdb->prefix}go_store";
-    $sql = "
-		CREATE TABLE $table_name (
-			id bigint(20) NOT NULL AUTO_INCREMENT,
-			uid bigint(20),
-			post_id bigint(20),
-			returned BOOLEAN DEFAULT 0,
-			xp INT,
-			gold INT,
-			health DECIMAL (10,2),
-			c4 INT,
-			last_time datetime,
-			PRIMARY KEY  (id),
-            KEY uid (uid),
-            KEY post_id (post_id),
-            KEY last_time (last_time)
-		);
-	";
-    require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
-    dbDelta( $sql );
-
-    //add_option( 'go_db_version', $go_db_version );
-
-}
-*/
 function go_table_actions() {
     global $wpdb;
     $table_name = "{$wpdb->prefix}go_actions";
@@ -135,7 +97,7 @@ function go_table_totals() {
 			id bigint(20) NOT NULL AUTO_INCREMENT,
 			uid bigint(20) NOT NULL,
 			xp INT unsigned DEFAULT 0,
-			gold DECIMAL (10,2) DEFAULT 0,
+			gold DECIMAL (10,2) unsigned DEFAULT 0,
 			health DECIMAL (10,2) unsigned DEFAULT 100,
 			c4 INT unsigned DEFAULT 0,
 			badges VARCHAR (4096),
@@ -148,8 +110,6 @@ function go_table_totals() {
 
     require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
-
-    //add_option( 'go_db_version', $go_db_version );
 }
 
 /**
@@ -374,95 +334,6 @@ function go_install_data ($reset = false) {
 
     }
 
-/*
-    $blogusers = get_users( array( 'fields' => array( 'ID' ) ) );
-    $blogusers = json_decode(json_encode($blogusers), True); //converts std_class to array
-
-    foreach ($blogusers as $key => $value) {
-        foreach ($value as $key2 => $value2) {
-            $result_blogusers[] = $value2;
-        };
-    }
-    //$blogusers = array_values($blogusers);
-
-    $user_ids = $wpdb->get_results( "SELECT uid FROM {$table_name_go_totals}" );
-    $user_ids = json_decode(json_encode($user_ids), True); //converts std_class to array
-    foreach ($user_ids as $key => $value) {
-        foreach ($value as $key2 => $value2) {
-            $result_userids[] = $value2;
-        };
-    }
-
-    $diff_ids = array_diff($result_blogusers, $result_userids);
-
-    foreach ($diff_ids as $uid) {
-        go_add_user_to_totals_table($uid);
-    }
-*/
-        /*
-            $user_id_array = $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT user_id
-                    FROM {$table_name_user_meta}
-                    WHERE meta_key = %s AND ( meta_value LIKE %s OR meta_value LIKE %s )",
-                    "{$wpdb->prefix}capabilities",
-                    "%{$role}%",
-                    '%administrator%'
-                )
-            );
-
-            for ( $index = 0; $index < count( $user_id_array ); $index++ ) {
-                $user_id = (int) $user_id_array[ $index ]->user_id;
-                $stored_points = 0;
-                $total_points = 0;
-                $total_currency = 0;
-                $bonus_currency = 0;
-                $penalty = 0;
-                $minutes = 0;
-                $status = -1;
-
-                $user_has_progress = (bool) $wpdb->get_var(
-                    $wpdb->prepare( "SELECT uid FROM {$table_name_go} WHERE uid = %d", $user_id )
-                );
-                if ( $user_has_progress ) {
-                    $stored_points = (int) $wpdb->get_var(
-                        $wpdb->prepare( "SELECT sum( points ) FROM {$table_name_go} WHERE uid = %d", $user_id )
-                    );
-                    $total_points = ( $stored_points >= 0 ? $stored_points : 0 );
-                    $total_currency = (int) $wpdb->get_var(
-                        $wpdb->prepare( "SELECT sum( currency ) FROM {$table_name_go} WHERE uid = %d", $user_id )
-                    );
-                }
-                $user_has_totals = (bool) $wpdb->get_var(
-                    $wpdb->prepare( "SELECT uid FROM {$table_name_go_totals} WHERE uid = %d", $user_id )
-                );
-                if ( $user_has_totals && $total_points > 0 ) {
-                    $wpdb->update(
-                        $table_name_go_totals,
-                        array(
-                            'points' => $total_points,
-                            'currency' => $total_currency
-                        ),
-                        array(
-                            'uid' => $user_id
-                        ),
-                        array( '%d' )
-                    );
-                } else if ( ! $user_has_totals ) {
-                    $wpdb->insert(
-                        $table_name_go_totals,
-                        array(
-                            'uid' => $user_id,
-                            'points' => $total_points,
-                            'currency' => $total_currency
-                        ),
-                        array( '%d' )
-                    );
-                }
-
-                go_update_ranks( $user_id, $total_points );
-            }
-            */
 }
 
 

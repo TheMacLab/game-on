@@ -80,17 +80,10 @@ wp_cache_add_non_persistent_groups( 'go_single' );
  */
 
 register_activation_hook( __FILE__, 'go_update_db' );
-//register_activation_hook( __FILE__, 'go_table_individual' );
-//register_activation_hook( __FILE__, 'go_ranks_registration' );
-//register_activation_hook( __FILE__, 'go_presets_registration' );
-register_activation_hook( __FILE__, 'go_install_data' );
 register_activation_hook( __FILE__, 'go_open_comments' );
 register_activation_hook( __FILE__, 'go_tsk_actv_activate' );
 register_activation_hook( __FILE__, 'go_map_activate' );
 register_activation_hook( __FILE__, 'go_store_activate' );
-//Multisite--create tables on existing blogs
-register_activation_hook( __FILE__, 'go_on_activate_msdb' );
-
 
 /*
  * Init
