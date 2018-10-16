@@ -308,6 +308,34 @@ function go_login( $atts, $content = null ) {
 add_shortcode ( 'sb_login', 'go_login' );
 add_shortcode ( 'go_login', 'go_login' );
 
+function go_store_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		array(
+			'id'   => '',
+		),
+		$atts,
+		'go_store'
+	);
+	$output = '';
+
+	if ( ! empty( $atts['id'] ) ) {
+
+		/**
+		 * Outputs an individual link, for the store item with the specified post ID, which contains
+		 * the title of the Store Item.
+		 */
+
+		$output .= sprintf(
+			'<a id="%s" class="go_str_item">%s</a>',
+			$atts['id'],
+			get_the_title( $atts['id'] )
+		);
+	}
+
+	return $output;
+}
+add_shortcode( 'go_store', 'go_store_shortcode' );
+
 
 
 ?>

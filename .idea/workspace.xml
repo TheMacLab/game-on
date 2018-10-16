@@ -1,35 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-order-posts.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/go-acf-functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/go_enque_js_acf.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/js/scripts/my-acf-extension.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/js/scripts/my-acf-extension.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/min/go_admin-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/admin/scripts/go_messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/admin/scripts/go_messages.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_admin_notifications-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_admin_notifications-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/front/scripts/go_every_page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_datatable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/go_datatable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_store_make_html.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/go_store_make_html.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_messages.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_stats.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/store_lightbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/store_lightbox.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_admin_bar.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_admin_bar.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_messages_check.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_messages_check.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_returns.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_returns.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_updates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/go_locks.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/ajax/go_locks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/go_tasks_and_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/go_tasks_and_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" afterDir="false" />
-    </list>
+    <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -527,12 +499,12 @@
       <workItem from="1539058115680" duration="24937000" />
       <workItem from="1539502773295" duration="3427000" />
       <workItem from="1539506905869" duration="7869000" />
-      <workItem from="1539553133775" duration="19023000" />
+      <workItem from="1539553133775" duration="19213000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2388676000" />
+    <option name="totallyTimeSpent" value="2388866000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
