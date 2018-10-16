@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_activation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/go_activation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/public/go_map.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/go_map.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,11 +37,8 @@
       <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="68">
               <caret line="11" column="18" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="18" />
-              <folding>
-                <element signature="e#6#233#0#PHP" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -58,8 +55,11 @@
       <file leaf-file-name="go_activation.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/admin/go_activation.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
-              <caret line="100" column="249" selection-start-line="100" selection-start-column="249" selection-end-line="100" selection-end-column="249" />
+            <state relative-caret-position="801">
+              <caret line="100" column="208" selection-start-line="100" selection-start-column="208" selection-end-line="100" selection-end-column="208" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -67,27 +67,17 @@
       <file leaf-file-name="wp-term-order.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/wp-term-order/wp-term-order.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
+            <state relative-caret-position="6868">
               <caret line="412" selection-start-line="412" selection-end-line="412" />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="go_map.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/public/go_map.php">
+        <entry file="file://$PROJECT_DIR$/src/public/tasks/ajax_tasks/go_map.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
+            <state relative-caret-position="425">
               <caret line="25" column="34" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="45" />
-              <folding>
-                <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#1;n#a#0;n#li#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -95,7 +85,7 @@
       <file leaf-file-name="go_transients.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/all/go_transients.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-446">
+            <state relative-caret-position="629">
               <caret line="42" selection-start-line="42" selection-end-line="42" />
             </state>
           </provider>
@@ -104,7 +94,7 @@
       <file leaf-file-name="store_lightbox.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ajax/store_lightbox.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
+            <state relative-caret-position="612">
               <caret line="204" selection-start-line="204" selection-end-line="204" />
               <folding>
                 <element signature="n#go_buy_item#0;n#!!top" />
@@ -118,7 +108,7 @@
       <file leaf-file-name="wp-db.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../wp-includes/wp-db.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="497">
+            <state relative-caret-position="10098">
               <caret line="602" selection-start-line="602" selection-end-line="602" />
             </state>
           </provider>
@@ -127,7 +117,7 @@
       <file leaf-file-name="go_admin_ajax.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ajax/go_admin_ajax.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
+            <state relative-caret-position="1802">
               <caret line="111" selection-start-line="111" selection-end-line="111" />
             </state>
           </provider>
@@ -271,48 +261,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Changed Files">
-          <expand>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
-              <item name="includes" type="cbb8eebc:String" user="includes" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
-              <item name="includes" type="cbb8eebc:String" user="includes" />
-              <item name="custom-acf-fields" type="cbb8eebc:String" user="custom-acf-fields" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-        <subPane subId="Project Files">
-          <expand>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
-              <item name="includes" type="cbb8eebc:String" user="includes" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
-              <item name="includes" type="cbb8eebc:String" user="includes" />
-              <item name="custom-acf-fields" type="cbb8eebc:String" user="custom-acf-fields" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -396,71 +344,47 @@
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
             </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Changed Files">
+          <expand>
             <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
             </path>
             <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
             </path>
             <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
+              <item name="custom-acf-fields" type="cbb8eebc:String" user="custom-acf-fields" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
             </path>
             <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="front" type="462c0819:PsiDirectoryNode" />
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
             </path>
             <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="admin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="all" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="all" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
+              <item name="includes" type="cbb8eebc:String" user="includes" />
+              <item name="custom-acf-fields" type="cbb8eebc:String" user="custom-acf-fields" />
             </path>
           </expand>
           <select />
@@ -480,9 +404,9 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/public/tasks/ajax_tasks" />
       <recent name="$PROJECT_DIR$/src/public/ajax" />
       <recent name="$PROJECT_DIR$/src/all" />
-      <recent name="$PROJECT_DIR$/src/public/tasks/ajax_tasks" />
       <recent name="$PROJECT_DIR$/src/admin/ajax" />
       <recent name="$PROJECT_DIR$/src/ajax" />
     </key>
@@ -577,30 +501,29 @@
       <workItem from="1539058115680" duration="24937000" />
       <workItem from="1539502773295" duration="3427000" />
       <workItem from="1539506905869" duration="7869000" />
-      <workItem from="1539553133775" duration="28655000" />
+      <workItem from="1539553133775" duration="28973000" />
+      <workItem from="1539725940937" duration="181000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2398308000" />
+    <option name="totallyTimeSpent" value="2398807000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
-    <editor active="true" />
     <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21720298" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.52110976" side_tool="true" weight="0.32707182" />
+      <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Run" order="4" />
-      <window_info anchor="bottom" id="Terminal" order="12" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21472773" />
-      <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.47889024" weight="0.3356009" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="12" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.74195546" visible="true" weight="0.3446712" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.74195546" weight="0.3446712" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
       <window_info anchor="bottom" id="PHP-CGI Server" order="13" />
@@ -611,12 +534,13 @@
       <window_info anchor="bottom" id="Messages" order="9" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.47889024" weight="0.3356009" />
     </layout>
     <layout-to-restore>
-      <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20730197" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -631,7 +555,7 @@
       <window_info anchor="bottom" id="Terminal" order="12" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.52110976" side_tool="true" weight="0.32707182" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.74195546" weight="0.3446712" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Messages" order="9" />
@@ -844,33 +768,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1377">
           <caret line="857" selection-start-line="857" selection-end-line="857" />
-          <folding>
-            <element signature="n#go_task_locks#0;n#!!top" />
-            <element signature="n#go_user_lock#0;n#!!top" />
-            <element signature="e#13388#13592#0#PHP" />
-            <element signature="n#go_period_lock#0;n#!!top" />
-            <element signature="e#15774#15967#0#PHP" />
-            <element signature="n#go_xp_lock#0;n#!!top" />
-            <element signature="e#16817#17017#0#PHP" />
-            <element signature="n#go_xp_levels_lock#0;n#!!top" />
-            <element signature="e#17837#18030#0#PHP" />
-            <element signature="n#go_c4_lock#0;n#!!top" />
-            <element signature="e#18877#19072#0#PHP" />
-            <element signature="n#go_gold_lock#0;n#!!top" />
-            <element signature="e#19946#20143#0#PHP" />
-            <element signature="n#go_health_lock#0;n#!!top" />
-            <element signature="e#21045#21178#0#PHP" />
-            <element signature="n#go_schedule_access#0;n#!!top" />
-            <element signature="n#go_prev_task#0;n#!!top" />
-            <element signature="n#go_task_chain_lock_message#0;n#!!top" />
-            <element signature="e#30114#30281#0#PHP" />
-            <element signature="n#go_task_chain_lock#0;n#!!top" />
-            <element signature="n#go_timezone_message#0;n#!!top" />
-            <element signature="e#44814#44877#0#PHP" />
-            <element signature="n#go_master_unlocked#0;n#!!top" />
-            <element signature="e#45549#45620#0#PHP" />
-            <element signature="n#go_is_done#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -878,11 +775,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
           <caret line="84" selection-start-line="84" selection-end-line="84" />
-          <folding>
-            <element signature="n#go_template_loader#0;n#!!top" />
-            <element signature="e#1487#1497#0#PHP" />
-            <element signature="n#go_hidden_footer#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -890,14 +782,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="67">
           <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
-          <folding>
-            <element signature="e#7#483#0#PHP" />
-            <element signature="n#go_get_status#0;n#!!top" />
-            <element signature="e#8#110#0#PHP" />
-            <element signature="n#go_timer#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -925,18 +809,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-523">
           <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
-          <folding>
-            <element signature="e#767#1336#0#PHP" />
-            <element signature="e#1342#1547#0#PHP" />
-            <element signature="e#1553#1629#0#PHP" />
-            <element signature="e#1943#2043#0#PHP" />
-            <element signature="e#2048#2226#0#PHP" />
-            <element signature="e#2232#2335#0#PHP" />
-            <element signature="e#2341#2414#0#PHP" />
-            <element signature="e#2606#2651#0#PHP" />
-            <element signature="e#2845#2969#0#PHP" />
-            <element signature="e#2975#3223#0#PHP" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -981,9 +853,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="n#!!block;n#go_admin_check_messages#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1005,35 +874,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2294">
           <caret line="336" column="25" selection-start-line="336" selection-start-column="12" selection-end-line="336" selection-end-column="25" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#go_clipboard_save_filters#0;n#!!top" />
-            <element signature="n#go_clipboard_menu#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7735">
           <caret line="511" column="71" selection-start-line="511" selection-start-column="71" selection-end-line="511" selection-end-column="71" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1055,46 +905,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1411">
           <caret line="310" selection-start-line="310" selection-end-line="310" />
-          <folding>
-            <element signature="n#go_make_store_new#0;n#!!top" />
-            <element signature="e#152#162#0#PHP" />
-            <element signature="n#go_make_map#0;n#!!top" />
-            <element signature="e#477#542#0#PHP" />
-            <element signature="n#go_single_map_link#0;n#!!top" />
-            <element signature="n#go_video_link#0;n#!!top" />
-            <element signature="n#go_video#0;n#!!top" />
-            <element signature="n#go_lightbox_url#0;n#!!top" />
-            <element signature="n#go_get_displayname_function#0;n#!!top" />
-            <element signature="n#go_get_firstname_function#0;n#!!top" />
-            <element signature="n#go_get_lastname_function#0;n#!!top" />
-            <element signature="n#go_get_login_function#0;n#!!top" />
-            <element signature="n#go_post_grabber_content_exerpt_shortcode#0;n#!!top" />
-            <element signature="n#go_latest_post_url_shortcode#0;n#!!top" />
-            <element signature="n#go_visitor_only_content_function#0;n#!!top" />
-            <element signature="n#go_user_only_content_function#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_login#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ajax/go_admin_ajax.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
+        <state relative-caret-position="1802">
           <caret line="111" selection-start-line="111" selection-end-line="111" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../wp-includes/wp-db.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
+        <state relative-caret-position="10098">
           <caret line="602" selection-start-line="602" selection-end-line="602" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ajax/store_lightbox.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
+        <state relative-caret-position="612">
           <caret line="204" selection-start-line="204" selection-end-line="204" />
           <folding>
             <element signature="n#go_buy_item#0;n#!!top" />
@@ -1104,44 +934,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/public/go_map.php">
+    <entry file="file://$PROJECT_DIR$/src/public/tasks/ajax_tasks/go_map.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
+        <state relative-caret-position="425">
           <caret line="25" column="34" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="45" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#a#0;n#li#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/all/go_transients.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-446">
+        <state relative-caret-position="629">
           <caret line="42" selection-start-line="42" selection-end-line="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/includes/wp-term-order/wp-term-order.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
+        <state relative-caret-position="6868">
           <caret line="412" selection-start-line="412" selection-end-line="412" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game-on.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="68">
           <caret line="11" column="18" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="18" />
-          <folding>
-            <element signature="e#6#233#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1154,8 +971,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/admin/go_activation.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="100" column="249" selection-start-line="100" selection-start-column="249" selection-end-line="100" selection-end-column="249" />
+        <state relative-caret-position="801">
+          <caret line="100" column="208" selection-start-line="100" selection-start-column="208" selection-end-line="100" selection-end-column="208" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

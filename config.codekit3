@@ -3094,11 +3094,11 @@
 		"oAP": "/src/public/ajax/go_locks.php",
 		"oF": 0
 		},
-	"/src/public/go_map.php": {
+	"/src/public/ajax/go_map.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/public/go_map.php",
+		"oAP": "/src/public/ajax/go_map.php",
 		"oF": 0
 		},
 	"/src/public/go_mce.php": {
