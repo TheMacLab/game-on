@@ -353,7 +353,6 @@ jQuery(document).ready(function($){
     var go_gold_toggle = GO_ACF_DATA.go_gold_toggle;
     var go_xp_toggle = GO_ACF_DATA.go_xp_toggle;
     var go_health_toggle = GO_ACF_DATA.go_health_toggle;
-    var go_c4_toggle = GO_ACF_DATA.go_c4_toggle;
     var go_badges_toggle = GO_ACF_DATA.go_badges_toggle;
 
 
@@ -389,11 +388,6 @@ jQuery(document).ready(function($){
     if (go_health_toggle == 0){
         jQuery(".go_health").hide();
         jQuery('.acf-th[data-name="health"]').hide();
-    }
-
-    if (go_c4_toggle == 0){
-        jQuery(".go_c4").hide();
-        jQuery('.acf-th[data-name="c4"]').hide();
     }
 
     if (go_badges_toggle == 0){

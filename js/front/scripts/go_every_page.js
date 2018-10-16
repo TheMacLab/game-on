@@ -823,8 +823,6 @@ function go_stats_leaderboard() {
 
                         //C4//////////////////
                         if (jQuery("#go_health_leaders_datatable").length) {
-                            //go_sort_leaders("go_c4_leaders_datatable", 4);
-                            //console.log("________C4___________");
                             var table3 = jQuery('#go_health_leaders_datatable').DataTable({
                                 "paging": true,
                                 "orderFixed": [[4, "desc"]],

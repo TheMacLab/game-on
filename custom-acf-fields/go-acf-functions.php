@@ -166,20 +166,6 @@ function acf_update_order($post_id ) {
 
     }
 
-    // top menu
-    $order_field = 'go-location_top_order';
-    $item_order_field = 'go-location_top_order_item';
-    $toggle = get_post_meta ($post_id, 'go-location_top_toggle', true);
-    $term = get_post_meta ($post_id, 'go-location_top_menu', true);
-    go_update_order($post_id, $order_field, $item_order_field, $toggle, $term);
-
-    // side widget
-    $order_field = 'go-location_side_order';
-    $item_order_field = 'go-location_side_order_item';
-    $toggle = get_post_meta ($post_id, 'go-location_side_toggle', true);
-    $term = get_post_meta ($post_id, 'go-location_side_menu', true);
-    go_update_order($post_id, $order_field, $item_order_field, $toggle, $term);
-
     $order_field = 'go-location_map_order';
     $item_order_field = 'go-location_map_order_item';
     $toggle = get_post_meta ($post_id, 'go-location_map_toggle', true);
@@ -210,16 +196,12 @@ function default_value_field_5b526d2e7957e($value, $post_id, $field) {
                 $title = get_option($title);
                 $message = "options_go_loot_bonus_loot_" . $i . "_message";
                 $message = get_option($message);
-                $mods_toggle = "options_go_loot_bonus_loot_" . $i . "_mods_toggle";
-                $mods_toggle = get_option($mods_toggle);
                 $xp = "options_go_loot_bonus_loot_" . $i . "_defaults_xp";
                 $xp = get_option($xp);
                 $gold = "options_go_loot_bonus_loot_" . $i . "_defaults_gold";
                 $gold = get_option($gold);
                 $health = "options_go_loot_bonus_loot_" . $i . "_defaults_health";
                 $health = get_option($health);
-                $c4 = "options_go_loot_bonus_loot_" . $i . "_defaults_c4";
-                $c4 = get_option($c4);
                 $drop = "options_go_loot_bonus_loot_" . $i . "_defaults_drop_rate";
                 $drop = get_option($drop);
 
@@ -227,13 +209,11 @@ function default_value_field_5b526d2e7957e($value, $post_id, $field) {
                     'field_5b526d2e79583' => $xp,
                     'field_5b526d2e79584' => $gold ,
                     'field_5b526d2e79585' => $health,
-                    'field_5b526d2e79586' => $c4,
                     'field_5b526d2e79588' => $drop
                 );
                 $row_val = array(
                     'field_5b526d2e7957f' => $title,
                     'field_5b526d2e79580' => $message,
-                    'field_5b526d2e79581' => $mods_toggle,
                     'field_5b526d2e79582' => $loot_val
                 );
 

@@ -148,6 +148,16 @@
 		"oAP": "/custom-acf-fields/go_enque_js_acf.php",
 		"oF": 0
 		},
+	"/custom-acf-fields/js/dev/go_acf-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/custom-acf-fields/js/dev/go_acf-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"/custom-acf-fields/js/dev/go_acf.js": {
 		"ft": 64,
 		"ma": 0,
@@ -3077,11 +3087,11 @@
 		"oAP": "/src/public/ajax/go_checks.php",
 		"oF": 0
 		},
-	"/src/public/go_locks.php": {
+	"/src/public/ajax/go_locks.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/public/go_locks.php",
+		"oAP": "/src/public/ajax/go_locks.php",
 		"oF": 0
 		},
 	"/src/public/go_map.php": {

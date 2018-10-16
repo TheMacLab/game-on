@@ -83,19 +83,16 @@ function go_clipboard_intable() {
     $xp_toggle = get_option('options_go_loot_xp_toggle');
     $gold_toggle = get_option('options_go_loot_gold_toggle');
     $health_toggle = get_option('options_go_loot_health_toggle');
-    $c4_toggle = get_option('options_go_loot_c4_toggle');
     $badges_toggle = get_option('options_go_badges_toggle');
 
     // prepares tab titles
     //$xp_name = get_option( "options_go_loot_xp_name" );
     //$gold_name = get_option( "options_go_loot_gold_name" );
-    //$c4_name = get_option( "options_go_loot_c4_name" );
     $badges_name = get_option( 'options_go_badges_name_plural' );
 
     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
     $health_abbr = get_option( "options_go_loot_health_abbreviation" );
-    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
 
     $seats_name = get_option( 'options_go_seats_name' );
 
@@ -135,11 +132,6 @@ function go_clipboard_intable() {
                 if ($health_toggle){
                     ?>
                     <th class='header'><?php echo "$health_abbr"; ?></th>
-                    <?php
-                }
-                if ($c4_toggle){
-                    ?>
-                    <th class='header'><?php echo "$c4_abbr"; ?></th>
                     <?php
                 }
                 if ($badges_toggle){
@@ -234,7 +226,6 @@ function go_clipboard_intable() {
         $xp = $row->xp;
         $gold = $row->gold;
         $health = $row->health;
-        $c4 = $row->c4;
 
 
         $rank = go_get_rank ( $user_id );
@@ -284,9 +275,6 @@ function go_clipboard_intable() {
             }
             if ($health_toggle) {
                 echo "<td class='user_health'>{$health}</td>";
-            }
-            if ($c4_toggle) {
-                echo "<td class='user_c4'>{$c4}</td>";
             }
 
             echo "		
@@ -431,18 +419,15 @@ function go_clipboard_intable_activity() {
                     $xp = $action['xp'];
                     $gold = $action['gold'];
                     $health = $action['health'];
-                    $c4 = $action['c4'];
                     $xp_total = $action['xp_total'];
                     $gold_total = $action['gold_total'];
                     $health_total = $action['health_total'];
-                    $c4_total = $action['c4_total'];
                     $action_badge_ids = $action['badges'];
                     $action_group_ids = $action['groups'];
 
                     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
                     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
                     $health_abbr = get_option( "options_go_loot_health_abbreviation" );
-                    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
 
 
                     $badges_names = array();
@@ -593,7 +578,6 @@ function go_clipboard_intable_activity() {
                     $xp_toggle = get_option('options_go_loot_xp_toggle');
                     $gold_toggle = get_option('options_go_loot_gold_toggle');
                     $health_toggle = get_option('options_go_loot_health_toggle');
-                    $c4_toggle = get_option('options_go_loot_c4_toggle');
 
                     if ($xp_toggle) {
                         $xp = $xp_abbr . ": " . $xp;
@@ -604,14 +588,10 @@ function go_clipboard_intable_activity() {
                     if ($health_toggle) {
                         $health = $health_abbr . ": " . $health;
                     }
-                    if ($c4_toggle) {
-                        $c4 = $c4_abbr . ": " . $c4;
-                    }
-
                     //$row[] = "{$badges_names}";
 
 
-                    $loot = $xp . "<br>" . $gold . "<br>" . $health  . "<br>" . $c4;
+                    $loot = $xp . "<br>" . $gold . "<br>" . $health;
                     $loot = "<span class='tooltip' ><span class='tooltiptext'>{$loot}</span>Loot</span>";
 
                     $action_list[] = "<tr class='" . $class . "'><td>" . $time . "</td><td>" . $type . "</td><td>" . $post_title . "</td><td>" . $action . "</td><td>" . $loot . "</td><td>" . $badges_names . "</td></tr>";

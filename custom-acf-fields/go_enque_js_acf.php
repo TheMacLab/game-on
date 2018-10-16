@@ -28,12 +28,9 @@ function go_acf_scripts ($hook) {
             array(
                     'go_store_toggle'       => get_option('options_go_store_toggle') ,
                     'go_map_toggle'         => get_option('options_go_locations_map_toggle') ,
-                    'go_top_menu_toggle'    => get_option('options_go_locations_top_menu_toggle') ,
-                    'go_widget_toggle'      => get_option('options_go_locations_widget_toggle') ,
                     'go_gold_toggle'        => get_option('options_go_loot_gold_toggle') ,
                     'go_xp_toggle'          => get_option('options_go_loot_xp_toggle') ,
                     'go_health_toggle'      => get_option('options_go_loot_health_toggle') ,
-                    'go_c4_toggle'          => get_option('options_go_loot_c4_toggle') ,
                     'go_badges_toggle'      => get_option('options_go_badges_toggle'),
                     //'go_leaderboard_toggle'      => get_option('options_go_stats_leaderboard_toggle')
 

@@ -43,21 +43,6 @@ function go_return_health( $user_id ) {
 	return $health;
 }
 
-function go_return_c4( $user_id ) {
-	global $wpdb;
-	$table_name_go_totals = $wpdb->prefix . "go_loot";
-	$c4 = (int) $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT c4
-			FROM {$table_name_go_totals} 
-			WHERE uid = %d",
-			$user_id
-		)
-	);
-	return $c4;
-
-}
-
 function go_display_points( $points ) {
 
 	$prefix = get_option( 'go_points_prefix' );
@@ -104,8 +89,7 @@ function go_display_minutes( $minutes ) {
 function go_display_longhand_currency ( $currency_type, $amount, $output = false ) {
 	if ( "xp" === $currency_type ||
 			"gold" === $currency_type ||
-			"health" === $currency_type ||
-			"c4" === $currency_type
+			"health" === $currency_type
 		) {
 
 		$currency_name = get_option( "options_go_loot_{$currency_type}_name" );
@@ -125,8 +109,7 @@ function go_display_longhand_currency ( $currency_type, $amount, $output = false
 function go_display_shorthand_currency ( $currency_type, $amount, $output = false ) {
     if ( "xp" === $currency_type ||
         "gold" === $currency_type ||
-        "health" === $currency_type ||
-        "c4" === $currency_type
+        "health" === $currency_type
     ) {
 
         $suffix = get_option( "options_go_loot_{$currency_type}_abbreviation" );

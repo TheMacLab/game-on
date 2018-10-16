@@ -143,9 +143,6 @@ function go_send_message(user_ids, post_id, message_type) {
     var health_toggle = (jQuery('[name=health_toggle]').siblings().hasClass("-on")) ? 1 : -1;
     var health = jQuery('[name=health]').val() * health_toggle;
 
-    var c4_toggle =(jQuery('[name=c4_toggle]').siblings().hasClass("-on")) ? 1 : -1;
-    var c4 = jQuery('[name=c4]').val() * c4_toggle;
-
     var badges = jQuery('#go_messages_go_badges_select').val();
     var badges_toggle = jQuery('[name=badges_toggle]').siblings().hasClass("-on");
     var groups = jQuery('#go_messages_user_go_groups_select').val();
@@ -160,8 +157,6 @@ function go_send_message(user_ids, post_id, message_type) {
     console.log(gold_toggle);
     console.log(health);
     console.log(health_toggle);
-    console.log(c4);
-    console.log(c4_toggle);
     console.log(badges);
     console.log(badges_toggle);
     console.log(groups);
@@ -181,7 +176,6 @@ function go_send_message(user_ids, post_id, message_type) {
         xp: xp,
         gold: gold,
         health: health,
-        c4: c4,
         badges_toggle: badges_toggle,
         badges: badges,
         groups_toggle: groups_toggle,

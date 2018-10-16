@@ -943,105 +943,6 @@ if( function_exists('acf_add_local_field_group') ):
                 ),
             ),
             array(
-                'key' => 'field_5ad66c7738a88',
-                'label' => 'Widget',
-                'name' => 'go_locations_widget',
-                'type' => 'group',
-                'instructions' => '',
-                'required' => 0,
-                'conditional_logic' => 0,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
-                'layout' => 'table',
-                'sub_fields' => array(
-                    array(
-                        'key' => 'field_5ad66c7738a89',
-                        'label' => 'toggle',
-                        'name' => 'toggle',
-                        'type' => 'true_false',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => 'acf-hide-label',
-                            'id' => '',
-                        ),
-                        'message' => '',
-                        'default_value' => 1,
-                        'ui' => 1,
-                        'ui_on_text' => 'On',
-                        'ui_off_text' => 'Off',
-                    ),
-                    array(
-                        'key' => 'field_5ad66c7738a8a',
-                        'label' => 'Name',
-                        'name' => 'name',
-                        'type' => 'text',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5ad66c7738a89',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'default_value' => 'Game Categories',
-                        'placeholder' => 'Categories',
-                        'prepend' => '',
-                        'append' => '',
-                        'maxlength' => '',
-                    ),
-                ),
-            ),
-            array(
-                'key' => 'field_5ad66cf858c20',
-                'label' => 'Main Menu',
-                'name' => 'go_locations_top_menu',
-                'type' => 'group',
-                'instructions' => '',
-                'required' => 0,
-                'conditional_logic' => 0,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
-                'layout' => 'table',
-                'sub_fields' => array(
-                    array(
-                        'key' => 'field_5ad66cf858c21',
-                        'label' => 'toggle',
-                        'name' => 'toggle',
-                        'type' => 'true_false',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => 'acf-hide-label',
-                            'id' => '',
-                        ),
-                        'message' => '',
-                        'default_value' => 1,
-                        'ui' => 1,
-                        'ui_on_text' => 'On',
-                        'ui_off_text' => 'Off',
-                    ),
-                ),
-            ),
-            array(
                 'key' => 'field_5adc010641915',
                 'label' => 'Loot Options',
                 'name' => '',
@@ -1333,33 +1234,6 @@ if( function_exists('acf_add_local_field_group') ):
                             ),
                         ),
                     ),
-                    array(
-                        'key' => 'field_5b212d55c1269',
-                        'label' => 'Apply Loot Modifiers',
-                        'name' => 'mods_toggle',
-                        'type' => 'true_false',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5ad66d80f426c',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'message' => '',
-                        'default_value' => 0,
-                        'ui' => 1,
-                        'ui_on_text' => 'On',
-                        'ui_off_text' => 'Off',
-                    ),
                 ),
             ),
             array(
@@ -1450,33 +1324,6 @@ if( function_exists('acf_add_local_field_group') ):
                         'append' => '',
                         'maxlength' => '',
                     ),
-                    array(
-                        'key' => 'field_5b22fe23a972f',
-                        'label' => 'Apply Loot Modifiers',
-                        'name' => 'mods_toggle',
-                        'type' => 'true_false',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5ad67502ceed3',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'message' => '',
-                        'default_value' => 0,
-                        'ui' => 1,
-                        'ui_on_text' => 'On',
-                        'ui_off_text' => 'Off',
-                    ),
                 ),
             ),
             array(
@@ -1566,142 +1413,6 @@ if( function_exists('acf_add_local_field_group') ):
                         'prepend' => '',
                         'append' => '',
                         'maxlength' => '',
-                    ),
-                    array(
-                        'key' => 'field_5b212da4c126b',
-                        'label' => 'Apply Loot Modifiers',
-                        'name' => 'mods_toggle',
-                        'type' => 'true_false',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'message' => '',
-                        'default_value' => 1,
-                        'ui' => 1,
-                        'ui_on_text' => 'On',
-                        'ui_off_text' => 'Off',
-                    ),
-                ),
-            ),
-            array(
-                'key' => 'field_5ad67585fd2aa',
-                'label' => 'Currency 4',
-                'name' => 'go_loot_c4',
-                'type' => 'group',
-                'instructions' => '',
-                'required' => 0,
-                'conditional_logic' => 0,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
-                'layout' => 'row',
-                'sub_fields' => array(
-                    array(
-                        'key' => 'field_5ad67585fd2ab',
-                        'label' => 'Toggle',
-                        'name' => 'toggle',
-                        'type' => 'true_false',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => 'acf-hide-label',
-                            'id' => '',
-                        ),
-                        'message' => '',
-                        'default_value' => 0,
-                        'ui' => 1,
-                        'ui_on_text' => 'On',
-                        'ui_off_text' => 'Off',
-                    ),
-                    array(
-                        'key' => 'field_5ad67585fd2ac',
-                        'label' => 'Name',
-                        'name' => 'name',
-                        'type' => 'text',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5ad67585fd2ab',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'default_value' => 'Awesome Points',
-                        'placeholder' => 'Awesome Points',
-                        'prepend' => '',
-                        'append' => '',
-                        'maxlength' => '',
-                    ),
-                    array(
-                        'key' => 'field_5ad67585fd2ad',
-                        'label' => 'Abbreviation',
-                        'name' => 'abbreviation',
-                        'type' => 'text',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5ad67585fd2ab',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'default_value' => 'AP',
-                        'placeholder' => 'AP',
-                        'prepend' => '',
-                        'append' => '',
-                        'maxlength' => '',
-                    ),
-                    array(
-                        'key' => 'field_5b220e47cf994',
-                        'label' => 'Apply Loot Modifiers',
-                        'name' => 'mods_toggle',
-                        'type' => 'true_false',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => array(
-                            array(
-                                array(
-                                    'field' => 'field_5ad67585fd2ab',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ),
-                            ),
-                        ),
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => '',
-                            'id' => '',
-                        ),
-                        'message' => '',
-                        'default_value' => 1,
-                        'ui' => 1,
-                        'ui_on_text' => 'On',
-                        'ui_off_text' => 'Off',
                     ),
                 ),
             ),
@@ -1841,27 +1552,6 @@ if( function_exists('acf_add_local_field_group') ):
                                 'step' => '.01',
                             ),
                             array(
-                                'key' => 'field_5adbfdbfa5d4c',
-                                'label' => 'C4',
-                                'name' => 'c4',
-                                'type' => 'number',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'go_c4',
-                                    'id' => '',
-                                ),
-                                'default_value' => 0,
-                                'placeholder' => '',
-                                'prepend' => '',
-                                'append' => '',
-                                'min' => 0,
-                                'max' => '',
-                                'step' => '',
-                            ),
-                            array(
                                 'key' => 'field_5acaeb729ce14',
                                 'label' => 'Drop Rate',
                                 'name' => 'drop_rate',
@@ -1905,7 +1595,7 @@ if( function_exists('acf_add_local_field_group') ):
             ),
             array(
                 'key' => 'field_5b52b4261ff75',
-                'label' => 'User Information',
+                'label' => 'Sections and Groups',
                 'name' => '',
                 'type' => 'message',
                 'instructions' => '',
@@ -1918,22 +1608,31 @@ if( function_exists('acf_add_local_field_group') ):
                 ),
                 'message' => '<p>Users can be organized into sections and groups.	These are created and managed under the <i class="fa fa-users" aria-hidden="true"></i>"User Groups" menu to the left or by clicking the links below (links open in new tab of window).</p>
 <ul><li><a href="edit-tags.php?taxonomy=user_go_sections" target="_blank">Sections</a></li><li><a href="edit-tags.php?taxonomy=user_go_groups" target="_blank">Groups</a></li></ul>
-
 <div class="more_info_accordian">
 <h3> More Information</h3>
 <div>
 <b>Sections</b>
 <p>
-Sections are the primary sort group for users and if you have multiple classes you will want to use these. Content and store items can be locked by section.	Students can self assign their section on the profile page.
+If you have multiple classes you will want to use these. 
+<ul>
+<li>Sections are the primary sort group for users.</li>
+<li>Content and store items can be locked by section.</li>	
+<li>Students can self assign their section on the profile page.</li>
+</ul>
 </p>
 <b>Groups</b>
 <p>
-Groups can by used for a secondary sorting of students( i.e., roles, professions, or table groups).	They are hierarchical--you can create categories so you can have multiple types of groups.	These also allow for locking of content and store items.	If you wish to have students self assign their groups, store items can be created that add students groups.	A future release will likely give you the option to add certain group categories to the profile page as well.
+Groups can by used for a secondary sorting of students( i.e., roles, professions, or table groups).	
+<ul>
+<li>They are hierarchical--you can create categories so you can have multiple types of groups.</li>
+<li>Allow for locking of content and store items.</li>
+<li>If you wish to have students self assign their groups, store items can be created that add students groups.</li>
+</ul>
 </p>
 <b>Seats</b>
 <p>Seats allow you to sort students on the clipboard by where they sit in the class.	There isn\\\'t an actually seating chart.</p>
 <b>Profile Questions</b>
-<p>These show on the students stats panel.	They are only visible to site administrators and the student, not other users.	These are useful for getting to know your students better.</p>
+<p>These show on the students stats panel. They are only visible to site administrators and the student, not other users. These are useful for getting to know your students better.</p>
 </div>
 </div>',
                 'new_lines' => '',
@@ -2984,27 +2683,6 @@ you only enter /map',
                                 'min' => 0,
                                 'max' => '',
                                 'step' => '.01',
-                            ),
-                            array(
-                                'key' => 'field_5b1374afa413a',
-                                'label' => 'C4',
-                                'name' => 'c4',
-                                'type' => 'number',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'go_reward go_c4 acf-hide-label',
-                                    'id' => '',
-                                ),
-                                'default_value' => 0,
-                                'placeholder' => 0,
-                                'prepend' => '',
-                                'append' => '',
-                                'min' => 0,
-                                'max' => '',
-                                'step' => 1,
                             ),
                         ),
                     ),
@@ -4061,212 +3739,6 @@ The master password that is set in the options page will work here, but you may 
                             ),
                         ),
                     ),
-                    array(
-                        'key' => 'field_5ab85b0b5ba44',
-                        'label' => 'Top Menu',
-                        'name' => 'top',
-                        'type' => 'group',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => 'go_top_menu',
-                            'id' => '',
-                        ),
-                        'layout' => 'block',
-                        'sub_fields' => array(
-                            array(
-                                'key' => 'field_5ab85b0b5ba45',
-                                'label' => 'toggle',
-                                'name' => 'toggle',
-                                'type' => 'true_false',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'acf-hide-label',
-                                    'id' => '',
-                                ),
-                                'message' => '',
-                                'default_value' => 0,
-                                'ui' => 1,
-                                'ui_on_text' => '',
-                                'ui_off_text' => '',
-                            ),
-                            array(
-                                'key' => 'field_5ab85b0b5ba46',
-                                'label' => 'Menu',
-                                'name' => 'menu',
-                                'type' => 'taxonomy2',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => array(
-                                    array(
-                                        array(
-                                            'field' => 'field_5ab85b0b5ba45',
-                                            'operator' => '==',
-                                            'value' => '1',
-                                        ),
-                                    ),
-                                ),
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'select2_child acf-hide-label',
-                                    'id' => '',
-                                ),
-                                'taxonomy' => 'task_menus',
-                                'field_type' => 'select',
-                                'allow_null' => 1,
-                                'add_term' => 1,
-                                'save_terms' => 1,
-                                'load_terms' => 0,
-                                'return_format' => 'id',
-                                'multiple' => 0,
-                            ),
-                            array(
-                                'key' => 'field_5ab85b0b5ba47',
-                                'label' => 'Order',
-                                'name' => 'order',
-                                'type' => 'order_posts',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => array(
-                                    array(
-                                        array(
-                                            'field' => 'field_5ab85b0b5ba45',
-                                            'operator' => '==',
-                                            'value' => '1',
-                                        ),
-                                    ),
-                                ),
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => '',
-                                    'id' => '',
-                                ),
-                                'sort_term' => 'go-location_top_menu',
-                                'return_format' => 'id',
-                                'post_type' => array(
-                                ),
-                                'taxonomy' => array(
-                                ),
-                                'min' => 0,
-                                'max' => 0,
-                                'filters' => array(
-                                    0 => 'search',
-                                    1 => 'post_type',
-                                    2 => 'taxonomy',
-                                ),
-                                'elements' => array(
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'key' => 'field_5ab85b545ba49',
-                        'label' => 'Widget',
-                        'name' => 'side',
-                        'type' => 'group',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => 'go_widget',
-                            'id' => '',
-                        ),
-                        'layout' => 'block',
-                        'sub_fields' => array(
-                            array(
-                                'key' => 'field_5ab85b545ba4a',
-                                'label' => 'toggle',
-                                'name' => 'toggle',
-                                'type' => 'true_false',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'acf-hide-label',
-                                    'id' => '',
-                                ),
-                                'message' => '',
-                                'default_value' => 0,
-                                'ui' => 1,
-                                'ui_on_text' => '',
-                                'ui_off_text' => '',
-                            ),
-                            array(
-                                'key' => 'field_5ab85b545ba4b',
-                                'label' => 'Menu',
-                                'name' => 'menu',
-                                'type' => 'taxonomy2',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => array(
-                                    array(
-                                        array(
-                                            'field' => 'field_5ab85b545ba4a',
-                                            'operator' => '==',
-                                            'value' => '1',
-                                        ),
-                                    ),
-                                ),
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'select2_child acf-hide-label',
-                                    'id' => '',
-                                ),
-                                'taxonomy' => 'task_categories',
-                                'field_type' => 'select',
-                                'allow_null' => 1,
-                                'add_term' => 1,
-                                'save_terms' => 1,
-                                'load_terms' => 0,
-                                'return_format' => 'id',
-                                'multiple' => 0,
-                            ),
-                            array(
-                                'key' => 'field_5ab85b545ba4c',
-                                'label' => 'Order',
-                                'name' => 'order',
-                                'type' => 'order_posts',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => array(
-                                    array(
-                                        array(
-                                            'field' => 'field_5ab85b545ba4a',
-                                            'operator' => '==',
-                                            'value' => '1',
-                                        ),
-                                    ),
-                                ),
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => '',
-                                    'id' => '',
-                                ),
-                                'sort_term' => 'go-location_side_menu',
-                                'return_format' => 'id',
-                                'post_type' => array(
-                                ),
-                                'taxonomy' => array(
-                                ),
-                                'min' => 0,
-                                'max' => 0,
-                                'filters' => array(
-                                    0 => 'search',
-                                    1 => 'post_type',
-                                    2 => 'taxonomy',
-                                ),
-                                'elements' => array(
-                                ),
-                            ),
-                        ),
-                    ),
                 ),
             ),
             array(
@@ -4903,7 +4375,6 @@ The master password that is set in the options page will work here, but you may 
                                     'go_xp_levels_lock' => 'Minimum XP',
                                     'go_gold_lock' => 'Minimum Gold',
                                     'go_health_lock' => 'Minimum Health',
-                                    'go_c4_lock' => 'Minimum Currency 4',
                                     'go_period_lock' => 'Class Section - 1 of these',
                                 ),
                                 'default_value' => array(
@@ -5176,35 +4647,6 @@ The master password that is set in the options page will work here, but you may 
                                         'step' => '',
                                     ),
                                     array(
-                                        'key' => 'field_5b23675e84647',
-                                        'label' => 'Minimum Currency 4',
-                                        'name' => 'c4',
-                                        'type' => 'number',
-                                        'instructions' => '',
-                                        'required' => 0,
-                                        'conditional_logic' => array(
-                                            array(
-                                                array(
-                                                    'field' => 'field_5ac134bb7858e',
-                                                    'operator' => '==',
-                                                    'value' => 'go_c4_lock',
-                                                ),
-                                            ),
-                                        ),
-                                        'wrapper' => array(
-                                            'width' => '',
-                                            'class' => '',
-                                            'id' => '',
-                                        ),
-                                        'default_value' => '',
-                                        'placeholder' => '',
-                                        'prepend' => '',
-                                        'append' => '',
-                                        'min' => 0,
-                                        'max' => '',
-                                        'step' => '',
-                                    ),
-                                    array(
                                         'key' => 'field_5ac134bb78597',
                                         'label' => 'Class Section',
                                         'name' => 'lock_sections',
@@ -5408,27 +4850,6 @@ The master password that is set in the options page will work here, but you may 
                         'wrapper' => array(
                             'width' => '',
                             'class' => 'go_reward go_health',
-                            'id' => '',
-                        ),
-                        'default_value' => 0,
-                        'placeholder' => '',
-                        'prepend' => '',
-                        'append' => '',
-                        'min' => 0,
-                        'max' => '',
-                        'step' => '',
-                    ),
-                    array(
-                        'key' => 'field_5adbfeb47907d',
-                        'label' => 'C4',
-                        'name' => 'c4',
-                        'type' => 'number',
-                        'instructions' => '',
-                        'required' => 0,
-                        'conditional_logic' => 0,
-                        'wrapper' => array(
-                            'width' => '',
-                            'class' => 'go_reward go_c4',
                             'id' => '',
                         ),
                         'default_value' => 0,
@@ -5680,27 +5101,6 @@ The master password that is set in the options page will work here, but you may 
                                 'max' => '',
                                 'step' => '.01',
                             ),
-                            array(
-                                'key' => 'field_5adbff00683ea',
-                                'label' => 'C4',
-                                'name' => 'c4',
-                                'type' => 'number',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'go_reward go_c4',
-                                    'id' => '',
-                                ),
-                                'default_value' => 0,
-                                'placeholder' => '',
-                                'prepend' => '',
-                                'append' => '',
-                                'min' => 0,
-                                'max' => '',
-                                'step' => 1,
-                            ),
                         ),
                     ),
                 ),
@@ -5942,27 +5342,6 @@ The master password that is set in the options page will work here, but you may 
                                         'min' => 0,
                                         'max' => '',
                                         'step' => '.01',
-                                    ),
-                                    array(
-                                        'key' => 'field_5b526d2e79586',
-                                        'label' => 'C4',
-                                        'name' => 'c4',
-                                        'type' => 'number',
-                                        'instructions' => '',
-                                        'required' => 0,
-                                        'conditional_logic' => 0,
-                                        'wrapper' => array(
-                                            'width' => '',
-                                            'class' => 'go_c4',
-                                            'id' => '',
-                                        ),
-                                        'default_value' => 0,
-                                        'placeholder' => '',
-                                        'prepend' => '',
-                                        'append' => '',
-                                        'min' => 0,
-                                        'max' => '',
-                                        'step' => 1,
                                     ),
                                     array(
                                         'key' => 'field_5b526d2e79588',
@@ -6294,27 +5673,6 @@ The master password that is set in the options page will work here, but you may 
                                 'min' => 0,
                                 'max' => '',
                                 'step' => '.01',
-                            ),
-                            array(
-                                'key' => 'field_5b00f8f508726',
-                                'label' => 'C4',
-                                'name' => 'c4',
-                                'type' => 'number',
-                                'instructions' => '',
-                                'required' => 0,
-                                'conditional_logic' => 0,
-                                'wrapper' => array(
-                                    'width' => '',
-                                    'class' => 'go_reward go_c4',
-                                    'id' => '',
-                                ),
-                                'default_value' => 0,
-                                'placeholder' => '',
-                                'prepend' => '',
-                                'append' => '',
-                                'min' => 0,
-                                'max' => '',
-                                'step' => 1,
                             ),
                         ),
                     ),

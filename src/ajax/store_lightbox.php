@@ -69,7 +69,6 @@ function go_buy_item() {
     $xp = 0;
     $gold = 0;
     $health = 0;
-    $c4 = 0;
 
     $store_abs_cost_xp = (isset($custom_fields['go_loot_loot_xp'][0]) ?  $custom_fields['go_loot_loot_xp'][0] : null);
     if (get_option( 'options_go_loot_xp_toggle' ) && $store_abs_cost_xp > 0){
@@ -105,27 +104,6 @@ function go_buy_item() {
 
     }
 
-    $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ?  $custom_fields['go_loot_loot_c4'][0] : null);
-    if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
-        $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
-        if ($store_toggle_c4 == false){
-            $c4 = $qty * ($store_abs_cost_c4) * -1;
-        }
-        else{
-            $c4 = $qty * ($store_abs_cost_c4);
-        }
-    }
-
-    if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
-        $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
-        if ($store_toggle_c4 == false){
-            $c4 = $qty * ($store_abs_cost_c4) * -1;
-        }
-        else{
-            $c4 = $qty * ($store_abs_cost_c4);
-        }
-    }
-
     ob_start();
 
     //BADGES
@@ -144,7 +122,7 @@ function go_buy_item() {
     }
 
 
-    go_update_actions( $user_id, 'store',  $post_id, $qty, null, null, 'purchase', null, null, null, null,  $xp, $gold, $health, $c4, $badge_ids, $group_ids, true, false);
+    go_update_actions( $user_id, 'store',  $post_id, $qty, null, null, 'purchase', null, null, null, null,  $xp, $gold, $health, $badge_ids, $group_ids, true, false);
 
     $go_admin_message = (isset($custom_fields['go-store-options_admin_notifications'][0]) ?  $custom_fields['go-store-options_admin_notifications'][0] : null);
 
@@ -158,10 +136,10 @@ function go_buy_item() {
         $result = serialize($result);
         $admin_users = get_option('options_go_admin_user_notifications');
         foreach ($admin_users as $admin_user) {
-            go_update_actions($admin_user, 'admin_notification', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, 'admin', false);
+            go_update_actions($admin_user, 'admin_notification', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $badge_ids, $group_ids, 'admin', false);
             update_user_meta($admin_user, 'go_new_messages', true);
         }
-        //go_update_actions($user_id, 'message', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false);
+        //go_update_actions($user_id, 'message', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $badge_ids, $group_ids, false);
         //update_user_meta($user_id, 'go_new_messages', true);
     }
 
@@ -194,7 +172,7 @@ function go_buy_item() {
 
 // Main Lightbox Ajax Function
 function go_the_lb_ajax() {
-    //check_ajax_referer( 'go_the_lb_ajax');
+    check_ajax_referer( 'go_the_lb_ajax');
 
 
 	$post_id = (int) $_POST['the_item_id'];
@@ -216,6 +194,7 @@ function go_the_lb_ajax() {
 
     ob_start();
 
+    $unlock_flag = true;
     if($skip_locks == false) {
         echo "<div class='go_store_lightbox_container'>";
         if ($is_admin) {
@@ -297,21 +276,7 @@ function go_the_lb_ajax() {
             //$xp_abbr         = get_option( 'options_go_loot_xp_abbreviation' );
             //$user_xp = go_return_points( $user_id );
             $store_toggle_xp = (isset($custom_fields['go_loot_reward_toggle_xp'][0]) ? $custom_fields['go_loot_reward_toggle_xp'][0] : null);
-            /*
-            $xp_mod_toggle = get_option('options_go_loot_xp_mods_toggle');
-
-            if ($xp_mod_toggle) {
-                $store_mod_val = ceil($store_abs_cost_xp * $health_mod);
-
-                if ($store_toggle_xp) {
-                    $store_abs_cost_xp = $store_abs_cost_xp - $store_mod_val;
-                }
-                else {
-                    $store_abs_cost_xp = $store_abs_cost_xp + $store_mod_val;
-                }
-
-            }
-            */
+            
         } else {
             $xp_on = false;
         }
@@ -336,15 +301,6 @@ function go_the_lb_ajax() {
             $health_on = false;
         }
 
-        $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ? $custom_fields['go_loot_loot_c4'][0] : null);
-        if (get_option('options_go_loot_c4_toggle') && $store_abs_cost_c4 > 0) {
-            $c4_on = true;
-            $c4_name = get_option('options_go_loot_c4_name');
-            $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ? $custom_fields['go_loot_reward_toggle_c4'][0] : null);
-        } else {
-            $c4_on = false;
-        }
-
         $purchase_count = go_get_purchase_count($post_id, $user_id, $custom_fields);
 
         $store_limit_toggle = (($custom_fields['go-store-options_limit_toggle'][0] == true) ? $custom_fields['go-store-options_limit_toggle'][0] : null);
@@ -367,7 +323,7 @@ function go_the_lb_ajax() {
 
         echo '<div id="go-lb-the-content"><div id="go_store_description" style=""' . do_shortcode($the_content) . '</div>';
 
-        if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false) || ($c4_on && $store_toggle_c4 == false)) {
+        if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false)) {
             echo "<div id='go_store_loot'><div id='go_cost'> <div id='go_store_cost_container' class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_minus' class='go_store_round_button'>-</div></div></div><div class='go_store_loot_right'><h3>Cost</h3>";
             if ($xp_on && $store_toggle_xp == false) {
                 echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_xp . ' : ' . $xp_name . '</div>';
@@ -378,14 +334,11 @@ function go_the_lb_ajax() {
             if ($health_on && $store_toggle_health == false) {
                 echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_health . ' : ' . $health_name . '</div>';
             }
-            if ($c4_on && $store_toggle_c4 == false) {
-                echo '<div class="golb-fr-boxes-r">' . $store_abs_cost_c4 . ' : ' . $c4_name . '</div>';
-            }
 
             echo "</div></div></div>";
         }
 
-        if (($xp_on && $store_toggle_xp == true) || ($gold_on && $store_toggle_gold == true) || ($health_on && $store_toggle_health == true) || ($c4_on && $store_toggle_c4 == true) || (!empty($badges)) || (!empty($groups))) {
+        if (($xp_on && $store_toggle_xp == true) || ($gold_on && $store_toggle_gold == true) || ($health_on && $store_toggle_health == true) || (!empty($badges)) || (!empty($groups))) {
             echo "<div id='go_reward'><div class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_plus' class='go_store_round_button'>+</div></div></div><div class='go_store_loot_right'><h3>Reward</h3>";
             if ($xp_on && $store_toggle_xp == true) {
                 echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_xp . ' : ' . $xp_name . '</div>';
@@ -396,10 +349,6 @@ function go_the_lb_ajax() {
             if ($health_on && $store_toggle_health == true) {
                 echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_health . ' : ' . $health_name . '</div>';
             }
-            if ($c4_on && $store_toggle_c4 == true) {
-                echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_c4 . ' : ' . $c4_name . '</div>';
-            }
-
 
             echo '<div id="go_badges_groups">';
             if (!empty($badges)) {
@@ -587,17 +536,7 @@ function go_get_purchase_limit($post_id, $user_id, $custom_fields, $purchase_cou
         }
     }
 
-    $max_c4 = 9999;
-    $store_abs_cost_c4 = (isset($custom_fields['go_loot_loot_c4'][0]) ?  $custom_fields['go_loot_loot_c4'][0] : null);
-    if (get_option( 'options_go_loot_c4_toggle' ) && $store_abs_cost_c4 > 0){
-        $user_c4 = go_return_c4( $user_id );
-        $store_toggle_c4 = (isset($custom_fields['go_loot_reward_toggle_c4'][0]) ?  $custom_fields['go_loot_reward_toggle_c4'][0] : null);
-        if ($store_toggle_c4 == false){
-            $max_c4 = $user_c4 / $store_abs_cost_c4;
-        }
-    }
-
-    $purchase_remaining_min = floor(min($purchases_left, $max_xp, $max_gold, $max_health, $max_c4));
+    $purchase_remaining_min = floor(min($purchases_left, $max_xp, $max_gold, $max_health));
 
     if ($purchase_remaining_min < 0){
         $purchase_remaining_min = 0;

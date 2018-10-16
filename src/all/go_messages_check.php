@@ -16,7 +16,6 @@ function go_check_messages(){
     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
     $health_abbr = get_option( "options_go_loot_health_abbreviation" );
-    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
 
     if ($is_logged_in && $is_new_messages ){
         //get unread messages
@@ -46,7 +45,6 @@ function go_check_messages(){
             $xp = $action->xp;
             $gold = $action->gold;
             $health = $action->health;
-            $c4 = $action->c4;
             $badges = $action->badges;
             $badges = unserialize($badges);
             $groups = $action->groups;
@@ -96,21 +94,6 @@ function go_check_messages(){
                     $health_penalty = null;
                     $health_reward = null;
                 }
-
-                if (empty($c4)) {
-                    $c4_penalty = null;
-                    $c4_reward = null;
-                } else if ($c4 > 0) {
-                    $c4_reward = $c4 . " " . $c4_abbr . "<br>";
-                    $c4_penalty = null;
-                } else if ($c4 < 0) {
-                    $c4_reward = null;
-                    $c4_penalty = $c4 . " " . $c4_abbr . "<br>";
-                } else {
-                    $c4_penalty = null;
-                    $c4_reward = null;
-                }
-
 
                 $badges_toggle = get_option('options_go_badges_toggle');
                 if ($badges_toggle && !empty($badges)) {
@@ -179,18 +162,18 @@ function go_check_messages(){
                 }
 
 
-                if (!empty($xp_reward) || !empty($gold_reward) || !empty($health_reward) || !empty($c4_reward) || !empty($badge_award) || !empty($group_award)) {
-                    $reward = "<h4>Reward</h4>{$xp_reward}{$gold_reward}{$health_reward}{$c4_reward}{$badge_award}{$group_award}";
+                if (!empty($xp_reward) || !empty($gold_reward) || !empty($health_reward) || !empty($badge_award) || !empty($group_award)) {
+                    $reward = "<h4>Reward</h4>{$xp_reward}{$gold_reward}{$health_reward}{$badge_award}{$group_award}";
                 } else {
                     $reward = '';
                 }
 
-                if (!empty($xp_penalty) || !empty($gold_penalty) || !empty($health_penalty) || !empty($c4_penalty) || !empty($badge_penalty) || !empty($group_penalty)) {
+                if (!empty($xp_penalty) || !empty($gold_penalty) || !empty($health_penalty) || !empty($badge_penalty) || !empty($group_penalty)) {
                     if (empty($post_id)){
-                        $penalty = "<h4>Additional Penalty:</h4>{$xp_penalty}{$gold_penalty}{$health_penalty}{$c4_penalty}{$badge_penalty}{$group_penalty}";
+                        $penalty = "<h4>Additional Penalty:</h4>{$xp_penalty}{$gold_penalty}{$health_penalty}{$badge_penalty}{$group_penalty}";
                     }
                     else{
-                        $penalty = "<h4>Loot Lost:</h4>{$xp_penalty}{$gold_penalty}{$health_penalty}{$c4_penalty}{$badge_penalty}{$group_penalty}";
+                        $penalty = "<h4>Loot Lost:</h4>{$xp_penalty}{$gold_penalty}{$health_penalty}{$badge_penalty}{$group_penalty}";
                     }
                 } else {
                     $penalty = '';

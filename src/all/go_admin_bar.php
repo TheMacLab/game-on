@@ -122,7 +122,6 @@ function go_admin_bar() {
         $xp_toggle = get_option('options_go_loot_xp_toggle');
         $gold_toggle = get_option('options_go_loot_gold_toggle');
         $health_toggle = get_option( 'options_go_loot_health_toggle' );
-        $c4_toggle = get_option('options_go_loot_c4_toggle');
 
 		if ($xp_toggle) {
             // the user's current amount of experience (points)
@@ -202,14 +201,7 @@ function go_admin_bar() {
             $gold_total = '';
         }
 
-        if ($c4_toggle) {
-            // the user's current amount of minutes
-            $go_current_c4 = go_get_user_loot( $user_id, 'c4' );
-            $c4_total =  '<div id="go_admin_bar_c4_2" class="admin_bar_loot">' . go_display_shorthand_currency('c4', $go_current_c4) . '</div>';
-        }
-        else{
-            $c4_total = '';
-        }
+        
 
 		$wp_admin_bar->add_node(
 			array(
@@ -219,7 +211,6 @@ function go_admin_bar() {
 							$progress_bar.
                             $health_bar.
                             $gold_total.
-                            $c4_total.
 					'</div>',
 				'href' => '#',
 			) 
@@ -240,9 +231,6 @@ function go_admin_bar() {
             $wp_admin_bar->add_node(array('id' => 'go_health', 'title' => '<div id="go_admin_bar_health">' . go_display_longhand_currency('health', $go_current_health) . '</div>', 'href' => '#', 'parent' => 'go_info',));
         }
 
-        if($c4_toggle) {
-            $wp_admin_bar->add_node(array('id' => 'go_c4', 'title' => '<div id="go_admin_bar_c4">' . go_display_longhand_currency('c4', $go_current_c4) . '</div>', 'href' => '#', 'parent' => 'go_info',));
-        }
 		/*
 		if ( current_user_can( 'manage_options' ) ) {
 			$wp_admin_bar->add_node( 

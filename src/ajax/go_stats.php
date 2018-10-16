@@ -85,7 +85,6 @@ function go_admin_bar_stats() {
     $xp_toggle = get_option('options_go_loot_xp_toggle');
     $gold_toggle = get_option('options_go_loot_gold_toggle');
     $health_toggle = get_option( 'options_go_loot_health_toggle' );
-    $c4_toggle = get_option('options_go_loot_c4_toggle');
 
     if ($xp_toggle) {
         // the user's current amount of experience (points)
@@ -165,14 +164,6 @@ function go_admin_bar_stats() {
         $gold_total = '';
     }
 
-    if ($c4_toggle) {
-        // the user's current amount of minutes
-        $go_current_c4 = go_get_user_loot( $user_id, 'c4' );
-        $c4_total =  '<div class="go_admin_bar_c4 admin_bar_loot">' . go_display_shorthand_currency('c4', $go_current_c4) . '</div>';
-    }
-    else{
-        $c4_total = '';
-    }
     //////////////////
 
 
@@ -217,9 +208,6 @@ function go_admin_bar_stats() {
                 }
                 if ($health_toggle) {
                     echo '<div class="go_stats_health">' . go_display_longhand_currency('health', $go_current_health) . '</div>';
-                }
-                if($c4_toggle) {
-                    echo '<div class="go_stats_c4">' . go_display_longhand_currency('c4', $go_current_c4) . '</div>';
                 }
                 ?>
             </div>
@@ -332,7 +320,7 @@ function go_tasks_dataloader_ajax()
 
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
-    $aColumns = array( 'id', 'uid', 'post_id', 'status', 'bonus_status' ,'xp', 'gold', 'health', 'c4', 'start_time', 'last_time', 'badges', 'groups' );
+    $aColumns = array( 'id', 'uid', 'post_id', 'status', 'bonus_status' ,'xp', 'gold', 'health', 'start_time', 'last_time', 'badges', 'groups' );
     $sIndexColumn = "id";
     $sTable = $go_task_table_name;
 
@@ -442,7 +430,6 @@ function go_tasks_dataloader_ajax()
         $xp = $task[xp];
         $gold = $task[gold];
         $health = $task[health];
-        $c4 = $task[c4];
         //$start_time = $task->start_time;
         $last_time = $task[last_time];
         $time  = date("m/d/y g:i A", strtotime($last_time));
@@ -506,7 +493,6 @@ function go_tasks_dataloader_ajax()
         $row[] = "{$xp}";
         $row[] = "{$gold}";
         $row[] = "{$health}";
-        $row[] = "{$c4}";
         $output['aaData'][] = $row;
     }
 
@@ -581,12 +567,10 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
     $xp_toggle = get_option('options_go_loot_xp_toggle');
     $gold_toggle = get_option('options_go_loot_gold_toggle');
     $health_toggle = get_option('options_go_loot_health_toggle');
-    $c4_toggle = get_option('options_go_loot_c4_toggle');
 
     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
     $health_abbr = get_option( "options_go_loot_health_abbreviation" );
-    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
 
     $tasks_name = get_option( "options_go_tasks_name_plural" );
 
@@ -625,11 +609,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
             <th class='header' id='go_stats_mods'><a href=\"#\"><?php echo "$health_abbr"; ?></a></th>
             <?php
         }
-        if ($c4_toggle){
-            ?>
-            <th class='header' id='go_stats_mods'><a href=\"#\"><?php echo "$c4_abbr"; ?></a></th>
-            <?php
-        }
+
 
     echo "
             <th class='header' ><a href='#'>Other</a></th>
@@ -657,7 +637,6 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
         $xp = $task->xp;
         $gold = $task->gold;
         $health = $task->health;
-        $c4 = $task->c4;
         //$start_time = $task->start_time;
         $last_time = $task->last_time;
         $time  = date("m/d/y g:i A", strtotime($last_time));
@@ -815,9 +794,6 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
         if ($health_toggle){
             echo"<td>{$health}</td>";
         }
-        if ($c4_toggle){
-            echo"<td>{$c4}</td>";
-        }
         echo "
         <td>{$badges_names}</td>
         </tr>
@@ -891,11 +867,9 @@ function go_stats_single_task_activity_list($post_id) {
         $xp = $action->xp;
         $gold = $action->gold;
         $health = $action->health;
-        $c4 = $action->c4;
         $xp_total = $action->xp_total;
         $gold_total = $action->gold_total;
         $health_total = $action->health_total;
-        $c4_total = $action->c4_total;
 
         $post_title = get_the_title($source_id);
 
@@ -977,11 +951,9 @@ function go_stats_single_task_activity_list($post_id) {
 					    <td>{$xp}</td>
 					    <td>{$gold}</td>
 					    <td>{$health}</td>
-					    <td>{$c4}</td>
 					    <td>{$xp_total}</td>
 					    <td>{$gold_total}</td>
 					    <td>{$health_total}</td>
-					    <td>{$c4_total}</td>
 					</tr>
 					";
 
@@ -1020,15 +992,12 @@ function go_stats_item_list() {
     $xp_toggle = get_option('options_go_loot_xp_toggle');
     $gold_toggle = get_option('options_go_loot_gold_toggle');
     $health_toggle = get_option('options_go_loot_health_toggle');
-    $c4_toggle = get_option('options_go_loot_c4_toggle');
     $xp_name = get_option('options_go_loot_xp_name');
     $gold_name = get_option('options_go_loot_gold_name');
     $health_name = get_option('options_go_loot_health_name');
-    $c4_name = get_option('options_go_loot_c4_name');
     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
     $health_abbr = get_option( "options_go_loot_health_abbreviation" );
-    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
     $badges_name = ucfirst(get_option('options_go_badges_name_plural'));
     $badges_name_sing = ucfirst(get_option('options_go_badges_name_singular'));
 
@@ -1059,11 +1028,7 @@ function go_stats_item_list() {
             <th class='header' id='go_stats_mods'><a href='#'><?php echo "$health_abbr"; ?></a></th>
             <?php
         }
-        if ($c4_toggle){
-            ?>
-            <th class='header' id='go_stats_mods'><a href='#'><?php echo "$c4_abbr"; ?></a></th>
-            <?php
-        }
+       
         ?>
         <th class='header' id='go_stats_mods'><a href='#'><?php echo "Other"; ?></a></th>
 
@@ -1088,11 +1053,9 @@ function go_stats_item_list() {
         $xp = $action->xp;
         $gold = $action->gold;
         $health = $action->health;
-        $c4 = $action->c4;
         $xp_total = $action->xp_total;
         $gold_total = $action->gold_total;
         $health_total = $action->health_total;
-        $c4_total = $action->c4_total;
         $badge_ids = $action->badges;
         $group_ids = $action->groups;
 
@@ -1148,9 +1111,6 @@ function go_stats_item_list() {
         if ($health_toggle){
             echo"<td>{$health}</td>";
         }
-        if ($c4_toggle){
-            echo"<td>{$c4}</td>";
-        }
 
         echo"<td>{$badges_names}</td>
         </tr>";
@@ -1171,12 +1131,10 @@ function go_stats_activity_list() {
     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
     $health_abbr = get_option( "options_go_loot_health_abbreviation" );
-    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
 
     $xp_toggle = get_option('options_go_loot_xp_toggle');
     $gold_toggle = get_option('options_go_loot_gold_toggle');
     $health_toggle = get_option('options_go_loot_health_toggle');
-    $c4_toggle = get_option('options_go_loot_c4_toggle');
 
     echo "<div id='go_activity_list' class='go_datatables'><table id='go_activity_datatable' class='pretty display'>
                    <thead>
@@ -1205,11 +1163,6 @@ function go_stats_activity_list() {
             <th class='header'><a href=\"#\"><?php echo "$health_abbr"; ?></a></th>
             <?php
         }
-        if ($c4_toggle){
-            ?>
-            <th class='header'><a href=\"#\"><?php echo "$c4_abbr"; ?></a></th>
-            <?php
-        }
         if ($xp_toggle){
             ?>
             <th class='header'><a href=\"#\">Total<br><?php echo "$xp_abbr"; ?></a></th>
@@ -1225,11 +1178,7 @@ function go_stats_activity_list() {
             <th class='header'><a href=\"#\">Total<br><?php echo "$health_abbr"; ?></a></th>
             <?php
         }
-        if ($c4_toggle){
-            ?>
-            <th class='header'><a href=\"#\">Total<br><?php echo "$c4_abbr"; ?></a></th>
-            <?php
-        }
+
 
 	echo "<th class='header'><a href='#'>Other</a></th>
 					</tr>
@@ -1249,7 +1198,7 @@ function go_activity_dataloader_ajax(){
     global $wpdb;
     $go_action_table_name = "{$wpdb->prefix}go_actions";
 
-    $aColumns = array( 'id', 'uid', 'action_type', 'source_id', 'TIMESTAMP' ,'stage', 'bonus_status', 'check_type', 'result', 'quiz_mod', 'late_mod', 'timer_mod', 'global_mod', 'xp', 'gold', 'health', 'c4', 'xp_total', 'gold_total', 'health_total', 'c4_total', 'badges', 'groups' );
+    $aColumns = array( 'id', 'uid', 'action_type', 'source_id', 'TIMESTAMP' ,'stage', 'bonus_status', 'check_type', 'result', 'quiz_mod', 'late_mod', 'timer_mod', 'global_mod', 'xp', 'gold', 'health', 'xp_total', 'gold_total', 'health_total', 'badges', 'groups' );
 
     $sIndexColumn = "id";
     $sTable = $go_action_table_name;
@@ -1384,11 +1333,9 @@ function go_activity_dataloader_ajax(){
         $xp = $action[xp];
         $gold = $action[gold];
         $health = $action[health];
-        $c4 = $action[c4];
         $xp_total = $action[xp_total];
         $gold_total = $action[gold_total];
         $health_total = $action[health_total];
-        $c4_total = $action[c4_total];
         $badge_ids = $action[badges];
         $group_ids = $action[groups];
 
@@ -1551,7 +1498,6 @@ function go_activity_dataloader_ajax(){
         $xp_toggle = get_option('options_go_loot_xp_toggle');
         $gold_toggle = get_option('options_go_loot_gold_toggle');
         $health_toggle = get_option('options_go_loot_health_toggle');
-        $c4_toggle = get_option('options_go_loot_c4_toggle');
 
         if ($xp_toggle){
             $row[] = "{$xp}";
@@ -1562,10 +1508,6 @@ function go_activity_dataloader_ajax(){
         if ($health_toggle){
             $row[] = "{$health}";
         }
-        if ($c4_toggle){
-            $row[] = "{$c4}";
-        }
-
         if ($xp_toggle){
             $row[] = "{$xp_total}";
         }
@@ -1574,9 +1516,6 @@ function go_activity_dataloader_ajax(){
         }
         if ($health_toggle){
             $row[] = "{$health_total}";
-        }
-        if ($c4_toggle){
-            $row[] = "{$c4_total}";
         }
         $row[] = "{$badges_names}";
         $output['aaData'][] = $row;
@@ -1899,7 +1838,6 @@ function go_stats_lite(){
     $xp_toggle = get_option('options_go_loot_xp_toggle');
     $gold_toggle = get_option('options_go_loot_gold_toggle');
     $health_toggle = get_option( 'options_go_loot_health_toggle' );
-    $c4_toggle = get_option('options_go_loot_c4_toggle');
 
     if ($xp_toggle) {
         // the user's current amount of experience (points)
@@ -1979,14 +1917,7 @@ function go_stats_lite(){
         $gold_total = '';
     }
 
-    if ($c4_toggle) {
-        // the user's current amount of minutes
-        $go_current_c4 = go_get_user_loot( $user_id, 'c4' );
-        $c4_total =  '<div class="go_admin_bar_c4 admin_bar_loot">' . go_display_shorthand_currency('c4', $go_current_c4) . '</div>';
-    }
-    else{
-        $c4_total = '';
-    }
+   
     //////////////////
 
 
@@ -2029,9 +1960,6 @@ function go_stats_lite(){
                 }
                 if ($health_toggle) {
                     echo '<div class="go_stats_health">' . go_display_longhand_currency('health', $go_current_health) . '</div>';
-                }
-                if($c4_toggle) {
-                    echo '<div class="go_stats_c4">' . go_display_longhand_currency('c4', $go_current_c4) . '</div>';
                 }
                 ?>
             </div>
@@ -2084,7 +2012,6 @@ function go_stats_lite(){
         $xp = $task->xp;
         $gold = $task->gold;
         $health = $task->health;
-        $c4 = $task->c4;
         //$start_time = $task->start_time;
         $last_time = $task->last_time;
         $time  = date("m/d/y g:i A", strtotime($last_time));

@@ -381,8 +381,6 @@ function go_stats_leaderboard() {
 
                         //C4//////////////////
                         if (jQuery("#go_health_leaders_datatable").length) {
-                            //go_sort_leaders("go_c4_leaders_datatable", 4);
-                            //console.log("________C4___________");
                             var table3 = jQuery('#go_health_leaders_datatable').DataTable({
                                 "paging": true,
                                 "orderFixed": [[4, "desc"]],
@@ -638,7 +636,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(o,this.id,"r
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var o=jQuery("[name=title]").val(),s=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,_=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*_,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*u,d=jQuery("#go_messages_go_badges_select").val(),p=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),y=jQuery("#go_messages_user_go_groups_select").val(),h=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,f={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:o,message:s,xp:i,gold:n,health:c,c4:g,badges_toggle:p,badges:d,groups_toggle:h,groups:y};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:f,success:function(e){
+var o=jQuery("[name=title]").val(),s=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,_=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*_,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("#go_messages_go_badges_select").val(),g=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),d=jQuery("#go_messages_user_go_groups_select").val(),p=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),y,h={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:o,message:s,xp:i,gold:n,health:c,badges_toggle:g,badges:u,groups_toggle:p,groups:d};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:h,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}function go_toggle(e){checkboxes=jQuery(".go_checkbox");for(var t=0,a=checkboxes.length;t<a;t++)checkboxes[t].checked=e.checked}function go_toggle_off(){checkboxes=jQuery(".go_checkbox");for(var e=0,t=checkboxes.length;e<t;e++)checkboxes[e].checked=!1}function go_clipboard_class_a_choice(){if(
 //var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;

@@ -184,7 +184,7 @@ function go_task_shortcode($atts, $content = null ) {
         //create the row
         $time = current_time( 'mysql');
         if ( $row_exists == null ) {
-            $wpdb->insert($go_task_table_name, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 0, 'last_time' => $time, 'xp' => 0, 'gold' => 0, 'health' => 0, 'c4' => 0,));
+            $wpdb->insert($go_task_table_name, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 0, 'last_time' => $time, 'xp' => 0, 'gold' => 0, 'health' => 0));
         }
     }
     /**
@@ -595,13 +595,6 @@ function go_display_rewards($custom_fields, $task_name ) {
     }else{
         $health_on = false;
     }
-    if (get_option( 'options_go_loot_c4_toggle' )){
-        $c4_on = true;
-        $c4_name = get_option('options_go_loot_c4_name');
-        $c4_loot = (isset($custom_fields['go_entry_rewards_c4'][0]) ?  $custom_fields['go_entry_rewards_c4'][0] : null);
-    }else{
-        $c4_on = false;
-    }
 
     if (get_option( 'options_go_badges_toggle' )){
         $badges_on = true;
@@ -631,12 +624,6 @@ function go_display_rewards($custom_fields, $task_name ) {
             $health_loot = $health + $health_loot;
         }
 
-        if($c4_on) {
-            $key = 'go_stages_' . $i . '_rewards_c4';
-            $c4 = (isset($custom_fields[$key][0]) ?  $custom_fields[$key][0] : null);
-            $c4_loot = $c4 + $c4_loot;
-        }
-
         $i++;
     }
     if($health_loot > 200){
@@ -653,9 +640,6 @@ function go_display_rewards($custom_fields, $task_name ) {
     }
     if($health_on){
         echo "<br>{$health_loot} {$health_name} ";
-    }
-    if($c4_on){
-        echo "<br>{$c4_loot} {$c4_name} ";
     }
     echo "</div>";
     go_display_stage_badges($badges);

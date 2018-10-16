@@ -12,7 +12,6 @@ function go_make_store_html() {
     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
     $health_abbr = get_option( "options_go_loot_health_abbreviation" );
-    $c4_abbr = get_option( "options_go_loot_c4_abbreviation" );
 
 
         $rows = get_terms($taxonomy, $args);//the rows

@@ -129,15 +129,6 @@ function go_create_admin_message (){
                                                                                                min="0" step=".01" oninput="validity.valid||(value='');"></div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-number go_reward go_c4 "
-                                                        data-name="c4" data-type="number">
-                                                        <div class="acf-input">
-                                                            <div class="acf-input-wrap"><input name="c4" type="number"
-                                                                                               value="0" min="0"
-                                                                                               step="1" placeholder="0" oninput="validity.valid||(value='');">
-                                                            </div>
-                                                        </div>
-                                                    </td>
                                                 </tr>
 
                                                 </tbody>
@@ -344,15 +335,6 @@ function go_create_admin_message (){
                                                                                                min="0" step=".01" oninput="validity.valid||(value='');"></div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-number go_reward go_c4 "
-                                                        data-name="c4" data-type="number">
-                                                        <div class="acf-input">
-                                                            <div class="acf-input-wrap"><input name="c4" type="number"
-                                                                                               value="0" min="0"
-                                                                                               step="1" placeholder="0" oninput="validity.valid||(value='');">
-                                                            </div>
-                                                        </div>
-                                                    </td>
                                                 </tr>
 
                                                 </tbody>
@@ -542,24 +524,6 @@ function go_create_admin_message (){
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-true-false go_reward go_c4"
-                                                        data-name="c4" data-type="true_false">
-                                                        <div class="acf-input">
-                                                            <div class="acf-true-false">
-                                                                <input value="0" type="hidden">
-                                                                <label>
-                                                                    <input name="c4_toggle" type="checkbox" value="1"
-                                                                           class="acf-switch-input">
-                                                                    <div class="acf-switch"><span class="acf-switch-on"
-                                                                                                  style="min-width: 36px;">+</span><span
-                                                                                class="acf-switch-off"
-                                                                                style="min-width: 36px;">-</span>
-                                                                        <div class="acf-switch-slider"></div>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </td>
                                                 </tr>
 
                                                 <tr class="acf-row">
@@ -586,15 +550,6 @@ function go_create_admin_message (){
                                                             <div class="acf-input-wrap"><input name="health"
                                                                                                type="number" value="0"
                                                                                                min="0" step=".01" oninput="validity.valid||(value='');"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="acf-field acf-field-number go_reward go_c4 "
-                                                        data-name="c4" data-type="number">
-                                                        <div class="acf-input">
-                                                            <div class="acf-input-wrap"><input name="c4" type="number"
-                                                                                               value="0" min="0"
-                                                                                               step="1" placeholder="0" oninput="validity.valid||(value='');">
-                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -727,7 +682,6 @@ function go_send_message(){
     $xp = intval($_POST['xp']);
     $gold = intval($_POST['gold']);
     $health = intval($_POST['health']);
-    $c4 = intval($_POST['c4']);
 
     $badges_toggle = $_POST['badges_toggle'];
     $badge_ids = $_POST['badges'];
@@ -767,7 +721,7 @@ function go_send_message(){
 
         //set the main reset message and additional penalties
         $result = serialize($result);
-        go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false, false);
+        go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $badge_ids, $group_ids, false, false);
 
         //reset each task
         foreach ($post_ids as $post_id) {
@@ -780,11 +734,10 @@ function go_send_message(){
             $xp_task = ($task->xp * -1);
             $gold_task = ($task->gold * -1);
             $health_task = ($task->health * -1);
-            $c4_task = ($task->c4 * -1);
 
             //update task table
             $wpdb->update($go_task_table_name, array('status' => -1,// integer (number)
-                'bonus_status' => 0, 'xp' => 0, 'gold' => 0, 'health' => 0, 'c4' => 0, 'badges' => null, 'groups' => null), array('uid' => $user_id, 'post_id' => $post_id), array('%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s'), array('%d', '%d'));
+                'bonus_status' => 0, 'xp' => 0, 'gold' => 0, 'health' => 0, 'badges' => null, 'groups' => null), array('uid' => $user_id, 'post_id' => $post_id), array('%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s'), array('%d', '%d'));
 
             $result = array();
             $task_title = get_the_title($post_id);
@@ -795,7 +748,7 @@ function go_send_message(){
 
 
             //update actions with loot, title and message
-            go_update_actions($user_id, $type, $post_id, 1, null, null, $result, null, null, null, null, $xp_task, $gold_task, $health_task, $c4_task, null, null, false, true);
+            go_update_actions($user_id, $type, $post_id, 1, null, null, $result, null, null, null, null, $xp_task, $gold_task, $health_task, null, null, false, true);
         }
     }//end of task resets
     else { //this isn't a task reset message and set the message and update the actions and totals
@@ -845,7 +798,7 @@ function go_send_message(){
                 go_remove_groups($group_ids, $user_id, false);//remove groups
             }
 
-            go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $c4, $badge_ids, $group_ids, false, false);
+            go_update_actions($user_id, $type, null, 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $badge_ids, $group_ids, false, false);
 
             //update_user_meta($user_id, 'go_new_messages', true);
 

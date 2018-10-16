@@ -111,11 +111,6 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         $health_name = get_option('options_go_loot_health_name');
         $health_loot = $loot->health;
     }
-    if (get_option( 'options_go_loot_c4_toggle' )){
-        $c4_on = true;
-        $c4_name = get_option('options_go_loot_c4_name');
-        $c4_loot = $loot->c4;
-    }
     if (get_option( 'options_go_badges_toggle' )){
         //$badges_on = true;
         //$badges_name = get_option('options_go_badges_name_plural');
@@ -141,9 +136,6 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     }
     if(isset($health_on)){
         echo "<br>{$health_loot} {$health_name} ";
-    }
-    if(isset($c4_on)){
-        echo "<br>{$c4_loot} {$c4_name}";
     }
     echo " </div>";
 
