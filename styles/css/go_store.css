@@ -166,13 +166,7 @@ store lightbox styles
     margin-bottom: 5px;
 }
 
-.buy_g {
-    background: url('../../../types/store/images/ajax-loader-buy-green.gif');
-}
 
-.buy_r {
-    background: url('../../../types/store/images/ajax-loader-buy-red.gif');
-}
 
 .golb-fr-boxes-r {
     float: left;

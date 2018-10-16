@@ -208,20 +208,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"/disabled/mail/class.phpmailer.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/disabled/mail/class.phpmailer.php",
-		"oF": 0
-		},
-	"/disabled/mail/PHPMailerAutoload.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/disabled/mail/PHPMailerAutoload.php",
-		"oF": 0
-		},
 	"/game-on.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -235,105 +221,6 @@
 		"oA": 0,
 		"oAP": "/go_acf_groups.php",
 		"oF": 0
-		},
-	"/images/ico.png": {
-		"ft": 32768,
-		"iS": 1556,
-		"oA": 0,
-		"oAP": "/images/ico.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/L1-center.png": {
-		"ft": 32768,
-		"iS": 166,
-		"oA": 0,
-		"oAP": "/images/map/L1-center.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/L1-left.png": {
-		"ft": 32768,
-		"iS": 169,
-		"oA": 0,
-		"oAP": "/images/map/L1-left.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/L1-right.png": {
-		"ft": 32768,
-		"iS": 158,
-		"oA": 0,
-		"oAP": "/images/map/L1-right.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/L3-bottom.png": {
-		"ft": 32768,
-		"iS": 149,
-		"oA": 0,
-		"oAP": "/images/map/L3-bottom.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/L3-center.png": {
-		"ft": 32768,
-		"iS": 148,
-		"oA": 0,
-		"oAP": "/images/map/L3-center.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/L3-li-top.png": {
-		"ft": 32768,
-		"iS": 149,
-		"oA": 0,
-		"oAP": "/images/map/L3-li-top.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/L3-ul-top.png": {
-		"ft": 32768,
-		"iS": 152,
-		"oA": 0,
-		"oAP": "/images/map/L3-ul-top.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/images/map/vertical-line.png": {
-		"ft": 32768,
-		"iS": 133,
-		"oA": 0,
-		"oAP": "/images/map/vertical-line.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
 		},
 	"/includes/acf/acf.php": {
 		"cB": 0,
@@ -514,16 +401,6 @@
 		"oT": 1,
 		"q": 100
 		},
-	"/includes/acf/assets/inc/datepicker/jquery-ui-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/datepicker/jquery-ui-min-min.css",
-		"oF": 0,
-		"oS": 3
-		},
 	"/includes/acf/assets/inc/datepicker/jquery-ui.css": {
 		"aP": 1,
 		"bl": 0,
@@ -531,16 +408,6 @@
 		"ma": 0,
 		"oA": 0,
 		"oAP": "/includes/acf/assets/inc/datepicker/jquery-ui-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/includes/acf/assets/inc/datepicker/jquery-ui.min-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/datepicker/jquery-ui.min-min-min.css",
 		"oF": 0,
 		"oS": 3
 		},
@@ -582,16 +449,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"/includes/acf/assets/inc/select2/3/select2.min-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/select2/3/select2.min-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/includes/acf/assets/inc/select2/3/select2.min.js": {
 		"ft": 64,
 		"ma": 0,
@@ -624,26 +481,6 @@
 		"oT": 1,
 		"q": 100
 		},
-	"/includes/acf/assets/inc/select2/4/select2-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/select2/4/select2-min-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/includes/acf/assets/inc/select2/4/select2-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/select2/4/select2-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/includes/acf/assets/inc/select2/4/select2.css": {
 		"aP": 1,
 		"bl": 0,
@@ -654,32 +491,12 @@
 		"oF": 0,
 		"oS": 3
 		},
-	"/includes/acf/assets/inc/select2/4/select2.full-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/select2/4/select2.full-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/includes/acf/assets/inc/select2/4/select2.full.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
 		"oAP": "/includes/acf/assets/inc/select2/4/select2.full-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/includes/acf/assets/inc/select2/4/select2.full.min-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/select2/4/select2.full.min-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -704,26 +521,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"/includes/acf/assets/inc/select2/4/select2.min-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/select2/4/select2.min-min-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/includes/acf/assets/inc/select2/4/select2.min-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/select2/4/select2.min-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/includes/acf/assets/inc/select2/4/select2.min.css": {
 		"aP": 1,
 		"bl": 0,
@@ -744,26 +541,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon-min-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.css": {
 		"aP": 1,
 		"bl": 0,
@@ -780,26 +557,6 @@
 		"mi": 1,
 		"oA": 0,
 		"oAP": "/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min-min-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/assets/inc/timepicker/jquery-ui-timepicker-addon.min-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -2089,16 +1846,6 @@
 		"oAP": "/includes/acf/pro/admin/views/html-settings-updates.php",
 		"oF": 0
 		},
-	"/includes/acf/pro/assets/css/acf-pro-field-group-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/pro/assets/css/acf-pro-field-group-min-min.css",
-		"oF": 0,
-		"oS": 3
-		},
 	"/includes/acf/pro/assets/css/acf-pro-field-group.css": {
 		"aP": 1,
 		"bl": 0,
@@ -2106,16 +1853,6 @@
 		"ma": 0,
 		"oA": 0,
 		"oAP": "/includes/acf/pro/assets/css/acf-pro-field-group-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/includes/acf/pro/assets/css/acf-pro-input-min.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/includes/acf/pro/assets/css/acf-pro-input-min-min.css",
 		"oF": 0,
 		"oS": 3
 		},
@@ -2139,16 +1876,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"/includes/acf/pro/assets/js/acf-pro-field-group.min-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/pro/assets/js/acf-pro-field-group.min-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/includes/acf/pro/assets/js/acf-pro-field-group.min.js": {
 		"ft": 64,
 		"ma": 0,
@@ -2165,16 +1892,6 @@
 		"mi": 1,
 		"oA": 0,
 		"oAP": "/includes/acf/pro/assets/js/acf-pro-input-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/includes/acf/pro/assets/js/acf-pro-input.min-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/includes/acf/pro/assets/js/acf-pro-input.min-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -2457,8 +2174,8 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/admin/dev/go_admin-min.js",
-		"oF": 0,
+		"oAP": "/js/admin/min/go_admin-min.js",
+		"oF": 2,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2467,8 +2184,8 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/admin/dev/go_clipboard_combined-min.js",
-		"oF": 0,
+		"oAP": "/js/admin/min/go_clipboard_combined-min.js",
+		"oF": 2,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2594,8 +2311,8 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/dev/go_frontend-min.js",
-		"oF": 0,
+		"oAP": "/js/front/min/go_frontend-min.js",
+		"oF": 3,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2604,8 +2321,8 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/dev/go_map-min.js",
-		"oF": 0,
+		"oAP": "/js/front/min/go_map-min.js",
+		"oF": 3,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2614,8 +2331,8 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/dev/go_tasks-min.js",
-		"oF": 0,
+		"oAP": "/js/front/min/go_tasks-min.js",
+		"oF": 2,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2737,8 +2454,8 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/scripts/go_admin_notifications-min.js",
-		"oF": 0,
+		"oAP": "/js/front/min/go_admin_notifications-min.js",
+		"oF": 2,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2832,6 +2549,105 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"/media/ico.png": {
+		"ft": 32768,
+		"iS": 1556,
+		"oA": 0,
+		"oAP": "/media/ico.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/L1-center.png": {
+		"ft": 32768,
+		"iS": 166,
+		"oA": 0,
+		"oAP": "/media/map/L1-center.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/L1-left.png": {
+		"ft": 32768,
+		"iS": 169,
+		"oA": 0,
+		"oAP": "/media/map/L1-left.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/L1-right.png": {
+		"ft": 32768,
+		"iS": 158,
+		"oA": 0,
+		"oAP": "/media/map/L1-right.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/L3-bottom.png": {
+		"ft": 32768,
+		"iS": 149,
+		"oA": 0,
+		"oAP": "/media/map/L3-bottom.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/L3-center.png": {
+		"ft": 32768,
+		"iS": 148,
+		"oA": 0,
+		"oAP": "/media/map/L3-center.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/L3-li-top.png": {
+		"ft": 32768,
+		"iS": 149,
+		"oA": 0,
+		"oAP": "/media/map/L3-li-top.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/L3-ul-top.png": {
+		"ft": 32768,
+		"iS": 152,
+		"oA": 0,
+		"oAP": "/media/map/L3-ul-top.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/map/vertical-line.png": {
+		"ft": 32768,
+		"iS": 133,
+		"oA": 0,
+		"oAP": "/media/map/vertical-line.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
 	"/media/mysterybox_inner_glow_sm.gif": {
 		"ft": 4194304,
 		"iS": 82102,
@@ -2839,6 +2655,136 @@
 		"oAP": "/media/mysterybox_inner_glow_sm.gif",
 		"oF": 0,
 		"opt": 0
+		},
+	"/media/not used/ajax-loader-buy-green.gif": {
+		"ft": 4194304,
+		"iS": 723,
+		"oA": 0,
+		"oAP": "/media/not used/ajax-loader-buy-green.gif",
+		"oF": 0,
+		"opt": 0
+		},
+	"/media/not used/ajax-loader-buy-red.gif": {
+		"ft": 4194304,
+		"iS": 723,
+		"oA": 0,
+		"oAP": "/media/not used/ajax-loader-buy-red.gif",
+		"oF": 0,
+		"opt": 0
+		},
+	"/media/not used/cog-small.png": {
+		"ft": 32768,
+		"iS": 646,
+		"oA": 0,
+		"oAP": "/media/not used/cog-small.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/cog.png": {
+		"ft": 32768,
+		"iS": 4588,
+		"oA": 0,
+		"oAP": "/media/not used/cog.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/little-ico.png": {
+		"ft": 32768,
+		"iS": 451,
+		"oA": 0,
+		"oAP": "/media/not used/little-ico.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/little-ico_old.png": {
+		"ft": 32768,
+		"iS": 1298,
+		"oA": 0,
+		"oAP": "/media/not used/little-ico_old.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/loading.gif": {
+		"ft": 4194304,
+		"iS": 39507,
+		"oA": 0,
+		"oAP": "/media/not used/loading.gif",
+		"oF": 0,
+		"opt": 0
+		},
+	"/media/not used/page.png": {
+		"ft": 32768,
+		"iS": 4038,
+		"oA": 0,
+		"oAP": "/media/not used/page.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/pin.png": {
+		"ft": 32768,
+		"iS": 3731,
+		"oA": 0,
+		"oAP": "/media/not used/pin.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/tasks/mime_icons/file-alt.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "/media/not used/tasks/mime_icons/file-alt.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
+		},
+	"/media/not used/tasks/mime_icons/file-pdf.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "/media/not used/tasks/mime_icons/file-pdf.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
+		},
+	"/media/not used/tasks/mime_icons/file-video.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "/media/not used/tasks/mime_icons/file-video.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
+		},
+	"/media/not used/tasks/mime_icons/file.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "/media/not used/tasks/mime_icons/file.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
 		},
 	"/README.html": {
 		"cB": 0,
@@ -2865,137 +2811,326 @@
 		"rFN": 0,
 		"uCM": 0
 		},
-	"/src/blogs/go_user_blog.php": {
+	"/src/admin/ajax/go_clipboard.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/blogs/go_user_blog.php",
+		"oAP": "/src/admin/ajax/go_clipboard.php",
 		"oF": 0
 		},
-	"/src/go_admin_bar.php": {
+	"/src/admin/clone_button.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_admin_bar.php",
+		"oAP": "/src/admin/clone_button.php",
 		"oF": 0
 		},
-	"/src/go_admin_menus.php": {
+	"/src/admin/go_activation.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_admin_menus.php",
+		"oAP": "/src/admin/go_activation.php",
 		"oF": 0
 		},
-	"/src/go_blogs.php": {
+	"/src/admin/go_admin_menus.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_blogs.php",
+		"oAP": "/src/admin/go_admin_menus.php",
 		"oF": 0
 		},
-	"/src/go_clipboard.php": {
+	"/src/admin/go_datatable.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_clipboard.php",
+		"oAP": "/src/admin/go_datatable.php",
 		"oF": 0
 		},
-	"/src/go_comments.php": {
+	"/src/admin/go_shortcodes_button.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_comments.php",
+		"oAP": "/src/admin/go_shortcodes_button.php",
 		"oF": 0
 		},
-	"/src/go_datatable.php": {
+	"/src/admin/go_store_admin.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_datatable.php",
+		"oAP": "/src/admin/go_store_admin.php",
 		"oF": 0
 		},
-	"/src/go_map.php": {
+	"/src/admin/go_store_make_html.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_map.php",
+		"oAP": "/src/admin/go_store_make_html.php",
 		"oF": 0
 		},
-	"/src/go_media.php": {
+	"/src/admin/go_task_admin.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_media.php",
+		"oAP": "/src/admin/go_task_admin.php",
 		"oF": 0
 		},
-	"/src/go_messages.php": {
+	"/src/admin/go_user_bio.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_messages.php",
+		"oAP": "/src/admin/go_user_bio.php",
 		"oF": 0
 		},
-	"/src/go_ranks.php": {
+	"/src/ajax/go_admin_ajax.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_ranks.php",
+		"oAP": "/src/ajax/go_admin_ajax.php",
 		"oF": 0
 		},
-	"/src/go_returns.php": {
+	"/src/ajax/go_blog_ajax.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_returns.php",
+		"oAP": "/src/ajax/go_blog_ajax.php",
 		"oF": 0
 		},
-	"/src/go_shortcodes.php": {
+	"/src/ajax/go_map_ajax.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_shortcodes.php",
+		"oAP": "/src/ajax/go_map_ajax.php",
 		"oF": 0
 		},
-	"/src/go_stats.php": {
+	"/src/ajax/go_messages.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_stats.php",
+		"oAP": "/src/ajax/go_messages.php",
 		"oF": 0
 		},
-	"/src/go_store.php": {
+	"/src/ajax/go_public_ajax.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_store.php",
+		"oAP": "/src/ajax/go_public_ajax.php",
 		"oF": 0
 		},
-	"/src/go_tools.php": {
+	"/src/ajax/go_stats.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_tools.php",
+		"oAP": "/src/ajax/go_stats.php",
 		"oF": 0
 		},
-	"/src/go_transients.php": {
+	"/src/ajax/go_tools.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_transients.php",
+		"oAP": "/src/ajax/go_tools.php",
 		"oF": 0
 		},
-	"/src/go_updates.php": {
+	"/src/ajax/store_lightbox.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_updates.php",
+		"oAP": "/src/ajax/store_lightbox.php",
 		"oF": 0
 		},
-	"/src/go_user.php": {
+	"/src/ajax/task-chains.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/go_user.php",
+		"oAP": "/src/ajax/task-chains.php",
+		"oF": 0
+		},
+	"/src/all/go_admin_bar.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_admin_bar.php",
+		"oF": 0
+		},
+	"/src/all/go_blogs.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_blogs.php",
+		"oF": 0
+		},
+	"/src/all/go_cpt_blogs.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_cpt_blogs.php",
+		"oF": 0
+		},
+	"/src/all/go_cpt_store.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_cpt_store.php",
+		"oF": 0
+		},
+	"/src/all/go_cpt_task_taxonomies.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_cpt_task_taxonomies.php",
+		"oF": 0
+		},
+	"/src/all/go_links.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_links.php",
+		"oF": 0
+		},
+	"/src/all/go_mce_defaults.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_mce_defaults.php",
+		"oF": 0
+		},
+	"/src/all/go_media.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_media.php",
+		"oF": 0
+		},
+	"/src/all/go_messages_check.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_messages_check.php",
+		"oF": 0
+		},
+	"/src/all/go_multisite.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_multisite.php",
+		"oF": 0
+		},
+	"/src/all/go_ranks.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_ranks.php",
+		"oF": 0
+		},
+	"/src/all/go_returns.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_returns.php",
+		"oF": 0
+		},
+	"/src/all/go_timer.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_timer.php",
+		"oF": 0
+		},
+	"/src/all/go_transients.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_transients.php",
+		"oF": 0
+		},
+	"/src/all/go_updates.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_updates.php",
+		"oF": 0
+		},
+	"/src/all/go_user_management.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_user_management.php",
+		"oF": 0
+		},
+	"/src/all/templates/go_user_blog_template.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/templates/go_user_blog_template.php",
+		"oF": 0
+		},
+	"/src/disabled/go_comments.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/disabled/go_comments.php",
+		"oF": 0
+		},
+	"/src/public/ajax/go_checks.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/ajax/go_checks.php",
+		"oF": 0
+		},
+	"/src/public/go_locks.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/go_locks.php",
+		"oF": 0
+		},
+	"/src/public/go_map.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/go_map.php",
+		"oF": 0
+		},
+	"/src/public/go_mce.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/go_mce.php",
+		"oF": 0
+		},
+	"/src/public/go_shortcodes.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/go_shortcodes.php",
+		"oF": 0
+		},
+	"/src/public/tasks/ajax_tasks/go_tasks_and_ajax.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/tasks/ajax_tasks/go_tasks_and_ajax.php",
+		"oF": 0
+		},
+	"/src/public/tasks/ajax_tasks/task_shortcode.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/tasks/ajax_tasks/task_shortcode.php",
+		"oF": 0
+		},
+	"/src/public/tasks/ajax_tasks/task_test_shortcode.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/tasks/ajax_tasks/task_test_shortcode.php",
+		"oF": 0
+		},
+	"/src/public/tasks/tasks_shortcode_filter.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/public/tasks/tasks_shortcode_filter.php",
 		"oF": 0
 		},
 	"/styles/admin/dev/go_admin.css.map": {
@@ -3106,6 +3241,16 @@
 		"oF": 0,
 		"oS": 0,
 		"uL": 1
+		},
+	"/styles/css/go_store-min.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/styles/css/go_store-min-min.css",
+		"oF": 0,
+		"oS": 3
 		},
 	"/styles/css/go_store.css": {
 		"aP": 1,
@@ -3279,6 +3424,16 @@
 		"oF": 0,
 		"oS": 3
 		},
+	"/styles/front/dev/go_frontend.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/styles/front/dev/go_frontend-min.css",
+		"oF": 0,
+		"oS": 3
+		},
 	"/styles/front/dev/go_frontend.css.map": {
 		"cB": 0,
 		"ft": 8192,
@@ -3294,8 +3449,8 @@
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "/styles/front/dev/go_frontend.css",
-		"oF": 0,
+		"oAP": "/styles/front/min/go_frontend.css",
+		"oF": 3,
 		"oS": 0,
 		"uL": 1
 		},
@@ -3444,241 +3599,6 @@
 		"opt": 0,
 		"oT": 1,
 		"q": 100
-		},
-	"/types/store/disabled/backend-lightbox.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/store/disabled/backend-lightbox.php",
-		"oF": 0
-		},
-	"/types/store/disabled/store-chains.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/store/disabled/store-chains.php",
-		"oF": 0
-		},
-	"/types/store/images/ajax-loader-buy-green.gif": {
-		"ft": 4194304,
-		"iS": 723,
-		"oA": 0,
-		"oAP": "/types/store/images/ajax-loader-buy-green.gif",
-		"oF": 0,
-		"opt": 0
-		},
-	"/types/store/images/ajax-loader-buy-red.gif": {
-		"ft": 4194304,
-		"iS": 723,
-		"oA": 0,
-		"oAP": "/types/store/images/ajax-loader-buy-red.gif",
-		"oF": 0,
-		"opt": 0
-		},
-	"/types/store/images/cog-small.png": {
-		"ft": 32768,
-		"iS": 1633,
-		"oA": 0,
-		"oAP": "/types/store/images/cog-small.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/types/store/images/cog.png": {
-		"ft": 32768,
-		"iS": 4588,
-		"oA": 0,
-		"oAP": "/types/store/images/cog.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/types/store/images/little-ico.png": {
-		"ft": 32768,
-		"iS": 451,
-		"oA": 0,
-		"oAP": "/types/store/images/little-ico.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/types/store/images/little-ico_old.png": {
-		"ft": 32768,
-		"iS": 1298,
-		"oA": 0,
-		"oAP": "/types/store/images/little-ico_old.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/types/store/images/loading.gif": {
-		"ft": 4194304,
-		"iS": 39507,
-		"oA": 0,
-		"oAP": "/types/store/images/loading.gif",
-		"oF": 0,
-		"opt": 0
-		},
-	"/types/store/images/page.png": {
-		"ft": 32768,
-		"iS": 4038,
-		"oA": 0,
-		"oAP": "/types/store/images/page.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/types/store/images/pin.png": {
-		"ft": 32768,
-		"iS": 3731,
-		"oA": 0,
-		"oAP": "/types/store/images/pin.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/types/store/includes/lightbox/buy-ajax.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/store/includes/lightbox/buy-ajax.php",
-		"oF": 0
-		},
-	"/types/store/includes/lightbox/frontend-lightbox.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/store/includes/lightbox/frontend-lightbox.php",
-		"oF": 0
-		},
-	"/types/store/store-shortcode.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/store/store-shortcode.php",
-		"oF": 0
-		},
-	"/types/store/super-store.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/store/super-store.php",
-		"oF": 0
-		},
-	"/types/tasks/go_checks.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/go_checks.php",
-		"oF": 0
-		},
-	"/types/tasks/go_locks.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/go_locks.php",
-		"oF": 0
-		},
-	"/types/tasks/go_timer.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/go_timer.php",
-		"oF": 0
-		},
-	"/types/tasks/media/mime_icons/file-alt.svg": {
-		"ft": 2097152,
-		"miP": 0,
-		"oA": 2,
-		"oAP": "/types/tasks/media/mime_icons/file-alt.svg",
-		"oF": 0,
-		"opt": 0,
-		"plM": 3758088159,
-		"prP": 0
-		},
-	"/types/tasks/media/mime_icons/file-pdf.svg": {
-		"ft": 2097152,
-		"miP": 0,
-		"oA": 2,
-		"oAP": "/types/tasks/media/mime_icons/file-pdf.svg",
-		"oF": 0,
-		"opt": 0,
-		"plM": 3758088159,
-		"prP": 0
-		},
-	"/types/tasks/media/mime_icons/file-video.svg": {
-		"ft": 2097152,
-		"miP": 0,
-		"oA": 2,
-		"oAP": "/types/tasks/media/mime_icons/file-video.svg",
-		"oF": 0,
-		"opt": 0,
-		"plM": 3758088159,
-		"prP": 0
-		},
-	"/types/tasks/media/mime_icons/file.svg": {
-		"ft": 2097152,
-		"miP": 0,
-		"oA": 2,
-		"oAP": "/types/tasks/media/mime_icons/file.svg",
-		"oF": 0,
-		"opt": 0,
-		"plM": 3758088159,
-		"prP": 0
-		},
-	"/types/tasks/task-admin.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/task-admin.php",
-		"oF": 0
-		},
-	"/types/tasks/task-chains.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/task-chains.php",
-		"oF": 0
-		},
-	"/types/tasks/task.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/task.php",
-		"oF": 0
-		},
-	"/types/tasks/task_shortcode.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/task_shortcode.php",
-		"oF": 0
-		},
-	"/types/tasks/test_shortcode.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/tasks/test_shortcode.php",
-		"oF": 0
-		},
-	"/types/types.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/types/types.php",
-		"oF": 0
 		}
 	},
 "hooks": [

@@ -56,8 +56,6 @@ class Front_End_Media {
         wp_enqueue_script( 'go_frontend_media' );
 	}
 
-
-
 	/**
 	 * This filter insures users only see their own media
 	 */

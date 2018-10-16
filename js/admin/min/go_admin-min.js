@@ -545,24 +545,6 @@ var t=GO_EVERY_PAGE_DATA.nonces.go_stats_lite;jQuery.ajax({type:"post",url:MyAja
 jQuery("#go_stats_lite_wrapper").remove(),jQuery("#stats_leaderboard").append(e),jQuery("#go_leaderboard_wrapper").hide(),jQuery("#go_tasks_datatable_lite").dataTable({destroy:!0,responsive:!0,autoWidth:!1}))}})}
 //	Grabs substring in the middle of the string object that getMid() is being called from.
 //	Takes two strings, one from the left and one from the right.
-/**
- * Decimal adjustment of a number.
- *
- * @param string type  The type of adjustment.
- * @param number value The number to adjust.
- * @param int    exp   The exponent (the 10 logarithm of the adjustment base).
- * @returns number The adjusted value.
- */
-function decimalAdjust(e,t,a){
-// If the exp is undefined or zero...
-return void 0===a||0==+a?Math[e](t):(
-// If the value is not a number or the exp is not an integer...
-t=+t,a=+a,isNaN(t)||"number"!=typeof a||a%1!=0?NaN:(
-// Shift
-t=t.toString().split("e"),+((
-// Shift back
-t=(t=Math[e](+(t[0]+"e"+(t[1]?+t[1]-a:-a)))).toString().split("e"))[0]+"e"+(t[1]?+t[1]+a:a))))}
-// Decimal round
 // Makes it so you can press return and enter content in a field
 function go_make_store_clickable(){
 //Make URL button clickable by clicking enter when field is in focus
@@ -570,10 +552,7 @@ jQuery(".clickable").keyup(function(e){
 // 13 is ENTER
 13===e.which&&jQuery("#go_store_pass_button").click()})}
 //open the lightbox for the store items
-function go_lb_opener(s){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=s,t,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){
-//console.log('success');
-//console.log(raw);
-var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
+function go_lb_opener(s){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=s,t,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){console.log("success"),console.log(e);var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
 //console.log('html');
 //console.log(res.html);
 //console.log(res.json_status);
@@ -650,11 +629,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(s,this.id,"r
 //user_ids
 var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,n=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=gold]").val()*n,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,u=jQuery("[name=health]").val()*l,c=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*c,d=jQuery("#go_messages_go_badges_select").val(),y=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),j=jQuery("#go_messages_user_go_groups_select").val(),p=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),h,m={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:i,health:u,c4:g,badges_toggle:y,badges:d,groups_toggle:p,groups:j};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:m,success:function(e){
 // show success or error message
-jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()}),setTimeout(set_height_mce,1e3)}),String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,s=this.length-(e.length+t.length),o;return this.substr(a,s)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
-// Decimal floor
-Math.floor10||(Math.floor10=function(e,t){return decimalAdjust("floor",e,t)}),
-// Decimal ceil
-Math.ceil10||(Math.ceil10=function(e,t){return decimalAdjust("ceil",e,t)}),
+jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()}),setTimeout(set_height_mce,1e3)}),String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,s=this.length-(e.length+t.length),o;return this.substr(a,s)}}
 //This is used to render the quizes
 //it is used in the function go_test_field_on_toggle
 /**
@@ -668,8 +643,7 @@ Math.ceil10||(Math.ceil10=function(e,t){return decimalAdjust("ceil",e,t)}),
  * @param string selector Optional. The selector to be passed to each query.
  * @return jQuery|null The nth previous sibling, or null if none are found in the nth previous
  *                     position.
- */
-jQuery.prototype.go_prev_n=function(e,t){if(void 0===e)
+ */,jQuery.prototype.go_prev_n=function(e,t){if(void 0===e)
 //console.error( 'Game On Error: go_prev_n() requires at least one argument.' );
 return null;"int"!=typeof e&&(e=Number.parseInt(e));for(var a=null,s=0;s<e;s++)if(0===s)a=void 0!==t?jQuery(this).prev(t):jQuery(this).prev();else{if(null===a)break;a=void 0!==t?jQuery(a).prev(t):jQuery(a).prev()}return a},//Add an on click to all store items
 jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})}),function(_){"use strict";_.fn.fitVids=function(e){var a={customSelector:null,ignore:null};if(!document.getElementById("fit-vids-style")){

@@ -40,8 +40,8 @@ function go_lb_opener( id ) {
             },
             cache: false,
             success: function( raw) {
-                //console.log('success');
-                //console.log(raw);
+                console.log('success');
+                console.log(raw);
                 var res = JSON.parse( raw );
 
                 try {

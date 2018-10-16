@@ -503,24 +503,6 @@ var t=GO_EVERY_PAGE_DATA.nonces.go_stats_lite;jQuery.ajax({type:"post",url:MyAja
 jQuery("#go_stats_lite_wrapper").remove(),jQuery("#stats_leaderboard").append(e),jQuery("#go_leaderboard_wrapper").hide(),jQuery("#go_tasks_datatable_lite").dataTable({destroy:!0,responsive:!0,autoWidth:!1}))}})}
 //	Grabs substring in the middle of the string object that getMid() is being called from.
 //	Takes two strings, one from the left and one from the right.
-/**
- * Decimal adjustment of a number.
- *
- * @param string type  The type of adjustment.
- * @param number value The number to adjust.
- * @param int    exp   The exponent (the 10 logarithm of the adjustment base).
- * @returns number The adjusted value.
- */
-function decimalAdjust(e,t,a){
-// If the exp is undefined or zero...
-return void 0===a||0==+a?Math[e](t):(
-// If the value is not a number or the exp is not an integer...
-t=+t,a=+a,isNaN(t)||"number"!=typeof a||a%1!=0?NaN:(
-// Shift
-t=t.toString().split("e"),+((
-// Shift back
-t=(t=Math[e](+(t[0]+"e"+(t[1]?+t[1]-a:-a)))).toString().split("e"))[0]+"e"+(t[1]?+t[1]+a:a))))}
-// Decimal round
 // Makes it so you can press return and enter content in a field
 function go_make_store_clickable(){
 //Make URL button clickable by clicking enter when field is in focus
@@ -528,10 +510,7 @@ jQuery(".clickable").keyup(function(e){
 // 13 is ENTER
 13===e.which&&jQuery("#go_store_pass_button").click()})}
 //open the lightbox for the store items
-function go_lb_opener(o){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=o,t,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){
-//console.log('success');
-//console.log(raw);
-var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
+function go_lb_opener(o){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),"none"==jQuery("#go_stats_page_black_bg").css("display")&&jQuery("#fade").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=o,t,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){console.log("success"),console.log(e);var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
 //console.log('html');
 //console.log(res.html);
 //console.log(res.json_status);
@@ -659,7 +638,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(o,this.id,"r
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var o=jQuery("[name=title]").val(),s=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,_=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*_,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*u,d=jQuery("#go_messages_go_badges_select").val(),p=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),h=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,f={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:o,message:s,xp:i,gold:n,health:c,c4:g,badges_toggle:p,badges:d,groups_toggle:y,groups:h};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:f,success:function(e){
+var o=jQuery("[name=title]").val(),s=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=xp]").val()*r,_=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*_,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,c=jQuery("[name=health]").val()*l,u=jQuery("[name=c4_toggle]").siblings().hasClass("-on")?1:-1,g=jQuery("[name=c4]").val()*u,d=jQuery("#go_messages_go_badges_select").val(),p=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),y=jQuery("#go_messages_user_go_groups_select").val(),h=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,f={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:o,message:s,xp:i,gold:n,health:c,c4:g,badges_toggle:p,badges:d,groups_toggle:h,groups:y};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:f,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}function go_toggle(e){checkboxes=jQuery(".go_checkbox");for(var t=0,a=checkboxes.length;t<a;t++)checkboxes[t].checked=e.checked}function go_toggle_off(){checkboxes=jQuery(".go_checkbox");for(var e=0,t=checkboxes.length;e<t;e++)checkboxes[e].checked=!1}function go_clipboard_class_a_choice(){if(
 //var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
@@ -709,345 +688,7 @@ t.draw()}),
 // Add event listener for opening and closing more actions
 jQuery("#go_clipboard_activity_datatable .show_more").click(function(){var e;
 //console.log(hidden);
-0==jQuery(this).hasClass("shown")?(jQuery(this).addClass("shown"),jQuery(this).siblings(".hidden_action").show(),jQuery(this).find(".hide_more_actions").show(),jQuery(this).find(".show_more_actions").hide()):(jQuery(this).removeClass("shown"),jQuery(this).siblings(".hidden_action").hide(),jQuery(this).find(".hide_more_actions").hide(),jQuery(this).find(".show_more_actions").show())
-/*
-                        var table = jQuery(this).closest('table');
-                        console.log(table);
-                        var row = table.row( table );
-                        console.log(row);
-                        if ( row.isShown() ) {
-                            // This row is already open - close it
-                            row.child.hide();
-                            tr.removeClass('shown');
-                        }
-                        else {
-                            // Open this row
-                            row.child( format(row.data()) ).show();
-                            tr.addClass('shown');
-                        }
-                        */})}}})}}
-/*
-function go_clipboard_clear_fields() {
-	jQuery( '#go_clipboard_points' ).val( '' );
-	jQuery( '#go_clipboard_currency' ).val( '' );
-	jQuery( '#go_clipboard_bonus_currency' ).val( '' );
-	jQuery( '#go_clipboard_minutes' ).val( '' );
-	jQuery( '#go_clipboard_penalty' ).val( '' );
-	jQuery( '#go_clipboard_reason' ).val( '' );
-	jQuery( '#go_clipboard_badge' ).val( '' );
-}
-*/
-/*
-function go_clipboard_class_a_choiceOLD_AJAX() {
-    //var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
-
-    jQuery.fn.dataTable.ext.search.push(
-
-        function( settings, data, dataIndex ) {
-
-            var section = jQuery('#go_user_go_sections_select').val();
-            var group = jQuery('#go_user_go_groups_select').val();
-            ////console.log(section);
-            ////console.log(section);
-            var groups =  data[2] ; // use data for the filter by column
-            var sections = data[1]; // use data for the filter by column
-
-            groups = JSON.parse(groups);
-            sections = JSON.parse(sections);
-            //console.log(groups);
-            //console.log(sections);
-            ////console.log("sections: " + sections);
-
-            var groupexists = jQuery.inArray(section, sections);
-
-            ////console.log ("Exists" + groupexists)
-            if( group == "none" || jQuery.inArray(group, groups) != -1){
-                //alert('value is Array!');
-                if( section == "none" || jQuery.inArray(section, sections) != -1){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            } else {
-                //alert('Not an array');
-                return false;
-            }
-
-
-        }
-    );
-
-    jQuery.ajax({
-        type: "post",
-        url: MyAjax.ajaxurl,
-        data: {
-            _ajax_nonce: nonce,
-            action: 'go_clipboard_intable',
-            go_clipboard_class_a_choice: jQuery( '#go_clipboard_class_a_choice' ).val()
-        },
-        success: function( res ) {
-            if ( -1 !== res ) {
-                //jQuery( '#go_clipboard_table_body' ).html( '' );
-                //var oTable = jQuery( '#go_clipboard_table' ).dataTable();
-                //oTable.fnDestroy();
-                jQuery( '#go_clipboard_table_body' ).append( res );
-                jQuery(document).ready(function() {
-
-                    if (jQuery("#go_clipboard").length) {
-
-                        //XP////////////////////////////
-                        //go_sort_leaders("go_clipboard", 4);
-                        var Clipboard = jQuery('#go_clipboard').DataTable({
-                            //"paging": true,
-                            "orderFixed": [[4, "desc"]],
-                            //"destroy": true,
-                            responsive: true,
-                            "autoWidth": false,
-                            "paging": false,
-                            "columnDefs": [
-                                {
-                                    "targets": [1],
-                                    "visible": false
-                                },
-                                {
-                                    "targets": [2],
-                                    "visible": false
-                                }
-                            ]
-                        });
-                        //on change filter listener
-                        //console.log("change1");
-                        jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
-                            //console.log("change");
-                            Clipboard.draw();
-
-                        } );
-                    }
-                });
-
-
-            }
-        }
-    });
-}
- */
-/*
-function go_fix_messages() {
-	var nonce = GO_CLIPBOARD_DATA.nonces.go_fix_messages;
-	jQuery.ajax({
-		type: "POST",
-		url: MyAjax.ajaxurl,
-		data: {
-			_ajax_nonce: nonce,
-			action: 'go_fix_messages'
-		},
-		success: function( res ) {
-			if ( -1 !== res ) {
-				alert( 'Messages fixed' );
-			}
-		}
-	});
-}
-*/
-/*
-function go_clipboard_class_a_choice_messages() {
-    if ( jQuery( "#go_clipboard_messages_datatable" ).length == 0 ) {
-        var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_messages;
-        jQuery.ajax({
-            type: "post",
-            url: MyAjax.ajaxurl,
-            data: {
-                _ajax_nonce: nonce,
-                action: 'go_clipboard_intable_messages',
-                go_clipboard_class_a_choice_messages: jQuery('#go_clipboard_class_a_choice_messages').val()
-            },
-            success: function (res) {
-                if (-1 !== res) {
-                    jQuery('#clipboard_messages_wrap').html(res);
-                    go_filter_datatables();
-                    var Messages = jQuery('#go_clipboard_messages_datatable').DataTable({
-                        stateSave: true,
-                        "bPaginate": false,
-                        //colReorder: true,
-                        "order": [[4, "asc"]],
-                        responsive: true,
-                        "autoWidth": false,
-                        //"destroy": true,
-                        dom: 'Bfrtip',
-
-                        "columnDefs": [
-                            {
-                                "targets": [0],
-                                className: 'noVis'
-                            },
-                            {
-                                "targets": [1],
-                                "visible": false,
-                                className: 'noVis'
-                            },
-                            {
-                                "targets": [2],
-                                "visible": false,
-                                className: 'noVis'
-                            },
-                            {
-                                "targets": [3],
-                                "visible": false,
-                                className: 'noVis'
-                            },
-                            {
-                                "targets": [6],
-                                className: 'noVis'
-                            },
-                            {
-                                "targets": [7],
-                                className: 'noVis'
-                            },
-                            {
-                                "targets": [9],
-                                className: 'noVis'
-                            }
-                        ],
-                        buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Export ...',
-                                buttons: [{
-                                    extend: 'pdf',
-                                    title: 'Game On Data Export',
-                                    exportOptions: {
-                                        columns: "thead th:not(.noExport)"
-                                    },
-                                    orientation: 'landscape'
-                                },{
-                                    extend: 'excel',
-                                    title: 'Game On Data Export',
-                                    exportOptions: {
-                                        columns: "thead th:not(.noExport)"
-                                    }
-                                }, {
-                                    extend: 'csv',
-                                    title: 'Game On Data Export',
-                                    exportOptions: {
-                                        columns: "thead th:not(.noExport)"
-                                    }
-                                }],
-
-                            },
-                            {
-                                extend: 'colvis',
-                                columns: ':not(.noVis)',
-                                postfixButtons: ['colvisRestore']
-                            }
-
-                        ]
-                    });
-                    //on change filter listener
-                    //console.log("change5");
-                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change(function () {
-                        //console.log("change");
-                        Messages.draw();
-
-                    });
-                }
-            }
-        });
-    }
-}
-
-function go_user_focus_change( user_id, element ) {
-	var nonce = GO_CLIPBOARD_DATA.nonces.go_update_user_focuses;
-	jQuery.ajax({
-		type: "POST",
-		url: MyAjax.ajaxurl,
-		data: {
-			_ajax_nonce: nonce,
-			action: 'go_update_user_focuses',
-			new_user_focus: jQuery( element ).val(),
-			user_id: user_id
-		}
-	});
-}
-
-function check_null( val ) {
-	if ( val != '' ) {
-		return val;
-	} else{
-		return 0;
-	}
-}
-
-function go_clipboard_add() {
-	var id_array = [];
-	jQuery( '#go_send_message' ).prop( 'disabled', 'disabled' );
-	jQuery( "input:checkbox[name=go_selected]:checked" ).each( function() {
-		id_array.push( jQuery( this ).val() );
-	});
-
-	if ( id_array.length > 0 ) {
-		var add_points = parseFloat( check_null( jQuery( '#go_clipboard_points' ).val() ) );
-		var add_currency = parseFloat( check_null( jQuery( '#go_clipboard_currency' ).val() ) );
-		var add_bonus_currency = parseFloat( check_null( jQuery( '#go_clipboard_bonus_currency' ).val() ) );
-		var add_penalty = parseFloat( check_null( jQuery( '#go_clipboard_penalty' ).val() ) );
-		var add_minutes = parseFloat( check_null( jQuery( '#go_clipboard_minutes' ).val() ) );
-		var badge_id = parseFloat( check_null( jQuery( '#go_clipboard_badge' ).val() ) );
-		var reason = jQuery( '#go_clipboard_reason' ).val();
-		if ( '' === reason ) {
-			reason = jQuery( '#go_clipboard_reason' ).attr( 'placeholder' );
-		}
-
-		var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_add;
-		jQuery.ajax({
-			type: "post",
-			url: MyAjax.ajaxurl,
-			data: {
-				_ajax_nonce: nonce,
-				action: 'go_clipboard_add',
-				ids: id_array,
-				points: add_points,
-				currency: add_currency,
-				bonus_currency: add_bonus_currency,
-				penalty: add_penalty,
-				reason: reason,
-				minutes: add_minutes,
-				badge_ID: badge_id
-			},
-			success: function( res ) {
-				var json_index = res.indexOf( '{"update_status":' );
-				var json_data = res.substr( json_index );
-				var res_obj = JSON.parse( json_data );
-				var succeeded = res_obj.update_status;
-
-				if ( succeeded ) {
-					for ( index in id_array ) {
-						var current_id = id_array[ index ];
-						var user_points = res_obj[ current_id ].points;
-						var user_currency = res_obj[ current_id ].currency;
-						var user_bonus_currency = res_obj[ current_id ].bonus_currency;
-						var user_penalty = res_obj[ current_id ].penalty;
-						var user_minutes = res_obj[ current_id ].minutes;
-						var user_badge_count = res_obj[ current_id ].badge_count;
-
-						jQuery( '#user_' + current_id + ' .user_points' ).html( user_points );
-						jQuery( '#user_' + current_id + ' .user_currency' ).html( user_currency );
-						jQuery( '#user_' + current_id + ' .user_bonus_currency' ).html( user_bonus_currency );
-						jQuery( '#user_' + current_id + ' .user_penalty' ).html( user_penalty );
-						jQuery( '#user_' + current_id + ' .user_minutes' ).html( user_minutes );
-						jQuery( '#user_' + current_id + ' .user_badge_count' ).html( user_badge_count );
-					}
-				}
-				go_clipboard_clear_fields();
-				jQuery( '#go_send_message' ).prop( 'disabled', false );
-				jQuery( '#go_clipboard_table input[type="checkbox"]' ).removeAttr( 'checked' );
-			}
-		});
-	} else {
-		go_clipboard_clear_fields();
-		jQuery( '#go_send_message' ).prop( 'disabled', false );
-	}
-}
-*/
+0==jQuery(this).hasClass("shown")?(jQuery(this).addClass("shown"),jQuery(this).siblings(".hidden_action").show(),jQuery(this).find(".hide_more_actions").show(),jQuery(this).find(".show_more_actions").hide()):(jQuery(this).removeClass("shown"),jQuery(this).siblings(".hidden_action").hide(),jQuery(this).find(".hide_more_actions").hide(),jQuery(this).find(".show_more_actions").show())})}}})}}
 /*
 on the create new taxonomy term page,
 this hides the acf stuff until a parent map is selected
@@ -1065,11 +706,7 @@ var t=jQuery("#post_ID").val();jQuery("#go_store_item_id .acf-input").html('[go_
 //map shortcode message
 //var map_id = jQuery('[name="tag_ID"]').val();
 //console.log(map_id);
-var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,o=this.length-(e.length+t.length),s;return this.substr(a,o)}},Math.round10||(Math.round10=function(e,t){return decimalAdjust("round",e,t)}),
-// Decimal floor
-Math.floor10||(Math.floor10=function(e,t){return decimalAdjust("floor",e,t)}),
-// Decimal ceil
-Math.ceil10||(Math.ceil10=function(e,t){return decimalAdjust("ceil",e,t)}),
+var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,o=this.length-(e.length+t.length),s;return this.substr(a,o)}}
 //This is used to render the quizes
 //it is used in the function go_test_field_on_toggle
 /**
@@ -1083,8 +720,7 @@ Math.ceil10||(Math.ceil10=function(e,t){return decimalAdjust("ceil",e,t)}),
  * @param string selector Optional. The selector to be passed to each query.
  * @return jQuery|null The nth previous sibling, or null if none are found in the nth previous
  *                     position.
- */
-jQuery.prototype.go_prev_n=function(e,t){if(void 0===e)
+ */,jQuery.prototype.go_prev_n=function(e,t){if(void 0===e)
 //console.error( 'Game On Error: go_prev_n() requires at least one argument.' );
 return null;"int"!=typeof e&&(e=Number.parseInt(e));for(var a=null,o=0;o<e;o++)if(0===o)a=void 0!==t?jQuery(this).prev(t):jQuery(this).prev();else{if(null===a)break;a=void 0!==t?jQuery(a).prev(t):jQuery(a).prev()}return a},//Add an on click to all store items
 jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})}),jQuery(window).ready(function(){
