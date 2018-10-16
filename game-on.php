@@ -8,8 +8,8 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4.22
 */
 
-$version = 4.22;
-global $version;
+$go_version = 4.22;
+global $go_version;
 
 $go_js_version = 4.22;
 global $go_js_version;
@@ -18,11 +18,12 @@ $go_css_version = 4.22;
 global $go_css_version;
 
 include( 'includes/wp-frontend-media-master/frontend-media.php' );
+include_once('includes/wp-term-order/wp-term-order.php'); //try to block this from non admin users
 
 if ( is_admin() ) {
 //add conditionals to these
     include_once('includes/acf/acf.php');//try to block this from non admin users
-    include_once('includes/wp-term-order/wp-term-order.php'); //try to block this from non admin users
+    //include_once('includes/wp-term-order/wp-term-order.php'); //try to block this from non admin users
     foreach (glob(plugin_dir_path(__FILE__) . "custom-acf-fields/*.php") as $file) {
         include_once $file;
     }
@@ -33,6 +34,7 @@ if ( is_admin() ) {
     foreach (glob(plugin_dir_path(__FILE__) . "custom-acf-fields/*.php") as $file) {
         //include_once $file;
     }
+    //include_once('includes/wp-term-order/wp-term-order.php'); //try to block this from non admin users
 
 }else{
     //INCLUDES on Public

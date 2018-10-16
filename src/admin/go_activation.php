@@ -93,11 +93,12 @@ function go_media_access() {
 //this is the activation notification
 function go_admin_head_notification() {
     if ( get_option( 'go_display_admin_explanation' ) && current_user_can( 'manage_options' ) ) {
-        $plugin_data = get_plugin_data( __FILE__, false, false );
-        $plugin_version = $plugin_data['Version'];
+        //$plugin_data = get_plugin_data( __FILE__, false, false );
+        //$plugin_version = $plugin_data['Version'];
+        global $go_version;
         $nonce = wp_create_nonce( 'go_admin_remove_notification_' . get_current_user_id() );
         $url = get_site_url(null, 'wp-admin/admin.php?page=game-tools');
-        echo "<div id='message' class='update-nag' style='font-size: 16px; padding-right: 50px;'>This is a fresh installation of Game On (version <a href='https://github.com/TheMacLab/game-on/releases/tag/v{$plugin_version}' target='_blank'>{$plugin_version}</a>).
+        echo "<div id='message' class='update-nag' style='font-size: 16px; padding-right: 50px;'>This is a fresh installation of <a href='https://github.com/mcmick/game-on-v4/releases' target='_blank'>Game On</a>.
 
 			<div style='position: relative; left: 20px;'>
 				<br>
