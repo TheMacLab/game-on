@@ -46,11 +46,11 @@ function go_make_single_map($last_map_id, $reload){
                 $pod_min = (isset($term_custom['pod_done_num'][0]) ?  $term_custom['pod_done_num'][0] : null);
                 $pod_all = (isset($term_custom['pod_all'][0]) ?  $term_custom['pod_all'][0] : null);
                 $pod_count = count($go_post_ids);
-                if ($pod_all || ($pod_min >= $pod_count)){
+                if (($pod_all || ($pod_min >= $pod_count)) && ($pod_count > 1)){
                     $task_name_pl = get_option('options_go_tasks_name_plural'); //Q option
-                    echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
+                   	 echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
                 }
-                else {
+                else if ($pod_count>1) {
                     if ($pod_min>1){
                         $task_name = get_option('options_go_tasks_name_plural'); //Q option
                     }else{

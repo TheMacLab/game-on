@@ -37,16 +37,19 @@ jQuery( document ).ready( function() {
     jQuery('#go_hidden_mce').remove();
     jQuery('#go_hidden_mce_edit').remove();
 
+    var go_select_admin_view = jQuery('#go_select_admin_view').val();
+    console.log(go_select_admin_view);
 
+    if (go_select_admin_view != 'all') {
 
-    //add onclick to continue buttons
-    jQuery('#go_button').one("click", function(e){
-        task_stage_check_input( this );
-    });
-    jQuery('#go_back_button').one("click", function(e){
-        task_stage_check_input( this );
-    });
-
+        //add onclick to continue buttons
+        jQuery('#go_button').one("click", function (e) {
+            task_stage_check_input(this);
+        });
+        jQuery('#go_back_button').one("click", function (e) {
+            task_stage_check_input(this);
+        });
+    }
 
     //add onclick to bonus loot buttons
     jQuery( "#go_bonus_button" ).one("click", function(e) {

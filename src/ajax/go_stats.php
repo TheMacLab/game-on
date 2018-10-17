@@ -23,7 +23,7 @@ function go_admin_bar_stats() {
     $user_display_name = $current_user->display_name;
     //$user_website = $current_user->user_url;
 
-
+    $leaderboard_toggle = get_option('options_go_stats_leaderboard_toggle');
 
     $use_local_avatars = get_option('options_go_avatars_local');
     $use_gravatar = get_option('options_go_avatars_gravatars');
@@ -229,8 +229,14 @@ function go_admin_bar_stats() {
                 <li class="stats_tabs" tab="history"><a href="#stats_history">HISTORY</a></li>
                 <li class="stats_tabs" tab="badges"><a href="#stats_badges"><?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?></a></li>
                 <li class="stats_tabs" tab="groups"><a href="#stats_groups">GROUPS</a></li>
-                <li class="stats_tabs" tab="leaderboard"><a href="#stats_leaderboard"><?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?></a></li>
+
                 <?php
+                if ($leaderboard_toggle){
+                     ?>
+                    <li class="stats_tabs" tab="leaderboard"><a href="#stats_leaderboard"><?php echo strtoupper(get_option('options_go_stats_leaderboard_name')); ?></a></li>
+
+                    <?php
+                }
                 if (!$is_admin){
                     echo '<li class="stats_tabs" tab="about"><a href="#stats_about">ABOUT</a></li>';
                 }
@@ -254,8 +260,12 @@ function go_admin_bar_stats() {
             <div id="stats_history"></div>
             <div id="stats_badges"></div>
             <div id="stats_groups"></div>
-            <div id="stats_leaderboard"></div>
             <?php
+               if ($leaderboard_toggle){
+                     ?>
+                    <div id="stats_leaderboard"></div>
+                    <?php
+                }
              if(!$is_admin){
                     echo '<div id="stats_about"></div>';
              }

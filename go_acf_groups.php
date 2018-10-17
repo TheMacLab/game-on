@@ -5,7 +5,7 @@
  * Date: 5/14/18
  * Time: 12:07 AM
  */
-//add_filter('acf/settings/show_admin', '__return_false');
+add_filter('acf/settings/show_admin', '__return_false');
 
 if( function_exists('acf_add_local_field_group') ):
 
@@ -143,7 +143,7 @@ if( function_exists('acf_add_local_field_group') ):
                     ),
                     array(
                         'key' => 'pod_done_num',
-                        'label' => 'Minimum # to Complete Quest',
+                        'label' => 'Minimum # to Complete Pod',
                         'name' => 'done_num',
                         'type' => 'number',
                         'instructions' => '',
@@ -167,8 +167,8 @@ if( function_exists('acf_add_local_field_group') ):
                             'class' => '',
                             'id' => '',
                         ),
-                        'default_value' => '',
-                        'placeholder' => 1,
+                        'default_value' => 1,
+                        'placeholder' => '',
                         'prepend' => '',
                         'append' => '',
                         'min' => 1,

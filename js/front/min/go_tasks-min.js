@@ -127,9 +127,9 @@ var e=go_task_data.status,o=go_task_data.currency;go_make_clickable(),jQuery(".g
     */
 //removes hidden mce that is used for blog check for understanding
 // remove existing editor instance
-tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),jQuery("#go_hidden_mce").remove(),jQuery("#go_hidden_mce_edit").remove(),
+tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),jQuery("#go_hidden_mce").remove(),jQuery("#go_hidden_mce_edit").remove();var r=jQuery("#go_select_admin_view").val();console.log(r),"all"!=r&&(
 //add onclick to continue buttons
-jQuery("#go_button").one("click",function(e){task_stage_check_input(this)}),jQuery("#go_back_button").one("click",function(e){task_stage_check_input(this)}),
+jQuery("#go_button").one("click",function(e){task_stage_check_input(this)}),jQuery("#go_back_button").one("click",function(e){task_stage_check_input(this)})),
 //add onclick to bonus loot buttons
 jQuery("#go_bonus_button").one("click",function(e){go_update_bonus_loot(this)}),
 //add active class to checks and buttons

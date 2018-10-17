@@ -406,12 +406,13 @@ function go_display_all_admin_content( $custom_fields, $is_logged_in, $task_name
     while (  $stage_count > $i) {
         go_print_1_message ( $custom_fields, $i );
         go_checks_for_understanding ($custom_fields, $i, $i, $user_id, $post_id, null, null, null);
-        go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
-        $bonus_status = go_get_bonus_status($post_id, $user_id);
-        if ($bonus_status == 0){
-            go_print_bonus_stage ($user_id, $post_id, $custom_fields);
-        }
+
         $i++;
+    }
+    go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
+    $bonus_count = $custom_fields['go_bonus_limit'][0];
+    if ($bonus_count > 0){
+        go_print_bonus_stage ($user_id, $post_id, $custom_fields);
     }
 
     // displays the chain pagination list so that visitors can still navigate chains easily
