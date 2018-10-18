@@ -12,23 +12,17 @@ function Vids_Fit_and_Box(){
         Max_width_and_LightboxNow();
         //go_native_video_resize();
     });
-};
+}
 
 function runmefirst(callback) {
     fitVidsNow();
     callback();
-};
-
+}
 
 function fitVidsNow(){
     //make the videos fit on the page
     jQuery("body").fitVids();
-    // var local_customSelector = "mejs-container";
-    //jQuery("body").fitVids({customSelector: "video"});
 }
-
-
-
 
 //resize in the lightbox--featherlight
 function go_video_resize(){

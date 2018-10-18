@@ -20,9 +20,6 @@ jQuery(document).ready( function($) {
 
  */
 /*
- * Disable submit with enter key, tab to next field instead
-*/
-/*
 on the create new taxonomy term page,
 this hides the acf stuff until a parent map is selected
  */
@@ -59,17 +56,7 @@ if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var
 //console.log(class1);
 //var patt = /w3schools/i;
 jQuery(this).featherlight(t)})}function go_admin_bar_stats_page_button(e){//this is called from the admin bar and is hard coded in the php code
-var t=GO_EVERY_PAGE_DATA.nonces.go_admin_bar_stats;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_admin_bar_stats",uid:e},success:function(e){-1!==e&&(
-/*
-                jQuery( '#go_stats_white_overlay' ).html( res );
-                jQuery( '#go_stats_page_black_bg' ).show();
-                jQuery( '#go_stats_white_overlay' ).show();
-                jQuery( '#go_stats_hidden_input' ).val( id );
-
-                // this will stop the body from scrolling behind the stats page
-                jQuery( 'html' ).addClass( 'go_no_scroll' );
-                */
-jQuery.featherlight(e,{variant:"stats"}),go_stats_task_list(),jQuery("#stats_tabs").tabs(),jQuery(".stats_tabs").click(function(){switch(
+var t=GO_EVERY_PAGE_DATA.nonces.go_admin_bar_stats;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_admin_bar_stats",uid:e},success:function(e){-1!==e&&(jQuery.featherlight(e,{variant:"stats"}),go_stats_task_list(),jQuery("#stats_tabs").tabs(),jQuery(".stats_tabs").click(function(){switch(
 //console.log("tabs");
 tab=jQuery(this).attr("tab"),tab){case"about":go_stats_about();break;case"tasks":go_stats_task_list();break;case"store":go_stats_item_list();break;case"history":go_stats_activity_list();break;case"badges":go_stats_badges_list();break;case"groups":go_stats_groups_list();break;case"leaderboard":go_stats_leaderboard();break}}))}})}function go_stats_links(){jQuery(".go_user_link_stats").prop("onclick",null).off("click"),jQuery(".go_user_link_stats").one("click",function(){var e;go_admin_bar_stats_page_button(jQuery(this).attr("name"))})}function go_stats_about(e){console.log("about");
 //jQuery(".go_datatables").hide();
@@ -246,42 +233,6 @@ function go_stats_activity_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_activ
 },responsive:!0,autoWidth:!1,columnDefs:[{targets:"_all",orderable:!1}],searching:!0}))}})}function go_stats_badges_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_badges_list;0==jQuery("#go_badges_list").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_badges_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){
 //console.log(res);
 -1!==e&&jQuery("#stats_badges").html(e)}})}function go_stats_groups_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_groups_list;0==jQuery("#go_groups_list").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_groups_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&jQuery("#stats_groups").html(e)}})}
-/*
-function go_sort_leaders(tableID, column) {
-    var table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById(tableID);
-    switching = true;
-    //Make a loop that will continue until
-    //no switching has been done:
-    console.log("switching");
-    while (switching) {
-        //start by saying: no switching is done:
-        switching = false;
-        rows = table.getElementsByTagName("TR");
-        //Loop through all table rows (except the first, which contains table headers):
-        for (i = 1; i < (rows.length - 1); i++) {
-            //start by saying there should be no switching:
-            shouldSwitch = false;
-            //Get the two elements you want to compare, one from current row and one from the next:
-            x = rows[i].getElementsByTagName("TD")[column];
-            xVal = x.innerHTML;
-            y = rows[i + 1].getElementsByTagName("TD")[column];
-            yVal = y.innerHTML;
-            //check if the two rows should switch place:
-            if (parseInt(xVal) < parseInt(yVal)) {
-                //if so, mark as a switch and break the loop:
-                shouldSwitch = true;
-                break;
-            }
-        }
-        if (shouldSwitch) {
-            //If a switch has been marked, make the switch and mark that a switch has been done:
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-        }
-    }
-}
-*/
 //this is for the leaderboard on the stats page and the clipboard
 function go_filter_datatables(){//function that filters all tables on draw
 jQuery.fn.dataTable.ext.search.push(function(e,t,a){var s=e.sTableId;
@@ -294,230 +245,7 @@ i=JSON.parse(i),console.log("groups"+i),
 n=JSON.parse(n),console.log("badges"+n),console.log("sections"+l);var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,i))&&(u="none"==o||l==o),"go_clipboard_datatable"==s&&u&&(u="none"==_||-1!=jQuery.inArray(_,n)),u}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),i=t[2],l=t[1];// use data for the filter by column
 i=JSON.parse(i),l=JSON.parse(l);
 //badges = JSON.parse(badges);
-var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,i))&&(u="none"==o||-1!=jQuery.inArray(o,l)),u})}
-/*
-function go_stats_leaderboard() {
-    //jQuery( '#go_stats_lite_wrapper' ).remove();
-    jQuery("#go_leaderboard_wrapper").show();
-    go_filter_datatables();
-
-    //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
-    //remove from localized data and actions
-    var nonce_leaderboard = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;
-    if (jQuery("#go_leaderboard_wrapper").length == 0) {
-        jQuery(".go_leaderboard_wrapper").show();
-        jQuery.ajax({
-            type: 'post',
-            url: MyAjax.ajaxurl,
-            data: {
-                _ajax_nonce: nonce_leaderboard,
-                action: 'go_stats_leaderboard',
-                user_id: jQuery('#go_stats_hidden_input').val()
-            },
-            success: function( raw ) {
-                console.log('success');
-                ////console.log(raw);
-                // parse the raw response to get the desired JSON
-                var res = {};
-                try {
-                    var res = JSON.parse( raw );
-                } catch (e) {
-                    console.log("parse_error");
-                }
-                ////console.log(res.xp_sticky);
-                //console.log(res.html);
-
-                jQuery('#stats_leaderboard').html(res.html);
-
-
-					//jQuery(document).ready(function() {
-                        console.log("________XP___________");
-                        if (jQuery("#go_xp_leaders_datatable").length) {
-
-                            //XP////////////////////////////
-							//go_sort_leaders("go_xp_leaders_datatable", 4);
-							var table = jQuery('#go_xp_leaders_datatable').DataTable({
-
-								//"paging": true,
-								"orderFixed": [[4, "desc"]],
-								//"destroy": true,
-								responsive: false,
-								"autoWidth": false,
-								"paging": true,
-                                "searching": false,
-								"columnDefs": [
-
-                                    {
-                                        "targets": [0],
-                                        "orderable": false
-                                    },
-                                    {
-										"targets": [1],
-										"visible": false
-									},
-									{
-										"targets": [2],
-										"visible": false
-									},
-                                    {
-                                        "targets": [3],
-                                        "orderable": false
-                                    },
-                                    {
-                                        "targets": [4],
-                                        "orderable": false
-                                    }
-								]
-                        	});
-
-                            table.on( 'order.dt search.dt', function () {
-                                table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                                    cell.innerHTML = i+1;
-                                } );
-                            } ).draw();
-                    	}
-
-                        //GOLD
-
-                        if (jQuery("#go_gold_leaders_datatable").length) {
-                            //go_sort_leaders("go_gold_leaders_datatable", 4);
-                            //console.log("________GOLD___________");
-                            var table2 = jQuery('#go_gold_leaders_datatable').DataTable({
-                                "paging": true,
-                                "orderFixed": [[4, "desc"]],
-                                //"destroy": true,
-                                responsive: false,
-                                "autoWidth": false,
-                                "searching": false,
-                                "columnDefs": [
-
-                                    {
-                                        "targets": [0],
-                                        "orderable": false
-                                    },
-                                    {
-                                        "targets": [1],
-                                        "visible": false
-                                    },
-                                    {
-                                        "targets": [2],
-                                        "visible": false
-                                    },
-                                    {
-                                        "targets": [3],
-                                        "orderable": false
-                                    },
-                                    {
-                                        "targets": [4],
-                                        "orderable": false
-                                    }
-                                ]
-                            });
-
-                            table2.on( 'order.dt search.dt', function () {
-                                table2.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                                    cell.innerHTML = i+1;
-                                } );
-                            } ).draw();
-                        }
-
-                        //C4//////////////////
-                        if (jQuery("#go_health_leaders_datatable").length) {
-                            var table3 = jQuery('#go_health_leaders_datatable').DataTable({
-                                "paging": true,
-                                "orderFixed": [[4, "desc"]],
-                                //"destroy": true,
-                                responsive: false,
-                                "autoWidth": false,
-                                "searching": false,
-                                "columnDefs": [
-
-                                    {
-                                        "targets": [0],
-                                        "orderable": false
-                                    },
-                                    {
-                                        "targets": [1],
-                                        "visible": false
-                                    },
-                                    {
-                                        "targets": [2],
-                                        "visible": false
-                                    },
-                                    {
-                                        "targets": [3],
-                                        "orderable": false
-                                    },
-                                    {
-                                        "targets": [4],
-                                        "orderable": false
-                                    }
-                                ]
-                            });
-
-
-                            table3.on( 'order.dt search.dt', function () {
-                                table3.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                                    cell.innerHTML = i+1;
-                                } );
-                            } ).draw();
-                        }
-
-                        //BADGES
-
-                        if (jQuery("#go_badges_leaders_datatable").length) {
-                            //go_sort_leaders("go_badges_leaders_datatable", 4);
-                            //console.log("________Badges___________");
-                            var table4 = jQuery('#go_badges_leaders_datatable').DataTable({
-                                "paging": true,
-                                "orderFixed": [[4, "desc"]],
-                                //"destroy": true,
-                                responsive: false,
-                                "autoWidth": false,
-                                "searching": false,
-                                "columnDefs": [
-                                    {
-                                        "targets": [1],
-                                        "visible": false
-                                    },
-                                    {
-                                        "targets": [2],
-                                        "visible": false
-                                    }
-                                ]
-                            });
-
-                            table4.on( 'order.dt search.dt', function () {
-                                table4.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                                    cell.innerHTML = i+1;
-                                } );
-                            } ).draw();
-                        }
-
-
-                        // Event listener to the two range filtering inputs to redraw on input
-                        jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
-                            if (jQuery("#go_xp_leaders_datatable").length) {
-                                table.draw();
-                            }
-                            if (jQuery("#go_gold_leaders_datatable").length) {
-                                table2.draw();
-                            }
-                            if (jQuery("#go_health_leaders_datatable").length) {
-                                table3.draw();
-                            }
-                            if (jQuery("#go_badges_leaders_datatable").length) {
-                                table4.draw();
-                            }
-                        } );
-
-                //});
-
-            }
-        });
-    }
-}
-*/function go_stats_leaderboard(){jQuery("#go_stats_lite_wrapper").remove(),jQuery("#go_leaderboard_wrapper").show(),go_filter_datatables();
+var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,i))&&(u="none"==o||-1!=jQuery.inArray(o,l)),u})}function go_stats_leaderboard(){jQuery("#go_stats_lite_wrapper").remove(),jQuery("#go_leaderboard_wrapper").show(),go_filter_datatables();
 //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
 //remove from localized data and actions
 var e=GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;0==jQuery("#go_leaderboard_wrapper").length&&(jQuery(".go_leaderboard_wrapper").show(),jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_leaderboard",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){console.log("success");
@@ -541,8 +269,6 @@ jQuery("#go_user_go_sections_select, #go_user_go_groups_select").change(function
 var t=GO_EVERY_PAGE_DATA.nonces.go_stats_lite;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_stats_lite",uid:e},success:function(e){-1!==e&&(
 //jQuery( '#go_stats_body' ).html( '' );
 jQuery("#go_stats_lite_wrapper").remove(),jQuery("#stats_leaderboard").append(e),jQuery("#go_leaderboard_wrapper").hide(),jQuery("#go_tasks_datatable_lite").dataTable({destroy:!0,responsive:!0,autoWidth:!1}))}})}
-//	Grabs substring in the middle of the string object that getMid() is being called from.
-//	Takes two strings, one from the left and one from the right.
 // Makes it so you can press return and enter content in a field
 function go_make_store_clickable(){
 //Make URL button clickable by clicking enter when field is in focus
@@ -587,9 +313,7 @@ jQuery("#go_store_pass_button").one("click",function(e){go_store_password(s)}),j
 //});
 jQuery("#go_store_admin_override").one("click",function(e){
 //console.log("override");
-jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}
-//Not sure if this is still used
-function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}function go_messages_opener(a,e,s){
+jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}function go_messages_opener(a,e,s){
 //jQuery('#go_messages_icon').prop('onclick',null).off('click'); //blog
 //remove the onclick events from any message link and then reattach after ajax call
 //types of links 1. clipboard 2. stats link 3. task reset button and 4. blog page
@@ -627,23 +351,11 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(s,this.id,"r
 //user_ids
 var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,n=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,i=jQuery("[name=gold]").val()*n,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,u=jQuery("[name=health]").val()*l,c=jQuery("#go_messages_go_badges_select").val(),g=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),d=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,p={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:i,health:u,badges_toggle:g,badges:c,groups_toggle:y,groups:d};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:p,success:function(e){
 // show success or error message
-jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()}),setTimeout(set_height_mce,1e3)}),String.prototype.getMid=function(e,t){if("string"==typeof e&&"string"==typeof t){var a=e.length,s=this.length-(e.length+t.length),o;return this.substr(a,s)}}
-//This is used to render the quizes
-//it is used in the function go_test_field_on_toggle
-/**
- * Retrieves the jQuery object of the nth previous element.
- *
- * @since 3.0.0
- *
- * @see jQuery.prototype.prev()
- *
- * @param int    n        The number of times to call `jQuery.prev()`.
- * @param string selector Optional. The selector to be passed to each query.
- * @return jQuery|null The nth previous sibling, or null if none are found in the nth previous
- *                     position.
- */,jQuery.prototype.go_prev_n=function(e,t){if(void 0===e)
-//console.error( 'Game On Error: go_prev_n() requires at least one argument.' );
-return null;"int"!=typeof e&&(e=Number.parseInt(e));for(var a=null,s=0;s<e;s++)if(0===s)a=void 0!==t?jQuery(this).prev(t):jQuery(this).prev();else{if(null===a)break;a=void 0!==t?jQuery(a).prev(t):jQuery(a).prev()}return a},//Add an on click to all store items
+jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()}),setTimeout(set_height_mce,1e3)}),
+/*
+ * Disable submit with enter key, tab to next field instead
+*/
+jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())}),//Add an on click to all store items
 jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})}),function(_){"use strict";_.fn.fitVids=function(e){var a={customSelector:null,ignore:null};if(!document.getElementById("fit-vids-style")){
 // appendStyles: https://github.com/toddmotto/fluidvids/blob/master/dist/fluidvids.js
 var t=document.head||document.getElementsByTagName("head")[0],s=".fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}",o=document.createElement("div");o.innerHTML='<p>x</p><style id="fit-vids-style">'+s+"</style>",t.appendChild(o.childNodes[1])}return e&&_.extend(a,e),this.each(function(){var e=['iframe[src*="player.vimeo.com"]','iframe[src*="youtube.com"]','iframe[src*="youtube-nocookie.com"]','iframe[src*="kickstarter.com"][src*="video.html"]',"object","embed"];a.customSelector&&e.push(a.customSelector);var r=".fitvidsignore";a.ignore&&(r=r+", "+a.ignore);var t=_(this).find(e.join(","));// Disable FitVids on this video.

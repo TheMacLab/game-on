@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 /*
  * Registering Scripts/Styles For The Front-end
  */

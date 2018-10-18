@@ -20,6 +20,19 @@ jQuery(document).ready( function($) {
 
  */
 
+
+jQuery(document).ready(function(){
+    go_hide_child_tax_acfs();
+    jQuery('.taxonomy-task_chains #parent, .taxonomy-go_badges #parent').change(function(){
+        go_hide_child_tax_acfs();
+    });
+
+    setTimeout(set_height_mce, 1000);
+
+});
+
+
+
 /*
  * Disable submit with enter key, tab to next field instead
 */
@@ -73,15 +86,6 @@ function go_hide_child_tax_acfs() {
 
 }
 
-jQuery(document).ready(function(){
-    go_hide_child_tax_acfs();
-    jQuery('.taxonomy-task_chains #parent, .taxonomy-go_badges #parent').change(function(){
-        go_hide_child_tax_acfs();
-    });
-
-    setTimeout(set_height_mce, 1000);
-
-});
 
 function set_height_mce() {
     jQuery('.go_call_to_action .mce-edit-area iframe').height( 100 );

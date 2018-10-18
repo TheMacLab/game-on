@@ -1,5 +1,29 @@
 //Hide and show map on click
 
+jQuery( document ).ready(function() {
+    go_map_check_if_done();
+});
+
+//Resize listener
+jQuery( window ).resize(function() {
+    go_resizeMap();
+})
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
 function go_to_this_map(map_id) {
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_to_this_map;
     jQuery.ajax({
@@ -92,19 +116,7 @@ function go_map_check_if_done() {
     go_resizeMap();
   }
 
-//Set the filtered and done content in the dropdown
-//window.addEventListener('load', go_map_check_if_done(), false);
-
-jQuery( document ).ready(function() {
-    go_map_check_if_done();
-});
-
-//Resize listener
-jQuery( window ).resize(function() {
-    go_resizeMap();
-    })
-
-//Resize map function, also runs on window load 
+//Resize map function, also runs on window load
 function go_resizeMap() {
  	
 	//get mapid from data
@@ -154,24 +166,8 @@ function go_resizeMap() {
         
 }
 
-
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
 function go_map_dropDown() {
     document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
 }

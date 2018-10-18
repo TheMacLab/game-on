@@ -22,15 +22,6 @@ jQuery( document ).ready( function() {
 	go_make_clickable();
 	jQuery( ".go_stage_message" ).show(  );
 
-	/*
-    jQuery( ".go_checks_and_buttons" ).show( 'slow',function() {
-        // Animation complete.
-
-    } );
-    */
-    //removes hidden mce that is used for blog check for understanding
-
-
     // remove existing editor instance
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');

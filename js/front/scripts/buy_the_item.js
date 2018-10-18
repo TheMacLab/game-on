@@ -285,7 +285,6 @@ function go_max_purchase_limit(){
     });
 }
 
-//Not sure if this is still used
 function go_count_item( item_id ) {
 	var nonce = GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;
 	jQuery.ajax({

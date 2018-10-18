@@ -8,8 +8,6 @@ function tinymce_getContentLength() {
     return len;
 }
 
-
-
 function go_blog_opener( el ) {
     jQuery("#go_hidden_mce").remove();
     jQuery(".go_blog_opener").prop("onclick", null).off("click");

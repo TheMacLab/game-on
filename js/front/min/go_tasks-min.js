@@ -119,13 +119,6 @@ jQuery.ajaxSetup({url:go_task_data.url+="/wp-admin/admin-ajax.php"});
 // checks to see that the task has just been encountered, and fires off the Gold
 // ("store") sound, if the task has Gold rewards for the first stage
 var e=go_task_data.status,o=go_task_data.currency;go_make_clickable(),jQuery(".go_stage_message").show(),
-/*
-    jQuery( ".go_checks_and_buttons" ).show( 'slow',function() {
-        // Animation complete.
-
-    } );
-    */
-//removes hidden mce that is used for blog check for understanding
 // remove existing editor instance
 tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),jQuery("#go_hidden_mce").remove(),jQuery("#go_hidden_mce_edit").remove();var r=jQuery("#go_select_admin_view").val();console.log(r),"all"!=r&&(
 //add onclick to continue buttons
