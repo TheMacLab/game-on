@@ -220,10 +220,10 @@ function go_make_single_map($last_map_id, $reload){
                     if ($bonus_stage_toggle == true){
                         $percentage = $bonus_status / $repeat_max * 100;
                         $color = 'gold';
-                        $progress_bar = '<div style="position: relative; width:90%; margin-left: 5%; height:15px; border: 1px solid; background-color: white;">'.'<div class="go_bonus_progress_bar" '.
+                        $progress_bar = '<div style="position: relative; width:90%; margin-left: 5%; height:15px; border: 1px solid; background-color: white; box-sizing: unset;">'.'<div class="go_bonus_progress_bar" '.
                             'style="position: absolute; height: 15px; width: '.$percentage.'%; background-color: '.$color.' ;">'.
                             '</div>'.
-                            '<div style="position: absolute; width: 100%; height: 100%; font-size: .7em;" class="bonus_progress">Bonus: '.
+                            '<div style="position: absolute; width: 100%; height: 100%; font-size: .7em; line-height: initial;" class="bonus_progress">Bonus: '.
                             $bonus_status . ' / ' . $repeat_max .'</div>'.
                             '</div>';
                         echo $progress_bar;

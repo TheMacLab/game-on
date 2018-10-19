@@ -2996,6 +2996,13 @@
 		"oAP": "/src/all/go_links.php",
 		"oF": 0
 		},
+	"/src/all/go_mce.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/all/go_mce.php",
+		"oF": 0
+		},
 	"/src/all/go_mce_defaults.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -3099,13 +3106,6 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "/src/public/ajax/go_map.php",
-		"oF": 0
-		},
-	"/src/public/go_mce.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/src/public/go_mce.php",
 		"oF": 0
 		},
 	"/src/public/go_shortcodes.php": {
