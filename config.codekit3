@@ -3108,11 +3108,11 @@
 		"oAP": "/src/public/ajax/go_map.php",
 		"oF": 0
 		},
-	"/src/public/go_shortcodes.php": {
+	"/src/public/ajax/go_shortcodes.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "/src/public/go_shortcodes.php",
+		"oAP": "/src/public/ajax/go_shortcodes.php",
 		"oF": 0
 		},
 	"/src/public/tasks/ajax_tasks/go_tasks_and_ajax.php": {
