@@ -14,6 +14,17 @@
   /* ------------------------------------------------------------
         Checkmarks
     ------------------------------------------------------------ */
+  /*
+	.checkmark:after {
+		content: '';
+		display: block;
+		width: 6px;
+		height: 12px;
+		border: solid green;
+		border-width: 0 4px 4px 0;
+		transform: rotate(45deg);
+	}
+*/
   /* ------------------------------------------------------------
         NUMBER OF COLUMNS: Adjust .primaryNav li to set the number
         of columns required in your site map. The default is
@@ -117,18 +128,6 @@
     display: inline-block;
     float: left;
     margin: 0 10px 0 10px; }
-  #maps .checkmark:after {
-    /*Add another block-level blank space*/
-    content: '';
-    display: block;
-    /*Make it a small rectangle so the border will create an L-shape*/
-    width: 6px;
-    height: 12px;
-    /*Add a white border on the bottom and left, creating that 'L' */
-    border: solid green;
-    border-width: 0 4px 4px 0;
-    /*Rotate the L 45 degrees to turn it into a checkmark*/
-    transform: rotate(45deg); }
   #maps .primaryNav li {
     width: 90%; }
   #maps .primaryNav li ul {

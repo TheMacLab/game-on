@@ -108,19 +108,17 @@
 		float: left;
 		margin: 0 10px 0 10px;
 	}
+	/*
 	.checkmark:after {
-		/*Add another block-level blank space*/
 		content: '';
 		display: block;
-		/*Make it a small rectangle so the border will create an L-shape*/
 		width: 6px;
 		height: 12px;
-		/*Add a white border on the bottom and left, creating that 'L' */
 		border: solid green;
 		border-width: 0 4px 4px 0;
-		/*Rotate the L 45 degrees to turn it into a checkmark*/
 		transform: rotate(45deg);
 	}
+*/
 
 	/* ------------------------------------------------------------
         NUMBER OF COLUMNS: Adjust .primaryNav li to set the number

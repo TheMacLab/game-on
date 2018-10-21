@@ -48,7 +48,7 @@ function go_make_single_map($last_map_id, $reload){
                 $pod_count = count($go_post_ids);
                 if (($pod_all || ($pod_min >= $pod_count)) && ($pod_count > 1)){
                     $task_name_pl = get_option('options_go_tasks_name_plural'); //Q option
-                   	 echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
+                   	 //echo "<br><span style='padding-top: 10px; font-size: .8em;'>Complete all $task_name_pl. </span>";
                 }
                 else if ($pod_count>1) {
                     if ($pod_min>1){
