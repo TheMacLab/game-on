@@ -124,6 +124,20 @@ function go_add_toplevel_menu() {
 }
 add_action( 'admin_menu', 'go_add_toplevel_menu' );
 
+function go_add_templates_as_submenu() {
+
+    /* add the sub menu under content for posts */
+    add_submenu_page(
+        'edit.php?post_type=tasks', // parent slug
+        'Templates', // page_title,
+        'Templates', // menu_title,
+        'edit_posts', // capability,
+        'edit.php?post_type=tasks_templates' // menu_slug,
+    );
+
+}
+add_action( 'admin_menu', 'go_add_templates_as_submenu', 9 );
+
 
 function go_add_mapmenu_as_submenu() {
 

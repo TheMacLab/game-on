@@ -8,7 +8,6 @@
 add_filter('acf/settings/show_admin', '__return_false');
 
 
-
 if( function_exists('acf_add_local_field_group') ):
 
     acf_add_local_field_group(array(
@@ -5670,6 +5669,13 @@ The master password that is set in the options page will work here, but you may 
                     'value' => 'tasks',
                 ),
             ),
+            array(
+                array(
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'tasks_templates',
+                ),
+            ),
         ),
         'menu_order' => 0,
         'position' => 'normal',
@@ -5839,4 +5845,4 @@ The master password that is set in the options page will work here, but you may 
         'description' => '',
     ));
 
-endif; 
+endif;

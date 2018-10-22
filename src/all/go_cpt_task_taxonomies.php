@@ -250,6 +250,44 @@ function go_register_task_tax_and_cpt() {
 		'capability_type' => 'post'
 	);
 	register_post_type( 'tasks', $args_cpt );
+
+    /*
+ * Task Custom Post Type
+ */
+    $labels_cpt = array(
+        'name' => _x( get_option( 'options_go_tasks_name_singular' ) . ' Templates', 'tasks_templates' ),
+        'singular_name' => _x( get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
+        'add_new' => _x( 'Add New '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
+        'add_new_item' => _x( 'Add New '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
+        'edit_item' => _x( 'Edit '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
+        'new_item' => _x( 'New '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
+        'view_item' => _x( 'View '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
+        'search_items' => _x( 'Search '.get_option( 'options_go_tasks_name_singular' ) . ' Templates', 'tasks_templates' ),
+        'not_found' => _x( 'No '.get_option( 'options_go_tasks_name_singular' ) . ' Templates'.' found', 'tasks_templates' ),
+        'not_found_in_trash' => _x( 'No '.get_option( 'options_go_tasks_name_singular' ) . ' Template' .' found in Trash', 'tasks_templates' ),
+        'parent_item_colon' => _x( 'Parent '.get_option( 'options_go_tasks_name_singular' ) . ' Template' .':', 'tasks_templates' ),
+        'menu_name' => _x( get_option( 'options_go_tasks_name_singular' )  . ' Templates' , 'tasks_templates' )
+    );
+    $args_cpt = array(
+        'labels' => $labels_cpt,
+        'hierarchical' => false,
+        'description' => get_option( 'options_go_tasks_name_plural' ),
+        'supports'              => array( 'title', 'comments', 'thumbnail' ),
+        'taxonomies' => array(''),
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => false,
+        'menu_position' => 20,
+        'menu_icon' => 'dashicons-welcome-widgets-menus',
+        'show_in_nav_menus' => true,
+        'exclude_from_search' => false,
+        'has_archive' => true,
+        'query_var' => true,
+        'can_export' => true,
+        'rewrite' => true ,
+        'capability_type' => 'post'
+    );
+    register_post_type( 'tasks_templates', $args_cpt );
 	
 }
 add_action( 'init', 'go_register_task_tax_and_cpt', 0 );

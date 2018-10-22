@@ -6,6 +6,7 @@
  * Time: 10:07 PM
  */
 
+/*
 function go_clone_post() {
     if ( ! current_user_can( 'edit_posts' ) ) {
         die( -1 );
@@ -108,6 +109,7 @@ function go_clone_post() {
     }
     die();
 }
+*/
 
 function go_admin_remove_notification() {
     if ( ! current_user_can( 'manage_options' ) ) {
