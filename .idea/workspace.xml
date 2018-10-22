@@ -100,7 +100,7 @@
         <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="403">
-              <caret line="5841" column="6" selection-start-line="5841" selection-start-column="6" selection-end-line="5841" selection-end-column="6" />
+              <caret line="5841" column="7" selection-start-line="5841" selection-start-column="7" selection-end-line="5841" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -501,7 +501,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2410010000" />
+    <option name="totallyTimeSpent" value="2410016000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -867,50 +867,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="286" selection-start-line="286" selection-end-line="286" />
-          <folding>
-            <element signature="e#70#167#0" />
-            <element signature="n#!!block;n#go_make_store_clickable#0" />
-            <element signature="n#!!block;n#go_lb_opener#0" />
-            <element signature="n#!!block;n#goBuytheItem#0" />
-            <element signature="n#!!block;n#flash_error_msg_store#0" />
-            <element signature="n#!!block;n#go_store_password#0" />
-            <element signature="n#!!block;n#go_max_purchase_limit#0" />
-            <element signature="n#!!block;n#go_count_item#0" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_fitvids.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-769">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-769" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_every_page.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="429">
           <caret line="760" selection-start-line="760" selection-end-line="760" />
-          <folding>
-            <element signature="n#!!block;n#go_noty_close_oldest#0" />
-            <element signature="n#!!block;n#go_lightbox_blog_img#0" />
-            <element signature="n#!!block;n#go_stats_links#0" />
-            <element signature="n#!!block;n#go_stats_about#0" />
-            <element signature="n#!!block;n#go_blog_lightbox_opener#0" />
-            <element signature="n#!!block;n#go_stats_task_list#0" />
-            <element signature="e#9009#13768#0" />
-            <element signature="n#!!block;n#go_stats_single_task_activity_list#0" />
-            <element signature="n#!!block;n#go_stats_item_list#0" />
-            <element signature="e#15750#16706#0" />
-            <element signature="n#!!block;n#go_stats_activity_list#0" />
-            <element signature="n#!!block;n#go_stats_badges_list#0" />
-            <element signature="n#!!block;n#go_stats_groups_list#0" />
-            <element signature="n#!!block;n#go_filter_datatables#0" />
-            <element signature="n#!!block;n#go_stats_leaderboard#0" />
-            <element signature="n#!!block;n#go_stats_lite#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -918,13 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="9" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="n#!!block;n#tinymce_updateCharCounter#0" />
-            <element signature="n#!!block;n#tinymce_getContentLength#0" />
-            <element signature="n#!!block;n#go_blog_opener#0" />
-            <element signature="n#!!block;n#go_blog_submit#0" />
-            <element signature="n#!!block;n#go_get_tinymce_content_blog#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -932,47 +893,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-          <folding>
-            <element signature="e#273#606#0" />
-            <element signature="n#!!block;n#go_to_this_map#0" />
-            <element signature="n#!!block;n#go_show_map#0" />
-            <element signature="n#!!block;n#go_map_check_if_done#0" />
-            <element signature="n#!!block;n#go_resizeMap#0" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_notification.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="n#!!block;n#go_notification#0" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/js/front/scripts/go_tasks.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-825">
           <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
-          <folding>
-            <element signature="n#!!block;n#go_update_bonus_loot#0" />
-            <element signature="n#!!block;n#getTimeRemaining#0" />
-            <element signature="n#!!block;n#initializeClock#0" />
-            <element signature="n#!!block;n#go_timer_abandon#0" />
-            <element signature="n#!!block;n#flash_error_msg#0" />
-            <element signature="n#!!block;n#go_enable_loading#0" />
-            <element signature="n#!!block;n#go_disable_loading#0" />
-            <element signature="n#!!block;n#task_stage_check_input#0" />
-            <element signature="n#!!block;n#task_stage_change#0" />
-            <element signature="n#!!block;n#go_get_tinymce_content_check#0" />
-            <element signature="n#!!block;n#go_mce_reset#0" />
-            <element signature="n#!!block;n#go_append#0" />
-            <element signature="n#!!block;n#go_make_clickable#0" />
-            <element signature="n#!!block;n#go_update_admin_view#0" />
-            <element signature="n#!!block;n#go_quiz_check_answers#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -995,9 +925,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="5" selection-start-column="5" selection-end-column="5" />
-          <folding>
-            <element signature="n#go_scripts#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1005,15 +932,7 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/js/admin/scripts/go_clipboard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#37#2055#0" />
-            <element signature="n#!!block;n#go_clipboard_class_a_choice#0" />
-            <element signature="n#!!block;n#go_clipboard_class_a_choice_activity#0" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/js/admin/scripts/go_edit_store.js">
       <provider selected="true" editor-type-id="text-editor" />
@@ -1022,10 +941,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="34" selection-start-line="34" selection-end-line="34" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="n#!!block;n#go_hide_child_tax_acfs#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1033,10 +948,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="127" column="58" selection-start-line="127" selection-start-column="58" selection-end-line="127" selection-end-column="58" />
-          <folding>
-            <element signature="n#!!block;n#go_messages_opener#0" />
-            <element signature="n#!!block;n#go_send_message#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1146,7 +1057,7 @@
     <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="403">
-          <caret line="5841" column="6" selection-start-line="5841" selection-start-column="6" selection-end-line="5841" selection-end-column="6" />
+          <caret line="5841" column="7" selection-start-line="5841" selection-start-column="7" selection-end-line="5841" selection-end-column="7" />
         </state>
       </provider>
     </entry>
