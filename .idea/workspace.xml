@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -100,8 +99,8 @@
       <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="497">
-              <caret line="5839" column="6" selection-start-line="5839" selection-start-column="6" selection-end-line="5839" selection-end-column="6" />
+            <state relative-caret-position="471">
+              <caret line="5841" column="6" selection-start-line="5841" selection-start-column="6" selection-end-line="5841" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -167,7 +166,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>go_admin_head_notification</find>
       <find>ajax</find>
       <find>upg</find>
       <find>lb_aj</find>
@@ -197,6 +195,7 @@
       <find>$content</find>
       <find>check</find>
       <find>Complete</find>
+      <find>c4</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -497,12 +496,12 @@
       <workItem from="1539506905869" duration="7869000" />
       <workItem from="1539553133775" duration="28973000" />
       <workItem from="1539725940937" duration="1342000" />
-      <workItem from="1539746951940" duration="9432000" />
+      <workItem from="1539746951940" duration="9575000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2409400000" />
+    <option name="totallyTimeSpent" value="2409543000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -1146,8 +1145,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="5839" column="6" selection-start-line="5839" selection-start-column="6" selection-end-line="5839" selection-end-column="6" />
+        <state relative-caret-position="471">
+          <caret line="5841" column="6" selection-start-line="5841" selection-start-column="6" selection-end-line="5841" selection-end-column="6" />
         </state>
       </provider>
     </entry>
