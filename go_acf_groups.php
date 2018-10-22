@@ -5839,4 +5839,4 @@ The master password that is set in the options page will work here, but you may 
         'description' => '',
     ));
 
-endif;
+endif; 
