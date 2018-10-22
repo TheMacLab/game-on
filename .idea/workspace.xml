@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_map.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/ajax/go_map.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_map.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_map.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/front/min/go_frontend.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/front/min/go_frontend.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -35,13 +33,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="go_tools.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/admin/scripts/go_tools.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-620" />
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="sorttable.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/admin/scripts/sorttable.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -85,7 +76,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_map.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_map.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/public/ajax/go_map.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="168">
@@ -100,10 +91,17 @@
                 <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#go_map_badge#0;n#!!top" />
                 <element signature="n#go_map_quest_badge#0;n#!!top" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#go_make_map_dropdown#0;n#!!top" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="497">
+              <caret line="5839" column="6" selection-start-line="5839" selection-start-column="6" selection-end-line="5839" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -169,7 +167,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>listurl</find>
       <find>go_admin_head_notification</find>
       <find>ajax</find>
       <find>upg</find>
@@ -199,6 +196,7 @@
       <find>awesom</find>
       <find>$content</find>
       <find>check</find>
+      <find>Complete</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -247,7 +245,6 @@
         <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/src/admin/go_activation.php" />
         <option value="$PROJECT_DIR$/src/ajax/go_stats.php" />
-        <option value="$PROJECT_DIR$/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_blogs.js" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_every_page.js" />
@@ -261,6 +258,7 @@
         <option value="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" />
         <option value="$PROJECT_DIR$/styles/css/go_map.scss" />
         <option value="$PROJECT_DIR$/src/public/ajax/go_map.php" />
+        <option value="$PROJECT_DIR$/go_acf_groups.php" />
       </list>
     </option>
   </component>
@@ -343,6 +341,11 @@
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="custom-acf-fields" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -494,12 +497,12 @@
       <workItem from="1539506905869" duration="7869000" />
       <workItem from="1539553133775" duration="28973000" />
       <workItem from="1539725940937" duration="1342000" />
-      <workItem from="1539746951940" duration="9090000" />
+      <workItem from="1539746951940" duration="9432000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2409058000" />
+    <option name="totallyTimeSpent" value="2409400000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -841,13 +844,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/public/tasks/tasks_shortcode_filter.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1143,10 +1139,15 @@
             <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
             <element signature="n#go_map_badge#0;n#!!top" />
             <element signature="n#go_map_quest_badge#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#go_make_map_dropdown#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="5839" column="6" selection-start-line="5839" selection-start-column="6" selection-end-line="5839" selection-end-column="6" />
         </state>
       </provider>
     </entry>
