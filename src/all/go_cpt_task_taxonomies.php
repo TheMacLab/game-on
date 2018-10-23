@@ -277,6 +277,7 @@ function go_register_task_tax_and_cpt() {
         'public' => true,
         'show_ui' => true,
         'show_in_menu' => false,
+		'show_in_admin_bar'     => false,
         'menu_position' => 20,
         'menu_icon' => 'dashicons-welcome-widgets-menus',
         'show_in_nav_menus' => true,

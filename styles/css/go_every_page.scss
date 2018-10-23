@@ -51,8 +51,8 @@ video.wp-video-shortcode {
 	word-wrap: normal !important;
 }
 
-.featherlight {z-index: 100000 !important;}
-#__wp-uploader-id-2 {z-index: 100001 !important;}
+.featherlight {z-index: 100002 !important;}
+#__wp-uploader-id-2 {z-index: 100003 !important;}
 
 /**
  *ACF Loot Color
@@ -334,9 +334,7 @@ input[type='text'].go_error_red {
  }
 
 
-#wpadminbar {
-    z-index: 99997 !important;
-}
+
 
 .go_message_container {
 	margin: 0 0 0 10px !important;

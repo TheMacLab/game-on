@@ -2230,9 +2230,9 @@
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/js/admin/min/go_edit_store-min-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2240,9 +2240,9 @@
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/js/admin/min/go_options-min-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
@@ -2300,9 +2300,9 @@
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/js/admin/scripts/go_tools-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
@@ -3143,13 +3143,6 @@
 		"oAP": "/src/public/tasks/tasks_shortcode_filter.php",
 		"oF": 0
 		},
-	"/styles/admin/dev/go_admin.css.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/styles/admin/dev/go_admin.css.map",
-		"oF": 0
-		},
 	"/styles/admin/dev/go_admin.scss": {
 		"aP": 0,
 		"bl": 0,
@@ -3158,8 +3151,8 @@
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "/styles/admin/dev/go_admin.css",
-		"oF": 0,
+		"oAP": "/styles/admin/min/go_admin.css",
+		"oF": 3,
 		"oS": 0,
 		"uL": 1
 		},
@@ -3216,15 +3209,18 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"/styles/css/go_every_page.css": {
-		"aP": 1,
+	"/styles/css/go_every_page.scss": {
+		"aP": 0,
 		"bl": 0,
-		"ft": 16,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
 		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/css/go_every_page-min.css",
-		"oF": 0,
-		"oS": 3
+		"oA": 1,
+		"oAP": "/styles/css/go_every_page.css",
+		"oF": 1,
+		"oS": 0,
+		"uL": 1
 		},
 	"/styles/css/go_map.scss": {
 		"aP": 0,
@@ -3252,25 +3248,18 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"/styles/css/go_store-min.css": {
-		"aP": 1,
+	"/styles/css/go_store.scss": {
+		"aP": 0,
 		"bl": 0,
-		"ft": 16,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
 		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/css/go_store-min-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/styles/css/go_store.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/css/go_store-min.css",
-		"oF": 0,
-		"oS": 3
+		"oA": 1,
+		"oAP": "/styles/css/go_store.css",
+		"oF": 1,
+		"oS": 0,
+		"uL": 1
 		},
 	"/styles/css/go_timer_sass.scss": {
 		"aP": 0,
@@ -3414,42 +3403,31 @@
 		"oT": 1,
 		"q": 100
 		},
-	"/styles/css/normalize.css": {
-		"aP": 1,
+	"/styles/css/normalize.scss": {
+		"aP": 0,
 		"bl": 0,
-		"ft": 16,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
 		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/css/normalize-min.css",
-		"oF": 0,
-		"oS": 3
+		"oA": 1,
+		"oAP": "/styles/css/normalize.css",
+		"oF": 1,
+		"oS": 0,
+		"uL": 1
 		},
-	"/styles/css/tasks-admin.css": {
-		"aP": 1,
+	"/styles/css/tasks-admin.scss": {
+		"aP": 0,
 		"bl": 0,
-		"ft": 16,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
 		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/css/tasks-admin-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/styles/front/dev/go_frontend.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/front/dev/go_frontend-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/styles/front/dev/go_frontend.css.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/styles/front/dev/go_frontend.css.map",
-		"oF": 0
+		"oA": 1,
+		"oAP": "/styles/css/tasks-admin.css",
+		"oF": 1,
+		"oS": 0,
+		"uL": 1
 		},
 	"/styles/front/dev/go_frontend.scss": {
 		"aP": 0,

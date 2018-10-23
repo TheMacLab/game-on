@@ -116,12 +116,10 @@ function go_user_delete( $user_id ) {
     $table_name_go_totals = "{$wpdb->prefix}go_loot";
     $table_name_go_tasks = "{$wpdb->prefix}go_tasks";
     $table_name_go_actions = "{$wpdb->prefix}go_actions";
-    //$table_name_go_store = "{$wpdb->prefix}go_store";
 
     $wpdb->delete( $table_name_go_totals, array( 'uid' => $user_id ) );
     $wpdb->delete( $table_name_go_tasks, array( 'uid' => $user_id ) );
     $wpdb->delete( $table_name_go_actions, array( 'uid' => $user_id ) );
-    //$wpdb->delete( $table_name_store, array( 'uid' => $user_id ) );
 }
 
 //set the default map on login
