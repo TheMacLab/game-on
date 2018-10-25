@@ -8,7 +8,7 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4.23
 */
 
-$go_js_version = 4.22;
+$go_js_version = 4.23;
 global $go_js_version;
 
 $go_css_version = 4.23;
@@ -88,11 +88,13 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     //that way it can check if a task
     add_action("wp", "go_include_tasks");
 
-    include_once('js/front/go_enque_js.php');
+    include_once('js/go_enque_js.php');
     add_action( 'wp_enqueue_scripts', 'go_scripts' );
 
-    include_once('styles/front/go_enque_styles.php');
+    include_once('styles/go_enque_styles.php');
     add_action( 'wp_enqueue_scripts', 'go_styles' );
+
+
 
 } else if ( defined( 'DOING_AJAX' )) { //ELSE THIS IS AN AJAX CALL
 
@@ -129,6 +131,10 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_task_change_stage', 'go_task_change_stage' ); //OK
     add_action( 'wp_ajax_go_update_last_map', 'go_update_last_map' ); //OK
     add_action( 'wp_ajax_go_to_this_map', 'go_to_this_map' ); //OK
+    add_action( 'wp_ajax_nopriv_go_update_last_map', 'go_update_last_map' ); //OK
+    add_action( 'wp_ajax_nopriv_go_to_this_map', 'go_to_this_map' ); //OK
+
+
     //Stats
     add_action( 'wp_ajax_go_admin_bar_stats', 'go_admin_bar_stats' ); //OK
     add_action( 'wp_ajax_go_stats_task_list', 'go_stats_task_list' ); //OK
@@ -190,10 +196,10 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     include_once('src/admin/ajax/go_clipboard.php');
 
     //admin js
-    include_once('js/admin/go_enque_js_admin.php');
+    include_once('js/go_enque_js_admin.php');
 
     //admin css
-    include_once('styles/admin/go_enque_styles_admin.php');
+    include_once('styles/go_enque_styles_admin.php');
 
     add_action( 'admin_enqueue_scripts', 'go_admin_scripts' );
     add_action( 'admin_enqueue_scripts', 'go_admin_styles' );
@@ -225,6 +231,8 @@ function go_include_tasks()
         }
     }
 }
+
+
 
 ////////////////////////////
 /// ALL PAGES & AJAX

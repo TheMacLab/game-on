@@ -154,33 +154,7 @@ video.wp-video-shortcode {
 
 }
 
-/********************
-*	Bonus Button
 
-
-.go_bonus_button {
-	padding: 15px 25px;
-	font-size: 24px;
-	text-align: center;
-	cursor: pointer;
-	outline: none;
-	color: #fff;
-	background-color: red;
-	border: none;
-	border-radius: 50%;
-	box-shadow: 0 9px #999 !important;
-}
-
-.go_bonus_button:hover {background-color: red}
-
-.go_bonus_button:active {
-
-	background-color: red;
-	box-shadow: 0px 5px #666 !important;
-	transform: translateY(4px);
-}
-
-********************/
 
 /********************
 *	locks
@@ -223,32 +197,6 @@ video.wp-video-shortcode {
 	outline: 0 !important;
 }
 
-/********************
-*	Collapsible Lists Widget
-********************/
-.collapsibleList li{
-	cursor           : auto;
-}
-
-.collapsibleList li::before {
-	content: "• ︎";
-}
-
-li.collapsibleListOpen{
-	cursor           : pointer;
-}
-
-li.collapsibleListOpen::before {
-	content: "▼";
-}
-
-li.collapsibleListClosed{
-	cursor           : pointer;
-}
-
-li.collapsibleListClosed::before {
-	content: "▶︎";
-}
 
 /********************
 *	Outro
@@ -267,14 +215,6 @@ li.collapsibleListClosed::before {
 /********************
 *	???
 ********************/
-
-.go_align_right {
-	text-align: right;
-}
-
-.go_align_center {
-	text-align: center;
-}
 
 .go_notification {
 	text-align: center;
@@ -303,7 +243,7 @@ li.collapsibleListClosed::before {
 }
 
 span.go_loading {
-	background-image: url("images/ajax-loader.gif");
+	background-image: url("../../media/images/ajax-loader.gif");
 	width: 16px;
 	height: 16px;
 	display: inline-block;
@@ -332,9 +272,6 @@ input[type='text'].go_error_red {
  		overflow: hidden;
 	}
  }
-
-
-
 
 .go_message_container {
 	margin: 0 0 0 10px !important;
@@ -503,108 +440,6 @@ input[name="go_admin_bar_submit"] {
 	padding: 0 8px 0 7px !important;
 }
 
-/********************
-*	File Uploader Styles
-********************/
-
-#go_option_admin_email_desc p {
-	margin-right: 20px;
-}
-
-#go_mailer_error_msg {
-	color: red;
-}
-
-#go_mailer_confirm_msg {
-	color: green;
-}
-
-/********************
-*	Help Button Styles
-********************/
-
-.go_task_opt_help {
-	float: right;
-	color: black;
-	margin-right: 0px;
-	width: 15px;
-	height: 15px;
-	border-radius: 8px;
-	padding: 0px 0px 0px 0px;
-	text-align: center;
-	background: white;
-	cursor: pointer;
-	display: inline;
-	position: relative;
-	background-color: #DBDBDB !important;
-}
-
-.go_task_opt_help:hover::after {
-	position: absolute;
-	content: attr(tooltip);
-	width: 200px;
-	padding: 0 5px 0 5px;
-	background-color: #CCC;
-	font-size: 14px;
-	bottom: 15px;
-	left: 20px;
-	border-radius: 5px;
-	z-index: 99;
-	color: black;
-	white-space: initial;
-}
-
-/********************
-*	Store Styles
-********************/
-
-/* Store Item Style | Back-end */
-
-input#go_store_limit_input {
-	text-align: center;
-	width: 50px;
-}
-
-input#go_store_limit_input::-webkit-input-placeholder,
-input.go_store_cost_input::-webkit-input-placeholder,
-input.go_store_filter_input::-webkit-input-placeholder,
-input#go_store_item_url_input::-webkit-input-placeholder,
-input#go_store_badge_id_input::-webkit-input-placeholder,
-input.go_store_gift_input::-webkit-input-placeholder {
-	padding-top: 2px;
-}
-
-input#go_store_limit_input,
-input.go_store_cost_input,
-input.go_store_filter_input,
-input#go_store_item_url_input,
-input#go_store_badge_id_input,
-input.go_store_gift_input {
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
-
-input.go_store_cost_input {
-	width: 30%;
-}
-
-input.go_store_filter_input {
-	width: 15%;
-}
-
-input#go_store_item_url_input {
-	width: 50%;
-}
-
-input.go_store_gift_input[type="text"] {
-	display: none;
-	width: 21.7%;
-}
-
-input#go_store_badge_id_input {
-	text-align: center;
-	width: 75px;
-}
 
 /********************
 *	Task Styles
@@ -633,15 +468,6 @@ input#go-button-clone {
 
 #go_start_info {
 	display: inline-block;
-}
-
-#go_list_of_decay_dates, 
-#go_list_of_decay_dates tbody, 
-#go_list_of_decay_dates th, 
-#go_list_of_decay_dates tr, 
-#go_list_of_decay_dates td {
-	margin: 0px;
-	padding: 0px;
 }
 
 .datepicker {
@@ -807,38 +633,6 @@ input.go_current {
 #go_task_timer {
 	color: red;
 	font-weight: bold;
-}
-
-div.pod_unfinished,
-div.pod_finished {
-	border-style: solid;
-	border-width: 2px;
-	border-radius: 3px;
-	border-color: #ACACAC;
-	background-color: white;
-}
-
-div.pod_unfinished {
-	border-bottom-color: red;
-}
-
-div.pod_finished {
-	border-bottom-color: green;
-}
-
-a.pod_link {
-	font-size: 1.5em;
-	text-decoration: none !important;
-	display: block;
-	width: 100%;
-	height: 100%;
-	padding: 5px 0px 5px 5px;
-	z-index: 10;
-}
-
-.pod_finished:hover,
-.pod_unfinished:hover {
-	background-color: #eee;
 }
 
 #go_bonus_loot_checkbox {
@@ -1032,26 +826,3 @@ input#go_pass_lock::-moz-placeholder {
     border-bottom: solid 1px;
     color: lightgray;
 }
-
-
-
-/********************
-*	Term Meta Field Styles
-
-.metafield-conditional_logic-show {
-    display: block;
-}
-
-.metafield_conditional_logic-hide {
-    display: none;
-}
-tr.metafield-conditional_logic-show {
-    display: table-row;
-    }
-   
-   tr.metafield-conditional_logic-hide {
-    display: none;
-    } 
-    
-    ********************/
-    

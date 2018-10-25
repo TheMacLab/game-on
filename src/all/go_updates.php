@@ -531,7 +531,7 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
 
         if (!empty($badge_ids)) {
             $badge_ids_array = unserialize($badge_ids);
-            $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : null);
+            $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : array());
             //$user_badges = get_user_meta($user_id, 'go_user_badges', true);
             $user_badges = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
             if (!empty($user_badges) && $user_badges != null) {
@@ -586,13 +586,13 @@ function go_remove_badges ($badge_ids, $user_id, $notify = false) {
 
         if (!empty($badge_ids)) {
             $badge_ids_array = unserialize($badge_ids);
-            $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : null);
+            $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : array());
             //$user_badges = get_user_meta($user_id, 'go_user_badges', true);
             $user_badges = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
 
             if (!empty($user_badges)) {//there are existing user badges
                 $user_badges_array = unserialize($user_badges);
-                $user_badges_array = ((is_array($user_badges_array)) ? $user_badges_array : null);
+                $user_badges_array = ((is_array($user_badges_array)) ? $user_badges_array : array());
                 $remove_badges_array = array_intersect($user_badges_array, $badge_ids_array);
                 $all_user_badges_array = array_diff($user_badges_array, $badge_ids_array);
                 $all_user_badges_array = array_filter($all_user_badges_array);
@@ -631,12 +631,12 @@ function go_add_groups($group_ids, $user_id, $notify = false) {
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
     if (!empty($group_ids)) {
         $group_ids_array = unserialize($group_ids);
-        $group_ids_array = ((is_array($group_ids_array)) ? $group_ids_array : null);
+        $group_ids_array = ((is_array($group_ids_array)) ? $group_ids_array : array());
         //$user_groups_ser = get_user_meta($user_id, 'go_user_groups', true);
         $user_groups_ser = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
         if (!empty($user_groups_ser)) {//there are existing groups for this user
             $user_groups_array = unserialize($user_groups_ser);
-            $user_groups_array = ((is_array($user_groups_array)) ? $user_groups_array : null);
+            $user_groups_array = ((is_array($user_groups_array)) ? $user_groups_array : array());
             $new_groups = array_diff($group_ids_array, $user_groups_array);//for the notifications
             $all_user_groups_array = array_unique (array_merge($user_groups_array, $group_ids_array));
             $all_user_groups_array = array_filter($all_user_groups_array);
@@ -679,7 +679,7 @@ function go_remove_groups($group_ids, $user_id, $notify = false) {
         $user_groups_ser = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
         if (!empty($user_groups_ser)) {//there are existing groups for this user
             $user_groups_array = unserialize($user_groups_ser);
-            $user_groups_array = ((is_array($user_groups_array)) ? $user_groups_array : null);
+            $user_groups_array = ((is_array($user_groups_array)) ? $user_groups_array : array());
             $remove_groups = array_intersect($user_groups_array, $group_ids_array);//what's going to be removed
             $all_user_groups_array = array_diff($user_groups_array, $group_ids_array);
             $all_user_groups_array = array_filter($all_user_groups_array);
@@ -1018,7 +1018,7 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         if ($rank_num > $old_rank){
             update_user_meta($user_id, "go_rank", $rank_num);
             go_noty_level_up($rank_num, $rank_name );
-            echo "<script>var audio = new Audio( PluginDir.url + 'media/milestone2.mp3' ); audio.play();</script>";
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/sounds/milestone2.mp3' ); audio.play();</script>";
         }
 
         if ($rank_num < $old_rank){
@@ -1063,10 +1063,10 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         }
 
         if ($up == true){
-            echo "<script>var audio = new Audio( PluginDir.url + 'media/coins.mp3' ); audio.play();</script>";
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/sounds/coins.mp3' ); audio.play();</script>";
         }
         if ($down == true){
-            echo "<script>var audio = new Audio( PluginDir.url + 'media/down.mp3' ); audio.play();</script>";
+            echo "<script>var audio = new Audio( PluginDir.url + 'media/sounds/down.mp3' ); audio.play();</script>";
         }
 
     }

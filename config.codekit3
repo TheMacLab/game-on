@@ -40,9 +40,9 @@
 	"/.idea/game-on_mmhsart4.iml": {
 		"cB": 0,
 		"ft": 8192,
-		"oA": 1,
+		"oA": 0,
 		"oAP": "/.idea/game-on_mmhsart4.iml",
-		"oF": 1
+		"oF": 0
 		},
 	"/.idea/inspectionProfiles/Project_Default.xml": {
 		"cB": 0,
@@ -61,23 +61,23 @@
 	"/.idea/modules.xml": {
 		"cB": 0,
 		"ft": 8192,
-		"oA": 1,
+		"oA": 0,
 		"oAP": "/.idea/modules.xml",
-		"oF": 1
+		"oF": 0
 		},
 	"/.idea/php.xml": {
 		"cB": 0,
 		"ft": 8192,
-		"oA": 1,
+		"oA": 0,
 		"oAP": "/.idea/php.xml",
-		"oF": 1
+		"oF": 0
 		},
 	"/.idea/vcs.xml": {
 		"cB": 0,
 		"ft": 8192,
-		"oA": 1,
+		"oA": 0,
 		"oAP": "/.idea/vcs.xml",
-		"oF": 1
+		"oF": 0
 		},
 	"/.idea/watcherTasks.xml": {
 		"cB": 0,
@@ -2179,396 +2179,267 @@
 		"oAP": "/includes/wp-term-order/wp-term-order.php",
 		"oF": 0
 		},
-	"/js/admin/dev/go_admin.js": {
+	"/js/dev/go_admin_user.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/admin/min/go_admin-min.js",
-		"oF": 2,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/dev/go_clipboard_combined.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/admin/min/go_clipboard_combined-min.js",
-		"oF": 2,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/go_enque_js_admin.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/admin/go_enque_js_admin.php",
-		"oF": 0
-		},
-	"/js/admin/min/go_admin-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/admin/min/go_admin-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/min/go_clipboard_combined-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/admin/min/go_clipboard_combined-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/min/go_edit_store-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/admin/min/go_edit_store-min-min.js",
-		"oF": 1,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/min/go_options-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/admin/min/go_options-min-min.js",
-		"oF": 1,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/scripts/go_clipboard.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/admin/scripts/go_clipboard-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/scripts/go_edit_store.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/admin/scripts/go_edit_store-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/scripts/go_every_admin_page.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/admin/scripts/go_every_admin_page-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/scripts/go_messages.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/admin/scripts/go_messages-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/scripts/go_options.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/admin/scripts/go_options-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/scripts/go_tools.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/admin/scripts/go_tools-min.js",
-		"oF": 1,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/admin/scripts/sorttable.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/admin/scripts/sorttable-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/dev/go_frontend.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/front/min/go_frontend-min.js",
+		"oAP": "/js/min/go_admin_user-min.js",
 		"oF": 3,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/front/dev/go_map.js": {
+	"/js/dev/go_frontend.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/min/go_map-min.js",
+		"oAP": "/js/min/go_frontend-min.js",
 		"oF": 3,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/front/dev/go_tasks.js": {
+	"/js/dev/go_scripts.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/min/go_tasks-min.js",
+		"oAP": "/js/min/go_scripts-min.js",
+		"oF": 3,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/go_tasks.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/js/min/go_tasks-min.js",
 		"oF": 2,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/front/go_enque_js.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/go_enque_js.php",
-		"oF": 0
-		},
-	"/js/front/media/airhorn.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/airhorn.mp3",
-		"oF": 0
-		},
-	"/js/front/media/coins.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/coins.mp3",
-		"oF": 0
-		},
-	"/js/front/media/down.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/down.mp3",
-		"oF": 0
-		},
-	"/js/front/media/gold.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/gold.mp3",
-		"oF": 0
-		},
-	"/js/front/media/milestone.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/milestone.mp3",
-		"oF": 0
-		},
-	"/js/front/media/milestone2.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/milestone2.mp3",
-		"oF": 0
-		},
-	"/js/front/media/notification.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/notification.mp3",
-		"oF": 0
-		},
-	"/js/front/media/win.mp3": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/js/front/media/win.mp3",
-		"oF": 0
-		},
-	"/js/front/min/go_admin_notifications-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/front/min/go_admin_notifications-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/min/go_frontend-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/front/min/go_frontend-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/min/go_map-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/front/min/go_map-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/min/go_tasks-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/front/min/go_tasks-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/scripts/buy_the_item.js": {
+	"/js/dev/scripts/buy_the_item.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 1,
-		"oAP": "/js/front/scripts/buy_the_item-min.js",
+		"oAP": "/js/dev/scripts/buy_the_item-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/front/scripts/go_admin_notifications.js": {
+	"/js/dev/scripts/go_admin_notifications.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_admin_notifications-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_blogs.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_blogs-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_clipboard.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_clipboard-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_edit_store.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_edit_store-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_every_admin_page.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_every_admin_page-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_every_page.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_every_page-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_fitvids.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_fitvids-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_map.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_map-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_messages.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_messages-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_options.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_options-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/go_videos_fit_and_box.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_videos_fit_and_box-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/dev/scripts/sorttable.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/sorttable-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/go_enque_js.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/js/go_enque_js.php",
+		"oF": 0
+		},
+	"/js/go_enque_js_admin.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/js/go_enque_js_admin.php",
+		"oF": 0
+		},
+	"/js/min/go_admin_user-min.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/min/go_admin_notifications-min.js",
-		"oF": 2,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/scripts/go_blogs.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/front/scripts/go_blogs-min.js",
+		"oAP": "/js/min/go_admin_user-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/front/scripts/go_every_page.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/front/scripts/go_every_page-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/scripts/go_fitvids.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/front/scripts/go_fitvids-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/scripts/go_map.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/front/scripts/go_map-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/front/scripts/go_notification.js": {
+	"/js/min/go_frontend-min.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
-		"oAP": "/js/front/scripts/go_notification-min.js",
+		"oAP": "/js/min/go_frontend-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/front/scripts/go_tasks.js": {
+	"/js/min/go_scripts-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/js/min/go_scripts-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/min/go_tasks-min.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 1,
-		"oAP": "/js/front/scripts/go_tasks-min.js",
-		"oF": 0,
+		"oAP": "/js/min/go_tasks-min-min.js",
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/front/scripts/go_videos_fit_and_box.js": {
+	"/js/scripts/client-side-image-resize.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 1,
-		"oAP": "/js/front/scripts/go_videos_fit_and_box-min.js",
-		"oF": 0,
+		"oAP": "/js/scripts/client-side-image-resize-min.js",
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/js/client-side-image-resize.js": {
+	"/js/scripts/go_shortcode_mce.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/js/client-side-image-resize-min.js",
-		"oF": 0,
+		"oA": 1,
+		"oAP": "/js/scripts/go_shortcode_mce-min.js",
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/js/go_shortcode_mce.js": {
+	"/js/scripts/go_tools.js": {
 		"ft": 64,
 		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/js/js/go_shortcode_mce-min.js",
-		"oF": 0,
+		"mi": 0,
+		"oA": 1,
+		"oAP": "/js/scripts/go_tools-min.js",
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
-	"/media/ico.png": {
-		"ft": 32768,
-		"iS": 1556,
+	"/media/images/ajax-loader.gif": {
+		"ft": 4194304,
+		"iS": 1849,
 		"oA": 0,
-		"oAP": "/media/ico.png",
+		"oAP": "/media/images/ajax-loader.gif",
 		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"opt": 0
 		},
 	"/media/map/L1-center.png": {
 		"ft": 32768,
@@ -2704,6 +2575,138 @@
 		"oT": 1,
 		"q": 100
 		},
+	"/media/not used/images/back_disabled.png": {
+		"ft": 32768,
+		"iS": 1361,
+		"oA": 0,
+		"oAP": "/media/not used/images/back_disabled.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/back_enabled.png": {
+		"ft": 32768,
+		"iS": 1379,
+		"oA": 0,
+		"oAP": "/media/not used/images/back_enabled.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/back_enabled_hover.png": {
+		"ft": 32768,
+		"iS": 1375,
+		"oA": 0,
+		"oAP": "/media/not used/images/back_enabled_hover.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/forward_disabled.png": {
+		"ft": 32768,
+		"iS": 1363,
+		"oA": 0,
+		"oAP": "/media/not used/images/forward_disabled.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/forward_enabled.png": {
+		"ft": 32768,
+		"iS": 1380,
+		"oA": 0,
+		"oAP": "/media/not used/images/forward_enabled.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/forward_enabled_hover.png": {
+		"ft": 32768,
+		"iS": 1379,
+		"oA": 0,
+		"oAP": "/media/not used/images/forward_enabled_hover.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/ico.png": {
+		"ft": 32768,
+		"iS": 1556,
+		"oA": 0,
+		"oAP": "/media/not used/images/ico.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/sort_asc.png": {
+		"ft": 32768,
+		"iS": 1118,
+		"oA": 0,
+		"oAP": "/media/not used/images/sort_asc.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/sort_asc_disabled.png": {
+		"ft": 32768,
+		"iS": 1050,
+		"oA": 0,
+		"oAP": "/media/not used/images/sort_asc_disabled.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/sort_both.png": {
+		"ft": 32768,
+		"iS": 1136,
+		"oA": 0,
+		"oAP": "/media/not used/images/sort_both.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/sort_desc.png": {
+		"ft": 32768,
+		"iS": 1127,
+		"oA": 0,
+		"oAP": "/media/not used/images/sort_desc.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/media/not used/images/sort_desc_disabled.png": {
+		"ft": 32768,
+		"iS": 1045,
+		"oA": 0,
+		"oAP": "/media/not used/images/sort_desc_disabled.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
 	"/media/not used/little-ico.png": {
 		"ft": 32768,
 		"iS": 451,
@@ -2795,6 +2798,48 @@
 		"opt": 0,
 		"plM": 3758088159,
 		"prP": 0
+		},
+	"/media/sounds/airhorn.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/media/sounds/airhorn.mp3",
+		"oF": 0
+		},
+	"/media/sounds/coins.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/media/sounds/coins.mp3",
+		"oF": 0
+		},
+	"/media/sounds/down.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/media/sounds/down.mp3",
+		"oF": 0
+		},
+	"/media/sounds/milestone2.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/media/sounds/milestone2.mp3",
+		"oF": 0
+		},
+	"/media/sounds/notification.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/media/sounds/notification.mp3",
+		"oF": 0
+		},
+	"/media/sounds/win.mp3": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/media/sounds/win.mp3",
+		"oF": 0
 		},
 	"/README.html": {
 		"cB": 0,
@@ -3143,36 +3188,6 @@
 		"oAP": "/src/public/tasks/tasks_shortcode_filter.php",
 		"oF": 0
 		},
-	"/styles/admin/dev/go_admin.scss": {
-		"aP": 0,
-		"bl": 0,
-		"dP": 10,
-		"dS": 0,
-		"ft": 4,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/admin/min/go_admin.css",
-		"oF": 3,
-		"oS": 0,
-		"uL": 1
-		},
-	"/styles/admin/go_enque_styles_admin.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/styles/admin/go_enque_styles_admin.php",
-		"oF": 0
-		},
-	"/styles/admin/min/go_admin.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/admin/min/go_admin-min.css",
-		"oF": 0,
-		"oS": 3
-		},
 	"/styles/css/Disabled/go_clipboard.css": {
 		"aP": 1,
 		"bl": 0,
@@ -3218,7 +3233,7 @@
 		"ma": 0,
 		"oA": 1,
 		"oAP": "/styles/css/go_every_page.css",
-		"oF": 1,
+		"oF": 0,
 		"oS": 0,
 		"uL": 1
 		},
@@ -3257,7 +3272,7 @@
 		"ma": 0,
 		"oA": 1,
 		"oAP": "/styles/css/go_store.css",
-		"oF": 1,
+		"oF": 0,
 		"oS": 0,
 		"uL": 1
 		},
@@ -3274,135 +3289,6 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"/styles/css/images/ajax-loader.gif": {
-		"ft": 4194304,
-		"iS": 1849,
-		"oA": 0,
-		"oAP": "/styles/css/images/ajax-loader.gif",
-		"oF": 0,
-		"opt": 0
-		},
-	"/styles/css/images/back_disabled.png": {
-		"ft": 32768,
-		"iS": 1361,
-		"oA": 0,
-		"oAP": "/styles/css/images/back_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/back_enabled.png": {
-		"ft": 32768,
-		"iS": 1379,
-		"oA": 0,
-		"oAP": "/styles/css/images/back_enabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/back_enabled_hover.png": {
-		"ft": 32768,
-		"iS": 1375,
-		"oA": 0,
-		"oAP": "/styles/css/images/back_enabled_hover.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/forward_disabled.png": {
-		"ft": 32768,
-		"iS": 1363,
-		"oA": 0,
-		"oAP": "/styles/css/images/forward_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/forward_enabled.png": {
-		"ft": 32768,
-		"iS": 1380,
-		"oA": 0,
-		"oAP": "/styles/css/images/forward_enabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/forward_enabled_hover.png": {
-		"ft": 32768,
-		"iS": 1379,
-		"oA": 0,
-		"oAP": "/styles/css/images/forward_enabled_hover.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/sort_asc.png": {
-		"ft": 32768,
-		"iS": 1118,
-		"oA": 0,
-		"oAP": "/styles/css/images/sort_asc.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/sort_asc_disabled.png": {
-		"ft": 32768,
-		"iS": 1050,
-		"oA": 0,
-		"oAP": "/styles/css/images/sort_asc_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/sort_both.png": {
-		"ft": 32768,
-		"iS": 1136,
-		"oA": 0,
-		"oAP": "/styles/css/images/sort_both.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/sort_desc.png": {
-		"ft": 32768,
-		"iS": 1127,
-		"oA": 0,
-		"oAP": "/styles/css/images/sort_desc.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/css/images/sort_desc_disabled.png": {
-		"ft": 32768,
-		"iS": 1045,
-		"oA": 0,
-		"oAP": "/styles/css/images/sort_desc_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
 	"/styles/css/normalize.scss": {
 		"aP": 0,
 		"bl": 0,
@@ -3412,7 +3298,7 @@
 		"ma": 0,
 		"oA": 1,
 		"oAP": "/styles/css/normalize.css",
-		"oF": 1,
+		"oF": 0,
 		"oS": 0,
 		"uL": 1
 		},
@@ -3425,11 +3311,11 @@
 		"ma": 0,
 		"oA": 1,
 		"oAP": "/styles/css/tasks-admin.css",
-		"oF": 1,
+		"oF": 0,
 		"oS": 0,
 		"uL": 1
 		},
-	"/styles/front/dev/go_frontend.scss": {
+	"/styles/dev/go_admin.scss": {
 		"aP": 0,
 		"bl": 0,
 		"dP": 10,
@@ -3437,17 +3323,36 @@
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "/styles/front/min/go_frontend.css",
+		"oAP": "/styles/min/go_admin.css",
 		"oF": 3,
 		"oS": 0,
 		"uL": 1
 		},
-	"/styles/front/go_enque_styles.php": {
-		"cB": 0,
-		"ft": 8192,
+	"/styles/dev/go_frontend.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
 		"oA": 0,
-		"oAP": "/styles/front/go_enque_styles.php",
-		"oF": 0
+		"oAP": "/styles/min/go_frontend.css",
+		"oF": 3,
+		"oS": 0,
+		"uL": 1
+		},
+	"/styles/dev/go_styles.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/styles/min/go_styles.css",
+		"oF": 3,
+		"oS": 0,
+		"uL": 1
 		},
 	"/styles/front/min/go_frontend.css": {
 		"aP": 1,
@@ -3459,134 +3364,56 @@
 		"oF": 0,
 		"oS": 3
 		},
-	"/styles/front/min/images/ajax-loader.gif": {
-		"ft": 4194304,
-		"iS": 1849,
+	"/styles/front/min/go_frontend.css.map": {
+		"cB": 0,
+		"ft": 8192,
 		"oA": 0,
-		"oAP": "/styles/front/min/images/ajax-loader.gif",
-		"oF": 0,
-		"opt": 0
+		"oAP": "/styles/front/min/go_frontend.css.map",
+		"oF": 0
 		},
-	"/styles/front/min/images/back_disabled.png": {
-		"ft": 32768,
-		"iS": 1361,
+	"/styles/go_enque_styles.php": {
+		"cB": 0,
+		"ft": 8192,
 		"oA": 0,
-		"oAP": "/styles/front/min/images/back_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"oAP": "/styles/go_enque_styles.php",
+		"oF": 0
 		},
-	"/styles/front/min/images/back_enabled.png": {
-		"ft": 32768,
-		"iS": 1379,
+	"/styles/go_enque_styles_admin.php": {
+		"cB": 0,
+		"ft": 8192,
 		"oA": 0,
-		"oAP": "/styles/front/min/images/back_enabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+		"oAP": "/styles/go_enque_styles_admin.php",
+		"oF": 0
 		},
-	"/styles/front/min/images/back_enabled_hover.png": {
-		"ft": 32768,
-		"iS": 1375,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/back_enabled_hover.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+	"/styles/min/go_admin.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "/styles/min/go_admin-min.css",
+		"oF": 1,
+		"oS": 3
 		},
-	"/styles/front/min/images/forward_disabled.png": {
-		"ft": 32768,
-		"iS": 1363,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/forward_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+	"/styles/min/go_frontend.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "/styles/min/go_frontend-min.css",
+		"oF": 1,
+		"oS": 3
 		},
-	"/styles/front/min/images/forward_enabled.png": {
-		"ft": 32768,
-		"iS": 1380,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/forward_enabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/front/min/images/forward_enabled_hover.png": {
-		"ft": 32768,
-		"iS": 1379,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/forward_enabled_hover.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/front/min/images/sort_asc.png": {
-		"ft": 32768,
-		"iS": 1118,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/sort_asc.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/front/min/images/sort_asc_disabled.png": {
-		"ft": 32768,
-		"iS": 1050,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/sort_asc_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/front/min/images/sort_both.png": {
-		"ft": 32768,
-		"iS": 1136,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/sort_both.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/front/min/images/sort_desc.png": {
-		"ft": 32768,
-		"iS": 1127,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/sort_desc.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
-		},
-	"/styles/front/min/images/sort_desc_disabled.png": {
-		"ft": 32768,
-		"iS": 1045,
-		"oA": 0,
-		"oAP": "/styles/front/min/images/sort_desc_disabled.png",
-		"oF": 0,
-		"oIPL": 0,
-		"opt": 0,
-		"oT": 1,
-		"q": 100
+	"/styles/min/go_styles.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "/styles/min/go_styles-min.css",
+		"oF": 1,
+		"oS": 3
 		}
 	},
 "hooks": [

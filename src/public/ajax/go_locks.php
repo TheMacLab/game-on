@@ -16,10 +16,10 @@
  */
 function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only){
 
-    //this is for maps. Add the password check here.
-    //This check is done on tasks and store as well.
+    //this is for maps.
+    //This check is done later on tasks and store as well.
     //It is separated out because they treat it differently
-    if ($check_only) {
+    if ($check_only && $is_logged_in) {
         $is_unlocked = go_master_unlocked($user_id, $id); //one query per quest on map
         if ($is_unlocked == 'password' || $is_unlocked == 'master password') {
             //$is_unlocked = true;
@@ -43,20 +43,21 @@ function go_task_locks ( $id, $user_id, $task_name, $custom_fields, $is_logged_i
     /**
      * This section is for the chain locks
      */
-    $location_map_toggle = (isset($custom_fields['go-location_map_toggle'][0]) ?  $custom_fields['go-location_map_toggle'][0] : null);
-    if ($location_map_toggle == true) {
-        ob_start();
-        $task_is_locked_cl = go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only);
-        $chain_message = ob_get_clean();
+    if($is_logged_in) {
+        $location_map_toggle = (isset($custom_fields['go-location_map_toggle'][0]) ? $custom_fields['go-location_map_toggle'][0] : null);
+        if ($location_map_toggle == true) {
+            ob_start();
+            $task_is_locked_cl = go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logged_in, $check_only);
+            $chain_message = ob_get_clean();
 
-        if ($task_is_locked_cl == true) {
-            echo $chain_message;
-            $task_is_locked = true;
-            //Locks End
-            //return $task_is_locked;
+            if ($task_is_locked_cl == true) {
+                echo $chain_message;
+                $task_is_locked = true;
+
+            }
         }
-    }
 
+    }
     /**
      * This section is for the scheduled access
      */

@@ -1,1 +1,0 @@
-jQuery(document).ready(function(){var e=GO_EDIT_STORE_DATA.postid,a=GO_EDIT_STORE_DATA.store_name,t="<a id="+e+" class='go_str_item ab-item' >View "+a+" Item</a>";jQuery("#wp-admin-bar-view").html(t)});

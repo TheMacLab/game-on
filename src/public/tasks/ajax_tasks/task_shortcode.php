@@ -95,19 +95,16 @@ function go_task_shortcode($atts, $content = null ) {
         'go_task_data',
         array(
             //'go_taskabandon_nonce'	=>  $task_shortcode_nonces['go_task_abandon'],
-            'url'	=> get_site_url(),
-            'status'	=>  $status,
-            'userID'	=>  $user_id,
-            'ID'	=>  $post_id,
-            'homeURL'	=>  home_url(),
-            'redirectURL'	=> $redirect_url,
-            'admin_name'	=>  $admin_name,
-            'go_unlock_stage'	=>  $task_shortcode_nonces['go_unlock_stage'],
-            //'go_test_point_update'	=>  $task_shortcode_nonces['go_test_point_update'],
-            'go_task_change_stage'	=>  $task_shortcode_nonces['go_task_change_stage'],
-            'task_count'	=>  ( ! empty( $task_count ) ? $task_count : 0 ),
-            'next_post_id_in_chain'	=>  ( ! empty( $next_post_id_in_chain ) ? $next_post_id_in_chain : 0 ),
-            'last_in_chain'	=>  ( ! empty( $last_in_chain ) ? 'true' : 'false' ),
+            'url'	=> get_site_url(), //ok
+            //'status'	=>  $status,
+            'userID'	=>  $user_id, //ok
+            'ID'	=>  $post_id, //ok
+            //'homeURL'	=>  home_url(),
+            'redirectURL'	=> $redirect_url, //ok
+            'admin_name'	=>  $admin_name, //ok
+            'go_unlock_stage'	=>  $task_shortcode_nonces['go_unlock_stage'], //ok
+            'go_task_change_stage'	=>  $task_shortcode_nonces['go_task_change_stage'], //ok
+
         )
     );
 
@@ -261,17 +258,24 @@ function go_display_visitor_content ( $custom_fields, $post_id, $task_name, $bad
     }
 
     if ($guest_access == "regular" ) {
+        //echo "Regular";
         $task_is_locked = go_display_locks($post_id, null, false, $task_name, $badge_name, $custom_fields, false, $uc_task_name);
         if (!$task_is_locked){
             go_display_visitor_messages($custom_fields, $post_id);
+
+        }else {
+            go_hidden_footer();
         }
         return null;
     }
     else if ($guest_access == "open" ) {
+        //echo "open";
         go_display_visitor_messages($custom_fields, $post_id);
+
         return null;
     }
     else {
+        //echo "else";
         echo "<div><h2 class='go_error_red'>This content is for logged in users only.</h2></div>";
         return null;
     }
@@ -308,29 +312,33 @@ function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_nam
     }
 
     //if it is locked, show master password field and stop printing of the task.
-    $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ?  $custom_fields['go_password_lock'][0] : null);
-    if ($go_password_lock == true){
-        $task_is_locked = true;
-    }
-    //Get option (show password field) from custom fields
-    if ($go_password_lock && $is_logged_in) {
-        //Show password unlock
-        echo "<div class='go_lock'><h3>Unlock {$uc_task_name}</h3><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
-        go_buttons($user_id, $custom_fields, null, null, null, 'unlock',false,null,null, false );
-        echo "</div>";
+    if ($is_logged_in) {
+        $go_password_lock = (isset($custom_fields['go_password_lock'][0]) ? $custom_fields['go_password_lock'][0] : null);
+        if ($go_password_lock == true) {
+            $task_is_locked = true;
+        }
 
-    }
-    else if ($task_is_locked == true  && $is_logged_in) { //change this code to show admin override box
-        //if ($is_logged_in) { //add of show password field is on
-        ?>
-        <div id="go_admin_override" style="overflow: auto; width: 100%;"><div style="float: right; font-size: .8em;">Admin Override</div></div>
-        <?php
-        //Show password unlock
-        echo "<div class='go_lock go_password' style='display: none;'><h3>Admin Override</h3><p>This field is not for users. Do not ask for this password. It is not part of the gameplay.</p><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
-        go_buttons($user_id, $custom_fields, null, null, null, 'unlock',false,null,null, false );
-        echo "</div>";
+        //Get option (show password field) from custom fields
+        if ($go_password_lock) {
+            //Show password unlock
+            echo "<div class='go_lock'><h3>Unlock {$uc_task_name}</h3><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
+            go_buttons($user_id, $custom_fields, null, null, null, 'unlock', false, null, null, false);
+            echo "</div>";
 
-        //}
+        } else if ($task_is_locked == true) {
+            //if ($is_logged_in) { //add of show password field is on
+            ?>
+            <div id="go_admin_override" style="overflow: auto; width: 100%;">
+                <div style="float: right; font-size: .8em;">Admin Override</div>
+            </div>
+            <?php
+            //Show password unlock
+            echo "<div class='go_lock go_password' style='display: none;'><h3>Admin Override</h3><p>This field is not for users. Do not ask for this password. It is not part of the gameplay.</p><input id='go_result' class='clickable' type='password' placeholder='Enter Password'>";
+            go_buttons($user_id, $custom_fields, null, null, null, 'unlock', false, null, null, false);
+            echo "</div>";
+
+            //}
+        }
     }
     return $task_is_locked;
 

@@ -11,7 +11,7 @@ function go_shortcode_button_register( $plugin_array ) {
     $is_admin = go_user_is_admin();
     if($is_admin) {
     	$url = plugin_dir_url(dirname(dirname(__FILE__)));
-        $url = $url . "js/js/go_shortcode_mce.js";
+        $url = $url . "js/scripts/go_shortcode_mce.js";
         $plugin_array['go_shortcode_button'] = $url;
         return $plugin_array;
     }

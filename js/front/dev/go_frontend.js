@@ -1,8 +1,0 @@
-// @codekit-prepend '../scripts/go_every_page.js'
-// @codekit-prepend '../scripts/buy_the_item.js'
-// @codekit-prepend '../scripts/go_videos_fit_and_box.js'
-// @codekit-prepend '../scripts/go_blogs.js'
-// @codekit-prepend '../scripts/go_fitvids.js'
-// @codekit-prepend '../../admin/scripts/go_messages.js'
-// @codekit-prepend '../../admin/scripts/go_clipboard.js'
-// @codekit-prepend '../../admin/scripts/go_every_admin_page.js'
