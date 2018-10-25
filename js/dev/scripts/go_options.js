@@ -7,38 +7,44 @@
 jQuery(document).ready(function(){
     //get the growth level from options
     //var growth = levelGrowth*1;
-    Go_orgGrowth = jQuery('#go_levels_growth').find('input').val();
-
-    //run the limit function once on load
-    go_levels_limit_each();
-
-    //attach function each input field
-    jQuery('.go_levels_repeater_numbers').find('input').change(go_levels_limit_each);
-    jQuery('.go_levels_repeater_names').find('input').change(go_level_names);
-    jQuery('.go_levels_repeater_names').find('input').change(go_level_names);
-    jQuery('#go_levels_growth').find('input').change(go_validate_growth);
-
-
-    acf.add_action('append', function( $el ){ //run limit function when new row is added and attach it to the input in the new field
-        // $el will be equivalent to the new element being appended $('tr.row')
-        //limit to the levels table
-        if (jQuery($el).closest("#go_levels_repeater").length) {
-            var $input_num = $el.find('input').first(); // find the first input field
-            jQuery($input_num).change(go_levels_limit_each); //bind to input on change
-
-            var $input_name = $el.find('input').last(); // find the first input field
-            jQuery($input_name).change(go_level_names);
-            //console.log('-----------------row added------------------------');
-            go_levels_limit_each(); //run one time
-            go_level_names();
+    if(typeof go_is_options_page !== 'undefined') {
+        var is_options_page = go_is_options_page;
     }
-    });
+    if (is_options_page) {
+        //console.log(is_options_page);
+        Go_orgGrowth = jQuery('#go_levels_growth').find('input').val();
 
-    jQuery( ".more_info_accordian" ).accordion({
-        collapsible: true,
-        header: "h3",
-        active: false
-    });
+        //run the limit function once on load
+        go_levels_limit_each();
+
+        //attach function each input field
+        jQuery('.go_levels_repeater_numbers').find('input').change(go_levels_limit_each);
+        jQuery('.go_levels_repeater_names').find('input').change(go_level_names);
+        jQuery('.go_levels_repeater_names').find('input').change(go_level_names);
+        jQuery('#go_levels_growth').find('input').change(go_validate_growth);
+
+
+        acf.add_action('append', function ($el) { //run limit function when new row is added and attach it to the input in the new field
+            // $el will be equivalent to the new element being appended $('tr.row')
+            //limit to the levels table
+            if (jQuery($el).closest("#go_levels_repeater").length) {
+                var $input_num = $el.find('input').first(); // find the first input field
+                jQuery($input_num).change(go_levels_limit_each); //bind to input on change
+
+                var $input_name = $el.find('input').last(); // find the first input field
+                jQuery($input_name).change(go_level_names);
+                //console.log('-----------------row added------------------------');
+                go_levels_limit_each(); //run one time
+                go_level_names();
+            }
+        });
+
+        jQuery(".more_info_accordian").accordion({
+            collapsible: true,
+            header: "h3",
+            active: false
+        });
+    }
 });
 
 function go_validate_growth() {

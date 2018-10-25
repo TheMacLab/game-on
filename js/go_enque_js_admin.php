@@ -87,9 +87,8 @@ function go_admin_scripts ($hook) {
 
     $is_admin_user = go_user_is_admin();
     if ($is_admin_user){
-        wp_enqueue_script( 'go_admin_user' );
         wp_localize_script(
-            'go_admin_user',
+            'go_scripts',
             'GO_ADMIN_DATA',
             array(
                 'nonces' => array(
@@ -97,6 +96,8 @@ function go_admin_scripts ($hook) {
                 )
             )
         );
+
+        wp_enqueue_script( 'go_admin_user' );
 
         if ( 'toplevel_page_go_clipboard' === $hook ) {
 
@@ -132,6 +133,7 @@ function go_admin_scripts ($hook) {
 
             //wp_enqueue_script('go_options_admin_js');
             wp_localize_script('go_admin_user', 'levelGrowth', get_option('options_go_loot_xp_levels_growth'));
+            wp_localize_script('go_admin_user', 'go_is_options_page', true);
         }
 
         if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
@@ -139,7 +141,7 @@ function go_admin_scripts ($hook) {
                 //wp_enqueue_script('go_edit_store');
                 $id = get_the_ID();
                 $store_name = get_option( 'options_go_store_name');
-                wp_localize_script( 'go_admin_user', 'GO_EDIT_STORE_DATA', array( 'postid' => $id , 'store_name' => $store_name) );
+                wp_localize_script( 'go_admin_user', 'GO_EDIT_STORE_DATA', array( 'postid' => $id , 'store_name' => $store_name, 'is_store_edit' => true ));
             }
         }
     }

@@ -72,12 +72,7 @@ var a=this.events[e.type];
 // execute each event handler
 for(var o in a)this.$$handleEvent=a[o],!1===this.$$handleEvent(e)&&(t=!1);return t}function fixEvent(e){
 // add W3C standard event methods
-return e.preventDefault=fixEvent.preventDefault,e.stopPropagation=fixEvent.stopPropagation,e}function go_admin_check_messages(){
-//ajax call for new messages php function
-//on success, if new messages, print
-var e=GO_ADMIN_DATA.nonces.go_admin_messages;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_admin_messages"},success:function(e){
-//console.log(res);
-0!=e&&jQuery("body").append(e)}})}function go_admin_check_messages_focus(){document.hasFocus()&&go_admin_check_messages()}
+return e.preventDefault=fixEvent.preventDefault,e.stopPropagation=fixEvent.stopPropagation,e}
 /*
 on the create new taxonomy term page,
 this hides the acf stuff until a parent map is selected
@@ -274,7 +269,7 @@ return void e.forEach(t,a);"string"==typeof e?
 // the object is a string
 o=String:"number"==typeof e.length&&(
 // the object is array-like
-o=Array)}o.forEach(e,t,a)}};jQuery(document).ready(function(){setInterval(go_admin_check_messages_focus,1e4),jQuery(window).focus(function(){go_admin_check_messages()})}),
+o=Array)}o.forEach(e,t,a)}};
 /*
  * go_tasks_admin.js
  *
@@ -304,6 +299,8 @@ jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-tas
 jQuery(document).ready(function(){
 //get the growth level from options
 //var growth = levelGrowth*1;
+if("undefined"!=typeof go_is_options_page)var e=go_is_options_page;e&&(
+//console.log(is_options_page);
 Go_orgGrowth=jQuery("#go_levels_growth").find("input").val(),
 //run the limit function once on load
 go_levels_limit_each(),
@@ -317,6 +314,6 @@ var a=e.find("input").last();// find the first input field
 jQuery(a).change(go_level_names),
 //console.log('-----------------row added------------------------');
 go_levels_limit_each(),//run one time
-go_level_names()}}),jQuery(".more_info_accordian").accordion({collapsible:!0,header:"h3",active:!1})}),jQuery(document).ready(function(){var e,t,a="<a id="+GO_EDIT_STORE_DATA.postid+" class='go_str_item ab-item' >View "+GO_EDIT_STORE_DATA.store_name+" Item</a>";
+go_level_names()}}),jQuery(".more_info_accordian").accordion({collapsible:!0,header:"h3",active:!1}))}),jQuery(document).ready(function(){if("undefined"!=typeof GO_EDIT_STORE_DATA)var e=GO_EDIT_STORE_DATA.is_store_edit;if(e){var t,a,o="<a id="+GO_EDIT_STORE_DATA.postid+" class='go_str_item ab-item' >View "+GO_EDIT_STORE_DATA.store_name+" Item</a>";
 //console.log(link);
-jQuery("#wp-admin-bar-view").html(a)});
+jQuery("#wp-admin-bar-view").html(o)}});
