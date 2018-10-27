@@ -8,7 +8,7 @@ jQuery(document).ready(function(){
     //get the growth level from options
     //var growth = levelGrowth*1;
     if(typeof go_is_options_page !== 'undefined') {
-        var is_options_page = go_is_options_page;
+        var is_options_page = go_is_options_page.is_options_page;
     }
     if (is_options_page) {
         //console.log(is_options_page);

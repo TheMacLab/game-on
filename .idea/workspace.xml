@@ -3,14 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_admin_user.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_admin_user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_edit_store.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_edit_store.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_options.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/go_enque_js.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/go_enque_js.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/go_enque_js_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/go_enque_js_admin.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/min/go_admin_user-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_admin_user-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_scripts-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_scripts-min.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -43,8 +38,8 @@
       <file leaf-file-name="go_enque_js.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/go_enque_js.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="36" column="12" selection-start-line="36" selection-start-column="12" selection-end-line="44" selection-end-column="14" />
+            <state relative-caret-position="-991">
+              <caret line="34" column="41" lean-forward="true" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -52,17 +47,17 @@
       <file leaf-file-name="go_enque_js_admin.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/go_enque_js_admin.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="143" column="72" selection-start-line="143" selection-start-column="54" selection-end-line="143" selection-end-column="72" />
+            <state relative-caret-position="128">
+              <caret line="135" column="102" selection-start-line="135" selection-start-column="70" selection-end-line="135" selection-end-column="102" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_options.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="go_options.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_options.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+            <state relative-caret-position="170">
+              <caret line="10" column="65" lean-forward="true" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -81,11 +76,23 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file leaf-file-name="go_edit_store.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_edit_store.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_edit_store.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="34">
-              <caret line="2" column="68" selection-start-line="2" selection-start-column="68" selection-end-line="2" selection-end-column="68" />
+              <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game-on.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2613">
+              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+              <folding>
+                <element signature="e#6#232#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -123,15 +130,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_scripts.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/dev/go_scripts.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -144,7 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>go_is_user</find>
       <find>go_stats_page_black_bg</find>
       <find>go_stats_user_focuses</find>
       <find>enque</find>
@@ -174,6 +171,7 @@
       <find>notification</find>
       <find>data</find>
       <find>notifica</find>
+      <find>is_</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -233,9 +231,9 @@
         <option value="$PROJECT_DIR$/js/dev/go_scripts.js" />
         <option value="$PROJECT_DIR$/js/go_enque_js.php" />
         <option value="$PROJECT_DIR$/js/dev/go_admin_user.js" />
+        <option value="$PROJECT_DIR$/js/dev/scripts/go_edit_store.js" />
         <option value="$PROJECT_DIR$/js/go_enque_js_admin.php" />
         <option value="$PROJECT_DIR$/js/dev/scripts/go_options.js" />
-        <option value="$PROJECT_DIR$/js/dev/scripts/go_edit_store.js" />
       </list>
     </option>
   </component>
@@ -470,12 +468,12 @@
       <workItem from="1539553133775" duration="28973000" />
       <workItem from="1539725940937" duration="1342000" />
       <workItem from="1539746951940" duration="10042000" />
-      <workItem from="1540353829202" duration="18841000" />
+      <workItem from="1540353829202" duration="20299000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2451248000" />
+    <option name="totallyTimeSpent" value="2452706000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -908,16 +906,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-          <folding>
-            <element signature="e#6#232#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/scripts/go_tools.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -998,13 +986,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/go_enque_js.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="36" column="12" selection-start-line="36" selection-start-column="12" selection-end-line="44" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_admin_notifications.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1015,24 +996,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_options.js">
+    <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_edit_store.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+        <state relative-caret-position="34">
+          <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2613">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding>
+            <element signature="e#6#232#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/go_enque_js.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-991">
+          <caret line="34" column="41" lean-forward="true" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/go_enque_js_admin.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="143" column="72" selection-start-line="143" selection-start-column="54" selection-end-line="143" selection-end-column="72" />
+        <state relative-caret-position="128">
+          <caret line="135" column="102" selection-start-line="135" selection-start-column="70" selection-end-line="135" selection-end-column="102" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_edit_store.js">
+    <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_options.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="68" selection-start-line="2" selection-start-column="68" selection-end-line="2" selection-end-column="68" />
+        <state relative-caret-position="170">
+          <caret line="10" column="65" lean-forward="true" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
         </state>
       </provider>
     </entry>

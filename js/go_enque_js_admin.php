@@ -133,7 +133,7 @@ function go_admin_scripts ($hook) {
 
             //wp_enqueue_script('go_options_admin_js');
             wp_localize_script('go_admin_user', 'levelGrowth', get_option('options_go_loot_xp_levels_growth'));
-            wp_localize_script('go_admin_user', 'go_is_options_page', true);
+            wp_localize_script('go_admin_user', 'go_is_options_page', array('is_options_page' => true));
         }
 
         if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
