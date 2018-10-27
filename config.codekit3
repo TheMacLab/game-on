@@ -2189,6 +2189,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"/js/dev/go_every_admin_page.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/js/min/go_every_admin_page-min.js",
+		"oF": 2,
+		"sC": 3,
+		"tS": 0
+		},
 	"/js/dev/go_frontend.js": {
 		"ft": 64,
 		"ma": 0,
@@ -2239,6 +2249,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"/js/dev/scripts/go_admin_page_admin_user.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_admin_page_admin_user-min.js",
+		"oF": 1,
+		"sC": 3,
+		"tS": 0
+		},
 	"/js/dev/scripts/go_blogs.js": {
 		"ft": 64,
 		"ma": 0,
@@ -2265,16 +2285,6 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "/js/dev/scripts/go_edit_store-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/dev/scripts/go_every_admin_page.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/dev/scripts/go_every_admin_page-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0

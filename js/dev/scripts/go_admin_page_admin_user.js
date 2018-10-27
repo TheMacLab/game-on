@@ -32,9 +32,6 @@ jQuery(document).ready(function(){
 });
 
 
-
-
-
 /*
 on the create new taxonomy term page,
 this hides the acf stuff until a parent map is selected

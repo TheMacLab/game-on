@@ -1,7 +1,4 @@
 /*
- * Disable submit with enter key, tab to next field instead
-*/
-/*
 function go_sounds( type ) {
 
     console.log("sounds" + PluginDir.url);
@@ -362,7 +359,7 @@ jQuery(this).addClass("wrapped")}))},100);// check every 100ms
 //on success, if new messages, print
 var e=GO_ADMIN_DATA.nonces.go_admin_messages;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_admin_messages"},success:function(e){
 //console.log(res);
-0!=e&&jQuery("body").append(e)}})}function go_admin_check_messages_focus(){document.hasFocus()&&go_admin_check_messages()}jQuery(document).ready(function(){jQuery("input,select").bind("keydown",function(e){var t;13===(e.keyCode||e.which)&&(e.preventDefault(),jQuery("input, select, textarea")[jQuery("input,select,textarea").index(this)+1].focus())})}),//Add an on click to all store items
+0!=e&&jQuery("body").append(e)}})}function go_admin_check_messages_focus(){document.hasFocus()&&go_admin_check_messages()}//Add an on click to all store items
 jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})}),function(_){"use strict";_.fn.fitVids=function(e){var a={customSelector:null,ignore:null};if(!document.getElementById("fit-vids-style")){
 // appendStyles: https://github.com/toddmotto/fluidvids/blob/master/dist/fluidvids.js
 var t=document.head||document.getElementsByTagName("head")[0],s=".fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}",o=document.createElement("div");o.innerHTML='<p>x</p><style id="fit-vids-style">'+s+"</style>",t.appendChild(o.childNodes[1])}return e&&_.extend(a,e),this.each(function(){var e=['iframe[src*="player.vimeo.com"]','iframe[src*="youtube.com"]','iframe[src*="youtube-nocookie.com"]','iframe[src*="kickstarter.com"][src*="video.html"]',"object","embed"];a.customSelector&&e.push(a.customSelector);var r=".fitvidsignore";a.ignore&&(r=r+", "+a.ignore);var t=_(this).find(e.join(","));// Disable FitVids on this video.

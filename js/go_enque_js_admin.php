@@ -19,6 +19,8 @@ function go_admin_scripts ($hook) {
 
     wp_register_script( 'go_admin_user', plugin_dir_url( __FILE__ ).'min/go_admin_user-min.js', array( 'jquery' ), $go_js_version, true);
 
+    wp_register_script( 'go_admin_page', plugin_dir_url( __FILE__ ).'min/go_every_admin_page-min.js', array( 'jquery' ), $go_js_version, true);
+
     //this one doesn't minify for some reason
     wp_register_script( 'go_admin-tools', plugin_dir_url( __FILE__ ).'scripts/go_tools.js', array( 'jquery' ), $go_js_version, true);
 
@@ -45,6 +47,9 @@ function go_admin_scripts ($hook) {
 
     //single script
     wp_enqueue_script( 'go_admin-tools' );
+
+    //Combined Scripts
+    wp_enqueue_script( 'go_admin_page' );
 
     //END Combined Scripts
 
