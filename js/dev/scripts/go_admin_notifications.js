@@ -1,8 +1,11 @@
 jQuery( document ).ready( function() {
-    setInterval(go_admin_check_messages_focus, 10000);
-    jQuery(window).focus(function() {
-        go_admin_check_messages();
-    });
+
+    if(typeof GO_ADMIN_DATA !== 'undefined') {
+        setInterval(go_admin_check_messages_focus, 10000);
+        jQuery(window).focus(function () {
+            go_admin_check_messages();
+        });
+    }
 });
 
 function go_admin_check_messages(){

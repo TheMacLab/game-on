@@ -368,4 +368,4 @@ t=(t=t.not("object object")).not(r)).each(function(){var e=_(this);if(!(0<e.pare
 // Internal counter for unique video names.
 _.fn.fitVids._count=0}(window.jQuery||window.Zepto),jQuery(window).ready(function(){
 //jQuery(".mejs-container").hide();
-Vids_Fit_and_Box()}),jQuery(document).ready(function(){setInterval(go_admin_check_messages_focus,1e4),jQuery(window).focus(function(){go_admin_check_messages()})});
+Vids_Fit_and_Box()}),jQuery(document).ready(function(){"undefined"!=typeof GO_ADMIN_DATA&&(setInterval(go_admin_check_messages_focus,1e4),jQuery(window).focus(function(){go_admin_check_messages()}))});

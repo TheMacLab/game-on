@@ -826,7 +826,7 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
 function go_noty_loot_success ($loot, $loot_type) {
     //go_noty_close_oldest();
     echo "<script> 
-
+        jQuery( document ).ready( function() {
         new Noty({
             type: 'success',
             layout: 'topRight',
@@ -838,6 +838,7 @@ function go_noty_loot_success ($loot, $loot_type) {
                 beforeShow: function() { go_noty_close_oldest();},
             }
         }).show();
+        });
      </script>";
 
 
@@ -850,6 +851,7 @@ function go_noty_loot_success ($loot, $loot_type) {
 function go_noty_level_up ($rank, $rank_name) {
     //go_noty_close_oldest();
     echo "<script> 
+        jQuery( document ).ready( function() {
         new Noty({
             type: 'success',
             layout: 'topRight',
@@ -861,7 +863,8 @@ function go_noty_level_up ($rank, $rank_name) {
                 beforeShow: function() { go_noty_close_oldest();},
             }
         
-        }).show();        
+        }).show(); 
+        });
         </script>";
 }
 
@@ -872,6 +875,7 @@ function go_noty_level_up ($rank, $rank_name) {
 function go_noty_level_down ($rank, $rank_name) {
     //go_noty_close_oldest();
     echo "<script> 
+        jQuery( document ).ready( function() {
         new Noty({
             type: 'error',
             layout: 'topRight',
@@ -883,7 +887,8 @@ function go_noty_level_down ($rank, $rank_name) {
                 beforeShow: function() { go_noty_close_oldest();},
             }
             
-        }).show();    
+        }).show();  
+        });
     </script>";
 }
 
@@ -894,6 +899,7 @@ function go_noty_level_down ($rank, $rank_name) {
 function go_noty_loot_error ($loot, $loot_type) {
     //go_noty_close_oldest();
     echo "<script> 
+        jQuery( document ).ready( function() {
         new Noty({
             type: 'error',
             layout: 'topRight',
@@ -906,6 +912,7 @@ function go_noty_loot_error ($loot, $loot_type) {
             }
             
         }).show();
+        }); 
     </script>";
 }
 
@@ -924,6 +931,7 @@ function go_noty_message_generic ($type = 'alert', $title, $content) {
     //go_noty_close_oldest();
     echo "<script> 
         jQuery( document ).ready( function() {
+            
             
             new Noty({
                 type: '" . $type . "',
