@@ -2383,6 +2383,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"/js/min/go_every_admin_page-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/js/min/go_every_admin_page-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"/js/min/go_frontend-min.js": {
 		"ft": 64,
 		"ma": 0,

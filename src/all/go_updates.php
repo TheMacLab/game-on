@@ -830,7 +830,7 @@ function go_noty_loot_success ($loot, $loot_type) {
         new Noty({
             type: 'success',
             layout: 'topRight',
-            text: '<div style=\"font-size: 1.5em;\">" . $loot_type . ": " . $loot . "</div>',
+            text: '<div style=\"font-size: 1.5em;\">" . addslashes($loot_type) . ": " . addslashes($loot) . "</div>',
             theme: 'relax',
             timeout: '3000',
             visibilityControl: true,
@@ -855,7 +855,7 @@ function go_noty_level_up ($rank, $rank_name) {
         new Noty({
             type: 'success',
             layout: 'topRight',
-            text: '<h1>Level Up! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
+            text: '<h1>Level Up! You are now Level " . addslashes($rank) . " (" . addslashes($rank_name) . ").</h3>',
             theme: 'relax', 
             timeout: false,
             visibilityControl: true,
@@ -879,7 +879,7 @@ function go_noty_level_down ($rank, $rank_name) {
         new Noty({
             type: 'error',
             layout: 'topRight',
-            text: '<h1>Level Down! You are now Level " . $rank . " (" . $rank_name . ").</h3>',
+            text: '<h1>Level Down! You are now Level " . addslashes($rank) . " (" . addslashes($rank_name) . ").</h3>',
             theme: 'relax', 
             timeout: false,
             visibilityControl: true,
@@ -903,7 +903,7 @@ function go_noty_loot_error ($loot, $loot_type) {
         new Noty({
             type: 'error',
             layout: 'topRight',
-            text: '<div style=\"font-size: 1.5em;\">" . $loot_type . ": " . $loot . "</div>',
+            text: '<div style=\"font-size: 1.5em;\">" . addslashes($loot_type) . ": " . addslashes($loot) . "</div>',
             theme: 'relax',
             timeout: '3000',
             visibilityControl: true,
@@ -936,7 +936,7 @@ function go_noty_message_generic ($type = 'alert', $title, $content) {
             new Noty({
                 type: '" . $type . "',
                 layout: 'topRight',
-                text: '" . $text . "',
+                text: '" . addslashes($text) . "',
                 theme: 'relax',
                 timeout: false,
                 visibilityControl: true,

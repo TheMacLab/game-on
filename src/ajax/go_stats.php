@@ -226,6 +226,7 @@ function go_admin_bar_stats() {
 
                 <li class="stats_tabs" tab="tasks"><a href="#stats_tasks"><?php echo strtoupper( get_option( 'options_go_tasks_name_plural' ) ); ?></a></li>
                 <li class="stats_tabs" tab="store"><a href="#stats_store"><?php echo strtoupper( get_option( 'options_go_store_name' ) ); ?></a></li>
+                <li class="stats_tabs" tab="messages"><a href="#stats_messages">MESSAGES</a></li>
                 <li class="stats_tabs" tab="history"><a href="#stats_history">HISTORY</a></li>
                 <li class="stats_tabs" tab="badges"><a href="#stats_badges"><?php echo strtoupper( get_option( 'options_go_badges_name_plural' ) ); ?></a></li>
                 <li class="stats_tabs" tab="groups"><a href="#stats_groups">GROUPS</a></li>
@@ -252,11 +253,9 @@ function go_admin_bar_stats() {
              }
              ?>
 
-            <div id="stats_tasks">
-
-
-            </div>
+            <div id="stats_tasks"></div>
             <div id="stats_store"></div>
+            <div id="stats_messages"></div>
             <div id="stats_history"></div>
             <div id="stats_badges"></div>
             <div id="stats_groups"></div>
