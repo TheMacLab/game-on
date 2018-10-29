@@ -74,13 +74,13 @@ function go_clipboard_class_a_choice() {
 		//XP////////////////////////////
 		//go_sort_leaders("go_clipboard", 4);
 		var Clipboard = jQuery('#go_clipboard_stats_datatable').DataTable({
-            //stateSave: false,
             "bPaginate": false,
             //colReorder: true,
             "order": [[5, "asc"]],
             responsive: true,
             "autoWidth": false,
             stateSave: true,
+            "stateDuration": 31557600,
             //"destroy": true,
             dom: 'Bfrtip',
             "drawCallback": function( settings ) {
@@ -238,14 +238,48 @@ function go_clipboard_class_a_choice_activity(refresh) {
                 if (-1 !== res) {
                     jQuery('#clipboard_activity_datatable_container').html(res);
                     //go_filter_datatables();
+                    var nonceSave = GO_CLIPBOARD_DATA.nonces.go_activity_stateSave;
+                    var nonceLoad = GO_CLIPBOARD_DATA.nonces.go_activity_stateLoad;
                     var Messages = jQuery('#go_clipboard_activity_datatable').DataTable({
-                        //stateSave: false,
-                        "bPaginate": false,
+                       "bPaginate": false,
                         //colReorder: true,
                         "order": [[4, "asc"]],
                         responsive: true,
                         "autoWidth": false,
                         stateSave: true,
+                        "stateDuration": 31557600,
+                        /*
+                        "stateSaveCallback": function (settings, data) {
+                            // Send an Ajax request to the server with the state object
+                            console.log("save:");console.log(data);
+                            jQuery.ajax( {
+                                "type": "post",
+                                "url": MyAjax.ajaxurl,
+                                //"dataType": "json",
+                                "data": {
+                                    _ajax_nonce: nonceSave,
+                                    action: 'go_activity_stateSave',
+                                    data: data,
+                                },
+                                "success": function () {}
+                            } );
+                        },
+                        "stateLoadCallback": function (settings, callback) {
+                            jQuery.ajax( {
+                                "type": "post",
+                                "url": MyAjax.ajaxurl,
+                                //"dataType": "json",
+                                "data": {
+                                    _ajax_nonce: nonceLoad,
+                                    action: 'go_activity_stateLoad',
+                                },
+                                success: function (json) {
+                                    var json = JSON.parse(json);
+                                    console.log(json);
+                                    callback( json );
+                                }
+                            } );
+                        },*/
                         //"destroy": true,
                         dom: 'Bfrtip',
                         "drawCallback": function( settings ) {

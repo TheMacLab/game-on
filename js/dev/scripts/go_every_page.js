@@ -93,6 +93,9 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
                         case 'history':
                             go_stats_activity_list();
                             break;
+                        case 'messages':
+                            go_stats_messages();
+                            break;
                         case 'badges':
                             go_stats_badges_list();
                             break;
@@ -507,6 +510,41 @@ function go_stats_activity_list() {
                         }*/
 
 
+                    });
+                }
+            }
+        });
+    }
+}
+
+function go_stats_messages() {
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_messages;
+    if (jQuery("#go_messages_datatable").length == 0) {
+        jQuery.ajax({
+            type: 'post',
+            url: MyAjax.ajaxurl,
+            data: {
+                _ajax_nonce: nonce,
+                action: 'go_stats_messages',
+                user_id: jQuery('#go_stats_hidden_input').val()
+            },
+            success: function (res) {
+                if (-1 !== res) {
+                    jQuery('#stats_messages').html(res);
+                    jQuery('#go_messages_datatable').dataTable({
+                        "processing": true,
+                        "serverSide": true,
+                        "ajax": {
+                            "url": MyAjax.ajaxurl + '?action=go_messages_dataloader_ajax',
+                            "data": function(d){
+                                d.user_id = jQuery('#go_stats_hidden_input').val();}//this doesn't actually pass something to my PHP like it does normally with AJAX.
+                        },
+                        responsive: true,
+                        "autoWidth": false,
+                        columnDefs: [
+                            { targets: '_all', "orderable": false }
+                        ],
+                        "searching": true
                     });
                 }
             }

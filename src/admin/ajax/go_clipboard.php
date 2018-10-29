@@ -11,6 +11,27 @@ function go_clipboard_save_filters (){
     update_user_meta( $user_id, 'go_clipboard_group', $group );
 }
 
+/*
+function go_activity_stateSave(){
+    $user_id = get_current_user_id();
+    check_ajax_referer( 'go_activity_stateSave_' . $user_id );
+    $state = $_POST['data'];
+    //$state = serialize($state);
+
+    update_user_meta( $user_id, 'go_activity_stateSave', $state );
+}
+
+function go_activity_stateLoad(){
+    $user_id = get_current_user_id();
+    check_ajax_referer( 'go_activity_stateLoad_' . $user_id );
+    $state = get_user_meta($user_id, 'go_activity_stateSave', true);
+    //$state = unserialize($state);
+    $state = json_encode($state);
+    echo $state;
+    die();
+}
+*/
+
 function go_clipboard_menu() {
     acf_form_head();
 

@@ -146,7 +146,7 @@ function go_buy_item() {
     echo "<script> new Noty({
     type: 'info',
     layout: 'topRight',
-    text: '<h2>Receipt</h2><br>Item: $the_title <br>Quantity: $qty',
+    text: '<h2>Receipt</h2><br>Item: ' . addslashes($the_title) .' <br>Quantity: ' . addslashes($qty),
     theme: 'relax',
     visibilityControl: true,
     callbacks: {

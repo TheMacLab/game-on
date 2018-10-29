@@ -140,6 +140,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_stats_task_list', 'go_stats_task_list' ); //OK
     add_action( 'wp_ajax_go_stats_item_list', 'go_stats_item_list' ); //OK
     add_action( 'wp_ajax_go_stats_activity_list', 'go_stats_activity_list' ); //OK
+    add_action( 'wp_ajax_go_stats_messages', 'go_stats_messages' ); //OK
     add_action( 'wp_ajax_go_stats_single_task_activity_list', 'go_stats_single_task_activity_list' ); //OK
     add_action( 'wp_ajax_go_stats_badges_list', 'go_stats_badges_list' ); //OK
     add_action( 'wp_ajax_go_stats_groups_list', 'go_stats_groups_list' ); //OK
@@ -147,6 +148,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_stats_lite', 'go_stats_lite' ); //OK
     add_action( 'wp_ajax_go_stats_about', 'go_stats_about' ); //OK
     add_action( 'wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
+    add_action( 'wp_ajax_go_messages_dataloader_ajax', 'go_messages_dataloader_ajax');
     //add_action( 'wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
     //Activation
     add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' ); //OK
@@ -160,6 +162,8 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     //Clipboard
     add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' ); //OK
     add_action( 'wp_ajax_go_clipboard_intable_activity', 'go_clipboard_intable_activity' ); //OK
+    add_action( 'wp_ajax_go_activity_stateSave', 'go_activity_stateSave' ); //OK
+    add_action( 'wp_ajax_go_activity_stateLoad', 'go_activity_stateLoad' ); //OK
     add_action( 'wp_ajax_go_clipboard_save_filters', 'go_clipboard_save_filters' ); //OK
     //Messages
     add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );//OK

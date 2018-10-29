@@ -77,6 +77,7 @@ function go_scripts () {
                     'go_stats_task_list'           => wp_create_nonce( 'go_stats_task_list_' ),
 					'go_stats_item_list'           => wp_create_nonce( 'go_stats_item_list_' ),
 					'go_stats_activity_list'       => wp_create_nonce( 'go_stats_activity_list_' ),
+                    'go_stats_messages'       => wp_create_nonce( 'go_stats_messages' ),
                     'go_stats_single_task_activity_list'       => wp_create_nonce( 'go_stats_single_task_activity_list' ),
 					//'go_stats_penalties_list'      => wp_create_nonce( 'go_stats_penalties_list_' ),
 					'go_stats_badges_list'         => wp_create_nonce( 'go_stats_badges_list_' ),
