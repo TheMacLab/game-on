@@ -33,7 +33,7 @@ function go_activity_stateLoad(){
 */
 
 function go_clipboard_menu() {
-    acf_form_head();
+    //acf_form_head();
 
 
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -59,9 +59,9 @@ function go_clipboard_menu() {
 		<div id="records_tabs" style="clear: both; margin-left: -9999px;">
 			<ul>
 				<li class="clipboard_tabs" tab="clipboard"><a href="#clipboard_wrap">Stats</a></li>
-                <?php
-				//<li class="clipboard_tabs" tab="messages"><a href="#clipboard_messages_wrap" on>Messages</a></li>
-				?>
+
+				<li class="clipboard_tabs" tab="notifications"><a href="#clipboard_notifications_wrap">Notifications</a></li>
+
 				<li class="clipboard_tabs" tab="activity"><a href="#clipboard_activity_wrap">Activity</a></li>
 			</ul>
 			<div id="clipboard_wrap">
@@ -70,7 +70,7 @@ function go_clipboard_menu() {
                 ?>
 			</div>
 
-			<div id="clipboard_messages_wrap">
+			<div id="clipboard_notifications_wrap">
 
 			</div>
 
@@ -659,5 +659,289 @@ function go_clipboard_intable_activity() {
     <?php
     die();
 }
+
+/**
+ *
+ */
+function go_clipboard_notifications() {
+    check_ajax_referer( 'go_clipboard_notifications' );
+
+    $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+    $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
+    $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+
+    $xp_toggle = get_option('options_go_loot_xp_toggle');
+    $gold_toggle = get_option('options_go_loot_gold_toggle');
+    $health_toggle = get_option('options_go_loot_health_toggle');
+
+    $seats_name = get_option( 'options_go_seats_name' );
+
+    echo "<div id='go_clipboard_notifications' class='go_datatables'><table id='go_clipboard_notifications_datatable' class='pretty display'>
+    <thead>
+    <tr>
+    <th></th>
+    <th><input type=\"checkbox\" onClick=\"go_toggle(this);\" /></th>
+     <th class=\"header\">sections</th>
+            <th class=\"header\">groups</th>
+            <th class=\"header\">badges</th>
+            <th class=\"header\">Section</th>
+            <th class=\"header\">" . $seats_name . "</a></th>
+            <th class=\"header\">First</th>
+            <th class=\"header\">Last</th>
+            <th class=\"header\">Display</th>
+
+    <th class='header'><a href=\"#\">Time</a></th>
+    <th class='header'><a href=\"#\">Title</a></th>					
+    <th class='header'><a href=\"#\">Message</a></th>
+    <th class='header'><a href=\"#\">Modifier</a></th>";
+
+
+    if ($xp_toggle){
+        ?>
+        <th class='header'><a href=\"#\"><?php echo "$xp_abbr"; ?></a></th>
+        <?php
+    }
+    if ($gold_toggle){
+        ?>
+        <th class='header'><a href=\"#\"><?php echo "$gold_abbr"; ?></a></th>
+        <?php
+    }
+    if ($health_toggle){
+        ?>
+        <th class='header'><a href=\"#\"><?php echo "$health_abbr"; ?></a></th>
+        <?php
+    }
+
+
+
+    echo "<th class='header'><a href='#'>Other</a></th>
+    </tr>
+    </thead>
+
+    </table></div>";
+
+    die();
+}
+
+/**
+ * go_clipboard_messages_dataloader_ajax
+ * Called for Server Side Processing from the JS
+ */
+function go_clipboard_notifications_dataloader_ajax(){
+
+    global $wpdb;
+    $go_action_table_name = "{$wpdb->prefix}go_actions";
+
+    $aColumns = array( 'id', 'uid', 'action_type', 'TIMESTAMP' , 'result', 'global_mod', 'xp', 'gold', 'health', 'badges', 'groups' );
+
+    $sIndexColumn = "id";
+    $sTable = $go_action_table_name;
+
+    $sLimit = '';
+
+    if ( isset( $_GET['start'] ) && $_GET['length'] != '-1' )
+    {
+        $sLimit = "LIMIT ".intval( $_GET['start'] ).", ".
+            intval( $_GET['length'] );
+    }
+
+    $sOrder = "ORDER BY TIMESTAMP desc"; //always in reverse order
+
+
+    $search_val = $_GET['search']['value'];
+
+
+    $user_id = get_current_user_id();
+
+    $sWhere = "WHERE uid = ".$user_id . " AND (action_type = 'admin_notification' ) ";
+
+    if ( isset($search_val) && $search_val != "" )
+    {
+
+        $sWhere .= " AND (";
+        for ( $i=0 ; $i<count($aColumns) ; $i++ )
+        {
+            $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql( $search_val )."%' OR ";
+        }
+        $sWhere = substr_replace( $sWhere, "", -3 );//removes the last OR
+
+
+        $sWhere .= ')';
+
+    }
+
+    $totalWhere = " WHERE uid = ".$user_id . " AND (action_type = 'admin_notification') ";
+
+    $sQuery = "
+    SELECT SQL_CALC_FOUND_ROWS `".str_replace(" , ", " ", implode("`, `", $aColumns))."`
+    FROM   $sTable
+    $sWhere
+    $sOrder
+    $sLimit
+    ";
+
+    $rResult = $wpdb->get_results($sQuery, ARRAY_A);
+
+    $sQuery = "SELECT FOUND_ROWS()";
+
+    $rResultFilterTotal = $wpdb->get_results($sQuery, ARRAY_N);
+
+    $iFilteredTotal = $rResultFilterTotal [0];
+
+    $sQuery = "
+    SELECT COUNT(`".$sIndexColumn."`)
+    FROM   $sTable
+    $totalWhere
+    ";
+
+    $rResultTotal = $wpdb->get_results($sQuery, ARRAY_N);
+
+    $iTotal = $rResultTotal [0];
+
+    $output = array(
+        "iTotalRecords" => $iTotal,
+        "iTotalDisplayRecords" => $iFilteredTotal,
+        "aaData" => array()
+    );
+
+    foreach($rResult as $action){//output a row for each task
+        $row = array();
+        ///////////
+        ///
+        $action_type = $action['action_type'];
+        $TIMESTAMP = $action['TIMESTAMP'];
+        $result = $action['result'];
+        $health_mod = $action['global_mod'];
+        $xp = $action['xp'];
+        $gold = $action['gold'];
+        $health = $action['health'];
+        $badge_ids = $action['badges'];
+        $group_ids = $action['groups'];
+
+        $badges_names = array();
+        $badges_toggle = get_option('options_go_badges_toggle');
+
+        if ($badges_toggle) {
+            $badge_ids = unserialize($badge_ids);
+            $badges_name_sing = get_option('options_go_badges_name_singular');
+
+            if (!empty($badge_ids)) {
+                $badges_names[] = "<b>" . $badges_name_sing . ":</b>";
+                foreach ($badge_ids as $badge_id) {
+                    $term = get_term($badge_id, "go_badges");
+                    $badge_name = $term->name;
+                    $badges_names[] = $badge_name;
+                }
+            }
+        }
+
+
+        $group_names = array();
+        $group_ids = unserialize($group_ids);
+        if (!empty($group_ids)){
+            if (!empty($badge_ids)) {
+                $badges_names[] = "<br>";
+            }
+            $group_names[] = "<b>Group:</b>";
+            foreach ($group_ids as $group_id) {
+                $term = get_term($group_id, "user_go_groups");
+                $group_name = $term->name;
+                $group_names[] = $group_name;
+            }
+        }
+        $badges_names = implode("<br>" , $badges_names);
+        $group_names = implode("<br>" , $group_names);
+
+
+        $type = ucfirst($action_type);
+        $result_array = unserialize($result);
+        $title = $result_array[0];
+        $message = $result_array[1];
+        //$message = $title . ": <br>" . $message;
+        //$action = "<span class='tooltip' ><span class='tooltiptext'>{$message}</span>See Message</span>";
+
+        if (!empty($badge_ids)) {
+            $badge_dir = $result_array[2];
+
+            //$badges_name = get_option('options_go_badges_name_plural');
+
+            if ($badge_dir == "badges+"){
+                $badge_dir = "<b>Add </b> ";
+            }else if ($badge_dir == "badges-"){
+                $badge_dir = "<b>Remove </b> ";
+            }else{
+                $badge_dir = "";
+            }
+        }
+        else{
+            $badge_dir = "";
+        }
+
+        if (!empty($group_ids)){
+            $groups_dir = $result_array[3];
+            if ($groups_dir == "groups+"){
+                $group_dir = "<b>Add </b> ";
+            }else if ($groups_dir == "groups-") {
+                $group_dir = "<b>Remove </b> ";
+            }else{
+                $group_dir = "";
+            }
+        }else{
+            $group_dir = "";
+        }
+
+        $badges_names = $badge_dir . $badges_names . $group_dir . $group_names;
+
+
+
+        $health_mod_int = $health_mod;
+        if (!empty($health_mod_int)){
+            $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+            $health_mod_str = $health_abbr . ": ". $health_mod;
+        }
+        else{
+            $health_mod_str = null;
+        }
+        //$unix_time = strtotime($TIMESTAMP);
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "";
+        $row[] = "{$TIMESTAMP}";
+        $row[] = "{$title}";
+        $row[] = "{$message}";
+        $row[] = "{$health_mod_str} ";
+
+        $xp_toggle = get_option('options_go_loot_xp_toggle');
+        $gold_toggle = get_option('options_go_loot_gold_toggle');
+        $health_toggle = get_option('options_go_loot_health_toggle');
+
+        if ($xp_toggle){
+            $row[] = "{$xp}";
+        }
+        if ($gold_toggle){
+            $row[] = "{$gold}";
+        }
+        if ($health_toggle){
+            $row[] = "{$health}";
+        }
+        $row[] = "{$badges_names}";
+        $output['aaData'][] = $row;
+    }
+
+
+    echo json_encode( $output );
+    die();
+}
+
+
+
 
 ?>

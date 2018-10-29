@@ -42,7 +42,7 @@ if ( is_admin() ) {
 
 }else{
     //INCLUDES on Public Pages
-    include_once('includes/acf/acf.php');
+    //include_once('includes/acf/acf.php');
 }
 
 
@@ -162,8 +162,8 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     //Clipboard
     add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' ); //OK
     add_action( 'wp_ajax_go_clipboard_intable_activity', 'go_clipboard_intable_activity' ); //OK
-    add_action( 'wp_ajax_go_activity_stateSave', 'go_activity_stateSave' ); //OK
-    add_action( 'wp_ajax_go_activity_stateLoad', 'go_activity_stateLoad' ); //OK
+    add_action( 'wp_ajax_go_clipboard_notifications', 'go_clipboard_notifications' ); //OK
+    add_action( 'wp_ajax_go_clipboard_notifications_dataloader_ajax', 'go_clipboard_notifications_dataloader_ajax' ); //OK
     add_action( 'wp_ajax_go_clipboard_save_filters', 'go_clipboard_save_filters' ); //OK
     //Messages
     add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );//OK

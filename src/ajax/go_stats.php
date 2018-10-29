@@ -1772,7 +1772,6 @@ function go_messages_dataloader_ajax(){
     die();
 }
 
-
 /**
 * @param $user_id
 */

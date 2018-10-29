@@ -92,10 +92,7 @@ function go_create_admin_message (){
                                                         <div class="acf-th">
                                                             <label>Health</label></div>
                                                     </th>
-                                                    <th>
-                                                        <div class="acf-th">
-                                                            <label>C4</label></div>
-                                                    </th>
+                                                    
                                                 </tr>
 
 
@@ -298,10 +295,7 @@ function go_create_admin_message (){
                                                         <div class="acf-th">
                                                             <label>Health</label></div>
                                                     </th>
-                                                    <th>
-                                                        <div class="acf-th">
-                                                            <label>C4</label></div>
-                                                    </th>
+                                                    
                                                 </tr>
 
 
@@ -460,10 +454,7 @@ function go_create_admin_message (){
                                                         <div class="acf-th">
                                                             <label>Health</label></div>
                                                     </th>
-                                                    <th>
-                                                        <div class="acf-th">
-                                                            <label>C4</label></div>
-                                                    </th>
+                                                    
                                                 </tr>
 
 

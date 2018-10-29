@@ -334,7 +334,7 @@ function go_admin_bar() {
 		}
 		*/
         if ($go_stats_switch) {
-            acf_form_head();
+            //acf_form_head();
             $stats_name = get_option('options_go_stats_name');
             $wp_admin_bar->add_node(
 
@@ -342,7 +342,7 @@ function go_admin_bar() {
         };
 
         if ($go_blog_switch) {
-            acf_form_head();
+            //acf_form_head();
             //$stats_name = get_option('options_go_stats_name');
 
             $user_info = get_userdata($user_id);
