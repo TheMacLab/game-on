@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_stats.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_updates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/go_activation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/go_activation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ajax/go_admin_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_admin_ajax.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -36,11 +34,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="go_updates.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_updates.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/all/go_updates.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1102">
               <caret line="905" column="104" selection-start-line="905" selection-start-column="104" selection-end-line="905" selection-end-column="104" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_activation.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/admin/go_activation.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="122" column="42" selection-start-line="122" selection-start-column="42" selection-end-line="122" selection-end-column="42" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_admin_ajax.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ajax/go_admin_ajax.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="121" column="8" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -54,17 +73,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_scripts-min.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/min/go_scripts-min.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="go_scripts.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/dev/go_scripts.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -72,11 +80,6 @@
               <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="buy_the_item.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/dev/scripts/buy_the_item.js">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file leaf-file-name="go_admin_notifications.js" pinned="false" current-in-tab="false">
@@ -155,9 +158,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>map</find>
-      <find>DataTable</find>
-      <find>go_to_this_map</find>
       <find>console</find>
       <find>console.log(&quot;badges</find>
       <find>go_blog_post_edit</find>
@@ -185,6 +185,9 @@
       <find>success</find>
       <find>go_bonus_loot</find>
       <find>&lt;script</find>
+      <find>new Not</find>
+      <find>go_admin_remove_notification</find>
+      <find>go_remove_admin_notification</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -204,7 +207,6 @@
         <option value="$PROJECT_DIR$/src/public/tasks/ajax_tasks/go_tasks_and_ajax.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/go_admin_notifications.js" />
         <option value="$PROJECT_DIR$/src/public/ajax/go_map.php" />
-        <option value="$PROJECT_DIR$/src/ajax/go_admin_ajax.php" />
         <option value="$PROJECT_DIR$/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/src/admin/clone_button.php" />
         <option value="$PROJECT_DIR$/src/admin/go_admin_menus.php" />
@@ -213,7 +215,6 @@
         <option value="$PROJECT_DIR$/styles/admin/dev/go_admin.scss" />
         <option value="$PROJECT_DIR$/src/all/go_cpt_blogs.php" />
         <option value="$PROJECT_DIR$/src/all/go_cpt_task_taxonomies.php" />
-        <option value="$PROJECT_DIR$/src/admin/go_activation.php" />
         <option value="$PROJECT_DIR$/js/front/scripts/buy_the_item.js" />
         <option value="$PROJECT_DIR$/styles/css/go_stats.scss" />
         <option value="$PROJECT_DIR$/styles/dev/go_styles.scss" />
@@ -247,6 +248,8 @@
         <option value="$PROJECT_DIR$/js/dev/go_tasks.js" />
         <option value="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" />
         <option value="$PROJECT_DIR$/src/all/go_updates.php" />
+        <option value="$PROJECT_DIR$/src/ajax/go_admin_ajax.php" />
+        <option value="$PROJECT_DIR$/src/admin/go_activation.php" />
       </list>
     </option>
   </component>
@@ -314,7 +317,7 @@
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ajax" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -513,12 +516,12 @@
       <workItem from="1539553133775" duration="28973000" />
       <workItem from="1539725940937" duration="1342000" />
       <workItem from="1539746951940" duration="10042000" />
-      <workItem from="1540353829202" duration="27475000" />
+      <workItem from="1540353829202" duration="28785000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2459882000" />
+    <option name="totallyTimeSpent" value="2461192000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1658" height="979" extended-state="0" />
@@ -530,13 +533,13 @@
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Run" order="4" />
       <window_info anchor="bottom" id="Terminal" order="12" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22215347" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22215347" />
       <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.47889024" visible="true" weight="0.3356009" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.47889024" weight="0.3356009" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.74195546" weight="0.3446712" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.74195546" visible="true" weight="0.3446712" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
       <window_info anchor="bottom" id="PHP-CGI Server" order="13" />
@@ -661,6 +664,11 @@
           <line>132</line>
           <option name="timeStamp" value="1127" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/ajax/go_admin_ajax.php</url>
+          <line>114</line>
+          <option name="timeStamp" value="1134" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js</url>
           <line>27</line>
@@ -676,7 +684,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="1134" />
+      <option name="time" value="1135" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="index.php">
@@ -707,14 +715,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/styles/front/dev/go_frontend.scss" />
-    <entry file="file://$PROJECT_DIR$/styles/go_enque_styles_admin.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/styles/css/tasks-admin.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-644" />
@@ -1072,6 +1072,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1102">
           <caret line="905" column="104" selection-start-line="905" selection-start-column="104" selection-end-line="905" selection-end-column="104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ajax/go_admin_ajax.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="121" column="8" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/admin/go_activation.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="122" column="42" selection-start-line="122" selection-start-column="42" selection-end-line="122" selection-end-column="42" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

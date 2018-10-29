@@ -119,7 +119,7 @@ function go_admin_remove_notification() {
 
     update_option( 'go_display_admin_explanation', false );
 
-    die( 'success' );
+    die( );
 }
 
 

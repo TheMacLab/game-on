@@ -120,10 +120,8 @@ function go_admin_head_notification() {
 						_ajax_nonce: '{$nonce}',
 						action: 'go_admin_remove_notification'
 					},
-					success: function( res ) {
-						if ( 'success' === res ) {
+					success: function( ) {
 							jQuery('#go_activation_message').remove();
-						}
 					}
 				} );
 			}
