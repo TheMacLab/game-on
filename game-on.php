@@ -17,6 +17,7 @@ global $go_css_version;
 ///////////////////////////////
 //INCLUDE RESOURCES BEFORE GO
 ///////////////////////////////
+//include_once('includes/acf/acf.php');
 include( 'includes/wp-frontend-media-master/frontend-media.php' );
 include_once('includes/wp-term-order/wp-term-order.php'); //try to block this from non admin users
 

@@ -3,7 +3,7 @@
 global $wpdb;
 
 function go_update_db_check() {
-    $go_db_version = 4.21;
+    $go_db_version = 4.23;
     if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
         update_option('go_db_version', $go_db_version);
         go_update_db();
@@ -17,6 +17,7 @@ function go_update_db() {
     go_table_tasks();
     go_table_actions();
     go_install_data();
+    go_set_options_autoload();
 }
 
 function go_table_tasks() {
@@ -108,6 +109,79 @@ function go_table_totals() {
     dbDelta( $sql );
 }
 
+function go_set_options_autoload(){
+    $options_array = array(
+        'options_go_tasks_name_singular',
+        'options_go_tasks_name_plural',
+        'options_go_tasks_stage_name_singular',
+        'options_go_tasks_stage_name_plural',
+        'options_go_tasks_optional_task',
+        'options_go_tasks_bonus_stage',
+        'options_go_store_toggle',
+        'options_go_store_name',
+        'options_go_store_store_link',
+        'options_go_store_store_receipts',
+        'options_go_badges_toggle',
+        'options_go_badges_name_singular',
+        'options_go_badges_name_plural',
+        'options_go_stats_toggle',
+        'options_go_blogs_toggle',
+        'options_go_stats_name',
+        'options_go_stats_leaderboard_toggle',
+        'options_go_stats_leaderboard_name',
+        'options_go_locations_map_toggle',
+        'options_go_locations_map_title',
+        'options_go_locations_map_map_link',
+        'options_go_loot_name',
+        'options_go_loot_xp_toggle',
+        'options_go_loot_gold_toggle',
+        'options_go_loot_health_toggle',
+
+        'options_go_loot_xp_name',
+        'options_go_loot_gold_name',
+        'options_go_loot_health_name',
+
+        'options_go_loot_xp_abbreviation',
+        'options_go_loot_gold_abbreviation',
+        'options_go_loot_health_abbreviation',
+
+        'options_go_loot_xp_levels_name_singular',
+        'options_go_loot_xp_levels_name_plural',
+        'options_go_loot_xp_levels_growth',
+
+        'options_go_loot_bonus_loot_toggle',
+        'options_go_loot_bonus_loot_name',
+
+        'options_go_seat_name',
+        'options_go_seat_number',
+
+        'options_go_video_width_unit',
+        'options_go_video_width_pixels',
+        'options_go_video_lightbox',
+
+        'options_go_images_resize_toggle',
+        'options_go_images_resize_longest_side',
+
+        'options_go_guest_global',
+        'options_go_full-names_toggle',
+        'options_go_search_toggle',
+
+        'options_go_dashboard_toggle',
+        'options_go_admin_bar_toggle',
+
+        'options_go_slugs_toggle',
+
+        'options_go_avatars_local',
+        'options_go_avatars_gravatars',
+    );
+
+    foreach ( $options_array as $option ) {
+        $value = get_option($option);
+        delete_option( $option );
+        update_option( $option, $value, true );
+    }
+}
+
 function go_install_data ($reset = false) {
     global $wpdb;
     $table_name_user_meta = "{$wpdb->prefix}usermeta";
@@ -130,6 +204,7 @@ function go_install_data ($reset = false) {
         'options_go_badges_name_singular' => 'Badge',
         'options_go_badges_name_plural' => 'Badges',
         'options_go_stats_toggle' => 1,
+        'options_go_blogs_toggle' => 1,
         'options_go_stats_name' => 'Stats',
         'options_go_stats_leaderboard_toggle' => 1,
         'options_go_stats_leaderboard_name' => 'Leaderboard',
@@ -179,11 +254,13 @@ function go_install_data ($reset = false) {
         'options_go_avatars_gravatars' => 1,
     );
     foreach ( $options_array as $key => $value ) {
-        add_option( $key, $value );
+        add_option( $key, $value, '', 'yes' );
     }
     if($reset){
-        update_option( $key, $value );
+        update_option( $key, $value, true );
     }
+
+
 
 
     //For Repeater Fields Sections

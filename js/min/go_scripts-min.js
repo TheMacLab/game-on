@@ -258,9 +258,9 @@ jQuery.featherlight(t.html,{variant:"store"}),"101"===Number.parseInt(t.json_sta
 //called when the "buy" button is clicked.
 function goBuytheItem(t,e){var s=GO_BUY_ITEM_DATA.nonces.go_buy_item,o=GO_BUY_ITEM_DATA.userID;console.log(o),jQuery(document).ready(function(a){var e={_ajax_nonce:s,action:"go_buy_item",the_id:t,qty:a("#go_qty").val(),user_id:o};a.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){a("#golb-fr-buy").innerHTML="",a("#golb-fr-buy").html(""),a("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){
 //console.log("SUccess: " + raw);
-var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?a("#light").html(e):
+var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?a("#light").html(e):(
 //go_sounds( 'store' );
-a("#light").html(t.html)}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(s){
+console.log("buy:"),console.log(t.html),a("#light").html(t.html))}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(s){
 //console.log('button clicked');
 //disable button to prevent double clicks
 //go_enable_loading( target );

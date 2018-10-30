@@ -137,6 +137,8 @@ function goBuytheItem( id, count ) {
 					jQuery( '#light').html(raw);
 				} else {
 					//go_sounds( 'store' );
+                    console.log("buy:");
+                    console.log(res.html);
                     jQuery( '#light').html(res.html);
 				}
 			}
@@ -299,6 +301,4 @@ function go_count_item( item_id ) {
 		}
 	});
 }
-
-
 

@@ -40,86 +40,22 @@ function go_register_task_tax_and_cpt() {
     register_taxonomy( 'task_chains', array( '' ), $task_chains_args );
     //register_taxonom  y_for_object_type( 'task_chains', 'tasks' );
 
-    // Register Task TOP MENU Taxonomy
-    $task_menu_labels = array(
-        'name' => _x('Top Menu', 'task_menu' ),
-        'singular_name' => _x('Top Menu', 'task_menu' ),
-        'search_items' => _x( 'Search Top Menus', 'task_menu' ),
-        'popular_items' => _x( 'Popular Top Menus', 'task_menu' ),
-        'all_items' => _x( 'All Top Menus', 'task_menu' ),
-        'parent_item' => _x('Parent Menu', 'task_menu' ),
-        'parent_item_colon' => _x( 'Parent Menu:', 'task_menu' ),
-        'edit_item' => _x( 'Edit Top Menu', 'task_menu' ),
-        'update_item' => _x( 'Update Top Menu', 'task_menu' ),
-        'add_new_item' => _x( 'Add New Top Menu', 'task_menu' ),
-        'new_item_name' => _x( 'New Top Menu', 'task_menu' ),
-        'separate_items_with_commas' => _x( 'Separate top menus with commas', 'task_menu' ),
-        'add_or_remove_items' => _x( 'Add or remove top menus', 'task_menu' ),
-        'choose_from_most_used' => _x( 'Choose from the most used top menus', 'task_menu' ),
-        'menu_name' => _x(' Top Menu', 'task_menu' ),
-    );
-    $task_menu_args = array(
-        'labels' => $task_menu_labels,
-        'public' => true,
-        'show_in_nav_menus' => true,
-        'show_in_menu' => false,
-        'show_ui' => true,
-        'show_tagcloud' => true,
-        'show_admin_column' => true,
-        'hierarchical' => true,
-        'rewrite' => array(
-            'slug' => get_option('options_go_locations_top_menu')
-        ),
-        'query_var' => true
-    );
-    register_taxonomy( 'task_menus', array( 'maps_menus' ), $task_menu_args );
 
-    // Register Task Side Menu Taxonomy
-    $task_cat_labels = array(
-        'name' => 'Side Menu',
-        'singular_name' => 'Side Menu',
-        'search_items' => 'Search Side Menus',
-        'popular_items' => 'Popular Side Menus',
-        'all_items' => 'All Side Menu Items',
-        'parent_item' => ' Side Menu Parent',
-        'parent_item_colon' => 'Side Menu:',
-        'edit_item' => 'Edit Side Menu Section',
-        'update_item' => 'Update Side Menu',
-        'add_new_item' => 'Add New Side Menu',
-        'new_item_name' => 'New Side Menu',
-        'separate_items_with_commas' => 'Separate Side Menus with commas',
-        'add_or_remove_items' => 'Add or remove Side Menu',
-        'choose_from_most_used' => 'Choose from the most used Side Menus',
-        'menu_name' => 'Side Menu',
-    );
-    $task_cat_args = array(
-        'labels' => $task_cat_labels,
-        'public' => true,
-        'show_in_nav_menus' => true,
-        'show_in_menu' => false,
-        'show_ui' => true,
-        'show_tagcloud' => true,
-        'show_admin_column' => true,
-        'hierarchical' => true,
-        'rewrite' => array(
-            'slug' => get_option('options_go_locations_widget')
-        ),
-        'query_var' => true
-    );
-    register_taxonomy( 'task_categories', array( 'maps_menus' ), $task_cat_args );
 
+	$badges_name_singular = get_option('options_go_badges_name_singular');
+	$badges_name_plural = get_option('options_go_badges_name_plural');
 
 	// Register Badges
 	$labels_badge = array(
-		'name'                       => _x( get_option('options_go_badges_name_plural'), 'badges' ),
-		'singular_name'              => _x( get_option('options_go_badges_name_singular'), 'badges' ),
-		'menu_name'                  => _x( get_option('options_go_badges_name_singular'), 'badges' ),
-		'all_items'                  => 'All ' . _x( get_option('options_go_badges_name_plural'), 'badges' ),
-		'parent_item'                => 'Parent ' . _x( get_option('options_go_badges_name_singular'), 'badges' ),
+		'name'                       => _x( $badges_name_plural, 'badges' ),
+		'singular_name'              => _x( $badges_name_singular, 'badges' ),
+		'menu_name'                  => _x( $badges_name_singular, 'badges' ),
+		'all_items'                  => 'All ' . _x( $badges_name_plural, 'badges' ),
+		'parent_item'                => 'Parent ' . _x( $badges_name_singular, 'badges' ),
 		'parent_item_colon'          => 'Parent Item:',
-		'new_item_name'              => 'New ' . _x( get_option('options_go_badges_name_singular'), 'badges' ) . ' Name',
-		'add_new_item'               => 'Add New ' . _x( get_option('options_go_badges_name_singular'), 'badges' ),
-		'edit_item'                  => 'Edit ' . _x( get_option('options_go_badges_name_singular'), 'badges' ),
+		'new_item_name'              => 'New ' . _x( $badges_name_singular, 'badges' ) . ' Name',
+		'add_new_item'               => 'Add New ' . _x( $badges_name_singular, 'badges' ),
+		'edit_item'                  => 'Edit ' . _x( $badges_name_singular, 'badges' ),
 		'update_item'                => 'Update Item',
 		'view_item'                  => 'View Item',
 		'separate_items_with_commas' => 'Separate items with commas',
@@ -216,24 +152,26 @@ function go_register_task_tax_and_cpt() {
 	/*
 	 * Task Custom Post Type
 	 */
+	$tasks_name_singular = get_option( 'options_go_tasks_name_singular' );
+    $tasks_name_plural = get_option( 'options_go_tasks_name_plural' );
 	$labels_cpt = array( 
-		'name' => _x( get_option( 'options_go_tasks_name_plural' ), 'task' ),
-		'singular_name' => _x( get_option( 'options_go_tasks_name_singular' ), 'task' ),
-		'add_new' => _x( 'Add New '.get_option( 'options_go_tasks_name_singular' ), 'task' ),
-		'add_new_item' => _x( 'Add New '.get_option( 'options_go_tasks_name_singular' ), 'task' ),
-		'edit_item' => _x( 'Edit '.get_option( 'options_go_tasks_name_singular' ), 'task' ),
-		'new_item' => _x( 'New '.get_option( 'options_go_tasks_name_singular' ), 'task' ),
-		'view_item' => _x( 'View '.get_option( 'options_go_tasks_name_singular' ), 'task' ),
-		'search_items' => _x( 'Search '.get_option( 'options_go_tasks_name_plural' ), 'task' ),
-		'not_found' => _x( 'No '.get_option( 'options_go_tasks_name_plural' ).' found', 'task' ),
-		'not_found_in_trash' => _x( 'No '.get_option( 'options_go_tasks_name_singular' ).' found in Trash', 'task' ),
-		'parent_item_colon' => _x( 'Parent '.get_option( 'options_go_tasks_name_singular' ).':', 'task' ),
-		'menu_name' => _x( get_option( 'options_go_tasks_name_plural' ), 'task' )
+		'name' => _x( $tasks_name_plural, 'task' ),
+		'singular_name' => _x( $tasks_name_singular, 'task' ),
+		'add_new' => _x( 'Add New '.$tasks_name_singular, 'task' ),
+		'add_new_item' => _x( 'Add New '.$tasks_name_singular, 'task' ),
+		'edit_item' => _x( 'Edit '.$tasks_name_singular, 'task' ),
+		'new_item' => _x( 'New '.$tasks_name_singular, 'task' ),
+		'view_item' => _x( 'View '.$tasks_name_singular, 'task' ),
+		'search_items' => _x( 'Search '.$tasks_name_plural, 'task' ),
+		'not_found' => _x( 'No '.$tasks_name_plural.' found', 'task' ),
+		'not_found_in_trash' => _x( 'No '.$tasks_name_singular.' found in Trash', 'task' ),
+		'parent_item_colon' => _x( 'Parent '.$tasks_name_singular.':', 'task' ),
+		'menu_name' => _x( $tasks_name_plural, 'task' )
 	);
 	$args_cpt = array(
 		'labels' => $labels_cpt,
 		'hierarchical' => false,
-		'description' => get_option( 'options_go_tasks_name_plural' ),
+		'description' => $tasks_name_plural,
         'supports'              => array( 'title', 'comments', 'thumbnail' ),
 		'taxonomies' => array(''),
 		'public' => true,
@@ -255,23 +193,23 @@ function go_register_task_tax_and_cpt() {
  * Task Custom Post Type
  */
     $labels_cpt = array(
-        'name' => _x( get_option( 'options_go_tasks_name_singular' ) . ' Templates', 'tasks_templates' ),
-        'singular_name' => _x( get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
-        'add_new' => _x( 'Add New '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
-        'add_new_item' => _x( 'Add New '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
-        'edit_item' => _x( 'Edit '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
-        'new_item' => _x( 'New '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
-        'view_item' => _x( 'View '.get_option( 'options_go_tasks_name_singular' ) . ' Template', 'tasks_templates' ),
-        'search_items' => _x( 'Search '.get_option( 'options_go_tasks_name_singular' ) . ' Templates', 'tasks_templates' ),
-        'not_found' => _x( 'No '.get_option( 'options_go_tasks_name_singular' ) . ' Templates'.' found', 'tasks_templates' ),
-        'not_found_in_trash' => _x( 'No '.get_option( 'options_go_tasks_name_singular' ) . ' Template' .' found in Trash', 'tasks_templates' ),
-        'parent_item_colon' => _x( 'Parent '.get_option( 'options_go_tasks_name_singular' ) . ' Template' .':', 'tasks_templates' ),
-        'menu_name' => _x( get_option( 'options_go_tasks_name_singular' )  . ' Templates' , 'tasks_templates' )
+        'name' => _x( $tasks_name_singular . ' Templates', 'tasks_templates' ),
+        'singular_name' => _x( $tasks_name_singular . ' Template', 'tasks_templates' ),
+        'add_new' => _x( 'Add New '.$tasks_name_singular . ' Template', 'tasks_templates' ),
+        'add_new_item' => _x( 'Add New '.$tasks_name_singular . ' Template', 'tasks_templates' ),
+        'edit_item' => _x( 'Edit '.$tasks_name_singular . ' Template', 'tasks_templates' ),
+        'new_item' => _x( 'New '.$tasks_name_singular . ' Template', 'tasks_templates' ),
+        'view_item' => _x( 'View '.$tasks_name_singular . ' Template', 'tasks_templates' ),
+        'search_items' => _x( 'Search '.$tasks_name_singular . ' Templates', 'tasks_templates' ),
+        'not_found' => _x( 'No '.$tasks_name_singular . ' Templates'.' found', 'tasks_templates' ),
+        'not_found_in_trash' => _x( 'No '.$tasks_name_singular . ' Template' .' found in Trash', 'tasks_templates' ),
+        'parent_item_colon' => _x( 'Parent '.$tasks_name_singular . ' Template' .':', 'tasks_templates' ),
+        'menu_name' => _x( $tasks_name_singular  . ' Templates' , 'tasks_templates' )
     );
     $args_cpt = array(
         'labels' => $labels_cpt,
         'hierarchical' => false,
-        'description' => get_option( 'options_go_tasks_name_plural' ),
+        'description' => $tasks_name_plural,
         'supports'              => array( 'title', 'comments', 'thumbnail' ),
         'taxonomies' => array(''),
         'public' => true,

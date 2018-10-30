@@ -123,9 +123,12 @@ function go_admin_bar() {
         $gold_toggle = get_option('options_go_loot_gold_toggle');
         $health_toggle = get_option( 'options_go_loot_health_toggle' );
 
+        $user_loot = go_get_loot($user_id);
+
 		if ($xp_toggle) {
             // the user's current amount of experience (points)
-            $go_current_xp = go_get_user_loot($user_id, 'xp');
+            //$go_current_xp = go_get_user_loot($user_id, 'xp');
+            $go_current_xp = $user_loot['xp'];
 
             $rank = go_get_rank($user_id);
             $rank_num = $rank['rank_num'];
@@ -178,7 +181,8 @@ function go_admin_bar() {
         if($health_toggle) {
             // the user's current amount of bonus currency,
             // also used for coloring the admin bar
-            $go_current_health = go_get_user_loot($user_id, 'health');
+            //$go_current_health = go_get_user_loot($user_id, 'health');
+            $go_current_health = $user_loot['health'];
             $health_percentage = intval($go_current_health / 2);
             if ($health_percentage <= 0) {
                 $health_percentage = 0;
@@ -194,7 +198,8 @@ function go_admin_bar() {
 
         if ($gold_toggle) {
             // the user's current amount of currency
-            $go_current_gold = go_get_user_loot($user_id, 'gold');
+            //$go_current_gold = go_get_user_loot($user_id, 'gold');
+            $go_current_gold = $user_loot['gold'];
             $gold_total = '<div id="go_admin_bar_gold_2" class="admin_bar_loot">' . go_display_shorthand_currency('gold', $go_current_gold)  . '</div>';
         }
         else{
@@ -231,108 +236,6 @@ function go_admin_bar() {
             $wp_admin_bar->add_node(array('id' => 'go_health', 'title' => '<div id="go_admin_bar_health">' . go_display_longhand_currency('health', $go_current_health) . '</div>', 'href' => '#', 'parent' => 'go_info',));
         }
 
-		/*
-		if ( current_user_can( 'manage_options' ) ) {
-			$wp_admin_bar->add_node( 
-				array(
-					'id' => 'go_deactivate',
-					'title' => '<input type="button" id="go_admin_bar_deactivation" name="go_admin_bar_deactivation" value="Deactivate" onclick="go_deactivate_plugin()"/>',
-					'parent'=>'go_info'
-				) 
-			);
-		}
-		*/
-		/*
-		if ( get_option( 'go_admin_bar_add_switch' ) == 'On' ) {		
-			$wp_admin_bar->add_node( 
-				array(
-					'id' => 'go_add',
-					'title' => 'Add',
-					'href' => '#',
-				) 
-			);
-			$title = '';
-			if ( ! $is_admin ) {
-				if ( get_option( 'go_bar_add_points_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_points_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_points_reason"/></div>';
-				}
-				if ( get_option( 'go_bar_add_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_currency_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_currency_reason"/></div>';
-				}
-				if ( get_option( 'go_bar_add_bonus_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_bonus_currency_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_bonus_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_bonus_currency_reason"/></div>';
-				}
-				if ( get_option( 'go_bar_add_penalty_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_penalty_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_penalty"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_penalty_reason"/></div>';
-				}
-				if ( get_option( 'go_bar_add_minutes_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_minutes_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_minutes"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_minutes_reason"/></div>';
-				}
-				if ( get_option( 'go_bar_add_points_switch' ) == 'On' || get_option( 'go_bar_add_currency_switch' ) == 'On' || get_option( 'go_bar_add_bonus_currency_switch' ) == 'On' || get_option( 'go_bar_add_penalty_switch' ) == 'On' || get_option( 'go_bar_add_minutes_switch' ) == 'On') {
-					$wp_admin_bar->add_node( 
-						array(
-							'id' => 'go_add_bar',
-							'title' => $title . '
-							<div><button style="width: 252px; margin-top: 10px;" id="go_admin_bar_add_button" name="go_admin_bar_submit" onclick="go_admin_bar_add();this.disabled = true;" value="Add">Add</button><div id="admin_bar_add_return"></div></div>
-							<script type="text/javascript">
-							var height = 80;
-							jQuery(".go_admin_bar_reason").each(function() {
-								height += 60;
-							});
-							jQuery( "ul#wp-admin-bar-go_add-default.ab-submenu" ).css( "height", height );
-							</script>',
-							'href' => false,
-							'parent' => 'go_add'
-						) 
-					);
-				}
-			} else {
-				if ( get_option( 'go_admin_bar_add_points_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_points_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_points"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_points_reason"/></div>';
-				}
-				if ( get_option( 'go_admin_bar_add_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_currency_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_currency_reason"/></div>';
-				}
-				if ( get_option( 'go_admin_bar_add_bonus_currency_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_bonus_currency_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_bonus_currency"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_bonus_currency_reason"/></div>';
-				}
-				if ( get_option( 'go_admin_bar_add_penalty_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_penalty_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_penalty"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_penalty_reason"/></div>';
-				}
-				if ( get_option( 'go_admin_bar_add_minutes_switch' ) == 'On' ) {
-					$title .=  '<div id="go_admin_bar_title">'.get_option( 'go_minutes_name' ).'</div>
-								<div id="go_admin_bar_input"><input type="text" class="go_admin_bar_add_input" id="go_admin_bar_add_minutes"/> For <input type="text" class="go_admin_bar_reason" id="go_admin_bar_add_minutes_reason"/></div>';
-				}
-				if ( get_option( 'go_admin_bar_add_points_switch' ) == 'On' || get_option( 'go_admin_bar_add_currency_switch' ) == 'On' || get_option( 'go_admin_bar_add_bonus_currency_switch' ) == 'On' || get_option( 'go_admin_bar_add_penalty_switch' ) == 'On' || get_option( 'go_admin_bar_add_minutes_switch' ) == 'On') {
-					$wp_admin_bar->add_node( 
-						array(
-							'id' => 'go_add_bar',
-							'title' => $title . '
-							<div><button style="width: 252px; margin-top: 10px;" id="go_admin_bar_add_button" name="go_admin_bar_submit" onclick="go_admin_bar_add();this.disabled = true;" value="Add">Add</button><div id="admin_bar_add_return"></div></div>
-							<script type="text/javascript">
-							var height = 80;
-							jQuery(".go_admin_bar_reason").each(function() {
-								height += 60;
-							});
-							jQuery( "ul#wp-admin-bar-go_add-default.ab-submenu" ).css( "height", height );
-							</script>',
-							'href' => false,
-							'parent' => 'go_add'
-						) 
-					);
-				}
-			}
-		}
-		*/
         if ($go_stats_switch) {
             //acf_form_head();
             $stats_name = get_option('options_go_stats_name');

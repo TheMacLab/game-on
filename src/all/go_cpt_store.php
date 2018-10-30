@@ -15,17 +15,18 @@ function go_register_store_tax_and_cpt() {
 	/*
 	 * Store Types Taxonomy
 	 */
+	$store_name = get_option( 'options_go_store_name' );
 	$cat_labels = array(
-		'name' => _x( get_option( 'options_go_store_name' ).' Categories', 'store_types' ),
-		'singular_name' => _x( get_option( 'options_go_store_name' ).' Item Category', 'store_types' ),
-		'search_items' =>  _x( 'Search '.get_option( 'options_go_store_name' ).' Categories' , 'store_types'),
-		'all_items' => _x( 'All '.get_option( 'options_go_store_name' ).' Categories', 'store_types' ),
-		'parent_item' => _x( get_option( 'options_go_store_name' ).' Section (Set as none to make this a new store section)' , 'store_types'),
-		'parent_item_colon' => _x( get_option( 'options_go_store_name' ).' Section (Set as none to make this a new store section):' , 'store_types'),
-		'edit_item' => _x( 'Edit '.get_option( 'options_go_store_name' ).' Category' , 'store_types'),
-		'update_item' => _x( 'Update '.get_option( 'options_go_store_name' ).' Category' , 'store_types'),
-		'add_new_item' => _x( 'Add New '.get_option( 'options_go_store_name' ).' Category' , 'store_types'),
-		'new_item_name' => _x( 'New '.get_option( 'options_go_store_name' ).' Category' , 'store_types'),
+		'name' => _x( $store_name.' Categories', 'store_types' ),
+		'singular_name' => _x( $store_name.' Item Category', 'store_types' ),
+		'search_items' =>  _x( 'Search '.$store_name.' Categories' , 'store_types'),
+		'all_items' => _x( 'All '.$store_name.' Categories', 'store_types' ),
+		'parent_item' => _x( $store_name.' Section (Set as none to make this a new store section)' , 'store_types'),
+		'parent_item_colon' => _x( $store_name.' Section (Set as none to make this a new store section):' , 'store_types'),
+		'edit_item' => _x( 'Edit '.$store_name.' Category' , 'store_types'),
+		'update_item' => _x( 'Update '.$store_name.' Category' , 'store_types'),
+		'add_new_item' => _x( 'Add New '.$store_name.' Category' , 'store_types'),
+		'new_item_name' => _x( 'New '.$store_name.' Category' , 'store_types'),
 	);
     $cat_args = array(
         'labels' => $cat_labels,
@@ -47,21 +48,21 @@ function go_register_store_tax_and_cpt() {
 	 */
 	 
 	$labels_cpt = array(
-		'name' => _x( get_option( 'options_go_store_name' ) , 'store-types'),
-		'menu_name' => _x( get_option( 'options_go_store_name' ) , 'store-types'),
-		'singular_name' => _x( get_option( 'options_go_store_name' ).' Item' , 'store-types'),
-		'add_new' => _x( 'New '.get_option( 'options_go_store_name' ).' Item' , 'store-types'),
-		'add_new_item' => _x( 'New '.get_option( 'options_go_store_name' ).' Item' , 'store-types'),
-		'edit' => _x( 'Edit '.get_option( 'options_go_store_name' ).' Items' , 'store-types'),
-		'edit_item' => _x( 'Edit '.get_option( 'options_go_store_name' ).' Item' , 'store-types'),
-		'new_item' => _x( 'New '.get_option( 'options_go_store_name' ).' Item' , 'store-types'),
+		'name' => _x( $store_name , 'store-types'),
+		'menu_name' => _x( $store_name , 'store-types'),
+		'singular_name' => _x( $store_name.' Item' , 'store-types'),
+		'add_new' => _x( 'New '.$store_name.' Item' , 'store-types'),
+		'add_new_item' => _x( 'New '.$store_name.' Item' , 'store-types'),
+		'edit' => _x( 'Edit '.$store_name.' Items' , 'store-types'),
+		'edit_item' => _x( 'Edit '.$store_name.' Item' , 'store-types'),
+		'new_item' => _x( 'New '.$store_name.' Item' , 'store-types'),
 		'view' => _x( 'View Items' , 'store-types'),
-		'view_item' => _x( 'View '.get_option( 'options_go_store_name' ).' Item' , 'store-types'),
-		'search_items' => _x( 'Search '.get_option( 'options_go_store_name' ).' Items' , 'store-types'),
-		'not_found' => _x( 'No '.get_option( 'options_go_store_name' ).' Items found' , 'store-types'),
-		'not_found_in_trash' => _x( 'No '.get_option( 'options_go_store_name' ).' Items found in Trash' , 'store-types'),
+		'view_item' => _x( 'View '.$store_name.' Item' , 'store-types'),
+		'search_items' => _x( 'Search '.$store_name.' Items' , 'store-types'),
+		'not_found' => _x( 'No '.$store_name.' Items found' , 'store-types'),
+		'not_found_in_trash' => _x( 'No '.$store_name.' Items found in Trash' , 'store-types'),
 		'parent' => 'Parent Store Item',
-		'name_admin_bar'        => _x( get_option( 'options_go_store_name' ) , 'store-types'),
+		'name_admin_bar'        => _x( $store_name , 'store-types'),
 		'archives'              => 'Item Archives',
 		'attributes'            => 'Item Attributes',
 		'parent_item_colon'     => 'Parent Item:',
@@ -79,7 +80,7 @@ function go_register_store_tax_and_cpt() {
 	$args = array(
         'labels' => $labels_cpt,
 		'hierarchical' => false,
-		'description' => _x( get_option( 'options_go_store_name' ) , 'store-types'),
+		'description' => _x( $store_name , 'store-types'),
         'supports'              => array( 'title', 'comments' ),
 		'taxonomies' => array('store_types'),
 		'public' => true,

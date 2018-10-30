@@ -48,8 +48,10 @@ function go_add_toplevel_menu() {
     acf_add_options_page(array(
         'page_title' => 'Options',
         'menu_slug' => 'go_options',
+        'autoload' => true,
         'capability' => 'edit_posts',
-        'icon_url'  => 'dashicons-admin-settings'
+        'icon_url'  => 'dashicons-admin-settings',
+
         //'parent_slug' 	=> 'game-on',
     ));
 
@@ -208,33 +210,7 @@ function go_add_chains_as_submenu() {
 }
 add_action( 'admin_menu', 'go_add_chains_as_submenu', 9 );
 
-function go_add_topmenus_as_submenu() {
 
-    /* add the sub menu under content for posts */
-    add_submenu_page(
-        'edit-tags.php?taxonomy=task_chains', // parent slug
-        'Top Menu', // page_title,
-        'Top Menu', // menu_title,
-        'edit_posts', // capability,
-        'edit-tags.php?taxonomy=task_menus'// menu_slug,
-    );
-
-}
-add_action( 'admin_menu', 'go_add_topmenus_as_submenu', 9 );
-
-function go_add_sidebar_as_submenu() {
-
-    /* add the sub menu under content for posts */
-    add_submenu_page(
-        'edit-tags.php?taxonomy=task_chains', // parent slug
-        'Side Bar', // page_title,
-        'Side Bar', // menu_title,
-        'edit_posts', // capability,
-        'edit-tags.php?taxonomy=task_categories' // menu_slug,
-    );
-
-}
-add_action( 'admin_menu', 'go_add_sidebar_as_submenu', 9 );
 
 /**
  * Add content to submenus

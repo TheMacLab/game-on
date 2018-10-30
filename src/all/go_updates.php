@@ -13,7 +13,7 @@
 function go_get_loot($user_id){
     global $wpdb;
     $key = 'go_get_loot';
-    $data = wp_cache_get( $key );
+    $data = wp_cache_get( $key, 'go_single2' );
     if ($data !== false){
         $loot = $data;
     }else {
@@ -779,17 +779,22 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
     $gold_name = null;
     $health_name = null;
 
+    $user_loot = go_get_loot($user_id);
+
     // the user's current amount of experience (points)
-    $go_current_xp = go_get_user_loot($user_id, 'xp');
+    //$go_current_xp = go_get_user_loot($user_id, 'xp');
+    $go_current_xp = $user_loot['xp'];
     $new_xp_total = $go_current_xp + $xp;
 
     // the user's current amount of currency
-    $go_current_gold = go_get_user_loot($user_id, 'gold');
+    //$go_current_gold = go_get_user_loot($user_id, 'gold');
+    $go_current_gold = $user_loot['gold'];
     $new_gold_total = $go_current_gold + $gold;
 
     // the user's current amount of bonus currency,
     // also used for coloring the admin bar
-    $go_current_health = go_get_user_loot($user_id, 'health');
+    //$go_current_health = go_get_user_loot($user_id, 'health');
+    $go_current_health = $user_loot['health'];
     $new_health_total = $go_current_health + $health;
     if ($new_health_total < 0) {
         $new_health_total = 0;
@@ -817,7 +822,6 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
     //badges and groups are only updated from the add/remove badges and groups functions
 
 }
-
 
 /**
  * @param $loot
