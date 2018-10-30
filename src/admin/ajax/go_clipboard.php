@@ -33,7 +33,7 @@ function go_activity_stateLoad(){
 */
 
 function go_clipboard_menu() {
-    //acf_form_head();
+    acf_form_head();
 
 
 	if ( ! current_user_can( 'manage_options' ) ) {

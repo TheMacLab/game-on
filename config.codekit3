@@ -148,16 +148,6 @@
 		"oAP": "/custom-acf-fields/go_enque_js_acf.php",
 		"oF": 0
 		},
-	"/custom-acf-fields/js/dev/go_acf-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/custom-acf-fields/js/dev/go_acf-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/custom-acf-fields/js/dev/go_acf.js": {
 		"ft": 64,
 		"ma": 0,
