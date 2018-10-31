@@ -83,4 +83,3 @@ function go_test_shortcode( $atts, $content ) {
 		}
 	}
 }
-?>

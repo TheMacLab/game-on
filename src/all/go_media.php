@@ -40,9 +40,9 @@ function go_users_own_attachments( $wp_query_obj ) {
     if( !in_array( $pagenow, array( 'upload.php', 'admin-ajax.php' ) ) )
         return;
 
-    if( !current_user_can('delete_pages') ) {
+    //if( !current_user_can('delete_pages') ) {
         $wp_query_obj->set('author', $current_user->ID);
-    }
+    //}
 
     return;
 }

@@ -737,10 +737,3 @@ function go_task_render_chain_pagination ( $task_id, $custom_fields ) {
 }
 
 
-
-
-
-
-?>
-
-
