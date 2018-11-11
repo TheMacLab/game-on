@@ -3,7 +3,7 @@
 global $wpdb;
 
 function go_update_db_check() {
-    $go_db_version = 4.23;
+    $go_db_version = 4.24;
     if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
         update_option('go_db_version', $go_db_version);
         go_update_db();
@@ -61,7 +61,7 @@ function go_table_actions() {
 			stage TINYINT,
 			bonus_status TINYINT,
 			check_type VARCHAR (200),
-			result VARCHAR (200),
+			result TEXT,
 			quiz_mod DECIMAL (10,2),
 			late_mod DECIMAL (10,2),
 			timer_mod DECIMAL (10,2),

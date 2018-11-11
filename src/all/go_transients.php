@@ -6,6 +6,64 @@
  * Time: 9:32 PM
  */
 
+
+/**
+ * Get/set transient of term objects
+ *
+ * Reset on:
+ * create badge
+ * update badge
+ *
+ * @param $taxonomy
+ * @return mixed
+ */
+function go_get_all_terms($taxonomy) {
+    $key = 'go_all_' . $taxonomy;
+    $data = get_transient($key);
+
+    if ($data === false) {
+        $data = get_terms( array(
+            'taxonomy' => $taxonomy
+        ) );
+        set_transient($key, $data, 3600 * 24);
+    }
+
+    return $data;
+}
+
+
+
+
+/**
+ * Get/set transient of user_id totals
+ *
+ * Reset on:
+ * update_totals
+ *
+ * @param $user_id
+ * @return mixed
+ */
+function go_get_loot($user_id){
+    global $wpdb;
+    $key = 'go_get_loot_' . $user_id;
+    $data = wp_cache_get( $key, 'go_single' );
+    if ($data === false){
+        $data = get_transient($key);
+        if ($data === false || empty($data)) {
+            $go_loot_table_name = "{$wpdb->prefix}go_loot";
+            $loot = $wpdb->get_results("SELECT * FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+            $loot = $loot[0];
+            $data = json_decode(json_encode($loot), True);
+            wp_cache_set($key, $data, 'go_single');
+            set_transient($key, $data, 3600 );
+        }else{
+            wp_cache_set($key, $data, 'go_single');
+        }
+    }
+    return $data;
+}
+
+
 /**
  * Get/set transient of term_ids of chains on a map by map term_id
  *

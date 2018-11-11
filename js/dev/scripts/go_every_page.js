@@ -471,7 +471,7 @@ function go_stats_activity_list() {
                         "ajax": {
                             "url": MyAjax.ajaxurl + '?action=go_activity_dataloader_ajax',
                             "data": function(d){
-                                d.user_id = jQuery('#go_stats_hidden_input').val();}//this doesn't actually pass something to my PHP like it does normally with AJAX.
+                                d.user_id = jQuery('#go_stats_hidden_input').val();}
                         },
                         responsive: true,
                         "autoWidth": false,
@@ -753,7 +753,7 @@ function go_stats_leaderboard() {
                 }
 
 
-                // Event listener to the two range filtering inputs to redraw on input
+                // Event listener to the range filtering inputs to redraw on input
                 jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
                     if (jQuery("#go_leaders_datatable").length) {
                         table.draw();

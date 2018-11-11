@@ -6,27 +6,6 @@
  * Time: 10:40 PM
  */
 
-/**
- * @param $user_id
- * @return mixed
- */
-function go_get_loot($user_id){
-    global $wpdb;
-    $key = 'go_get_loot';
-    $data = wp_cache_get( $key, 'go_single2' );
-    if ($data !== false){
-        $loot = $data;
-    }else {
-
-        $go_loot_table_name = "{$wpdb->prefix}go_loot";
-        $loot = $wpdb->get_results("SELECT * FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-        $loot = $loot[0];
-        $loot = json_decode(json_encode($loot), True);
-        wp_cache_set($key, $loot, 'go_single');
-    }
-    return $loot;
-}
-
 function go_get_health_mod ($user_id){
     //set the health mod
     $is_logged_in = ! empty( $user_id ) && is_user_member_of_blog( $user_id ) ? true : false;
@@ -56,18 +35,7 @@ function go_get_user_loot ($user_id, $loot_type){
     //get health from totals table
     global $wpdb;
     $user_loot = go_get_loot($user_id);
-    //unserialize ($user_loot);
-    /*
-    $go_totals_table_name = "{$wpdb->prefix}go_loot";
-    $loot = $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT {$loot_type} 
-					FROM {$go_totals_table_name} 
-					WHERE uid = %d LIMIT 1",
-            $user_id
-        )
-    );
-    */
+
     $loot = $user_loot[$loot_type];
     return $loot;
 }
@@ -959,6 +927,8 @@ function go_noty_message_generic ($type = 'alert', $title, $content) {
 function go_update_totals_table_Badges($user_id, $badges, $badge_count)
 {
     global $wpdb;
+    $key = 'go_get_loot_' . $user_id;
+    delete_transient($key);
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
     //create row for user if none exists
@@ -978,6 +948,10 @@ function go_update_totals_table_Badges($user_id, $badges, $badge_count)
 function go_update_totals_table_Groups($user_id, $groups)
 {
     global $wpdb;
+
+    $key = 'go_get_loot_' . $user_id;
+    delete_transient($key);
+
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
     //create row for user if none exists
@@ -1002,6 +976,10 @@ function go_update_totals_table_Groups($user_id, $groups)
  */
 function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $notify, $debt){
     global $wpdb;
+
+    $key = 'go_get_loot_' . $user_id;
+    delete_transient($key);
+
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
     //create row for user if none exists

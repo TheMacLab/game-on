@@ -10,7 +10,9 @@ function go_create_admin_message (){
 
     check_ajax_referer( 'go_create_admin_message');
 
-    $user_ids = $_POST['user_ids'];
+    $user_ids = (isset($_POST['user_ids']) ?  $_POST['user_ids'] : null);
+
+    //$user_ids = $_POST['user_ids'];
     $post_id = $_POST['post_id'];
     $message_type = $_POST['message_type'];
 

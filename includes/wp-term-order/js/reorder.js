@@ -375,14 +375,20 @@ jQuery(document).ready(function(){
 				///if submit button is pressed, reload content and redo list from table
 				jQuery("#submit").click(function() {
 					jQuery("#col-right").css("display", "none");
+					//delay here??
 					jQuery("#col-right").bind("DOMSubtreeModified", function(){
-						location.reload();
+                        console.log("modified and reload");
+						location.reload(true);
 					});
+
 					if ((jQuery(".term-name-wrap").hasClass( "form-invalid" )) == true){
 						jQuery("#col-right").unbind("DOMSubtreeModified");
                         jQuery("#col-right").css("display", "block");
 					}
-                    jQuery( ".formfield" ).hasClass( "form-invalid" ).css("display", "block");
+                    if ((jQuery( ".formfield" ).hasClass( "form-invalid" )) == true)
+					{
+                        jQuery( ".formfield" ).css("display", "block");
+					}
 
 					//jQuery("#col-right").css("display", "block");
 				});

@@ -161,10 +161,13 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_the_lb_ajax', 'go_the_lb_ajax' ); //OK
     add_action( 'wp_ajax_nopriv_go_the_lb_ajax', 'go_the_lb_ajax' ); //OK
     //Clipboard
-    add_action( 'wp_ajax_go_clipboard_intable', 'go_clipboard_intable' ); //OK
-    add_action( 'wp_ajax_go_clipboard_intable_activity', 'go_clipboard_intable_activity' ); //OK
-    add_action( 'wp_ajax_go_clipboard_notifications', 'go_clipboard_notifications' ); //OK
-    add_action( 'wp_ajax_go_clipboard_notifications_dataloader_ajax', 'go_clipboard_notifications_dataloader_ajax' ); //OK
+    add_action( 'wp_ajax_go_clipboard_stats', 'go_clipboard_stats' ); //OK
+    add_action( 'wp_ajax_go_clipboard_activity', 'go_clipboard_activity' ); //OK
+    add_action( 'wp_ajax_go_clipboard_messages', 'go_clipboard_messages' ); //OK
+    add_action( 'wp_ajax_go_clipboard_store', 'go_clipboard_store' ); //OK
+    add_action( 'wp_ajax_go_clipboard_stats_dataloader_ajax', 'go_clipboard_stats_dataloader_ajax' ); //OK
+    add_action( 'wp_ajax_go_clipboard_messages_dataloader_ajax', 'go_clipboard_messages_dataloader_ajax' ); //OK
+    add_action( 'wp_ajax_go_clipboard_store_dataloader_ajax', 'go_clipboard_store_dataloader_ajax' ); //OK
     add_action( 'wp_ajax_go_clipboard_save_filters', 'go_clipboard_save_filters' ); //OK
     //Messages
     add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );//OK

@@ -13,6 +13,7 @@
  * @param bool $stats
  * @param bool $profile
  * @param bool $blog
+ * @param bool $show_messages
  */
 function go_user_links($user_id, $on_stats, $website = true, $stats = false, $profile = false, $blog = false, $show_messages = false) {
     //if current user is admin, set all to true
@@ -25,11 +26,11 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
     echo" <div class='go_user_links'>";
 
     if ($stats && !$on_stats){
-        echo "<div class='go_user_link_stats go_user_link' name='{$user_id}'><a href='#';'><i class=\"fa fa-area-chart ab-icon\" aria-hidden=\"true\"></i></a></div>";
+        echo "<div class='go_user_link_stats go_user_link' name='{$user_id}'><a href='#';'><i class='fa fa-area-chart ab-icon' aria-hidden='true'></i></a></div>";
     }
     if ($profile){
         $user_edit_link = get_edit_user_link( $user_id  );
-        echo "<div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class=\"fa fa-user\" aria-hidden=\"true\"></i></a></div>";
+        echo "<div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class='fa fa-user' aria-hidden='true'></i></a></div>";
     }
     if ($blog){
         $blog_toggle = get_option('options_go_blogs_toggle');
@@ -37,14 +38,13 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
             $user_info = get_userdata($user_id);
             $userloginname = $user_info->user_login;
             $user_blog_link = get_site_url(null, '/user/' . $userloginname);
-            echo" <div class='go_user_link'><a href='$user_blog_link' target='_blank'><span class=\"dashicons dashicons-admin-post\"></span></a></div>";
+            echo" <div class='go_user_link'><a href='$user_blog_link' target='_blank'><span class='dashicons dashicons-admin-post'></span></a></div>";
         }
-
     }
     if ($website){
         $user_website = $user_obj->user_url;//user website
         if (!empty($user_website)) {
-            echo " <div class='go_user_link'><a href='$user_website' target='_blank'><span class=\"dashicons dashicons-admin-site\"></span></a></div>";
+            echo " <div class='go_user_link'><a href='$user_website' target='_blank'><span class='dashicons dashicons-admin-site'></span></a></div>";
         }
     }
     if($is_admin && $show_messages && $on_stats){
@@ -60,12 +60,7 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
     }
     echo "</div>";
 
-
-
-
 }
-
-
 
 /**
  * @param $check_type

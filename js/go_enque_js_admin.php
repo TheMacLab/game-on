@@ -116,17 +116,18 @@ function go_admin_scripts ($hook) {
             //END COMBINED
 
             // Localization
-            wp_localize_script( 'go_admin_user', 'Minutes_limit', array( 'limit' => get_option( 'go_minutes_color_limit' ) ) );
+            //wp_localize_script( 'go_admin_user', 'Minutes_limit', array( 'limit' => get_option( 'go_minutes_color_limit' ) ) );
             wp_localize_script(
                 'go_admin_user',
                 'GO_CLIPBOARD_DATA',
                 array(
                     'nonces' => array(
-                        'go_clipboard_intable'          => wp_create_nonce( 'go_clipboard_intable_' . $user_id ),
+                        'go_clipboard_stats'          => wp_create_nonce( 'go_clipboard_stats_' . $user_id ),
                         //'go_clipboard_intable_messages' => wp_create_nonce( 'go_clipboard_intable_messages_' . $user_id ),
-                        'go_clipboard_intable_activity' => wp_create_nonce( 'go_clipboard_intable_activity_' . $user_id ),
+                        'go_clipboard_activity' => wp_create_nonce( 'go_clipboard_activity_' . $user_id ),
                         //'go_activity_stateSave' => wp_create_nonce( 'go_activity_stateSave_' . $user_id ),
-                        'go_clipboard_notifications' => wp_create_nonce( 'go_clipboard_notifications'),
+                        'go_clipboard_messages' => wp_create_nonce( 'go_clipboard_messages'),
+                        'go_clipboard_store' => wp_create_nonce( 'go_clipboard_store'),
                         //'go_update_user_focuses'        => wp_create_nonce( 'go_update_user_focuses_' . $user_id ),
                         //'go_clipboard_add'              => wp_create_nonce( 'go_clipboard_add_' . $user_id ),
                         //'go_fix_messages'               => wp_create_nonce( 'go_fix_messages_' . $user_id ),

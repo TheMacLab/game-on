@@ -350,23 +350,23 @@ function go_the_lb_ajax() {
                 echo '<div class="golb-fr-boxes-g">' . $store_abs_cost_health . ' : ' . $health_name . '</div>';
             }
 
-            echo '<div id="go_badges_groups">';
+            echo '<div id="go_badges_groups" style="display: flex; flex-wrap: wrap">';
             if (!empty($badges)) {
-                echo '<div id="go_badges"><h4>Badges</h4>';
+                echo '<div id="go_store_badges" style="padding:10px;"><b>Badges</b>';
                 foreach ($badges as $badge) {
                     $term = get_term($badge);
                     $name = $term->name;
-                    echo '<div>' . $name . '</div>';
+                    echo '<br>' . $name ;
                 }
                 echo '</div>';
             }
 
             if (!empty($groups)) {
-                echo '<div id="go_groups"><h4>Groups</h4>';
+                echo '<div id="go_store_groups" style="padding:10px;"><b>Groups</b>';
                 foreach ($groups as $group) {
                     $term = get_term($group);
                     $name = $term->name;
-                    echo '<div>' . $name . '</div>';
+                    echo '<br>' . $name . '</br>';
                 }
                 echo '</div>';
             }
@@ -377,16 +377,14 @@ function go_the_lb_ajax() {
         echo "</div></div></div>";
 
         ?>
-        <div id="go_store_actions">
+        <div id="go_store_actions" style="display:flex; flex-wrap: wrap;">
             <?php
             $store_multiple_toggle = (isset($custom_fields['go-store-options_multiple'][0]) ? $custom_fields['go-store-options_multiple'][0] : null);
 
             if ($purchase_remaining_max > 0 && $store_multiple_toggle) {
                 ?>
 
-                <div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty"
-                                                                          style="width: 40px;font-size: 11px; margin-right:0px; margin-top: 0px; bottom: 3px; position: relative;"
-                                                                          type="number" value="1" disabled="disabled"/>
+                <div id="golb-fr-qty" class="golb-fr-boxes-n">Qty: <input id="go_qty" type="number" value="1" disabled="disabled"/>
                 </div>
                 <?php
             }

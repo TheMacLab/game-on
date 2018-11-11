@@ -1,96 +1,110 @@
-function go_toggle(e){checkboxes=jQuery(".go_checkbox");for(var t=0,a=checkboxes.length;t<a;t++)checkboxes[t].checked=e.checked}function go_toggle_off(){checkboxes=jQuery(".go_checkbox");for(var e=0,t=checkboxes.length;e<t;e++)checkboxes[e].checked=!1}function go_clipboard_class_a_choice(){if(
-//var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
-go_filter_datatables(),jQuery("#go_clipboard_stats_datatable").length){
-//XP////////////////////////////
-//go_sort_leaders("go_clipboard", 4);
-var s=jQuery("#go_clipboard_stats_datatable").DataTable({bPaginate:!1,
-//colReorder: true,
-order:[[5,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,stateDuration:31557600,
-//"destroy": true,
-dom:"Bfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"1px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
-//on change filter listener
-//console.log("change5");
-jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").change(function(){
-//console.log("change");
-s.draw();
-//ajax function to save the values
-var e=GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters,t=jQuery("#go_clipboard_user_go_sections_select").val(),a=jQuery("#go_clipboard_user_go_groups_select").val(),o=jQuery("#go_clipboard_go_badges_select").val();
+function go_toggle(e){checkboxes=jQuery(".go_checkbox");for(var t=0,a=checkboxes.length;t<a;t++)checkboxes[t].checked=e.checked}function go_clipboard_change_filter(){var e=jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls");console.log(e),"clipboard_wrap"==e?(console.log("1"),
+//Clipboard.draw();
+//jQuery("#clipboard_stats_datatable_container").html("");
+jQuery("#clipboard_store_datatable_container").html(""),jQuery("#clipboard_messages_datatable_container").html("")):"clipboard_store_wrap"==e?(console.log("2"),
+//Store.draw();
+//jQuery("#clipboard_stats_datatable_container").html("");
+//jQuery("#clipboard_store_datatable_container").html("");
+jQuery("#clipboard_messages_datatable_container").html("")):"clipboard_messages_wrap"==e?(console.log("3"),
+//Messages.draw();
+//jQuery("#clipboard_stats_datatable_container").html("");
+jQuery("#clipboard_store_datatable_container").html("")):"clipboard_activity_wrap"==e&&(console.log("4"),
+//Activity.draw();
+//jQuery("#clipboard_stats_datatable_container").html("");
+jQuery("#clipboard_store_datatable_container").html(""),jQuery("#clipboard_messages_datatable_container").html(""));
+//ajax to save the values
+var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters,a=jQuery("#go_clipboard_user_go_sections_select").val(),o=jQuery("#go_clipboard_user_go_groups_select").val(),r=jQuery("#go_clipboard_go_badges_select").val();
 //alert (section);
 //console.log(jQuery( '#go_clipboard_user_go_sections_select' ).val());
-jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_clipboard_save_filters",section:t,badge:o,group:a},success:function(e){
+jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_save_filters",section:a,badge:r,group:o},success:function(e){
 //console.log("values saved");
-}})}),jQuery("#records_tabs").css("margin-left","")}
+}})}function go_filter_clipboard_datatables(e){//function that filters all tables on draw
+jQuery.fn.dataTable.ext.search.push(function(e,t,a){var o=e.sTableId,r=jQuery("#go_clipboard_user_go_sections_select").val(),s=jQuery("#go_clipboard_user_go_groups_select").val(),n=jQuery("#go_clipboard_go_badges_select").val(),i=t[4],l=t[3],c=t[2];
+//console.log("mytable" + mytable);
+//if (mytable == "go_clipboard_stats_datatable" || mytable == "go_clipboard_messages_datatable" || mytable == "go_clipboard_activity_datatable") {
+// use data for the filter by column
+//console.log("data" + data);
+//console.log("badges" + badges);
+//console.log("groups" + groups);
+//console.log("sections" + sections);
+//console.log(sections);
+l=JSON.parse(l),
+//console.log("groups" + groups);
+//sections = JSON.parse(sections);
+i=JSON.parse(i);
+//console.log("badges" + badges);
+//console.log("sections" + sections);
+var d=!0;return(d="none"==s||-1!=jQuery.inArray(s,l))&&(d="none"==r||c==r),"go_clipboard_datatable"==o&&d&&(d="none"==n||-1!=jQuery.inArray(n,i)),d;
+//}
+//else{
+//   return true;
+// }
+})}function go_toggle_off(){checkboxes=jQuery(".go_checkbox");for(var e=0,t=checkboxes.length;e<t;e++)checkboxes[e].checked=!1}function go_clipboard_stats_datatable(e){
+//var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
+if(
+//hide date filter
+jQuery("#go_timestamp_filters").hide(),0==jQuery("#go_clipboard_stats_datatable").length||1==e){jQuery("#clipboard_stats_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_stats;
+//console.log("refresh" + refresh);
+//console.log("stats");
+jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_stats",date:jQuery(".datepicker").val(),refresh:e},success:function(e){
+//console.log("success");
+if(-1!==e){jQuery("#clipboard_stats_datatable_container").html(e);var t=jQuery("#go_clipboard_stats_datatable").DataTable({deferRender:!0,bPaginate:!0,
+//colReorder: true,
+order:[[5,"asc"]],responsive:!0,autoWidth:!1,
+//stateSave: true,
+stateDuration:31557600,
+//"destroy": true,
+dom:"lBfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"1px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
+//search on enter only
+jQuery("div.dataTables_filter input").unbind(),jQuery("div.dataTables_filter input").keyup(function(e){13==e.keyCode&&t.search(this.value).draw()}),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").change(function(){var e;"clipboard_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&t.draw(),go_clipboard_change_filter()}),jQuery(".go_update_clipboard").one("click",function(){var e;"clipboard_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&go_clipboard_stats_datatable(!0),go_clipboard_change_filter()}),
 //force window resize on load to initialize responsive behavior
-jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust().responsive.recalc()}function go_clipboard_class_a_choice_activity(e){if(0==jQuery("#go_clipboard_activity_datatable").length||1==e){var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_intable_activity,a=jQuery(".datepicker").val();
+jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust().responsive.recalc(),
+//the filter for client side
+go_filter_clipboard_datatables("go_clipboard_stats_datatable"),t.draw()}}})}}function go_clipboard_store_datatable(e){if(
+//show date filter
+jQuery("#go_timestamp_filters").show(),0==jQuery("#go_clipboard_store_datatable").length||1==e){jQuery("#clipboard_store_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_store;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_store"},success:function(e){
+//console.log("success");
+if(-1!==e){jQuery("#clipboard_store_datatable_container").html(e);
+//go_filter_datatables();
+var t=jQuery("#go_clipboard_store_datatable").DataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_clipboard_store_dataloader_ajax",data:function(e){
+//d.user_id = jQuery('#go_stats_hidden_input').val();
+e.date=jQuery(".datepicker").val(),e.section=jQuery("#go_clipboard_user_go_sections_select").val(),e.group=jQuery("#go_clipboard_user_go_groups_select").val(),e.badge=jQuery("#go_clipboard_go_badges_select").val()}},bPaginate:!0,
+//colReorder: true,
+order:[[8,"desc"]],responsive:!0,autoWidth:!1,
+//stateSave: true,
+//"stateDuration": 31557600,
+searchDelay:1e3,dom:"lBfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all",sortable:!1},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});jQuery("div.dataTables_filter input").unbind(),jQuery("div.dataTables_filter input").keyup(function(e){13==e.keyCode&&t.search(this.value).draw()}),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, .datepicker").change(function(){var e;"clipboard_store_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&t.draw(),go_clipboard_change_filter()}),jQuery(".go_update_clipboard").one("click",function(){var e;"clipboard_store_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&go_clipboard_store_datatable(!0),go_clipboard_change_filter()})}}})}}function go_clipboard_messages_datatable(e){if(
+//show date filter
+jQuery("#go_timestamp_filters").show(),0==jQuery("#go_clipboard_messages_datatable").length||1==e){jQuery("#clipboard_messages_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_messages;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_messages"},success:function(e){
+//console.log("success");
+if(-1!==e){jQuery("#clipboard_messages_datatable_container").html(e);
+//go_filter_datatables();
+var t=jQuery("#go_clipboard_messages_datatable").DataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_clipboard_messages_dataloader_ajax",data:function(e){
+//d.user_id = jQuery('#go_stats_hidden_input').val();
+e.date=jQuery(".datepicker").val(),e.section=jQuery("#go_clipboard_user_go_sections_select").val(),e.group=jQuery("#go_clipboard_user_go_groups_select").val(),e.badge=jQuery("#go_clipboard_go_badges_select").val()}},bPaginate:!0,
+//colReorder: true,
+order:[[8,"desc"]],responsive:!0,autoWidth:!1,searchDelay:1e3,
+//stateSave: true,
+//"stateDuration": 31557600,
+dom:"lBfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all",sortable:!1},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
+//search only on enter key
+jQuery("div.dataTables_filter input").unbind(),jQuery("div.dataTables_filter input").keyup(function(e){13==e.keyCode&&t.search(this.value).draw()}),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, .datepicker").change(function(){var e;"clipboard_messages_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&t.draw(),go_clipboard_change_filter()}),jQuery(".go_update_clipboard").one("click",function(){var e;"clipboard_messages_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&(console.log("draw"),go_clipboard_messages_datatable(!0)),go_clipboard_change_filter()})}}})}}function go_clipboard_activity_datatable(e){if(
+//show date filter
+jQuery("#go_timestamp_filters").show(),0==jQuery("#go_clipboard_activity_datatable").length||1==e){jQuery("#clipboard_activity_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_activity;
 //console.log(date);
-jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_intable_activity",go_clipboard_class_a_choice_activity:jQuery("#go_clipboard_class_a_choice_activity").val(),date:jQuery(".datepicker").val()},success:function(e){
+jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_activity",date:jQuery(".datepicker").val()},success:function(e){
 //console.log("success");
 if(-1!==e){jQuery("#clipboard_activity_datatable_container").html(e);
 //go_filter_datatables();
-var t=jQuery("#go_clipboard_activity_datatable").DataTable({bPaginate:!1,
+var t=jQuery("#go_clipboard_activity_datatable").DataTable({deferRender:!0,bPaginate:!0,
 //colReorder: true,
-order:[[4,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,stateDuration:31557600,
-/*
-                        "stateSaveCallback": function (settings, data) {
-                            // Send an Ajax request to the server with the state object
-                            console.log("save:");console.log(data);
-                            jQuery.ajax( {
-                                "type": "post",
-                                "url": MyAjax.ajaxurl,
-                                //"dataType": "json",
-                                "data": {
-                                    _ajax_nonce: nonceSave,
-                                    action: 'go_activity_stateSave',
-                                    data: data,
-                                },
-                                "success": function () {}
-                            } );
-                        },
-                        "stateLoadCallback": function (settings, callback) {
-                            jQuery.ajax( {
-                                "type": "post",
-                                "url": MyAjax.ajaxurl,
-                                //"dataType": "json",
-                                "data": {
-                                    _ajax_nonce: nonceLoad,
-                                    action: 'go_activity_stateLoad',
-                                },
-                                success: function (json) {
-                                    var json = JSON.parse(json);
-                                    console.log(json);
-                                    callback( json );
-                                }
-                            } );
-                        },*/
-//"destroy": true,
-dom:"Bfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
-//show date filter
-jQuery("#go_timestamp_filters").show(),
-//on change filter listener
-//console.log("change5");
-jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").change(function(){
-//console.log("change");
-t.draw()}),
+order:[[4,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,stateDuration:31557600,dom:"lBfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
 // Add event listener for opening and closing more actions
 jQuery("#go_clipboard_activity_datatable .show_more").click(function(){var e;
 //console.log(hidden);
-0==jQuery(this).hasClass("shown")?(jQuery(this).addClass("shown"),jQuery(this).siblings(".hidden_action").show(),jQuery(this).find(".hide_more_actions").show(),jQuery(this).find(".show_more_actions").hide()):(jQuery(this).removeClass("shown"),jQuery(this).siblings(".hidden_action").hide(),jQuery(this).find(".hide_more_actions").hide(),jQuery(this).find(".show_more_actions").show())})}}})}}function go_clipboard_notifications_datatable(e){if(0==jQuery("#go_clipboard_notifications_datatable").length||1==e){var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_notifications,a=jQuery(".datepicker").val();
-//console.log(date);
-jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_notifications",go_clipboard_notifications_datatable:jQuery("#go_clipboard_notifications_datatable").val(),date:jQuery(".datepicker").val()},success:function(e){
-//console.log("success");
-if(-1!==e){jQuery("#clipboard_notifications_wrap").html(e);
-//go_filter_datatables();
-var t=jQuery("#go_clipboard_notifications_datatable").DataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_clipboard_notifications_dataloader_ajax",data:function(e){e.user_id=jQuery("#go_stats_hidden_input").val()}//this doesn't actually pass something to my PHP like it does normally with AJAX.
-},bPaginate:!1,
-//colReorder: true,
-order:[[4,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,stateDuration:31557600,dom:"Bfrtip",drawCallback:function(e){jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()}),go_stats_links()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]});
-//show date filter
-jQuery("#go_timestamp_filters").show(),
-//on change filter listener
-//console.log("change5");
-jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").change(function(){
-//console.log("change");
-t.draw()})}}})}}
+0==jQuery(this).hasClass("shown")?(jQuery(this).addClass("shown"),jQuery(this).siblings(".hidden_action").show(),jQuery(this).find(".hide_more_actions").show(),jQuery(this).find(".show_more_actions").hide()):(jQuery(this).removeClass("shown"),jQuery(this).siblings(".hidden_action").hide(),jQuery(this).find(".hide_more_actions").hide(),jQuery(this).find(".show_more_actions").show())}),
+//search on enter only
+jQuery("div.dataTables_filter input").unbind(),jQuery("div.dataTables_filter input").keyup(function(e){13==e.keyCode&&t.search(this.value).draw()}),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").change(function(){var e;"clipboard_activity_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&t.draw(),go_clipboard_change_filter()}),jQuery(".go_update_clipboard").one("click",function(){var e;"clipboard_activity_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&(console.log("11"),go_clipboard_activity_datatable(!0)),go_clipboard_change_filter()}),jQuery(".datepicker").change(function(){var e;"clipboard_activity_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&(console.log("22"),go_clipboard_activity_datatable(!0)),go_clipboard_change_filter()})}}})}}
 // written by Dean Edwards, 2005
 // with input from Tino Zijdel, Matthias Miller, Diego Perini
 // http://dean.edwards.name/weblog/2005/10/add-event/
@@ -137,19 +151,19 @@ var t=jQuery("#post_ID").val();jQuery("#go_store_item_id .acf-input").html('[go_
 var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}function go_validate_growth(){var e=jQuery("#go_levels_growth").find("input").val();isNaN(e)?jQuery("#go_levels_growth").find("input").val(Go_orgGrowth):Go_orgGrowth=e}function go_level_names(){var e=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,t,a,o;t=0,a="",jQuery(".go_levels_repeater_names").find("input").each(function(){t++,o=a,a=jQuery(this).val(),
 //console.log (thisName);
 //console.log (prevName);
-1<t&&t!=e&&(console.log("Row:"+t),null!=a&&""!=a||(console.log("empty:"+t),console.log(a),jQuery(this).val(o),a=o))})}function go_levels_limit_each(){var o=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,s=Go_orgGrowth,r;
+1<t&&t!=e&&(console.log("Row:"+t),null!=a&&""!=a||(console.log("empty:"+t),console.log(a),jQuery(this).val(o),a=o))})}function go_levels_limit_each(){var o=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,r=Go_orgGrowth,s;
 //var growth = jQuery('#go_levels_growth').find('input').val();
-r=0,jQuery(".go_levels_repeater_numbers").find("input").each(function(){
+s=0,jQuery(".go_levels_repeater_numbers").find("input").each(function(){
 //console.log('-----------row'+ row);
-var e;r++,e=jQuery(this).val()||0,e=parseInt(e);var t=jQuery(this).closest(".acf-row").prev().find(".go_levels_repeater_numbers").find("input").val()||0;t=parseInt(t);var a=jQuery(this).closest(".acf-row").next().find(".go_levels_repeater_numbers").find("input").val()||0;a=parseInt(a),
+var e;s++,e=jQuery(this).val()||0,e=parseInt(e);var t=jQuery(this).closest(".acf-row").prev().find(".go_levels_repeater_numbers").find("input").val()||0;t=parseInt(t);var a=jQuery(this).closest(".acf-row").next().find(".go_levels_repeater_numbers").find("input").val()||0;a=parseInt(a),
 //console.log('prev' + prevVal);
 //console.log('this' + thisVal);
 //console.log('next' + nextVal);
-1===r?(//the first row
+1===s?(//the first row
 jQuery(this).attr({max:0,// substitute your own
-min:0}),jQuery(this).val(0)):r===o-1?(//the last row
-jQuery(this).attr({min:t}),jQuery(this).removeAttr("max"),e<t&&jQuery(this).val(Math.floor(t*s))):r===o||(//all the rows in teh middle
-e<a&&jQuery(this).attr({min:t,max:a}),a<e&&jQuery(this).attr({min:t}),e<t&&jQuery(this).val(t*s)
+min:0}),jQuery(this).val(0)):s===o-1?(//the last row
+jQuery(this).attr({min:t}),jQuery(this).removeAttr("max"),e<t&&jQuery(this).val(Math.floor(t*r))):s===o||(//all the rows in teh middle
+e<a&&jQuery(this).attr({min:t,max:a}),a<e&&jQuery(this).attr({min:t}),e<t&&jQuery(this).val(t*r)
 /*
             else if (thisVal > nextVal && nextVal != 0) {
 
@@ -161,25 +175,19 @@ e<a&&jQuery(this).attr({min:t,max:a}),a<e&&jQuery(this).attr({min:t}),e<t&&jQuer
             }
             */)})}jQuery(document).ready(function(){jQuery("#records_tabs").length&&(jQuery("#records_tabs").tabs(),jQuery(".clipboard_tabs").click(function(){switch(
 //console.log("tabs");
-tab=jQuery(this).attr("tab"),tab){
-/*
-                case 'store':
-                    //console.log("store");
-                    go_clipboard_class_a_choice_messages();
-                    break;
-                */
-case"activity":
+tab=jQuery(this).attr("tab"),tab){case"clipboard":console.log("stats1"),go_clipboard_stats_datatable(!1),
+//force window resize on load to initialize responsive behavior
+jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust().responsive.recalc();break;case"store":
+//console.log("messages");
+go_clipboard_store_datatable(),
+//force window resize on load to initialize responsive behavior
+jQuery("#go_clipboard_store_datatable").DataTable().columns.adjust().responsive.recalc();break;case"messages":
+//console.log("messages");
+go_clipboard_messages_datatable(),
+//force window resize on load to initialize responsive behavior
+jQuery("#go_clipboard_messages_datatable").DataTable().columns.adjust().responsive.recalc();break;case"activity":
 //console.log("activity");
-go_clipboard_class_a_choice_activity(),jQuery("#go_clipboard_activity_datatable").DataTable().columns.adjust().responsive.recalc();break;case"clipboard":
-//console.log("clipboard");
-//force window resize on load to initialize responsive behavior
-jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust().responsive.recalc();break;case"notifications":
-//console.log("notifications");
-go_clipboard_notifications_datatable(),
-//force window resize on load to initialize responsive behavior
-jQuery("#go_clipboard_notifications_datatable").DataTable().columns.adjust().responsive.recalc();break}})),jQuery("#go_clipboard_stats_datatable").length&&(go_clipboard_class_a_choice(),jQuery(".datepicker").datepicker({firstDay:0}),jQuery(".datepicker").datepicker("setDate",new Date),jQuery(".datepicker").change(function(){
-//console.log("change");
-jQuery("#go_clipboard_activity_datatable").html("<div id='loader' style='font-size: 1.5em; text-align: center; height: 200px'>loading . . .</div>"),go_clipboard_class_a_choice_activity(!0)}),jQuery(".go_datepicker_refresh").click(function(){jQuery("#go_clipboard_activity_datatable").html("<div id='loader' style='font-size: 1.5em; text-align: center; height: 200px'>loading . . .</div>"),go_clipboard_notifications_datatable(!0)}))});
+go_clipboard_activity_datatable(),jQuery("#go_clipboard_activity_datatable").DataTable().columns.adjust().responsive.recalc();break}})),jQuery("#records_tabs").length&&(go_clipboard_stats_datatable(!1),jQuery("#records_tabs").css("margin-left",""),jQuery(".datepicker").datepicker({firstDay:0}),jQuery(".datepicker").datepicker("setDate",new Date))});
 /*
   SortTable
   version 2
@@ -280,8 +288,8 @@ sort_numeric:function(e,t){return aa=parseFloat(e[0].replace(/[^0-9.-]/g,"")),is
 // A stable sort function to allow multi-level sorting of data
 // see: http://en.wikipedia.org/wiki/Cocktail_sort
 // thanks to Joseph Nahmias
-var a=0,o=e.length-1,s=!0;s;){s=!1;for(var r=a;r<o;++r)if(0<t(e[r],e[r+1])){var n=e[r];e[r]=e[r+1],e[r+1]=n,s=!0}// for
-if(o--,!s)break;for(var r=o;a<r;--r)if(t(e[r],e[r-1])<0){var n=e[r];e[r]=e[r-1],e[r-1]=n,s=!0}// for
+var a=0,o=e.length-1,r=!0;r;){r=!1;for(var s=a;s<o;++s)if(0<t(e[s],e[s+1])){var n=e[s];e[s]=e[s+1],e[s+1]=n,r=!0}// for
+if(o--,!r)break;for(var s=o;a<s;--s)if(t(e[s],e[s-1])<0){var n=e[s];e[s]=e[s-1],e[s-1]=n,r=!0}// for
 a++}// while(swap)
 }},
 /* ******************************************************************
@@ -306,7 +314,7 @@ Array.forEach=function(e,t,a){for(var o=0;o<e.length;o++)t.call(a,e[o],o,e)}),
 // generic enumeration
 Function.prototype.forEach=function(e,t,a){for(var o in e)void 0===this.prototype[o]&&t.call(a,e[o],o,e)},
 // character enumeration
-String.forEach=function(a,o,s){Array.forEach(a.split(""),function(e,t){o.call(s,e,t,a)})};
+String.forEach=function(a,o,r){Array.forEach(a.split(""),function(e,t){o.call(r,e,t,a)})};
 // globally resolve forEach enumeration
 var forEach=function(e,t,a){if(e){var o=Object;// default
 if(e instanceof Function)
