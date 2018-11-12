@@ -203,7 +203,7 @@ function go_stats_activity_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_activ
 function go_filter_datatables(){//function that filters all tables on draw
 jQuery.fn.dataTable.ext.search.push(function(e,t,a){var s=e.sTableId;
 //console.log(myTable);
-if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),_=jQuery("#go_clipboard_go_badges_select").val(),i=t[4],n=t[3],l=t[2];// use data for the filter by column
+if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),_=jQuery("#go_clipboard_go_badges_select").val(),i=t[4],n=t[3],u=t[2];// use data for the filter by column
 //console.log("data" + data);
 //console.log("badges" + badges);
 //console.log("groups" + groups);
@@ -215,10 +215,13 @@ n=JSON.parse(n),
 i=JSON.parse(i);
 //console.log("badges" + badges);
 //console.log("sections" + sections);
-var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||l==o),"go_clipboard_datatable"==s&&u&&(u="none"==_||-1!=jQuery.inArray(_,i)),u}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],l=t[1];// use data for the filter by column
-n=JSON.parse(n),l=JSON.parse(l);
+var l=!0;return(l="none"==r||-1!=jQuery.inArray(r,n))&&(l="none"==o||u==o),"go_clipboard_datatable"==s&&l&&(l="none"==_||-1!=jQuery.inArray(_,i)),l}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],u=t[1];// use data for the filter by column
+n=JSON.parse(n),u=JSON.parse(u);
 //badges = JSON.parse(badges);
-var u=!0;return(u="none"==r||-1!=jQuery.inArray(r,n))&&(u="none"==o||-1!=jQuery.inArray(o,l)),u})}function go_stats_leaderboard(){jQuery("#go_stats_lite_wrapper").remove(),jQuery("#go_leaderboard_wrapper").show(),go_filter_datatables();
+var l=!0;return(l="none"==r||-1!=jQuery.inArray(r,n))&&(l="none"==o||-1!=jQuery.inArray(o,u)),l})}function go_stats_leaderboard(){
+//jQuery( '#go_stats_lite_wrapper' ).remove();
+//jQuery("#go_leaderboard_wrapper").show();
+// go_filter_datatables();
 //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
 //remove from localized data and actions
 var e=GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;0==jQuery("#go_leaderboard_wrapper").length&&(jQuery(".go_leaderboard_wrapper").show(),jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_leaderboard",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){
@@ -335,7 +338,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(s,this.id,"r
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,i=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*i,l=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,u=jQuery("[name=health]").val()*l,c=jQuery("#go_messages_go_badges_select").val(),g=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),d=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,h={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:n,health:u,badges_toggle:g,badges:c,groups_toggle:y,groups:d};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:h,success:function(e){
+var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,i=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*i,u=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,l=jQuery("[name=health]").val()*u,c=jQuery("#go_messages_go_badges_select").val(),g=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),d=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,h={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:n,health:l,badges_toggle:g,badges:c,groups_toggle:y,groups:d};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:h,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}function Vids_Fit_and_Box(){runmefirst(function(){
 //after making the video fit, set the max width and add the lightbox code

@@ -689,9 +689,9 @@ function go_filter_datatables() { //function that filters all tables on draw
 }
 
 function go_stats_leaderboard() {
-    jQuery( '#go_stats_lite_wrapper' ).remove();
-    jQuery("#go_leaderboard_wrapper").show();
-    go_filter_datatables();
+    //jQuery( '#go_stats_lite_wrapper' ).remove();
+    //jQuery("#go_leaderboard_wrapper").show();
+   // go_filter_datatables();
 
     //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
     //remove from localized data and actions
