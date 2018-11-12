@@ -14,23 +14,32 @@
  * @param bool $profile
  * @param bool $blog
  * @param bool $show_messages
+ * @param bool $stats_lite
  */
-function go_user_links($user_id, $on_stats, $website = true, $stats = false, $profile = false, $blog = false, $show_messages = false) {
+function go_user_links($user_id, $website = true, $stats = false, $profile = false, $blog = false, $show_messages = false, $stats_lite = false) {
     //if current user is admin, set all to true
     $current_id = get_current_user_id();
+
     $is_admin = go_user_is_admin($current_id);
-    if($is_admin){
-        $stats = true;
+
+    if ($current_id ==$user_id){
+        $is_current_user = true;
     }
     $user_obj = get_userdata($user_id);
     echo" <div class='go_user_links'>";
 
-    if ($stats && !$on_stats){
-        echo "<div class='go_user_link_stats go_user_link' name='{$user_id}'><a href='#';'><i class='fa fa-area-chart ab-icon' aria-hidden='true'></i></a></div>";
+    if ($stats){
+        if ($stats_lite) {
+            echo "<div class='go_user_link'><a href='javascript:;' class='go_stats_lite' data-UserId='{$user_id}' onclick='go_stats_lite({$user_id});'><i class='fa fa-area-chart ab-icon' aria-hidden='true'></i></a></div>";
+        }else{//regular stats link
+            echo "<div class='go_user_link_stats go_user_link' name='{$user_id}'><a href='#';'><i class='fa fa-area-chart ab-icon' aria-hidden='true'></i></a></div>";
+        }
     }
-    if ($profile){
-        $user_edit_link = get_edit_user_link( $user_id  );
-        echo "<div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class='fa fa-user' aria-hidden='true'></i></a></div>";
+    if ($profile) {
+        if ($is_current_user || ($is_admin)) {
+            $user_edit_link = get_edit_user_link($user_id);
+            echo "<div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class='fa fa-user' aria-hidden='true'></i></a></div>";
+        }
     }
     if ($blog){
         $blog_toggle = get_option('options_go_blogs_toggle');
@@ -47,16 +56,11 @@ function go_user_links($user_id, $on_stats, $website = true, $stats = false, $pr
             echo " <div class='go_user_link'><a href='$user_website' target='_blank'><span class='dashicons dashicons-admin-site'></span></a></div>";
         }
     }
-    if($is_admin && $show_messages && $on_stats){
-        echo "<div id='go_stats_messages_icon_stats' class='go_stats_messages_icon go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
-        //make the messages icon a link to this user
-        echo '<script>console.log("on_stats");  jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id);}); </script>';
-    }
-    else if($is_admin && $show_messages ){
+
+    if($is_admin && $show_messages ){
         echo "<div id='go_stats_messages_icon_blog' class='go_stats_messages_icon go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
         //make the messages icon a link to this user
-        echo '<script>console.log("on_blog"); jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id); }); </script>';
-        echo "<script>  jQuery('.go_user_link_stats').one('click', function(){  var user_id = jQuery(this).attr('name'); go_admin_bar_stats_page_button(user_id)}); </script>";
+
     }
     echo "</div>";
 

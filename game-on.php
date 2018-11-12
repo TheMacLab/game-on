@@ -107,6 +107,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
 
     //in the admin/ajax directory
     include_once('src/admin/ajax/go_clipboard.php');
+    include_once('src/admin/ajax/go_store_make_html.php');
 
     //in the ajax directory
     include_once('src/ajax/go_admin_ajax.php');
@@ -146,6 +147,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_stats_badges_list', 'go_stats_badges_list' ); //OK
     add_action( 'wp_ajax_go_stats_groups_list', 'go_stats_groups_list' ); //OK
     add_action( 'wp_ajax_go_stats_leaderboard', 'go_stats_leaderboard' ); //OK
+    add_action( 'wp_ajax_go_stats_leaderboard_dataloader_ajax', 'go_stats_leaderboard_dataloader_ajax');
     add_action( 'wp_ajax_go_stats_lite', 'go_stats_lite' ); //OK
     add_action( 'wp_ajax_go_stats_about', 'go_stats_about' ); //OK
     add_action( 'wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
@@ -196,7 +198,6 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     include_once('src/admin/go_datatable.php');
     include_once('src/admin/go_shortcodes_button.php');
     include_once('src/admin/go_store_admin.php');
-    include_once('src/admin/go_store_make_html.php');
     include_once('src/admin/go_task_admin.php');
     include_once('src/admin/go_user_bio.php');
 

@@ -2903,6 +2903,13 @@
 		"oAP": "/src/admin/ajax/go_clipboard.php",
 		"oF": 0
 		},
+	"/src/admin/ajax/go_store_make_html.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/admin/ajax/go_store_make_html.php",
+		"oF": 0
+		},
 	"/src/admin/clone_button.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -2943,13 +2950,6 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "/src/admin/go_store_admin.php",
-		"oF": 0
-		},
-	"/src/admin/go_store_make_html.php": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 0,
-		"oAP": "/src/admin/go_store_make_html.php",
 		"oF": 0
 		},
 	"/src/admin/go_task_admin.php": {

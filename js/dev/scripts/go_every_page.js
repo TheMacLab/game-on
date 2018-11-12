@@ -105,8 +105,6 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
                         case 'leaderboard':
                             go_stats_leaderboard();
                             break;
-
-
                     }
                 });
 
@@ -119,10 +117,14 @@ function go_admin_bar_stats_page_button( id ) {//this is called from the admin b
 function go_stats_links(){
     jQuery('.go_user_link_stats').prop('onclick',null).off('click');
     jQuery('.go_user_link_stats').one('click', function(){  var user_id = jQuery(this).attr('name'); go_admin_bar_stats_page_button(user_id)});
+
+    jQuery('.go_stats_messages_icon').prop('onclick',null).off('click');
+    jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id); });
+
 }
 
 function go_stats_about(user_id) {
-    console.log("about");
+    //console.log("about");
     //jQuery(".go_datatables").hide();
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_about;
     if ( jQuery( "#go_stats_about" ).length == 0 ) {
@@ -136,8 +138,8 @@ function go_stats_about(user_id) {
             },
             success: function (res) {
                 if (-1 !== res) {
-                    console.log(res);
-                    console.log("about me");
+                    //console.log(res);
+                    //console.log("about me");
                     //jQuery( '#go_stats_body' ).html( '' );
                     //var oTable = jQuery('#go_tasks_datatable').dataTable();
                     //oTable.fnDestroy();
@@ -152,7 +154,7 @@ function go_stats_about(user_id) {
 }
 
 function go_blog_lightbox_opener(post_id){
-    console.log("open");
+    //console.log("open");
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_lightbox_opener;
     jQuery.ajax({
         type: 'post',
@@ -198,6 +200,7 @@ function go_stats_task_list() {
                     if (-1 !== res) {
                         jQuery('#stats_tasks').html(res);
                         jQuery('#go_tasks_datatable').dataTable({
+                            deferRender: true,
                             responsive: true,
                             "autoWidth": false,
                             "order": [[jQuery('th.go_tasks_timestamps').index(), "desc"]],
@@ -704,53 +707,51 @@ function go_stats_leaderboard() {
                 user_id: jQuery('#go_stats_hidden_input').val()
             },
             success: function( raw ) {
-                console.log('success');
-                ////console.log(raw);
-                // parse the raw response to get the desired JSON
-                var res = {};
-                try {
-                    var res = JSON.parse( raw );
-                } catch (e) {
-                    console.log("parse_error");
-                }
-                ////console.log(res.xp_sticky);
-                //console.log(res.html);
+                //console.log(raw);
+                //console.log('success');
 
-                jQuery('#stats_leaderboard').html(res.html);
-
+                jQuery('#stats_leaderboard').html(raw);
 
                 //jQuery(document).ready(function() {
-                console.log("________here___________");
-                if (jQuery("#go_leaders_datatable").length) {
-
+                //console.log("________here___________");
+                //if (jQuery("#go_leaders_datatable").length) {
+                    var section = jQuery('#go_user_go_sections_select').val();
+                    //console.log(section);
                     //XP////////////////////////////
                     //go_sort_leaders("go_xp_leaders_datatable", 4);
                     var table = jQuery('#go_leaders_datatable').DataTable({
+                        "processing": true,
+                        "serverSide": true,
+                        "ajax": {
+                            "url": MyAjax.ajaxurl + '?action=go_stats_leaderboard_dataloader_ajax',
+                            "data": function(d){
+                                //d.user_id = jQuery('#go_stats_hidden_input').val();
+                                //d.date = jQuery( '.datepicker' ).val();
+                                d.section = jQuery('#go_user_go_sections_select').val();
+                                d.group = jQuery('#go_user_go_groups_select').val();
+                                //d.badge = jQuery('#go_clipboard_go_badges_select').val();
+                            }
+                        },
                         //"orderFixed": [[4, "desc"]],
                         //"destroy": true,
                         responsive: false,
                         "autoWidth": false,
                         "paging": true,
-                        "order": [[4, "desc"]],
-                        "columnDefs": [
-
-                            {
-                                "targets": [1],
-                                "visible": false
-                            },
-                            {
-                                "targets": [2],
-                                "visible": false
-                            }
-                        ]
+                        "order": [[2, "desc"]],
+                        "drawCallback": function( settings ) {
+                            go_stats_links();
+                        },
+                        "searching": false
                     });
-
+                    /*
+                    //index column
                     table.on( 'order.dt search.dt', function () {
                         table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                             cell.innerHTML = i+1;
                         } );
                     } ).draw();
-                }
+                    */
+                //}
 
 
                 // Event listener to the range filtering inputs to redraw on input
@@ -779,15 +780,22 @@ function go_stats_lite (user_id) {
             uid: user_id
         },
         success: function( res ) {
+
+            jQuery.featherlight(res, {variant: 'stats_lite'});
+
             if ( -1 !== res ) {
-                //jQuery( '#go_stats_body' ).html( '' );
-                jQuery( '#go_stats_lite_wrapper' ).remove();
-                jQuery( '#stats_leaderboard' ).append( res );
-                jQuery("#go_leaderboard_wrapper").hide();
+                //jQuery( '#go_stats_lite_wrapper' ).remove();
+                //jQuery( '#stats_leaderboard' ).append( res );
+                //jQuery("#go_leaderboard_wrapper").hide();
                 jQuery('#go_tasks_datatable_lite').dataTable({
                     "destroy": true,
                     responsive: true,
                     "autoWidth": false,
+                    "drawCallback": function( settings ) {
+                        go_stats_links();
+                    },
+                    "searching": false
+
 
                 });
 

@@ -75,7 +75,7 @@ get_header();
                 <div class='go_stats_user_info'>
                     <?php echo "<h2>{$user_fullname}</h2>{$user_display_name}<br>"; ?>
                     <?php
-                    go_user_links($user_id,false, true, false, false, false, true);
+                    go_user_links($user_id, true, true, true, false, true, true);
                     if ($current_user_id === $user_id){
                         echo '<button class="go_blog_opener" blog_post_id ="">New Post</button>';
                      }
@@ -208,7 +208,8 @@ if ($current_user_id === $user_id){
             tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
             jQuery('#go_hidden_mce').remove();
             jQuery('#go_hidden_mce_edit').remove();
-            jQuery('#wpadminbar').css('z-index', 99999)
+            jQuery('#wpadminbar').css('z-index', 99999);
+            go_stats_links();
         });
 
     </script>

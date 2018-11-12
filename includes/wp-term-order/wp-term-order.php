@@ -411,9 +411,9 @@ final class WP_Term_Order {
 		);
 
         if ($taxonomy == 'store_types') {
-            $html = go_make_store_html();
+            $store = go_make_store_html();
 
-            update_option('go_store_html', $html);
+            update_option('go_store_html', $store);
         }
 
         if ($taxonomy == 'task_chains') {

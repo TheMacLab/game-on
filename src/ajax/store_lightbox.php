@@ -352,7 +352,8 @@ function go_the_lb_ajax() {
 
             echo '<div id="go_badges_groups" style="display: flex; flex-wrap: wrap">';
             if (!empty($badges)) {
-                echo '<div id="go_store_badges" style="padding:10px;"><b>Badges</b>';
+                $badges_name_plural = get_option('options_go_badges_name_plural');
+                echo '<div id="go_store_badges" style="padding:10px;"><b>'.$badges_name_plural.'</b>';
                 foreach ($badges as $badge) {
                     $term = get_term($badge);
                     $name = $term->name;

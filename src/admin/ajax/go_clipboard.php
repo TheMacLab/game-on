@@ -383,7 +383,7 @@ function go_clipboard_stats() {
                     <td>{$user_lastname}</td>
                     <td>{$user_display_name}</td>
                     <td>";
-            go_user_links($user_id, false, true, true, true, true, false);
+            go_user_links($user_id, true, true, true, true, true, false);
             echo " </a></td>
                     ";
 
@@ -813,7 +813,7 @@ function go_clipboard_store_dataloader_ajax(){
         $time  = date("m/d/y g:i A", strtotime($TIMESTAMP));
 
         ob_start();
-        go_user_links($user_id, false, true, true, true, true, false);
+        go_user_links($user_id, true, true, true, true, true, false);
         $links = ob_get_clean();
 
         $check_box = "<input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/>";
@@ -912,45 +912,7 @@ function go_clipboard_messages() {
 function go_clipboard_messages_dataloader_ajax(){
     global $wpdb;
     //FIRST GET THE SEARCH PARAMETERS FROM OTHER TABLES
-    //STORE IDS
-    //if there is a search value, get the store ids that match by title and description
-    $store_item_ids = array();
     $search_val = $_GET['search']['value'];
-    if (isset($search_val) && $search_val != "") {
-        $sTable = "{$wpdb->prefix}posts";
-
-        //columns that will be returned
-        $aColumns = array('ID');
-
-        //columns that will be searched
-        $sColumns = array('post_content', "post_title");
-
-        $search_val = $_GET['search']['value'];
-
-        $sWhere = "WHERE (post_type = 'go_store') ";
-
-        $sWhere .= " AND (";
-        for ($i = 0; $i < count($sColumns); $i++) {
-            $sWhere .= "`" . $sColumns[$i] . "` LIKE '%" . esc_sql($search_val) . "%' OR ";
-        }
-        $sWhere = substr_replace($sWhere, "", -3);//removes the last OR
-
-        $sWhere .= ')';
-
-        $sQuery = "
-            SELECT SQL_CALC_FOUND_ROWS `" . str_replace(" , ", " ", implode("`, `", $aColumns)) . "`
-            FROM   $sTable
-            $sWhere
-        ";
-
-        $rResult = $wpdb->get_results($sQuery, ARRAY_A);
-        foreach ($rResult as $store_item_id) {
-            $store_item_ids[]= $store_item_id['ID'];
-        }
-    }
-    if (empty($store_item_ids)){
-        $store_item_ids[] = 'none';
-    }
 
     //USER IDS
     //if there is a search value, get the user ids that match by name
@@ -1029,17 +991,7 @@ function go_clipboard_messages_dataloader_ajax(){
         $sWhere = substr_replace( $sWhere, "", -3 );
         $sWhere .= ')';
 
-        //search for source_ids
-        //columns source_id column
-        $sColumns = array('source_id');
-        //Store IDs added to search
-        $sWhere .= " OR (";
-        for ($i = 0; $i < count($store_item_ids); $i++) {
-            $search_val = $store_item_ids[$i];
-            $sWhere .= "`" . $sColumns[0] . "` LIKE '%" . esc_sql($search_val) . "%' OR ";
-        }
-        $sWhere = substr_replace($sWhere, "", -3);//removes the last OR
-        $sWhere .= ')';
+
 
 
         //search for User IDs
@@ -1265,7 +1217,7 @@ function go_clipboard_messages_dataloader_ajax(){
         $time  = date("m/d/y g:i A", strtotime($TIMESTAMP));
 
         ob_start();
-        go_user_links($user_id, false, true, true, true, true, false);
+        go_user_links($user_id, true, true, true, true, true, false);
         $links = ob_get_clean();
 
         $check_box = "<input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/>";
@@ -1656,7 +1608,7 @@ function go_clipboard_activity() {
 					<td>{$user_lastname}</td>
 					<td>{$user_display_name}</td>
 					<td>";
-                go_user_links($user_id, false, true, true, true, true, false);
+                go_user_links($user_id, true, true, true, true, true, false);
                 echo " </a></td>
 					<td class='user_activity' style='padding: 4px;'>{$action_list} </td>
 				  </tr>";
