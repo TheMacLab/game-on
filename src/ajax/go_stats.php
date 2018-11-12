@@ -792,6 +792,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
             $bonus_status_order = $bonus_status/$total_bonus_stages;
             $bonus_str = $bonus_status . " / " . $total_bonus_stages;
         }else{
+            $bonus_status_order = 0;
             $bonus_str = null;
         }
         echo " <tr id='postID_{$post_id}'>";
