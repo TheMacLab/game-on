@@ -211,7 +211,7 @@ function go_clipboard_stats_datatable(refresh) {
                         "order": [[5, "asc"]],
                         responsive: true,
                         "autoWidth": false,
-                        //stateSave: true,
+                        stateSave: true,
                         "stateDuration": 31557600,
                         //"destroy": true,
                         dom: 'lBfrtip',
@@ -385,8 +385,8 @@ function go_clipboard_store_datatable(refresh) {
                         "order": [[8, "desc"]],
                         responsive: true,
                         "autoWidth": false,
-                        //stateSave: true,
-                        //"stateDuration": 31557600,
+                        stateSave: true,
+                        "stateDuration": 31557600,
                         searchDelay: 1000,
                         dom: 'lBfrtip',
                         "drawCallback": function( settings ) {
@@ -520,8 +520,8 @@ function go_clipboard_messages_datatable(refresh) {
                         responsive: true,
                         "autoWidth": false,
                         searchDelay: 1000,
-                        //stateSave: true,
-                        //"stateDuration": 31557600,
+                        stateSave: true,
+                        "stateDuration": 31557600,
                         dom: 'lBfrtip',
                         "drawCallback": function( settings ) {
                             jQuery('.go_messages_icon').prop('onclick',null).off('click');

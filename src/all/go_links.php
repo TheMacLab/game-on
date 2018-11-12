@@ -24,6 +24,8 @@ function go_user_links($user_id, $website = true, $stats = false, $profile = fal
 
     if ($current_id ==$user_id){
         $is_current_user = true;
+    }else{
+        $is_current_user = false;
     }
     $user_obj = get_userdata($user_id);
     echo" <div class='go_user_links'>";
