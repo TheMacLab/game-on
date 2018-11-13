@@ -2479,8 +2479,8 @@ function go_stats_leaderboard_dataloader_ajax() {
 
     //CREATE THE QUERY
     //FILTER VALUES
-    $section = $_GET['section'];
-    $group = $_GET['group'];
+    $section = intval($_GET['section']);
+    $group = intval($_GET['group']);
 
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
 
@@ -2627,19 +2627,10 @@ function go_stats_leaderboard_dataloader_ajax() {
             $num_sections =1;
         }
         $user_periods= array();
-        $user_period_name= array();
-        $user_seat = array();
         for ($i = 0; $i < $num_sections; $i++) {
             $user_period_option = "go_section_and_seat_" . $i . "_user-section";
-            $user_seat_option = "go_section_and_seat_" . $i . "_user-seat";
-
-            $user_period = get_user_meta($user_id, $user_period_option, true);
+            $user_period = intval(get_user_meta($user_id, $user_period_option, true));
             $user_periods[] = $user_period;
-            $term = get_term($user_period, "user_go_sections");
-            //$user_period_name = $term->name;
-            $user_period_name[] = (isset($term->name) ? $term->name : null);
-
-            $user_seat[] = get_user_meta($user_id, $user_seat_option, true);
         }
         if ($section != 'none') {
             $in_array = in_array($section, $user_periods);
@@ -2689,87 +2680,7 @@ function go_stats_leaderboard_dataloader_ajax() {
 
     echo json_encode( $output );
     die();
-    /*
-    $rows = $wpdb->get_results("SELECT * 
-			        FROM {$go_totals_table_name}"
 
-    );
-                foreach ( $rows as $row ) {
-                $user_id = $row->uid;
-                $is_admin = go_user_is_admin($user_id);
-                if($is_admin){
-                    continue;
-                }
-
-                $group_ids = $row->groups;
-                $group_ids = unserialize($group_ids);
-                $group_ids = json_encode($group_ids);
-
-                //$sections = get_user_meta($user_id, "go_sections");
-                $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
-                $sections = array();
-                for ($i = 0; $i < $num_terms; $i++) {
-
-                    $user_period = "go_section_and_seat_" . $i . "_user-section";
-                    $user_period = get_user_meta($user_id, $user_period, true);
-                    $sections[] = $user_period;
-
-                }
-                $sections = json_encode($sections);
-                $user_data = get_userdata( $user_id );
-                $user_name = $user_data->display_name;
-                $xp = $row->xp;
-                $gold = $row->gold;
-                $health = $row->health;
-                $badge_count = $row->badge_count;
-
-                if ($user_id == $current_user_id){
-                    $is_user = 'go_is_user';
-                }else{
-                    $is_user = null;
-                }
-
-                echo "<tr class='{$is_user}'><td></td><td>" . $sections . "</td><td>$group_ids</td><td><a href='javascript:;' class='go_stats_lite' data-UserId='{$user_id}' onclick='go_stats_lite({$user_id});'>$user_name</a></td>";
-                if($xp_toggle){
-                    echo "<td>" . $xp . "</td>";
-                }
-                if($gold_toggle){
-                    echo "<td>" . $gold . "</td>";
-                }
-                if($health_toggle){
-                    echo "<td>" . $health . "</td>";
-                }
-                if($badges_toggle){
-                    echo "<td>" . $badge_count . "</td>";
-                }
-
-                echo "</tr>";
-
-            }
-            ?>
-
-                        </tbody></table>
-                </div>
-
-        </div>
-    </div>
-
-    <?php
-
-    $buffer = ob_get_contents();
-
-    ob_end_clean();
-
-    // constructs the JSON response
-    echo json_encode(
-        array(
-            'json_status' => 'success',
-            'html' => $buffer
-        )
-    );
-
-    die();
-    */
 }
 
 
