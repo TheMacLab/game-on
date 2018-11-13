@@ -15,10 +15,10 @@ function go_create_admin_message (){
     //$user_ids = $_POST['user_ids'];
     $post_id = $_POST['post_id'];
     $message_type = $_POST['message_type'];
-
+    $user_ids = array_unique($user_ids);
 
     if (empty($user_ids)){
-        ?> <div>No User Selected.</div> <?php
+        echo" <div>No User Selected.</div>";
         die();
     }
 

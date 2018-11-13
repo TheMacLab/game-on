@@ -1,4 +1,5 @@
 jQuery( document ).ready( function() {
+
     	if ( jQuery( '#records_tabs' ).length ) {
 		jQuery('#records_tabs').tabs();
         jQuery( '.clipboard_tabs' ).click( function() {
@@ -7,7 +8,7 @@ jQuery( document ).ready( function() {
             switch (tab) {
 
                 case 'clipboard':
-                    console.log("stats1");
+                    //console.log("stats1");
                     go_clipboard_stats_datatable(false);
                     //force window resize on load to initialize responsive behavior
                     jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust()
@@ -41,8 +42,11 @@ jQuery( document ).ready( function() {
         go_clipboard_stats_datatable(false);
         jQuery("#records_tabs").css("margin-left", '');
 
-        jQuery( ".datepicker" ).datepicker({ firstDay: 0 });
-        jQuery(".datepicker").datepicker('setDate', new Date());
+        //initialize the datepicker inputs
+        jQuery( "#datepicker-store" ).datepicker({ firstDay: 0 });
+        jQuery( "#datepicker-messages" ).datepicker({ firstDay: 0 });
+        jQuery( "#datepicker-activity" ).datepicker({ firstDay: 0 });
+        jQuery("#datepicker-activity").datepicker('setDate', new Date());//today's date
 	}
 
 });
@@ -54,42 +58,177 @@ function go_toggle( source ) {
 	}
 }
 
-function go_clipboard_change_filter() {
-    var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-    console.log(current_tab);
-    if (current_tab == "clipboard_wrap"){
-        console.log("1");
-        //Clipboard.draw();
-        //jQuery("#clipboard_stats_datatable_container").html("");
-        jQuery("#clipboard_store_datatable_container").html("");
-        jQuery("#clipboard_messages_datatable_container").html("");
-        //jQuery("#clipboard_activity_datatable_container").html("");
-    }
-    else if (current_tab == "clipboard_store_wrap") {
-        console.log("2");
-        //Store.draw();
-        //jQuery("#clipboard_stats_datatable_container").html("");
-        //jQuery("#clipboard_store_datatable_container").html("");
-        jQuery("#clipboard_messages_datatable_container").html("");
-        //jQuery("#clipboard_activity_datatable_container").html("");
-    }
-    else if (current_tab == "clipboard_messages_wrap") {
-        console.log("3");
-        //Messages.draw();
-        //jQuery("#clipboard_stats_datatable_container").html("");
-        jQuery("#clipboard_store_datatable_container").html("");
-        //jQuery("#clipboard_messages_datatable_container").html("");
-        //jQuery("#clipboard_activity_datatable_container").html("");
-    }
-    else if (current_tab == "clipboard_activity_wrap") {
-        console.log("4");
-        //Activity.draw();
-        //jQuery("#clipboard_stats_datatable_container").html("");
-        jQuery("#clipboard_store_datatable_container").html("");
-        jQuery("#clipboard_messages_datatable_container").html("");
-        //jQuery("#clipboard_activity_datatable_container").html("");
-    }
+function go_clipboard_callback() {
+    //*******************//
+    // ALL TABS
+    //*******************//
+        //Apply on click to the stats and messages buttons in the table
+        go_stats_links();
 
+        //apply on click to the messages button at the top
+        jQuery('.go_messages_icon').prop('onclick',null).off('click');
+        jQuery(".go_messages_icon").one("click", function(e){
+            go_messages_opener();
+        });
+
+    //*******************//
+    //GET CURRENT TAB
+    //*******************//
+        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
+        console.log(current_tab);
+
+    //IF CURRENT TAB IS . . .
+        if (current_tab == "clipboard_wrap"){
+            //recalculate for responsive behavior
+            jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust()
+                .responsive.recalc();
+
+            //show date filter
+            jQuery('#go_timestamp_filters').hide();
+            //jQuery('#datepicker-store').show();
+            //jQuery('#datepicker-messages').hide();
+            //jQuery('#datepicker-activity').hide();
+
+            //update button--set this table to update
+            jQuery('.go_update_clipboard').prop('onclick',null).off('click');//unbind click
+            jQuery('.go_update_clipboard').one("click", function () {
+                    go_clipboard_stats_datatable(true);
+            });
+
+            //if filters are changed, redraw the table
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').unbind();
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change(function () {
+                //Apply filter tags to table
+                go_filter_clipboard_datatables(true);
+                //redraw table
+                Clipboard.draw();
+                go_save_clipboard_filters();
+            });
+
+            //search
+            jQuery("div.dataTables_filter input").unbind();
+            //search on leave
+            jQuery("div.dataTables_filter input").blur( function (e) {
+                Clipboard.search( this.value ).draw();
+            });
+            //search on clear with 'x'
+            document.querySelector("#go_clipboard_stats_datatable_filter input").onsearch = function (e) {
+                Clipboard.search( this.value ).draw();
+            };
+        }
+        else if (current_tab == "clipboard_store_wrap") {
+            //recalculate for responsive behavior
+            jQuery("#go_clipboard_store_datatable").DataTable().columns.adjust()
+                .responsive.recalc();
+
+            //show date filter
+            jQuery('#go_timestamp_filters').show();
+            jQuery('#datepicker-store').show();
+            jQuery('#datepicker-messages').hide();
+            jQuery('#datepicker-activity').hide();
+
+            //update button--set this table to update
+            jQuery('.go_update_clipboard').prop('onclick',null).off('click');//unbind click
+            jQuery('.go_update_clipboard').one("click", function () {
+                go_clipboard_store_datatable(true);
+            });
+
+            //if filters are changed, redraw the table
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').unbind();
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-store').change(function () {
+                Store.draw();
+                go_save_clipboard_filters();
+            });
+
+
+            //search
+            jQuery("div.dataTables_filter input").unbind();
+            //search on leave
+            jQuery("div.dataTables_filter input").blur( function (e) {
+                Store.search( this.value ).draw();
+            });
+            //search on clear with 'x'
+            document.querySelector("#go_clipboard_store_datatable_filter input").onsearch = function (e) {
+                Store.search( this.value ).draw();
+            };
+        }
+        else if (current_tab == "clipboard_messages_wrap") {
+            //recalculate for responsive behavior
+            jQuery("#go_clipboard_messages_datatable").DataTable().columns.adjust()
+                .responsive.recalc();
+
+            //show date filter
+            jQuery('#go_timestamp_filters').show();
+            jQuery('#datepicker-store').hide();
+            jQuery('#datepicker-messages').show();
+            jQuery('#datepicker-activity').hide();
+
+            //update button--set this table to update
+            jQuery('.go_update_clipboard').prop('onclick',null).off('click');//unbind click
+            jQuery('.go_update_clipboard').one("click", function () {
+                go_clipboard_messages_datatable(true);
+            });
+
+            //if filters are changed, redraw the table
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').unbind();
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-messages').change(function () {
+                Messages.draw();
+                go_save_clipboard_filters();
+            });
+
+            //search
+            jQuery("div.dataTables_filter input").unbind();
+            //search on leave
+            jQuery("div.dataTables_filter input").blur( function (e) {
+                Messages.search( this.value ).draw();
+            });
+            //search on clear with 'x'
+            document.querySelector("#go_clipboard_messages_datatable_filter input").onsearch = function (e) {
+                Messages.search( this.value ).draw();
+            };
+        }
+        else if (current_tab == "clipboard_activity_wrap") {
+            //recalculate for responsive behavior
+            jQuery("#go_clipboard_activity_datatable").DataTable().columns.adjust()
+                .responsive.recalc();
+
+            //show date filter
+            jQuery('#go_timestamp_filters').show();
+            jQuery('#datepicker-store').hide();
+            jQuery('#datepicker-messages').hide();
+            jQuery('#datepicker-activity').show();
+
+            //update button--set this table to update
+            jQuery('.go_update_clipboard').prop('onclick',null).off('click');//unbind click
+            jQuery('.go_update_clipboard').one("click", function () {
+                go_clipboard_activity_datatable(true);
+            });
+
+            //if filters are changed, redraw the table
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').unbind();
+            jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-activity').change(function () {
+                //Apply filter tags to table
+                go_filter_clipboard_datatables(true);
+                //redraw table
+                Activity.draw();
+                go_save_clipboard_filters();
+            });
+
+            //search
+            jQuery("div.dataTables_filter input").unbind();
+            //search on leave
+            jQuery("div.dataTables_filter input").blur( function (e) {
+                Activity.search( this.value ).draw();
+            });
+            //search on clear with 'x'
+            document.querySelector("#go_clipboard_activity_datatable_filter input").onsearch = function (e) {
+                Activity.search( this.value ).draw();
+            };
+        }
+
+}
+
+function go_save_clipboard_filters(){
     //ajax to save the values
     var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters;
     var section = jQuery( '#go_clipboard_user_go_sections_select' ).val();
@@ -112,14 +251,12 @@ function go_clipboard_change_filter() {
             //console.log("values saved");
         }
     });
-
 }
 
-function go_filter_clipboard_datatables(mytable) { //function that filters all tables on draw
+function go_filter_clipboard_datatables(filter_badges) { //function that filters all tables on draw
     jQuery.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
             var mytable = settings.sTableId;
-            //console.log("mytable" + mytable);
             //if (mytable == "go_clipboard_stats_datatable" || mytable == "go_clipboard_messages_datatable" || mytable == "go_clipboard_activity_datatable") {
                 var section = jQuery('#go_clipboard_user_go_sections_select').val();
                 var group = jQuery('#go_clipboard_user_go_groups_select').val();
@@ -127,20 +264,13 @@ function go_filter_clipboard_datatables(mytable) { //function that filters all t
                 var badges =  data[4] ;
                 var groups =  data[3] ; // use data for the filter by column
                 var sections = data[2]; // use data for the filter by column
-                //console.log("data" + data);
-                //console.log("badges" + badges);
-                //console.log("groups" + groups);
-                //console.log("sections" + sections);
-                //console.log(sections);
+
 
 
                 groups = JSON.parse(groups);
-
-                //console.log("groups" + groups);
                 //sections = JSON.parse(sections);
                 badges = JSON.parse(badges);
                 //console.log("badges" + badges);
-
                 //console.log("sections" + sections);
 
                 var inlist = true;
@@ -157,12 +287,14 @@ function go_filter_clipboard_datatables(mytable) { //function that filters all t
                         inlist = false;
                     }
                 }
-                if (mytable == "go_clipboard_datatable") {
+                if (filter_badges == true) {
                     if (inlist) {
                         if (badge == "none" || jQuery.inArray(badge, badges) != -1) {
                             inlist = true;
+                            //console.log(inlist);
                         } else {
                             inlist = false;
+                            //console.log(inlist);
                         }
                     }
                 }
@@ -182,9 +314,6 @@ function go_toggle_off() {
 }
 
 function go_clipboard_stats_datatable(refresh) {
-    //hide date filter
-    jQuery('#go_timestamp_filters').hide();
-	//var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_intable;
 	if (jQuery("#go_clipboard_stats_datatable").length == 0  || refresh == true) {
         jQuery("#clipboard_stats_datatable_container").html("<h2>Loading . . .</h2>");
         var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_stats;
@@ -204,25 +333,20 @@ function go_clipboard_stats_datatable(refresh) {
                 if (-1 !== res) {
                     jQuery('#clipboard_stats_datatable_container').html(res);
 
-                    var Clipboard = jQuery('#go_clipboard_stats_datatable').DataTable({
+                    Clipboard = jQuery('#go_clipboard_stats_datatable').DataTable({
                         deferRender: true,
                         "bPaginate": true,
                         //colReorder: true,
                         "order": [[5, "asc"]],
                         responsive: true,
                         "autoWidth": false,
-                        stateSave: true,
+                        //stateSave: true,
                         "stateDuration": 31557600,
                         //"destroy": true,
                         dom: 'lBfrtip',
                         "drawCallback": function( settings ) {
-                            jQuery('.go_messages_icon').prop('onclick',null).off('click');
-                            jQuery(".go_messages_icon").one("click", function(e){
-                                go_messages_opener();
-                            });
-                            go_stats_links();
+                            go_clipboard_callback();
                         },
-
                         "columnDefs": [
                             { type: 'natural', targets: '_all'  },
                             {
@@ -309,48 +433,21 @@ function go_clipboard_stats_datatable(refresh) {
 
                         ]
                     });
-
-                    //search on enter only
-                    jQuery("div.dataTables_filter input").unbind();
-                    jQuery("div.dataTables_filter input").keyup( function (e) {
-                        if (e.keyCode == 13) {
-                            Clipboard.search( this.value ).draw();
-                        }
-                    });
-
-                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change(function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_wrap"){
-                            Clipboard.draw();
-                        }
-                        go_clipboard_change_filter();
-                    });
-
-                    jQuery('.go_update_clipboard').one("click", function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_wrap"){
-                            go_clipboard_stats_datatable(true);
-                        }
-                        go_clipboard_change_filter();
-                    });
-
-                    //force window resize on load to initialize responsive behavior
-                    jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust()
-                        .responsive.recalc();
-
-                    //the filter for client side
-                    go_filter_clipboard_datatables("go_clipboard_stats_datatable");
+                    //Filter the table
+                    go_filter_clipboard_datatables(true);
+                    //redraw table
                     Clipboard.draw();
+
+
                 }
             }
         });
+    }else{
+        go_clipboard_callback();
     }
 }
 
 function go_clipboard_store_datatable(refresh) {
-    //show date filter
-    jQuery('#go_timestamp_filters').show();
-
     if ( jQuery( "#go_clipboard_store_datatable" ).length == 0  || refresh == true) {
         jQuery("#clipboard_store_datatable_container").html("<h2>Loading . . .</h2>");
         var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_store;
@@ -367,14 +464,14 @@ function go_clipboard_store_datatable(refresh) {
                 if (-1 !== res) {
                     jQuery('#clipboard_store_datatable_container').html(res);
                     //go_filter_datatables();
-                    var Store = jQuery('#go_clipboard_store_datatable').DataTable({
+                    Store = jQuery('#go_clipboard_store_datatable').DataTable({
                         "processing": true,
                         "serverSide": true,
                         "ajax": {
                             "url": MyAjax.ajaxurl + '?action=go_clipboard_store_dataloader_ajax',
                             "data": function(d){
                                 //d.user_id = jQuery('#go_stats_hidden_input').val();
-                                d.date = jQuery( '.datepicker' ).val();
+                                d.date = jQuery( '#datepicker-store' ).val();
                                 d.section = jQuery('#go_clipboard_user_go_sections_select').val();
                                 d.group = jQuery('#go_clipboard_user_go_groups_select').val();
                                 d.badge = jQuery('#go_clipboard_go_badges_select').val();
@@ -390,11 +487,7 @@ function go_clipboard_store_datatable(refresh) {
                         searchDelay: 1000,
                         dom: 'lBfrtip',
                         "drawCallback": function( settings ) {
-                            jQuery('.go_messages_icon').prop('onclick',null).off('click');
-                            jQuery(".go_messages_icon").one("click", function(e){
-                                go_messages_opener();
-                            });
-                            go_stats_links();
+                            go_clipboard_callback();
                         },
                         "columnDefs": [
                             { type: 'natural', targets: '_all', sortable: false  },
@@ -449,40 +542,16 @@ function go_clipboard_store_datatable(refresh) {
                             }
                         ]
                     });
-
-                    jQuery("div.dataTables_filter input").unbind();
-                    jQuery("div.dataTables_filter input").keyup( function (e) {
-                        if (e.keyCode == 13) {
-                            Store.search( this.value ).draw();
-                        }
-                    });
-
-
-                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, .datepicker').change(function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_store_wrap"){
-                            Store.draw();
-                        }
-                        go_clipboard_change_filter();
-                    });
-
-                    jQuery('.go_update_clipboard').one("click", function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_store_wrap"){
-                            go_clipboard_store_datatable(true);
-                        }
-                        go_clipboard_change_filter();
-                    });
                 }
             }
         });
     }
+    else{
+        go_clipboard_callback();
+    }
 }
 
 function go_clipboard_messages_datatable(refresh) {
-    //show date filter
-    jQuery('#go_timestamp_filters').show();
-
     if ( jQuery( "#go_clipboard_messages_datatable" ).length == 0  || refresh == true) {
         jQuery("#clipboard_messages_datatable_container").html("<h2>Loading . . .</h2>");
 
@@ -501,14 +570,14 @@ function go_clipboard_messages_datatable(refresh) {
                 if (-1 !== res) {
                     jQuery('#clipboard_messages_datatable_container').html(res);
                     //go_filter_datatables();
-                    var Messages = jQuery('#go_clipboard_messages_datatable').DataTable({
+                    Messages = jQuery('#go_clipboard_messages_datatable').DataTable({
                         "processing": true,
                         "serverSide": true,
                         "ajax": {
                             "url": MyAjax.ajaxurl + '?action=go_clipboard_messages_dataloader_ajax',
                             "data": function(d){
                                 //d.user_id = jQuery('#go_stats_hidden_input').val();
-                                d.date = jQuery( '.datepicker' ).val();
+                                d.date = jQuery( '#datepicker-messages' ).val();
                                 d.section = jQuery('#go_clipboard_user_go_sections_select').val();
                                 d.group = jQuery('#go_clipboard_user_go_groups_select').val();
                                 d.badge = jQuery('#go_clipboard_go_badges_select').val();
@@ -524,11 +593,7 @@ function go_clipboard_messages_datatable(refresh) {
                         "stateDuration": 31557600,
                         dom: 'lBfrtip',
                         "drawCallback": function( settings ) {
-                            jQuery('.go_messages_icon').prop('onclick',null).off('click');
-                            jQuery(".go_messages_icon").one("click", function(e){
-                                go_messages_opener();
-                            });
-                            go_stats_links();
+                            go_clipboard_callback();
                         },
                         "columnDefs": [
                             { type: 'natural', targets: '_all', sortable: false  },
@@ -594,32 +659,25 @@ function go_clipboard_messages_datatable(refresh) {
                     });
 
 
-                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, .datepicker').change(function () {
+                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-messages').change(function () {
                         var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
                         if (current_tab == "clipboard_messages_wrap"){
                             Messages.draw();
                         }
-                        go_clipboard_change_filter();
+                        go_clipboard_callback();
                     });
 
-                    jQuery('.go_update_clipboard').one("click", function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_messages_wrap"){
-                            console.log("draw");
-                            go_clipboard_messages_datatable(true);
-                        }
-                        go_clipboard_change_filter();
-                    });
+
                 }
             }
         });
     }
+    else{
+        go_clipboard_callback();
+    }
 }
 
 function go_clipboard_activity_datatable(refresh) {
-    //show date filter
-    jQuery('#go_timestamp_filters').show();
-
     if ( jQuery( "#go_clipboard_activity_datatable" ).length == 0  || refresh == true) {
         jQuery("#clipboard_activity_datatable_container").html("<h2>Loading . . .</h2>");
 
@@ -632,14 +690,14 @@ function go_clipboard_activity_datatable(refresh) {
             data: {
                 _ajax_nonce: nonce,
                 action: 'go_clipboard_activity',
-                date: jQuery( '.datepicker' ).val()
+                date: jQuery( '#datepicker-activity' ).val()
             },
             success: function( res ) {
                 //console.log("success");
                 if (-1 !== res) {
                     jQuery('#clipboard_activity_datatable_container').html(res);
                     //go_filter_datatables();
-                    var Activity = jQuery('#go_clipboard_activity_datatable').DataTable({
+                    Activity = jQuery('#go_clipboard_activity_datatable').DataTable({
                         deferRender: true,
                         "bPaginate": true,
                         //colReorder: true,
@@ -650,11 +708,7 @@ function go_clipboard_activity_datatable(refresh) {
                         "stateDuration": 31557600,
                         dom: 'lBfrtip',
                         "drawCallback": function( settings ) {
-                            jQuery('.go_messages_icon').prop('onclick',null).off('click');
-                            jQuery(".go_messages_icon").one("click", function(e){
-                                go_messages_opener();
-                            });
-                            go_stats_links();
+                            go_clipboard_callback();
                         },
                         "columnDefs": [
                             { type: 'natural', targets: '_all'  },
@@ -743,6 +797,11 @@ function go_clipboard_activity_datatable(refresh) {
 
                     });
 
+                    //Filter the table
+                    go_filter_clipboard_datatables(true);
+                    //redraw table
+                    Activity.draw();
+
                     // Add event listener for opening and closing more actions
                     jQuery('#go_clipboard_activity_datatable .show_more').click( function () {
                         var hidden = jQuery(this).hasClass('shown');
@@ -760,42 +819,6 @@ function go_clipboard_activity_datatable(refresh) {
                             jQuery(this).find('.show_more_actions').show();
                             //console.log("hide");
                         }
-
-                    } );
-
-                    //search on enter only
-                    jQuery("div.dataTables_filter input").unbind();
-                    jQuery("div.dataTables_filter input").keyup( function (e) {
-                        if (e.keyCode == 13) {
-                            Activity.search( this.value ).draw();
-                        }
-                    });
-
-
-                    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select').change(function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_activity_wrap"){
-                            Activity.draw();
-                        }
-                        go_clipboard_change_filter();
-                    });
-
-                    jQuery('.go_update_clipboard').one("click", function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_activity_wrap"){
-                            console.log("11");
-                            go_clipboard_activity_datatable(true);
-                        }
-                        go_clipboard_change_filter();
-                    });
-
-                    jQuery('.datepicker').change(function () {
-                        var current_tab = jQuery("#records_tabs").find("[aria-selected='true']").attr('aria-controls');
-                        if (current_tab == "clipboard_activity_wrap"){
-                            console.log("22");
-                            go_clipboard_activity_datatable(true);
-                        }
-                        go_clipboard_change_filter();
                     });
 
                 }

@@ -287,6 +287,7 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
             $loot = go_get_loot($user_id);
             $badges_array = $loot['badges'];
             $user_terms = unserialize($badges_array);
+            $user_terms = array_values($user_terms);
         //}
 
 

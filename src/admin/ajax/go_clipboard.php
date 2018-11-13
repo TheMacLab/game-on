@@ -25,7 +25,7 @@ function go_get_all_user_names() {//should I put website, section, and seats her
 			        FROM {$totals_table_name}");
         $data = array();
         foreach ($user_ids as $user_id){
-            $user_id = $user_id->ID;
+            $user_id = $user_id->uid;
             $user_data =  array();
             $user_data_key = get_userdata($user_id);
             $user_display_name = $user_data_key->display_name;
@@ -99,27 +99,6 @@ function go_clipboard_save_filters (){
     update_user_meta( $user_id, 'go_clipboard_group', $group );
 }
 
-/*
-function go_activity_stateSave(){
-    $user_id = get_current_user_id();
-    check_ajax_referer( 'go_activity_stateSave_' . $user_id );
-    $state = $_POST['data'];
-    //$state = serialize($state);
-
-    update_user_meta( $user_id, 'go_activity_stateSave', $state );
-}
-
-function go_activity_stateLoad(){
-    $user_id = get_current_user_id();
-    check_ajax_referer( 'go_activity_stateLoad_' . $user_id );
-    $state = get_user_meta($user_id, 'go_activity_stateSave', true);
-    //$state = unserialize($state);
-    $state = json_encode($state);
-    echo $state;
-    die();
-}
-*/
-
 function go_clipboard_menu() {
     acf_form_head();
 
@@ -141,7 +120,7 @@ function go_clipboard_menu() {
                 <span> Group: <?php go_make_tax_select('user_go_groups', "Show All"  , "clipboard_", $group, false); ?></span>
                 <span> Badges: <?php go_make_tax_select('go_badges', "Show All"  , "clipboard_", $badge, false); ?></span>
 
-                <span id="go_timestamp_filters" style="display:none;" > Date: <input type="search" class="datepicker" name="datepicker" value=""/></span>
+                <span id="go_timestamp_filters" style="display:none;" > Date: <input id="datepicker-store" type="search" class="datepicker" name="datepicker" value=""/><input id="datepicker-messages" type="search" class="datepicker" name="datepicker" value=""/><input id="datepicker-activity" type="text" class="datepicker" name="datepicker" value=""/></span>
                 <span style="float:right; margin-right: 60px;"><button class="go_update_clipboard dt-button ui-button ui-state-default ui-button-text-only buttons-collection"><span class="ui-button-text">Update <span class="dashicons dashicons-update" style="vertical-align: center;"></span></span></button></span>
 
 
@@ -198,10 +177,10 @@ function go_clipboard_stats() {
     if ($data === false) {
         //$current_user_id =  $user_id = get_current_user_id();
         $go_totals_table_name = "{$wpdb->prefix}go_loot";
+        $go_users_table_name = "{$wpdb->prefix}users";
         $rows = $wpdb->get_results(
             "SELECT * 
                         FROM {$go_totals_table_name}"
-
         );
 
         $xp_toggle = get_option('options_go_loot_xp_toggle');
@@ -288,7 +267,10 @@ function go_clipboard_stats() {
             //these are used in the filter
             $group_ids = $row->groups;
             $group_ids_array = unserialize($group_ids);
-            $group_ids = json_encode($group_ids_array);
+            if (!is_array($group_ids_array)) {
+                $group_ids_array = array();
+            }
+            $group_ids = json_encode(array_values($group_ids_array));
 
             if (is_array($group_ids_array)){
                 $group_list = array();
@@ -313,7 +295,10 @@ function go_clipboard_stats() {
             //these are used in the filter
             $badge_ids = $row->badges;
             $badge_ids_array = unserialize($badge_ids);
-            $badge_ids = json_encode($badge_ids_array);
+            if (!is_array($badge_ids_array)) {
+                $badge_ids_array = array();
+            }
+            $badge_ids = json_encode(array_values($badge_ids_array));
 
             $badge_count = $row->badge_count;
             $badge_list = array();
@@ -351,27 +336,20 @@ function go_clipboard_stats() {
             if (empty($num_sections)){
                 $num_sections =1;
             }
-            $user_periods= array();
-            $user_period_name= array();
-            $user_seat = array();
+
             for ($i = 0; $i < $num_sections; $i++) {
                 $user_period_option = "go_section_and_seat_" . $i . "_user-section";
                 $user_seat_option = "go_section_and_seat_" . $i . "_user-seat";
 
+
                 $user_period = get_user_meta($user_id, $user_period_option, true);
-                $user_periods[] = $user_period;
-                $term = get_term($user_period, "user_go_sections");
+                $term = get_term( $user_period, "user_go_sections" );
                 //$user_period_name = $term->name;
-                $user_period_name[] = (isset($term->name) ? $term->name : null);
+                $user_period_name = (isset($term->name) ?  $term->name : null);
 
-                $user_seat[] = get_user_meta($user_id, $user_seat_option, true);
-            }
+                $user_seat = get_user_meta($user_id, $user_seat_option, true);
 
-            //if this is not filtered, set the values
-            $user_period_name = implode("<br>", $user_period_name);
-            $user_seat = implode("<br>", $user_seat);
-
-            echo "<tr>
+                echo "<tr>
                     <td></td>
                     <td style='text-align: center;'><input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/></td>
                     <td >{$user_period} </a></td>
@@ -383,26 +361,26 @@ function go_clipboard_stats() {
                     <td>{$user_lastname}</td>
                     <td>{$user_display_name}</td>
                     <td>";
-            go_user_links($user_id, true, true, true, true, true, false);
-            echo " </a></td>
+                go_user_links($user_id, true, true, true, true, true, false);
+                echo " </a></td>
                     ";
 
-            if ($xp_toggle) {
-                echo "<td data-order='{$rank_num}'>{$rank_num}{$current_rank_name}</td>
+                if ($xp_toggle) {
+                    echo "<td data-order='{$rank_num}'>{$rank_num}{$current_rank_name}</td>
                   <td class='user_points'>{$xp}</td>";
-            }
-            if ($gold_toggle) {
-                echo "<td class='user_currency'>{$gold}</td>";
-            }
-            if ($health_toggle) {
-                echo "<td class='user_health'>{$health}</td>";
-            }
+                }
+                if ($gold_toggle) {
+                    echo "<td class='user_currency'>{$gold}</td>";
+                }
+                if ($health_toggle) {
+                    echo "<td class='user_health'>{$health}</td>";
+                }
 
-            echo "		
+                echo "		
                     <td class='user_badge_count'>{$badge_count}</td>
                     <td class='user_group_count'>{$group_count}</td>
                   </tr>";
-
+            }
         }
         ?>
                 </tbody></table></div>
@@ -414,6 +392,7 @@ function go_clipboard_stats() {
     else{
         echo $data;
     }
+    die();
 }
 
 function go_clipboard_store() {
@@ -550,8 +529,6 @@ function go_clipboard_store_dataloader_ajax(){
 
     //END GET PARAMETERS
 
-
-
     //CREATE THE QUERY
     $section = $_GET['section'];
     $badge = $_GET['badge'];
@@ -648,13 +625,12 @@ function go_clipboard_store_dataloader_ajax(){
     }
 
     $sQuery = "
-    SELECT SQL_CALC_FOUND_ROWS `" . str_replace(" , ", " ", implode("`, `", $aColumns)) . "`
-    FROM   $sTable
+    SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+    FROM $sTable 
     $sWhere
     $sOrder
     $sLimit
     ";
-
     $rResult = $wpdb->get_results($sQuery, ARRAY_A);
 
     $sQuery = "SELECT FOUND_ROWS()";
@@ -672,8 +648,10 @@ function go_clipboard_store_dataloader_ajax(){
     $rResultTotal = $wpdb->get_results($sQuery, ARRAY_N);
 
     $iTotal = $rResultTotal [0];
-
+    //$iFilteredTotal = number that match without limit;
+    //$iTotalRecords = number in this table total (total store items/messages)
     $output = array("iTotalRecords" => $iTotal, "iTotalDisplayRecords" => $iFilteredTotal, "aaData" => array());
+
 
     foreach($rResult as $action){//output a row for each message
 
@@ -845,6 +823,8 @@ function go_clipboard_store_dataloader_ajax(){
         $row[] = "{$badges_names}";
         $output['aaData'][] = $row;
     }
+
+    $output['iTotalDisplayRecords'] =  count($output['aaData']);
 
 
     echo json_encode( $output );
@@ -1042,6 +1022,12 @@ function go_clipboard_messages_dataloader_ajax(){
 
     $rResult = $wpdb->get_results($sQuery, ARRAY_A);
 
+    $sQuery = "
+    SELECT COUNT(`" . $sIndexColumn . "`)
+    FROM   $sTable
+    $sWhere
+    ";
+
     $sQuery = "SELECT FOUND_ROWS()";
 
     $rResultFilterTotal = $wpdb->get_results($sQuery, ARRAY_N);
@@ -1049,7 +1035,7 @@ function go_clipboard_messages_dataloader_ajax(){
     $iFilteredTotal = $rResultFilterTotal [0];
 
     $sQuery = "
-    SELECT COUNT(`".$sIndexColumn."`)
+    SELECT COUNT(`" . $sIndexColumn . "`)
     FROM   $sTable
     $totalWhere
     ";
@@ -1250,6 +1236,7 @@ function go_clipboard_messages_dataloader_ajax(){
         $row[] = "{$badges_names}";
         $output['aaData'][] = $row;
     }
+    $output['iTotalDisplayRecords'] =  count($output['aaData']);
 
 
     echo json_encode( $output );

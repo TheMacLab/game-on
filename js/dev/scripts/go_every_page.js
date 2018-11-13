@@ -1,19 +1,4 @@
 
-/*
-function go_sounds( type ) {
-
-    console.log("sounds" + PluginDir.url);
-    if ( 'store' == type ) {
-        var audio = new Audio( PluginDir.url + 'media/win.mp3' );
-        audio.play();
-    } else if ( 'timer' == type ) {
-        var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
-        audio.play();
-    }
-}
-*/
-
-
 function go_noty_close_oldest(){
     Noty.setMaxVisible(6);
     var noty_list_count = jQuery('#noty_layout__topRight > div').length;
@@ -120,7 +105,6 @@ function go_stats_links(){
 
     jQuery('.go_stats_messages_icon').prop('onclick',null).off('click');
     jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id); });
-
 }
 
 function go_stats_about(user_id) {
@@ -254,112 +238,6 @@ function go_stats_task_list() {
     }
 }
 
-//the SSP v4 one
-/*
-function go_stats_task_list4() {
-    jQuery(".go_datatables").hide();
-    var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;
-    if ( jQuery( "#go_task_list" ).length ) {
-
-        jQuery( "#go_task_list" ).show();
-
-    }else {
-
-
-        jQuery.ajax({
-            type: 'post',
-            url: MyAjax.ajaxurl,
-            data: {
-                _ajax_nonce: nonce,
-                action: 'go_stats_task_list',
-                user_id: jQuery('#go_stats_hidden_input').val()
-            },
-            success: function (res) {
-                if (-1 !== res) {
-                    //jQuery( '#go_stats_body' ).html( '' );
-                    //var oTable = jQuery('#go_stats_datatable').dataTable();
-                    //oTable.fnDestroy();
-
-                    jQuery('#go_stats_body').append(res);
-                    jQuery('#go_tasks_datatable').dataTable({
-                        "processing": true,
-                        "serverSide": true,
-                        "ajax": MyAjax.ajaxurl+'?action=go_tasks_dataloader_ajax',
-                        //"bProcessing": true,
-                        //"bServerSide": true,
-                        //"sAjaxSource": MyAjax.ajaxurl+'?action=go_tasks_dataloader_ajax',
-                        'createdRow': function(row, data, dataIndex) {
-                            var dateCell = jQuery(row).find('td:eq(0)').text(); // get first column
-                            // Split timestamp into [ Y, M, D, h, m, s ]
-                            //var t = dateCell.split(/[- :]/);
-							// Apply each element to the Date function
-                            //var d = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
-                            //var newDate = d.toString('dd-MM-yy');
-                            //jQuery(row).find('td:eq(0)').attr("data-order", dateCell).text("hi");
-
-                            var d = new Date(dateCell * 1000);
-                            var month = d.getMonth();
-                            var day = d.getDate();
-                            var year = d.getFullYear().toString().slice(-2);
-                            var hours = d.getHours();
-                            var dd = "AM";
-                            var h = hours;
-                            if (h >= 12) {
-                                h = hours - 12;
-                                dd = "PM";
-                            }
-                            if (h == 0) {
-                                h = 12;
-                            }
-							// Minutes part from the timestamp
-                            var minutes = "0" + d.getMinutes();
-							// Seconds part from the timestamp
-                            var seconds = "0" + d.getSeconds();
-
-                            // Will display time in 10:30:23 format
-                            //var formattedTime = month + "/" + day + "/" + year + "  " + h + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + " " + dd;
-                            var formattedTime = month + "/" + day + "/" + year + "  " + h + ':' + minutes.substr(-2) + " " + dd;
-                            jQuery(row).find('td:eq(0)').attr("data-order", dateCell).text(formattedTime);
-
-                           // var newDate = d.toString('dd-MM-yy');
-
-							// new newDate(dateCell * 1000).format('h:i:s')
-
-                            //var dateOrder = $dateCell.text(); // get the ISO date
-							////console.log("data: " + data[0] + "  Row: " + row + "  dataindex: " + dataIndex);
-							//console.log(formattedTime);
-                        },
-                        initComplete: function () {
-                            this.api().columns().every( function () {
-                                var column = this;
-                                var select = jQuery('<select><option value=""></option></select>')
-                                    .appendTo( jQuery(column.footer()).empty() )
-                                    .on( 'change', function () {
-                                        var val = jQuery.fn.dataTable.util.escapeRegex(
-                                            jQuery(this).val()
-                                        );
-
-                                        column
-                                            .search( val ? '^'+val+'$' : '', true, false )
-                                            .draw();
-                                    } );
-
-                                column.data().unique().sort().each( function ( d, j ) {
-                                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                                } );
-                            } );
-                        }
-
-                    });
-                }
-            }
-        });
-    }
-
-
-}
-*/
-
 function go_stats_single_task_activity_list (postID) {
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_single_task_activity_list;
     jQuery.ajax({
@@ -420,38 +298,6 @@ function go_stats_item_list() {
         });
     }
 }
-
-/* v4 no ssp
-function go_stats_activity_list() {
-    var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_activity_list;
-    jQuery.ajax({
-        type: 'post',
-        url: MyAjax.ajaxurl,
-        data:{
-            _ajax_nonce: nonce,
-            action: 'go_stats_activity_list',
-            user_id: jQuery( '#go_stats_hidden_input' ).val()
-        },
-        success: function( res ) {
-            if ( -1 !== res ) {
-                //jQuery( '#go_stats_body' ).html( '' );
-                var oTable = jQuery( '#go_stats_datatable' ).dataTable();
-                oTable.fnDestroy();
-
-                jQuery( '#go_stats_body' ).html( res );
-                jQuery( '#go_stats_datatable' ).dataTable( {
-
-                    "bPaginate": true,
-                    "order": [[0, "desc"]],
-                    "destroy": true,
-                    responsive: true,
-                    "autoWidth": false
-                });
-            }
-        }
-    });
-}
-*/
 
 //the SSP v4 one
 function go_stats_activity_list() {
@@ -598,103 +444,7 @@ function go_stats_groups_list() {
     }
 }
 
-//this is for the leaderboard on the stats page and the clipboard
-function go_filter_datatables() { //function that filters all tables on draw
-    jQuery.fn.dataTable.ext.search.push(
-        function( settings, data, dataIndex ) {
-            var mytable = settings.sTableId;
-            //console.log(myTable);
-            if (mytable == "go_clipboard_stats_datatable" || mytable == "go_clipboard_messages_datatable" || mytable == "go_clipboard_activity_datatable") {
-                var section = jQuery('#go_clipboard_user_go_sections_select').val();
-                var group = jQuery('#go_clipboard_user_go_groups_select').val();
-                var badge = jQuery('#go_clipboard_go_badges_select').val();
-                var badges =  data[4] ;
-                var groups =  data[3] ; // use data for the filter by column
-                var sections = data[2]; // use data for the filter by column
-                //console.log("data" + data);
-                //console.log("badges" + badges);
-                //console.log("groups" + groups);
-                //console.log("sections" + sections);
-                //console.log(sections);
-
-
-                groups = JSON.parse(groups);
-
-                //console.log("groups" + groups);
-                //sections = JSON.parse(sections);
-                badges = JSON.parse(badges);
-                //console.log("badges" + badges);
-
-                //console.log("sections" + sections);
-
-                var inlist = true;
-                if( group == "none" || jQuery.inArray(group, groups) != -1) {
-                    inlist = true;
-                }else {
-                    inlist = false;
-                }
-
-                if (inlist){
-                    if( section == "none" || sections == section) {
-                        inlist = true;
-                    }else {
-                        inlist = false;
-                    }
-                }
-                if (mytable == "go_clipboard_datatable") {
-                    if (inlist) {
-                        if (badge == "none" || jQuery.inArray(badge, badges) != -1) {
-                            inlist = true;
-                        } else {
-                            inlist = false;
-                        }
-                    }
-                }
-                return inlist;
-            }
-            else if (mytable == "go_leaders_datatable") {
-                var section = jQuery('#go_user_go_sections_select').val();
-                var group = jQuery('#go_user_go_groups_select').val();
-
-                //var badges =  data[3] ;
-                var groups =  data[2] ; // use data for the filter by column
-                var sections = data[1]; // use data for the filter by column
-
-
-                groups = JSON.parse(groups);
-                sections = JSON.parse(sections);
-                //badges = JSON.parse(badges);
-
-
-                var inlist = true;
-                if( group == "none" || jQuery.inArray(group, groups) != -1) {
-                    inlist = true;
-                }else {
-                    inlist = false;
-                }
-
-                if (inlist){
-                    if( section == "none" || jQuery.inArray(section, sections) != -1) {
-                        inlist = true;
-                    }else {
-                        inlist = false;
-                    }
-                }
-
-                return inlist;
-            }else{
-                return true;
-            }
-        });
-}
-
 function go_stats_leaderboard() {
-    //jQuery( '#go_stats_lite_wrapper' ).remove();
-    //jQuery("#go_leaderboard_wrapper").show();
-   // go_filter_datatables();
-
-    //var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
-    //remove from localized data and actions
     var nonce_leaderboard = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;
     if (jQuery("#go_leaderboard_wrapper").length == 0) {
         jQuery(".go_leaderboard_wrapper").show();
@@ -712,9 +462,6 @@ function go_stats_leaderboard() {
 
                 jQuery('#stats_leaderboard').html(raw);
 
-                //jQuery(document).ready(function() {
-                //console.log("________here___________");
-                //if (jQuery("#go_leaders_datatable").length) {
                     var section = jQuery('#go_user_go_sections_select').val();
                     //console.log(section);
                     //XP////////////////////////////
@@ -743,15 +490,8 @@ function go_stats_leaderboard() {
                         },
                         "searching": false
                     });
-                    /*
-                    //index column
-                    table.on( 'order.dt search.dt', function () {
-                        table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                            cell.innerHTML = i+1;
-                        } );
-                    } ).draw();
-                    */
-                //}
+
+
 
 
                 // Event listener to the range filtering inputs to redraw on input

@@ -1,16 +1,3 @@
-/*
-function go_sounds( type ) {
-
-    console.log("sounds" + PluginDir.url);
-    if ( 'store' == type ) {
-        var audio = new Audio( PluginDir.url + 'media/win.mp3' );
-        audio.play();
-    } else if ( 'timer' == type ) {
-        var audio = new Audio( PluginDir.url + 'media/airhorn.mp3' );
-        audio.play();
-    }
-}
-*/
 function go_noty_close_oldest(){Noty.setMaxVisible(6);var e=jQuery("#noty_layout__topRight > div").length;0==e&&jQuery("#noty_layout__topRight").remove(),5<=e&&jQuery("#noty_layout__topRight > div").first().trigger("click")}function go_lightbox_blog_img(){jQuery("[class*= wp-image]").each(function(){var e;
 //console.log("fullsize:" + fullSize);
 if(1==jQuery(this).hasClass("size-full"))var t=jQuery(this).attr("src");else var a,s=/.*wp-image/,o=jQuery(this).attr("class").replace(s,"wp-image"),r=jQuery(this).attr("src"),_=/-([^-]+).$/,i=/\.[0-9a-z]+$/i,n=r.match(i),t=r.replace(_,n);
@@ -48,112 +35,7 @@ function go_stats_task_list(){var e;jQuery("#go_task_list_single").remove(),jQue
                             });
                         }
                     );
-                    */}})}
-//the SSP v4 one
-/*
-function go_stats_task_list4() {
-    jQuery(".go_datatables").hide();
-    var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;
-    if ( jQuery( "#go_task_list" ).length ) {
-
-        jQuery( "#go_task_list" ).show();
-
-    }else {
-
-
-        jQuery.ajax({
-            type: 'post',
-            url: MyAjax.ajaxurl,
-            data: {
-                _ajax_nonce: nonce,
-                action: 'go_stats_task_list',
-                user_id: jQuery('#go_stats_hidden_input').val()
-            },
-            success: function (res) {
-                if (-1 !== res) {
-                    //jQuery( '#go_stats_body' ).html( '' );
-                    //var oTable = jQuery('#go_stats_datatable').dataTable();
-                    //oTable.fnDestroy();
-
-                    jQuery('#go_stats_body').append(res);
-                    jQuery('#go_tasks_datatable').dataTable({
-                        "processing": true,
-                        "serverSide": true,
-                        "ajax": MyAjax.ajaxurl+'?action=go_tasks_dataloader_ajax',
-                        //"bProcessing": true,
-                        //"bServerSide": true,
-                        //"sAjaxSource": MyAjax.ajaxurl+'?action=go_tasks_dataloader_ajax',
-                        'createdRow': function(row, data, dataIndex) {
-                            var dateCell = jQuery(row).find('td:eq(0)').text(); // get first column
-                            // Split timestamp into [ Y, M, D, h, m, s ]
-                            //var t = dateCell.split(/[- :]/);
-							// Apply each element to the Date function
-                            //var d = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
-                            //var newDate = d.toString('dd-MM-yy');
-                            //jQuery(row).find('td:eq(0)').attr("data-order", dateCell).text("hi");
-
-                            var d = new Date(dateCell * 1000);
-                            var month = d.getMonth();
-                            var day = d.getDate();
-                            var year = d.getFullYear().toString().slice(-2);
-                            var hours = d.getHours();
-                            var dd = "AM";
-                            var h = hours;
-                            if (h >= 12) {
-                                h = hours - 12;
-                                dd = "PM";
-                            }
-                            if (h == 0) {
-                                h = 12;
-                            }
-							// Minutes part from the timestamp
-                            var minutes = "0" + d.getMinutes();
-							// Seconds part from the timestamp
-                            var seconds = "0" + d.getSeconds();
-
-                            // Will display time in 10:30:23 format
-                            //var formattedTime = month + "/" + day + "/" + year + "  " + h + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + " " + dd;
-                            var formattedTime = month + "/" + day + "/" + year + "  " + h + ':' + minutes.substr(-2) + " " + dd;
-                            jQuery(row).find('td:eq(0)').attr("data-order", dateCell).text(formattedTime);
-
-                           // var newDate = d.toString('dd-MM-yy');
-
-							// new newDate(dateCell * 1000).format('h:i:s')
-
-                            //var dateOrder = $dateCell.text(); // get the ISO date
-							////console.log("data: " + data[0] + "  Row: " + row + "  dataindex: " + dataIndex);
-							//console.log(formattedTime);
-                        },
-                        initComplete: function () {
-                            this.api().columns().every( function () {
-                                var column = this;
-                                var select = jQuery('<select><option value=""></option></select>')
-                                    .appendTo( jQuery(column.footer()).empty() )
-                                    .on( 'change', function () {
-                                        var val = jQuery.fn.dataTable.util.escapeRegex(
-                                            jQuery(this).val()
-                                        );
-
-                                        column
-                                            .search( val ? '^'+val+'$' : '', true, false )
-                                            .draw();
-                                    } );
-
-                                column.data().unique().sort().each( function ( d, j ) {
-                                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                                } );
-                            } );
-                        }
-
-                    });
-                }
-            }
-        });
-    }
-
-
-}
-*/function go_stats_single_task_activity_list(e){var t=GO_EVERY_PAGE_DATA.nonces.go_stats_single_task_activity_list;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_stats_single_task_activity_list",user_id:jQuery("#go_stats_hidden_input").val(),postID:e},success:function(e){-1!==e&&(
+                    */}})}function go_stats_single_task_activity_list(e){var t=GO_EVERY_PAGE_DATA.nonces.go_stats_single_task_activity_list;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_stats_single_task_activity_list",user_id:jQuery("#go_stats_hidden_input").val(),postID:e},success:function(e){-1!==e&&(
 //jQuery( '#go_stats_body' ).html( '' );
 jQuery("#go_task_list_single").remove(),jQuery("#go_task_list").hide(),jQuery("#stats_tasks").append(e),jQuery("#go_single_task_datatable").dataTable({bPaginate:!0,order:[[0,"desc"]],
 //"destroy": true,
@@ -163,75 +45,14 @@ responsive:!0,autoWidth:!1}))}})}function go_stats_item_list(){
 var e=GO_EVERY_PAGE_DATA.nonces.go_stats_item_list;0==jQuery("#go_store_datatable").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_item_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&(jQuery("#stats_store").html(e),jQuery("#go_store_datatable").dataTable({bPaginate:!0,order:[[0,"desc"]],
 //"destroy": true,
 responsive:!0,autoWidth:!1}))}})}
-/* v4 no ssp
-function go_stats_activity_list() {
-    var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_activity_list;
-    jQuery.ajax({
-        type: 'post',
-        url: MyAjax.ajaxurl,
-        data:{
-            _ajax_nonce: nonce,
-            action: 'go_stats_activity_list',
-            user_id: jQuery( '#go_stats_hidden_input' ).val()
-        },
-        success: function( res ) {
-            if ( -1 !== res ) {
-                //jQuery( '#go_stats_body' ).html( '' );
-                var oTable = jQuery( '#go_stats_datatable' ).dataTable();
-                oTable.fnDestroy();
-
-                jQuery( '#go_stats_body' ).html( res );
-                jQuery( '#go_stats_datatable' ).dataTable( {
-
-                    "bPaginate": true,
-                    "order": [[0, "desc"]],
-                    "destroy": true,
-                    responsive: true,
-                    "autoWidth": false
-                });
-            }
-        }
-    });
-}
-*/
 //the SSP v4 one
 function go_stats_activity_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_activity_list;0==jQuery("#go_activity_datatable").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_activity_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&(jQuery("#stats_history").html(e),jQuery("#go_activity_datatable").dataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_activity_dataloader_ajax",data:function(e){e.user_id=jQuery("#go_stats_hidden_input").val()}},responsive:!0,autoWidth:!1,columnDefs:[{targets:"_all",orderable:!1}],searching:!0}))}})}function go_stats_messages(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_messages;0==jQuery("#go_messages_datatable").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_messages",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&(jQuery("#stats_messages").html(e),jQuery("#go_messages_datatable").dataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_messages_dataloader_ajax",data:function(e){e.user_id=jQuery("#go_stats_hidden_input").val()}//this doesn't actually pass something to my PHP like it does normally with AJAX.
 },responsive:!0,autoWidth:!1,columnDefs:[{targets:"_all",orderable:!1}],searching:!0}))}})}function go_stats_badges_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_badges_list;0==jQuery("#go_badges_list").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_badges_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){
 //console.log(res);
--1!==e&&jQuery("#stats_badges").html(e)}})}function go_stats_groups_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_groups_list;0==jQuery("#go_groups_list").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_groups_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&jQuery("#stats_groups").html(e)}})}
-//this is for the leaderboard on the stats page and the clipboard
-function go_filter_datatables(){//function that filters all tables on draw
-jQuery.fn.dataTable.ext.search.push(function(e,t,a){var s=e.sTableId;
-//console.log(myTable);
-if("go_clipboard_stats_datatable"==s||"go_clipboard_messages_datatable"==s||"go_clipboard_activity_datatable"==s){var o=jQuery("#go_clipboard_user_go_sections_select").val(),r=jQuery("#go_clipboard_user_go_groups_select").val(),_=jQuery("#go_clipboard_go_badges_select").val(),i=t[4],n=t[3],u=t[2];// use data for the filter by column
-//console.log("data" + data);
-//console.log("badges" + badges);
-//console.log("groups" + groups);
-//console.log("sections" + sections);
-//console.log(sections);
-n=JSON.parse(n),
-//console.log("groups" + groups);
-//sections = JSON.parse(sections);
-i=JSON.parse(i);
-//console.log("badges" + badges);
-//console.log("sections" + sections);
-var l=!0;return(l="none"==r||-1!=jQuery.inArray(r,n))&&(l="none"==o||u==o),"go_clipboard_datatable"==s&&l&&(l="none"==_||-1!=jQuery.inArray(_,i)),l}if("go_leaders_datatable"!=s)return!0;var o=jQuery("#go_user_go_sections_select").val(),r=jQuery("#go_user_go_groups_select").val(),n=t[2],u=t[1];// use data for the filter by column
-n=JSON.parse(n),u=JSON.parse(u);
-//badges = JSON.parse(badges);
-var l=!0;return(l="none"==r||-1!=jQuery.inArray(r,n))&&(l="none"==o||-1!=jQuery.inArray(o,u)),l})}function go_stats_leaderboard(){
-//jQuery( '#go_stats_lite_wrapper' ).remove();
-//jQuery("#go_leaderboard_wrapper").show();
-// go_filter_datatables();
-//var nonce_leaderboard_choices = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard_choices;
-//remove from localized data and actions
-var e=GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;0==jQuery("#go_leaderboard_wrapper").length&&(jQuery(".go_leaderboard_wrapper").show(),jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_leaderboard",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){
+-1!==e&&jQuery("#stats_badges").html(e)}})}function go_stats_groups_list(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_groups_list;0==jQuery("#go_groups_list").length&&jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_groups_list",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){-1!==e&&jQuery("#stats_groups").html(e)}})}function go_stats_leaderboard(){var e=GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;0==jQuery("#go_leaderboard_wrapper").length&&(jQuery(".go_leaderboard_wrapper").show(),jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_stats_leaderboard",user_id:jQuery("#go_stats_hidden_input").val()},success:function(e){
 //console.log(raw);
 //console.log('success');
-jQuery("#stats_leaderboard").html(e);
-//jQuery(document).ready(function() {
-//console.log("________here___________");
-//if (jQuery("#go_leaders_datatable").length) {
-var t=jQuery("#go_user_go_sections_select").val(),a=jQuery("#go_leaders_datatable").DataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_stats_leaderboard_dataloader_ajax",data:function(e){
+jQuery("#stats_leaderboard").html(e);var t=jQuery("#go_user_go_sections_select").val(),a=jQuery("#go_leaders_datatable").DataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_stats_leaderboard_dataloader_ajax",data:function(e){
 //d.user_id = jQuery('#go_stats_hidden_input').val();
 //d.date = jQuery( '.datepicker' ).val();
 e.section=jQuery("#go_user_go_sections_select").val(),e.group=jQuery("#go_user_go_groups_select").val()}},
@@ -241,15 +62,6 @@ responsive:!1,autoWidth:!1,paging:!0,order:[[2,"desc"]],drawCallback:function(e)
 //console.log(section);
 //XP////////////////////////////
 //go_sort_leaders("go_xp_leaders_datatable", 4);
-/*
-                    //index column
-                    table.on( 'order.dt search.dt', function () {
-                        table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                            cell.innerHTML = i+1;
-                        } );
-                    } ).draw();
-                    */
-//}
 // Event listener to the range filtering inputs to redraw on input
 jQuery("#go_user_go_sections_select, #go_user_go_groups_select").change(function(){jQuery("#go_leaders_datatable").length&&a.draw()})}}))}function go_stats_lite(e){
 //jQuery(".go_datatables").hide();
@@ -338,7 +150,7 @@ jQuery(".go_reset_task").one("click",function(e){go_messages_opener(s,this.id,"r
 //replace button with loader
 //check for negative numbers and give error
 //user_ids
-var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,i=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*i,u=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,l=jQuery("[name=health]").val()*u,c=jQuery("#go_messages_go_badges_select").val(),g=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),d=jQuery("#go_messages_user_go_groups_select").val(),y=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),j,h={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:n,health:l,badges_toggle:g,badges:c,groups_toggle:y,groups:d};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:h,success:function(e){
+var s=jQuery("[name=title]").val(),o=jQuery("[name=message]").val(),r=jQuery("[name=xp_toggle]").siblings().hasClass("-on")?1:-1,_=jQuery("[name=xp]").val()*r,i=jQuery("[name=gold_toggle]").siblings().hasClass("-on")?1:-1,n=jQuery("[name=gold]").val()*i,u=jQuery("[name=health_toggle]").siblings().hasClass("-on")?1:-1,l=jQuery("[name=health]").val()*u,c=jQuery("#go_messages_go_badges_select").val(),g=jQuery("[name=badges_toggle]").siblings().hasClass("-on"),d=jQuery("#go_messages_user_go_groups_select").val(),h=jQuery("[name=groups_toggle]").siblings().hasClass("-on"),y,j={action:"go_send_message",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_send_message,post_id:t,user_ids:e,message_type:a,title:s,message:o,xp:_,gold:n,health:l,badges_toggle:g,badges:c,groups_toggle:h,groups:d};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:j,success:function(e){
 // show success or error message
 jQuery("#go_messages_container").html("Message sent successfully."),jQuery("#go_tasks_datatable").remove(),go_stats_task_list(),go_toggle_off()},error:function(e,t,a){jQuery("#go_messages_container").html("Error.")}})}function Vids_Fit_and_Box(){runmefirst(function(){
 //after making the video fit, set the max width and add the lightbox code

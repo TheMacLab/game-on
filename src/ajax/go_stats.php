@@ -2455,8 +2455,6 @@ function go_stats_leaderboard() {
 function go_stats_leaderboard_dataloader_ajax() {
     global $wpdb;
 
-
-
     //FIRST GET THE SEARCH PARAMETERS FROM OTHER TABLES
     $search_val = $_GET['search']['value'];
 
@@ -2501,8 +2499,6 @@ function go_stats_leaderboard_dataloader_ajax() {
         $sLimit = "LIMIT ".intval( $_GET['start'] ).", ".
             intval( $_GET['length'] );
     }
-
-
 
     $order_dir = $_GET['order'][0]['dir'];
     $order_col = $_GET['order'][0]['column'];
@@ -2688,6 +2684,9 @@ function go_stats_leaderboard_dataloader_ajax() {
         }
         $output['aaData'][] = $row;
     }
+
+    $output['iTotalDisplayRecords'] =  count($output['aaData']);
+
     echo json_encode( $output );
     die();
     /*
