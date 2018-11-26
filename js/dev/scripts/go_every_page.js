@@ -120,92 +120,99 @@ function go_stats_links(){
     jQuery('.go_stats_messages_icon').prop('onclick',null).off('click');
     jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id); });
 
-    jQuery('#go_user_go_sections_select').select2({
-        ajax: {
-            url: ajaxurl, // AJAX URL is predefined in WordPress admin
-            dataType: 'json',
-            delay: 400, // delay in ms while typing when to perform a AJAX search
-            data: function (params) {
+    if (jQuery("#select2-go_user_go_sections_select-container").length == 0) {
+        jQuery('#go_user_go_sections_select').select2({
+            ajax: {
+                url: ajaxurl, // AJAX URL is predefined in WordPress admin
+                dataType: 'json',
+                delay: 400, // delay in ms while typing when to perform a AJAX search
+                data: function (params) {
 
-                return {
-                    q: params.term, // search query
-                    action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
-                    taxonomy: 'user_go_sections'
-                };
+                    return {
+                        q: params.term, // search query
+                        action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
+                        taxonomy: 'user_go_sections'
+                    };
 
 
-            },
-            processResults: function( data ) {
-                console.log ("here: " + data);
+                },
+                processResults: function (data) {
+                    console.log("here: " + data);
 
-                var options = [];
-                if (data) {
-                    // data is the array of arrays, and each of them contains ID and the Label of the option
-                    jQuery.each(data, function (index, text) { // do not forget that "index" is just auto incremented value
-                        options.push({id: text[0], text: text[1]});
+                    var options = [];
+                    if (data) {
+                        // data is the array of arrays, and each of them contains ID and the Label of the option
+                        jQuery.each(data, function (index, text) { // do not forget that "index" is just auto incremented value
+                            options.push({id: text[0], text: text[1]});
+                        });
+
+                    }
+                    jQuery("#go_user_go_sections_select").select2("destroy");
+                    jQuery('#go_user_go_sections_select').children().remove();
+                    jQuery("#go_user_go_sections_select").select2({
+                        data: options,
+                        placeholder: "Show All",
+                        allowClear: true
                     });
+                    jQuery("#go_user_go_sections_select").select2("open");
+                    return {
+                        results: options
+                    };
 
-                }
-                jQuery("#go_user_go_sections_select").select2("destroy");
-                jQuery('#go_user_go_sections_select').children().remove();
-                jQuery("#go_user_go_sections_select").select2({
-                    data:options,
-                    placeholder: "Show All",
-                    allowClear: true});
-                jQuery("#go_user_go_sections_select").select2("open");
-                return {
-                    results: options
-                };
-
+                },
+                cache: true
             },
-            cache: true
-        },
-        minimumInputLength: 0, // the minimum of symbols to input before perform a search
-        multiple: false,
-        placeholder: "Show All",
-        allowClear: true
-    });
-    jQuery('#go_user_go_groups_select').select2({
-        ajax: {
-            url: ajaxurl, // AJAX URL is predefined in WordPress admin
-            dataType: 'json',
-            delay: 400, // delay in ms while typing when to perform a AJAX search
-            data: function (params) {
-                return {
-                    q: params.term, // search query
-                    action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
-                    taxonomy: 'user_go_groups'
-                };
-            },
-            processResults: function( data ) {
-                //console.log("search results: " + data);
-                var options = [];
-                if ( data ) {
+            minimumInputLength: 0, // the minimum of symbols to input before perform a search
+            multiple: false,
+            placeholder: "Show All",
+            allowClear: true
+        });
+    }
 
-                    // data is the array of arrays, and each of them contains ID and the Label of the option
-                    jQuery.each( data, function( index, text ) { // do not forget that "index" is just auto incremented value
-                        options.push( { id: text[0], text: text[1]  } );
+    if (jQuery("#select2-go_user_go_groups_select-container").length == 0) {
+        jQuery('#go_user_go_groups_select').select2({
+            ajax: {
+                url: ajaxurl, // AJAX URL is predefined in WordPress admin
+                dataType: 'json',
+                delay: 400, // delay in ms while typing when to perform a AJAX search
+                data: function (params) {
+                    return {
+                        q: params.term, // search query
+                        action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
+                        taxonomy: 'user_go_groups'
+                    };
+                },
+                processResults: function (data) {
+                    //console.log("search results: " + data);
+                    var options = [];
+                    if (data) {
+
+                        // data is the array of arrays, and each of them contains ID and the Label of the option
+                        jQuery.each(data, function (index, text) { // do not forget that "index" is just auto incremented value
+                            options.push({id: text[0], text: text[1]});
+                        });
+
+                    }
+                    jQuery("#go_user_go_groups_select").select2("destroy");
+                    jQuery('#go_user_go_groups_select').children().remove();
+                    jQuery("#go_user_go_groups_select").select2({
+                        data: options,
+                        placeholder: "Show All",
+                        allowClear: true
                     });
-
-                }
-                jQuery("#go_user_go_groups_select").select2("destroy");
-                jQuery('#go_user_go_groups_select').children().remove();
-                jQuery("#go_user_go_groups_select").select2({
-                    data:options,
-                    placeholder: "Show All",
-                    allowClear: true});
-                jQuery("#go_user_go_groups_select").select2("open");
-                return {
-                    results: options
-                };
+                    jQuery("#go_user_go_groups_select").select2("open");
+                    return {
+                        results: options
+                    };
+                },
+                cache: true
             },
-            cache: true
-        },
-        minimumInputLength: 0, // the minimum of symbols to input before perform a search
-        multiple: false,
-        placeholder: "Show All",
-        allowClear: true
-    });
+            minimumInputLength: 0, // the minimum of symbols to input before perform a search
+            multiple: false,
+            placeholder: "Show All",
+            allowClear: true
+        });
+    }
 
 }
 

@@ -98,7 +98,7 @@ jQuery("#go_clipboard_stats_datatable").remove(),jQuery("#go_clipboard_store_dat
 //this now saves to session data
 function go_save_clipboard_filters(){
 //SESSION STORAGE
-var e=jQuery("#go_clipboard_user_go_sections_select").val(),a=jQuery("#go_clipboard_user_go_sections_select option:selected").text(),t=jQuery("#go_clipboard_user_go_groups_select").val(),o=jQuery("#go_clipboard_user_go_groups_select option:selected").text(),r=jQuery("#go_clipboard_go_badges_select").val(),s=jQuery("#go_clipboard_go_badges_select option:selected").text(),l=document.getElementById("go_unmatched_toggle").checked;console.log("b "+r),sessionStorage.setItem("go_clipboard_section",e),sessionStorage.setItem("go_clipboard_badge",r),sessionStorage.setItem("go_clipboard_group",t),sessionStorage.setItem("go_clipboard_section_name",a),sessionStorage.setItem("go_clipboard_badge_name",s),sessionStorage.setItem("go_clipboard_group_name",o),sessionStorage.setItem("go_clipboard_unmatched",l)}
+var e=jQuery("#go_clipboard_user_go_sections_select").val(),a=jQuery("#go_clipboard_user_go_sections_select option:selected").text(),t=jQuery("#go_clipboard_user_go_groups_select").val(),o=jQuery("#go_clipboard_user_go_groups_select option:selected").text(),s=jQuery("#go_clipboard_go_badges_select").val(),r=jQuery("#go_clipboard_go_badges_select option:selected").text(),l=document.getElementById("go_unmatched_toggle").checked;console.log("b "+s),sessionStorage.setItem("go_clipboard_section",e),sessionStorage.setItem("go_clipboard_badge",s),sessionStorage.setItem("go_clipboard_group",t),sessionStorage.setItem("go_clipboard_section_name",a),sessionStorage.setItem("go_clipboard_badge_name",r),sessionStorage.setItem("go_clipboard_group_name",o),sessionStorage.setItem("go_clipboard_unmatched",l)}
 /*
 function go_filter_clipboard_datatables(filter_badges) { //function that filters all tables on draw
     jQuery.fn.dataTable.ext.search.push(
@@ -190,7 +190,7 @@ order:[[8,"desc"]],responsive:!0,autoWidth:!1,searchDelay:1e3,stateSave:!0,state
 //if (data.order) delete data.order;
 a.search&&delete a.search,a.start&&delete a.start},stateDuration:31557600,dom:"lBfrtip",drawCallback:function(e){go_clipboard_callback()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[7],sortable:!1},{targets:[9],sortable:!1},{targets:[13],sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,a,t,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]}),
 //search only on enter key
-jQuery("div.dataTables_filter input").unbind(),jQuery("div.dataTables_filter input").keyup(function(e){13==e.keyCode&&Messages.search(this.value).draw()}))}})}else go_clipboard_callback()}function go_clipboard_activity_datatable(e){if(0==jQuery("#go_clipboard_activity_datatable").length||1==e){jQuery("#clipboard_activity_datatable_container").html("<h2>Loading . . .</h2>");var a=GO_CLIPBOARD_DATA.nonces.go_clipboard_activity;
+jQuery("div.dataTables_filter input").unbind(),jQuery("div.dataTables_filter input").keyup(function(e){13==e.keyCode&&Messages.search(this.value).draw()}))}})}else go_clipboard_callback()}function go_clipboard_activity_datatable(e){if(0==jQuery("#go_clipboard_activity_datatable").length||1==e){jQuery("#clipboard_activity_datatable_container").html("<h2>Loading . . .</h2>");var a=GO_CLIPBOARD_DATA.nonces.go_clipboard_activity;console.log("date: "+jQuery("#datepicker_clipboard").val()),console.log("section: "+jQuery("#go_clipboard_user_go_sections_select").val()),console.log("group: "+jQuery("#go_clipboard_user_go_groups_select").val()),console.log("badges: "+jQuery("#go_clipboard_go_badges_select").val()),console.log("unmatched: "+document.getElementById("go_unmatched_toggle").checked),console.log("tasks: "+jQuery("#go_task_select").val()),
 //console.log(date);
 jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:a,action:"go_clipboard_activity",date:jQuery("#datepicker_clipboard").val()},success:function(e){
 //console.log("success");
@@ -250,7 +250,7 @@ multiple:!0,placeholder:"Show All"});break}})),jQuery("#records_tabs").length&&
 //go_clipboard_stats_datatable(false);
 jQuery("#records_tabs").css("margin-left","");
 // Get saved data from sessionStorage
-var a=sessionStorage.getItem("go_clipboard_section"),e=sessionStorage.getItem("go_clipboard_section_name"),o=sessionStorage.getItem("go_clipboard_badge"),t=sessionStorage.getItem("go_clipboard_badge_name"),r=sessionStorage.getItem("go_clipboard_group"),s=sessionStorage.getItem("go_clipboard_group_name"),l=sessionStorage.getItem("go_clipboard_unmatched");
+var a=sessionStorage.getItem("go_clipboard_section"),e=sessionStorage.getItem("go_clipboard_section_name"),o=sessionStorage.getItem("go_clipboard_badge"),t=sessionStorage.getItem("go_clipboard_badge_name"),s=sessionStorage.getItem("go_clipboard_group"),r=sessionStorage.getItem("go_clipboard_group_name"),l=sessionStorage.getItem("go_clipboard_unmatched");
 //jQuery('#go_clipboard_user_go_sections_select').select2({data: go_get_menu_data('go_user_sections')});
 // go_cache_menu(1, 'stats');
 //jQuery("#go_clipboard_user_go_sections_select").select2("destroy").select2({data:data});
@@ -275,10 +275,10 @@ taxonomy:"user_go_groups"}},processResults:function(e){
 var t=[];return e&&
 // data is the array of arrays, and each of them contains ID and the Label of the option
 jQuery.each(e,function(e,a){// do not forget that "index" is just auto incremented value
-t.push({id:a[0],text:a[1]})}),jQuery("#go_clipboard_user_go_groups_select").select2("destroy"),jQuery("#go_clipboard_user_go_groups_select").children().remove(),jQuery("#go_clipboard_user_go_groups_select").select2({data:t,placeholder:"Show All",allowClear:!0}).val(r).trigger("change"),jQuery("#go_clipboard_user_go_groups_select").select2("open"),{results:t}},cache:!0},minimumInputLength:0,// the minimum of symbols to input before perform a search
-multiple:!1,placeholder:"Show All",allowClear:!0}),null!=r&&"null"!=r){
+t.push({id:a[0],text:a[1]})}),jQuery("#go_clipboard_user_go_groups_select").select2("destroy"),jQuery("#go_clipboard_user_go_groups_select").children().remove(),jQuery("#go_clipboard_user_go_groups_select").select2({data:t,placeholder:"Show All",allowClear:!0}).val(s).trigger("change"),jQuery("#go_clipboard_user_go_groups_select").select2("open"),{results:t}},cache:!0},minimumInputLength:0,// the minimum of symbols to input before perform a search
+multiple:!1,placeholder:"Show All",allowClear:!0}),null!=s&&"null"!=s){
 // Fetch the preselected item, and add to the control
-var n=jQuery("#go_clipboard_user_go_groups_select"),i=new Option(s,r,!0,!0);
+var n=jQuery("#go_clipboard_user_go_groups_select"),i=new Option(r,s,!0,!0);
 // create the option and append to Select2
 n.append(i).trigger("change")}if(jQuery("#go_clipboard_go_badges_select").select2({ajax:{url:ajaxurl,// AJAX URL is predefined in WordPress admin
 dataType:"json",delay:400,// delay in ms while typing when to perform a AJAX search

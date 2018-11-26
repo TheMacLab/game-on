@@ -998,6 +998,13 @@ function go_clipboard_activity_datatable(refresh) {
 
         var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_activity;
 
+        console.log("date: " + jQuery( '#datepicker_clipboard' ).val());
+        console.log("section: " + jQuery('#go_clipboard_user_go_sections_select').val());
+        console.log("group: " + jQuery('#go_clipboard_user_go_groups_select').val());
+        console.log("badges: " + jQuery('#go_clipboard_go_badges_select').val());
+        console.log("unmatched: " + document.getElementById("go_unmatched_toggle").checked);
+        console.log("tasks: " + jQuery("#go_task_select").val());
+
         //console.log(date);
         jQuery.ajax({
             type: "post",

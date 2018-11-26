@@ -1,4 +1,17 @@
 <?php
+
+
+
+function go_write_log($log) {
+    if (true === WP_DEBUG) {
+        if (is_array($log) || is_object($log)) {
+            error_log(print_r($log, true));
+        } else {
+            error_log($log);
+        }
+    }
+}
+
 function go_make_taxonomy_dropdown_ajax(){
     // we will pass post IDs and titles to this array
     $return = array();
@@ -1738,24 +1751,24 @@ function go_clipboard_activity_dataloader_ajax(){
     ";
     //Add Badge and Group names from the action item?,
     //can't do because they might have multiple saved in a serialized array so it can't be joined.
-
+    go_write_log($sQuery);
     ////columns that will be returned
     $rResult = $wpdb->get_results($sQuery, ARRAY_A);
 
 
-    $sQuery = "SELECT FOUND_ROWS()";
+    $sQuery2 = "SELECT FOUND_ROWS()";
 
-    $rResultFilterTotal = $wpdb->get_results($sQuery, ARRAY_N);
+    $rResultFilterTotal = $wpdb->get_results($sQuery2, ARRAY_N);
 
     $iFilteredTotal = $rResultFilterTotal [0];
 
     //$totalWhere = " WHERE (action_type = 'message') ";
-    $sQuery = "
+    $sQuery3 = "
     SELECT COUNT(`" . $sIndexColumn . "`)
     FROM   $tTable
     ";
 
-    $rResultTotal = $wpdb->get_results($sQuery, ARRAY_N);
+    $rResultTotal = $wpdb->get_results($sQuery3, ARRAY_N);
 
     $iTotal = $rResultTotal [0];
     //$iFilteredTotal = number that match without limit;
