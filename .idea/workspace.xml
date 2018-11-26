@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_every_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_every_page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_scripts-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_scripts-min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ajax/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_stats.php" afterDir="false" />
     </list>
@@ -36,11 +34,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="go_clipboard.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="go_clipboard.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="1747" column="17" lean-forward="true" selection-start-line="1747" selection-start-column="17" selection-end-line="1748" selection-end-column="17" />
+            <state relative-caret-position="170">
+              <caret line="1747" column="17" selection-start-line="1747" selection-start-column="17" selection-end-line="1747" selection-end-column="17" />
               <folding>
                 <element signature="n#go_make_taxonomy_dropdown_ajax#0;n#!!top" />
                 <element signature="n#go_total_query_time#0;n#!!top" />
@@ -112,11 +110,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_stats.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_stats.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ajax/go_stats.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="2279" column="17" selection-start-line="2279" selection-start-column="17" selection-end-line="2279" selection-end-column="17" />
+            <state relative-caret-position="511">
+              <caret line="2279" column="17" lean-forward="true" selection-start-line="2279" selection-start-column="17" selection-end-line="2280" selection-end-column="17" />
               <folding>
                 <element signature="n#go_admin_bar_stats#0;n#!!top" />
                 <element signature="e#11129#19576#0#PHP" />
@@ -318,9 +316,9 @@
         <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/src/admin/ajax/go_store_make_html.php" />
         <option value="$PROJECT_DIR$/js/dev/go_clipboard.js" />
-        <option value="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" />
         <option value="$PROJECT_DIR$/js/dev/scripts/go_every_page.js" />
         <option value="$PROJECT_DIR$/src/ajax/go_stats.php" />
+        <option value="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" />
       </list>
     </option>
   </component>
@@ -585,12 +583,12 @@
       <workItem from="1541406466989" duration="148955000" />
       <workItem from="1542095961949" duration="81875000" />
       <workItem from="1542443488588" duration="50106000" />
-      <workItem from="1542721857455" duration="133740000" />
+      <workItem from="1542721857455" duration="133927000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2933481000" />
+    <option name="totallyTimeSpent" value="2933668000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
@@ -790,12 +788,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/ajax/go_stats.php</url>
-          <line>2288</line>
+          <line>2289</line>
           <option name="timeStamp" value="1468" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php</url>
-          <line>1758</line>
+          <line>1757</line>
           <option name="timeStamp" value="1469" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1218,43 +1216,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="1747" column="17" lean-forward="true" selection-start-line="1747" selection-start-column="17" selection-end-line="1748" selection-end-column="17" />
-          <folding>
-            <element signature="n#go_make_taxonomy_dropdown_ajax#0;n#!!top" />
-            <element signature="n#go_total_query_time#0;n#!!top" />
-            <element signature="n#go_clipboard_save_filters#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#span#0;n#span#2;n#div#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_uWhere_values#0;n#!!top" />
-            <element signature="n#go_section#0;n#!!top" />
-            <element signature="n#go_sWhere#0;n#!!top" />
-            <element signature="n#go_start_row#0;n#!!top" />
-            <element signature="n#go_loot_columns#0;n#!!top" />
-            <element signature="n#go_clipboard_time#0;n#!!top" />
-            <element signature="n#go_badges_and_groups#0;n#!!top" />
-            <element signature="n#go_clipboard_stats#0;n#!!top" />
-            <element signature="n#go_clipboard_stats_dataloader_ajax#0;n#!!top" />
-            <element signature="e#21445#22153#0#PHP" />
-            <element signature="e#22333#22953#0#PHP" />
-            <element signature="n#go_clipboard_store#0;n#!!top" />
-            <element signature="e#32266#32605#0#PHP" />
-            <element signature="n#go_clipboard_messages#0;n#!!top" />
-            <element signature="e#38445#43540#0#PHP" />
-            <element signature="e#51213#51350#0#PHP" />
-            <element signature="n#style#0;n#span#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#go_clipboard_activity#0;n#!!top" />
-            <element signature="e#80890#85985#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/go_clipboard.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
@@ -1301,8 +1262,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ajax/go_stats.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="2279" column="17" selection-start-line="2279" selection-start-column="17" selection-end-line="2279" selection-end-column="17" />
+        <state relative-caret-position="511">
+          <caret line="2279" column="17" lean-forward="true" selection-start-line="2279" selection-start-column="17" selection-end-line="2280" selection-end-column="17" />
           <folding>
             <element signature="n#go_admin_bar_stats#0;n#!!top" />
             <element signature="e#11129#19576#0#PHP" />
@@ -1319,6 +1280,43 @@
             <element signature="n#go_stats_groups_list#0;n#!!top" />
             <element signature="n#go_stats_leaderboard#0;n#!!top" />
             <element signature="n#go_stats_lite#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="1747" column="17" selection-start-line="1747" selection-start-column="17" selection-end-line="1747" selection-end-column="17" />
+          <folding>
+            <element signature="n#go_make_taxonomy_dropdown_ajax#0;n#!!top" />
+            <element signature="n#go_total_query_time#0;n#!!top" />
+            <element signature="n#go_clipboard_save_filters#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#span#0;n#span#2;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#go_uWhere_values#0;n#!!top" />
+            <element signature="n#go_section#0;n#!!top" />
+            <element signature="n#go_sWhere#0;n#!!top" />
+            <element signature="n#go_start_row#0;n#!!top" />
+            <element signature="n#go_loot_columns#0;n#!!top" />
+            <element signature="n#go_clipboard_time#0;n#!!top" />
+            <element signature="n#go_badges_and_groups#0;n#!!top" />
+            <element signature="n#go_clipboard_stats#0;n#!!top" />
+            <element signature="n#go_clipboard_stats_dataloader_ajax#0;n#!!top" />
+            <element signature="e#21445#22153#0#PHP" />
+            <element signature="e#22333#22953#0#PHP" />
+            <element signature="n#go_clipboard_store#0;n#!!top" />
+            <element signature="e#32266#32605#0#PHP" />
+            <element signature="n#go_clipboard_messages#0;n#!!top" />
+            <element signature="e#38445#43540#0#PHP" />
+            <element signature="e#51213#51350#0#PHP" />
+            <element signature="n#style#0;n#span#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#go_clipboard_activity#0;n#!!top" />
+            <element signature="e#80890#85985#0#PHP" />
           </folding>
         </state>
       </provider>
