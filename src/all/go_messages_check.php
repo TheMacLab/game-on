@@ -180,10 +180,10 @@ function go_check_messages(){
                 }
                 $message = "<div> {$message}</div><div>{$reward}{$penalty}</div>";
 
-                go_noty_message_generic('warning', $title, $message);
+                go_noty_message_generic('warning', $title, $message, '5000');
             }
             else{
-                go_noty_message_generic('warning', '', $title);
+                go_noty_message_generic('warning', '', $title, '5000');
             }
         }
         //set messages flag to read

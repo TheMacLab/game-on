@@ -1,3 +1,17 @@
+function go_user_profile_link(uid){
+    jQuery.ajax({
+        type: "post",
+        url: MyAjax.ajaxurl,
+        data: {
+            //_ajax_nonce: nonce,
+            action: 'go_user_profile_link',
+            uid: uid
+        },
+        success: function (url) {
+            window.open(url);
+        }
+    })
+}
 
 function go_noty_close_oldest(){
     Noty.setMaxVisible(6);
@@ -105,6 +119,94 @@ function go_stats_links(){
 
     jQuery('.go_stats_messages_icon').prop('onclick',null).off('click');
     jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id); });
+
+    jQuery('#go_user_go_sections_select').select2({
+        ajax: {
+            url: ajaxurl, // AJAX URL is predefined in WordPress admin
+            dataType: 'json',
+            delay: 400, // delay in ms while typing when to perform a AJAX search
+            data: function (params) {
+
+                return {
+                    q: params.term, // search query
+                    action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
+                    taxonomy: 'user_go_sections'
+                };
+
+
+            },
+            processResults: function( data ) {
+                console.log ("here: " + data);
+
+                var options = [];
+                if (data) {
+                    // data is the array of arrays, and each of them contains ID and the Label of the option
+                    jQuery.each(data, function (index, text) { // do not forget that "index" is just auto incremented value
+                        options.push({id: text[0], text: text[1]});
+                    });
+
+                }
+                jQuery("#go_user_go_sections_select").select2("destroy");
+                jQuery('#go_user_go_sections_select').children().remove();
+                jQuery("#go_user_go_sections_select").select2({
+                    data:options,
+                    placeholder: "Show All",
+                    allowClear: true});
+                jQuery("#go_user_go_sections_select").select2("open");
+                return {
+                    results: options
+                };
+
+            },
+            cache: true
+        },
+        minimumInputLength: 0, // the minimum of symbols to input before perform a search
+        multiple: false,
+        placeholder: "Show All",
+        allowClear: true
+    });
+    jQuery('#go_user_go_groups_select').select2({
+        ajax: {
+            url: ajaxurl, // AJAX URL is predefined in WordPress admin
+            dataType: 'json',
+            delay: 400, // delay in ms while typing when to perform a AJAX search
+            data: function (params) {
+                return {
+                    q: params.term, // search query
+                    action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
+                    taxonomy: 'user_go_groups'
+                };
+            },
+            processResults: function( data ) {
+                //console.log("search results: " + data);
+                var options = [];
+                if ( data ) {
+
+                    // data is the array of arrays, and each of them contains ID and the Label of the option
+                    jQuery.each( data, function( index, text ) { // do not forget that "index" is just auto incremented value
+                        options.push( { id: text[0], text: text[1]  } );
+                    });
+
+                }
+                jQuery("#go_user_go_groups_select").select2("destroy");
+                jQuery('#go_user_go_groups_select').children().remove();
+                jQuery("#go_user_go_groups_select").select2({
+                    data:options,
+                    placeholder: "Show All",
+                    allowClear: true});
+                jQuery("#go_user_go_groups_select").select2("open");
+                return {
+                    results: options
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 0, // the minimum of symbols to input before perform a search
+        multiple: false,
+        placeholder: "Show All",
+        allowClear: true
+    });
+
 }
 
 function go_stats_about(user_id) {
@@ -286,12 +388,20 @@ function go_stats_item_list() {
                 if (-1 !== res) {
                     jQuery('#stats_store').html(res);
                     jQuery('#go_store_datatable').dataTable({
-
-                        "bPaginate": true,
-                        "order": [[0, "desc"]],
-                        //"destroy": true,
+                        "processing": true,
+                        "serverSide": true,
+                        "ajax": {
+                            "url": MyAjax.ajaxurl + '?action=go_stats_store_item_dataloader',
+                            "data": function(d){
+                                d.user_id = jQuery('#go_stats_hidden_input').val();}
+                        },
                         responsive: true,
-                        "autoWidth": false
+                        "autoWidth": false,
+                        columnDefs: [
+                            { targets: '_all', "orderable": false }
+                        ],
+                        "searching": true,
+                        "order": [[0, "desc"]]
                     });
                 }
             }
@@ -329,6 +439,8 @@ function go_stats_activity_list() {
                         ],
 
                         "searching": true,
+
+                        "order": [[0, "desc"]],
                         /*'createdRow': function (row, data, dataIndex) {
                             var dateCell = jQuery(row).find('td:eq(0)').text(); // get first column
 
@@ -386,14 +498,15 @@ function go_stats_messages() {
                         "ajax": {
                             "url": MyAjax.ajaxurl + '?action=go_messages_dataloader_ajax',
                             "data": function(d){
-                                d.user_id = jQuery('#go_stats_hidden_input').val();}//this doesn't actually pass something to my PHP like it does normally with AJAX.
+                                d.user_id = jQuery('#go_stats_hidden_input').val();}
                         },
                         responsive: true,
                         "autoWidth": false,
                         columnDefs: [
                             { targets: '_all', "orderable": false }
                         ],
-                        "searching": true
+                        "searching": true,
+                        "order": [[0, "desc"]]
                     });
                 }
             }
@@ -446,6 +559,11 @@ function go_stats_groups_list() {
 
 function go_stats_leaderboard() {
     var nonce_leaderboard = GO_EVERY_PAGE_DATA.nonces.go_stats_leaderboard;
+    var is_admin = GO_EVERY_PAGE_DATA.go_is_admin;
+    var initial_sort = 3;
+    if (is_admin == true){
+        initial_sort = 4;
+    }
     if (jQuery("#go_leaderboard_wrapper").length == 0) {
         jQuery(".go_leaderboard_wrapper").show();
         jQuery.ajax({
@@ -462,8 +580,7 @@ function go_stats_leaderboard() {
 
                 jQuery('#stats_leaderboard').html(raw);
 
-                    var section = jQuery('#go_user_go_sections_select').val();
-                    //console.log(section);
+
                     //XP////////////////////////////
                     //go_sort_leaders("go_xp_leaders_datatable", 4);
                     var table = jQuery('#go_leaders_datatable').DataTable({
@@ -484,11 +601,45 @@ function go_stats_leaderboard() {
                         responsive: false,
                         "autoWidth": false,
                         "paging": true,
-                        "order": [[2, "desc"]],
+                        "order": [[initial_sort, "desc"]],
                         "drawCallback": function( settings ) {
                             go_stats_links();
                         },
-                        "searching": false
+                        "searching": false,
+                        "columnDefs": [
+                            { type: 'natural', targets: '_all'},
+                            {
+                                "targets": [0],
+                                sortable: false
+                            },
+                            {
+                                "targets": [1],
+                                sortable: false
+                            },
+                            {
+                                "targets": [2],
+                                sortable: false
+                            },
+                            {
+                                "targets": [3],
+                                sortable: false,
+                            },
+                            {
+                                "targets": [4],
+                                sortable: true,
+                                "orderSequence": [ "desc" ]
+                            },
+                            {
+                                "targets": [5],
+                                sortable: true,
+                                "orderSequence": [ "desc" ]
+                            },
+                            {
+                                "targets": [6],
+                                sortable: true,
+                                "orderSequence": [ "desc" ]
+                            },
+                        ],
                     });
 
 
@@ -496,6 +647,8 @@ function go_stats_leaderboard() {
 
                 // Event listener to the range filtering inputs to redraw on input
                 jQuery('#go_user_go_sections_select, #go_user_go_groups_select').change( function() {
+                    var section = jQuery('#go_user_go_sections_select').val();
+                    console.log(section);
                     if (jQuery("#go_leaders_datatable").length) {
                         table.draw();
                     }

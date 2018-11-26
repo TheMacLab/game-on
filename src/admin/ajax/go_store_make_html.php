@@ -1,7 +1,5 @@
 <?php
 
-
-
 function go_make_store_html() {
 
         $args = array('hide_empty' => false, 'orderby' => 'name', 'order' => 'ASC', 'parent' => '0');
@@ -147,6 +145,131 @@ function go_make_store_html() {
 
 }
 
+function go_make_store_dropdown() {
+
+    $args = array('hide_empty' => false, 'orderby' => 'name', 'order' => 'ASC', 'parent' => '0');
+
+    /* Get all task chains with no parents--these are the sections of the store.  */
+    $taxonomy = 'store_types';
+
+    $rows = get_terms($taxonomy, $args);//the rows
+    echo "<select id='go_store_item_select' class='go_tax_select' data-placeholder='Show All' multiple>";
+
+    //echo "<option value='none' ><b>Show All</b></option>";
+    echo "<option></option>";
+
+
+    /* For each Store Category with no parent, get all the children.  These are the store rows.*/
+    $chainParentNum = 0;
+    //for each row
+    foreach ($rows as $row) {
+        $chainParentNum++;
+        $row_id = $row->term_id;//id of the row
+        $custom_fields = get_term_meta($row_id);
+        $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ? $custom_fields['go_hide_store_cat'][0] : null);
+        if ($cat_hidden == true) {
+            continue;
+        }
+
+        echo  "<optgroup label='" . $row->name . "' ></optgroup>" ;
+
+        $column_args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $row_id,
+
+        );
+
+        $columns = get_terms($taxonomy, $column_args);
+        /*Loop for each chain.  Prints the chain name then looks up children (quests). */
+        foreach ($columns as $column) {
+
+            echo  "<optgroup label='" . $column->name . "' >" ;
+
+            $column_id = $column->term_id;
+            /*Gets a list of store items that are assigned to each chain as array. Ordered by post ID */
+            $args = array('tax_query' => array(array('taxonomy' => $taxonomy, 'field' => 'term_id', 'terms' => $column_id,)), 'orderby' => 'meta_value_num', 'order' => 'ASC', 'posts_per_page' => -1, 'meta_key' => 'go-store-location_store_item', 'meta_value' => '', 'post_type' => 'go_store', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true);
+            $go_store_objs = get_posts($args);
+
+            //////////////////
+            /// ////////////////////
+            //$go_store_ids = get_objects_in_term( $column_id, $taxonomy );
+
+            /*Only loop through for first item in array.  This will get the correct order
+            of items from the post metadata */
+
+            if (!empty($go_store_objs)) {
+
+                foreach ($go_store_objs as $go_store_obj) {
+
+                    $status = get_post_status($go_store_obj);
+
+
+
+                    if ($status !== 'publish') {
+                        continue;
+                    }
+                    $store_item_id = $go_store_obj->ID;
+
+                    echo "<option value='" . $go_store_obj->ID . "'>" . get_the_title($go_store_obj) . "</option>";
+                }
+            }
+
+            echo "</optgroup>";
+        }
+
+    }
+
+    echo "</select>";
+
+}
+
+function go_make_store_dropdown_ajax() {
+    // we will pass post IDs and titles to this array
+    $return = array();
+
+    // you can use WP_Query, query_posts() or get_posts() here - it doesn't matter
+    $search_results = new WP_Query( array(
+        's'=> $_GET['q'], // the search query
+        'post_status' => 'publish', // if you don't want drafts to be returned
+        'ignore_sticky_posts' => 1,
+        'posts_per_page' => 50, // how much to show at once\
+        'post_type' => 'go_store'
+    ) );
+    if( $search_results->have_posts() ) :
+        while( $search_results->have_posts() ) : $search_results->the_post();
+            // shorten the title a little
+            $title = ( mb_strlen( $search_results->post->post_title ) > 50 ) ? mb_substr( $search_results->post->post_title, 0, 49 ) . '...' : $search_results->post->post_title;
+            $return[] = array( $search_results->post->ID, $title ); // array( Post ID, Post Title )
+        endwhile;
+    endif;
+    echo json_encode( $return );
+    die;
+
+}
+
+function go_make_cpt_select2_ajax() {
+    // we will pass post IDs and titles to this array
+    $return = array();
+
+    // you can use WP_Query, query_posts() or get_posts() here - it doesn't matter
+    $search_results = new WP_Query( array(
+        's'=> $_GET['q'], // the search query
+        'post_type'=> $_GET['cpt'], // the search query
+        //'post_status' => 'publish', // if you don't want drafts to be returned
+        //'ignore_sticky_posts' => 1,
+        'posts_per_page' => 50 // how much to show at once\
+
+    ) );
+    if( $search_results->have_posts() ) :
+        while( $search_results->have_posts() ) : $search_results->the_post();
+            // shorten the title a little
+            $title = ( mb_strlen( $search_results->post->post_title ) > 50 ) ? mb_substr( $search_results->post->post_title, 0, 49 ) . '...' : $search_results->post->post_title;
+            $return[] = array( $search_results->post->ID, $title ); // array( Post ID, Post Title )
+        endwhile;
+    endif;
+    echo json_encode( $return );
+    die;
+
+}
+
 /**
  * Update store on post save, delete or trash
  * @param  integer $post_id Current post ID
@@ -165,12 +288,12 @@ function go_update_store_post_save( $post_id ) {
     //delete task data transient
     $key = 'go_post_data_' . $post_id;
     delete_transient($key);
-
 }
 
-add_action( 'wp_trash_post',    'go_update_store_post_save' );
-add_action( 'deleted_post',      'go_update_store_post_save' );
-add_action( 'save_post', 'go_update_store_post_save' );
+add_action( 'wp_trash_post', 'go_update_store_post_save' );
+add_action( 'deleted_post', 'go_update_store_post_save' );
+add_action( 'save_post', 'go_update_store_post_save');
+
 
 /**
  * Update store on store term

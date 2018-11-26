@@ -152,6 +152,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_stats_about', 'go_stats_about' ); //OK
     add_action( 'wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
     add_action( 'wp_ajax_go_messages_dataloader_ajax', 'go_messages_dataloader_ajax');
+    add_action( 'wp_ajax_go_stats_store_item_dataloader', 'go_stats_store_item_dataloader');
     //add_action( 'wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
     //Activation
     add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' ); //OK
@@ -168,9 +169,15 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_clipboard_messages', 'go_clipboard_messages' ); //OK
     add_action( 'wp_ajax_go_clipboard_store', 'go_clipboard_store' ); //OK
     add_action( 'wp_ajax_go_clipboard_stats_dataloader_ajax', 'go_clipboard_stats_dataloader_ajax' ); //OK
-    add_action( 'wp_ajax_go_clipboard_messages_dataloader_ajax', 'go_clipboard_messages_dataloader_ajax' ); //OK
     add_action( 'wp_ajax_go_clipboard_store_dataloader_ajax', 'go_clipboard_store_dataloader_ajax' ); //OK
-    add_action( 'wp_ajax_go_clipboard_save_filters', 'go_clipboard_save_filters' ); //OK
+    add_action( 'wp_ajax_go_clipboard_messages_dataloader_ajax', 'go_clipboard_messages_dataloader_ajax' ); //OK
+    add_action( 'wp_ajax_go_clipboard_activity_dataloader_ajax', 'go_clipboard_activity_dataloader_ajax' ); //OK
+    add_action( 'wp_ajax_go_make_store_dropdown_ajax', 'go_make_store_dropdown_ajax' );
+    add_action( 'wp_ajax_go_make_cpt_select2_ajax', 'go_make_cpt_select2_ajax' );
+    add_action( 'wp_ajax_go_make_taxonomy_dropdown_ajax', 'go_make_taxonomy_dropdown_ajax' );
+    add_action( 'wp_ajax_go_initial_value', 'go_initial_value' );
+    add_action( 'wp_ajax_go_user_profile_link', 'go_user_profile_link' );
+    //add_action( 'wp_ajax_go_clipboard_save_filters', 'go_clipboard_save_filters' ); //OK
     //Messages
     add_action( 'wp_ajax_go_create_admin_message', 'go_create_admin_message' );//OK
     add_action( 'wp_ajax_go_send_message', 'go_send_message' ); //OK
@@ -203,6 +210,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
 
     //admin/ajax directory
     include_once('src/admin/ajax/go_clipboard.php');
+    include_once('src/admin/ajax/go_store_make_html.php');
 
     //admin js
     include_once('js/go_enque_js_admin.php');

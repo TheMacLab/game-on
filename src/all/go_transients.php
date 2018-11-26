@@ -5,40 +5,11 @@
  * Date: 9/9/18
  * Time: 9:32 PM
  */
-
-
-/**
- * Get/set transient of term objects
- *
- * Reset on:
- * create badge
- * update badge
- *
- * @param $taxonomy
- * @return mixed
- */
-function go_get_all_terms($taxonomy) {
-    $key = 'go_all_' . $taxonomy;
-    $data = get_transient($key);
-
-    if ($data === false) {
-        $data = get_terms( array(
-            'taxonomy' => $taxonomy
-        ) );
-        set_transient($key, $data, 3600 * 24);
-    }
-
-    return $data;
-}
-
-
-
-
 /**
  * Get/set transient of user_id totals
  *
  * Reset on:
- * update_totals
+ * update_totals OK
  *
  * @param $user_id
  * @return mixed
@@ -62,7 +33,6 @@ function go_get_loot($user_id){
     }
     return $data;
 }
-
 
 /**
  * Get/set transient of term_ids of chains on a map by map term_id
@@ -106,7 +76,7 @@ function go_get_map_chain_term_ids($term_id) {
  * @param $term_id
  * @return mixed
  *
- * Delete on save or update of term
+ * Delete on save or update of term OK
  */
 function go_get_parent_map_id($term_id){
 
@@ -136,7 +106,7 @@ function go_get_parent_map_id($term_id){
 /**
  * @return mixed
  *
- * Delete on save or update of any term
+ * Delete on save or update of any term OK
  */
 function go_get_maps_term_ids(){
     $key = 'go_get_maps_term_ids';
@@ -255,6 +225,7 @@ function go_get_chain_posts($term_id, $is_map = false ){
  * [3]-metadata
  * Reset on:
  * post save                                        OK
+ * or 24 Hours
  *
  * @param $post_id
  * @return array
@@ -282,7 +253,6 @@ function go_post_data($post_id){
     return $task_data;
 
 }
-
 
 /**
  * Update transients on post save, delete or trash

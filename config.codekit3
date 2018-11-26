@@ -44,6 +44,13 @@
 		"oAP": "/.idea/game-on_mmhsart4.iml",
 		"oF": 0
 		},
+	"/.idea/inspectionProfiles/profiles_settings.xml": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/.idea/inspectionProfiles/profiles_settings.xml",
+		"oF": 0
+		},
 	"/.idea/inspectionProfiles/Project_Default.xml": {
 		"cB": 0,
 		"ft": 8192,
@@ -2189,6 +2196,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"/js/dev/go_clipboard.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/js/min/go_clipboard-min.js",
+		"oF": 2,
+		"sC": 3,
+		"tS": 0
+		},
 	"/js/dev/go_every_admin_page.js": {
 		"ft": 64,
 		"ma": 0,
@@ -2275,16 +2292,6 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "/js/dev/scripts/go_blogs-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
-	"/js/dev/scripts/go_clipboard.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/dev/scripts/go_clipboard-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -2389,6 +2396,16 @@
 		"mi": 1,
 		"oA": 0,
 		"oAP": "/js/min/go_admin_user-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/js/min/go_clipboard-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/js/min/go_clipboard-min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0

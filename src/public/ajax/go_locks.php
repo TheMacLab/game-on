@@ -269,28 +269,12 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
     if ($is_logged_in) {
         $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_badge";
         $terms_needed = $custom_fields[$option][0];
-        $terms_needed = unserialize($terms_needed);
-        // gets the current user's period(s)
-        //$num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
-        //$user_terms = array();
-        //for ($i = 0; $i < $num_terms; $i++) {
+        $terms_needed = array_values(unserialize($terms_needed));
 
-            //$user_period = "go_section_and_seat_" . $i . "_user-section";
-            //$user_period = get_user_meta($user_id, $user_period, true);
-            //$user_terms[] = $user_period;
-/*
-            global $wpdb;
-            $go_loot_table_name = "{$wpdb->prefix}go_loot";
-            $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-            $user_terms = unserialize($badges_array);
-*/
-            $loot = go_get_loot($user_id);
-            $badges_array = $loot['badges'];
-            $user_terms = unserialize($badges_array);
-            $user_terms = array_values($user_terms);
-        //}
-
-
+        global $wpdb;
+        $go_loot_table_name = "{$wpdb->prefix}go_loot";
+        $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+        $user_terms = array_values(unserialize($badges_array));
 
         //if the current user is in a class period then check if it is the right one
         if (!$user_terms || !is_array($user_terms)) {
@@ -343,21 +327,12 @@ function go_user_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_log
     if( $is_logged_in ) {
         $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_group";
         $terms_needed = $custom_fields[$option][0];
-        $terms_needed = unserialize($terms_needed);
-        // gets the current user's period(s)
-        //$num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
-        // $user_terms = array();
-        //for ($i = 0; $i < $num_terms; $i++) {
-            /*
-            global $wpdb;
-            $go_loot_table_name = "{$wpdb->prefix}go_loot";
-            $groups_array = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-            $user_terms = unserialize($groups_array);
-            */
-            $loot = go_get_loot($user_id);
-            $groups_array = $loot['groups'];
-            $user_terms = unserialize($groups_array);
-        //}
+        $terms_needed = array_values(unserialize($terms_needed));
+
+        global $wpdb;
+        $go_loot_table_name = "{$wpdb->prefix}go_loot";
+        $groups_array = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
+        $user_terms = array_values(unserialize($groups_array));
 
         //set $user_terms to empty array if not set
         if (!$user_terms || !is_array($user_terms)) {

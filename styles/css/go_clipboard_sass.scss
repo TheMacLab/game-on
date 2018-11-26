@@ -1,5 +1,15 @@
-#go_leaderboard_filters {
+
+#go_leaderboard_filters_container {
+  display: flex; justify-content: space-between;
+}
+#go_leaderboard_filters, #go_leaderboard_update_button {
   padding: 20px;
+  text-align: right;
+}
+
+#go_leaderboard_filters h3,
+#go_leaderboard_filters .select2{
+  text-align: left;
 }
 
 #records_tabs a, #records_tabs .tooltip{
@@ -15,3 +25,14 @@
 }
 
 .hidden_action{display: none;}
+
+
+.dataTables_processing {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background-color: lightblue !important;
+  z-index: 1 !important;
+  margin: 0px !important;
+}

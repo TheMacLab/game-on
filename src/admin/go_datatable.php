@@ -3,7 +3,7 @@
 global $wpdb;
 
 function go_update_db_check() {
-    $go_db_version = 4.24;
+    $go_db_version = 4.25;
     if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
         update_option('go_db_version', $go_db_version);
         go_update_db();
@@ -77,6 +77,7 @@ function go_table_actions() {
 			PRIMARY KEY  (id),
             KEY uid (uid),
             KEY source_id (source_id),
+            KEY action_type (action_type ),
             KEY TIMESTAMP (TIMESTAMP),
             KEY uid_source (uid, source_id),
             KEY uid_date (uid, TIMESTAMP)

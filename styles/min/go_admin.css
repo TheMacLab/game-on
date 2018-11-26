@@ -1,1 +1,105 @@
-#go_leaderboard_filters{padding:20px}#records_tabs a,#records_tabs .tooltip{color:blue}#go_messages .select2-container{width:100% !important}.dt-buttons{padding:10px}.hidden_action{display:none}.go_rewards{background-color:#c9fbc9}.go_call_to_action{background-color:cornsilk}.go_date_picker_modifier_input{height:30px;width:70px}.column-primary{flex:1 !important}.posts.column-posts,.manage-column.column-posts,.pod_toggle.column-pod_toggle,.manage-column.column-pod_toggle{text-align:center;flex:none !important;display:block;width:40px}.pod_achievement.column-pod_achievement,.manage-column.column-pod_achievement,.pod_done_num.column-pod_done_num,.manage-column.column-pod_done_num,.description.column-description,.manage-column.column-description,.slug.column-slug,.manage-column.column-slug{text-align:center;flex:none !important;display:block;width:100px}.pod_done_num.column-pod_done_num,.manage-column.column-pod_done_num{text-align:center;flex:none !important;display:block;width:75px}#col-right{display:none}ul .row-actions{display:none}.taxonomy-task_chains .term-description-wrap,.taxonomy-task_focus_categories .term-description-wrap,.taxonomy-task_categories .term-description-wrap,.taxonomy-task_menus .term-description-wrap,.taxonomy-stask_badges .term-description-wrap,.taxonomy-store_types .term-description-wrap{display:none}.wp-has-submenu.toplevel_page_maps_menus .wp-first-item{display:none}
+#go_leaderboard_filters_container {
+  display: flex;
+  justify-content: space-between; }
+
+#go_leaderboard_filters, #go_leaderboard_update_button {
+  padding: 20px;
+  text-align: right; }
+
+#go_leaderboard_filters h3,
+#go_leaderboard_filters .select2 {
+  text-align: left; }
+
+#records_tabs a, #records_tabs .tooltip {
+  color: blue; }
+
+#go_messages .select2-container {
+  width: 100% !important; }
+
+.dt-buttons {
+  padding: 10px; }
+
+.hidden_action {
+  display: none; }
+
+.dataTables_processing {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background-color: lightblue !important;
+  z-index: 1 !important;
+  margin: 0px !important; }
+
+.go_rewards {
+  background-color: #c9fbc9; }
+
+.go_call_to_action {
+  background-color: cornsilk; }
+
+/**
+ * Date Picker Setting Row
+ */
+.go_date_picker_modifier_input {
+  height: 30px;
+  width: 70px; }
+
+/**
+*set column widths on manage term pages
+ */
+.column-primary {
+  flex: 1 !important; }
+
+.posts.column-posts,
+.manage-column.column-posts,
+.pod_toggle.column-pod_toggle,
+.manage-column.column-pod_toggle {
+  text-align: center;
+  flex: none !important;
+  display: block;
+  width: 40px; }
+
+.pod_achievement.column-pod_achievement,
+.manage-column.column-pod_achievement,
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num,
+.description.column-description,
+.manage-column.column-description,
+.slug.column-slug,
+.manage-column.column-slug {
+  text-align: center;
+  flex: none !important;
+  display: block;
+  width: 100px; }
+
+.pod_done_num.column-pod_done_num,
+.manage-column.column-pod_done_num {
+  text-align: center;
+  flex: none !important;
+  display: block;
+  width: 75px; }
+
+/********************
+*	Edit term tables
+hides table on term page until reorder.js is complete
+********************/
+#col-right {
+  display: none; }
+
+ul .row-actions {
+  display: none; }
+
+/*hides description field*/
+.taxonomy-task_chains .term-description-wrap,
+.taxonomy-task_focus_categories .term-description-wrap,
+.taxonomy-task_categories .term-description-wrap,
+.taxonomy-task_menus .term-description-wrap,
+.taxonomy-stask_badges .term-description-wrap,
+.taxonomy-store_types .term-description-wrap {
+  display: none; }
+
+/********************
+*
+********************/
+.wp-has-submenu.toplevel_page_maps_menus .wp-first-item {
+  display: none; }

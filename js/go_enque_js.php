@@ -61,6 +61,8 @@ function go_scripts () {
 
 		// Localization
 		$user_id = get_current_user_id();
+        //is the current user an admin
+        $is_admin = go_user_is_admin($user_id);
 
 
         wp_localize_script( 'go_frontend-min', 'SiteURL', get_site_url() );
@@ -95,8 +97,8 @@ function go_scripts () {
                     'go_blog_submit'                => wp_create_nonce('go_blog_submit'),
                     'go_to_this_map'                => wp_create_nonce('go_to_this_map'),
                     'go_blog_lightbox_opener'                => wp_create_nonce('go_blog_lightbox_opener')
-
-				)
+                ),
+                'go_is_admin'                   => $is_admin
 			)
 		);
 		wp_localize_script(

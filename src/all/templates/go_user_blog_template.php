@@ -89,7 +89,309 @@ get_header();
         </div>
     </div>
     <?php
-/// END USER HEADER
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////
+    /// ////////////
+    ////////////////////////////////////
+    /// TEST QUERIES
+    ///
+    global $wpdb;
+
+
+    $go_action_table_name = "{$wpdb->prefix}go_actions";
+
+    //columns that will be returned
+    $aColumns = array('id', 'uid', 'source_id', 'action_type', 'TIMESTAMP', 'result', 'xp', 'gold', 'health', 'badges', 'groups');
+
+    //columns that will be searched
+    $sColumns = array('result', 'xp', 'gold', 'health', 'badges', 'groups');
+
+    $sIndexColumn = "id";
+    $sTable = $go_action_table_name;
+
+    $sLimit = '';
+    //if (isset($_GET['start']) && $_GET['length'] != '-1') {
+        $sLimit = "LIMIT " . intval(0) . ", " . intval(100);
+    //}
+
+    $sOrder = "ORDER BY TIMESTAMP desc"; //always in reverse order
+
+    $sWhere = "WHERE (action_type = 'store') ";
+
+    $totalWhere = " WHERE (action_type = 'store') ";
+
+    if ( isset($date) && $date != "" )
+    {
+        $date = date("Y-m-d", strtotime($date));
+        $sWhere .= " AND ( DATE(TIMESTAMP) = '" . $date . "')";
+    }
+
+
+//This is the fast one if it is sorted by user info or a search term is provided
+    $sQuery = "
+      SELECT 
+        user_info.*, t4.source_id, t4.action_type, t4.TIMESTAMP, t4.result, t4.xp, t4.gold, t4.health, t4.badges, t4.groups
+      FROM (
+          SELECT
+          t1.uid,
+          MAX(CASE WHEN t2.meta_key = 'first_name' THEN meta_value END) AS first_name,
+          MAX(CASE WHEN t2.meta_key = 'last_name' THEN meta_value END) AS last_name,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat' THEN meta_value END) AS num_section,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_0_user-section' THEN meta_value END) AS section_0,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_0_user-seat' THEN meta_value END) AS seat_0,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_1_user-section' THEN meta_value END) AS section_1,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_1_user-seat' THEN meta_value END) AS seat_1,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_2_user-section' THEN meta_value END) AS section_2,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_2_user-seat' THEN meta_value END) AS seat_2,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_3_user-section' THEN meta_value END) AS section_3,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_3_user-seat' THEN meta_value END) AS seat_3,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_4_user-section' THEN meta_value END) AS section_4,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_4_user-seat' THEN meta_value END) AS seat_4,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_5_user-section' THEN meta_value END) AS section_5,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_5_user-seat' THEN meta_value END) AS seat_5,      
+          t3.display_name, t3.user_url
+          FROM wp_go_loot AS t1 
+          LEFT JOIN wp_usermeta AS t2 ON t1.uid = t2.user_id
+          LEFT JOIN wp_users AS t3 ON t2.user_id = t3.ID
+          GROUP BY t1.id
+      ) AS user_info
+      INNER JOIN wp_go_actions AS t4 ON user_info.uid = t4.uid
+      WHERE (t4.action_type = 'store')
+      $sOrder
+      $sLimit
+    ";
+    $rResult = $wpdb->get_results($sQuery, ARRAY_A);
+/*
+    //SLOWER.
+    $sQuery = "
+      SELECT 
+         actions.*,
+          MAX(CASE WHEN t2.meta_key = 'first_name' THEN meta_value END) AS first_name,
+          MAX(CASE WHEN t2.meta_key = 'last_name' THEN meta_value END) AS last_name,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat' THEN meta_value END) AS num_section,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_0_user-section' THEN meta_value END) AS section_0,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_0_user-seat' THEN meta_value END) AS seat_0,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_1_user-section' THEN meta_value END) AS section_1,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_1_user-seat' THEN meta_value END) AS seat_1,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_2_user-section' THEN meta_value END) AS section_2,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_2_user-seat' THEN meta_value END) AS seat_2,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_3_user-section' THEN meta_value END) AS section_3,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_3_user-seat' THEN meta_value END) AS seat_3,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_4_user-section' THEN meta_value END) AS section_4,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_4_user-seat' THEN meta_value END) AS seat_4,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_5_user-section' THEN meta_value END) AS section_5,
+          MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_5_user-seat' THEN meta_value END) AS seat_5,      
+          t3.display_name, t3.user_url
+      FROM (
+          SELECT " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+          FROM $sTable 
+          $sWhere
+          $sOrder
+          $sLimit
+      ) AS actions
+      LEFT JOIN wp_usermeta AS t2 ON actions.uid = t2.user_id
+      LEFT JOIN wp_users AS t3 ON t2.user_id = t3.ID
+          GROUP BY actions.id
+    ";
+    $rResult = $wpdb->get_results($sQuery, ARRAY_A);
+*/
+    $sQuery = "
+    SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+    FROM $sTable 
+    $sWhere
+    $sOrder
+    $sLimit
+    ";
+
+    $rResult = $wpdb->get_results($sQuery, ARRAY_A);
+
+    $sQuery = "SELECT FOUND_ROWS()";
+
+    $rResultFilterTotal = $wpdb->get_results($sQuery, ARRAY_N);
+
+    $iFilteredTotal = $rResultFilterTotal [0];
+
+    $sQuery = "
+    SELECT COUNT(`" . $sIndexColumn . "`)
+    FROM   $sTable
+    $totalWhere
+    ";
+
+    $rResultTotal = $wpdb->get_results($sQuery, ARRAY_N);
+
+    $iTotal = $rResultTotal [0];
+    //$iFilteredTotal = number that match without limit;
+    //$iTotalRecords = number in this table total (total store items/messages)
+    $output = array("iTotalRecords" => $iTotal, "iTotalDisplayRecords" => $iFilteredTotal, "aaData" => array());
+
+
+    foreach($rResult as $action){//output a row for each message
+
+        //The message content
+        $row = array();
+        $user_id = $action['uid'];
+        $source_id = $action['source_id'];
+        $TIMESTAMP = $action['TIMESTAMP'];
+        $xp = $action['xp'];
+        $gold = $action['gold'];
+        $health = $action['health'];
+        $badge_ids = $action['badges'];
+        $group_ids = $action['groups'];
+
+        $title = get_the_title($source_id);
+
+
+        ///Get the user info for this row from the transient--should this be stored temporarily, in the object cache
+        $user_row = go_get_loot($user_id);
+
+
+        //FILTERS
+        //groups filter
+        $user_group_ids = $user_row['groups'];
+        $group_ids_array = unserialize($user_group_ids);
+
+
+
+        $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
+        if (empty($num_sections)){
+            $num_sections =1;
+        }
+        $user_periods= array();
+        $user_period_name= array();
+        $user_seat = array();
+        for ($i = 0; $i < $num_sections; $i++) {
+            $user_period_option = "go_section_and_seat_" . $i . "_user-section";
+            $user_seat_option = "go_section_and_seat_" . $i . "_user-seat";
+
+
+            $user_period = get_user_meta($user_id, $user_period_option, true);
+            $user_periods[] = $user_period;
+            $term = get_term($user_period, "user_go_sections");
+            //$user_period_name = $term->name;
+            $user_period_name[] = (isset($term->name) ? $term->name : null);
+
+            $user_seat[] = get_user_meta($user_id, $user_seat_option, true);
+        }
+
+        //if this is not filtered, set the values
+        $user_period_name = implode("<br>", $user_period_name);
+        $user_seat = implode("<br>", $user_seat);
+
+        $user_data_key = get_userdata($user_id);
+        $user_display_name = $user_data_key->display_name;
+        $user_firstname = $user_data_key->user_firstname;
+        $user_lastname = $user_data_key->user_lastname;
+
+        $badges_toggle = get_option('options_go_badges_toggle');
+        if ($badges_toggle) {
+            $badges_names = array();
+            $badge_ids = unserialize($badge_ids);
+            $badges_name_sing = get_option('options_go_badges_name_singular');
+
+            if (!empty($badge_ids)) {
+                $badges_names_heading = "<b>Add " . $badges_name_sing . ":</b> ";
+                foreach ($badge_ids as $badge_id) {
+                    $term = get_term($badge_id, "go_badges");
+                    $badge_name = $term->name;
+                    $badges_names[] = $badge_name;
+                }
+                $badges_names = $badges_names_heading . implode(", " , $badges_names);
+            }else{
+                $badges_names = "";
+            }
+
+        }else{
+            $badges_names = "";
+        }
+
+        $group_names = array();
+        $group_ids = unserialize($group_ids);
+        if (!empty($group_ids)){
+            if (!empty($badge_ids)) {
+                $group_names_heading = "<br><b>Add Group: </b>";
+            }else {
+                $group_names_heading = "<b>Add Group: </b>";
+            }
+            foreach ($group_ids as $group_id) {
+                $term = get_term($group_id, "user_go_groups");
+                $group_name = $term->name;
+                $group_names[] = $group_name;
+            }
+            $group_names = $group_names_heading . implode(", " , $group_names);
+        }else{
+            $group_names = "";
+        }
+
+        $badges_names = $badges_names . $group_names;
+
+
+        //$unix_time = strtotime($TIMESTAMP);
+        $time  = date("m/d/y g:i A", strtotime($TIMESTAMP));
+
+        ob_start();
+        go_user_links($user_id, true, true, true, true, true, false);
+        $links = ob_get_clean();
+
+        $check_box = "<input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/>";
+
+        $row[] = "";
+        $row[] = "{$check_box}";
+        $row[] = "{$user_period_name}";//user period
+        $row[] = "{$user_seat}";//user seat
+        $row[] = "{$user_firstname}";
+        $row[] = "{$user_lastname}";
+        $row[] = "{$user_display_name}";
+        $row[] = "{$links}";
+        $row[] = "{$time}";
+        $row[] = "{$title}";
+
+        $xp_toggle = get_option('options_go_loot_xp_toggle');
+        $gold_toggle = get_option('options_go_loot_gold_toggle');
+        $health_toggle = get_option('options_go_loot_health_toggle');
+
+        if ($xp_toggle){
+            $row[] = "{$xp}";
+        }
+        if ($gold_toggle){
+            $row[] = "{$gold}";
+        }
+        if ($health_toggle){
+            $row[] = "{$health}";
+        }
+        $row[] = "{$badges_names}";
+        $output['aaData'][] = $row;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /// END USER HEADER
 
 // get the username based from uname value in query var request.
 

@@ -496,7 +496,6 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
     if (get_option( 'options_go_badges_toggle' )){
         //$badge_ids = (isset($custom_fields['go_purch_reward_badges'][0]) ?  $custom_fields['go_purch_reward_badges'][0] : null);
         //store badge ids
-
         if (!empty($badge_ids)) {
             $badge_ids_array = unserialize($badge_ids);
             $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : array());
@@ -507,12 +506,11 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
                 $user_badges_array = ((is_array($user_badges_array)) ? $user_badges_array : array());
                 $new_badges = array_diff($badge_ids_array, $user_badges_array);
                 $all_user_badges_array = array_unique(array_merge($user_badges_array, $badge_ids_array));
-
             } else {//there were no existing user badges
                 $all_user_badges_array = $badge_ids_array;
                 $new_badges = $badge_ids_array;
             }
-            $all_user_badges_array = array_filter($all_user_badges_array);
+            $all_user_badges_array = array_values($all_user_badges_array);
             $all_user_badges_ser = serialize($all_user_badges_array);
 
             $badge_count = count($all_user_badges_array);
@@ -563,7 +561,7 @@ function go_remove_badges ($badge_ids, $user_id, $notify = false) {
                 $user_badges_array = ((is_array($user_badges_array)) ? $user_badges_array : array());
                 $remove_badges_array = array_intersect($user_badges_array, $badge_ids_array);
                 $all_user_badges_array = array_diff($user_badges_array, $badge_ids_array);
-                $all_user_badges_array = array_filter($all_user_badges_array);
+                $all_user_badges_array = array_values($all_user_badges_array);
                 $all_user_badges_ser = serialize($all_user_badges_array);
 
                 $badge_count = count($all_user_badges_array);
@@ -607,7 +605,7 @@ function go_add_groups($group_ids, $user_id, $notify = false) {
             $user_groups_array = ((is_array($user_groups_array)) ? $user_groups_array : array());
             $new_groups = array_diff($group_ids_array, $user_groups_array);//for the notifications
             $all_user_groups_array = array_unique (array_merge($user_groups_array, $group_ids_array));
-            $all_user_groups_array = array_filter($all_user_groups_array);
+            $all_user_groups_array = array_values($all_user_groups_array);
             $all_user_groups_ser = serialize($all_user_groups_array);
         }else{//there are no existing groups
             $user_groups = $group_ids;
@@ -650,7 +648,7 @@ function go_remove_groups($group_ids, $user_id, $notify = false) {
             $user_groups_array = ((is_array($user_groups_array)) ? $user_groups_array : array());
             $remove_groups = array_intersect($user_groups_array, $group_ids_array);//what's going to be removed
             $all_user_groups_array = array_diff($user_groups_array, $group_ids_array);
-            $all_user_groups_array = array_filter($all_user_groups_array);
+            $all_user_groups_array = array_values($all_user_groups_array);
             $all_user_groups_ser = serialize($all_user_groups_array);
 
            // update_user_meta($user_id, 'go_user_groups', $all_user_groups_ser);//update user badges
@@ -782,6 +780,8 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
         $gold_name = get_option('options_go_loot_gold_name');
         $health_name = get_option('options_go_loot_health_name');
         go_update_admin_bar_v4($user_id, $new_xp_total, $xp_name, $new_gold_total, $gold_name, $new_health_total, $health_name);
+    }else if ($notify == 'admin'){
+        return;
     }
     //if this is not a store item with admin notifications, then continue to update the totals table
     if ($notify !== 'admin') {
@@ -893,7 +893,7 @@ function go_noty_loot_error ($loot, $loot_type) {
  * @param $title
  * @param $content
  */
-function go_noty_message_generic ($type = 'alert', $title, $content) {
+function go_noty_message_generic ($type = 'alert', $title, $content, $timeout = false) {
     if (!empty($title)){
         $text = "<h3>" . $title . "</h3><div>" . $content . "</div>";
     }
@@ -902,15 +902,13 @@ function go_noty_message_generic ($type = 'alert', $title, $content) {
     }
     //go_noty_close_oldest();
     echo "<script> 
-        jQuery( document ).ready( function() {
-            
-            
-            new Noty({
+        jQuery( document ).ready( function() { 
+           new Noty({
                 type: '" . $type . "',
                 layout: 'topRight',
                 text: '" . addslashes($text) . "',
                 theme: 'relax',
-                timeout: false,
+                timeout: '" . $timeout . "',
                 visibilityControl: true,
                 callbacks: {
                     beforeShow: function() { go_noty_close_oldest();},

@@ -3,6 +3,8 @@
 function go_admin_scripts ($hook) {
     global $post;
 	$user_id = get_current_user_id();
+    //is the current user an admin
+    $is_admin = go_user_is_admin($user_id);
     global $go_js_version;
 
     /*
@@ -18,6 +20,8 @@ function go_admin_scripts ($hook) {
     wp_register_script( 'go_scripts', plugin_dir_url( __FILE__ ).'min/go_scripts-min.js', array( 'jquery' ), $go_js_version, true);
 
     wp_register_script( 'go_admin_user', plugin_dir_url( __FILE__ ).'min/go_admin_user-min.js', array( 'jquery' ), $go_js_version, true);
+
+    wp_register_script( 'go_clipboard', plugin_dir_url( __FILE__ ).'min/go_clipboard-min.js', array( 'jquery' ), $go_js_version, true);
 
     wp_register_script( 'go_admin_page', plugin_dir_url( __FILE__ ).'min/go_every_admin_page-min.js', array( 'jquery' ), $go_js_version, true);
 
@@ -53,7 +57,7 @@ function go_admin_scripts ($hook) {
 
     //END Combined Scripts
 
-		// Localization for every admin page
+		// Localization for all admin page
         wp_localize_script( 'go_scripts', 'SiteURL', get_site_url() );
         wp_localize_script( 'go_scripts', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		wp_localize_script( 'go_scripts', 'PluginDir', array( 'url' => plugin_dir_url(dirname(__FILE__) ) ) );
@@ -88,6 +92,7 @@ function go_admin_scripts ($hook) {
                     'go_send_message' 				=> wp_create_nonce('go_send_message'),
                     'go_blog_lightbox_opener'                => wp_create_nonce('go_blog_lightbox_opener')
 				),
+				'go_is_admin'                   => $is_admin
 			)
 		);
 
@@ -112,13 +117,12 @@ function go_admin_scripts ($hook) {
              */
 
             //COMBINED
-            //wp_enqueue_script( 'go_clipboard_combined-min' );
-            //END COMBINED
+            wp_enqueue_script( 'go_clipboard' );
 
             // Localization
             //wp_localize_script( 'go_admin_user', 'Minutes_limit', array( 'limit' => get_option( 'go_minutes_color_limit' ) ) );
             wp_localize_script(
-                'go_admin_user',
+                'go_clipboard',
                 'GO_CLIPBOARD_DATA',
                 array(
                     'nonces' => array(

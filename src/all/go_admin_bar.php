@@ -503,7 +503,6 @@ function go_admin_bar() {
 }
 
 function go_update_admin_view (){
-    global $wpdb;
     check_ajax_referer( 'go_update_admin_view'  );
 
     if(empty($_POST) || !isset($_POST)) {
@@ -522,6 +521,7 @@ function go_update_admin_view (){
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
 }
 
 ?>

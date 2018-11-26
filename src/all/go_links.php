@@ -15,19 +15,31 @@
  * @param bool $blog
  * @param bool $show_messages
  * @param bool $stats_lite
+ * @param bool $clipboard
+ * @param $website_link
+ * @param $login
  */
-function go_user_links($user_id, $website = true, $stats = false, $profile = false, $blog = false, $show_messages = false, $stats_lite = false) {
+function go_user_links($user_id, $website = true, $stats = false, $profile = false, $blog = false, $show_messages = false, $stats_lite = false , $clipboard = false, $website_link = null, $login = null ) {
     //if current user is admin, set all to true
-    $current_id = get_current_user_id();
+    global $wpdb;
 
-    $is_admin = go_user_is_admin($current_id);
+    if ($clipboard) { //if this is the clipboard
+        $show_all = true;
 
-    if ($current_id ==$user_id){
-        $is_current_user = true;
     }else{
-        $is_current_user = false;
+        $current_id = get_current_user_id();
+        $is_admin = go_user_is_admin($current_id);
+        //if this is an admin
+        if ($is_admin){
+            $show_all = true;
+        }
+        else if ($current_id == $user_id) {//if this is the current user
+            $show_all = true;
+        } else {
+            $show_all = false;
+        }
     }
-    $user_obj = get_userdata($user_id);
+
     echo" <div class='go_user_links'>";
 
     if ($stats){
@@ -37,37 +49,54 @@ function go_user_links($user_id, $website = true, $stats = false, $profile = fal
             echo "<div class='go_user_link_stats go_user_link' name='{$user_id}'><a href='#';'><i class='fa fa-area-chart ab-icon' aria-hidden='true'></i></a></div>";
         }
     }
-    if ($profile) {
-        if ($is_current_user || ($is_admin)) {
+    if ($profile && $show_all) {
+        if($clipboard){
+            echo "<div class='go_user_link'><a onclick='go_user_profile_link({$user_id})' href='javascript:void(0);' target='_blank'><i class='fa fa-user' aria-hidden='true'></i></a></div>";
+        }else {
             $user_edit_link = get_edit_user_link($user_id);
             echo "<div class='go_user_link'><a href='$user_edit_link' target='_blank'><i class='fa fa-user' aria-hidden='true'></i></a></div>";
         }
     }
-    if ($blog){
+    if ($blog) {
         $blog_toggle = get_option('options_go_blogs_toggle');
-        if($blog_toggle){
-            $user_info = get_userdata($user_id);
-            $userloginname = $user_info->user_login;
-            $user_blog_link = get_site_url(null, '/user/' . $userloginname);
-            echo" <div class='go_user_link'><a href='$user_blog_link' target='_blank'><span class='dashicons dashicons-admin-post'></span></a></div>";
+        if ($blog_toggle) {
+            if ($clipboard) {
+                $info_login = $login;
+            } else {
+                $user_info = get_userdata($user_id);
+                $info_login = $user_info->user_login;
+            }
+            $user_blog_link = get_site_url(null, '/user/' . $info_login);
+            echo " <div class='go_user_link'><a href='$user_blog_link' target='_blank'><span class='dashicons dashicons-admin-post'></span></a></div>";
+
         }
     }
     if ($website){
-        $user_website = $user_obj->user_url;//user website
-        if (!empty($user_website)) {
-            echo " <div class='go_user_link'><a href='$user_website' target='_blank'><span class='dashicons dashicons-admin-site'></span></a></div>";
+        if (!$clipboard) {
+            $user_obj = get_userdata($user_id);
+            $website_link = $user_obj->user_url;//user website
+        }
+        if (!empty($website_link)) {
+            echo " <div class='go_user_link'><a href='$website_link' target='_blank'><span class='dashicons dashicons-admin-site'></span></a></div>";
         }
     }
 
-    if($is_admin && $show_messages ){
+    if($show_messages && ($clipboard || $is_admin)){
         echo "<div id='go_stats_messages_icon_blog' class='go_stats_messages_icon go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
         //make the messages icon a link to this user
-
     }
     echo "</div>";
 
 }
 
+function go_user_profile_link(){
+    $user_id = $_POST['uid'];
+    $user_id = intval($user_id);
+
+    $user_edit_link = get_edit_user_link($user_id);
+    echo $user_edit_link;
+    die();
+}
 /**
  * @param $check_type
  * @param $result
@@ -142,13 +171,13 @@ function go_bonus_result_link($check_type, $result, $stage, $time, $bonus = true
 
 }
 
-
-function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $saved_val = null, $multiple = false){
+function go_make_tax_select_bk ($taxonomy, $title = "Show All", $location = null, $saved_val = null, $multiple = false){
+    $selected = null;
     $is_hier = is_taxonomy_hierarchical( $taxonomy );
     if ($multiple == true){
         $multiple = "multiple='multiple'";
     }
-    echo "<select id='go_". $location . $taxonomy . "_select' class='go_tax_select' name='" . $taxonomy . "[]' " . $multiple . ">";
+    echo "<select id='go_". $location . $taxonomy . "_select' class='go_tax_select' name='" . $taxonomy . "' " . $multiple . ">";
 
     echo "<option value='none' ><b>" . $title . "</b></option>";
     if ($is_hier) {
@@ -158,34 +187,37 @@ function go_make_tax_select ($taxonomy, $title = "Show All", $location = null, $
         $parents = get_terms($taxonomy, $args);
 
         foreach ( $parents as $parent ) {
-            //$row_id = $parent->term_id;
-
             $option =  "<optgroup label='" . $parent->name . "' >" ;
             echo $option;
             $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent->term_id);
             //children terms
             $children = get_terms($taxonomy, $args);
             foreach ( $children as $child ) {
-                if ($saved_val[0] == $child->term_id ){
-                    $selected = "selected";
+                if ($saved_val == $child->term_id ){
+                    $selected = 'selected="selected"';
                 }else{$selected = null;}
                 echo "<option value='" . $child->term_id . "' " . $selected . ">" . $child->name . "</option>";
                 echo "";
             }
             echo "</optgroup>";
-
         }
-
     }else{
         $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC');
         //children terms
         $children = get_terms($taxonomy, $args);
         foreach ( $children as $child ) {
-            if ($saved_val[0] == $child->term_id ){
-                $selected = "selected";
+            if ($saved_val == $child->term_id ){
+                $selected = 'selected="selected"';
             }else{$selected = null;}
             echo "<option value='" . $child->term_id . "' " . $selected . ">" . $child->name . "</option>";
         }
     }
     echo "</select>";
 }
+
+function go_make_tax_select ($taxonomy, $location = null){
+
+    echo "<select id='go_". $location . $taxonomy . "_select'></select>";
+
+}
+

@@ -1,164 +1,9 @@
-function go_toggle(e){checkboxes=jQuery(".go_checkbox");for(var t=0,a=checkboxes.length;t<a;t++)checkboxes[t].checked=e.checked}function go_clipboard_callback(){
-//*******************//
-// ALL TABS
-//*******************//
-//Apply on click to the stats and messages buttons in the table
-go_stats_links(),
-//apply on click to the messages button at the top
-jQuery(".go_messages_icon").prop("onclick",null).off("click"),jQuery(".go_messages_icon").one("click",function(e){go_messages_opener()});
-//*******************//
-//GET CURRENT TAB
-//*******************//
-var e=jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls");console.log(e),
-//IF CURRENT TAB IS . . .
-"clipboard_wrap"==e?(
-//recalculate for responsive behavior
-jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust().responsive.recalc(),
-//show date filter
-jQuery("#go_timestamp_filters").hide(),
-//jQuery('#datepicker-store').show();
-//jQuery('#datepicker-messages').hide();
-//jQuery('#datepicker-activity').hide();
-//update button--set this table to update
-jQuery(".go_update_clipboard").prop("onclick",null).off("click"),//unbind click
-jQuery(".go_update_clipboard").one("click",function(){go_clipboard_stats_datatable(!0)}),
-//if filters are changed, redraw the table
-jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").unbind(),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").change(function(){
-//Apply filter tags to table
-go_filter_clipboard_datatables(!0),
-//redraw table
-Clipboard.draw(),go_save_clipboard_filters()}),
-//search
-jQuery("div.dataTables_filter input").unbind(),
-//search on leave
-jQuery("div.dataTables_filter input").blur(function(e){Clipboard.search(this.value).draw()}),
-//search on clear with 'x'
-document.querySelector("#go_clipboard_stats_datatable_filter input").onsearch=function(e){Clipboard.search(this.value).draw()}):"clipboard_store_wrap"==e?(
-//recalculate for responsive behavior
-jQuery("#go_clipboard_store_datatable").DataTable().columns.adjust().responsive.recalc(),
-//show date filter
-jQuery("#go_timestamp_filters").show(),jQuery("#datepicker-store").show(),jQuery("#datepicker-messages").hide(),jQuery("#datepicker-activity").hide(),
-//update button--set this table to update
-jQuery(".go_update_clipboard").prop("onclick",null).off("click"),//unbind click
-jQuery(".go_update_clipboard").one("click",function(){go_clipboard_store_datatable(!0)}),
-//if filters are changed, redraw the table
-jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").unbind(),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-store").change(function(){Store.draw(),go_save_clipboard_filters()}),
-//search
-jQuery("div.dataTables_filter input").unbind(),
-//search on leave
-jQuery("div.dataTables_filter input").blur(function(e){Store.search(this.value).draw()}),
-//search on clear with 'x'
-document.querySelector("#go_clipboard_store_datatable_filter input").onsearch=function(e){Store.search(this.value).draw()}):"clipboard_messages_wrap"==e?(
-//recalculate for responsive behavior
-jQuery("#go_clipboard_messages_datatable").DataTable().columns.adjust().responsive.recalc(),
-//show date filter
-jQuery("#go_timestamp_filters").show(),jQuery("#datepicker-store").hide(),jQuery("#datepicker-messages").show(),jQuery("#datepicker-activity").hide(),
-//update button--set this table to update
-jQuery(".go_update_clipboard").prop("onclick",null).off("click"),//unbind click
-jQuery(".go_update_clipboard").one("click",function(){go_clipboard_messages_datatable(!0)}),
-//if filters are changed, redraw the table
-jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").unbind(),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-messages").change(function(){Messages.draw(),go_save_clipboard_filters()}),
-//search
-jQuery("div.dataTables_filter input").unbind(),
-//search on leave
-jQuery("div.dataTables_filter input").blur(function(e){Messages.search(this.value).draw()}),
-//search on clear with 'x'
-document.querySelector("#go_clipboard_messages_datatable_filter input").onsearch=function(e){Messages.search(this.value).draw()}):"clipboard_activity_wrap"==e&&(
-//recalculate for responsive behavior
-jQuery("#go_clipboard_activity_datatable").DataTable().columns.adjust().responsive.recalc(),
-//show date filter
-jQuery("#go_timestamp_filters").show(),jQuery("#datepicker-store").hide(),jQuery("#datepicker-messages").hide(),jQuery("#datepicker-activity").show(),
-//update button--set this table to update
-jQuery(".go_update_clipboard").prop("onclick",null).off("click"),//unbind click
-jQuery(".go_update_clipboard").one("click",function(){go_clipboard_activity_datatable(!0)}),
-//if filters are changed, redraw the table
-jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select").unbind(),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-activity").change(function(){
-//Apply filter tags to table
-go_filter_clipboard_datatables(!0),
-//redraw table
-Activity.draw(),go_save_clipboard_filters()}),
-//search
-jQuery("div.dataTables_filter input").unbind(),
-//search on leave
-jQuery("div.dataTables_filter input").blur(function(e){Activity.search(this.value).draw()}),
-//search on clear with 'x'
-document.querySelector("#go_clipboard_activity_datatable_filter input").onsearch=function(e){Activity.search(this.value).draw()})}function go_save_clipboard_filters(){
-//ajax to save the values
-var e=GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters,t=jQuery("#go_clipboard_user_go_sections_select").val(),a=jQuery("#go_clipboard_user_go_groups_select").val(),o=jQuery("#go_clipboard_go_badges_select").val();
-//alert (section);
-//console.log(jQuery( '#go_clipboard_user_go_sections_select' ).val());
-jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_clipboard_save_filters",section:t,badge:o,group:a},success:function(e){
-//console.log("values saved");
-}})}function go_filter_clipboard_datatables(_){//function that filters all tables on draw
-jQuery.fn.dataTable.ext.search.push(function(e,t,a){var o=e.sTableId,r=jQuery("#go_clipboard_user_go_sections_select").val(),s=jQuery("#go_clipboard_user_go_groups_select").val(),i=jQuery("#go_clipboard_go_badges_select").val(),n=t[4],l=t[3],c=t[2];
-//if (mytable == "go_clipboard_stats_datatable" || mytable == "go_clipboard_messages_datatable" || mytable == "go_clipboard_activity_datatable") {
-// use data for the filter by column
-l=JSON.parse(l),
-//sections = JSON.parse(sections);
-n=JSON.parse(n);
-//console.log("badges" + badges);
-//console.log("sections" + sections);
-var d=!0;return(d="none"==s||-1!=jQuery.inArray(s,l))&&(d="none"==r||c==r),1==_&&d&&(d="none"==i||-1!=jQuery.inArray(i,n)),d;
-//}
-//else{
-//   return true;
-// }
-})}function go_toggle_off(){checkboxes=jQuery(".go_checkbox");for(var e=0,t=checkboxes.length;e<t;e++)checkboxes[e].checked=!1}function go_clipboard_stats_datatable(e){if(0==jQuery("#go_clipboard_stats_datatable").length||1==e){jQuery("#clipboard_stats_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_stats;
-//console.log("refresh" + refresh);
-//console.log("stats");
-jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_stats",date:jQuery(".datepicker").val(),refresh:e},success:function(e){
-//console.log("success");
--1!==e&&(jQuery("#clipboard_stats_datatable_container").html(e),Clipboard=jQuery("#go_clipboard_stats_datatable").DataTable({deferRender:!0,bPaginate:!0,
-//colReorder: true,
-order:[[5,"asc"]],responsive:!0,autoWidth:!1,
-//stateSave: true,
-stateDuration:31557600,
-//"destroy": true,
-dom:"lBfrtip",drawCallback:function(e){go_clipboard_callback()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"1px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]}),
-//Filter the table
-go_filter_clipboard_datatables(!0),
-//redraw table
-Clipboard.draw())}})}else go_clipboard_callback()}function go_clipboard_store_datatable(e){if(0==jQuery("#go_clipboard_store_datatable").length||1==e){jQuery("#clipboard_store_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_store;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_store"},success:function(e){
-//console.log("success");
--1!==e&&(jQuery("#clipboard_store_datatable_container").html(e),
-//go_filter_datatables();
-Store=jQuery("#go_clipboard_store_datatable").DataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_clipboard_store_dataloader_ajax",data:function(e){
-//d.user_id = jQuery('#go_stats_hidden_input').val();
-e.date=jQuery("#datepicker-store").val(),e.section=jQuery("#go_clipboard_user_go_sections_select").val(),e.group=jQuery("#go_clipboard_user_go_groups_select").val(),e.badge=jQuery("#go_clipboard_go_badges_select").val()}},bPaginate:!0,
-//colReorder: true,
-order:[[8,"desc"]],responsive:!0,autoWidth:!1,stateSave:!0,stateDuration:31557600,searchDelay:1e3,dom:"lBfrtip",drawCallback:function(e){go_clipboard_callback()},columnDefs:[{type:"natural",targets:"_all",sortable:!1},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]}))}})}else go_clipboard_callback()}function go_clipboard_messages_datatable(e){if(0==jQuery("#go_clipboard_messages_datatable").length||1==e){jQuery("#clipboard_messages_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_messages;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_messages"},success:function(e){
-//console.log("success");
--1!==e&&(jQuery("#clipboard_messages_datatable_container").html(e),
-//go_filter_datatables();
-Messages=jQuery("#go_clipboard_messages_datatable").DataTable({processing:!0,serverSide:!0,ajax:{url:MyAjax.ajaxurl+"?action=go_clipboard_messages_dataloader_ajax",data:function(e){
-//d.user_id = jQuery('#go_stats_hidden_input').val();
-e.date=jQuery("#datepicker-messages").val(),e.section=jQuery("#go_clipboard_user_go_sections_select").val(),e.group=jQuery("#go_clipboard_user_go_groups_select").val(),e.badge=jQuery("#go_clipboard_go_badges_select").val()}},bPaginate:!0,
-//colReorder: true,
-order:[[8,"desc"]],responsive:!0,autoWidth:!1,searchDelay:1e3,stateSave:!0,stateDuration:31557600,dom:"lBfrtip",drawCallback:function(e){go_clipboard_callback()},columnDefs:[{type:"natural",targets:"_all",sortable:!1},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]}),
-//search only on enter key
-jQuery("div.dataTables_filter input").unbind(),jQuery("div.dataTables_filter input").keyup(function(e){13==e.keyCode&&Messages.search(this.value).draw()}),jQuery("#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #datepicker-messages").change(function(){var e;"clipboard_messages_wrap"==jQuery("#records_tabs").find("[aria-selected='true']").attr("aria-controls")&&Messages.draw(),go_clipboard_callback()}))}})}else go_clipboard_callback()}function go_clipboard_activity_datatable(e){if(0==jQuery("#go_clipboard_activity_datatable").length||1==e){jQuery("#clipboard_activity_datatable_container").html("<h2>Loading . . .</h2>");var t=GO_CLIPBOARD_DATA.nonces.go_clipboard_activity;
-//console.log(date);
-jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_clipboard_activity",date:jQuery("#datepicker-activity").val()},success:function(e){
-//console.log("success");
--1!==e&&(jQuery("#clipboard_activity_datatable_container").html(e),
-//go_filter_datatables();
-Activity=jQuery("#go_clipboard_activity_datatable").DataTable({deferRender:!0,bPaginate:!0,
-//colReorder: true,
-order:[[4,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,stateDuration:31557600,dom:"lBfrtip",drawCallback:function(e){go_clipboard_callback()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[2],visible:!1,className:"noVis"},{targets:[3],visible:!1,className:"noVis"},{targets:[4],visible:!1,className:"noVis"},{targets:[7],className:"noVis"},{targets:[8],className:"noVis"},{targets:[10],className:"noVis",sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,t,a,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]}),
-//Filter the table
-go_filter_clipboard_datatables(!0),
-//redraw table
-Activity.draw(),
-// Add event listener for opening and closing more actions
-jQuery("#go_clipboard_activity_datatable .show_more").click(function(){var e;
-//console.log(hidden);
-0==jQuery(this).hasClass("shown")?(jQuery(this).addClass("shown"),jQuery(this).siblings(".hidden_action").show(),jQuery(this).find(".hide_more_actions").show(),jQuery(this).find(".show_more_actions").hide()):(jQuery(this).removeClass("shown"),jQuery(this).siblings(".hidden_action").hide(),jQuery(this).find(".hide_more_actions").hide(),jQuery(this).find(".show_more_actions").show())}))}})}}
 // written by Dean Edwards, 2005
 // with input from Tino Zijdel, Matthias Miller, Diego Perini
 // http://dean.edwards.name/weblog/2005/10/add-event/
-function dean_addEvent(e,t,a){if(e.addEventListener)e.addEventListener(t,a,!1);else{
+function dean_addEvent(e,t,r){if(e.addEventListener)e.addEventListener(t,r,!1);else{
 // assign each event handler a unique ID
-a.$$guid||(a.$$guid=dean_addEvent.guid++),
+r.$$guid||(r.$$guid=dean_addEvent.guid++),
 // create a hash table of event types for the element
 e.events||(e.events={});
 // create a hash table of event handlers for each element/event pair
@@ -166,17 +11,17 @@ var o=e.events[t];o||(o=e.events[t]={},
 // store the existing event handler (if there is one)
 e["on"+t]&&(o[0]=e["on"+t])),
 // store the event handler in the hash table
-o[a.$$guid]=a,
+o[r.$$guid]=r,
 // assign a global event handler to do all the work
-e["on"+t]=handleEvent}}function removeEvent(e,t,a){e.removeEventListener?e.removeEventListener(t,a,!1):
+e["on"+t]=handleEvent}}function removeEvent(e,t,r){e.removeEventListener?e.removeEventListener(t,r,!1):
 // delete the event handler from the hash table
-e.events&&e.events[t]&&delete e.events[t][a.$$guid]}function handleEvent(e){var t=!0;
+e.events&&e.events[t]&&delete e.events[t][r.$$guid]}function handleEvent(e){var t=!0;
 // grab the event object (IE uses a global event object)
 e=e||fixEvent(((this.ownerDocument||this.document||this).parentWindow||window).event);
 // get a reference to the hash table of event handlers
-var a=this.events[e.type];
+var r=this.events[e.type];
 // execute each event handler
-for(var o in a)this.$$handleEvent=a[o],!1===this.$$handleEvent(e)&&(t=!1);return t}function fixEvent(e){
+for(var o in r)this.$$handleEvent=r[o],!1===this.$$handleEvent(e)&&(t=!1);return t}function fixEvent(e){
 // add W3C standard event methods
 return e.preventDefault=fixEvent.preventDefault,e.stopPropagation=fixEvent.stopPropagation,e}
 /*
@@ -196,22 +41,22 @@ var t=jQuery("#post_ID").val();jQuery("#go_store_item_id .acf-input").html('[go_
 //map shortcode message
 //var map_id = jQuery('[name="tag_ID"]').val();
 //console.log(map_id);
-var a=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+a+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}function go_validate_growth(){var e=jQuery("#go_levels_growth").find("input").val();isNaN(e)?jQuery("#go_levels_growth").find("input").val(Go_orgGrowth):Go_orgGrowth=e}function go_level_names(){var e=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,t,a,o;t=0,a="",jQuery(".go_levels_repeater_names").find("input").each(function(){t++,o=a,a=jQuery(this).val(),
+var r=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+r+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}function go_validate_growth(){var e=jQuery("#go_levels_growth").find("input").val();isNaN(e)?jQuery("#go_levels_growth").find("input").val(Go_orgGrowth):Go_orgGrowth=e}function go_level_names(){var e=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,t,r,o;t=0,r="",jQuery(".go_levels_repeater_names").find("input").each(function(){t++,o=r,r=jQuery(this).val(),
 //console.log (thisName);
 //console.log (prevName);
-1<t&&t!=e&&(console.log("Row:"+t),null!=a&&""!=a||(console.log("empty:"+t),console.log(a),jQuery(this).val(o),a=o))})}function go_levels_limit_each(){var o=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,r=Go_orgGrowth,s;
+1<t&&t!=e&&(console.log("Row:"+t),null!=r&&""!=r||(console.log("empty:"+t),console.log(r),jQuery(this).val(o),r=o))})}function go_levels_limit_each(){var o=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,n=Go_orgGrowth,s;
 //var growth = jQuery('#go_levels_growth').find('input').val();
 s=0,jQuery(".go_levels_repeater_numbers").find("input").each(function(){
 //console.log('-----------row'+ row);
-var e;s++,e=jQuery(this).val()||0,e=parseInt(e);var t=jQuery(this).closest(".acf-row").prev().find(".go_levels_repeater_numbers").find("input").val()||0;t=parseInt(t);var a=jQuery(this).closest(".acf-row").next().find(".go_levels_repeater_numbers").find("input").val()||0;a=parseInt(a),
+var e;s++,e=jQuery(this).val()||0,e=parseInt(e);var t=jQuery(this).closest(".acf-row").prev().find(".go_levels_repeater_numbers").find("input").val()||0;t=parseInt(t);var r=jQuery(this).closest(".acf-row").next().find(".go_levels_repeater_numbers").find("input").val()||0;r=parseInt(r),
 //console.log('prev' + prevVal);
 //console.log('this' + thisVal);
 //console.log('next' + nextVal);
 1===s?(//the first row
 jQuery(this).attr({max:0,// substitute your own
 min:0}),jQuery(this).val(0)):s===o-1?(//the last row
-jQuery(this).attr({min:t}),jQuery(this).removeAttr("max"),e<t&&jQuery(this).val(Math.floor(t*r))):s===o||(//all the rows in teh middle
-e<a&&jQuery(this).attr({min:t,max:a}),a<e&&jQuery(this).attr({min:t}),e<t&&jQuery(this).val(t*r)
+jQuery(this).attr({min:t}),jQuery(this).removeAttr("max"),e<t&&jQuery(this).val(Math.floor(t*n))):s===o||(//all the rows in teh middle
+e<r&&jQuery(this).attr({min:t,max:r}),r<e&&jQuery(this).attr({min:t}),e<t&&jQuery(this).val(t*n)
 /*
             else if (thisVal > nextVal && nextVal != 0) {
 
@@ -221,25 +66,52 @@ e<a&&jQuery(this).attr({min:t,max:a}),a<e&&jQuery(this).attr({min:t}),e<t&&jQuer
             else {
                 //console.log('middle Value:' + thisVal);
             }
-            */)})}jQuery(document).ready(function(){jQuery("#records_tabs").length&&(jQuery("#records_tabs").tabs(),jQuery(".clipboard_tabs").click(function(){switch(
-//console.log("tabs");
-tab=jQuery(this).attr("tab"),tab){case"clipboard":
-//console.log("stats1");
-go_clipboard_stats_datatable(!1),
-//force window resize on load to initialize responsive behavior
-jQuery("#go_clipboard_stats_datatable").DataTable().columns.adjust().responsive.recalc();break;case"store":
-//console.log("messages");
-go_clipboard_store_datatable(),
-//force window resize on load to initialize responsive behavior
-jQuery("#go_clipboard_store_datatable").DataTable().columns.adjust().responsive.recalc();break;case"messages":
-//console.log("messages");
-go_clipboard_messages_datatable(),
-//force window resize on load to initialize responsive behavior
-jQuery("#go_clipboard_messages_datatable").DataTable().columns.adjust().responsive.recalc();break;case"activity":
-//console.log("activity");
-go_clipboard_activity_datatable(),jQuery("#go_clipboard_activity_datatable").DataTable().columns.adjust().responsive.recalc();break}})),jQuery("#records_tabs").length&&(go_clipboard_stats_datatable(!1),jQuery("#records_tabs").css("margin-left",""),
-//initialize the datepicker inputs
-jQuery("#datepicker-store").datepicker({firstDay:0}),jQuery("#datepicker-messages").datepicker({firstDay:0}),jQuery("#datepicker-activity").datepicker({firstDay:0}),jQuery("#datepicker-activity").datepicker("setDate",new Date))});
+            */)})}
+// Makes it so you can press return and enter content in a field
+function go_make_store_clickable(){
+//Make URL button clickable by clicking enter when field is in focus
+jQuery(".clickable").keyup(function(e){
+// 13 is ENTER
+13===e.which&&jQuery("#go_store_pass_button").click()})}
+//open the lightbox for the store items
+function go_lb_opener(o){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=o,t,r={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){console.log("success"),console.log(e);var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
+//console.log('html');
+//console.log(res.html);
+//console.log(res.json_status);
+//console.log('success');
+//console.log(raw);
+if(jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
+//jQuery( "#lb-content" ).append(results);
+//jQuery('.featherlight-content').html(res.html);
+jQuery.featherlight(t.html,{variant:"store"}),"101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var r="Server Error.";jQuery("#go_store_error_msg").text()!=r?jQuery("#go_store_error_msg").text(r):flash_error_msg_store("#go_store_error_msg")}else 302===Number.parseInt(t.json_status)&&(console.log(302),window.location=t.location);jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)}),go_max_purchase_limit()}})}}
+//called when the "buy" button is clicked.
+function goBuytheItem(t,e){var o=GO_BUY_ITEM_DATA.nonces.go_buy_item,n=GO_BUY_ITEM_DATA.userID;console.log(n),jQuery(document).ready(function(r){var e={_ajax_nonce:o,action:"go_buy_item",the_id:t,qty:r("#go_qty").val(),user_id:n};r.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){r("#golb-fr-buy").innerHTML="",r("#golb-fr-buy").html(""),r("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){
+//console.log("SUccess: " + raw);
+var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?r("#light").html(e):(
+//go_sounds( 'store' );
+console.log("buy:"),console.log(t.html),r("#light").html(t.html))}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(o){
+//console.log('button clicked');
+//disable button to prevent double clicks
+//go_enable_loading( target );
+var e;if(!(0<jQuery("#go_store_password_result").attr("value").length)){jQuery("#go_store_error_msg").show();var t="Please enter a password.";return jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg_store("#go_store_error_msg"),void jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)})}var r=jQuery("#go_store_password_result").attr("value");if(jQuery("#light").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var n=o,s,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:n,skip_locks:!0,result:r};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,cache:!1,success:function(e){
+//console.log('success');
+//console.log(raw);
+var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
+//console.log('html');
+//console.log(res.html);
+//console.log(res.json_status);
+//alert(res.json_status);
+if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var r="Server Error.";jQuery("#go_store_error_msg").text()!=r?jQuery("#go_store_error_msg").text(r):flash_error_msg_store("#go_store_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("bad_password"==t.json_status){
+//console.log("bad");
+jQuery("#go_store_error_msg").show();var r="Invalid password.";jQuery("#go_store_error_msg").text()!=r?jQuery("#go_store_error_msg").text(r):flash_error_msg_store("#go_store_error_msg"),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)})}else
+//console.log("good");
+jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)}),jQuery("#go_store_lightbox_container").hide(),jQuery(".featherlight-content").html(t.html),go_max_purchase_limit()}})}}function go_max_purchase_limit(){window.go_purchase_limit=jQuery("#golb-fr-purchase-limit").attr("val");var e=go_purchase_limit;jQuery("#go_qty").spinner({max:e,min:1,stop:function(){jQuery(this).change()}}),go_make_store_clickable(),
+//jQuery('#go_store_admin_override').click( function () {
+//    jQuery('.go_store_lock').show();
+//});
+jQuery("#go_store_admin_override").one("click",function(e){
+//console.log("override");
+jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}
 /*
   SortTable
   version 2
@@ -313,7 +185,7 @@ row_array=[],col=this.sorttable_columnindex,rows=this.sorttable_tbody.rows;for(v
 //sorttable.shaker_sort(row_array, this.sorttable_sortfunction);
 /* and comment out this one */row_array.sort(this.sorttable_sortfunction),tb=this.sorttable_tbody;for(var t=0;t<row_array.length;t++)tb.appendChild(row_array[t][1]);delete row_array}))}},guessType:function(e,t){
 // guess the type of a column based on its first non-blank row
-sortfn=sorttable.sort_alpha;for(var a=0;a<e.tBodies[0].rows.length;a++)if(text=sorttable.getInnerText(e.tBodies[0].rows[a].cells[t]),""!=text){if(text.match(/^-?[�$�]?[\d,.]+%?$/))return sorttable.sort_numeric;
+sortfn=sorttable.sort_alpha;for(var r=0;r<e.tBodies[0].rows.length;r++)if(text=sorttable.getInnerText(e.tBodies[0].rows[r].cells[t]),""!=text){if(text.match(/^-?[�$�]?[\d,.]+%?$/))return sorttable.sort_numeric;
 // check for a date: dd/mm/yyyy or dd/mm/yy
 // can have / or . or - as separator
 // can be mm/dd as well
@@ -330,7 +202,7 @@ sortfn=sorttable.sort_ddmm}}return sortfn},getInnerText:function(e){
 // this is *not* a generic getInnerText function; it's special to sorttable.
 // for example, you can override the cell text with a customkey attribute.
 // it also gets .value for <input> fields.
-if(!e)return"";if(hasInputs="function"==typeof e.getElementsByTagName&&e.getElementsByTagName("input").length,null!=e.getAttribute("sorttable_customkey"))return e.getAttribute("sorttable_customkey");if(void 0!==e.textContent&&!hasInputs)return e.textContent.replace(/^\s+|\s+$/g,"");if(void 0!==e.innerText&&!hasInputs)return e.innerText.replace(/^\s+|\s+$/g,"");if(void 0!==e.text&&!hasInputs)return e.text.replace(/^\s+|\s+$/g,"");switch(e.nodeType){case 3:if("input"==e.nodeName.toLowerCase())return e.value.replace(/^\s+|\s+$/g,"");case 4:return e.nodeValue.replace(/^\s+|\s+$/g,"");break;case 1:case 11:for(var t="",a=0;a<e.childNodes.length;a++)t+=sorttable.getInnerText(e.childNodes[a]);return t.replace(/^\s+|\s+$/g,"");break;default:return""}},reverse:function(e){
+if(!e)return"";if(hasInputs="function"==typeof e.getElementsByTagName&&e.getElementsByTagName("input").length,null!=e.getAttribute("sorttable_customkey"))return e.getAttribute("sorttable_customkey");if(void 0!==e.textContent&&!hasInputs)return e.textContent.replace(/^\s+|\s+$/g,"");if(void 0!==e.innerText&&!hasInputs)return e.innerText.replace(/^\s+|\s+$/g,"");if(void 0!==e.text&&!hasInputs)return e.text.replace(/^\s+|\s+$/g,"");switch(e.nodeType){case 3:if("input"==e.nodeName.toLowerCase())return e.value.replace(/^\s+|\s+$/g,"");case 4:return e.nodeValue.replace(/^\s+|\s+$/g,"");break;case 1:case 11:for(var t="",r=0;r<e.childNodes.length;r++)t+=sorttable.getInnerText(e.childNodes[r]);return t.replace(/^\s+|\s+$/g,"");break;default:return""}},reverse:function(e){
 // reverse the rows in a tbody
 newrows=[];for(var t=0;t<e.rows.length;t++)newrows[newrows.length]=e.rows[t];for(var t=newrows.length-1;0<=t;t--)e.appendChild(newrows[t]);delete newrows},
 /* sort functions
@@ -340,9 +212,9 @@ sort_numeric:function(e,t){return aa=parseFloat(e[0].replace(/[^0-9.-]/g,"")),is
 // A stable sort function to allow multi-level sorting of data
 // see: http://en.wikipedia.org/wiki/Cocktail_sort
 // thanks to Joseph Nahmias
-var a=0,o=e.length-1,r=!0;r;){r=!1;for(var s=a;s<o;++s)if(0<t(e[s],e[s+1])){var i=e[s];e[s]=e[s+1],e[s+1]=i,r=!0}// for
-if(o--,!r)break;for(var s=o;a<s;--s)if(t(e[s],e[s-1])<0){var i=e[s];e[s]=e[s-1],e[s-1]=i,r=!0}// for
-a++}// while(swap)
+var r=0,o=e.length-1,n=!0;n;){n=!1;for(var s=r;s<o;++s)if(0<t(e[s],e[s+1])){var a=e[s];e[s]=e[s+1],e[s+1]=a,n=!0}// for
+if(o--,!n)break;for(var s=o;r<s;--s)if(t(e[s],e[s-1])<0){var a=e[s];e[s]=e[s-1],e[s-1]=a,n=!0}// for
+r++}// while(swap)
 }},
 /* ******************************************************************
    Supporting functions: bundled here to avoid depending on a library
@@ -362,22 +234,22 @@ dean_addEvent.guid=1,fixEvent.preventDefault=function(){this.returnValue=!1},fix
 */
 // array-like enumeration
 ,Array.forEach||(// mozilla already supports this
-Array.forEach=function(e,t,a){for(var o=0;o<e.length;o++)t.call(a,e[o],o,e)}),
+Array.forEach=function(e,t,r){for(var o=0;o<e.length;o++)t.call(r,e[o],o,e)}),
 // generic enumeration
-Function.prototype.forEach=function(e,t,a){for(var o in e)void 0===this.prototype[o]&&t.call(a,e[o],o,e)},
+Function.prototype.forEach=function(e,t,r){for(var o in e)void 0===this.prototype[o]&&t.call(r,e[o],o,e)},
 // character enumeration
-String.forEach=function(a,o,r){Array.forEach(a.split(""),function(e,t){o.call(r,e,t,a)})};
+String.forEach=function(r,o,n){Array.forEach(r.split(""),function(e,t){o.call(n,e,t,r)})};
 // globally resolve forEach enumeration
-var forEach=function(e,t,a){if(e){var o=Object;// default
+var forEach=function(e,t,r){if(e){var o=Object;// default
 if(e instanceof Function)
 // functions have a "length" property
 o=Function;else{if(e.forEach instanceof Function)
 // the object implements a custom forEach method so use that
-return void e.forEach(t,a);"string"==typeof e?
+return void e.forEach(t,r);"string"==typeof e?
 // the object is a string
 o=String:"number"==typeof e.length&&(
 // the object is array-like
-o=Array)}o.forEach(e,t,a)}};
+o=Array)}o.forEach(e,t,r)}};
 /*
  * go_tasks_admin.js
  *
@@ -418,10 +290,11 @@ jQuery(".go_levels_repeater_numbers").find("input").change(go_levels_limit_each)
 //limit to the levels table
 if(jQuery(e).closest("#go_levels_repeater").length){var t=e.find("input").first();// find the first input field
 jQuery(t).change(go_levels_limit_each);//bind to input on change
-var a=e.find("input").last();// find the first input field
-jQuery(a).change(go_level_names),
+var r=e.find("input").last();// find the first input field
+jQuery(r).change(go_level_names),
 //console.log('-----------------row added------------------------');
 go_levels_limit_each(),//run one time
-go_level_names()}}),jQuery(".more_info_accordian").accordion({collapsible:!0,header:"h3",active:!1}))}),jQuery(document).ready(function(){if("undefined"!=typeof GO_EDIT_STORE_DATA)var e=GO_EDIT_STORE_DATA.is_store_edit;if(e){var t,a,o="<a id="+GO_EDIT_STORE_DATA.postid+" class='go_str_item ab-item' >View "+GO_EDIT_STORE_DATA.store_name+" Item</a>";
+go_level_names()}}),jQuery(".more_info_accordian").accordion({collapsible:!0,header:"h3",active:!1}))}),jQuery(document).ready(function(){if("undefined"!=typeof GO_EDIT_STORE_DATA)var e=GO_EDIT_STORE_DATA.is_store_edit;if(e){var t,r,o="<a id="+GO_EDIT_STORE_DATA.postid+" class='go_str_item ab-item' >View "+GO_EDIT_STORE_DATA.store_name+" Item</a>";
 //console.log(link);
-jQuery("#wp-admin-bar-view").html(o)}});
+jQuery("#wp-admin-bar-view").html(o)}}),//Add an on click to all store items
+jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})});

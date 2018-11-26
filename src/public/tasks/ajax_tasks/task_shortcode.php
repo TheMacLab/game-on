@@ -181,7 +181,7 @@ function go_task_shortcode($atts, $content = null ) {
         //create the row
         $time = current_time( 'mysql');
         if ( $row_exists == null ) {
-            $wpdb->insert($go_task_table_name, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 0, 'last_time' => $time, 'xp' => 0, 'gold' => 0, 'health' => 0));
+            $wpdb->insert($go_task_table_name, array('uid' => $user_id, 'post_id' => $post_id, 'status' => 0, 'last_time' => $time, 'xp' => 0, 'gold' => 0, 'health' => 0, 'start_time' => $time));
         }
     }
     /**
