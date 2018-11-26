@@ -1746,7 +1746,6 @@ function go_clipboard_activity_dataloader_ajax(){
           $sType JOIN $pTable AS t6 ON t4.post_id = t6.ID
           $sWhere
           ) AS t9
-          $sOrder
           $sLimit
     ";
     //Add Badge and Group names from the action item?,
