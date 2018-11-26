@@ -2278,7 +2278,6 @@ function go_stats_leaderboard_dataloader_ajax(){
           LEFT JOIN $umTable AS t2 ON t1.uid = t2.user_id  
           GROUP BY t1.id
           $uWhere
-          $sOrder
       ) AS t5
     ";
     //Add Badge and Group names from the action item?,

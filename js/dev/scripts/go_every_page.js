@@ -120,6 +120,9 @@ function go_stats_links(){
     jQuery('.go_stats_messages_icon').prop('onclick',null).off('click');
     jQuery(".go_stats_messages_icon").one("click", function(e){ var user_id = jQuery(this).attr("name"); go_messages_opener(user_id); });
 
+}
+
+function go_leaderboard_menus_select2(){
     if (jQuery("#select2-go_user_go_sections_select-container").length == 0) {
         jQuery('#go_user_go_sections_select').select2({
             ajax: {
@@ -213,7 +216,6 @@ function go_stats_links(){
             allowClear: true
         });
     }
-
 }
 
 function go_stats_about(user_id) {
@@ -611,6 +613,7 @@ function go_stats_leaderboard() {
                         "order": [[initial_sort, "desc"]],
                         "drawCallback": function( settings ) {
                             go_stats_links();
+                            go_leaderboard_menus_select2();
                         },
                         "searching": false,
                         "columnDefs": [
