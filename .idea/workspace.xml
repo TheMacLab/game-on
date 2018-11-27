@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,8 +35,8 @@
       <file leaf-file-name="go_clipboard.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="1754" column="6" selection-start-line="1754" selection-start-column="6" selection-end-line="1754" selection-end-column="6" />
+            <state relative-caret-position="413">
+              <caret line="1486" column="25" selection-start-line="1486" selection-start-column="25" selection-end-line="1486" selection-end-column="25" />
               <folding>
                 <element signature="n#go_make_taxonomy_dropdown_ajax#0;n#!!top" />
                 <element signature="n#go_total_query_time#0;n#!!top" />
@@ -63,6 +62,7 @@
                 <element signature="n#go_clipboard_store#0;n#!!top" />
                 <element signature="e#32266#32605#0#PHP" />
                 <element signature="n#go_clipboard_messages#0;n#!!top" />
+                <element signature="n#go_clipboard_messages_dataloader_ajax#0;n#!!top" />
                 <element signature="e#38445#43540#0#PHP" />
                 <element signature="e#51213#51350#0#PHP" />
                 <element signature="n#style#0;n#span#0;n#span#0;n#!!top" expanded="true" />
@@ -583,12 +583,12 @@
       <workItem from="1541406466989" duration="148955000" />
       <workItem from="1542095961949" duration="81875000" />
       <workItem from="1542443488588" duration="50106000" />
-      <workItem from="1542721857455" duration="134608000" />
+      <workItem from="1542721857455" duration="134843000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2934349000" />
+    <option name="totallyTimeSpent" value="2934584000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
@@ -793,7 +793,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php</url>
-          <line>1762</line>
+          <line>1760</line>
           <option name="timeStamp" value="1469" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1286,8 +1286,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/admin/ajax/go_clipboard.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="1754" column="6" selection-start-line="1754" selection-start-column="6" selection-end-line="1754" selection-end-column="6" />
+        <state relative-caret-position="413">
+          <caret line="1486" column="25" selection-start-line="1486" selection-start-column="25" selection-end-line="1486" selection-end-column="25" />
           <folding>
             <element signature="n#go_make_taxonomy_dropdown_ajax#0;n#!!top" />
             <element signature="n#go_total_query_time#0;n#!!top" />
@@ -1313,6 +1313,7 @@
             <element signature="n#go_clipboard_store#0;n#!!top" />
             <element signature="e#32266#32605#0#PHP" />
             <element signature="n#go_clipboard_messages#0;n#!!top" />
+            <element signature="n#go_clipboard_messages_dataloader_ajax#0;n#!!top" />
             <element signature="e#38445#43540#0#PHP" />
             <element signature="e#51213#51350#0#PHP" />
             <element signature="n#style#0;n#span#0;n#span#0;n#!!top" expanded="true" />

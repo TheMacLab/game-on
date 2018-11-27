@@ -1485,7 +1485,6 @@ function go_clipboard_activity() {
 function go_clipboard_activity_dataloader_ajax(){
     global $wpdb;
     $wpdb->show_errors();
-
     //Get the search value
     $search_val = $_GET['search']['value'];
     $section = go_section();
@@ -1747,18 +1746,17 @@ function go_clipboard_activity_dataloader_ajax(){
           $sType JOIN $pTable AS t6 ON t4.post_id = t6.ID
           $sWhere
           ) AS t9
+          $sOrder
           $sLimit
     ";
     //Add Badge and Group names from the action item?,
     //can't do because they might have multiple saved in a serialized array so it can't be joined.
-
-    //go_write_log($sQuery);
+    go_write_log($sQuery);
     ////columns that will be returned
     $rResult = $wpdb->get_results($sQuery, ARRAY_A);
 
     go_write_log("ERROR: ");
     go_write_log($wpdb->print_error());
-
 
     $sQuery2 = "SELECT FOUND_ROWS()";
 
