@@ -1046,7 +1046,7 @@ function go_clipboard_activity_datatable(refresh) {
                         "order": [[4, "asc"]],
                         responsive: true,
                         "autoWidth": false,
-                        stateSave: true,
+                        //stateSave: true,
                         stateLoadParams: function( settings, data ) {
                             //if (data.order) delete data.order;
                             if (data.search) delete data.search;

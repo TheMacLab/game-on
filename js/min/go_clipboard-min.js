@@ -200,7 +200,9 @@ Activity=jQuery("#go_clipboard_activity_datatable").DataTable({processing:!0,ser
 //d.user_id = jQuery('#go_stats_hidden_input').val();
 e.date=jQuery("#datepicker_clipboard").val(),e.section=jQuery("#go_clipboard_user_go_sections_select").val(),e.group=jQuery("#go_clipboard_user_go_groups_select").val(),e.badge=jQuery("#go_clipboard_go_badges_select").val(),e.unmatched=document.getElementById("go_unmatched_toggle").checked,e.tasks=jQuery("#go_task_select").val();for(var a=0,t=e.columns.length;a<t;a++)e.columns[a].search.value||delete e.columns[a].search,!0===e.columns[a].searchable&&delete e.columns[a].searchable,!0===e.columns[a].orderable&&delete e.columns[a].orderable,e.columns[a].data===e.columns[a].name&&delete e.columns[a].name;delete e.search.regex}},deferRender:!0,bPaginate:!0,
 //colReorder: true,
-order:[[4,"asc"]],responsive:!0,autoWidth:!1,stateSave:!0,stateLoadParams:function(e,a){
+order:[[4,"asc"]],responsive:!0,autoWidth:!1,
+//stateSave: true,
+stateLoadParams:function(e,a){
 //if (data.order) delete data.order;
 a.search&&delete a.search,a.start&&delete a.start},stateDuration:31557600,dom:"lBfrtip",drawCallback:function(e){go_clipboard_callback()},columnDefs:[{type:"natural",targets:"_all"},{targets:[0],className:"noVis",width:"5px",sortable:!1},{targets:[1],className:"noVis",width:"20px",sortable:!1},{targets:[12,14,18],sortable:!1}],buttons:[{text:'<span class="go_messages_icon">Message <i class="fa fa-bullhorn" aria-hidden="true"></i><span></span>',action:function(e,a,t,o){}},{extend:"collection",text:"Export ...",buttons:[{extend:"pdf",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"},orientation:"landscape"},{extend:"excel",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}},{extend:"csv",title:"Game On Data Export",exportOptions:{columns:"thead th:not(.noExport)"}}]},{extend:"colvis",columns:":not(.noVis)",postfixButtons:["colvisRestore"],text:"Column Visibility"}]}),
 // Add event listener for opening and closing more actions
