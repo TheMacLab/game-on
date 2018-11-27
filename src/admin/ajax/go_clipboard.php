@@ -1829,7 +1829,8 @@ function go_clipboard_activity_dataloader_ajax(){
 
         $output['aaData'][] = $row;
     }
-
+    go_write_log("output: ");
+    go_write_log($output);
     //go_total_query_time();
 
     echo json_encode( $output );
