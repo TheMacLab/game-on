@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/dev/go_clipboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_clipboard.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -72,8 +71,8 @@
       <file leaf-file-name="go_clipboard.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/dev/go_clipboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="1048" column="26" selection-start-line="1048" selection-start-column="26" selection-end-line="1048" selection-end-column="26" />
+            <state relative-caret-position="155">
+              <caret line="1045" column="36" selection-start-line="1045" selection-start-column="36" selection-end-line="1045" selection-end-column="36" />
               <folding>
                 <element signature="n#!!block;n#go_cache_menu#0" />
                 <element signature="n#!!block;n#go_get_menu_data#0" />
@@ -85,8 +84,6 @@
                 <element signature="n#!!block;n#go_clipboard_update#0" />
                 <element signature="n#!!block;n#go_save_clipboard_filters#0" />
                 <element signature="e#24140#26275#0" />
-                <element signature="n#!!block;n#go_clipboard_stats_datatable#0" />
-                <element signature="n#!!block;n#go_clipboard_store_datatable#0" />
               </folding>
             </state>
           </provider>
@@ -213,7 +210,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ajax</find>
       <find>$website_link</find>
       <find>go_get_loot_</find>
       <find>POST</find>
@@ -243,6 +239,7 @@
       <find>go_user_go_sections_select</find>
       <find>go_clipboard_activity_dataloader_ajax</find>
       <find>length</find>
+      <find>order</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -570,12 +567,12 @@
       <workItem from="1541406466989" duration="148955000" />
       <workItem from="1542095961949" duration="81875000" />
       <workItem from="1542443488588" duration="50106000" />
-      <workItem from="1542721857455" duration="140930000" />
+      <workItem from="1542721857455" duration="141026000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2940671000" />
+    <option name="totallyTimeSpent" value="2940767000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
@@ -1286,8 +1283,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/go_clipboard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="1048" column="26" selection-start-line="1048" selection-start-column="26" selection-end-line="1048" selection-end-column="26" />
+        <state relative-caret-position="155">
+          <caret line="1045" column="36" selection-start-line="1045" selection-start-column="36" selection-end-line="1045" selection-end-column="36" />
           <folding>
             <element signature="n#!!block;n#go_cache_menu#0" />
             <element signature="n#!!block;n#go_get_menu_data#0" />
@@ -1299,8 +1296,6 @@
             <element signature="n#!!block;n#go_clipboard_update#0" />
             <element signature="n#!!block;n#go_save_clipboard_filters#0" />
             <element signature="e#24140#26275#0" />
-            <element signature="n#!!block;n#go_clipboard_stats_datatable#0" />
-            <element signature="n#!!block;n#go_clipboard_store_datatable#0" />
           </folding>
         </state>
       </provider>

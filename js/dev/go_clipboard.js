@@ -1043,7 +1043,7 @@ function go_clipboard_activity_datatable(refresh) {
                         deferRender: true,
                         "bPaginate": true,
                         //colReorder: true,
-                        "order": [[4, "asc"]],
+                        "order": [11, "asc"]],
                         responsive: true,
                         "autoWidth": false,
                         //stateSave: true,
