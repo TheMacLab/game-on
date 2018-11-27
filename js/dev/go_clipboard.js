@@ -1031,13 +1031,13 @@ function go_clipboard_activity_datatable(refresh) {
                                 d.badge = jQuery('#go_clipboard_go_badges_select').val();
                                 d.unmatched = document.getElementById("go_unmatched_toggle").checked;
                                 d.tasks = jQuery("#go_task_select").val();
-                                for (var i = 0, len = data.columns.length; i < len; i++) {
-                                    if (! data.columns[i].search.value) delete data.columns[i].search;
-                                    if (data.columns[i].searchable === true) delete data.columns[i].searchable;
-                                    if (data.columns[i].orderable === true) delete data.columns[i].orderable;
-                                    if (data.columns[i].data === data.columns[i].name) delete data.columns[i].name;
+                                for (var i = 0, len = d.columns.length; i < len; i++) {
+                                    if (! d.columns[i].search.value) delete d.columns[i].search;
+                                    if (d.columns[i].searchable === true) delete d.columns[i].searchable;
+                                    if (d.columns[i].orderable === true) delete d.columns[i].orderable;
+                                    if (d.columns[i].data === d.columns[i].name) delete d.columns[i].name;
                                 }
-                                delete data.search.regex;
+                                delete d.search.regex;
                             }
                         },
                         deferRender: true,
