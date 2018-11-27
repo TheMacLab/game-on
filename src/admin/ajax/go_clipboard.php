@@ -1694,7 +1694,6 @@ function go_clipboard_activity_dataloader_ajax(){
     $pTable = "{$wpdb->prefix}posts";
 
     $sQuery = "
-      
       SELECT SQL_CALC_FOUND_ROWS
         t9.*,
         CASE 
