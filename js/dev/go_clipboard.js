@@ -975,7 +975,6 @@ function go_clipboard_messages_datatable(refresh) {
                             }
                         ]
                     });
-
                     //search only on enter key
                     jQuery("div.dataTables_filter input").unbind();
                     jQuery("div.dataTables_filter input").keyup( function (e) {

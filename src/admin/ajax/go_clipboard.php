@@ -1484,6 +1484,8 @@ function go_clipboard_activity() {
 
 function go_clipboard_activity_dataloader_ajax(){
     global $wpdb;
+    go_write_log("GET: ");
+    go_write_log($_GET);
     $wpdb->show_errors();
     //Get the search value
     $search_val = $_GET['search']['value'];
@@ -1829,7 +1831,7 @@ function go_clipboard_activity_dataloader_ajax(){
         $output['aaData'][] = $row;
     }
 
-    go_total_query_time();
+    //go_total_query_time();
 
     echo json_encode( $output );
     die();
