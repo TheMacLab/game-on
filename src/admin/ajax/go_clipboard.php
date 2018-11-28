@@ -1756,9 +1756,9 @@ function go_clipboard_activity_dataloader_ajax(){
     ////columns that will be returned
     $rResult = $wpdb->get_results($sQuery, ARRAY_A);
 
-    go_write_log("ERROR: ");
-    go_write_log($wpdb->print_error());
-    go_write_log($rResult);
+    //go_write_log("ERROR: ");
+    //go_write_log($wpdb->print_error());
+   // go_write_log($rResult);
     $sQuery2 = "SELECT FOUND_ROWS()";
 
     $rResultFilterTotal = $wpdb->get_results($sQuery2, ARRAY_N);
@@ -1829,8 +1829,8 @@ function go_clipboard_activity_dataloader_ajax(){
 
         $output['aaData'][] = $row;
     }
-    go_write_log("output: ");
-    go_write_log($output);
+    //go_write_log("output: ");
+    //go_write_log($output);
     //go_total_query_time();
 
     echo json_encode( $output );
