@@ -56,7 +56,7 @@ function go_show_map(mapid) {
 //
 	document.getElementById("maps").style.display = "none";
 	document.getElementById("loader").style.display = "block";
-    var nonce = GO_CLIPBOARD_DATA.nonces.go_update_last_map;
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_update_last_map;
     var uid = jQuery('#go_map_user').data("uid");
 	//var map_nonce = jQuery( '#_wpnonce' ).val();
 
