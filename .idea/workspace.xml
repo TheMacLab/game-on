@@ -2,61 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ajax/go_construct_queries.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-helpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/acf/includes/api/api-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/acf/includes/api/api-template.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_admin_user.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_admin_user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_clipboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_clipboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_frontend.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_frontend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/buy_the_item.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/buy_the_item.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_admin_notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_admin_notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_every_page.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_every_page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_map.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_messages.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_videos_fit_and_box.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_videos_fit_and_box.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/go_enque_js.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/go_enque_js.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/go_enque_js_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/go_enque_js_admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_admin_user-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_admin_user-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_clipboard-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_clipboard-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_scripts-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_scripts-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_tasks-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_blog_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_blog_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_map_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_map_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_messages.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_public_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_stats.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/store_lightbox.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/store_lightbox.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_admin_bar.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_admin_bar.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_blogs.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_blogs.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_links.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_links.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_messages_check.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_messages_check.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_updates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_user_management.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_user_management.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/templates/go_user_blog_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/templates/go_user_blog_template.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/disabled/go_comments.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/disabled/go_comments.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_checks.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/ajax/go_checks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_locks.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/ajax/go_locks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_map.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/ajax/go_map.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_shortcodes.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/ajax/go_shortcodes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_clipboard_sass.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_clipboard_sass.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_every_page.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_every_page.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_map.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_map.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/dev/go_frontend.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/dev/go_frontend.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/dev/go_styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/dev/go_styles.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/min/go_admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_admin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/min/go_frontend.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_frontend.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/min/go_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_styles.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -144,10 +90,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
+            <state relative-caret-position="799">
               <caret line="52" column="21" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="21" />
             </state>
           </provider>
@@ -253,11 +199,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="game-on.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="133" column="69" selection-start-line="133" selection-start-column="49" selection-end-line="133" selection-end-column="69" />
+            <state relative-caret-position="118">
+              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -348,7 +294,6 @@
         <option value="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" />
         <option value="$PROJECT_DIR$/src/ajax/go_construct_queries.php" />
         <option value="$PROJECT_DIR$/src/public/ajax/go_shortcodes.php" />
-        <option value="$PROJECT_DIR$/game-on.php" />
         <option value="$PROJECT_DIR$/styles/dev/go_frontend.scss" />
         <option value="$PROJECT_DIR$/styles/dev/go_styles.scss" />
         <option value="$PROJECT_DIR$/js/dev/go_frontend.js" />
@@ -371,6 +316,7 @@
         <option value="$PROJECT_DIR$/src/all/go_updates.php" />
         <option value="$PROJECT_DIR$/src/ajax/go_blog_ajax.php" />
         <option value="$PROJECT_DIR$/go_acf_groups.php" />
+        <option value="$PROJECT_DIR$/game-on.php" />
       </list>
     </option>
   </component>
@@ -641,12 +587,12 @@
       <workItem from="1543468152850" duration="286000" />
       <workItem from="1543469331349" duration="18217000" />
       <workItem from="1543539893466" duration="16594000" />
-      <workItem from="1543696432092" duration="115552000" />
+      <workItem from="1543696432092" duration="115717000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3102904000" />
+    <option name="totallyTimeSpent" value="3103069000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1680" height="1027" extended-state="6" />
@@ -1416,13 +1362,6 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="133" column="69" selection-start-line="133" selection-start-column="49" selection-end-line="133" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ajax/go_public_ajax.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
@@ -1591,8 +1530,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
+        <state relative-caret-position="799">
           <caret line="52" column="21" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
         </state>
       </provider>
     </entry>
