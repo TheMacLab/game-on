@@ -102,7 +102,8 @@ function go_admin_scripts ($hook) {
                     'go_send_message' 				=> wp_create_nonce('go_send_message'),
                     'go_blog_lightbox_opener'       => wp_create_nonce('go_blog_lightbox_opener'),
                     'go_blog_user_task'             => wp_create_nonce('go_blog_user_task'),
-                    'go_user_map_ajax'              => wp_create_nonce('go_user_map_ajax')
+                    'go_user_map_ajax'              => wp_create_nonce('go_user_map_ajax'),
+                        'go_update_last_map'            => wp_create_nonce('go_update_last_map')
 				),
 				'go_is_admin'                   => $is_admin,
                 'go_lightbox_switch'            => $go_lightbox_switch,
@@ -149,8 +150,7 @@ function go_admin_scripts ($hook) {
                         //'go_update_user_focuses'        => wp_create_nonce( 'go_update_user_focuses_' . $user_id ),
                         //'go_clipboard_add'              => wp_create_nonce( 'go_clipboard_add_' . $user_id ),
                         //'go_fix_messages'               => wp_create_nonce( 'go_fix_messages_' . $user_id ),
-                        'go_clipboard_save_filters'     => wp_create_nonce( 'go_clipboard_save_filters_' . $user_id ),
-                        'go_update_last_map'            => wp_create_nonce('go_update_last_map')
+                        'go_clipboard_save_filters'     => wp_create_nonce( 'go_clipboard_save_filters_' . $user_id )
                     ),
                 )
             );
