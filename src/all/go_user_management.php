@@ -16,7 +16,7 @@ function go_user_redirect( $redirect_to, $request, $user )
         $default_map = get_option('options_go_locations_map_default', '');
         $user_id = $user->ID;
         if ($default_map !== '') {
-            update_user_meta($user_id, 'go_last_map', $default_map);
+            update_user_option($user_id, 'go_last_map', $default_map);
         }
         if (isset($user->roles) && is_array($user->roles)) {
             $roles = $user->roles;
@@ -99,7 +99,7 @@ function go_user_registration ( $user_id ) {
     $table_name_go_totals = "{$wpdb->prefix}go_loot";
     $table_name_capabilities = "{$wpdb->prefix}capabilities";
     $role = get_option( 'go_role', 'subscriber' );
-    $user_role = get_user_meta( $user_id, "{$table_name_capabilities}", true );
+    $user_role = get_user_option("{$table_name_capabilities}", $user_id);
     if ( array_search( 1, $user_role ) == $role || array_search( 1, $user_role ) == 'administrator' ) {
 
         // this should update the user's rank metadata
@@ -129,7 +129,7 @@ function go_default_map($user_login, $user){
 
     $user_id = $user->ID;
     if ($default_map !== '') {
-        update_user_meta($user_id, 'go_last_map', $default_map);
+        update_user_option($user_id, 'go_last_map', $default_map);
     }
 }
 add_action('wp_login', 'go_default_map', 10, 2);

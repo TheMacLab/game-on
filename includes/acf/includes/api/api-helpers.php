@@ -2894,7 +2894,7 @@ function acf_update_user_setting( $name, $value ) {
 	
 	
 	// get user settings
-	$settings = get_user_meta( $user_id, 'acf_user_settings', true );
+	$settings = get_user_option( 'acf_user_settings', $user_id );
 	
 	
 	// ensure array
@@ -2940,7 +2940,7 @@ function acf_get_user_setting( $name = '', $default = false ) {
 	
 	
 	// get user settings
-	$settings = get_user_meta( $user_id, 'acf_user_settings', true );
+	$settings = get_user_option( 'acf_user_settings', $user_id );
 	
 	
 	// ensure array

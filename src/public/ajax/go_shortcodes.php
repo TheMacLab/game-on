@@ -13,7 +13,7 @@ add_shortcode('go_make_store', 'go_make_store_new');
 function go_make_map() {
     if ( ! is_admin() ) {
         $user_id = get_current_user_id();
-        $last_map_id = get_user_meta($user_id, 'go_last_map', true);
+        $last_map_id = get_user_option('go_last_map', $user_id);
         go_make_map_dropdown();
         go_make_single_map($last_map_id, false);// do your thing
     }

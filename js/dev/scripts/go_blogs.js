@@ -116,4 +116,36 @@ function go_get_tinymce_content_blog(){
     }
 }
 
+function go_blog_user_task (user_id, task_id) {
+    //jQuery(".go_datatables").hide();
+    console.log("blogs!");
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_user_task;
+    jQuery.ajax({
+        type: 'post',
+        url: MyAjax.ajaxurl,
+        data:{
+            _ajax_nonce: nonce,
+            action: 'go_blog_user_task',
+            uid: user_id,
+            task_id: task_id
+        },
+        success: function( res ) {
 
+            jQuery.featherlight(res, {
+                variant: 'blogs',
+                afterOpen: function(event){
+                    //console.log("fitvids"); // this contains all related elements
+                    //alert(this.$content.hasClass('true')); // alert class of content
+                    //jQuery("#go_blog_container").fitVids();
+                    go_fit_and_max_only("#go_blog_container");
+                }
+
+            });
+
+
+            if ( -1 !== res ) {
+
+            }
+        }
+    });
+}

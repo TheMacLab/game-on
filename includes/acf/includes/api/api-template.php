@@ -227,7 +227,7 @@ function get_field_objects( $post_id = false, $format_value = true, $load_value 
 	
 	} elseif( $info['type'] == 'user' ) {
 		
-		$meta = get_user_meta( $info['id'] );
+		$meta = get_user_option( $info['id'] );
 		
 	} elseif( $info['type'] == 'comment' ) {
 		

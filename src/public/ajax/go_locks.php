@@ -388,12 +388,12 @@ function go_period_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_l
         $terms_needed = $custom_fields[$option][0];
         $terms_needed = unserialize($terms_needed);
         // gets the current user's period(s)
-        $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
+        $num_terms = get_user_option('go_section_and_seat', $user_id);
         $user_terms = array();
         for ($i = 0; $i < $num_terms; $i++) {
 
             $user_period = "go_section_and_seat_" . $i . "_user-section";
-            $user_period = get_user_meta($user_id, $user_period, true);
+            $user_period = get_user_option($user_period, $user_id);
             $user_terms[] = $user_period;
         }
 
@@ -586,12 +586,12 @@ function go_schedule_access($user_id, $custom_fields, $is_logged_in, $check_only
     //if( $is_logged_in || !$is_logged_in) {
         $is_locked = true;
         //$user_terms = array();
-        $num_terms = get_user_meta($user_id, 'go_section_and_seat', true);
+        $num_terms = get_user_option('go_section_and_seat', $user_id);
         $user_terms = array();
         for ($i = 0; $i < $num_terms; $i++) {
 
             $user_period = "go_section_and_seat_" . $i . "_user-section";
-            $user_period = get_user_meta($user_id, $user_period, true);
+            $user_period = get_user_option($user_period, $user_id);
             $user_terms[] = $user_period;
         }
 

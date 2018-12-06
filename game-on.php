@@ -119,6 +119,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     include_once('src/ajax/go_tools.php');
     include_once('src/ajax/store_lightbox.php');
     include_once('src/ajax/task-chains.php');
+    include_once('src/ajax/go_construct_queries.php');
 
     //in the public/tasks/ajax directory
     include_once('src/public/tasks/ajax_tasks/go_tasks_and_ajax.php');
@@ -135,8 +136,6 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_to_this_map', 'go_to_this_map' ); //OK
     add_action( 'wp_ajax_nopriv_go_update_last_map', 'go_update_last_map' ); //OK
     add_action( 'wp_ajax_nopriv_go_to_this_map', 'go_to_this_map' ); //OK
-
-
     //Stats
     add_action( 'wp_ajax_go_admin_bar_stats', 'go_admin_bar_stats' ); //OK
     add_action( 'wp_ajax_go_stats_task_list', 'go_stats_task_list' ); //OK
@@ -153,7 +152,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_activity_dataloader_ajax', 'go_activity_dataloader_ajax');
     add_action( 'wp_ajax_go_messages_dataloader_ajax', 'go_messages_dataloader_ajax');
     add_action( 'wp_ajax_go_stats_store_item_dataloader', 'go_stats_store_item_dataloader');
-    //add_action( 'wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
+    add_action( 'wp_ajax_go_tasks_dataloader_ajax', 'go_tasks_dataloader_ajax');
     //Activation
     add_action( 'wp_ajax_go_admin_remove_notification', 'go_admin_remove_notification' ); //OK
     //Store
@@ -188,6 +187,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_blog_lightbox_opener', 'go_blog_lightbox_opener' ); //OK
     add_action( 'wp_ajax_go_blog_opener', 'go_blog_opener' ); //OK
     add_action( 'wp_ajax_go_blog_submit', 'go_blog_submit' ); //OK
+    add_action( 'wp_ajax_go_blog_user_task', 'go_blog_user_task');
     //Admin
     add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' ); //OK
     add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' ); //for term order //OK
@@ -195,6 +195,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     add_action( 'wp_ajax_go_reset_all_users', 'go_reset_all_users' ); //OK
     //add_action( 'wp_ajax_go_clone_post', 'go_clone_post' );  //OK
     add_action( 'wp_ajax_go_upgade4', 'go_upgade4' ); //OK
+    add_action( 'wp_ajax_go_user_map_ajax', 'go_user_map_ajax' );
 
 } else {//ELSE THIS IS AN ADMIN PAGE
 

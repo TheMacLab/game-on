@@ -3,7 +3,7 @@ jQuery( document ).ready( function() {
     if(typeof GO_ADMIN_DATA !== 'undefined') {
         setInterval(go_admin_check_messages_focus, 10000);
         jQuery(window).focus(function () {
-            go_admin_check_messages();
+            //go_admin_check_messages();
         });
     }
 });
@@ -11,7 +11,7 @@ jQuery( document ).ready( function() {
 function go_admin_check_messages(){
     //ajax call for new messages php function
     //on success, if new messages, print
-
+    //console.log("check_messages");
     var nonce = GO_ADMIN_DATA.nonces.go_admin_messages;
 
     jQuery.ajax({
@@ -33,6 +33,6 @@ function go_admin_check_messages(){
 
 function go_admin_check_messages_focus(){
     if ( document.hasFocus() ) {
-        go_admin_check_messages();
+        //go_admin_check_messages();
     }
 }

@@ -274,7 +274,7 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
 
 
 
-            //if not entry loot--it couldn't have a quiz
+            //if not entry loot--it could have a quiz
             if ($status != -1) {
                 //if stage check is a quiz
                 if ($check_type == 'quiz') {
@@ -286,8 +286,17 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
                         $quiz_stage_mod = 'go_stages_' . $status . '_quiz_modifier'; //% to take off for each question missed
                         $quiz_stage_mod = (isset($custom_fields[$quiz_stage_mod][0]) ? $custom_fields[$quiz_stage_mod][0] : 0);
                         $quiz_mod = $quiz_stage_mod * .01 * $questions_missed;
+
                     }
+                    $quiz_array = "go_stages_" . strval($status) . "_quiz";
+                    $quiz_array= $custom_fields[$quiz_array];
+                    $quiz_array = unserialize($quiz_array[0]);
+                    $question_count = $quiz_array[3];
+                    if (empty($questions_missed)){$questions_missed = 0;}
+                    $result = $questions_missed . "/" . $question_count;
+
                 }
+
             }
 
             $due_date_mod = 0;
@@ -499,7 +508,7 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
         if (!empty($badge_ids)) {
             $badge_ids_array = unserialize($badge_ids);
             $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : array());
-            //$user_badges = get_user_meta($user_id, 'go_user_badges', true);
+            //$user_badges = get_user_option('go_user_badges', $user_id);
             $user_badges = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
             if (!empty($user_badges) && $user_badges != null) {
                 $user_badges_array = unserialize($user_badges);
@@ -515,7 +524,7 @@ function go_add_badges ($badge_ids, $user_id, $notify = false) {
 
             $badge_count = count($all_user_badges_array);
 
-            //update_user_meta($user_id, 'go_user_badges', $all_user_badges_ser);
+            //update_user_option($user_id, 'go_user_badges', $all_user_badges_ser);
             //go_update_totals_table($user_id, null, null, null, null, null, null, null, null, $all_user_badges_ser, null, $badge_count, false);
             go_update_totals_table_Badges($user_id, $all_user_badges_ser, $badge_count);
             if ($notify === true) {
@@ -553,7 +562,7 @@ function go_remove_badges ($badge_ids, $user_id, $notify = false) {
         if (!empty($badge_ids)) {
             $badge_ids_array = unserialize($badge_ids);
             $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : array());
-            //$user_badges = get_user_meta($user_id, 'go_user_badges', true);
+            //$user_badges = get_user_option('go_user_badges', $user_id);
             $user_badges = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
 
             if (!empty($user_badges)) {//there are existing user badges
@@ -565,7 +574,7 @@ function go_remove_badges ($badge_ids, $user_id, $notify = false) {
                 $all_user_badges_ser = serialize($all_user_badges_array);
 
                 $badge_count = count($all_user_badges_array);
-                //update_user_meta($user_id, 'go_user_badges', $all_user_badges_ser);
+                //update_user_option($user_id, 'go_user_badges', $all_user_badges_ser);
                 //go_update_totals_table($user_id, null, null, null, null, null, null, null, null, $all_user_badges_ser, null, $badge_count, false);
                 go_update_totals_table_Badges($user_id, $all_user_badges_ser, $badge_count);
 
@@ -598,7 +607,7 @@ function go_add_groups($group_ids, $user_id, $notify = false) {
     if (!empty($group_ids)) {
         $group_ids_array = unserialize($group_ids);
         $group_ids_array = ((is_array($group_ids_array)) ? $group_ids_array : array());
-        //$user_groups_ser = get_user_meta($user_id, 'go_user_groups', true);
+        //$user_groups_ser = get_user_option('go_user_groups', $user_id);
         $user_groups_ser = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
         if (!empty($user_groups_ser)) {//there are existing groups for this user
             $user_groups_array = unserialize($user_groups_ser);
@@ -612,7 +621,7 @@ function go_add_groups($group_ids, $user_id, $notify = false) {
             $all_user_groups_ser = $group_ids;
             $new_groups = $group_ids_array;
         }
-        //update_user_meta($user_id, 'go_user_groups', $all_user_groups_ser);
+        //update_user_option($user_id, 'go_user_groups', $all_user_groups_ser);
         //go_update_totals_table($user_id, null, null, null, null, null, null, null, null, null, $all_user_groups_ser, 0, false);
         go_update_totals_table_Groups($user_id, $all_user_groups_ser);
 
@@ -641,7 +650,7 @@ function go_remove_groups($group_ids, $user_id, $notify = false) {
     if (!empty($group_ids)) {
         $group_ids_array = unserialize($group_ids);
         $group_ids_array = ((is_array($group_ids_array)) ? $group_ids_array : null);
-        //$user_groups_ser = get_user_meta($user_id, 'go_user_groups', true);
+        //$user_groups_ser = get_user_option('go_user_groups', $user_id );
         $user_groups_ser = $wpdb->get_var ("SELECT groups FROM {$go_loot_table_name} WHERE uid = {$user_id}");
         if (!empty($user_groups_ser)) {//there are existing groups for this user
             $user_groups_array = unserialize($user_groups_ser);
@@ -651,7 +660,7 @@ function go_remove_groups($group_ids, $user_id, $notify = false) {
             $all_user_groups_array = array_values($all_user_groups_array);
             $all_user_groups_ser = serialize($all_user_groups_array);
 
-           // update_user_meta($user_id, 'go_user_groups', $all_user_groups_ser);//update user badges
+           // update_user_option($user_id, 'go_user_groups', $all_user_groups_ser);//update user badges
             //go_update_totals_table($user_id, null, null, null, null, null, null, null, null, null, $all_user_groups_ser, 0, false);
             go_update_totals_table_Groups($user_id, $all_user_groups_ser);
 
@@ -730,7 +739,6 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
 {
     global $wpdb;
 
-
     if (get_option('options_go_loot_xp_toggle') == false) {
         $xp = 0;
     }
@@ -770,7 +778,6 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
         $health = 200 - $go_current_health;
     }
 
-
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
     //$time = date( 'Y-m-d G:i:s', current_time( 'timestamp', 0 ) );
     $time = current_time('mysql');
@@ -788,7 +795,6 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
         go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $notify, $debt);
     }
     //badges and groups are only updated from the add/remove badges and groups functions
-
 }
 
 /**
@@ -1002,15 +1008,15 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         $new_rank = go_get_rank($user_id);
         $rank_num = $new_rank['rank_num'];
         $rank_name = $new_rank['current_rank'];
-        $old_rank = get_user_meta($user_id, "go_rank", true);
+        $old_rank = get_user_option("go_rank", $user_id);
         if ($rank_num > $old_rank){
-            update_user_meta($user_id, "go_rank", $rank_num);
+            update_user_option($user_id, "go_rank", $rank_num);
             go_noty_level_up($rank_num, $rank_name );
             echo "<script>var audio = new Audio( PluginDir.url + 'media/sounds/milestone2.mp3' ); audio.play();</script>";
         }
 
         if ($rank_num < $old_rank){
-            update_user_meta($user_id, "go_rank", $rank_num);
+            update_user_option($user_id, "go_rank", $rank_num);
             go_noty_level_down($rank_num, $rank_name );
         }
 

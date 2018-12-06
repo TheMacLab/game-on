@@ -1,28 +1,37 @@
 
 jQuery(window).ready(function(){
     //jQuery(".mejs-container").hide();
-    Vids_Fit_and_Box();
+    go_Vids_Fit_and_Box("body");
 
 
 });
 
-function Vids_Fit_and_Box(){
-    runmefirst(function() {
+function go_Vids_Fit_and_Box (fit_element){
+    runmefirst(fit_element, function() {
         //after making the video fit, set the max width and add the lightbox code
-        Max_width_and_LightboxNow();
+        go_Max_width_and_LightboxNow();
         //go_native_video_resize();
     });
 }
 
-function runmefirst(callback) {
-    fitVidsNow();
+function runmefirst(fit_element, callback) {
+    jQuery(fit_element).fitVids();
     callback();
 }
 
-function fitVidsNow(){
-    //make the videos fit on the page
-    jQuery("body").fitVids();
+
+//For Max width only when videos are already in lightboxes (the store for example)
+function go_fit_and_max_only(fit_element){
+    go_fit_and_max_only_first(fit_element, function(){
+        go_Max_width()
+    });
 }
+
+function go_fit_and_max_only_first(fit_element, callback){
+    jQuery(fit_element).fitVids();
+    callback();
+}
+
 
 //resize in the lightbox--featherlight
 function go_video_resize(){
@@ -55,10 +64,10 @@ function go_video_resize(){
 
 }
 
-function Max_width_and_LightboxNow(){  
-//console.log("max_width");
-    //add a max width video wrapper to the fitVid
-    var _maxwidth = jQuery("#go_wrapper").data('maxwidth');
+function go_Max_width(){
+    //var _maxwidth = jQuery("#go_wrapper").data('maxwidth');
+    var _maxwidth = GO_EVERY_PAGE_DATA.go_fitvids_maxwidth;
+    console.log("max" + _maxwidth);
     //var fluid_width_video_wrapper = {};
     jQuery(".fluid-width-video-wrapper:not(.fit)").each(function(){
 
@@ -74,15 +83,24 @@ function Max_width_and_LightboxNow(){
         jQuery(this).addClass('fit');
         jQuery( ".max-width-video-wrapper").css("max-width", _maxwidth);
     });
+}
+
+function go_Max_width_and_LightboxNow(){
+//console.log("max_width");
+    //add a max width video wrapper to the fitVid
+    go_Max_width();
 
     //Toggle lightbox on and off based on option
-    var lightbox_switch = jQuery("#go_wrapper").data('lightbox');
+    //var lightbox_switch = jQuery("#go_wrapper").data('lightbox');
+    var lightbox_switch = GO_EVERY_PAGE_DATA.go_lightbox_switch;
 
-    if (lightbox_switch === 1){
+    //console.log("lbs" + lightbox_switch);
+    if (lightbox_switch === "1"){
         //alert (lightbox_switch);
         //add a featherlight lightroom wrapper to the fitvids iframes
         jQuery(".max-width-video-wrapper:not(.wrapped):has(iframe)").each(function(){
-            jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_iframe" href="#" ><span style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;"></span></a>');
+            jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_iframe" href="#" ><div style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 999999;"></div></a>');
+            jQuery(".max-width-video-wrapper").children().unbind();
             jQuery(this).addClass('wrapped');
 
         });
@@ -98,12 +116,17 @@ function Max_width_and_LightboxNow(){
                 closeOnEsc: true,
                 variant: 'fit_and_box',
                 afterOpen: function(event){
+                    //console.log ("this" + this);
                     jQuery(".featherlight-content").css({
+                    //jQuery(this).css({
                         'width' : '100%',
                         'overflow' : 'hidden'
                     });
-                    jQuery(".featherlight-content iframe")[0].src += "&autoplay=1";
+                    //jQuery(".featherlight-content iframe").src().append( "&autoplay=1");
+                    jQuery(".featherlight-content iframe").attr('src' , jQuery(".featherlight-content iframe").attr('src') + "&autoplay=1");
+                    //jQuery(this).find("iframe").attr('src' , jQuery(this).find("iframe").attr('src') + "&autoplay=1");
                     //ev.preventDefault();
+                    //console.log("src2:" + _src);
 
                     go_video_resize();
                     jQuery( window ).resize(function() {
@@ -112,6 +135,7 @@ function Max_width_and_LightboxNow(){
                 }
             });
         });
+
 
         //adds link to native video
 
@@ -131,8 +155,5 @@ function Max_width_and_LightboxNow(){
                 });
             }
         }, 100); // check every 100ms
-
-
-
     }
  }

@@ -10,15 +10,19 @@
  * @param bool $map_id
  */
 function go_update_last_map($map_id = false) {
+
+    check_ajax_referer( 'go_update_last_map' );
     if(empty($_POST) || !isset($_POST)) {
         ajaxStatus('error', 'Nothing to update.');
     } else {
         try {
-            if (!$map_id){$mapid = $_POST['goLastMap'];}
-            check_ajax_referer('go_update_last_map', 'security' );
+            if (!$map_id){
+                $mapid = $_POST['goLastMap'];
+            }
             $user_id = get_current_user_id();
-            update_user_meta( $user_id, 'go_last_map', $mapid );
-            go_make_single_map($mapid, true);
+            update_user_option( $user_id, 'go_last_map', $mapid );
+            $user_id = $_POST['uid'];
+            go_make_single_map($mapid, true, $user_id);
 
             die();
         } catch (Exception $e){
@@ -35,7 +39,7 @@ function go_to_this_map(){
     check_ajax_referer( 'go_to_this_map');
     $user_id = get_current_user_id();
     $map_id = $_POST['map_id'];
-    update_user_meta( $user_id, 'go_last_map', $map_id );
+    update_user_option( $user_id, 'go_last_map', $map_id );
 
     $map_url = get_option('options_go_locations_map_map_link');
     $map_url = (string) $map_url;

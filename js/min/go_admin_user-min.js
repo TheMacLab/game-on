@@ -1,27 +1,43 @@
+/*
+  SortTable
+  version 2
+  7th April 2007
+  Stuart Langridge, http://www.kryogenix.org/code/browser/sorttable/
+
+  Instructions:
+  Download this file
+  Add <script src="sorttable.js"></script> to your HTML
+  Add class="sortable" to any table you'd like to make sortable
+  Click on the headers to sort
+
+  Thanks to many, many people for contributions and suggestions.
+  Licenced as X11: http://www.kryogenix.org/code/browser/licence.html
+  This basically means: do what you want with it.
+*/
 // written by Dean Edwards, 2005
 // with input from Tino Zijdel, Matthias Miller, Diego Perini
 // http://dean.edwards.name/weblog/2005/10/add-event/
-function dean_addEvent(e,t,r){if(e.addEventListener)e.addEventListener(t,r,!1);else{
+function dean_addEvent(e,t,o){if(e.addEventListener)e.addEventListener(t,o,!1);else{
 // assign each event handler a unique ID
-r.$$guid||(r.$$guid=dean_addEvent.guid++),
+o.$$guid||(o.$$guid=dean_addEvent.guid++),
 // create a hash table of event types for the element
 e.events||(e.events={});
 // create a hash table of event handlers for each element/event pair
-var o=e.events[t];o||(o=e.events[t]={},
+var r=e.events[t];r||(r=e.events[t]={},
 // store the existing event handler (if there is one)
-e["on"+t]&&(o[0]=e["on"+t])),
+e["on"+t]&&(r[0]=e["on"+t])),
 // store the event handler in the hash table
-o[r.$$guid]=r,
+r[o.$$guid]=o,
 // assign a global event handler to do all the work
-e["on"+t]=handleEvent}}function removeEvent(e,t,r){e.removeEventListener?e.removeEventListener(t,r,!1):
+e["on"+t]=handleEvent}}function removeEvent(e,t,o){e.removeEventListener?e.removeEventListener(t,o,!1):
 // delete the event handler from the hash table
-e.events&&e.events[t]&&delete e.events[t][r.$$guid]}function handleEvent(e){var t=!0;
+e.events&&e.events[t]&&delete e.events[t][o.$$guid]}function handleEvent(e){var t=!0;
 // grab the event object (IE uses a global event object)
 e=e||fixEvent(((this.ownerDocument||this.document||this).parentWindow||window).event);
 // get a reference to the hash table of event handlers
-var r=this.events[e.type];
+var o=this.events[e.type];
 // execute each event handler
-for(var o in r)this.$$handleEvent=r[o],!1===this.$$handleEvent(e)&&(t=!1);return t}function fixEvent(e){
+for(var r in o)this.$$handleEvent=o[r],!1===this.$$handleEvent(e)&&(t=!1);return t}function fixEvent(e){
 // add W3C standard event methods
 return e.preventDefault=fixEvent.preventDefault,e.stopPropagation=fixEvent.stopPropagation,e}
 /*
@@ -41,22 +57,22 @@ var t=jQuery("#post_ID").val();jQuery("#go_store_item_id .acf-input").html('[go_
 //map shortcode message
 //var map_id = jQuery('[name="tag_ID"]').val();
 //console.log(map_id);
-var r=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+r+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}function go_validate_growth(){var e=jQuery("#go_levels_growth").find("input").val();isNaN(e)?jQuery("#go_levels_growth").find("input").val(Go_orgGrowth):Go_orgGrowth=e}function go_level_names(){var e=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,t,r,o;t=0,r="",jQuery(".go_levels_repeater_names").find("input").each(function(){t++,o=r,r=jQuery(this).val(),
+var o=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+o+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}function go_validate_growth(){var e=jQuery("#go_levels_growth").find("input").val();isNaN(e)?jQuery("#go_levels_growth").find("input").val(Go_orgGrowth):Go_orgGrowth=e}function go_level_names(){var e=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,t,o,r;t=0,o="",jQuery(".go_levels_repeater_names").find("input").each(function(){t++,r=o,o=jQuery(this).val(),
 //console.log (thisName);
 //console.log (prevName);
-1<t&&t!=e&&(console.log("Row:"+t),null!=r&&""!=r||(console.log("empty:"+t),console.log(r),jQuery(this).val(o),r=o))})}function go_levels_limit_each(){var o=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,n=Go_orgGrowth,s;
+1<t&&t!=e&&(console.log("Row:"+t),null!=o&&""!=o||(console.log("empty:"+t),console.log(o),jQuery(this).val(r),o=r))})}function go_levels_limit_each(){var r=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,n=Go_orgGrowth,a;
 //var growth = jQuery('#go_levels_growth').find('input').val();
-s=0,jQuery(".go_levels_repeater_numbers").find("input").each(function(){
+a=0,jQuery(".go_levels_repeater_numbers").find("input").each(function(){
 //console.log('-----------row'+ row);
-var e;s++,e=jQuery(this).val()||0,e=parseInt(e);var t=jQuery(this).closest(".acf-row").prev().find(".go_levels_repeater_numbers").find("input").val()||0;t=parseInt(t);var r=jQuery(this).closest(".acf-row").next().find(".go_levels_repeater_numbers").find("input").val()||0;r=parseInt(r),
+var e;a++,e=jQuery(this).val()||0,e=parseInt(e);var t=jQuery(this).closest(".acf-row").prev().find(".go_levels_repeater_numbers").find("input").val()||0;t=parseInt(t);var o=jQuery(this).closest(".acf-row").next().find(".go_levels_repeater_numbers").find("input").val()||0;o=parseInt(o),
 //console.log('prev' + prevVal);
 //console.log('this' + thisVal);
 //console.log('next' + nextVal);
-1===s?(//the first row
+1===a?(//the first row
 jQuery(this).attr({max:0,// substitute your own
-min:0}),jQuery(this).val(0)):s===o-1?(//the last row
-jQuery(this).attr({min:t}),jQuery(this).removeAttr("max"),e<t&&jQuery(this).val(Math.floor(t*n))):s===o||(//all the rows in teh middle
-e<r&&jQuery(this).attr({min:t,max:r}),r<e&&jQuery(this).attr({min:t}),e<t&&jQuery(this).val(t*n)
+min:0}),jQuery(this).val(0)):a===r-1?(//the last row
+jQuery(this).attr({min:t}),jQuery(this).removeAttr("max"),e<t&&jQuery(this).val(Math.floor(t*n))):a===r||(//all the rows in teh middle
+e<o&&jQuery(this).attr({min:t,max:o}),o<e&&jQuery(this).attr({min:t}),e<t&&jQuery(this).val(t*n)
 /*
             else if (thisVal > nextVal && nextVal != 0) {
 
@@ -74,61 +90,33 @@ jQuery(".clickable").keyup(function(e){
 // 13 is ENTER
 13===e.which&&jQuery("#go_store_pass_button").click()})}
 //open the lightbox for the store items
-function go_lb_opener(o){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=o,t,r={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){console.log("success"),console.log(e);var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
-//console.log('html');
-//console.log(res.html);
-//console.log(res.json_status);
-//console.log('success');
-//console.log(raw);
-if(jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),
-//jQuery( "#lb-content" ).append(results);
-//jQuery('.featherlight-content').html(res.html);
-jQuery.featherlight(t.html,{variant:"store"}),"101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var r="Server Error.";jQuery("#go_store_error_msg").text()!=r?jQuery("#go_store_error_msg").text(r):flash_error_msg_store("#go_store_error_msg")}else 302===Number.parseInt(t.json_status)&&(console.log(302),window.location=t.location);jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)}),go_max_purchase_limit()}})}}
+function go_lb_opener(r){if(jQuery("#light").css("display","block"),jQuery(".go_str_item").prop("onclick",null).off("click"),!jQuery.trim(jQuery("#lb-content").html()).length){var e=r,t,o={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:e};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:o,beforeSend:function(){jQuery("#lb-content").append('<div class="go-lb-loading"></div>')},cache:!1,success:function(e){console.log("success"),console.log(e);var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}if(jQuery("#lb-content").innerHTML="",jQuery("#lb-content").html(""),jQuery.featherlight(t.html,{variant:"store",afterOpen:function(e){console.log("store-fitvids3"),
+//jQuery("#go_store_description").fitVids();
+//go_fit_and_max_only("#go_store_description");
+go_fit_and_max_only("#go_store_description")}}),"101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var o="Server Error.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg")}else 302===Number.parseInt(t.json_status)&&(console.log(302),window.location=t.location);jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)}),go_max_purchase_limit()}})}}
 //called when the "buy" button is clicked.
-function goBuytheItem(t,e){var o=GO_BUY_ITEM_DATA.nonces.go_buy_item,n=GO_BUY_ITEM_DATA.userID;console.log(n),jQuery(document).ready(function(r){var e={_ajax_nonce:o,action:"go_buy_item",the_id:t,qty:r("#go_qty").val(),user_id:n};r.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){r("#golb-fr-buy").innerHTML="",r("#golb-fr-buy").html(""),r("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){
-//console.log("SUccess: " + raw);
-var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?r("#light").html(e):(
-//go_sounds( 'store' );
-console.log("buy:"),console.log(t.html),r("#light").html(t.html))}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(o){
-//console.log('button clicked');
-//disable button to prevent double clicks
-//go_enable_loading( target );
-var e;if(!(0<jQuery("#go_store_password_result").attr("value").length)){jQuery("#go_store_error_msg").show();var t="Please enter a password.";return jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg_store("#go_store_error_msg"),void jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)})}var r=jQuery("#go_store_password_result").attr("value");if(jQuery("#light").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var n=o,s,a={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:n,skip_locks:!0,result:r};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,cache:!1,success:function(e){
-//console.log('success');
-//console.log(raw);
-var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}
-//console.log('html');
-//console.log(res.html);
-//console.log(res.json_status);
-//alert(res.json_status);
-if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var r="Server Error.";jQuery("#go_store_error_msg").text()!=r?jQuery("#go_store_error_msg").text(r):flash_error_msg_store("#go_store_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("bad_password"==t.json_status){
-//console.log("bad");
-jQuery("#go_store_error_msg").show();var r="Invalid password.";jQuery("#go_store_error_msg").text()!=r?jQuery("#go_store_error_msg").text(r):flash_error_msg_store("#go_store_error_msg"),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)})}else
-//console.log("good");
-jQuery("#go_store_pass_button").one("click",function(e){go_store_password(o)}),jQuery("#go_store_lightbox_container").hide(),jQuery(".featherlight-content").html(t.html),go_max_purchase_limit()}})}}function go_max_purchase_limit(){window.go_purchase_limit=jQuery("#golb-fr-purchase-limit").attr("val");var e=go_purchase_limit;jQuery("#go_qty").spinner({max:e,min:1,stop:function(){jQuery(this).change()}}),go_make_store_clickable(),
-//jQuery('#go_store_admin_override').click( function () {
-//    jQuery('.go_store_lock').show();
-//});
-jQuery("#go_store_admin_override").one("click",function(e){
-//console.log("override");
-jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}
-/*
-  SortTable
-  version 2
-  7th April 2007
-  Stuart Langridge, http://www.kryogenix.org/code/browser/sorttable/
-
-  Instructions:
-  Download this file
-  Add <script src="sorttable.js"></script> to your HTML
-  Add class="sortable" to any table you'd like to make sortable
-  Click on the headers to sort
-
-  Thanks to many, many people for contributions and suggestions.
-  Licenced as X11: http://www.kryogenix.org/code/browser/licence.html
-  This basically means: do what you want with it.
-*/
-var stIsIE=/*@cc_on!@*/!1;
+function goBuytheItem(t,e){var r=GO_BUY_ITEM_DATA.nonces.go_buy_item,n=GO_BUY_ITEM_DATA.userID;jQuery(document).ready(function(o){var e={_ajax_nonce:r,action:"go_buy_item",the_id:t,qty:o("#go_qty").val(),user_id:n};o.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){o("#golb-fr-buy").innerHTML="",o("#golb-fr-buy").html(""),o("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?o("#light").html(e):o("#light").html(t.html)}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(r){var e;if(!(0<jQuery("#go_store_password_result").attr("value").length)){jQuery("#go_store_error_msg").show();var t="Please enter a password.";return jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg_store("#go_store_error_msg"),void jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)})}var o=jQuery("#go_store_password_result").attr("value");if(jQuery("#light").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var n=r,a,s={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:n,skip_locks:!0,result:o};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:s,cache:!1,success:function(e){var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var o="Server Error.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("bad_password"==t.json_status){jQuery("#go_store_error_msg").show();var o="Invalid password.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg"),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)})}else jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)}),jQuery("#go_store_lightbox_container").hide(),jQuery(".featherlight-content").html(t.html),go_max_purchase_limit()}})}}function go_max_purchase_limit(){window.go_purchase_limit=jQuery("#golb-fr-purchase-limit").attr("val");var e=go_purchase_limit;jQuery("#go_qty").spinner({max:e,min:1,stop:function(){jQuery(this).change()}}),go_make_store_clickable(),jQuery("#go_store_admin_override").one("click",function(e){jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}function tinymce_updateCharCounter(e,t){jQuery(".char_count").text(t+"/500")}function tinymce_getContentLength(){var e=tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText.length;return console.log(e),e}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
+//var result_title = jQuery( this ).attr( 'value' );
+var t=jQuery(e).attr("blog_post_id"),o,r={action:"go_blog_opener",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_opener,blog_post_id:t};
+//console.log(el);
+//console.log(blog_post_id);
+//jQuery.ajaxSetup({ cache: true });
+jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,cache:!1,success:function(e){
+//console.log(results);
+//tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+//tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+jQuery.featherlight(e,{afterContent:function(){console.log("after"),tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_edit"),tinymce.execCommand("mceAddEditor",!0,"go_blog_post_edit")}}),
+//tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+//tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e){var t,o,r,n,a={action:"go_blog_submit",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_submit,result:go_get_tinymce_content_blog(),result_title:jQuery("#go_result_title_blog").val(),blog_post_id:jQuery(e).attr("blog_post_id")};
+//jQuery.ajaxSetup({ cache: true });
+jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:a,cache:!1,success:function(){console.log("success"),location.reload()}})}function go_get_tinymce_content_blog(){return console.log("html"),jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").is(":visible")?jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").val():(console.log("visual"),tinyMCE.activeEditor.getContent())}function go_blog_user_task(e,t){
+//jQuery(".go_datatables").hide();
+console.log("blogs!");var o=GO_EVERY_PAGE_DATA.nonces.go_blog_user_task;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:o,action:"go_blog_user_task",uid:e,task_id:t},success:function(e){jQuery.featherlight(e,{variant:"blogs",afterOpen:function(e){
+//console.log("fitvids"); // this contains all related elements
+//alert(this.$content.hasClass('true')); // alert class of content
+//jQuery("#go_blog_container").fitVids();
+go_fit_and_max_only("#go_blog_container")}})}})}var stIsIE=/*@cc_on!@*/!1;
 /* for Internet Explorer */
 /*@cc_on @*/
 /*@if (@_win32)
@@ -185,7 +173,7 @@ row_array=[],col=this.sorttable_columnindex,rows=this.sorttable_tbody.rows;for(v
 //sorttable.shaker_sort(row_array, this.sorttable_sortfunction);
 /* and comment out this one */row_array.sort(this.sorttable_sortfunction),tb=this.sorttable_tbody;for(var t=0;t<row_array.length;t++)tb.appendChild(row_array[t][1]);delete row_array}))}},guessType:function(e,t){
 // guess the type of a column based on its first non-blank row
-sortfn=sorttable.sort_alpha;for(var r=0;r<e.tBodies[0].rows.length;r++)if(text=sorttable.getInnerText(e.tBodies[0].rows[r].cells[t]),""!=text){if(text.match(/^-?[�$�]?[\d,.]+%?$/))return sorttable.sort_numeric;
+sortfn=sorttable.sort_alpha;for(var o=0;o<e.tBodies[0].rows.length;o++)if(text=sorttable.getInnerText(e.tBodies[0].rows[o].cells[t]),""!=text){if(text.match(/^-?[�$�]?[\d,.]+%?$/))return sorttable.sort_numeric;
 // check for a date: dd/mm/yyyy or dd/mm/yy
 // can have / or . or - as separator
 // can be mm/dd as well
@@ -202,7 +190,7 @@ sortfn=sorttable.sort_ddmm}}return sortfn},getInnerText:function(e){
 // this is *not* a generic getInnerText function; it's special to sorttable.
 // for example, you can override the cell text with a customkey attribute.
 // it also gets .value for <input> fields.
-if(!e)return"";if(hasInputs="function"==typeof e.getElementsByTagName&&e.getElementsByTagName("input").length,null!=e.getAttribute("sorttable_customkey"))return e.getAttribute("sorttable_customkey");if(void 0!==e.textContent&&!hasInputs)return e.textContent.replace(/^\s+|\s+$/g,"");if(void 0!==e.innerText&&!hasInputs)return e.innerText.replace(/^\s+|\s+$/g,"");if(void 0!==e.text&&!hasInputs)return e.text.replace(/^\s+|\s+$/g,"");switch(e.nodeType){case 3:if("input"==e.nodeName.toLowerCase())return e.value.replace(/^\s+|\s+$/g,"");case 4:return e.nodeValue.replace(/^\s+|\s+$/g,"");break;case 1:case 11:for(var t="",r=0;r<e.childNodes.length;r++)t+=sorttable.getInnerText(e.childNodes[r]);return t.replace(/^\s+|\s+$/g,"");break;default:return""}},reverse:function(e){
+if(!e)return"";if(hasInputs="function"==typeof e.getElementsByTagName&&e.getElementsByTagName("input").length,null!=e.getAttribute("sorttable_customkey"))return e.getAttribute("sorttable_customkey");if(void 0!==e.textContent&&!hasInputs)return e.textContent.replace(/^\s+|\s+$/g,"");if(void 0!==e.innerText&&!hasInputs)return e.innerText.replace(/^\s+|\s+$/g,"");if(void 0!==e.text&&!hasInputs)return e.text.replace(/^\s+|\s+$/g,"");switch(e.nodeType){case 3:if("input"==e.nodeName.toLowerCase())return e.value.replace(/^\s+|\s+$/g,"");case 4:return e.nodeValue.replace(/^\s+|\s+$/g,"");break;case 1:case 11:for(var t="",o=0;o<e.childNodes.length;o++)t+=sorttable.getInnerText(e.childNodes[o]);return t.replace(/^\s+|\s+$/g,"");break;default:return""}},reverse:function(e){
 // reverse the rows in a tbody
 newrows=[];for(var t=0;t<e.rows.length;t++)newrows[newrows.length]=e.rows[t];for(var t=newrows.length-1;0<=t;t--)e.appendChild(newrows[t]);delete newrows},
 /* sort functions
@@ -212,9 +200,9 @@ sort_numeric:function(e,t){return aa=parseFloat(e[0].replace(/[^0-9.-]/g,"")),is
 // A stable sort function to allow multi-level sorting of data
 // see: http://en.wikipedia.org/wiki/Cocktail_sort
 // thanks to Joseph Nahmias
-var r=0,o=e.length-1,n=!0;n;){n=!1;for(var s=r;s<o;++s)if(0<t(e[s],e[s+1])){var a=e[s];e[s]=e[s+1],e[s+1]=a,n=!0}// for
-if(o--,!n)break;for(var s=o;r<s;--s)if(t(e[s],e[s-1])<0){var a=e[s];e[s]=e[s-1],e[s-1]=a,n=!0}// for
-r++}// while(swap)
+var o=0,r=e.length-1,n=!0;n;){n=!1;for(var a=o;a<r;++a)if(0<t(e[a],e[a+1])){var s=e[a];e[a]=e[a+1],e[a+1]=s,n=!0}// for
+if(r--,!n)break;for(var a=r;o<a;--a)if(t(e[a],e[a-1])<0){var s=e[a];e[a]=e[a-1],e[a-1]=s,n=!0}// for
+o++}// while(swap)
 }},
 /* ******************************************************************
    Supporting functions: bundled here to avoid depending on a library
@@ -234,22 +222,22 @@ dean_addEvent.guid=1,fixEvent.preventDefault=function(){this.returnValue=!1},fix
 */
 // array-like enumeration
 ,Array.forEach||(// mozilla already supports this
-Array.forEach=function(e,t,r){for(var o=0;o<e.length;o++)t.call(r,e[o],o,e)}),
+Array.forEach=function(e,t,o){for(var r=0;r<e.length;r++)t.call(o,e[r],r,e)}),
 // generic enumeration
-Function.prototype.forEach=function(e,t,r){for(var o in e)void 0===this.prototype[o]&&t.call(r,e[o],o,e)},
+Function.prototype.forEach=function(e,t,o){for(var r in e)void 0===this.prototype[r]&&t.call(o,e[r],r,e)},
 // character enumeration
-String.forEach=function(r,o,n){Array.forEach(r.split(""),function(e,t){o.call(n,e,t,r)})};
+String.forEach=function(o,r,n){Array.forEach(o.split(""),function(e,t){r.call(n,e,t,o)})};
 // globally resolve forEach enumeration
-var forEach=function(e,t,r){if(e){var o=Object;// default
+var forEach=function(e,t,o){if(e){var r=Object;// default
 if(e instanceof Function)
 // functions have a "length" property
-o=Function;else{if(e.forEach instanceof Function)
+r=Function;else{if(e.forEach instanceof Function)
 // the object implements a custom forEach method so use that
-return void e.forEach(t,r);"string"==typeof e?
+return void e.forEach(t,o);"string"==typeof e?
 // the object is a string
-o=String:"number"==typeof e.length&&(
+r=String:"number"==typeof e.length&&(
 // the object is array-like
-o=Array)}o.forEach(e,t,r)}};
+r=Array)}r.forEach(e,t,o)}};
 /*
  * go_tasks_admin.js
  *
@@ -290,11 +278,11 @@ jQuery(".go_levels_repeater_numbers").find("input").change(go_levels_limit_each)
 //limit to the levels table
 if(jQuery(e).closest("#go_levels_repeater").length){var t=e.find("input").first();// find the first input field
 jQuery(t).change(go_levels_limit_each);//bind to input on change
-var r=e.find("input").last();// find the first input field
-jQuery(r).change(go_level_names),
+var o=e.find("input").last();// find the first input field
+jQuery(o).change(go_level_names),
 //console.log('-----------------row added------------------------');
 go_levels_limit_each(),//run one time
-go_level_names()}}),jQuery(".more_info_accordian").accordion({collapsible:!0,header:"h3",active:!1}))}),jQuery(document).ready(function(){if("undefined"!=typeof GO_EDIT_STORE_DATA)var e=GO_EDIT_STORE_DATA.is_store_edit;if(e){var t,r,o="<a id="+GO_EDIT_STORE_DATA.postid+" class='go_str_item ab-item' >View "+GO_EDIT_STORE_DATA.store_name+" Item</a>";
+go_level_names()}}),jQuery(".more_info_accordian").accordion({collapsible:!0,header:"h3",active:!1}))}),jQuery(document).ready(function(){if("undefined"!=typeof GO_EDIT_STORE_DATA)var e=GO_EDIT_STORE_DATA.is_store_edit;if(e){var t,o,r="<a id="+GO_EDIT_STORE_DATA.postid+" class='go_str_item ab-item' >View "+GO_EDIT_STORE_DATA.store_name+" Item</a>";
 //console.log(link);
-jQuery("#wp-admin-bar-view").html(o)}}),//Add an on click to all store items
+jQuery("#wp-admin-bar-view").html(r)}}),//Add an on click to all store items
 jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})});

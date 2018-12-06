@@ -42,12 +42,18 @@ function go_user_links($user_id, $website = true, $stats = false, $profile = fal
 
     echo" <div class='go_user_links'>";
 
+
+
     if ($stats){
         if ($stats_lite) {
             echo "<div class='go_user_link'><a href='javascript:;' class='go_stats_lite' data-UserId='{$user_id}' onclick='go_stats_lite({$user_id});'><i class='fa fa-area-chart ab-icon' aria-hidden='true'></i></a></div>";
         }else{//regular stats link
             echo "<div class='go_user_link_stats go_user_link' name='{$user_id}'><a href='#';'><i class='fa fa-area-chart ab-icon' aria-hidden='true'></i></a></div>";
         }
+    }
+    if ($clipboard){
+        echo "<div class='go_user_link go_user_map' name='{$user_id}'><a onclick='go_user_map({$user_id})' href='javascript:void(0);'><i class='fa fa-sitemap ab-icon' aria-hidden='true'></i></a></div>";
+
     }
     if ($profile && $show_all) {
         if($clipboard){
@@ -82,7 +88,7 @@ function go_user_links($user_id, $website = true, $stats = false, $profile = fal
     }
 
     if($show_messages && ($clipboard || $is_admin)){
-        echo "<div id='go_stats_messages_icon_blog' class='go_stats_messages_icon go_user_link ' name='{$user_id}'><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
+        echo "<div class='go_stats_messages_icon go_user_link ' data-uid='" . $user_id . "' ><a href='#' ><i class='fa fa-bullhorn' aria-hidden='true'></i></a></div>";
         //make the messages icon a link to this user
     }
     echo "</div>";
@@ -171,6 +177,7 @@ function go_bonus_result_link($check_type, $result, $stage, $time, $bonus = true
 
 }
 
+//NON ajax version
 function go_make_tax_select_bk ($taxonomy, $title = "Show All", $location = null, $saved_val = null, $multiple = false){
     $selected = null;
     $is_hier = is_taxonomy_hierarchical( $taxonomy );
@@ -215,6 +222,7 @@ function go_make_tax_select_bk ($taxonomy, $title = "Show All", $location = null
     echo "</select>";
 }
 
+//this then uses select2 and ajax to make dropdown
 function go_make_tax_select ($taxonomy, $location = null){
 
     echo "<select id='go_". $location . $taxonomy . "_select'></select>";

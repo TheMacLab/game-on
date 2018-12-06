@@ -144,6 +144,10 @@ function go_unlock_stage() {
 /**
  *
  */
+function go_post_exists( $post_id ) {
+  return is_string( get_post_status( $post_id ) );
+}
+
 function go_task_change_stage() {
     global $wpdb;
 
@@ -161,6 +165,10 @@ function go_task_change_stage() {
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
     $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
+    if (is_integer($blog_post_id) && go_post_exists($blog_post_id) == true){
+    }else{
+        $blog_post_id = null;
+    }
 
     $redirect_url = null;
     $time_left_ms = null;
@@ -273,11 +281,13 @@ function go_task_change_stage() {
                 ),
             );
 
+            $result = go_blog_save($blog_post_id, $my_post);
+
             // Insert the post into the database
-            $new_post_id = wp_insert_post( $my_post );
+
             //create blog post function ($uid, $result);
             //get id of blog post item to set in actions
-            $result = $new_post_id;
+
         }
         else if ($check_type == 'unlock'){
             //this function checks password and returns

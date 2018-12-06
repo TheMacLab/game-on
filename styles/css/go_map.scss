@@ -1,6 +1,17 @@
 /* ------------------------------------------------------------
 	Loader (from https://www.w3schools.com/howto/howto_css_loader.asp)
 ------------------------------------------------------------ */
+
+/* ------------------------------------------------------------
+    lightbox
+------------------------------------------------------------ */
+
+.featherlight.map .featherlight-content
+{
+	min-width: 90%;
+	min-height: 90%;
+}
+
 #maps {
 	visibility: hidden;
 
@@ -550,3 +561,4 @@
 	border-color: #d1b62c;
 	cursor: pointer;
 }
+

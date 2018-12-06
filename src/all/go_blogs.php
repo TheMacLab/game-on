@@ -9,7 +9,7 @@
 
 function go_custom_rewrite() {
     // we are telling wordpress that if somebody access yoursite.com/all-post/user/username
-    // wordpress will do a request on this query var yoursite.com/index.php?query_type=all_post&uname=username
+    // wordpress will do a request on this query var yoursite.com/index.php?query_type=user_blog&uname=username
     //flush_rewrite_rules();
 
     add_rewrite_rule( "^user/([^/]*)/page/(.*)/?", 'index.php?query_type=user_blog&uname=$matches[1]&paged=$matches[2]', "top");
@@ -23,7 +23,7 @@ function go_custom_query( $vars ) {
     $vars[] = 'paged';
     return $vars;
 }
-// Then add those two functions on thier appropriate hook and filter
+// Then add those two functions on their appropriate hook and filter
 add_action( 'init', 'go_custom_rewrite' );
 add_filter( 'query_vars', 'go_custom_query' );
 

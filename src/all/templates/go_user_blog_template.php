@@ -54,7 +54,7 @@ get_header();
     $use_local_avatars = get_option('options_go_avatars_local');
     $use_gravatar = get_option('options_go_avatars_gravatars');
     if ($use_local_avatars){
-        $user_avatar_id = get_user_meta( $user_id, 'go_avatar', true );
+        $user_avatar_id = get_user_option( 'go_avatar', $user_id );
         $user_avatar = wp_get_attachment_image($user_avatar_id);
     }
     if (empty($user_avatar) && $use_gravatar) {
@@ -266,7 +266,7 @@ get_header();
 
 
 
-        $num_sections = get_user_meta($user_id, 'go_section_and_seat', true);
+        $num_sections = get_user_option('go_section_and_seat', $user_id);
         if (empty($num_sections)){
             $num_sections =1;
         }
@@ -278,13 +278,13 @@ get_header();
             $user_seat_option = "go_section_and_seat_" . $i . "_user-seat";
 
 
-            $user_period = get_user_meta($user_id, $user_period_option, true);
+            $user_period = get_user_option($user_period_option, $user_id );
             $user_periods[] = $user_period;
             $term = get_term($user_period, "user_go_sections");
             //$user_period_name = $term->name;
             $user_period_name[] = (isset($term->name) ? $term->name : null);
 
-            $user_seat[] = get_user_meta($user_id, $user_seat_option, true);
+            $user_seat[] = get_user_option($user_seat_option, $user_id);
         }
 
         //if this is not filtered, set the values

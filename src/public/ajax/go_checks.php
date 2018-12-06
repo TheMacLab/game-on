@@ -106,7 +106,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
     $is_admin = go_user_is_admin($user_id);
     $admin_view = null;
     if ($is_admin) {
-        $admin_view = get_user_meta($user_id, 'go_admin_view', true);
+        $admin_view = get_user_option('go_admin_view', $user_id );
     }
     //$onclick = "onclick='task_stage_check_input( this );'";
 
@@ -226,9 +226,13 @@ function go_password_check ($custom_fields, $i, $status, $go_actions_table_name,
                 $i
             )
         );
+        go_print_password_check_result($password_type);
 
-        echo "The " . $password_type . " was entered correctly.";
     }
+}
+
+function go_print_password_check_result($password_type){
+    echo "The " . $password_type . " was entered correctly.";
 }
 
 /**
@@ -281,7 +285,7 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
             $title = get_the_title($post_id);
         }
         echo "<div id='go_url_div'>";
-        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title_check' type='text' placeholder='' value ='{$title}' blog_post_id ='{$blog_post_id}'></div> </div>";
+        echo "<div>Title:<div><input style='width: 100%;' id='go_result_title_check' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}'></div> </div>";
         $settings  = array(
             //'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
             //'tinymce'=>true,
@@ -309,30 +313,37 @@ function go_blog_check ($custom_fields, $i, $status, $go_actions_table_name, $us
                 $i
             )
         );
+        go_print_blog_check_result($post_id);
         //echo $post_id;
         //$post_link = get_permalink($post_id);
         //echo "<a href='" . $post_link . "' target='blank'>View/Edit Post</a>";
-        $content_post = get_post($post_id);
-        $content = $content_post->post_content;
-        $page_title = $content_post->post_title;
-        //$content = apply_filters('the_content', $content);
-        //$content = str_replace(']]>', ']]&gt;', $content);
-        //$content = do_shortcode($content);
-        $content  = apply_filters( 'go_awesome_text', $content );
-        //if(isset($GLOBALS['wp_embed']))
-            //$content  = $GLOBALS['wp_embed']->autoembed($content );
-        ?><script>
-            document.title = "<?php echo $page_title; ?>";
-            jQuery( document ).ready(function() {
-                go_lightbox_blog_img();
-            });
-        </script><?php
-        echo "<h3>". $page_title . "</h3>";
-        echo '<button class="go_blog_opener" blog_post_id ="'.$post_id.'">edit post</button>';
-
-        echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">" . $content . "</div>";
 
     }
+}
+
+function go_print_blog_check_result($post_id, $edit = true){
+    $content_post = get_post($post_id);
+    //$content_post2 = go_post_data($post_id);
+    $content = $content_post->post_content;
+    $page_title = $content_post->post_title;
+    //$content = apply_filters('the_content', $content);
+    //$content = str_replace(']]>', ']]&gt;', $content);
+    //$content = do_shortcode($content);
+    $content  = apply_filters( 'go_awesome_text', $content );
+    //if(isset($GLOBALS['wp_embed']))
+    //$content  = $GLOBALS['wp_embed']->autoembed($content );
+    ?><script>
+        document.title = "<?php echo $page_title; ?>";
+        jQuery( document ).ready(function() {
+            go_lightbox_blog_img();
+        });
+    </script><?php
+    echo "<h3>". $page_title . "</h3>";
+    if ($edit == true) {
+        echo '<button class="go_blog_opener" blog_post_id ="' . $post_id . '">edit post</button>';
+    }
+    echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">" . $content . "</div>";
+
 }
 
 /**
@@ -389,11 +400,15 @@ function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $use
                 $i
             )
         );
-        //add lightbox to this
-        echo "URL Submitted : <a href='" . $url . "' target='blank'>" . $url . "</a>";
+        //add lightbox to this--NOPE too many protected URLs
+        go_print_URL_check_result($url);
         //Too many security errors with Lightbox
         //echo "<br><a href='" . $url . "' data-featherlight='iframe'>Open in a lightbox.</a>";
     }
+}
+
+function go_print_URL_check_result($url){
+    echo "URL Submitted : <a href='" . $url . "' target='blank'>" . $url . "</a>";
 }
 
 /**
@@ -437,36 +452,38 @@ function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $
                 $i
             )
         );
-
-        $type = get_post_mime_type($media_id);
-
-        //return $icon;
-        switch ($type) {
-            case 'image/jpeg':
-            case 'image/png':
-            case 'image/gif':
-                $type_image = true;
-                break;
-            default:
-                $type_image = false;
-        }
-        if ($type_image == true){
-            $med = wp_get_attachment_image_src( $media_id, 'medium' );
-            $full = wp_get_attachment_image_src( $media_id, 'full' );
-            //echo "<img src='" . $thumb[0] . "' >" ;
-            echo '<a href="#" data-featherlight="' . $full[0] . '"><img src="' . $med[0] . '"></a>';
-
-        }
-        else{
-           // $img = wp_mime_type_icon($type);
-            //echo "<img src='" . $img . "' >";
-            $thumb = wp_get_attachment_image_src( $media_id, 'thumbnail',true );
-            echo "<img src='" . $thumb[0] . "' >" ;
-        }
-        echo "<div>" . get_the_title($media_id) . "</div>" ;
-
+        go_print_upload_check_result($media_id);
     }
 
+}
+
+function go_print_upload_check_result($media_id){
+    $type = get_post_mime_type($media_id);
+
+    //return $icon;
+    switch ($type) {
+        case 'image/jpeg':
+        case 'image/png':
+        case 'image/gif':
+            $type_image = true;
+            break;
+        default:
+            $type_image = false;
+    }
+    if ($type_image == true){
+        $med = wp_get_attachment_image_src( $media_id, 'medium' );
+        $full = wp_get_attachment_image_src( $media_id, 'full' );
+        //echo "<img src='" . $thumb[0] . "' >" ;
+        echo '<a href="#" data-featherlight="' . $full[0] . '"><img src="' . $med[0] . '"></a>';
+
+    }
+    else{
+        // $img = wp_mime_type_icon($type);
+        //echo "<img src='" . $img . "' >";
+        $thumb = wp_get_attachment_image_src( $media_id, 'thumbnail',true );
+        echo "<img src='" . $thumb[0] . "' >" ;
+    }
+    echo "<div>" . get_the_title($media_id) . "</div>" ;
 }
 
 /**

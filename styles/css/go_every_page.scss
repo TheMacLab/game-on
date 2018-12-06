@@ -1,3 +1,11 @@
+.go_blog_stage {
+	border: solid 1px;
+	padding: 10px 20px 10px 20px;
+	border-radius: 5px;
+	background-color: #ededed;
+	margin-bottom: 10px;
+}
+
 /**VIDEOS EMBEDED WITH MEDIA MANAGER
 https://cfxdesign.com/how-to-make-the-wordpress-video-shortcode-responsive/
 */
@@ -51,7 +59,9 @@ video.wp-video-shortcode {
 	word-wrap: normal !important;
 }
 
-.featherlight {z-index: 100002 !important;}
+.featherlight {
+	z-index: 100002 !important;
+	background: rgba(0,0,0,.8) !important}
 #__wp-uploader-id-2 {z-index: 100003 !important;}
 
 /**
@@ -264,11 +274,11 @@ input[type='text'].go_error_red {
 *	Admin-Bar Styles
 ********************/
 .fa.ab-icon:before {font-family: Fontawesome !important;}
- 
+
 @media screen and (max-width: 782px){
   	#wp-admin-bar-go_map, #wp-admin-bar-go_stats, #wp-admin-bar-go_store {
- 		display:block !important; 
- 		width: 52px; height: 46px; 
+ 		display:block !important;
+ 		width: 52px; height: 46px;
  		overflow: hidden;
 	}
  }
@@ -278,9 +288,9 @@ input[type='text'].go_error_red {
 }
 
 .go_message_container a {
-	display: inline-block !important; 
-	text-decoration: underline !important; 
-	padding: 0px !important; 
+	display: inline-block !important;
+	text-decoration: underline !important;
+	padding: 0px !important;
 	margin: 0px !important;
 }
 
@@ -472,7 +482,7 @@ input#go-button-clone {
 
 .datepicker {
 	border-width: 1px;
-	border-color: #DDD;	
+	border-color: #DDD;
 }
 
 .cmb_id_go_mta_time_modifier td input {
@@ -502,8 +512,8 @@ input#go-button-clone {
 }
 
 .go_task_accordion_triangle {
-	width: 0; 
-	height: 0; 
+	width: 0;
+	height: 0;
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;
 	border-top: 5px solid #AAA;
@@ -544,9 +554,9 @@ input#go-button-clone {
 	margin-left: -2px;
 }
 
-.go_test_field_input_row select, 
-.go_test_field_input_question, 
-.go_test_field_add, 
+.go_test_field_input_row select,
+.go_test_field_input_question,
+.go_test_field_add,
 .go_test_field_rm,
 .go_test_field_add_block_button {
 	margin-left: inherit;
@@ -580,7 +590,7 @@ input#go-button-clone {
 }
 
 .go_test_field_input::-moz-placeholder {
-   padding-top: 2px;  
+   padding-top: 2px;
 }
 
 .go_test_field_input_checkbox {
@@ -621,11 +631,11 @@ input.go_current {
 	padding: 7px !important;
 }
 
-#go_future_notification { 
+#go_future_notification {
 	color: red;
 }
 
-#go_future_notification_task_name { 
+#go_future_notification_task_name {
 	font-weight: bold;
 	color: black !important;
 }
@@ -660,7 +670,7 @@ ul#go_bonus_loot_wrap li.go_error {
 
 /* Tasks Style | Front-end */
 
-#go_description p, 
+#go_description p,
 #go_content p,
 #new_content p {
 	padding-top: 10px;
@@ -811,7 +821,7 @@ input#go_pass_lock::-moz-placeholder {
 	font-family: Fontawesome !important;
 	content: '\f0a3';
 }
-     
+
 #adminmenu #toplevel_page_groups .wp-menu-image:before {
 	font-family: Fontawesome !important;
 	content: '\f0c0';

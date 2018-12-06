@@ -1,6 +1,117 @@
 <?php
 
+function go_make_taxonomy_dropdown_ajax(){
+    // we will pass post IDs and titles to this array
+    $return = array();
 
+    $results = array();
+    $taxonomy = $_GET['taxonomy']; // taxonomy
+
+    $is_hier = $_GET['is_hier']; // is it hierarchical
+    ////////////////
+    if ($is_hier === true || $is_hier === "true") {
+        $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => '0');
+
+        //parent terms
+        $parents = get_terms($taxonomy, $args);
+
+        foreach ( $parents as $parent ) {
+            $title = ( mb_strlen( $parent->name ) > 50 ) ? mb_substr( $parent->name, 0, 49 ) . '...' : $parent->name;
+            $return[] = array( $parent->term_id, $title, true ); // array( Post ID, Post Title )
+
+            $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => $parent->term_id);
+            //children terms
+            $children = get_terms($taxonomy, $args);
+            foreach ( $children as $child ) {
+                $title = ( mb_strlen( $child->name ) > 50 ) ? mb_substr( $child->name, 0, 49 ) . '...' : $child->name;
+                $return[] = array( $child->term_id, $title, false ); // array( Post ID, Post Title )
+            }
+        }
+        $terms = $return;
+        $i = -1;
+        $c = 0;
+        foreach ($terms as $term){
+            if ($term[2] == true){
+                $i++;
+                $results[$i]['text'] = $term[1];
+                $c = 0;
+            }
+            else {
+                $results[$i]['children'][$c]['id'] = $term[0];
+                $results[$i]['children'][$c]['text'] = $term[1];
+                $c++;
+            }
+        }
+    }else{
+        $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC');
+        //children terms
+        $children = get_terms($taxonomy, $args);
+        foreach ( $children as $child ) {
+            $title = ( mb_strlen( $child->name ) > 50 ) ? mb_substr( $child->name, 0, 49 ) . '...' : $child->name;
+            $results[] = array(
+                    'id' => $child->term_id,
+                    'text' => $title ); // array( Post ID, Post Title )
+        }
+
+    }
+
+
+    /*
+    ////////////////////////
+    $args = array(
+        'hide_empty' => false,
+        'orderby' => 'order',
+        'order' => 'ASC',
+        'search'=> $_GET['q'], // the search query)
+        'posts_per_page' => 50, // how much to show at once\
+    );
+
+    $search_results = get_terms($taxonomy, $args);
+
+    if( count($search_results) > 0 ){
+        foreach ($search_results as $search_result){
+            $title = ( mb_strlen( $search_result->name ) > 50 ) ? mb_substr( $search_result->name, 0, 49 ) . '...' : $search_result->name;
+            //$return[] = array( $search_result->term_id, $title ); // array( Post ID, Post Title )
+        }
+    }
+    */
+
+
+    echo json_encode( $results );
+    die;
+}
+
+function go_loot_headers($totals = null){
+    $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+    $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
+    $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+
+    $xp_toggle = get_option('options_go_loot_xp_toggle');
+    $gold_toggle = get_option('options_go_loot_gold_toggle');
+    $health_toggle = get_option('options_go_loot_health_toggle');
+    if ($totals == true){
+        $total = "Total ";
+
+    }else{
+        $total ="";
+    }
+
+    if ($xp_toggle){
+            ?>
+            <th class='header'><a href="#"><?php echo "$total" . "$xp_abbr"; ?></a></th>
+            <?php
+        }
+        if ($gold_toggle){
+            ?>
+            <th class='header'><a href="#"><?php echo "$total" . "$gold_abbr"; ?></a></th>
+            <?php
+        }
+        if ($health_toggle){
+            ?>
+            <th class='header'><a href="#"><?php echo "$total" . "$health_abbr"; ?></a></th>
+            <?php
+        }
+}
 /**
  *
  */
@@ -38,7 +149,7 @@ function go_admin_bar_stats() {
     $use_local_avatars = get_option('options_go_avatars_local');
     $use_gravatar = get_option('options_go_avatars_gravatars');
     if ($use_local_avatars){
-        $user_avatar_id = get_user_meta( $user_id, 'go_avatar', true );
+        $user_avatar_id = get_user_option( 'go_avatar', $user_id );
         $user_avatar = wp_get_attachment_image($user_avatar_id);
     }
     if (empty($user_avatar) && $use_gravatar) {
@@ -294,88 +405,134 @@ function go_admin_bar_stats() {
     die();
 }
 
+/**
+* @param null $user_id
+* @param bool $not_ajax
+*/
+function go_stats_about($user_id = null, $not_ajax = false) {
+
+    if ( ! empty( $_POST['user_id'] ) && empty($user_id) ) {
+        $user_id = (int) $_POST['user_id'];
+    }
+
+    if (!$not_ajax){
+        check_ajax_referer( 'go_stats_about' );
+    }
+
+    echo "<div id='go_stats_about' class='go_datatables'>";
+    $headshot_id = get_user_option('go_headshot', $user_id ) ;
+    $headshot = wp_get_attachment_image($headshot_id);
+    ?>
+    <div class='go_stats_gravatar'><?php echo $headshot; ?></div>
+    <?php
+
+    $num_of_qs = get_option('options_go_user_profile_questions');
+
+     for ($i = 0; $i < $num_of_qs; $i++) {
+         $q_title = get_option('options_go_user_profile_questions_' . $i . '_title');
+         $q_answer = get_user_option('question_' . $i, $user_id);
+
+         echo "<h4>{$q_title}</h4>";
+         echo "<p>{$q_answer}</p>";
+     }
+
+    echo "</div>";
+
+    //die();
+}
+
 /**Tasks with Sever Side Processing--in case the tables get too large*/
-/*
-function go_stats_task_listSSP() {
+
+function go_stats_task_list() {
+
     check_ajax_referer( 'go_stats_task_list_' );
+    $current_user = get_current_user_id();
+    $is_admin = go_user_is_admin($current_user);
+
+    $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
+    $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
+    $health_abbr = get_option( "options_go_loot_health_abbreviation" );
+
+    $xp_toggle = get_option('options_go_loot_xp_toggle');
+    $gold_toggle = get_option('options_go_loot_gold_toggle');
+    $health_toggle = get_option('options_go_loot_health_toggle');
 
 
     echo "<div id='go_task_list' class='go_datatables'><table id='go_tasks_datatable' class='pretty display'>
                    <thead>
-						<tr>
+						<tr>";
+    if ($is_admin){
+        echo "<th></th><th class='header go_tasks_reset_multiple'  style='color: red;'><a href='#' class='go_tasks_reset_multiple_clipboard'><i class='fa fa-times-circle' aria-hidden='true'></i></a></th>
+    <th class='header go_tasks_reset' ><a href='#'></a></th>";
+    }
+    echo "    
+        <th class='header' id='go_stats_last_time'><a href=\"#\">Time</a></th>
+        <th class='header' id='go_stats_post_name'><a href=\"#\">Title</a></th>
+        
+    
+        <th class='header' id='go_stats_status'><a href=\"#\">Status</a></th>
+        <th class='header' id='go_stats_bonus_status'><a href=\"#\">Bonus</a></th>
+        <th class='header' id='go_stats_actions'><a href=\"#\">Actions</a></th>
+        <th class='header' id='go_stats_links'><a href=\"#\">History</a></th>";
+        go_loot_headers();
+        echo"
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>";
+    if ($is_admin){
+        echo "<th></th><th class='header go_tasks_reset_multiple'  style='color: red;'><a href='#' class='go_tasks_reset_multiple_clipboard'><i class='fa fa-times-circle' aria-hidden='true'></i></a></th>
+    <th class='header go_tasks_reset' ><a href='#'></a></th>";
+    }
+    echo "
 							<th class='header' id='go_stats_last_time'><a href=\"#\">Time</a></th>
 							<th class='header' id='go_stats_post_name'><a href=\"#\">Title</a></th>
 							
 						
 							<th class='header' id='go_stats_status'><a href=\"#\">Status</a></th>
 							<th class='header' id='go_stats_bonus_status'><a href=\"#\">Bonus</a></th>
-							<th class='header' id='go_stats_links'><a href=\"#\">Activity</a></th>
-							
-							<th class='header' id='go_stats_mods'><a href=\"#\">XP</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">G</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">H</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">AP</a></th>
-							
-						</tr>
-						</thead>
-						<tfoot>
-						<tr>
-							<th class='header' id='go_stats_last_time'><a href=\"#\">Time</a></th>
-							<th class='header' id='go_stats_post_name'><a href=\"#\">Title</a></th>
-							
-						
-							<th class='header' id='go_stats_status'><a href=\"#\">Status</a></th>
-							<th class='header' id='go_stats_bonus_status'><a href=\"#\">Bonus</a></th>
-							<th class='header' id='go_stats_links'><a href=\"#\">Activity</a></th>
-							
-							<th class='header' id='go_stats_mods'><a href=\"#\">XP</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">G</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">H</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">AP</a></th>
-							
-						</tr>
-						</tfoot>
+							<th class='header' id='go_stats_actions'><a href=\"#\">Actions</a></th>
+                            <th class='header' id='go_stats_links'><a href=\"#\">History</a></th>";
+
+        go_loot_headers();
+        echo"
+            </tr>
+            </tfoot>
 			   
 				</table></div>";
-
     die();
 }
-function go_tasks_dataloader_ajax()
-{
 
+function go_tasks_dataloader_ajax(){
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
     $aColumns = array( 'id', 'uid', 'post_id', 'status', 'bonus_status' ,'xp', 'gold', 'health', 'start_time', 'last_time', 'badges', 'groups' );
     $sIndexColumn = "id";
     $sTable = $go_task_table_name;
 
+    /*
     $sLimit = "";
     if ( isset( $_REQUEST['iDisplayStart'] ) && $_REQUEST['iDisplayLength'] != '-1' )
     {
         $sLimit = "LIMIT ".intval( $_REQUEST['iDisplayStart'] ).", ".
             intval( $_REQUEST['iDisplayLength'] );
     }
+    */
 
-    $sOrder = "";
-    if ( isset( $_REQUEST['iSortCol_0'] ) )
+    $sLimit = '';
+    if ( isset( $_GET['start'] ) && $_GET['length'] != '-1' )
     {
-        $sOrder = "ORDER BY  ";
-        for ( $i=0 ; $i<intval( $_REQUEST['iSortingCols'] ) ; $i++ )
-        {
-            if ( $_REQUEST[ 'bSortable_'.intval($_REQUEST['iSortCol_'.$i]) ] == "true" )
-            {
-                $sOrder .= "`".$aColumns[ intval( $_REQUEST['iSortCol_'.$i] ) ]."` ".
-                    ($_REQUEST['sSortDir_'.$i]==='asc' ? 'asc' : 'desc') .", ";
-            }
-        }
-
-        $sOrder = substr_replace( $sOrder, "", -2 );
-        if ( $sOrder == "ORDER BY" )
-        {
-            $sOrder = "";
-        }
+        $sLimit = "LIMIT ".intval( $_GET['start'] ).", ".
+            intval( $_GET['length'] );
     }
 
+    $sOrder = "ORDER BY last_time desc"; //always in reverse order
+    ///////////
+    /// ////
+    ///
+    ///OLD
+    ///
+    ///
     $sWhere = "";
     if ( isset($_REQUEST['sSearch']) && $_REQUEST['sSearch'] != "" )
     {
@@ -427,21 +584,100 @@ function go_tasks_dataloader_ajax()
     $iTotal = $rResultTotal [0];
 
     $output = array(
-        "sEcho" => intval($_REQUEST['sEcho']),
         "iTotalRecords" => $iTotal,
         "iTotalDisplayRecords" => $iFilteredTotal,
         "aaData" => array()
     );
 
+    /////////////
+    /// START
+    ///
+    $search_val = $_GET['search']['value'];
+
+    $user_id = $_GET['user_id'];
+
+    $sWhere = "WHERE uid = ".$user_id;
+
+    if ( isset($search_val) && $search_val != "" )
+    {
+
+        $sWhere .= " AND (";
+        for ( $i=0 ; $i<count($aColumns) ; $i++ )
+        {
+            $sWhere .= "`".$aColumns[$i]."` LIKE '%".esc_sql( $search_val )."%' OR ";
+        }
+        $sWhere = substr_replace( $sWhere, "", -3 );//removes the last OR
+
+        $sWhere .= ')';
+    }
+
+    $totalWhere = " WHERE uid = ".$user_id;
+
+    $pTable = "{$wpdb->prefix}posts";
+    /*
+    $sQuery = "
+    SELECT SQL_CALC_FOUND_ROWS 
+      t1.*, t2.post_title 
+    FROM
+        (
+          SELECT `".str_replace(" , ", " ", implode("`, `", $aColumns))."`
+          FROM   $sTable
+          $sWhere
+          $sOrder
+          $sLimit
+        ) AS t1
+      INNER JOIN $pTable AS t2 ON t1.post_id = t2.ID
+      ";
+    */
+    $sQuery = "
+          SELECT `".str_replace(" , ", " ", implode("`, `", $aColumns))."`
+          FROM   $sTable
+          $sWhere
+          $sOrder
+          $sLimit
+  
+      ";
+
+    $rResult = $wpdb->get_results($sQuery, ARRAY_A);
+
+    $sQuery = "SELECT FOUND_ROWS()";
+
+    $rResultFilterTotal = $wpdb->get_results($sQuery, ARRAY_N);
+
+    $iFilteredTotal = $rResultFilterTotal [0];
+
+    $sQuery = "
+      SELECT COUNT(`".$sIndexColumn."`)
+      FROM   $sTable
+      $totalWhere
+     ";
+
+    $rResultTotal = $wpdb->get_results($sQuery, ARRAY_N);
+
+    $iTotal = $rResultTotal [0];
+
+    $output = array(
+        "iTotalRecords" => $iTotal,
+        "iTotalDisplayRecords" => $iFilteredTotal,
+        "aaData" => array()
+    );
+
+    //////////////////
+    ///
+    ///END
+    ///
+    ///
+    ///
     foreach($rResult as $task){//output a row for each task
         $row = array();
         ///////////
         ///
-        $post_id = $task[post_id];
+        $post_id = $task['post_id'];
+        //$post_name = $task[post_title];
         $custom_fields = get_post_custom( $post_id );
         $post_name = get_the_title($post_id);
         $post_link = get_post_permalink($post_id);
-        $status = $task[status];
+        $status = $task['status'];
         $total_stages = (isset($custom_fields['go_stages'][0]) ?  $custom_fields['go_stages'][0] : null);
 
 
@@ -449,75 +685,40 @@ function go_tasks_dataloader_ajax()
         $bonus_status = null;
         $total_bonus_stages = null;
         if ($bonus_switch) {
-            $bonus_status = $task[bonus_status];
+            $bonus_status = $task['bonus_status'];
             $total_bonus_stages = (isset($custom_fields['go_bonus_limit'][0]) ? $custom_fields['go_bonus_limit'][0] : null);
+            $bonus_status = $bonus_status ."/". $total_bonus_stages;
         }
-        $xp = $task[xp];
-        $gold = $task[gold];
-        $health = $task[health];
+        //$xp = $task['xp'];
+        //$gold = $task['gold'];
+        //$health = $task['health'];
         //$start_time = $task->start_time;
-        $last_time = $task[last_time];
+        $last_time = $task['last_time'];
         $time  = date("m/d/y g:i A", strtotime($last_time));
-        $unix_time = strtotime($last_time);
+        //$unix_time = strtotime($last_time);
 
-
-        $go_actions_table_name = "{$wpdb->prefix}go_actions";
-        $actions = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT *
-                        FROM {$go_actions_table_name}
-                        WHERE source_id = %d
-                        ORDER BY id DESC",
-                $post_id
-            )
-        );
 
         $next_bonus_stage = null;
-        $i = 0;
+
         $links = array();
-        foreach ($actions as $action){
-            $check_type = $action->check_type;
-            $result = $action->result;
-            $action_time = $action->TIMESTAMP;
-            $action_time = date("m/d/y g:i A", strtotime($action_time));
-            $action_stage = $action->stage;
-            if ($action->action_type == 'task'){
-                $loop_bonus_status = $action->bonus_status; //get the bonus status if it exists
-                $stage = $action->stage ; //get the stage
 
-                if (!isset($loop_bonus_status) && $loop_bonus_status > 0 ){//the last bonus submitted
-                    $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                    $next_bonus_stage = $loop_bonus_status -1;
-                }
-                else if ($next_bonus_stage > 0 && $loop_bonus_status == $next_bonus_stage ){ //get the previous bonus stage
-                    $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                    $next_bonus_stage = $loop_bonus_status -1;
-                }
-                else if ($next_bonus_stage <= 0 || $next_bonus_stage == null) {
-                    if (!isset($next_stage) && $stage > 0 ){ //it's not a bonus and it's not the last one completed
-                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                        $next_stage = $stage - 1;
-                    }
-                    else if ($next_stage > 0 && $stage == $next_stage){
-                        $links[] = go_result_link($check_type, $result, $action_stage, $action_time);
-                        $next_stage = $stage - 1;
-                    }
-                }
-
-            }
-        }
         $links = array_reverse($links);
         $links = $comma_separated = implode(" ", $links);
-
-
-        $row[] = "{$unix_time}";
+        $check_box = "<input class='go_checkbox' type='checkbox' name='go_selected' data-uid='" . $user_id . "' data-task='". $post_id . "'/>";
+        $row[] = "";
+        $row[] = "{$check_box}";
+        $row[] = '<a><i data-uid="' . $user_id . '" data-task="'. $post_id . '" style="padding: 0px 10px;" class="go_reset_task_clipboard fa fa-times-circle" aria-hidden="true"></a>';
+        $row[] = "{$time}";
         $row[] = "<a href='{$post_link}' >{$post_name}</a>";
         $row[] = "{$status} / {$total_stages}";
-        $row[] = "{$bonus_status} / {$total_bonus_stages}";
-        $row[] = "{$links} <a href='javascript:;' class='go_stats_body_activity_single_task' data-postID='{$post_id}' onclick='go_stats_single_task_activity_list({$post_id});'> ALL</a>";
-        $row[] = "{$xp}";
-        $row[] = "{$gold}";
-        $row[] = "{$health}";
+        $row[] = "{$bonus_status}";
+        $row[] = '<a href="javascript:;" class="go_blog_user_task" data-UserId="'.$user_id.'" onclick="go_blog_user_task('.$user_id.', '.$post_id.');"><i style="padding: 0px 10px;" class="fa fa-eye" aria-hidden="true"></i></a>';//actions
+
+        $row[] = " <a href='javascript:;' class='go_stats_body_activity_single_task' data-postID='{$post_id}' onclick='go_stats_single_task_activity_list({$post_id});'><i style=\"padding: 0px 10px;\" class=\"fa fa-table\" aria-hidden=\"true\"></i></a>";
+
+        $go_loot_columns = go_loot_columns($task);
+        $row = array_merge($row, $go_loot_columns);
+
         $output['aaData'][] = $row;
     }
 
@@ -525,45 +726,10 @@ function go_tasks_dataloader_ajax()
     echo json_encode( $output );
     die();
 }
-*/
-/**
-* @param null $user_id
-* @param bool $not_ajax
-*/
-function go_stats_about($user_id = null, $not_ajax = false) {
 
-    if ( ! empty( $_POST['user_id'] ) && empty($user_id) ) {
-        $user_id = (int) $_POST['user_id'];
-    }
 
-    if (!$not_ajax){
-        check_ajax_referer( 'go_stats_about' );
-    }
-
-    echo "<div id='go_stats_about' class='go_datatables'>";
-    $headshot_id = get_user_meta($user_id, 'go_headshot', true) ;
-    $headshot = wp_get_attachment_image($headshot_id);
-    ?>
-    <div class='go_stats_gravatar'><?php echo $headshot; ?></div>
-    <?php
-
-    $num_of_qs = get_option('options_go_user_profile_questions');
-
-     for ($i = 0; $i < $num_of_qs; $i++) {
-         $q_title = get_option('options_go_user_profile_questions_' . $i . '_title');
-         $q_answer = get_user_meta($user_id, 'question_' . $i, true);
-
-         echo "<h4>{$q_title}</h4>";
-         echo "<p>{$q_answer}</p>";
-     }
-
-    echo "</div>";
-
-    //die();
-}
-
-/**Non server side processing (SSP)*/
-function go_stats_task_list($user_id = null, $not_ajax = false) {
+/**Non server side processing (SSP)
+function go_stats_task_list1($user_id = null, $not_ajax = false) {
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
     if ( ! empty( $_POST['user_id'] ) ) {
@@ -603,6 +769,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
                    <thead>
 						<tr>";
     if ($is_admin){
+
         echo "<th></th><th class='header go_tasks_reset_multiple'  style='color: red; text-align: center;'><a href='#'><i class='fa fa-times-circle' aria-hidden='true'></i></a></th>
     <th class='header go_tasks_reset' ><a href='#'>Reset</a></th>";
     }
@@ -644,6 +811,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
         unset($next_stage);
         $post_id = $task->post_id;
         $custom_fields = get_post_custom( $post_id );
+
         $post_name = get_the_title($post_id);
         $post_link = get_post_permalink($post_id);
         $status = $task->status;
@@ -830,7 +998,7 @@ function go_stats_task_list($user_id = null, $not_ajax = false) {
 
     die();
 }
-
+ */
 /**
 * @param $post_id
 */
@@ -843,6 +1011,9 @@ function go_stats_single_task_activity_list($post_id) {
     check_ajax_referer( 'go_stats_single_task_activity_list' );
     $post_id = (int) $_POST['postID'];
 
+    $task_name = get_option('options_go_tasks_name_singular');
+    $tasks_name = get_option('options_go_tasks_name_plural');
+
     $actions = $wpdb->get_results(
         $wpdb->prepare(
             "SELECT * 
@@ -853,7 +1024,9 @@ function go_stats_single_task_activity_list($post_id) {
         )
     );
     $post_title = get_the_title($post_id);
-    echo "<div id='go_task_list_single' class='go_datatables'><h3>$post_title</h3>
+    echo "<div id='go_task_list_single' class='go_datatables'>
+            <div style='float: right;'><a onclick='go_close_single_history()' href='javascript:void(0);'><i class='fa fa-times ab-icon' aria-hidden='true'></i> Show All $tasks_name</a></div>
+            <h3>Single $task_name History: $post_title</h3>
 
             <table id='go_single_task_datatable' class='pretty display'>
                    <thead>
@@ -862,16 +1035,11 @@ function go_stats_single_task_activity_list($post_id) {
 							<th class='header' id='go_stats_time'><a href=\"#\">Time</a></th>
 							<th class='header' id='go_stats_action'><a href=\"#\">Action</a></th>
 							<th class='header' id='go_stats_post_name'><a href=\"#\">Stage</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">Modifiers</a></th>
+							<th class='header' id='go_stats_mods'><a href=\"#\">Modifiers</a></th>";
 							
-							<th class='header' id='go_stats_mods'><a href=\"#\">XP</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">G</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">H</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">AP</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> XP</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> G</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> H</a></th>
-							<th class='header' id='go_stats_mods'><a href=\"#\">Total<br> AP</a></th>
+    go_loot_headers();
+    go_loot_headers(true);
+    echo"
 						</tr>
 						</thead>
 			    <tbody>
@@ -2073,7 +2241,6 @@ function go_stats_groups_list($user_id) {
  *
  */
 
-
 /**
  *
  */
@@ -2157,77 +2324,17 @@ function go_stats_leaderboard() {
 
 function go_stats_leaderboard_dataloader_ajax(){
     global $wpdb;
-    //Get the search value
-    $search_val = $_GET['search']['value'];
-    //Get filter values
-    $section = $_GET['section'];
-    if ($section == "none"){
-        $section = 0;
-    }
-    //$badge = $_GET['badge'];
-    $group = $_GET['group'];
+    $current_id = get_current_user_id();
+    $is_admin = go_user_is_admin($current_id);
 
-    //is the current user an admin
-    $current_user_id = get_current_user_id();
-    $is_admin = go_user_is_admin($current_user_id);
-
-    //CREATE THE QUERY
-    //CREATE THE USER WHERE STATEMENT
-    //check the drop down filters only
-    //Query 1:
-    //WHERE (uWhere)
-    //User_meta by section_id from the drop down filter
-    //loot table by badge_id from drop down filter
-    //and group_id from the drop down filter.
-    $uWhere = "";
-    //if ((isset($section) && $section != "none" && $section != "") || (isset($badge) && $badge != "none" && $badge != "") || (isset($group) && $group != "none" && $group != "") )
-    //{
-        $uWhere = "HAVING ( capabilities NOT LIKE '%administrator%' ";
-
-
-        $first = true;
-
-        //add search for section number
-        if  (isset($section) && $section != "none" && $section != "") {
-            //search for badge IDs
-            $sColumns = array('section_0', 'section_1', 'section_2', 'section_3', 'section_4', 'section_5' );
-            $uWhere .= " AND (";
-            $first = false;
-            // }
-            $search_var = $section;
-            for ($i = 0; $i < count($sColumns); $i++) {
-                $uWhere .= "`" . $sColumns[$i] . "` = " . intval($section) . " OR ";
-            }
-            $uWhere = substr_replace($uWhere, "", -3);//removes the last OR
-            $uWhere .= ')';
-        }
-
-        if  (isset($group) && $group != "none" && $group != "") {
-            //search for group IDs
-            $sColumn = 'groups';
-            if ($first == false) {
-                $uWhere .= " AND (";
-            }else {
-                $uWhere .= " (";
-                $first = false;
-            }
-            $search_var = $group;
-            $uWhere .= "`" . $sColumn . "` LIKE '%" . esc_sql($search_var). "%'";
-            $uWhere .= ')';
-        }
-
-        $uWhere .= ")";
-    //}
-
-
-
-
-    //END CREATE USER WHERE
-
+    //$section = go_section();
+    $uWhere = go_uWhere_values();
     $sLimit = '';
     if (isset($_GET['start']) && $_GET['length'] != '-1') {
         $sLimit = "LIMIT " . intval($_GET['start']) . ", " . intval($_GET['length']);
     }
+
+    //$sOrder = go_sOrder('leaderboard', $section);
 
     $order_dir = $_GET['order'][0]['dir'];
     $order_col = $_GET['order'][0]['column'];
@@ -2251,8 +2358,8 @@ function go_stats_leaderboard_dataloader_ajax(){
     $sOrder = "ORDER BY " . $order_col . " " . $order_dir;
 
     $lTable = "{$wpdb->prefix}go_loot";
-    $uTable = "{$wpdb->prefix}users";
     $umTable = "{$wpdb->prefix}usermeta";
+    $uTable = "{$wpdb->prefix}users";
     $sColumn = "{$wpdb->prefix}capabilities";
     $sQuery = "
           
@@ -2280,6 +2387,40 @@ function go_stats_leaderboard_dataloader_ajax(){
           $uWhere
           $sOrder
       ) AS t5
+    ";
+
+    $sQuery = "
+          
+      SELECT SQL_CALC_FOUND_ROWS
+        t5.*
+      FROM (
+              SELECT
+              t1.*,
+              MAX(CASE WHEN t2.meta_key = 'first_name' THEN meta_value END) AS first_name,
+              MAX(CASE WHEN t2.meta_key = 'last_name' THEN meta_value END) AS last_name,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat' THEN meta_value END) AS num_section,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_0_user-section' THEN meta_value END)  AS section_0,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_0_user-seat' THEN meta_value END)  AS seat_0,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_1_user-section' THEN meta_value END) AS section_1,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_1_user-seat' THEN meta_value END) AS seat_1,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_2_user-section' THEN meta_value END) AS section_2,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_2_user-seat' THEN meta_value END) AS seat_2,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_3_user-section' THEN meta_value END) AS section_3,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_3_user-seat' THEN meta_value END) AS seat_3,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_4_user-section' THEN meta_value END) AS section_4,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_4_user-seat' THEN meta_value END) AS seat_4,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_5_user-section' THEN meta_value END) AS section_5,
+              MAX(CASE WHEN t2.meta_key = 'go_section_and_seat_5_user-seat' THEN meta_value END) AS seat_5,
+              t3.display_name, t3.user_url, t3.user_login
+              FROM $lTable AS t1 
+              LEFT JOIN $umTable AS t2 ON t1.uid = t2.user_id
+              LEFT JOIN $uTable AS t3 ON t2.user_id = t3.ID
+              GROUP BY t1.id
+              $uWhere
+          ) AS t5
+          $sOrder
+          $sLimit
+          
     ";
     //Add Badge and Group names from the action item?,
     //can't do because they might have multiple saved in a serialized array so it can't be joined.
@@ -2325,11 +2466,16 @@ function go_stats_leaderboard_dataloader_ajax(){
         $gold = $action['gold'];
         $health = $action['health'];
         $badge_count = $action['badge_count'];
+        $user_display_name = $action['display_name'];
+        $user_firstname = $action['first_name'];
+        $user_lastname = $action['last_name'];
 
+        /*
         $userdata = get_userdata($user_id);
         $user_display_name = $userdata->display_name;
         $user_firstname = $userdata->user_firstname;
         $user_lastname = $userdata->user_lastname;
+        */
 
         //set full name
         $full_name_toggle = get_option('options_go_full-names_toggle');
@@ -2340,7 +2486,7 @@ function go_stats_leaderboard_dataloader_ajax(){
         $num++;
 
         ob_start();
-        go_user_links($user_id, true, true, true, true, true, false);
+        go_user_links($user_id, true, true, true, true, true, true);
         $links = ob_get_clean();
 
         $row[] = "{$num}";
@@ -2381,7 +2527,8 @@ function go_stats_leaderboard_dataloader_ajax(){
  *
  */
 function go_stats_lite(){
-//$user_id = 0;
+
+check_ajax_referer( 'go_stats_lite' );
 if ( ! empty( $_POST['uid'] ) ) {
     $user_id = (int) $_POST['uid'];
     $current_user = get_userdata( $user_id );
@@ -2389,7 +2536,7 @@ if ( ! empty( $_POST['uid'] ) ) {
     $current_user = wp_get_current_user();
     $user_id = $current_user->ID;
 }
-check_ajax_referer( 'go_stats_lite' );
+
 
 ?>
 <input type="hidden" id="go_stats_hidden_input" value="<?php echo $user_id; ?>"/>
@@ -2402,7 +2549,7 @@ $user_website = $current_user->user_url;
 $use_local_avatars = get_option('options_go_avatars_local');
 $use_gravatar = get_option('options_go_avatars_gravatars');
 if ($use_local_avatars){
-    $user_avatar_id = get_user_meta( $user_id, 'go_avatar', true );
+    $user_avatar_id = get_user_option( 'go_avatar', $user_id );
     $user_avatar = wp_get_attachment_image($user_avatar_id);
 }
 if (empty($user_avatar) && $use_gravatar) {

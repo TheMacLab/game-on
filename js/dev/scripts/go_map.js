@@ -1,13 +1,20 @@
-//Hide and show map on click
 
+
+
+//Resize listener--move to map shortcode/lightbox
+/*
+//Hide and show map on click
 jQuery( document ).ready(function() {
     go_map_check_if_done();
 });
 
-//Resize listener
+
 jQuery( window ).resize(function() {
     go_resizeMap();
-})
+});
+*/
+
+
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
@@ -23,6 +30,7 @@ window.onclick = function(event) {
         }
     }
 }
+
 
 function go_to_this_map(map_id) {
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_to_this_map;
@@ -48,23 +56,26 @@ function go_show_map(mapid) {
 //
 	document.getElementById("maps").style.display = "none";
 	document.getElementById("loader").style.display = "block";
-	var map_nonce = jQuery( '#_wpnonce' ).val();
+    var nonce = GO_CLIPBOARD_DATA.nonces.go_update_last_map;
+    var uid = jQuery('#go_map_user').data("uid");
+	//var map_nonce = jQuery( '#_wpnonce' ).val();
 
     console.log(mapid);
-    console.log(map_ajax_admin_url);
+    //console.log(map_ajax_admin_url);
 	
 
 	jQuery.ajax({	
 		type: "POST",
-		url : map_ajax_admin_url,
+		url : MyAjax.ajaxurl,
 			data: {
-				'action':'go_update_last_map',
-				'goLastMap' : mapid,
-				'security': map_nonce,
+				action:'go_update_last_map',
+				goLastMap : mapid,
+                _ajax_nonce: nonce,
+                uid: uid
 			},
 			success:function(data) {			
           		jQuery('#mapwrapper').html(data);				
-				//console.log("success!");
+				console.log("success!");
 				go_resizeMap();
 				document.getElementById("loader").style.display = "none";
  				document.getElementById("maps").style.display = "block";
@@ -78,16 +89,20 @@ function go_show_map(mapid) {
 	});
 }
 
-function go_map_check_if_done() { 
-	
+//I think this was supposed to check the dropdown to see if the maps were done.
+//It doesn't work
+/*
+function go_map_check_if_done() {
+    go_resizeMap();
     //declare idArray
     var idArray = [];
     //make array of all the maps ids
     jQuery('.map').each(function () {
         idArray.push(this.id);
     });
+    console.log("IDS" + idArray);
+    console.log(idArray.length);
     //for each map do something
-
     var mapNum = 0;
     for (var i = 0; i < idArray.length; i++){
         var mapNum = mapNum++;
@@ -113,12 +128,13 @@ function go_map_check_if_done() {
         }
     }
 
-    go_resizeMap();
+    //go_resizeMap();
   }
+  */
 
 //Resize map function, also runs on window load
 function go_resizeMap() {
- 	
+ 	console.log("resize");
 	//get mapid from data
 	var mapNum = jQuery("#maps").data('mapid');
 
@@ -170,4 +186,37 @@ function go_resizeMap() {
 toggle between hiding and showing the dropdown content */
 function go_map_dropDown() {
     document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function go_user_map(user_id) {
+    console.log("map");
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_user_map_ajax;
+    jQuery.ajax({
+        type: 'post',
+        url: MyAjax.ajaxurl,
+        data: {
+            _ajax_nonce: nonce,
+            action: 'go_user_map_ajax',
+            uid: user_id
+        },
+        success: function (res) {
+            if (-1 !== res) {
+                jQuery.featherlight(res, {
+                    variant: 'map',
+                    afterOpen: function () {
+                        console.log("after");
+                        //go_map_check_if_done();
+                        go_resizeMap();
+                        jQuery( window ).resize(function() {
+                           // go_resizeMap();
+                        });
+                        jQuery(window).on('resize', function(){
+                            go_resizeMap();
+                        });
+                    }
+                });
+            }
+        }
+    });
+
 }

@@ -12,31 +12,8 @@ function go_write_log($log) {
     }
 }
 
-function go_make_taxonomy_dropdown_ajax(){
-    // we will pass post IDs and titles to this array
-    $return = array();
 
-    $taxonomy = $_GET['taxonomy']; // taxonomy
-    $args = array(
-        'hide_empty' => false,
-        'orderby' => 'order',
-        'order' => 'ASC',
-        'search'=> $_GET['q'], // the search query)
-        'posts_per_page' => 50, // how much to show at once\
-    );
 
-    $search_results = get_terms($taxonomy, $args);
-
-    if( count($search_results) > 0 ){
-        foreach ($search_results as $search_result){
-            $title = ( mb_strlen( $search_result->name ) > 50 ) ? mb_substr( $search_result->name, 0, 49 ) . '...' : $search_result->name;
-            $return[] = array( $search_result->term_id, $title ); // array( Post ID, Post Title )
-        }
-    }
-
-    echo json_encode( $return );
-    die;
-}
 
 function go_total_query_time(){
     global $wpdb;
@@ -71,18 +48,14 @@ function go_clipboard_save_filters (){
 function go_clipboard_menu() {
     acf_form_head();
 
-
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} else {
         $task_name = get_option( 'options_go_tasks_name_plural'  );
-
 	?>
-
         <div id="go_leaderboard_filters" style="display: flex; flex-wrap: wrap ;">
             <div style="padding: 0 20px 20px 20px;">
                 <h3>User Filter</h3>
-
 
                 <span><label for="go_clipboard_user_go_sections_select">Section </label><?php go_make_tax_select('user_go_sections' , "clipboard_"); ?></span>
                 <br><span><label for="go_clipboard_user_go_groups_select">Group </label><?php go_make_tax_select('user_go_groups', "clipboard_"); ?></span>
@@ -93,12 +66,13 @@ function go_clipboard_menu() {
                 <h3>Action Filters</h3>
                 <span id="go_timestamp_filters" ><label for="datepicker_clipboard">Date </label><input id="datepicker_clipboard" type="search" class="datepicker" name="datepicker" value=""/></span>
                 <span id="go_store_filters"><br><label for="go_clipboard_store_item_select">Store Items </label><select id="go_store_item_select" class="js-store_data"></select></span>
-                <span id="go_task_filters"><br><label for="go_clipboard_task_select"> <?php echo $task_name; ?></label><select id="go_task_select" class="js-store_data"></select></span>
-                <span id="go_show_unmatched" ><br><label for="go_unmatched_toggle">Show Unmatched Users </label><input id="go_unmatched_toggle" type="checkbox" class="checkbox" name="unmatched"><span class='tooltip' target='_blank'><span class='tooltiptext' style='z-index: 99999;'>Show a minimum of one row per user. This is useful to see who has not done something, in addition to those who have.</span><i class="fa fa-info-circle"></i></span> </span>
+                <span id="go_task_filters"><br><label for="go_clipboard_task_select"><?php echo $task_name; ?> </label><select id="go_task_select" class="js-store_data"></select></span>
+                <span id="go_show_unmatched" ><br><label for="go_unmatched_toggle">Show Unmatched Users </label><input id="go_unmatched_toggle" type="checkbox" class="checkbox" name="unmatched"><span class="tooltip" data-tippy-content="Show a minimum of one row per user. This is useful to see who has not done something, in addition to those who have."><span><i class="fa fa-info-circle"></i></span> </span></span>
             </div>
             <div id="go_leaderboard_update_button" style="padding:20px; align-self: flex-end;">
-
-                <div style="margin-right: 60px;"><button class="go_update_clipboard dt-button ui-button ui-state-default ui-button-text-only buttons-collection"><span class="ui-button-text">Filter <span class="dashicons dashicons-update" style="vertical-align: center;"></span></span></button></div>
+                <div style="margin-right: 60px;"><button class="go_reset_clipboard dt-button ui-button ui-state-default ui-button-text-only buttons-collection"><span class="ui-button-text">Clear Filters <i class="fa fa-undo" aria-hidden="true"></i></span></button></div>
+                <br>
+                <div style="margin-right: 60px;"><button class="go_update_clipboard dt-button ui-button ui-state-default ui-button-text-only buttons-collection"><span class="ui-button-text">Refresh Data <i class="fa fa-refresh" aria-hidden="true"></i></span></button></div>
             </div>
         </div>
 
@@ -130,254 +104,6 @@ function go_clipboard_menu() {
 	<?php
 
 	}
-}
-
-function go_uWhere_values(){
-    //CREATE THE QUERY
-    //CREATE THE USER WHERE STATEMENT
-    //check the drop down filters only
-    //Query 1:
-    //WHERE (uWhere)
-    //User_meta by section_id from the drop down filter
-    //loot table by badge_id from drop down filter
-    //and group_id from the drop down filter.
-
-    $section = $_GET['section'];
-    $badge = $_GET['badge'];
-    $group = $_GET['group'];
-
-    $uWhere = "";
-    if ((isset($section) && $section != "" ) || (isset($badge) && $badge != "") || (isset($group) && $group != "") )
-    {
-        $uWhere = "HAVING ";
-        $uWhere .= " (";
-        $first = true;
-
-        //add search for section number
-        if  (isset($section) && $section != "") {
-            //search for badge IDs
-            $sColumns = array('section_0', 'section_1', 'section_2', 'section_3', 'section_4', 'section_5', );
-            $uWhere .= " (";
-            $first = false;
-
-            /*
-            $search_array = $section;
-
-            if ( isset($search_array) && !empty($search_array) )
-            {
-                for ( $i=0 ; $i<count($search_array) ; $i++ )
-                {
-                    for ($i2 = 0; $i2 < count($sColumns); $i2++) {
-                        $uWhere .= "`" . $sColumns[$i2] . "` = " . intval($search_array[$i]) . " OR ";
-                    }
-                }
-            }
-            */
-            for ($i = 0; $i < count($sColumns); $i++) {
-                $uWhere .= "`" . $sColumns[$i] . "` = " . intval($section) . " OR ";
-            }
-            $uWhere = substr_replace( $uWhere, "", -3 );
-            $uWhere .= ")";
-        }
-
-        if  (isset($badge) && $badge != "") {
-            //search for badge IDs
-            $sColumn = 'badges';
-            if ($first == false) {
-                $uWhere .= " AND (";
-            }else {
-                $uWhere .= " (";
-                $first = false;
-            }
-            $search_var = $badge;
-            $uWhere .= "`" . $sColumn . "` LIKE '%\"" . esc_sql($search_var). "\"%'";
-            $uWhere .= ')';
-        }
-
-        if  (isset($group)  && $group != "") {
-            //search for group IDs
-            $sColumn = 'groups';
-            if ($first == false) {
-                $uWhere .= " AND (";
-            }else {
-                $uWhere .= " (";
-                $first = false;
-            }
-            $search_var = $group;
-            $uWhere .= "`" . $sColumn . "` LIKE '%\"" . esc_sql($search_var). "\"%'";
-            $uWhere .= ')';
-        }
-        $uWhere .= ")";
-    }
-    return $uWhere;
-}
-
-function go_section(){
-    $section = $_GET['section'];
-    if ($section == ""){
-        $section = 0;
-    }
-    //if (is_array($sections) && count($sections) === 1){
-    //    $section = $sections[0];
-    //}
-    return $section;
-}
-
-function go_sWhere($search_val, $sColumns){
-    $sWhere = "";
-    if ( isset($search_val) && $search_val != "" )
-    {
-        $sWhere = "WHERE  ";
-        $sWhere .= "";
-
-        //search these columns
-        for ( $i=0 ; $i<count($sColumns) ; $i++ )
-        {
-            $sWhere .= "`".$sColumns[$i]."` LIKE '%".esc_sql( $search_val )."%' OR ";
-        }
-        $sWhere = substr_replace( $sWhere, "", -3 );
-        $sWhere .= '';
-    }
-    return $sWhere;
-}
-
-function go_sOrder($tab = null, $section = 0){
-    if ($tab === null){
-        return "";
-    }
-    $section = $_GET['section'];
-    if ($section == "none"){
-        $section = 0;
-    }
-
-    $order_dir = $_GET['order'][0]['dir'];
-    $order_col = $_GET['order'][0]['column'];
-    if ($order_col == 2){
-        if ($section > 0 && !empty($section)){
-            $order_col = 'the_section';
-        }else {
-            $order_col = 'section_0';//section
-        }
-    }
-    if ($order_col == 3){
-        if ($section > 0 && !empty($section)){
-            $order_col = 'length(the_seat)';
-            $order_col2 = 'the_seat';
-        }else {
-            $order_col = 'length(seat_0)';
-            $order_col2 = 'seat_0';//section
-        }
-    }
-    else if ($order_col == 4){
-        $order_col = 'first_name';//first
-    }
-    else if ($order_col == 5){
-        $order_col = 'last_name';//last
-    }
-    else if ($order_col == 6){
-        $order_col = 'display_name';//display
-    }
-
-    if ($tab == 'stats') {
-        if ($order_col == 9) {
-            $order_col = 'xp';//xp
-        } else if ($order_col == 10) {
-            $order_col = 'gold';//gold
-        } else if ($order_col == 11) {
-            $order_col = 'health';//health
-        } else if ($order_col == 12) {
-            $order_col = 'badge_count';//badges
-        } else if ($order_col == 13) {
-            $order_col = 'length(groups)';//groups
-        }
-
-    }
-    else if ($tab == 'store'){
-        if ($order_col == 8){
-            $order_col = 'id';//Time (ids are sequential)
-        }
-        else if ($order_col == 9){
-            $order_col = 'post_title';
-        }
-        else if ($order_col == 10){
-            $order_col = 'xp';//xp
-        }
-        else if ($order_col == 11){
-            $order_col = 'gold';//gold
-        }
-        else if ($order_col == 12){
-            $order_col = 'health';//health
-        }
-
-    }
-    else if ($tab == 'tasks'){
-        if ($order_col == 8){
-            $order_col = 'post_title';//Time (ids are sequential)
-        }
-        else if ($order_col == 9){
-            $order_col = 'start_time';
-        }
-        else if ($order_col == 10){
-            $order_col = 'last_time';
-        }
-        else if ($order_col == 11){
-            $order_col = 'status';
-        }
-        else if ($order_col == 12){
-            $order_col = 'status';
-        }
-        else if ($order_col == 13){
-            $order_col = 'bonus_status';
-        }
-        else if ($order_col == 15){
-            $order_col = 'xp';
-        }
-        else if ($order_col == 16){
-            $order_col = 'gold';//gold
-        }
-        else if ($order_col == 17){
-            $order_col = 'health';//health
-        }
-
-    }
-
-
-
-
-    $sOrder = "ORDER BY " . $order_col . " " . $order_dir;
-    if (isset($order_col2)){
-        $sOrder .= " , " . $order_col2 . " " . $order_dir;
-    }
-    return $sOrder;
-}
-
-function go_sType(){
-    $unmatched = $_GET['unmatched'];
-    if ($unmatched === true || $unmatched == 'true' ) {
-        $sType = "LEFT";//add switch for "show unmatched users" toggle
-    }else{
-        $sType = "INNER";
-    }
-    return $sType;
-}
-
-function go_sOn($action_type){
-    $sOn = "";
-    $date = $_GET['date'];
-    if ($action_type == 'store' || $action_type == 'message') {
-        $sOn = "AND (action_type = '" . $action_type . "') ";
-
-        if (isset($date) && $date != "") {
-            $date = date("Y-m-d", strtotime($date));
-            $sOn .= " AND ( DATE(t4.TIMESTAMP) = '" . $date . "')";
-        }
-    }else if($action_type == 'tasks'){
-        if (isset($date) && $date != "") {
-            $date = date("Y-m-d", strtotime($date));
-            $sOn .= " AND ( DATE(t4.last_time) = '" . $date . "')";
-        }
-    }
-    return $sOn;
 }
 
 function go_start_row($action){
@@ -423,7 +149,13 @@ function go_start_row($action){
     go_user_links($user_id, true, true, true, true, true, false, true, $website, $login);
     $links = ob_get_clean();
 
-    $check_box = "<input class='go_checkbox' type='checkbox' name='go_selected' value='{$user_id}'/>";
+
+    $task_id = (isset($action['post_id']) ?  $action['post_id'] : null);
+    //if ($task_id != null) {
+    //    $task_id = "data-task='" . $task_id . "'";
+    //}
+
+    $check_box = "<input class='go_checkbox' type='checkbox' name='go_selected' data-uid='" . $user_id . "' data-task='". $task_id . "'/>";
 
     $row[] = "";
     $row[] = "{$check_box}";
@@ -512,7 +244,7 @@ function go_badges_and_groups($badge_ids, $group_ids){
     }
     $badges_names =  $badges_names . $group_names;
 
-    $badges_and_groups = '<span class=\'tooltip\' target=\'_blank\'><span class=\'tooltiptext\' style=\'z-index: 99999;\'>'. $badges_names .'</span>' . $bg_links . '</span>';
+    $badges_and_groups = '<span class="tooltip" data-tippy-content="'. $badges_names .'">'. $bg_links . '</span>';
 
     return $badges_and_groups;
 }
@@ -597,14 +329,11 @@ function go_clipboard_stats() {
 
 function go_clipboard_stats_dataloader_ajax(){
     global $wpdb;
-    //Get the search value
-    $search_val = $_GET['search']['value'];
+    $sColumns = array('first_name', 'last_name', 'display_name', 'xp', 'gold', 'health');
+
     $section = go_section();
     $uWhere = go_uWhere_values();
-
-    $sColumns = array('first_name', 'last_name', 'display_name', 'xp', 'gold', 'health');
-    $sWhere = go_sWhere($search_val, $sColumns);
-
+    $sWhere = go_sWhere( $sColumns);
     $sLimit = '';
     if (isset($_GET['start']) && $_GET['length'] != '-1') {
         $sLimit = "LIMIT " . intval($_GET['start']) . ", " . intval($_GET['length']);
@@ -718,7 +447,8 @@ function go_clipboard_stats_dataloader_ajax(){
                 }
             }
             $group_list = implode(",<br>", $group_list);
-            $group_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$group_list</span>{$group_count}</span>";
+            $group_count = '<span class="tooltip" data-tippy-content="'. $group_list .'">'. $group_count . '</span>';
+            //$group_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$group_list</span>{$group_count}</span>";
         }
         else{
             $group_count = null;
@@ -739,7 +469,8 @@ function go_clipboard_stats_dataloader_ajax(){
                 }
             }
             $badge_list = implode(",<br>", $badge_list);
-            $badge_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$badge_list</span>{$badge_count}</span>";
+            $badge_count = '<span class="tooltip" data-tippy-content="'. $badge_list .'">'. $badge_count . '</span>';
+            //$badge_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$badge_list</span>{$badge_count}</span>";
         }
         else{
             $badge_count = null;
@@ -833,12 +564,11 @@ function go_clipboard_store_dataloader_ajax(){
     global $wpdb;
 
     //Get the search value
-    $search_val = $_GET['search']['value'];
     $section = go_section();
     $uWhere = go_uWhere_values();
 
     $sColumns = array('first_name', 'last_name', 'display_name', 'result', 'xp', 'gold', 'health', 'post_title');
-    $sWhere = go_sWhere($search_val, $sColumns);
+    $sWhere = go_sWhere($sColumns);
 
     $sLimit = '';
     if (isset($_GET['start']) && $_GET['length'] != '-1') {
@@ -1048,12 +778,12 @@ function go_clipboard_messages_dataloader_ajax(){
     global $wpdb;
 
     //Get the search value
-    $search_val = $_GET['search']['value'];
+    //$search_val = $_GET['search']['value'];
     $section = go_section();
     $uWhere = go_uWhere_values();
 
     $sColumns = array('first_name', 'last_name', 'display_name', 'result', 'xp', 'gold', 'health');
-    $sWhere = go_sWhere($search_val, $sColumns);
+    $sWhere = go_sWhere($sColumns);
 
     $sLimit = '';
     if (isset($_GET['start']) && $_GET['length'] != '-1') {
@@ -1339,6 +1069,11 @@ function go_clipboard_messages_dataloader_ajax(){
             $badges_name_sing = get_option('options_go_badges_name_singular');
 
             if (!empty($badge_ids)) {
+                if(!is_array($badge_ids)){
+                    $badge_ids_array = array();
+                    $badge_ids_array[]= $badge_ids;
+                    $badge_ids = $badge_ids_array;
+                }
                 $badges_names_heading = "<b>" . $badges_name_sing . ": </b>";
                 foreach ($badge_ids as $badge_id) {
                     $term = get_term($badge_id, "go_badges");
@@ -1373,7 +1108,8 @@ function go_clipboard_messages_dataloader_ajax(){
         $message = $result_array[1];
 
         if (!empty($message)) {
-            $title = "<span class='tooltip' ><span class='tooltiptext'>{$message}</span>$title</span>";
+            //$title = "<span class='tooltip' ><span class='tooltiptext'>{$message}</span>$title</span>";
+            $title = '<span class="tooltip" data-tippy-content="'. $message .'">'. $title . '</span>';
         }
         $bg_links = '';
         if (!empty($badges_names)) {
@@ -1403,8 +1139,8 @@ function go_clipboard_messages_dataloader_ajax(){
             $badges_names = $badges_names . "<br>" ;
         }
         $badges_names =  $badges_names . $group_names;
-
-        $badges_and_groups = '<span class=\'tooltip\' target=\'_blank\'><span class=\'tooltiptext\' style=\'z-index: 99999;\'>'. $badges_names .'</span>' . $bg_links . '</span>';
+        $badges_and_groups = '<span class="tooltip" data-tippy-content="'. $badges_names .'">'. $bg_links . '</span>';
+        //$badges_and_groups = '<span class=\'tooltip\' target=\'_blank\'><span class=\'tooltiptext\' style=\'z-index: 99999;\'>'. $badges_names .'</span>' . $bg_links . '</span>';
 
         $time  = go_clipboard_time($TIMESTAMP);
 
@@ -1463,12 +1199,12 @@ function go_clipboard_activity() {
             <th class="header">Display</th>
             <th class="header">Links</th>
             <th class='header'>Task</th>
+            <th class='header'>Actions</th>
             <th class='header'>Start</th>
             <th class='header'>Last</th>
             <th class='header'>Status</th>
             <th class='header'>Done</th>
             <th class='header'>Bonus</th>
-            <th class='header'>Actions</th>
             <th class='header'>XP</th>
             <th class='header'>G</th>
             <th class='header'>H</th>
@@ -1484,16 +1220,16 @@ function go_clipboard_activity() {
 
 function go_clipboard_activity_dataloader_ajax(){
     global $wpdb;
-    go_write_log("GET: ");
-    go_write_log($_GET);
-    $wpdb->show_errors();
+    //go_write_log("GET: ");
+    //go_write_log($_GET);
+    //$wpdb->show_errors();
     //Get the search value
-    $search_val = $_GET['search']['value'];
+    //$search_val = $_GET['search']['value'];
     $section = go_section();
     $uWhere = go_uWhere_values();
 
     $sColumns = array('first_name', 'last_name', 'display_name', 'xp', 'gold', 'health', 'post_title');
-    $sWhere = go_sWhere($search_val, $sColumns);
+    $sWhere = go_sWhere( $sColumns);
 
     $sLimit = '';
     if (isset($_GET['start']) && $_GET['length'] != '-1') {
@@ -1521,170 +1257,6 @@ function go_clipboard_activity_dataloader_ajax(){
     //Index column
     $sIndexColumn = "id";
 
-    /*
-    //Get the search value
-    $search_val = $_GET['search']['value'];
-    //Get filter values
-    $section = $_GET['section'];
-    if ($section == "none"){
-        $section = 0;
-    }
-    $badge = $_GET['badge'];
-    $group = $_GET['group'];
-    $date = $_GET['date'];
-    $unmatched = $_GET['unmatched'];
-
-    //CREATE THE QUERY
-    //CREATE THE USER WHERE STATEMENT
-    //check the drop down filters only
-    //Query 1:
-    //WHERE (uWhere)
-    //User_meta by section_id from the drop down filter
-    //loot table by badge_id from drop down filter
-    //and group_id from the drop down filter.
-    $uWhere = "";
-    if ((isset($section) && $section != "none" && $section != "") || (isset($badge) && $badge != "none" && $badge != "") || (isset($group) && $group != "none" && $group != "") )
-    {
-        $uWhere = "HAVING ";
-        $uWhere .= " (";
-        $first = true;
-
-        //add search for section number
-        if  (isset($section) && $section != "none" && $section != "") {
-            //search for badge IDs
-            $sColumns = array('section_0', 'section_1', 'section_2', 'section_3', 'section_4', 'section_5', );
-            //if ($first == false) {
-            //  $sWhere .= " AND (";
-            //}else {
-            $uWhere .= " (";
-            $first = false;
-            // }
-            $search_var = $section;
-            for ($i = 0; $i < count($sColumns); $i++) {
-                $uWhere .= "`" . $sColumns[$i] . "` LIKE '%" . esc_sql($search_var) . "%' OR ";
-            }
-            $uWhere = substr_replace($uWhere, "", -3);//removes the last OR
-            $uWhere .= ')';
-        }
-
-        if  (isset($badge) && $badge != "none" && $badge != "") {
-            //search for badge IDs
-            $sColumn = 'user_badges';
-            if ($first == false) {
-                $uWhere .= " AND (";
-            }else {
-                $uWhere .= " (";
-                $first = false;
-            }
-            $search_var = $badge;
-            $uWhere .= "`" . $sColumn . "` LIKE '%" . esc_sql($search_var). "%'";
-            $uWhere .= ')';
-        }
-
-        if  (isset($group) && $group != "none" && $group != "") {
-            //search for group IDs
-            $sColumn = 'user_groups';
-            if ($first == false) {
-                $uWhere .= " AND (";
-            }else {
-                $uWhere .= " (";
-                $first = false;
-            }
-            $search_var = $group;
-            $uWhere .= "`" . $sColumn . "` LIKE '%" . esc_sql($search_var). "%'";
-            $uWhere .= ')';
-        }
-        $uWhere .= ")";
-    }
-    //END CREATE USER WHERE
-
-    ////CREATE THE TERM QUERY
-    //columns that will be searched
-    //Query 2:
-    //WHERE
-    //Search columns with search value from input box
-    //and Date from date time field
-    $sColumns = array('first_name', 'last_name', 'display_name', 'result', 'xp', 'gold', 'health');
-    //Index column
-    $sIndexColumn = "id";
-
-    $sWhere = "WHERE (";
-    if ( isset($search_val) && $search_val != "" )
-    {
-        //search these columns
-        for ( $i=0 ; $i<count($sColumns) ; $i++ )
-        {
-            $sWhere .= "`".$sColumns[$i]."` LIKE '%".esc_sql( $search_val )."%' OR ";
-        }
-        $sWhere = substr_replace( $sWhere, "", -3 );
-        $sWhere .= ')';
-    }
-
-    $sWhere = "";
-    //END CREATE sWHERE
-
-    $sOn = "AND (action_type = 'message') ";
-    if ( isset($date) && $date != "" )
-    {
-        $date = date("Y-m-d", strtotime($date));
-        $sOn .= " AND ( DATE(t4.TIMESTAMP) = '" . $date . "')";
-    }
-
-    $sLimit = '';
-    if (isset($_GET['start']) && $_GET['length'] != '-1') {
-        $sLimit = "LIMIT " . intval($_GET['start']) . ", " . intval($_GET['length']);
-    }
-
-    $order_dir = $_GET['order'][0]['dir'];
-    $order_col = $_GET['order'][0]['column'];
-    if ($order_col == 3){
-        if ($section > 0 && !empty($section)){
-            $order_col = 'length(the_seat)';
-            $order_col2 = 'the_seat';
-        }else {
-            $order_col = 'length(seat_0)';
-            $order_col2 = 'seat_0';//section
-        }
-    }
-    else if ($order_col == 4){
-        $order_col = 'first_name';//first
-    }
-    else if ($order_col == 5){
-        $order_col = 'last_name';//last
-    }
-    else if ($order_col == 6){
-        $order_col = 'display_name';//display
-    }
-    else if ($order_col == 8){
-        $order_col = 'id';//Time
-    }
-    else if ($order_col == 8){
-        $order_col = 'length(result)';//title and message
-    }
-    else if ($order_col == 10){
-        $order_col = 'xp';//xp
-    }
-    else if ($order_col == 11){
-        $order_col = 'gold';//gold
-    }
-    else if ($order_col == 12){
-        $order_col = 'health';//health
-    }
-    else{
-        $order_col = 'length(id)';//Time
-    }
-
-    $sOrder = "ORDER BY " . $order_col . " " . $order_dir;
-    if (isset($order_col2)){
-        $sOrder .= " , " . $order_col2 . " " . $order_dir;
-    }
-
-    if ($unmatched === true || $unmatched == 'true' ) {
-        $sType = "LEFT";//add switch for "show unmatched users" toggle
-    }else{
-        $sType = "INNER";
-    }
-    */
 
     $lTable = "{$wpdb->prefix}go_loot";
     $aTable = "{$wpdb->prefix}go_actions";
@@ -1784,6 +1356,15 @@ function go_clipboard_activity_dataloader_ajax(){
         //The message content
         $row = go_start_row($action);
         $row[] = $action['post_title'];
+
+        $task_id = (isset($action['post_id']) ?  $action['post_id'] : null);
+        //if ($task_id != null) {
+          //  $task_id = "data-task='" . $task_id . "'";
+        //}
+
+        $user_id = $action['uid'];
+        $row[] = '<a href="javascript:;" class="go_blog_user_task" data-UserId="'.$user_id.'" onclick="go_blog_user_task('.$user_id.', '.$task_id.');"><i style="padding: 0px 10px;" class="fa fa-eye" aria-hidden="true"></i></a><a><i data-uid="' . $user_id . '" data-task="'. $task_id . '" style="padding: 0px 10px;" class="go_reset_task_clipboard fa fa-times-circle" aria-hidden="true"></a>';//actions
+
         $start = $action['start_time'];
         $row[] = go_clipboard_time($start);
         $last = $action['last_time'];
@@ -1796,16 +1377,29 @@ function go_clipboard_activity_dataloader_ajax(){
         //$task_link = $go_post_data[2];
         $custom_fields = $go_post_data[3];
 
-        $stage_count = (isset($custom_fields['go_stages'][0]) ?  $custom_fields['go_stages'][0] : null);
-        $bonus_count = (isset($custom_fields['go_bonus_limit'][0]) ?  $custom_fields['go_bonus_limit'][0] : null);
-        $row[] = strval($action['status']) . " / " . strval($stage_count);
+        if ($action['status'] >= 0) {
+            $stage_count = (isset($custom_fields['go_stages'][0]) ? $custom_fields['go_stages'][0] : null);
+            $bonus_count = (isset($custom_fields['go_bonus_limit'][0]) ? $custom_fields['go_bonus_limit'][0] : null);
+            $row[] = strval($action['status']) . " / " . strval($stage_count);
 
-        if (($action['status'] >= $stage_count) && !empty($action['status'])){
-            $complete = "<i class=\"fa fa-check\" aria-hidden=\"true\"></i>";
-        }else{
-            $complete = "";
+            if (($action['status'] >= $stage_count) && !empty($action['status'])){
+                $complete = "<i class=\"fa fa-check\" aria-hidden=\"true\"></i>";
+            }else{
+                $complete = "";
+            }
+            $row[] = $complete;
+
         }
-        $row[] = $complete;
+        else if($action['status'] == -2){
+            $row[] = "reset";
+            $row[] = "";
+        }
+        else if ($action['status'] == -1){
+            $row[] = "abandoned";
+            $row[] = "";
+        }
+
+
 
         if ($action['bonus_status'] > 0) {
             $row[] = strval($action['bonus_status']) . " / " . strval($bonus_count);
@@ -1814,7 +1408,6 @@ function go_clipboard_activity_dataloader_ajax(){
         }
 
 
-        $row[] = '<i class="fa fa-eye" aria-hidden="true"></i>';//actions
 
 
 

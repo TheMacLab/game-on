@@ -137,10 +137,10 @@ function go_buy_item() {
         $admin_users = get_option('options_go_admin_user_notifications');
         foreach ($admin_users as $admin_user) {
             go_update_actions($admin_user, 'admin_notification', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $badge_ids, $group_ids, 'admin', false);
-            update_user_meta($admin_user, 'go_new_messages', true);
+            update_user_option($admin_user, 'go_new_messages');
         }
         //go_update_actions($user_id, 'message', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $badge_ids, $group_ids, false);
-        //update_user_meta($user_id, 'go_new_messages', true);
+        //update_user_option($user_id, 'go_new_messages');
     }
 
     echo "<script> new Noty({
@@ -185,8 +185,7 @@ function go_the_lb_ajax() {
     $custom_fields = $go_post_data[3];
 
     $item_content = (isset($custom_fields['go_store_item_desc'][0]) ?  $custom_fields['go_store_item_desc'][0] : null);
-    $the_content  = apply_filters( 'go_awesome_text', $item_content );
-    //$the_content = wpautop( $item_content );
+    $the_content  = apply_filters( 'the_content', $item_content );
 
     $user_id = get_current_user_id();
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
@@ -321,7 +320,7 @@ function go_the_lb_ajax() {
         echo '<div id="light" class="white_content">';
         echo "<h1>{$the_title}</h1>";
 
-        echo '<div id="go-lb-the-content"><div id="go_store_description" style=""' . do_shortcode($the_content) . '</div>';
+        echo '<div id="go-lb-the-content"><div id="go_store_description" style=""' . $the_content . '</div>';
 
         if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false)) {
             echo "<div id='go_store_loot'><div id='go_cost'> <div id='go_store_cost_container' class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_minus' class='go_store_round_button'>-</div></div></div><div class='go_store_loot_right'><h3>Cost</h3>";

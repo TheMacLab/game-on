@@ -366,7 +366,7 @@ function task_stage_change( target ) {
         //result = tinyMCE.activeEditor.getContent();
         result = go_get_tinymce_content_check();
         var result_title = jQuery( '#go_result_title_check' ).val( );
-        var blog_post_id= jQuery( '#go_result_title' ).attr( 'blog_post_id' );
+        var blog_post_id= jQuery( '#go_result_title_check' ).data( 'blog_post_id' );
         //console.log(blog_post_id);
 
     }else{
@@ -516,7 +516,7 @@ function go_append (res){
     //jQuery( res.html ).addClass('active');
     jQuery( res.html ).appendTo( '#go_wrapper' ).stop().hide().show( 'slow' ).promise().then(function() {
         // Animation complete
-        Vids_Fit_and_Box();
+        go_Vids_Fit_and_Box("body");
         go_make_clickable();
         go_disable_loading();
         //go_mce();

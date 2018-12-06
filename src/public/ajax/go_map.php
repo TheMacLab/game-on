@@ -4,14 +4,31 @@
 /**
  * @param $last_map_id
  * @param $reload
+ * @param $user_id
  */
-function go_make_single_map($last_map_id, $reload){
+function go_make_single_map($last_map_id, $reload, $user_id = null){
+    ?>
+    <script>
+        jQuery( document ).ready(function() {
+            console.log("ready1");
+            go_resizeMap();
+        });
+
+
+        jQuery( window ).resize(function() {
+            console.log("resize1");
+            go_resizeMap();
+        });
+    </script>
+        <?php
     global $wpdb;
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
-    wp_nonce_field( 'go_update_last_map');
+    //wp_nonce_field( 'go_update_last_map');
     $last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');//Query 1 - get the map
-    $user_id = get_current_user_id();
+    if ($user_id == null) {
+        $user_id = get_current_user_id();
+    }
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
     //$taxonomy_name = 'task_chains';
 
@@ -265,6 +282,8 @@ function go_make_single_map($last_map_id, $reload){
 
 /**
  * @param $badge
+ *
+ * Show badge on map for tasks
  */
 function go_map_badge($badge, $user_badges = null){
     //does this term have a badge assigned and if so show it
@@ -285,6 +304,8 @@ function go_map_badge($badge, $user_badges = null){
 }
 
 /**
+ *  * Show badge on map for chains
+ *
  * @param $badge
  */
 function go_map_quest_badge($badge, $user_badges = null){
@@ -339,7 +360,7 @@ function go_map_quest_badge($badge, $user_badges = null){
 /**
  *
  */
-function go_make_map_dropdown(){
+function go_make_map_dropdown($user_id = null){
 /* Get all task chains with no parents--these are the top level on the map.  They are chains of chains (realms). */
 	$taxonomy = 'task_chains';
 	$term_args0=array(
@@ -349,6 +370,13 @@ function go_make_map_dropdown(){
   		'parent' => '0'
 	);
 	$tax_terms_maps = get_terms($taxonomy,$term_args0);
+
+	if($user_id != null){
+	    $user_data = get_userdata($user_id );
+	    $user_name = $user_data->display_name;
+	    echo "<h1 id='go_map_user' data-uid='".intval($user_id)."'>Viewing map as ". $user_name . "</h1>";
+
+    }
 	
 	echo"
 	<div id='sitemap' style='visibility:hidden;'>   
@@ -363,6 +391,16 @@ function go_make_map_dropdown(){
                 <a onclick=go_show_map($term_id)>$tax_term_map->name</a></div>";
             }
         echo"</div></div></div> ";
+}
+
+function go_user_map_ajax(){
+    check_ajax_referer( 'go_user_map_ajax');
+    $user_id = intval($_POST['uid']);
+    $current_user_id = get_current_user_id();
+    $last_map_id = get_user_option('go_last_map', $current_user_id);
+    go_make_map_dropdown($user_id);
+    go_make_single_map($last_map_id, false, $user_id);// do your thing
+    die();
 }
 
 

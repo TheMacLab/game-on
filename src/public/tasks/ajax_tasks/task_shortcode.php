@@ -67,7 +67,7 @@ function go_task_shortcode($atts, $content = null ) {
     $admin_name = 'an administrator';
     $is_admin = go_user_is_admin( $user_id );
 
-    $admin_view = ($is_admin ?  get_user_meta($user_id, 'go_admin_view', true) : null);
+    $admin_view = ($is_admin ?  get_user_option('go_admin_view', $user_id) : null);
 
     //user status
     $status = go_get_status($post_id, $user_id);
@@ -207,7 +207,7 @@ function go_task_shortcode($atts, $content = null ) {
      * Note: If the timer is on, the reward entry is given when the timer is started.
      *
      */
-    if ($status === -1){
+    if ($status === -1 || $status === -2){
         go_update_stage_table($user_id, $post_id, $custom_fields, -1, null, true, 'entry_reward', null, null, null);
         $status = 0;
     }

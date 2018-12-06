@@ -2990,6 +2990,13 @@
 		"oAP": "/src/ajax/go_blog_ajax.php",
 		"oF": 0
 		},
+	"/src/ajax/go_construct_queries.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/src/ajax/go_construct_queries.php",
+		"oF": 0
+		},
 	"/src/ajax/go_map_ajax.php": {
 		"cB": 0,
 		"ft": 8192,

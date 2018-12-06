@@ -40,10 +40,10 @@ function go_display_comment_author ( $author_name, $comment_id, $comment ) {
         if ($is_admin) {
             return $author_name;
         } else {
-            $ranks = get_user_meta($author_id, 'go_rank', true);
+            $ranks = get_user_option('go_rank', $author_id);
             $points_array = $ranks[0];
             $rank_name = $points_array[0];
-            $focus = get_user_meta($author_id, 'go_focus', true);
+            $focus = get_user_option('go_focus', $author_id);
             if (!empty($focus)) {
                 if (is_array($focus)) {
                     for ($i = 0; $i < count($focus); $i++) {

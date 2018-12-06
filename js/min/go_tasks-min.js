@@ -49,7 +49,7 @@ var o="";void 0!==jQuery(e).attr("button_type")&&(o=jQuery(e).attr("button_type"
 //console.log(button_type);
 var r="";void 0!==jQuery(e).attr("status")&&(r=jQuery(e).attr("status"));var t="";void 0!==jQuery(e).attr("check_type")&&(t=jQuery(e).attr("check_type"));var s=jQuery("#go_admin_bar_progress_bar").css("background-color"),_=jQuery("#go_result").attr("value");if("blog"==t&&"undo_last_bonus"!=o){
 //result = tinyMCE.activeEditor.getContent();
-_=go_get_tinymce_content_check();var a=jQuery("#go_result_title_check").val(),n=jQuery("#go_result_title").attr("blog_post_id")}else var a=null;jQuery.ajax({type:"POST",data:{_ajax_nonce:go_task_data.go_task_change_stage,action:"go_task_change_stage",post_id:go_task_data.ID,user_id:go_task_data.userID,status:r,button_type:o,check_type:t,result:_,result_title:a,blog_post_id:n},success:function(e){console.log("success");
+_=go_get_tinymce_content_check();var a=jQuery("#go_result_title_check").val(),n=jQuery("#go_result_title_check").data("blog_post_id")}else var a=null;jQuery.ajax({type:"POST",data:{_ajax_nonce:go_task_data.go_task_change_stage,action:"go_task_change_stage",post_id:go_task_data.ID,user_id:go_task_data.userID,status:r,button_type:o,check_type:t,result:_,result_title:a,blog_post_id:n},success:function(e){console.log("success");
 //console.log(raw);
 // parse the raw response to get the desired JSON
 var o={};try{var o=JSON.parse(e)}catch(e){o={json_status:"101",timer_start:"",button_type:"",time_left:"",html:"",redirect:"",rewards:{gold:0}}}
@@ -74,7 +74,7 @@ tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mc
 //jQuery( res.html ).addClass('active');
 jQuery(e.html).appendTo("#go_wrapper").stop().hide().show("slow").promise().then(function(){
 // Animation complete
-Vids_Fit_and_Box(),go_make_clickable(),go_disable_loading(),
+go_Vids_Fit_and_Box("body"),go_make_clickable(),go_disable_loading(),
 //go_mce();
 // remove existing editor instance, and add new one
 tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post"),tinymce.execCommand("mceAddEditor",!0,"go_blog_post")})}

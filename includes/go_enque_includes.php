@@ -3,6 +3,11 @@
 function go_admin_includes () {
 
     /**
+     * TIPPY (TOOLTIP LIBRARY)
+     */
+    wp_register_script( 'go_tippy', 'https://unpkg.com/tippy.js@3/dist/tippy.all.min.js', array( 'jquery' ),'v1.1', false);
+    wp_enqueue_script( 'go_tippy' );
+    /**
      * Select 2
      */
     wp_register_script( 'go_select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', array( 'jquery' ),'v1.1', false);

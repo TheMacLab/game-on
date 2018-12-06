@@ -69,7 +69,7 @@ function go_admin_bar() {
         $post_type = get_post_type();
 
         if ($is_admin) {
-            $admin_view = get_user_meta($user_id, 'go_admin_view',true);
+            $admin_view = get_user_option('go_admin_view', $user_id);
             if (!empty ($admin_view) ){
                 if ($admin_view == 'all'){
                     $all_selected = 'selected = "selected"';
@@ -515,7 +515,7 @@ function go_update_admin_view (){
             //check_ajax_referer('go_update_admin_view', 'security' );
             $user_id = wp_get_current_user();
             $user_id = get_current_user_id();
-            update_user_meta( $user_id, 'go_admin_view', $go_admin_view );
+            update_user_option( $user_id, 'go_admin_view', $go_admin_view );
             die();
         } catch (Exception $e){
             echo 'Caught exception: ',  $e->getMessage(), "\n";

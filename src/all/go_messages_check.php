@@ -11,7 +11,7 @@ function go_check_messages(){
     //on each page load, check if user has new messages
     $user_id =  get_current_user_id();
     $is_logged_in = is_user_logged_in();
-    $is_new_messages = get_user_meta($user_id, 'go_new_messages', true);
+    $is_new_messages = get_user_option('go_new_messages');
 
     $xp_abbr = get_option( "options_go_loot_xp_abbreviation" );
     $gold_abbr = get_option( "options_go_loot_gold_abbreviation" );
@@ -180,10 +180,10 @@ function go_check_messages(){
                 }
                 $message = "<div> {$message}</div><div>{$reward}{$penalty}</div>";
 
-                go_noty_message_generic('warning', $title, $message, '5000');
+                go_noty_message_generic('warning', $title, $message, '15000');
             }
             else{
-                go_noty_message_generic('warning', '', $title, '5000');
+                go_noty_message_generic('warning', '', $title, '15000');
             }
         }
         //set messages flag to read
@@ -248,7 +248,7 @@ function go_check_messages(){
                 '%d'
             )
         );
-        update_user_meta($user_id, 'go_new_messages', false);
+        update_user_option($user_id, 'go_new_messages', false);
     }
 
 

@@ -50,24 +50,18 @@ function go_lb_opener( id ) {
                         html: ''
                     };
                 }
-                //console.log('html');
-                //console.log(res.html);
-                //console.log(res.json_status);
-
                 jQuery( "#lb-content" ).innerHTML = "";
                 jQuery( "#lb-content" ).html( '' );
 
-                //jQuery( "#lb-content" ).append(results);
-                //jQuery('.featherlight-content').html(res.html);
-                jQuery.featherlight(res.html, {variant: 'store'});
-
-
-
-                //console.log('success');
-                //console.log(raw);
-
-
-
+                jQuery.featherlight(res.html, {
+                    variant: 'store',
+                    afterOpen: function(event){
+                        console.log("store-fitvids3");
+                        //jQuery("#go_store_description").fitVids();
+                        //go_fit_and_max_only("#go_store_description");
+                        go_fit_and_max_only("#go_store_description");
+                    }
+                });
                 if ( '101' === Number.parseInt( res.json_status ) ) {
                     console.log (101);
                     jQuery( '#go_store_error_msg' ).show();
@@ -102,7 +96,7 @@ function goBuytheItem( id, count ) {
 
 	var nonce = GO_BUY_ITEM_DATA.nonces.go_buy_item;
 	var user_id = GO_BUY_ITEM_DATA.userID;
-	console.log(user_id);
+
 	jQuery( document ).ready( function( jQuery ) {
 		var gotoBuy = {
 			_ajax_nonce: nonce,
@@ -123,7 +117,6 @@ function goBuytheItem( id, count ) {
 				jQuery( '#golb-fr-buy' ).append( '<div id="go-buy-loading" class="buy_gold"></div>' );
 			},
 			success: function( raw ) {
-				//console.log("SUccess: " + raw);
                 var res = {};
                 try {
                     var res = JSON.parse( raw );
@@ -136,9 +129,6 @@ function goBuytheItem( id, count ) {
 				if ( -1 !== raw.indexOf( 'Error' ) ) {
 					jQuery( '#light').html(raw);
 				} else {
-					//go_sounds( 'store' );
-                    console.log("buy:");
-                    console.log(res.html);
                     jQuery( '#light').html(res.html);
 				}
 			}
@@ -161,9 +151,6 @@ function flash_error_msg_store( elem ) {
 }
 
 function go_store_password( id ){
-    //console.log('button clicked');
-    //disable button to prevent double clicks
-    //go_enable_loading( target );
     var pass_entered = jQuery('#go_store_password_result').attr('value').length > 0 ? true : false;
     if (!pass_entered) {
         jQuery('#go_store_error_msg').show();
@@ -200,8 +187,6 @@ function go_store_password( id ){
             data: gotoSend,
             cache: false,
             success: function( raw) {
-                    //console.log('success');
-                    //console.log(raw);
                     var res = JSON.parse( raw );
 
                     try {
@@ -213,10 +198,6 @@ function go_store_password( id ){
                         };
                     }
 
-                    //console.log('html');
-                    //console.log(res.html);
-                    //console.log(res.json_status);
-                    //alert(res.json_status);
                     if ( '101' === Number.parseInt( res.json_status ) ) {
                         console.log (101);
                         jQuery( '#go_store_error_msg' ).show();
@@ -231,7 +212,6 @@ function go_store_password( id ){
                         window.location = res.location;
 
                     }else if ( 'bad_password' ==  res.json_status ) {
-                        //console.log("bad");
                         jQuery( '#go_store_error_msg' ).show();
                         var error = "Invalid password.";
                         if ( jQuery( '#go_store_error_msg' ).text() != error ) {
@@ -243,7 +223,6 @@ function go_store_password( id ){
                             go_store_password(id);
                         });
                     }else {
-                        //console.log("good");
                         jQuery('#go_store_pass_button').one("click", function (e) {
                             go_store_password(id);
                         });
@@ -271,11 +250,8 @@ function go_max_purchase_limit(){
         }
     });
     go_make_store_clickable();
-    //jQuery('#go_store_admin_override').click( function () {
-    //    jQuery('.go_store_lock').show();
-    //});
+
     jQuery('#go_store_admin_override').one("click", function (e) {
-        //console.log("override");
         jQuery('.go_store_lock').show();
         jQuery('#go_store_admin_override').hide();
         go_make_store_clickable();
