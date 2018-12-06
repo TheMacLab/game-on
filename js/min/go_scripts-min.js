@@ -171,7 +171,7 @@ var e=GO_ADMIN_DATA.nonces.go_admin_messages;jQuery.ajax({type:"post",url:MyAjax
 //https://stackoverflow.com/questions/28180584/wordpress-update-user-meta-onclick-with-ajax
 //https://wordpress.stackexchange.com/questions/216140/update-user-meta-using-with-ajax
 //
-document.getElementById("maps").style.display="none",document.getElementById("loader").style.display="block";var t=GO_CLIPBOARD_DATA.nonces.go_update_last_map,a=jQuery("#go_map_user").data("uid");
+document.getElementById("maps").style.display="none",document.getElementById("loader").style.display="block";var t=GO_EVERY_PAGE_DATA.nonces.go_update_last_map,a=jQuery("#go_map_user").data("uid");
 //var map_nonce = jQuery( '#_wpnonce' ).val();
 console.log(e),
 //console.log(map_ajax_admin_url);
