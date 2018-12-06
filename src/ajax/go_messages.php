@@ -545,6 +545,7 @@ function go_admin_messages(){
     //$user_id = get_current_user_id();
     check_ajax_referer( 'go_admin_messages');
     go_check_messages();
+    die();
 }
 
 function go_send_message(){

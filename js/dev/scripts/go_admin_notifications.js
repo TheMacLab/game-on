@@ -1,9 +1,9 @@
 jQuery( document ).ready( function() {
 
     if(typeof GO_ADMIN_DATA !== 'undefined') {
-        setInterval(go_admin_check_messages_focus, 10000);
+        setInterval(go_admin_check_messages, 10000);
         jQuery(window).focus(function () {
-            //go_admin_check_messages();
+            go_admin_check_messages();
         });
     }
 });
@@ -22,7 +22,7 @@ function go_admin_check_messages(){
             action: 'go_admin_messages'
         },
         success: function( res ) {
-            //console.log(res);
+            console.log(res);
             if ( 0 != res ) {
                 jQuery('body').append(res);
                 //console.log(res);

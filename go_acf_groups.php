@@ -4920,7 +4920,7 @@ The master password that is set in the options page will work here, but you may 
                         ),
                         'wrapper' => array(
                             'width' => '',
-                            'class' => 'go_call_to_action',
+                            'class' => 'go_call_to_action go_quiz_container',
                             'id' => '',
                         ),
                     ),

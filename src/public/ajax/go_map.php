@@ -28,6 +28,9 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
     $last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');//Query 1 - get the map
     if ($user_id == null) {
         $user_id = get_current_user_id();
+        $task_links = true;
+    }else{
+        $task_links = false;
     }
     $is_logged_in = ! empty( $user_id ) && $user_id > 0 ? true : false;
     //$taxonomy_name = 'task_chains';
@@ -192,9 +195,13 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
                         $bonus_task = null;
                     }
 
-
-                    echo "<li class='$task_color $optional '><a href='$task_link'><div class='$finished'></div><span <span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
-
+                    if ($task_links === true) {
+                        echo "<li class='$task_color $optional '><a href='$task_link'><div class='$finished'></div><span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
+                    }else{
+                        echo "<li class='$task_color $optional '><a href='javascript:;' class='go_blog_user_task' data-UserId='".$user_id."' onclick='go_blog_user_task(".$user_id.", ".$post_id.");'><div class='$finished'></div><span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
+                        //echo "<li class='$task_color $optional '><a href='$task_link'><div class='$finished'></div><span style='font-size: .8em;'>$bonus_task $task_name <br>$unlock_message</span>";
+                        }
+                    //<a href="javascript:;" class="go_blog_user_task" data-UserId="'.$user_id.'" onclick="go_blog_user_task('.$user_id.', '.$post_id.');">
                     if($badge_ids) {
                         $badge_ids = unserialize($badge_ids);
                         foreach($badge_ids as $badge_id) {

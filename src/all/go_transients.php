@@ -16,7 +16,7 @@
  */
 function go_get_loot($user_id){
     global $wpdb;
-    $key = 'go_get_loot_' . $user_id;
+        $key = 'go_get_loot_' . $user_id;
     $data = wp_cache_get( $key, 'go_single' );
     if ($data === false){
         $data = get_transient($key);

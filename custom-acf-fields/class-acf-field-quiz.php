@@ -46,18 +46,24 @@ class acf_field_quiz extends acf_field {
 	
 	function render_field( $field ) {
 		$prefix = $field['prefix'];
-		if ($prefix != 'acfcloneidex') {
+
             $stage_num = trim($prefix, "]");
             $stage_num = substr($stage_num, strpos($stage_num, ']') + 2);
-            $stage_num = (int)$stage_num;
-            //$custom = get_post_custom();
+            if ($stage_num != 'acfcloneindex') {
+                $stage_num = (int)$stage_num;
+                //$custom = get_post_custom();
 
-            //Get field name (complete string from DB)
-            $meta_id = 'go_stages_' . $stage_num . '_quiz';
-            $stage_num = $stage_num + 1;
+                //Get field name (complete string from DB)
+                $meta_id = 'go_stages_' . $stage_num . '_quiz';
+                $stage_num = $stage_num + 1;
+
 
             //Get one letter code of "test type" from args. This is now stage number?
             $ttc = $stage_num;
+            }else{
+                $ttc = $stage_num;
+            }
+
 
             //$temp_array = ( ! empty( $custom[ $meta_id ][0] ) ? $custom[ $meta_id ][0] : null );
             $temp_uns = $field['value'];
@@ -75,6 +81,11 @@ class acf_field_quiz extends acf_field {
 
             <table id='go_test_field_table_<?php echo $ttc; ?>' class='go_test_field_table'>
                 <?php
+                if ($stage_num == 'acfcloneindex'){
+                    echo "
+                    <input style='display: none;' class='go_test_field_new_{$ttc} noEnterSubmit' name='go_test_field_new_{$ttc}' type='hidden' value='true' />
+                    ";
+                }
                 if (!empty($test_field_block_count) && !empty($test_field_input_array)) {
                     for ($i = 0; $i < $test_field_block_count; $i++) {
                         if (!empty($test_field_input_array[$i][0])) {
@@ -317,9 +328,11 @@ class acf_field_quiz extends acf_field {
                     jQuery(obj).parents('tr.go_test_field_input_row_<?php echo $ttc; ?>').find('input.go_test_field_input_count_<?php echo $ttc; ?>')[0].value--;
                     jQuery(obj).parent('li').remove();
                 }
+
+
             </script>
             <?php
-        }
+
 	}
 	
 	/*
@@ -335,8 +348,7 @@ class acf_field_quiz extends acf_field {
 	*  @param	$field	- an array holding all the field's data
 	*/
 	function render_field_settings( $field ) {
-		
-		
+
 	}
 
 	/*
@@ -355,16 +367,27 @@ class acf_field_quiz extends acf_field {
 	*/
     function update_value( $value, $post_id, $field ) {
         //$val_uns = unserialize($value);
-
+        $array = $_POST['acf']['field_5ac134fe12f51'];
+        $array = array_keys($array);
+        //$i = array_search('blah', array_keys($array));
         $stage_quiz_num = $field['name'];
         $ttc = trim($stage_quiz_num,"go_stages__quiz");
-        $ttc = (int)$ttc;
-        $ttc =$ttc + 1;
+        $ttc = $array[$ttc];
+        if (is_integer($ttc)){
+            $ttc =$ttc + 1;
+        }
+
+
+
+
+
 
         $question_temp 		= ( ! empty( $_POST["go_test_field_input_question_{$ttc}"] )	? $_POST["go_test_field_input_question_{$ttc}"] : null );
+
         if (!empty($question_temp) ){
             $block_count = count($question_temp);
         }
+
         $test_temp 			= ( ! empty( $_POST["go_test_field_values_{$ttc}"] ) 			? $_POST["go_test_field_values_{$ttc}"] : null );
         if (!empty($test_temp)) {
             $test_temp = array_values($test_temp);

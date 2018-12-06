@@ -468,18 +468,10 @@ function task_stage_change( target ) {
                 }
                 else if ( res.button_type == 'timer' ){
                     jQuery( '#go_wrapper > div' ).slice(-2).hide( 'slow', function() { jQuery(this).remove();} );
-
-                    //initializeClock('clockdiv', deadline);
-                    //initializeClock('go_timer', deadline);
-
                     var audio = new Audio( PluginDir.url + 'media/sounds/airhorn.mp3' );
                     audio.play();
                 }
-                    //console.log(res.html);
-
                     go_append(res);
-
-
                 //Pop up currency awards
                 jQuery( '#notification' ).html( res.notification );
                 jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });

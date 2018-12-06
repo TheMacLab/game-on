@@ -175,7 +175,6 @@ function go_blog_user_task(){
         $stage_name ="";
         $action_type = $action->action_type;
         $TIMESTAMP = $action->TIMESTAMP;
-        $time  = date("m/d/y g:i A", strtotime($TIMESTAMP));
         $stage = $action->stage;
         $bonus_status = $action->bonus_status;
         $result = $action->result;
@@ -239,7 +238,7 @@ function go_blog_user_task(){
                 $time_on_task = go_time_on_task($current_time, $TIMESTAMP);
 
 
-                $this_result[] = "<div style='text-align:right;'>Time On Task: " .$time_on_task . "</div></div>";
+                $this_result[] = $time_on_task;
                 $stage_results[] = $this_result;
             }
             $first_loop = false;
@@ -287,7 +286,7 @@ function go_blog_user_task(){
     }
 
     $time_on_task = go_time_on_task($current_time, $entry_time);
-    $this_result[] = "<div style='text-align:right;'>Time On Task: " .$time_on_task . "</div></div>";
+    $this_result[] = $time_on_task;
     $stage_results[] = $this_result;
 
     $stage_results = array_reverse($stage_results);
@@ -326,6 +325,8 @@ function go_time_on_task($current_time, $TIMESTAMP){
         $time_on_task .= "{$seconds} seconds";
     }
 
+    $time  = date("m/d/y g:i A", strtotime($TIMESTAMP));
+    $time_on_task = "<div style='text-align:right;'>Time Submitted: " . $time . "</div><div style='text-align:right;'>Time On Task: " .$time_on_task . "</div></div>";
     return $time_on_task;
 }
 
