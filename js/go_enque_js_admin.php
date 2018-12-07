@@ -103,7 +103,7 @@ function go_admin_scripts ($hook) {
                     'go_blog_lightbox_opener'       => wp_create_nonce('go_blog_lightbox_opener'),
                     'go_blog_user_task'             => wp_create_nonce('go_blog_user_task'),
                     'go_user_map_ajax'              => wp_create_nonce('go_user_map_ajax'),
-                        'go_update_last_map'            => wp_create_nonce('go_update_last_map')
+                    'go_update_last_map'            => wp_create_nonce('go_update_last_map')
 				),
 				'go_is_admin'                   => $is_admin,
                 'go_lightbox_switch'            => $go_lightbox_switch,

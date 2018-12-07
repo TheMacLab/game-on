@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" beforeDir="false" afterPath="$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_admin_notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_admin_notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_scripts-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_scripts-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_tasks-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_blog_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_blog_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_messages.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_messages_check.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_messages_check.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_transients.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_transients.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_updates.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/all/go_updates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_map.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/ajax/go_map.php" afterDir="false" />
-    </list>
+    <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,11 +33,12 @@
       <file leaf-file-name="class-acf-field-quiz.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="323" column="337" selection-start-line="323" selection-start-column="315" selection-end-line="323" selection-end-column="337" />
+            <state relative-caret-position="132">
+              <caret line="316" lean-forward="true" selection-start-line="316" selection-end-line="316" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
                 <element signature="e#19338#19633#0#HTML" />
+                <element signature="e#19696#23370#0#HTML" />
                 <element signature="e#23436#23829#0#HTML" />
                 <element signature="e#26037#26360#0#PHP" />
                 <element signature="e#26416#26793#0#PHP" />
@@ -128,7 +115,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>go_stats_single_task_activity_list</find>
       <find>blog</find>
       <find>map</find>
       <find>go_reset_task_clipboard</find>
@@ -158,6 +144,7 @@
       <find>go_test_field_values_</find>
       <find>update_checkbox_value_</find>
       <find>go_button_add_field</find>
+      <find>add_field_</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -527,12 +514,12 @@
       <workItem from="1543468152850" duration="286000" />
       <workItem from="1543469331349" duration="18217000" />
       <workItem from="1543539893466" duration="16594000" />
-      <workItem from="1543696432092" duration="140404000" />
+      <workItem from="1543696432092" duration="140942000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3127756000" />
+    <option name="totallyTimeSpent" value="3128294000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1680" height="1027" extended-state="6" />
@@ -1433,11 +1420,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/custom-acf-fields/class-acf-field-quiz.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="323" column="337" selection-start-line="323" selection-start-column="315" selection-end-line="323" selection-end-column="337" />
+        <state relative-caret-position="132">
+          <caret line="316" lean-forward="true" selection-start-line="316" selection-end-line="316" />
           <folding>
             <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
             <element signature="e#19338#19633#0#HTML" />
+            <element signature="e#19696#23370#0#HTML" />
             <element signature="e#23436#23829#0#HTML" />
             <element signature="e#26037#26360#0#PHP" />
             <element signature="e#26416#26793#0#PHP" />
