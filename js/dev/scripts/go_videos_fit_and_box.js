@@ -99,7 +99,7 @@ function go_Max_width_and_LightboxNow(){
         //alert (lightbox_switch);
         //add a featherlight lightroom wrapper to the fitvids iframes
         jQuery(".max-width-video-wrapper:not(.wrapped):has(iframe)").each(function(){
-            jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_iframe" href="#" ><div style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 999999;"></div></a>');
+            jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_iframe" href="#" ><div style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;"></div></a>');
             jQuery(".max-width-video-wrapper").children().unbind();
             jQuery(this).addClass('wrapped');
 

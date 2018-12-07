@@ -199,9 +199,12 @@ function go_sOrder($tab = null, $section = 0){
             $order_col = 'last_time';
         }
         else if ($order_col == 12){
-            $order_col = 'status';
+            $order_col = 'timediff';
         }
         else if ($order_col == 13){
+            $order_col = 'status';
+        }
+        else if ($order_col == 14){
             $order_col = 'status';
         }
         else if ($order_col == 14){

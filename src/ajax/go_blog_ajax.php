@@ -298,8 +298,24 @@ function go_blog_user_task(){
 
 }
 
-function go_time_on_task($current_time, $TIMESTAMP){
-    $delta_time = strtotime($current_time) - strtotime($TIMESTAMP);
+//Get the time on task from two times as timestamps
+//or as one variable passed as a number of seconds
+function go_time_on_task($current_time, $TIMESTAMP =false){
+    if ($TIMESTAMP != false) {
+        $delta_time = strtotime($current_time) - strtotime($TIMESTAMP);
+        $d = 'days';
+        $h = 'hours';
+        $m = 'minutes';
+        $s = 'seconds';
+        $title = "Time On Task: ";
+    }else{
+        $delta_time = $current_time;
+        $d = 'd';
+        $h = 'h';
+        $m = 'm';
+        $s = 's';
+        $title = "";
+    }
     $days = floor( $delta_time/86400);
     $delta_time = $delta_time % 86400;
     $hours = floor($delta_time / 3600);
@@ -310,24 +326,28 @@ function go_time_on_task($current_time, $TIMESTAMP){
 
 
 
-    $time_on_task = "{$days} days {$hours} hours and {$minutes} minutes and {$seconds} seconds";
+
+    //$time_on_task = "{$days} days {$hours} hours and {$minutes} minutes and {$seconds} seconds";
     $time_on_task = "";
     if ($days>0){
-        $time_on_task .= "{$days} days ";
+        $time_on_task .= "{$days}{$d} ";
     }
     if ($hours>0){
-        $time_on_task .= "{$hours} hours ";
+        $time_on_task .= "{$hours}{$h} ";
     }
     if ($minutes>0){
-        $time_on_task .= "{$minutes} minutes ";
+        $time_on_task .= "{$minutes}{$m} ";
     }
     if ($seconds>0){
-        $time_on_task .= "{$seconds} seconds";
+        $time_on_task .= "{$seconds}{$s}";
     }
-
-    $time  = date("m/d/y g:i A", strtotime($TIMESTAMP));
-    $time_on_task = "<div style='text-align:right;'>Time Submitted: " . $time . "</div><div style='text-align:right;'>Time On Task: " .$time_on_task . "</div></div>";
-    return $time_on_task;
+    $result ="";
+    $time = date("m/d/y g:i A", strtotime($TIMESTAMP));
+    if ($TIMESTAMP != false) {
+        $result .= "<div style='text-align:right;'>Time Submitted: " . $time . "</div>";
+    }
+    $result .= "<div style='text-align:right;'>". $title .$time_on_task . "</div></div>";
+    return $result;
 }
 
 

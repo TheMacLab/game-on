@@ -138,7 +138,7 @@ if(
 go_Max_width(),"1"===GO_EVERY_PAGE_DATA.go_lightbox_switch){
 //alert (lightbox_switch);
 //add a featherlight lightroom wrapper to the fitvids iframes
-jQuery(".max-width-video-wrapper:not(.wrapped):has(iframe)").each(function(){jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_iframe" href="#" ><div style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 999999;"></div></a>'),jQuery(".max-width-video-wrapper").children().unbind(),jQuery(this).addClass("wrapped")}),
+jQuery(".max-width-video-wrapper:not(.wrapped):has(iframe)").each(function(){jQuery(this).prepend('<a style="display:block;" class="featherlight_wrapper_iframe" href="#" ><div style="position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;"></div></a>'),jQuery(".max-width-video-wrapper").children().unbind(),jQuery(this).addClass("wrapped")}),
 //adds a html link to the wrapper for featherlight lightbox
 jQuery('[class^="featherlight_wrapper_iframe"]').each(function(){var e=jQuery(this).parent().find(".fluid-width-video-wrapper").parent().html();
 //console.log("src2:" + _src);

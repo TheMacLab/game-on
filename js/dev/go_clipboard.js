@@ -1095,7 +1095,7 @@ function go_clipboard_activity_datatable(refresh) {
                                 sortable: false
                             },
                             {
-                                "targets": [7, 9, 13],
+                                "targets": [7, 9, 14],
                                 sortable: false
                             }
                         ],

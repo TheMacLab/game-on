@@ -1202,6 +1202,7 @@ function go_clipboard_activity() {
             <th class='header'>Actions</th>
             <th class='header'>Start</th>
             <th class='header'>Last</th>
+            <th class='header'>Time On</th>
             <th class='header'>Status</th>
             <th class='header'>Done</th>
             <th class='header'>Bonus</th>
@@ -1289,7 +1290,8 @@ function go_clipboard_activity_dataloader_ajax(){
           
       FROM (
           SELECT
-            t5.*, t6.post_title, t4.id, t4.post_id, t4.status, t4.bonus_status, t4.xp, t4.gold, t4.health, t4.start_time, t4.last_time, t4.badges, t4.groups
+            t5.*, t6.post_title, t4.id, t4.post_id, t4.status, t4.bonus_status, t4.xp, t4.gold, t4.health, t4.start_time, t4.last_time, t4.badges, t4.groups,
+            TIMESTAMPDIFF(SECOND, t4.start_time, t4.last_time ) AS timediff
           FROM (
               SELECT
               t1.uid, t1.badges AS user_badges, t1.groups AS user_groups,
@@ -1369,6 +1371,18 @@ function go_clipboard_activity_dataloader_ajax(){
         $row[] = go_clipboard_time($start);
         $last = $action['last_time'];
         $row[] = go_clipboard_time($last);
+        $diff = $action['timediff'];
+        $hours = 0;
+        $minutes = 0;
+        $seconds = 0;
+        if (!empty($diff)) {
+            //$diff = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $diff);
+            //sscanf($diff, "%d:%d:%d", $hours, $minutes, $seconds);
+            //$time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+            //$diff = go_time_on_task($time_seconds, false);
+            $diff = go_time_on_task($diff, false);
+        }
+        $row[] = $diff;
 
 
         $go_post_data = go_post_data($action['post_id']);

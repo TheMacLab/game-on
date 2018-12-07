@@ -791,9 +791,7 @@ function go_update_actions($user_id, $type, $source_id, $status, $bonus_status, 
         go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name, $notify, $debt);
     }
 
-    if ($notify === 'admin'){
-        return;
-    }else if ($notify === true) {
+    if ($notify === true) {
         go_update_admin_bar_v4($user_id, $new_xp_total, $xp_name, $new_gold_total, $gold_name, $new_health_total, $health_name);
     }
     //badges and groups are only updated from the add/remove badges and groups functions
@@ -1134,7 +1132,7 @@ function go_update_admin_bar_v4($user_id, $xp, $xp_name, $gold, $gold_name, $hea
     $health_toggle = get_option( 'options_go_loot_health_toggle' );
 
     $user_loot = go_get_loot($user_id);
-    
+
     if ($xp_toggle) {
         // the user's current amount of experience (points)
         //$go_current_xp = go_get_user_loot($user_id, 'xp');
