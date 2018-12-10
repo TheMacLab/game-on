@@ -2349,6 +2349,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"/js/dev/scripts/go_quiz_admin.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/js/dev/scripts/go_quiz_admin-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"/js/dev/scripts/go_videos_fit_and_box.js": {
 		"ft": 64,
 		"ma": 0,

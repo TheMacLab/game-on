@@ -4,3 +4,4 @@
 // @codekit-prepend '/scripts/go_edit_store.js'
 // @codekit-prepend '/scripts/buy_the_item.js'
 // @codekit-prepend '/scripts/go_blogs.js'
+// @codekit-prepend '/scripts/go_quiz_admin.js'
