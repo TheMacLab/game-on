@@ -4,3 +4,5 @@ bower_components
 bower.json
 not_loaded
 .DS_Store
+*.DS_Store
+**/.DS_Store

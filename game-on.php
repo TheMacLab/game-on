@@ -276,6 +276,6 @@ add_action( 'user_register', 'go_user_registration' ); //this should change for 
  */
 // mitigating compatibility issues with Jetpack plugin by Automatic
 // (https://wordpress.org/plugins/jetpack/).
-add_filter( 'jetpack_enable_open_graph', '__return_false', 99 );
+add_filter( 'jetpack_enable_open_graph', '__return_false' );
 
 ?>

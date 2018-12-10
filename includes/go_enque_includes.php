@@ -1,115 +1,175 @@
 <?php
 
+/**
+ * Place external JS in the footer
+ * Used as the last param to wp_register_script() and wp_enqueue_script()
+ */
+$js_in_footer = true;
+/**
+ * URL strings for external scripts
+ */
+// JS
+
+$go_select2_js_url       = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js';
+$go_datatables_js_url    = 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js';
+$go_datatables_ns_js_url = 'https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js';
+$go_pdfmake_js_url       = 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.38/pdfmake.min.js';
+$go_pdfmake_fonts_js_url  = 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.38/vfs_fonts.js';
+$go_featherlight_js_url  = 'https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js';
+$go_noty_js_url          = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js'; 
+$go_sweetalert_js_url    = 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js';
+$go_tippy_js_url		= 'https://unpkg.com/tippy.js@3/dist/tippy.all.min.js';
+
+// CSS
+$go_select2_css_url      = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css';
+$go_datatables_css_url   = 'https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css';
+$go_featherlight_css_url = 'https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css';
+$go_noty_css_url         = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css';
+
+/*
+ * Define what scripts/styles need to be enqueued on the admin side.
+ *
+ * TODO: define what scripts/styles need to be loaded on per-page basis.
+ * 
+ * https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
+ * 
+ * The above URL notes that pages can be specified via the $hook parameter 
+ * to the includes() function. 
+ *
+ */
 function go_admin_includes () {
+
+    // Bring variables from beginning of file into function scope
+    global $js_in_footer;
+    global $go_select2_js_url, $go_datatables_js_url, $go_datatables_ns_js_url,
+       $go_pdfmake_js_url, $go_pdfmake_fonts_js_url, $go_featherlight_js_url,
+       $go_noty_js_url, $go_sweetalert_js_url, $go_select2_css_url,
+       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $go_tippy_js_url;
 
     /**
      * TIPPY (TOOLTIP LIBRARY)
      */
-    wp_register_script( 'go_tippy', 'https://unpkg.com/tippy.js@3/dist/tippy.all.min.js', array( 'jquery' ),'v1.1', false);
+    wp_register_script( 'go_tippy', $go_tippy_js_url, array( 'jquery' ),'v1.1', $js_in_footer);
     wp_enqueue_script( 'go_tippy' );
+   
     /**
-     * Select 2
+     * Select 2 by Kevin Brown
+     * https://select2.org/
      */
-    wp_register_script( 'go_select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', array( 'jquery' ),'v1.1', false);
+    wp_register_script( 'go_select2', $go_select2_js_url, array( 'jquery' ),'v1.1', $js_in_footer );
     wp_enqueue_script( 'go_select2' );
 
-    wp_register_style( 'go_select2_css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css' );
+    wp_register_style( 'go_select2_css', $go_select2_css_url ); 
     wp_enqueue_style( 'go_select2_css' );
 
     /**
-     * Datatables
+     * Datatables by SpryMedia Ltd.
+     * https://datatables.net/
      */
 
     //wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
     wp_register_script( 'go_datatables', 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.js', array( 'jquery' ),'v1.1', false);
     wp_enqueue_script( 'go_datatables' );
-
-    wp_register_script( 'go_pdf_make', 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js','v1.7.13', true);
-    wp_enqueue_script( 'go_pdf_make' );
-
-    wp_register_script( 'go_pdf_make_fonts', 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js','v1.7.13', true);
-    wp_enqueue_script( 'go_pdf_make_fonts' );
-
-    //wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
-    wp_register_style( 'go_datatables_css', 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.css' );
-    wp_enqueue_style( 'go_datatables_css' );
-
-    wp_register_script( 'go_natural_sort', 'https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js', array( 'jquery' ), 'v1.7.13', true);
+    // Natural sort plugin
+    // https://datatables.net/plug-ins/sorting/natural
+    wp_register_script( 'go_natural_sort', $go_datatables_ns_js_url, array( 'jquery' ), 'v1.7.13', $js_in_footer );
     wp_enqueue_script( 'go_natural_sort' );
+
+    wp_register_style( 'go_datatables_css', $go_datatables_css_url );
+    wp_enqueue_style( 'go_datatables_css' );
 
 
     /**
-     * Featherlight
+     * PDF Make by Bartek Pampuch
+     * http://pdfmake.org
      */
+    wp_register_script( 'go_pdf_make', $go_pdfmake_js_url, null, 'v1.7.13', $js_in_footer );
+    wp_enqueue_script( 'go_pdf_make' );
 
-    //wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js', array( 'jquery' ),'v1', true);
-    wp_register_script( 'go_featherlight', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.js','v1.7.13', true);
+    wp_register_script( 'go_pdf_make_fonts', $go_pdfmake_fonts_js_url, null, 'v1.7.13', $js_in_footer );
+    wp_enqueue_script( 'go_pdf_make_fonts' );
+
+    /**
+     * Featherlight by Noel Bossart
+     * https://noelboss.github.io/featherlight/
+     */
+    wp_register_script( 'go_featherlight', $go_featherlight_js_url , null, 'v1.7.13', $js_in_footer );
     wp_enqueue_script( 'go_featherlight' );
 
-    //wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
-    wp_register_style( 'go_featherlight_css', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css', null,'v1.7.13' );
+    wp_register_style( 'go_featherlight_css', $go_featherlight_css_url, null,'v1.7.13' );
     wp_enqueue_style( 'go_featherlight_css' );
 
     /**
-     * Tabs
+     * noty by Nedim Arabaci
+     * ned.im/noty/
      */
-
-    wp_enqueue_script( 'jquery-ui-tabs' );
-
-    /**
-     * noty
-     */
-
-    wp_register_script( 'go_noty', plugin_dir_url( __FILE__ ).'noty/lib/noty.js', '','v1', false);
+    wp_register_script( 'go_noty', $go_noty_js_url, null,'v1', $js_in_footer );
     wp_enqueue_script( 'go_noty' );
 
-    wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );
+    wp_register_style( 'go_noty_css', $go_noty_css_url );
     wp_enqueue_style( 'go_noty_css' );
 
     /**
      * Sweet Alert
      */
-    wp_register_script( 'go_sweet_alert', 'https://unpkg.com/sweetalert/dist/sweetalert.min.js', null,'v1' );
+    wp_register_script( 'go_sweet_alert', $go_sweetalert_js_url, null,'v1', $js_in_footer );
     wp_enqueue_script( 'go_sweet_alert' );
 
+    /**
+     * Tabs
+     */
+    wp_enqueue_script( 'jquery-ui-tabs', null, null, $js_in_footer);
 
 }
 
+/**
+ * Define what scripts/styles need to be enqueued on the public side.
+ */
 function go_includes () {
+
+    // Bring variables from beginning of file into function scope
+    global $js_in_footer;
+    global $go_select2_js_url, $go_datatables_js_url, $go_datatables_ns_js_url,
+       $go_pdfmake_js_url, $go_pdfmake_fonts_js_url, $go_featherlight_js_url,
+       $go_noty_js_url, $go_sweetalert_js_url, $go_select2_css_url,
+       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url;
+
 
     wp_enqueue_media();
 
     /**
-     * Select 2
+     * Select 2 by Kevin Brown
+     * https://select2.org/
      */
-    wp_register_script( 'go_select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', array( 'jquery' ),'v1.1', false);
+    wp_register_script( 'go_select2', $go_select2_js_url, array( 'jquery' ),'v1.1', $js_in_footer );
     wp_enqueue_script( 'go_select2' );
 
-    wp_register_style( 'go_select2_css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css' );
+    wp_register_style( 'go_select2_css', $go_select2_css_url );
     wp_enqueue_style( 'go_select2_css' );
 
     /**
-     * Datatables
+     * Datatables by SpryMedia Ltd.
+     * https://datatables.net/
      */
-
-    //wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
-    wp_register_script( 'go_datatables', 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.js', array( 'jquery' ),'v1.1', false);
+    wp_register_script( 'go_datatables', $go_datatables_js_url, array( 'jquery' ),'v1.1', $js_in_footer );
     wp_enqueue_script( 'go_datatables' );
-
-    wp_register_script( 'go_pdf_make', 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js', array( 'jquery' ), 'v1.7.13', true);
-    wp_enqueue_script( 'go_pdf_make' );
-
-    wp_register_script( 'go_pdf_make_fonts', 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js', array( 'jquery' ),'v1.7.13', true);
-    wp_enqueue_script( 'go_pdf_make_fonts' );
-
-    wp_register_script( 'go_natural_sort', 'https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js', array( 'jquery' ), 'v1.7.13', true);
+    // Natural sort plugin
+    // https://datatables.net/plug-ins/sorting/natural
+    wp_register_script( 'go_natural_sort', $go_datatables_ns_js_url, array( 'jquery' ), 'v1.7.13', $js_in_footer );
     wp_enqueue_script( 'go_natural_sort' );
 
-    //wp_register_style( 'go_datatables_css', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.css' );
-    wp_register_style( 'go_datatables_css', 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.css' );
+    wp_register_style( 'go_datatables_css', $go_datatables_css_url );
     wp_enqueue_style( 'go_datatables_css' );
 
+    /**
+     * PDF Make by Bartek Pampuch
+     * http://pdfmake.org
+     */
+    wp_register_script( 'go_pdf_make', $go_pdfmake_js_url, array( 'jquery' ), 'v1.7.13', $js_in_footer );
+    wp_enqueue_script( 'go_pdf_make' );
 
+    wp_register_script( 'go_pdf_make_fonts', $go_pdfmake_fonts_js_url, array( 'jquery' ),'v1.7.13', $js_in_footer );
+    wp_enqueue_script( 'go_pdf_make_fonts' );
 
     /**
      * Frontend Media
@@ -118,37 +178,36 @@ function go_includes () {
     //wp_enqueue_script( 'go_frontend_media' );
 
     /**
-     * Featherlight
+     * Featherlight by Noel Bossart
+     * https://noelboss.github.io/featherlight/
      */
-
-    //wp_register_script( 'go_featherlight', plugin_dir_url( __FILE__ ).'featherlight/release/featherlight.min.js', array( 'jquery' ),'v1', true);
-    wp_register_script( 'go_featherlight', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.js','v1.7.13', true);
+    wp_register_script( 'go_featherlight', $go_featherlight_js_url, null, 'v1.7.13', $js_in_footer );
     wp_enqueue_script( 'go_featherlight' );
 
-    //wp_register_style( 'go_featherlight_css', plugin_dir_url( __FILE__ ).'featherlight/css/wp-featherlight.min.css' );
-    wp_register_style( 'go_featherlight_css', '//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css', null,'v1.7.13' );
+    wp_register_style( 'go_featherlight_css', $go_featherlight_css_url, null, 'v1.7.13' );
     wp_enqueue_style( 'go_featherlight_css' );
 
-    wp_register_script( 'go_collapse_lists', plugin_dir_url( __FILE__ ).'CollapsibleLists.js', array( 'jquery' ),'v2', true);
+    /**
+     * Collapsible Lists by Kate Morley
+     * http://code.iamkate.com/javascript/collapsible-lists/ 
+     */
+    wp_register_script( 'go_collapse_lists', plugin_dir_url( __FILE__ ).'CollapsibleLists.js', array( 'jquery' ),'v2', $js_in_footer );
     wp_enqueue_script( 'go_collapse_lists' );
 
     /**
-     * noty
+     * noty by Nedim Arabaci
+     * ned.im/noty/
      */
-
-    wp_register_script( 'go_noty', plugin_dir_url( __FILE__ ).'noty/lib/noty.js', '','v1', false);
+    wp_register_script( 'go_noty', $go_noty_js_url, '','v1', $js_in_footer );
     wp_enqueue_script( 'go_noty' );
 
-    wp_register_style( 'go_noty_css', plugin_dir_url( __FILE__ ).'noty/lib/noty.css' );
+    wp_register_style( 'go_noty_css', $go_noty_css_url );
     wp_enqueue_style( 'go_noty_css' );
 
     /**
      * Tabs
      */
-
-    wp_enqueue_script( 'jquery-ui-tabs' );
-
-
+    wp_enqueue_script( 'jquery-ui-tabs', null, null, null, $js_in_footer );
 }
 
 ?>

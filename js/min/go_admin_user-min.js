@@ -41,6 +41,29 @@ for(var r in o)this.$$handleEvent=o[r],!1===this.$$handleEvent(e)&&(t=!1);return
 // add W3C standard event methods
 return e.preventDefault=fixEvent.preventDefault,e.stopPropagation=fixEvent.stopPropagation,e}
 /*
+ * go_tasks_admin.js
+ *
+ * Where all the functionality for the task edit page goes.
+ *
+ * @see go_generate_accordion_array() below, it maps all the functions to their appropriate
+ *      settings/accordions.
+ */
+/*
+ * Disable sorting of metaboxes
+
+jQuery(document).ready( function($) {
+    $('.meta-box-sortables').sortable({
+        disabled: true
+    });
+
+    $('.postbox .hndle').css('cursor', 'pointer');
+});
+
+
+ */
+//fix https://stackoverflow.com/questions/9588025/change-tinymce-editors-height-dynamically
+function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}
+/*
 on the create new taxonomy term page,
 this hides the acf stuff until a parent map is selected
  */
@@ -57,7 +80,7 @@ var t=jQuery("#post_ID").val();jQuery("#go_store_item_id .acf-input").html('[go_
 //map shortcode message
 //var map_id = jQuery('[name="tag_ID"]').val();
 //console.log(map_id);
-var o=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+o+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function set_height_mce(){jQuery(".go_call_to_action .mce-edit-area iframe").height(100)}function go_validate_growth(){var e=jQuery("#go_levels_growth").find("input").val();isNaN(e)?jQuery("#go_levels_growth").find("input").val(Go_orgGrowth):Go_orgGrowth=e}function go_level_names(){var e=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,t,o,r;t=0,o="",jQuery(".go_levels_repeater_names").find("input").each(function(){t++,r=o,o=jQuery(this).val(),
+var o=jQuery("#name").val();jQuery("#go_map_shortcode_id .acf-input").html('Place this code in a content area to link directly to this map.<br><br>[go_single_map_link map_id="'+e+'"]'+o+"[/go_single_map_link]"),null==e&&jQuery("#go_map_shortcode_id").hide()}function go_validate_growth(){var e=jQuery("#go_levels_growth").find("input").val();isNaN(e)?jQuery("#go_levels_growth").find("input").val(Go_orgGrowth):Go_orgGrowth=e}function go_level_names(){var e=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,t,o,r;t=0,o="",jQuery(".go_levels_repeater_names").find("input").each(function(){t++,r=o,o=jQuery(this).val(),
 //console.log (thisName);
 //console.log (prevName);
 1<t&&t!=e&&(console.log("Row:"+t),null!=o&&""!=o||(console.log("empty:"+t),console.log(o),jQuery(this).val(r),o=r))})}function go_levels_limit_each(){var r=document.getElementById("go_levels_repeater").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length,n=Go_orgGrowth,s;
@@ -261,29 +284,7 @@ return void e.forEach(t,o);"string"==typeof e?
 // the object is a string
 r=String:"number"==typeof e.length&&(
 // the object is array-like
-r=Array)}r.forEach(e,t,o)}};
-/*
- * go_tasks_admin.js
- *
- * Where all the functionality for the task edit page goes.
- *
- * @see go_generate_accordion_array() below, it maps all the functions to their appropriate
- *      settings/accordions.
- */
-/*
- * Disable sorting of metaboxes
-
-jQuery(document).ready( function($) {
-    $('.meta-box-sortables').sortable({
-        disabled: true
-    });
-
-    $('.postbox .hndle').css('cursor', 'pointer');
-});
-
-
- */
-jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()}),setTimeout(set_height_mce,1e3)}),
+r=Array)}r.forEach(e,t,o)}};jQuery(document).ready(function(){go_hide_child_tax_acfs(),jQuery(".taxonomy-task_chains #parent, .taxonomy-go_badges #parent").change(function(){go_hide_child_tax_acfs()}),setTimeout(set_height_mce,1e3)}),
 /**
  * This next section makes sure the levels on the options page proceed in ascending order.
  */

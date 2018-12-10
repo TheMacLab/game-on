@@ -20,6 +20,11 @@ jQuery(document).ready( function($) {
 
  */
 
+//fix https://stackoverflow.com/questions/9588025/change-tinymce-editors-height-dynamically
+function set_height_mce() {
+    jQuery('.go_call_to_action .mce-edit-area iframe').height( 100 );
+
+}
 
 jQuery(document).ready(function(){
     go_hide_child_tax_acfs();
@@ -73,9 +78,6 @@ function go_hide_child_tax_acfs() {
 }
 
 
-function set_height_mce() {
-    jQuery('.go_call_to_action .mce-edit-area iframe').height( 100 );
 
-}
 
 
