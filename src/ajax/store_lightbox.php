@@ -447,7 +447,7 @@ function go_the_lb_ajax() {
 
 }
 
-//these are o
+
 function go_get_purchase_count($post_id, $user_id, $custom_fields) {
     global $wpdb;
     $store_limit_frequency = ( ($custom_fields['go-store-options_limit_toggle'][0] == true ) ? $custom_fields['go-store-options_limit_frequency'][0] : null );

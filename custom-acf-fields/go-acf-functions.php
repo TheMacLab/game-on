@@ -114,72 +114,7 @@ function go_late_init_flush() {
 add_action( 'init', 'go_late_init_flush', 999999 );
 
 
-/**
- * @param $post_id
- * @param $order_field
- * @param $item_order_field
- * @param $toggle
- * @param $term
- * The order is saved to a field that is assigned in the class-acf-order_posts.php file
- * That value is then saved here again so it can be loaded back in to the field for all the
- * items in this taxonomy.
- */
-function go_update_order($post_id, $order_field, $item_order_field, $toggle, $term)  {
-    $term_obj = get_term($term);
-    if (!empty($term_obj) && !is_wp_error($term_obj)) {
-        $taxonomy = $term_obj->taxonomy;
-        //$term_order = get_term_meta( $term, 'go_order', true );
-        $order = get_post_meta($post_id, $order_field, true);
 
-        if ($toggle == false) {
-            delete_post_meta($post_id, $item_order_field);
-            wp_remove_object_terms($post_id, $term, $taxonomy);
-        } elseif ($toggle == true) {
-            if (empty($term)) {
-                delete_post_meta($post_id, $item_order_field);
-            } else {
-                $i = 0;
-                foreach ($order as $item) {
-                    // for each post in the value, set term
-                    wp_set_post_terms($item, $term, $taxonomy);
-                    // for each post in the value, set order
-                    update_post_meta($item, $item_order_field, $i);
-                    $i++;
-                }
-            }
-
-        }
-        delete_post_meta($post_id, $order_field);
-    }
-}
-
-
-/**
- * @param $post_id
- */
-function acf_update_order($post_id ) {
-
-    // bail early if no ACF data
-    if( empty($_POST['acf']) ) {
-
-        return;
-
-    }
-
-    $order_field = 'go-location_map_order';
-    $item_order_field = 'go-location_map_order_item';
-    $toggle = get_post_meta ($post_id, 'go-location_map_toggle', true);
-    $term = get_post_meta ($post_id, 'go-location_map_loc', true);
-    go_update_order($post_id, $order_field, $item_order_field, $toggle, $term);
-
-    $order_field = 'go-store-location_store-sec_order';
-    $item_order_field = 'go-store-location_store_item';
-    $toggle = get_post_meta ($post_id, 'go-store-location_store-sec_toggle', true);
-    $term = get_post_meta ($post_id, 'go-store-location_store-sec_loc', true);
-    go_update_order($post_id, $order_field, $item_order_field, $toggle, $term);
-
-}
-add_action('acf/save_post', 'acf_update_order', 99);
 
 /**
  *Loads the default options in bonus loot

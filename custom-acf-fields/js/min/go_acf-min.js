@@ -1,1 +1,363 @@
-!function($){acf.fields.order_posts=acf.field.extend({type:"order_posts",$el:null,$input:null,$filters:null,$choices:null,$values:null,actions:{ready:"initialize",append:"initialize"},events:{"keypress [data-filter]":"submit_filter","change [data-filter]":"change_filter","keyup [data-filter]":"change_filter","click .choices .acf-rel-item":"add_item",'click [data-name="remove_item"]':"remove_item"},focus:function(){this.$el=this.$field.find(".acf-relationship"),this.$input=this.$el.children('input[type="hidden"]'),this.$choices=this.$el.find(".choices"),this.$values=this.$el.find(".values"),this.o=acf.get_data(this.$el)},initialize:function(){var e=this,a=this.$field,t=this.$el,i=this.$input;this.$values.children(".list").sortable({items:"li",forceHelperSize:!0,forcePlaceholderSize:!0,scroll:!0,update:function(){i.trigger("change")}}),this.$choices.children(".list").scrollTop(0).on("scroll",function(i){if(!t.hasClass("is-loading")&&!t.hasClass("is-empty")&&Math.ceil($(this).scrollTop())+$(this).innerHeight()>=$(this).get(0).scrollHeight){var s=t.data("paged")||1;t.data("paged",s+1),e.set("$field",a).fetch()}}),this.fetch()},maybe_fetch:function(){var e=this,a=this.$field;this.o.timeout&&clearTimeout(this.o.timeout);var t=setTimeout(function(){e.doFocus(a),e.fetch()},300);this.$el.data("timeout",t)},fetch:function(){var e=this,a=this.$field;this.$el.addClass("is-loading"),this.o.xhr&&(this.o.xhr.abort(),this.o.xhr=!1),this.o.action="acf/fields/relationship/query",this.o.field_key=a.data("key"),this.o.post_id=acf.get("post_id");var t=acf.prepare_for_ajax(this.o);1==t.paged&&this.$choices.children(".list").html(""),this.$choices.find("ul:last").append('<p><i class="acf-loading"></i> '+acf._e("relationship","loading")+"</p>");var i=$.ajax({url:acf.get("ajaxurl"),dataType:"json",type:"post",data:t,success:function(t){e.set("$field",a).render(t)}});this.$el.data("xhr",i)},render:function(e){if(this.$el.removeClass("is-loading is-empty"),this.$choices.find("p").remove(),!e||!e.results||!e.results.length)return this.$el.addClass("is-empty"),void(1==this.o.paged&&this.$choices.children(".list").append("<p>"+acf._e("relationship","empty")+"</p>"));var a=$(this.walker(e.results));this.$values.find(".acf-rel-item").each(function(){a.find('.acf-rel-item[data-id="'+$(this).data("id")+'"]').addClass("disabled")}),this.$choices.children(".list").append(a);var t="",i=null;this.$choices.find(".acf-rel-label").each(function(){if($(this).text()==t)return i.append($(this).siblings("ul").html()),void $(this).parent().remove();t=$(this).text(),i=$(this).siblings("ul")})},walker:function(e){var a="";if($.isArray(e))for(var t in e)a+=this.walker(e[t]);else $.isPlainObject(e)&&(void 0!==e.children?(a+='<li><span class="acf-rel-label">'+e.text+'</span><ul class="acf-bl">',a+=this.walker(e.children),a+="</ul></li>"):a+='<li><span class="acf-rel-item" data-id="'+e.id+'">'+e.text+"</span></li>");return a},submit_filter:function(e){13==e.which&&e.preventDefault()},change_filter:function(e){var a=e.$el.val(),t=e.$el.data("filter");this.$el.data(t)!=a&&(this.$el.data(t,a),this.$el.data("paged",1),e.$el.is("select")?this.fetch():this.maybe_fetch())},add_item:function(e){if(this.o.max>0&&this.$values.find(".acf-rel-item").length>=this.o.max)return void alert(acf._e("relationship","max").replace("{max}",this.o.max));if(e.$el.hasClass("disabled"))return!1;e.$el.addClass("disabled");var a=["<li>",'<input type="hidden" name="'+this.$input.attr("name")+'[]" value="'+e.$el.data("id")+'" />','<span data-id="'+e.$el.data("id")+'" class="acf-rel-item">'+e.$el.html(),'<a href="#" class="acf-icon -minus small dark" data-name="remove_item"></a>',"</span>","</li>"].join("");this.$values.children(".list").append(a),this.$input.trigger("change"),acf.validation.remove_error(this.$field)},remove_item:function(e){var a=e.$el.parent(),t=a.data("id");a.parent("li").remove(),this.$choices.find('.acf-rel-item[data-id="'+t+'"]').removeClass("disabled"),this.$input.trigger("change")}})}(jQuery),function($){acf.fields.taxonomy2=acf.field.extend({type:"taxonomy2",$el:null,actions:{ready:"render",append:"render",remove:"remove"},events:{'click a[data-name="add"]':"add_term"},focus:function(){this.$el=this.$field.find(".acf-taxonomy-field"),this.o=acf.get_data(this.$el,{save:"",type:"",taxonomy:""}),this.o.key=this.$field.data("key")},render:function(){var e=this.$field.find("select");if(e.exists()){var a=acf.get_data(e);a=acf.parse_args(a,{pagination:!0,ajax_action:"acf/fields/taxonomy2/query",key:this.o.key}),acf.select2.init(e,a)}},remove:function(){var e=this.$field.find("select");if(!e.exists())return!1;acf.select2.destroy(e)},add_term:function(e){var a=this;acf.open_popup({title:e.$el.attr("title")||e.$el.data("title"),loading:!0,height:220});var t=acf.prepare_for_ajax({action:"acf/fields/taxonomy2/add_term",field_key:this.o.key});$.ajax({url:acf.get("ajaxurl"),data:t,type:"post",dataType:"html",success:function(e){a.add_term_confirm(e)}})},add_term_confirm:function(e){var a=this;acf.update_popup({content:e}),$('#acf-popup input[name="term_name"]').focus(),$("#acf-popup form").on("submit",function(e){e.preventDefault(),a.add_term_submit($(this))})},add_term_submit:function(e){var a=this,t=e.find(".acf-submit"),i=e.find('input[name="term_name"]'),s=e.find('select[name="term_parent"]');if(""===i.val())return i.focus(),!1;t.find("button").attr("disabled","disabled"),t.find(".acf-spinner").addClass("is-active");var l=acf.prepare_for_ajax({action:"acf/fields/taxonomy2/add_term",field_key:this.o.key,term_name:i.val(),term_parent:s.exists()?s.val():0});$.ajax({url:acf.get("ajaxurl"),data:l,type:"post",dataType:"json",success:function(e){var s=acf.get_ajax_message(e);acf.is_ajax_success(e)&&(i.val(""),a.append_new_term(e.data)),s.text&&t.find("span").html(s.text)},complete:function(){t.find("button").removeAttr("disabled"),t.find(".acf-spinner").removeClass("is-active"),t.find("span").delay(1500).fadeOut(250,function(){$(this).html(""),$(this).show()}),i.focus()}})},append_new_term:function(e){var a={id:e.term_id,text:e.term_label};switch($('.acf-taxonomy-field[data-taxonomy="'+this.o.taxonomy+'"]').each(function(){var a=$(this).data("type");if("radio"==a||"checkbox"==a){var t=$(this).children('input[type="hidden"]'),i=$(this).find("ul:first"),s=t.attr("name");"checkbox"==a&&(s+="[]");var l=$(['<li data-id="'+e.term_id+'">',"<label>",'<input type="'+a+'" value="'+e.term_id+'" name="'+s+'" /> ',"<span>"+e.term_label+"</span>","</label>","</li>"].join(""));if(e.term_parent){var r=i.find('li[data-id="'+e.term_parent+'"]');i=r.children("ul"),i.exists()||(i=$('<ul class="children acf-bl"></ul>'),r.append(i))}i.append(l)}}),$("#acf-popup #term_parent").each(function(){var a=$('<option value="'+e.term_id+'">'+e.term_label+"</option>");e.term_parent?$(this).children('option[value="'+e.term_parent+'"]').after(a):$(this).append(a)}),this.o.type){case"select":var t=this.$el.children("select");acf.select2.add_value(t,e.term_id,e.term_label);break;case"multi_select":var t=this.$el.children("select");acf.select2.add_value(t,e.term_id,e.term_label);break;case"checkbox":case"radio":var i=this.$el.find(".categorychecklist-holder"),s=i.find('li[data-id="'+e.term_id+'"]'),l=i.get(0).scrollTop+(s.offset().top-i.offset().top);s.find("input").prop("checked",!0),i.animate({scrollTop:l},"250");break}}})}(jQuery),function($){acf.fields.taxonomy1=acf.field.extend({type:"taxonomy1",$el:null,actions:{ready:"render",append:"render",remove:"remove"},events:{'click a[data-name="add"]':"add_term"},focus:function(){this.$el=this.$field.find(".acf-taxonomy-field"),this.o=acf.get_data(this.$el,{save:"",type:"",taxonomy:""}),this.o.key=this.$field.data("key")},render:function(){var e=this.$field.find("select");if(e.exists()){var a=acf.get_data(e);a=acf.parse_args(a,{pagination:!0,ajax_action:"acf/fields/taxonomy1/query",key:this.o.key}),acf.select2.init(e,a)}},remove:function(){var e=this.$field.find("select");if(!e.exists())return!1;acf.select2.destroy(e)},add_term:function(e){var a=this;acf.open_popup({title:e.$el.attr("title")||e.$el.data("title"),loading:!0,height:220});var t=acf.prepare_for_ajax({action:"acf/fields/taxonomy1/add_term",field_key:this.o.key});$.ajax({url:acf.get("ajaxurl"),data:t,type:"post",dataType:"html",success:function(e){a.add_term_confirm(e)}})},add_term_confirm:function(e){var a=this;acf.update_popup({content:e}),$('#acf-popup input[name="term_name"]').focus(),$("#acf-popup form").on("submit",function(e){e.preventDefault(),a.add_term_submit($(this))})},add_term_submit:function(e){var a=this,t=e.find(".acf-submit"),i=e.find('input[name="term_name"]'),s=e.find('select[name="term_parent"]');if(""===i.val())return i.focus(),!1;t.find("button").attr("disabled","disabled"),t.find(".acf-spinner").addClass("is-active");var l=acf.prepare_for_ajax({action:"acf/fields/taxonomy1/add_term",field_key:this.o.key,term_name:i.val(),term_parent:s.exists()?s.val():0});$.ajax({url:acf.get("ajaxurl"),data:l,type:"post",dataType:"json",success:function(e){var s=acf.get_ajax_message(e);acf.is_ajax_success(e)&&(i.val(""),a.append_new_term(e.data)),s.text&&t.find("span").html(s.text)},complete:function(){t.find("button").removeAttr("disabled"),t.find(".acf-spinner").removeClass("is-active"),t.find("span").delay(1500).fadeOut(250,function(){$(this).html(""),$(this).show()}),i.focus()}})},append_new_term:function(e){var a={id:e.term_id,text:e.term_label};switch($('.acf-taxonomy-field[data-taxonomy="'+this.o.taxonomy+'"]').each(function(){var a=$(this).data("type");if("radio"==a||"checkbox"==a){var t=$(this).children('input[type="hidden"]'),i=$(this).find("ul:first"),s=t.attr("name");"checkbox"==a&&(s+="[]");var l=$(['<li data-id="'+e.term_id+'">',"<label>",'<input type="'+a+'" value="'+e.term_id+'" name="'+s+'" /> ',"<span>"+e.term_label+"</span>","</label>","</li>"].join(""));if(e.term_parent){var r=i.find('li[data-id="'+e.term_parent+'"]');i=r.children("ul"),i.exists()||(i=$('<ul class="children acf-bl"></ul>'),r.append(i))}i.append(l)}}),$("#acf-popup #term_parent").each(function(){var a=$('<option value="'+e.term_id+'">'+e.term_label+"</option>");e.term_parent?$(this).children('option[value="'+e.term_parent+'"]').after(a):$(this).append(a)}),this.o.type){case"select":var t=this.$el.children("select");acf.select2.add_value(t,e.term_id,e.term_label);break;case"multi_select":var t=this.$el.children("select");acf.select2.add_value(t,e.term_id,e.term_label);break;case"checkbox":case"radio":var i=this.$el.find(".categorychecklist-holder"),s=i.find('li[data-id="'+e.term_id+'"]'),l=i.get(0).scrollTop+(s.offset().top-i.offset().top);s.find("input").prop("checked",!0),i.animate({scrollTop:l},"250");break}}})}(jQuery),jQuery(document).ready(function($){if("undefined"!=typeof acf){var e=acf.ajax.extend({events:{'change [data-key="field_5a960f468bf8e"] select':"_map_change",'change [data-key="field_5ab85b545ba4b"] select':"_side_change",'change [data-key="field_5ab85b0b5ba46"] select':"_top_change",'change [data-key="field_5abde7f980c65"] select':"_store_change"},_store_change:function(e){$('[data-key="field_5abde7f980cc5"] select').empty();var a=e.$el.val();this.term_request&&this.term_request.abort();var t=this,i=this.o;i.input_name="acf[field_5abde7f92fd6a][field_5abde7f964b9f][field_5abde7f980cc5][]",i.action="load_order_field_settings",i.term=a,i.post_id=jQuery("#post_ID").val(),i.exists=[],this.term_request=$.ajax({url:acf.get("ajaxurl"),data:acf.prepare_for_ajax(i),type:"post",dataType:"text",async:!0,success:function(e){var a={};try{var a=JSON.parse(e)}catch(e){a={html:""}}$("#acf-field_5abde7f92fd6a-field_5abde7f964b9f-field_5abde7f980cc5 .values").replaceWith(a.html),$("#acf-field_5abde7f92fd6a-field_5abde7f964b9f-field_5abde7f980cc5 .values .list").sortable({items:"li",forceHelperSize:!0,forcePlaceholderSize:!0,scroll:!0,update:function(){$input.trigger("change")}})}})},_map_change:function(e){$('[data-key="field_5a960f468bf91"] select').empty();var a=e.$el.val();this.term_request&&this.term_request.abort();var t=this,i=this.o;i.input_name="acf[field_5a960f458bf8c][field_5ab197179d24a][field_5a960f468bf91][]",i.action="load_order_field_settings",i.term=a,i.post_id=jQuery("#post_ID").val(),i.exists=[],this.term_request=$.ajax({url:acf.get("ajaxurl"),data:acf.prepare_for_ajax(i),type:"post",dataType:"text",async:!0,success:function(e){var a={};try{var a=JSON.parse(e)}catch(e){a={html:""}}$("#acf-field_5a960f458bf8c-field_5ab197179d24a-field_5a960f468bf91 .values").replaceWith(a.html),$("#acf-field_5a960f458bf8c-field_5ab197179d24a-field_5a960f468bf91 .values .list").sortable({items:"li",forceHelperSize:!0,forcePlaceholderSize:!0,scroll:!0,update:function(){$input.trigger("change")}})}})},_side_change:function(e){$('[data-key="field_5ab85b545ba4c"] select').empty();var a=e.$el.val();this.term_request&&this.term_request.abort();var t=this,i=this.o;i.input_name="acf[field_5a960f458bf8c][field_5ab85b545ba49][field_5ab85b545ba4c][]",i.action="load_order_field_settings",i.term=a,i.post_id=jQuery("#post_ID").val(),i.exists=[],this.term_request=$.ajax({url:acf.get("ajaxurl"),data:acf.prepare_for_ajax(i),type:"post",dataType:"text",async:!0,success:function(e){var a={};try{var a=JSON.parse(e)}catch(e){a={html:""}}$("#acf-field_5a960f458bf8c-field_5ab85b545ba49-field_5ab85b545ba4c .values").replaceWith(a.html),$("#acf-field_5a960f458bf8c-field_5ab85b545ba49-field_5ab85b545ba4c .values .list").sortable({items:"li",forceHelperSize:!0,forcePlaceholderSize:!0,scroll:!0,update:function(){$input.trigger("change")}})}})},_top_change:function(e){$('[data-key="field_5ab85b0b5ba47"] select').empty();var a=e.$el.val();this.term_request&&this.term_request.abort();var t=this,i=this.o;i.input_name="acf[field_5a960f458bf8c][field_5ab85b0b5ba44][field_5ab85b0b5ba47][]",i.action="load_order_field_settings",i.term=a,i.post_id=jQuery("#post_ID").val(),i.exists=[],this.term_request=$.ajax({url:acf.get("ajaxurl"),data:acf.prepare_for_ajax(i),type:"post",dataType:"text",async:!0,success:function(e){var a={};try{var a=JSON.parse(e)}catch(e){a={html:""}}$("#acf-field_5a960f458bf8c-field_5ab85b0b5ba44-field_5ab85b0b5ba47 .values").replaceWith(a.html),$("#acf-field_5a960f458bf8c-field_5ab85b0b5ba44-field_5ab85b0b5ba47 .values .list").sortable({items:"li",forceHelperSize:!0,forcePlaceholderSize:!0,scroll:!0,update:function(){$input.trigger("change")}})}})}}),a=GO_ACF_DATA.go_store_toggle,t=GO_ACF_DATA.go_map_toggle,i=GO_ACF_DATA.go_top_menu_toggle,s=GO_ACF_DATA.go_widget_toggle,l=GO_ACF_DATA.go_gold_toggle,r=GO_ACF_DATA.go_xp_toggle,d=GO_ACF_DATA.go_health_toggle,n=GO_ACF_DATA.go_c4_toggle,c=GO_ACF_DATA.go_badges_toggle;0==t&&(jQuery(".go_map").hide(),jQuery('.acf-th[data-name="map"]').hide()),0==i&&(jQuery(".go_top_menu").hide(),jQuery('.acf-th[data-name="top"]').hide()),0==s&&(jQuery(".go_widget").hide(),jQuery('.acf-th[data-name="side"]').hide()),0==l&&(jQuery(".go_gold").hide(),jQuery('.acf-th[data-name="gold"]').hide()),0==r&&(jQuery(".go_xp").hide(),jQuery('.acf-th[data-name="xp"]').hide()),0==d&&(jQuery(".go_health").hide(),jQuery('.acf-th[data-name="health"]').hide()),0==n&&(jQuery(".go_c4").hide(),jQuery('.acf-th[data-name="c4"]').hide()),0==c&&(jQuery(".go_badges").hide(),jQuery('option[value="go_badge_lock"]').hide())}});
+//This file is js on the acf pages
+//
+jQuery(document).ready(function(e){
+// make sure acf is loaded, it should be, but just in case
+if("undefined"!=typeof acf){
+/*
+		// extend the acf.ajax object
+		// you should probably rename this var
+		var myACFextension = acf.model.extend({
+			events: {
+				// this data-key must match the field key for the term field on the post page where
+				// you want to dynamically load the posts when the term is changed
+				//on map change
+				'change [data-key="field_5a960f468bf8e"] select': '_map_change',
+				//on side menu change
+				'change [data-key="field_5ab85b545ba4b"] select': '_side_change',
+				//on top menu change
+				'change [data-key="field_5ab85b0b5ba46"] select': '_top_change',
+                //on store location change
+                'change [data-key="field_5abde7f980c65"] select': '_store_change',
+				// this entry is to cause the city field to be updated when the page is loaded
+				//'ready [data-key="field_579376f522130"] select': '_term_change',
+			},
+
+            // this is our function that will perform the
+            // ajax request when the term value is changed
+            _store_change: function(e){
+
+
+                // clear the order field options
+                // the data-key is the field key of the order field on post
+                var $select = $('[data-key="field_5abde7f980cc5"] select');
+                $select.empty();
+
+                // get the term selection
+                var $value = e.$el.val();
+
+                // a lot of the following code is copied directly
+                // from ACF and modified for our purpose
+
+                // I assume this tests to see if there is already a request
+                // for this and cancels it if there is
+                if( this.term_request) {
+                    this.term_request.abort();
+                }
+
+                // I don't know exactly what it does
+                // acf does it so I copied it
+                var self = this,
+                    data = this.o;
+
+                //set the name of the input in the li
+                data.input_name = 'acf[field_5abde7f92fd6a][field_5abde7f964b9f][field_5abde7f980cc5][]';
+
+                // set the ajax action that's set up in php
+                data.action = 'load_order_field_settings';
+
+                // set the term value to be submitted
+                data.term = $value;
+
+                //set the post ID
+                data.post_id = jQuery("#post_ID").val();
+
+                //console.log( post_id );
+                // this is another bit I'm not sure about
+                // copied from ACF
+                data.exists = [];
+
+                // this the request is copied from ACF
+                this.term_request = $.ajax({
+                    url:		acf.get('ajaxurl'),
+                    data:		acf.prepare_for_ajax(data),
+                    type:		'post',
+                    dataType:	'text',
+                    async: true,
+                    success: function(raw){
+
+                        // parse the raw response to get the desired JSON
+                        var res = {};
+                        try {
+                            var res = JSON.parse( raw );
+                        } catch (e) {
+                            res = {
+                                html: '',
+                            };
+                        }
+
+                        $( "#acf-field_5abde7f92fd6a-field_5abde7f964b9f-field_5abde7f980cc5 .values" ).replaceWith( res.html );
+                        $( "#acf-field_5abde7f92fd6a-field_5abde7f964b9f-field_5abde7f980cc5 .values .list").sortable({
+                            items:					'li',
+                            forceHelperSize:		true,
+                            forcePlaceholderSize:	true,
+                            scroll:					true,
+                            update:	function(){
+
+                                $input.trigger('change');
+
+                            }
+
+                        });
+
+                    }
+                });
+            },
+
+
+			// this is our function that will perform the
+			// ajax request when the term value is changed
+			_map_change: function(e){
+				
+				
+				// clear the order field options
+				// the data-key is the field key of the order field on post
+				var $select = $('[data-key="field_5a960f468bf91"] select');
+				$select.empty();
+				
+				// get the term selection
+				var $value = e.$el.val();
+                console.log("value: " + $value);
+				// a lot of the following code is copied directly 
+				// from ACF and modified for our purpose
+				
+				// I assume this tests to see if there is already a request
+				// for this and cancels it if there is
+				if( this.term_request) {
+					this.term_request.abort();
+				}
+                console.log("this: " + JSON.stringify(this, null, 2));
+				// I don't know exactly what it does
+				// acf does it so I copied it
+				var self = this,
+						data = this.o;
+
+				var data = [];
+
+				//dynamic js
+				// when there is a change in connected taxonomy field
+				//clear this field and
+				//get the field
+				//and make sortble
+                console.log("this!!: " + JSON.stringify(this, null, 2));
+
+                console.log("data: " + JSON.stringify(data, null, 2));
+
+                //set the name of the input in the li
+				data.input_name = 'acf[field_5a960f458bf8c][field_5ab197179d24a][field_5a960f468bf91]';
+
+				// set the ajax action that's set up in php
+				data.action = 'load_order_field_settings';
+
+				// set the term value to be submitted
+				data.term = $value;
+
+				//set the post ID
+				data.post_id = jQuery("#post_ID").val();
+
+				//console.log( post_id );
+				// this is another bit I'm not sure about
+				// copied from ACF
+				data.exists = [];
+				
+				// this the request is copied from ACF
+				this.term_request = $.ajax({
+					url:		acf.get('ajaxurl'),
+					data:		acf.prepare_for_ajax(data),
+					type:		'post',
+					dataType:	'text',
+					async: true,
+					success: function(raw){
+					
+					// parse the raw response to get the desired JSON
+					var res = {};
+					try {
+						var res = JSON.parse( raw );
+					} catch (e) {
+
+						res = {
+							html: '',
+						};
+					}
+
+					$( "#acf-field_5a960f458bf8c-field_5ab197179d24a-field_5a960f468bf91 .values" ).replaceWith( res.html );
+					$( "#acf-field_5a960f458bf8c-field_5ab197179d24a-field_5a960f468bf91 .values .list").sortable({
+						items:					'li',
+						forceHelperSize:		true,
+						forcePlaceholderSize:	true,
+						scroll:					true,
+						update:	function(){
+							
+							$input.trigger('change');
+							
+						}
+
+					});
+					
+					}
+				});
+			},
+
+			// this is our function that will perform the
+			// ajax request when the term value is changed
+			_side_change: function(e){
+				
+				// clear the order field options
+				// the data-key is the field key of the order field on post
+				var $select = $('[data-key="field_5ab85b545ba4c"] select');
+				$select.empty();
+				
+				// get the term selection
+				var $value = e.$el.val();
+				
+				// a lot of the following code is copied directly 
+				// from ACF and modified for our purpose
+				
+				// I assume this tests to see if there is already a request
+				// for this and cancels it if there is
+				if( this.term_request) {
+					this.term_request.abort();
+				}
+				
+				// I don't know exactly what it does
+				// acf does it so I copied it
+				var self = this,
+						data = this.o;
+						
+				//set the name of the input in the li
+				data.input_name = 'acf[field_5a960f458bf8c][field_5ab85b545ba49][field_5ab85b545ba4c][]';
+				 
+				// set the ajax action that's set up in php
+				data.action = 'load_order_field_settings';
+
+				// set the term value to be submitted
+				data.term = $value;
+
+				//set the post ID
+				data.post_id = jQuery("#post_ID").val();
+
+				//console.log( post_id );
+				// this is another bit I'm not sure about
+				// copied from ACF
+				data.exists = [];
+				
+				// this the request is copied from ACF
+				this.term_request = $.ajax({
+					url:		acf.get('ajaxurl'),
+					data:		acf.prepare_for_ajax(data),
+					type:		'post',
+					dataType:	'text',
+					async: true,
+					success: function(raw){
+					
+					// parse the raw response to get the desired JSON
+					var res = {};
+					try {
+						var res = JSON.parse( raw );
+					} catch (e) {
+						res = {
+							html: '',
+						};
+					}
+
+					$( "#acf-field_5a960f458bf8c-field_5ab85b545ba49-field_5ab85b545ba4c .values" ).replaceWith( res.html );
+					$( "#acf-field_5a960f458bf8c-field_5ab85b545ba49-field_5ab85b545ba4c .values .list").sortable({
+						items:					'li',
+						forceHelperSize:		true,
+						forcePlaceholderSize:	true,
+						scroll:					true,
+						update:	function(){
+							
+							$input.trigger('change');
+							
+						}
+
+					});
+					
+					}
+				});
+			},
+
+						// this is our function that will perform the
+			// ajax request when the term value is changed
+			_top_change: function(e){
+				
+				// clear the order field options
+				// the data-key is the field key of the order field on post
+				var $select = $('[data-key="field_5ab85b0b5ba47"] select');
+				$select.empty();
+				
+				// get the term selection
+				var $value = e.$el.val();
+				
+				// a lot of the following code is copied directly 
+				// from ACF and modified for our purpose
+				
+				// I assume this tests to see if there is already a request
+				// for this and cancels it if there is
+				if( this.term_request) {
+					this.term_request.abort();
+				}
+				
+				// I don't know exactly what it does
+				// acf does it so I copied it
+				var self = this,
+						data = this.o;
+						
+				//set the name of the input in the li
+				data.input_name = 'acf[field_5a960f458bf8c][field_5ab85b0b5ba44][field_5ab85b0b5ba47][]';
+				 
+				// set the ajax action that's set up in php
+				data.action = 'load_order_field_settings';
+
+				// set the term value to be submitted
+				data.term = $value;
+
+				//set the post ID
+				data.post_id = jQuery("#post_ID").val();
+				
+				//console.log( post_id );
+				// this is another bit I'm not sure about
+				// copied from ACF
+				data.exists = [];
+				
+				// this the request is copied from ACF
+				this.term_request = $.ajax({
+					url:		acf.get('ajaxurl'),
+					data:		acf.prepare_for_ajax(data),
+					type:		'post',
+					dataType:	'text',
+					async: true,
+					success: function(raw){
+					
+					// parse the raw response to get the desired JSON
+					var res = {};
+					try {
+						var res = JSON.parse( raw );
+					} catch (e) {
+						res = {
+							html: '',
+						};
+					}
+
+					$( "#acf-field_5a960f458bf8c-field_5ab85b0b5ba44-field_5ab85b0b5ba47 .values" ).replaceWith( res.html );
+					$( "#acf-field_5a960f458bf8c-field_5ab85b0b5ba44-field_5ab85b0b5ba47 .values .list").sortable({
+						items:					'li',
+						forceHelperSize:		true,
+						forcePlaceholderSize:	true,
+						scroll:					true,
+						update:	function(){
+							
+							$input.trigger('change');
+							
+						}
+
+					});
+					
+					}
+				});
+			},
+		});
+		*/
+// triger the ready action on page load
+//$('[data-key="field_579376f522130"] select').trigger('ready');
+var _=GO_ACF_DATA.go_store_toggle,g=GO_ACF_DATA.go_map_toggle,a=GO_ACF_DATA.go_top_menu_toggle,o=GO_ACF_DATA.go_widget_toggle,d=GO_ACF_DATA.go_gold_toggle,t=GO_ACF_DATA.go_xp_toggle,h=GO_ACF_DATA.go_health_toggle,A=GO_ACF_DATA.go_badges_toggle;0==g&&(jQuery(".go_map").hide(),jQuery('.acf-th[data-name="map"]').hide()),0==a&&(jQuery(".go_top_menu").hide(),jQuery('.acf-th[data-name="top"]').hide()),0==o&&(jQuery(".go_widget").hide(),jQuery('.acf-th[data-name="side"]').hide()),0==d&&(jQuery(".go_gold").hide(),jQuery('.acf-th[data-name="gold"]').hide()),0==t&&(jQuery(".go_xp").hide(),jQuery('.acf-th[data-name="xp"]').hide()),0==h&&(jQuery(".go_health").hide(),jQuery('.acf-th[data-name="health"]').hide()),0==A&&(jQuery(".go_badges").hide(),jQuery('option[value="go_badge_lock"]').hide())}});

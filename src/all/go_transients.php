@@ -72,6 +72,16 @@ function go_get_map_chain_term_ids($term_id) {
 
 }
 
+function go_reset_map_transient($term_id){
+    $term = get_term($term_id, 'task_chains');
+    //Get the parent object
+    $termParent = ($term->parent == 0) ? $term : get_term($term->parent, 'task_chains');
+    //GET THE ID FROM THE MAP OBJECT
+    $term_id = $termParent->term_id;
+    $key = 'go_get_map_chain_term_ids_' . $term_id;
+    delete_transient($key);
+}
+
 /**
  * @param $term_id
  * @return mixed
@@ -83,11 +93,8 @@ function go_get_parent_map_id($term_id){
     $key = 'go_get_parent_map_id_' . $term_id;
 
     $data = get_transient($key);
-
+    $data = false;
     if ($data === false) {
-
-
-
         //find if term is a map
         //if not a map, get map_id
         $term = get_term($term_id, 'task_chains');
@@ -112,7 +119,7 @@ function go_get_maps_term_ids(){
     $key = 'go_get_maps_term_ids';
 
     $data = get_transient($key);
-
+    $data = false;
     if ($data === false) {
         $args = array('hide_empty' => false, 'orderby' => 'order', 'order' => 'ASC', 'parent' => 0, 'fields' => 'ids');
         //get all parent maps (chains with no parents)
@@ -137,7 +144,7 @@ function go_get_maps_term_ids(){
 function go_term_data($term_id){
     $key = 'go_term_data_' . $term_id;
     $data = get_transient($key);
-
+    $data = false;
     if ($data !== false){
         $term_data = $data;
 
@@ -173,7 +180,7 @@ function go_get_chain_posts($term_id, $is_map = false ){
     $key = 'go_get_chain_posts_' . $term_id;
 
     $data = get_transient($key);
-
+    $data = false;
     if ($data !== false){
         $data_ids = $data;
 
@@ -314,9 +321,53 @@ function go_update_task_chain_term_save( $term_id ) {
     $key = 'go_get_maps_term_ids';
     delete_transient( $key );
 
+    go_reset_map_transient($term_id);
+
 
 }
 
 add_action( "delete_task_chains", 'go_update_task_chain_term_save', 10, 4 );
 add_action( "create_task_chains", 'go_update_task_chain_term_save', 10, 4 );
 add_action( "edit_task_chains", 'go_update_task_chain_term_save', 10, 4 );
+
+
+/**
+ * Update store on post save, delete or trash
+ * @param  integer $post_id Current post ID
+ * @return integer          Current post ID
+ */
+function go_update_store_post_save( $post_id ) {
+    $post = get_post( $post_id );
+    // Check for post type.
+    if ( 'go_store' !== $post->post_type ) {
+        return;
+    }
+    $html = go_make_store_html();
+
+    update_option( 'go_store_html', $html );
+
+    //delete task data transient
+    $key = 'go_post_data_' . $post_id;
+    delete_transient($key);
+}
+
+add_action( 'wp_trash_post', 'go_update_store_post_save' );
+add_action( 'deleted_post', 'go_update_store_post_save' );
+add_action( 'save_post', 'go_update_store_post_save');
+
+
+/**
+ * Update store on store term
+ * @param  integer $post_id Current post ID
+ * @return integer          Current post ID
+ */
+function go_update_store_term_save( $term_id ) {
+
+    $html = go_make_store_html();
+
+    update_option( 'go_store_html', $html );
+}
+
+add_action( "delete_store_types", 'go_update_store_term_save', 10, 4 );
+add_action( "create_store_types", 'go_update_store_term_save', 10, 4 );
+add_action( "edit_store_types", 'go_update_store_term_save', 10, 4 );

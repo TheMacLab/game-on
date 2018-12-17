@@ -5,8 +5,23 @@ function go_make_taxonomy_dropdown_ajax(){
     $return = array();
 
     $results = array();
-    $taxonomy = $_GET['taxonomy']; // taxonomy
 
+    $is_acf = (isset($_GET['taxonomy2acf']) ?  $_GET['taxonomy2acf'] : false);
+
+    if($is_acf){
+
+        $field = acf_get_field( $_GET['field_key']);
+        if( !$field ) return false;
+        // bail early if taxonomy does not exist
+        if( !taxonomy_exists($field['taxonomy']) ) return false;
+        $taxonomy = $field['taxonomy'];
+
+    }
+    else {
+
+
+        $taxonomy = $_GET['taxonomy']; // taxonomy
+    }
     $is_hier = $_GET['is_hier']; // is it hierarchical
     ////////////////
     if ($is_hier === true || $is_hier === "true") {

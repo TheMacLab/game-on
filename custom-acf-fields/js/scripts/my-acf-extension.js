@@ -1,10 +1,15 @@
+//This file is js on the acf pages
+//
+
 jQuery(document).ready(function($){
 		// make sure acf is loaded, it should be, but just in case
 		if (typeof acf == 'undefined') { return; }
-		
+
+
+		/*
 		// extend the acf.ajax object
 		// you should probably rename this var
-		var myACFextension = acf.ajax.extend({
+		var myACFextension = acf.model.extend({
 			events: {
 				// this data-key must match the field key for the term field on the post page where
 				// you want to dynamically load the posts when the term is changed
@@ -114,7 +119,7 @@ jQuery(document).ready(function($){
 				
 				// get the term selection
 				var $value = e.$el.val();
-				
+                console.log("value: " + $value);
 				// a lot of the following code is copied directly 
 				// from ACF and modified for our purpose
 				
@@ -123,15 +128,26 @@ jQuery(document).ready(function($){
 				if( this.term_request) {
 					this.term_request.abort();
 				}
-				
+                console.log("this: " + JSON.stringify(this, null, 2));
 				// I don't know exactly what it does
 				// acf does it so I copied it
 				var self = this,
 						data = this.o;
 
-				//set the name of the input in the li
-				data.input_name = 'acf[field_5a960f458bf8c][field_5ab197179d24a][field_5a960f468bf91][]';
-				 
+				var data = [];
+
+				//dynamic js
+				// when there is a change in connected taxonomy field
+				//clear this field and
+				//get the field
+				//and make sortble
+                console.log("this!!: " + JSON.stringify(this, null, 2));
+
+                console.log("data: " + JSON.stringify(data, null, 2));
+
+                //set the name of the input in the li
+				data.input_name = 'acf[field_5a960f458bf8c][field_5ab197179d24a][field_5a960f468bf91]';
+
 				// set the ajax action that's set up in php
 				data.action = 'load_order_field_settings';
 
@@ -160,6 +176,7 @@ jQuery(document).ready(function($){
 					try {
 						var res = JSON.parse( raw );
 					} catch (e) {
+
 						res = {
 							html: '',
 						};
@@ -343,7 +360,7 @@ jQuery(document).ready(function($){
 				});
 			},
 		});
-		
+		*/
 		// triger the ready action on page load
 		//$('[data-key="field_579376f522130"] select').trigger('ready');
     var go_store_toggle = GO_ACF_DATA.go_store_toggle;

@@ -5,13 +5,13 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 4.30
+Version: 4.31
 */
 
-$go_js_version = 4.30;
+$go_js_version = 4.31;
 global $go_js_version;
 
-$go_css_version = 4.30;
+$go_css_version = 4.31;
 global $go_css_version;
 
 ///////////////////////////////
@@ -20,6 +20,8 @@ global $go_css_version;
 //include_once('includes/acf/acf.php');
 include( 'includes/wp-frontend-media-master/frontend-media.php' );
 include_once('includes/wp-term-order/wp-term-order.php'); //try to block this from non admin users
+include_once('custom-acf-fields/acf-order-posts/acf-order-posts.php');
+
 
 // include external js and css resources
 include_once('includes/go_enque_includes.php');//split this into public and admin
@@ -30,10 +32,9 @@ add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
 if ( is_admin() ) {
 
     include_once('includes/acf/acf.php');
+    include_once('custom-acf-fields/acf-level2-taxonomy/acf-level2-taxonomy.php');
+    include_once('custom-acf-fields/acf-quiz/acf-quiz.php');
 
-    include_once('custom-acf-fields/class-acf-field-order-posts.php');
-    include_once('custom-acf-fields/class-acf-field-quiz.php');
-    include_once('custom-acf-fields/class-acf-field-taxonomy2.php');
     include_once('custom-acf-fields/go-acf-functions.php');
 
     include_once('custom-acf-fields/go_enque_js_acf.php');
@@ -129,6 +130,7 @@ if ( !is_admin() ) { //IF PUBLIC FACING PAGE
     /*
     * AJAX Hooks
     */
+
     //Tasks
     add_action( 'wp_ajax_go_unlock_stage', 'go_unlock_stage' ); //OK
     add_action( 'wp_ajax_go_task_change_stage', 'go_task_change_stage' ); //OK
@@ -277,5 +279,6 @@ add_action( 'user_register', 'go_user_registration' ); //this should change for 
 // mitigating compatibility issues with Jetpack plugin by Automatic
 // (https://wordpress.org/plugins/jetpack/).
 add_filter( 'jetpack_enable_open_graph', '__return_false' );
+
 
 ?>

@@ -25,6 +25,7 @@ $go_select2_css_url      = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6
 $go_datatables_css_url   = 'https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css';
 $go_featherlight_css_url = 'https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css';
 $go_noty_css_url         = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css';
+$font_awesome_url = '//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
 
 /*
  * Define what scripts/styles need to be enqueued on the admin side.
@@ -44,7 +45,22 @@ function go_admin_includes () {
     global $go_select2_js_url, $go_datatables_js_url, $go_datatables_ns_js_url,
        $go_pdfmake_js_url, $go_pdfmake_fonts_js_url, $go_featherlight_js_url,
        $go_noty_js_url, $go_sweetalert_js_url, $go_select2_css_url,
-       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $go_tippy_js_url;
+       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $go_tippy_js_url, $font_awesome_url;
+
+    /**
+     * jQuery theme
+     * https://select2.org/
+     */
+    wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, 1.112 );
+    wp_enqueue_style( 'jquery-ui-css' );
+
+    /**
+     * Font Awesome
+     * https://fontawesome.com/v4.7.0/icons/
+     */
+    wp_register_style ('font-awesome', $font_awesome_url , null, 4.7 );
+    wp_enqueue_style('font-awesome');
+
 
     /**
      * TIPPY (TOOLTIP LIBRARY)
@@ -132,10 +148,24 @@ function go_includes () {
     global $go_select2_js_url, $go_datatables_js_url, $go_datatables_ns_js_url,
        $go_pdfmake_js_url, $go_pdfmake_fonts_js_url, $go_featherlight_js_url,
        $go_noty_js_url, $go_sweetalert_js_url, $go_select2_css_url,
-       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url;
+       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $font_awesome_url;
 
 
     wp_enqueue_media();
+
+    /**
+     * jQuery theme
+     * https://select2.org/
+     */
+    wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, 1.112 );
+    wp_enqueue_style( 'jquery-ui-css' );
+
+    /**
+     * Font Awesome
+     * https://fontawesome.com/v4.7.0/icons/
+     */
+    wp_register_style ('font-awesome', $font_awesome_url , null, 4.7 );
+    wp_enqueue_style('font-awesome');
 
     /**
      * Select 2 by Kevin Brown

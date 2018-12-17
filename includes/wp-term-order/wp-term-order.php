@@ -830,20 +830,6 @@ function _wp_term_order() {
 }
 add_action( 'init', '_wp_term_order', 99 );
 
-/**
- *Added for Game ON
- */
-
-
-function go_reset_map_transient($term_id){
-    $term = get_term($term_id, 'task_chains');
-    //Get the parent object
-    $termParent = ($term->parent == 0) ? $term : get_term($term->parent, 'task_chains');
-    //GET THE ID FROM THE MAP OBJECT
-    $term_id = $termParent->term_id;
-    $key = 'go_get_map_chain_term_ids_' . $term_id;
-    delete_transient($key);
-}
 
 function go_check_if_top_term () {
     global $wpdb;
