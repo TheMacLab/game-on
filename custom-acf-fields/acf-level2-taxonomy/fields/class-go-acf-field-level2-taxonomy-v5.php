@@ -170,7 +170,6 @@ class go_acf_field_level2_taxonomy extends acf_field {
                         echo '<option value="' . $value. '" selected="selected">' . $term_name . '</option>';
                     }
                 }
-                //move script to js file and taxonomy to data attribute
             ?>
         </select>
 
@@ -356,7 +355,9 @@ class go_acf_field_level2_taxonomy extends acf_field {
 
 	
 	function load_value( $value, $post_id, $field ) {
-        $value = $value[0];
+        if (is_array($value)) {
+            $value = $value[0];
+        }
 		return $value;
 	}
 	
@@ -382,7 +383,6 @@ class go_acf_field_level2_taxonomy extends acf_field {
 	
 	function update_value( $value, $post_id, $field ) {
         $value = (array)$value;
-
 		return $value;
 		
 	}

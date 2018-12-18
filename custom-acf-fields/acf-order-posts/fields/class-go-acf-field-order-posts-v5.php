@@ -266,9 +266,10 @@ class go_acf_field_order_posts extends acf_field {
         //and make sortble
         //$key, $name, $term_id, $post_id
         echo '<script>
-                jQuery("#' . $taxonomy . '").change(
+console.log("reorder");
+                jQuery(".' . $taxonomy . '").change(
                     function() {
-                        var term_id =  jQuery("#' . $taxonomy . '").val();
+                        var term_id =  jQuery(".' . $taxonomy . '").val();
                         var key = "' . $key . '";
                         var post_id = "' . $post_id . '";
                         var name = "' . $name . '";
