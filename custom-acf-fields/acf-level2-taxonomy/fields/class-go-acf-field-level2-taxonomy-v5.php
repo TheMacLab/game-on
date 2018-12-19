@@ -382,7 +382,11 @@ class go_acf_field_level2_taxonomy extends acf_field {
 
 	
 	function update_value( $value, $post_id, $field ) {
-        wp_set_object_terms($post_id, $value, $field['taxonomy']);
+	    if (!empty($value) || $value == 0) {
+	        $post_id = intval($post_id);
+            $value = intval($value);
+            wp_set_object_terms($post_id, $value, $field['taxonomy']);
+        }
 
         //$value = (array)$value;
         //wp_set_post_terms($post_id, $value);
