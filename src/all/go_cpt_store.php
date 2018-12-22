@@ -82,7 +82,7 @@ function go_register_store_tax_and_cpt() {
 		'hierarchical' => false,
 		'description' => _x( $store_name , 'store-types'),
         'supports'              => array( 'title', 'comments' ),
-		'taxonomies' => array('store_types'),
+		'taxonomies' => array(''),
 		'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => true,

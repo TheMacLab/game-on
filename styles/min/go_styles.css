@@ -1,3 +1,5 @@
+@import url(../css/go-acf-input.css);
+@import url(../css/go-acf-global.css);
 .go_blog_stage {
   border: solid 1px;
   padding: 10px 20px 10px 20px;
@@ -65,11 +67,13 @@ video.wp-video-shortcode {
 /**
  *ACF Loot Color
  */
-#go_loot_table .acf-switch {
+#go_loot_table .acf-switch,
+#go_loot_table .go-acf-switch {
   background: pink !important;
   border-color: indianred !important; }
 
-#go_loot_table .acf-switch.-on {
+#go_loot_table .acf-switch.-on,
+#go_loot_table .go-acf-switch.-on {
   background: forestgreen !important;
   border-color: darkgreen !important; }
 

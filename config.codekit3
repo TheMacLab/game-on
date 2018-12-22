@@ -2741,16 +2741,6 @@
 		"sC": 3,
 		"tS": 0
 		},
-	"/js/dev/scripts/acf-input.min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/js/dev/scripts/acf-input.min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/js/dev/scripts/buy_the_item.js": {
 		"ft": 64,
 		"ma": 0,
@@ -3747,26 +3737,6 @@
 		"oAP": "/src/public/tasks/tasks_shortcode_filter.php",
 		"oF": 0
 		},
-	"/styles/css/acf-global.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/css/acf-global-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/styles/css/acf-input.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/css/acf-input-min.css",
-		"oF": 0,
-		"oS": 3
-		},
 	"/styles/css/Disabled/go_clipboard.css": {
 		"aP": 1,
 		"bl": 0,
@@ -3789,6 +3759,26 @@
 		"oF": 0,
 		"oS": 0,
 		"uL": 1
+		},
+	"/styles/css/go-acf-global.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/styles/css/go-acf-global-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"/styles/css/go-acf-input.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/styles/css/go-acf-input-min.css",
+		"oF": 0,
+		"oS": 3
 		},
 	"/styles/css/go_clipboard_sass.scss": {
 		"aP": 0,

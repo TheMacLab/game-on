@@ -148,7 +148,7 @@ function go_includes () {
     global $go_select2_js_url, $go_datatables_js_url, $go_datatables_ns_js_url,
        $go_pdfmake_js_url, $go_pdfmake_fonts_js_url, $go_featherlight_js_url,
        $go_noty_js_url, $go_sweetalert_js_url, $go_select2_css_url,
-       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $font_awesome_url;
+       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $font_awesome_url, $go_tippy_js_url;
 
 
     wp_enqueue_media();
@@ -159,6 +159,13 @@ function go_includes () {
      */
     wp_register_style( 'jquery-ui-css', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css', null, 1.112 );
     wp_enqueue_style( 'jquery-ui-css' );
+
+    /**
+     * TIPPY (TOOLTIP LIBRARY)
+     */
+    wp_register_script( 'go_tippy', $go_tippy_js_url, array( 'jquery' ),'v1.1', $js_in_footer);
+    wp_enqueue_script( 'go_tippy' );
+
 
     /**
      * Font Awesome

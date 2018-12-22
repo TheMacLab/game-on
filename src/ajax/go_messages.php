@@ -44,56 +44,56 @@ function go_create_admin_message (){
             $user_name = "Multiple Values Selected";
         }
         else {
-                $is_first = true;
-                $task_title = "";
-                $i = 0;
-                foreach ($uniqueTasks as $task_id) {
-                    $i++;
+            $is_first = true;
+            $task_title = "";
+            $i = 0;
+            foreach ($uniqueTasks as $task_id) {
+                $i++;
 
-                    if (!$is_first && $quest_count > 2 && $i < $quest_count) {
-                        $task_title = $task_title . ", ";
-                    }
-                    if ($i == $quest_count && $quest_count > 1) {
-                        $task_title = $task_title . ", and ";
-                    }
-                    $task_title = $task_title . get_the_title($task_id);
-                    $is_first = false;
+                if (!$is_first && $quest_count > 2 && $i < $quest_count) {
+                    $task_title = $task_title . ", ";
                 }
-
-                $is_first = true;
-                $user_name = "";
-                $i = 0;
-                foreach ($uniqueUsers as $user_id) {
-                    $i++;
-                    //$task_id = intval($task['task_id']);
-                    if (!$is_first && $user_count > 2 && $i < $user_count) {
-                        $user_name = $user_name . ", ";
-                    }
-                    if ($i == $user_count && $user_count > 1) {
-                        $user_name = $user_name . ", and ";
-                    }
-                    $user = get_userdata($user_id);
-                    $this_user_name = $user->first_name . ' ' . $user->last_name;
-                    if (empty($this_user_name) || $this_user_name == ' ') {
-                        $user_name = $user->display_name;
-                    }
-                    $user_name = $user_name . $this_user_name;
-                    $is_first = false;
+                if ($i == $quest_count && $quest_count > 1) {
+                    $task_title = $task_title . ", and ";
                 }
-        }
+                $task_title = $task_title . get_the_title($task_id);
+                $is_first = false;
+            }
 
-
-/*
-        if ($user_count > 1){
-
-        } else{
-            $user = get_userdata($uniqueUsers[0]);
-            $user_name = $user->first_name . ' ' . $user->last_name;
-            if (empty($user_fullname) || $user_fullname = ' ') {
-                $user_name = $user->display_name;
+            $is_first = true;
+            $user_name = "";
+            $i = 0;
+            foreach ($uniqueUsers as $user_id) {
+                $i++;
+                //$task_id = intval($task['task_id']);
+                if (!$is_first && $user_count > 2 && $i < $user_count) {
+                    $user_name = $user_name . ", ";
+                }
+                if ($i == $user_count && $user_count > 1) {
+                    $user_name = $user_name . ", and ";
+                }
+                $user = get_userdata($user_id);
+                $this_user_name = $user->first_name . ' ' . $user->last_name;
+                if (empty($this_user_name) || $this_user_name == ' ') {
+                    $user_name = $user->display_name;
+                }
+                $user_name = $user_name . $this_user_name;
+                $is_first = false;
             }
         }
-*/
+
+
+        /*
+                if ($user_count > 1){
+
+                } else{
+                    $user = get_userdata($uniqueUsers[0]);
+                    $user_name = $user->first_name . ' ' . $user->last_name;
+                    if (empty($user_fullname) || $user_fullname = ' ') {
+                        $user_name = $user->display_name;
+                    }
+                }
+        */
         ?>
 
         <div id="go_messages_container">
@@ -166,31 +166,31 @@ function go_create_admin_message (){
                             </tr>
 
                         </table>
-                        <div id="go_loot_table" class="acf-field acf-field-group " data-type="group">
+                        <div id="go_loot_table" class="go-acf-field go-acf-field-group " data-type="group">
 
-                            <div class="acf-input">
+                            <div class="go-acf-input">
                                 <h3>Addtional Penalties <span class="tooltip" data-tippy-content="In addition to removing loot that had been awarded, you may assign an additional penalty."><span><i class="fa fa-info-circle"></i></span></span></h3>
 
                                 <label for="go_additional_penalty_toggle">Assign Penalty </label><input id="go_additional_penalty_toggle" type="checkbox">
                                 <br>
                                 <br>
-                                <div id="go_penalty_table" class="acf-fields -top -border" style="display:none;">
-                                    <div class="acf-field acf-field-group acf-hide-label acf-no-padding acf-table-no-border"
+                                <div id="go_penalty_table" class="go-acf-fields -top -border" style="display:none;">
+                                    <div class="go-acf-field go-acf-field-group go-acf-hide-label go-acf-no-padding go-acf-table-no-border"
                                          data-name="reward_toggle" data-type="group">
-                                        <div class="acf-input">
-                                            <table class="acf-table form-table">
+                                        <div class="go-acf-input">
+                                            <table class="go-acf-table form-table">
                                                 <thead>
                                                 <tr>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>XP</label></div>
                                                     </th>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Gold</label></div>
                                                     </th>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Health</label></div>
                                                     </th>
 
@@ -201,30 +201,30 @@ function go_create_admin_message (){
                                                 <tbody>
 
 
-                                                <tr class="acf-row">
-                                                    <td class="acf-field acf-field-number go_reward go_xp  data-name="
+                                                <tr class="go-acf-row">
+                                                    <td class="go-acf-field go-acf-field-number go_reward go_xp  data-name="
                                                         xp
                                                     " data-type="number">
-                                                    <div class="acf-input">
-                                                        <div class="acf-input-wrap"><input name="xp" type="number"
-                                                                                           value="0" min="0" step="1" oninput="validity.valid||(value='');">
+                                                    <div class="go-acf-input">
+                                                        <div class="go-acf-input-wrap"><input name="xp" type="number"
+                                                                                              value="0" min="0" step="1" oninput="validity.valid||(value='');">
                                                         </div>
                                                     </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-number go_reward go_gold"
+                                                    <td class="go-acf-field go-acf-field-number go_reward go_gold"
                                                         data-name="gold" data-type="number">
-                                                        <div class="acf-input">
-                                                            <div class="acf-input-wrap"><input name="gold" type="number"
-                                                                                               value="0" min="0"
-                                                                                               step="1" oninput="validity.valid||(value='');"></div>
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-input-wrap"><input name="gold" type="number"
+                                                                                                  value="0" min="0"
+                                                                                                  step="1" oninput="validity.valid||(value='');"></div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-number go_reward go_health "
+                                                    <td class="go-acf-field go-acf-field-number go_reward go_health "
                                                         data-name="health" data-type="number">
-                                                        <div class="acf-input">
-                                                            <div class="acf-input-wrap"><input name="health"
-                                                                                               type="number" value="0"
-                                                                                               min="0" step=".01" oninput="validity.valid||(value='');"></div>
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-input-wrap"><input name="health"
+                                                                                                  type="number" value="0"
+                                                                                                  min="0" step=".01" oninput="validity.valid||(value='');"></div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -233,16 +233,16 @@ function go_create_admin_message (){
                                             </table>
                                         </div>
                                         <p></p>
-                                        <div class="acf-input">
-                                            <table class="acf-table">
+                                        <div class="go-acf-input">
+                                            <table class="go-acf-table">
                                                 <thead>
                                                 <tr>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Remove Badges</label></div>
                                                     </th>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Remove Groups</label></div>
                                                     </th>
 
@@ -251,13 +251,13 @@ function go_create_admin_message (){
                                                 </thead>
                                                 <tbody>
 
-                                                <tr class="acf-row">
-                                                    <td class="acf-field acf-field-true-false go_reward go_badges"
+                                                <tr class="go-acf-row">
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_badges"
                                                         data-name="gold" data-type="true_false">
                                                         <?php go_make_tax_select('go_badges', "messages_"); ?>
 
                                                     </td>
-                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_gold"
                                                         data-name="gold" data-type="true_false">
                                                         <?php go_make_tax_select('user_go_groups', "messages_"); ?>
                                                     </td>
@@ -333,25 +333,25 @@ function go_create_admin_message (){
                             </tr>
 
                         </table>
-                        <div id="go_loot_table" class="acf-field acf-field-group" data-type="group">
-                            <div class="acf-input">
-                                <div class="acf-fields -top -border">
-                                    <div class="acf-field acf-field-group acf-hide-label acf-no-padding acf-table-no-border"
+                        <div id="go_loot_table" class="go-acf-field go-acf-field-group" data-type="group">
+                            <div class="go-acf-input">
+                                <div class="go-acf-fields -top -border">
+                                    <div class="go-acf-field go-acf-field-group go-acf-hide-label go-acf-no-padding go-acf-table-no-border"
                                          data-name="reward_toggle" data-type="group">
-                                        <div class="acf-input">
-                                            <table class="acf-table">
+                                        <div class="go-acf-input">
+                                            <table class="go-acf-table">
                                                 <thead>
                                                 <tr>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>XP</label></div>
                                                     </th>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Gold</label></div>
                                                     </th>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Health</label></div>
                                                     </th>
 
@@ -360,56 +360,56 @@ function go_create_admin_message (){
 
                                                 </thead>
                                                 <tbody>
-                                                <tr class="acf-row">
-                                                    <td class="acf-field acf-field-true-false go_reward go_xp"
+                                                <tr class="go-acf-row">
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_xp"
                                                         data-name="xp" data-type="true_false">
-                                                        <div class="acf-input">
-                                                            <div class="acf-true-false">
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-true-false">
                                                                 <input value="0" type="hidden">
                                                                 <label>
                                                                     <input name="xp_toggle" type="checkbox" value="1"
-                                                                           class="acf-switch-input">
-                                                                    <div class="acf-switch"><span class="acf-switch-on"
-                                                                                                  style="min-width: 36px;">+</span><span
-                                                                                class="acf-switch-off"
+                                                                           class="go-acf-switch-input">
+                                                                    <div class="go-acf-switch"><span class="go-acf-switch-on"
+                                                                                                     style="min-width: 36px;">+</span><span
+                                                                                class="go-acf-switch-off"
                                                                                 style="min-width: 36px;">-</span>
-                                                                        <div class="acf-switch-slider"></div>
+                                                                        <div class="go-acf-switch-slider"></div>
                                                                     </div>
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_gold"
                                                         data-name="gold" data-type="true_false">
-                                                        <div class="acf-input">
-                                                            <div class="acf-true-false">
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-true-false">
                                                                 <input value="0" type="hidden">
                                                                 <label>
                                                                     <input name="gold_toggle" type="checkbox"
-                                                                           class="acf-switch-input">
-                                                                    <div class="acf-switch"><span class="acf-switch-on"
-                                                                                                  style="min-width: 36px;">+</span><span
-                                                                                class="acf-switch-off"
+                                                                           class="go-acf-switch-input">
+                                                                    <div class="go-acf-switch"><span class="go-acf-switch-on"
+                                                                                                     style="min-width: 36px;">+</span><span
+                                                                                class="go-acf-switch-off"
                                                                                 style="min-width: 36px;">-</span>
-                                                                        <div class="acf-switch-slider"></div>
+                                                                        <div class="go-acf-switch-slider"></div>
                                                                     </div>
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-true-false go_reward go_health"
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_health"
                                                         data-name="health" data-type="true_false">
-                                                        <div class="acf-input">
-                                                            <div class="acf-true-false">
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-true-false">
                                                                 <input value="0" type="hidden">
                                                                 <label>
                                                                     <input name="health_toggle" type="checkbox"
-                                                                           value="1" class="acf-switch-input">
-                                                                    <div class="acf-switch"><span class="acf-switch-on"
-                                                                                                  style="min-width: 36px;">+</span><span
-                                                                                class="acf-switch-off"
+                                                                           value="1" class="go-acf-switch-input">
+                                                                    <div class="go-acf-switch"><span class="go-acf-switch-on"
+                                                                                                     style="min-width: 36px;">+</span><span
+                                                                                class="go-acf-switch-off"
                                                                                 style="min-width: 36px;">-</span>
-                                                                        <div class="acf-switch-slider"></div>
+                                                                        <div class="go-acf-switch-slider"></div>
                                                                     </div>
                                                                 </label>
                                                             </div>
@@ -417,30 +417,30 @@ function go_create_admin_message (){
                                                     </td>
                                                 </tr>
 
-                                                <tr class="acf-row">
-                                                    <td class="acf-field acf-field-number go_reward go_xp  data-name="
+                                                <tr class="go-acf-row">
+                                                    <td class="go-acf-field go-acf-field-number go_reward go_xp  data-name="
                                                         xp
                                                     " data-type="number">
-                                                    <div class="acf-input">
-                                                        <div class="acf-input-wrap"><input name="xp" type="number"
-                                                                                           value="0" min="0" step="1" oninput="validity.valid||(value='');">
+                                                    <div class="go-acf-input">
+                                                        <div class="go-acf-input-wrap"><input name="xp" type="number"
+                                                                                              value="0" min="0" step="1" oninput="validity.valid||(value='');">
                                                         </div>
                                                     </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-number go_reward go_gold"
+                                                    <td class="go-acf-field go-acf-field-number go_reward go_gold"
                                                         data-name="gold" data-type="number">
-                                                        <div class="acf-input">
-                                                            <div class="acf-input-wrap"><input name="gold" type="number"
-                                                                                               value="0" min="0"
-                                                                                               step="1" oninput="validity.valid||(value='');"></div>
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-input-wrap"><input name="gold" type="number"
+                                                                                                  value="0" min="0"
+                                                                                                  step="1" oninput="validity.valid||(value='');"></div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-number go_reward go_health "
+                                                    <td class="go-acf-field go-acf-field-number go_reward go_health "
                                                         data-name="health" data-type="number">
-                                                        <div class="acf-input">
-                                                            <div class="acf-input-wrap"><input name="health"
-                                                                                               type="number" value="0"
-                                                                                               min="0" step=".01" oninput="validity.valid||(value='');"></div>
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-input-wrap"><input name="health"
+                                                                                                  type="number" value="0"
+                                                                                                  min="0" step=".01" oninput="validity.valid||(value='');"></div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -449,16 +449,16 @@ function go_create_admin_message (){
                                             </table>
                                         </div>
                                         <p></p>
-                                        <div class="acf-input">
-                                            <table class="acf-table">
+                                        <div class="go-acf-input">
+                                            <table class="go-acf-table">
                                                 <thead>
                                                 <tr>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Badges</label></div>
                                                     </th>
                                                     <th>
-                                                        <div class="acf-th">
+                                                        <div class="go-acf-th">
                                                             <label>Groups</label></div>
                                                     </th>
 
@@ -466,38 +466,38 @@ function go_create_admin_message (){
 
                                                 </thead>
                                                 <tbody>
-                                                <tr class="acf-row">
-                                                    <td class="acf-field acf-field-true-false go_reward go_xp"
+                                                <tr class="go-acf-row">
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_xp"
                                                         data-name="xp" data-type="true_false">
-                                                        <div class="acf-input">
-                                                            <div class="acf-true-false">
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-true-false">
                                                                 <input value="0" type="hidden">
                                                                 <label>
                                                                     <input name="badges_toggle" type="checkbox"
-                                                                           value="1" class="acf-switch-input">
-                                                                    <div class="acf-switch"><span class="acf-switch-on"
-                                                                                                  style="min-width: 36px;">+</span><span
-                                                                                class="acf-switch-off"
+                                                                           value="1" class="go-acf-switch-input">
+                                                                    <div class="go-acf-switch"><span class="go-acf-switch-on"
+                                                                                                     style="min-width: 36px;">+</span><span
+                                                                                class="go-acf-switch-off"
                                                                                 style="min-width: 36px;">-</span>
-                                                                        <div class="acf-switch-slider"></div>
+                                                                        <div class="go-acf-switch-slider"></div>
                                                                     </div>
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_gold"
                                                         data-name="gold" data-type="true_false">
-                                                        <div class="acf-input">
-                                                            <div class="acf-true-false">
+                                                        <div class="go-acf-input">
+                                                            <div class="go-acf-true-false">
                                                                 <input value="0" type="hidden">
                                                                 <label>
                                                                     <input name="groups_toggle" type="checkbox"
-                                                                           value="1" class="acf-switch-input">
-                                                                    <div class="acf-switch"><span class="acf-switch-on"
-                                                                                                  style="min-width: 36px;">+</span><span
-                                                                                class="acf-switch-off"
+                                                                           value="1" class="go-acf-switch-input">
+                                                                    <div class="go-acf-switch"><span class="go-acf-switch-on"
+                                                                                                     style="min-width: 36px;">+</span><span
+                                                                                class="go-acf-switch-off"
                                                                                 style="min-width: 36px;">-</span>
-                                                                        <div class="acf-switch-slider"></div>
+                                                                        <div class="go-acf-switch-slider"></div>
                                                                     </div>
                                                                 </label>
                                                             </div>
@@ -505,13 +505,13 @@ function go_create_admin_message (){
                                                     </td>
 
                                                 </tr>
-                                                <tr class="acf-row">
-                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                <tr class="go-acf-row">
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_gold"
                                                         data-name="gold" data-type="true_false">
                                                         <?php go_make_tax_select('go_badges', "messages_"); ?>
 
                                                     </td>
-                                                    <td class="acf-field acf-field-true-false go_reward go_gold"
+                                                    <td class="go-acf-field go-acf-field-true-false go_reward go_gold"
                                                         data-name="gold" data-type="true_false">
                                                         <?php go_make_tax_select('user_go_groups', "messages_"); ?>
                                                     </td>
@@ -533,6 +533,23 @@ function go_create_admin_message (){
             </form>
 
         </div>
+        <script>
+            jQuery( document ).ready( function() {
+                jQuery('.go-acf-switch').click(function () {
+                    console.log("click");
+                    if (jQuery(this).hasClass('-on') == false) {
+                        jQuery(this).prev('input').prop('checked', true);
+                        jQuery(this).addClass('-on');
+                        jQuery(this).removeClass('-off');
+                    } else {
+                        jQuery(this).prev('input').prop('checked', false);
+                        jQuery(this).removeClass('-on');
+                        jQuery(this).addClass('-off');
+                    }
+                });
+
+            });
+        </script>
         <?php
     }
 }
