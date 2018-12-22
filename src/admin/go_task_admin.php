@@ -260,8 +260,13 @@ function task_chains_add_field_column_contents( $content, $column_name, $term_id
             break;
         case 'pod_done_num' :
             $content = get_term_meta( $term_id, 'pod_toggle', true );
+            $all = get_term_meta( $term_id, 'pod_all', true );
             if ($content == true){
-                $content = get_term_meta( $term_id, 'pod_done_num', true );
+                if ($all == true){
+                    $content = 'all';
+                }else {
+                    $content = get_term_meta($term_id, 'pod_done_num', true);
+                }
             }
             else{
                 $content = '';

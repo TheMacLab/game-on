@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_frontend.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_frontend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/acf-input.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ajax/go_messages.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/acf-global.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go-acf-global.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/acf-input.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go-acf-input.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_every_page.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_every_page.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/dev/go_frontend.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/dev/go_frontend.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/dev/go_styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/dev/go_styles.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/min/go_frontend.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_frontend.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/min/go_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/go_task_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/go_task_admin.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -47,14 +34,18 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="go_cpt_store.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/all/go_cpt_store.php">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="538">
+              <caret line="84" column="31" selection-start-line="84" selection-start-column="31" selection-end-line="84" selection-end-column="31" />
+            </state>
+          </provider>
         </entry>
       </file>
-      <file leaf-file-name="go-acf-global.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/styles/css/go-acf-global.css">
+      <file leaf-file-name="go_task_admin.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/admin/go_task_admin.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2453">
-              <caret selection-end-line="6" selection-end-column="1" />
+            <state relative-caret-position="412">
+              <caret line="262" column="53" lean-forward="true" selection-start-line="262" selection-start-column="53" selection-end-line="262" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -62,7 +53,9 @@
       <file leaf-file-name="go_cpt_task_taxonomies.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/all/go_cpt_task_taxonomies.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-45" />
+            <state relative-caret-position="-2568">
+              <caret line="39" column="35" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="35" />
+            </state>
           </provider>
         </entry>
       </file>
@@ -78,7 +71,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>acf_quiz_no_submit_on_enter</find>
       <find>noEn</find>
       <find>go_get_map_chain_term_ids_</find>
       <find>go_get_parent_map_id_</find>
@@ -108,6 +100,7 @@
       <find>acf-input.css</find>
       <find>acf</find>
       <find>switch</find>
+      <find># Needed</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -127,8 +120,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/custom-acf-fields/js/scripts/acf-tax3-input.js" />
-        <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy2.php" />
         <option value="$PROJECT_DIR$/src/ajax/go_stats.php" />
         <option value="$PROJECT_DIR$/custom-acf-fields/class-acf-field-taxonomy3.php" />
         <option value="$PROJECT_DIR$/custom-acf-fields/js/scripts/acf-tax2-input.js" />
@@ -178,6 +169,8 @@
         <option value="$PROJECT_DIR$/src/ajax/go_messages.php" />
         <option value="$PROJECT_DIR$/js/dev/scripts/go-acf-fields.js" />
         <option value="$PROJECT_DIR$/js/dev/go_scripts.js" />
+        <option value="$PROJECT_DIR$/src/all/go_cpt_store.php" />
+        <option value="$PROJECT_DIR$/src/admin/go_task_admin.php" />
       </list>
     </option>
   </component>
@@ -265,6 +258,17 @@
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="includes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ajax" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -416,12 +420,12 @@
       <workItem from="1544773210489" duration="10157000" />
       <workItem from="1544850365718" duration="41603000" />
       <workItem from="1545147227280" duration="4659000" />
-      <workItem from="1545201689525" duration="12723000" />
+      <workItem from="1545201689525" duration="13038000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3327863000" />
+    <option name="totallyTimeSpent" value="3328178000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
@@ -1085,9 +1089,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/admin/go_task_admin.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/admin/go_user_bio.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1180,11 +1181,6 @@
     <entry file="file://$PROJECT_DIR$/js/dev/scripts/go-acf-fields.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/all/go_cpt_task_taxonomies.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-45" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/go_scripts.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1233,13 +1229,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ajax/go_messages.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="542" column="54" selection-start-line="542" selection-start-column="54" selection-end-line="542" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/go_enque_js.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -1252,13 +1241,38 @@
         <state relative-caret-position="-14" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/all/go_cpt_store.php">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/ajax/go_messages.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="208" column="74" selection-start-line="208" selection-start-column="71" selection-end-line="208" selection-end-column="74" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/styles/css/go-acf-global.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2453">
-          <caret selection-end-line="6" selection-end-column="1" />
+        <state relative-caret-position="285">
+          <caret line="171" column="10" selection-start-line="171" selection-start-column="10" selection-end-line="171" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/all/go_cpt_task_taxonomies.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2568">
+          <caret line="39" column="35" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/all/go_cpt_store.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="538">
+          <caret line="84" column="31" selection-start-line="84" selection-start-column="31" selection-end-line="84" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/admin/go_task_admin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="412">
+          <caret line="262" column="53" lean-forward="true" selection-start-line="262" selection-start-column="53" selection-end-line="262" selection-end-column="53" />
         </state>
       </provider>
     </entry>
