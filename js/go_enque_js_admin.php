@@ -2,10 +2,12 @@
 
 function go_admin_scripts ($hook) {
     global $post;
-	$user_id = get_current_user_id();
+    global $go_js_version;
+    global $go_debug;
+
+    $user_id = get_current_user_id();
     //is the current user an admin
     $is_admin = go_user_is_admin($user_id);
-    global $go_js_version;
 
     /*
      * Registering Scripts For Admin Pages
@@ -28,6 +30,10 @@ function go_admin_scripts ($hook) {
     //this one doesn't minify for some reason
     wp_register_script( 'go_admin-tools', plugin_dir_url( __FILE__ ).'scripts/go_tools.js', array( 'jquery' ), $go_js_version, true);
 
+    if(!$go_debug) {
+        wp_register_script('go_admin_notifications', plugin_dir_url(__FILE__) . 'scripts/go_admin_notifications.js', array('jquery'), $go_js_version, true);
+        wp_enqueue_script('go_admin_notifications');
+    }
 
     /*
      * Enqueue Scripts For Admin Pages (Except for page specific ones below)

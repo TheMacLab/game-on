@@ -8,6 +8,9 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4.33
 */
 
+$go_debug = true;
+global $go_debug;
+
 $go_js_version = 4.32;
 global $go_js_version;
 

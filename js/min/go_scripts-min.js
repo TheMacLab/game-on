@@ -163,11 +163,7 @@ jQuery(this).prepend('<a href=\'#\' class=\'featherlight_wrapper_vid_shortcode\'
 //jQuery(this).children(".featherlight_wrapper_vid_shortcode").prepend("<span style=\"position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 1;\"></span>");
 //jQuery(".mejs-overlay-play").unbind("click");
 jQuery(this).addClass("wrapped")}))},100);// check every 100ms
-}}function go_admin_check_messages(){
-//ajax call for new messages php function
-//on success, if new messages, print
-//console.log("check_messages");
-var e=GO_ADMIN_DATA.nonces.go_admin_messages;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:e,action:"go_admin_messages"},success:function(e){console.log(e),0!=e&&jQuery("body").append(e)}})}function go_admin_check_messages_focus(){document.hasFocus()}function go_to_this_map(e){var t=GO_EVERY_PAGE_DATA.nonces.go_to_this_map;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_to_this_map",map_id:e},success:function(e){console.log("success"),window.location.href=e}})}function go_show_map(e){
+}}function go_to_this_map(e){var t=GO_EVERY_PAGE_DATA.nonces.go_to_this_map;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_to_this_map",map_id:e},success:function(e){console.log("success"),window.location.href=e}})}function go_show_map(e){
 //https://stackoverflow.com/questions/28180584/wordpress-update-user-meta-onclick-with-ajax
 //https://wordpress.stackexchange.com/questions/216140/update-user-meta-using-with-ajax
 //
@@ -241,7 +237,7 @@ t=(t=t.not("object object")).not(r)).each(function(){var e=_(this);if(!(0<e.pare
 // Internal counter for unique video names.
 _.fn.fitVids._count=0}(window.jQuery||window.Zepto),jQuery(window).ready(function(){
 //jQuery(".mejs-container").hide();
-go_Vids_Fit_and_Box("body")}),jQuery(document).ready(function(){"undefined"!=typeof GO_ADMIN_DATA&&(setInterval(go_admin_check_messages,1e4),jQuery(window).focus(function(){go_admin_check_messages()}))}),
+go_Vids_Fit_and_Box("body")}),
 //Resize listener--move to map shortcode/lightbox
 /*
 //Hide and show map on click

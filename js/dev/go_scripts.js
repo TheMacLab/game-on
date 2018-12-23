@@ -3,6 +3,5 @@
 // @codekit-prepend '/scripts/go_fitvids.js'
 // @codekit-prepend '/scripts/go_messages.js'
 // @codekit-prepend '/scripts/go_videos_fit_and_box.js'
-// @codekit-prepend '/scripts/go_admin_notifications.js'
 // @codekit-prepend '/scripts/go_map.js'
 

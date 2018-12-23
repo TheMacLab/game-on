@@ -6,6 +6,7 @@
 
 function go_scripts () {
     global $go_js_version;
+    global $go_debug;
     wp_register_script( 'go_wp_media', get_site_url(null, 'wp-admin/css/media.css'), null, $go_js_version );
 	/*
 	 * Registering Scripts For The Front-end
@@ -22,7 +23,10 @@ function go_scripts () {
 		//All GO
         wp_register_script( 'go_scripts', plugin_dir_url( __FILE__ ).'min/go_scripts-min.js', array( 'jquery' ), $go_js_version, true);
 
-
+        if(!$go_debug) {
+            wp_register_script('go_admin_notifications', plugin_dir_url(__FILE__) . 'scripts/go_admin_notifications.js', array('jquery'), $go_js_version, true);
+            wp_enqueue_script('go_admin_notifications');
+        }
     /*
      * Enqueueing Scripts For The Front-end
      */
