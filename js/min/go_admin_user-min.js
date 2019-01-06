@@ -118,19 +118,58 @@ function go_lb_opener(r){if(jQuery("#light").css("display","block"),jQuery(".go_
 //go_fit_and_max_only("#go_store_description");
 go_fit_and_max_only("#go_store_description")}}),"101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var o="Server Error.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg")}else 302===Number.parseInt(t.json_status)&&(console.log(302),window.location=t.location);jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)}),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)}),go_max_purchase_limit()}})}}
 //called when the "buy" button is clicked.
-function goBuytheItem(t,e){var r=GO_BUY_ITEM_DATA.nonces.go_buy_item,n=GO_BUY_ITEM_DATA.userID;jQuery(document).ready(function(o){var e={_ajax_nonce:r,action:"go_buy_item",the_id:t,qty:o("#go_qty").val(),user_id:n};o.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){o("#golb-fr-buy").innerHTML="",o("#golb-fr-buy").html(""),o("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?o("#light").html(e):o("#light").html(t.html)}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(r){var e;if(!(0<jQuery("#go_store_password_result").attr("value").length)){jQuery("#go_store_error_msg").show();var t="Please enter a password.";return jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg_store("#go_store_error_msg"),void jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)})}var o=jQuery("#go_store_password_result").attr("value");if(jQuery("#light").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var n=r,a,s={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:n,skip_locks:!0,result:o};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:s,cache:!1,success:function(e){var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var o="Server Error.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("bad_password"==t.json_status){jQuery("#go_store_error_msg").show();var o="Invalid password.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg"),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)})}else jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)}),jQuery("#go_store_lightbox_container").hide(),jQuery(".featherlight-content").html(t.html),go_max_purchase_limit()}})}}function go_max_purchase_limit(){window.go_purchase_limit=jQuery("#golb-fr-purchase-limit").attr("val");var e=go_purchase_limit;jQuery("#go_qty").spinner({max:e,min:1,stop:function(){jQuery(this).change()}}),go_make_store_clickable(),jQuery("#go_store_admin_override").one("click",function(e){jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}
-/*
-function tinymce_updateCharCounter(el, len) {
-    jQuery('.char_count').text(len + '/' + '500');
-}
-
-function tinymce_getContentLength() {
-    var len = tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText.length;
-    console.log(len);
-    return len;
-}
-*/
-function tinymce_getContentLength_new(){var e=tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText,t=0;if(e){var o=(e=(e=(e=(e=e.replace(/\.\.\./g," ")).replace(/<.[^<>]*?>/g," ").replace(/&nbsp;|&#160;/gi," ")).replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i,"$1$3").replace(/&.+?;/g," ")).replace(/[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g,"")).match(/[\w\u2019\x27\-\u00C0-\u1FFF]+/g);o&&(t=o.length)}return t}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
+function goBuytheItem(t,e){var r=GO_BUY_ITEM_DATA.nonces.go_buy_item,n=GO_BUY_ITEM_DATA.userID;jQuery(document).ready(function(o){var e={_ajax_nonce:r,action:"go_buy_item",the_id:t,qty:o("#go_qty").val(),user_id:n};o.ajax({url:MyAjax.ajaxurl,type:"POST",data:e,beforeSend:function(){o("#golb-fr-buy").innerHTML="",o("#golb-fr-buy").html(""),o("#golb-fr-buy").append('<div id="go-buy-loading" class="buy_gold"></div>')},success:function(e){var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:"101 Error: Please try again."}}-1!==e.indexOf("Error")?o("#light").html(e):o("#light").html(t.html)}})})}function flash_error_msg_store(e){var t=jQuery(e).css("background-color");void 0===typeof t&&(t="white"),jQuery(e).animate({color:t},200,function(){jQuery(e).animate({color:"red"},200)})}function go_store_password(r){var e;if(!(0<jQuery("#go_store_password_result").attr("value").length)){jQuery("#go_store_error_msg").show();var t="Please enter a password.";return jQuery("#go_store_error_msg").text()!=t?jQuery("#go_store_error_msg").text(t):flash_error_msg_store("#go_store_error_msg"),void jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)})}var o=jQuery("#go_store_password_result").attr("value");if(jQuery("#light").css("display","block"),!jQuery.trim(jQuery("#lb-content").html()).length){var n=r,a,s={action:"go_the_lb_ajax",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_the_lb_ajax,the_item_id:n,skip_locks:!0,result:o};jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:s,cache:!1,success:function(e){var t=JSON.parse(e);try{var t=JSON.parse(e)}catch(e){t={json_status:"101",html:""}}if("101"===Number.parseInt(t.json_status)){console.log(101),jQuery("#go_store_error_msg").show();var o="Server Error.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg")}else if(302===Number.parseInt(t.json_status))console.log(302),window.location=t.location;else if("bad_password"==t.json_status){jQuery("#go_store_error_msg").show();var o="Invalid password.";jQuery("#go_store_error_msg").text()!=o?jQuery("#go_store_error_msg").text(o):flash_error_msg_store("#go_store_error_msg"),jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)})}else jQuery("#go_store_pass_button").one("click",function(e){go_store_password(r)}),jQuery("#go_store_lightbox_container").hide(),jQuery(".featherlight-content").html(t.html),go_max_purchase_limit()}})}}function go_max_purchase_limit(){window.go_purchase_limit=jQuery("#golb-fr-purchase-limit").attr("val");var e=go_purchase_limit;jQuery("#go_qty").spinner({max:e,min:1,stop:function(){jQuery(this).change()}}),go_make_store_clickable(),jQuery("#go_store_admin_override").one("click",function(e){jQuery(".go_store_lock").show(),jQuery("#go_store_admin_override").hide(),go_make_store_clickable()})}function go_count_item(e){var t=GO_BUY_ITEM_DATA.nonces.go_get_purchase_count;jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:{_ajax_nonce:t,action:"go_get_purchase_count",item_id:e},success:function(e){if(-1!==e){var t=e.toString();jQuery("#golb-purchased").html("Quantity purchased: "+t)}}})}function task_stage_check_input(e,t,o){console.log("button clicked"),
+//disable button to prevent double clicks
+go_enable_loading(e);
+//BUTTON TYPES
+//Abandon
+//Start Timer
+//Continue
+//Undo
+//Repeat
+//Undo Repeat --is this different than just undo
+//Continue or Complete button needs to validate input for:
+////quizes
+///URLs
+///passwords
+///uploads
+//if it passes validation:
+////send information to php with ajax and wait for a response
+//if response is success
+////update totals
+///flash rewards and sounds
+////update last check
+////update current stage and check
+//v4 Set variables
+var r="";void 0!==jQuery(e).attr("button_type")&&(r=jQuery(e).attr("button_type"));var n="";void 0!==jQuery(e).attr("status")&&(n=jQuery(e).attr("status"));var a="";void 0!==jQuery(e).attr("check_type")&&(a=jQuery(e).attr("check_type"),console.log(a));var s=!1;jQuery("#go_stage_error_msg").text(""),jQuery("#go_blog_error_msg").text("");var i="<h3>Your post was not saved.</h3><ul> ",l=jQuery(e).attr("url_toggle"),_=jQuery(e).attr("video_toggle"),c=jQuery(e).attr("file_toggle"),u=jQuery(e).attr("text_toggle"),d=jQuery(e).attr("blog_suffix"),g,h="#go_result_url"+d,m="#go_result_media"+d,f;
+//console.log ("GRV: " + go_result_video);
+///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
+//if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
+if("blog"==a||"blog_lightbox"==a){//min words and Video field on blog form validation
+if("1"==_){var y=jQuery("#go_result_video"+d).attr("value").replace(/\s+/,"");console.log(y),0<y.length?!y.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<y.lastIndexOf("http://")||0<y.lastIndexOf("https://")?(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0):-1==y.search("youtube")&&-1==y.search("vimeo")&&(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0):(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0)}if("1"==u){
+//Word count validation
+var p=jQuery(e).attr("min_words"),b;//this variable is used in the other functions as well
+//alert("min Words: " + min_words);
+tinymce_getContentLength_new()<p&&(i+="<li>Your post is not long enough. There must be "+p+" words minimum.</li>",s=!0)}}"password"!==a&&"unlock"!=a||(0<jQuery("#go_result").attr("value").length||(i+="Retrieve the password from "+go_task_data.admin_name+".",s=!0));if("URL"==a||("blog"==a||"blog_lightbox"==a)&&1==l){if("URL"==a)var y=jQuery("#go_result").attr("value").replace(/\s+/,"");else var y=jQuery(h).attr("value").replace(/\s+/,""),v=jQuery(e).attr("required_string");console.log("URL"+y),0<y.length?!y.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<y.lastIndexOf("http://")||0<y.lastIndexOf("https://")?(i+="<li>Enter a valid URL.</li>",s=!0):"blog"!=a&&"blog_lightbox"!=a||-1==y.indexOf(v)&&(i+='<li>Enter a valid URL. The URL must contain "'+v+'".</li>',s=!0):(i+="<li>Enter a valid URL.</li>",go_disable_loading(),s=!0)}if("upload"==a||("blog"==a||"blog_lightbox"==a)&&1==c){if("upload"==a)var j=jQuery("#go_result").attr("value");else var j=jQuery(m).attr("value");null==j&&(i+="<li>Please attach a file.</li>",s=!0)}if("quiz"==a){var Q=jQuery(".go_test_list");if(1<=Q.length){for(var w=0,E=0;E<Q.length;E++){var x="#"+Q[E].id+" input:checked",k;1<=jQuery(x).length&&w++}
+//if all questions were answered
+s=w>=Q.length?(go_quiz_check_answers(n,e),!1):(1<Q.length?i+="<li>Please answer all questions!</li>":i+="<li>Please answer the question!</li>",!0)}}
+//}
+if(i+="</ul>",1==s)return 1==t?(console.log("error_stage"),
+//flash_error_msg('#go_stage_error_msg');
+jQuery("#go_stage_error_msg").append(i),jQuery("#go_stage_error_msg").show()):(console.log("error_blog"),jQuery("#go_blog_error_msg").append(i),jQuery("#go_blog_error_msg").show()),console.log("error validation"),void go_disable_loading();jQuery("#go_stage_error_msg").hide(),jQuery("#go_blog_error_msg").hide(),1==t?task_stage_change(e)://this was a blog save button (not a continue on a stage) so just save without changing stage.  The function only validated the inputs.
+go_blog_submit(e,d,o)}
+// disables the target stage button, and adds a loading gif to it
+function go_enable_loading(e){
+//prevent further events with this button
+//jQuery('#go_button').prop('disabled',true);
+// prepend the loading gif to the button's content, to show that the request is being processed
+e.innerHTML='<span class="go_loading"></span>'+e.innerHTML}
+// re-enables the stage button, and removes the loading gif
+function go_disable_loading(){console.log("oneclick"),jQuery(".go_loading").remove(),jQuery("#go_button").off().one("click",function(e){task_stage_check_input(this,!0,null)}),jQuery("#go_back_button").off().one("click",function(e){
+//task_stage_check_input( this, true, null );
+task_stage_change(this)}),jQuery("#go_save_button").off().one("click",function(e){task_stage_check_input(this,!1,!1)}),jQuery("#go_bonus_button").off().one("click",function(e){go_update_bonus_loot(this)}),jQuery(".go_str_item").off().one("click",function(e){go_lb_opener(this.id)}),console.log("opener4"),jQuery(".go_blog_opener").off().one("click",function(e){go_blog_opener(this)}),jQuery("#go_blog_submit").off().one("click",function(e){task_stage_check_input(this,!1,!1)}),
+//add active class to checks and buttons
+jQuery(".progress").closest(".go_checks_and_buttons").addClass("active")}function tinymce_getContentLength_new(){var e=tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText,t=0;if(e){var o=(e=(e=(e=(e=e.replace(/\.\.\./g," ")).replace(/<.[^<>]*?>/g," ").replace(/&nbsp;|&#160;/gi," ")).replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i,"$1$3").replace(/&.+?;/g," ")).replace(/[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g,"")).match(/[\w\u2019\x27\-\u00C0-\u1FFF]+/g);o&&(t=o.length)}return t}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
 //var result_title = jQuery( this ).attr( 'value' );
 var t=jQuery(e).attr("blog_post_id"),o,r={action:"go_blog_opener",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_opener,blog_post_id:t};
 //console.log(el);
@@ -304,4 +343,19 @@ go_levels_limit_each(),//run one time
 go_level_names()}}),jQuery(".more_info_accordian").accordion({collapsible:!0,header:"h3",active:!1}))}),jQuery(document).ready(function(){if("undefined"!=typeof GO_EDIT_STORE_DATA)var e=GO_EDIT_STORE_DATA.is_store_edit;if(e){var t,o,r="<a id="+GO_EDIT_STORE_DATA.postid+" class='go_str_item ab-item' >View "+GO_EDIT_STORE_DATA.store_name+" Item</a>";
 //console.log(link);
 jQuery("#wp-admin-bar-view").html(r)}}),//Add an on click to all store items
-jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})});
+jQuery(document).ready(function(){jQuery(".go_str_item").one("click",function(e){go_lb_opener(this.id)})}),
+/*
+function tinymce_updateCharCounter(el, len) {
+    jQuery('.char_count').text(len + '/' + '500');
+}
+
+function tinymce_getContentLength() {
+    var len = tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText.length;
+    console.log(len);
+    return len;
+}
+*/
+jQuery(document).ready(function(){
+//add onclick to blog edit buttons
+//console.log("opener3");
+jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)}),jQuery("#go_hidden_mce").remove(),jQuery("#go_hidden_mce_edit").remove()});

@@ -9,6 +9,278 @@ function tinymce_getContentLength() {
     return len;
 }
 */
+jQuery( document ).ready( function() {
+
+    //add onclick to blog edit buttons
+    //console.log("opener3");
+    jQuery(".go_blog_opener").one("click", function (e) {
+        go_blog_opener(this);
+    });
+
+    jQuery('#go_hidden_mce').remove();
+    jQuery('#go_hidden_mce_edit').remove();
+});
+
+function task_stage_check_input( target, next_stage, reload) {
+
+    console.log('button clicked');
+    //disable button to prevent double clicks
+    go_enable_loading( target );
+
+    //BUTTON TYPES
+    //Abandon
+    //Start Timer
+    //Continue
+    //Undo
+    //Repeat
+    //Undo Repeat --is this different than just undo
+
+    //Continue or Complete button needs to validate input for:
+    ////quizes
+    ///URLs
+    ///passwords
+    ///uploads
+
+    //if it passes validation:
+    ////send information to php with ajax and wait for a response
+
+    //if response is success
+    ////update totals
+    ///flash rewards and sounds
+    ////update last check
+    ////update current stage and check
+
+
+    //v4 Set variables
+    var button_type = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
+        button_type = jQuery( target ).attr( 'button_type' )
+    }
+
+    var task_status = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'status' ) ) {
+        task_status = jQuery( target ).attr( 'status' )
+    }
+
+    var check_type = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'check_type' ) ) {
+        check_type = jQuery( target ).attr( 'check_type' )
+        console.log(check_type);
+    }
+    var fail = false;
+    jQuery('#go_stage_error_msg').text("");
+    jQuery('#go_blog_error_msg').text("");
+    var error_message = '<h3>Your post was not saved.</h3><ul> ';
+
+    var url_toggle = jQuery(target).attr('url_toggle');
+    var video_toggle = jQuery(target).attr('video_toggle');
+    var file_toggle = jQuery(target).attr('file_toggle');
+    var text_toggle = jQuery(target).attr('text_toggle');
+    var suffix = jQuery( target ).attr( 'blog_suffix' );
+
+    var go_result_video = '#go_result_video' + suffix;
+    var go_result_url = '#go_result_url' + suffix;
+    var go_result_media = '#go_result_media' + suffix;
+    //console.log ("GRV: " + go_result_video);
+
+    ///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
+    //if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
+
+    if ( check_type == 'blog' || check_type == 'blog_lightbox') { //min words and Video field on blog form validation
+
+        if(video_toggle == '1') {
+            var the_url = jQuery(go_result_video).attr('value').replace(/\s+/, '');
+            console.log(the_url);
+
+            if (the_url.length > 0) {
+                if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
+                    if ((the_url.search("youtube") == -1) && (the_url.search("vimeo") == -1)) {
+                        error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                        fail = true;
+                    }
+                } else {
+                    error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                    fail = true;
+                }
+            } else {
+                error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                fail = true;
+            }
+        }
+
+        if(text_toggle  == '1') {
+            //Word count validation
+            var min_words = jQuery(target).attr('min_words'); //this variable is used in the other functions as well
+            //alert("min Words: " + min_words);
+            var my_words = tinymce_getContentLength_new();
+            if (my_words < min_words) {
+                error_message += "<li>Your post is not long enough. There must be " + min_words + " words minimum.</li>";
+                fail = true;
+            }
+        }
+
+    }
+    if (check_type === 'password' || check_type == 'unlock') {
+        var pass_entered = jQuery('#go_result').attr('value').length > 0 ? true : false;
+        if (!pass_entered) {
+            error_message += "Retrieve the password from " + go_task_data.admin_name + ".";
+            fail = true;
+        }
+    }
+    if (check_type == 'URL' || ((check_type == 'blog' || check_type == 'blog_lightbox') && url_toggle == true)) {
+
+        if (check_type == 'URL') {
+            var the_url = jQuery('#go_result').attr('value').replace(/\s+/, '');
+        }else{
+            var the_url = jQuery(go_result_url).attr('value').replace(/\s+/, '');
+            var required_string = jQuery( target ).attr('required_string');
+        }
+        console.log("URL" + the_url);
+
+        if (the_url.length > 0) {
+            if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
+                if ( check_type == 'blog' || check_type == 'blog_lightbox') {
+                    if ((the_url.indexOf(required_string) == -1) ){
+                        error_message += "<li>Enter a valid URL. The URL must contain \"" + required_string + "\".</li>";
+                        fail = true;
+                    }
+                }
+            } else {
+                error_message += "<li>Enter a valid URL.</li>";
+                fail = true;
+            }
+        } else {
+            error_message += "<li>Enter a valid URL.</li>";
+            go_disable_loading();
+            fail = true;
+        }
+
+    }
+    if (check_type == 'upload' || ((check_type == 'blog' || check_type == 'blog_lightbox') && file_toggle == true)) {
+        if (check_type == 'upload') {
+            var result = jQuery("#go_result").attr('value');
+        }else{
+            var result = jQuery(go_result_media).attr('value');
+        }
+        if (result == undefined) {
+            error_message += "<li>Please attach a file.</li>";
+            fail = true;
+        }
+
+    }
+
+    if (check_type == 'quiz') {
+        var test_list = jQuery(".go_test_list");
+        if (test_list.length >= 1) {
+            var checked_ans = 0;
+            for (var i = 0; i < test_list.length; i++) {
+                var obj_str = "#" + test_list[i].id + " input:checked";
+                var chosen_answers = jQuery(obj_str);
+                if (chosen_answers.length >= 1) {
+                    checked_ans++;
+                }
+            }
+            //if all questions were answered
+            if (checked_ans >= test_list.length) {
+                go_quiz_check_answers(task_status, target);
+                fail = false;
+
+            }
+            //else print error message
+            else if (test_list.length > 1) {
+                error_message +="<li>Please answer all questions!</li>";
+                fail = true;
+            }
+            //} else {
+            //if (jQuery(".go_test_list input:checked").length >= 1) {
+            // go_quiz_check_answers();
+            //}
+            else {
+                error_message += "<li>Please answer the question!</li>";
+                fail = true;
+            }
+        }
+    }
+    //}
+    error_message += "</ul>";
+    if (fail == true){
+        if (next_stage == true) {
+            console.log("error_stage");
+            //flash_error_msg('#go_stage_error_msg');
+            jQuery('#go_stage_error_msg').append(error_message);
+            jQuery('#go_stage_error_msg').show();
+
+        }else {
+
+            console.log("error_blog");
+            jQuery('#go_blog_error_msg').append(error_message);
+            jQuery('#go_blog_error_msg').show();
+        }
+        console.log("error validation");
+        go_disable_loading();
+        return;
+    }else{
+        jQuery('#go_stage_error_msg').hide();
+        jQuery('#go_blog_error_msg').hide();
+    }
+
+    if (next_stage == true) {
+        task_stage_change(target);
+    }else{ //this was a blog save button (not a continue on a stage) so just save without changing stage.  The function only validated the inputs.
+        go_blog_submit( target, suffix, reload );
+    }
+}
+
+// disables the target stage button, and adds a loading gif to it
+function go_enable_loading( target ) {
+    //prevent further events with this button
+    //jQuery('#go_button').prop('disabled',true);
+    // prepend the loading gif to the button's content, to show that the request is being processed
+    target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
+}
+
+// re-enables the stage button, and removes the loading gif
+function go_disable_loading( ) {
+    console.log ("oneclick");
+    jQuery('.go_loading').remove();
+
+    jQuery('#go_button').off().one("click", function(e){
+        task_stage_check_input( this, true, null );
+    });
+    jQuery('#go_back_button').off().one("click", function(e){
+        //task_stage_check_input( this, true, null );
+        task_stage_change(this);
+    });
+
+    jQuery('#go_save_button').off().one("click", function(e){
+        task_stage_check_input( this, false, false );
+    });
+
+    jQuery( "#go_bonus_button" ).off().one("click", function(e) {
+        go_update_bonus_loot(this);
+    });
+
+
+    jQuery('.go_str_item').off().one("click", function(e){
+        go_lb_opener( this.id );
+    });
+
+    console.log("opener4");
+    jQuery(".go_blog_opener").off().one("click", function(e){
+        go_blog_opener( this );
+    });
+
+    jQuery("#go_blog_submit").off().one("click", function(e){
+        task_stage_check_input( this, false, false );
+    });
+
+
+    //add active class to checks and buttons
+    jQuery(".progress").closest(".go_checks_and_buttons").addClass('active');
+
+}
+
+
 
 function tinymce_getContentLength_new() {
     var b = tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText;

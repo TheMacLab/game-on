@@ -273,10 +273,10 @@ function go_print_password_check_result($password_type){
 function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
     global $wpdb;
 
-    $url_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0] : null);
-    $file_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_attach_file_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_attach_file_toggle'][0] : null);
-    $video_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_video'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_video'][0] : null);
-    $text_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_blog_text_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_blog_text_toggle'][0] : null);
+    //$url_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0] : null);
+    //$file_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_attach_file_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_attach_file_toggle'][0] : null);
+    //$video_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_video'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_video'][0] : null);
+    //$text_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_blog_text_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_blog_text_toggle'][0] : null);
 
     //for bonus stages
     $stage = 'stage';

@@ -45,6 +45,8 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             $text_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0] : true);
             $restrict_mime_types = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0] : null);
             $min_words = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0] : null);
+            $required_string = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0] : null);
+
         }
         else{
             $url_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_url'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_url'][0] : null);
@@ -53,7 +55,11 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             $text_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0] : null);
             $restrict_mime_types = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0] : null);
             $min_words = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0] : null);
+            $required_string = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0]) ?  $custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0] : null);
 
+        }
+        if(empty($title)){
+            $title = get_the_title($go_blog_task_id);
         }
 
     }
@@ -63,7 +69,11 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     echo "<div>Title:<div><input style='width: 100%;' id='go_blog_title".$suffix."' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}'></div> </div>";
 
     if ($url_toggle) {
-        echo "<div>URL:<div>";
+        echo "<div>URL:";
+        if ($required_string){
+            echo " (url must contain \"".$required_string."\")";
+        }
+        echo "<div>";
         //go_url_check($custom_fields, $i, $i, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, null, 'Enter URL', 'go_result_url' , $url_content);
         go_url_check_blog ('Enter URL', 'go_result_url'.$suffix , $url_content);
         echo "</div> </div>";
@@ -78,7 +88,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             $mime_types_array = is_array($mime_types) ? $mime_types : array();
             $mime_types = implode(",", $mime_types_array);
             $mime_types_pretty = implode(", ", $mime_types_array);
-            $mime_types_count = array_count_values($mime_types_array);
+            $mime_types_count = count($mime_types_array);
         }else{
             $mime_types = '';
             $mime_types_pretty = '';
@@ -86,12 +96,13 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         }
 
         echo "<div>Attach File:";
+
         if (!empty($mime_types_pretty))
         {
             if ($mime_types_count > 1) {
-                echo " (File type must be one of: " . $mime_types_pretty . ".)";
+                echo " (Allowed file types: " . $mime_types_pretty . ")";
             }else if ($mime_types_count == 1){
-                echo " (File type must be:" . $mime_types_pretty . ".)";
+                echo " (Allowed file type: " . $mime_types_pretty . ")";
             }
         }
         echo "<div>";

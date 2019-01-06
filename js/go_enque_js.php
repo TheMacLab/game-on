@@ -36,8 +36,6 @@ function go_scripts () {
 		wp_enqueue_script( 'go_frontend-min' );
         wp_enqueue_script( 'go_scripts' );
 
-        wp_enqueue_script( 'go_tasks','','','', true );
-
         $is_admin = go_user_is_admin();
         if ($is_admin){
             //wp_register_script('go_admin_notification_listener', plugins_url('min/go_admin_notifications-min.js', __FILE__), array('jquery'), $go_js_version, true);
@@ -53,7 +51,7 @@ function go_scripts () {
             );
         }
 
-		//END COMBINED
+    //END COMBINED
 
 		// Dependencies
 		wp_enqueue_script( 'jquery' );

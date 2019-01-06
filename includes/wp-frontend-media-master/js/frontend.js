@@ -13,10 +13,10 @@ function go_upload_frontend(div_id, mime_types) {
     //event.preventDefault();
 
     //add ajax function that converts extensions into list of mime types for the media uploader
-    var title = "Select a file."
+    var title = "Select a file"
     if (mime_types.length != 0) {
         var restricted = mime_types.replace(/,/g, ', ')
-        title = title + " File type required: " + restricted + ".";
+        title = title + " (Allowed types: " + restricted + ")";
     }
 
     // Add page slug to media uploader settings

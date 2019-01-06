@@ -30,6 +30,13 @@ function go_task_shortcode($atts, $content = null ) {
     }
 
     /**
+     * Enqueue go_tasks.js that is only needed on task pages
+     * https://www.thewpcrowd.com/wordpress/enqueuing-scripts-only-when-widget-or-shortcode/
+     */
+    wp_enqueue_script( 'go_tasks','','','', true );
+
+
+    /**
      * Variables
      */
     // the current user's id
@@ -345,7 +352,9 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         //$badges_on = true;
         //$badges_name = get_option('options_go_badges_name_plural');
         $badges = $loot->badges;
-        $badges = unserialize($badges);
+        if($badges) {
+            $badges = unserialize($badges);
+        }
     }
     //$groups_loot = $loot->groups;
     echo "<div id='outro' class='go_checks_and_buttons'>";
