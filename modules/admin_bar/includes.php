@@ -6,43 +6,22 @@
  * Time: 5:35 AM
  */
 
+//conditional includes
 
-
-foreach ( glob( plugin_dir_path( __FILE__ ) . "*.php" ) as $file ) {
-    include_once $file;
-}
-
-if ( is_admin() ) {
-
-    foreach ( glob( plugin_dir_path( __FILE__ ) . "admin/*.php" ) as $file ) {
-        include_once $file;
-    }
-
-    foreach ( glob( plugin_dir_path( __FILE__ ) . "admin/ajax/*.php" ) as $file ) {
-        include_once $file;
-    }
-
+if ( !is_admin() ) {
+    //include_once('public/public.php');
 }else if ( defined( 'DOING_AJAX' )) {
+    include_once('src/ajax.php');
 
-    foreach ( glob( plugin_dir_path( __FILE__ ) . "ajax/*.php" ) as $file ) {
-        include_once $file;
-    }
-
-    foreach ( glob( plugin_dir_path( __FILE__ ) . "public/ajax/*.php" ) as $file ) {
-        include_once $file;
-    }
-
-    foreach ( glob( plugin_dir_path( __FILE__ ) . "admin/ajax/*.php" ) as $file ) {
-        include_once $file;
-    }
-
+    add_action( 'wp_ajax_go_update_admin_view', 'go_update_admin_view' ); //OK
 }else{
-
-    foreach ( glob( plugin_dir_path( __FILE__ ) . "public/*.php" ) as $file ) {
-        include_once $file;
-    }
-
-    foreach ( glob( plugin_dir_path( __FILE__ ) . "public/ajax/*.php" ) as $file ) {
-        include_once $file;
-    }
+    //include_once('admin/admin.php');
 }
+
+//always include
+include_once('src/functions.php');
+
+/*
+ * Admin Menu & Admin Bar
+ */
+add_action( 'admin_bar_init', 'go_admin_bar' );

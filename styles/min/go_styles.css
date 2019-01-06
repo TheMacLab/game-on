@@ -132,6 +132,14 @@ video.wp-video-shortcode {
 #go_button {
   float: right; }
 
+.go_save_button {
+  float: left;
+  margin: 10px; }
+
+#go_blog_submit {
+  float: right;
+  margin: 10px; }
+
 #go_back_button,
 #go_button,
 #frontend-button {
@@ -146,6 +154,9 @@ video.wp-video-shortcode {
   background-color: gold;
   color: black;
   border: 1px solid; }
+
+.go_required_blog_content {
+  padding: 20px; }
 
 /********************
 *	locks
@@ -694,6 +705,9 @@ input#go_pass_lock::-moz-placeholder {
 .wp-menu-separator {
   border-bottom: solid 1px;
   color: lightgray; }
+
+#wp-go_blog_post-wrap {
+  margin-top: 20px; }
 
 .featherlight.stats .featherlight-content {
   width: 90%;

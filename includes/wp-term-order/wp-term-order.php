@@ -73,6 +73,8 @@ final class WP_Term_Order {
 	 */
 	public function __construct() {
 
+        add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
+
 		// Setup plugin
 		$this->file     = __FILE__;
 		$this->url      = plugin_dir_url( $this->file );
@@ -151,7 +153,6 @@ final class WP_Term_Order {
 
 		// Enqueue fancy ordering
 		if ( true === $this->fancy ) {
-				add_action( 'wp_ajax_check_if_top_term', 'go_check_if_top_term' );
 				$ajax_url   = admin_url( 'admin-ajax.php' );        // Localized AJAX URL
 				wp_register_script( 'term-order-reorder', $this->url . 'js/reorder.js', array( 'jquery-ui-sortable' ), $this->db_version, true );
 				wp_localize_script('term-order-reorder','ajax_url',$ajax_url);

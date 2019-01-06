@@ -18,23 +18,23 @@ i.wrapAll(n),i.contents().unwrap(),this;// Suggested by ColeLawrence
 return this.each(function(){jQuery.replaceTag(this,e,r)})}}),jQuery("#cb-select-all-1").click(function(){toggle(this)}),jQuery("#cb-select-all-2").click(function(){toggle(this)}),jQuery(document).ready(function(){var a=[];
 //make array of all the term ids
 jQuery("#the-list").find("tr").each(function(){a.push(this.id)}),termDivIDs=a,
-//alert (termID);
+//alert (termDivIDs);
 jQuery.ajax({type:"POST",
 //dataType: 'json',
 url:ajax_url,data:{action:"check_if_top_term",goTermDivIDs:termDivIDs},success:function(e){
 /**
-				 * Update the term order based on the ajax response
-				 *
-				 * @param {type} response
-				 * @returns {void}
-				 */
+		 * Update the term order based on the ajax response
+		 *
+		 * @param {type} response
+		 * @returns {void}
+		 */
 function c(e){
 //window.location.reload();
 /*if ( 'children' === response ) {
-						window.location.reload();
-						return;
-					}
-					*/
+				window.location.reload();
+				return;
+			}
+			*/
 //alert(response);
 var r=jQuery.parseJSON(e),t=r.new_pos;for(var i in t)if("next"!==i){var a=document.getElementById("inline_"+i);if(null!==a&&t.hasOwnProperty(i)){var n=a.querySelector(".order");if(void 0!==t[i].order){null!==n&&(n.innerHTML=t[i].order);var l=a.querySelector(".parent");null!==l&&(l.innerHTML=t[i].parent);var s=null,d=a.querySelector(".row-title");null!==d&&(s=d.innerHTML);for(var o=0;o<t[i].depth;)
 //term_title = '&mdash; ' + term_title;
@@ -44,28 +44,28 @@ jQuery("#the-list").find(".parent").each(function(e){jQuery(this).wrapInner('<di
 //Edit Inline (Quick Edit)
 //this doesn't work yet
 /*
-				jQuery( '.editinline' ).on( 'click', function() {
-					var tag_id = jQuery( this ).parents( 'li' ).attr( 'id' ),
-				 	order  = jQuery( 'li.order', '#' + tag_id ).text();
-					alert (tag_id);
-					alert (order);
-					order = 2;
-					console.log(order);
-					jQuery( ':input[name="order"]', '.inline-edit-row' ).val( order );
-				 } );
-				 */
+		jQuery( '.editinline' ).on( 'click', function() {
+			var tag_id = jQuery( this ).parents( 'li' ).attr( 'id' ),
+			order  = jQuery( 'li.order', '#' + tag_id ).text();
+			alert (tag_id);
+			alert (order);
+			order = 2;
+			console.log(order);
+			jQuery( ':input[name="order"]', '.inline-edit-row' ).val( order );
+		 } );
+		 */
 /*
-				//Event Listener on mouseover show actions
-				jQuery( "#the-list .column-name" ).mouseover(function() {
-  					jQuery(this).find('.row-actions').css( "left", "0px" );
-				});
+		//Event Listener on mouseover show actions
+		jQuery( "#the-list .column-name" ).mouseover(function() {
+			jQuery(this).find('.row-actions').css( "left", "0px" );
+		});
 
 
-    			jQuery("#the-list .column-name").mouseout(function() {
-       				jQuery(this).find('.row-actions').css( "left", "-99999em" );
-       				//hideChildren ();
-    			});
-    			*/
+		jQuery("#the-list .column-name").mouseout(function() {
+			jQuery(this).find('.row-actions').css( "left", "-99999em" );
+			//hideChildren ();
+		});
+		*/
 jQuery(".handleRight").mousedown(function(){jQuery(".child.ui-sortable-handle").css("display","none"),jQuery("body").mouseup(function(){jQuery(".child.ui-sortable-handle").css("display","block")})});
 //////////////////////////Begin Sortable List
 var h=jQuery(".ulSortable"),y=jQuery('form input[name="taxonomy"]').val();h.sortable({
@@ -74,49 +74,49 @@ items:"> li",cursor:"move",axis:"y",cancel:"  .inline-edit-row",distance:2,opaci
 //tolerance: 'intersect',
 containment:"parent",forceHelperSize:!0,forcePlaceholderSize:!0,cursorAt:{top:25,left:15},
 /**
-					 * Sort start
-					 *
-					 * @param {event} e
-					 * @param {element} ui
-					 * @returns {void}
-					 */
+			 * Sort start
+			 *
+			 * @param {event} e
+			 * @param {element} ui
+			 * @returns {void}
+			 */
 start:function(e,r){
 //sortable_terms_table.sortable( "refreshPositions" );
 //sortable_terms_table.sortable('refresh');
 "undefined"!=typeof inlineEditTax&&inlineEditTax.revert(),r.placeholder.height(r.item.height()),r.item.parent().parent().addClass("dragging")},
 /**
-					 * Sort dragging
-					 *
-					 * @param {event} e
-					 * @param {element} ui
-					 * @returns {void}
-					 */
+			 * Sort dragging
+			 *
+			 * @param {event} e
+			 * @param {element} ui
+			 * @returns {void}
+			 */
 helper:function(e,r){
 //sortable_terms_table.sortable( "refreshPositions" );
 //sortable_terms_table.sortable('refresh');
 return r.children().each(function(){jQuery(this).width(jQuery(this).width())}),r},
 /**
-					 * Sort dragging stopped
-					 *
-					 * @param {event} e
-					 * @param {element} ui
-					 * @returns {void}
-					 */
+			 * Sort dragging stopped
+			 *
+			 * @param {event} e
+			 * @param {element} ui
+			 * @returns {void}
+			 */
 /*
-					stop: function ( e, ui ) {
-						ui.item.children( '.row-actions' ).show();
-						ui.item.parent().parent().removeClass( 'dragging' );
-						//jQuery(".children").show();
-						//window.location.reload();
-					},
-					*/
+			stop: function ( e, ui ) {
+				ui.item.children( '.row-actions' ).show();
+				ui.item.parent().parent().removeClass( 'dragging' );
+				//jQuery(".children").show();
+				//window.location.reload();
+			},
+			*/
 /**
-					 * Update the data in the database based on UI changes
-					 *
-					 * @param {event} e
-					 * @param {element} ui
-					 * @returns {void}
-					 */
+			 * Update the data in the database based on UI changes
+			 *
+			 * @param {event} e
+			 * @param {element} ui
+			 * @returns {void}
+			 */
 update:function(e,r){h.sortable("disable").addClass("to-updating"),r.item.addClass("to-row-updating");var t=4,i=r.item[0].id.substr(4),a=!1,n=r.item.prev();0<n.length&&(a=n.attr("id").substr(4));var l=!1,s=r.item.next();0<s.length&&(l=s.attr("id").substr(4)),
 // Go do the sorting stuff via ajax
 jQuery.post(ajaxurl,{action:"reordering_terms",id:i,previd:a,nextid:l,tax:y},c)}

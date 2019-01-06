@@ -14,25 +14,29 @@ function go_scripts () {
     wp_enqueue_script( 'mce-view' );
 
 	wp_enqueue_style( 'dashicons' );
-		//task shortcode script is registered here, but enqueued and localized in the shortcode.
-		wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'min/go_tasks-min.js', null, $go_js_version );
 
-		//COMBINED FILE
-		wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'min/go_frontend-min.js', array('jquery'), $go_js_version, false);
+	//task shortcode script is registered here, but enqueued and localized in the shortcode.
+    wp_register_script( 'go_tasks', plugin_dir_url( __FILE__ ).'min/go_tasks-min.js', null, $go_js_version );
 
-		//All GO
-        wp_register_script( 'go_scripts', plugin_dir_url( __FILE__ ).'min/go_scripts-min.js', array( 'jquery' ), $go_js_version, true);
 
-        if(!$go_debug) {
-            wp_register_script('go_admin_notifications', plugin_dir_url(__FILE__) . 'scripts/go_admin_notifications.js', array('jquery'), $go_js_version, true);
-            wp_enqueue_script('go_admin_notifications');
-        }
+    //COMBINED FILE
+    wp_register_script( 'go_frontend-min', plugin_dir_url( __FILE__ ).'min/go_frontend-min.js', array('jquery'), $go_js_version, false);
+
+    //All GO
+    wp_register_script( 'go_scripts', plugin_dir_url( __FILE__ ).'min/go_scripts-min.js', array( 'jquery' ), $go_js_version, true);
+
+    if(!$go_debug) {
+        wp_register_script('go_admin_notifications', plugin_dir_url(__FILE__) . 'scripts/go_admin_notifications.js', array('jquery'), $go_js_version, true);
+        wp_enqueue_script('go_admin_notifications');
+    }
     /*
      * Enqueueing Scripts For The Front-end
      */
 		//Combined File
 		wp_enqueue_script( 'go_frontend-min' );
         wp_enqueue_script( 'go_scripts' );
+
+        wp_enqueue_script( 'go_tasks','','','', true );
 
         $is_admin = go_user_is_admin();
         if ($is_admin){

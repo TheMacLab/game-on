@@ -1,27 +1,22 @@
+//this needs to be run on both task and blog pages
+//it has the code to verify the blog content
+//and assign the click to the opener
 jQuery( document ).ready( function() {
 
     //add onclick to blog edit buttons
+    console.log("opener3");
+    jQuery(".go_blog_opener").one("click", function(e){
+        go_blog_opener( this );
+    });
 
-    //jQuery( document ).ready( function() {
-        jQuery(".go_blog_opener").one("click", function(e){
-            go_blog_opener( this );
-        });
-    //});
-
-
-	jQuery.ajaxSetup({
+    /*
+    jQuery.ajaxSetup({
 		url: go_task_data.url += '/wp-admin/admin-ajax.php'
 	});
-
+*/
 
 	go_make_clickable();
 	jQuery( ".go_stage_message" ).show(  );
-
-    // remove existing editor instance
-    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
-    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
-    jQuery('#go_hidden_mce').remove();
-    jQuery('#go_hidden_mce_edit').remove();
 
     var go_select_admin_view = jQuery('#go_select_admin_view').val();
     console.log(go_select_admin_view);
@@ -30,10 +25,14 @@ jQuery( document ).ready( function() {
 
         //add onclick to continue buttons
         jQuery('#go_button').one("click", function (e) {
-            task_stage_check_input(this);
+            task_stage_check_input(this, true, null);
         });
         jQuery('#go_back_button').one("click", function (e) {
-            task_stage_check_input(this);
+            //task_stage_check_input(this, true, null);
+            task_stage_change(this);
+        });
+        jQuery('#go_save_button').one("click", function (e) {
+            task_stage_check_input(this, false, false);
         });
     }
 
@@ -50,6 +49,16 @@ jQuery( document ).ready( function() {
     jQuery('#go_admin_override').click( function () {
         jQuery('.go_password').show();
     });
+
+    // remove existing editor instance
+    //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
+    //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+    jQuery('#go_hidden_mce').remove();
+    jQuery('#go_hidden_mce_edit').remove();
+
+    //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
+    //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post' );
+
 });
 
 function go_update_bonus_loot(){
@@ -77,7 +86,7 @@ function go_update_bonus_loot(){
 
 //For the Timer (v4)
 function getTimeRemaining(endtime) {
-	  var t = Date.parse(endtime) - Date.parse(new Date());
+	  var t = endtime - Date.parse(new Date());
 	  var seconds = Math.floor((t / 1000) % 60);
 	  var minutes = Math.floor((t / 1000 / 60) % 60);
 	  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
@@ -89,11 +98,12 @@ function getTimeRemaining(endtime) {
 	    'minutes': minutes,
 	    'seconds': seconds
 	  };
-
-	}
+}
 
 //Initializes the new timer (v4)
 function initializeClock(id, endtime) {
+    console.log("initializeClock");
+    endtime = endtime + Date.parse(new Date());
 	var clock = document.getElementById(id);
 	var daysSpan = clock.querySelector('.days');
 	var hoursSpan = clock.querySelector('.hours');
@@ -123,18 +133,16 @@ function initializeClock(id, endtime) {
   	updateClock();
   	var t = getTimeRemaining(endtime);
   	var time_ms = t.total;
-	console.log (t.total);
+	console.log ("total" + t.total);
   	if (time_ms > 0 ){
   		var timeinterval = setInterval(updateClock, 1000);
   	}else {
-
   	}
-
 }
 
 function go_timer_abandon() {
 	 var redirectURL = go_task_data.redirectURL
- 	//window.location = $homeURL;
+ 	//task_stage_check_input.location = $homeURL;
     window.location = redirectURL;
 }
 
@@ -166,22 +174,33 @@ function go_disable_loading( ) {
     jQuery('.go_loading').remove();
 
     jQuery('#go_button').off().one("click", function(e){
-        task_stage_check_input( this );
+        task_stage_check_input( this, true, null );
     });
     jQuery('#go_back_button').off().one("click", function(e){
-        task_stage_check_input( this );
+        //task_stage_check_input( this, true, null );
+        task_stage_change(this);
+    });
+
+    jQuery('#go_save_button').off().one("click", function(e){
+        task_stage_check_input( this, false, false );
     });
 
     jQuery( "#go_bonus_button" ).off().one("click", function(e) {
         go_update_bonus_loot(this);
     });
 
+
     jQuery('.go_str_item').off().one("click", function(e){
         go_lb_opener( this.id );
     });
 
+    console.log("opener4");
     jQuery(".go_blog_opener").off().one("click", function(e){
         go_blog_opener( this );
+    });
+
+    jQuery("#go_blog_submit").off().one("click", function(e){
+        task_stage_check_input( this, false, false );
     });
 
 
@@ -190,8 +209,9 @@ function go_disable_loading( ) {
 
 }
 
-function task_stage_check_input( target ) {
-	console.log('button clicked');
+function task_stage_check_input( target, next_stage, reload) {
+
+    console.log('button clicked');
     //disable button to prevent double clicks
     go_enable_loading( target );
 
@@ -233,65 +253,111 @@ function task_stage_check_input( target ) {
     var check_type = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'check_type' ) ) {
         check_type = jQuery( target ).attr( 'check_type' )
+        console.log(check_type);
     }
+    var fail = false;
+    jQuery('#go_stage_error_msg').text("");
+    jQuery('#go_blog_error_msg').text("");
+    var error_message = '<h3>Your post was not saved.</h3><ul> ';
+
+    var url_toggle = jQuery(target).attr('url_toggle');
+    var video_toggle = jQuery(target).attr('video_toggle');
+    var file_toggle = jQuery(target).attr('file_toggle');
+    var text_toggle = jQuery(target).attr('text_toggle');
+    var suffix = jQuery( target ).attr( 'blog_suffix' );
+
+    var go_result_video = '#go_result_video' + suffix;
+    var go_result_url = '#go_result_url' + suffix;
+    var go_result_media = '#go_result_media' + suffix;
+    //console.log ("GRV: " + go_result_video);
 
     ///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
-    if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
-    	if (check_type === 'password' || check_type == 'unlock') {
-            var pass_entered = jQuery('#go_result').attr('value').length > 0 ? true : false;
-            if (!pass_entered) {
-                jQuery('#go_stage_error_msg').show();
-                var error = "Retrieve the password from " + go_task_data.admin_name + ".";
-                if (jQuery('#go_stage_error_msg').text() != error) {
-                    jQuery('#go_stage_error_msg').text(error);
-                } else {
-                    flash_error_msg('#go_stage_error_msg');
-                }
-                go_disable_loading();
-                return;
-            }
-        } else if (check_type == 'URL') {
-            var the_url = jQuery('#go_result').attr('value').replace(/\s+/, '');
-            if (the_url.length > 0) {
-                if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
-                    var url_entered = true;
-                } else {
-                    jQuery('#go_stage_error_msg').show();
-                    var error = "Enter a valid URL.";
-                    if (jQuery('#go_stage_error_msg').text() != error) {
-                        jQuery('#go_stage_error_msg').text(error);
+    //if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
+
+        if ( check_type == 'blog' || check_type == 'blog_lightbox') { //min words and Video field on blog form validation
+
+            if(video_toggle == '1') {
+                var the_url = jQuery(go_result_video).attr('value').replace(/\s+/, '');
+                console.log(the_url);
+
+                if (the_url.length > 0) {
+                    if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
+                        if ((the_url.search("youtube") == -1) && (the_url.search("vimeo") == -1)) {
+                            error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                            fail = true;
+                        }
                     } else {
-                        flash_error_msg('#go_stage_error_msg');
+                        error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                        fail = true;
                     }
-                    go_disable_loading();
-                    return;
-                }
-            } else {
-                jQuery('#go_stage_error_msg').show();
-                var error = "Enter a valid URL.";
-                if (jQuery('#go_stage_error_msg').text() != error) {
-                    jQuery('#go_stage_error_msg').text(error);
                 } else {
-                    flash_error_msg('#go_stage_error_msg');
+                    error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                    fail = true;
                 }
-                go_disable_loading();
-                return;
-            }
-        }else if (check_type == 'upload') {
-            var result = jQuery("#go_result").attr( 'value');
-            if (result == undefined) {
-                jQuery('#go_stage_error_msg').show();
-                var error = "Please attach a file.";
-                if (jQuery('#go_stage_error_msg').text() != error) {
-                    jQuery('#go_stage_error_msg').text(error);
-                } else {
-                    flash_error_msg('#go_stage_error_msg');
-                }
-                go_disable_loading();
-                return;
             }
 
-        }else if (check_type == 'quiz') {
+            if(text_toggle  == '1') {
+                //Word count validation
+                var min_words = jQuery(target).attr('min_words'); //this variable is used in the other functions as well
+                //alert("min Words: " + min_words);
+                var my_words = tinymce_getContentLength_new();
+                if (my_words < min_words) {
+                    error_message += "<li>Your post is not long enough. There must be " + min_words + " words minimum.</li>";
+                    fail = true;
+                }
+            }
+
+        }
+        if (check_type === 'password' || check_type == 'unlock') {
+            var pass_entered = jQuery('#go_result').attr('value').length > 0 ? true : false;
+            if (!pass_entered) {
+                error_message += "Retrieve the password from " + go_task_data.admin_name + ".";
+                fail = true;
+            }
+        }
+        if (check_type == 'URL' || ((check_type == 'blog' || check_type == 'blog_lightbox') && url_toggle == true)) {
+
+    	    if (check_type == 'URL') {
+                var the_url = jQuery('#go_result').attr('value').replace(/\s+/, '');
+            }else{
+                var the_url = jQuery(go_result_url).attr('value').replace(/\s+/, '');
+                var required_string = jQuery( target ).attr('required_string');
+            }
+            console.log("URL" + the_url);
+
+            if (the_url.length > 0) {
+                if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
+                    if ( check_type == 'blog' || check_type == 'blog_lightbox') {
+                        if ((the_url.indexOf(required_string) == -1) ){
+                            error_message += "<li>Enter a valid URL. The URL must contain \"" + required_string + "\".</li>";
+                            fail = true;
+                        }
+                    }
+                } else {
+                    error_message += "<li>Enter a valid URL.</li>";
+                    fail = true;
+                }
+            } else {
+                error_message += "<li>Enter a valid URL.</li>";
+                go_disable_loading();
+                fail = true;
+            }
+
+        }
+        if (check_type == 'upload' || ((check_type == 'blog' || check_type == 'blog_lightbox') && file_toggle == true)) {
+            if (check_type == 'upload') {
+                var result = jQuery("#go_result").attr('value');
+            }else{
+                var result = jQuery(go_result_media).attr('value');
+            }
+            if (result == undefined) {
+                error_message += "<li>Please attach a file.</li>";
+                fail = true;
+            }
+
+        }
+
+        if (check_type == 'quiz') {
             var test_list = jQuery(".go_test_list");
             if (test_list.length >= 1) {
                 var checked_ans = 0;
@@ -305,39 +371,52 @@ function task_stage_check_input( target ) {
                 //if all questions were answered
                 if (checked_ans >= test_list.length) {
                     go_quiz_check_answers(task_status, target);
-                    go_disable_loading();
-                    return;
+                    fail = false;
 
                 }
                 //else print error message
                 else if (test_list.length > 1) {
-                    jQuery('#go_stage_error_msg').show();
-                    if (jQuery('#go_stage_error_msg').text() != "Please answer all questions!") {
-                        jQuery('#go_stage_error_msg').text("Please answer all questions!");
-                    } else {
-                        flash_error_msg('#go_stage_error_msg');
-                    }
-                    go_disable_loading();
-                    return;
+                    error_message +="<li>Please answer all questions!</li>";
+                    fail = true;
                 }
                 //} else {
                 //if (jQuery(".go_test_list input:checked").length >= 1) {
                 // go_quiz_check_answers();
                 //}
                 else {
-                    jQuery('#go_stage_error_msg').show();
-                    if (jQuery('#go_stage_error_msg').text() != "Please answer the question!") {
-                        jQuery('#go_stage_error_msg').text("Please answer the question!");
-                    } else {
-                        flash_error_msg('#go_stage_error_msg');
-                    }
-                    go_disable_loading();
-                    return;
+                    error_message += "<li>Please answer the question!</li>";
+                    fail = true;
                 }
             }
         }
+    //}
+    error_message += "</ul>";
+    if (fail == true){
+        if (next_stage == true) {
+            console.log("error_stage");
+            //flash_error_msg('#go_stage_error_msg');
+            jQuery('#go_stage_error_msg').append(error_message);
+            jQuery('#go_stage_error_msg').show();
+
+        }else {
+
+            console.log("error_blog");
+            jQuery('#go_blog_error_msg').append(error_message);
+            jQuery('#go_blog_error_msg').show();
+        }
+        console.log("error validation");
+        go_disable_loading();
+        return;
+    }else{
+        jQuery('#go_stage_error_msg').hide();
+        jQuery('#go_blog_error_msg').hide();
     }
-    task_stage_change( target );
+
+    if (next_stage == true) {
+        task_stage_change(target);
+    }else{ //this was a blog save button (not a continue on a stage) so just save without changing stage.  The function only validated the inputs.
+        go_blog_submit( target, suffix, reload );
+    }
 }
 
 function task_stage_change( target ) {
@@ -365,9 +444,13 @@ function task_stage_change( target ) {
     if( check_type == 'blog' && button_type != 'undo_last_bonus'){
         //result = tinyMCE.activeEditor.getContent();
         result = go_get_tinymce_content_check();
-        var result_title = jQuery( '#go_result_title_check' ).val( );
+        var result_title = jQuery( '#go_blog_title' ).val();
         var blog_post_id= jQuery( '#go_result_title_check' ).data( 'blog_post_id' );
-        //console.log(blog_post_id);
+        var blog_url= jQuery( '#go_result_url' ).val();
+        var blog_media= jQuery( '#go_result_media' ).attr( 'value' );
+        var blog_video= jQuery( '#go_result_video' ).val();
+        //console.log("ID" + blog_post_id);
+        //console.log("BV" + blog_video);
 
     }else{
         var result_title = null;
@@ -384,7 +467,11 @@ function task_stage_change( target ) {
             check_type: check_type,
             result: result,
             result_title: result_title,
-            blog_post_id: blog_post_id
+            blog_post_id: blog_post_id,
+            blog_url: blog_url,
+            blog_media: blog_media,
+            blog_video: blog_video,
+
         },
         success: function( raw ) {
             console.log('success');
@@ -484,12 +571,12 @@ function task_stage_change( target ) {
 }
 
 function go_get_tinymce_content_check(){
-    console.log("html");
+    //console.log("html");
     if (jQuery("#wp-go_blog_post-wrap .wp-editor-area").is(":visible")){
         return jQuery('#wp-go_blog_post-wrap .wp-editor-area').val();
 
     }else{
-        console.log("visual");
+        //console.log("visual");
         return tinyMCE.activeEditor.getContent();
     }
 }
@@ -500,8 +587,6 @@ function go_mce_reset() {
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
     tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post' );
 
-    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
-    tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
 }
 
 function go_append (res){
