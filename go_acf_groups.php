@@ -4876,11 +4876,11 @@ The master password that is set in the options page will work here, but you may 
                                     'class' => '',
                                     'id' => '',
                                 ),
-                                'layout' => 'table',
+                                'layout' => 'row',
                                 'sub_fields' => array(
                                     array(
                                         'key' => 'field_5c2d29dff9144',
-                                        'label' => 'Link',
+                                        'label' => '',
                                         'name' => 'toggle',
                                         'type' => 'true_false',
                                         'instructions' => '',
@@ -4939,11 +4939,11 @@ The master password that is set in the options page will work here, but you may 
                                     'class' => '',
                                     'id' => '',
                                 ),
-                                'layout' => 'table',
+                                'layout' => 'row',
                                 'sub_fields' => array(
                                     array(
                                         'key' => 'field_5c2d2a64f9146',
-                                        'label' => 'Attach File',
+                                        'label' => '',
                                         'name' => 'toggle',
                                         'type' => 'true_false',
                                         'instructions' => '',
@@ -4965,7 +4965,7 @@ The master password that is set in the options page will work here, but you may 
                                         'label' => 'Restrict File Types',
                                         'name' => 'restrict_file_types',
                                         'type' => 'true_false',
-                                        'instructions' => '',
+                                        'instructions' => '<a target="codex" href="https://codex.wordpress.org/Function_Reference/get_allowed_mime_types"> See allowed file types.</a>',
                                         'required' => 0,
                                         'conditional_logic' => array(
                                             array(
@@ -5009,8 +5009,8 @@ The master password that is set in the options page will work here, but you may 
                                             'id' => '',
                                         ),
                                         'choices' => array(
-                                            'image' => 'Images',
-                                            'application' => 'Application Files (e.g., Office, iWork)',
+                                            'image' => 'Images (jpg, png, gif, tiff, ico, bmp)',
+                                            'application' => 'Application Files (e.g., Office, iWork, Adobe)',
                                             'text' => 'Text (e.g., txt, csv, css, html)',
                                             'audio' => 'Audio',
                                             'video' => 'Video',
@@ -5046,7 +5046,7 @@ The master password that is set in the options page will work here, but you may 
                             ),
                             array(
                                 'key' => 'field_5c2d2f88e62d4',
-                                'label' => 'Blog Text',
+                                'label' => 'Show Blog Text Editor',
                                 'name' => 'blog_text',
                                 'type' => 'group',
                                 'instructions' => '',
@@ -5057,11 +5057,11 @@ The master password that is set in the options page will work here, but you may 
                                     'class' => '',
                                     'id' => '',
                                 ),
-                                'layout' => 'table',
+                                'layout' => 'row',
                                 'sub_fields' => array(
                                     array(
                                         'key' => 'field_5c2d2c49f914c',
-                                        'label' => 'Blog text',
+                                        'label' => '',
                                         'name' => 'toggle',
                                         'type' => 'true_false',
                                         'instructions' => '',
@@ -5080,7 +5080,7 @@ The master password that is set in the options page will work here, but you may 
                                     ),
                                     array(
                                         'key' => 'field_5c2d2cbbf914d',
-                                        'label' => 'Minimum Length',
+                                        'label' => 'Minimum Words',
                                         'name' => 'minimum_length',
                                         'type' => 'number',
                                         'instructions' => '',
@@ -5100,7 +5100,7 @@ The master password that is set in the options page will work here, but you may 
                                             'id' => '',
                                         ),
                                         'default_value' => '',
-                                        'placeholder' => 'minimum characters',
+                                        'placeholder' => 'minimum words',
                                         'prepend' => '',
                                         'append' => '',
                                         'min' => '',
@@ -5729,11 +5729,11 @@ The master password that is set in the options page will work here, but you may 
                                     'class' => '',
                                     'id' => '',
                                 ),
-                                'layout' => 'table',
+                                'layout' => 'row',
                                 'sub_fields' => array(
                                     array(
                                         'key' => 'field_5c31719e270f2',
-                                        'label' => 'Link',
+                                        'label' => '',
                                         'name' => 'toggle',
                                         'type' => 'true_false',
                                         'instructions' => '',
@@ -5792,11 +5792,11 @@ The master password that is set in the options page will work here, but you may 
                                     'class' => '',
                                     'id' => '',
                                 ),
-                                'layout' => 'table',
+                                'layout' => 'row',
                                 'sub_fields' => array(
                                     array(
                                         'key' => 'field_5c31719e270f5',
-                                        'label' => 'Attach File',
+                                        'label' => '',
                                         'name' => 'toggle',
                                         'type' => 'true_false',
                                         'instructions' => '',
@@ -5818,7 +5818,7 @@ The master password that is set in the options page will work here, but you may 
                                         'label' => 'Restrict File Types',
                                         'name' => 'restrict_file_types',
                                         'type' => 'true_false',
-                                        'instructions' => '',
+                                        'instructions' => '<a target="codex" href="https://codex.wordpress.org/Function_Reference/get_allowed_mime_types"> See allowed file types.</a>',
                                         'required' => 0,
                                         'conditional_logic' => array(
                                             array(
@@ -5862,19 +5862,19 @@ The master password that is set in the options page will work here, but you may 
                                             'id' => '',
                                         ),
                                         'choices' => array(
-                                            'image' => 'Images',
-                                            'application' => 'Application Files (e.g., Office, iWork)',
+                                            'image' => 'Images (jpg, png, gif, tiff, ico, bmp)',
+                                            'application' => 'Application Files (e.g., Office, iWork, Adobe)',
                                             'text' => 'Text (e.g., txt, csv, css, html)',
                                             'audio' => 'Audio',
                                             'video' => 'Video',
                                         ),
                                         'allow_custom' => 0,
-                                        'save_custom' => 0,
                                         'default_value' => array(
                                         ),
                                         'layout' => 'vertical',
                                         'toggle' => 1,
                                         'return_format' => 'value',
+                                        'save_custom' => 0,
                                     ),
                                 ),
                             ),
@@ -5899,7 +5899,7 @@ The master password that is set in the options page will work here, but you may 
                             ),
                             array(
                                 'key' => 'field_5c31719e270f9',
-                                'label' => 'Blog Text',
+                                'label' => 'Show Blog Text Editor',
                                 'name' => 'blog_text',
                                 'type' => 'group',
                                 'instructions' => '',
@@ -5910,11 +5910,11 @@ The master password that is set in the options page will work here, but you may 
                                     'class' => '',
                                     'id' => '',
                                 ),
-                                'layout' => 'table',
+                                'layout' => 'row',
                                 'sub_fields' => array(
                                     array(
                                         'key' => 'field_5c31719e270fa',
-                                        'label' => 'Blog text',
+                                        'label' => '',
                                         'name' => 'toggle',
                                         'type' => 'true_false',
                                         'instructions' => '',
@@ -5933,7 +5933,7 @@ The master password that is set in the options page will work here, but you may 
                                     ),
                                     array(
                                         'key' => 'field_5c31719e270fb',
-                                        'label' => 'Minimum Length',
+                                        'label' => 'Minimum Words',
                                         'name' => 'minimum_length',
                                         'type' => 'number',
                                         'instructions' => '',
@@ -5953,7 +5953,7 @@ The master password that is set in the options page will work here, but you may 
                                             'id' => '',
                                         ),
                                         'default_value' => '',
-                                        'placeholder' => 'minimum characters',
+                                        'placeholder' => 'minimum words',
                                         'prepend' => '',
                                         'append' => '',
                                         'min' => '',

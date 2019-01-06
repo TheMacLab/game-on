@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,25 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="public_ajax.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/modules/tasks/src/public_ajax.php">
+      <file leaf-file-name="go_acf_groups.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="682">
-              <caret line="687" column="46" selection-start-line="687" selection-start-column="46" selection-end-line="687" selection-end-column="46" />
-              <folding>
-                <element signature="n#go_get_bonus_status#0;n#!!top" />
-                <element signature="n#go_display_visitor_content#0;n#!!top" />
-                <element signature="n#go_display_locks#0;n#!!top" />
-                <element signature="n#go_display_visitor_messages#0;n#!!top" />
-                <element signature="n#go_admin_content#0;n#!!top" />
-                <element signature="n#go_display_all_admin_content#0;n#!!top" />
-                <element signature="n#go_due_date_mods#0;n#!!top" />
-                <element signature="n#go_print_messages#0;n#!!top" />
-                <element signature="n#go_print_1_message#0;n#!!top" />
-                <element signature="n#go_display_stage_badges#0;n#!!top" />
-                <element signature="n#go_display_rewards#0;n#!!top" />
-                <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
-              </folding>
+            <state relative-caret-position="849">
+              <caret line="6287" column="6" selection-start-line="6287" selection-start-column="6" selection-end-line="6287" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -160,7 +147,6 @@
         <option value="$PROJECT_DIR$/core/src/all/go_mce.php" />
         <option value="$PROJECT_DIR$/core/src/all/tinymce/wordcount/plugin.min.js" />
         <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" />
-        <option value="$PROJECT_DIR$/go_acf_groups.php" />
         <option value="$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php" />
         <option value="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" />
         <option value="$PROJECT_DIR$/core/src/public_ajax/go_checks.php" />
@@ -170,6 +156,7 @@
         <option value="$PROJECT_DIR$/js/dev/go_tasks.js" />
         <option value="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" />
         <option value="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" />
+        <option value="$PROJECT_DIR$/go_acf_groups.php" />
       </list>
     </option>
   </component>
@@ -219,13 +206,13 @@
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="media" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="dev" type="462c0819:PsiDirectoryNode" />
+              <item name="media" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -420,12 +407,12 @@
       <workItem from="1546381917745" duration="64691000" />
       <workItem from="1546601397088" duration="30274000" />
       <workItem from="1546703967045" duration="46769000" />
-      <workItem from="1546812970970" duration="285000" />
+      <workItem from="1546812970970" duration="1853000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3492279000" />
+    <option name="totallyTimeSpent" value="3493847000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
@@ -437,7 +424,7 @@
       <window_info anchor="bottom" id="Run" order="4" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32993197" />
       <window_info anchor="bottom" id="Terminal" order="12" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15628816" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15628816" />
       <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.47889024" weight="0.33548388" />
@@ -1222,13 +1209,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="849">
-          <caret line="6287" column="6" selection-start-line="6287" selection-start-column="6" selection-end-line="6287" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-hook.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
@@ -1376,7 +1356,7 @@
     <entry file="file://$PROJECT_DIR$/modules/tasks/src/public_ajax.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="682">
-          <caret line="687" column="46" selection-start-line="687" selection-start-column="46" selection-end-line="687" selection-end-column="46" />
+          <caret line="687" column="64" selection-start-line="687" selection-start-column="64" selection-end-line="687" selection-end-column="64" />
           <folding>
             <element signature="n#go_get_bonus_status#0;n#!!top" />
             <element signature="n#go_display_visitor_content#0;n#!!top" />
@@ -1391,6 +1371,13 @@
             <element signature="n#go_display_rewards#0;n#!!top" />
             <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/go_acf_groups.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="849">
+          <caret line="6287" column="6" selection-start-line="6287" selection-start-column="6" selection-end-line="6287" selection-end-column="6" />
         </state>
       </provider>
     </entry>
