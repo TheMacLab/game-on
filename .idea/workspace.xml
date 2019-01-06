@@ -2,85 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/core/src/ajax/ajax.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go_acf_groups.php" beforeDir="false" afterPath="$PROJECT_DIR$/go_acf_groups.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-term-order/js/reorder-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-term-order/js/reorder-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-term-order/js/reorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-term-order/js/reorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-term-order/wp-term-order.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-term-order/wp-term-order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/go_enque_js.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/go_enque_js.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_admin_user-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_admin_user-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_tasks-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/admin/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/admin_bar/src/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/admin/ajax/admin_ajax.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/ajax/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/tasks/src/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/css/admin.sass" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/css/public.sass" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/css/styles.sass" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/admin_bar/includes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/js/admin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/js/input.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/js/public.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/public/ajax/public_ajax.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/public/public.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/map/src/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/ajax/go_clipboard.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/ajax/go_store_make_html.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/clone_button.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_activation.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_admin_menus.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_datatable.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_shortcodes_button.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_store_admin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_task_admin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/go_user_bio.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_admin_ajax.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_blog_ajax.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_construct_queries.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_map_ajax.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_messages.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_public_ajax.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_stats.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/go_tools.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/store_lightbox.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ajax/task-chains.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_admin_bar.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_blogs.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_cpt_blogs.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_cpt_store.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_cpt_task_taxonomies.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_links.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_mce.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_mce_defaults.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_media.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_messages_check.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_multisite.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_ranks.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_returns.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_timer.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_transients.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_updates.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/go_user_management.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/all/templates/go_user_blog_template.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/disabled/go_comments.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_checks.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_locks.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_map.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/ajax/go_shortcodes.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/go_tasks_and_ajax.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_shortcode.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/ajax_tasks/task_test_shortcode.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/tasks/tasks_shortcode_filter.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_every_page.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_every_page.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/min/go_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -123,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="public_ajax.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="public_ajax.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-334">
-              <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+            <state relative-caret-position="196">
+              <caret line="43" column="168" lean-forward="true" selection-start-line="43" selection-start-column="168" selection-end-line="43" selection-end-column="168" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
@@ -146,10 +69,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_user_blog_template.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="go_user_blog_template.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4791">
+            <state relative-caret-position="149">
               <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
             </state>
           </provider>
@@ -285,9 +208,9 @@
       <find>opener</find>
       <find>Draft Sa</find>
       <find>go_blog_submit</find>
-      <find>$url_toggle</find>
       <find>$user_id</find>
       <find>$check_box</find>
+      <find>$url_toggle</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -357,10 +280,10 @@
         <option value="$PROJECT_DIR$/core/src/public_ajax/go_checks.php" />
         <option value="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" />
         <option value="$PROJECT_DIR$/js/go_enque_js.php" />
-        <option value="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" />
         <option value="$PROJECT_DIR$/js/dev/go_tasks.js" />
         <option value="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" />
         <option value="$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php" />
+        <option value="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" />
       </list>
     </option>
   </component>
@@ -625,12 +548,12 @@
       <workItem from="1546147237721" duration="521000" />
       <workItem from="1546381917745" duration="64691000" />
       <workItem from="1546601397088" duration="30274000" />
-      <workItem from="1546703967045" duration="40270000" />
+      <workItem from="1546703967045" duration="40890000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3485495000" />
+    <option name="totallyTimeSpent" value="3486115000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
@@ -1048,6 +971,11 @@
           <line>24</line>
           <option name="timeStamp" value="1927" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php</url>
+          <line>10</line>
+          <option name="timeStamp" value="1930" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/front/scripts/go_videos_fit_and_box.js</url>
           <line>27</line>
@@ -1072,7 +1000,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="1930" />
+      <option name="time" value="1931" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="index.php">
@@ -1549,18 +1477,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-334">
-          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/go_tasks.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3247">
@@ -1585,6 +1501,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/ajax.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="155">
@@ -1596,10 +1519,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php">
+    <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4791">
-          <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+        <state relative-caret-position="196">
+          <caret line="43" column="168" lean-forward="true" selection-start-line="43" selection-start-column="168" selection-end-line="43" selection-end-column="168" />
+          <folding>
+            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
