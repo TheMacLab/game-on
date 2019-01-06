@@ -685,7 +685,7 @@ function go_bonus_loot () {
     	<h4>{$bonus_loot_uc}</h4>
         <p>Click the box to try and claim " . $bonus_loot . ".
         ";
-    $url = plugin_dir_url(dirname(dirname(dirname(dirname(__FILE__)))));
+    $url = plugin_dir_url((dirname(dirname(dirname(__FILE__)))));
     $url = $url . "media/mysterybox_inner_glow_sm.gif";
     echo "<br><br>
 

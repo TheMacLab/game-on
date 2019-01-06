@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/public_ajax/go_checks.php" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/public_ajax/go_checks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_tasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/go_enque_js.php" beforeDir="false" afterPath="$PROJECT_DIR$/js/go_enque_js.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_admin_user-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_admin_user-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_tasks-min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,7 +31,31 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file leaf-file-name="public_ajax.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/modules/tasks/src/public_ajax.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="682">
+              <caret line="687" column="46" selection-start-line="687" selection-start-column="46" selection-end-line="687" selection-end-column="46" />
+              <folding>
+                <element signature="n#go_get_bonus_status#0;n#!!top" />
+                <element signature="n#go_display_visitor_content#0;n#!!top" />
+                <element signature="n#go_display_locks#0;n#!!top" />
+                <element signature="n#go_display_visitor_messages#0;n#!!top" />
+                <element signature="n#go_admin_content#0;n#!!top" />
+                <element signature="n#go_display_all_admin_content#0;n#!!top" />
+                <element signature="n#go_due_date_mods#0;n#!!top" />
+                <element signature="n#go_print_messages#0;n#!!top" />
+                <element signature="n#go_print_1_message#0;n#!!top" />
+                <element signature="n#go_display_stage_badges#0;n#!!top" />
+                <element signature="n#go_display_rewards#0;n#!!top" />
+                <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -54,7 +67,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>go_result_video</find>
       <find>go_result_url</find>
       <find>required_string</find>
       <find>required</find>
@@ -84,6 +96,7 @@
       <find>go_blog_submit</find>
       <find>File type required</find>
       <find>local</find>
+      <find>mystery</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -154,9 +167,9 @@
         <option value="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" />
         <option value="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" />
         <option value="$PROJECT_DIR$/js/go_enque_js.php" />
-        <option value="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" />
         <option value="$PROJECT_DIR$/js/dev/go_tasks.js" />
         <option value="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" />
+        <option value="$PROJECT_DIR$/modules/tasks/src/public_ajax.php" />
       </list>
     </option>
   </component>
@@ -191,6 +204,38 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="dev" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Changed Files">
           <expand>
@@ -228,38 +273,6 @@
               <item name="game-on_mmhsart4" type="cbb8eebc:String" user="game-on_mmhsart4" />
               <item name="includes" type="cbb8eebc:String" user="includes" />
               <item name="custom-acf-fields" type="cbb8eebc:String" user="custom-acf-fields" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="dev" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="modules" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -407,28 +420,30 @@
       <workItem from="1546381917745" duration="64691000" />
       <workItem from="1546601397088" duration="30274000" />
       <workItem from="1546703967045" duration="46769000" />
+      <workItem from="1546812970970" duration="285000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3491994000" />
+    <option name="totallyTimeSpent" value="3492279000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.52110976" side_tool="true" weight="0.32707182" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32993197" />
       <window_info anchor="bottom" id="Run" order="4" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32993197" />
       <window_info anchor="bottom" id="Terminal" order="12" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15445666" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15628816" />
       <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" sideWeight="0.47889024" visible="true" weight="0.33548388" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.47889024" weight="0.33548388" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.74195546" weight="0.41075268" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
       <window_info anchor="bottom" id="PHP-CGI Server" order="13" />
@@ -441,16 +456,16 @@
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
     </layout>
     <layout-to-restore>
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32993197" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27045178" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="PHP-CGI Server" order="13" />
       <window_info anchor="bottom" id="Inspection Results" order="15" weight="0.08076923" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.47889024" weight="0.33548388" />
@@ -458,12 +473,12 @@
       <window_info anchor="right" id="Database" order="3" weight="0.3297619" />
       <window_info anchor="bottom" id="Terminal" order="12" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.52110976" side_tool="true" weight="0.32707182" />
-      <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32993197" />
+      <window_info anchor="bottom" id="Database Changes" order="10" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.74195546" visible="true" weight="0.41075268" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Messages" order="9" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -940,11 +955,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
-          <folding>
-            <element signature="n#go_video_link#0;n#!!top" />
-            <element signature="n#go_video#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -969,17 +979,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_every_page.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!block;n#go_noty_close_oldest#0" />
-            <element signature="n#!!block;n#go_lightbox_blog_img#0" />
-            <element signature="n#!!block;n#go_admin_bar_stats_page_button#0" />
-            <element signature="n#!!block;n#go_stats_links#0" />
-            <element signature="n#!!block;n#go_leaderboard_menus_select2#0" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/includes/wp-frontend-media-master/js/frontend-min.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -992,14 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="257" column="18" selection-start-line="257" selection-start-column="18" selection-end-line="257" selection-end-column="18" />
-          <folding>
-            <element signature="n#go_buy_item#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_get_purchase_count#0;n#!!top" />
-            <element signature="n#go_get_purchase_limit#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1049,9 +1041,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="26" selection-start-line="26" selection-end-line="26" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1087,9 +1076,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
           <caret line="64" column="15" selection-start-line="64" selection-start-column="15" selection-end-line="64" selection-end-column="15" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1196,10 +1182,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="372">
           <caret line="65" column="10" selection-start-line="65" selection-start-column="10" selection-end-line="65" selection-end-column="10" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1207,13 +1189,7 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/go_scripts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/all/go_mce.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -1230,13 +1206,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/go_admin_user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/all/tinymce/wordcount/plugin.min.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -1405,8 +1375,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/tasks/src/public_ajax.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1210">
-          <caret line="98" selection-start-line="98" selection-end-line="114" selection-end-column="6" />
+        <state relative-caret-position="682">
+          <caret line="687" column="46" selection-start-line="687" selection-start-column="46" selection-end-line="687" selection-end-column="46" />
           <folding>
             <element signature="n#go_get_bonus_status#0;n#!!top" />
             <element signature="n#go_display_visitor_content#0;n#!!top" />
@@ -1417,7 +1387,6 @@
             <element signature="n#go_due_date_mods#0;n#!!top" />
             <element signature="n#go_print_messages#0;n#!!top" />
             <element signature="n#go_print_1_message#0;n#!!top" />
-            <element signature="n#go_bonus_loot#0;n#!!top" />
             <element signature="n#go_display_stage_badges#0;n#!!top" />
             <element signature="n#go_display_rewards#0;n#!!top" />
             <element signature="n#go_task_render_chain_pagination#0;n#!!top" />
