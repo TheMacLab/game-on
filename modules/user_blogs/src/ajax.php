@@ -31,7 +31,7 @@ function go_blog_opener(){
     }
 
     go_blog_form($blog_post_id, '_lightbox', $go_blog_task_id, $i, null );
-    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox' min_words ='{$min_words}' required_string='{$required_string}'>Submit</button>";
+    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox' min_words ='{$min_words}' required_string='{$required_string}' task_id='{$go_blog_task_id}'>Submit</button>";
     echo "<p id='go_blog_error_msg' style='display: none; color: red;'></p>";
     ?>
     <script>
@@ -49,6 +49,7 @@ function go_blog_opener(){
     <?php
 }
 
+/*
 function go_blog_lightbox_opener(){
     check_ajax_referer( 'go_blog_lightbox_opener' );
 
@@ -72,21 +73,37 @@ function go_blog_lightbox_opener(){
     echo "</div>";
 
 }
+*/
 
 function go_blog_submit(){
     check_ajax_referer( 'go_blog_submit' );
     $blog_post_id = intval(!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
-    $blog_meta = get_post_custom( $blog_post_id );
-    $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ?  $blog_meta['go_blog_task_id'][0] : null);
-    $go_blog_task_stage = (isset($blog_meta['go_blog_task_stage'][0]) ?  $blog_meta['go_blog_task_stage'][0] : null);
+    if($blog_post_id) {
+        $blog_meta = get_post_custom($blog_post_id);
+        $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+        $go_blog_task_stage = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
+    }else {
+        $go_blog_task_id = intval(!empty($_POST['post_id']) ? (string)$_POST['post_id'] : '');
+        $go_blog_task_stage = intval(!empty($_POST['go_blog_task_stage']) ? (string)$_POST['go_blog_task_stage'] : '');
+    }
 
+    $result = go_save_blog_post($go_blog_task_id, $go_blog_task_stage);
 
-    go_save_blog_post($go_blog_task_id, $go_blog_task_stage);
-
+    ob_start();
     go_noty_message_generic('success', 'Draft Saved Successfully', '', 2000);
+    $buffer = ob_get_contents();
+
+    ob_end_clean();
+
+    echo json_encode(
+        array(
+            'json_status' => 'success',
+            'blog_post_id' => $result,
+            'message' => $buffer
+        )
+    );
 
     die();
-
 
     /*
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
@@ -166,10 +183,9 @@ function go_blog_save($blog_post_id, $my_post){
     return $result;
 }
 
-
-
-
-
+/**
+ * Prints content for the clipboard tasks table
+ */
 function go_blog_user_task(){
     global $wpdb;
 
@@ -321,7 +337,8 @@ function go_blog_user_task(){
             echo  "<div class='go_blog_stage'><h3>". $stage_name . " " . $current_stage .": ";
             if ($check_type == "blog"){
                 echo "Blog Post</h3>";
-                go_print_blog_check_result($result, false);
+                //go_print_blog_check_result($result, false);
+                go_blog_post($result);
             }else if($check_type == "URL"){
                 echo "URL</h3>";
                 go_print_URL_check_result($result);

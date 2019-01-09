@@ -232,8 +232,9 @@ function go_stats_about(user_id) {
     }
 }
 
+/*
 function go_blog_lightbox_opener(post_id){
-    //console.log("open");
+    console.log("go_blog_lightbox_opener");
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_lightbox_opener;
     jQuery.ajax({
         type: 'post',
@@ -256,6 +257,7 @@ function go_blog_lightbox_opener(post_id){
         }
     });
 }
+*/
 
 function go_stats_task_list() {
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_task_list;

@@ -159,8 +159,6 @@ function flash_error_msg( elem ) {
     });
 }
 
-
-
 function task_stage_change( target ) {
     console.log( "change");
     //v4 Set variables
@@ -187,7 +185,7 @@ function task_stage_change( target ) {
         //result = tinyMCE.activeEditor.getContent();
         result = go_get_tinymce_content_blog();
         var result_title = jQuery( '#go_blog_title' ).val();
-        var blog_post_id= jQuery( '#go_result_title_check' ).data( 'blog_post_id' );
+        var blog_post_id= jQuery( '#go_blog_title' ).data( 'blog_post_id' );
         var blog_url= jQuery( '#go_result_url' ).val();
         var blog_media= jQuery( '#go_result_media' ).attr( 'value' );
         var blog_video= jQuery( '#go_result_video' ).val();
@@ -330,7 +328,6 @@ function go_mce_reset() {
     // remove existing editor instance
     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
     tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post' );
-
 }
 
 function go_append (res){

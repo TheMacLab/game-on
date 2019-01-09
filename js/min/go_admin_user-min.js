@@ -141,23 +141,22 @@ go_enable_loading(e);
 ////update last check
 ////update current stage and check
 //v4 Set variables
-var r="";void 0!==jQuery(e).attr("button_type")&&(r=jQuery(e).attr("button_type"));var n="";void 0!==jQuery(e).attr("status")&&(n=jQuery(e).attr("status"));var a="";void 0!==jQuery(e).attr("check_type")&&(a=jQuery(e).attr("check_type"),console.log(a));var s=!1;jQuery("#go_stage_error_msg").text(""),jQuery("#go_blog_error_msg").text("");var i="<h3>Your post was not saved.</h3><ul> ",l=jQuery(e).attr("url_toggle"),_=jQuery(e).attr("video_toggle"),c=jQuery(e).attr("file_toggle"),u=jQuery(e).attr("text_toggle"),d=jQuery(e).attr("blog_suffix"),g,h="#go_result_url"+d,m="#go_result_media"+d,f;
-//console.log ("GRV: " + go_result_video);
+var r="";void 0!==jQuery(e).attr("button_type")&&(r=jQuery(e).attr("button_type"));var n="";void 0!==jQuery(e).attr("status")&&(n=jQuery(e).attr("status"));var a="";void 0!==jQuery(e).attr("check_type")&&(a=jQuery(e).attr("check_type"),console.log(a));var s=!1;jQuery("#go_stage_error_msg").text(""),jQuery("#go_blog_error_msg").text("");var i="<h3>Your post was not saved.</h3><ul> ",l=jQuery(e).attr("url_toggle"),_=jQuery(e).attr("video_toggle"),c=jQuery(e).attr("file_toggle"),u=jQuery(e).attr("text_toggle"),g=jQuery(e).attr("blog_suffix"),d="#go_result_video"+g,h="#go_result_url"+g,m="#go_result_media"+g,f;
 ///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
 //if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
-if("blog"==a||"blog_lightbox"==a){//min words and Video field on blog form validation
-if("1"==_){var y=jQuery("#go_result_video"+d).attr("value").replace(/\s+/,"");console.log(y),0<y.length?!y.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<y.lastIndexOf("http://")||0<y.lastIndexOf("https://")?(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0):-1==y.search("youtube")&&-1==y.search("vimeo")&&(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0):(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0)}if("1"==u){
+if(console.log("suffix: "+g),"blog"==a||"blog_lightbox"==a){//min words and Video field on blog form validation
+if("1"==_){var p=jQuery(d).attr("value").replace(/\s+/,"");console.log(p),0<p.length?!p.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<p.lastIndexOf("http://")||0<p.lastIndexOf("https://")?(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0):-1==p.search("youtube")&&-1==p.search("vimeo")&&(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0):(i+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",s=!0)}if("1"==u){
 //Word count validation
-var p=jQuery(e).attr("min_words"),b;//this variable is used in the other functions as well
+var y=jQuery(e).attr("min_words"),b;//this variable is used in the other functions as well
 //alert("min Words: " + min_words);
-tinymce_getContentLength_new()<p&&(i+="<li>Your post is not long enough. There must be "+p+" words minimum.</li>",s=!0)}}"password"!==a&&"unlock"!=a||(0<jQuery("#go_result").attr("value").length||(i+="Retrieve the password from "+go_task_data.admin_name+".",s=!0));if("URL"==a||("blog"==a||"blog_lightbox"==a)&&1==l){if("URL"==a)var y=jQuery("#go_result").attr("value").replace(/\s+/,"");else var y=jQuery(h).attr("value").replace(/\s+/,""),v=jQuery(e).attr("required_string");console.log("URL"+y),0<y.length?!y.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<y.lastIndexOf("http://")||0<y.lastIndexOf("https://")?(i+="<li>Enter a valid URL.</li>",s=!0):"blog"!=a&&"blog_lightbox"!=a||-1==y.indexOf(v)&&(i+='<li>Enter a valid URL. The URL must contain "'+v+'".</li>',s=!0):(i+="<li>Enter a valid URL.</li>",go_disable_loading(),s=!0)}if("upload"==a||("blog"==a||"blog_lightbox"==a)&&1==c){if("upload"==a)var j=jQuery("#go_result").attr("value");else var j=jQuery(m).attr("value");null==j&&(i+="<li>Please attach a file.</li>",s=!0)}if("quiz"==a){var Q=jQuery(".go_test_list");if(1<=Q.length){for(var w=0,E=0;E<Q.length;E++){var x="#"+Q[E].id+" input:checked",k;1<=jQuery(x).length&&w++}
+tinymce_getContentLength_new()<y&&(i+="<li>Your post is not long enough. There must be "+y+" words minimum.</li>",s=!0)}}"password"!==a&&"unlock"!=a||(0<jQuery("#go_result").attr("value").length||(i+="Retrieve the password from "+go_task_data.admin_name+".",s=!0));if("URL"==a||("blog"==a||"blog_lightbox"==a)&&1==l){if("URL"==a)var p=jQuery("#go_result").attr("value").replace(/\s+/,"");else var p=jQuery(h).attr("value").replace(/\s+/,""),v=jQuery(e).attr("required_string");console.log("URL"+p),0<p.length?!p.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<p.lastIndexOf("http://")||0<p.lastIndexOf("https://")?(i+="<li>Enter a valid URL.</li>",s=!0):"blog"!=a&&"blog_lightbox"!=a||-1==p.indexOf(v)&&(i+='<li>Enter a valid URL. The URL must contain "'+v+'".</li>',s=!0):(i+="<li>Enter a valid URL.</li>",go_disable_loading(),s=!0)}if("upload"==a||("blog"==a||"blog_lightbox"==a)&&1==c){if("upload"==a)var j=jQuery("#go_result").attr("value");else var j=jQuery(m).attr("value");null==j&&(i+="<li>Please attach a file.</li>",s=!0)}if("quiz"==a){var Q=jQuery(".go_test_list");if(1<=Q.length){for(var w=0,E=0;E<Q.length;E++){var x="#"+Q[E].id+" input:checked",k;1<=jQuery(x).length&&w++}
 //if all questions were answered
 s=w>=Q.length?(go_quiz_check_answers(n,e),!1):(1<Q.length?i+="<li>Please answer all questions!</li>":i+="<li>Please answer the question!</li>",!0)}}
 //}
 if(i+="</ul>",1==s)return 1==t?(console.log("error_stage"),
 //flash_error_msg('#go_stage_error_msg');
 jQuery("#go_stage_error_msg").append(i),jQuery("#go_stage_error_msg").show()):(console.log("error_blog"),jQuery("#go_blog_error_msg").append(i),jQuery("#go_blog_error_msg").show()),console.log("error validation"),void go_disable_loading();jQuery("#go_stage_error_msg").hide(),jQuery("#go_blog_error_msg").hide(),1==t?task_stage_change(e)://this was a blog save button (not a continue on a stage) so just save without changing stage.  The function only validated the inputs.
-go_blog_submit(e,d,o)}
+go_blog_submit(e,g,o)}
 // disables the target stage button, and adds a loading gif to it
 function go_enable_loading(e){
 //prevent further events with this button
@@ -184,11 +183,14 @@ jQuery.featherlight(e,{afterContent:function(){
 tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_lightbox"),tinymce.execCommand("mceAddEditor",!0,"go_blog_post_lightbox")}}),
 //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
 //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
-jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),console.log("opener2"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e,t,o){var r=GO_EVERY_PAGE_DATA.nonces.go_blog_submit,n=go_get_tinymce_content_blog(),a=jQuery("#go_blog_title"+t).val();console.log("title: "+a);var s,i,l,_,c={action:"go_blog_submit",_ajax_nonce:r,result:n,result_title:a,blog_post_id:jQuery(e).attr("blog_post_id"),blog_url:jQuery("#go_result_url"+t).val(),blog_media:jQuery("#go_result_media"+t).attr("value"),blog_video:jQuery("#go_result_video"+t).val()};
+jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),console.log("opener2"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e,o,r){var t=GO_EVERY_PAGE_DATA.nonces.go_blog_submit,n=go_get_tinymce_content_blog(),a=jQuery("#go_blog_title"+o).val();console.log("title: "+a);var s=jQuery(e).attr("blog_post_id"),i=jQuery(e).attr("status"),l=jQuery(e).attr("task_id"),_=jQuery("#go_result_url"+o).val(),c=jQuery("#go_result_media"+o).attr("value"),u=jQuery("#go_result_video"+o).val();console.log("blog_url: "+_),console.log("blog_media: "+c);var g={action:"go_blog_submit",_ajax_nonce:t,result:n,result_title:a,blog_post_id:s,blog_url:_,blog_media:c,blog_video:u,go_blog_task_stage:i,post_id:l};
 //jQuery.ajaxSetup({ cache: true });
-jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:c,cache:!1,success:function(e){console.log("success"),1==o?location.reload():0!=e&&(jQuery("body").append(e),
+jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:g,cache:!1,success:function(e){console.log("success");
+//console.log(raw);
+// parse the raw response to get the desired JSON
+var t={};try{var t=JSON.parse(e)}catch(e){t={json_status:"101",message:"",blog_post_id:""}}console.log("message"+t.message),console.log("blog_post_id"+t.blog_post_id),1==r?location.reload():(jQuery("body").append(t.message),
 //console.log(res);
-jQuery(".go_loading").remove(),jQuery("#go_save_button"+t).off().one("click",function(e){task_stage_check_input(this,!1,!1)}))}})}function go_get_tinymce_content_blog(){
+jQuery(".go_loading").remove(),jQuery("#go_save_button"+o).off().one("click",function(e){task_stage_check_input(this,!1,!1)}),jQuery("#go_save_button"+o).attr("blog_post_id",t.blog_post_id),jQuery("#go_blog_title"+o).attr("data-blog_post_id",t.blog_post_id))}})}function go_get_tinymce_content_blog(){
 //console.log("html");
 return jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").is(":visible")?jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").val():tinyMCE.activeEditor.getContent()}function go_blog_user_task(e,t){
 //jQuery(".go_datatables").hide();

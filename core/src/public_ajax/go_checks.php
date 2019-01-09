@@ -301,73 +301,14 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
                 'task'
             )
         );
-        /*
-        if (!empty($blog_post_id)) {
-            $post = get_post($blog_post_id, OBJECT, 'edit');
-            $content = $post->post_content;
-            $title = get_the_title($blog_post_id);
-            $blog_meta = get_post_custom( $blog_post_id );
-            $url_content = (isset($blog_meta['go_blog_url'][0]) ?  $blog_meta['go_blog_url'][0] : null);
-            $media_content = (isset($blog_meta['go_blog_media'][0]) ?  $blog_meta['go_blog_media'][0] : null);
-            $video_content = (isset($blog_meta['go_blog_video'][0]) ?  $blog_meta['go_blog_video'][0] : null);
 
-
-        }
-        else{
-            $title = null;
-            $content = null;
-            $url_content = null;
-            $media_content = null;
-            $video_content = null;
-        }
-        if (empty($title)){
-            $title = get_the_title($post_id);
-        }
-        */
         $i--;
         go_blog_form($blog_post_id, '', $post_id, $i, $bonus);
-        /*
-        echo "<div id='go_blog_div'>";
-        echo "<div>Title:<div><input style='width: 100%;' id='go_blog_title' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}'></div> </div>";
 
-        if ($url_toggle) {
-            echo "<div>URL:<div>";
-            //go_url_check($custom_fields, $i, $i, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, null, 'Enter URL', 'go_result_url' , $url_content);
-            go_url_check_blog ('Enter URL', 'go_result_url', $url_content);
-            echo "</div> </div>";
-        }
-
-        if($file_toggle) {
-            echo "<div>Attach File:<div>";
-            //go_upload_check($custom_fields, $i, $i, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, null, $media_content);
-            go_upload_check_blog ($media_content, 'go_result_media');
-            echo "</div> </div>";
-        }
-
-        if ($video_toggle) {
-            echo "<div>Video Link:<div>";
-            //go_url_check($custom_fields, $i, $i, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, null, "URL of Video", 'go_result_video', $video_content);
-            go_url_check_blog ('URL of Video', 'go_result_video', $video_content);
-            echo "</div> </div>";
-        }
-
-        if($text_toggle) {
-            $settings = array(//'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
-                //'tinymce'=>true,
-                //'wpautop' =>false,
-                'textarea_name' => 'go_result', 'media_buttons' => true, //'teeny' => false,
-                'quicktags' => array('buttons' => ''), 'menubar' => false, 'drag_drop_upload' => true);
-            wp_editor($content, 'go_blog_post', $settings);
-            echo "<button id='go_save_button' class='progress left' status='{$status}' check_type='blog' button_type='save'  admin_lock='true' >Save Draft</button> ";
-
-        }
-
-        echo "</div>";
-        */
     }
     else {
         $i++;
-        $post_id = (string) $wpdb->get_var(
+        $blog_post_id = (string) $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT result 
 				FROM {$go_actions_table_name} 
@@ -378,81 +319,14 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
                 $i
             )
         );
-        go_print_blog_check_result($post_id, true, $custom_fields, $i);
+        //go_print_blog_check_result($blog_post_id, true, $custom_fields, $i);
+        go_blog_post($blog_post_id);
+
         //echo $post_id;
         //$post_link = get_permalink($post_id);
         //echo "<a href='" . $post_link . "' target='blank'>View/Edit Post</a>";
 
     }
-}
-
-function go_print_blog_check_result($post_id, $edit = true, $custom_fields, $i = false){
-    if ($i) { //if this is attached to a task stage, get the required fields
-        $i = intval($i) -1;
-        $url_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0] : null);
-        $file_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0] : null);
-        $video_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_video'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_video'][0] : null);
-        $text_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0] : null);
-    }
-    else{
-        $url_toggle = true;
-        $file_toggle = true;
-        $video_toggle = true;
-        $text_toggle = true;
-    }
-
-    $blog_meta = get_post_custom( $post_id );
-
-    if ($text_toggle) {
-        $content_post = get_post($post_id);
-    }
-    //$content_post2 = go_post_data($post_id);
-    $content = $content_post->post_content;
-    $page_title = $content_post->post_title;
-    //$content = apply_filters('the_content', $content);
-    //$content = str_replace(']]>', ']]&gt;', $content);
-    //$content = do_shortcode($content);
-    $content  = apply_filters( 'go_awesome_text', $content );
-    //if(isset($GLOBALS['wp_embed']))
-    //$content  = $GLOBALS['wp_embed']->autoembed($content );
-    ?><script>
-        document.title = "<?php echo $page_title; ?>";
-        jQuery( document ).ready(function() {
-            go_lightbox_blog_img();
-        });
-    </script><?php
-
-
-    echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">";
-    echo "<h2>". $page_title . "</h2>";
-    if($url_toggle){
-        $url_content = (isset($blog_meta['go_blog_url'][0]) ?  $blog_meta['go_blog_url'][0] : null);
-        if (!empty($url_content)){
-            go_print_URL_check_result($url_content);
-        }
-    }
-
-    if($file_toggle){
-        $media_content = (isset($blog_meta['go_blog_media'][0]) ?  $blog_meta['go_blog_media'][0] : null);
-        if (!empty($media_content)){
-            go_print_upload_check_result($media_content);
-        }
-    }
-
-    if($video_toggle){
-        $video_content = (isset($blog_meta['go_blog_video'][0]) ?  $blog_meta['go_blog_video'][0] : null);
-        if (!empty($video_content)){
-            //$video_content =   "Video Submitted : <p>$video_content </p>";
-            $video_content = apply_filters( 'go_awesome_text', $video_content );
-            echo "$video_content";
-        }
-    }
-    echo $content;
-    echo "</div>";
-    if ($edit == true) {
-        echo '<button class="go_blog_opener" blog_post_id ="' . $post_id . '">edit post</button>';
-    }
-
 }
 
 /**
