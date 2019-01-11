@@ -157,7 +157,7 @@ video.wp-video-shortcode {
 
 #go_back_button,
 #go_button,
-#frontend-button {
+.go_frontend-button {
   cursor: pointer; }
 
 #go_upload_button {

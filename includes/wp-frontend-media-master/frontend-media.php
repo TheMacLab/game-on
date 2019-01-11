@@ -81,7 +81,7 @@ class Front_End_Media {
         $role->add_cap( 'upload_files' );
 		if ( current_user_can( 'read' ) ) {
 			$str = __( 'Select File', 'frontend-media' );
-			return '<img id="'.$div_id.'" /><div id="go_upload_button"><input id="frontend-button" type="button" onclick="go_upload_frontend(\''.$div_id.'\', \''.$mime_types.'\');" value="' . $str . '" class="button" style="position: relative; z-index: 1;"></div>';
+			return '<img id="'.$div_id.'" /><div id="go_upload_button"><input class="go_frontend-button" type="button" onclick="go_upload_frontend(\''.$div_id.'\', \''.$mime_types.'\');" value="' . $str . '" class="button" style="position: relative; z-index: 1;"></div>';
 		}
 
 		return __( 'Please Login To Upload', 'frontend-media' );
@@ -134,7 +134,7 @@ class Front_End_Media {
 
             }
 
-            return '<div id="go_upload_button"><input id="frontend-button" type="button" onclick="go_upload_frontend(\''.$div_id.'\', \''.$mime_types.'\');" value="' . $str . '" class="button" style="position: relative; z-index: 1;"></div></div>';
+            return '<div id="go_upload_button"><input class="go_frontend-button" type="button" onclick="go_upload_frontend(\''.$div_id.'\', \''.$mime_types.'\');" value="' . $str . '" class="button" style="position: relative; z-index: 1;"></div></div>';
 
         }
 

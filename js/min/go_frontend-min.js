@@ -236,6 +236,7 @@ function go_enable_loading( target ) {
     //prevent further events with this button
     //jQuery('#go_button').prop('disabled',true);
     // prepend the loading gif to the button's content, to show that the request is being processed
+    jQuery('.go_loading').remove();
     target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
 }
 
@@ -301,6 +302,16 @@ function go_blog_opener( el ) {
     go_enable_loading( el );
     jQuery("#go_hidden_mce").remove();
     jQuery(".go_blog_opener").prop("onclick", null).off("click");
+
+    //listener for changes to make sure they are saved.  Alert with sweet alert.
+    tinymce.init({
+        selector: 'go_blog_post_lightbox',  // change this value according to your HTML
+        setup: function(editor) {
+            editor.on('keyup', function(e) {
+                jQuery('body').attr('data-go_blog_updated', '1');
+            });
+        }
+    });
     //var result_title = jQuery( this ).attr( 'value' );
     var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
     //console.log(el);
@@ -325,10 +336,21 @@ function go_blog_opener( el ) {
                     console.log("aftercontent");
 
                     jQuery( 'body' ).attr( 'data-go_blog_saved', '0' );
-
                     jQuery( 'body' ).attr( 'data-go_blog_updated', '0' );
+
+                    jQuery("#go_result_url_lightbox, #go_result_video_lightbox").change(function() {
+                        jQuery('body').attr('data-go_blog_updated', '1');
+                    });
+
+                    jQuery('.go_frontend-button').on("click", function() {
+                        jQuery('body').attr('data-go_blog_updated', '1');
+                    });
+
+
+
                     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_lightbox');
                     tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_lightbox' );
+
                     //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
                     //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
                 },

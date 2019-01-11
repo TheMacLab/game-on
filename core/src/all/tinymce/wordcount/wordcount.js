@@ -1,5 +1,4 @@
 tinymce.PluginManager.add("wordcount", function(a) {
-    console.log("updated");
     function b() {
         a.theme.panel.find("#wordcount").text(["Words: {0}", e.getCount()])
     }
@@ -19,8 +18,6 @@ tinymce.PluginManager.add("wordcount", function(a) {
                 }, 0),
                     a.on("setcontent beforeaddundo", b),
                     a.on("keyup", function(a) {
-                        jQuery('body').attr('data-go_blog_updated', '1');
-
                         32 == a.keyCode && b();
                         46 == a.keyCode && b();
                         8 == a.keyCode && b();

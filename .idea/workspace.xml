@@ -2,24 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/tools/src/admin.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/admin/go_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/admin/go_admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/all/go_mce.php" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/all/go_mce.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/plugin.min-min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/plugin.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/plugin.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/public_ajax/go_checks.php" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/public_ajax/go_checks.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/go_enque_includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/go_enque_includes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/go_tasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/go_tasks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/plugin.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount-min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/wp-frontend-media-master/frontend-media.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/min/go_admin_user-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_admin_user-min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_tasks-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_tasks-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/tools/includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/tools/includes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/css/go_every_page.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_every_page.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/min/go_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_styles.css" afterDir="false" />
     </list>
@@ -51,21 +42,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="go_blogs.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="go_blogs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_blogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="369" column="83" selection-start-line="369" selection-start-column="83" selection-end-line="369" selection-end-column="83" />
+            <state relative-caret-position="283">
+              <caret line="346" column="23" lean-forward="true" selection-start-line="346" selection-start-column="23" selection-end-line="346" selection-end-column="23" />
               <folding>
                 <element signature="n#!!block;n#task_stage_check_input#0" />
                 <element signature="e#751#765#0" />
                 <element signature="e#895#953#0" />
                 <element signature="e#1116#1140#0" />
-                <element signature="n#!!block;n#go_enable_loading#0" />
-                <element signature="n#!!block;n#go_disable_loading#0" />
                 <element signature="n#!!block;n#tinymce_getContentLength_new#0" />
                 <element signature="n#!!block;n#go_blog_user_task#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_mce.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/all/go_mce.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="112" selection-start-line="112" selection-end-line="123" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="wordcount.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="31" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -105,7 +112,7 @@
         <entry file="file://$PROJECT_DIR$/js/min/go_frontend-min.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="181">
-              <caret line="339" column="28" selection-start-line="339" selection-start-column="24" selection-end-line="339" selection-end-column="28" />
+              <caret line="361" column="28" selection-start-line="361" selection-start-column="24" selection-end-line="361" selection-end-column="28" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -122,28 +129,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_tasks.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/dev/go_tasks.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="n#!!block;n#go_update_bonus_loot#0" />
-                <element signature="n#!!block;n#getTimeRemaining#0" />
-                <element signature="n#!!block;n#initializeClock#0" />
-                <element signature="n#!!block;n#flash_error_msg#0" />
-                <element signature="n#!!block;n#go_append#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ajax.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ajax.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/ajax.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-486">
-              <caret line="104" column="10" selection-start-line="104" selection-start-column="10" selection-end-line="104" selection-end-column="10" />
+            <state relative-caret-position="484">
+              <caret line="154" column="164" selection-start-line="154" selection-start-column="164" selection-end-line="154" selection-end-column="164" />
               <folding>
                 <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
@@ -164,8 +154,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>$blog_post_id</find>
-      <find>$result_title</find>
       <find>draft sav</find>
       <find>success</find>
       <find>jQ</find>
@@ -194,6 +182,8 @@
       <find>swee</find>
       <find>featherli</find>
       <find>data</find>
+      <find>updated</find>
+      <find>frontend-button</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -257,15 +247,15 @@
         <option value="$PROJECT_DIR$/js/dev/go_tasks.js" />
         <option value="$PROJECT_DIR$/core/src/public_ajax/go_checks.php" />
         <option value="$PROJECT_DIR$/modules/user_blogs/src/public_ajax.php" />
-        <option value="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" />
         <option value="$PROJECT_DIR$/core/src/all/tinymce/wordcount/plugin.min.js" />
         <option value="$PROJECT_DIR$/core/src/all/go_mce.php" />
         <option value="$PROJECT_DIR$/core/src/admin/go_admin.php" />
         <option value="$PROJECT_DIR$/modules/tools/src/admin.php" />
         <option value="$PROJECT_DIR$/modules/tools/includes.php" />
-        <option value="$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js" />
         <option value="$PROJECT_DIR$/includes/go_enque_includes.php" />
         <option value="$PROJECT_DIR$/styles/css/go_every_page.scss" />
+        <option value="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" />
+        <option value="$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js" />
         <option value="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" />
       </list>
     </option>
@@ -353,51 +343,12 @@
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="all" type="462c0819:PsiDirectoryNode" />
-              <item name="tinymce" type="462c0819:PsiDirectoryNode" />
-              <item name="wordcount" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="public_ajax" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
               <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
               <item name="includes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="dev" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="dev" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="min" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
-              <item name="game-on-mmhsart" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game-on-mmhsart" type="b2602c69:ProjectViewProjectNode" />
@@ -634,12 +585,12 @@
       <workItem from="1546601397088" duration="30274000" />
       <workItem from="1546703967045" duration="46769000" />
       <workItem from="1546812970970" duration="2555000" />
-      <workItem from="1546975045063" duration="35706000" />
+      <workItem from="1546975045063" duration="39639000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3530255000" />
+    <option name="totallyTimeSpent" value="3534188000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
@@ -1054,7 +1005,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/modules/user_blogs/src/ajax.php</url>
-          <line>162</line>
+          <line>163</line>
           <option name="timeStamp" value="1942" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -1084,7 +1035,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/dev/scripts/go_blogs.js</url>
-          <line>425</line>
+          <line>447</line>
           <option name="timeStamp" value="1546" />
         </line-breakpoint>
       </breakpoints>
@@ -1475,26 +1426,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/all/go_mce.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/min/go_admin_user-min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>
@@ -1537,7 +1474,7 @@
     <entry file="file://$PROJECT_DIR$/js/min/go_frontend-min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
-          <caret line="339" column="28" selection-start-line="339" selection-start-column="24" selection-end-line="339" selection-end-column="28" />
+          <caret line="361" column="28" selection-start-line="361" selection-start-column="24" selection-end-line="361" selection-end-column="28" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -1581,30 +1518,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/ajax.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="154" column="164" selection-start-line="154" selection-start-column="164" selection-end-line="154" selection-end-column="164" />
+          <folding>
+            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/all/go_mce.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="112" selection-start-line="112" selection-end-line="123" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/all/tinymce/wordcount/wordcount.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="31" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/dev/scripts/go_blogs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="369" column="83" selection-start-line="369" selection-start-column="83" selection-end-line="369" selection-end-column="83" />
+        <state relative-caret-position="283">
+          <caret line="346" column="23" lean-forward="true" selection-start-line="346" selection-start-column="23" selection-end-line="346" selection-end-column="23" />
           <folding>
             <element signature="n#!!block;n#task_stage_check_input#0" />
             <element signature="e#751#765#0" />
             <element signature="e#895#953#0" />
             <element signature="e#1116#1140#0" />
-            <element signature="n#!!block;n#go_enable_loading#0" />
-            <element signature="n#!!block;n#go_disable_loading#0" />
             <element signature="n#!!block;n#tinymce_getContentLength_new#0" />
             <element signature="n#!!block;n#go_blog_user_task#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/ajax.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-486">
-          <caret line="104" column="10" selection-start-line="104" selection-start-column="10" selection-end-line="104" selection-end-column="10" />
-          <folding>
-            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
