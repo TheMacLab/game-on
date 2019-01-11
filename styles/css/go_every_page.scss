@@ -64,6 +64,24 @@ video.wp-video-shortcode {
 	background: rgba(0,0,0,.8) !important}
 #__wp-uploader-id-2 {z-index: 100003 !important;}
 
+.swal-overlay {
+	z-index: 100005 !important;
+}
+.swal-button--save {
+	background-color: forestgreen !important;
+}
+
+.swal-button--save:hover {
+	background-color: darkseagreen !important;
+}
+.swal-button--exit {
+	background-color: indianred !important;
+}
+
+.swal-button--exit:hover {
+	background-color: pink !important;
+}
+
 /**
  *ACF Loot Color
  */

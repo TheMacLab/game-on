@@ -28,11 +28,11 @@ jQuery( document ).ready( function() {
             task_stage_check_input(this, true, null);
         });
         jQuery('#go_back_button').one("click", function (e) {
-            //task_stage_check_input(this, true, null);
             task_stage_change(this);
         });
         jQuery('#go_save_button').one("click", function (e) {
-            task_stage_check_input(this, false, false);
+            //task_stage_check_input(this, false, false);
+            go_blog_submit( this, false );
         });
     }
 
@@ -140,8 +140,7 @@ function initializeClock(id, endtime) {
 }
 
 function go_timer_abandon() {
-	 var redirectURL = go_task_data.redirectURL
- 	//task_stage_check_input.location = $homeURL;
+	 var redirectURL = go_task_data.redirectURL;
     window.location = redirectURL;
 }
 

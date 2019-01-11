@@ -9,87 +9,537 @@ function tinymce_getContentLength() {
     return len;
 }
 */
-function task_stage_check_input(e,o,t){console.log("button clicked"),
-//disable button to prevent double clicks
-go_enable_loading(e);
-//BUTTON TYPES
-//Abandon
-//Start Timer
-//Continue
-//Undo
-//Repeat
-//Undo Repeat --is this different than just undo
-//Continue or Complete button needs to validate input for:
-////quizes
-///URLs
-///passwords
-///uploads
-//if it passes validation:
-////send information to php with ajax and wait for a response
-//if response is success
-////update totals
-///flash rewards and sounds
-////update last check
-////update current stage and check
-//v4 Set variables
-var r="";void 0!==jQuery(e).attr("button_type")&&(r=jQuery(e).attr("button_type"));var l="";void 0!==jQuery(e).attr("status")&&(l=jQuery(e).attr("status"));var a="";void 0!==jQuery(e).attr("check_type")&&(a=jQuery(e).attr("check_type"),console.log(a));var _=!1;jQuery("#go_stage_error_msg").text(""),jQuery("#go_blog_error_msg").text("");var n="<h3>Your post was not saved.</h3><ul> ",g=jQuery(e).attr("url_toggle"),i=jQuery(e).attr("video_toggle"),s=jQuery(e).attr("file_toggle"),u=jQuery(e).attr("text_toggle"),c=jQuery(e).attr("blog_suffix"),d="#go_result_video"+c,b="#go_result_url"+c,p="#go_result_media"+c,y;
-///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
-//if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
-if(console.log("suffix: "+c),"blog"==a||"blog_lightbox"==a){//min words and Video field on blog form validation
-if("1"==i){var h=jQuery(d).attr("value").replace(/\s+/,"");console.log(h),0<h.length?!h.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<h.lastIndexOf("http://")||0<h.lastIndexOf("https://")?(n+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",_=!0):-1==h.search("youtube")&&-1==h.search("vimeo")&&(n+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",_=!0):(n+="<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>",_=!0)}if("1"==u){
-//Word count validation
-var j=jQuery(e).attr("min_words"),f;//this variable is used in the other functions as well
-//alert("min Words: " + min_words);
-tinymce_getContentLength_new()<j&&(n+="<li>Your post is not long enough. There must be "+j+" words minimum.</li>",_=!0)}}"password"!==a&&"unlock"!=a||(0<jQuery("#go_result").attr("value").length||(n+="Retrieve the password from "+go_task_data.admin_name+".",_=!0));if("URL"==a||("blog"==a||"blog_lightbox"==a)&&1==g){if("URL"==a)var h=jQuery("#go_result").attr("value").replace(/\s+/,"");else var h=jQuery(b).attr("value").replace(/\s+/,""),v=jQuery(e).attr("required_string");console.log("URL"+h),0<h.length?!h.match(/^(http:\/\/|https:\/\/).*\..*$/)||0<h.lastIndexOf("http://")||0<h.lastIndexOf("https://")?(n+="<li>Enter a valid URL.</li>",_=!0):"blog"!=a&&"blog_lightbox"!=a||-1==h.indexOf(v)&&(n+='<li>Enter a valid URL. The URL must contain "'+v+'".</li>',_=!0):(n+="<li>Enter a valid URL.</li>",go_disable_loading(),_=!0)}if("upload"==a||("blog"==a||"blog_lightbox"==a)&&1==s){if("upload"==a)var Q=jQuery("#go_result").attr("value");else var Q=jQuery(p).attr("value");null==Q&&(n+="<li>Please attach a file.</li>",_=!0)}if("quiz"==a){var m=jQuery(".go_test_list");if(1<=m.length){for(var k=0,x=0;x<m.length;x++){var w="#"+m[x].id+" input:checked",E;1<=jQuery(w).length&&k++}
-//if all questions were answered
-_=k>=m.length?(go_quiz_check_answers(l,e),!1):(1<m.length?n+="<li>Please answer all questions!</li>":n+="<li>Please answer the question!</li>",!0)}}
-//}
-if(n+="</ul>",1==_)return 1==o?(console.log("error_stage"),
-//flash_error_msg('#go_stage_error_msg');
-jQuery("#go_stage_error_msg").append(n),jQuery("#go_stage_error_msg").show()):(console.log("error_blog"),jQuery("#go_blog_error_msg").append(n),jQuery("#go_blog_error_msg").show()),console.log("error validation"),void go_disable_loading();jQuery("#go_stage_error_msg").hide(),jQuery("#go_blog_error_msg").hide(),1==o?task_stage_change(e)://this was a blog save button (not a continue on a stage) so just save without changing stage.  The function only validated the inputs.
-go_blog_submit(e,c,t)}
+jQuery( document ).ready( function() {
+
+    //add onclick to blog edit buttons
+    //console.log("opener3");
+    jQuery(".go_blog_opener").one("click", function (e) {
+        go_blog_opener(this);
+    });
+
+    jQuery('#go_hidden_mce').remove();
+    jQuery('#go_hidden_mce_edit').remove();
+});
+
+function task_stage_check_input( target, on_task) {
+
+    console.log('button clicked');
+    //disable button to prevent double clicks
+    go_enable_loading( target );
+
+    //BUTTON TYPES
+    //Abandon
+    //Start Timer
+    //Continue
+    //Undo
+    //Repeat
+    //Undo Repeat --is this different than just undo
+
+    //Continue or Complete button needs to validate input for:
+    ////quizes
+    ///URLs
+    ///passwords
+    ///uploads
+
+    //if it passes validation:
+    ////send information to php with ajax and wait for a response
+
+    //if response is success
+    ////update totals
+    ///flash rewards and sounds
+    ////update last check
+    ////update current stage and check
+
+
+    //v4 Set variables
+    var button_type = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
+        button_type = jQuery( target ).attr( 'button_type' )
+    }
+
+    var task_status = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'status' ) ) {
+        task_status = jQuery( target ).attr( 'status' )
+    }
+
+    var check_type = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'check_type' ) ) {
+        check_type = jQuery( target ).attr( 'check_type' )
+        console.log(check_type);
+    }
+    var fail = false;
+    jQuery('#go_stage_error_msg').text("");
+    jQuery('#go_blog_error_msg').text("");
+    var error_message = '<h3>Your post was not saved.</h3><ul> ';
+
+    var url_toggle = jQuery(target).attr('url_toggle');
+    var video_toggle = jQuery(target).attr('video_toggle');
+    var file_toggle = jQuery(target).attr('file_toggle');
+    var text_toggle = jQuery(target).attr('text_toggle');
+    var suffix = jQuery( target ).attr( 'blog_suffix' );
+
+    var go_result_video = '#go_result_video' + suffix;
+    var go_result_url = '#go_result_url' + suffix;
+    var go_result_media = '#go_result_media' + suffix;
+    console.log ("suffix: " + suffix);
+
+    ///v4 START VALIDATE FIELD ENTRIES BEFORE SUBMIT
+    //if (button_type == 'continue' || button_type == 'complete' || button_type =='continue_bonus' || button_type =='complete_bonus') {
+
+    if ( check_type == 'blog' || check_type == 'blog_lightbox') { //min words and Video field on blog form validation
+
+        if(video_toggle == '1') {
+            var the_url = jQuery(go_result_video).attr('value').replace(/\s+/, '');
+            console.log(the_url);
+
+            if (the_url.length > 0) {
+                if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
+                    if ((the_url.search("youtube") == -1) && (the_url.search("vimeo") == -1)) {
+                        error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                        fail = true;
+                    }
+                } else {
+                    error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                    fail = true;
+                }
+            } else {
+                error_message += "<li>Enter a valid video URL. YouTube and Vimeo are supported.</li>";
+                fail = true;
+            }
+        }
+
+        if(text_toggle  == '1') {
+            //Word count validation
+            var min_words = jQuery(target).attr('min_words'); //this variable is used in the other functions as well
+            //alert("min Words: " + min_words);
+            var my_words = tinymce_getContentLength_new();
+            if (my_words < min_words) {
+                error_message += "<li>Your post is not long enough. There must be " + min_words + " words minimum.</li>";
+                fail = true;
+            }
+        }
+
+    }
+    if (check_type === 'password' || check_type == 'unlock') {
+        var pass_entered = jQuery('#go_result').attr('value').length > 0 ? true : false;
+        if (!pass_entered) {
+            error_message += "Retrieve the password from " + go_task_data.admin_name + ".";
+            fail = true;
+        }
+    }
+    if (check_type == 'URL' || ((check_type == 'blog' || check_type == 'blog_lightbox') && url_toggle == true)) {
+
+        if (check_type == 'URL') {
+            var the_url = jQuery('#go_result').attr('value').replace(/\s+/, '');
+        }else{
+            var the_url = jQuery(go_result_url).attr('value').replace(/\s+/, '');
+            var required_string = jQuery( target ).attr('required_string');
+        }
+        console.log("URL" + the_url);
+
+        if (the_url.length > 0) {
+            if (the_url.match(/^(http:\/\/|https:\/\/).*\..*$/) && !(the_url.lastIndexOf('http://') > 0) && !(the_url.lastIndexOf('https://') > 0)) {
+                if ( check_type == 'blog' || check_type == 'blog_lightbox') {
+                    if ((the_url.indexOf(required_string) == -1) ){
+                        error_message += "<li>Enter a valid URL. The URL must contain \"" + required_string + "\".</li>";
+                        fail = true;
+                    }
+                }
+            } else {
+                error_message += "<li>Enter a valid URL.</li>";
+                fail = true;
+            }
+        } else {
+            error_message += "<li>Enter a valid URL.</li>";
+            go_disable_loading();
+            fail = true;
+        }
+
+    }
+    if (check_type == 'upload' || ((check_type == 'blog' || check_type == 'blog_lightbox') && file_toggle == true)) {
+        if (check_type == 'upload') {
+            var result = jQuery("#go_result").attr('value');
+        }else{
+            var result = jQuery(go_result_media).attr('value');
+        }
+        if (result == undefined) {
+            error_message += "<li>Please attach a file.</li>";
+            fail = true;
+        }
+
+    }
+
+    if (check_type == 'quiz') {
+        var test_list = jQuery(".go_test_list");
+        if (test_list.length >= 1) {
+            var checked_ans = 0;
+            for (var i = 0; i < test_list.length; i++) {
+                var obj_str = "#" + test_list[i].id + " input:checked";
+                var chosen_answers = jQuery(obj_str);
+                if (chosen_answers.length >= 1) {
+                    checked_ans++;
+                }
+            }
+            //if all questions were answered
+            if (checked_ans >= test_list.length) {
+                go_quiz_check_answers(task_status, target);
+                fail = false;
+
+            }
+            //else print error message
+            else if (test_list.length > 1) {
+                error_message +="<li>Please answer all questions!</li>";
+                fail = true;
+            }
+            //} else {
+            //if (jQuery(".go_test_list input:checked").length >= 1) {
+            // go_quiz_check_answers();
+            //}
+            else {
+                error_message += "<li>Please answer the question!</li>";
+                fail = true;
+            }
+        }
+    }
+    //}
+    error_message += "</ul>";
+    if (fail == true){
+        if (on_task == true) {
+            console.log("error_stage");
+            //flash_error_msg('#go_stage_error_msg');
+            jQuery('#go_stage_error_msg').append(error_message);
+            jQuery('#go_stage_error_msg').show();
+
+        }else {
+
+            console.log("error_blog");
+            jQuery('#go_blog_error_msg').append(error_message);
+            jQuery('#go_blog_error_msg').show();
+        }
+        console.log("error validation");
+        go_disable_loading();
+        return;
+    }else{
+        jQuery('#go_stage_error_msg').hide();
+        jQuery('#go_blog_error_msg').hide();
+    }
+
+    if (on_task == true) {
+        task_stage_change(target);
+    }else{ //this was a blog submit button in a lightbox, so just save without changing stage.
+        go_blog_submit( target, true );
+    }
+}
+
 // disables the target stage button, and adds a loading gif to it
-function go_enable_loading(e){
-//prevent further events with this button
-//jQuery('#go_button').prop('disabled',true);
-// prepend the loading gif to the button's content, to show that the request is being processed
-e.innerHTML='<span class="go_loading"></span>'+e.innerHTML}
+function go_enable_loading( target ) {
+    //prevent further events with this button
+    //jQuery('#go_button').prop('disabled',true);
+    // prepend the loading gif to the button's content, to show that the request is being processed
+    target.innerHTML = '<span class="go_loading"></span>' + target.innerHTML;
+}
+
 // re-enables the stage button, and removes the loading gif
-function go_disable_loading(){console.log("oneclick"),jQuery(".go_loading").remove(),jQuery("#go_button").off().one("click",function(e){task_stage_check_input(this,!0,null)}),jQuery("#go_back_button").off().one("click",function(e){
-//task_stage_check_input( this, true, null );
-task_stage_change(this)}),jQuery("#go_save_button").off().one("click",function(e){task_stage_check_input(this,!1,!1)}),jQuery("#go_bonus_button").off().one("click",function(e){go_update_bonus_loot(this)}),jQuery(".go_str_item").off().one("click",function(e){go_lb_opener(this.id)}),console.log("opener4"),jQuery(".go_blog_opener").off().one("click",function(e){go_blog_opener(this)}),jQuery("#go_blog_submit").off().one("click",function(e){task_stage_check_input(this,!1,!1)}),
-//add active class to checks and buttons
-jQuery(".progress").closest(".go_checks_and_buttons").addClass("active")}function tinymce_getContentLength_new(){var e=tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText,o=0;if(e){var t=(e=(e=(e=(e=e.replace(/\.\.\./g," ")).replace(/<.[^<>]*?>/g," ").replace(/&nbsp;|&#160;/gi," ")).replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i,"$1$3").replace(/&.+?;/g," ")).replace(/[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g,"")).match(/[\w\u2019\x27\-\u00C0-\u1FFF]+/g);t&&(o=t.length)}return o}function go_blog_opener(e){jQuery("#go_hidden_mce").remove(),jQuery(".go_blog_opener").prop("onclick",null).off("click");
-//var result_title = jQuery( this ).attr( 'value' );
-var o=jQuery(e).attr("blog_post_id"),t,r={action:"go_blog_opener",_ajax_nonce:GO_EVERY_PAGE_DATA.nonces.go_blog_opener,blog_post_id:o};
-//console.log(el);
-//console.log(blog_post_id);
-//jQuery.ajaxSetup({ cache: true });
-jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:r,cache:!1,success:function(e){
-//console.log(results);
-//tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
-//tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
-jQuery.featherlight(e,{afterContent:function(){
-//console.log("after");
-tinymce.execCommand("mceRemoveEditor",!0,"go_blog_post_lightbox"),tinymce.execCommand("mceAddEditor",!0,"go_blog_post_lightbox")}}),
-//tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
-//tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
-jQuery(".featherlight").css("background","rgba(0,0,0,.8)"),jQuery(".featherlight .featherlight-content").css("width","80%"),console.log("opener2"),jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)})}})}function go_blog_submit(e,t,r){var o=GO_EVERY_PAGE_DATA.nonces.go_blog_submit,l=go_get_tinymce_content_blog(),a=jQuery("#go_blog_title"+t).val();console.log("title: "+a);var _=jQuery(e).attr("blog_post_id"),n=jQuery(e).attr("status"),g=jQuery(e).attr("task_id"),i=jQuery("#go_result_url"+t).val(),s=jQuery("#go_result_media"+t).attr("value"),u=jQuery("#go_result_video"+t).val();console.log("blog_url: "+i),console.log("blog_media: "+s);var c={action:"go_blog_submit",_ajax_nonce:o,result:l,result_title:a,blog_post_id:_,blog_url:i,blog_media:s,blog_video:u,go_blog_task_stage:n,post_id:g};
-//jQuery.ajaxSetup({ cache: true });
-jQuery.ajax({url:MyAjax.ajaxurl,type:"POST",data:c,cache:!1,success:function(e){console.log("success");
-//console.log(raw);
-// parse the raw response to get the desired JSON
-var o={};try{var o=JSON.parse(e)}catch(e){o={json_status:"101",message:"",blog_post_id:""}}console.log("message"+o.message),console.log("blog_post_id"+o.blog_post_id),1==r?location.reload():(jQuery("body").append(o.message),
-//console.log(res);
-jQuery(".go_loading").remove(),jQuery("#go_save_button"+t).off().one("click",function(e){task_stage_check_input(this,!1,!1)}),jQuery("#go_save_button"+t).attr("blog_post_id",o.blog_post_id),jQuery("#go_blog_title"+t).attr("data-blog_post_id",o.blog_post_id))}})}function go_get_tinymce_content_blog(){
-//console.log("html");
-return jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").is(":visible")?jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").val():tinyMCE.activeEditor.getContent()}function go_blog_user_task(e,o){
-//jQuery(".go_datatables").hide();
-console.log("blogs!");var t=GO_EVERY_PAGE_DATA.nonces.go_blog_user_task;jQuery.ajax({type:"post",url:MyAjax.ajaxurl,data:{_ajax_nonce:t,action:"go_blog_user_task",uid:e,task_id:o},success:function(e){jQuery.featherlight(e,{variant:"blogs",afterOpen:function(e){
-//console.log("fitvids"); // this contains all related elements
-//alert(this.$content.hasClass('true')); // alert class of content
-//jQuery("#go_blog_container").fitVids();
-go_fit_and_max_only("#go_blog_container")}})}})}jQuery(document).ready(function(){
-//add onclick to blog edit buttons
-//console.log("opener3");
-jQuery(".go_blog_opener").one("click",function(e){go_blog_opener(this)}),jQuery("#go_hidden_mce").remove(),jQuery("#go_hidden_mce_edit").remove()});
+function go_disable_loading( ) {
+    //console.log ("oneclick");
+    jQuery('.go_loading').remove();
+
+    jQuery('#go_button').off().one("click", function(e){
+        task_stage_check_input( this, true );
+    });
+    jQuery('#go_back_button').off().one("click", function(e){
+        task_stage_change(this);
+    });
+
+    jQuery('#go_save_button').off().one("click", function(e){
+        //task_stage_check_input( this, false );
+        go_blog_submit( this, false );//disable loading
+
+    });
+
+
+    jQuery( "#go_bonus_button" ).off().one("click", function(e) {
+        go_update_bonus_loot(this);
+    });
+
+
+    jQuery('.go_str_item').off().one("click", function(e){
+        go_lb_opener( this.id );
+    });
+
+    console.log("opener4");
+    jQuery(".go_blog_opener").off().one("click", function(e){
+        go_blog_opener( this );
+    });
+
+
+    jQuery("#go_blog_submit").off().one("click", function(e){
+        task_stage_check_input( this, false );//disable loading
+    });
+
+
+    //add active class to checks and buttons
+    jQuery(".progress").closest(".go_checks_and_buttons").addClass('active');
+
+}
+
+function tinymce_getContentLength_new() {
+    var b = tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText;
+    var e = 0;
+    if (b) {
+        b = b.replace(/\.\.\./g, " "),
+            b = b.replace(/<.[^<>]*?>/g, " ").replace(/&nbsp;|&#160;/gi, " "),
+            b = b.replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i, "$1$3").replace(/&.+?;/g, " "),
+            b = b.replace(/[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g, "");
+        var f = b.match(/[\w\u2019\x27\-\u00C0-\u1FFF]+/g);
+        f && (e = f.length)
+    }
+    return e
+}
+
+function go_blog_opener( el ) {
+    go_enable_loading( el );
+    jQuery("#go_hidden_mce").remove();
+    jQuery(".go_blog_opener").prop("onclick", null).off("click");
+    //var result_title = jQuery( this ).attr( 'value' );
+    var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
+    //console.log(el);
+    //console.log(blog_post_id);
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_opener;
+    var gotoSend = {
+        action:"go_blog_opener",
+        _ajax_nonce: nonce,
+        blog_post_id: blog_post_id
+    };
+    //jQuery.ajaxSetup({ cache: true });
+    jQuery.ajax({
+        url: MyAjax.ajaxurl,
+        type: 'POST',
+        data: gotoSend,
+        cache: false,
+        success: function (results) {
+            //console.log(results);
+            //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+            //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+            jQuery.featherlight(results, {afterContent: function(){
+                    console.log("aftercontent");
+
+                    jQuery( 'body' ).attr( 'data-go_blog_saved', '0' );
+
+                    jQuery( 'body' ).attr( 'data-go_blog_updated', '0' );
+                    tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_lightbox');
+                    tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_lightbox' );
+                    //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
+                    //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
+                },
+                beforeClose: function() {
+                    console.log("beforeClose");
+                    var go_blog_saved= jQuery( 'body' ).attr( 'data-go_blog_saved' );
+                    var go_blog_updated= jQuery( 'body' ).attr( 'data-go_blog_updated' );
+                    if (go_blog_saved != '1' && go_blog_updated == '1') {
+                        swal({
+                            title: "You have unsaved changes.",
+                            text: "Would you like to save? If you don't save you will not be able to recover these changes.",
+                            icon: "warning",
+                           //buttons: ["Save and Close", "Close without Saving"],
+                            //dangerMode: true,
+
+                            buttons: {
+                                exit: {
+                                    text: "Close without Saving",
+                                    value: "exit",
+                                },
+                                save: {
+                                    text: "Save and Close",
+                                    value: "save"
+
+                                }
+
+                            }
+                        })
+                            .then((value) => {
+                                switch (value) {
+
+                                    case "exit":
+                                        swal("Your changes were not saved.");
+                                        jQuery( 'body' ).attr( 'data-go_blog_saved', '1' );
+                                        jQuery.featherlight.close();
+                                        break;
+
+                                    case "save":
+                                        jQuery('#go_blog_submit').trigger('click');
+                                        break;
+
+                                    default:
+
+                                }
+                            });
+                        return false;
+                    }
+                }
+            });
+            //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
+            //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+
+            jQuery(".featherlight").css('background', 'rgba(0,0,0,.8)');
+            jQuery(".featherlight .featherlight-content").css('width', '80%');
+
+            console.log("opener2");
+            jQuery(".go_blog_opener").one("click", function(e){
+                go_blog_opener( this );
+            });
+            go_disable_loading();
+
+            /*
+
+            //This code is for the min length validation
+            ///counts length of blog posts and activates submit button
+            tinyMCE.activeEditor.on('keyup', function(ed) {
+                console.log ("keyclick");
+                tinymce_updateCharCounter(this, tinymce_getContentLength());
+                if (tinymce_getContentLength() + 1 > 500) {
+                    jQuery("#go_blog_submit").show();
+                    jQuery("#go_blog_submit").one("click", function(e){
+                        go_blog_submit( this );
+                    });
+                    return ;
+                }
+                else{
+                    jQuery("#go_blog_submit").hide();
+                    jQuery("#go_blog_submit").unbind("click");
+
+                    return;
+                }
+            });
+            */
+
+
+        }
+    });
+}
+
+function go_blog_submit( el, reload ) {
+    go_enable_loading( el );
+
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_submit;
+    var suffix = jQuery( el ).attr( 'blog_suffix' );
+    var result = go_get_tinymce_content_blog();
+    //var result = tinyMCE.activeEditor.getContent();
+    var result_title = jQuery( '#go_blog_title' + suffix ).val( );
+    console.log("title: " + result_title);
+
+    var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
+    var go_blog_task_stage= jQuery( el ).attr( 'status' );
+    var task_id= jQuery( el ).attr( 'task_id' );
+
+    var blog_url= jQuery( '#go_result_url' + suffix ).val();
+    var blog_media= jQuery( '#go_result_media' + suffix ).attr( 'value' );
+    var blog_video= jQuery( '#go_result_video' + suffix).val();
+    console.log("blog_url: " + blog_url);
+    console.log("blog_media: " + blog_media);
+
+    var gotoSend = {
+        action:"go_blog_submit",
+        _ajax_nonce: nonce,
+        result: result,
+        result_title: result_title,
+        blog_post_id: blog_post_id,
+        blog_url: blog_url,
+        blog_media: blog_media,
+        blog_video: blog_video,
+        go_blog_task_stage: go_blog_task_stage,
+        post_id: task_id
+    };
+    //jQuery.ajaxSetup({ cache: true });
+    jQuery.ajax({
+        url: MyAjax.ajaxurl,
+        type: 'POST',
+        data: gotoSend,
+        cache: false,
+        success: function (raw) {
+            console.log('success');
+            //console.log(raw);
+            // parse the raw response to get the desired JSON
+            var res = {};
+            try {
+                var res = JSON.parse( raw );
+            } catch (e) {
+                res = {
+                    json_status: '101',
+                    message: '',
+                    blog_post_id: ''
+                };
+            }
+            //console.log("message" + res.message);
+            //console.log("blog_post_id: " + res.blog_post_id);
+            //console.log("suffix: " + suffix)
+
+            if (reload == true) {
+                location.reload();
+            }
+            else{
+                    //jQuery('body').append(res.message);
+                    //jQuery('.go_loading').remove();
+                    go_disable_loading();
+                    jQuery('#go_save_button' + suffix).off().one("click", function(e){
+                        //task_stage_check_input( this, false );//on submit, no reload
+                        go_blog_submit( this, false );
+                    });
+
+                    jQuery( '#go_save_button' + suffix ).attr( 'blog_post_id', res.blog_post_id );
+                    jQuery( 'body' ).attr( 'data-go_blog_saved', '1' );
+                    jQuery( '#go_blog_title' + suffix ).attr( 'data-blog_post_id', res.blog_post_id );
+
+            }
+            //});
+        }
+    });
+}
+
+function go_get_tinymce_content_blog(){
+    //console.log("html");
+    if (jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").is(":visible")){
+        return jQuery('#wp-go_blog_post_edit-wrap .wp-editor-area').val();
+
+    }else{
+        //console.log("visual");
+        return tinyMCE.activeEditor.getContent();
+    }
+}
+
+function go_blog_user_task (user_id, task_id) {
+    //jQuery(".go_datatables").hide();
+    console.log("blogs!");
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_user_task;
+    jQuery.ajax({
+        type: 'post',
+        url: MyAjax.ajaxurl,
+        data:{
+            _ajax_nonce: nonce,
+            action: 'go_blog_user_task',
+            uid: user_id,
+            task_id: task_id
+        },
+        success: function( res ) {
+
+            jQuery.featherlight(res, {
+                variant: 'blogs',
+                afterOpen: function(event){
+                    //console.log("fitvids"); // this contains all related elements
+                    //alert(this.$content.hasClass('true')); // alert class of content
+                    //jQuery("#go_blog_container").fitVids();
+                    go_fit_and_max_only("#go_blog_container");
+                }
+
+            });
+
+
+            if ( -1 !== res ) {
+
+            }
+        }
+    });
+}
+
+
+// @codekit-prepend '/scripts/go_blogs.js'

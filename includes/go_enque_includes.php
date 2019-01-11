@@ -224,6 +224,14 @@ function go_includes () {
     wp_register_style( 'go_featherlight_css', $go_featherlight_css_url, null, 'v1.7.13' );
     wp_enqueue_style( 'go_featherlight_css' );
 
+
+    /**
+     * Sweet Alert
+     */
+    wp_register_script( 'go_sweet_alert', $go_sweetalert_js_url, null,'v1', $js_in_footer );
+    wp_enqueue_script( 'go_sweet_alert' );
+
+
     /**
      * Collapsible Lists by Kate Morley
      * http://code.iamkate.com/javascript/collapsible-lists/ 

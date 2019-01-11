@@ -38,8 +38,7 @@ function go_blog_opener(){
 
         jQuery( document ).ready( function() {
             jQuery("#go_blog_submit").one("click", function(e){
-                //go_blog_submit( this, '_lightbox' );
-                task_stage_check_input(this, false, true);
+                task_stage_check_input(this, false);
             });
 
         });
@@ -104,26 +103,9 @@ function go_blog_submit(){
     );
 
     die();
-
-    /*
-    $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
-    $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
-    $user_id = get_current_user_id();
-    $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
-    $my_post = array(
-        'ID'        => $blog_post_id,
-        'post_type'     => 'go_blogs',
-        'post_title'    => $result_title,
-        'post_content'  => $result,
-        'post_status'   => 'publish',
-        'post_author'   => $user_id,
-
-    );
-    go_blog_save($blog_post_id, $my_post);
-    */
 }
 
-function go_save_blog_post($post_id = null, $stage = null, $message = false){
+function go_save_blog_post($post_id = null, $stage = null){
     $user_id = get_current_user_id();
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
@@ -166,22 +148,24 @@ function go_save_blog_post($post_id = null, $stage = null, $message = false){
         )
     );
 
-    $result = go_blog_save($blog_post_id, $my_post);
-
-    return $result;
-}
-
-function go_blog_save($blog_post_id, $my_post){
     if (empty($blog_post_id)) {
         // Insert the post into the database
         $new_post_id = wp_insert_post( $my_post );
         $result = $new_post_id;
+        go_update_actions($user_id, 'blog_post', $post_id, ($stage + 1), null, null, $result, null, null, null, null, null, null, null, null, null, false, null);
+
     }else{
         wp_update_post($my_post);
         $result = $blog_post_id;
     }
+
+
+    //$result = go_blog_save($blog_post_id, $my_post);
+
     return $result;
 }
+
+
 
 /**
  * Prints content for the clipboard tasks table

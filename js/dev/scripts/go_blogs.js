@@ -21,7 +21,7 @@ jQuery( document ).ready( function() {
     jQuery('#go_hidden_mce_edit').remove();
 });
 
-function task_stage_check_input( target, next_stage, reload) {
+function task_stage_check_input( target, on_task) {
 
     console.log('button clicked');
     //disable button to prevent double clicks
@@ -204,7 +204,7 @@ function task_stage_check_input( target, next_stage, reload) {
     //}
     error_message += "</ul>";
     if (fail == true){
-        if (next_stage == true) {
+        if (on_task == true) {
             console.log("error_stage");
             //flash_error_msg('#go_stage_error_msg');
             jQuery('#go_stage_error_msg').append(error_message);
@@ -224,10 +224,10 @@ function task_stage_check_input( target, next_stage, reload) {
         jQuery('#go_blog_error_msg').hide();
     }
 
-    if (next_stage == true) {
+    if (on_task == true) {
         task_stage_change(target);
-    }else{ //this was a blog save button (not a continue on a stage) so just save without changing stage.  The function only validated the inputs.
-        go_blog_submit( target, suffix, reload );
+    }else{ //this was a blog submit button in a lightbox, so just save without changing stage.
+        go_blog_submit( target, true );
     }
 }
 
@@ -241,20 +241,22 @@ function go_enable_loading( target ) {
 
 // re-enables the stage button, and removes the loading gif
 function go_disable_loading( ) {
-    console.log ("oneclick");
+    //console.log ("oneclick");
     jQuery('.go_loading').remove();
 
     jQuery('#go_button').off().one("click", function(e){
-        task_stage_check_input( this, true, null );
+        task_stage_check_input( this, true );
     });
     jQuery('#go_back_button').off().one("click", function(e){
-        //task_stage_check_input( this, true, null );
         task_stage_change(this);
     });
 
     jQuery('#go_save_button').off().one("click", function(e){
-        task_stage_check_input( this, false, false );
+        //task_stage_check_input( this, false );
+        go_blog_submit( this, false );//disable loading
+
     });
+
 
     jQuery( "#go_bonus_button" ).off().one("click", function(e) {
         go_update_bonus_loot(this);
@@ -270,8 +272,9 @@ function go_disable_loading( ) {
         go_blog_opener( this );
     });
 
+
     jQuery("#go_blog_submit").off().one("click", function(e){
-        task_stage_check_input( this, false, false );
+        task_stage_check_input( this, false );//disable loading
     });
 
 
@@ -295,6 +298,7 @@ function tinymce_getContentLength_new() {
 }
 
 function go_blog_opener( el ) {
+    go_enable_loading( el );
     jQuery("#go_hidden_mce").remove();
     jQuery(".go_blog_opener").prop("onclick", null).off("click");
     //var result_title = jQuery( this ).attr( 'value' );
@@ -318,12 +322,60 @@ function go_blog_opener( el ) {
             //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
             //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
             jQuery.featherlight(results, {afterContent: function(){
-                    //console.log("after");
+                    console.log("aftercontent");
 
+                    jQuery( 'body' ).attr( 'data-go_blog_saved', '0' );
+
+                    jQuery( 'body' ).attr( 'data-go_blog_updated', '0' );
                     tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_lightbox');
                     tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_lightbox' );
                     //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
                     //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
+                },
+                beforeClose: function() {
+                    console.log("beforeClose");
+                    var go_blog_saved= jQuery( 'body' ).attr( 'data-go_blog_saved' );
+                    var go_blog_updated= jQuery( 'body' ).attr( 'data-go_blog_updated' );
+                    if (go_blog_saved != '1' && go_blog_updated == '1') {
+                        swal({
+                            title: "You have unsaved changes.",
+                            text: "Would you like to save? If you don't save you will not be able to recover these changes.",
+                            icon: "warning",
+                           //buttons: ["Save and Close", "Close without Saving"],
+                            //dangerMode: true,
+
+                            buttons: {
+                                exit: {
+                                    text: "Close without Saving",
+                                    value: "exit",
+                                },
+                                save: {
+                                    text: "Save and Close",
+                                    value: "save"
+
+                                }
+
+                            }
+                        })
+                            .then((value) => {
+                                switch (value) {
+
+                                    case "exit":
+                                        swal("Your changes were not saved.");
+                                        jQuery( 'body' ).attr( 'data-go_blog_saved', '1' );
+                                        jQuery.featherlight.close();
+                                        break;
+
+                                    case "save":
+                                        jQuery('#go_blog_submit').trigger('click');
+                                        break;
+
+                                    default:
+
+                                }
+                            });
+                        return false;
+                    }
                 }
             });
             //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
@@ -336,6 +388,7 @@ function go_blog_opener( el ) {
             jQuery(".go_blog_opener").one("click", function(e){
                 go_blog_opener( this );
             });
+            go_disable_loading();
 
             /*
 
@@ -365,9 +418,11 @@ function go_blog_opener( el ) {
     });
 }
 
-function go_blog_submit( el, suffix, reload ) {
+function go_blog_submit( el, reload ) {
+    go_enable_loading( el );
 
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_submit;
+    var suffix = jQuery( el ).attr( 'blog_suffix' );
     var result = go_get_tinymce_content_blog();
     //var result = tinyMCE.activeEditor.getContent();
     var result_title = jQuery( '#go_blog_title' + suffix ).val( );
@@ -415,23 +470,24 @@ function go_blog_submit( el, suffix, reload ) {
                     blog_post_id: ''
                 };
             }
-            console.log("message" + res.message);
-            console.log("blog_post_id" + res.blog_post_id);
+            //console.log("message" + res.message);
+            //console.log("blog_post_id: " + res.blog_post_id);
+            //console.log("suffix: " + suffix)
 
             if (reload == true) {
                 location.reload();
             }
             else{
-
-
-                    jQuery('body').append(res.message);
-                    //console.log(res);
-                    jQuery('.go_loading').remove();
+                    //jQuery('body').append(res.message);
+                    //jQuery('.go_loading').remove();
+                    go_disable_loading();
                     jQuery('#go_save_button' + suffix).off().one("click", function(e){
-                        task_stage_check_input( this, false, false );
+                        //task_stage_check_input( this, false );//on submit, no reload
+                        go_blog_submit( this, false );
                     });
 
                     jQuery( '#go_save_button' + suffix ).attr( 'blog_post_id', res.blog_post_id );
+                    jQuery( 'body' ).attr( 'data-go_blog_saved', '1' );
                     jQuery( '#go_blog_title' + suffix ).attr( 'data-blog_post_id', res.blog_post_id );
 
             }

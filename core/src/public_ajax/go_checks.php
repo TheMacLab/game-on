@@ -108,8 +108,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
     if ($is_admin) {
         $admin_view = get_user_option('go_admin_view', $user_id );
     }
-    //$onclick = "onclick='task_stage_check_input( this );'";
-
     $undo = 'undo';
     $abandon = 'abandon';
     $complete = 'complete';
@@ -298,7 +296,7 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
                 $user_id,
                 $post_id,
                 $i,
-                'task'
+                'blog_post'
             )
         );
 

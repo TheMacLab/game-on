@@ -118,7 +118,7 @@ function fp_tinymce_wordcount($plugins_array = array())
     //Build the response - the key is the plugin name, value is the URL to the plugin JS
     foreach ($plugins as $plugin )
     {
-        $plugins_array[ $plugin ] = plugins_url('tinymce/', __FILE__) . $plugin . '/plugin.min.js';
+        $plugins_array[ $plugin ] = plugins_url('tinymce/', __FILE__) . $plugin . '/wordcount.js';
     }
     return $plugins_array;
 }

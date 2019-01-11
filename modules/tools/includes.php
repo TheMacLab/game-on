@@ -15,7 +15,7 @@ if ( !is_admin() ) {
     add_action( 'wp_ajax_go_reset_all_users', 'go_reset_all_users' ); //OK
     add_action( 'wp_ajax_go_upgade4', 'go_upgade4' ); //OK
 }else{
-    //include_once('admin/admin.php');
+    include_once('src/admin.php');
 }
 
 //always include

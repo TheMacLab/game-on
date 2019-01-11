@@ -137,16 +137,18 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
 
         //Save Draft Button
         echo "<button id='go_save_button{$suffix}' class='go_save_button progress left'  status='{$i}' check_type='skip' button_type='save'  admin_lock='true' blog_post_id='{$blog_post_id}' blog_suffix='{$suffix}' task_id='{$go_blog_task_id}'>Save Draft</button>";
-         ?>
+        if($suffix =='_lightbox') {
+            ?>
             <script>
-                jQuery( document ).ready( function() {
+                jQuery(document).ready(function () {
                     jQuery('#go_save_button_lightbox').one("click", function (e) {
-                        task_stage_check_input(this, false, false);
+                        go_blog_submit( this, false );
                     });
                 });
 
             </script>
-        <?php
+            <?php
+        }
     }
 }
 
@@ -178,6 +180,9 @@ function go_blog_post($blog_post_id){
 
     if(!empty($go_blog_task_id)) {//if this post was submitted from a task, then add the task required fields
         $custom_fields = get_post_custom($go_blog_task_id);
+        $task_title = get_the_title($go_blog_task_id);
+        $task_url = get_permalink($go_blog_task_id);
+        $stage = $i + 1;
         if ($i != null) {
             $url_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0] : false);
             $file_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0] : false);
@@ -191,7 +196,7 @@ function go_blog_post($blog_post_id){
             $text_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0] : true);
         }
         if(empty($title)){
-            $title = get_the_title($go_blog_task_id);
+            $title = $task_title;
         }
 
     }
@@ -205,7 +210,13 @@ function go_blog_post($blog_post_id){
 
 
     echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">";
-    echo "<h2>". $title . "</h2>";
+    /*
+    if (!empty($task_title) && $stage > 0) {
+        echo "<div style='font-size: .8em;'>Submitted on <a href='{$task_url}'>{$task_title} stage {$stage}</a>.</div>";
+    }
+    */
+    echo "<h2><a href='{$task_url}'>". $title . "</a></h2>";
+
     if($url_toggle){
         $url_content = (isset($blog_meta['go_blog_url'][0]) ?  $blog_meta['go_blog_url'][0] : null);
         if (!empty($url_content)){

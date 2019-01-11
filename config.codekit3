@@ -177,22 +177,32 @@
 		"oAP": "/core/src/all/go_users.php",
 		"oF": 0
 		},
-	"/core/src/all/tinymce/wordcount/plugin.min-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/core/src/all/tinymce/wordcount/plugin.min-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/core/src/all/tinymce/wordcount/plugin.min.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 0,
 		"oAP": "/core/src/all/tinymce/wordcount/plugin.min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/core/src/all/tinymce/wordcount/wordcount-min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/core/src/all/tinymce/wordcount/wordcount-min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"/core/src/all/tinymce/wordcount/wordcount.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/core/src/all/tinymce/wordcount/wordcount-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -2809,7 +2819,7 @@
 	"/js/dev/go_admin_user.js": {
 		"ft": 64,
 		"ma": 0,
-		"mi": 1,
+		"mi": 0,
 		"oA": 0,
 		"oAP": "/js/min/go_admin_user-min.js",
 		"oF": 3,
@@ -2839,7 +2849,7 @@
 	"/js/dev/go_frontend.js": {
 		"ft": 64,
 		"ma": 0,
-		"mi": 1,
+		"mi": 0,
 		"oA": 0,
 		"oAP": "/js/min/go_frontend-min.js",
 		"oF": 3,
@@ -3716,6 +3726,13 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "/modules/tools/includes.php",
+		"oF": 0
+		},
+	"/modules/tools/src/admin.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/modules/tools/src/admin.php",
 		"oF": 0
 		},
 	"/modules/tools/src/ajax.php": {
