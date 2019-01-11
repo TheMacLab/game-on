@@ -134,7 +134,7 @@ function go_task_change_stage() {
         //save blog post
         else if ($check_type == 'blog'){
 
-            $result = go_save_blog_post($post_id, $status);
+            $result = go_save_blog_post($post_id, $status, null);
             // Insert the post into the database
 
             //create blog post function ($uid, $result);
@@ -233,7 +233,7 @@ function go_task_change_stage() {
                 $result = go_stage_password_validate($result, $custom_fields, $status, true);
             }
             else if ($check_type == 'blog'){
-                $result = go_save_blog_post($post_id, $status);
+                $result = go_save_blog_post($post_id, null, $bonus_status);
             }
 
             //get the rewards and apply modifiers

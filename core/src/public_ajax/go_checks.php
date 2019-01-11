@@ -113,15 +113,16 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
     $complete = 'complete';
     $continue = 'continue';
     $stage = $i;
-    $required_string = (isset($custom_fields['go_stages_'.$stage.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$stage.'_blog_options_url_url_validation'][0] : null);
 
-    if (!$bonus === true) {
+    if ($bonus != true) {
         $url_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0] : null);
         $file_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0] : null);
         $video_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_video'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_video'][0] : null);
         $text_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0] : null);
         $restrict_mime_types = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0] : null);
         $min_words = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0] : null);
+        $required_string = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$stage.'_blog_options_url_url_validation'][0] : null);
+
     }
     else{
         $url_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_url'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_url'][0] : null);
@@ -130,6 +131,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         $text_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0] : null);
         $restrict_mime_types = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0] : null);
         $min_words = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0] : null);
+        $required_string = (isset($custom_fields['go_bonus_stage_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$stage.'_blog_options_url_url_validation'][0] : null);
 
     }
 
@@ -159,7 +161,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
             $undo = 'undo_last';
         }
         echo "<div id='go_buttons'>";
-        echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' ;'>⬆ Undo</div>";
+        echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
         if ($custom_fields['bonus_switch'][0] && ! $bonus_is_complete) {
             //echo "There is a bonus stage.";
             echo "<button id='go_button' class='show_bonus' status='{$status}' check_type='{$check_type}' button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
@@ -179,7 +181,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
             echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='{$complete}' admin_lock='true' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}' >Complete</button> ";
         } else {
 
-            echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='{$continue}'  admin_lock='true' required_string='{$required_string}' min_words='{$status}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Continue</button>";
+            echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='{$continue}'  admin_lock='true' required_string='{$required_string}' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Continue</button>";
 
         }
         echo "</div>";
@@ -301,7 +303,7 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
         );
 
         $i--;
-        go_blog_form($blog_post_id, '', $post_id, $i, $bonus);
+        go_blog_form($blog_post_id, '', $post_id, $i, $bonus_status);
 
     }
     else {
@@ -310,11 +312,12 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
             $wpdb->prepare(
                 "SELECT result 
 				FROM {$go_actions_table_name} 
-				WHERE uid = %d AND source_id = %d AND {$stage}  = %d
+				WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
 				ORDER BY id DESC LIMIT 1",
                 $user_id,
                 $post_id,
-                $i
+                $i,
+                'blog_post'
             )
         );
         //go_print_blog_check_result($blog_post_id, true, $custom_fields, $i);

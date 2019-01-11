@@ -25,7 +25,7 @@ jQuery( document ).ready( function() {
 
         //add onclick to continue buttons
         jQuery('#go_button').one("click", function (e) {
-            task_stage_check_input(this, true, null);
+            task_stage_check_input(this, true);
         });
         jQuery('#go_back_button').one("click", function (e) {
             task_stage_change(this);

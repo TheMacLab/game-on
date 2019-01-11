@@ -1418,9 +1418,7 @@ function go_blog_opener( el ) {
                                 save: {
                                     text: "Save and Close",
                                     value: "save"
-
                                 }
-
                             }
                         })
                             .then((value) => {
@@ -1441,6 +1439,8 @@ function go_blog_opener( el ) {
                                 }
                             });
                         return false;
+                    }else if (go_blog_saved == '1'){
+                        location.reload();
                     }
                 }
             });
@@ -1492,17 +1492,18 @@ function go_blog_submit( el, reload ) {
     var result = go_get_tinymce_content_blog();
     //var result = tinyMCE.activeEditor.getContent();
     var result_title = jQuery( '#go_blog_title' + suffix ).val( );
-    console.log("title: " + result_title);
+    //console.log("title: " + result_title);
 
     var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
+    var go_blog_bonus_stage= jQuery( el ).attr( 'data-bonus_status' );
     var go_blog_task_stage= jQuery( el ).attr( 'status' );
     var task_id= jQuery( el ).attr( 'task_id' );
 
     var blog_url= jQuery( '#go_result_url' + suffix ).val();
     var blog_media= jQuery( '#go_result_media' + suffix ).attr( 'value' );
     var blog_video= jQuery( '#go_result_video' + suffix).val();
-    console.log("blog_url: " + blog_url);
-    console.log("blog_media: " + blog_media);
+    console.log("go_blog_bonus_stage: " + go_blog_bonus_stage);
+    //console.log("blog_media: " + blog_media);
 
     var gotoSend = {
         action:"go_blog_submit",
@@ -1514,6 +1515,7 @@ function go_blog_submit( el, reload ) {
         blog_media: blog_media,
         blog_video: blog_video,
         go_blog_task_stage: go_blog_task_stage,
+        go_blog_bonus_stage: go_blog_bonus_stage,
         post_id: task_id
     };
     //jQuery.ajaxSetup({ cache: true });

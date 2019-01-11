@@ -12,6 +12,10 @@ function go_blog_opener(){
 
     $blog_post_id = ( ! empty( $_POST['blog_post_id'] ) ? (int) $_POST['blog_post_id'] : 0 );
     $min_words = null;
+    $text_toggle = null;
+    $file_toggle = null;
+    $video_toggle = null;
+    $url_toggle = null;
     $i = null;
     $required_string = null;
     $go_blog_task_id = null;
@@ -24,14 +28,32 @@ function go_blog_opener(){
         $i = $stage - 1;
         if(!empty($go_blog_task_id)) {
             $custom_fields = get_post_custom($go_blog_task_id);
-            $min_words = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0] : null);
-            $required_string = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0] : null);
 
+            if ($stage == "0") {
+                $url_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0] : null);
+                $file_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0] : null);
+                $video_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_video'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_video'][0] : null);
+                $text_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0] : null);
+                $restrict_mime_types = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0] : null);
+                $min_words = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0] : null);
+                $required_string = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0] : null);
+
+            }
+            else{
+                $url_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_url'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_url'][0] : null);
+                $file_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0] : null);
+                $video_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_video'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_video'][0] : null);
+                $text_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0] : null);
+                $restrict_mime_types = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0] : null);
+                $min_words = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0] : null);
+                $required_string = (isset($custom_fields['go_bonus_stage_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$stage.'_blog_options_url_url_validation'][0] : null);
+
+            }
         }
     }
 
     go_blog_form($blog_post_id, '_lightbox', $go_blog_task_id, $i, null );
-    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox' min_words ='{$min_words}' required_string='{$required_string}' task_id='{$go_blog_task_id}'>Submit</button>";
+    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox'  task_id='{$go_blog_task_id}' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Submit</button>";
     echo "<p id='go_blog_error_msg' style='display: none; color: red;'></p>";
     ?>
     <script>
@@ -79,14 +101,20 @@ function go_blog_submit(){
     $blog_post_id = intval(!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
     if($blog_post_id) {
         $blog_meta = get_post_custom($blog_post_id);
-        $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
-        $go_blog_task_stage = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
+        $go_blog_task_id = intval(isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+        $go_blog_task_stage = intval(isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
+        $go_blog_task_bonus = (isset($blog_meta['go_blog_bonus_stage'][0]) ? $blog_meta['go_blog_bonus_stage'][0] : null);
+
     }else {
         $go_blog_task_id = intval(!empty($_POST['post_id']) ? (string)$_POST['post_id'] : '');
-        $go_blog_task_stage = intval(!empty($_POST['go_blog_task_stage']) ? (string)$_POST['go_blog_task_stage'] : '');
+        $go_blog_task_stage = intval(!empty($_POST['go_blog_task_stage']) ? (string)$_POST['go_blog_task_stage'] : null);
+        $go_blog_task_bonus = ((($_POST['go_blog_bonus_stage']) !='') ? intval($_POST['go_blog_bonus_stage']) : null);
     }
-
-    $result = go_save_blog_post($go_blog_task_id, $go_blog_task_stage);
+    if ($go_blog_task_bonus !== null){
+        $go_blog_task_bonus = intval($go_blog_task_bonus);
+        $go_blog_task_stage = null;
+    }
+    $result = go_save_blog_post($go_blog_task_id, $go_blog_task_stage, $go_blog_task_bonus);
 
     ob_start();
     go_noty_message_generic('success', 'Draft Saved Successfully', '', 2000);
@@ -105,7 +133,7 @@ function go_blog_submit(){
     die();
 }
 
-function go_save_blog_post($post_id = null, $stage = null){
+function go_save_blog_post($post_id = null, $stage = null, $bonus_status = null){
     $user_id = get_current_user_id();
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
@@ -124,7 +152,15 @@ function go_save_blog_post($post_id = null, $stage = null){
     }else{
         $post_name = null;
     }
+    if($bonus_status !== null){
+        $bonus_status = $bonus_status + 1;
+        $stage = null;
+        $status = null;
+    }else{
+        $status = $stage;
+        $stage = ($stage + 1);
 
+    }
 
     $my_post = array(
         'ID'        => $blog_post_id,
@@ -143,7 +179,8 @@ function go_save_blog_post($post_id = null, $stage = null){
             'go_blog_media'     => $blog_media,
             'go_blog_video'     => $blog_video,
             'go_blog_task_id'     => $post_id,
-            'go_blog_task_stage'     => $stage
+            'go_blog_task_stage'     => $status,
+            'go_blog_bonus_stage'   => $bonus_status
 
         )
     );
@@ -153,7 +190,7 @@ function go_save_blog_post($post_id = null, $stage = null){
         $new_post_id = wp_insert_post( $my_post );
         $result = $new_post_id;
         //create an entry in the actions table that attaches this blog post to this task and stage.  This is how the check for understanding looks up the blog post.
-        go_update_actions($user_id, 'blog_post', $post_id, ($stage + 1), null, null, $result, null, null, null, null, null, null, null, null, null, false, null);
+        go_update_actions($user_id, 'blog_post', $post_id, $stage, $bonus_status, null, $result, null, null, null, null, null, null, null, null, null, false, null);
 
     }else{
         wp_update_post($my_post);
