@@ -152,6 +152,7 @@ function go_save_blog_post($post_id = null, $stage = null){
         // Insert the post into the database
         $new_post_id = wp_insert_post( $my_post );
         $result = $new_post_id;
+        //create an entry in the actions table that attaches this blog post to this task and stage.  This is how the check for understanding looks up the blog post.
         go_update_actions($user_id, 'blog_post', $post_id, ($stage + 1), null, null, $result, null, null, null, null, null, null, null, null, null, false, null);
 
     }else{
