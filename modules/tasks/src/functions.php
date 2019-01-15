@@ -172,7 +172,7 @@ function go_register_task_tax_and_cpt() {
 		'labels' => $labels_cpt,
 		'hierarchical' => false,
 		'description' => $tasks_name_plural,
-        'supports'              => array( 'title', 'comments', 'thumbnail' ),
+        'supports'              => array( 'title', 'comments', 'thumbnail', 'revisions' ),
 		'taxonomies' => array(''),
 		'public' => true,
 		'show_ui' => true,

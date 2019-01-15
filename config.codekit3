@@ -3802,6 +3802,13 @@
 		"oAP": "/modules/user_blogs/src/public_ajax.php",
 		"oF": 0
 		},
+	"/modules/user_blogs/src/revisions.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/modules/user_blogs/src/revisions.php",
+		"oF": 0
+		},
 	"/modules/user_blogs/src/templates/go_user_blog_template.php": {
 		"cB": 0,
 		"ft": 8192,

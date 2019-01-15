@@ -156,26 +156,26 @@ add_filter('wp_handle_upload_prefilter', 'go_import_upload_prefilter');
 function go_import_upload_prefilter($file)
 {
     //$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $type = $file['type'];
-    $user_id = get_current_user_id();
-    $mime_types = get_user_option( 'go_media_filter', $user_id );
-    $mime_types_array = explode("," , $mime_types);
-    $mime_types_pretty = implode(", ", $mime_types_array);
+    if(!is_admin()) {
+        $type = $file['type'];
+        $user_id = get_current_user_id();
+        $mime_types = get_user_option('go_media_filter', $user_id);
+        $mime_types_array = explode(",", $mime_types);
+        $mime_types_pretty = implode(", ", $mime_types_array);
 
-    $match = false;
-    foreach ($mime_types_array as $mime_type){
-        if  ( substr($type, 0, strlen($mime_type)) === $mime_type){
-            $match = true;
-            break;
+        $match = false;
+        foreach ($mime_types_array as $mime_type) {
+            if (substr($type, 0, strlen($mime_type)) === $mime_type) {
+                $match = true;
+                break;
 
+            }
         }
+
+        if (!$match) {
+            $file['error'] = "The uploaded file is not supported. Allowed file types: " . $mime_types_pretty;
+        }
+
     }
-
-    //if (!in_array($ext, $mime_types_array)) {
-    if(!$match){
-        $file['error'] = "The uploaded " . $ext . " file is not supported. Allowed file types: " .$mime_types_pretty ;
-    }
-
-
     return $file;
 }

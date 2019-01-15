@@ -155,7 +155,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
 }
 
 function go_blog_post($blog_post_id){
-
+    //$blog_post_id = 10704;
     $current_user = get_current_user_id();
 
     $file_toggle = false;
@@ -256,7 +256,6 @@ function go_blog_post($blog_post_id){
 
 }
 
-
 // Register Custom Taxonomy
 function go_blog_tags() {
 
@@ -345,7 +344,7 @@ function go_blogs() {
         'label'                 => __( 'User Blog Post', 'text_domain' ),
         'description'           => __( 'User Blog Posts', 'text_domain' ),
         'labels'                => $labels,
-        'supports'              => array( 'title', 'editor', 'author' ),
+        'supports'              => array( 'title', 'editor', 'author', 'revisions' ),
         'taxonomies'            => array( 'go_blog_tags' ),
         'hierarchical'          => false,
         'public'                => true,
@@ -402,4 +401,7 @@ function go_template_loader($template){
     return $template;
 }
 add_filter('template_include', 'go_template_loader');
+
+
+
 

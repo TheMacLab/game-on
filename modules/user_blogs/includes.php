@@ -24,3 +24,4 @@ if ( !is_admin() ) {
 
 //always include
 include_once('src/functions.php');
+include_once('src/revisions.php');

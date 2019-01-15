@@ -134,6 +134,7 @@ function go_blog_submit(){
 }
 
 function go_save_blog_post($post_id = null, $stage = null, $bonus_status = null){
+
     $user_id = get_current_user_id();
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
@@ -185,6 +186,7 @@ function go_save_blog_post($post_id = null, $stage = null, $bonus_status = null)
         )
     );
 
+
     if (empty($blog_post_id)) {
         // Insert the post into the database
         $new_post_id = wp_insert_post( $my_post );
@@ -202,7 +204,6 @@ function go_save_blog_post($post_id = null, $stage = null, $bonus_status = null)
 
     return $result;
 }
-
 
 
 /**
