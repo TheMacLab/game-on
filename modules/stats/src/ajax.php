@@ -806,9 +806,8 @@ function go_stats_single_task_activity_list($post_id) {
 							<th class='header' id='go_stats_action'><a href=\"#\">Action</a></th>
 							<th class='header' id='go_stats_post_name'><a href=\"#\">Stage</a></th>
 							<th class='header' id='go_stats_mods'><a href=\"#\">Modifiers</a></th>";
-
     go_loot_headers();
-    go_loot_headers(true);
+    //go_loot_headers(true);
     echo"
 						</tr>
 						</thead>
@@ -913,9 +912,6 @@ function go_stats_single_task_activity_list($post_id) {
 					    <td>{$xp}</td>
 					    <td>{$gold}</td>
 					    <td>{$health}</td>
-					    <td>{$xp_total}</td>
-					    <td>{$gold_total}</td>
-					    <td>{$health_total}</td>
 					</tr>
 					";
 

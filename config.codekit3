@@ -3550,6 +3550,41 @@
 		"oAP": "/modules/clipboard/src/ajax.php",
 		"oF": 0
 		},
+	"/modules/feedback/includes.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/modules/feedback/includes.php",
+		"oF": 0
+		},
+	"/modules/feedback/src/admin.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/modules/feedback/src/admin.php",
+		"oF": 0
+		},
+	"/modules/feedback/src/admin_ajax.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/modules/feedback/src/admin_ajax.php",
+		"oF": 0
+		},
+	"/modules/feedback/src/ajax.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/modules/feedback/src/ajax.php",
+		"oF": 0
+		},
+	"/modules/feedback/src/functions.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/modules/feedback/src/functions.php",
+		"oF": 0
+		},
 	"/modules/map/includes.php": {
 		"cB": 0,
 		"ft": 8192,

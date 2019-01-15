@@ -49,7 +49,7 @@ function go_register_store_tax_and_cpt() {
         'rewrite' => true,
         'query_var' => true
     );
-    register_taxonomy( 'store_types', array( '' ), $cat_args );
+    register_taxonomy( 'store_types', array( 'go_store' ), $cat_args );
 
 
 	/*

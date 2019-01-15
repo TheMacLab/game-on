@@ -8,10 +8,10 @@
 
 //conditional includes
 if ( !is_admin() ) {
-    include_once('src/public_ajax.php');
+    //include_once('src/public_ajax.php');
 }else if ( defined( 'DOING_AJAX' )) {
     include_once('src/ajax.php');
-    include_once('src/public_ajax.php');
+    //include_once('src/public_ajax.php');
 
     //Blogs
     //add_action( 'wp_ajax_go_blog_lightbox_opener', 'go_blog_lightbox_opener' ); //OK
