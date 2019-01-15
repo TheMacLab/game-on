@@ -23,7 +23,6 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     $media_content = null;
     $min_words = null;
 
-
     if (!empty($blog_post_id)) {
         $post = get_post($blog_post_id, OBJECT, 'edit');
         $content = $post->post_content;
@@ -65,7 +64,6 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         }
 
     }
-
 
     echo "<div id='go_blog_div'>";
     echo "<div>Title:<div><input style='width: 100%;' id='go_blog_title".$suffix."' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}'></div> </div>";
@@ -248,7 +246,7 @@ function go_blog_post($blog_post_id){
     }
     if ($current_user == $author_id) {
         echo '<button class="go_blog_opener" blog_post_id ="' . $blog_post_id . '">edit post</button>';
-        echo '<button class="go_blog_trash" blog_post_id ="' . $blog_post_id . '">trash post</button>';
+        //echo '<button class="go_blog_trash" blog_post_id ="' . $blog_post_id . '">trash post</button>';
     }
     echo "</div>";
 

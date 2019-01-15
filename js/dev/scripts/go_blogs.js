@@ -12,7 +12,7 @@ function tinymce_getContentLength() {
 jQuery( document ).ready( function() {
 
     //add onclick to blog edit buttons
-    //console.log("opener3");
+    console.log("opener3");
     jQuery(".go_blog_opener").one("click", function (e) {
         go_blog_opener(this);
     });
@@ -413,7 +413,7 @@ function go_blog_opener( el ) {
             jQuery(".featherlight").css('background', 'rgba(0,0,0,.8)');
             jQuery(".featherlight .featherlight-content").css('width', '80%');
 
-            console.log("opener2");
+            //console.log("opener2");
             jQuery(".go_blog_opener").one("click", function(e){
                 go_blog_opener( this );
             });
@@ -526,6 +526,37 @@ function go_blog_submit( el, reload ) {
         }
     });
 }
+
+function go_blog_trash( el ) {
+    go_enable_loading( el );
+
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_trash;
+
+    var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
+
+    var gotoSend = {
+        action:"go_blog_trash",
+        _ajax_nonce: nonce,
+
+        blog_post_id: blog_post_id,
+
+    };
+    //jQuery.ajaxSetup({ cache: true });
+    jQuery.ajax({
+        url: MyAjax.ajaxurl,
+        type: 'POST',
+        data: gotoSend,
+        cache: false,
+        success: function (raw) {
+
+                location.reload();
+            jQuery(".go_blog_trash").off().one("click", function(e){
+                go_blog_trash( this );
+            });
+        }
+    });
+}
+
 
 function go_get_tinymce_content_blog(){
     //console.log("html");

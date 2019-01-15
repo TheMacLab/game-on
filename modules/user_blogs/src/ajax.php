@@ -70,53 +70,168 @@ function go_blog_opener(){
 }
 
 function go_blog_trash(){
+    global $wpdb;
     check_ajax_referer( 'go_blog_trash' );
 
     $blog_post_id = ( ! empty( $_POST['blog_post_id'] ) ? (int) $_POST['blog_post_id'] : 0 );
 
-    if ($blog_post_id != 0) { //if opening an existing post
-        //get the minimum character count to add to the button
+    if ($blog_post_id != 0 && !empty($blog_post_id)) {
+
         $blog_meta = get_post_custom($blog_post_id);
         $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
-        $stage = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
-        $i = $stage - 1;
+        $stage_num = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
+        $bonus_stage_num = (isset($blog_meta['go_blog_bonus_stage'][0]) ? $blog_meta['go_blog_bonus_stage'][0] : null);
+        $aTable = "{$wpdb->prefix}go_actions";
+
+        if ($stage_num !== null) {
+
+        }else{
+
+        }
+
+
+
         if(!empty($go_blog_task_id)) {
-            //add code to remove all loot since this stage, including this stage and mark all other blog posts deleted
-            //if it is a bonus only mark that one and remove the loot
-            $custom_fields = get_post_custom($go_blog_task_id);
 
-            if ($stage == "0") {
-                $url_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0] : null);
-                $file_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0] : null);
-                $video_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_video'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_video'][0] : null);
-                $text_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_toggle'][0] : null);
-                $restrict_mime_types = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0] : null);
-                $min_words = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0] : null);
-                $required_string = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0] : null);
+            if ($stage_num !== null) {
+                $stage_type = 'stage';
+                $stage_num = $stage_num + 1;
+                $new_status_task = $stage_num;
+                $new_bonus_status_task = null;
+
+
+                //get all tasks with a ID that is greater and add loot then subtract
+                //get all blog post IDs and set as trash
 
             }
-            else{//is a bonus
+            else{//if it is a bonus only mark that one and remove the loot
+                $stage_type = 'bonus_status';
+                $new_status_task = null;
+                $new_bonus_status_task = $bonus_stage_num;
+            }
+
+            ////////////////////
+
+
+            if ($stage_type === 'bonus_status'){
+                //Get the loot for this bonus task
+                $loot = $wpdb->get_results($wpdb->prepare("SELECT uid, xp, gold, health, badges, groups, check_type, result
+				FROM {$aTable} 
+				WHERE result = %d AND source_id = %d AND {$stage_type}  = %d AND action_type = %s
+				ORDER BY id DESC LIMIT 1",
+                        $blog_post_id,
+                        $go_blog_task_id,
+                        $bonus_stage_num,
+                        'task'), ARRAY_A);
+
+                $uid = $loot['uid'];
+
+
+            }else {
+                //get the user id and the index id for this entry so that we can get the loot awarded for this and after
+                $result = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT id, uid
+				FROM {$aTable} 
+				WHERE result = %d AND source_id = %d AND {$stage_type}  = %d AND action_type = %s
+				ORDER BY id DESC LIMIT 1",
+                        $blog_post_id,
+                        $go_blog_task_id,
+                        $stage_num,
+                        'task'
+                    ), ARRAY_A
+                );
+                $result = $result[0];
+                //$result = json_decode(json_encode($result), true);
+                $id = $result['id'];
+                $uid = $result['uid'];
+                //remove all loot since this stage, including this stage and mark all other blog posts deleted
+                $loot = $wpdb->get_results($wpdb->prepare("SELECT xp, gold, health, badges, groups, check_type, result
+				FROM {$aTable} 
+				WHERE uid = %d AND source_id = %d AND action_type = %s AND id >= %d
+				ORDER BY id ", $uid, $go_blog_task_id, 'task', $id), ARRAY_A);
+
 
             }
+            $xp = 0;
+            $gold = 0;
+            $health = 0;
+            $badge_array = array();
+            $group_array = array();
+            foreach($loot as $loot_row){
+                $xp = $loot_row['xp'] + $xp;
+                $gold = $loot_row['gold'] + $gold;
+                $health = $loot_row['health'] + $health;
+                $badges = $loot_row['badges'];
+                $groups = $loot_row['groups'];
+                $check_type = $loot_row['check_type'];
+                $result = $loot_row['result'];
+
+                if ($check_type === "blog"){
+                    wp_trash_post( intval($result ) );
+                }
+
+                $badge_task = unserialize($badges);
+                $group_task = unserialize($groups);
+                if (!is_array($badge_task)){
+                    $badge_task = array();
+                }
+                if (!is_array($group_task)){
+                    $group_task = array();
+                }
+                $badge_array = array_merge($badge_task, $badge_array);
+                $group_array = array_merge($group_task, $group_array);
+            }
+
+            if (!empty($badge_array)) {//else if badges toggle is false and badges exist
+                //$result[] = "badges-";
+                $badge_ids = serialize($badge_array);
+                go_remove_badges($badge_ids, $uid, false);//remove badges
+            }else{
+                $badge_ids = "";
+            }
+
+            if (!empty($group_array)) {//else if groups toggle is false and groups exist
+                //$result[] = "groups-";
+                $group_ids = serialize($group_array);
+                go_remove_groups($group_ids, $uid, false);//remove groups
+            }else{
+                $group_ids = "";
+            }
+            //$result = serialize($result);
+
+
+            $go_task_table_name = "{$wpdb->prefix}go_tasks";
+            $time = current_time('mysql');
+            $last_time = $time;
+
+            $xp = intval($xp);
+            $gold = intval($gold);
+            $health = intval($health);
+
+            $new_status_task = intval($new_status_task) - 1;
+
+            $new_bonus_status_task = intval($new_bonus_status_task);
+
+
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$go_task_table_name} 
+                    SET 
+                        status = {$new_status_task},
+                        bonus_status = {$new_bonus_status_task},
+                        xp = {$xp} + xp,
+                        gold = {$gold} + gold,
+                        health = {$health} + health,
+                        last_time = IFNULL('{$last_time}', last_time)         
+                    WHERE uid= %d AND post_id=%d ",
+                    intval($uid),
+                    intval($go_blog_task_id)
+                )
+            );
+            go_update_actions( $uid, 'delete',  $go_blog_task_id, $new_status_task, $new_bonus_status_task, null, null, null, null, null, null,  $xp, $gold, $health, $badge_ids, $group_ids, true, true);
         }
     }
-
-    go_blog_form($blog_post_id, '_lightbox', $go_blog_task_id, $i, null );
-    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox'  task_id='{$go_blog_task_id}' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Submit</button>";
-    echo "<p id='go_blog_error_msg' style='display: none; color: red;'></p>";
-    ?>
-    <script>
-
-        jQuery( document ).ready( function() {
-            jQuery("#go_blog_submit").one("click", function(e){
-                task_stage_check_input(this, false);
-            });
-
-        });
-
-    </script>
-
-    <?php
 }
 
 
