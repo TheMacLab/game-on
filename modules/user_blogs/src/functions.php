@@ -248,6 +248,7 @@ function go_blog_post($blog_post_id){
     }
     if ($current_user == $author_id) {
         echo '<button class="go_blog_opener" blog_post_id ="' . $blog_post_id . '">edit post</button>';
+        echo '<button class="go_blog_trash" blog_post_id ="' . $blog_post_id . '">trash post</button>';
     }
     echo "</div>";
 

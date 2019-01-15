@@ -16,6 +16,9 @@ jQuery( document ).ready( function() {
     jQuery(".go_blog_opener").one("click", function (e) {
         go_blog_opener(this);
     });
+    jQuery(".go_blog_trash").one("click", function (e) {
+        go_blog_trash(this);
+    });
 
     jQuery('#go_hidden_mce').remove();
     jQuery('#go_hidden_mce_edit').remove();
@@ -268,9 +271,13 @@ function go_disable_loading( ) {
         go_lb_opener( this.id );
     });
 
-    console.log("opener4");
+    //console.log("opener4");
     jQuery(".go_blog_opener").off().one("click", function(e){
         go_blog_opener( this );
+    });
+
+    jQuery(".go_blog_trash").off().one("click", function(e){
+        go_blog_trash( this );
     });
 
 
@@ -459,7 +466,7 @@ function go_blog_submit( el, reload ) {
     var blog_media= jQuery( '#go_result_media' + suffix ).attr( 'value' );
     var blog_video= jQuery( '#go_result_video' + suffix).val();
     console.log("go_blog_bonus_stage: " + go_blog_bonus_stage);
-    //console.log("blog_media: " + blog_media);
+    console.log("stage: " + blog_media);
 
     var gotoSend = {
         action:"go_blog_submit",

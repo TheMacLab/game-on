@@ -108,6 +108,7 @@ function go_scripts () {
                     'go_create_admin_message' => wp_create_nonce('go_create_admin_message'),
                     'go_send_message' => wp_create_nonce('go_send_message'),
                     'go_blog_opener'                => wp_create_nonce('go_blog_opener'),
+                    'go_blog_trash'                => wp_create_nonce('go_blog_trash'),
                     'go_blog_submit'                => wp_create_nonce('go_blog_submit'),
                     'go_to_this_map'                => wp_create_nonce('go_to_this_map'),
                     'go_blog_lightbox_opener'                => wp_create_nonce('go_blog_lightbox_opener'),
