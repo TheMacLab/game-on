@@ -151,7 +151,7 @@ video.wp-video-shortcode {
   float: left;
   margin: 10px; }
 
-#go_blog_submit {
+#go_blog_submit, .go_blog_trash {
   float: right;
   margin: 10px; }
 

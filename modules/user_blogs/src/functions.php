@@ -39,11 +39,11 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     }
     if(!empty($go_blog_task_id)) {
         $custom_fields = get_post_custom($go_blog_task_id);
-        if ($bonus !== false) {
+        if ($bonus !== false && $bonus !== null ) {
             $url_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_url'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_url'][0] : null);
             $file_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0] : null);
             $video_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_video'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_video'][0] : null);
-            $text_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0] : null);
+            $text_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0] : true);
             $restrict_mime_types = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0] : null);
             $min_words = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0] : null);
             $required_string = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0]) ?  $custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0] : null);
@@ -152,7 +152,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     }
 }
 
-function go_blog_post($blog_post_id){
+function go_blog_post($blog_post_id, $check_for_understanding = false){
     //$blog_post_id = 10704;
     $current_user = get_current_user_id();
 
@@ -246,7 +246,9 @@ function go_blog_post($blog_post_id){
     }
     if ($current_user == $author_id) {
         echo '<button class="go_blog_opener" blog_post_id ="' . $blog_post_id . '">edit post</button>';
-        //echo '<button class="go_blog_trash" blog_post_id ="' . $blog_post_id . '">trash post</button>';
+        if ($check_for_understanding == false) {
+            echo '<span class="go_blog_trash" blog_post_id ="' . $blog_post_id . '"><i class="fa fa-trash fa-2x"></i></span>';
+        }
     }
     echo "</div>";
 

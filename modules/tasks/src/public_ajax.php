@@ -305,7 +305,11 @@ function go_print_bonus_stage ($user_id, $post_id, $custom_fields){
     ";
 
     $i = 0;
+
+
     while ( $i <= $bonus_status && $repeat_max > $i) {
+
+
         //Print Checks for Understanding for the last stage message printed and buttons
         go_checks_for_understanding($custom_fields, $i, null, $user_id, $post_id, true, $bonus_status, $repeat_max);
         $i++;

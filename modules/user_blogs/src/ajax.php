@@ -83,20 +83,26 @@ function go_blog_trash(){
         $bonus_stage_num = (isset($blog_meta['go_blog_bonus_stage'][0]) ? $blog_meta['go_blog_bonus_stage'][0] : null);
         $aTable = "{$wpdb->prefix}go_actions";
 
-        if ($stage_num !== null) {
-
-        }else{
-
+        //try to get task_id from the old style blog posts
+        if(empty($go_blog_task_id)) {
+            $go_blog_task_id = $wpdb->get_var($wpdb->prepare("SELECT source_id
+				FROM {$aTable} 
+				WHERE result = %d AND  action_type = %s
+				ORDER BY id DESC LIMIT 1",
+                intval($blog_post_id),
+                'task'));
         }
 
-
-
-        if(!empty($go_blog_task_id)) {
+        if(empty($go_blog_task_id)) {//this post is not associated with a task
+            wp_trash_post( intval($blog_post_id ) );
+        }
+        else{
 
             if ($stage_num !== null) {
                 $stage_type = 'stage';
-                $stage_num = $stage_num + 1;
                 $new_status_task = $stage_num;
+                $stage_num = $stage_num + 1 ;
+
                 $new_bonus_status_task = null;
 
 
@@ -111,46 +117,29 @@ function go_blog_trash(){
             }
 
             ////////////////////
-
-
-            if ($stage_type === 'bonus_status'){
-                //Get the loot for this bonus task
-                $loot = $wpdb->get_results($wpdb->prepare("SELECT uid, xp, gold, health, badges, groups, check_type, result
+            ///
+            ///
+            $result = $wpdb->get_results($wpdb->prepare("SELECT uid, xp, gold, health, badges, groups, check_type, result
 				FROM {$aTable} 
-				WHERE result = %d AND source_id = %d AND {$stage_type}  = %d AND action_type = %s
+				WHERE result = %d AND source_id = %d AND action_type = %s
 				ORDER BY id DESC LIMIT 1",
-                        $blog_post_id,
-                        $go_blog_task_id,
-                        $bonus_stage_num,
-                        'task'), ARRAY_A);
+                $blog_post_id,
+                $go_blog_task_id,
+                'task'), ARRAY_A);
 
-                $uid = $loot['uid'];
+            $loot = $result;
+            $result = $result[0];
+            //$result = json_decode(json_encode($result), true);
+            $id = $result['id'];
+            $uid = $result['uid'];
 
+            if ($stage_type === 'stage'){
 
-            }else {
-                //get the user id and the index id for this entry so that we can get the loot awarded for this and after
-                $result = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT id, uid
-				FROM {$aTable} 
-				WHERE result = %d AND source_id = %d AND {$stage_type}  = %d AND action_type = %s
-				ORDER BY id DESC LIMIT 1",
-                        $blog_post_id,
-                        $go_blog_task_id,
-                        $stage_num,
-                        'task'
-                    ), ARRAY_A
-                );
-                $result = $result[0];
-                //$result = json_decode(json_encode($result), true);
-                $id = $result['id'];
-                $uid = $result['uid'];
                 //remove all loot since this stage, including this stage and mark all other blog posts deleted
                 $loot = $wpdb->get_results($wpdb->prepare("SELECT xp, gold, health, badges, groups, check_type, result
 				FROM {$aTable} 
 				WHERE uid = %d AND source_id = %d AND action_type = %s AND id >= %d
 				ORDER BY id ", $uid, $go_blog_task_id, 'task', $id), ARRAY_A);
-
 
             }
             $xp = 0;
@@ -205,21 +194,23 @@ function go_blog_trash(){
             $time = current_time('mysql');
             $last_time = $time;
 
-            $xp = intval($xp);
-            $gold = intval($gold);
-            $health = intval($health);
+            $xp = intval($xp) * -1;
+            $gold = intval($gold) * -1;
+            $health = intval($health) * -1;
 
-            $new_status_task = intval($new_status_task) - 1;
-
+            $new_status_task = intval($new_status_task);
             $new_bonus_status_task = intval($new_bonus_status_task);
-
+            if ($stage_type === 'bonus_status'){
+                $update_col = "bonus_status = -1 + bonus_status ";
+            }else{
+                $update_col = "status = {$new_status_task}, bonus_status = 0";
+            }
 
             $wpdb->query(
                 $wpdb->prepare(
                     "UPDATE {$go_task_table_name} 
                     SET 
-                        status = {$new_status_task},
-                        bonus_status = {$new_bonus_status_task},
+                        {$update_col},
                         xp = {$xp} + xp,
                         gold = {$gold} + gold,
                         health = {$health} + health,

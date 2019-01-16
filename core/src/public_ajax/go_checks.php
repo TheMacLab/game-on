@@ -68,10 +68,11 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     }else{$class = 'null';}
     echo "<div class='go_checks_and_buttons {$class}' style='display:block;'>";
 
+    $blog_post_id = null;
     if ($check_type == 'upload') {
         go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'blog') {
-        go_blog_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
+        $blog_post_id = go_blog_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'URL') {
         go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'password') {
@@ -83,7 +84,7 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     }
 
     //Buttons
-    go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, false);
+    go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, false, $blog_post_id);
 
     echo "</div>";
 }
@@ -101,7 +102,7 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
  * @param $repeat_max
  * @param bool $outro
  */
-function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, $outro = false){
+function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, $outro = false, $blog_post_id = null){
 
     $is_admin = go_user_is_admin($user_id);
     $admin_view = null;
@@ -135,7 +136,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
 
     }
 
-
     $bonus_is_complete = false;
     if ($bonus){
         $stage_count = $repeat_max;
@@ -146,7 +146,6 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
         if ($i == $repeat_max - 1 && $bonus_status == $repeat_max){
             $bonus_is_complete = true;
             $undo = 'undo_last_bonus';
-
         }
         $status = $bonus_status;
     }
@@ -161,7 +160,7 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
             $undo = 'undo_last';
         }
         echo "<div id='go_buttons'>";
-        echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
+        echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' blog_post_id='{$blog_post_id}'>⬆ Undo</div>";
         if ($custom_fields['bonus_switch'][0] && ! $bonus_is_complete) {
             //echo "There is a bonus stage.";
             echo "<button id='go_button' class='show_bonus' status='{$status}' check_type='{$check_type}' button_type='show_bonus'  admin_lock='true' >Show Bonus Challenge</button> ";
@@ -173,9 +172,9 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
 
         echo "<div id='go_buttons'>";
         if ($i == 0) {
-            echo "<div id='go_back_button'  undo='true' button_type='{$abandon}' status='{$status}' check_type='{$check_type}' >Abandon</div>";
+            echo "<div id='go_back_button'  undo='true' button_type='{$abandon}' status='{$status}' check_type='{$check_type}' blog_post_id='{$blog_post_id}'>Abandon</div>";
         } else {
-            echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' >⬆ Undo</div>";
+            echo "<div id='go_back_button' undo='true' button_type='{$undo}' status='{$status}' check_type='{$check_type}' blog_post_id='{$blog_post_id}'>⬆ Undo</div>";
         }
         if (($i + 1) == $stage_count) {
             echo "<button id='go_button' class='progress' status='{$status}' check_type='{$check_type}' button_type='{$complete}' admin_lock='true' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}' >Complete</button> ";
@@ -289,39 +288,76 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
     if ($i == $status) {
         echo $instructions;
         $i++;
-        $blog_post_id = (string) $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT result 
-				FROM {$go_actions_table_name} 
-				WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
-				ORDER BY id DESC LIMIT 1",
-                $user_id,
-                $post_id,
-                $i,
-                'blog_post'
-            )
-        );
 
-        $i--;
+        $blog_post_id = null;
+        if($bonus){ //if this is a bonus stage, then get the oldest post that has a status of trashed and if nothing found get the current stage if set
+
+                //get all blog posts associated with this bonus task
+                $blog_post_ids = $wpdb->get_results($wpdb->prepare("SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND action_type = %s and bonus_status > 0
+				ORDER BY id ", $user_id, $post_id, 'blog_post'),ARRAY_N);
+
+                //for each one, get the status
+                foreach ($blog_post_ids as $blog_post_id){
+                    $blog_post_id = $blog_post_id[0];
+                    $post_status = get_post_status($blog_post_id);
+                    if ($post_status == 'trash') {//if trashed, then set the blog_post_id
+                        break;
+                    }
+                    $blog_post_id = null;
+                }
+
+
+
+        }
+        if($blog_post_id == null){//if this is not a bonus stage, then get the post associated with it.
+
+            $blog_post_id = (string) $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT result 
+                    FROM {$go_actions_table_name} 
+                    WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
+                    ORDER BY id DESC LIMIT 1",
+                    $user_id,
+                    $post_id,
+                    $i,
+                    'blog_post'
+                )
+            );
+        }
+
+            $i--;
         go_blog_form($blog_post_id, '', $post_id, $i, $bonus_status);
+
+        return $blog_post_id;
 
     }
     else {
         $i++;
-        $blog_post_id = (string) $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT result 
+        global $go_global_skip_post;
+        $i = $i + $go_global_skip_post;
+        $print = false;
+
+        while($print === false) {
+            $blog_post_id = (string)$wpdb->get_var($wpdb->prepare("SELECT result 
 				FROM {$go_actions_table_name} 
 				WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
-				ORDER BY id DESC LIMIT 1",
-                $user_id,
-                $post_id,
-                $i,
-                'blog_post'
-            )
-        );
-        //go_print_blog_check_result($blog_post_id, true, $custom_fields, $i);
-        go_blog_post($blog_post_id);
+				ORDER BY id DESC LIMIT 1", $user_id, $post_id, $i, 'blog_post'));
+
+            $post_status = get_post_status($blog_post_id);
+
+
+            if ($post_status == 'trash') {
+                //go_print_blog_check_result($blog_post_id, true, $custom_fields, $i);
+                $i++;
+                $go_global_skip_post++;
+            }else{
+                $print = true;
+            }
+
+        }
+        go_blog_post($blog_post_id, true);
 
         //echo $post_id;
         //$post_link = get_permalink($post_id);

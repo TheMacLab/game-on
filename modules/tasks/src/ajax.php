@@ -28,9 +28,10 @@ function go_task_change_stage() {
     $status        = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
 
+    $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : null);
     /*
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
-    $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
+
     if (is_integer($blog_post_id) && go_post_exists($blog_post_id) == true){
     }else{
         $blog_post_id = null;
@@ -206,12 +207,21 @@ function go_task_change_stage() {
         $redirect_url = get_option('options_go_landing_page_on_login', '');
         $redirect_url = (site_url() . '/' . $redirect_url);
         go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'abandon', null, null, null );
+        if($blog_post_id) {
+            wp_trash_post(intval($blog_post_id));
+        }
     }
     else if ($button_type == 'undo' || $button_type == 'undo_last') {
         if ($button_type == 'undo_last') {
             $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
             $group_ids = (isset($custom_fields['go_groups'][0]) ?  $custom_fields['go_groups'][0] : null);
         }
+
+        //mark blog post as deleted if attached to this stage
+        if($blog_post_id) {
+            wp_trash_post(intval($blog_post_id));
+        }
+
         go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'undo', null, $badge_ids, $group_ids );
         go_checks_for_understanding ($custom_fields, $status -1 , $status - 1 , $user_id, $post_id, null, null, null);
     }
@@ -263,11 +273,17 @@ function go_task_change_stage() {
             ///
             go_update_stage_table ($user_id, $post_id, $custom_fields, null, $bonus_status, false, 'undo_bonus', $check_type, null, null);
             go_checks_for_understanding($custom_fields, $bonus_status -1, null, $user_id, $post_id, true, $bonus_status - 1 , $repeat_max);
+            if($blog_post_id) {
+                wp_trash_post(intval($blog_post_id));
+            }
         }
         else if ($button_type == 'abandon_bonus') {
             $status = go_get_status($post_id, $user_id);
             $stage_count = $custom_fields['go_stages'][0];
             go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
+            if($blog_post_id) {
+                wp_trash_post(intval($blog_post_id));
+            }
         }
     }
     //go_check_messages();

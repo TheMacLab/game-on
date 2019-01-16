@@ -465,8 +465,8 @@ function go_blog_submit( el, reload ) {
     var blog_url= jQuery( '#go_result_url' + suffix ).val();
     var blog_media= jQuery( '#go_result_media' + suffix ).attr( 'value' );
     var blog_video= jQuery( '#go_result_video' + suffix).val();
-    console.log("go_blog_bonus_stage: " + go_blog_bonus_stage);
-    console.log("stage: " + blog_media);
+    //console.log("go_blog_bonus_stage: " + go_blog_bonus_stage);
+    //console.log("stage: " + blog_media);
 
     var gotoSend = {
         action:"go_blog_submit",
@@ -527,34 +527,92 @@ function go_blog_submit( el, reload ) {
     });
 }
 
+function go_trash_warning(){
+    swal({
+        title: "Are you sure you want to delete this post?",
+        icon: "warning",
+        //buttons: ["Save and Close", "Close without Saving"],
+        //dangerMode: true,
+
+        buttons: {
+            exit: {
+                text: "Cancel",
+                value: "exit",
+            },
+            save: {
+                text: "Yes, trash it.",
+                value: "trash"
+            }
+        }
+    })
+        .then((value) => {
+            switch (value) {
+
+                case "exit":
+                    break;
+
+                case "trash":
+                    return true;
+
+                default:
+
+            }
+        });
+    return false;
+}
 function go_blog_trash( el ) {
     go_enable_loading( el );
 
-    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_trash;
+    swal({
+        title: "Are you sure?",
+        text: "Do you really want to delete this post?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_trash;
 
-    var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
+                var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
 
-    var gotoSend = {
-        action:"go_blog_trash",
-        _ajax_nonce: nonce,
+                var gotoSend = {
+                    action:"go_blog_trash",
+                    _ajax_nonce: nonce,
 
-        blog_post_id: blog_post_id,
+                    blog_post_id: blog_post_id,
 
-    };
-    //jQuery.ajaxSetup({ cache: true });
-    jQuery.ajax({
-        url: MyAjax.ajaxurl,
-        type: 'POST',
-        data: gotoSend,
-        cache: false,
-        success: function (raw) {
+                };
+                //jQuery.ajaxSetup({ cache: true });
+                jQuery.ajax({
+                    url: MyAjax.ajaxurl,
+                    type: 'POST',
+                    data: gotoSend,
+                    cache: false,
+                    success: function (raw) {
 
-                location.reload();
-            jQuery(".go_blog_trash").off().one("click", function(e){
-                go_blog_trash( this );
-            });
-        }
-    });
+                        location.reload();
+                        jQuery(".go_blog_trash").off().one("click", function(e){
+                            go_blog_trash( this );
+                        });
+                        swal("Poof! Your post has been deleted!", {
+                            icon: "success",
+                        });
+                    }
+                });
+                go_disable_loading( el );
+
+
+            } else {
+                swal("Your post is safe!");
+                go_disable_loading( el );
+            }
+        });
+
+
+
+
+
 }
 
 

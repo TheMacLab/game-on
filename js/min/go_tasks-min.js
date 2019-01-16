@@ -177,6 +177,11 @@ function task_stage_change( target ) {
         check_type = jQuery( target ).attr( 'check_type' )
     }
 
+    var blog_post_id = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'blog_post_id' ) ) {
+        check_type = jQuery( target ).attr( 'blog_post_id' )
+    }
+
     var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
     var result = jQuery( '#go_result' ).attr( 'value' );
 
