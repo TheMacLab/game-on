@@ -122,7 +122,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         $settings = array(//'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
             'tinymce'=>true,
             //'wpautop' =>false,
-            'textarea_name' => 'go_result'.$suffix, 'media_buttons' => true, 'teeny' => true,
+            'textarea_name' => 'go_result'.$suffix, 'media_buttons' => true, //'teeny' => true,
              'menubar' => false, 'drag_drop_upload' => true);
 
         //echo "<button id='go_save_button' class='progress left'  check_type='blog' button_type='save'  admin_lock='true' >Save Draft</button> ";

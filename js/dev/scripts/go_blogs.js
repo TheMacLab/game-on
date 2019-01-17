@@ -410,13 +410,11 @@ function go_blog_opener( el ) {
                     // this is needed for the editor to initiate
                     tinyMCE.execCommand('mceAddEditor', false, fullId);
 
-                   // tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_lightbox' );
+                    //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_lightbox' );
                     //tinyMCE.execCommand("mceAddControl", false, 'go_blog_post_lightbox');
 
                     //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_lightbox' );
                     //tinymce.execCommand( 'mceToggleEditor', true, 'go_blog_post_edit' );
-
-
 
                 },
                 beforeClose: function() {
