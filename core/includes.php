@@ -56,36 +56,10 @@ include_once('src/all/go_users.php');
  */
 function go_hidden_footer(){
 
-    /**
-     * Hidden mce so it can be initialized later
-     */
-    echo "<div id='go_hidden_mce' style='display: block;'>";
-    $settings  = array(
-        //'wpautop' =>false,
-        //'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
-        //'tinymce'=>true,
-        'textarea_name' => 'go_result',
-        'media_buttons' => true,
-        //'teeny' => true,
-        'quicktags'=>false,
-        'menubar' => true,
-        'drag_drop_upload' => true
-    );
-    wp_editor( '', 'go_blog_post', $settings );
-    echo "</div>";
+    ob_start();
+    wp_editor( '', 'initialize');
+    $editor = ob_get_clean(); // We do not need the editor on the page load so no echo.
 
-    echo "<div id='go_hidden_mce_edit' style='display: block;'>";
-    $settings2  = array(
-        //'tinymce'=> array( 'menubar'=> true, 'toolbar1' => 'undo,redo', 'toolbar2' => ''),
-        //'tinymce'=>true,
-        'wpautop' =>false,
-        'textarea_name' => 'go_result_lightbox',
-        'media_buttons' => true,
-        //'teeny' => true,
-        'quicktags'=>false,
-        'menubar' => true,
-        'drag_drop_upload' => true
-    );
-    wp_editor( '', 'go_blog_post_lightbox', $settings2 );
-    echo "</div>";
+
 }
+
