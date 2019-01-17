@@ -401,7 +401,7 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     }
 
     $bonus_status = go_get_bonus_status($post_id, $user_id);
-    if ($bonus_status == 0){
+    if ($bonus_status <= 0){
         go_buttons($user_id, $custom_fields, null, $stage_count, $status, 'show_bonus', false, null, null, true);
     }
     echo "</div>";

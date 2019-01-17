@@ -182,7 +182,6 @@ function task_stage_change( target ) {
         check_type = jQuery( target ).attr( 'blog_post_id' )
     }
 
-    var color = jQuery( '#go_admin_bar_progress_bar' ).css( "background-color" );
     var result = jQuery( '#go_result' ).attr( 'value' );
 
     if( check_type == 'blog' && button_type != 'undo_last_bonus'){
@@ -218,8 +217,6 @@ function task_stage_change( target ) {
 
         },
         success: function( raw ) {
-            console.log('success');
-            //console.log(raw);
             // parse the raw response to get the desired JSON
             var res = {};
             try {
@@ -227,18 +224,17 @@ function task_stage_change( target ) {
             } catch (e) {
                 res = {
                     json_status: '101',
-                    timer_start: '',
+                    timer_start: '',//doesn;t do anything
                     button_type: '',
                     time_left: '',
                     html: '',
                     redirect: '',
-                    rewards: {
+                    rewards: { //this doesn't do anything? check this function
                         gold: 0,
                     },
                 };
             }
-            //console.log(res.html);
-            //alert(json_status);
+            console.log("HTML: " + res.html);
             if ( '101' === Number.parseInt( res.json_status ) ) {
                 console.log (101);
                 jQuery( '#go_stage_error_msg' ).show();
@@ -294,7 +290,6 @@ function task_stage_change( target ) {
                     jQuery( '#go_wrapper > div' ).slice(-3).remove();
                 }
                 else if ( res.button_type == 'abandon' ){
-
                     window.location = res.redirect;
                 }
                 else if ( res.button_type == 'timer' ){
@@ -303,29 +298,13 @@ function task_stage_change( target ) {
                     audio.play();
                 }
                     go_append(res);
-                //Pop up currency awards
-                jQuery( '#notification' ).html( res.notification );
-                jQuery( '#go_admin_bar_progress_bar' ).css({ "background-color": color });
-                jQuery( '#go_button' ).ready( function() {
-                    //check_locks();
-                });
+
             }
         }
     });
 }
 
-/*
-function go_get_tinymce_content_check(){
-    //console.log("html");
-    if (jQuery("#wp-go_blog_post-wrap .wp-editor-area").is(":visible")){
-        return jQuery('#wp-go_blog_post-wrap .wp-editor-area').val();
 
-    }else{
-        //console.log("visual");
-        return tinyMCE.activeEditor.getContent();
-    }
-}
-*/
 
 //This isn't currently used, but saving just in case . . .
 function go_mce_reset() {

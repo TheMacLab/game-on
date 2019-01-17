@@ -8,7 +8,7 @@
 
 //Uses the hidden footer that is in the core of GO.
 
-function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null, $bonus = null){
+function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null, $bonus = null, $check_for_understanding = false){
 
     $file_toggle = false;
     $url_toggle = false;
@@ -66,7 +66,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     }
 
     echo "<div id='go_blog_div'>";
-    echo "<div>Title:<div><input style='width: 100%;' id='go_blog_title".$suffix."' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}'></div> </div>";
+    echo "<div>Title:<div><input style='width: 100%;' id='go_blog_title".$suffix."' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}' ></div> </div>";
 
     if ($url_toggle) {
         echo "<div>URL:";
@@ -136,7 +136,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         }
 
         //Save Draft Button
-        echo "<button id='go_save_button{$suffix}' class='go_save_button progress left'  status='{$i}' data-bonus_status='{$bonus}' check_type='skip' button_type='save'  admin_lock='true' blog_post_id='{$blog_post_id}' blog_suffix='{$suffix}' task_id='{$go_blog_task_id}'>Save Draft</button>";
+        echo "<button id='go_save_button{$suffix}' class='go_save_button progress left'  status='{$i}' data-bonus_status='{$bonus}' check_type='skip' button_type='save'  admin_lock='true' blog_post_id='{$blog_post_id}' blog_suffix='{$suffix}' task_id='{$go_blog_task_id}' data-check_for_understanding ='{$check_for_understanding}'>Save Draft</button>";
         if($suffix =='_lightbox') {
             ?>
             <script>
@@ -155,6 +155,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
 function go_blog_post($blog_post_id, $check_for_understanding = false){
     //$blog_post_id = 10704;
     $current_user = get_current_user_id();
+    $is_admin = go_user_is_admin();
 
     $file_toggle = false;
     $url_toggle = false;
@@ -209,7 +210,7 @@ function go_blog_post($blog_post_id, $check_for_understanding = false){
     </script><?php
 
 
-    echo "<div class=\"go_blog_post_wrapper\" style=\"padding: 10px;margin: 10px; background-color: white;\">";
+    echo "<div class=\"go_blog_post_wrapper go_blog_post_wrapper_$blog_post_id\" style=\"padding: 10px;margin: 10px; background-color: white;\">";
     /*
     if (!empty($task_title) && $stage > 0) {
         echo "<div style='font-size: .8em;'>Submitted on <a href='{$task_url}'>{$task_title} stage {$stage}</a>.</div>";
@@ -244,17 +245,13 @@ function go_blog_post($blog_post_id, $check_for_understanding = false){
     if($text_toggle) {
         echo $content;
     }
-    if ($current_user == $author_id) {
-        echo '<button class="go_blog_opener" blog_post_id ="' . $blog_post_id . '">edit post</button>';
-        if ($check_for_understanding == false) {
+    if ($current_user == $author_id || $is_admin) {
+        echo "<button class='go_blog_opener' blog_post_id ='{$blog_post_id}' data-check_for_understanding ='{$check_for_understanding}'>edit post</button>";
+        if ($current_user == $author_id && $check_for_understanding == false) {
             echo '<span class="go_blog_trash" blog_post_id ="' . $blog_post_id . '"><i class="fa fa-trash fa-2x"></i></span>';
         }
     }
-    echo "</div>";
-
-
-
-
+        echo "</div>";
 }
 
 // Register Custom Taxonomy

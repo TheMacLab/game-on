@@ -1136,56 +1136,7 @@ function go_update_totals_table($user_id, $xp, $xp_name, $gold, $gold_name, $hea
  * @param $health_name
  */
 function go_update_admin_bar_v4($user_id, $xp, $xp_name, $gold, $gold_name, $health, $health_name) {
-    //$user_id = get_current_user_id();
-    /*
-    $rank = go_get_rank( $user_id );
-    $rank_num = $rank['rank_num'];
-    $current_rank = $rank['current_rank'];
-    $current_rank_points = $rank['current_rank_points'];
-    $next_rank = $rank['next_rank'];
-    $next_rank_points = $rank['next_rank_points'];
 
-
-    //$rank_num = $rank['rank_num'];
-    //$current_rank = $rank['current_rank'];
-    //$current_rank_points = $rank['current_rank_points'];
-    //$next_rank = $rank['next_rank'];
-    //$next_rank_points = $rank['next_rank_points'];
-
-    $go_option_ranks = get_option( 'options_go_loot_xp_levels_name_singular' );
-
-    if ( $next_rank_points != false ) {
-        $rank_threshold_diff = $next_rank_points - $current_rank_points;
-        $pts_to_rank_threshold = $xp - $current_rank_points;
-        $pts_to_rank_up_str = "L{$rank_num}: {$pts_to_rank_threshold} / {$rank_threshold_diff}";
-        $percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
-        //$color = barColor( $go_current_health, 0 );
-        $color = "#39b54a";
-    } else {
-        $pts_to_rank_up_str = $current_rank;
-        $percentage = 100;
-        $color = "gold";
-    }
-
-
-    if ( $percentage <= 0 ) {
-        $percentage = 0;
-    } else if ( $percentage >= 100 ) {
-        $percentage = 100;
-    }
-
-    $health_percentage = intval($health / 2);
-    if ( $health_percentage <= 0 ) {
-        $health_percentage = 0;
-    } else if ( $health_percentage >= 100 ) {
-        $health_percentage = 100;
-    }
-    */
-    ///////////////////////////////////
-    ///
-    ///
-    ///
-    ///
     $xp_toggle = get_option('options_go_loot_xp_toggle');
     $gold_toggle = get_option('options_go_loot_gold_toggle');
     $health_toggle = get_option( 'options_go_loot_health_toggle' );
@@ -1204,23 +1155,11 @@ function go_update_admin_bar_v4($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         $next_rank = $rank['next_rank'];
         $next_rank_points = $rank['next_rank_points'];
 
-        $go_option_ranks = get_option('options_go_loot_xp_levels_name_singular');
-        //$points_array = $go_option_ranks['points'];
-
-        /*
-         * Here we are referring to last element manually,
-         * since we don't want to modifiy
-         * the arrays with the array_pop function.
-         */
-        //$max_rank_index = count( $points_array ) - 1;
-        //$max_rank_points = (int) $points_array[ $max_rank_index ];
-
         if ($next_rank_points != false) {
             $rank_threshold_diff = $next_rank_points - $current_rank_points;
             $pts_to_rank_threshold = $go_current_xp - $current_rank_points;
             $pts_to_rank_up_str = "L{$rank_num}: {$pts_to_rank_threshold} / {$rank_threshold_diff}";
             $percentage = $pts_to_rank_threshold / $rank_threshold_diff * 100;
-            //$color = barColor( $go_current_health, 0 );
             $color = "#39b54a";
         } else {
             $pts_to_rank_up_str = $current_rank;
@@ -1273,13 +1212,6 @@ function go_update_admin_bar_v4($user_id, $xp, $xp_name, $gold, $gold_name, $hea
         $gold_total = '';
     }
 
-    ////////////////
-    ///
-    ///
-    ///
-    ///
-    ///
-    ///
     ?><script language='javascript'>
         jQuery(document).ready(function() {
     <?php

@@ -11,6 +11,7 @@ function go_blog_opener(){
     check_ajax_referer( 'go_blog_opener' );
 
     $blog_post_id = ( ! empty( $_POST['blog_post_id'] ) ? (int) $_POST['blog_post_id'] : 0 );
+    $check_for_understanding = ( ! empty( $_POST['check_for_understanding'] ) ? (int) $_POST['check_for_understanding'] : false );
     $min_words = null;
     $text_toggle = null;
     $file_toggle = null;
@@ -19,6 +20,7 @@ function go_blog_opener(){
     $i = null;
     $required_string = null;
     $go_blog_task_id = null;
+    $bonus = null;
 
     if ($blog_post_id != 0) { //if opening an existing post
         //get the minimum character count to add to the button
@@ -51,7 +53,7 @@ function go_blog_opener(){
         }
     }
 
-    go_blog_form($blog_post_id, '_lightbox', $go_blog_task_id, $i, $bonus );
+    go_blog_form($blog_post_id, '_lightbox', $go_blog_task_id, $i, $bonus, $check_for_understanding );
     echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox'  task_id='{$go_blog_task_id}' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Submit</button>";
     echo "<p id='go_blog_error_msg' style='display: none; color: red;'></p>";
     ?>
@@ -98,7 +100,7 @@ function go_blog_trash(){
         }
         else{
 
-            if ($stage_num !== null) {
+            if ($stage_num !== null) {//if a stage number was sent (it is not a bonus stage)
                 $stage_type = 'stage';
                 $new_status_task = $stage_num;
                 $stage_num = $stage_num + 1 ;
@@ -119,7 +121,7 @@ function go_blog_trash(){
             ////////////////////
             ///
             ///
-            $result = $wpdb->get_results($wpdb->prepare("SELECT uid, xp, gold, health, badges, groups, check_type, result
+            $result = $wpdb->get_results($wpdb->prepare("SELECT id, uid, xp, gold, health, badges, groups, check_type, result
 				FROM {$aTable} 
 				WHERE result = %d AND source_id = %d AND action_type = %s
 				ORDER BY id DESC LIMIT 1",
@@ -202,6 +204,7 @@ function go_blog_trash(){
             $new_bonus_status_task = intval($new_bonus_status_task);
             if ($stage_type === 'bonus_status'){
                 $update_col = "bonus_status = -1 + bonus_status ";
+                $update_col = max($update_col,0);
             }else{
                 $update_col = "status = {$new_status_task}, bonus_status = 0";
             }
@@ -255,6 +258,7 @@ function go_blog_lightbox_opener(){
 function go_blog_submit(){
     check_ajax_referer( 'go_blog_submit' );
     $blog_post_id = intval(!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
+    $check_for_understanding = !empty($_POST['check_for_understanding']) ? (string)$_POST['check_for_understanding'] : false;
     if($blog_post_id) {
         $blog_meta = get_post_custom($blog_post_id);
         $go_blog_task_id = intval(isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
@@ -278,11 +282,18 @@ function go_blog_submit(){
 
     ob_end_clean();
 
+    ob_start();
+    go_blog_post($blog_post_id, $check_for_understanding);
+    $wrapper = ob_get_contents();
+
+    ob_end_clean();
+
     echo json_encode(
         array(
             'json_status' => 'success',
             'blog_post_id' => $result,
-            'message' => $buffer
+            'message' => $buffer,
+            'wrapper' => $wrapper
         )
     );
 
@@ -517,7 +528,7 @@ function go_blog_user_task(){
             if ($check_type == "blog"){
                 echo "Blog Post</h3>";
                 //go_print_blog_check_result($result, false);
-                go_blog_post($result);
+                go_blog_post($result, false);
             }else if($check_type == "URL"){
                 echo "URL</h3>";
                 go_print_URL_check_result($result);

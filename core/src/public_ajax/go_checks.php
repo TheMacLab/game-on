@@ -285,7 +285,7 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
     }
     //end for bonus stages
 
-    if ($i == $status) {
+    if ($i == $status) {//this is the current stage, so print the blog form
         echo $instructions;
         $i++;
 
@@ -325,38 +325,54 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
                     'blog_post'
                 )
             );
+
+            if(empty($blog_post_id)) {
+                $blog_post_id = (string)$wpdb->get_var($wpdb->prepare("SELECT result 
+				FROM {$go_actions_table_name} 
+				WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
+				ORDER BY id DESC LIMIT 1", $user_id, $post_id, $i, 'task'));
+            }
         }
 
             $i--;
-        go_blog_form($blog_post_id, '', $post_id, $i, $bonus_status);
+        go_blog_form($blog_post_id, '', $post_id, $i, $bonus_status, true);
 
         return $blog_post_id;
 
     }
-    else {
+    else {//this is a complete stage, so print the complete blog post
         $i++;
-        global $go_global_skip_post;
-        $i = $i + $go_global_skip_post;
-        $print = false;
 
-        while($print === false) {
-            $blog_post_id = (string)$wpdb->get_var($wpdb->prepare("SELECT result 
+        if ($bonus) {//if this is a bonus, get the next published post
+            global $go_global_skip_post;
+            $i = $i + $go_global_skip_post;
+            $print = false;
+            while ($print === false) {
+                $blog_post_id = (string)$wpdb->get_var($wpdb->prepare("SELECT result 
 				FROM {$go_actions_table_name} 
 				WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
-				ORDER BY id DESC LIMIT 1", $user_id, $post_id, $i, 'blog_post'));
+				ORDER BY id DESC LIMIT 1", $user_id, intval($post_id), $i, 'blog_post'));
 
-            $post_status = get_post_status($blog_post_id);
+                $post_status = get_post_status($blog_post_id);
 
 
-            if ($post_status == 'trash') {
-                //go_print_blog_check_result($blog_post_id, true, $custom_fields, $i);
-                $i++;
-                $go_global_skip_post++;
-            }else{
-                $print = true;
+                if ($post_status == 'trash') {
+                    //go_print_blog_check_result($blog_post_id, true, $custom_fields, $i);
+                    $i++;
+                    $go_global_skip_post++;
+                } else {
+                    $print = true;
+                }
+
             }
+        }else if(empty($blog_post_id)) {
+            $blog_post_id = (string)$wpdb->get_var($wpdb->prepare("SELECT result 
+            FROM {$go_actions_table_name} 
+            WHERE uid = %d AND source_id = %d AND {$stage}  = %d AND action_type = %s
+            ORDER BY id DESC LIMIT 1", $user_id, $post_id, $i, 'task'));
 
         }
+
         go_blog_post($blog_post_id, true);
 
         //echo $post_id;
