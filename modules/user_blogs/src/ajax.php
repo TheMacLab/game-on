@@ -80,7 +80,7 @@ function go_blog_trash(){
     if ($blog_post_id != 0 && !empty($blog_post_id)) {
 
         $blog_meta = get_post_custom($blog_post_id);
-        $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+        //$go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
         $stage_num = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
         $bonus_stage_num = (isset($blog_meta['go_blog_bonus_stage'][0]) ? $blog_meta['go_blog_bonus_stage'][0] : null);
         $aTable = "{$wpdb->prefix}go_actions";
