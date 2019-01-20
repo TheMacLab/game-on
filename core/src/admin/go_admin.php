@@ -250,15 +250,18 @@ function go_add_toplevel_menu() {
      * Add GO Options Page using ACF
      */
 // add sub page
-    acf_add_options_page(array(
-        'page_title' => 'Options',
-        'menu_slug' => 'go_options',
-        'autoload' => true,
-        'capability' => 'edit_posts',
-        'icon_url'  => 'dashicons-admin-settings',
 
+if( function_exists('acf_add_options_page') ) {
+    acf_add_options_page(array('page_title' => 'Options', 'menu_slug' => 'go_options', 'autoload' => true, 'capability' => 'edit_posts', 'icon_url' => 'dashicons-admin-settings',
         //'parent_slug' 	=> 'game-on',
     ));
+
+    acf_add_options_page(array('page_title' => 'Canned Feedback', 'menu_slug' => 'go_feedback', 'autoload' => true, 'capability' => 'edit_posts', 'icon_url' => 'dashicons-admin-settings',
+        //'parent_slug' 	=> 'edit.php?post_type=go_blogs',
+    ));
+
+
+}
 
     /* add a new menu item */
     add_menu_page(
