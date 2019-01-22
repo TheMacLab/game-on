@@ -352,14 +352,7 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         $health_name = get_option('options_go_loot_health_name');
         $health_loot = $loot->health;
     }
-    if (get_option( 'options_go_badges_toggle' )){
-        //$badges_on = true;
-        //$badges_name = get_option('options_go_badges_name_plural');
-        $badges = $loot->badges;
-        //if($badges) {
-         //   $badges = unserialize($badges);
-       // }
-    }
+
     //$groups_loot = $loot->groups;
     echo "<div id='outro' class='go_checks_and_buttons'>";
     echo "    
@@ -382,7 +375,17 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     }
     echo " </div>";
 
-    go_display_stage_badges($badges);
+    if (get_option( 'options_go_badges_toggle' )){
+        //$badges_on = true;
+        //$badges_name = get_option('options_go_badges_name_plural');
+        $badges = $loot->badges;
+        //if($badges) {
+        //   $badges = unserialize($badges);
+        // }
+        go_display_stage_badges($badges);
+    }
+
+
 
 
     echo "</div>";
@@ -708,12 +711,13 @@ function go_display_stage_badges($badges) {
    // }
     $badge_ids_array = unserialize($badges);//legacy badges saved as serialized array
     if (!is_array($badge_ids_array)){
-        go_map_quest_badge($badges);
+        $badge_ids_array = array();
+        $badge_ids_array[] = $badges;
 
-    }else {
+    }
 
 
-        foreach ($badges as $badge) {
+        foreach ($badge_ids_array as $badge) {
             $badge_id = $badge;
             $badge_class = 'go_badge_earned';
 
@@ -743,7 +747,7 @@ function go_display_stage_badges($badges) {
 
             }
         }
-    }
+
 }
 
 /**
