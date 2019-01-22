@@ -69,6 +69,7 @@ function go_blog_opener(){
     </script>
 
     <?php
+
 }
 
 function go_blog_trash(){

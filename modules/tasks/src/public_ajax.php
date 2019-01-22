@@ -356,9 +356,9 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         //$badges_on = true;
         //$badges_name = get_option('options_go_badges_name_plural');
         $badges = $loot->badges;
-        if($badges) {
-            $badges = unserialize($badges);
-        }
+        //if($badges) {
+         //   $badges = unserialize($badges);
+       // }
     }
     //$groups_loot = $loot->groups;
     echo "<div id='outro' class='go_checks_and_buttons'>";
@@ -703,7 +703,16 @@ function go_bonus_loot () {
  * @param $badges
  */
 function go_display_stage_badges($badges) {
-    if (is_array($badges)) {
+    //if (is_array($badges)) {
+
+   // }
+    $badge_ids_array = unserialize($badges);//legacy badges saved as serialized array
+    if (!is_array($badge_ids_array)){
+        go_map_quest_badge($badges);
+
+    }else {
+
+
         foreach ($badges as $badge) {
             $badge_id = $badge;
             $badge_class = 'go_badge_earned';
@@ -780,7 +789,7 @@ function go_display_rewards($custom_fields, $task_name ) {
         $badges_on = true;
         $badges_name = get_option('options_go_badges_name_plural');
         $badges = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
-        $badges = unserialize($badges);
+        //$badges = unserialize($badges);
     }
 
     $i = 0;

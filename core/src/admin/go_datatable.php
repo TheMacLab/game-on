@@ -3,13 +3,13 @@
 global $wpdb;
 
 function go_update_db_check() {
-    $go_db_version = 4.5;
+    $go_db_version = 4.6;
     if ( get_site_option( 'go_db_version' ) != $go_db_version ) {
         update_option('go_db_version', $go_db_version);
         go_update_db();
     }
 }
-//add_action( 'plugins_loaded', 'go_update_db_check' );
+add_action( 'plugins_loaded', 'go_update_db_check' );
 
 function go_update_db() {
     go_table_totals();
@@ -160,8 +160,8 @@ function go_set_options_autoload(){
         'options_go_video_width_pixels',
         'options_go_video_lightbox',
 
-        'options_go_images_resize_toggle',
-        'options_go_images_resize_longest_side',
+        //'options_go_images_resize_toggle',
+        //'options_go_images_resize_longest_side',
 
         'options_go_guest_global',
         'options_go_full-names_toggle',
@@ -176,10 +176,12 @@ function go_set_options_autoload(){
         'options_go_avatars_gravatars',
     );
 
-    foreach ( $options_array as $option ) {
-        $value = get_option($option);
-        delete_option( $option );
-        update_option( $option, $value, true );
+    foreach ( $options_array as $option ) {//autoload must be set on creation of option
+        $value = get_option($option); //get the value if it exists
+        if ($value) {//if value already exists, set the value
+            delete_option($option);
+        }
+        update_option( $option, $value, true );//update the value
     }
 }
 
@@ -239,8 +241,8 @@ function go_install_data ($reset = false) {
         'options_go_video_width_pixels' => '500',
         'options_go_video_lightbox' => '1',
 
-        'options_go_images_resize_toggle' => 1,
-        'options_go_images_resize_longest_side' => '1920',
+        //'options_go_images_resize_toggle' => 1,
+        //'options_go_images_resize_longest_side' => '1920',
 
         'options_go_guest_global' => 'regular',
         'options_go_full-names_toggle' => 0,
@@ -260,9 +262,6 @@ function go_install_data ($reset = false) {
     if($reset){
         update_option( $key, $value, true );
     }
-
-
-
 
     //For Repeater Fields Sections
     $isset = get_option('options_go_sections'); //if there are no sections at all
@@ -299,6 +298,27 @@ function go_install_data ($reset = false) {
         add_option('options_go_loot_xp_levels_level_14_xp', 19381);
         add_option('options_go_loot_xp_levels_level_14_name', 'Guru');
 
+    }
+
+    //For Levels
+    $isset = get_option('options_go_feedback_canned'); //if there are no level at all
+    if ($isset == false){
+        add_option('options_go_feedback_canned', 3);
+        add_option('options_go_feedback_canned_0_title', 'Post has been reset');
+        add_option('options_go_feedback_canned_0_message', 'This post does not meet the minimum requirements.  Loot has been removed.');
+        add_option('options_go_feedback_canned_0_defaults_xp', 0);
+        add_option('options_go_feedback_canned_0_defaults_gold', 0);
+        add_option('options_go_feedback_canned_0_defaults_health', 0);
+        add_option('options_go_feedback_canned_1_title', 'Needs revision');
+        add_option('options_go_feedback_canned_1_message', 'Please revise this post.');
+        add_option('options_go_feedback_canned_1_defaults_xp', 0);
+        add_option('options_go_feedback_canned_1_defaults_gold', 0);
+        add_option('options_go_feedback_canned_1_defaults_health', 0);
+        add_option('options_go_feedback_canned_2_title', 'Great work');
+        add_option('options_go_feedback_canned_2_message', 'Great job!  Here is some extra loot.');
+        add_option('options_go_feedback_canned_2_defaults_xp', 10);
+        add_option('options_go_feedback_canned_2_defaults_gold', 10);
+        add_option('options_go_feedback_canned_2_defaults_health', 0);
     }
 
 }

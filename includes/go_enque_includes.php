@@ -25,7 +25,7 @@ $go_select2_css_url      = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6
 $go_datatables_css_url   = 'https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css';
 $go_featherlight_css_url = 'https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css';
 $go_noty_css_url         = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css';
-$font_awesome_url = '//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+$font_awesome_url = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
 
 /*
  * Define what scripts/styles need to be enqueued on the admin side.

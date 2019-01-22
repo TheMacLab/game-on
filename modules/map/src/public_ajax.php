@@ -125,7 +125,7 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
                     //$task_name = $row->post_title; //Q
                     //$task_link = get_permalink($row); //Q
                     //$id = $row->ID;
-                    //$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id Q
+                    //$custom_fields = get_post_custom( $id ); // Just gathering some data about this task with its post id
                     $stage_count = $custom_fields['go_stages'][0];//total stages
                     $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
                     if(!isset($user_badges)){
@@ -214,10 +214,15 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
                         }
                     //<a href="javascript:;" class="go_blog_user_task" data-UserId="'.$user_id.'" onclick="go_blog_user_task('.$user_id.', '.$post_id.');">
                     if($badge_ids) {
-                        $badge_ids = unserialize($badge_ids);
-                        foreach($badge_ids as $badge_id) {
-                            go_map_quest_badge($badge_id, $user_badges);
+                        $badge_ids_array = unserialize($badge_ids);//legacy badges saved as serialized array
+                        if (is_array($badge_ids_array)){
+                            foreach($badge_ids_array as $badge_id) {
+                                go_map_quest_badge($badge_id, $user_badges);
+                            }
+                        }else{
+                            go_map_quest_badge($badge_ids);
                         }
+
                     }
 
                     /*
@@ -268,7 +273,7 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
 							</li>";
                 }
 
-
+                //badge for chains
                 $badge = get_term_meta($term_id, "pod_achievement", true);
                 if (!empty($badge)) {
                     if(!isset($user_badges)){
@@ -281,6 +286,7 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
             }
             echo "</ul>";
         }
+        //badge for map
         $badge = get_term_meta($last_map_id, "pod_achievement", true);
         if (!empty($badge)) {
             if(!isset($user_badges)){
