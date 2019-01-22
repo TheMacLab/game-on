@@ -564,12 +564,18 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
 function go_add_badges ($badge_ids, $user_id, $notify = false) {
 
     global $wpdb;
+
     $go_loot_table_name = "{$wpdb->prefix}go_loot";
     if (get_option( 'options_go_badges_toggle' )){
+
         //$badge_ids = (isset($custom_fields['go_purch_reward_badges'][0]) ?  $custom_fields['go_purch_reward_badges'][0] : null);
         //store badge ids
         if (!empty($badge_ids)) {
-            $badge_ids_array = unserialize($badge_ids);
+            $badge_ids_array = unserialize($badge_ids);//legacy badges saved as serialized array
+            if (!is_array($badge_ids_array)){
+                $badge_ids_array = array();
+                $badge_ids_array[] = $badge_ids;
+            }
             $badge_ids_array = ((is_array($badge_ids_array)) ? $badge_ids_array : array());
             //$user_badges = get_user_option('go_user_badges', $user_id);
             $user_badges = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
