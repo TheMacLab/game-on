@@ -131,7 +131,7 @@ if ( empty($posts) ) {
        $post_id = $post['ID'];
        go_blog_post($post_id);
        //do_action('go_blog_template_after_post');
-       go_user_feedback_container($post_id);
+       //go_user_feedback_container($post_id);
    }
    ?>
 
