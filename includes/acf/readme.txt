@@ -66,6 +66,35 @@ From your WordPress dashboard
 
 == Changelog ==
 
+= 5.7.10 =
+*Release Date - 16 January 2019*
+
+* Fix - Fixed bug preventing metaboxes from saving if validation fails within Gutenberg.
+* Fix - Fixed bug causing unload prompt to show incorrectly within Gutenberg.
+* Fix - Fixed JS error when selecting taxonomy terms within Gutenberg.
+* Fix - Fixed bug causing jQuery sortable issues within other plugins.
+* Tweak - Improved loading translations by adding fallback from region to country when .mo file does not exit.
+* Tweak - Improved punctuation throughout admin notices.
+* Tweak - Improved performance and accuracy when loading a user field value.
+* Dev - Added filter 'acf/get_locale' to customize the locale used to load translations.
+* Dev - Added filter 'acf/allow_unfiltered_html' to customize if current user can save unfiltered HTML.
+* Dev - Added new data storage functions `acf_register_store()` and `acf_get_store()`.
+* Dev - Moved from .less to .scss and minified all css.
+* i18n - Updated French translation thanks to Maxime Bernard-Jacquet.
+* i18n - Updated Czech translation thanks to David Rychly.
+
+= 5.7.9 =
+*Release Date - 17 December 2018*
+
+* Fix - Added custom metabox location (acf_after_title) compatibility with Gutenberg.
+* Fix - Added dynamic metabox check compatibility with Gutenberg.
+* Fix - Fixed bug causing required date picker fields to prevent form submit.
+* Fix - Fixed bug preventing multi-input values from saving correctly within media modals.
+* Fix - Fixed bug where `acf_form()` redirects to an incorrect URL for sub-sites.
+* Fix - Fixed bug where breaking out of a sub `have_rows()` loop could produce undesired results.
+* Dev - Added filter 'acf/connect_attachment_to_post' to prevent connecting attachments to posts.
+* Dev - Added JS filter 'google_map_autocomplete_args' to customize Google Maps autocomplete settings.
+
 = 5.7.8 =
 *Release Date - 7 December 2018*
 

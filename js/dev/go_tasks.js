@@ -303,8 +303,6 @@ function task_stage_change( target ) {
     });
 }
 
-
-
 //This isn't currently used, but saving just in case . . .
 function go_mce_reset() {
     // remove existing editor instance
@@ -334,7 +332,7 @@ function go_append (res){
         // use wordpress settings
         tinymce.init({
             selector: fullId,
-
+            branding: false,
             theme:"modern",
             skin:"lightgray",
             language:"en",
@@ -365,13 +363,15 @@ function go_append (res){
             preview_styles:"font-family font-size font-weight font-style text-decoration text-transform",
             wpeditimage_disable_captions:false,
             wpeditimage_html5_captions:true,
-            plugins:"charmap,hr,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpview",
+            plugins:"charmap,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpview,wordcount",
             selector:"#" + fullId,
             resize:"vertical",
             menubar:false,
             wpautop:true,
+            wordpress_adv_hidden:false,
             indent:false,
-            toolbar1:"bold,italic,strikethrough,bullist,numlist,blockquote,hr,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv",toolbar2:"formatselect,underline,alignjustify,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
+            toolbar1:"formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,spellchecker,fullscreen,wp_adv",
+            toolbar2:"strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
             toolbar3:"",
             toolbar4:"",
             tabfocus_elements:":prev,:next",

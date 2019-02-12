@@ -8,6 +8,8 @@ Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
 Version: 4.5
 */
 
+
+
 $go_debug = true;
 global $go_debug;
 
@@ -23,7 +25,6 @@ global $go_css_version;
 //include_once('includes/acf/acf.php');
 include( 'includes/wp-frontend-media-master/frontend-media.php' );
 include_once('includes/wp-term-order/wp-term-order.php'); //try to load only on admin pages
-include_once('custom-acf-fields/acf-order-posts/acf-order-posts.php');
 
 
 // include external js and css resources
@@ -35,6 +36,42 @@ add_action( 'admin_enqueue_scripts', 'go_admin_includes' );
 if ( is_admin() ) {
 
     include_once('includes/acf/acf.php');
+
+    include_once('custom-acf-fields/acf-order-posts/acf-order-posts.php');
+
+    if ($go_debug == true) {
+        //add_filter('acf/settings/show_admin', '__return_false');
+        add_filter('acf/settings/save_json', 'go_acf_json_save_point');
+    }
+
+    function go_acf_json_save_point( $path ) {
+
+        // update path
+        $path = (plugin_dir_path(__FILE__) . 'acf-json');
+
+
+        // return
+        return $path;
+
+    }
+
+    add_filter('acf/settings/load_json', 'go_acf_json_load_point');
+
+    function go_acf_json_load_point( $paths ) {
+
+        // remove original path (optional)
+        unset($paths[0]);
+
+        // append path
+        $paths[] = (plugin_dir_path(__FILE__) . 'acf-json');
+
+
+        // return
+        return $paths;
+
+    }
+
+
     include_once('custom-acf-fields/acf-level2-taxonomy/acf-level2-taxonomy.php');
     include_once('custom-acf-fields/acf-quiz/acf-quiz.php');
 
@@ -57,7 +94,7 @@ if ( is_admin() ) {
 //INCLUDE ON ALL PAGES
 /////////////////////////
 //main directory
-include_once('go_acf_groups.php'); //the ACF fields for the admin pages
+//include_once('go_acf_groups.php'); //the ACF fields for the admin pages
 
 include_once('core/includes.php');
 
@@ -72,7 +109,7 @@ include_once('modules/tasks/includes.php');
 include_once('modules/tools/includes.php');
 include_once('modules/user_profiles/includes.php');
 include_once('modules/user_blogs/includes.php');
-include_once('modules/feedback/includes.php');
+//include_once('modules/feedback/includes.php');
 
 /*
     * Plugin Activation Hooks

@@ -308,17 +308,7 @@ function go_blog_opener( el ) {
     jQuery(".go_blog_opener").prop("onclick", null).off("click");
 
     var check_for_understanding= jQuery( el ).attr( 'data-check_for_understanding' );
-
-    //listener for changes to make sure they are saved.  Alert with sweet alert.
-    tinymce.init({
-        selector: 'go_blog_post_lightbox',  // change this value according to your HTML
-        setup: function(editor) {
-            editor.on('keyup', function(e) {
-                jQuery('body').attr('data-go_blog_updated', '1');
-                console.log("updated");
-            });
-        }
-    });
+    
     //var result_title = jQuery( this ).attr( 'value' );
     var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
     //console.log(el);
@@ -340,6 +330,7 @@ function go_blog_opener( el ) {
             //console.log(results);
             //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_edit');
             //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_edit' );
+
             jQuery.featherlight(results, {afterContent: function(){
                     console.log("aftercontent");
 
@@ -359,13 +350,22 @@ function go_blog_opener( el ) {
                     var fullId = 'go_blog_post_lightbox';
                     //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post_lightbox');
                     tinymce.execCommand('mceRemoveEditor', true, fullId);
+
+
                     //quicktags({id :'go_blog_post_lightbox'});
 
                     quicktags({id : fullId});
                     // use wordpress settings
                     tinymce.init({
                         selector: fullId,
-
+                         // change this value according to your HTML
+                        setup: function(editor) {
+                            editor.on('keyup', function(e) {
+                                jQuery('body').attr('data-go_blog_updated', '1');
+                                console.log("updated");
+                            });
+                        },
+                        branding: false,
                         theme:"modern",
                         skin:"lightgray",
                         language:"en",
@@ -396,19 +396,22 @@ function go_blog_opener( el ) {
                         preview_styles:"font-family font-size font-weight font-style text-decoration text-transform",
                         wpeditimage_disable_captions:false,
                         wpeditimage_html5_captions:true,
-                        plugins:"charmap,hr,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpview",
+                        plugins:"charmap,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpview,wordcount",
                         selector:"#" + fullId,
                         resize:"vertical",
                         menubar:false,
                         wpautop:true,
+                        wordpress_adv_hidden:false,
                         indent:false,
-                        toolbar1:"bold,italic,strikethrough,bullist,numlist,blockquote,hr,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv",toolbar2:"formatselect,underline,alignjustify,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
+                        toolbar1:"formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,spellchecker,fullscreen,wp_adv",
+                        toolbar2:"strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
                         toolbar3:"",
                         toolbar4:"",
                         tabfocus_elements:":prev,:next",
                         body_class:"id post-type-post post-status-publish post-format-standard",});
                     // this is needed for the editor to initiate
                     tinyMCE.execCommand('mceAddEditor', false, fullId);
+
 
                     //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post_lightbox' );
                     //tinyMCE.execCommand("mceAddControl", false, 'go_blog_post_lightbox');
@@ -459,6 +462,11 @@ function go_blog_opener( el ) {
                             });
                         return false;
                     }else {
+                        var post_wrapper_class = ".go_blog_post_wrapper_" + blog_post_id;
+                        if (jQuery(post_wrapper_class).length = 0) {
+                            location.reload();
+                        }
+
 
                         //location.reload();
                         //change reload to swap wrapper
@@ -492,7 +500,9 @@ function go_blog_submit( el, reload ) {
     var result_title = jQuery( '#go_blog_title' + suffix ).val( );
     //console.log("title: " + result_title);
 
-    var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
+    //var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
+    var blog_post_id = jQuery('#go_blog_title' + suffix).attr( 'data-blog_post_id' );
+    console.log("blog_post_id: " + blog_post_id);
     var post_wrapper_class = ".go_blog_post_wrapper_" + blog_post_id;
     var go_blog_bonus_stage= jQuery( el ).attr( 'data-bonus_status' );
     var go_blog_task_stage= jQuery( el ).attr( 'status' );
@@ -526,7 +536,7 @@ function go_blog_submit( el, reload ) {
         data: gotoSend,
         cache: false,
         success: function (raw) {
-            console.log('success');
+            console.log('success1');
             //console.log(raw);
             // parse the raw response to get the desired JSON
             var res = {};
@@ -546,8 +556,6 @@ function go_blog_submit( el, reload ) {
             jQuery( 'body' ).attr( 'data-go_blog_updated', '0' );
 
 
-            jQuery(post_wrapper_class).html(res.wrapper);
-
             jQuery('body').append(res.message);
             //jQuery('.go_loading').remove();
             go_disable_loading();
@@ -562,9 +570,18 @@ function go_blog_submit( el, reload ) {
             jQuery( '#go_blog_title' + suffix ).attr( 'data-blog_post_id', res.blog_post_id );
 
             if (reload == true) {
+                var is_new = jQuery(post_wrapper_class).length;
+                console.log("reload is true:" + is_new);
                 //go_disable_loading();
                 var current = jQuery.featherlight.current();
                 current.close();
+                if (jQuery(post_wrapper_class).length > 0) {
+                    jQuery(post_wrapper_class).replaceWith(res.wrapper);
+                    go_disable_loading();
+                }else{
+                    location.reload();
+                }
+
             }
 
 

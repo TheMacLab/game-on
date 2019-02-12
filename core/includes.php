@@ -56,9 +56,18 @@ include_once('src/all/go_users.php');
  */
 function go_hidden_footer(){
 
-    ob_start();
-    wp_editor( '', 'initialize');
-    $editor = ob_get_clean(); // We do not need the editor on the page load so no echo.
+    //ob_start();
+
+    ?>
+<div style="display: none;">
+    <?php
+    wp_editor('', 'initialize');
+    ?>
+</div>
+<?php
+
+    //wp_editor( '', 'initialize');
+    //$editor = ob_get_clean(); // We do not need the editor on the page load so no echo.
 
 
 }

@@ -110,9 +110,9 @@ add_filter( 'tiny_mce_before_init', 'go_changeMceDefaults' );
 // Load tinymce wordcount
 //*******************************************************************************************
 
-add_filter('mce_external_plugins', 'fp_tinymce_wordcount');
+add_filter('mce_external_plugins', 'go_tinymce_wordcount');
 
-function fp_tinymce_wordcount($plugins_array = array())
+function go_tinymce_wordcount($plugins_array = array())
 {
     $plugins = array('wordcount');
     //Build the response - the key is the plugin name, value is the URL to the plugin JS
