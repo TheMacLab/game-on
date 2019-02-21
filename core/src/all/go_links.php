@@ -178,9 +178,9 @@ function go_bonus_result_link($check_type, $result, $stage, $time, $bonus = true
 }
 
 //this then uses select2 and ajax to make dropdown
-function go_make_tax_select ($taxonomy, $location = null){
+function go_make_tax_select ($taxonomy, $location = null, $selector = 'id'){
 
-    echo "<select id='go_". $location . $taxonomy . "_select'></select>";
+    echo "<select ".$selector."='go_". $location . $taxonomy . "_select'></select>";
 
 }
 

@@ -32,7 +32,8 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         $media_content = (isset($blog_meta['go_blog_media'][0]) ? $blog_meta['go_blog_media'][0] : null);
         $video_content = (isset($blog_meta['go_blog_video'][0]) ? $blog_meta['go_blog_video'][0] : null);
 
-        $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : $go_blog_task_id);
+        //$go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : $go_blog_task_id);
+        $go_blog_task_id = wp_get_post_parent_id($blog_post_id);
         $i = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : $i); //set this meta for bonus
 
 
@@ -47,6 +48,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             $restrict_mime_types = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_restrict_file_types'][0] : null);
             $min_words = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0] : null);
             $required_string = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0]) ?  $custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0] : null);
+            $is_private = (isset($custom_fields['go_bonus_stage_blog_options_bonus_private'][0]) ?  $custom_fields['go_bonus_stage_blog_options_bonus_private'][0] : null);
 
         }
         else{
@@ -57,15 +59,21 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             $restrict_mime_types = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_restrict_file_types'][0] : null);
             $min_words = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0] : null);
             $required_string = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0] : null);
+            $is_private = (isset($custom_fields['go_stages_'.$i.'_blog_options_private'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_private'][0] : false);
 
         }
         if(empty($title)){
             $title = get_the_title($go_blog_task_id);
         }
 
-    }
+    }else{
+        $is_private = get_post_meta($blog_post_id, 'go_blog_private_post', true) ? get_post_meta($blog_post_id, 'go_blog_private_post', true) : false;
 
+    }
     echo "<div class='go_blog_div'>";
+    if( !empty($go_blog_task_id) && $is_private) {
+        echo "<div ><h3>This post is private. Only you and the site administrators/instructors will be able to see it.</h3></div>";
+    }
     echo "<div>Title:<div><input style='width: 100%;' id='go_blog_title".$suffix."' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}' ></div> </div>";
 
     if ($url_toggle) {
@@ -142,6 +150,15 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     echo "</div>";
     if($text_toggle) { //add stuff below the mce window if it is shown
 
+        //Private Post Toggle
+        if(empty($go_blog_task_id)){//only if not attached to quest
+            if ($is_private){
+                $checked = 'checked';
+            }else{
+                $checked = '';
+            }
+            echo "<div style='width: 100%;text-align: right;'><input type='checkbox' id='go_private_post{$suffix}' value='go_private_post{$suffix}' {$checked}> Private Post</div>";
+        }
         //word Count
         if ($min_words > 0) {
             echo "<div id='go_blog_min' style='text-align:right'><span class='char_count'>" . $min_words . "</span> Words Required</div>";
@@ -164,7 +181,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     }
 }
 
-function go_blog_post($blog_post_id, $check_for_understanding = false){
+function go_blog_post($blog_post_id, $check_for_understanding = false, $with_feedback = false){
     //$blog_post_id = 10704;
     $current_user = get_current_user_id();
     $is_admin = go_user_is_admin();
@@ -187,7 +204,8 @@ function go_blog_post($blog_post_id, $check_for_understanding = false){
     $content = apply_filters( 'go_awesome_text', $content );
     $title = get_the_title($blog_post_id);
     $blog_meta = get_post_custom($blog_post_id);
-    $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+    //$go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+    $go_blog_task_id = wp_get_post_parent_id($blog_post_id);
     $i = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
     //if $i (task stage) is not set, then this must be a bonus stage
 
@@ -263,7 +281,11 @@ function go_blog_post($blog_post_id, $check_for_understanding = false){
             echo '<span class="go_blog_trash" blog_post_id ="' . $blog_post_id . '"><i class="fa fa-trash fa-2x"></i></span>';
         }
     }
-        echo "</div>";
+    if ($with_feedback){
+        do_action('go_blog_template_after_post', $blog_post_id);
+    }
+
+    echo "</div>";
 }
 
 // Register Custom Taxonomy
@@ -374,6 +396,46 @@ function go_blogs() {
 
 }
 add_action( 'init', 'go_blogs', 0 );
+
+// Register custom post status
+function go_custom_post_status(){
+    register_post_status( 'unread', array(
+        'label'                     => _x( 'Unread', 'post' ),
+        'public'                    => true,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>' ),
+    ) );
+
+    register_post_status( 'read', array(
+        'label'                     => _x( 'Read', 'post' ),
+        'public'                    => true,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Read <span class="count">(%s)</span>', 'Read <span class="count">(%s)</span>' ),
+    ) );
+
+    register_post_status( 'reset', array(
+        'label'                     => _x( 'Reset', 'post' ),
+        'public'                    => false,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Reset <span class="count">(%s)</span>', 'Reset <span class="count">(%s)</span>' ),
+    ) );
+
+    register_post_status( 'revise', array(
+        'label'                     => _x( 'Revise', 'post' ),
+        'public'                    => true,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Revise <span class="count">(%s)</span>', 'Revise <span class="count">(%s)</span>' ),
+    ) );
+}
+add_action( 'init', 'my_custom_post_status' );
 
 
 function go_custom_rewrite() {

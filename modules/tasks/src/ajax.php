@@ -133,12 +133,11 @@ function go_task_change_stage() {
         //save blog post
         else if ($check_type == 'blog'){
 
-            $result = go_save_blog_post($post_id, $status, null);
+            $result = go_save_blog_post($post_id, $status, null, 'unread');
             // Insert the post into the database
 
             //create blog post function ($uid, $result);
             //get id of blog post item to set in actions
-
         }
 
         else if ($check_type == 'unlock'){ //check password in lock
@@ -241,7 +240,7 @@ function go_task_change_stage() {
                 $result = go_stage_password_validate($result, $custom_fields, $status, true);
             }
             else if ($check_type == 'blog'){
-                $result = go_save_blog_post($post_id, null, $bonus_status);
+                $result = go_save_blog_post($post_id, null, $bonus_status, 'unread');
             }
 
             //get the rewards and apply modifiers

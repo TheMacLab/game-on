@@ -19,6 +19,7 @@ if ( !is_admin() ) {
     add_action( 'wp_ajax_go_blog_trash', 'go_blog_trash' ); //OK
     add_action( 'wp_ajax_go_blog_submit', 'go_blog_submit' ); //OK
     add_action( 'wp_ajax_go_blog_user_task', 'go_blog_user_task');
+    add_action( 'wp_ajax_go_blog_favorite_toggle', 'go_blog_favorite_toggle');
 }else{
     //include_once('admin/admin.php');
 }

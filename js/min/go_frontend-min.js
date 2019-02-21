@@ -22,7 +22,91 @@ jQuery( document ).ready( function() {
 
     jQuery('#go_hidden_mce').remove();
     jQuery('#go_hidden_mce_edit').remove();
+
+    jQuery( ".feedback_accordion" ).accordion({
+        collapsible: true
+    });
+
+    jQuery(".go_blog_favorite").click(function() {
+        go_blog_favorite(this);
+    });
+
+    //go_blog_tags_select2();
+
 });
+
+function  go_blog_favorite(target){
+    blog_post_id = jQuery( target ).attr( 'data-post_id' );
+
+
+    if (jQuery(target).is(":checked"))
+    {
+        var checked = true;
+    }else{
+        checked = false;
+    }
+
+    var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_favorite_toggle;
+
+    //console.log("favorite_id: " + blog_post_id);
+    var gotoSend = {
+        action:"go_blog_favorite_toggle",
+        _ajax_nonce: nonce,
+        blog_post_id: blog_post_id,
+        checked: checked
+    };
+    //jQuery.ajaxSetup({ cache: true });
+    jQuery.ajax({
+        url: MyAjax.ajaxurl,
+        type: 'POST',
+        data: gotoSend,
+        success: function (raw) {
+
+        }
+    });
+}
+
+
+
+function go_blog_tags_select2(){
+    jQuery('.go_feedback_go_blog_tags_select').select2({
+        ajax: {
+            url: MyAjax.ajaxurl, // AJAX URL is predefined in WordPress admin
+            dataType: 'json',
+            delay: 400, // delay in ms while typing when to perform a AJAX search
+            data: function (params) {
+
+                return {
+                    q: params.term, // search query
+                    action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
+                    taxonomy: 'go_blog_tags',
+                    is_hier: false
+                };
+
+
+            },
+            processResults: function( data ) {
+
+                jQuery(".go_feedback_go_blog_tags_select").select2("destroy");
+                jQuery('.go_feedback_go_blog_tags_select').children().remove();
+                jQuery(".go_feedback_go_blog_tags_select").select2({
+                    data: data,
+                    placeholder: "Show All",
+                    allowClear: true}).trigger("change");
+                jQuery(".go_feedback_go_blog_tags_select").select2("open");
+                return {
+                    results: data
+                };
+
+            },
+            cache: true
+        },
+        minimumInputLength: 0, // the minimum of symbols to input before perform a search
+        multiple: true,
+        placeholder: "Show All",
+        allowClear: true
+    });
+}
 
 function task_stage_check_input( target, on_task) {
 
@@ -309,16 +393,6 @@ function go_blog_opener( el ) {
 
     var check_for_understanding= jQuery( el ).attr( 'data-check_for_understanding' );
 
-    //listener for changes to make sure they are saved.  Alert with sweet alert.
-    tinymce.init({
-        selector: 'go_blog_post_lightbox',  // change this value according to your HTML
-        setup: function(editor) {
-            editor.on('keyup', function(e) {
-                jQuery('body').attr('data-go_blog_updated', '1');
-                console.log("updated");
-            });
-        }
-    });
     //var result_title = jQuery( this ).attr( 'value' );
     var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
     //console.log(el);
@@ -508,6 +582,7 @@ function go_blog_submit( el, reload ) {
     var result = go_get_tinymce_content_blog();
     //var result = tinyMCE.activeEditor.getContent();
     var result_title = jQuery( '#go_blog_title' + suffix ).val( );
+    var button= jQuery( el ).attr( 'button_type' );
     //console.log("title: " + result_title);
 
     //var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
@@ -520,10 +595,15 @@ function go_blog_submit( el, reload ) {
     var check_for_understanding= jQuery( el ).attr( 'data-check_for_understanding' );
 
     var blog_url= jQuery( '#go_result_url' + suffix ).val();
+    //var blog_private= jQuery( '#go_private_post' + suffix ).val();
+    if (jQuery('#go_private_post' + suffix).is(":checked"))
+    {
+        var blog_private = true;
+    }
     var blog_media= jQuery( '#go_result_media' + suffix ).attr( 'value' );
     var blog_video= jQuery( '#go_result_video' + suffix).val();
     //console.log("go_blog_bonus_stage: " + go_blog_bonus_stage);
-    //console.log("stage: " + blog_media);
+    console.log("blog_private: " + blog_private);
 
     var gotoSend = {
         action:"go_blog_submit",
@@ -534,9 +614,11 @@ function go_blog_submit( el, reload ) {
         blog_url: blog_url,
         blog_media: blog_media,
         blog_video: blog_video,
+        blog_private: blog_private,
         go_blog_task_stage: go_blog_task_stage,
         go_blog_bonus_stage: go_blog_bonus_stage,
         post_id: task_id,
+        button: button,
         check_for_understanding: check_for_understanding
     };
     //jQuery.ajaxSetup({ cache: true });
@@ -587,6 +669,10 @@ function go_blog_submit( el, reload ) {
                 current.close();
                 if (jQuery(post_wrapper_class).length > 0) {
                     jQuery(post_wrapper_class).replaceWith(res.wrapper);
+                    jQuery( ".feedback_accordion" ).accordion({
+                        collapsible: true
+                    });
+                    //go_blog_tags_select2();
                     go_disable_loading();
                 }else{
                     location.reload();

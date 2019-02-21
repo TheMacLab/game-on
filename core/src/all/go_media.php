@@ -28,3 +28,21 @@ function go_users_own_attachments( $wp_query_obj ) {
 
     return;
 }
+
+/**
+ * Resize All Images on Client Side
+ */
+function client_side_resize_load() {
+    wp_enqueue_script( 'client-resize' , plugins_url( '../../../js/scripts/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
+    wp_localize_script( 'client-resize' , 'client_resize' , array(
+        'plupload' => array(
+            'resize' => array(
+                'enabled' => true,
+                'width' => 1920, // enter your width here
+                'height' => 1200, // enter your width here
+                'quality' => 90,
+            ),
+        )
+    ) );
+}
+add_action( 'wp_enqueue_media' , 'client_side_resize_load' );

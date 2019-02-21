@@ -12,14 +12,13 @@ if ( !is_admin() ) {
 
 
 }else if ( defined( 'DOING_AJAX' )) {
-
-    //include_once('src/ajax.php');
-    //include_once('src/admin_ajax.php');
+    include_once('src/ajax.php');
+    include_once('src/admin_ajax.php');
 
 
 }else{
-    //include_once('src/admin.php');
-    //include_once('src/admin_ajax.php');
+    include_once('src/admin.php');
+    include_once('src/admin_ajax.php');
 }
 
 //always include

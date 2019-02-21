@@ -95,6 +95,7 @@ $arg = array(
     'order'             => 'DESC',
     'author_name'       => $user,
     'paged' => $paged,
+    'post_status' => 'any'
 );
 //build query
 $query = new WP_Query( $arg );
@@ -129,8 +130,7 @@ if ( empty($posts) ) {
    foreach ($posts as $post){
        $post = json_decode(json_encode($post), True);//convert stdclass to array by encoding and decoding
        $post_id = $post['ID'];
-       go_blog_post($post_id);
-       do_action('go_blog_template_after_post');
+       go_blog_post($post_id, false, true);
        //go_user_feedback_container($post_id);
    }
    ?>

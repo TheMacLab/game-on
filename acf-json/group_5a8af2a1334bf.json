@@ -1613,6 +1613,25 @@
                                     "step": 10
                                 }
                             ]
+                        },
+                        {
+                            "key": "field_5c6b76a18ae97",
+                            "label": "Private",
+                            "name": "private",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Private Post",
+                            "default_value": 0,
+                            "ui": 0,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
                         }
                     ]
                 },
@@ -2465,6 +2484,25 @@
                                     "step": 10
                                 }
                             ]
+                        },
+                        {
+                            "key": "field_5c6b76e88ae98",
+                            "label": "Private",
+                            "name": "private",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Private Post",
+                            "default_value": 0,
+                            "ui": 0,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
                         }
                     ]
                 },
@@ -2631,5 +2669,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1549909789
+    "modified": 1550546746
 }

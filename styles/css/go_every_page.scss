@@ -1,3 +1,64 @@
+
+
+.go_favorite_container {
+
+	label {
+		cursor: pointer;
+
+
+		input[type="checkbox"] {
+			display: none;
+		}
+
+		.go_favorite_label:before{
+			font-family: Fontawesome !important;
+			content: '\f08a';
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			color: #aaaaaa;
+			line-height: 1;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		input[type="checkbox"]:checked + .go_favorite_label:before{
+			font-family: Fontawesome !important;
+			content: "\f004";
+			color: #8B0000;
+		}
+
+
+
+	}
+
+}
+
+.go_favorite_container span.checkbox::before {
+	width: 27px;
+	height: 27px;
+	background-color: #fff;
+	left: -35px;
+	box-sizing: border-box;
+	border: 3px solid transparent;
+	transition: border-color .2s;
+}
+.go_favorite_container span.checkbox:hover::before {
+	border: 3px solid #F0FF76;
+}
+.go_favorite_container span.checkbox::after {
+	content: '\f00c';
+	font-family: 'FontAwesome';
+	left: -31px;
+	top: 2px;
+	color: transparent;
+	transition: color .2s;
+}
+input[type="checkbox"]:checked + label span.checkbox::after {
+	color: #62AFFF;
+}
+
 .go_blog_stage {
 	border: solid 1px;
 	padding: 10px 20px 10px 20px;

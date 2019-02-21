@@ -25,8 +25,10 @@ function go_blog_opener(){
     if ($blog_post_id != 0) { //if opening an existing post
         //get the minimum character count to add to the button
         $blog_meta = get_post_custom($blog_post_id);
-        $go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+        //$go_blog_task_id = (isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+        $go_blog_task_id = wp_get_post_parent_id($blog_post_id);
         $stage = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
+
 
         if(!empty($go_blog_task_id)) {
             $custom_fields = get_post_custom($go_blog_task_id);
@@ -54,7 +56,7 @@ function go_blog_opener(){
     }
 
     go_blog_form($blog_post_id, '_lightbox', $go_blog_task_id, $i, $bonus, $check_for_understanding );
-    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox'  task_id='{$go_blog_task_id}' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Submit</button>";
+    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' button_type='submit' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox'  task_id='{$go_blog_task_id}' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Submit</button>";
     echo "<p id='go_blog_error_msg' style='display: none; color: red;'></p>";
     ?>
     <script>
@@ -260,22 +262,32 @@ function go_blog_submit(){
     check_ajax_referer( 'go_blog_submit' );
     $blog_post_id = intval(!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
     $check_for_understanding = !empty($_POST['check_for_understanding']) ? (string)$_POST['check_for_understanding'] : false;
-    if($blog_post_id) {
+    $button = !empty($_POST['button']) ? (string)$_POST['button'] : false;
+    $post_status = !empty(get_post_status($blog_post_id)) ? get_post_status($blog_post_id) : 'draft';//if new post, set as draft
+    $is_private = !empty($_POST['blog_private']) ? $_POST['blog_private'] : false;
+
+    if ($button == 'submit'){
+        $post_status = 'unread';//if submit was pressed, set status as unread
+    }
+
+    if($blog_post_id) {//if this blog post already exists
         $blog_meta = get_post_custom($blog_post_id);
-        $go_blog_task_id = intval(isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+        //$go_blog_task_id = intval(isset($blog_meta['go_blog_task_id'][0]) ? $blog_meta['go_blog_task_id'][0] : null);
+        $go_blog_task_id = wp_get_post_parent_id($blog_post_id);
         $go_blog_task_stage = intval(isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : null);
         $go_blog_task_bonus = (isset($blog_meta['go_blog_bonus_stage'][0]) ? $blog_meta['go_blog_bonus_stage'][0] : null);
-
     }else {
-        $go_blog_task_id = intval(!empty($_POST['post_id']) ? (string)$_POST['post_id'] : '');
+        //$go_blog_task_id = intval(!empty($_POST['post_id']) ? (string)$_POST['post_id'] : '');
+        $go_blog_task_id = wp_get_post_parent_id($blog_post_id);
         $go_blog_task_stage = intval(!empty($_POST['go_blog_task_stage']) ? (string)$_POST['go_blog_task_stage'] : null);
         $go_blog_task_bonus = ((($_POST['go_blog_bonus_stage']) !='') ? intval($_POST['go_blog_bonus_stage']) : null);
     }
+
     if ($go_blog_task_bonus !== null){
         $go_blog_task_bonus = intval($go_blog_task_bonus);
         $go_blog_task_stage = null;
     }
-    $result = go_save_blog_post($go_blog_task_id, $go_blog_task_stage, $go_blog_task_bonus);
+    $result = go_save_blog_post($go_blog_task_id, $go_blog_task_stage, $go_blog_task_bonus, $post_status, $is_private);
 
     ob_start();
     go_noty_message_generic('success', 'Draft Saved Successfully', '', 2000);
@@ -284,7 +296,7 @@ function go_blog_submit(){
     ob_end_clean();
 
     ob_start();
-    go_blog_post($blog_post_id, $check_for_understanding);
+    go_blog_post($blog_post_id, $check_for_understanding, true);
     $wrapper = ob_get_contents();
 
     ob_end_clean();
@@ -301,55 +313,67 @@ function go_blog_submit(){
     die();
 }
 
-function go_save_blog_post($post_id = null, $stage = null, $bonus_status = null){
+function go_save_blog_post($post_id = null, $stage = null, $bonus_status = null, $post_status, $is_private = false){
 
     $user_id = get_current_user_id();
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
     $result_title = (!empty($_POST['result_title']) ? (string)$_POST['result_title'] : '');// Contains the result from the check for understanding
-    $blog_post_id = intval(!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : '');
-    if (go_post_exists($blog_post_id) == true){
-    }else{
+    $blog_post_id = intval(!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : null);
+    if (go_post_exists($blog_post_id) == false){
         $blog_post_id = null;
     }
+
+    if (is_int($post_id) and $post_id > 0) {//if this is attached to a quest
+
+        if ($bonus_status !== null) {//if this is a bonus stage blog post, set variables
+            $bonus_status = $bonus_status + 1;
+            $stage = null;
+            $status = null;
+            $meta_key = 'go_bonus_stage_blog_options_bonus_private';
+        } else {//if this is a regular stage blog post, set variables
+            $status = $stage;
+            $meta_key = 'go_stages_' . $status . '_blog_options_private';
+            $stage = ($stage + 1);
+        }
+
+        //Set Privacy
+        if (go_post_exists($blog_post_id) == true) {
+            //do something if this blog post already exists
+            //don't change the privacy status if post exists
+            $is_private = get_post_meta($blog_post_id, 'go_blog_private_post', true) ? get_post_meta($blog_post_id, 'go_blog_private_post', true) : false;
+
+        } else {
+            //do something for new blog posts
+                //$custom_fields = get_post_custom($post_id);
+                //$is_private = (isset($custom_fields[$meta_key][0]) ? $custom_fields[$meta_key][0] : true);
+            $is_private = get_post_meta($post_id, $meta_key, true);
+        }
+
+
+    }
+
     $blog_url = (!empty($_POST['blog_url']) ? (string)$_POST['blog_url'] : '');
     $blog_media = (!empty($_POST['blog_media']) ? (string)$_POST['blog_media'] : '');
     $blog_video = (!empty($_POST['blog_video']) ? (string)$_POST['blog_video'] : '');
 
-    //if this post is associated with a task stage
-    if ($post_id === null) {
-        $post_name = get_the_title($post_id);
-    }else{
-        $post_name = null;
-    }
-    if($bonus_status !== null){
-        $bonus_status = $bonus_status + 1;
-        $stage = null;
-        $status = null;
-    }else{
-        $status = $stage;
-        $stage = ($stage + 1);
 
-    }
+
 
     $my_post = array(
         'ID'        => $blog_post_id,
         'post_type'     => 'go_blogs',
         'post_title'    => $result_title,
         'post_content'  => $result,
-        'post_status'   => 'publish',
+        'post_status'   => $post_status,
         'post_author'   => $user_id,
-        'tax_input'    => array(
-            'go_blog_tags'     => $post_name,
-            'go_blog_tags'     => $post_id,
-
-        ),
+        'post_parent'    => $post_id,
         'meta_input'    => array(
             'go_blog_url'     => $blog_url,
             'go_blog_media'     => $blog_media,
             'go_blog_video'     => $blog_video,
-            'go_blog_task_id'     => $post_id,
             'go_blog_task_stage'     => $status,
-            'go_blog_bonus_stage'   => $bonus_status
+            'go_blog_bonus_stage'   => $bonus_status,
+            'go_blog_private_post'    => $is_private
 
         )
     );

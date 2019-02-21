@@ -2,30 +2,46 @@
 
 // Included on every load of this module
 
-add_action('go_blog_template_after_post', 'go_user_feedback_container');
+add_action('go_blog_template_after_post', 'go_user_feedback_container', 10, 1);
 
 
 function go_user_feedback_container($post_id){
     $admin_user = go_user_is_admin();
-    go_user_feedback($post_id);
-    if ($admin_user) {
-        go_feedback_form($post_id);
-    }
+
+    go_task_status_icon($post_id);
+    go_blog_is_private($post_id);
+    go_blog_favorite($post_id);
+    //go_blog_tags_select($post_id);
+    ?>
+    <div class="feedback_accordion">
+        <h3>Feedback</h3>
+        <div><?php go_user_feedback($post_id); ?></div>
+        <h3>Revision History</h3>
+        <div>Second content panel</div>
+        <?php
+        if ($admin_user) {
+            ?>
+            <h3>Feedback Form</h3>
+            <div>
+            <?php
+            go_feedback_form($post_id);
+            ?>
+            </div>
+            <?php
+
+        }
+        ?>
+    </div>
+    <?php
+
+
+
 }
 
 function go_user_feedback($post_id){
     ?>
     <div class="go_user_feedback">
-        <div class="go_feedback_status">
-            <?php
-            go_task_status_icon($post_id);
-            ?>
-        </div>
-        <div class="go_post_trash">
-            <?php
-            go_post_trash($post_id);
-            ?>
-        </div>
+
         <div class="go_feedback_table_container">
             <div class="go_feedback_table">
                 <?php
@@ -70,11 +86,71 @@ function go_feedback_form($post_id){
 }
 
 function go_task_status_icon($post_id){
+    $status = get_post_status($post_id);
+    $icon ='';
+    if ($status == 'read'){
+        $icon ='<i class="fa fa-eye" aria-hidden="true"></i>';
+    }else if ($status == 'reset'){
+        $icon ='<i class="fa fa-times-circle" aria-hidden="true"></i>';
+    }else if ($status == 'revise'){
+        $icon ='<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
+    }else if ($status == 'Draft'){
+        $icon ='<span>DRAFT</span>';
+    }
+    echo '<div class="go_status_icon" >'.$icon.'</div>';
+}
+
+function go_blog_is_private($post_id){
+
+    //$blog_meta = get_post_custom($post_id);
+    //$status = (isset($blog_meta['go_blog_private_post'][0]) ? $blog_meta['go_blog_private_post'][0] : false);
+    $status = get_post_meta($post_id, 'go_blog_private_post', true );
+    if ($status) {
+
+        //$status = get_post_status($post_id);
+        echo '<div class="go_blog_visibility" ><i class="fa fa-user-secret" aria-hidden="true"></i></div>';
+    }
+}
+
+function go_blog_favorite($post_id){
+
+        $status = get_post_meta($post_id, 'go_blog_favorite', true );
+        if ($status == 'true'){
+            $checked = 'checked';
+        }else{
+            $checked = '';
+        }
+        //echo "<div style=''><input type='checkbox' class='go_blog_favorite ' value='go_blog_favorite' data-post_id='{$post_id}' {$checked}> Favorite</div>";
+        ?>
+    <div class="go_favorite_container">
+        <label>
+            <?php
+        echo "<input type='checkbox' class='go_blog_favorite ' value='go_blog_favorite' data-post_id='{$post_id}' {$checked}>";
+        ?>
+        <span class="go_favorite_label"></span>
+        </label>
+    </div>
+    <?php
+}
+
+function go_blog_favorite_toggle(){
+    check_ajax_referer( 'go_blog_favorite_toggle' );
+    $post_id = !empty($_POST['blog_post_id']) ? intval($_POST['blog_post_id']) : false;
+    $status = !empty($_POST['checked']) ? $_POST['checked'] : false;
+    update_post_meta( $post_id, 'go_blog_favorite', $status);
+
 
 }
 
-function go_post_trash($post_id){
-
+function go_blog_tags_select($post_id){
+    ?>
+    <form name="primaryTagForm" id="primaryTagForm" method="POST" enctype="multipart/form-data" >
+        <fieldset>
+            <span><label for="go_feedback_go_blog_tags_select">Tags </label><?php go_make_tax_select('_go_blog_tags' , "feedback", 'class'); ?></span>
+            <button class="button" type="submit"><?php _e('Tag ', 'framework') ?></button>
+        </fieldset>
+    </form>
+    <?php
 }
 
 function go_feedback_table($post_id){
@@ -86,7 +162,8 @@ function go_blog_post_history_table($post_id){
     $go_task_table_name = "{$wpdb->prefix}go_actions";
 
     $custom_fields = get_post_custom( $post_id );
-    $task_id = (isset($custom_fields['go_blog_task_id'][0]) ?  $custom_fields['go_blog_task_id'][0] : null);
+    //$task_id = (isset($custom_fields['go_blog_task_id'][0]) ?  $custom_fields['go_blog_task_id'][0] : null);
+    $task_id = wp_get_post_parent_id($post_id);
     $user_id = get_post_field ('post_author', $post_id);
 
     //check_ajax_referer( 'go_blog_post_history_table' );
