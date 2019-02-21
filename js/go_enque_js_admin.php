@@ -180,6 +180,23 @@ function go_admin_scripts ($hook) {
             }
         }
     }
+
+    /**
+     * Resize All Images on Client Side
+     */
+    wp_enqueue_script( 'client-resize' , plugins_url( 'scripts/client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
+    wp_localize_script( 'client-resize' , 'client_resize' , array(
+        'plupload' => array(
+            'resize' => array(
+                'enabled' => true,
+                'width' => 1920, // enter your width here
+                'height' => 1200, // enter your width here
+                'quality' => 90,
+            ),
+        )
+    ) );
+
+
 }
 
 
