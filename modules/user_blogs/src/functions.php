@@ -435,7 +435,7 @@ function go_custom_post_status(){
         'label_count'               => _n_noop( 'Revise <span class="count">(%s)</span>', 'Revise <span class="count">(%s)</span>' ),
     ) );
 }
-add_action( 'init', 'my_custom_post_status' );
+add_action( 'init', 'go_custom_post_status' );
 
 
 function go_custom_rewrite() {
