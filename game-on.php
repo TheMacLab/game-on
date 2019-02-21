@@ -13,10 +13,10 @@ Version: 4.5
 $go_debug = true;
 global $go_debug;
 
-$go_js_version = 4.5;
+$go_js_version = 4.6;
 global $go_js_version;
 
-$go_css_version = 4.5;
+$go_css_version = 4.6;
 global $go_css_version;
 
 ///////////////////////////////
