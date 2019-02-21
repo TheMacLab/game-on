@@ -10,6 +10,19 @@ Version: 4.6
 
 
 
+add_filter('plupload_default_settings', function ($settings) {
+    $settings['resize'] = array(
+        'enabled' => true,
+        'width' => 1920,
+        'height' => 1920,
+        'quality' => 80,
+        'preserve_headers' => false
+    );
+
+    return $settings;
+});
+
+
 $go_debug = true;
 global $go_debug;
 
@@ -109,7 +122,7 @@ include_once('modules/tasks/includes.php');
 include_once('modules/tools/includes.php');
 include_once('modules/user_profiles/includes.php');
 include_once('modules/user_blogs/includes.php');
-include_once('modules/feedback/includes.php');
+//include_once('modules/feedback/includes.php');
 
 /*
     * Plugin Activation Hooks

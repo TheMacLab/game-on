@@ -7,3 +7,4 @@
         oldReady.apply( this , arguments );
     };
 })(wp.media);
+
