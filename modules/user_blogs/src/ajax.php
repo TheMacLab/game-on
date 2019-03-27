@@ -20,7 +20,7 @@ function go_blog_opener(){
     $i = null;
     $required_string = null;
     $go_blog_task_id = null;
-    $bonus = null;
+    $bonus = false;
 
     if ($blog_post_id != 0) { //if opening an existing post
         //get the minimum character count to add to the button
@@ -44,7 +44,7 @@ function go_blog_opener(){
                 $bonus = false;
             }
             else{
-                $url_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_url'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_url'][0] : null);
+                $url_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_url_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_url_toggle'][0] : null);
                 $file_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0] : null);
                 $video_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_video'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_video'][0] : null);
                 $text_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_toggle'][0] : null);
@@ -56,7 +56,7 @@ function go_blog_opener(){
     }
 
     go_blog_form($blog_post_id, '_lightbox', $go_blog_task_id, $i, $bonus, $check_for_understanding );
-    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' button_type='submit' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox'  task_id='{$go_blog_task_id}' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}'>Submit</button>";
+    echo "<button id='go_blog_submit' style='display:block;' check_type='blog_lightbox' button_type='submit' blog_post_id ={$blog_post_id} blog_suffix ='_lightbox'  task_id='{$go_blog_task_id}' required_string='".$required_string."' min_words='{$min_words}' blog_suffix ='' url_toggle='{$url_toggle}' video_toggle='{$video_toggle}' file_toggle='{$file_toggle}' text_toggle='{$text_toggle}' data-check_for_understanding ='{$check_for_understanding}'>Submit</button>";
     echo "<p id='go_blog_error_msg' style='display: none; color: red;'></p>";
     ?>
     <script>
@@ -265,6 +265,7 @@ function go_blog_submit(){
     $button = !empty($_POST['button']) ? (string)$_POST['button'] : false;
     $post_status = !empty(get_post_status($blog_post_id)) ? get_post_status($blog_post_id) : 'draft';//if new post, set as draft
     $is_private = !empty($_POST['blog_private']) ? $_POST['blog_private'] : false;
+    $post_id = !empty($_POST['post_id']) ? intval($_POST['post_id']) : null;
 
     if ($button == 'submit'){
         $post_status = 'unread';//if submit was pressed, set status as unread
@@ -278,7 +279,7 @@ function go_blog_submit(){
         $go_blog_task_bonus = (isset($blog_meta['go_blog_bonus_stage'][0]) ? $blog_meta['go_blog_bonus_stage'][0] : null);
     }else {
         //$go_blog_task_id = intval(!empty($_POST['post_id']) ? (string)$_POST['post_id'] : '');
-        $go_blog_task_id = wp_get_post_parent_id($blog_post_id);
+        $go_blog_task_id = $post_id;
         $go_blog_task_stage = intval(!empty($_POST['go_blog_task_stage']) ? (string)$_POST['go_blog_task_stage'] : null);
         $go_blog_task_bonus = ((($_POST['go_blog_bonus_stage']) !='') ? intval($_POST['go_blog_bonus_stage']) : null);
     }
@@ -290,7 +291,12 @@ function go_blog_submit(){
     $result = go_save_blog_post($go_blog_task_id, $go_blog_task_stage, $go_blog_task_bonus, $post_status, $is_private);
 
     ob_start();
-    go_noty_message_generic('success', 'Draft Saved Successfully', '', 2000);
+    if ($button == 'submit'){
+
+        go_noty_message_generic('success', 'Post Saved Successfully', '', 2000);
+    }else{
+        go_noty_message_generic('success', 'Draft Saved Successfully', '', 2000);
+    }
     $buffer = ob_get_contents();
 
     ob_end_clean();

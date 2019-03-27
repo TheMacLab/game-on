@@ -149,6 +149,25 @@
             "message": "",
             "new_lines": "wpautop",
             "esc_html": 0
+        },
+        {
+            "key": "field_5c9b15bf0fa00",
+            "label": "Hide Map",
+            "name": "go_hide_map",
+            "type": "true_false",
+            "instructions": "If hidden, this map will not show in the dropdown.  Quests on the map will still be accessible.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Hide",
+            "ui_off_text": "Show"
         }
     ],
     "location": [
@@ -168,5 +187,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1549906808
+    "modified": 1553668029
 }

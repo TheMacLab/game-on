@@ -10,6 +10,7 @@ jQuery( document ).ready( function() {
     //});
 
 
+
     jQuery.ajaxSetup({
 		url: go_task_data.url += '/wp-admin/admin-ajax.php'
 	});
@@ -165,11 +166,16 @@ function task_stage_change( target ) {
     if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
         button_type = jQuery( target ).attr( 'button_type' )
     }
-    //console.log(button_type);
+    console.log("Button:" + button_type);
 
     var task_status = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'status' ) ) {
         task_status = jQuery( target ).attr( 'status' )
+    }
+
+    var next_bonus = "";
+    if ( 'undefined' !== typeof jQuery( target ).attr( 'next_bonus' ) ) {
+        next_bonus = jQuery( target ).attr( 'next_bonus' )
     }
 
     var check_type = "";
@@ -186,7 +192,7 @@ function task_stage_change( target ) {
 
     if( check_type == 'blog' && button_type != 'undo_last_bonus'){
         //result = tinyMCE.activeEditor.getContent();
-        result = go_get_tinymce_content_blog();
+        result = go_get_tinymce_content_blog('task_stage_change');
         var result_title = jQuery( '#go_blog_title' ).val();
         var blog_post_id= jQuery( '#go_blog_title' ).data( 'blog_post_id' );
         var blog_url= jQuery( '#go_result_url' ).val();
@@ -206,6 +212,7 @@ function task_stage_change( target ) {
             post_id: go_task_data.ID,
             user_id: go_task_data.userID,
             status: task_status,
+            next_bonus: next_bonus,
             button_type: button_type,
             check_type: check_type,
             result: result,

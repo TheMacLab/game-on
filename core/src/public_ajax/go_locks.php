@@ -269,14 +269,27 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
     if ($is_logged_in) {
         $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_badge";
         $terms_needed = $custom_fields[$option][0];
-        $terms_needed = array_values(unserialize($terms_needed));
+        if (is_serialized($terms_needed)) {
+            $terms_needed = unserialize($terms_needed);
+        }
+        if (is_array($terms_needed)) {
+            $terms_needed = array_values($terms_needed);
+        }else{
+            $terms_needed = array();
+        }
 
         global $wpdb;
         $go_loot_table_name = "{$wpdb->prefix}go_loot";
         $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-        $user_terms = array_values(unserialize($badges_array));
+        if (is_serialized($terms_needed)) {
+            $badges_array = unserialize($badges_array);
+        }
+        if(is_array($badges_array)) {
+            $user_terms = array_values($badges_array);
+        }else{
+            $user_terms = array();
+        }
 
-        //if the current user is in a class period then check if it is the right one
         if (!$user_terms || !is_array($user_terms)) {
             $user_terms = array();
         }

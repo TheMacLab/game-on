@@ -320,7 +320,7 @@ function go_the_lb_ajax() {
         echo '<div id="light" class="white_content">';
         echo "<h1>{$the_title}</h1>";
 
-        echo '<div id="go-lb-the-content"><div id="go_store_description" style=""' . $the_content . '</div>';
+        echo '<div id="go-lb-the-content"><div id="go_store_description" >' . $the_content . '</div>';
 
         if (($xp_on && $store_toggle_xp == false) || ($gold_on && $store_toggle_gold == false) || ($health_on && $store_toggle_health == false)) {
             echo "<div id='go_store_loot'><div id='go_cost'> <div id='go_store_cost_container' class='go_store_container'> <div class='go_store_loot_left'><div class='go_round_button_container'><div id='gp_store_minus' class='go_store_round_button'>-</div></div></div><div class='go_store_loot_right'><h3>Cost</h3>";

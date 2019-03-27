@@ -709,7 +709,11 @@ function go_display_stage_badges($badges) {
     //if (is_array($badges)) {
 
    // }
-    $badge_ids_array = unserialize($badges);//legacy badges saved as serialized array
+    if (is_serialized($badges)) {
+        $badge_ids_array = unserialize($badges);//legacy badges saved as serialized array
+    }else{
+        $badge_ids_array = $badges;
+    }
     if (!is_array($badge_ids_array)){
         $badge_ids_array = array();
         $badge_ids_array[] = $badges;
@@ -718,26 +722,27 @@ function go_display_stage_badges($badges) {
 
 
         foreach ($badge_ids_array as $badge) {
-            $badge_id = $badge;
-            $badge_class = 'go_badge_earned';
+            if (is_int($badge) && $badge != 0) {
+                $badge_id = $badge;
+                $badge_class = 'go_badge_earned';
 
-            $badge_img_id = get_term_meta($badge_id, 'my_image');
-            /*
-            $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
-            if( $cat_hidden == true){
-                continue;
-            }
-            */
+                $badge_img_id = get_term_meta($badge_id, 'my_image');
+                /*
+                $cat_hidden = (isset($custom_fields['go_hide_store_cat'][0]) ?  $custom_fields['go_hide_store_cat'][0] : null);
+                if( $cat_hidden == true){
+                    continue;
+                }
+                */
 
-            $badge_obj = get_term($badge_id);
-            $badge_name = $badge_obj->name;
-            //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
-            $badge_img = wp_get_attachment_image($badge_img_id[0], array(100, 100));
+                $badge_obj = get_term($badge_id);
+                $badge_name = $badge_obj->name;
+                //$badge_img_id =(isset($custom_fields['my_image'][0]) ?  $custom_fields['my_image'][0] : null);
+                $badge_img = wp_get_attachment_image($badge_img_id[0], array(100, 100));
 
-            //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
-            //$img_post = get_post( $badge_id );
-            if (!empty($badge_obj)) {
-                echo "<div class='go_outro_reward'><div>
+                //$badge_attachment = wp_get_attachment_image( $badge_img_id, array( 100, 100 ) );
+                //$img_post = get_post( $badge_id );
+                if (!empty($badge_obj)) {
+                    echo "<div class='go_outro_reward'><div>
                         <div>
                             <figure title='{$badge_name}'>{$badge_img}
                                 <figcaption>{$badge_name}</figcaption>
@@ -745,6 +750,7 @@ function go_display_stage_badges($badges) {
                         </div>
                        </div></div>";
 
+                }
             }
         }
 

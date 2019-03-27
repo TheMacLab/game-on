@@ -678,9 +678,9 @@ function go_send_message(){
             go_remove_badges($badge_ids, $user_id, false);//remove badges
         }
 
-        if ($groups_toggle && !empty($group_ids)) {//if groups toggle is true and groups exist
+        if ($groups_toggle == "true" && !empty($group_ids)) {//if groups toggle is true and groups exist
             go_add_groups($group_ids, $user_id, false);//add groups
-        } else if (!$groups_toggle && !empty($group_ids)) {//else if groups toggle is false and groups exist
+        } else if ($groups_toggle == "false" && !empty($group_ids)) {//else if groups toggle is false and groups exist
             go_remove_groups($group_ids, $user_id, false);//remove groups
         }
 

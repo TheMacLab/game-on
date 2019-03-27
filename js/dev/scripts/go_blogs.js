@@ -142,6 +142,7 @@ function task_stage_check_input( target, on_task) {
     var button_type = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {
         button_type = jQuery( target ).attr( 'button_type' )
+        console.log("button_type: " + button_type);
     }
 
     var task_status = "";
@@ -152,7 +153,7 @@ function task_stage_check_input( target, on_task) {
     var check_type = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'check_type' ) ) {
         check_type = jQuery( target ).attr( 'check_type' )
-        console.log(check_type);
+        console.log("Check Type: " + check_type);
     }
     var fail = false;
     jQuery('#go_stage_error_msg').text("");
@@ -199,9 +200,11 @@ function task_stage_check_input( target, on_task) {
             //Word count validation
             var min_words = jQuery(target).attr('min_words'); //this variable is used in the other functions as well
             //alert("min Words: " + min_words);
-            var my_words = tinymce_getContentLength_new();
+            var my_words = tinymce_getContentLength_new(check_type);
+            var bb = tinymce.get(tinymce.activeEditor.id);
+            console.log(bb);
             if (my_words < min_words) {
-                error_message += "<li>Your post is not long enough. There must be " + min_words + " words minimum.</li>";
+                error_message += "<li>Your post is not long enough. There must be " + min_words + " words minimum. You have " + my_words + " words.</li>";
                 fail = true;
             }
         }
@@ -372,8 +375,15 @@ function go_disable_loading( ) {
 
 }
 
-function tinymce_getContentLength_new() {
-    var b = tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText;
+function tinymce_getContentLength_new(source) {
+    //var b = jQuery(target).closest(".go_checks_and_buttons").find('.mce-content-body').hide();
+    //console.log(b);
+    //var b = tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText;
+    if (source == 'blog_lightbox'){
+        var b = tinymce.get('go_blog_post_lightbox').contentDocument.body.innerText;
+    }else {
+        var b = tinymce.get('go_blog_post').contentDocument.body.innerText;
+    }
     var e = 0;
     if (b) {
         b = b.replace(/\.\.\./g, " "),
@@ -579,16 +589,18 @@ function go_blog_submit( el, reload ) {
 
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_submit;
     var suffix = jQuery( el ).attr( 'blog_suffix' );
-    var result = go_get_tinymce_content_blog();
+
     //var result = tinyMCE.activeEditor.getContent();
     var result_title = jQuery( '#go_blog_title' + suffix ).val( );
     var button= jQuery( el ).attr( 'button_type' );
+    var result = go_get_tinymce_content_blog(suffix);
     //console.log("title: " + result_title);
-
+    console.log("go_blog_submit");
     //var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
     var blog_post_id = jQuery('#go_blog_title' + suffix).attr( 'data-blog_post_id' );
     console.log("blog_post_id: " + blog_post_id);
     var post_wrapper_class = ".go_blog_post_wrapper_" + blog_post_id;
+    //alert(post_wrapper_class);
     var go_blog_bonus_stage= jQuery( el ).attr( 'data-bonus_status' );
     var go_blog_task_stage= jQuery( el ).attr( 'status' );
     var task_id= jQuery( el ).attr( 'task_id' );
@@ -662,6 +674,7 @@ function go_blog_submit( el, reload ) {
             jQuery( '#go_blog_title' + suffix ).attr( 'data-blog_post_id', res.blog_post_id );
 
             if (reload == true) {
+                //alert("here");
                 var is_new = jQuery(post_wrapper_class).length;
                 console.log("reload is true:" + is_new);
                 //go_disable_loading();
@@ -741,14 +754,24 @@ function go_blog_trash( el ) {
 
 }
 
-function go_get_tinymce_content_blog(){
+function go_get_tinymce_content_blog( source ){
     //console.log("html");
     if (jQuery("#wp-go_blog_post_edit-wrap .wp-editor-area").is(":visible")){
+        //alert("content1");
         return jQuery('#wp-go_blog_post_edit-wrap .wp-editor-area').val();
 
     }else{
         //console.log("visual");
-        return tinyMCE.activeEditor.getContent();
+        //alert("content2");
+
+        if (source == '_lightbox'){//this was a save in a lightbox
+            return tinymce.get('go_blog_post_lightbox').getContent();
+        }else{
+            return tinymce.get('go_blog_post').getContent();
+        }
+
+
+
     }
 }
 

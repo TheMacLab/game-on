@@ -18,9 +18,9 @@ tinymce.PluginManager.add("wordcount", function(a) {
                 }, 0),
                     a.on("setcontent beforeaddundo", b),
                     a.on("keyup", function(a) {
-                        32 == a.keyCode && b();
-                        46 == a.keyCode && b();
-                        8 == a.keyCode && b();
+                        console.log("click")
+                        setTimeout(b(), 1000);
+                        //b();
                     })
             }, 0)
         }),

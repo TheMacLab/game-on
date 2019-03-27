@@ -24,6 +24,7 @@ function go_task_change_stage() {
     $button_type 			= ( ! empty( $_POST['button_type'] ) ? $_POST['button_type'] : null );
     $check_type 			= ( ! empty( $_POST['check_type'] ) ? $_POST['check_type'] : null );
     $status        = ( ! empty( $_POST['status'] ) ? (int) $_POST['status'] : 0 ); // Task's status posted from ajax function
+    $next_bonus = ( ! empty( $_POST['next_bonus'] ) ? (int) $_POST['next_bonus'] : 0 );
     $result = (!empty($_POST['result']) ? (string)$_POST['result'] : ''); // Contains the result from the check for understanding
 
     $blog_post_id = (!empty($_POST['blog_post_id']) ? (string)$_POST['blog_post_id'] : null);
@@ -68,6 +69,20 @@ function go_task_change_stage() {
 
     if ($button_type == 'continue_bonus' || $button_type == 'complete_bonus' || $button_type == 'undo_bonus' || $button_type == 'undo_last_bonus' || $button_type == 'abandon_bonus') {
         $db_status = go_get_bonus_status($post_id, $user_id);
+
+        if ($button_type == 'continue_bonus' || $button_type == 'complete_bonus' ) {
+            global $go_print_next;//the bonus stage to be printed, sometimes they print out of order if posts were trashed
+            $go_print_next = (isset($go_print_next) ?  $go_print_next : $next_bonus  );
+            global $go_bonus_count;//the bonus stage to be printed, sometimes they print out of order if posts were trashed
+            $go_bonus_count = (isset($go_bonus_count) ?  $go_bonus_count : $status );
+
+        }
+        if ($button_type == 'undo_bonus' || $button_type == 'undo_last_bonus') {
+            global $go_print_next;//the bonus stage to be printed, sometimes they print out of order if posts were trashed
+            $go_print_next = (isset($go_print_next) ?  $go_print_next : $next_bonus - 1);
+            global $go_bonus_count;//the bonus stage to be printed, sometimes they print out of order if posts were trashed
+            $go_bonus_count = (isset($go_bonus_count) ?  $go_bonus_count : $status );
+        }
     }
     else{
         $db_status = go_get_status($post_id, $user_id);

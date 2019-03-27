@@ -37,6 +37,10 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
     //wp_nonce_field( 'go_update_last_map');
     $last_map_object = get_term_by( 'id' , $last_map_id, 'task_chains');//Query 1 - get the map
+    $is_hidden = get_term_meta( $last_map_id, 'go_hide_map', true );
+    if ($is_hidden){
+        return;
+    }
     if ($user_id == null) {
         $user_id = get_current_user_id();
         $task_links = true;
@@ -61,6 +65,11 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
             $term_data = go_term_data($term_id);
             $term_name = $term_data[0];
             $term_custom = $term_data[1];
+
+            $is_hidden = (isset($term_custom['go_hide_map'][0]) ?  $term_custom['go_hide_map'][0] : null);
+            if ($is_hidden){
+                return;
+            }
 
             //$term_object = get_term($term_id);
 
@@ -130,7 +139,12 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
                     $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
                     if(!isset($user_badges)){
                         $user_badges =  $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-                        $user_badges = unserialize($user_badges);
+                        if(!is_array($user_badges)){ //if there were no badges then create empty array
+                            $user_badges = array();
+                        }
+                        else {
+                            $user_badges = unserialize($user_badges);
+                        }
                     }
 
                     //$user_tasks is an array of task object arrays
@@ -428,10 +442,13 @@ function go_make_map_dropdown($user_id = null){
       <div id='myDropdown' class='dropdown-content'>";
     /* For each task chain with no parent, add to Dropdown  */
             foreach ( $tax_terms_maps as $tax_term_map ) {
-				$term_id = $tax_term_map->term_id;  
-                echo "
+				$term_id = $tax_term_map->term_id;
+                $is_hidden = get_term_meta( $term_id, 'go_hide_map', true );
+                if (!$is_hidden) {
+                    echo "
                 <div id='mapLink_$term_id' >
                 <a onclick=go_show_map($term_id)>$tax_term_map->name</a></div>";
+                }
             }
         echo"</div></div></div> ";
 }
