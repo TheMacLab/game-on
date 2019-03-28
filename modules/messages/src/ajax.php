@@ -691,8 +691,6 @@ function go_send_message(){
         $user_id = intval($user_id);
         update_user_option($user_id, 'go_new_messages', true);
     } //end foreach user
-
-
 }
 
 ?>

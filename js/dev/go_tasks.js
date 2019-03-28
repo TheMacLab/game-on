@@ -59,6 +59,7 @@ jQuery( document ).ready( function() {
     //tinymce.execCommand('mceRemoveEditor', true, 'go_blog_post');
     //tinymce.execCommand( 'mceAddEditor', true, 'go_blog_post' );
 
+
 });
 
 function go_update_bonus_loot(){
@@ -160,7 +161,9 @@ function flash_error_msg( elem ) {
 }
 
 function task_stage_change( target ) {
+
     console.log( "change");
+
     //v4 Set variables
     var button_type = "";
     if ( 'undefined' !== typeof jQuery( target ).attr( 'button_type' ) ) {

@@ -181,7 +181,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         //show save button if this is a draft, reset, trashed or new post
         $allow_drafts = array("draft", "reset", "trash", null);
         if (in_array($post_status, $allow_drafts)) {
-            echo "<button id='go_save_button{$suffix}' class='go_save_button progress left'  status='{$i}' data-bonus_status='{$bonus}' check_type='skip' button_type='save{$suffix}'  admin_lock='true' blog_post_id='{$blog_post_id}' blog_suffix='{$suffix}' task_id='{$go_blog_task_id}' data-check_for_understanding ='{$check_for_understanding}'>Save Draft</button>";
+            echo "<button id='go_save_button{$suffix}' class='go_buttons go_save_button progress left'  status='{$i}' data-bonus_status='{$bonus}' check_type='skip' button_type='save{$suffix}'  admin_lock='true' blog_post_id='{$blog_post_id}' blog_suffix='{$suffix}' task_id='{$go_blog_task_id}' data-check_for_understanding ='{$check_for_understanding}'>Save Draft</button>";
 
         }
 
@@ -200,6 +200,13 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         }
     }
 }
+//add_filter( 'wp_default_editor', create_function('', 'return "tinymce";'));
+add_filter( 'wp_default_editor', function() {return 'tinymce';});
+
+//add_filter( 'option_page_capability_' . ot_options_id(), create_function( '$caps', "return '$caps';" ), 999 );
+
+//add_filter( 'option_page_capability_' . ot_options_id(), function($caps) {return $caps;},999);
+
 
 function go_blog_post($blog_post_id, $check_for_understanding = false, $with_feedback = false){
     //$blog_post_id = 10704;

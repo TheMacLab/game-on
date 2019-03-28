@@ -201,8 +201,8 @@ function task_stage_check_input( target, on_task) {
             var min_words = jQuery(target).attr('min_words'); //this variable is used in the other functions as well
             //alert("min Words: " + min_words);
             var my_words = tinymce_getContentLength_new(check_type);
-            var bb = tinymce.get(tinymce.activeEditor.id);
-            console.log(bb);
+            //var bb = tinymce.get(tinymce.activeEditor.id);
+            //console.log(bb);
             if (my_words < min_words) {
                 error_message += "<li>Your post is not long enough. There must be " + min_words + " words minimum. You have " + my_words + " words.</li>";
                 fail = true;
@@ -379,10 +379,14 @@ function tinymce_getContentLength_new(source) {
     //var b = jQuery(target).closest(".go_checks_and_buttons").find('.mce-content-body').hide();
     //console.log(b);
     //var b = tinymce.get(tinymce.activeEditor.id).contentDocument.body.innerText;
+
     if (source == 'blog_lightbox'){
-        var b = tinymce.get('go_blog_post_lightbox').contentDocument.body.innerText;
+        //var b = tinymce.get('go_blog_post_lightbox').contentDocument.body.innerText;
+        var b = go_tmce_getContent('go_blog_post_lightbox');
+
     }else {
-        var b = tinymce.get('go_blog_post').contentDocument.body.innerText;
+        //var b = tinymce.get('go_blog_post').contentDocument.body.innerText;
+        var b = go_tmce_getContent('go_blog_post');
     }
     var e = 0;
     if (b) {
@@ -585,6 +589,7 @@ function go_blog_opener( el ) {
 }
 
 function go_blog_submit( el, reload ) {
+
     go_enable_loading( el );
 
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_blog_submit;
@@ -765,9 +770,11 @@ function go_get_tinymce_content_blog( source ){
         //alert("content2");
 
         if (source == '_lightbox'){//this was a save in a lightbox
-            return tinymce.get('go_blog_post_lightbox').getContent();
+            //return tinymce.get('go_blog_post_lightbox').getContent();
+            return go_tmce_getContent('go_blog_post_lightbox');
         }else{
-            return tinymce.get('go_blog_post').getContent();
+            //return tinymce.get('go_blog_post').getContent();
+            return go_tmce_getContent('go_blog_post');
         }
 
 
@@ -807,4 +814,63 @@ function go_blog_user_task (user_id, task_id) {
             }
         }
     });
+}
+
+/*
+Based on: http://wordpress.stackexchange.com/questions/42652/#answer-42729
+These functions provide a simple way to interact with TinyMCE (wp_editor) visual editor.
+This is the same thing that WordPress does, but a tad more intuitive.
+Additionally, this works for any editor - not just the "content" editor.
+Usage:
+0) If you are not using the default visual editor, make your own in PHP with a defined editor ID:
+  wp_editor( $content, 'tab-editor' );
+
+1) Get contents of your editor in JavaScript:
+  tmce_getContent( 'tab-editor' )
+
+2) Set content of the editor:
+  tmce_setContent( content, 'tab-editor' )
+Note: If you just want to use the default editor, you can leave the ID blank:
+  tmce_getContent()
+  tmce_setContent( content )
+
+Note: If using a custom textarea ID, different than the editor id, add an extra argument:
+  tmce_getContent( 'visual-id', 'textarea-id' )
+  tmce_getContent( content, 'visual-id', 'textarea-id')
+
+Note: An additional function to provide "focus" to the displayed editor:
+  tmce_focus( 'tab-editor' )
+=========================================================
+*/
+function go_tmce_getContent(editor_id, textarea_id) {
+    if ( typeof editor_id == 'undefined' ) editor_id = wpActiveEditor;
+    if ( typeof textarea_id == 'undefined' ) textarea_id = editor_id;
+
+    if ( jQuery('#wp-'+editor_id+'-wrap').hasClass('tmce-active') && tinyMCE.get(editor_id) ) {
+        return tinyMCE.get(editor_id).getContent();
+    }else{
+        return jQuery('#'+textarea_id).val();
+    }
+}
+
+function go_tmce_setContent(content, editor_id, textarea_id) {
+    if ( typeof editor_id == 'undefined' ) editor_id = wpActiveEditor;
+    if ( typeof textarea_id == 'undefined' ) textarea_id = editor_id;
+
+    if ( jQuery('#wp-'+editor_id+'-wrap').hasClass('tmce-active') && tinyMCE.get(editor_id) ) {
+        return tinyMCE.get(editor_id).setContent(content);
+    }else{
+        return jQuery('#'+textarea_id).val(content);
+    }
+}
+
+function go_tmce_focus(editor_id, textarea_id) {
+    if ( typeof editor_id == 'undefined' ) editor_id = wpActiveEditor;
+    if ( typeof textarea_id == 'undefined' ) textarea_id = editor_id;
+
+    if ( jQuery('#wp-'+editor_id+'-wrap').hasClass('tmce-active') && tinyMCE.get(editor_id) ) {
+        return tinyMCE.get(editor_id).focus();
+    }else{
+        return jQuery('#'+textarea_id).focus();
+    }
 }

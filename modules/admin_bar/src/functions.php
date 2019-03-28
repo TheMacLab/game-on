@@ -104,9 +104,9 @@ function go_admin_bar() {
             }
             $content = '<form>
                             View: <select id="go_select_admin_view" onchange="go_update_admin_view(this.value)">
+                                <option value="user" ' . $user_selected . '>Player Mode: Locks On</option>
+                                <option value="player" ' . $player_selected . '>Admin Mode: No Locks</option>
                                 <option value="all" ' . $all_selected . ' >All Stages</option>
-                                <option value="player" ' . $player_selected . '>No Locks</option>
-                                <option value="user" ' . $user_selected . '>With Locks</option>
                                 <option value="guest" ' . $guest_selected . '>Guest</option>
                             </select>
                         </form>';

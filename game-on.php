@@ -122,7 +122,7 @@ include_once('modules/tasks/includes.php');
 include_once('modules/tools/includes.php');
 include_once('modules/user_profiles/includes.php');
 include_once('modules/user_blogs/includes.php');
-//include_once('modules/feedback/includes.php');
+include_once('modules/feedback/includes.php');
 
 /*
     * Plugin Activation Hooks

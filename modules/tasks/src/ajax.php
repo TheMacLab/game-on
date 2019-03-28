@@ -196,21 +196,21 @@ function go_task_change_stage() {
         /// Write out the new information
         if ($button_type == 'continue') {
             //print new check for understanding based on last stage check type
-            go_checks_for_understanding($custom_fields, $status - 1, $status, $user_id, $post_id, null, null, null);
+            go_checks_for_understanding($custom_fields, $status - 1, $status, $user_id, $post_id, null, null, null, false);
             //print new stage message
             go_print_1_message($custom_fields, $status );
             //print new stage check for understanding
-            go_checks_for_understanding($custom_fields, $status, $status, $user_id, $post_id, null, null, null);
+            go_checks_for_understanding($custom_fields, $status, $status, $user_id, $post_id, null, null, null, false);
             //$complete = false;
         }else{//Complete
 
             //print new check for understanding based on last stage check type
-            go_checks_for_understanding($custom_fields, $status - 1, $status, $user_id, $post_id, null, null, null);
+            go_checks_for_understanding($custom_fields, $status - 1, $status, $user_id, $post_id, null, null, null, false);
             //complete
 
             //$complete = true;
             $stage_count = $custom_fields['go_stages'][0];
-            go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
+            go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status, false);
             //print outro and bonus button
         }
     }
@@ -235,11 +235,11 @@ function go_task_change_stage() {
         }
 
         go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'undo', null, $badge_ids, $group_ids );
-        go_checks_for_understanding ($custom_fields, $status -1 , $status - 1 , $user_id, $post_id, null, null, null);
+        go_checks_for_understanding ($custom_fields, $status -1 , $status - 1 , $user_id, $post_id, null, null, null, false);
     }
     else if ($button_type == 'show_bonus'){
 
-        go_print_bonus_stage($user_id, $post_id, $custom_fields);
+        go_print_bonus_stage($user_id, $post_id, $custom_fields, false);
 
 
     }
@@ -271,11 +271,11 @@ function go_task_change_stage() {
             $bonus_status = $bonus_status + 1;
             $repeat_max = $custom_fields['go_bonus_limit'][0];
             if ($bonus_status  < $repeat_max) {
-                go_checks_for_understanding($custom_fields, $bonus_status -1 , null, $user_id, $post_id, true, $bonus_status, $repeat_max);
-                go_checks_for_understanding($custom_fields, $bonus_status, null, $user_id, $post_id, true, $bonus_status, $repeat_max);
+                go_checks_for_understanding($custom_fields, $bonus_status -1 , null, $user_id, $post_id, true, $bonus_status, $repeat_max, false);
+                go_checks_for_understanding($custom_fields, $bonus_status, null, $user_id, $post_id, true, $bonus_status, $repeat_max, false);
             }else
             {
-                go_checks_for_understanding($custom_fields, $bonus_status - 1, null, $user_id, $post_id, true, $bonus_status, $repeat_max);
+                go_checks_for_understanding($custom_fields, $bonus_status - 1, null, $user_id, $post_id, true, $bonus_status, $repeat_max, false);
             }
         }
         else if ($button_type == 'undo_bonus' || $button_type == 'undo_last_bonus') {
@@ -284,7 +284,7 @@ function go_task_change_stage() {
             /// UPDATE THE DATABASE for BONUS stages undo
             ///
             go_update_stage_table ($user_id, $post_id, $custom_fields, null, $bonus_status, false, 'undo_bonus', $check_type, null, null);
-            go_checks_for_understanding($custom_fields, $bonus_status -1, null, $user_id, $post_id, true, $bonus_status - 1 , $repeat_max);
+            go_checks_for_understanding($custom_fields, $bonus_status -1, null, $user_id, $post_id, true, $bonus_status - 1 , $repeat_max, false);
             if($blog_post_id) {
                 wp_trash_post(intval($blog_post_id));
             }
@@ -292,7 +292,7 @@ function go_task_change_stage() {
         else if ($button_type == 'abandon_bonus') {
             $status = go_get_status($post_id, $user_id);
             $stage_count = $custom_fields['go_stages'][0];
-            go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
+            go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status, false);
             if($blog_post_id) {
                 wp_trash_post(intval($blog_post_id));
             }

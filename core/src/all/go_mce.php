@@ -123,4 +123,9 @@ function go_tinymce_wordcount($plugins_array = array())
     return $plugins_array;
 }
 
+
+
+
+
 ?>
+

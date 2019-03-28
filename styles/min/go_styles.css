@@ -764,6 +764,15 @@ input#go_pass_lock::-moz-placeholder {
 #wp-go_blog_post-wrap {
   margin-top: 20px; }
 
+#go_all_content .go_buttons,
+#go_all_content .insert-media {
+  opacity: .3;
+  cursor: default;
+  pointer-events: none !important; }
+
+#go_all_content .wp-editor-container textarea.wp-editor-area {
+  height: 50px; }
+
 .featherlight.stats .featherlight-content {
   width: 90%;
   height: 90%;

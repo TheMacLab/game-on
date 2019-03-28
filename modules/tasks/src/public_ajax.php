@@ -127,6 +127,7 @@ function go_task_shortcode($atts, $content = null ) {
      */
     if ($is_logged_in == false) {
         go_display_visitor_content( $custom_fields, $post_id, $task_name, $badge_name, $uc_task_name);
+        echo "</div>";
         return null;
     }
 
@@ -136,6 +137,7 @@ function go_task_shortcode($atts, $content = null ) {
     $admin_flag = go_admin_content($post_id, $is_admin, $admin_view, $custom_fields, $is_logged_in, $task_name, $status, $user_id, $post_id, $badge_name);
 
     if ($admin_flag == 'stop') {
+        echo "</div>";
         return null;
     }
 
@@ -149,6 +151,7 @@ function go_task_shortcode($atts, $content = null ) {
                 //Print the bottom of the page
                 go_task_render_chain_pagination( $post_id, $custom_fields );
                 go_hidden_footer();
+                echo "</div>";
                 return null;
             }
         }
@@ -194,7 +197,7 @@ function go_task_shortcode($atts, $content = null ) {
      * Display Rewards before task content
      * This is the list of rewards at the top of the task.
      */
-    go_display_rewards( $custom_fields, $task_name );
+    go_display_rewards( $custom_fields, $task_name, true );
 
     /**
      * Timer
@@ -205,6 +208,7 @@ function go_task_shortcode($atts, $content = null ) {
         echo "</div>";
         go_task_render_chain_pagination ( $post_id, $custom_fields );
         go_hidden_footer ();
+        echo "</div>";
         return null;
     }
 
@@ -287,8 +291,9 @@ function go_get_bonus_status($task_id, $user_id = null ) {
  * @param $post_id
  * @param $custom_fields
  * @param $task_name
+ * @param $all_content
  */
-function go_print_bonus_stage ($user_id, $post_id, $custom_fields){
+function go_print_bonus_stage ($user_id, $post_id, $custom_fields, $all_content){
     $bonus_status = go_get_bonus_status($post_id, $user_id);
     $content = (isset($custom_fields['go_bonus_stage_content'][0]) ?  $custom_fields['go_bonus_stage_content'][0] : null);
     $content  = apply_filters( 'go_awesome_text', $content );
@@ -306,13 +311,16 @@ function go_print_bonus_stage ($user_id, $post_id, $custom_fields){
 
     $i = 0;
 
+    if (!$all_content) {
+        while ($i <= $bonus_status && $repeat_max > $i) {
 
-    while ( $i <= $bonus_status && $repeat_max > $i) {
 
-
-        //Print Checks for Understanding for the last stage message printed and buttons
-        go_checks_for_understanding($custom_fields, $i, null, $user_id, $post_id, true, $bonus_status, $repeat_max);
-        $i++;
+            //Print Checks for Understanding for the last stage message printed and buttons
+            go_checks_for_understanding($custom_fields, $i, null, $user_id, $post_id, true, $bonus_status, $repeat_max, $all_content);
+            $i++;
+        }
+    }else{
+        go_checks_for_understanding($custom_fields, $i, null, $user_id, $post_id, true, $bonus_status, $repeat_max, $all_content);
     }
 
     //if ($bonus_status == $i ) {
@@ -327,7 +335,7 @@ function go_print_bonus_stage ($user_id, $post_id, $custom_fields){
  * @param $stage_count
  * @param $status
  */
-function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status){
+function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status, $all_content){
     global $wpdb;
     $go_task_table_name = "{$wpdb->prefix}go_tasks";
     //$custom_fields = get_post_custom( $post_id );
@@ -335,60 +343,62 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     $outro_message = (isset($custom_fields['go_outro_message'][0]) ?  $custom_fields['go_outro_message'][0] : null);
     //$outro_message = do_shortcode($outro_message);
     $outro_message  = apply_filters( 'go_awesome_text', $outro_message );
-    $loot = $wpdb->get_results ("SELECT * FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}" );
-    $loot = $loot[0];
-    if (get_option( 'options_go_loot_xp_toggle' )){
-        $xp_on = true;
-        $xp_name = get_option('options_go_loot_xp_name');
-        $xp_loot = $loot->xp;
-    }
-    if (get_option( 'options_go_loot_gold_toggle' )){
-        $gold_on = true;
-        $gold_name = get_option('options_go_loot_gold_name');
-        $gold_loot = $loot->gold;
-    }
-    if (get_option( 'options_go_loot_health_toggle' )){
-        $health_on = true;
-        $health_name = get_option('options_go_loot_health_name');
-        $health_loot = $loot->health;
-    }
-
-    //$groups_loot = $loot->groups;
     echo "<div id='outro' class='go_checks_and_buttons'>";
     echo "    
         <h3>" . ucwords($task_name) . " Complete!</h3>
-        <p>".$outro_message."</p>
-        
-        
-        <h4>Rewards</h4>
+        <p>" . $outro_message . "</p>
+        You earned:";
+
+
+    if (!$all_content) {
+        echo "
         <div class='go_task_rewards'>
-        <div class='go_task_reward'>
-        <p>You earned  : ";
-    if(isset($xp_on)){
-        echo "<br>{$xp_loot} {$xp_name} ";
+        <div class='go_task_reward'>";
+        
+
+        $loot = $wpdb->get_results("SELECT * FROM {$go_task_table_name} WHERE uid = {$user_id} AND post_id = {$post_id}");
+        $loot = $loot[0];
+        if (get_option('options_go_loot_xp_toggle')) {
+            $xp_on = true;
+            $xp_name = get_option('options_go_loot_xp_name');
+            $xp_loot = $loot->xp;
+        }
+        if (get_option('options_go_loot_gold_toggle')) {
+            $gold_on = true;
+            $gold_name = get_option('options_go_loot_gold_name');
+            $gold_loot = $loot->gold;
+        }
+        if (get_option('options_go_loot_health_toggle')) {
+            $health_on = true;
+            $health_name = get_option('options_go_loot_health_name');
+            $health_loot = $loot->health;
+        }
+
+        if (isset($xp_on)) {
+            echo "{$xp_loot} {$xp_name} ";
+        }
+        if (isset($gold_on)) {
+            echo "<br>{$gold_loot} {$gold_name} ";
+        }
+        if (isset($health_on)) {
+            echo "<br>{$health_loot} {$health_name} ";
+        }
+        echo "</div>";
+        if (get_option('options_go_badges_toggle')) {
+            //$badges_on = true;
+            //$badges_name = get_option('options_go_badges_name_plural');
+            $badges = $loot->badges;
+            //if($badges) {
+            //   $badges = unserialize($badges);
+            // }
+            go_display_stage_badges($badges);
+            echo "</div>";
+        }
+    }else{
+        go_display_rewards( $custom_fields, $task_name, false );
     }
-    if(isset($gold_on)){
-        echo "<br>{$gold_loot} {$gold_name} ";
-    }
-    if(isset($health_on)){
-        echo "<br>{$health_loot} {$health_name} ";
-    }
-    echo " </div>";
-
-    if (get_option( 'options_go_badges_toggle' )){
-        //$badges_on = true;
-        //$badges_name = get_option('options_go_badges_name_plural');
-        $badges = $loot->badges;
-        //if($badges) {
-        //   $badges = unserialize($badges);
-        // }
-        go_display_stage_badges($badges);
-    }
 
 
-
-
-    echo "</div>";
     if ($custom_fields['bonus_loot_toggle'][0]) {
         global $wpdb;
         $go_actions_table_name = "{$wpdb->prefix}go_actions";
@@ -408,53 +418,13 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
         go_buttons($user_id, $custom_fields, null, $stage_count, $status, 'show_bonus', false, null, null, true);
     }
     echo "</div>";
-    if ($bonus_status > 0){
-        go_print_bonus_stage ($user_id, $post_id, $custom_fields);
+    if ($bonus_status > 0 || $all_content){
+        go_print_bonus_stage ($user_id, $post_id, $custom_fields, $all_content);
     }
 }
 
 
-/**
- * VISITOR CONTENT
- */
 
-/**
- * Logic to decide if locks should be used for visitors
- * based on options and task settings.
- * @param $custom_fields
- * @return null
- */
-function go_display_visitor_content ( $custom_fields, $post_id, $task_name, $badge_name, $uc_task_name ){
-    if ($custom_fields['go-guest-view'][0] == "global"){
-        $guest_access = get_option('options_go_guest_global');
-    }
-    else {
-        $guest_access = $custom_fields['go-guest-view'][0];
-    }
-
-    if ($guest_access == "regular" ) {
-        //echo "Regular";
-        $task_is_locked = go_display_locks($post_id, null, false, $task_name, $badge_name, $custom_fields, false, $uc_task_name);
-        if (!$task_is_locked){
-            go_display_visitor_messages($custom_fields, $post_id);
-
-        }else {
-            go_hidden_footer();
-        }
-        return null;
-    }
-    else if ($guest_access == "open" ) {
-        //echo "open";
-        go_display_visitor_messages($custom_fields, $post_id);
-
-        return null;
-    }
-    else {
-        //echo "else";
-        echo "<div><h2 class='go_error_red'>This content is for logged in users only.</h2></div>";
-        return null;
-    }
-}
 
 /**
  * LOCKS
@@ -519,6 +489,76 @@ function go_display_locks ($post_id, $user_id, $is_admin, $task_name, $badge_nam
 
 }
 
+
+/**
+ * VISITOR CONTENT
+ */
+
+/**
+ * Logic to decide if locks should be used for visitors
+ * based on options and task settings.
+ * @param $custom_fields
+ * @return null
+ */
+function go_display_visitor_content ( $custom_fields, $post_id, $task_name, $badge_name, $uc_task_name ){
+
+
+    if ($custom_fields['go-guest-view'][0] == "global"){
+        $guest_access = get_option('options_go_guest_global');
+    }
+    else {
+        $guest_access = $custom_fields['go-guest-view'][0];
+    }
+    if ($guest_access == "blocked" ) {
+        echo "<div><h2 class='go_error_red'>You must be logged in to view this content.</h2></div>";
+        return null;
+    }
+
+
+    go_display_rewards( $custom_fields, $task_name, true  );
+    go_due_date_mods ($custom_fields, false, $task_name );
+
+    $task_is_locked = false;
+    if ($guest_access == "regular" ) {
+        //echo "Regular";
+        $task_is_locked = go_display_locks($post_id, null, false, $task_name, $badge_name, $custom_fields, false, $uc_task_name);
+
+    }
+
+
+    if (( $guest_access == "regular" && !$task_is_locked) || $guest_access == "open"){
+        echo "<script> 
+        jQuery( document ).ready( function() { 
+           new Noty({
+                type: 'error',
+                layout: 'topCenter',
+                text: 'You are viewing this page as a Guest. <br>You can view the content, but gameplay is disabled.',
+                theme: 'relax',
+                timeout: '3000',
+                visibilityControl: true,  
+            }).show();
+           jQuery('#go_all_content input, #go_all_content textarea').attr('disabled', 'disabled');
+        });</script>";
+
+        echo "<div id='go_all_content'>";
+        go_hidden_blog_post();
+
+
+        go_display_visitor_messages($custom_fields, $post_id);
+        go_print_outro (null, $post_id, $custom_fields, 1, 1, true);
+
+        // displays the chain pagination list so that visitors can still navigate chains easily
+        go_task_render_chain_pagination( $post_id, $custom_fields );
+
+        go_hidden_footer();
+        echo "</div>";
+
+    }
+    return null;
+
+
+
+}
 /**
  * Print the stage content for visitors
  * @param $custom_fields
@@ -529,12 +569,19 @@ function go_display_visitor_messages( $custom_fields, $post_id ) {
     $stage_count = $custom_fields['go_stages'][0];
     while (  $stage_count > $i) {
         go_print_1_message ( $custom_fields, $i );
+        go_checks_for_understanding ($custom_fields, $i, $i, null, $post_id, null, null, null, true);
+
         $i++;
     }
+}
 
-    // displays the chain pagination list so that visitors can still navigate chains easily
-    go_task_render_chain_pagination( $post_id, $custom_fields );
-    go_hidden_footer();
+
+/**
+ * Used to create a hidden post for the guest views.  It makes it so the other blog forms don't load MCE.
+ */
+function go_hidden_blog_post(){
+    echo "<div style='display:none;'>";
+    wp_editor('', 'go_blog_post' );
     echo "</div>";
 }
 
@@ -553,12 +600,13 @@ function go_display_visitor_messages( $custom_fields, $post_id ) {
  * @return string
  */
 function go_admin_content ($post_id, $is_admin, $admin_view, $custom_fields, $is_logged_in, $task_name, $status, $uid, $task_id, $badge_name){
+
     if ($is_admin && $admin_view == 'all') {
+
         go_display_all_admin_content($custom_fields, $is_logged_in, $task_name, $status, $uid, $task_id);
         $admin_flag = 'stop';
         return $admin_flag;
     }
-
     else if ($is_admin && $admin_view == 'guest') {
         go_display_visitor_content( $custom_fields, $post_id, $task_name, $badge_name, $task_name);
         $admin_flag = 'stop';
@@ -581,28 +629,50 @@ function go_admin_content ($post_id, $is_admin, $admin_view, $custom_fields, $is
  * @param $task_name
  */
 function go_display_all_admin_content( $custom_fields, $is_logged_in, $task_name, $status, $user_id, $post_id ) {
-    go_display_rewards( $custom_fields, $task_name  );
+    echo "<script> 
+        jQuery( document ).ready( function() { 
+           new Noty({
+                type: 'error',
+                layout: 'topCenter',
+                text: 'You are in \"All Stage\" view mode. Gameplay is disabled.',
+                theme: 'relax',
+                timeout: '8000',
+                visibilityControl: true,  
+            }).show();
+           
+           jQuery('#go_all_content input, #go_all_content textarea').attr('disabled', 'disabled');
+        });
+        
+        </script>";
+
+    echo "<div id='go_all_content'>";
+    go_hidden_blog_post();
+    go_display_rewards( $custom_fields, $task_name, true  );
     go_due_date_mods ($custom_fields, $is_logged_in, $task_name );
     //Print messages
     $i = 0;
     $stage_count = $custom_fields['go_stages'][0];
     while (  $stage_count > $i) {
         go_print_1_message ( $custom_fields, $i );
-        go_checks_for_understanding ($custom_fields, $i, $i, $user_id, $post_id, null, null, null);
+        go_checks_for_understanding ($custom_fields, $i, $i, $user_id, $post_id, null, null, null, true);
 
         $i++;
     }
-    go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
+    go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status, true);
+    /*
     $bonus_count = $custom_fields['go_bonus_limit'][0];
     if ($bonus_count > 0){
-        go_print_bonus_stage ($user_id, $post_id, $custom_fields);
+        go_print_bonus_stage ($user_id, $post_id, $custom_fields, true);
     }
+    */
 
     // displays the chain pagination list so that visitors can still navigate chains easily
     go_task_render_chain_pagination( $post_id, $custom_fields);
     go_hidden_footer();
     echo "</div>";
 }
+
+
 
 /**
  * DUE DATE MODIFIER MESSAGE
@@ -653,12 +723,12 @@ function go_print_messages ( $status, $custom_fields, $user_id, $post_id){
     while ( $i <= $status && $stage_count > $i) {
         go_print_1_message ( $custom_fields, $i );
         //Print Checks for Understanding for the last stage message printed and buttons
-        go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, null, null, null);
+        go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, null, null, null, false);
         //go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $post_id, $bonus, $bonus_status, $repeat_max)
         $i++;
     }
     if ($i <= $status){
-        go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status);
+        go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status, false);
     }
 }
 
@@ -756,13 +826,16 @@ function go_display_stage_badges($badges) {
 
 }
 
+
 /**
  * @param $custom_fields
  * @param $user_id
  * @param $post_id
  * @param $task_name
+ * @param $top
  */
-function go_display_rewards($custom_fields, $task_name ) {
+function go_display_rewards($custom_fields, $task_name, $top = true ) {
+
     $stage_count = $custom_fields['go_stages'][0];
 
     if ($stage_count > 1){
@@ -770,6 +843,10 @@ function go_display_rewards($custom_fields, $task_name ) {
     }
     else{
         $stage_name = get_option('options_go_tasks_stage_name_singular');
+    }
+
+    if($top){
+        echo "This {$task_name} has:<br>{$stage_count} {$stage_name}<br>Where you can earn:";
     }
 
     if (get_option( 'options_go_loot_xp_toggle' )){
@@ -828,11 +905,10 @@ function go_display_rewards($custom_fields, $task_name ) {
     if($health_loot > 200){
         $health_loot = 200;
     }
-    echo "This {$task_name} has:<br>{$stage_count} {$stage_name}<br>Where you can earn:";
     echo "<div class='go_task_rewards'>
         <div class='go_task_reward'>";
     if($xp_on){
-        echo "<br>{$xp_loot} {$xp_name} ";
+        echo "{$xp_loot} {$xp_name} ";
     }
     if($gold_on){
         echo "<br>{$gold_loot} {$gold_name} ";
