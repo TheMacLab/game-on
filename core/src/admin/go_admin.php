@@ -579,4 +579,38 @@ function go_shortcode_button_register( $plugin_array ) {
 add_filter( 'mce_external_plugins', 'go_shortcode_button_register' );
 
 
+
+
+$taxonomy = 'task_chains';
+
+
+// define the after-<taxonomy>-table callback
+function action_after_taxonomy_table( $taxonomy ) {
+    // make action magic happen here...
+    ?>
+    <script>
+        jQuery( document ).ready(function() {
+            console.log("move it");
+            jQuery('.metabox-prefs').hide();
+            jQuery('#posts-filter').after("<div id='go_screen_options_container'><div id='go_screen_options' style='float: right; background-color: white;padding: 20px;'></div></div>");
+            jQuery('#adv-settings').appendTo('#go_screen_options');
+            jQuery('#screen-options-wrap #screen-options-link-wrap').hide();
+            jQuery('legend').hide();
+
+
+        });
+
+    </script>
+    <?php
+};
+
+// add the action
+add_action( "after-{$taxonomy}-table", 'action_after_taxonomy_table', 10, 1 );
+
+// run the action
+do_action( 'after-{$taxonomy}-table', $taxonomy );
+
+
+
+
 ?>

@@ -196,7 +196,7 @@ function task_stage_change( target ) {
     if( check_type == 'blog' && button_type != 'undo_last_bonus'){
         //result = tinyMCE.activeEditor.getContent();
         result = go_get_tinymce_content_blog('task_stage_change');
-        var result_title = jQuery( '#go_blog_title' ).val();
+        var result_title = jQuery( '#go_blog_title' ).html();
         var blog_post_id= jQuery( '#go_blog_title' ).data( 'blog_post_id' );
         var blog_url= jQuery( '#go_result_url' ).val();
         var blog_media= jQuery( '#go_result_media' ).attr( 'value' );
@@ -307,7 +307,12 @@ function task_stage_change( target ) {
                     var audio = new Audio( PluginDir.url + 'media/sounds/airhorn.mp3' );
                     audio.play();
                 }
-                    go_append(res);
+                go_append(res);
+                jQuery( document ).ready( function() {
+                    jQuery( ".feedback_accordion" ).accordion({
+                        collapsible: true
+                    });
+                });
             }
         }
     });

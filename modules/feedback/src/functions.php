@@ -2,10 +2,10 @@
 
 // Included on every load of this module
 
-add_action('go_blog_template_after_post', 'go_user_feedback_container', 10, 1);
+add_action('go_blog_template_after_post', 'go_user_feedback_container', 10, 2);
 
 
-function go_user_feedback_container($post_id){
+function go_user_feedback_container($post_id, $show_form = false){
     $admin_user = go_user_is_admin();
 
     go_task_status_icon($post_id);
@@ -19,7 +19,7 @@ function go_user_feedback_container($post_id){
         <h3>Revision History</h3>
         <div>Second content panel</div>
         <?php
-        if ($admin_user) {
+        if ($admin_user && $show_form) {
             ?>
             <h3>Feedback Form</h3>
             <div>

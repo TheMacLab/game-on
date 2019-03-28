@@ -73,7 +73,7 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
     if ($check_type == 'upload') {
         go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'blog') {
-        $blog_post_id = go_blog_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions, $all_content);
+        $blog_post_id = go_blog_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions, $all_content, $repeat_max, $check_type, $stage_count);
     } else if ($check_type == 'URL') {
         go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
     } else if ($check_type == 'password') {
@@ -84,8 +84,11 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
         go_no_check($i, $status, $custom_fields, $instructions, $bonus, $bonus_status);
     }
 
-    //Buttons
-    go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, false, $blog_post_id);
+    if ($check_type != 'blog') {
+        //Buttons
+        go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, false, $blog_post_id);
+    }
+
 
     echo "</div>";
 }
@@ -279,7 +282,7 @@ function go_print_password_check_result($password_type){
  * @param $bonus_status
  * @param $instructions
  */
-function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions, $all_content){
+function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions, $all_content, $repeat_max, $check_type, $stage_count){
     global $wpdb;
 
     //$url_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0] : null);
@@ -359,7 +362,9 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
                 wp_reset_postdata();
             }
             $blog_post_id = (isset($blog_post_id) ?  $blog_post_id : null);
-
+            if($blog_post_id) {
+                wp_trash_post(intval($blog_post_id));
+            }
             go_blog_form($blog_post_id, '', $post_id, $i, $bonus_status, true);
             return $blog_post_id;
         }
@@ -412,6 +417,8 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
             wp_reset_postdata();
             $blog_post_id = (isset($blog_post_id) ?  $blog_post_id : null);
             go_blog_post($blog_post_id, true, true);
+            $go_print_next++;
+            return $blog_post_id;
         }
         else{//this is the current bonus stage and print the form
             //get the next, trashed or not
@@ -478,14 +485,19 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
                 wp_reset_postdata();
             }
             $blog_post_id = (isset($blog_post_id) ?  $blog_post_id : null);
-
+            if($blog_post_id) {
+                wp_trash_post(intval($blog_post_id));
+            }
             go_blog_form($blog_post_id, '', $post_id, $i, $bonus, true);
+
+            go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, false, $blog_post_id);
+            if($blog_post_id){do_action('go_blog_template_after_post', $blog_post_id, false);}
 
             return $blog_post_id;
 
         }
 
-        $go_print_next++;
+
     }
 
 

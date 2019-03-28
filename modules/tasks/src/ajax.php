@@ -229,11 +229,6 @@ function go_task_change_stage() {
             $group_ids = (isset($custom_fields['go_groups'][0]) ?  $custom_fields['go_groups'][0] : null);
         }
 
-        //mark blog post as deleted if attached to this stage
-        if($blog_post_id) {
-            wp_trash_post(intval($blog_post_id));
-        }
-
         go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'undo', null, $badge_ids, $group_ids );
         go_checks_for_understanding ($custom_fields, $status -1 , $status - 1 , $user_id, $post_id, null, null, null, false);
     }
@@ -285,17 +280,13 @@ function go_task_change_stage() {
             ///
             go_update_stage_table ($user_id, $post_id, $custom_fields, null, $bonus_status, false, 'undo_bonus', $check_type, null, null);
             go_checks_for_understanding($custom_fields, $bonus_status -1, null, $user_id, $post_id, true, $bonus_status - 1 , $repeat_max, false);
-            if($blog_post_id) {
-                wp_trash_post(intval($blog_post_id));
-            }
+
         }
         else if ($button_type == 'abandon_bonus') {
             $status = go_get_status($post_id, $user_id);
             $stage_count = $custom_fields['go_stages'][0];
             go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $status, false);
-            if($blog_post_id) {
-                wp_trash_post(intval($blog_post_id));
-            }
+
         }
     }
     //go_check_messages();

@@ -156,7 +156,7 @@ function task_stage_check_input( target, on_task) {
         console.log("Check Type: " + check_type);
     }
     var fail = false;
-    jQuery('#go_stage_error_msg').text("");
+    jQuery('#go_blog_stage_error_msg').text("");
     jQuery('#go_blog_error_msg').text("");
     var error_message = '<h3>Your post was not saved.</h3><ul> ';
 
@@ -297,8 +297,8 @@ function task_stage_check_input( target, on_task) {
         if (on_task == true) {
             console.log("error_stage");
             //flash_error_msg('#go_stage_error_msg');
-            jQuery('#go_stage_error_msg').append(error_message);
-            jQuery('#go_stage_error_msg').show();
+            jQuery('#go_blog_stage_error_msg').append(error_message);
+            jQuery('#go_blog_stage_error_msg').show();
 
         }else {
 
@@ -306,13 +306,26 @@ function task_stage_check_input( target, on_task) {
             jQuery('#go_blog_error_msg').append(error_message);
             jQuery('#go_blog_error_msg').show();
         }
+
         console.log("error validation");
+        /*
+        new Noty({
+                type: 'error',
+                layout: 'center',
+                text: error_message,
+                theme: 'relax',
+                timeout: '5000',
+                visibilityControl: true,
+            }).show();
+            */
+
         go_disable_loading();
         return;
     }else{
-        jQuery('#go_stage_error_msg').hide();
+        jQuery('#go_blog_stage_error_msg').hide();
         jQuery('#go_blog_error_msg').hide();
     }
+
 
     if (on_task == true) {
         task_stage_change(target);
@@ -677,6 +690,7 @@ function go_blog_submit( el, reload ) {
             jQuery( '#go_save_button' + suffix ).attr( 'blog_post_id', res.blog_post_id );
 
             jQuery( '#go_blog_title' + suffix ).attr( 'data-blog_post_id', res.blog_post_id );
+
 
             if (reload == true) {
                 //alert("here");

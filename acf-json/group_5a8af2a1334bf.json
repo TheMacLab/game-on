@@ -1197,16 +1197,16 @@
             "layout": "table",
             "sub_fields": [
                 {
-                    "key": "field_5ac134fa12f4e",
-                    "label": "Gold",
-                    "name": "gold",
+                    "key": "field_5ac134fa12f4f",
+                    "label": "XP",
+                    "name": "xp",
                     "type": "number",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
-                        "class": "go_reward go_gold",
+                        "class": "go_reward go_xp",
                         "id": ""
                     },
                     "default_value": 0,
@@ -1218,16 +1218,16 @@
                     "step": ""
                 },
                 {
-                    "key": "field_5ac134fa12f4f",
-                    "label": "XP",
-                    "name": "xp",
+                    "key": "field_5ac134fa12f4e",
+                    "label": "Gold",
+                    "name": "gold",
                     "type": "number",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
-                        "class": "go_reward go_xp",
+                        "class": "go_reward go_gold",
                         "id": ""
                     },
                     "default_value": 0,
@@ -1370,6 +1370,25 @@
                     "layout": "block",
                     "sub_fields": [
                         {
+                            "key": "field_5c9c5547c8a18",
+                            "label": "Title",
+                            "name": "title",
+                            "type": "text",
+                            "instructions": "Leave blank to have the \"quest name-stage #\" set as the titel",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "stage # by default",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": 30
+                        },
+                        {
                             "key": "field_5c2d2ef2e62d2",
                             "label": "URL",
                             "name": "url",
@@ -1436,8 +1455,8 @@
                             "key": "field_5c2d2f35e62d3",
                             "label": "Attach File",
                             "name": "attach_file",
-                            "type": "group",
-                            "instructions": "<a target=\"codex\" href=\"https:\/\/codex.wordpress.org\/Function_Reference\/get_allowed_mime_types\"> See allowed file types.<\/a>",
+                            "type": "text",
+                            "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -1445,90 +1464,11 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "row",
-                            "sub_fields": [
-                                {
-                                    "key": "field_5c2d2a64f9146",
-                                    "label": "",
-                                    "name": "toggle",
-                                    "type": "true_false",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "message": "",
-                                    "default_value": 0,
-                                    "ui": 0,
-                                    "ui_on_text": "",
-                                    "ui_off_text": ""
-                                },
-                                {
-                                    "key": "field_5c2d2a8ff9147",
-                                    "label": "Restrict File Types",
-                                    "name": "restrict_file_types",
-                                    "type": "true_false",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": [
-                                        [
-                                            {
-                                                "field": "field_5c2d2a64f9146",
-                                                "operator": "==",
-                                                "value": "1"
-                                            }
-                                        ]
-                                    ],
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "message": "",
-                                    "default_value": 0,
-                                    "ui": 0,
-                                    "ui_on_text": "",
-                                    "ui_off_text": ""
-                                },
-                                {
-                                    "key": "field_5c3031c3c3605",
-                                    "label": "Allowed File Types",
-                                    "name": "allowed_types",
-                                    "type": "checkbox",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": [
-                                        [
-                                            {
-                                                "field": "field_5c2d2a8ff9147",
-                                                "operator": "==",
-                                                "value": "1"
-                                            }
-                                        ]
-                                    ],
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "image": "Images (jpg, png, gif, tiff, ico, bmp)",
-                                        "application": "Application Files (e.g., Office, iWork, Adobe)",
-                                        "text": "Text (e.g., txt, csv, css, html)",
-                                        "audio": "Audio",
-                                        "video": "Video"
-                                    },
-                                    "allow_custom": 0,
-                                    "default_value": [],
-                                    "layout": "vertical",
-                                    "toggle": 1,
-                                    "return_format": "value",
-                                    "save_custom": 0
-                                }
-                            ]
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         },
                         {
                             "key": "field_5c2d2bf4f914b",
@@ -1728,16 +1668,16 @@
                     "layout": "table",
                     "sub_fields": [
                         {
-                            "key": "field_5ac134fe12f54",
-                            "label": "Gold",
-                            "name": "gold",
+                            "key": "field_5ac134fe12f55",
+                            "label": "XP",
+                            "name": "xp",
                             "type": "number",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "go_reward go_gold",
+                                "class": "go_reward go_xp",
                                 "id": ""
                             },
                             "default_value": 0,
@@ -1749,16 +1689,16 @@
                             "step": 1
                         },
                         {
-                            "key": "field_5ac134fe12f55",
-                            "label": "XP",
-                            "name": "xp",
+                            "key": "field_5ac134fe12f54",
+                            "label": "Gold",
+                            "name": "gold",
                             "type": "number",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "go_reward go_xp",
+                                "class": "go_reward go_gold",
                                 "id": ""
                             },
                             "default_value": 0,
@@ -2669,5 +2609,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1550546746
+    "modified": 1553749433
 }

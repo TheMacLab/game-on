@@ -51,6 +51,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
         $custom_fields = get_post_custom($go_blog_task_id);
 
         if ($bonus == true ) {
+            $blog_title = (isset($custom_fields['go_bonus_stage_blog_options_bonus_title'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_title'][0] : null);
             $url_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_url_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_url_toggle'][0] : null);
             $file_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_attach_file_toggle'][0] : null);
             $video_toggle = (isset($custom_fields['go_bonus_stage_blog_options_bonus_video'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_video'][0] : null);
@@ -59,10 +60,15 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             $min_words = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0]) ? $custom_fields['go_bonus_stage_blog_options_bonus_blog_text_minimum_length'][0] : null);
             $required_string = (isset($custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0]) ?  $custom_fields['go_bonus_stage_blog_options_bonus_blog_url_url_validation'][0] : null);
             $is_private = (isset($custom_fields['go_bonus_stage_blog_options_bonus_private'][0]) ?  $custom_fields['go_bonus_stage_blog_options_bonus_private'][0] : false);
-
+            if ($blog_title){
+                $blog_title = " - ".$blog_title;
+            }else{
+                $blog_title = " - Bonus";
+            }
         }
         else{
             $i = (isset($blog_meta['go_blog_task_stage'][0]) ? $blog_meta['go_blog_task_stage'][0] : $i); //set this meta for bonus
+            $blog_title = (isset($custom_fields['go_stages_' . $i . '_blog_options_title'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_title'][0] : null);
             $url_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_url_toggle'][0] : null);
             $file_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_attach_file_toggle'][0] : null);
             $video_toggle = (isset($custom_fields['go_stages_' . $i . '_blog_options_video'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_video'][0] : null);
@@ -71,10 +77,16 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             $min_words = (isset($custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0]) ? $custom_fields['go_stages_' . $i . '_blog_options_blog_text_minimum_length'][0] : null);
             $required_string = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_url_validation'][0] : null);
             $is_private = (isset($custom_fields['go_stages_'.$i.'_blog_options_private'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_private'][0] : false);
-
+            if ($blog_title){
+                $blog_title = " - ".$blog_title;
+            }else{
+                $blog_title = " - Stage ". (intval($i) +1) ;
+            }
         }
         if(empty($title)){
             $title = get_the_title($go_blog_task_id);
+
+            $title = $title . "" . $blog_title;
         }
 
     }else{
@@ -85,7 +97,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     if( !empty($go_blog_task_id) && $is_private) {
         echo "<div ><h3>This post is private. Only you and the site administrators/instructors will be able to see it.</h3></div>";
     }
-    echo "<div>Title:<div><input style='width: 100%;' id='go_blog_title".$suffix."' type='text' placeholder='' value ='{$title}' data-blog_post_id ='{$blog_post_id}' ></div> </div>";
+    echo "<div><h3 style='width: 100%;' data-blog_post_id ='{$blog_post_id}' id='go_blog_title'{$suffix}'>".$title."</h3> </div>";
 
     if ($url_toggle) {
         echo "<div>URL:";
@@ -178,12 +190,16 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
             echo "<div id='go_blog_min' style='text-align:right'><span class='char_count'>" . $min_words . "</span> Words Required</div>";
         }
 
+        echo "<p id='go_blog_stage_error_msg' style='display: none; color: red;'></p>";
+
         //show save button if this is a draft, reset, trashed or new post
         $allow_drafts = array("draft", "reset", "trash", null);
         if (in_array($post_status, $allow_drafts)) {
             echo "<button id='go_save_button{$suffix}' class='go_buttons go_save_button progress left'  status='{$i}' data-bonus_status='{$bonus}' check_type='skip' button_type='save{$suffix}'  admin_lock='true' blog_post_id='{$blog_post_id}' blog_suffix='{$suffix}' task_id='{$go_blog_task_id}' data-check_for_understanding ='{$check_for_understanding}'>Save Draft</button>";
 
         }
+
+
 
         //Save Draft Button
         if($suffix =='_lightbox') {
