@@ -594,7 +594,7 @@ function action_after_taxonomy_table( $taxonomy ) {
             jQuery('.metabox-prefs').hide();
             jQuery('#posts-filter').after("<div id='go_screen_options_container'><div id='go_screen_options' style='float: right; background-color: white;padding: 20px;'></div></div>");
             jQuery('#adv-settings').appendTo('#go_screen_options');
-            jQuery('#screen-options-wrap #screen-options-link-wrap').hide();
+            jQuery('#screen-options-link-wrap').hide();
             jQuery('legend').hide();
 
 
