@@ -60,6 +60,8 @@ function go_frame_it_up( $init_array ){
         'frameborder' => true,
     );
 }
+
+
 function go_frame_it_up_tinymce( $init_array ){
     if( isset( $init_array['extended_valid_elements'] ) )
         $init_array['extended_valid_elements'] .= ',iframe[id|name|class|style|src|width|height|allowtransparency|frameborder]';
@@ -123,9 +125,4 @@ function go_tinymce_wordcount($plugins_array = array())
     return $plugins_array;
 }
 
-
-
-
-
-?>
 
