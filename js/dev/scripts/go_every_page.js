@@ -124,10 +124,11 @@ function go_stats_links(){
 }
 
 function go_leaderboard_menus_select2(){
+
     if (jQuery("#select2-go_user_go_sections_select-container").length == 0) {
         jQuery('#go_user_go_sections_select').select2({
             ajax: {
-                url: MyAjax.ajaxurl, // AJAX URL is predefined in WordPress admin
+                url: thisisme.ajaxurl, // AJAX URL is predefined in WordPress admin
                 dataType: 'json',
                 delay: 400, // delay in ms while typing when to perform a AJAX search
                 data: function (params) {

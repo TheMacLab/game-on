@@ -134,11 +134,6 @@ function go_scripts () {
 			)
 
 		);
-
-        $ajax_url   = admin_url( 'admin-ajax.php' );        // Localized AJAX URL
-        wp_localize_script('go_frontend-min','ajax_admin_url',$ajax_url);
-
-
     /**
      * Resize All Images on Client Side
      */
