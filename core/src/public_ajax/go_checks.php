@@ -366,6 +366,11 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
                 wp_trash_post(intval($blog_post_id));
             }
             go_blog_form($blog_post_id, '', $post_id, $i, $bonus_status, true);
+
+            go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_type, $bonus, $bonus_status, $repeat_max, false, $blog_post_id);
+            if($blog_post_id){do_action('go_blog_template_after_post', $blog_post_id, false);}
+
+
             return $blog_post_id;
         }
     }else{//this is a bonus

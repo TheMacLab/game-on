@@ -934,8 +934,10 @@ input#go_pass_lock::-moz-placeholder {
 
 #go_all_content {
 	.go_buttons,
-	.insert-media{
-		opacity: .3;
+	.insert-media,
+	.wp-editor-tabs,
+	#go_bonus_button{
+		opacity: .5;
 		cursor: default;
 		pointer-events:none !important;
 	}

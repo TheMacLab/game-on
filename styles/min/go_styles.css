@@ -765,8 +765,10 @@ input#go_pass_lock::-moz-placeholder {
   margin-top: 20px; }
 
 #go_all_content .go_buttons,
-#go_all_content .insert-media {
-  opacity: .3;
+#go_all_content .insert-media,
+#go_all_content .wp-editor-tabs,
+#go_all_content #go_bonus_button {
+  opacity: .5;
   cursor: default;
   pointer-events: none !important; }
 

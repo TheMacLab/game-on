@@ -269,35 +269,47 @@ function go_badge_lock($id, $user_id, $task_name, $custom_fields, $i, $k, $is_lo
     if ($is_logged_in) {
         $option = "go_locks_" . $i . "_keys_" . $k . "_options_0_badge";
         $terms_needed = $custom_fields[$option][0];
+        /*
         if (is_serialized($terms_needed)) {
             $terms_needed = unserialize($terms_needed);
         }
-        if (is_array($terms_needed)) {
-            $terms_needed = array_values($terms_needed);
+        if (!is_array($terms_needed)) {
+            $terms_needed = array($terms_needed);
+        }else{
+            $terms_needed = array();
+        }
+    */
+        if (is_serialized($terms_needed)){
+            $terms_needed = unserialize($terms_needed);//legacy badges saved as serialized array
+        }
+        if (!is_array($terms_needed)){
+            $terms_needed = array($terms_needed);
         }else{
             $terms_needed = array();
         }
 
+
+
         global $wpdb;
         $go_loot_table_name = "{$wpdb->prefix}go_loot";
         $badges_array = $wpdb->get_var ("SELECT badges FROM {$go_loot_table_name} WHERE uid = {$user_id}");
-        if (is_serialized($terms_needed)) {
+        if (is_serialized($badges_array)) {
             $badges_array = unserialize($badges_array);
         }
         if(is_array($badges_array)) {
-            $user_terms = array_values($badges_array);
+            $badges_array = array_values($badges_array);
         }else{
-            $user_terms = array();
+            $badges_array = array();
         }
 
-        if (!$user_terms || !is_array($user_terms)) {
-            $user_terms = array();
+        if (!$badges_array || !is_array($badges_array)) {
+            $badges_array = array();
         }
 
         // determines if the user has the correct badges
         if (!empty($terms_needed)) {
             // checks to see if the filter array are in the the user's badge array
-            $intersection = array_values(array_intersect($user_terms, $terms_needed));
+            $intersection = array_values(array_intersect($badges_array, $terms_needed));
             // stores an array of the badges that were not found in the user's badge array
             $term_diff = array_diff($terms_needed, $intersection);
             if (!empty($term_diff)) {
