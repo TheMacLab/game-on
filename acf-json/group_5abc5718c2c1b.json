@@ -861,9 +861,9 @@
                     "sub_fields": [
                         {
                             "key": "field_5b37cc4882dd8",
-                            "label": "Exponential Growth Rate",
+                            "label": "Growth Rate",
                             "name": "growth",
-                            "type": "text",
+                            "type": "number",
                             "instructions": "This will auto increment new rows added by this multiplier. The high the multiplier the more difficult the high levels will be obtain.",
                             "required": 1,
                             "conditional_logic": 0,
@@ -872,11 +872,34 @@
                                 "class": "",
                                 "id": "go_levels_growth"
                             },
-                            "default_value": "1.5",
-                            "placeholder": 1,
+                            "default_value": 5,
+                            "placeholder": "",
                             "prepend": "",
                             "append": "",
-                            "maxlength": ""
+                            "min": 0,
+                            "max": 10,
+                            "step": 1
+                        },
+                        {
+                            "key": "field_5c9db9e80429d",
+                            "label": "First Level Up",
+                            "name": "go_first_level_up",
+                            "type": "number",
+                            "instructions": "This is used to calculate new rows below.",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": "go_first_up"
+                            },
+                            "default_value": 50,
+                            "placeholder": 50,
+                            "prepend": "",
+                            "append": "XP",
+                            "min": 1,
+                            "max": 1000,
+                            "step": 1
                         },
                         {
                             "key": "field_5abc934260c5b",
@@ -2109,5 +2132,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1549910005
+    "modified": 1553841526
 }
