@@ -43,12 +43,12 @@ function go_flush_rewrites() {
     go_blog_tags();
     go_blogs();
     go_custom_rewrite();
-    go_reader_page();
+    //go_reader_page();
     go_map_page();
     go_store_page();
     flush_rewrite_rules();
     go_custom_rewrite();
-    go_reader_page();
+    //go_reader_page();
     go_map_page();
     go_store_page();
 
