@@ -788,7 +788,7 @@ function go_prev_task($id = null, $chain_id){
             $prev_task = $go_task_ids[$prev_key];
             $prev_task_data = go_post_data($prev_task);
             $prev_task_custom_meta = $prev_task_data[3];
-            $is_last_optional = (isset($prev_task_custom_meta['location_map_opt'][0]) ?  $prev_task_custom_meta['location_map_opt'][0] : false);
+            $is_last_optional = (isset($prev_task_custom_meta['go-location_map_opt'][0]) ?  $prev_task_custom_meta['go-location_map_opt'][0] : false);
 
             if (!$is_last_optional){//if a not optional task is found, break the loop and return the id
                 break;
@@ -845,7 +845,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
 
     //if this task is not on a chain, it couldn't be locked by a chain
     if (empty($chain_id)) {
-        return false;
+        return false;//it is unlocked
     }
 
     //SET SOME VARIABLES ABOUT THE CHAIN THIS TASK IS ON, (is it a pod, is it locked by previous chain)
@@ -868,21 +868,21 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
     if (!$first_in_chain && !$is_pod) {
         $is_done = go_is_done($prev_task, $user_id);
         if ($is_done) {
-            return false;
+            return false;//it is unlocked
         } else {
             if (!$check_only) {
                 go_task_chain_lock_message($prev_task, $task_name);
             }
-            return true;
+            return true;//it is locked
         }
     }
 
     //CHECK #2
     //IF THIS IS A POD OR THE FIRST IN THE CHAIN
     //AND THIS CHAIN is not LOCKED BY THE PREVIOUS
-    //THEN SET THIS TASK TO UNLOCKED
+    //THEN SET THIS TASK TO UNLOCKED(available)
     else if (($is_pod || $first_in_chain) && !$locked_by_prev) {
-        return false;
+        return false;//it is unlocked
     }
 
 
@@ -911,7 +911,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
 
             }
             if ($master_unlock == true) {
-                return false;
+                return false;//it is unlocked
             }
         }
 
@@ -939,7 +939,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
         //Get the previous chain id
         //either from this map
         //or the last chain on the previous map
-        if ($first_on_map == false) {
+        if ($first_on_map === false) {
             //this is not the first chain
             //then get the previous chain on this map
             $prev_key = (int)$this_chain_order - 1;
@@ -962,7 +962,7 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             $prev_map = $top_chains[$prev_map_key];
 
 
-            //get last chain on previous map
+            //get all chains on previous map
             $children_chains = go_get_map_chain_term_ids($prev_map);
             //if no children chains on previous map, then return unlocked
             if ($children_chains == false) {
@@ -973,6 +973,15 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             $prev_chain = $rev_children_chains[0];
         }
 
+        //CHECK IT PREVIOUS CHAIN IS DONE
+        $is_chain_done = is_chain_done($prev_chain, $user_id, null, null);
+        if($is_chain_done){
+            return false;
+        }else{
+            return true;
+        }
+
+        /*
         //CHECK #4.4
         //IF THE PREVIOUS CHAIN IS A POD
         //check if previous chain is a pod
@@ -981,7 +990,9 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
         $term_custom = $term_data[1];
         $is_pod = (isset($term_custom['pod_toggle'][0]) ? $term_custom['pod_toggle'][0] : null);
 
-        //CHECK #4.3
+
+
+        //CHECK #4.5
         //IF IT IS A POD
         //CHECK IF IT IS DONE
         if ($is_pod){
@@ -1047,7 +1058,10 @@ function go_task_chain_lock($id, $user_id, $task_name, $custom_fields, $is_logge
             }
         }
         return false;
+        */
     }
+
+    return false;
 
 }
 
@@ -1216,6 +1230,106 @@ function go_lock_password_validate($pass, $custom_fields){
         echo json_encode(array('json_status' => 'bad_password', 'html' => '', 'rewards' => array(), 'location' => '',));
         die();
     }
+}
+
+function is_chain_done($chain_id, $user_id, $post_id, $is_progressing = true){
+    $is_pod = get_term_meta($chain_id, "pod_toggle", true);
+
+    $args = array('tax_query' => array(array('taxonomy' => 'task_chains', 'field' => 'term_id', 'terms' => $chain_id,)), 'orderby' => 'meta_value_num', 'order' => 'ASC', 'posts_per_page' => -1, 'meta_key' => 'go-location_map_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
+    );
+
+    $go_task_objs = get_posts($args);
+
+    //HOW MANY ARE NEEDED
+    if ($is_pod ) {// it is a pod, find how many are neeed
+        $all_needed = get_term_meta($chain_id, "pod_all", true);
+
+        if ($all_needed) {
+
+            $num_needed = count($go_task_objs);
+        }else{
+            $num_needed = get_term_meta($chain_id, "pod_done_num", true);
+        }
+    }else{
+        $num_needed = count($go_task_objs);
+    }
+
+    //HOW MANY ARE DONE
+    $num_done = 0;
+    foreach ($go_task_objs as $go_task_obj) {//check if each task is done
+        $go_task_id = $go_task_obj->ID;
+
+        //count as done if unpublished (it is in the count and can't be done)
+        $is_published = get_post_status( $go_task_id );
+        if ($is_published !== 'publish'){//if is not published, then count as done and continue
+            $num_done++;
+            if ($num_done >= $num_needed) {
+                return true;//if enough are done, return it is done
+            }
+            continue;
+        }
+
+        //count as done if optional
+        $is_optional = get_post_meta($go_task_id, 'go-location_map_opt', true);
+        if ($is_optional){//if is optional, then count as done and continue
+            $num_done++;
+            if ($num_done >= $num_needed) {
+                return true;//if enough are done, return it is done
+            }
+            continue;
+        }
+
+        //count as done if complete
+        $stage_count = intval(get_post_meta($go_task_id, 'go_stages', true));//total stages
+        $status = intval(go_get_status($go_task_id, $user_id));
+        //adjust status if this is being run on a stage complete/undo last
+        if($post_id == $go_task_id){//if this is the current quest and complete was checked (that is when a $complete_post_id is passed)
+            if ($is_progressing === true) {
+                $status++;
+            }else if ($is_progressing === false){
+                $status--;
+            }
+        }
+
+        if ($stage_count == $status){
+            $num_done++;
+            if ($num_done >= $num_needed) {
+                return true;//if enough are done, return it is done
+            }
+        }
+
+    }
+
+    //IS IT DONE
+    if ($num_done >= $num_needed) {
+        return true;//if enough are done, return it is done
+    }
+    //}
+    /*
+    else {//not pod
+        //is this the last item on chain that isn't optional
+
+
+
+        foreach ($go_task_objs as $go_task_obj){
+            $go_task_id = $go_task_obj->ID;
+
+            $is_optional = get_post_meta($go_task_id, 'go-location_map_opt', true);
+            if (!$is_optional){
+                $stage_count = get_post_meta($go_task_id, 'go_stages', true);//total stages
+
+                $status = go_get_status($go_task_id, $user_id);
+
+                if ($stage_count == $status){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+    }
+    */
+    return false;
 }
 
 

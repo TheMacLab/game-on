@@ -19,14 +19,16 @@
 			font-variant: normal;
 			text-transform: none;
 			color: #aaaaaa;
-			line-height: 1;
+			line-height: 2;
 			-webkit-font-smoothing: antialiased;
+			font-size: 2em;
 		}
 
 		input[type="checkbox"]:checked + .go_favorite_label:before{
 			font-family: Fontawesome !important;
 			content: "\f004";
 			color: #8B0000;
+			font-size: 2em;
 		}
 
 
@@ -945,4 +947,27 @@ input#go_pass_lock::-moz-placeholder {
 	.wp-editor-container textarea.wp-editor-area{
 		height: 50px;
 	}
+}
+
+#go_task_rewards {
+	display: flex;
+}
+#go_task_rewards > *{
+	padding: 20px;
+}
+
+
+/********************
+*	Blue Pulse on filter button
+********************/
+@-webkit-keyframes bluePulse {
+	from { background: #C9E0E2; -webkit-box-shadow: 0 0 9px #50B7E3; }
+	50% { background: #C9E0E2; -webkit-box-shadow: 0 0 18px #2CC8EF; }
+	to { background: #C9E0E2; -webkit-box-shadow: 0 0 9px #50B7E3; }
+}
+
+#go_leaderboard_update_button button.bluepulse {
+	-webkit-animation-name: bluePulse;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
 }

@@ -965,21 +965,9 @@
                                     "choices": {
                                         "": "Select",
                                         "0": "Level1 -  : 0 XP",
-                                        "100": "Level2 -  : 100 XP",
-                                        "150": "Level3 -  : 150 XP",
-                                        "225": "Level4 -  : 225 XP",
-                                        "337": "Level5 -  : 337 XP",
-                                        "505": "Level6 -  : 505 XP",
-                                        "757": "Level7 -  : 757 XP",
-                                        "1135": "Level8 -  : 1135 XP",
-                                        "1702": "Level9 -  : 1702 XP",
-                                        "2553": "Level10 -  : 2553 XP",
-                                        "3829": "Level11 -  : 3829 XP",
-                                        "5743": "Level12 -  : 5743 XP",
-                                        "8614": "Level13 -  : 8614 XP",
-                                        "12921": "Level14 -  : 12921 XP",
-                                        "19381": "Level15 - Guru : 19381 XP",
-                                        "29071": "Level16 - Guru Master : 29071 XP"
+                                        "50": "Level2 -  : 50 XP",
+                                        "105": "Level3 -  : 105 XP",
+                                        "170": "Level4 -  : 170 XP"
                                     },
                                     "default_value": [],
                                     "allow_null": 0,
@@ -1455,7 +1443,7 @@
                             "key": "field_5c2d2f35e62d3",
                             "label": "Attach File",
                             "name": "attach_file",
-                            "type": "text",
+                            "type": "group",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -1464,11 +1452,90 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
-                            "maxlength": "",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": ""
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_5c2d2a64f9146",
+                                    "label": "",
+                                    "name": "toggle",
+                                    "type": "true_false",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "message": "",
+                                    "default_value": 0,
+                                    "ui": 0,
+                                    "ui_on_text": "",
+                                    "ui_off_text": ""
+                                },
+                                {
+                                    "key": "field_5c2d2a8ff9147",
+                                    "label": "Restrict File Types",
+                                    "name": "restrict_file_types",
+                                    "type": "true_false",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_5c2d2a64f9146",
+                                                "operator": "==",
+                                                "value": "1"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "message": "",
+                                    "default_value": 0,
+                                    "ui": 0,
+                                    "ui_on_text": "",
+                                    "ui_off_text": ""
+                                },
+                                {
+                                    "key": "field_5c3031c3c3605",
+                                    "label": "Allowed File Types",
+                                    "name": "allowed_types",
+                                    "type": "checkbox",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_5c2d2a8ff9147",
+                                                "operator": "==",
+                                                "value": "1"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "image": "Images (jpg, png, gif, tiff, ico, bmp)",
+                                        "application": "Application Files (e.g., Office, iWork, Adobe)",
+                                        "text": "Text (e.g., txt, csv, css, html)",
+                                        "audio": "Audio",
+                                        "video": "Video"
+                                    },
+                                    "allow_custom": 0,
+                                    "default_value": [],
+                                    "layout": "vertical",
+                                    "toggle": 1,
+                                    "return_format": "value",
+                                    "save_custom": 0
+                                }
+                            ]
                         },
                         {
                             "key": "field_5c2d2bf4f914b",
@@ -1800,7 +1867,7 @@
                     "key": "field_5aafc59f20e7d",
                     "label": "Toggle",
                     "name": "toggle",
-                    "type": "true_false",
+                    "type": "radio",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -1809,11 +1876,17 @@
                         "class": "go_toggle acf-hide-label",
                         "id": ""
                     },
-                    "message": "",
-                    "default_value": 0,
-                    "ui": 1,
-                    "ui_on_text": "On",
-                    "ui_off_text": "Off"
+                    "choices": {
+                        "0": "None",
+                        "default": "Default",
+                        "1": "Custom"
+                    },
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "default_value": "",
+                    "layout": "horizontal",
+                    "return_format": "value",
+                    "save_other_choice": 0
                 },
                 {
                     "key": "field_5b526d2e7957e",
@@ -2609,5 +2682,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1553749433
+    "modified": 1554173152
 }

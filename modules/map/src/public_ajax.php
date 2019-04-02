@@ -211,7 +211,7 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
                         $finished = null;
                     }
 
-                    if ($custom_fields['go-location_map_opt'][0] && !$is_pod) {
+                    if ($custom_fields['go-location_map_opt'][0]) {
                         $optional = 'optional_task';
                         $bonus_task = get_option('options_go_tasks_optional_task').':';  //Q option
                     }

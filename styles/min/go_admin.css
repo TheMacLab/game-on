@@ -31,22 +31,6 @@
   z-index: 1 !important;
   margin: 0px !important; }
 
-@-webkit-keyframes bluePulse {
-  from {
-    background: #C9E0E2;
-    -webkit-box-shadow: 0 0 9px #50B7E3; }
-  50% {
-    background: #C9E0E2;
-    -webkit-box-shadow: 0 0 18px #2CC8EF; }
-  to {
-    background: #C9E0E2;
-    -webkit-box-shadow: 0 0 9px #50B7E3; } }
-
-#go_leaderboard_update_button button.bluepulse {
-  -webkit-animation-name: bluePulse;
-  -webkit-animation-duration: 2s;
-  -webkit-animation-iteration-count: infinite; }
-
 .go_rewards {
   background-color: #c9fbc9; }
 

@@ -234,7 +234,7 @@ function go_sOrder($tab = null, $section = 0){
 }
 
 function go_sType(){
-    $unmatched = $_GET['unmatched'];
+    $unmatched = (isset($_GET['unmatched']) ? $_GET['unmatched'] : false);
     if ($unmatched === true || $unmatched == 'true' ) {
         $sType = "LEFT";//add switch for "show unmatched users" toggle
     }else{
@@ -246,18 +246,30 @@ function go_sType(){
 function go_sOn($action_type){
     $sOn = "";
     $date = $_GET['date'];
-    if ($action_type == 'store' || $action_type == 'message') {
-        $sOn = "AND (action_type = '" . $action_type . "') ";
 
+    if ($action_type == 'store' || $action_type == 'message') {
         if (isset($date) && $date != "") {
-            $date = date("Y-m-d", strtotime($date));
-            $sOn .= " AND ( DATE(t4.TIMESTAMP) = '" . $date . "')";
+            $dates = explode(' - ', $date);
+            $firstdate = $dates[0];
+            $lastdate = $dates[1];
+            $firstdate = date("Y-m-d", strtotime($firstdate));
+            $lastdate = date("Y-m-d", strtotime($lastdate));
+            $date = " AND ( DATE(t4.TIMESTAMP) BETWEEN '" . $firstdate . "' AND '" . $lastdate . "')";
         }
+        $sOn = "AND (action_type = '" . $action_type . "') ";
+        $sOn .= $date;
+
+
     }else if($action_type == 'tasks'){
         if (isset($date) && $date != "") {
-            $date = date("Y-m-d", strtotime($date));
-            $sOn .= " AND ( DATE(t4.last_time) = '" . $date . "')";
+            $dates = explode(' - ', $date);
+            $firstdate = $dates[0];
+            $lastdate = $dates[1];
+            $firstdate = date("Y-m-d", strtotime($firstdate));
+            $lastdate = date("Y-m-d", strtotime($lastdate));
+            $date = " AND ( DATE(t4.last_time) BETWEEN '" . $firstdate . "' AND '" . $lastdate . "')";
         }
+        $sOn .= $date;
     }
     return $sOn;
 }
@@ -1204,12 +1216,14 @@ function go_clipboard_activity() {
     check_ajax_referer( 'go_clipboard_activity_' . get_current_user_id() );
     global $wpdb;
 
+    /*
     $date_ajax = $_POST['date'];
     if (!empty($date_ajax)) {
         $date_ajax = date("Y-m-d", strtotime($date_ajax));
     }else{
         $date_ajax = null;
     }
+    */
 
     $go_totals_table_name = "{$wpdb->prefix}go_loot";
     $rows = $wpdb->get_results(
@@ -1452,17 +1466,11 @@ function go_clipboard_activity_dataloader_ajax(){
             $row[] = "";
         }
 
-
-
         if ($action['bonus_status'] > 0) {
             $row[] = strval($action['bonus_status']) . " / " . strval($bonus_count);
         }else{
             $row[] = "";
         }
-
-
-
-
 
         $go_loot_columns = go_loot_columns_clipboard($action);
         $row = array_merge($row, $go_loot_columns);

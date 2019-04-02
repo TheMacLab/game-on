@@ -197,7 +197,7 @@ function go_task_shortcode($atts, $content = null ) {
      * Display Rewards before task content
      * This is the list of rewards at the top of the task.
      */
-    go_display_rewards( $custom_fields, $task_name, true );
+    go_display_rewards( $custom_fields, $task_name, true, $user_id, 'top' );
 
     /**
      * Timer
@@ -221,8 +221,6 @@ function go_task_shortcode($atts, $content = null ) {
         go_update_stage_table($user_id, $post_id, $custom_fields, -1, null, true, 'entry_reward', null, null, null);
         $status = 0;
     }
-
-
 
 
     /**
@@ -395,11 +393,11 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
             echo "</div>";
         }
     }else{
-        go_display_rewards( $custom_fields, $task_name, false );
+        go_display_rewards( $custom_fields, $task_name, false, $user_id, 'bottom');
     }
 
-
-    if ($custom_fields['bonus_loot_toggle'][0]) {
+    $bonus_loot_radio = (isset($custom_fields['bonus_loot_toggle'][0]) ? $custom_fields['bonus_loot_toggle'][0] : false);//number of loot drops;
+    if ($bonus_loot_radio == true || $bonus_loot_radio == 'default' ) {
         global $wpdb;
         $go_actions_table_name = "{$wpdb->prefix}go_actions";
         $previous_bonus_attempt = $wpdb->get_var($wpdb->prepare("SELECT result 
@@ -408,10 +406,12 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
                 ORDER BY id DESC LIMIT 1", $post_id, $user_id, 'bonus_loot'));
         //ob_start();
         if(empty($previous_bonus_attempt)) {
-            go_bonus_loot();
+            go_bonus_loot($custom_fields, $user_id);
         }
 
     }
+
+
 
     $bonus_status = go_get_bonus_status($post_id, $user_id);
     if ($bonus_status <= 0){
@@ -421,6 +421,51 @@ function go_print_outro ($user_id, $post_id, $custom_fields, $stage_count, $stat
     if ($bonus_status > 0 || $all_content){
         go_print_bonus_stage ($user_id, $post_id, $custom_fields, $all_content);
     }
+}
+
+function go_print_bonus_loot_possibilities($custom_fields, $user_id){
+
+    $rows = go_get_bonus_loot_rows($custom_fields, false, $user_id);
+
+    if (count($rows) >0) {
+        echo "<ul>";
+        foreach ($rows as $row) {
+            $title = (isset($row['title']) ? $row['title'] : null);
+            echo "<li><b>";
+            echo $title . "</b>";
+            //$message = (isset($row['title']) ? $row['title'] : null);
+            if (go_get_loot_toggle( 'xp')){
+                $loot = (isset($row['$xp']) ? $row['$xp'] : null);
+                if ($loot > 0) {
+                    $name = go_get_loot_short_name('xp');
+
+                    echo " " . $loot . " " . $name;
+                }
+            }
+            if (go_get_loot_toggle( 'gold')){
+                $loot = (isset($row['gold']) ? $row['gold'] : null);
+                if ($loot > 0) {
+                    $name = go_get_loot_short_name('gold');
+                    echo " " . $loot . " " . $name;
+                }
+            }
+            if (go_get_loot_toggle( 'health')){
+                $loot = (isset($row['health']) ? $row['health'] : null);
+                if ($loot > 0) {
+                    $name = go_get_loot_short_name('health');
+                    echo " " . $loot . " " . $name;
+                }
+            }
+
+            //$drop = get_option($drop);
+
+
+
+            echo "</li>";
+        }
+        echo "</ul>";
+    }
+
 }
 
 
@@ -515,7 +560,7 @@ function go_display_visitor_content ( $custom_fields, $post_id, $task_name, $bad
     }
 
 
-    go_display_rewards( $custom_fields, $task_name, true  );
+    go_display_rewards( $custom_fields, $task_name, true  , null, 'top');
     go_due_date_mods ($custom_fields, false, $task_name );
 
     $task_is_locked = false;
@@ -647,7 +692,7 @@ function go_display_all_admin_content( $custom_fields, $is_logged_in, $task_name
 
     echo "<div id='go_all_content'>";
     go_hidden_blog_post();
-    go_display_rewards( $custom_fields, $task_name, true  );
+    go_display_rewards( $custom_fields, $task_name, true , $user_id, 'top');
     go_due_date_mods ($custom_fields, $is_logged_in, $task_name );
     //Print messages
     $i = 0;
@@ -753,23 +798,28 @@ function go_print_1_message ( $custom_fields, $i ){
 /**
  *Bonus Loot
  */
-function go_bonus_loot () {
+function go_bonus_loot ($custom_fields, $user_id) {
     $bonus_loot = strtolower( get_option( 'options_go_loot_bonus_loot_name' ) );
     $bonus_loot_uc = ucwords($bonus_loot);
     //$mystery_box_url =
     echo "
 		<div id='go_bonus_loot'>
     	<h4>{$bonus_loot_uc}</h4>
-        <p>Click the box to try and claim " . $bonus_loot . ".
+        <p>Click the box to try and claim " . $bonus_loot . ".</p>
         ";
     $url = plugin_dir_url((dirname(dirname(dirname(__FILE__)))));
     $url = $url . "media/mysterybox_inner_glow_sm.gif";
-    echo "<br><br>
-
-		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-		<img id='go_bonus_button' class='go_bonus_button'src=" . $url . " > 
-	";
-    echo "</p></div>";
+    echo "<div id='go_bonus_loot_container' style='display:flex;'>
+            <div id='go_bonus_loot_mysterybox'>
+                <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+                <img id='go_bonus_button' class='go_bonus_button'src=" . $url . " > 
+		    </div>
+		    <div id='go_bonus_loot_possibilites'>
+                Click the mystery box and you might find: ";
+    go_print_bonus_loot_possibilities($custom_fields,$user_id);
+    echo "</div>
+        </div>
+    </div>";
 }
 
 /**
@@ -834,7 +884,7 @@ function go_display_stage_badges($badges) {
  * @param $task_name
  * @param $top
  */
-function go_display_rewards($custom_fields, $task_name, $top = true ) {
+function go_display_rewards($custom_fields, $task_name, $top = true, $user_id, $position ) {
 
     $stage_count = $custom_fields['go_stages'][0];
 
@@ -846,7 +896,9 @@ function go_display_rewards($custom_fields, $task_name, $top = true ) {
     }
 
     if($top){
-        echo "This {$task_name} has:<br>{$stage_count} {$stage_name}<br>Where you can earn:";
+        echo "<p>This is a {$stage_count} {$stage_name} {$task_name}.</p>";
+
+        echo "<div><p style='margin-bottom: 0px;'>You can earn:</>";
     }
 
     if (get_option( 'options_go_loot_xp_toggle' )){
@@ -905,8 +957,9 @@ function go_display_rewards($custom_fields, $task_name, $top = true ) {
     if($health_loot > 200){
         $health_loot = 200;
     }
-    echo "<div class='go_task_rewards'>
-        <div class='go_task_reward'>";
+
+    echo "<div id='go_task_rewards'>
+        <div id='go_task_rewards_loot'>";
     if($xp_on){
         echo "{$xp_loot} {$xp_name} ";
     }
@@ -917,8 +970,16 @@ function go_display_rewards($custom_fields, $task_name, $top = true ) {
         echo "<br>{$health_loot} {$health_name} ";
     }
     echo "</div>";
+
     go_display_stage_badges($badges);
+
+    echo"<div id='go_bonus_loot_possibilites'>";
+    echo "Complete the task for a chance at a bonus of: ";
+    go_print_bonus_loot_possibilities($custom_fields,$user_id);
     echo "</div>";
+
+
+    echo "</div></div>";
 
 }
 

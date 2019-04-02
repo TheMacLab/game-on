@@ -10,6 +10,36 @@ Creation Date: 05/09/13
 
 //include('includes/lightbox/backend-lightbox.php');
 
+//https://stackoverflow.com/questions/25310665/wordpress-how-to-create-a-rewrite-rule-for-a-file-in-a-custom-plugin
+add_action('init', 'go_store_page');
+function go_store_page(){
+    //add_rewrite_rule( "store", 'index.php?query_type=user_blog&uname=$matches[1]', "top");
+    add_rewrite_rule( "store", 'index.php?store=true', "top");
+}
+
+/* Query Vars */
+add_filter( 'query_vars', 'go_store_register_query_var' );
+function go_store_register_query_var( $vars ) {
+    $vars[] = 'store';
+    return $vars;
+}
+
+/* Template Include */
+add_filter('template_include', 'go_store_template_include', 1, 1);
+function go_store_template_include($template)
+{
+    global $wp_query; //Load $wp_query object
+
+
+    $page_value = ( isset($wp_query->query_vars['store']) ? $wp_query->query_vars['store'] : false ); //Check for query var "blah"
+
+    if ($page_value && $page_value == "true") { //Verify "blah" exists and value is "true".
+        return plugin_dir_path(__FILE__).'templates/go_store_template.php'; //Load your template or file
+    }
+
+    return $template; //Load normal template when $page_value != "true" as a fallback
+}
+
 
 function go_make_store_new() {
     $html = get_option('go_store_html');

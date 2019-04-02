@@ -43,8 +43,15 @@ function go_flush_rewrites() {
     go_blog_tags();
     go_blogs();
     go_custom_rewrite();
+    go_reader_page();
+    go_map_page();
+    go_store_page();
     flush_rewrite_rules();
     go_custom_rewrite();
+    go_reader_page();
+    go_map_page();
+    go_store_page();
+
 }
 
 
@@ -86,6 +93,27 @@ function go_map_activate() {
         wp_insert_post( $my_post );
     }
 }
+
+/**
+ *
+ */
+function go_reader_activate() {
+    $my_post = array(
+        'post_title'    => 'Reader',
+        'post_content'  => '[go_make_reader]',
+        'post_status'   => 'publish',
+        'post_author'   => 1,
+        'post_type'   => 'page',
+    );
+
+    $page = get_page_by_path( "Reader" , OBJECT );
+
+    if ( ! isset($page) ){
+        wp_insert_post( $my_post );
+    }
+}
+
+
 
 
 /**

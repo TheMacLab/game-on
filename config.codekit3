@@ -4116,6 +4116,22 @@
 		"oAP": "/modules/feedback/src/functions.php",
 		"oF": 0
 		},
+	"/modules/feedback/src/public.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/modules/feedback/src/public.php",
+		"oF": 0
+		},
+	"/modules/feedback/src/templates/go_reader_template.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/modules/feedback/src/templates/go_reader_template.php",
+		"oF": 0
+		},
 	"/modules/map/includes.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -4146,6 +4162,14 @@
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/modules/map/src/public_ajax.php",
+		"oF": 0
+		},
+	"/modules/map/src/templates/go_map_template.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/modules/map/src/templates/go_map_template.php",
 		"oF": 0
 		},
 	"/modules/messages/includes.php": {
@@ -4252,6 +4276,14 @@
 		"oAP": "/modules/store/src/functions.php",
 		"oF": 0
 		},
+	"/modules/store/src/templates/go_store_template.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/modules/store/src/templates/go_store_template.php",
+		"oF": 0
+		},
 	"/modules/tasks/includes.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -4354,6 +4386,14 @@
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/modules/user_blogs/src/functions.php",
+		"oF": 0
+		},
+	"/modules/user_blogs/src/public_ajax.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/modules/user_blogs/src/public_ajax.php",
 		"oF": 0
 		},
 	"/modules/user_blogs/src/revisions.php": {

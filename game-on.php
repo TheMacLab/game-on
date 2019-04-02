@@ -5,10 +5,8 @@ Plugin URI: http://maclab.guhsd.net/game-on
 Description: Gamification tools for teachers.
 Author: Valhalla Mac Lab
 Author URI: https://github.com/TheMacLab/game-on/blob/master/README.md
-Version: 4.63
+Version: 4.64
 */
-
-
 
 add_filter('plupload_default_settings', function ($settings) {
     $settings['resize'] = array(
@@ -22,14 +20,13 @@ add_filter('plupload_default_settings', function ($settings) {
     return $settings;
 });
 
-
 $go_debug = false;//set to true when coding
 global $go_debug;
 
-$go_js_version = 4.63;
+$go_js_version = 4.64;
 global $go_js_version;
 
-$go_css_version = 4.63;
+$go_css_version = 4.64;
 global $go_css_version;
 
 ///////////////////////////////
@@ -38,7 +35,6 @@ global $go_css_version;
 //include_once('includes/acf/acf.php');
 include( 'includes/wp-frontend-media-master/frontend-media.php' );
 include_once('includes/wp-term-order/wp-term-order.php'); //try to load only on admin pages
-
 
 // include external js and css resources
 include_once('includes/go_enque_includes.php');//split this into public and admin
@@ -130,8 +126,9 @@ include_once('modules/user_blogs/includes.php');
 register_activation_hook( __FILE__, 'go_update_db_ms' );
 register_activation_hook( __FILE__, 'go_open_comments' );
 register_activation_hook( __FILE__, 'go_tsk_actv_activate' );
-register_activation_hook( __FILE__, 'go_map_activate' );
-register_activation_hook( __FILE__, 'go_store_activate' );
+//register_activation_hook( __FILE__, 'go_map_activate' );
+//register_activation_hook( __FILE__, 'go_reader_activate' );
+//register_activation_hook( __FILE__, 'go_store_activate' );
 register_activation_hook( __FILE__, 'go_media_access' );
 register_activation_hook( __FILE__, 'go_flush_rewrites' );
 

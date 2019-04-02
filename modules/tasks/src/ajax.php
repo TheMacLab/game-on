@@ -175,11 +175,11 @@ function go_task_change_stage() {
         ///
         //if task is complete, award badges and groups
         if ($button_type == 'complete') {
-            $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
+            $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);//badges awarded on this task
 
             $group_ids = (isset($custom_fields['go_groups'][0]) ?  $custom_fields['go_groups'][0] : null);
-            $badge_ids_terms = go_badges_task_chains($post_id, $user_id, $custom_fields);
-            if (!empty($badge_ids_terms)){
+            $badge_ids_terms = go_badges_task_chains($post_id, $user_id, $custom_fields);//badges awarded on this term
+            if (!empty($badge_ids_terms)){//combine the term and task badges before adding them
                 $badge_ids = unserialize($badge_ids);
                 if (!is_array($badge_ids)){
                     $badge_ids = array();
@@ -227,7 +227,18 @@ function go_task_change_stage() {
         if ($button_type == 'undo_last') {
             $badge_ids = (isset($custom_fields['go_badges'][0]) ?  $custom_fields['go_badges'][0] : null);
             $group_ids = (isset($custom_fields['go_groups'][0]) ?  $custom_fields['go_groups'][0] : null);
+            $badge_ids_terms = go_badges_task_chain_undo($post_id, $custom_fields, $user_id);
+
+            if (!empty($badge_ids_terms)){//combine the term and task badges before removing them
+                $badge_ids = unserialize($badge_ids);
+                if (!is_array($badge_ids)){
+                    $badge_ids = array();
+                }
+                $badge_ids = array_unique(array_merge($badge_ids, $badge_ids_terms));
+                $badge_ids = serialize($badge_ids);
+            }
         }
+
 
         go_update_stage_table ($user_id, $post_id, $custom_fields, $status, null, false, 'undo', null, $badge_ids, $group_ids );
         go_checks_for_understanding ($custom_fields, $status -1 , $status - 1 , $user_id, $post_id, null, null, null, false);
@@ -367,7 +378,7 @@ function go_badges_task_chains ($post_id, $user_id, $custom_fields ) {
         $is_chain_done = null;
         //if chain/pod has badge is on it
         if(!empty($badge) && $badge != null){
-            $is_chain_done = is_chain_done($chain_id, $user_id, $post_id);
+            $is_chain_done = is_chain_done($chain_id, $user_id, $post_id, true);
             //is chain done
             if ($is_chain_done){
                 //if chain is done, add badge to array
@@ -397,7 +408,7 @@ function go_badges_task_chains ($post_id, $user_id, $custom_fields ) {
                 //for each chain/pod //check if all chains are done
                 foreach ($children as $child) {
                     //check if each chain is done
-                    $is_chain_done = is_chain_done($child, $user_id, $post_id);
+                    $is_chain_done = is_chain_done($child, $user_id, $post_id, true);
                     //if it isn't done, stop checking the other chains.
                     if (!$is_chain_done) {
                         break;
@@ -414,76 +425,48 @@ function go_badges_task_chains ($post_id, $user_id, $custom_fields ) {
     }
 }
 
-function is_chain_done($chain_id, $user_id, $post_id){
-    $is_pod = get_term_meta($chain_id, "pod_toggle", true);
+function go_badges_task_chain_undo($post_id, $custom_fields, $user_id){
 
-    $args = array('tax_query' => array(array('taxonomy' => 'task_chains', 'field' => 'term_id', 'terms' => $chain_id,)), 'orderby' => 'meta_value_num', 'order' => 'ASC', 'posts_per_page' => -1, 'meta_key' => 'go-location_map_order_item', 'meta_value' => '', 'post_type' => 'tasks', 'post_mime_type' => '', 'post_parent' => '', 'author' => '', 'author_name' => '', 'post_status' => 'publish', 'suppress_filters' => true
-    );
+    $chain_id = (isset($custom_fields['go-location_map_loc'][0]) ?  $custom_fields['go-location_map_loc'][0] : null);
 
-    $go_task_objs = get_posts($args);
+    //if it is in a chain, check if it is done and remove badge to array if it is not done
+    if (!empty($chain_id) && $chain_id != null) {
+        $badges = array();
+        //Get the badge assigned
+        $badge = get_term_meta($chain_id, "pod_achievement", true);
 
-
-    if ($is_pod) {// it is a pod
-        $all_needed = get_term_meta($chain_id, "pod_all", true);
-
-        if ($all_needed) {
-
-            $num_needed = count($go_task_objs);
-        }else{
-            $num_needed = get_term_meta($chain_id, "pod_done_num", true);
-        }
-
-        $num_done = 0;
-        foreach ($go_task_objs as $go_task_obj) {//check if each task is done
-            $go_task_id = $go_task_obj->ID;
-            $status = get_post_status( $go_task_id );
-            if ($status !== 'publish'){
-                $num_done++;
-                continue; }//if task is not published then continue--go to next loop
-
-            $stage_count = intval(get_post_meta($go_task_id, 'go_stages', true));//total stages
-
-            $status = intval(go_get_status($go_task_id, $user_id));
-
-            if($post_id == $go_task_id){
-                $status++;
-            }
-
-            if ($stage_count == $status){
-                $is_done = true;
-            }else{
-                $is_done = false;
-            }
-
-            if ($is_done) {
-                $num_done++;
-            }
-            if ($num_done >= $num_needed) {
-                return true;//if enough are done, add badge to array
+        $is_chain_done = null;
+        //if chain/pod has badge is on it
+        if (!empty($badge) && $badge != null) {
+            $is_chain_done = is_chain_done($chain_id, $user_id, $post_id, false);
+            //is chain done
+            if (!$is_chain_done) {
+                //if chain is not done, add badge to array
+                $badges[] = $badge;
             }
         }
-    } else {//not pod
-        //is this the last item on chain that isn't optional
 
 
-        foreach ($go_task_objs as $go_task_obj){
-            $go_task_id = $go_task_obj->ID;
+    //if the chain isn't done, also remove map badge
+    if($is_chain_done == true || $is_chain_done == null) {
+        //chain is done, so get the parent chain
+        $term = get_term($chain_id, 'task_chains');
+        $termParent = ($term->parent == 0) ? $term : get_term($term->parent, 'task_chains');
+        $termParentID = $termParent->term_id;                                   //get the id of the map
 
-            $is_optional = get_post_meta($go_task_id, 'go-location_map_opt', true);
-            if (!$is_optional){
-                $stage_count = get_post_meta($go_task_id, 'go_stages', true);//total stages
+        $badge = get_term_meta($termParentID, "pod_achievement", true); //badge assigned to map
+        //if map has a badge on it
+        if (!empty($badge)) {
 
-                $status = go_get_status($go_task_id, $user_id);
+                $badges[] = $badge;
 
-                if ($stage_count == $status){
-                    return true;
-                }else{
-                    return false;
-                }
-            }
         }
+        //}
     }
-    return false;
-}
+    return $badges;
+    }
+};
+
+
 
 

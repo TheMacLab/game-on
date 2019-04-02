@@ -714,5 +714,203 @@ function go_stats_lite (user_id) {
 
 
 
+function go_date_loader(start, end, is_default) {
+    if (is_default == true){
+        start = moment();
+        end = moment();
+    }else{
+        jQuery('.go_update_clipboard').addClass("bluepulse");
+        jQuery('.go_update_clipboard').html('<span class="ui-button-text">Apply Filters<i class="fa fa-filter" aria-hidden="true"></i></span>');
+
+    }
+
+    jQuery('#datepicker_clipboard span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
 
+}
+
+function go_load_daterangepicker(){
+    jQuery('#datepicker_clipboard').daterangepicker({
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        "startDate": moment(),
+        "endDate": moment()
+    }, function(start, end, label) {
+        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        go_date_loader(start, end, false);
+    });
+
+    go_date_loader(null, null, true);
+}
+
+function go_make_select2_filter(taxonomy, my_value){
+
+    // Get saved data from sessionStorage
+    var value = localStorage.getItem('go_clipboard_' + my_value);
+    var value_name = localStorage.getItem('go_clipboard_' + my_value + '_name');
+
+
+    jQuery('#go_clipboard_' + taxonomy + '_select').select2({
+        ajax: {
+            url: ajaxurl, // AJAX URL is predefined in WordPress admin
+            dataType: 'json',
+            delay: 400, // delay in ms while typing when to perform a AJAX search
+            data: function (params) {
+
+                return {
+                    q: params.term, // search query
+                    action: 'go_make_taxonomy_dropdown_ajax', // AJAX action for admin-ajax.php
+                    taxonomy: taxonomy,
+                    is_hier: false
+                };
+
+
+            },
+            processResults: function( data ) {
+
+                jQuery("#go_clipboard_" + taxonomy + "_select").select2("destroy");
+                jQuery("#go_clipboard_" + taxonomy + "_select").children().remove();
+                jQuery("#go_clipboard_" + taxonomy + "_select").select2({
+                    data: data,
+                    placeholder: "Show All",
+                    allowClear: true}).val(value).trigger("change");
+                jQuery("#go_clipboard_" + taxonomy + "_select").select2("open");
+                return {
+                    results: data
+                };
+
+            },
+            cache: true
+        },
+        minimumInputLength: 0, // the minimum of symbols to input before perform a search
+        multiple: false,
+        placeholder: "Show All",
+        allowClear: true
+    });
+
+    if( value != null && value != 'null') {
+        // Fetch the preselected item, and add to the control
+        var valueSelect = jQuery('#go_clipboard_' + taxonomy + '_select');
+        // create the option and append to Select2
+        var option = new Option(value_name, value, true, true);
+        valueSelect.append(option).trigger('change');
+    }
+
+}
+
+function go_make_select2_cpt( my_div, cpt) {
+
+    jQuery(my_div).select2({
+        ajax: {
+            url: ajaxurl, // AJAX URL is predefined in WordPress admin
+            dataType: 'json',
+            delay: 400, // delay in ms while typing when to perform a AJAX search
+            data: function (params) {
+                return {
+                    q: params.term, // search query
+                    action: 'go_make_cpt_select2_ajax', // AJAX action for admin-ajax.php
+                    cpt: cpt
+                };
+            },
+            processResults: function( data ) {
+                //console.log("search results: " + data);
+                var options = [];
+                if ( data ) {
+
+                    // data is the array of arrays, and each of them contains ID and the Label of the option
+                    jQuery.each( data, function( index, text ) { // do not forget that "index" is just auto incremented value
+                        options.push( { id: text[0], text: text[1]  } );
+                    });
+
+                }
+                return {
+                    results: options
+                };
+            },
+            cache: false
+        },
+        minimumInputLength: 1, // the minimum of symbols to input before perform a search
+        multiple: true,
+        placeholder: "Show All"
+    });
+
+}
+
+
+function go_setup_reset_filter_button(){
+    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #go_task_select, #go_store_item_select').on('select2:select', function (e) {
+        // Do something
+        jQuery('.go_update_clipboard').addClass("bluepulse");
+        jQuery('.go_update_clipboard').html('<span class="ui-button-text">Apply Filters<i class="fa fa-filter" aria-hidden="true"></i></span>');
+    });
+    jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #go_task_select, #go_store_item_select').on('select2:unselect', function (e) {
+        // Do something
+        jQuery('.go_update_clipboard').addClass("bluepulse");
+        jQuery('.go_update_clipboard').html('<span class="ui-button-text">Apply Filters<i class="fa fa-filter" aria-hidden="true"></i></span>');
+    });
+
+    jQuery('.go_reset_clipboard').on("click", function () {
+        jQuery('#datepicker_clipboard span').html("");
+        jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #go_task_select, #go_store_item_select').val(null).trigger('change');
+        jQuery('.go_update_clipboard').addClass("bluepulse");
+        jQuery('.go_update_clipboard').html('<span class="ui-button-text">Apply Filters<i class="fa fa-filter" aria-hidden="true"></i></span>');
+        jQuery('#go_unmatched_toggle').prop('checked', false); // Uncheck
+    });
+}
+
+//this now saves to session data
+function go_save_clipboard_filters(is_reader){
+    //SESSION STORAGE
+    var section = jQuery( '#go_clipboard_user_go_sections_select' ).val();
+    var section_name = jQuery("#go_clipboard_user_go_sections_select option:selected").text();
+    var group = jQuery( '#go_clipboard_user_go_groups_select' ).val();
+    var group_name = jQuery("#go_clipboard_user_go_groups_select option:selected").text();
+    var badge = jQuery( '#go_clipboard_go_badges_select' ).val();
+    var badge_name = jQuery("#go_clipboard_go_badges_select option:selected").text();
+    if(!is_reader) {
+        var unmatched = document.getElementById("go_unmatched_toggle").checked;
+    }
+    console.log("b " + badge);
+
+
+    localStorage.setItem('go_clipboard_section', section);
+    localStorage.setItem('go_clipboard_badge', badge);
+    localStorage.setItem('go_clipboard_group', group);
+    localStorage.setItem('go_clipboard_section_name', section_name);
+    localStorage.setItem('go_clipboard_badge_name', badge_name);
+    localStorage.setItem('go_clipboard_group_name', group_name);
+    localStorage.setItem('go_clipboard_unmatched', unmatched);
+
+    /*
+    //THIS IS FOR SAVING AS OPTION IN DB WITH AJAX
+    //ajax to save the values
+    var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_save_filters;
+    var section = jQuery( '#go_clipboard_user_go_sections_select' ).val();
+    var group = jQuery( '#go_clipboard_user_go_groups_select' ).val();
+    var badge = jQuery( '#go_clipboard_go_badges_select' ).val();
+    var unmatched = document.getElementById("go_unmatched_toggle").checked;
+    //alert ("badge " + badge);
+    //console.log(jQuery( '#go_clipboard_user_go_sections_select' ).val());
+    jQuery.ajax({
+        type: "post",
+        url: MyAjax.ajaxurl,
+        data: {
+            _ajax_nonce: nonce,
+            action: 'go_clipboard_save_filters',
+            section: section,
+            badge: badge,
+            group: group,
+            unmatched: unmatched
+        },
+        success: function( res ) {
+            console.log("values saved");
+        }
+    });
+    */
+}

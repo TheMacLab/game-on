@@ -5,7 +5,7 @@
  * Prints menu and container for clipboard
  */
 function go_clipboard_menu() {
-    acf_form_head();
+    //acf_form_head();
 
     if ( ! current_user_can( 'manage_options' ) ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -23,9 +23,14 @@ function go_clipboard_menu() {
             </div>
             <div id="go_action_filters" style="padding: 0 20px 20px 20px; display:none;">
                 <h3>Action Filters</h3>
-                <span id="go_timestamp_filters" ><label for="datepicker_clipboard">Date </label><input id="datepicker_clipboard" type="search" class="datepicker" name="datepicker" value=""/></span>
-                <span id="go_store_filters"><br><label for="go_clipboard_store_item_select">Store Items </label><select id="go_store_item_select" class="js-store_data"></select></span>
-                <span id="go_task_filters"><br><label for="go_clipboard_task_select"><?php echo $task_name; ?> </label><select id="go_task_select" class="js-store_data"></select></span>
+
+                <div id="datepicker_clipboard" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                </div>
+
+                <span id="go_store_filters"><br><label for="go_clipboard_store_item_select">Store Items </label><select id="go_store_item_select" class="js-store_data" style="width:250px;"></select></span>
+                <span id="go_task_filters"><br><label for="go_clipboard_task_select"><?php echo $task_name; ?> </label><select id="go_task_select" class="js-store_data" style="width:250px;"></select></span>
                 <span id="go_show_unmatched" ><br><label for="go_unmatched_toggle">Show Unmatched Users </label><input id="go_unmatched_toggle" type="checkbox" class="checkbox" name="unmatched"><span class="tooltip" data-tippy-content="Show a minimum of one row per user. This is useful to see who has not done something, in addition to those who have."><span><i class="fa fa-info-circle"></i></span> </span></span>
             </div>
             <div id="go_leaderboard_update_button" style="padding:20px; align-self: flex-end;">

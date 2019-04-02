@@ -142,11 +142,12 @@ function go_buy_item() {
         //go_update_actions($user_id, 'message', null , 1, null, null, $result, null, null, null, null, $xp, $gold, $health, $badge_ids, $group_ids, false);
         //update_user_option($user_id, 'go_new_messages');
     }
+    $time = current_time('m-d-Y g:i A');
 
     echo "<script> new Noty({
     type: 'info',
     layout: 'topRight',
-    text: '<h2>Receipt</h2><br>Item: " . addslashes($the_title) . " <br>Quantity: " . addslashes($qty) . "',
+    text: '<h2>Receipt</h2><br>Item: " . addslashes($the_title) . " <br>Quantity: " . addslashes($qty) . " <br>Time: " . addslashes($time) . "',
     theme: 'relax',
     visibilityControl: true,
     callbacks: {
@@ -446,7 +447,6 @@ function go_the_lb_ajax() {
     die;
 
 }
-
 
 function go_get_purchase_count($post_id, $user_id, $custom_fields) {
     global $wpdb;

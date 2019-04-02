@@ -74,6 +74,10 @@ function go_blog_opener(){
 
 }
 
+
+//this needs to change because blogs that are attached to quests should not have a trash button
+//this should check if attached to a quest and give a message to go undo the task.
+//only delete if not attached to a quest.
 function go_blog_trash(){
     global $wpdb;
     check_ajax_referer( 'go_blog_trash' );

@@ -153,8 +153,8 @@ function go_set_options_autoload(){
         'options_go_loot_bonus_loot_toggle',
         'options_go_loot_bonus_loot_name',
 
-        'options_go_seat_name',
-        'options_go_seat_number',
+        'options_go_seats_name',
+        'options_go_seats_number',
 
         'options_go_video_width_unit',
         'options_go_video_width_pixels',
@@ -229,13 +229,14 @@ function go_install_data ($reset = false) {
 
         'options_go_loot_xp_levels_name_singular' => 'Level',
         'options_go_loot_xp_levels_name_plural' => 'Levels',
-        'options_go_loot_xp_levels_growth' => '1.5',
+        'options_go_loot_xp_levels_growth' => '5',
+        'options_go_loot_xp_levels_go_first_level_up' => 50,
 
         'options_go_loot_bonus_loot_toggle' => 1,
         'options_go_loot_bonus_loot_name' => 'Bonus Loot',
 
-        'options_go_seat_name' => 'Seat',
-        'options_go_seat_number' => '40',
+        'options_go_seats_name' => 'Seat',
+        'options_go_seats_number' => '40',
 
         'options_go_video_width_unit' => 'px',
         'options_go_video_width_pixels' => '500',

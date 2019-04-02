@@ -10,19 +10,34 @@ $js_in_footer = true;
  */
 // JS
 
+
+
 $go_select2_js_url       = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js';
-$go_datatables_js_url    = 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js';
+
+//Datatables
+//$go_datatables_js_url    = 'https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/b-print-1.5.6/cr-1.5.0/r-2.2.2/sl-1.3.0/datatables.min.js';
+$go_datatables_js_url    = 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.js';
+
 $go_datatables_ns_js_url = 'https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js';
-$go_pdfmake_js_url       = 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.38/pdfmake.min.js';
-$go_pdfmake_fonts_js_url  = 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.38/vfs_fonts.js';
+$go_pdfmake_js_url       = 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js';
+$go_pdfmake_fonts_js_url  = 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js';
+//$go_datatables_css_url   = 'https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css';
+$go_datatables_css_url   = 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/b-print-1.5.6/cr-1.5.0/r-2.2.2/sl-1.3.0/datatables.min.css';
+
+
+
 $go_featherlight_js_url  = 'https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js';
 $go_noty_js_url          = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js'; 
 $go_sweetalert_js_url    = 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js';
 $go_tippy_js_url		= 'https://unpkg.com/tippy.js@3/dist/tippy.all.min.js';
 
+//DateRangePicker
+$go_moment_js_url           = 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js';
+$go_daterangepicker_js_url  = 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js';
+$go_daterangepicker_css_url = 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css';
+
 // CSS
 $go_select2_css_url      = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css';
-$go_datatables_css_url   = 'https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css';
 $go_featherlight_css_url = 'https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css';
 $go_noty_css_url         = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css';
 $font_awesome_url = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
@@ -38,14 +53,33 @@ $font_awesome_url = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/f
  * to the includes() function. 
  *
  */
-function go_admin_includes () {
+/**
+ * @param $hook
+ */
+function go_admin_includes ($hook) {
 
     // Bring variables from beginning of file into function scope
     global $js_in_footer;
     global $go_select2_js_url, $go_datatables_js_url, $go_datatables_ns_js_url,
        $go_pdfmake_js_url, $go_pdfmake_fonts_js_url, $go_featherlight_js_url,
        $go_noty_js_url, $go_sweetalert_js_url, $go_select2_css_url,
-       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $go_tippy_js_url, $font_awesome_url;
+       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $go_tippy_js_url, $font_awesome_url, $go_moment_js_url, $go_daterangepicker_js_url, $go_daterangepicker_css_url;
+
+    /**
+     * Date Range Picker
+     * http://www.daterangepicker.com/
+     */
+    if ($hook == 'toplevel_page_go_clipboard'){
+        wp_register_script( 'go_moment_js_url', $go_moment_js_url, array( 'jquery' ),'v1.1', false);
+        wp_enqueue_script( 'go_moment_js_url' );
+
+        wp_register_script( 'go_daterangepicker_js_url', $go_daterangepicker_js_url, array( 'jquery' ),'v1.1', false);
+        wp_enqueue_script( 'go_daterangepicker_js_url' );
+
+        wp_register_style( 'go_daterangepicker_css_url', $go_daterangepicker_css_url, null, 1.112);
+        wp_enqueue_style( 'go_daterangepicker_css_url' );
+    }
+
 
     /**
      * jQuery theme
@@ -84,15 +118,17 @@ function go_admin_includes () {
      */
 
     //wp_register_script( 'go_datatables', plugin_dir_url( __FILE__ ).'DataTables/datatables.min.js', array( 'jquery' ),'v1', false);
-    wp_register_script( 'go_datatables', 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.js', array( 'jquery' ),'v1.1', false);
+    //wp_register_script( 'go_datatables', 'https://cdn.datatables.net/v/ju/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.1/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.js', array( 'jquery' ),'v1.1', false);
+    wp_register_script( 'go_datatables', $go_datatables_js_url, array( 'jquery' ),'v1.1', false);
+
     wp_enqueue_script( 'go_datatables' );
     // Natural sort plugin
     // https://datatables.net/plug-ins/sorting/natural
     wp_register_script( 'go_natural_sort', $go_datatables_ns_js_url, array( 'jquery' ), 'v1.7.13', $js_in_footer );
     wp_enqueue_script( 'go_natural_sort' );
 
-    wp_register_style( 'go_datatables_css', $go_datatables_css_url );
-    wp_enqueue_style( 'go_datatables_css' );
+    wp_register_style( 'go_datatables_css_url', $go_datatables_css_url );
+    wp_enqueue_style( 'go_datatables_css_url' );
 
 
     /**
@@ -140,6 +176,7 @@ function go_admin_includes () {
 
 /**
  * Define what scripts/styles need to be enqueued on the public side.
+ * @param $hook
  */
 function go_includes () {
 
@@ -148,7 +185,19 @@ function go_includes () {
     global $go_select2_js_url, $go_datatables_js_url, $go_datatables_ns_js_url,
        $go_pdfmake_js_url, $go_pdfmake_fonts_js_url, $go_featherlight_js_url,
        $go_noty_js_url, $go_sweetalert_js_url, $go_select2_css_url,
-       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $font_awesome_url, $go_tippy_js_url;
+       $go_datatables_css_url, $go_featherlight_css_url, $go_noty_css_url, $font_awesome_url, $go_tippy_js_url,
+           $go_moment_js_url, $go_daterangepicker_js_url, $go_daterangepicker_css_url;
+
+
+        wp_register_script( 'go_moment_js_url', $go_moment_js_url, array( 'jquery' ),'v1.1', false);
+        wp_enqueue_script( 'go_moment_js_url' );
+
+        wp_register_script( 'go_daterangepicker_js_url', $go_daterangepicker_js_url, array( 'jquery' ),'v1.1', false);
+        wp_enqueue_script( 'go_daterangepicker_js_url' );
+
+        wp_register_style( 'go_daterangepicker_css_url', $go_daterangepicker_css_url, null, 1.112);
+        wp_enqueue_style( 'go_daterangepicker_css_url' );
+
 
 
     wp_enqueue_media();

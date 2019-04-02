@@ -92,31 +92,52 @@ function go_return_health( $user_id ) {
     return $health;
 }
 
+function go_get_loot_toggle ( $loot_type ){
+
+    if (get_option( 'options_go_loot_' . $loot_type . '_toggle' )){
+        $is_on = true;
+    }else{
+        $is_on = false;
+    }
+    return $is_on;
+}
+
+function go_get_loot_name( $loot_type){
+        $name = get_option('options_go_loot_' . $loot_type . '_name');
+        return $name;
+}
+
+function go_get_loot_short_name( $loot_type){
+    $name = get_option('options_go_loot_' . $loot_type . '_abbreviation');
+    return $name;
+}
+
+//not used
 function go_display_points( $points ) {
 
     $prefix = get_option( 'go_points_prefix' );
     $suffix = get_option( 'go_points_suffix' );
     return "{$prefix} {$points} {$suffix}";
 }
-
+//not used
 function go_display_currency( $currency ) {
     $prefix = get_option( 'go_currency_prefix' );
     $suffix = get_option( 'go_currency_suffix' );
     return "{$prefix} {$currency} {$suffix}";
 }
-
+//not used
 function go_display_bonus_currency( $bonus_currency ) {
     $prefix = get_option( 'go_bonus_currency_prefix' );
     $suffix = get_option( 'go_bonus_currency_suffix' );
     return "{$prefix} {$bonus_currency} {$suffix}";
 }
-
+//not_used
 function go_display_penalty( $penalty ) {
     $prefix = get_option( 'go_penalty_prefix' );
     $suffix = get_option( 'go_penalty_suffix' );
     return "{$prefix} {$penalty} {$suffix}";
 }
-
+//not_used
 function go_display_minutes( $minutes ) {
     $prefix = get_option( 'go_minutes_prefix' );
     $suffix = get_option( 'go_minutes_suffix' );
@@ -197,7 +218,7 @@ function go_return_badge_count( $user_id ) {
 function go_get_health_mod ($user_id){
     //set the health mod
     $is_logged_in = ! empty( $user_id ) && is_user_member_of_blog( $user_id ) ? true : false;
-    $health_toggle = get_option('options_go_loot_health_toggle');
+    $health_toggle = go_get_loot_toggle( 'health' );
     if ($health_toggle && $is_logged_in) {
         //get current health mod from totals table
         $health_mod = go_get_user_loot($user_id, 'health') * .01;
@@ -518,6 +539,25 @@ function go_update_stage_table ($user_id, $post_id, $custom_fields, $status, $bo
 					WHERE uid = %d and source_id  = %d and stage = %d 
 					ORDER BY id DESC LIMIT 1", $user_id, $post_id, $status));
 
+                if (is_serialized($badges)) {
+                        $badges = unserialize($badges);
+                }
+                if (!is_array($badges)) {
+                    $badges = array();
+                }
+
+
+                if (!empty($badge_ids)){//combine the term and task badges before removing them
+                    $badge_ids = unserialize($badge_ids);
+                    if (!is_array($badge_ids)){
+                        $badge_ids = array();
+                    }
+                    $badges = array_unique(array_merge($badge_ids, $badges));
+
+                }
+                $badges = serialize($badges);
+
+
                 $badge_ids = go_remove_badges($badges, $user_id, true);
 
                 $badge_ids = serialize($badge_ids);
@@ -663,6 +703,7 @@ function go_remove_badges ($badge_ids, $user_id, $notify = false) {
         }
     }
 }
+
 
 /**
  * @param $group_ids
@@ -1286,6 +1327,84 @@ function go_add_user_to_totals_table($user_id){
     }
 }
 
+function go_get_bonus_loot_rows($custom_fields, $health_mod = false, $user_id = 'guest'){
+
+
+    if (!$health_mod) {//if the health mod was not passed, get it
+        $health_mod = 1;//default mod
+        $health_toggle = get_option('options_go_loot_health_toggle');
+        if ($health_toggle) {
+            if ($user_id != 'guest') {//if not a guest user
+                $health_mod = go_get_health_mod($user_id);//get this users health level
+            }
+        }
+    }
+
+    //LOGIC
+    //get bonus radio
+    //if default, get default values
+    //if custom, get custom
+    //return rows found as values array
+
+    $bonus_radio =(isset($custom_fields['bonus_loot_toggle'][0]) ? $custom_fields['bonus_loot_toggle'][0] : null);//is bonus set default, custom or off
+
+
+
+    if ($bonus_radio === true || $bonus_radio == "default") {
+        if ($bonus_radio === true) {
+            $key_prefix = 'bonus_loot_go_bonus_loot_';
+            $row_count = (isset($custom_fields['bonus_loot_go_bonus_loot'][0]) ? $custom_fields['bonus_loot_go_bonus_loot'][0] : null);//number of loot drops
+        }else if ($bonus_radio == "default"){
+            $key_prefix = 'options_go_loot_bonus_loot_';
+            $row_count = get_option('options_go_loot_bonus_loot');
+        }
+
+
+        $values = array();
+        if (!empty($row_count)) {//if there are drop rows
+            for ($i = 0; $i < $row_count; $i++) {//get the values for each row
+                $message = $key_prefix . $i . "_message";
+                $title = $key_prefix . $i . "_title";
+                $xp = $key_prefix . $i . "_defaults_xp";
+                $gold = $key_prefix . $i . "_defaults_gold";
+                $health = $key_prefix . $i . "_defaults_health";
+                $drop = $key_prefix . $i . "_defaults_drop_rate";
+
+                if ($bonus_radio === true) {
+                    $title = (isset($custom_fields[$title][0]) ? $custom_fields[$title][0] : null);
+                    $message = (isset($custom_fields[$message][0]) ? $custom_fields[$message][0] : null);
+                    $xp = (isset($custom_fields[$xp][0]) ? $custom_fields[$xp][0] : null) * $health_mod;
+                    $gold = (isset($custom_fields[$gold][0]) ? $custom_fields[$gold][0] : null) * $health_mod;
+                    $health = (isset($custom_fields[$health][0]) ? $custom_fields[$health][0] : null);
+                    $drop = (isset($custom_fields[$drop][0]) ? $custom_fields[$drop][0] : null);
+                }else if($bonus_radio == "default"){
+                    $title = get_option($title);
+                    $message = get_option($message);
+                    $xp = get_option($xp);;
+                    $gold = get_option($gold);
+                    $health = get_option($health);
+                    $drop = get_option($drop);
+                }
+
+                $row_val = array('title' => $title, 'message' => $message, 'xp' => $xp, 'gold' => $gold, 'health' => $health, 'drop' => $drop);
+
+                $values[] = $row_val;//stuff each row in to an array
+
+            }
+        }
+        //sort by drop rate
+        $bonus_option = array();
+        foreach ($values as $key => $row) {
+            $bonus_option[$key] = $row['drop'];
+        }
+        array_multisort($bonus_option, SORT_ASC, $values);
+
+        return $values;
+    }
+    return array();
+}
+
+
 
 /**
  * @param $post_id
@@ -1299,19 +1418,20 @@ function go_update_bonus_loot ($post_id){
 
     $go_actions_table_name = "{$wpdb->prefix}go_actions";
 
+    //check to see if the bonus has been attempted by this user on this task before.  You can only get 1 bonus per task.
     $previous_bonus_attempt = $wpdb->get_var($wpdb->prepare("SELECT result 
                 FROM {$go_actions_table_name} 
                 WHERE source_id = %d AND uid = %d AND action_type = %s
                 ORDER BY id DESC LIMIT 1", $post_id, $user_id, 'bonus_loot'));
+
     //ob_start();
     if(!empty($previous_bonus_attempt)) {
         //if(0==1){
-
         go_noty_message_generic('error', '', "You have previously attempted this bonus.  No award given.");
 
 
     }else {
-        //if health toggle is on, get health
+        //if health toggle is on, get health.  Health affects the bonus.
         $health_toggle = get_option('options_go_loot_health_toggle');
         if ($health_toggle) {
 
@@ -1324,6 +1444,7 @@ function go_update_bonus_loot ($post_id){
 
         $custom_fields = get_post_custom($post_id);
 
+        /*
         $row_count = (isset($custom_fields['bonus_loot_go_bonus_loot'][0]) ? $custom_fields['bonus_loot_go_bonus_loot'][0] : null);//number of loot drops
         $values = array();
         if (!empty($row_count)) {//if there are drop rows
@@ -1354,6 +1475,10 @@ function go_update_bonus_loot ($post_id){
             $bonus_option[$key] = $row['drop'];
         }
         array_multisort($bonus_option, SORT_ASC, $values);
+        */
+
+        $values = go_get_bonus_loot_rows($custom_fields, $health_mod, $user_id);
+
 
         //add all the drop rates together
         //if greater than 100, treat them as ratios
