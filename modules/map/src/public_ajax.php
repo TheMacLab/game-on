@@ -309,7 +309,7 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
 
 
 
-        echo "</ul></div>";
+        echo "</ul></div></div>";
     }
     if ($reload == false) {echo "</div>";}
 }
