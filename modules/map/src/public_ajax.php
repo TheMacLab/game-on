@@ -61,8 +61,8 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
     }
 
     if ($reload == false) {echo "<div id='mapwrapper' style='padding: 30px;'>";}
-    echo "<div id='loader-wrapper' style='display:none; height: 300px; width: 100%; padding: 30px; background-color: white;'>
-                <div id='loader' style='margin:auto;'>
+    echo "<div id='loader' style='display:none; height: 300px; width: 100%; padding: 30px; background-color: white;'>
+                <div id='loader_inside' style='margin:auto;'>
                     Loading . . .
                 </div>
           </div>
