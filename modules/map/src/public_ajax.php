@@ -60,16 +60,16 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
         }
     }
 
-    if ($reload == false) {echo "<div id='mapwrapper' style='padding: 30px;'>";}
+    if ($reload == false) {echo "<div id='mapwrapper' style='padding: 30px; overflow: auto;'>";}
     echo "<div id='loader' style='display:none; height: 300px; width: 100%; padding: 30px; background-color: white;'>
                 <div id='loader_inside' style='margin:auto;'>
                     Loading . . .
                 </div>
           </div>
-            <div id='maps' data-mapid='$last_map_id'>";
+            <div id='maps' data-mapid='$last_map_id' style='overflow: auto;'>";
     if(!empty($last_map_id)){
 
-        echo 	"<div id='map_$last_map_id' class='map'>
+        echo 	"<div id='map_$last_map_id' class='map' style='overflow: auto;'>
 				<ul class='primaryNav'>
 				<li class='ParentNav'><p>$last_map_object->name</p></li>";
 
@@ -309,8 +309,9 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
 
 
 
-        echo "</ul></div></div>";
+        echo "</ul></div>";
     }
+    echo "</div>";
     if ($reload == false) {echo "</div>";}
 }
 
