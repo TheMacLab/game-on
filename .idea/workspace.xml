@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acf-json/group_5abc5718c2c1b.json" beforeDir="false" afterPath="$PROJECT_DIR$/acf-json/group_5abc5718c2c1b.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/admin_bar/src/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/admin_bar/src/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/map/src/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/map/src/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/map/src/templates/go_map_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/map/src/templates/go_map_template.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/store/src/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/store/src/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/store/src/templates/go_store_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/store/src/templates/go_store_template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/map/src/public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/map/src/public_ajax.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +46,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/store/src/templates/go_store_template.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
@@ -117,14 +111,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/map/src/public_ajax.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="68" selection-start-line="19" selection-start-column="68" selection-end-line="19" selection-end-column="68" />
+            <state relative-caret-position="110">
+              <caret line="63" column="99" selection-start-line="63" selection-start-column="99" selection-end-line="63" selection-end-column="99" />
               <folding>
-                <element signature="n#go_make_single_map#0;n#!!top" />
-                <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#a#0;n#li#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#a#0;n#li#0;n#!!top" expanded="true" />
@@ -144,8 +138,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/map/src/templates/go_map_template.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="22" selection-start-line="22" selection-end-line="23" selection-end-column="55" />
+            <state relative-caret-position="285">
+              <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
               <folding>
                 <element signature="n#style#0;n#h1#0;n#!!top" expanded="true" />
               </folding>
@@ -262,7 +256,6 @@
         <option value="$PROJECT_DIR$/modules/feedback/includes.php" />
         <option value="$PROJECT_DIR$/modules/clipboard/src/ajax.php" />
         <option value="$PROJECT_DIR$/modules/feedback/src/ajax.php" />
-        <option value="$PROJECT_DIR$/modules/map/src/public_ajax.php" />
         <option value="$PROJECT_DIR$/core/src/public_ajax/go_locks.php" />
         <option value="$PROJECT_DIR$/modules/tasks/src/ajax.php" />
         <option value="$PROJECT_DIR$/modules/user_blogs/includes.php" />
@@ -289,6 +282,7 @@
         <option value="$PROJECT_DIR$/modules/map/src/templates/go_map_template.php" />
         <option value="$PROJECT_DIR$/modules/admin_bar/src/functions.php" />
         <option value="$PROJECT_DIR$/modules/store/src/templates/go_store_template.php" />
+        <option value="$PROJECT_DIR$/modules/map/src/public_ajax.php" />
       </list>
     </option>
   </component>
@@ -611,24 +605,24 @@
       <workItem from="1551687878192" duration="5314000" />
       <workItem from="1552368042332" duration="265000" />
       <workItem from="1553426029331" duration="110360000" />
-      <workItem from="1553974545455" duration="90584000" />
+      <workItem from="1553974545455" duration="91700000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3922252000" />
+    <option name="totallyTimeSpent" value="3923368000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="26" width="1588" height="998" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18887451" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18887451" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="0" sideWeight="0.49939686" visible="true" weight="0.3268817" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.70892626" weight="0.30022076" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" sideWeight="0.70892626" visible="true" weight="0.30022076" />
       <window_info anchor="bottom" id="Message" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.725097" visible="true" weight="0.46136865" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.725097" weight="0.46136865" />
       <window_info anchor="bottom" id="Run" order="4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -1970,28 +1964,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/map/src/public_ajax.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="68" selection-start-line="19" selection-start-column="68" selection-end-line="19" selection-end-column="68" />
-          <folding>
-            <element signature="n#go_make_single_map#0;n#!!top" />
-            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#li#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#a#0;n#li#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_single_map_link#0;n#!!top" />
-            <element signature="n#go_map_badge#0;n#!!top" />
-            <element signature="n#go_map_quest_badge#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#go_make_map_dropdown#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/store/src/functions.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1">
@@ -2047,22 +2019,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/map/src/templates/go_map_template.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="22" selection-start-line="22" selection-end-line="23" selection-end-column="55" />
-          <folding>
-            <element signature="n#style#0;n#h1#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/store/src/templates/go_store_template.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
           <folding>
             <element signature="n#style#0;n#h1#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/map/src/templates/go_map_template.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+          <folding>
+            <element signature="n#style#0;n#h1#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/map/src/public_ajax.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="63" column="99" selection-start-line="63" selection-start-column="99" selection-end-line="63" selection-end-column="99" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#a#0;n#li#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#a#0;n#li#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#go_single_map_link#0;n#!!top" />
+            <element signature="n#go_map_badge#0;n#!!top" />
+            <element signature="n#go_map_quest_badge#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#go_make_map_dropdown#0;n#!!top" />
           </folding>
         </state>
       </provider>
