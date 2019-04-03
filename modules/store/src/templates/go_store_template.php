@@ -19,7 +19,9 @@
  */
 
 get_header();
-echo "<h1 style='padding-top:30px;'>Store</h1>";
+
+$store_title = get_option( 'options_go_store_title');
+echo "<h1 style='padding-top:30px;'>{$store_title}</h1>";
 go_make_store_new();
 
 

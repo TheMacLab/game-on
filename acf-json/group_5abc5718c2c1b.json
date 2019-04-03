@@ -240,8 +240,35 @@
                 },
                 {
                     "key": "field_5abc8438b1d7b",
-                    "label": "Name",
+                    "label": "Menu Bar Name",
                     "name": "name",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5abc8feb65b24",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Store",
+                    "placeholder": "Store",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5ca452be4cc48",
+                    "label": "Page Title",
+                    "name": "title",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -580,6 +607,33 @@
                     "ui_off_text": "Off"
                 },
                 {
+                    "key": "field_5ca452f44cc49",
+                    "label": "Menu Bar Name",
+                    "name": "name",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5abc90cb65b25",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Map",
+                    "placeholder": "Map",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
                     "key": "field_5ac980f30f163",
                     "label": "Title",
                     "name": "title",
@@ -607,6 +661,25 @@
                     "maxlength": ""
                 },
                 {
+                    "key": "field_5b06186083d19",
+                    "label": "Map Link",
+                    "name": "map_link",
+                    "type": "text",
+                    "instructions": "Example:\r\nto redirect to http:\/\/mysite.com\/map\r\nyou only enter \"map”",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "map",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
                     "key": "field_5b017d76920ec",
                     "label": "Default Map",
                     "name": "default",
@@ -627,25 +700,6 @@
                     "load_terms": 0,
                     "return_format": "id",
                     "multiple": 0
-                },
-                {
-                    "key": "field_5b06186083d19",
-                    "label": "Map Link",
-                    "name": "map_link",
-                    "type": "text",
-                    "instructions": "Example:\r\nto redirect to http:\/\/mysite.com\/map\r\nyou only enter \"map”",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "map",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
                 }
             ]
         },
@@ -2132,5 +2186,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1553841526
+    "modified": 1554273169
 }
