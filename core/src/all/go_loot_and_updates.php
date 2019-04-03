@@ -1350,8 +1350,8 @@ function go_get_bonus_loot_rows($custom_fields, $health_mod = false, $user_id = 
 
 
 
-    if ($bonus_radio === true || $bonus_radio == "default") {
-        if ($bonus_radio === true) {
+    if ($bonus_radio == "1" || $bonus_radio == "default") {
+        if ($bonus_radio == "1") {
             $key_prefix = 'bonus_loot_go_bonus_loot_';
             $row_count = (isset($custom_fields['bonus_loot_go_bonus_loot'][0]) ? $custom_fields['bonus_loot_go_bonus_loot'][0] : null);//number of loot drops
         }else if ($bonus_radio == "default"){
@@ -1370,7 +1370,7 @@ function go_get_bonus_loot_rows($custom_fields, $health_mod = false, $user_id = 
                 $health = $key_prefix . $i . "_defaults_health";
                 $drop = $key_prefix . $i . "_defaults_drop_rate";
 
-                if ($bonus_radio === true) {
+                if ($bonus_radio == "1") {
                     $title = (isset($custom_fields[$title][0]) ? $custom_fields[$title][0] : null);
                     $message = (isset($custom_fields[$message][0]) ? $custom_fields[$message][0] : null);
                     $xp = (isset($custom_fields[$xp][0]) ? $custom_fields[$xp][0] : null) * $health_mod;
@@ -1401,6 +1401,7 @@ function go_get_bonus_loot_rows($custom_fields, $health_mod = false, $user_id = 
 
         return $values;
     }
+
     return array();
 }
 

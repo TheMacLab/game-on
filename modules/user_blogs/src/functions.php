@@ -326,9 +326,9 @@ function go_blog_post($blog_post_id, $check_for_understanding = false, $with_fee
     if($text_toggle) {
         echo $content;
     }
-    if (($current_user == $author_id || $is_admin) && (empty($go_blog_task_id))) {//if admin or current user and this was
+    if ($current_user == $author_id || $is_admin) {//if admin or current user and this was
         echo "<button class='go_blog_opener' blog_post_id ='{$blog_post_id}' data-check_for_understanding ='{$check_for_understanding}'>edit post</button>";
-        if ($current_user == $author_id && $check_for_understanding == false) {
+        if ($current_user == $author_id && $check_for_understanding == false  && empty($go_blog_task_id)) {
             echo '<span class="go_blog_trash" blog_post_id ="' . $blog_post_id . '"><i class="fa fa-trash fa-2x"></i></span>';
         }
     }

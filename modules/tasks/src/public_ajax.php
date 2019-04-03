@@ -886,6 +886,8 @@ function go_display_stage_badges($badges) {
  */
 function go_display_rewards($custom_fields, $task_name, $top = true, $user_id, $position ) {
 
+
+    $task_name = ucwords($task_name);
     $stage_count = $custom_fields['go_stages'][0];
 
     if ($stage_count > 1){
@@ -973,11 +975,16 @@ function go_display_rewards($custom_fields, $task_name, $top = true, $user_id, $
 
     go_display_stage_badges($badges);
 
-    echo"<div id='go_bonus_loot_possibilites'>";
-    echo "Complete the task for a chance at a bonus of: ";
-    go_print_bonus_loot_possibilities($custom_fields,$user_id);
-    echo "</div>";
+$bonus_radio =(isset($custom_fields['bonus_loot_toggle'][0]) ? $custom_fields['bonus_loot_toggle'][0] : null);//is bonus set default, custom or off
 
+
+
+    if ($bonus_radio == "1" || $bonus_radio == "default") {
+        echo "<div id='go_bonus_loot_possibilites'>";
+        echo "Complete the {$task_name} for a chance at a bonus of: ";
+        go_print_bonus_loot_possibilities($custom_fields, $user_id);
+        echo "</div>";
+    }
 
     echo "</div></div>";
 

@@ -538,7 +538,7 @@ function go_clipboard_store_datatable(refresh) {
                             "data": function(d){
 
                                 //d.user_id = jQuery('#go_stats_hidden_input').val();
-                                d.date = jQuery('#datepicker_clipboard span').html();
+                                d.date = jQuery('#go_datepicker').html();
                                 d.section = jQuery('#go_clipboard_user_go_sections_select').val();
                                 d.group = jQuery('#go_clipboard_user_go_groups_select').val();
                                 d.badge = jQuery('#go_clipboard_go_badges_select').val();
@@ -665,7 +665,7 @@ function go_clipboard_messages_datatable(refresh) {
                             "url": MyAjax.ajaxurl + '?action=go_clipboard_messages_dataloader_ajax',
                             "data": function(d){
                                 //d.user_id = jQuery('#go_stats_hidden_input').val();
-                                d.date = jQuery('#datepicker_clipboard span').html();
+                                d.date = jQuery('#go_datepicker').html();
                                 d.section = jQuery('#go_clipboard_user_go_sections_select').val();
                                 d.group = jQuery('#go_clipboard_user_go_groups_select').val();
                                 d.badge = jQuery('#go_clipboard_go_badges_select').val();
@@ -776,7 +776,7 @@ function go_clipboard_activity_datatable(refresh) {
 
         var nonce = GO_CLIPBOARD_DATA.nonces.go_clipboard_activity;
 
-        console.log("date: " + jQuery('#datepicker_clipboard span').html());
+        console.log("date: " + jQuery('#go_datepicker').html());
         console.log("section: " + jQuery('#go_clipboard_user_go_sections_select').val());
         console.log("group: " + jQuery('#go_clipboard_user_go_groups_select').val());
         console.log("badges: " + jQuery('#go_clipboard_go_badges_select').val());
@@ -790,7 +790,7 @@ function go_clipboard_activity_datatable(refresh) {
             data: {
                 _ajax_nonce: nonce,
                 action: 'go_clipboard_activity',
-                date: jQuery('#datepicker_clipboard span').html()
+                date: jQuery('#go_datepicker').html()
             },
             success: function( res ) {
                 //console.log("success");
@@ -804,7 +804,7 @@ function go_clipboard_activity_datatable(refresh) {
                             "url": MyAjax.ajaxurl + '?action=go_clipboard_activity_dataloader_ajax',
                             "data": function(d){
                                 //d.user_id = jQuery('#go_stats_hidden_input').val();
-                                d.date = jQuery('#datepicker_clipboard span').html();
+                                d.date = jQuery('#go_datepicker').html();
                                 d.section = jQuery('#go_clipboard_user_go_sections_select').val();
                                 d.group = jQuery('#go_clipboard_user_go_groups_select').val();
                                 d.badge = jQuery('#go_clipboard_go_badges_select').val();

@@ -353,6 +353,7 @@ function go_close_single_history(){
     jQuery("#go_task_list").show();
     jQuery("#go_task_list_single").hide();
 }
+
 function go_stats_single_task_activity_list (postID) {
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_stats_single_task_activity_list;
     jQuery.ajax({
@@ -712,8 +713,6 @@ function go_stats_lite (user_id) {
     });
 }
 
-
-
 function go_date_loader(start, end, is_default) {
     if (is_default == true){
         start = moment();
@@ -724,13 +723,14 @@ function go_date_loader(start, end, is_default) {
 
     }
 
-    jQuery('#datepicker_clipboard span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    jQuery('#go_datepicker').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
 
 }
 
 function go_load_daterangepicker(){
-    jQuery('#datepicker_clipboard').daterangepicker({
+
+    jQuery('#go_datepicker_clipboard').daterangepicker({
         ranges: {
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -740,14 +740,42 @@ function go_load_daterangepicker(){
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
         "startDate": moment(),
-        "endDate": moment()
+        "endDate": moment(),
+        "opens": "center",
+        locale: {
+            cancelLabel: 'Clear'
+        }
     }, function(start, end, label) {
         console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-        go_date_loader(start, end, false);
+            go_date_loader(start, end, false);
+    });
+
+    jQuery('#go_datepicker_clipboard').on('cancel.daterangepicker', function(ev, picker) {
+        jQuery('#go_datepicker_clipboard span').html('');
     });
 
     go_date_loader(null, null, true);
 }
+
+function go_load_daterangepicker_empty(){
+
+    jQuery('#go_datepicker_clipboard').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear'
+        }
+    });
+
+    jQuery('#go_datepicker_clipboard').on('apply.daterangepicker', function(ev, picker) {
+        jQuery('#go_datepicker_clipboard span').html(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+    });
+
+    jQuery('#go_datepicker_clipboard').on('cancel.daterangepicker', function(ev, picker) {
+        jQuery('#go_datepicker_clipboard span').html('');
+    });
+
+}
+
 
 function go_make_select2_filter(taxonomy, my_value){
 
@@ -856,12 +884,38 @@ function go_setup_reset_filter_button(){
     });
 
     jQuery('.go_reset_clipboard').on("click", function () {
-        jQuery('#datepicker_clipboard span').html("");
+        jQuery('#go_datepicker').html("");
         jQuery('#go_clipboard_user_go_sections_select, #go_clipboard_user_go_groups_select, #go_clipboard_go_badges_select, #go_task_select, #go_store_item_select').val(null).trigger('change');
         jQuery('.go_update_clipboard').addClass("bluepulse");
         jQuery('.go_update_clipboard').html('<span class="ui-button-text">Apply Filters<i class="fa fa-filter" aria-hidden="true"></i></span>');
         jQuery('#go_unmatched_toggle').prop('checked', false); // Uncheck
     });
+
+    go_daterange_clear();
+
+
+}
+
+function go_daterange_clear(){
+    jQuery('#go_reset_datepicker').on("click", function (e){
+        e.stopPropagation();
+        jQuery('#go_datepicker_container').html('<div id="go_datepicker_clipboard"><i class="fa fa-calendar" style="float: left;"></i><span id="go_datepicker"></span> <i id="go_reset_datepicker" class=""select2-selection__clear><b> × </b></i><i class="fa fa-caret-down"></i></div>');
+        //jQuery('#go_datepicker_clipboard span').html('');
+        jQuery('#go_reset_datepicker').hide();
+        jQuery('#go_datepicker_container').one("click", function (){
+            //console.log("hi there one");
+            go_load_daterangepicker();
+            jQuery('#go_reset_datepicker').show();
+            go_daterange_clear();
+        });
+
+        //go_load_daterangepicker_empty();
+
+    });
+}
+
+function go_clear_daterange(){
+
 }
 
 //this now saves to session data

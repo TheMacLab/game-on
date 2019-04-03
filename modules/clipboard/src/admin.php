@@ -23,10 +23,11 @@ function go_clipboard_menu() {
             </div>
             <div id="go_action_filters" style="padding: 0 20px 20px 20px; display:none;">
                 <h3>Action Filters</h3>
-
-                <div id="datepicker_clipboard" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span></span> <i class="fa fa-caret-down"></i>
+                <div id="go_datepicker_container" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                    <div id="go_datepicker_clipboard">
+                        <i class="fa fa-calendar" style="float: left;"></i>&nbsp;
+                        <span id="go_datepicker"></span> <i id="go_reset_datepicker" class=""select2-selection__clear><b> × </b></i><i class="fa fa-caret-down"></i>
+                    </div>
                 </div>
 
                 <span id="go_store_filters"><br><label for="go_clipboard_store_item_select">Store Items </label><select id="go_store_item_select" class="js-store_data" style="width:250px;"></select></span>

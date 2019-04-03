@@ -1071,7 +1071,7 @@ function tinymce_getContentLength() {
 jQuery( document ).ready( function() {
 
     //add onclick to blog edit buttons
-    console.log("opener3");
+    //console.log("opener3");
     jQuery(".go_blog_opener").one("click", function (e) {
         go_blog_opener(this);
     });
@@ -1825,10 +1825,6 @@ function go_blog_trash( el ) {
                 go_disable_loading( el );
             }
         });
-
-
-
-
 
 }
 

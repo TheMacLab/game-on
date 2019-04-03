@@ -579,9 +579,28 @@ function go_shortcode_button_register( $plugin_array ) {
 add_filter( 'mce_external_plugins', 'go_shortcode_button_register' );
 
 
+/**
+ * Return to taxonomy page after updating a term
+ * Work for any post type and all custom/built_in taxonomies
+ */
+
+add_filter( 'wp_redirect',
+    function( $location ){
+        $mytaxonomy = (isset($_POST['taxonomy']) ?  $_POST['taxonomy'] : null);
+        if( $mytaxonomy ){
+            //$location = add_query_arg( 'action',   'edit',               $location );
+            $location = '?taxonomy=' . $mytaxonomy;
+            //$location = add_query_arg( 'tag_ID',   $_inputs['tag_ID'],   $location );
+            return $location;
+        }
 
 
-$taxonomy = 'task_chains';
+        return $location;
+    }
+);
+
+
+
 
 
 // define the after-<taxonomy>-table callback
@@ -604,11 +623,18 @@ function action_after_taxonomy_table( $taxonomy ) {
     <?php
 };
 
+$mytaxonomy = (isset($_GET['taxonomy']) ?  $_GET['taxonomy'] : null);
+
+if ($mytaxonomy) {
+    $taxonomy = $mytaxonomy;
+
 // add the action
-add_action( "after-{$taxonomy}-table", 'action_after_taxonomy_table', 10, 1 );
+    add_action("after-{$taxonomy}-table", 'action_after_taxonomy_table', 10, 1);
 
 // run the action
-do_action( 'after-{$taxonomy}-table', $taxonomy );
+    do_action('after-{$taxonomy}-table', $taxonomy);
+
+}
 
 
 
