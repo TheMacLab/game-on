@@ -68,20 +68,21 @@ function go_checks_for_understanding ($custom_fields, $i, $status, $user_id, $po
         $class = 'active';
     }else{$class = 'null';}
     echo "<div class='go_checks_and_buttons {$class}' style='display:block;'>";
+    echo $instructions;
 
     $blog_post_id = null;
     if ($check_type == 'upload') {
-        go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
+        go_upload_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'blog') {
-        $blog_post_id = go_blog_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions, $all_content, $repeat_max, $check_type, $stage_count);
+        $blog_post_id = go_blog_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $all_content, $repeat_max, $check_type, $stage_count);
     } else if ($check_type == 'URL') {
-        go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
+        go_url_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'password') {
-        go_password_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
+        go_password_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'quiz') {
-        go_test_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions);
+        go_test_check($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status);
     } else if ($check_type == 'none' || $check_type == null) {
-        go_no_check($i, $status, $custom_fields, $instructions, $bonus, $bonus_status);
+        go_no_check($i, $status, $custom_fields, $bonus, $bonus_status);
     }
 
     if ($check_type != 'blog') {
@@ -205,21 +206,16 @@ function go_buttons($user_id, $custom_fields, $i, $stage_count, $status, $check_
  * @param $i
  * @param $status
  * @param $custom_fields
- * @param $instructions
  * @param $bonus
  * @param $bonus_status
  */
-function go_no_check ($i, $status, $custom_fields, $instructions, $bonus, $bonus_status){
+function go_no_check ($i, $status, $custom_fields, $bonus, $bonus_status){
     //for bonus stages
     if ($bonus){
         $status = $bonus_status;
     }
     if ($i !=$status) {
         echo "Stage complete!";
-    }
-    else{
-        echo $instructions;
-
     }
 }
 
@@ -232,9 +228,8 @@ function go_no_check ($i, $status, $custom_fields, $instructions, $bonus, $bonus
  * @param $post_id
  * @param $bonus
  * @param $bonus_status
- * @param $instructions
  */
-function go_password_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
+function go_password_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status){
     global $wpdb;
 
     //for bonus stages
@@ -246,7 +241,6 @@ function go_password_check ($custom_fields, $i, $status, $go_actions_table_name,
     //end for bonus stages
 
     if ($i == $status) {
-        echo $instructions;
         echo "<input id='go_result' class='clickable' type='password' placeholder='Enter Password'/>";
     }
     else {
@@ -280,9 +274,8 @@ function go_print_password_check_result($password_type){
  * @param $post_id
  * @param $bonus
  * @param $bonus_status
- * @param $instructions
  */
-function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions, $all_content, $repeat_max, $check_type, $stage_count){
+function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $all_content, $repeat_max, $check_type, $stage_count){
     global $wpdb;
 
     //$url_toggle = (isset($custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0]) ?  $custom_fields['go_stages_'.$i.'_blog_options_url_toggle'][0] : null);
@@ -517,9 +510,8 @@ function go_blog_check ($custom_fields = null, $i, $status, $go_actions_table_na
  * @param $post_id
  * @param $bonus
  * @param $bonus_status
- * @param $instructions
  */
-function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
+function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status){
     global $wpdb;
 
     //for bonus stages
@@ -531,7 +523,6 @@ function go_url_check ($custom_fields, $i, $status, $go_actions_table_name, $use
     //end for bonus stages
 
     if ($i == $status) {
-        echo $instructions;
         $i++;
         $url = (string)$wpdb->get_var($wpdb->prepare("SELECT result 
 				FROM {$go_actions_table_name} 
@@ -585,9 +576,8 @@ function go_print_URL_check_result($url){
  * @param $post_id
  * @param $bonus
  * @param $bonus_status
- * @param $instructions
  */
-function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions) {
+function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status) {
     global $wpdb;
 
     //for bonus stages
@@ -599,7 +589,6 @@ function go_upload_check ($custom_fields, $i, $status, $go_actions_table_name, $
     //end for bonus stages
 
     if ($i == $status) {
-        echo $instructions;
         $i++;
         $media_id = (int)$wpdb->get_var($wpdb->prepare("SELECT result 
 				FROM {$go_actions_table_name} 
@@ -700,11 +689,9 @@ function go_print_upload_check_result($media_id){
  * @param $post_id
  * @param $bonus
  * @param $bonus_status
- * @param $instructions
  */
-function go_test_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status, $instructions){
+function go_test_check ($custom_fields, $i, $status, $go_actions_table_name, $user_id, $post_id, $bonus, $bonus_status){
     if ($i == $status) {
-        echo $instructions;
         //$quiz_data = 'go_stages_' . $i . '_quiz';
         //$quiz_data = $custom_fields[$check_type][0];
 
