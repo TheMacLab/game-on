@@ -3,26 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4c52fe7c-a769-413b-9a8a-3effed8b98a6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.codekit3" beforeDir="false" afterPath="$PROJECT_DIR$/config.codekit3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-on.php" beforeDir="false" afterPath="$PROJECT_DIR$/game-on.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/dev/scripts/go_map.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dev/scripts/go_map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_admin_user-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_admin_user-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_frontend-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_frontend-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/min/go_scripts-min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/min/go_scripts-min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/map/src/public_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/map/src/public_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/map/src/templates/go_map_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/map/src/templates/go_map_template.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/store/src/admin_ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/store/src/admin_ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/store/src/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/store/src/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/store/src/templates/go_store_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/store/src/templates/go_store_template.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/user_blogs/src/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/user_blogs/src/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_map.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_map.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/css/go_stats.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/css/go_stats.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/front/min/go_frontend.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/front/min/go_frontend.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/min/go_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/min/go_styles.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +33,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game-on.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="80">
@@ -68,17 +50,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/functions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="336" column="5" selection-start-line="336" selection-start-column="5" selection-end-line="336" selection-end-column="5" />
+            <state relative-caret-position="750">
+              <caret line="421" selection-start-line="421" selection-end-line="421" />
               <folding>
                 <element signature="n#go_blog_form#0;n#!!top" />
                 <element signature="n#style#0;n#h3#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+                <element signature="n#go_blog_post#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#go_blog_tags#0;n#!!top" />
-                <element signature="n#go_blogs#0;n#!!top" />
                 <element signature="n#go_custom_post_status#0;n#!!top" />
                 <element signature="n#go_custom_query#0;n#!!top" />
                 <element signature="n#go_template_loader#0;n#!!top" />
@@ -121,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/ajax.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="322" selection-start-line="322" selection-end-line="322" />
+            <state relative-caret-position="281">
+              <caret line="389" column="31" selection-start-line="389" selection-start-column="31" selection-end-line="389" selection-end-column="31" />
               <folding>
                 <element signature="n#go_blog_opener#0;n#!!top" />
                 <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
@@ -256,8 +238,8 @@
       <find>light</find>
       <find>go_blog_task_id</find>
       <find>post</find>
-      <find>go_blog_title</find>
       <find>stage</find>
+      <find>go_blog_title</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/js/front/scripts</dir>
@@ -331,13 +313,13 @@
         <option value="$PROJECT_DIR$/styles/css/go_stats.scss" />
         <option value="$PROJECT_DIR$/modules/user_blogs/src/templates/go_user_blog_template.php" />
         <option value="$PROJECT_DIR$/js/dev/scripts/go_blogs.js" />
-        <option value="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" />
-        <option value="$PROJECT_DIR$/modules/user_blogs/src/functions.php" />
         <option value="$PROJECT_DIR$/game-on.php" />
+        <option value="$PROJECT_DIR$/modules/user_blogs/src/functions.php" />
+        <option value="$PROJECT_DIR$/modules/user_blogs/src/ajax.php" />
       </list>
     </option>
   </component>
-  <component name="PhpDebugGeneral" xdebug_show_addresses="true" listening_started="true" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
+  <component name="PhpDebugGeneral" xdebug_show_addresses="true" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
   <component name="PhpServers">
     <servers>
       <server host="localhost" id="3921dc9d-31df-49b8-a3ad-25e0abc23ff5" name="localhost" />
@@ -640,12 +622,12 @@
       <workItem from="1551687878192" duration="5314000" />
       <workItem from="1552368042332" duration="265000" />
       <workItem from="1553426029331" duration="110360000" />
-      <workItem from="1553974545455" duration="103321000" />
+      <workItem from="1553974545455" duration="104200000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3934989000" />
+    <option name="totallyTimeSpent" value="3935868000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="26" width="1588" height="998" extended-state="0" />
@@ -2022,19 +2004,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game-on.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="120" column="2" selection-start-line="120" selection-start-column="2" selection-end-line="120" selection-end-column="2" />
+          <folding>
+            <element signature="e#6#232#0#PHP" expanded="true" />
+            <element signature="n#go_write_log#0;n#!!top" />
+            <element signature="n#go_total_query_time#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/functions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="336" column="5" selection-start-line="336" selection-start-column="5" selection-end-line="336" selection-end-column="5" />
+        <state relative-caret-position="750">
+          <caret line="421" selection-start-line="421" selection-end-line="421" />
           <folding>
             <element signature="n#go_blog_form#0;n#!!top" />
             <element signature="n#style#0;n#h3#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#go_blog_post#0;n#!!top" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#go_blog_tags#0;n#!!top" />
-            <element signature="n#go_blogs#0;n#!!top" />
             <element signature="n#go_custom_post_status#0;n#!!top" />
             <element signature="n#go_custom_query#0;n#!!top" />
             <element signature="n#go_template_loader#0;n#!!top" />
@@ -2044,26 +2038,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/user_blogs/src/ajax.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="322" selection-start-line="322" selection-end-line="322" />
+        <state relative-caret-position="281">
+          <caret line="389" column="31" selection-start-line="389" selection-start-column="31" selection-end-line="389" selection-end-column="31" />
           <folding>
             <element signature="n#go_blog_opener#0;n#!!top" />
             <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
             <element signature="n#go_blog_trash#0;n#!!top" />
             <element signature="e#10736#11363#0#PHP" />
             <element signature="n#go_blog_user_task#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game-on.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="120" column="2" selection-start-line="120" selection-start-column="2" selection-end-line="120" selection-end-column="2" />
-          <folding>
-            <element signature="e#6#232#0#PHP" expanded="true" />
-            <element signature="n#go_write_log#0;n#!!top" />
-            <element signature="n#go_total_query_time#0;n#!!top" />
           </folding>
         </state>
       </provider>

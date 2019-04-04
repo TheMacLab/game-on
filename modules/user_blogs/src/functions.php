@@ -419,6 +419,7 @@ function go_blogs() {
         'items_list'            => __( 'Items list', 'text_domain' ),
         'items_list_navigation' => __( 'Items list navigation', 'text_domain' ),
         'filter_items_list'     => __( 'Filter items list', 'text_domain' ),
+
     );
     $rewrite = array(
         'slug'                  => 'blogs',
