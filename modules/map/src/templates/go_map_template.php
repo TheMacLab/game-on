@@ -20,8 +20,7 @@
 
 get_header();
 
-$map_title = get_option( 'options_go_locations_map_title');
-echo "<h1 style='padding-top:30px;'>{$map_title}</h1>";
+
 go_make_map();
 
 

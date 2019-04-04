@@ -44,8 +44,14 @@ function go_store_template_include($template)
 
 
 function go_make_store_new() {
+
+    echo "<div id='go_store_container' style='padding:10px 30px; margin: 30px 5%; background-color: white;'>";
+    $store_title = get_option( 'options_go_store_title');
+    echo "<h1 style='padding:0px 30px 30px 0px;'>{$store_title}</h1>";
+
     $html = get_option('go_store_html');
     echo $html;
+    echo "</div>";
 }
 add_shortcode('go_make_store', 'go_make_store_new');
 

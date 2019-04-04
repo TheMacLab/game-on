@@ -66,8 +66,6 @@ function  go_blog_favorite(target){
     });
 }
 
-
-
 function go_blog_tags_select2(){
     jQuery('.go_feedback_go_blog_tags_select').select2({
         ajax: {
@@ -609,7 +607,7 @@ function go_blog_submit( el, reload ) {
     var suffix = jQuery( el ).attr( 'blog_suffix' );
 
     //var result = tinyMCE.activeEditor.getContent();
-    var result_title = jQuery( '#go_blog_title' + suffix ).val( );
+    var result_title = jQuery( '#go_blog_title' + suffix ).html();
     var button= jQuery( el ).attr( 'button_type' );
     var result = go_get_tinymce_content_blog(suffix);
     //console.log("title: " + result_title);
@@ -617,7 +615,7 @@ function go_blog_submit( el, reload ) {
     //var blog_post_id= jQuery( el ).attr( 'blog_post_id' );
     var blog_post_id = jQuery('#go_blog_title' + suffix).attr( 'data-blog_post_id' );
     console.log("blog_post_id: " + blog_post_id);
-    var post_wrapper_class = ".go_blog_post_wrapper_" + blog_post_id;
+    var post_wrapper_class = ".go_blog_post_wrapper_" + blog_post_id;//checks if the post exists on the page--used to reload that section later
     //alert(post_wrapper_class);
     var go_blog_bonus_stage= jQuery( el ).attr( 'data-bonus_status' );
     var go_blog_task_stage= jQuery( el ).attr( 'status' );

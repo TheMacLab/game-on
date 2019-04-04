@@ -135,9 +135,9 @@ function go_make_store_html() {
             }
             echo "</ul></div> ";
         }
-        echo "</div> ";
+        echo "</div></div> ";
     }
-    echo "</div>";
+    echo "</div></div>";
     $store_html = ob_get_contents();
     ob_end_clean();
 

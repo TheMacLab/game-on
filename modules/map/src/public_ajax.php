@@ -6,8 +6,12 @@ function go_make_map() {
     if ( ! is_admin() ) {
         $user_id = get_current_user_id();
         $last_map_id = get_user_option('go_last_map', $user_id);
+        echo "<div id='go_map_container' style='padding:10px 30px; margin: 30px 5%; background-color: white;'>";
+        $map_title = get_option( 'options_go_locations_map_title');
+        echo "<h1 style='padding:0px 30px 30px 0px;'>{$map_title}</h1>";
         go_make_map_dropdown();
         go_make_single_map($last_map_id, false);// do your thing
+        echo "</div>";
     }
 }
 add_shortcode('go_make_map', 'go_make_map');
@@ -60,10 +64,9 @@ function go_make_single_map($last_map_id, $reload, $user_id = null){
         }
     }
 
-    if ($reload == false) {echo "<div id='mapwrapper' style='padding: 30px; overflow: auto;'>";}
-    echo "<div id='loader' style='display:none; height: 300px; width: 100%; padding: 30px; background-color: white;'>
-                <div id='loader_inside' style='margin:auto;'>
-                    Loading . . .
+    if ($reload == false) {echo "<div id='mapwrapper' style='overflow: auto; '>";}
+    echo "<div id='loader_container' style='display:none; height: 250px; width: 100%; padding: 10px 30px; '>
+                <div id='loader'>
                 </div>
           </div>
             <div id='maps' data-mapid='$last_map_id' style='overflow: auto;'>";
@@ -453,7 +456,7 @@ function go_make_map_dropdown($user_id = null){
 	<div id='sitemap' style='visibility:hidden;'>   
     <div class='dropdown'>
       <button onclick='go_map_dropDown()' class='dropbtn'>Choose a Map</button>
-      <div id='myDropdown' class='dropdown-content'>";
+      <div id='go_Dropdown' class='dropdown-content'>";
     /* For each task chain with no parent, add to Dropdown  */
             foreach ( $tax_terms_maps as $tax_term_map ) {
 				$term_id = $tax_term_map->term_id;

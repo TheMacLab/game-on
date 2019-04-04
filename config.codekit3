@@ -4641,24 +4641,6 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"/styles/front/min/go_frontend.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/styles/front/min/go_frontend-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/styles/front/min/go_frontend.css.map": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/styles/front/min/go_frontend.css.map",
-		"oF": 0
-		},
 	"/styles/go_enque_styles.php": {
 		"cB": 0,
 		"ft": 8192,

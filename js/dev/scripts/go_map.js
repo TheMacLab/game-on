@@ -55,7 +55,7 @@ function go_show_map(mapid) {
 //https://wordpress.stackexchange.com/questions/216140/update-user-meta-using-with-ajax
 //
 	document.getElementById("maps").style.display = "none";
-	document.getElementById("loader").style.display = "block";
+	document.getElementById("loader_container").style.display = "block";
     var nonce = GO_EVERY_PAGE_DATA.nonces.go_update_last_map;
     var uid = jQuery('#go_map_user').data("uid");
 	//var map_nonce = jQuery( '#_wpnonce' ).val();
@@ -77,7 +77,7 @@ function go_show_map(mapid) {
           		jQuery('#mapwrapper').html(data);				
 				console.log("success!");
 				go_resizeMap();
-				document.getElementById("loader").style.display = "none";
+				document.getElementById("loader_container").style.display = "none";
  				document.getElementById("maps").style.display = "block";
 				
 			},
@@ -185,7 +185,7 @@ function go_resizeMap() {
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
 function go_map_dropDown() {
-    document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("go_Dropdown").classList.toggle("show");
 }
 
 function go_user_map(user_id) {

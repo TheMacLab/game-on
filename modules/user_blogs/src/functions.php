@@ -97,7 +97,7 @@ function go_blog_form($blog_post_id, $suffix, $go_blog_task_id = null, $i = null
     if( !empty($go_blog_task_id) && $is_private) {
         echo "<div ><h3>This post is private. Only you and the site administrators/instructors will be able to see it.</h3></div>";
     }
-    echo "<div><h3 style='width: 100%;' data-blog_post_id ='{$blog_post_id}' id='go_blog_title'{$suffix}'>".$title."</h3> </div>";
+    echo "<div><h3 style='width: 100%;' data-blog_post_id ='{$blog_post_id}' id='go_blog_title{$suffix}'>".$title."</h3> </div>";
 
     if ($url_toggle) {
         echo "<div>URL:";
@@ -326,11 +326,14 @@ function go_blog_post($blog_post_id, $check_for_understanding = false, $with_fee
     if($text_toggle) {
         echo $content;
     }
-    if ($current_user == $author_id || $is_admin) {//if admin or current user and this was
+    if ($current_user == $author_id) {//if current user then show edit and maybe trash
         echo "<button class='go_blog_opener' blog_post_id ='{$blog_post_id}' data-check_for_understanding ='{$check_for_understanding}'>edit post</button>";
-        if ($current_user == $author_id && $check_for_understanding == false  && empty($go_blog_task_id)) {
+        if (($current_user == $author_id && $check_for_understanding == false  && empty($go_blog_task_id))) {
             echo '<span class="go_blog_trash" blog_post_id ="' . $blog_post_id . '"><i class="fa fa-trash fa-2x"></i></span>';
         }
+
+    }else if ($is_admin) {
+        echo '<span class="go_blog_trash" blog_post_id ="' . $blog_post_id . '"><i class="fa fa-times-circle fa-2x"></i></span>';
     }
     if ($with_feedback){
         do_action('go_blog_template_after_post', $blog_post_id);

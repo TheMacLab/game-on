@@ -231,7 +231,6 @@ function go_blog_trash(){
     }
 }
 
-
 /*
 function go_blog_lightbox_opener(){
     check_ajax_referer( 'go_blog_lightbox_opener' );
@@ -402,7 +401,6 @@ function go_save_blog_post($post_id = null, $stage = null, $bonus_status = null,
 
     return $result;
 }
-
 
 /**
  * Prints content for the clipboard tasks table

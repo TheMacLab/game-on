@@ -79,6 +79,7 @@ get_header();
 
         </div>
     </div>
+    </div>
     <?php
 
     /// END USER HEADER
@@ -117,7 +118,7 @@ $posts = $query->get_posts();
 if ( empty($posts) ) {
     echo "Author doesn't have any posts";
 } else {
-    echo "<div id='go_wrapper' data-lightbox='{$go_lightbox_switch}' data-maxwidth='{$go_fitvids_maxwidth}' >";
+    echo "<div id='go_wrapper' data-lightbox='{$go_lightbox_switch}' data-maxwidth='{$go_fitvids_maxwidth}' style='background-color: #f2f2f2' >";
     ?>
 
     <div class="go_blog_container1" style="display: flex; justify-content: center;">
