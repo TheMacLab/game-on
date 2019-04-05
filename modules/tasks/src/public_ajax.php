@@ -431,8 +431,8 @@ function go_print_bonus_loot_possibilities($custom_fields, $user_id){
         echo "<ul>";
         foreach ($rows as $row) {
             $title = (isset($row['title']) ? $row['title'] : null);
-            echo "<li><b>";
-            echo $title . "</b>";
+            echo "<li>";
+            echo $title . "";
             //$message = (isset($row['title']) ? $row['title'] : null);
             if (go_get_loot_toggle( 'xp')){
                 $loot = (isset($row['$xp']) ? $row['$xp'] : null);

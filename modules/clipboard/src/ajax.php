@@ -640,7 +640,10 @@ function go_clipboard_stats_dataloader_ajax(){
                 }
             }
             $group_list = implode(",<br>", $group_list);
-            $group_count = '<span class="tooltip" data-tippy-content="'. $group_list .'">'. $group_count . '</span>';
+            //$group_count = '<span class="tooltip" data-tippy-content="'. $group_list .'">'. $group_count . '</span>';
+            $group_count = '<span>'. $group_list . '</span>';
+
+
             //$group_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$group_list</span>{$group_count}</span>";
         }
         else{
@@ -662,7 +665,8 @@ function go_clipboard_stats_dataloader_ajax(){
                 }
             }
             $badge_list = implode(",<br>", $badge_list);
-            $badge_count = '<span class="tooltip" data-tippy-content="'. $badge_list .'">'. $badge_count . '</span>';
+            //$badge_count = '<span class="tooltip" data-tippy-content="'. $badge_list .'">'. $badge_count . '</span>';
+            $badge_count = '<span>'. $badge_list . '</span>';
             //$badge_count = "<span class='tooltip' target='_blank'><span class='tooltiptext'>$badge_list</span>{$badge_count}</span>";
         }
         else{
